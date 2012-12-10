@@ -382,9 +382,22 @@ val undefined : ?message:string -> 'a -> 'b
     "Undefined". Optional argument [message] permits the
     customization of the error message.*)
 
+val ( @@ ) : ('a -> 'b) -> 'a -> 'b
+(** Function application. [f @@ x] is equivalent to [f x].
+However, it binds less tightly (between [::] and [=],[<],[>],etc)
+and is right-associative, which makes it useful for composing sequences of
+function calls without too many parentheses. It is similar to Haskell's [$].
+Note that it replaces pre-2.0 [**>] and [<|]. *)
+
+val ( % ) : ('a -> 'b) -> ('c -> 'a) -> 'c -> 'b
+(** Function composition: the mathematical [o] operator.
+ [f % g] is [fun x -> f (g x)]. It is similar to Haskell's [.].
+
+Examples: the following are equivalent:
+[f (g (h x))], [f @@ g @@ h x], [f % g % h @@ x]. *)
 
 val ( |> ) : 'a -> ('a -> 'b) -> 'b
-(** Function application. [x |> f] is equivalent to [f x].
+(** The "pipe": function application. [x |> f] is equivalent to [f x].
 
     This operator is commonly used to write a function composition by
     order of evaluation (the order used in object-oriented
@@ -393,25 +406,16 @@ val ( |> ) : 'a -> ('a -> 'b) -> 'b
 
     For instance, [g (f x)] means "apply [f] to [x], then apply [g] to
     the result." The corresponding notation in most object-oriented
-    programming languages would be somewhere along the lines of [x.f.g
-    ()], or "starting from [x], apply [f], then apply [g]." In OCaml,
-    using the ( |> ) operator, this is written [x |> f |> g].
+    programming languages would be somewhere along the lines of [x.f.g.h()],
+    or "starting from [x], apply [f], then apply [g]." In OCaml,
+    using the ( |> ) operator, this is written [x |> f |> g |> h].
 
     This operator may also be useful for composing sequences of
-    function calls without too many parenthesis. *)
-
-
-val ( @@ ) : ('a -> 'b) -> 'a -> 'b
-(** Function application. [f @@ x] is equivalent to [f x].
-However, it binds less tightly (between [::] and [=],[<],[>],etc)
-and is right-associative, which makes it useful for composing sequences of
-function calls without too many parentheses. It is similar to Haskell's [$].
-Note that it replaces pre-2.0 [**>] and [<|].
-*)
+    function calls without too many parentheses. *)
 
 val ( |- ) : ('a -> 'b) -> ('b -> 'c) -> 'a -> 'c
-(** Function composition. [f |- g] is [fun x -> g (f x)].
-    This is also equivalent to applying [<**] twice.*)
+(** Piping function composition. [f |- g] is [fun x -> g (f x)].
+ This operator is mainly useful when using pipes ([|>])*)
 
 val ( |? ) : 'a option -> 'a -> 'a
 (** Like {!BatOption.default}, with the arguments reversed.
