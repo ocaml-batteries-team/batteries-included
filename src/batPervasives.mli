@@ -413,9 +413,16 @@ val ( |> ) : 'a -> ('a -> 'b) -> 'b
     This operator may also be useful for composing sequences of
     function calls without too many parentheses. *)
 
-val ( |- ) : ('a -> 'b) -> ('b -> 'c) -> 'a -> 'c
-(** Piping function composition. [f |- g] is [fun x -> g (f x)].
- This operator is mainly useful when using pipes ([|>])*)
+val ( %> ) : ('a -> 'b) -> ('b -> 'c) -> 'a -> 'c
+(** Piping function composition. [f %> g] is [fun x -> g (f x)].
+Whereas [f % g] applies [g] first and [f] second, [f @> g]
+applies [f], then [g]. 
+Note that it plays well with pipes, so for instance
+[x |> f %> g %> h |> i %> j] yields the expected result...
+but in such cases it's still recommended to use [|>] only.
+Note that it replaces pre-2.0 [|-], which {i didn't} integrate with
+pipes.
+*)
 
 val ( |? ) : 'a option -> 'a -> 'a
 (** Like {!BatOption.default}, with the arguments reversed.

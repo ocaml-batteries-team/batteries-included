@@ -235,7 +235,7 @@ val skip: int -> 'a t -> 'a t
     then returns [e].
 
     This function has the same behavior as [drop] but is often easier to
-    compose with, e.g., [skip 5 |- take 3] is a new function which skips
+    compose with, e.g., [skip 5 %> take 3] is a new function which skips
     5 elements and then returns the next 3 elements.*)
 
 val take_while : ('a -> bool) -> 'a t -> 'a t

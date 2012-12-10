@@ -362,7 +362,7 @@ let filter_map p xs =
   (Q.pair (Q.array Q.small_int) (Q.fun1 Q.small_int (Q.option Q.int))) \
   (fun (a, f) -> \
     let a' = filter (fun elt -> f elt <> None) a in \
-    let a' = map (f |- BatOption.get) a' in \
+    let a' = map (f %> BatOption.get) a' in \
     let a = filter_map f a in \
     a = a' \
   )

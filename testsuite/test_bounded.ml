@@ -51,7 +51,7 @@ let assert_make (type s) m to_string (xs : s list) =
   List.iter (
     fun x ->
       let printer b = Printf.sprintf "%s (%b)" (to_string x) b in
-      U.assert_equal ~printer (max_check x && min_check x) (BatOption.is_some ((B.make |- B.extract) x))
+      U.assert_equal ~printer (max_check x && min_check x) (BatOption.is_some ((B.make %> B.extract) x))
   ) xs;
   ()
 

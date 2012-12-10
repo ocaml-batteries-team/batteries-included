@@ -407,7 +407,7 @@ module TestMap
       [
         M.enum, "enum";
         M.backwards, "backwards";
-        M.bindings |- BatList.enum, "enum bindings";
+        M.bindings %> BatList.enum, "enum bindings";
       ]
 
   let reindex (f : M.key -> 'a -> 'b) : 'a -> 'b =

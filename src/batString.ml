@@ -487,7 +487,7 @@ let map f s =
 (*$T map
    map Char.uppercase "Five" = "FIVE"
    map Char.uppercase "" = ""
-   map (String.of_char |- failwith) "" = ""
+   map (String.of_char %> failwith) "" = ""
 *)
 
 let filter_map f s =
