@@ -123,7 +123,6 @@ module FingerTree = BatFingerTree
 module Logger = BatLogger
 module MultiMap = BatMultiMap
 module ParserCo = BatParserCo
-module PathGen = BatPathGen
 module Result = BatResult
 module Return = BatReturn
 module Seq = BatSeq
@@ -156,6 +155,7 @@ module Incubator = struct
   module Log = BatLog
   module Substring = BatSubstring
   module Bounded = BatBounded
+  module PathGen = BatPathGen
 end
 
 (* Pervasives last *)
