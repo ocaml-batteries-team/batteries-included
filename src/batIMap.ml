@@ -305,6 +305,11 @@ let fold2_range f {m=m1} {m=m2} x0 = Core.fold2_range f m1 m2 x0
 let union f {m=m1;eq} {m=m2} = {m=Core.union ~eq f m1 m2; eq}
 let merge ?(eq=(=)) f {m=m1} {m=m2} = {m=Core.merge ~eq f m1 m2; eq}
 let forall2_range f {m=m1} {m=m2} = Core.forall2_range f m1 m2
+let get_dec_eq {eq} = eq
+
+(*$T get_dec_eq
+  get_dec_eq (empty Int.equal) == Int.equal
+*)
 
 module Infix = struct
   let (-->) {m} k = Core.find k m

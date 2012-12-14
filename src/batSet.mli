@@ -639,4 +639,8 @@ module PSet : sig
   val print :  ?first:string -> ?last:string -> ?sep:string ->
     ('a BatInnerIO.output -> 'c -> unit) ->
     'a BatInnerIO.output -> 'c t -> unit
+
+  (** get the comparison function used for a polymorphic map *)
+  val get_cmp : 'a t -> ('a -> 'a -> int)
+
 end

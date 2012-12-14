@@ -113,6 +113,10 @@ val merge :  ?eq:('c -> 'c -> bool) -> (int -> int -> 'a option -> 'b option -> 
 
 val forall2_range : (int -> int -> 'a option -> 'b option -> bool) -> 'a t -> 'b t -> bool
 
+
+(** Get the equality function used in an IMap.t *)
+val get_dec_eq : 'a t -> ('a -> 'a -> bool)
+
 (** Infix operators over a {!BatIMap} *)
 module Infix : sig
   val (-->) : 'a t -> int -> 'a
