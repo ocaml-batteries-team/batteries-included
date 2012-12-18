@@ -43,7 +43,9 @@ module Legacy = struct
   module Weak = Weak
   module Str = Str
   module Unix = Unix
+  module Num = Num
   module Big_int = Big_int
+  module Bigarray = Bigarray
 end
 
 (* stdlib modules *)
