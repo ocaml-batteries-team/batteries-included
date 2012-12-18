@@ -160,6 +160,7 @@ module UTF8 = BatUTF8 (* replaces, doesn't extend UTF8 *)
 
 
 (* Num *)
+module Num = BatNum
 module Big_int = struct include Big_int include BatBig_int end
 
 
