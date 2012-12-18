@@ -165,9 +165,23 @@ val print: 'a BatInnerIO.output -> t -> unit
 
 (** {6 Submodules grouping all infix operators} *)
 
+module TaggedInfix : sig
+  val ( =/ ) : num -> num -> bool
+  val ( </ ) : num -> num -> bool
+  val ( >/ ) : num -> num -> bool
+  val ( <=/ ) : num -> num -> bool
+  val ( >=/ ) : num -> num -> bool
+  val ( <>/ ) : num -> num -> bool
+
+  val ( +/ ) : num -> num -> num
+  val ( -/ ) : num -> num -> num
+  val ( */ ) : num -> num -> num
+  val ( // ) : num -> num -> num
+  val ( **/ ) : num -> num -> num
+end
+
 module Infix : sig
   include BatNumber.Infix with type bat__infix_t = t
-
   val ( =/ ) : num -> num -> bool
   val ( </ ) : num -> num -> bool
   val ( >/ ) : num -> num -> bool

@@ -64,10 +64,15 @@ module BaseNum = struct
       with Not_found -> of_int (BatInt.of_float f)
 end
 
-module Infix = struct
-  include BatNumber.MakeInfix (BaseNum)
+module TaggedInfix = struct
   let (=/), (</), (>/), (<=/), (>=/), (<>/) = Num.((=/), (</), (>/), (<=/), (>=/), (<>/))
   let (+/), (-/), ( */ ), (//), ( **/ ) = Num.((+/), (-/), ( */ ), (//), ( **/ ))
+end
+
+module Infix = struct
+  (* infix operators without / suffix: +-*/ *)
+  include BatNumber.MakeInfix (BaseNum)
+  include TaggedInfix
 end
 
 include (BatNumber.MakeNumeric(BaseNum): BatNumber.Numeric with type t = Num.num and module Infix := Infix)
