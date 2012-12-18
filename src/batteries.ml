@@ -45,6 +45,7 @@ module Legacy = struct
   module Num = Num
   module Big_int = Big_int
   module Bigarray = Bigarray
+  module Str = Str
 end
 
 (* stdlib modules *)
