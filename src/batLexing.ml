@@ -1,5 +1,5 @@
 (*
- * ExtString - Additional functions for string manipulations.
+ * BatString - Additional functions for string manipulations.
  * Copyright (C) 1996 Xavier Leroy, INRIA Rocquencourt
  * Copyright (C) 2009 David Teller, LIFO, Universite d'Orleans
  *

@@ -1,5 +1,5 @@
 (*
- * ExtBuffer - Additional buffer operations
+ * BatBuffer - Additional buffer operations
  * Copyright (C) 1999 Pierre Weis, Xavier Leroy
  *               2009 David Teller, LIFO, Universite d'Orleans
  *               2009 Dawid Toton

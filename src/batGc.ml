@@ -1,5 +1,5 @@
 (*
- * ExtGC - Extended GC operations
+ * BatGC - Extended GC operations
  * Copyright (C) 1996 Damien Doligez
  *               2008 David Teller, LIFO, Universite d'Orleans
  *

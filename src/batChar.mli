@@ -1,5 +1,5 @@
 (*
- * ExtChar - Additional character operations
+ * BatChar - Additional character operations
  * Copyright (C) 1996 Xavier Leroy
  *               2008 David Teller
  *

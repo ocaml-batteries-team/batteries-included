@@ -1,5 +1,5 @@
 (*
- * ExtMarshal - Extended marshaling operations
+ * BatMarshal - Extended marshaling operations
  * Copyright (C) 1997 Xavier Leroy
  *               2008 David Teller
  *

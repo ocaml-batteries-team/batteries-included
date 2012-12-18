@@ -1,5 +1,5 @@
 (*
- * ExtNativeint - Extended native ints
+ * BatNativeint - Extended native ints
  * Copyright (C) 2005 Xavier Leroy
  *               2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2008 David Teller

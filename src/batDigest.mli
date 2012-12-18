@@ -1,5 +1,5 @@
 (*
- * ExtDigest - Additional functions for MD5 message digests
+ * BatDigest - Additional functions for MD5 message digests
  * Copyright (C) 1996 Xavier Leroy, INRIA Rocquencourt
  * Copyright (C) 2009 David Teller, LIFO, Universite d'Orleans
  *

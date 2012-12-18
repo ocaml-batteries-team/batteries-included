@@ -1,5 +1,5 @@
 (*
- * ExtQueue - Extended operations on queues
+ * BatQueue - Extended operations on queues
  * Copyright (C) 1996 Xavier Leroy
  *               2008 David Teller, LIFO, Universite d'Orleans
  *

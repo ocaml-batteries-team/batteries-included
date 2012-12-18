@@ -1,5 +1,5 @@
 (*
- * ExtBigarray - additional and modified functions for big arrays.
+ * BatBigarray - additional and modified functions for big arrays.
  * Copyright (C) 2000 Michel Serrano
  *               2000 Xavier Leroy
  *               2009 David Teller, LIFO, Universite d'Orleans

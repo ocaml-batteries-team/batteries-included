@@ -1,5 +1,5 @@
 (*
- * ExtRandom - Additional randomization operations
+ * BatRandom - Additional randomization operations
  * Copyright (C) 1996 Damien Doligez
  *               2008 David Teller
  *

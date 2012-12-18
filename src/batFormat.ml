@@ -1,5 +1,5 @@
 (*
- * ExtFormat - Extended Format module
+ * BatFormat - Extended Format module
  * Copyright (C) 1996 Pierre Weis
  *               2009 David Teller, LIFO, Universite d'Orleans
  *

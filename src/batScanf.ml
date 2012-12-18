@@ -1,5 +1,5 @@
 (*
- * ExtScanf - Extended Scanf module
+ * BatScanf - Extended Scanf module
  * Copyright (C) 2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  *
  * This library is free software; you can redistribute it and/or

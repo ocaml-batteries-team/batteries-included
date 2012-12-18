@@ -1,5 +1,5 @@
 (*
- * ExtFloat - Extended floats
+ * BatFloat - Extended floats
  * Copyright (C) 2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  *

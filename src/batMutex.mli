@@ -1,5 +1,5 @@
 (*
- * ExtMutex - Additional functions for Mutexes
+ * BatMutex - Additional functions for Mutexes
  * Copyright (C) 1996 Xavier Leroy
  *               1996 Damien Doligez
  *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans

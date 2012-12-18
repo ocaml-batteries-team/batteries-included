@@ -1,5 +1,5 @@
 (*
- * ExtUnit - Operations on Unit
+ * BatUnit - Operations on Unit
  * Copyright (C) 2008 David Teller, LIFO, Universite d'Orleans
  *
  * This library is free software; you can redistribute it and/or

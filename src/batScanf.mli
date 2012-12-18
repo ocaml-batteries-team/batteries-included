@@ -1,5 +1,5 @@
 (*
- * ExtScanf - Extended Scanf module
+ * BatScanf - Extended Scanf module
  * Copyright (C) 1996 Pierre Weis
  *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  *
@@ -433,4 +433,3 @@ val format_from_string :
     according to the given format string [fmt].
     @raise Scan_failure if [s], considered as a format string, does not
     have the same type as [fmt]. *)
-

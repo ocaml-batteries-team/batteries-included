@@ -1,5 +1,5 @@
 (*
- * ExtSet - Extended operations on sets
+ * BatSet - Extended operations on sets
  * Copyright (C) 1996 Xavier Leroy
  *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  *

@@ -1,5 +1,5 @@
 (*
- * ExtBool - Extended booleans
+ * BatBool - Extended booleans
  * Copyright (C) 2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2008 David Teller
  *

@@ -1,5 +1,5 @@
 (*
- * ExtOO - Extended operations on objects
+ * BatOO - Extended operations on objects
  * Copyright (C) 1996 Jerome Vouillon, INRIA
  *               2008 David Teller, LIFO, Universite d'Orleans
  *

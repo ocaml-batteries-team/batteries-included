@@ -1,5 +1,5 @@
 (*
- * ExtBig_int - Extended operations on big integers
+ * BatBig_int - Extended operations on big integers
  * Copyright (C) 2008 Gabriel Scherer
  *               2008 David Teller
  *
@@ -346,4 +346,3 @@ val gcd_big_int : big_int -> big_int -> big_int
 (** {7 Printing} *)
 
 val print : 'a BatIO.output -> t -> unit
-

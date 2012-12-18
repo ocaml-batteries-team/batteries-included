@@ -1,5 +1,5 @@
 (*
- * ExtInt64 - Extended 64-bit integers
+ * BatInt64 - Extended 64-bit integers
  * Copyright (C) 2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2008 David Teller
  *

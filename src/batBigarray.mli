@@ -1,5 +1,5 @@
 (*
- * ExtBigarray - additional and modified functions for big arrays.
+ * BatBigarray - additional and modified functions for big arrays.
  * Copyright (C) 2000 Michel Serrano
  *               2000 Xavier Leroy
  *               2008 David Teller, LIFO, Universite d'Orleans
@@ -963,5 +963,3 @@ val reshape_3 :
   ('a, 'b, 'c) Genarray.t -> int -> int -> int -> ('a, 'b, 'c) Array3.t
 (** Specialized version of {!Bigarray.reshape} for reshaping to
    three-dimensional arrays. *)
-
-

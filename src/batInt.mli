@@ -1,5 +1,5 @@
 (*
- * ExtInt - Extended operations on integers
+ * BatInt - Extended operations on integers
  * Copyright (C) 2008 Gabriel Scherer
  *               2008 David Teller
  *

@@ -1,5 +1,5 @@
 (*
- * ExtNum - Operations on arbitrary-precision numbers
+ * BatNum - Operations on arbitrary-precision numbers
  * Copyright (C) 1996 Valerie Menissier-Morain
  *               2008 Gabriel Scherer
  *               2008 David Teller

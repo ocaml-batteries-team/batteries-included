@@ -1,5 +1,5 @@
 (*
- * ExtArray - additional and modified functions for arrays.
+ * BatArray - additional and modified functions for arrays.
  * Copyright (C) 2005 Richard W.M. Jones (rich @ annexia.org)
  *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  *

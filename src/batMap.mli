@@ -1,5 +1,5 @@
 (*
- * ExtMap - Additional map operations
+ * BatMap - Additional map operations
  * Copyright (C) 1996 Xavier Leroy
  *               2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  *

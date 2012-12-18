@@ -1,5 +1,5 @@
 (*
- * ExtHashtbl, extra functions over hashtables.
+ * BatHashtbl, extra functions over hashtables.
  * Copyright (C) 1996 Xavier Leroy
  *               2003 Nicolas Cannasse
  *               2005 Damien Doligez

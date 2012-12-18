@@ -1,5 +1,5 @@
 (*
- * ExtMutex - Additional functions for Mutexes
+ * BatMutex - Additional functions for Mutexes
  * Copyright (C) 1996 Xavier Leroy
  *               1996 Damien Doligez
  *               2008 David Teller
@@ -27,7 +27,7 @@ struct
       type t =
 	  { mutex : Mutex.t;
 	    id    : int }
-	
+
       let unique =
 	let counter = ref 0
 	and mutex   = Mutex.create ()
@@ -37,16 +37,16 @@ struct
 	    incr counter;
 	    Mutex.unlock mutex;
 	    result
-	
+
       let create () =
 	{ mutex = Mutex.create () ;
 	  id    = unique }
-	
+
       let lock t =
 	Printf.eprintf "[Mutex] Attempting to lock mutex %d\n" t.id;
 	Mutex.lock t.mutex;
 	Printf.eprintf "[Mutex] Mutex %d locked\n" t.id
-	
+
       let unlock t =
 	Printf.eprintf "[Mutex] Attempting to unlock mutex %d\n" t.id;
 	Mutex.unlock t.mutex;

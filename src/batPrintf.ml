@@ -1,5 +1,5 @@
 (*
- * ExtPrintf - Extended Printf module
+ * BatPrintf - Extended Printf module
  * Copyright (C) 2008 David Teller (contributor)
  *
  * This library is free software; you can redistribute it and/or

@@ -1,5 +1,5 @@
 (*
- * ExtUnix - additional and modified functions for Unix and Unix-compatible systems.
+ * BatUnix - additional and modified functions for Unix and Unix-compatible systems.
  * Copyright (C) 1996 Xavier Leroy
  * Copyright (C) 2009 David Teller, LIFO, Universite d'Orleans
  *

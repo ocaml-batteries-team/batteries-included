@@ -1,5 +1,5 @@
 (*
- * ExtComplex - Extended Complex Numbers
+ * BatComplex - Extended Complex Numbers
  * Copyright (C) 2007 Bluestorm <bluestorm dot dylc on-the-server gmail dot com>
  *               2008 David Teller
  *

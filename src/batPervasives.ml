@@ -1,5 +1,5 @@
 (*
- * ExtPervasives - Additional functions
+ * BatPervasives - Additional functions
  * Copyright (C) 1996 Xavier Leroy
  *               2003 Nicolas Cannasse
  *               2007 Zheng Li

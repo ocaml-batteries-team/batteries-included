@@ -1,5 +1,5 @@
 (*
- * ExtSys - additional and modified functions for System
+ * BatSys - additional and modified functions for System
  * Copyright (C) 1996 Xavier Leroy
  * Copyright (C) 2009 David Teller, LIFO, Universite d'Orleans
  *
