@@ -32,7 +32,7 @@ open BatInnerIO
 val lines_of : string -> string BatEnum.t
 (** [line_of name] reads the contents of file [name] as an enumeration of lines.
     The file is automatically closed once the last line has been reached or the
-    enumeration is closed or garbage-collected. *)
+    enumeration is garbage-collected. *)
 
 val write_lines: string -> string BatEnum.t -> unit
 (** [write_lines name lines] writes strings given by [lines] to file [name] with newline character appended to each line. *)
