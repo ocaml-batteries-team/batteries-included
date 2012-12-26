@@ -101,12 +101,12 @@ val bind : ('a, 'b, 'c) t -> ('b -> ('a, 'd, 'c) t ) -> ('a, 'd, 'c) t
      [bind p f] results in a new parser which behaves as [p]
      then, in case of success, applies [f] to the result.*)
 
-(*val compose: ('a, 'b, 'c) t -> ('b, 'd, 'c) t -> ('a, 'd, 'c) t*)
+(*val compose: ('a, 'b, 'c) t -> ('b, 'd, 'c) t -> ('a, 'd, 'c) t
   (**Composition of two successive parsers.
 
      [compose p q] results in a new parser which feeds the
      consecutive results of [p] into [q]. In case of error,
-     positions are taken from [p].*)
+     positions are taken from [p].*)*)
 
 
 val ( >>= ) : ('a, 'b, 'c) t -> ('b -> ('a, 'd, 'c) t ) -> ('a, 'd, 'c) t
@@ -149,7 +149,7 @@ val suspend : ('a, 'b, 'c) t -> ('a, (unit -> ('b, 'c report) BatPervasives.resu
 val run: ('a, 'b, 'c) t -> ('a, 'c) Source.t -> ('b, 'c report) BatPervasives.result
   (**[run p s] executes parser [p] on source [s]. In case of
      success, returns [Ok v], where [v] is the return value of [p].
-     In case of failure, returns [Error f], with [f] containing
+     In case of failure, returns [Bad f], with [f] containing
      details on the parsing error.*)
 
 
