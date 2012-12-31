@@ -168,6 +168,12 @@ val min : 'a array -> 'a
 
     @raise Invalid_argument on empty input *)
 
+val sum : int array -> int
+(** [sum l] returns the sum of the integers of [l] *)
+
+val fsum : float array -> float
+(** [fsum l] returns the sum of the floats of [l] *)
+
 val left : 'a array -> int -> 'a array
 (**[left r len] returns the array containing the [len] first
    characters of [r]. If [r] contains less than [len] characters, it
