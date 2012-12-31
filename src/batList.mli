@@ -178,10 +178,10 @@ val min : 'a list -> 'a
 [Pervasives.compare] *)
 
 val sum : int list -> int
-(** [sum l] returns the sum of the elements of [l] *)
+(** [sum l] returns the sum of the integers of [l] *)
 
 val fsum : float list -> float
-(** [sum l] returns the sum of the elements of [l] *)
+(** [fsum l] returns the sum of the floats of [l] *)
 
 
 (** {6 Iterators on two lists} *)

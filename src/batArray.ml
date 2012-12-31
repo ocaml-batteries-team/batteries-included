@@ -542,6 +542,17 @@ let max a = reduce Pervasives.max a
   max [|2;3;1|] = 3
 *)
 
+let sum = reduce (+)
+let fsum = reduce (+.)
+
+(*$T sum
+ sum [|1;2;3|] = 6
+ sum [|0|] = 0
+*) (*$T fsum
+ fsum [|1.0;2.0;3.0|] = 6.0
+ fsum [|0.0|] = 0.0
+*)
+
 (* meant for tests, don't care about side effects being repeated
    or not failing early *)
 let is_sorted_by f xs =
