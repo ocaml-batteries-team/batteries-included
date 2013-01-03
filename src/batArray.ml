@@ -600,8 +600,10 @@ let insert xs x i =
 *)
 
 
+(* helper function; only works for arrays of equal length *)
 let eq_elements eq_elt a1 a2 = for_all2 eq_elt a1 a2
 
+(* helper function to compare arrays *)
 let rec ord_aux eq_elt i a1 a2 =
   let open BatOrd in
   if i >= length a1 then Eq
@@ -611,17 +613,17 @@ let rec ord_aux eq_elt i a1 a2 =
 
 let ord_elements eq_elt a1 a2 = ord_aux eq_elt 0 a1 a2
 
-let eq eq_elt a1 a2 =
+let equal eq a1 a2 =
   BatOrd.bin_eq
     BatInt.equal (length a1) (length a2)
-    (eq_elements eq_elt) a1 a2
-(*$T
-  eq (=) [|1;2;3|] [|1;2;3|]
-  not (eq (=) [|1;2;3|] [|1;2;3;4|])
-  not (eq (=) [|1;2;3;4|] [|1;2;3|])
-  eq (=) [||] [||]
-  eq (<>) [|1;2;3|] [|2;3;4|]
-  not (eq (<>) [|1;2;3|] [|3;2;1|])
+    (eq_elements eq) a1 a2
+(*$T equal
+  equal (=) [|1;2;3|] [|1;2;3|]
+  not (equal (=) [|1;2;3|] [|1;2;3;4|])
+  not (equal (=) [|1;2;3;4|] [|1;2;3|])
+  equal (=) [||] [||]
+  equal (<>) [|1;2;3|] [|2;3;4|]
+  not (equal (<>) [|1;2;3|] [|3;2;1|])
 *)
 
 let ord ord_elt a1 a2 =
@@ -638,7 +640,7 @@ let ord ord_elt a1 a2 =
 module Incubator = struct
   module Eq (T : BatOrd.Eq) = struct
     type t = T.t array
-    let eq = eq T.eq
+    let eq = equal T.eq
   end
 
   module Ord (T : BatOrd.Ord) = struct
@@ -739,7 +741,7 @@ struct
   let compare      = compare
   let print        = print
   let ord          = ord
-  let eq           = eq
+  let equal        = equal
   external unsafe_get : ('a, [> `Read]) t -> int -> 'a = "%array_unsafe_get"
   external unsafe_set : ('a, [> `Write])t -> int -> 'a -> unit = "%array_unsafe_set"
 

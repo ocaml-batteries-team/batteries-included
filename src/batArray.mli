@@ -460,7 +460,7 @@ val ord : 'a BatOrd.ord -> 'a array BatOrd.ord
     lexicographically for arrays of the same size.  This is a
     different ordering than [compare], but is often faster. *)
 
-val eq : 'a BatOrd.eq -> 'a array BatOrd.eq
+val equal : 'a BatOrd.eq -> 'a array BatOrd.eq
 (** Hoist a equality test for elements to arrays.  Arrays are only
     equal if their lengths are the same and corresponding elements
     test equal. *)
@@ -656,7 +656,7 @@ sig
 
   val compare : 'a BatOrd.comp -> ('a, [> `Read]) t BatOrd.comp
   val ord : 'a BatOrd.ord -> ('a, [> `Read]) t BatOrd.ord
-  val eq : 'a BatOrd.eq -> ('a, [> `Read]) t BatOrd.eq
+  val equal : 'a BatOrd.eq -> ('a, [> `Read]) t BatOrd.eq
 
 (** {6 Override modules}*)
 
