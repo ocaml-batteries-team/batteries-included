@@ -333,21 +333,6 @@ sig
     end
   end
 
-module IStringMap : S with type key = String.t
-(** A map on strings. Comparison of strings ignores case (i.e. "foo" = "Foo")*)
-
-module NumStringMap : S with type key = String.t
-(** A map on strings. Strings are handled as prefix + number (i.e. "abc23" < "abc123", "abc012" = "abc12")*)
-
-(*
-
-module RopeMap    : S with type key = BatRope.t
-(** A map on ropes. Comparison of ropes takes case into account (i.e. r"foo" <> r"Foo")*)
-
-module IRopeMap   : S with type key = BatRope.t
-(** A map on ropes. Comparison of ropes ignores case (i.e. r"foo" = r"Foo")*)
-
- *)
 
 module Make (Ord : BatInterfaces.OrderedType) : S with type key = Ord.t
 (** Functor building an implementation of the map structure

@@ -626,89 +626,49 @@ module type OrderedType = BatInterfaces.OrderedType
 module type S =
 sig
   type key
-
   type (+'a) t
-
   val empty: 'a t
-
   val is_empty: 'a t -> bool
-
   val cardinal: 'a t -> int
-
   val add: key -> 'a -> 'a t -> 'a t
-
   val find: key -> 'a t -> 'a
-
   val remove: key -> 'a t -> 'a t
-
   val modify: key -> ('a -> 'a) -> 'a t -> 'a t
-
   val modify_def: 'a -> key -> ('a -> 'a) -> 'a t -> 'a t
-
   val extract : key -> 'a t -> 'a * 'a t
-
   val pop : 'a t -> (key * 'a) * 'a t
-
   val mem: key -> 'a t -> bool
-
   val iter: (key -> 'a -> unit) -> 'a t -> unit
-
   val map: ('a -> 'b) -> 'a t -> 'b t
-
   val mapi: (key -> 'a -> 'b) -> 'a t -> 'b t
-
   val fold: (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
-
   val filterv: ('a -> bool) -> 'a t -> 'a t
-
   val filter: (key -> 'a -> bool) -> 'a t -> 'a t
-
   val filter_map: (key -> 'a -> 'b option) -> 'a t -> 'b t
-
   val compare: ('a -> 'a -> int) -> 'a t -> 'a t -> int
-
   val equal: ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
-
   val keys : _ t -> key BatEnum.t
-
   val values: 'a t -> 'a BatEnum.t
-
   val min_binding : 'a t -> (key * 'a)
-
   val max_binding : 'a t -> (key * 'a)
-
   val choose : 'a t -> (key * 'a)
-
   val split : key -> 'a t -> ('a t * 'a option * 'a t)
-
   val partition : (key -> 'a -> bool) -> 'a t -> 'a t * 'a t
-
   val singleton : key -> 'a -> 'a t
-
   val bindings : 'a t -> (key * 'a) list
-
   val enum  : 'a t -> (key * 'a) BatEnum.t
-
   val backwards  : 'a t -> (key * 'a) BatEnum.t
-
   val of_enum: (key * 'a) BatEnum.t -> 'a t
-
   val for_all: (key -> 'a -> bool) -> 'a t -> bool
-
   val exists: (key -> 'a -> bool) -> 'a t -> bool
-
   val merge:
     (key -> 'a option -> 'b option -> 'c option) -> 'a t -> 'b t -> 'c t
-
   (** {6 Boilerplate code}*)
-
   (** {7 Printing}*)
-
   val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
     ('a BatInnerIO.output -> key -> unit) ->
     ('a BatInnerIO.output -> 'c -> unit) ->
     'a BatInnerIO.output -> 'c t -> unit
-
   module Exceptionless : sig
     val find: key -> 'a t -> 'a option
   end
@@ -849,11 +809,6 @@ struct
   end
 
 end
-
-module IStringMap = Make(BatString.IString)
-module NumStringMap = Make(BatString.NumString)
-(*  module RopeMap    = Make(BatRope)
-    module IRopeMap   = Make(BatRope.IRope) *)
 
 
 (**
