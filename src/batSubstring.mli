@@ -283,6 +283,9 @@ val iter : (char -> unit) -> t -> unit
     right.  Equivalent to [List.iter f (explode sus)].
 *)
 
+val contains : t -> char -> bool
+(** [contains t c] returns true if [t] contains [c] *)
+
 val trim : t -> t
 (** removes whitespace from left and right ends of input *)
 

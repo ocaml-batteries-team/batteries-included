@@ -161,7 +161,6 @@ let rindex_from (str, off, len) i c =
 
 let rindex sus c = rindex_from sus (size sus - 1) c
 
-
 (** not implemented: collate *)
 
 let dropl p (str,off,len) =
@@ -249,6 +248,12 @@ let iter f (str, off, len) =
   for i = off to off+len-1 do
     f str.[i];
   done
+
+let contains ((_,_, len) as ss) c = 
+  if len = 0 then false
+  else
+    try begin iter (fun x -> if c = x then raise Exit) ss ; false end
+    with Exit -> true
 
 let trim x = dropl BatChar.is_whitespace (dropr BatChar.is_whitespace x)
 
