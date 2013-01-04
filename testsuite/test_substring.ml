@@ -195,6 +195,18 @@ let test_contains =
     end
   ]
 
+let test_contains_from =
+  let ss = of_string "foo bar" in
+  let aeq = assert_equal ~printer:string_of_bool in
+  [
+    begin "contains_from" >:: fun () ->
+      aeq (contains_from ss 1 'o') true;
+      aeq (contains_from ss 5 'o') false;
+      assert_raises (Invalid_argument "Substring.index_from")
+                    (fun () -> (contains_from ss 100 '0'));
+    end
+  ]
+
 let tests = "Substring" >::: [
   "dropr" >::: test_dropr;
   "dropl" >::: test_dropl;
@@ -207,4 +219,5 @@ let tests = "Substring" >::: [
   "is_prefix" >::: test_is_prefix;
   "enum" >::: test_enum;
   "contains" >::: test_contains;
+  "contains_from" >::: test_contains_from;
 ];;
