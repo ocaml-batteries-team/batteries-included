@@ -249,11 +249,27 @@ let iter f (str, off, len) =
     f str.[i];
   done
 
-let contains ((_,_, len) as ss) c = 
-  if len = 0 then false
-  else
-    try begin iter (fun x -> if c = x then raise Exit) ss ; false end
-    with Exit -> true
+let contains ss c = 
+  try ignore (index ss c); true with Not_found -> false
+(*$T contains
+   contains (of_string "testing") 'i' = true
+   contains (of_string "testing") 'z' = false
+*)
+
+let contains_from ss i c = 
+  try ignore (index_from ss i c); true with Not_found -> false
+(*$T contains_from
+   contains_from (of_string "foobar") 1 'b' = true
+   contains_from (of_string "foobar") 5 'b' = false
+*)
+
+
+let rcontains_from ss i c = 
+  try ignore (rindex_from ss i c); true with Not_found -> false
+(*$T rcontains_from
+   rcontains_from (of_string "foobar") 1 'b' = false
+   rcontains_from (of_string "foobar") 5 'b' = true
+*)
 
 let trim x = dropl BatChar.is_whitespace (dropr BatChar.is_whitespace x)
 

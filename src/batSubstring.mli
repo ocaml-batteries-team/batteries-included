@@ -284,7 +284,23 @@ val iter : (char -> unit) -> t -> unit
 *)
 
 val contains : t -> char -> bool
-(** [contains t c] returns true if [t] contains [c] *)
+(** [BatSubstring.contains s c] tests if character [c]
+   appears in the string [s]. *)
+
+val contains_from : t -> int -> char -> bool
+(** [BatSubstring.contains_from s start c] tests if character [c]
+   appears in [s] after position [start].
+   [BatSubstring.contains s c] is equivalent to
+   [BatSubstring.contains_from s 0 c].
+
+   @raise Invalid_argument if [start] is not a valid position in [s]. *)
+
+val rcontains_from : t -> int -> char -> bool
+(** [BatSubstring.rcontains_from s stop c] tests if character [c]
+   appears in [s] before position [stop+1].
+
+   @raise Invalid_argument if [stop < 0] or [stop+1] is not a valid
+   position in [s]. *)
 
 val trim : t -> t
 (** removes whitespace from left and right ends of input *)
