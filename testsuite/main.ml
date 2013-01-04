@@ -23,6 +23,7 @@ let all_tests =
     Test_dynarray.tests;
     Test_stack.tests;
     Test_mappable.tests;
+    Test_num.tests;
     Test_hashcons.tests;
     Test_mapfunctors.tests;
     Test_optparse.tests;

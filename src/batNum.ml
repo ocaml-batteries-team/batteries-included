@@ -43,28 +43,28 @@ module BaseNum = struct
   let to_float   = float_of_num
   let to_string  = string_of_num
   let of_string  = num_of_string
-  let pred       = function
-    | Int     i -> Int ( i - 1 )
-    | Big_int i -> Big_int (Big_int.pred_big_int i)
-    | _         -> raise (Invalid_argument "Num.pred")
-  let succ       = function
-    | Int     i -> Int ( i + 1 )
-    | Big_int i -> Big_int (Big_int.succ_big_int i)
-    | _         -> raise (Invalid_argument "Num.succ")
-
+  let pred       = pred_num
+  let succ       = succ_num
 
   let of_float f =
-    let x,e = frexp f in
-    let n,e =
-      Big_int.big_int_of_int64 (Int64.of_float (ldexp x 52)),
-      (e-52)
-    in
-    if e >= 0 then
-      Num.Big_int (Big_int.shift_left_big_int n e)
-    else
-      Num.div_num
-	(Num.Big_int n)
-	(Num.Big_int Big_int.(shift_left_big_int unit_big_int ~-e))
+    match classify_float f with
+    | FP_normal
+    | FP_subnormal ->
+        let x,e = frexp f in
+        let n,e =
+          Big_int.big_int_of_int64 (Int64.of_float (ldexp x 52)),
+          (e-52)
+        in
+        if e >= 0 then
+          Big_int (Big_int.shift_left_big_int n e)
+        else
+          div
+            (Big_int n)
+            (Big_int Big_int.(shift_left_big_int unit_big_int ~-e))
+    | FP_zero -> zero
+    | FP_nan -> div zero zero
+    | FP_infinite ->
+        if f >= 0. then div one zero else div (neg one) zero
 end
 
 module TaggedInfix = struct
@@ -79,11 +79,6 @@ module Infix = struct
 end
 
 include (BatNumber.MakeNumeric(BaseNum): BatNumber.Numeric with type t = Num.num and module Infix := Infix)
-
-(*$T of_float
-  of_float 2.5  |> to_float |> Float.approx_equal 2.5
-  of_float 1.0 |> to_float |> Float.approx_equal 1.0
-*)
 
 include Num
 let round = round_num
