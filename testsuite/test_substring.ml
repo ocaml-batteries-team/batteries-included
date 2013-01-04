@@ -184,6 +184,17 @@ let test_enum =
     end
   ]
 
+let test_contains =
+  let (ss1,ss2) = (of_string "foo bar", of_string "") in
+  let aeq = assert_equal ~printer:string_of_bool in
+  [
+    begin "contains" >:: fun () ->
+      aeq (contains ss1 'b') true;
+      aeq (contains ss1 'Z') false;
+      aeq (contains ss2 '9') false;
+    end
+  ]
+
 let tests = "Substring" >::: [
   "dropr" >::: test_dropr;
   "dropl" >::: test_dropl;
@@ -195,4 +206,5 @@ let tests = "Substring" >::: [
   "index_from" >::: test_index_from;
   "is_prefix" >::: test_is_prefix;
   "enum" >::: test_enum;
+  "contains" >::: test_contains;
 ];;
