@@ -267,4 +267,14 @@ let split_on_dot str = split_on_char '.' str;;
 let split_on_comma str = split_on_char ',' str;;
 let split_on_slash str = split_on_char '/' str;;
 
+let rec enum (str, off, len) = 
+  let last_element = off + len - 1 in
+  let i = ref off in 
+  BatEnum.make
+      ~next:(fun () -> 
+        if !i > last_element then raise BatEnum.No_more_elements
+        else str.[BatRef.post_incr i] )
+      ~count:(fun () -> len - !i)
+      ~clone:(fun () -> enum (str, !i, len - !i))
+
 let print oc ss = iter (fun c -> BatIO.write oc c) ss
