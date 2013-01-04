@@ -26,8 +26,6 @@ val create : int -> t
 
 val equal : t -> t -> bool
 
-val ord : t -> t -> BatOrd.order
-
 val of_input : BatIO.input -> t
 
 val substring : string -> int -> int -> t

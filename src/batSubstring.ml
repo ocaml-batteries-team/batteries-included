@@ -34,7 +34,6 @@ let make len c = String.make len c, 0, len
 let create len = String.make len '\000', 0, len
 
 let equal = (=)
-let ord = BatOrd.ord Pervasives.compare
 
 (*
 let of_chan chan =
