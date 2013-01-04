@@ -43,15 +43,8 @@ module BaseNum = struct
   let to_float   = float_of_num
   let to_string  = string_of_num
   let of_string  = num_of_string
-  let pred       = function
-    | Int     i -> Int ( i - 1 )
-    | Big_int i -> Big_int (Big_int.pred_big_int i)
-    | _         -> raise (Invalid_argument "Num.pred")
-  let succ       = function
-    | Int     i -> Int ( i + 1 )
-    | Big_int i -> Big_int (Big_int.succ_big_int i)
-    | _         -> raise (Invalid_argument "Num.succ")
-
+  let pred       = pred_num
+  let succ       = succ_num
 
   let of_float f =
     let x,e = frexp f in
