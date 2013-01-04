@@ -291,5 +291,10 @@ val split_on_dot : t -> t list
 val split_on_comma : t -> t list
 val split_on_slash : t -> t list
 
+val enum : t -> char BatEnum.t
+(** [enum ss] returns an enumeration of the characters represented by ss. 
+    It does no copying so beweare of mutating the original string.
+*)
+
 val print : 'a BatIO.output -> t -> unit
 (** [print oc ss] prints [ss] to the output channel [oc] *)

@@ -172,6 +172,18 @@ let test_is_prefix =
     end;
   ];;
 
+let test_enum =
+  let ss = of_string "testing" in
+  let test_enum substring = ss |> to_string |> BatString.enum in
+  [
+    begin "enum" >:: fun () ->
+      assert_equal (ss |> enum |> BatString.of_enum) "testing";
+      assert_equal (size ss) (ss |> enum |> BatEnum.count) ~printer:string_of_int;
+      assert_equal (ss |> enum |> BatString.of_enum)
+                   (ss |> test_enum |> BatString.of_enum)
+    end
+  ]
+
 let tests = "Substring" >::: [
   "dropr" >::: test_dropr;
   "dropl" >::: test_dropl;
@@ -182,4 +194,5 @@ let tests = "Substring" >::: [
   "slice" >::: test_slice;
   "index_from" >::: test_index_from;
   "is_prefix" >::: test_is_prefix;
+  "enum" >::: test_enum;
 ];;
