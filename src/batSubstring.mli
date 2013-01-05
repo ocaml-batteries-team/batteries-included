@@ -24,6 +24,9 @@ val make : int -> char -> t
 
 val create : int -> t
 
+val equal : t -> t -> bool
+(** Substring equality *)
+
 val of_input : BatIO.input -> t
 
 val substring : string -> int -> int -> t
