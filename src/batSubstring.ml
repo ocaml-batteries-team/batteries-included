@@ -33,6 +33,18 @@ let make len c = String.make len c, 0, len
 
 let create len = String.make len '\000', 0, len
 
+let equal (s1,o1,l1) (s2,o2,l2) = 
+  if l1 <> l2 then false
+  else BatReturn.label (fun label ->
+    for i = 0 to l1-1 do
+      if s1.[i+o1] <> s1.[i+o2] then BatReturn.return label false
+    done; true)
+(*$T equal
+   equal (of_string "abc") (of_string "abc") = true
+   equal (substring "aba" 0 1) (substring "aba" 2 1) = true
+   equal (substring "aba" 1 1) (substring "aba" 2 1) = false
+*)
+
 (*
 let of_chan chan =
   let tempsize = 16384 in
@@ -158,6 +170,12 @@ let rindex_from (str, off, len) i c =
 
 let rindex sus c = rindex_from sus (size sus - 1) c
 
+let contains ss c = try ignore (index ss c); true with Not_found -> false
+(*$T contains
+   contains (of_string "foobar") 'c' = false
+   contains (of_string "foobar") 'o' = true
+   contains (of_string "") 'Z' = false
+*)
 
 (** not implemented: collate *)
 

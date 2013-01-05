@@ -24,6 +24,9 @@ val make : int -> char -> t
 
 val create : int -> t
 
+val equal : t -> t -> bool
+(** Substring equality *)
+
 val of_input : BatIO.input -> t
 
 val substring : string -> int -> int -> t
@@ -143,6 +146,9 @@ val rindex_from : t -> int -> char -> int
 (** [index_from sus i c] returns the index of the last occurence of [c] in [sus]
     before the index [i] or @raise Not_found otherwise. If [i] is beyond the
     range of [sus], @raise Invalid_argument. It is equivalent to [rindex (trimr i sus) c]. *)
+
+val contains : t -> char -> bool
+(** [contains s c] tests if character [c] appears in the substring [s]. *)
 
 val dropl : (char -> bool) -> t -> t
 (** [dropl p sus] drops the longest prefix (left substring) of [sus]
