@@ -144,6 +144,9 @@ val rindex_from : t -> int -> char -> int
     before the index [i] or @raise Not_found otherwise. If [i] is beyond the
     range of [sus], @raise Invalid_argument. It is equivalent to [rindex (trimr i sus) c]. *)
 
+val contains : t -> char -> bool
+(** [contains s c] tests if character [c] appears in the substring [s]. *)
+
 val dropl : (char -> bool) -> t -> t
 (** [dropl p sus] drops the longest prefix (left substring) of [sus]
     all of whose characters satisfy predicate [p].  If all

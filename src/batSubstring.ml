@@ -158,6 +158,12 @@ let rindex_from (str, off, len) i c =
 
 let rindex sus c = rindex_from sus (size sus - 1) c
 
+let contains ss c = try ignore (index ss c); true with Not_found -> false
+(*$T contains
+   contains (of_string "foobar") 'c' = false
+   contains (of_string "foobar") 'o' = true
+   contains (of_string "") 'Z' = false
+*)
 
 (** not implemented: collate *)
 
