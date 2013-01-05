@@ -285,6 +285,11 @@ val iter : (char -> unit) -> t -> unit
     right.  Equivalent to [List.iter f (explode sus)].
 *)
 
+val iteri : (int -> char -> unit) -> t -> unit
+(** Same as {!iter}, but the
+   function is applied to the index of the element as first argument
+   (counting from 0), and the character itself as second argument.  *)
+
 val trim : t -> t
 (** removes whitespace from left and right ends of input *)
 

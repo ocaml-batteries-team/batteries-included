@@ -184,6 +184,16 @@ let test_enum =
     end
   ]
 
+let test_iteri = 
+  let ss = of_string "test" in
+  let mark = ref false in
+  let r = ref [] in
+  ss |> iteri (fun i _ -> mark := true; r := i::(!r) );
+  [
+    assert_equal !mark true ~printer:string_of_bool;
+    assert_equal (List.rev !r) [0;1;2;3]
+  ]
+
 let tests = "Substring" >::: [
   "dropr" >::: test_dropr;
   "dropl" >::: test_dropl;
