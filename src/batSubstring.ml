@@ -266,7 +266,7 @@ let iter f (str, off, len) =
   done
 
 let iteri f (str, off, len) =
-  for i = off to off+len-1 do f i str.[i] done
+  for i = 0 to len-1 do f i str.[i+off] done
 
 let trim x = dropl BatChar.is_whitespace (dropr BatChar.is_whitespace x)
 

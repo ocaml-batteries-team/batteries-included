@@ -190,8 +190,10 @@ let test_iteri =
   let r = ref [] in
   ss |> iteri (fun i _ -> mark := true; r := i::(!r) );
   [
-    assert_equal !mark true ~printer:string_of_bool;
-    assert_equal (List.rev !r) [0;1;2;3]
+    begin "iteri" >:: fun () ->
+      assert_equal !mark true ~printer:string_of_bool;
+      assert_equal (List.rev !r) [0;1;2;3]
+    end
   ]
 
 let tests = "Substring" >::: [
@@ -205,4 +207,5 @@ let tests = "Substring" >::: [
   "index_from" >::: test_index_from;
   "is_prefix" >::: test_is_prefix;
   "enum" >::: test_enum;
+  "test_iteri" >::: test_iteri;
 ];;
