@@ -172,7 +172,7 @@ let filteri (f:'key -> 'a -> bool) (t:('key, 'a) t) =
   iter (fun k a -> if f k a then add result k a) t;
   result
 
-let filter  f t = filteri (fun _k a -> f a) t
+let filter f t = filteri (fun _k a -> f a) t
 
 let filter_map f t =
   let result = create 16 in
@@ -195,17 +195,15 @@ module Infix =
 
 module Labels =
   struct
-
-    let label f               = fun key data -> f ~key ~data
-    let add e ~key ~data      = add e key data
-    let replace e ~key ~data  = replace e key data
-    let iter       ~f e       = iter (label f) e
-    let map        ~f e       = map (label f) e
-    let filter     ~f e       = filter f e
-    let filteri    ~f e       = filteri (label f) e
-    let filter_map ~f e       = filter_map (label f) e
-    let fold       ~f e ~init = fold (label f) e init
-
+    let label f = fun key data -> f ~key ~data
+    let add e ~key ~data = add e key data
+    let replace e ~key ~data = replace e key data
+    let iter ~f e = iter (label f) e
+    let map ~f e = map (label f) e
+    let filter ~f e = filter f e
+    let filteri ~f e = filteri (label f) e
+    let filter_map ~f e = filter_map (label f) e
+    let fold ~f e ~init = fold (label f) e init
   end
 
 module type HashedType = Hashtbl.HashedType
@@ -231,9 +229,9 @@ module type S =
     val iter : (key -> 'a -> unit) -> 'a t -> unit
     val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
     val map : (key -> 'b -> 'c) -> 'b t -> 'c t
-    val filter: ('a -> bool) -> 'a t -> 'a t
-    val filteri: (key -> 'a -> bool) -> 'a t -> 'a t
-    val filter_map: (key -> 'a -> 'b option) -> 'a t -> 'b t
+    val filter : ('a -> bool) -> 'a t -> 'a t
+    val filteri : (key -> 'a -> bool) -> 'a t -> 'a t
+    val filter_map : (key -> 'a -> 'b option) -> 'a t -> 'b t
     val keys : 'a t -> key BatEnum.t
     val values : 'a t -> 'a BatEnum.t
     val enum : 'a t -> (key * 'a) BatEnum.t
@@ -280,12 +278,10 @@ module type S =
 	  val replace : 'a t -> key:key -> data:'a -> unit
 	  val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
 	  val map : f:(key:key -> data:'a -> 'b) -> 'a t -> 'b t
-	  val filter: f:('a -> bool) -> 'a t -> 'a t
-	  val filteri:f:(key:key -> data:'a -> bool) -> 'a t -> 'a t
-	  val filter_map:f:(key:key -> data:'a -> 'b option) -> 'a t -> 'b t
-	  val fold :
-	    f:(key:key -> data:'a -> 'b -> 'b) ->
-	    'a t -> init:'b -> 'b
+	  val filter : f:('a -> bool) -> 'a t -> 'a t
+	  val filteri : f:(key:key -> data:'a -> bool) -> 'a t -> 'a t
+	  val filter_map : f:(key:key -> data:'a -> 'b option) -> 'a t -> 'b t
+	  val fold : f:(key:key -> data:'a -> 'b -> 'b) -> 'a t -> init:'b -> 'b
     end
 
   end
@@ -386,11 +382,12 @@ module Make(H: HashedType): (S with type key = H.t) =
     let fold = fold
     let length = length
 
-    let enum h               = enum (to_hash h)
-    let of_enum e            = of_hash (of_enum e)
-    let values  h            = values (to_hash h)
-    let keys h               = keys (to_hash h)
-    let map (f:key -> 'a -> 'b) h              = of_hash (map f (to_hash h))
+    let enum h = enum (to_hash h)
+    let of_enum e = of_hash (of_enum e)
+    let values  h = values (to_hash h)
+    let keys h = keys (to_hash h)
+    let map (f:key -> 'a -> 'b) h = of_hash (map f (to_hash h))
+
     let find_option h key =
       let hc = h_conv (to_hash h) in
       let rec loop = function
@@ -400,6 +397,7 @@ module Make(H: HashedType): (S with type key = H.t) =
       in
       let pos = (H.hash key) mod (Array.length hc.data) in
       loop (Array.unsafe_get hc.data pos)
+
     let find_default h key defval =
       let hc = h_conv (to_hash h) in
       let rec loop = function
@@ -409,6 +407,7 @@ module Make(H: HashedType): (S with type key = H.t) =
       in
       let pos = (H.hash key) mod (Array.length hc.data) in
       loop (Array.unsafe_get hc.data pos)
+
     let remove_all h key =
       let hc = h_conv (to_hash h) in
       let rec loop = function
@@ -422,7 +421,9 @@ module Make(H: HashedType): (S with type key = H.t) =
       in
       let pos = (H.hash key) mod (Array.length hc.data) in
       Array.unsafe_set hc.data pos (loop (Array.unsafe_get hc.data pos))
-    let is_empty h           = length h = 0
+
+    let is_empty h = length h = 0
+
     let print ?first ?last ?sep print_k print_v out t =
 	  print ?first ?last ?sep print_k print_v out (to_hash t)
 
@@ -431,7 +432,7 @@ module Make(H: HashedType): (S with type key = H.t) =
 	  iter (fun k a -> if f k a then add result k a) t;
 	  result
 
-    let filter  f t = filteri (fun _k a -> f a) t
+    let filter f t = filteri (fun _k a -> f a) t
 
     let filter_map f t =
 	  let result = create 16 in
@@ -442,15 +443,15 @@ module Make(H: HashedType): (S with type key = H.t) =
 
     module Labels =
       struct
-	    let label f              = fun key data -> f ~key ~data
-	    let add e ~key ~data     = add e key data
+	    let label f = fun key data -> f ~key ~data
+	    let add e ~key ~data = add e key data
 	    let replace e ~key ~data = replace e key data
-	    let iter  ~f e           = iter (label f) e
-	    let map   ~f e           = map (label f) e
-	    let filter     ~f e      = filter f e
-	    let filteri    ~f e      = filteri (label f) e
-	    let filter_map ~f e      = filter_map (label f) e
-	    let fold  ~f e ~init     = fold (label f) e init
+	    let iter ~f e = iter (label f) e
+	    let map ~f e = map (label f) e
+	    let filter ~f e = filter f e
+	    let filteri ~f e = filteri (label f) e
+	    let filter_map ~f e = filter_map (label f) e
+	    let fold ~f e ~init = fold (label f) e init
       end
 
     module Exceptionless =
@@ -504,15 +505,15 @@ module Cap =
     let filter_map  = filter_map
     module Labels =
       struct
-	    let label f              = fun key data -> f ~key ~data
-	    let add e ~key ~data     = add e key data
+	    let label f = fun key data -> f ~key ~data
+	    let add e ~key ~data = add e key data
 	    let replace e ~key ~data = replace e key data
-	    let iter  ~f e           = iter (label f) e
-	    let map   ~f e           = map (label f) e
-	    let filter     ~f e      = filter f e
-	    let filteri    ~f e      = filteri (label f) e
-	    let filter_map ~f e      = filter_map (label f) e
-	    let fold  ~f e ~init     = fold (label f) e init
+	    let iter ~f e = iter (label f) e
+	    let map ~f e = map (label f) e
+	    let filter ~f e = filter f e
+	    let filteri ~f e = filteri (label f) e
+	    let filter_map ~f e = filter_map (label f) e
+	    let fold ~f e ~init = fold (label f) e init
       end
 
     module Exceptionless =

@@ -148,13 +148,13 @@ val mem : ('a, 'b) t -> 'a -> bool
 *)
 
 val iter : ('a -> 'b -> unit) -> ('a, 'b) t -> unit
-  (** [Hashtbl.iter f tbl] applies [f] to all bindings in table [tbl].
-      [f] receives the key as first argument, and the associated value
-      as second argument. Each binding is presented exactly once to [f].
-      The order in which the bindings are passed to [f] is unspecified.
-      However, if the table contains several bindings for the same key,
-      they are passed to [f] in reverse order of introduction, that is,
-      the most recent binding is passed first. *)
+(** [Hashtbl.iter f tbl] applies [f] to all bindings in table [tbl].
+    [f] receives the key as first argument, and the associated value
+    as second argument. Each binding is presented exactly once to [f].
+    The order in which the bindings are passed to [f] is unspecified.
+    However, if the table contains several bindings for the same key,
+    they are passed to [f] in reverse order of introduction, that is,
+    the most recent binding is passed first. *)
 
 val fold : ('a -> 'b -> 'c -> 'c) -> ('a, 'b) t -> 'c -> 'c
 (** [Hashtbl.fold f tbl init] computes
@@ -168,19 +168,17 @@ val fold : ('a -> 'b -> 'c -> 'c) -> ('a, 'b) t -> 'c -> 'c
    the most recent binding is passed first. *)
 
 val map : ('a -> 'b -> 'c) -> ('a,'b) t -> ('a,'c) t
-  (** [map f x] creates a new hashtable with the same
-      keys as [x], but with the function [f] applied to
-      all the values *)
+(** [map f x] creates a new hashtable with the same
+    keys as [x], but with the function [f] applied to
+    all the values *)
 
 val filter: ('a -> bool) -> ('key, 'a) t -> ('key, 'a) t
-  (**[filter f m] returns a new hashtable where only the values [a] of [m]
-     such that [f a = true] remain.*)
+(** [filter f m] returns a new hashtable where only the values [a] of [m]
+    such that [f a = true] remain.*)
 
 val filteri: ('key -> 'a -> bool) -> ('key, 'a) t -> ('key, 'a) t
-  (**[filter f m] returns a hashtbl where only the key, values pairs
-     [key], [a] of [m] such that [f key a = true] remain. The
-     bindings are passed to [f] in increasing order with respect
-     to the ordering over the type of the keys. *)
+(** [filter f m] returns a hashtbl where only the key, values pairs
+    [key], [a] of [m] such that [f key a = true] remain. *)
 
 val filter_map: ('key -> 'a -> 'b option) -> ('key, 'a) t -> ('key, 'b) t
 (** [filter_map f m] combines the features of [filteri] and [map].  It
@@ -273,13 +271,11 @@ sig
   val add : ('a, 'b) t -> key:'a -> data:'b -> unit
   val replace : ('a, 'b) t -> key:'a -> data:'b -> unit
   val iter : f:(key:'a -> data:'b -> unit) -> ('a, 'b) t -> unit
-  val map:   f:(key:'a -> data:'b -> 'c) -> ('a, 'b) t -> ('a, 'c) t
-  val filter: f:('a -> bool) -> ('key, 'a) t -> ('key, 'a) t
-  val filteri:f:(key:'key -> data:'a -> bool) -> ('key, 'a) t -> ('key, 'a) t
-  val filter_map:f:(key:'key -> data:'a -> 'b option) -> ('key, 'a) t -> ('key, 'b) t
-  val fold :
-    f:(key:'a -> data:'b -> 'c -> 'c) ->
-    ('a, 'b) t -> init:'c -> 'c
+  val map : f:(key:'a -> data:'b -> 'c) -> ('a, 'b) t -> ('a, 'c) t
+  val filter : f:('a -> bool) -> ('key, 'a) t -> ('key, 'a) t
+  val filteri : f:(key:'key -> data:'a -> bool) -> ('key, 'a) t -> ('key, 'a) t
+  val filter_map : f:(key:'key -> data:'a -> 'b option) -> ('key, 'a) t -> ('key, 'b) t
+  val fold : f:(key:'a -> data:'b -> 'c -> 'c) -> ('a, 'b) t -> init:'c -> 'c
 end
 
 (** {6 Functorial interface} *)
@@ -326,9 +322,9 @@ module type S =
     val iter : (key -> 'a -> unit) -> 'a t -> unit
     val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
     val map : (key -> 'b -> 'c) -> 'b t -> 'c t
-    val filter: ('a -> bool) -> 'a t -> 'a t
-    val filteri: (key -> 'a -> bool) -> 'a t -> 'a t
-    val filter_map: (key -> 'a -> 'b option) -> 'a t -> 'b t
+    val filter : ('a -> bool) -> 'a t -> 'a t
+    val filteri : (key -> 'a -> bool) -> 'a t -> 'a t
+    val filter_map : (key -> 'a -> 'b option) -> 'a t -> 'b t
 
     val keys : 'a t -> key BatEnum.t
     val values : 'a t -> 'a BatEnum.t
@@ -419,9 +415,9 @@ sig
 
   (**{6 Constructors}*)
 
-val create : int -> ('a, 'b, _) t
+  val create : int -> ('a, 'b, _) t
 
-external of_table  : ('a, 'b) Hashtbl.t -> ('a, 'b, _ ) t = "%identity"
+  external of_table  : ('a, 'b) Hashtbl.t -> ('a, 'b, _ ) t = "%identity"
   (** Adopt a regular hashtable as a capability hashtble, allowing
       to decrease capabilities if necessary.
 
@@ -429,7 +425,7 @@ external of_table  : ('a, 'b) Hashtbl.t -> ('a, 'b, _ ) t = "%identity"
       [let cap = of_table a in ...], any modification in [a]
       will also have effect on [cap] and reciprocally.*)
 
-external to_table  : ('a, 'b, [`Read | `Write]) t -> ('a, 'b) Hashtbl.t = "%identity"
+  external to_table  : ('a, 'b, [`Read | `Write]) t -> ('a, 'b) Hashtbl.t = "%identity"
   (** Return a capability hashtable as a regular hashtable.
 
       This operation requires both read and write permissions
@@ -437,106 +433,83 @@ external to_table  : ('a, 'b, [`Read | `Write]) t -> ('a, 'b) Hashtbl.t = "%iden
       words, in [let a = of_table cap in ...], any modification
       in [a] will also have effect on [cap] and reciprocally.*)
 
-external read_only :  ('a, 'b, [>`Read])  t -> ('a, 'b, [`Read])  t = "%identity"
+  external read_only :  ('a, 'b, [>`Read])  t -> ('a, 'b, [`Read])  t = "%identity"
   (** Drop to read-only permissions.
 
       This operation involves no copying.*)
 
-external write_only : ('a, 'b, [>`Write]) t -> ('a, 'b, [`Write]) t = "%identity"
+  external write_only : ('a, 'b, [>`Write]) t -> ('a, 'b, [`Write]) t = "%identity"
   (** Drop to write-only permissions.
 
       This operation involves no copying.*)
 
-(**{6 Base operations}*)
-val length : ('a, 'b, _) t -> int
+  (**{6 Base operations}*)
 
-val is_empty : ('a, 'b, _) t -> bool
+  val length : ('a, 'b, _) t -> int
+  val is_empty : ('a, 'b, _) t -> bool
+  val add : ('a, 'b, [>`Write]) t -> 'a -> 'b -> unit
+  val remove : ('a, 'b, [>`Write]) t -> 'a -> unit
+  val remove_all : ('a,'b, [>`Write]) t -> 'a -> unit
+  val replace : ('a, 'b, [>`Write]) t -> 'a -> 'b -> unit
+  val copy : ('a, 'b, [>`Read]) t -> ('a, 'b, _) t
+  val clear : ('a, 'b, [>`Write]) t -> unit
 
-val add : ('a, 'b, [>`Write]) t -> 'a -> 'b -> unit
+  (**{6 Searching}*)
 
-val remove : ('a, 'b, [>`Write]) t -> 'a -> unit
-
-val remove_all : ('a,'b, [>`Write]) t -> 'a -> unit
-
-val replace : ('a, 'b, [>`Write]) t -> 'a -> 'b -> unit
-
-val copy : ('a, 'b, [>`Read]) t -> ('a, 'b, _) t
-
-val clear : ('a, 'b, [>`Write]) t -> unit
-
-
-(**{6 Searching}*)
-
-val find : ('a, 'b, [>`Read]) t -> 'a -> 'b
-
-val find_all : ('a, 'b, [>`Read]) t -> 'a -> 'b list
-
-val find_default : ('a, 'b, [>`Read]) t -> 'a -> 'b -> 'b
-
-val find_option : ('a, 'b, [>`Read]) t -> 'a -> 'b option
-
-val mem : ('a, 'b, [>`Read]) t -> 'a -> bool
+  val find : ('a, 'b, [>`Read]) t -> 'a -> 'b
+  val find_all : ('a, 'b, [>`Read]) t -> 'a -> 'b list
+  val find_default : ('a, 'b, [>`Read]) t -> 'a -> 'b -> 'b
+  val find_option : ('a, 'b, [>`Read]) t -> 'a -> 'b option
+  val mem : ('a, 'b, [>`Read]) t -> 'a -> bool
 
 (*val exists : ('a,'b) t -> 'a -> bool
   (** [exists h k] returns true is at least one item with key [k] is
       found in the hashtable. *)*)
 
-(**{6 Traversing}*)
-val iter : ('a -> 'b -> unit) -> ('a, 'b, [>`Read]) t -> unit
+  (**{6 Traversing}*)
 
-val fold : ('a -> 'b -> 'c -> 'c) -> ('a, 'b, [>`Read]) t -> 'c -> 'c
+  val iter : ('a -> 'b -> unit) -> ('a, 'b, [>`Read]) t -> unit
+  val fold : ('a -> 'b -> 'c -> 'c) -> ('a, 'b, [>`Read]) t -> 'c -> 'c
+  val map : ('a -> 'b -> 'c) -> ('a, 'b, [>`Read]) t -> ('a, 'c, _) t
+  val filter: ('a -> bool) -> ('key, 'a, [>`Read]) t -> ('key, 'a, _) t
+  val filteri: ('key -> 'a -> bool) -> ('key, 'a, [>`Read]) t -> ('key, 'a, _) t
+  val filter_map: ('key -> 'a -> 'b option) -> ('key, 'a, [>`Read]) t -> ('key, 'b, _) t
 
-val map : ('a -> 'b -> 'c) -> ('a, 'b, [>`Read]) t -> ('a, 'c, _) t
+  (**{6 Conversions}*)
 
-val filter: ('a -> bool) -> ('key, 'a, [>`Read]) t -> ('key, 'a, _) t
+  val keys : ('a,'b, [>`Read]) t -> 'a BatEnum.t
+  val values : ('a, 'b, [>`Read]) t -> 'b BatEnum.t
+  val enum : ('a, 'b, [>`Read]) t -> ('a * 'b) BatEnum.t
+  val of_enum : ('a * 'b) BatEnum.t -> ('a, 'b, _) t
 
-val filteri: ('key -> 'a -> bool) -> ('key, 'a, [>`Read]) t -> ('key, 'a, _) t
+  (** {6 Boilerplate code}*)
 
-val filter_map: ('key -> 'a -> 'b option) -> ('key, 'a, [>`Read]) t -> ('key, 'b, _) t
+  (** {7 Printing}*)
 
-(**{6 Conversions}*)
+  val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
+                                ('a BatInnerIO.output -> 'b -> unit) ->
+                                ('a BatInnerIO.output -> 'c -> unit) ->
+                                'a BatInnerIO.output -> ('b, 'c, [>`Read]) t -> unit
 
-val keys : ('a,'b, [>`Read]) t -> 'a BatEnum.t
+  (** {6 Override modules}*)
 
-val values : ('a, 'b, [>`Read]) t -> 'b BatEnum.t
+  (** Operations on {!BatHashtbl.Cap} without exceptions.*)
+  module Exceptionless :
+  sig
+    val find : ('a, 'b, [>`Read]) t -> 'a -> 'b option
+  end
 
-val enum : ('a, 'b, [>`Read]) t -> ('a * 'b) BatEnum.t
+  (** Operations on {!BatHashtbl.Cap} with labels.*)
+  module Labels :
+  sig
+    val add : ('a, 'b, [>`Write]) t -> key:'a -> data:'b -> unit
+    val replace : ('a, 'b, [>`Write]) t -> key:'a -> data:'b -> unit
+    val iter : f:(key:'a -> data:'b -> unit) -> ('a, 'b, [>`Read]) t -> unit
+    val map : f:(key:'a -> data:'b -> 'c) -> ('a, 'b, [>`Read]) t -> ('a, 'c, _) t
+    val filter: f:('a -> bool) -> ('key, 'a, [>`Read]) t -> ('key, 'a, _) t
+    val filteri: f:(key:'key -> data:'a -> bool) -> ('key, 'a, [>`Read]) t -> ('key, 'a, _) t
+    val filter_map: f:(key:'key -> data:'a -> 'b option) -> ('key, 'a, [>`Read]) t -> ('key, 'b, _) t
+    val fold : f:(key:'a -> data:'b -> 'c -> 'c) -> ('a, 'b, [>`Read]) t -> init:'c -> 'c
+  end
 
-val of_enum : ('a * 'b) BatEnum.t -> ('a, 'b, _) t
-
-(** {6 Boilerplate code}*)
-
-(** {7 Printing}*)
-
-val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
-                              ('a BatInnerIO.output -> 'b -> unit) ->
-                              ('a BatInnerIO.output -> 'c -> unit) ->
-                              'a BatInnerIO.output -> ('b, 'c, [>`Read]) t -> unit
-
-
-
-(** {6 Override modules}*)
-
-(** Operations on {!BatHashtbl.Cap} without exceptions.*)
-module Exceptionless :
-sig
-  val find : ('a, 'b, [>`Read]) t -> 'a -> 'b option
-end
-
-(** Operations on {!BatHashtbl.Cap} with labels.*)
-module Labels :
-sig
-  val add : ('a, 'b, [>`Write]) t -> key:'a -> data:'b -> unit
-  val replace : ('a, 'b, [>`Write]) t -> key:'a -> data:'b -> unit
-  val iter : f:(key:'a -> data:'b -> unit) -> ('a, 'b, [>`Read]) t -> unit
-  val map : f:(key:'a -> data:'b -> 'c) -> ('a, 'b, [>`Read]) t -> ('a, 'c, _) t
-  val filter: f:('a -> bool) -> ('key, 'a, [>`Read]) t -> ('key, 'a, _) t
-  val filteri: f:(key:'key -> data:'a -> bool) -> ('key, 'a, [>`Read]) t -> ('key, 'a, _) t
-  val filter_map: f:(key:'key -> data:'a -> 'b option) -> ('key, 'a, [>`Read]) t -> ('key, 'b, _) t
-
-  val fold : f:(key:'a -> data:'b -> 'c -> 'c) ->
-	     ('a, 'b, [>`Read]) t -> init:'c -> 'c
-
-end
-
-end
+end (* Cap module *)
