@@ -79,6 +79,24 @@ val replace : ('a, 'b) t -> 'a -> 'b -> unit
    This is functionally equivalent to {!Hashtbl.remove}[ tbl x]
    followed by {!Hashtbl.add}[ tbl x y]. *)
 
+val modify : 'a -> ('b -> 'b) -> ('a, 'b) t -> unit
+(** [Hashtbl.modify k f tbl] replaces the first binding for [k] in [tbl]
+    with [f] applied to that value.
+    @raise Not_found if [k] is unbound in [tbl].
+    @since NEXT_RELEASE *)
+
+val modify_def : 'b -> 'a -> ('b -> 'b) -> ('a, 'b) t -> unit
+(** [Hashtbl.modify_def v k f tbl] does the same as [Hashtbl.modify k f tbl]
+    but [f v] is inserted in [tbl] if [k] was unbound.
+    @since NEXT_RELEASE *)
+
+val modify_opt : 'a -> ('b option -> 'b option) -> ('a, 'b) t -> unit
+(** [Hashtbl.modify_opt k f tbl] allows to remove, modify or add a binding for
+    [k] in [tbl]. [f] will be called with [None] if [k] was unbound.
+    first previous binding of [k] in [tbl] will be deleted if [f] returns [None].
+    Otherwise, the previous binding is replaced by the value produced by [f].
+    @since NEXT_RELEASE *)
+
 val copy : ('a, 'b) t -> ('a, 'b) t
 (** Return a copy of the given hashtable. *)
 
@@ -237,6 +255,7 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
 module Exceptionless :
 sig
   val find : ('a, 'b) t -> 'a -> 'b option
+  val modify : 'a -> ('b -> 'b) -> ('a, 'b) t -> (unit, exn) BatPervasives.result
 end
 
 (** Infix operators over a {!BatHashtbl} *)
@@ -276,6 +295,9 @@ sig
   val filteri : f:(key:'key -> data:'a -> bool) -> ('key, 'a) t -> ('key, 'a) t
   val filter_map : f:(key:'key -> data:'a -> 'b option) -> ('key, 'a) t -> ('key, 'b) t
   val fold : f:(key:'a -> data:'b -> 'c -> 'c) -> ('a, 'b) t -> init:'c -> 'c
+  val modify : key:'a -> f:('b -> 'b) -> ('a, 'b) t -> unit
+  val modify_def : default:'b -> key:'a -> f:('b -> 'b) -> ('a, 'b) t -> unit
+  val modify_opt : key:'a -> f:('b option -> 'b option) -> ('a, 'b) t -> unit
 end
 
 (** {6 Functorial interface} *)
@@ -325,7 +347,9 @@ module type S =
     val filter : ('a -> bool) -> 'a t -> 'a t
     val filteri : (key -> 'a -> bool) -> 'a t -> 'a t
     val filter_map : (key -> 'a -> 'b option) -> 'a t -> 'b t
-
+    val modify : key -> ('a -> 'a) -> 'a t -> unit
+    val modify_def : 'a -> key -> ('a -> 'a) -> 'a t -> unit
+    val modify_opt : key -> ('a option -> 'a option) -> 'a t -> unit
     val keys : 'a t -> key BatEnum.t
     val values : 'a t -> 'a BatEnum.t
     val enum : 'a t -> (key * 'a) BatEnum.t
@@ -349,6 +373,7 @@ module type S =
     module Exceptionless :
     sig
       val find : 'a t -> key -> 'a option
+      val modify : key -> ('a -> 'a) -> 'a t -> (unit, exn) BatPervasives.result
     end
 
     (** Infix operators over a {!BatHashtbl} *)
@@ -388,6 +413,9 @@ module type S =
       val filteri: f:(key:key -> data:'a -> bool) -> 'a t -> 'a t
       val filter_map: f:(key:key -> data:'a -> 'b option) -> 'a t -> 'b t
       val fold : f:(key:key -> data:'a -> 'b -> 'b) -> 'a t -> init:'b -> 'b
+      val modify : key:key -> f:('a -> 'a) -> 'a t -> unit
+      val modify_def : default:'a -> key:key -> f:('a -> 'a) -> 'a t -> unit
+      val modify_opt : key:key -> f:('a option -> 'a option) -> 'a t -> unit
     end
 
   end
@@ -497,6 +525,7 @@ sig
   module Exceptionless :
   sig
     val find : ('a, 'b, [>`Read]) t -> 'a -> 'b option
+    val modify : 'a -> ('b -> 'b) -> ('a, 'b, [>`Read]) t -> (unit, exn) BatPervasives.result
   end
 
   (** Operations on {!BatHashtbl.Cap} with labels.*)

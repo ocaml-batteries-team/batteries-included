@@ -164,6 +164,80 @@ let length h = (h_conv h).size
 
 let is_empty h = length h = 0
 
+let modify_opt key f h =
+  let hc = h_conv h in
+  let rec loop = function
+	| Empty ->
+	   (match f None with
+	     | None    -> Empty
+	     | Some v' -> hc.size <- succ hc.size;
+                      Cons(key,v',Empty))
+	| Cons(k,v,next) ->
+	   if k = key then (
+	     match f (Some v) with
+	       | Some v' -> Cons(k,v',next)
+	       | None    -> hc.size <- pred hc.size;
+	                    next
+	   ) else
+	     Cons(k,v,loop next)
+  in
+  let pos = (hash key) mod (Array.length hc.data) in
+  Array.unsafe_set hc.data pos (loop (Array.unsafe_get hc.data pos))
+
+(*$T modify_opt
+ let h = create 3 in \
+ modify_opt "foo" (function None -> Some 0 | _ -> assert false) h; \
+ length h = 1 && find_option h "foo" = Some 0
+ let h = create 3 in \
+ add h "foo" 1; \
+ modify_opt "foo" (function Some 1 -> None | _ -> assert false) h; \
+ length h = 0 && find_option h "foo" = None
+*)
+
+let modify key f h =
+  let hc = h_conv h in
+  let rec loop = function
+	| Empty -> raise Not_found
+	| Cons(k,v,next) ->
+	   if k = key then (
+         Cons(k,f v,next)
+	   ) else
+	     Cons(k,v,loop next)
+  in
+  let pos = (hash key) mod (Array.length hc.data) in
+  Array.unsafe_set hc.data pos (loop (Array.unsafe_get hc.data pos))
+
+(*$T modify
+ let h = create 3 in \
+ add h "foo" 1; add h "bar" 2; \
+ modify "foo" succ h; \
+ values h |> List.of_enum = [ 2; 2 ]
+ let h = create 3 in \
+ try modify "baz" succ h; false \
+ with Not_found -> true
+*)
+
+let modify_def v0 key f h =
+  let hc = h_conv h in
+  let rec loop = function
+	| Empty ->
+	   hc.size <- succ hc.size;
+	   Cons(key,f v0,Empty)
+	| Cons(k,v,next) ->
+	   if k = key then (
+         Cons(k,f v,next)
+	   ) else
+	     Cons(k,v,loop next)
+  in
+  let pos = (hash key) mod (Array.length hc.data) in
+  Array.unsafe_set hc.data pos (loop (Array.unsafe_get hc.data pos))
+
+(*$T modify_def
+ let h = create 3 in \
+ modify_def 0 "foo" succ h; \
+ length h = 1 && find_option h "foo" = Some 1
+*)
+
 let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") ?(kvsep=": ") print_k print_v out t =
   BatEnum.print ~first ~last ~sep (fun out (k,v) -> BatPrintf.fprintf out "%a%s%a" print_k k kvsep print_v v) out (enum t)
 
@@ -185,6 +259,7 @@ let filter_map f t =
 module Exceptionless =
   struct
     let find = find_option
+    let modify k f = BatPervasives.wrap (modify k f)
   end
 
 module Infix =
@@ -204,6 +279,9 @@ module Labels =
     let filteri ~f e = filteri (label f) e
     let filter_map ~f e = filter_map (label f) e
     let fold ~f e ~init = fold (label f) e init
+    let modify ~key ~f = modify key f
+    let modify_def ~default ~key ~f = modify_def default key f
+    let modify_opt ~key ~f = modify_opt key f
   end
 
 module type HashedType = Hashtbl.HashedType
@@ -232,6 +310,9 @@ module type S =
     val filter : ('a -> bool) -> 'a t -> 'a t
     val filteri : (key -> 'a -> bool) -> 'a t -> 'a t
     val filter_map : (key -> 'a -> 'b option) -> 'a t -> 'b t
+    val modify : key -> ('a -> 'a) -> 'a t -> unit
+    val modify_def : 'a -> key -> ('a -> 'a) -> 'a t -> unit
+    val modify_opt : key -> ('a option -> 'a option) -> 'a t -> unit
     val keys : 'a t -> key BatEnum.t
     val values : 'a t -> 'a BatEnum.t
     val enum : 'a t -> (key * 'a) BatEnum.t
@@ -245,6 +326,7 @@ module type S =
     module Exceptionless :
     sig
 	  val find : 'a t -> key -> 'a option
+	  val modify : key -> ('a -> 'a) -> 'a t -> (unit, exn) BatPervasives.result
     end
 
     (** Infix operators over a {!BatHashtbl} *)
@@ -282,6 +364,9 @@ module type S =
 	  val filteri : f:(key:key -> data:'a -> bool) -> 'a t -> 'a t
 	  val filter_map : f:(key:key -> data:'a -> 'b option) -> 'a t -> 'b t
 	  val fold : f:(key:key -> data:'a -> 'b -> 'b) -> 'a t -> init:'b -> 'b
+	  val modify : key:key -> f:('a -> 'a) -> 'a t -> unit
+	  val modify_def : default:'a -> key:key -> f:('a -> 'a) -> 'a t -> unit
+	  val modify_opt : key:key -> f:('a option -> 'a option) -> 'a t -> unit
     end
 
   end
@@ -441,6 +526,54 @@ module Make(H: HashedType): (S with type key = H.t) =
 			       | Some v -> add result k v) t;
 	  result
 
+    let modify_opt key f h =
+      let hc = h_conv (to_hash h) in
+      let rec loop = function
+        | Empty ->
+           (match f None with
+             | None    -> Empty
+             | Some v' -> hc.size <- succ hc.size;
+                          Cons(key,v',Empty))
+        | Cons(k,v,next) ->
+           if H.equal k key then (
+             match f (Some v) with
+               | Some v' -> Cons(k,v',next)
+               | None    -> hc.size <- pred hc.size;
+                            next
+           ) else
+             Cons(k,v,loop next)
+      in
+      let pos = (H.hash key) mod (Array.length hc.data) in
+      Array.unsafe_set hc.data pos (loop (Array.unsafe_get hc.data pos))
+
+    let modify key f h =
+      let hc = h_conv (to_hash h) in
+      let rec loop = function
+        | Empty -> raise Not_found
+        | Cons(k,v,next) ->
+           if H.equal k key then (
+             Cons(k,f v,next)
+           ) else
+             Cons(k,v,loop next)
+      in
+      let pos = (H.hash key) mod (Array.length hc.data) in
+      Array.unsafe_set hc.data pos (loop (Array.unsafe_get hc.data pos))
+
+    let modify_def v0 key f h =
+      let hc = h_conv (to_hash h) in
+      let rec loop = function
+        | Empty ->
+           hc.size <- succ hc.size;
+           Cons(key,f v0,Empty)
+        | Cons(k,v,next) ->
+           if H.equal k key then (
+             Cons(k,f v,next)
+           ) else
+             Cons(k,v,loop next)
+      in
+      let pos = (H.hash key) mod (Array.length hc.data) in
+      Array.unsafe_set hc.data pos (loop (Array.unsafe_get hc.data pos))
+
     module Labels =
       struct
 	    let label f = fun key data -> f ~key ~data
@@ -452,11 +585,15 @@ module Make(H: HashedType): (S with type key = H.t) =
 	    let filteri ~f e = filteri (label f) e
 	    let filter_map ~f e = filter_map (label f) e
 	    let fold ~f e ~init = fold (label f) e init
+	    let modify ~key ~f = modify key f
+	    let modify_def ~default ~key ~f = modify_def default key f
+	    let modify_opt ~key ~f = modify_opt key f
       end
 
     module Exceptionless =
       struct
 	    let find = find_option
+	    let modify k f = BatPervasives.wrap (modify k f)
       end
 
     module Infix =
@@ -495,6 +632,9 @@ module Cap =
     let filter      = filter
     let filteri     = filteri
     let filter_map  = filter_map
+    let modify      = modify
+    let modify_def  = modify_def
+    let modify_opt  = modify_opt
     let keys        = keys
     let values      = values
     let enum        = enum
@@ -514,10 +654,14 @@ module Cap =
 	    let filteri ~f e = filteri (label f) e
 	    let filter_map ~f e = filter_map (label f) e
 	    let fold ~f e ~init = fold (label f) e init
+	    let modify ~key ~f = modify key f
+	    let modify_def ~default ~key ~f = modify_def default key f
+	    let modify_opt ~key ~f = modify_opt key f
       end
 
     module Exceptionless =
       struct
 	    let find = find_option
+	    let modify k f = BatPervasives.wrap (modify k f)
       end
   end
