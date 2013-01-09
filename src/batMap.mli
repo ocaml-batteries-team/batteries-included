@@ -110,6 +110,12 @@ sig
 
 	@since 1.3.0 *)
 
+    val modify_opt: key -> ('a option -> 'a option) -> 'a t -> 'a t
+    (** [modify_opt k f m] allows to modify the binding for [k] in [m]
+        or absence thereof.
+
+        @since NEXT_RELEASE *)
+
     val extract : key -> 'a t -> 'a * 'a t
     (** [extract k m] removes the current binding of [k] from [m],
         returning the value [k] was bound to and the updated [m].
@@ -502,6 +508,12 @@ val modify_def: 'b -> 'a -> ('b -> 'b) -> ('a,'b) t -> ('a,'b) t
 
     @since 1.3.0 *)
 
+val modify_opt: 'a -> ('b option -> 'b option) -> ('a,'b) t -> ('a,'b) t
+(** [modify_opt k f m] allow to modify the binding for [k] in [m]
+    or absence thereof.
+
+    @since NEXT_RELEASE *)
+
 
 val extract : 'a -> ('a, 'b) t -> 'b * ('a, 'b) t
 (** [extract k m] removes the current binding of [k] from [m],
@@ -767,6 +779,11 @@ module PMap : sig
 
       @since 1.3.0 *)
 
+  val modify_opt: 'a -> ('b option -> 'b option) -> ('a,'b) t -> ('a,'b) t
+  (** [modify_opt k f m] allow to modify the binding for [k] in [m]
+      or absence thereof.
+
+      @since NEXT_RELEASE *)
 
   val extract : 'a -> ('a, 'b) t -> 'b * ('a, 'b) t
   (** [extract k m] removes the current binding of [k] from [m],
