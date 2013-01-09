@@ -33,12 +33,13 @@ tracker}.
 
 {!modules: BatBitSet BatCache BatDeque BatDllist BatDynArray BatEnum
 BatFingerTree BatGlobal BatHashcons BatHeap BatIMap BatISet
-BatLazyList BatMultiPMap BatRefList BatSeq BatSplay BatUref BatVect }
+BatLazyList BatMultiPMap BatRefList BatSeq BatSplay BatText BatUChar
+BatUref BatUTF8 BatVect}
 
 {6 New Modules in Batteries}
 
 {!modules: BatBase64 BatCharParser BatFile BatInterfaces BatIO BatLog
-BatLogger BatNumber BatOptParse BatParserCo 
+BatLogger BatNumber BatOptParse BatParserCo
 BatResult BatReturn }
 
 {6 Builtin Types as Modules}
