@@ -265,6 +265,9 @@ let iter f (str, off, len) =
     f str.[i];
   done
 
+let iteri f (str, off, len) =
+  for i = 0 to len-1 do f i str.[i+off] done
+
 let trim x = dropl BatChar.is_whitespace (dropr BatChar.is_whitespace x)
 
 let split_on_char c (str, off, len) =
