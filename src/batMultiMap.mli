@@ -92,6 +92,29 @@ val foldi : ('a -> 'b BatSet.t -> 'c -> 'c) -> ('a , 'b) t -> 'c -> 'c
 (** Same as [fold], but the function receives as arguments both the
     key and the associated value for each binding of the map. *)
 
+val modify : 'a -> ('b BatSet.t -> 'b BatSet.t) -> ('a, 'b) t -> ('a, 'b) t
+(** [modify x f m] replaces the binding for [x] with [f] applied to
+    these values.
+
+    @since NEXT_RELEASE
+    @raise Not_found is [x] is unbound in [m] *)
+
+val modify_def :
+    'b BatSet.t -> 'a -> ('b BatSet.t -> 'b BatSet.t) ->
+    ('a, 'b) t -> ('a, 'b) t
+(** [modify_def dfl x f m] performs as [modify x f m] but it adds
+    [f dfl] in [m] instead of raising [Not_found] if [x] was unbound.
+
+    @since NEXT_RELEASE *)
+
+val modify_opt:
+    'a -> ('b BatSet.t option -> 'b BatSet.t option) ->
+    ('a, 'b) t -> ('a, 'b) t
+(** [modify_opt x f m] allows to modify the bindings for [k] in [m]
+    or absence thereof.
+
+    @since NEXT_RELEASE *)
+
 val enum : ('a, 'b) t -> ('a * 'b) BatEnum.t
 (** creates an enumeration for this map. *)
 

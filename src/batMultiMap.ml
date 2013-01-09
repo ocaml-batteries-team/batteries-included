@@ -46,6 +46,9 @@ let map = BatMap.map
 let mapi = BatMap.mapi
 let fold = BatMap.fold
 let foldi = BatMap.foldi
+let modify = BatMap.modify
+let modify_def = BatMap.modify_def
+let modify_opt = BatMap.modify_opt
 
 let (|>) x f = f x
 let enum t = BatMap.enum t |> BatEnum.map (fun (k,s) -> BatSet.enum s |> BatEnum.map (fun x -> (k,x))) |> BatEnum.concat

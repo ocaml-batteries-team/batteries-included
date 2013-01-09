@@ -84,6 +84,15 @@ let fold f d i  = M.fold f d.content i
 
 let foldi f d i = M.foldi f d.content i
 
+let modify k f t =
+  {t with content = M.modify k f t.content}
+
+let modify_def dft k f t =
+  {t with content = M.modify_def dft k f t.content}
+
+let modify_opt k f t =
+  {t with content = M.modify_opt k f t.content}
+
 let enum t =
     BatEnum.concat (BatEnum.map (fun (k,e) -> BatEnum.map (fun x -> (k,x)) (S.enum e)) (M.enum t.content))
 
