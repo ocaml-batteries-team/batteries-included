@@ -43,6 +43,7 @@
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
+<link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -302,6 +303,11 @@ DIET : Discrete Interval Encoding Trees
 <tr><td><a href="BatInnerIO.html">BatInnerIO</a> </td>
 <td><div class="info">
 Core of the BatIO module.
+</div>
+</td></tr>
+<tr><td><a href="BatInnerPervasives.html">BatInnerPervasives</a> </td>
+<td><div class="info">
+Operators
 </div>
 </td></tr>
 <tr><td><a href="BatInnerWeaktbl.html">BatInnerWeaktbl</a> </td>
@@ -876,11 +882,6 @@ Hashing utilities
 uses icompare as ordering function
 </div>
 </td></tr>
-<tr><td><a href="BatMap.IStringMap.html">IStringMap</a> [<a href="BatMap.html">BatMap</a>]</td>
-<td><div class="info">
-A map on strings.
-</div>
-</td></tr>
 <tr><td><a href="Batteries.Incubator.html">Incubator</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatRandom.Incubator.html">Incubator</a> [<a href="BatRandom.html">BatRandom</a>]</td>
@@ -934,7 +935,7 @@ Infix operators over a <a href="BatMultiPMap.html"><code class="code"><span clas
 </td></tr>
 <tr><td><a href="BatMap.PMap.Infix.html">Infix</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
 <td><div class="info">
-Infix operators over a <code class="code"><span class="constructor">BatPMap</span></code>
+Infix operators over a <a href="BatMap.PMap.html"><code class="code"><span class="constructor">BatMap</span>.<span class="constructor">PMap</span></code></a>
 </div>
 </td></tr>
 <tr><td><a href="BatMap.Infix.html">Infix</a> [<a href="BatMap.html">BatMap</a>]</td>
@@ -1203,16 +1204,13 @@ The BatEnum Monad
 <td></td></tr>
 <tr><td><a href="BatConcurrent.NoLock.html">NoLock</a> [<a href="BatConcurrent.html">BatConcurrent</a>]</td>
 <td></td></tr>
+<tr><td><a href="Batteries.Num.html">Num</a> [<a href="Batteries.html">Batteries</a>]</td>
+<td></td></tr>
 <tr><td><a href="Batteries.Legacy.Num.html">Num</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatString.NumString.html">NumString</a> [<a href="BatString.html">BatString</a>]</td>
 <td><div class="info">
 uses numeric_compare as its ordering function
-</div>
-</td></tr>
-<tr><td><a href="BatMap.NumStringMap.html">NumStringMap</a> [<a href="BatMap.html">BatMap</a>]</td>
-<td><div class="info">
-A map on strings.
 </div>
 </td></tr>
 <tr><td><a href="Batteries.Number.html">Number</a> [<a href="Batteries.html">Batteries</a>]</td>
@@ -1287,7 +1285,7 @@ This module contains the option parser itself.
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Parsing.html">Parsing</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
 <td></td></tr>
-<tr><td><a href="Batteries.PathGen.html">PathGen</a> [<a href="Batteries.html">Batteries</a>]</td>
+<tr><td><a href="Batteries.Incubator.PathGen.html">PathGen</a> [<a href="Batteries.Incubator.html">Batteries.Incubator</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Printexc.html">Printexc</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
@@ -1383,6 +1381,8 @@ Manipulate the current state of the random generator.
 This module contains various standard options.
 </div>
 </td></tr>
+<tr><td><a href="Batteries.Legacy.Str.html">Str</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
+<td></td></tr>
 <tr><td><a href="Batteries.Stream.html">Stream</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Stream.html">Stream</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
@@ -1406,6 +1406,8 @@ This module contains various standard options.
 <tr><td><a href="Batteries.Legacy.Sys.html">Sys</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>T</td></tr>
+<tr><td><a href="BatNum.TaggedInfix.html">TaggedInfix</a> [<a href="BatNum.html">BatNum</a>]</td>
+<td></td></tr>
 <tr><td><a href="Batteries.Text.html">Text</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatteriesPrint.TextSet.html">TextSet</a> [<a href="BatteriesPrint.html">BatteriesPrint</a>]</td>

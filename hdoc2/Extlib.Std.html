@@ -47,6 +47,7 @@
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
+<link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -463,8 +464,22 @@ The undefined function.
     "Undefined". Optional argument <code class="code">message</code> permits the
     customization of the error message.<br>
 </div>
+<pre><span id="VAL(@@)"><span class="keyword">val</span> (@@)</span> : <code class="type">('a -> 'b) -> 'a -> 'b</code></pre><br>
+Function application. <code class="code">f @@ x</code> is equivalent to <code class="code">f x</code>.
+However, it binds less tightly (between <code class="code">::</code> and <code class="code">=</code>,<code class="code">&lt;</code>,<code class="code">&gt;</code>,etc)
+and is right-associative, which makes it useful for composing sequences of
+function calls without too many parentheses. It is similar to Haskell's <code class="code">$</code>.
+Note that it replaces pre-2.0 <code class="code">**&gt;</code> and <code class="code">&lt;|</code>.<br>
+<pre><span id="VAL(%)"><span class="keyword">val</span> (%)</span> : <code class="type">('a -> 'b) -> ('c -> 'a) -> 'c -> 'b</code></pre><div class="info">
+Function composition: the mathematical <code class="code">o</code> operator.
+ <code class="code">f % g</code> is <code class="code"><span class="keyword">fun</span> x <span class="keywordsign">-&gt;</span> f (g x)</code>. It is similar to Haskell's <code class="code">.</code>.
+<p>
+
+Examples: the following are equivalent:
+<code class="code">f (g (h x))</code>, <code class="code">f @@ g @@ h x</code>, <code class="code">f % g % h @@ x</code>.<br>
+</div>
 <pre><span id="VAL(|>)"><span class="keyword">val</span> (|&gt;)</span> : <code class="type">'a -> ('a -> 'b) -> 'b</code></pre><div class="info">
-Function application. <code class="code">x |&gt; f</code> is equivalent to <code class="code">f x</code>.
+The "pipe": function application. <code class="code">x |&gt; f</code> is equivalent to <code class="code">f x</code>.
 <p>
 
     This operator is commonly used to write a function composition by
@@ -475,35 +490,23 @@ Function application. <code class="code">x |&gt; f</code> is equivalent to <code
 
     For instance, <code class="code">g (f x)</code> means "apply <code class="code">f</code> to <code class="code">x</code>, then apply <code class="code">g</code> to
     the result." The corresponding notation in most object-oriented
-    programming languages would be somewhere along the lines of <code class="code">x.f.g
-    ()</code>, or "starting from <code class="code">x</code>, apply <code class="code">f</code>, then apply <code class="code">g</code>." In OCaml,
-    operator ( |&gt; ) this latest notation maps to <code class="code">x |&gt; f |&gt; g</code>, or
+    programming languages would be somewhere along the lines of <code class="code">x.f.g.h()</code>,
+    or "starting from <code class="code">x</code>, apply <code class="code">f</code>, then apply <code class="code">g</code>." In OCaml,
+    using the ( |&gt; ) operator, this is written <code class="code">x |&gt; f |&gt; g |&gt; h</code>.
 <p>
 
     This operator may also be useful for composing sequences of
-    function calls without too many parenthesis.<br>
+    function calls without too many parentheses.<br>
 </div>
-<pre><span id="VAL( **> )"><span class="keyword">val</span> ( **&gt; )</span> : <code class="type">('a -> 'b) -> 'a -> 'b</code></pre><div class="info">
-Function application. <code class="code">f **&gt; x</code> is equivalent to <code class="code">f x</code>.
-<p>
-
-      This operators may be useful for composing sequences of
-      function calls without too many parenthesis.
-<p>
-
-      <b>Note</b> The name of this operator is not written in stone.
-      It is bound to change soon.<br>
-</div>
-<pre><span id="VAL(<|)"><span class="keyword">val</span> (&lt;|)</span> : <code class="type">('a -> 'b) -> 'a -> 'b</code></pre><div class="info">
-same as <code class="code"> ( **&gt; ) </code><br>
-</div>
-<pre><span id="VAL(|-)"><span class="keyword">val</span> (|-)</span> : <code class="type">('a -> 'b) -> ('b -> 'c) -> 'a -> 'c</code></pre><div class="info">
-Function composition. <code class="code">f |- g</code> is <code class="code"><span class="keyword">fun</span> x <span class="keywordsign">-&gt;</span> g (f x)</code>.
-    This is also equivalent to applying <code class="code">&lt;**</code> twice.<br>
-</div>
-<pre><span id="VAL(-|)"><span class="keyword">val</span> (-|)</span> : <code class="type">('a -> 'b) -> ('c -> 'a) -> 'c -> 'b</code></pre><div class="info">
-Function composition. <code class="code">f -| g</code> is <code class="code"><span class="keyword">fun</span> x <span class="keywordsign">-&gt;</span> f (g x)</code>. Mathematically, this is
-    operator o.<br>
+<pre><span id="VAL(%>)"><span class="keyword">val</span> (%&gt;)</span> : <code class="type">('a -> 'b) -> ('b -> 'c) -> 'a -> 'c</code></pre><div class="info">
+Piping function composition. <code class="code">f %&gt; g</code> is <code class="code"><span class="keyword">fun</span> x <span class="keywordsign">-&gt;</span> g (f x)</code>.
+Whereas <code class="code">f % g</code> applies <code class="code">g</code> first and <code class="code">f</code> second, <code class="code">f @&gt; g</code>
+applies <code class="code">f</code>, then <code class="code">g</code>.
+Note that it plays well with pipes, so for instance
+<code class="code">x |&gt; f %&gt; g %&gt; h |&gt; i %&gt; j</code> yields the expected result...
+but in such cases it's still recommended to use <code class="code">|&gt;</code> only.
+Note that it replaces pre-2.0 <code class="code">|-</code>, which <i>didn't</i> integrate with
+pipes.<br>
 </div>
 <pre><span id="VAL(|?)"><span class="keyword">val</span> (|?)</span> : <code class="type">'a option -> 'a -> 'a</code></pre><div class="info">
 Like <a href="BatOption.html#VALdefault"><code class="code"><span class="constructor">BatOption</span>.default</code></a>, with the arguments reversed.
@@ -518,34 +521,35 @@ Like <a href="BatOption.html#VALdefault"><code class="code"><span class="constru
 Argument flipping.
 <p>
 
-      <code class="code">flip f x y</code> is <code class="code">f y x</code>. Don't abuse this function, it may shorten considerably
-      your code but it also has the nasty habit of making it harder to read.<br>
-</div>
-<pre><span id="VAL( *** )"><span class="keyword">val</span> ( *** )</span> : <code class="type">('a -> 'b) -> ('c -> 'd) -> 'a * 'c -> 'b * 'd</code></pre><div class="info">
-Function pairing.
-<p>
-
-    <code class="code">f *** g</code> is <code class="code"><span class="keyword">fun</span> (x,y) <span class="keywordsign">-&gt;</span> (f x, g y)</code>. Equivalent to <code class="code"><span class="constructor">Tuple</span>.<span class="constructor">Tuple2</span>.map</code>.<br>
-</div>
-<pre><span id="VAL(&&&)"><span class="keyword">val</span> (&amp;&amp;&amp;)</span> : <code class="type">('a -> 'b) -> ('a -> 'c) -> 'a -> 'b * 'c</code></pre><div class="info">
-Applying two functions to the same argument.
-<p>
-
-      <code class="code"> f &amp;&amp;&amp; g</code> is <code class="code"><span class="keyword">fun</span> x <span class="keywordsign">-&gt;</span> (f x, g x)</code>.<br>
+    <code class="code">flip f x y</code> is <code class="code">f y x</code>. Don't abuse this function, it may shorten
+    considerably your code but it also has the nasty habit of making
+    it harder to read.<br>
 </div>
 <pre><span id="VALcurry"><span class="keyword">val</span> curry</span> : <code class="type">('a * 'b -> 'c) -> 'a -> 'b -> 'c</code></pre><div class="info">
-Convert a function which accepts a pair of arguments into
-    a function which accepts two arguments.
+Convert a function which accepts a pair of arguments into a
+    function which accepts two arguments.
 <p>
 
     <code class="code">curry f</code> is <code class="code"><span class="keyword">fun</span> x y <span class="keywordsign">-&gt;</span> f (x,y)</code><br>
 </div>
 <pre><span id="VALuncurry"><span class="keyword">val</span> uncurry</span> : <code class="type">('a -> 'b -> 'c) -> 'a * 'b -> 'c</code></pre><div class="info">
 Convert a function which accepts a two arguments into a function
-      which accepts a pair of arguments.
+    which accepts a pair of arguments.
 <p>
 
-      <code class="code">uncurry f</code> is <code class="code"><span class="keyword">fun</span> (x, y) <span class="keywordsign">-&gt;</span> f x y</code><br>
+    <code class="code">uncurry f</code> is <code class="code"><span class="keyword">fun</span> (x, y) <span class="keywordsign">-&gt;</span> f x y</code><br>
+</div>
+<pre><span id="VALneg"><span class="keyword">val</span> neg</span> : <code class="type">('a -> bool) -> 'a -> bool</code></pre><div class="info">
+<code class="code">neg p</code> returns a new predicate that is the negation of the given
+    predicate.  That is, the new predicate returns <code class="code"><span class="keyword">false</span></code> when the
+    input predicate returns <code class="code"><span class="keyword">true</span></code> and vice versa.  This is for
+    predicates with one argument.
+<p>
+
+    <code class="code">neg p</code> is <code class="code"><span class="keyword">fun</span> x <span class="keywordsign">-&gt;</span> not (p x)</code><br>
+</div>
+<pre><span id="VALneg2"><span class="keyword">val</span> neg2</span> : <code class="type">('a -> 'b -> bool) -> 'a -> 'b -> bool</code></pre><div class="info">
+as <code class="code">neg</code> but for predicates with two arguments<br>
 </div>
 <pre><span id="VALconst"><span class="keyword">val</span> const</span> : <code class="type">'a -> 'b -> 'a</code></pre><div class="info">
 Ignore its second argument.
@@ -887,7 +891,7 @@ Print and consume the contents of an enumeration.<br>
 </div>
 <br>
 <span id="6_Results"><h6>Results</h6></span><br>
-<pre><code><span id="TYPEresult"><span class="keyword">type</span> <code class="type">('a, 'b)</code> result</span> = </code></pre><table class="typetable">
+<pre><span id="TYPEresult"><span class="keyword">type</span> <code class="type">('a, 'b)</code> result</span> = <code class="type">('a, 'b) <a href="BatInnerPervasives.html#TYPEresult">BatInnerPervasives.result</a></code> = </pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>

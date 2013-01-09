@@ -44,6 +44,7 @@
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
+<link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -217,8 +218,20 @@ Sequence of elements
 Maps and sets based on splay trees
 </div>
 </td></tr>
+<tr><td class="module"><a href="BatText.html">BatText</a></td><td><div class="info">
+Heavyweight strings ("ropes")
+</div>
+</td></tr>
+<tr><td class="module"><a href="BatUChar.html">BatUChar</a></td><td><div class="info">
+Unicode characters.
+</div>
+</td></tr>
 <tr><td class="module"><a href="BatUref.html">BatUref</a></td><td><div class="info">
 Unifiable references using destructive union-find
+</div>
+</td></tr>
+<tr><td class="module"><a href="BatUTF8.html">BatUTF8</a></td><td><div class="info">
+UTF-8 encoded Unicode strings.
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatVect.html">BatVect</a></td><td><div class="info">
@@ -272,10 +285,6 @@ Modules for GNU <code class="code">getopt(3)</code>-style command line parsing.
 </td></tr>
 <tr><td class="module"><a href="BatParserCo.html">BatParserCo</a></td><td><div class="info">
 A simple parser combinator library.
-</div>
-</td></tr>
-<tr><td class="module"><a href="BatPathGen.html">BatPathGen</a></td><td><div class="info">
-Filepath handling.
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatResult.html">BatResult</a></td><td><div class="info">
@@ -346,7 +355,7 @@ Operations on <code class="code">unit</code>.
 <span id="6_ExtensionstotheStandardLibrary"><h6>Extensions to the Standard Library</h6></span>
 <p>
 
-These modules have base library equivalents.  When using <code class="code"><span class="keyword">open</span> <span class="constructor">Batteries</span></code>, <code class="code"><span class="constructor">BatFoo</span></code> will replace <code class="code"><span class="constructor">Foo</span></code>, so that the new functions are easily available without a <code class="code"><span class="constructor">Bat</span></code> prefix on the module name.  As well, <code class="code"><span class="constructor">BatPervasives</span></code> is opened into the global namespace.  Finally, the previous versions of replaced modules are available in the <code class="code"><span class="constructor">Legacy</span></code> module, i.e. <code class="code"><span class="constructor">Legacy</span>.<span class="constructor">Unix</span></code> and <code class="code"><span class="constructor">Legaxy</span>.<span class="constructor">Pervasives</span></code>.
+These modules have base library equivalents.  When using <code class="code"><span class="keyword">open</span> <span class="constructor">Batteries</span></code>, <code class="code"><span class="constructor">BatFoo</span></code> will replace <code class="code"><span class="constructor">Foo</span></code>, so that the new functions are easily available without a <code class="code"><span class="constructor">Bat</span></code> prefix on the module name.  As well, <code class="code"><span class="constructor">BatPervasives</span></code> is opened into the global namespace.  Finally, the previous versions of replaced modules are available in the <code class="code"><span class="constructor">Legacy</span></code> module, i.e. <code class="code"><span class="constructor">Legacy</span>.<span class="constructor">Unix</span></code> and <code class="code"><span class="constructor">Legacy</span>.<span class="constructor">Pervasives</span></code>.
 <p>
 
 <br>
@@ -510,6 +519,10 @@ Bounded values
 </td></tr>
 <tr><td class="module"><a href="BatOrd.html">BatOrd</a></td><td><div class="info">
 An algebraic datatype for ordering.
+</div>
+</td></tr>
+<tr><td class="module"><a href="BatPathGen.html">BatPathGen</a></td><td><div class="info">
+Filepath handling.
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatSubstring.html">BatSubstring</a></td><td><div class="info">

@@ -46,6 +46,7 @@
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
+<link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -280,4 +281,7 @@ builds a set from the given list, using the default comparison
 <span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
 <br>
 <span id="7_Printing"><div class="h7">Printing</div></span><br>
-<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'c -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'c <a href="BatSet.PSet.html#TYPEt">t</a> -> unit</code></pre></body></html>
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'c -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'c <a href="BatSet.PSet.html#TYPEt">t</a> -> unit</code></pre><pre><span id="VALget_cmp"><span class="keyword">val</span> get_cmp</span> : <code class="type">'a <a href="BatSet.PSet.html#TYPEt">t</a> -> 'a -> 'a -> int</code></pre><div class="info">
+get the comparison function used for a polymorphic map<br>
+</div>
+</body></html>

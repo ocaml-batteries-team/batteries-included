@@ -47,6 +47,7 @@
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
+<link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -209,7 +210,10 @@ Create a new map by modifying each <code class="code">y</code> using the given f
 <pre><span id="VALunion"><span class="keyword">val</span> union</span> : <code class="type">('a -> 'a -> 'a) -> 'a <a href="BatIMap.html#TYPEt">t</a> -> 'a <a href="BatIMap.html#TYPEt">t</a> -> 'a <a href="BatIMap.html#TYPEt">t</a></code></pre><div class="info">
 Merge two maps, giving a value<br>
 </div>
-<pre><span id="VALmerge"><span class="keyword">val</span> merge</span> : <code class="type">?eq:('c -> 'c -> bool) -><br>       (int -> int -> 'a option -> 'b option -> 'c option) -><br>       'a <a href="BatIMap.html#TYPEt">t</a> -> 'b <a href="BatIMap.html#TYPEt">t</a> -> 'c <a href="BatIMap.html#TYPEt">t</a></code></pre><pre><span id="VALforall2_range"><span class="keyword">val</span> forall2_range</span> : <code class="type">(int -> int -> 'a option -> 'b option -> bool) -><br>       'a <a href="BatIMap.html#TYPEt">t</a> -> 'b <a href="BatIMap.html#TYPEt">t</a> -> bool</code></pre><pre><span class="keyword">module</span> <a href="BatIMap.Infix.html">Infix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatIMap.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<pre><span id="VALmerge"><span class="keyword">val</span> merge</span> : <code class="type">?eq:('c -> 'c -> bool) -><br>       (int -> int -> 'a option -> 'b option -> 'c option) -><br>       'a <a href="BatIMap.html#TYPEt">t</a> -> 'b <a href="BatIMap.html#TYPEt">t</a> -> 'c <a href="BatIMap.html#TYPEt">t</a></code></pre><pre><span id="VALforall2_range"><span class="keyword">val</span> forall2_range</span> : <code class="type">(int -> int -> 'a option -> 'b option -> bool) -><br>       'a <a href="BatIMap.html#TYPEt">t</a> -> 'b <a href="BatIMap.html#TYPEt">t</a> -> bool</code></pre><pre><span id="VALget_dec_eq"><span class="keyword">val</span> get_dec_eq</span> : <code class="type">'a <a href="BatIMap.html#TYPEt">t</a> -> 'a -> 'a -> bool</code></pre><div class="info">
+Get the equality function used in an IMap.t<br>
+</div>
+<pre><span class="keyword">module</span> <a href="BatIMap.Infix.html">Infix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatIMap.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
 Infix operators over a <a href="BatIMap.html"><code class="code"><span class="constructor">BatIMap</span></code></a>
 </div>
 </body></html>

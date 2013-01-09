@@ -46,6 +46,7 @@
 <link title="BatIO" rel="Chapter" href="BatIO.html">
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
+<link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -251,6 +252,12 @@ Same as <code class="code"><span class="constructor">Array</span>.append</code>,
 <code class="code">min a</code> returns the smallest value in <code class="code">a</code> as judged by
     <code class="code"><span class="constructor">Pervasives</span>.compare</code><br>
 <b>Raises</b> <code>Invalid_argument</code> on empty input<br>
+</div>
+<pre><span id="VALsum"><span class="keyword">val</span> sum</span> : <code class="type">int array -> int</code></pre><div class="info">
+<code class="code">sum l</code> returns the sum of the integers of <code class="code">l</code><br>
+</div>
+<pre><span id="VALfsum"><span class="keyword">val</span> fsum</span> : <code class="type">float array -> float</code></pre><div class="info">
+<code class="code">fsum l</code> returns the sum of the floats of <code class="code">l</code><br>
 </div>
 <pre><span id="VALleft"><span class="keyword">val</span> left</span> : <code class="type">'a array -> int -> 'a array</code></pre><div class="info">
 <code class="code">left r len</code> returns the array containing the <code class="code">len</code> first
@@ -530,7 +537,7 @@ Hoist an element comparison function to compare arrays of those
     lexicographically for arrays of the same size.  This is a
     different ordering than <code class="code">compare</code>, but is often faster.<br>
 </div>
-<pre><span id="VALeq"><span class="keyword">val</span> eq</span> : <code class="type">'a <a href="BatOrd.html#TYPEeq">BatOrd.eq</a> -> 'a array <a href="BatOrd.html#TYPEeq">BatOrd.eq</a></code></pre><div class="info">
+<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">'a <a href="BatOrd.html#TYPEeq">BatOrd.eq</a> -> 'a array <a href="BatOrd.html#TYPEeq">BatOrd.eq</a></code></pre><div class="info">
 Hoist a equality test for elements to arrays.  Arrays are only
     equal if their lengths are the same and corresponding elements
     test equal.<br>
