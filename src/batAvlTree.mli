@@ -12,6 +12,11 @@ val is_empty : 'a tree -> bool
 
 val make_tree : 'a tree -> 'a -> 'a tree -> 'a tree
 
+val create : 'a tree -> 'a -> 'a tree -> 'a tree
+(** [create l v r] is similar to [make_tree l v r] but performs no rebalancing;
+    in other words, you should use this only when you {e know} that [l] and [r]
+    are already balanced. *)
+
 val height : 'a tree -> int
 
 (* If tree is empty, then raise Not_found *)
