@@ -190,13 +190,31 @@ val map : ('a -> 'b -> 'c) -> ('a,'b) t -> ('a,'c) t
     keys as [x], but with the function [f] applied to
     all the values *)
 
+val map_inplace : ('a -> 'b -> 'b) -> ('a,'b) t -> unit
+(** [map_inplace f x] replace all values currently bound in [x]
+    by [f] applied to each value.
+
+    @since NEXT_RELEASE *)
+
 val filter: ('a -> bool) -> ('key, 'a) t -> ('key, 'a) t
 (** [filter f m] returns a new hashtable where only the values [a] of [m]
     such that [f a = true] remain.*)
 
+val filter_inplace : ('a -> bool) -> ('key,'a) t -> unit
+(** [filter_inplace f m] removes from [m] all bindings that does not
+    satisfy the predicate f.
+
+    @since NEXT_RELEASE *)
+
 val filteri: ('key -> 'a -> bool) -> ('key, 'a) t -> ('key, 'a) t
 (** [filter f m] returns a hashtbl where only the key, values pairs
     [key], [a] of [m] such that [f key a = true] remain. *)
+
+val filteri_inplace : ('key -> 'a -> bool) -> ('key, 'a) t -> unit
+(** [filteri_inplace f m] performs as filter_inplace but [f]
+    receive the value in additiuon to the key.
+
+    @since NEXT_RELEASE *)
 
 val filter_map: ('key -> 'a -> 'b option) -> ('key, 'a) t -> ('key, 'b) t
 (** [filter_map f m] combines the features of [filteri] and [map].  It
@@ -206,6 +224,9 @@ val filter_map: ('key -> 'a -> 'b option) -> ('key, 'a) t -> ('key, 'b) t
     Some bi].  When [f] returns [None], the corresponding element of
     [m] is discarded. *)
 
+val filter_map_inplace: ('key -> 'a -> 'a option) -> ('key, 'a) t -> unit
+(** [filter_map_inplace f m] performs like filter_map but modify [m]
+    inplace instead of creating a new Hashtbl. *)
 
 (** {6 The polymorphic hash primitive}*)
 
@@ -291,9 +312,13 @@ sig
   val replace : ('a, 'b) t -> key:'a -> data:'b -> unit
   val iter : f:(key:'a -> data:'b -> unit) -> ('a, 'b) t -> unit
   val map : f:(key:'a -> data:'b -> 'c) -> ('a, 'b) t -> ('a, 'c) t
+  val map_inplace : f:(key:'a -> data:'b -> 'b) -> ('a,'b) t -> unit
   val filter : f:('a -> bool) -> ('key, 'a) t -> ('key, 'a) t
+  val filter_inplace : f:('a -> bool) -> ('key, 'a) t -> unit
   val filteri : f:(key:'key -> data:'a -> bool) -> ('key, 'a) t -> ('key, 'a) t
+  val filteri_inplace : f:(key:'key -> data:'a -> bool) -> ('key, 'a) t -> unit
   val filter_map : f:(key:'key -> data:'a -> 'b option) -> ('key, 'a) t -> ('key, 'b) t
+  val filter_map_inplace : f:(key:'key -> data:'a -> 'a option) -> ('key, 'a) t -> unit
   val fold : f:(key:'a -> data:'b -> 'c -> 'c) -> ('a, 'b) t -> init:'c -> 'c
   val modify : key:'a -> f:('b -> 'b) -> ('a, 'b) t -> unit
   val modify_def : default:'b -> key:'a -> f:('b -> 'b) -> ('a, 'b) t -> unit
@@ -344,9 +369,13 @@ module type S =
     val iter : (key -> 'a -> unit) -> 'a t -> unit
     val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
     val map : (key -> 'b -> 'c) -> 'b t -> 'c t
+    val map_inplace : (key -> 'a -> 'a) -> 'a t -> unit
     val filter : ('a -> bool) -> 'a t -> 'a t
+    val filter_inplace : ('a -> bool) -> 'a t -> unit
     val filteri : (key -> 'a -> bool) -> 'a t -> 'a t
+    val filteri_inplace : (key -> 'a -> bool) -> 'a t -> unit
     val filter_map : (key -> 'a -> 'b option) -> 'a t -> 'b t
+    val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
     val modify : key -> ('a -> 'a) -> 'a t -> unit
     val modify_def : 'a -> key -> ('a -> 'a) -> 'a t -> unit
     val modify_opt : key -> ('a option -> 'a option) -> 'a t -> unit
@@ -409,9 +438,13 @@ module type S =
       val replace : 'a t -> key:key -> data:'a -> unit
       val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
       val map : f:(key:key -> data:'a -> 'b) -> 'a t -> 'b t
-      val filter: f:('a -> bool) -> 'a t -> 'a t
-      val filteri: f:(key:key -> data:'a -> bool) -> 'a t -> 'a t
-      val filter_map: f:(key:key -> data:'a -> 'b option) -> 'a t -> 'b t
+      val map_inplace : f:(key:key -> data:'a -> 'a) -> 'a t -> unit
+      val filter : f:('a -> bool) -> 'a t -> 'a t
+      val filter_inplace : f:('a -> bool) -> 'a t -> unit
+      val filteri : f:(key:key -> data:'a -> bool) -> 'a t -> 'a t
+      val filteri_inplace : f:(key:key -> data:'a -> bool) -> 'a t -> unit
+      val filter_map : f:(key:key -> data:'a -> 'b option) -> 'a t -> 'b t
+      val filter_map_inplace : f:(key:key -> data:'a -> 'a option) -> 'a t -> unit
       val fold : f:(key:key -> data:'a -> 'b -> 'b) -> 'a t -> init:'b -> 'b
       val modify : key:key -> f:('a -> 'a) -> 'a t -> unit
       val modify_def : default:'a -> key:key -> f:('a -> 'a) -> 'a t -> unit
@@ -499,9 +532,13 @@ sig
   val iter : ('a -> 'b -> unit) -> ('a, 'b, [>`Read]) t -> unit
   val fold : ('a -> 'b -> 'c -> 'c) -> ('a, 'b, [>`Read]) t -> 'c -> 'c
   val map : ('a -> 'b -> 'c) -> ('a, 'b, [>`Read]) t -> ('a, 'c, _) t
-  val filter: ('a -> bool) -> ('key, 'a, [>`Read]) t -> ('key, 'a, _) t
-  val filteri: ('key -> 'a -> bool) -> ('key, 'a, [>`Read]) t -> ('key, 'a, _) t
-  val filter_map: ('key -> 'a -> 'b option) -> ('key, 'a, [>`Read]) t -> ('key, 'b, _) t
+  val map_inplace : ('a -> 'b -> 'b) -> ('a, 'b, [>`Write]) t -> unit
+  val filter : ('a -> bool) -> ('key, 'a, [>`Read]) t -> ('key, 'a, _) t
+  val filter_inplace : ('a -> bool) -> ('key, 'a, [>`Write]) t -> unit
+  val filteri : ('key -> 'a -> bool) -> ('key, 'a, [>`Read]) t -> ('key, 'a, _) t
+  val filteri_inplace : ('key -> 'a -> bool) -> ('key, 'a, [>`Write]) t -> unit
+  val filter_map : ('key -> 'a -> 'b option) -> ('key, 'a, [>`Read]) t -> ('key, 'b, _) t
+  val filter_map_inplace : ('key -> 'a -> 'a option) -> ('key, 'a, [>`Write]) t -> unit
 
   (**{6 Conversions}*)
 
@@ -535,9 +572,13 @@ sig
     val replace : ('a, 'b, [>`Write]) t -> key:'a -> data:'b -> unit
     val iter : f:(key:'a -> data:'b -> unit) -> ('a, 'b, [>`Read]) t -> unit
     val map : f:(key:'a -> data:'b -> 'c) -> ('a, 'b, [>`Read]) t -> ('a, 'c, _) t
-    val filter: f:('a -> bool) -> ('key, 'a, [>`Read]) t -> ('key, 'a, _) t
-    val filteri: f:(key:'key -> data:'a -> bool) -> ('key, 'a, [>`Read]) t -> ('key, 'a, _) t
-    val filter_map: f:(key:'key -> data:'a -> 'b option) -> ('key, 'a, [>`Read]) t -> ('key, 'b, _) t
+    val map_inplace : f:(key:'a -> data:'b -> 'b) -> ('a, 'b, [>`Write]) t -> unit
+    val filter : f:('a -> bool) -> ('key, 'a, [>`Read]) t -> ('key, 'a, _) t
+    val filter_inplace : f:('a -> bool) -> ('key, 'a, [>`Write]) t -> unit
+    val filteri : f:(key:'key -> data:'a -> bool) -> ('key, 'a, [>`Read]) t -> ('key, 'a, _) t
+    val filteri_inplace : f:(key:'key -> data:'a -> bool) -> ('key, 'a, [>`Write]) t -> unit
+    val filter_map : f:(key:'key -> data:'a -> 'b option) -> ('key, 'a, [>`Read]) t -> ('key, 'b, _) t
+    val filter_map_inplace : f:(key:'key -> data:'a -> 'a option) -> ('key, 'a, [>`Write]) t -> unit
     val fold : f:(key:'a -> data:'b -> 'c -> 'c) -> ('a, 'b, [>`Read]) t -> init:'c -> 'c
   end
 

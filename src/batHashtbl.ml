@@ -123,6 +123,19 @@ let map f h =
 	  data = Array.map loop (h_conv h).data;
 	}
 
+let map_inplace f h =
+  let rec loop = function
+    | Empty -> Empty
+    | Cons (k, v, next) -> Cons (k, f k v, loop next)
+  in
+  BatArray.modify loop (h_conv h).data
+
+(*$= map_inplace & ~printer:(IO.to_string (List.print Int.print))
+  (let h = Enum.combine (1 -- 5, 1 -- 5) |> of_enum in \
+   map_inplace (fun _ x -> x+1) h ; \
+   values h |> List.of_enum |> List.sort Int.compare) [2;3;4;5;6]
+ *)
+
 let remove_all h key =
   let hc = h_conv h in
   let rec loop = function
@@ -246,7 +259,35 @@ let filteri (f:'key -> 'a -> bool) (t:('key, 'a) t) =
   iter (fun k a -> if f k a then add result k a) t;
   result
 
+let filteri_inplace f h =
+  let hc = h_conv h in
+  let rec loop = function
+    | Empty -> Empty
+    | Cons (k, v, next) ->
+      if f k v then Cons (k, v, loop next)
+      else (
+        hc.size <- pred hc.size ;
+        loop next
+      ) in
+  BatArray.modify loop hc.data
+
+(*$= filteri_inplace & ~printer:(IO.to_string (List.print Int.print))
+  (let h = Enum.combine (1 -- 5, 1 -- 5) |> of_enum in \
+   filteri_inplace (fun _ x -> x>3) h ; \
+   values h |> List.of_enum |> List.sort Int.compare) [4; 5]
+ *)
+
+
 let filter f t = filteri (fun _k a -> f a) t
+
+let filter_inplace f h = filteri_inplace (fun _k a -> f a) h
+
+(*$= filter_inplace & ~printer:(IO.to_string (List.print Int.print))
+  (let h = Enum.combine (1 -- 5, 1 -- 5) |> of_enum in \
+   filter_inplace (fun x -> x>3) h ; \
+   values h |> List.of_enum |> List.sort Int.compare) [4; 5]
+ *)
+
 
 let filter_map f t =
   let result = create 16 in
@@ -254,6 +295,24 @@ let filter_map f t =
 			   | None   -> ()
 			   | Some v -> add result k v) t;
   result
+
+let filter_map_inplace f h =
+  let hc = h_conv h in
+  let rec loop = function
+    | Empty -> Empty
+    | Cons (k, v, next) ->
+      (match f k v with
+        | None ->
+            hc.size <- pred hc.size ;
+            loop next
+        | Some v' -> Cons (k, v', loop next)) in
+  BatArray.modify loop hc.data
+
+(*$= filter_map_inplace & ~printer:(IO.to_string (List.print Int.print))
+  (let h = Enum.combine (1 -- 5, 1 -- 5) |> of_enum in \
+   filter_map_inplace (fun _ x -> if x>3 then Some (x+1) else None) h ; \
+   values h |> List.of_enum |> List.sort Int.compare) [5; 6]
+ *)
 
 
 module Exceptionless =
@@ -275,9 +334,13 @@ module Labels =
     let replace e ~key ~data = replace e key data
     let iter ~f e = iter (label f) e
     let map ~f e = map (label f) e
+    let map_inplace ~f e = map_inplace (label f) e
     let filter ~f e = filter f e
+    let filter_inplace ~f e = filter_inplace f e
     let filteri ~f e = filteri (label f) e
+    let filteri_inplace ~f e = filteri_inplace (label f) e
     let filter_map ~f e = filter_map (label f) e
+    let filter_map_inplace ~f e = filter_map_inplace (label f) e
     let fold ~f e ~init = fold (label f) e init
     let modify ~key ~f = modify key f
     let modify_def ~default ~key ~f = modify_def default key f
@@ -307,9 +370,13 @@ module type S =
     val iter : (key -> 'a -> unit) -> 'a t -> unit
     val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
     val map : (key -> 'b -> 'c) -> 'b t -> 'c t
+    val map_inplace : (key -> 'a -> 'a) -> 'a t -> unit
     val filter : ('a -> bool) -> 'a t -> 'a t
+    val filter_inplace : ('a -> bool) -> 'a t -> unit
     val filteri : (key -> 'a -> bool) -> 'a t -> 'a t
+    val filteri_inplace : (key -> 'a -> bool) -> 'a t -> unit
     val filter_map : (key -> 'a -> 'b option) -> 'a t -> 'b t
+    val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
     val modify : key -> ('a -> 'a) -> 'a t -> unit
     val modify_def : 'a -> key -> ('a -> 'a) -> 'a t -> unit
     val modify_opt : key -> ('a option -> 'a option) -> 'a t -> unit
@@ -360,9 +427,13 @@ module type S =
 	  val replace : 'a t -> key:key -> data:'a -> unit
 	  val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
 	  val map : f:(key:key -> data:'a -> 'b) -> 'a t -> 'b t
+	  val map_inplace : f:(key:key -> data:'a -> 'a) -> 'a t -> unit
 	  val filter : f:('a -> bool) -> 'a t -> 'a t
+	  val filter_inplace : f:('a -> bool) -> 'a t -> unit
 	  val filteri : f:(key:key -> data:'a -> bool) -> 'a t -> 'a t
+	  val filteri_inplace : f:(key:key -> data:'a -> bool) -> 'a t -> unit
 	  val filter_map : f:(key:key -> data:'a -> 'b option) -> 'a t -> 'b t
+	  val filter_map_inplace : f:(key:key -> data:'a -> 'a option) -> 'a t -> unit
 	  val fold : f:(key:key -> data:'a -> 'b -> 'b) -> 'a t -> init:'b -> 'b
 	  val modify : key:key -> f:('a -> 'a) -> 'a t -> unit
 	  val modify_def : default:'a -> key:key -> f:('a -> 'a) -> 'a t -> unit
@@ -473,6 +544,12 @@ module Make(H: HashedType): (S with type key = H.t) =
     let keys h = keys (to_hash h)
     let map (f:key -> 'a -> 'b) h = of_hash (map f (to_hash h))
 
+    (* We can use polymorphic filteri since we do not use the key at all for inline ops *)
+    let map_inplace (f:key -> 'a -> 'b) h = map_inplace f (to_hash h)
+    let filteri_inplace f h = filteri_inplace f (to_hash h)
+    let filter_inplace f h = filter_inplace f (to_hash h)
+    let filter_map_inplace f h = filter_map_inplace f (to_hash h)
+
     let find_option h key =
       let hc = h_conv (to_hash h) in
       let rec loop = function
@@ -581,9 +658,13 @@ module Make(H: HashedType): (S with type key = H.t) =
 	    let replace e ~key ~data = replace e key data
 	    let iter ~f e = iter (label f) e
 	    let map ~f e = map (label f) e
+	    let map_inplace ~f e = map_inplace (label f) e
 	    let filter ~f e = filter f e
+	    let filter_inplace ~f e = filter_inplace f e
 	    let filteri ~f e = filteri (label f) e
+	    let filteri_inplace ~f e = filteri_inplace (label f) e
 	    let filter_map ~f e = filter_map (label f) e
+	    let filter_map_inplace ~f e = filter_map_inplace (label f) e
 	    let fold ~f e ~init = fold (label f) e init
 	    let modify ~key ~f = modify key f
 	    let modify_def ~default ~key ~f = modify_def default key f
@@ -629,9 +710,13 @@ module Cap =
     let iter        = iter
     let fold        = fold
     let map         = map
+    let map_inplace = map_inplace
     let filter      = filter
+    let filter_inplace = filter_inplace
     let filteri     = filteri
+    let filteri_inplace = filteri_inplace
     let filter_map  = filter_map
+    let filter_map_inplace = filter_map_inplace
     let modify      = modify
     let modify_def  = modify_def
     let modify_opt  = modify_opt
@@ -650,9 +735,13 @@ module Cap =
 	    let replace e ~key ~data = replace e key data
 	    let iter ~f e = iter (label f) e
 	    let map ~f e = map (label f) e
+	    let map_inplace ~f e = map_inplace (label f) e
 	    let filter ~f e = filter f e
+	    let filter_inplace ~f e = filter_inplace f e
 	    let filteri ~f e = filteri (label f) e
+	    let filteri_inplace ~f e = filteri_inplace (label f) e
 	    let filter_map ~f e = filter_map (label f) e
+	    let filter_map_inplace ~f e = filter_map_inplace (label f) e
 	    let fold ~f e ~init = fold (label f) e init
 	    let modify ~key ~f = modify key f
 	    let modify_def ~default ~key ~f = modify_def default key f
