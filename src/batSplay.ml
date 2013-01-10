@@ -87,9 +87,9 @@ let csplay = function
 
 let rec cfind ?(cx=[]) ~sel = function
   | Empty -> C (cx, Empty)
-  | Node (l, x, r) ->
+  | Node (l, x, r) as node ->
       let sx = sel x in
-      if sx = 0 then C (cx, Node (l, x, r))
+      if sx = 0 then C (cx, node)
       else if sx < 0 then cfind ~cx:(Left (x, r) :: cx) ~sel l
       else cfind ~cx:(Right (l, x) :: cx) ~sel r
 
