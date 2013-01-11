@@ -391,6 +391,9 @@ let get_dec_eq {eq} = eq
   get_dec_eq (empty Int.equal) == Int.equal
 *)
 
+let of_enum ~eq e =
+    BatEnum.fold (fun t (n1, n2, v) -> add_range n1 n2 v t) (empty ~eq) e
+
 module Infix = struct
   let (-->) {m} k = Core.find k m
   let (<--) m (k,v) = add k v m

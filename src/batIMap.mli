@@ -114,6 +114,9 @@ val map_to_set : ('a -> bool) -> 'a t -> BatISet.t
 val enum : 'a t -> (int * int * 'a) BatEnum.t
 (** [enum t] returns an enumeration of the bindings in [t] *)
 
+val of_enum : eq:('a -> 'a -> bool) -> (int * int * 'a) BatEnum.t -> 'a t
+(** [of_enum e] returns the set of given ranges *)
+
 val fold2_range : (int -> int -> 'a option -> 'b option -> 'c -> 'c) -> 'a t -> 'b t -> 'c -> 'c
 
 (** [fold2_range f t u x0] folds across each range that's defined in

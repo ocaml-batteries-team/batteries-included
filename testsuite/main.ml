@@ -32,6 +32,7 @@ let all_tests =
     Test_container.tests;
     Test_random.tests;
     Test_bounded.tests;
+    Test_modifiable.tests;
   ]
 
 let () =
