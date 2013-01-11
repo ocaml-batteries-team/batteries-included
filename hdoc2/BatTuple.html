@@ -114,14 +114,11 @@
 <pre><span class="keyword">module</span> BatTuple: <code class="code"><span class="keyword">sig</span></code> <a href="BatTuple.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Tuples.
 <p>
 
-    NOTE: API changes are expected in a future release.
-<p>
-
     Modules are provided for tuples with 2, 3, 4, and 5
-    elements. Each provides the following categories of functions.
+    elements. Each provides the following categories of functions:
 <p>
 
-    Projection. Functions <code class="code">first</code>, <code class="code">second</code>, <code class="code">third</code>, <code class="code">fourth</code>, and <code class="code">fifth</code>
+    <b>Projection</b>. Functions <code class="code">first</code>, <code class="code">second</code>, <code class="code">third</code>, <code class="code">fourth</code>, and <code class="code">fifth</code>
     extract a single element. Also, multiple elements can be
     extracted. For example, <a href="BatTuple.Tuple3.html#VALget13"><code class="code"><span class="constructor">BatTuple</span>.<span class="constructor">Tuple3</span>.get13</code></a> returns the first and
     third elements of a 3-tuple. All possible combinations are
@@ -134,7 +131,7 @@
     different order.
 <p>
 
-    Mapping. Apply a function to one or all elements of a
+    <b>Mapping</b>. Apply a function to one or all elements of a
     tuple. Functions <code class="code">map1</code>, <code class="code">map2</code>, etc. map a given function to the
     first, second, etc. element of a tuple. All elements can be mapped
     using <code class="code">map</code> or <code class="code">mapn</code>. For example, <a href="BatTuple.Tuple3.html#VALmap"><code class="code"><span class="constructor">BatTuple</span>.<span class="constructor">Tuple3</span>.map</code></a> <code class="code">f g h</code> will
@@ -144,22 +141,22 @@
     same type.
 <p>
 
-    Currying. Every tuple has a <code class="code">curry</code> and <code class="code">uncurry</code> function, which
+    <b>Currying</b>. Every tuple has a <code class="code">curry</code> and <code class="code">uncurry</code> function, which
     allow converting between functions that take <code class="code">n</code> arguments to ones
     that take a single <code class="code">n</code>-tuple argument.
 <p>
 
-    Enumeration. Every <code class="code">n</code>-tuple can be converted to an enum with <code class="code">n</code>
+    <b>Enumeration</b>. Every <code class="code">n</code>-tuple can be converted to an enum with <code class="code">n</code>
     elements using its <code class="code">enum</code> function, and can be constructed from an
     enum using <code class="code">of_enum</code>. Tuples satisfy <a href="BatEnum.Enumerable.html"><code class="code"><span class="constructor">BatEnum</span>.<span class="constructor">Enumerable</span></code></a>.
 <p>
 
-    Printing. Function <code class="code">print</code> prints a tuple given a method for
+    <b>Printing</b>. Function <code class="code">print</code> prints a tuple given a method for
     printing each of its elements. The simpler <code class="code">printn</code> function can
     be used when all elements are of the same type.
 <p>
 
-    Comparison. Every tuple has a <code class="code">compare</code> function, which can
+    <b>Comparison</b>. Every tuple has a <code class="code">compare</code> function, which can
     optionally be customized by specifying methods for comparing each
     element. <code class="code"><span class="constructor">Pervasives</span>.compare</code> is used by default.<br>
 <hr width="100%">
