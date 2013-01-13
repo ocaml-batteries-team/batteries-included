@@ -76,6 +76,50 @@ module Core = struct
 	if n1 <= n && n <= n2 then v else
 	  find n (right_branch m)
 
+  let modify_opt ?(eq=(==)) (n:int) f m =
+    let rec aux m =
+      if is_empty m then
+        match f None with
+	| Some v -> singleton n v
+	| None   -> raise Exit
+      else
+        let (n1, n2, v) = root m in
+        if n < n1 then aux (left_branch m) else
+	  if n > n2 then aux (right_branch m) else
+	    match f (Some v) with
+	    | None    ->
+	      concat (left_branch m) (right_branch m)
+	    | Some v' ->
+	      if eq v' v then
+	        raise Exit (* fast exit *)
+	      else
+	        if n = n1 && n = n2 then (* no need to rebalance *)
+		  create (left_branch m) (n, n, v') (right_branch m)
+	        else
+		  let l =
+		    if n = n1 then left_branch m
+		    else add_range ~eq n1 (n-1) v (left_branch m)
+		  and r =
+		    if n = n2 then right_branch m
+		    else add_range ~eq (n+1) n2 v (right_branch m) in
+		  make_tree l (n, n, v') r
+    in
+    try aux m with Exit -> m
+
+  let modify ?(eq=(==)) (n:int) f m =
+    let f' = function
+      | Some v -> Some (f v)
+      | None   -> raise Not_found
+    in
+    modify_opt ~eq n f' m
+
+  let modify_def v0 ?(eq=(==)) (n:int) f m =
+    let f' = function
+      | Some v -> Some (f v)
+      | None   -> Some (f v0)
+    in
+    modify_opt ~eq n f' m
+
   let rec remove n m =
     if is_empty m then empty else
       let (n1, n2, v) as x = root m in
@@ -283,6 +327,42 @@ let add x y {m;eq} = {m=Core.add ~eq x y m; eq}
 
 let add_range lo hi y {m;eq} = {m=Core.add_range ~eq lo hi y m; eq}
 let find x {m} = Core.find x m
+let modify x f {m;eq} = {m=Core.modify ~eq x f m; eq}
+
+(*$T modify
+  (* modify a single entry *) \
+  empty ~eq:(=) |> add 1 1 |> modify 1 succ |> find 1 = 2
+  (* modify a range boundary *) \
+  empty ~eq:(=) |> add_range 1 5 1 |> modify 1 succ |> find 1 = 2
+  empty ~eq:(=) |> add_range 1 5 1 |> modify 1 succ |> find 2 = 1
+  empty ~eq:(=) |> add_range 1 5 1 |> modify 1 succ |> find 5 = 1
+  (* modify a range boundary (the other one) *) \
+  empty ~eq:(=) |> add_range 1 5 1 |> modify 5 succ |> find 1 = 1
+  empty ~eq:(=) |> add_range 1 5 1 |> modify 5 succ |> find 4 = 1
+  empty ~eq:(=) |> add_range 1 5 1 |> modify 5 succ |> find 5 = 2
+  (* modify a range in the middle *) \
+  empty ~eq:(=) |> add_range 1 5 1 |> modify 2 succ |> find 1 = 1
+  empty ~eq:(=) |> add_range 1 5 1 |> modify 2 succ |> find 2 = 2
+  empty ~eq:(=) |> add_range 1 5 1 |> modify 2 succ |> find 3 = 1
+  empty ~eq:(=) |> add_range 1 5 1 |> modify 2 succ |> find 5 = 1
+ *)
+
+let modify_def v0 x f {m;eq} = {m=Core.modify_def ~eq v0 x f m; eq}
+
+(*$T modify_def
+  (* adding an entry *) \
+  empty ~eq:(=) |> modify_def 0 1 succ |> find 1 = 1
+ *)
+
+let modify_opt x f {m;eq} = {m=Core.modify_opt ~eq x f m; eq}
+
+(*$T modify_opt
+  (* adding an entry *) \
+  empty ~eq:(=) |> modify_opt 1 (function None -> Some 1 | _ -> assert false) |> find 1 = 1
+  (* deleting an entry *) \
+  empty ~eq:(=) |> add 1 1 |> modify_opt 1 (function Some 1 -> None | _ -> assert false) |> mem 1 |> not
+ *)
+
 let remove x {m;eq} = {m=Core.remove x m; eq}
 let remove_range lo hi {m;eq} = {m=Core.remove_range lo hi m; eq}
 let from x {m;eq} = {m=Core.from x m; eq}
@@ -310,6 +390,9 @@ let get_dec_eq {eq} = eq
 (*$T get_dec_eq
   get_dec_eq (empty Int.equal) == Int.equal
 *)
+
+let of_enum ~eq e =
+    BatEnum.fold (fun t (n1, n2, v) -> add_range n1 n2 v t) (empty ~eq) e
 
 module Infix = struct
   let (-->) {m} k = Core.find k m

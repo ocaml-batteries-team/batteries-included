@@ -411,6 +411,27 @@ module Concrete = struct
     in
     loop map
 
+  let modify_opt x f cmp map =
+    let rec loop = function
+      | Node (l, k, v, r, h) ->
+        let c = cmp x k in
+        if c = 0 then
+          match f (Some v) with
+            | None -> merge l r
+            | Some v' -> Node (l, x, v', r, h)
+        else if c < 0 then
+          let nl = loop l in
+          bal nl k v r
+        else
+          let nr = loop r in
+          bal l k v nr
+      | Empty ->
+        match f None with
+          | None   -> raise Exit (* fast exit *)
+          | Some d -> Node (Empty, x, d, Empty, 1)
+    in
+    try loop map with Exit -> map
+
   let extract x cmp map =
     let rec loop = function
       | Node (l, k, v, r, _) ->
@@ -635,6 +656,7 @@ sig
   val remove: key -> 'a t -> 'a t
   val modify: key -> ('a -> 'a) -> 'a t -> 'a t
   val modify_def: 'a -> key -> ('a -> 'a) -> 'a t -> 'a t
+  val modify_opt: key -> ('a option -> 'a option) -> 'a t -> 'a t
   val extract : key -> 'a t -> 'a * 'a t
   val pop : 'a t -> (key * 'a) * 'a t
   val mem: key -> 'a t -> bool
@@ -769,6 +791,9 @@ struct
   let modify_def v0 x f m =
     t_of_impl (Concrete.modify_def v0 x f Ord.compare (impl_of_t m))
 
+  let modify_opt x f m =
+    t_of_impl (Concrete.modify_opt x f Ord.compare (impl_of_t m))
+
   let extract k t =
     let (v, t') = Concrete.extract k Ord.compare (impl_of_t t) in
     (v, t_of_impl t')
@@ -902,6 +927,16 @@ let add_carry x d m = Concrete.add_carry x d Pervasives.compare m
 let modify x f m = Concrete.modify x f Pervasives.compare m
 
 let modify_def v0 x f m = Concrete.modify_def v0 x f Pervasives.compare m
+
+let modify_opt x f m = Concrete.modify_opt x f Pervasives.compare m
+(*$T modify_opt
+  empty |> add 1 false |> \
+  modify_opt 1 (function Some false -> Some true | _ -> assert false) |> \
+  find 1
+  empty |> add 1 true |> \
+  modify_opt 1 (function Some true -> None | _ -> assert false) |> \
+  mem 1 |> not
+ *)
 
 let extract x m = Concrete.extract x Pervasives.compare m
 
@@ -1085,6 +1120,9 @@ module PMap = struct (*$< PMap *)
 
   let modify_def v0 x f m =
     { m with map = Concrete.modify_def v0 x f m.cmp m.map }
+
+  let modify_opt x f m =
+    { m with map = Concrete.modify_opt x f m.cmp m.map }
 
   let extract x m =
     let out, map' = Concrete.extract x m.cmp m.map in

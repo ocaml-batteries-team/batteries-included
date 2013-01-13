@@ -401,6 +401,24 @@ val mem_assq : 'a -> ('a * 'b) list -> bool
 (** Same as {!List.mem_assoc}, but uses physical equality instead of
    structural equality to compare keys. *)
 
+val modify : 'a -> ('b -> 'b) -> ('a * 'b) list -> ('a * 'b) list
+(** [modify a f l] returns the same list as [l] but with value associated
+    to key [a] replaced with [f a].
+
+    @raise Not_found if no value is associated with [a] in [l]
+    @since NEXT_RELEASE *)
+
+val modify_def : 'b -> 'a -> ('b -> 'b) -> ('a * 'b) list -> ('a * 'b) list
+(** [modify_def dfl a f l] performs as [modify a f l] except that it
+    add an association from [a] to [f dfl] instead of raising [Not_found].
+
+    @since NEXT_RELEASE *)
+
+val modify_opt : 'a -> ('b option -> 'b option) -> ('a * 'b) list -> ('a * 'b) list
+(** [modify_opt a f l] allows to modify the binding for [a] in [l]
+    or absence thereof.
+
+    @since NEXT_RELEASE *)
 
 (** {6 List transformations}*)
 

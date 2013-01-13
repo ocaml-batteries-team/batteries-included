@@ -92,6 +92,7 @@ module TestMap
     val max_binding : 'a m -> (key * 'a)
     val modify : key -> ('a -> 'a) -> 'a m -> 'a m
     val modify_def : 'a -> key -> ('a -> 'a) -> 'a m -> 'a m
+    val modify_opt : key -> ('a option -> 'a option) -> 'a m -> 'a m
 
     val extract : key -> 'a m -> 'a * 'a m
     val pop : 'a m -> (key * 'a) * 'a m
@@ -247,6 +248,28 @@ module TestMap
         (sum (M.modify_def 1 k ((+)1) t) = sum t + if M.mem k t then 1 else 2) in
     test 1 t;
     test 57 t;
+    "modify_def 0 1 (+1) empty -> singleton 1,0" @?
+      (let t = M.modify_def 0 1 succ M.empty in M.find 1 t = 1 && M.cardinal t = 1);
+    ()
+
+  let test_modify_opt () =
+    let sum t = M.fold (+) t 0 in
+    let t = il [(1, 2); (3, 4)] in
+    (* usage to modify values *)
+    let test1 k t =
+      "sum (modify_opt k (+1 or 2) t) = sum t + (mem k t ? 1 : 2)" @?
+        (sum (M.modify_opt k (function None -> Some 2 | Some x -> Some (x+1)) t) =
+         sum t + if M.mem k t then 1 else 2) in
+    test1 1 t;
+    test1 57 t;
+    (* usage to delete values *)
+    "modify_opt k (fun _ -> None) t -> remove k" @?
+      (M.modify_opt 3 (function Some _ -> None | None -> None) t |> M.mem 3 |> not);
+    "modify_opt k (fun _ -> None) (singleton k) -> empty" @?
+      (M.singleton 1 0 |> M.modify_opt 1 (fun _ -> None) |> M.is_empty);
+    (* usage to add values *)
+    "modify_opt k (fun None -> Some x) t -> add k" @?
+      (M.modify_opt 2 (function None -> Some 1 | _ -> assert false) t |> M.mem 2);
     ()
 
   let test_choose () =
@@ -545,6 +568,7 @@ module TestMap
     "test_max_binding" >:: test_max_binding;
     "test_modify" >:: test_modify;
     "test_modify_def" >:: test_modify_def;
+    "test_modify_opt" >:: test_modify_opt;
     "test_choose" >:: test_choose;
     "test_split" >:: test_split;
     "test_partition" >:: test_partition;
