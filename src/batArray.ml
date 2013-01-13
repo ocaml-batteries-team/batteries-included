@@ -286,7 +286,7 @@ let enum xs =
       ~count:(fun () ->
 		n - !start)
       ~clone:(fun () ->
-		make (ref !start) xs)
+		make (BatRef.copy start) xs)
   in
   make (ref 0) xs
 (*$Q enum
@@ -316,8 +316,7 @@ let backwards xs =
       ~count:(fun () ->
 		!start)
       ~clone:(fun () ->
-		let xs' = Array.sub xs 0 !start in
-		make (BatRef.copy start) xs')
+		make (BatRef.copy start) xs)
   in
   make (ref (length xs)) xs
 (*$Q backwards
