@@ -269,7 +269,11 @@ include Infix
 
 (** {6 Operators}*)
 
-let undefined ?(message="Undefined") = failwith message
+let undefined ?(message="Undefined") _ = failwith message
+(*$T undefined
+   ignore (Obj.magic (undefined ~message:"")); true
+   try ignore (undefined ~message:"FooBar" ()); false with Failure "FooBar" -> true
+*)
 
 let verify x ex = if x then () else raise ex
 let verify_arg x s = if x then () else invalid_arg s
