@@ -466,7 +466,8 @@ val repeat : ?times:int -> 'a -> 'a t
 val cycle : ?times:int -> 'a t -> 'a t
   (** [cycle] is similar to [repeat], except that the content to fill is a
       subenum rather than a single element. Note that [times] represents the
-      times of repeating not the length of enum. *)
+      times of repeating not the length of enum. When [~times] is absent the
+      result is an infinite enum. *)
 
 val delay : (unit -> 'a t) -> 'a t
   (** [delay (fun () -> e)] produces an enumeration which behaves as [e].
