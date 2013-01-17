@@ -152,6 +152,15 @@ let test_from_loop () =
   assert_equal ~printer:string_of_int 10 nb_res ;
   assert_equal ~printer:string_of_int 6 !nb_calls
 
+let test_cycle () = 
+  let open BatEnum in
+  let expected = [1;2;3;1;2;3] in
+  let result = [1;2;3] |> BatList.enum |> cycle ~times:2 |> BatList.of_enum in
+  assert_equal expected result;
+  let result = [1;2] |> BatList.enum |> cycle ~times:0 in
+  assert_equal ~printer:string_of_int 0 (count result)
+
+
 let tests = "BatEnum" >::: [
   "Array" >:: test_array_enums;
   "List" >:: test_list_enums;
@@ -164,4 +173,5 @@ let tests = "BatEnum" >::: [
   "from" >:: test_from;
   "from_while" >:: test_from_while;
   "from_loop" >:: test_from_loop;
+  "test_cycle" >:: test_cycle
 ]
