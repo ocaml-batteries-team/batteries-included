@@ -52,7 +52,17 @@
     }
 
     external h_conv : ('a, 'b) t -> ('a, 'b) h_t = "%identity"
+    (* DISABLED: Because of the representation change from 3.12 to 4.00,
+       using h_make below would be unsound: we have no guarantee the
+       actual representation is equal to our h_t.
+       
+       However, the representation change was careful to be a strict
+       extension of the previous record, which means that h_conv can
+       still be used: it will only return a subrecord of the real
+       representation, but we can rely on it as a common denominator.
+    
     external h_make : ('a, 'b) h_t -> ('a, 'b) t = "%identity"
+    *)
 
     let resize hashfun tbl =
       let odata = tbl.data in
@@ -115,15 +125,49 @@
     let values h =
       BatEnum.map (fun (_,v) -> v) (enum h)
 	
-    let map f h =
+    let map (f : 'k -> 'a -> 'b) (h :  ('k, 'a) t) : ('k, 'b) t =
       let rec loop = function
-	| Empty -> Empty
-	| Cons (k,v,next) -> Cons (k,f k v,loop next)
+        | Empty -> Empty
+        | Cons (k,v,next) -> Cons (k,f k v,loop next)
       in
-	h_make {
-	  size = (h_conv h).size;
-	  data = Array.map loop (h_conv h).data; 
-	}
+      (* Because of the 3.12->4.00 representation change, we cannot
+         build a fresh hashtable directly: we don't know the exact
+         desired representation, so we must use the functions imported
+         from stdlib's Hashtbl, whatever representation they support. We
+         cannot use Hashtbl.create either, as the new version uses
+         a randomized seed and therefore would need re-computing the keys
+         of the element, which is precisely the O(N) version we want to
+         avoid.
+    
+         The ugly workaround is the following: copy the table using
+         stdlib's Hashtbl.copy (preserve the representation), and
+         mutate the copy: we *can* use the h_conv projection to reveal
+         the mutable 'data' field, as it is present in both
+         representations. However, the input hashtable is typed
+         ('k,'a) while the output must be ('k,'b) (for f : 'a ->
+         'b). We use Obj.magic to do the transition (which *ought to
+         be* sound as the copied hashtable is owned by this function
+         and never exposed outside), but as we're not totally evil we
+         clear the hashtable first, to make sure that buckets of
+         different types *never* get mixed during the computation.
+    
+         We try to be careful to re-allocate the array spine of the input
+         exactly once (during the copy), which is both necessary and
+         sufficient.
+      *)
+      let len = Array.length (h_conv h).data in
+      let h_data = (h_conv h).data in
+      let h'a = copy h in
+      let h'a_data = (h_conv h'a).data in
+      for i = 0 to len - 1 do h'a_data.(i) <- Empty done;
+      let h'b = (Obj.magic h'a : ('k, 'b) t) in
+      let h'b_data = (h_conv h'b).data in
+      for i = 0 to len - 1 do h'b_data.(i) <- loop h_data.(i) done;
+      h'b
+    
+    (*$T map
+       let k = (0,5) in let h = create 1 in let () = add h k 3 in let h2 = map (fun _ v -> v) h in mem h2 k
+    *)
 
     let remove_all h key =
       let hc = h_conv h in
