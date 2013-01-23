@@ -114,7 +114,7 @@ val from_loop: 'b -> ('b -> ('a * 'b)) -> 'a t
 val seq: 'a -> ('a -> 'a) -> ('a -> bool) -> 'a t
   (** [seq init step cond] creates a sequence of data, which starts
       from [init],  extends by [step],  until the condition [cond]
-      fails. E.g. [seq 1 ((+) 1) ((>) 100)] returns [^[1, 2, ... 99]^]. If [cond
+      fails. E.g. [seq 1 ((+) 1) ((>) 100)] returns [[^1, 2, ... 99^]]. If [cond
       init] is false, the result is empty. *)
 
 val unfold: 'b -> ('b -> ('a * 'b) option) -> 'a t
@@ -244,9 +244,11 @@ val rindex_of : 'a -> 'a t -> int option
 val rindex_ofq : 'a -> 'a t -> int option
   (** [rindex_ofq e l] behaves as [rindex_of e l] except it uses
       physical equality*)
+
 (**
    {6  Common functions}
 *)
+
 val next : 'a t -> 'a node_t
   (**Compute and return the next value of the list*)
 
@@ -492,6 +494,7 @@ val sort : ?cmp:('a -> 'a -> int) -> 'a t -> 'a t
 val stable_sort : ('a -> 'a -> int) -> 'a t -> 'a t
 
 (**{6 Operations on two lists}*)
+
 val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
 (** [map2 f [^ a0; a1; ...^] [^ b0; b1; ... ^]] is [[^ f a0 b0; f a1
     b1; ... ^]]. @raise Different_list_size if the two lists have
