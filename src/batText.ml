@@ -804,19 +804,26 @@ let nsplit str sep =
   	   with Invalid_rope -> None
          with
 	   | Some idx ->
-  	     (* at this point, [idx] to [idx + seplen] contains the
+  	     (* at this point, [idx] to [idx + seplen - 1] contains the
   		separator, which is useless to us on the other hand,
   		[idx + seplen] to [ofs] contains what's just after the
   		separator, which is what we want*)
   	     let end_of_occurrence = idx + seplen in
   	     if end_of_occurrence >= ofs then
-	       aux acc idx (*We may be at the end of the string*)
+	       aux acc (idx - 1) (*We may be at the end of the string*)
   	     else
-	       aux ( sub str end_of_occurrence ( ofs - end_of_occurrence ) :: acc ) idx
-  	   | None -> (sub str 0 ofs)::acc
+	       aux ( sub str end_of_occurrence ( ofs - end_of_occurrence + 1) :: acc ) (idx - 1)
+  	   | None -> (sub str 0 (ofs + 1))::acc
        in
        aux [] (length str - 1 )
-
+(*$T nsplit
+  nsplit (of_string "OCaml, the coolest FP language.") (of_char ' ') = \
+    List.map of_string ["OCaml,"; "the"; "coolest"; "FP"; "language."]
+  nsplit (of_string "OCaml, the coolest FP language.") (of_char 'o') = \
+    List.map of_string ["OCaml, the c"; "lest FP language."]
+  nsplit (of_string "OCaml, the coolest FP language.") (of_char '!') = \
+    List.map of_string ["OCaml, the coolest FP language."]
+*)
 
 let join = concat
 
