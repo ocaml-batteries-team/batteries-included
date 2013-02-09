@@ -770,10 +770,26 @@ let replace_chars f r = fold (fun acc s -> append_us acc (f s)) Empty r
 let split r sep =
   let i = find r sep in
   head r i, tail r (i+length sep)
+(*$T split
+  split (of_string "OCaml, the coolest FP language.") (of_char ' ') = \
+    (of_string "OCaml,", of_string "the coolest FP language.")
+  split (of_string "OCaml, the coolest FP language.") (of_char '.') = \
+    (of_string "OCaml, the coolest FP language", empty)
+  Result.(catch (split (of_string "OCaml, the coolest FP language.")) \
+		(of_char '!') |> is_exn Invalid_rope)
+*)
 
 let rsplit (r:t) sep =
   let i = rfind r sep in
   head r i, tail r (i+length sep)
+(*$T rsplit
+  rsplit (of_string "OCaml, the coolest FP language.") (of_char ' ') = \
+    (of_string "OCaml, the coolest FP", of_string "language.")
+  rsplit (of_string "OCaml, the coolest FP language.") (of_char 'O') = \
+    (empty, of_string "Caml, the coolest FP language.")
+  Result.(catch (rsplit (of_string "OCaml, the coolest FP language.")) \
+		(of_char '!') |> is_exn Invalid_rope)
+*)
 
 (** An implementation of [nsplit] in one pass.
 
