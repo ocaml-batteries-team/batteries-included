@@ -682,12 +682,12 @@ let rfind_from r1 suf r2 =
   let check_at pos = r2_string = (to_ustring (sub r1 pos matchlen)) in
   (* TODO: inefficient *)
   Return.with_label (fun label ->
-    for i = suf - (length r1 + 1 ) downto 0 do
+    for i = suf - matchlen + 1 downto 0 do
       if check_at i then Return.return label i
     done;
     raise Not_found)
 
-let rfind r1 r2 = rfind_from r1 (length r2 - 1) r2
+let rfind r1 r2 = rfind_from r1 (length r1 - 1) r2
 
 let exists r_str r_sub = try ignore(find r_str r_sub); true with Not_found -> false
 
