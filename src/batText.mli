@@ -399,7 +399,9 @@ val rsplit : t -> t -> t * t
 val nsplit : t -> t -> t list
   (** [nsplit s sep] splits the rope [s] into a list of ropes
       which are separated by [sep].
-      [nsplit "" _] returns the empty list. *)
+      [nsplit "" _] returns the empty list.
+      If the separator is not found, it returns a list of
+      the rope [s]. *)
 
 val compare : t -> t -> int
   (** The comparison function for ropes, with the same specification as

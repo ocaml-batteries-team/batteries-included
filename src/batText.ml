@@ -672,7 +672,7 @@ let find_from r1 ofs r2 =
     for i = ofs to length r1 - matchlen do
       if check_at i then Return.return label i
     done;
-    raise Not_found)
+    raise Invalid_rope)
 
 let find r1 r2 = find_from r1 0 r2
 
@@ -682,14 +682,14 @@ let rfind_from r1 suf r2 =
   let check_at pos = r2_string = (to_ustring (sub r1 pos matchlen)) in
   (* TODO: inefficient *)
   Return.with_label (fun label ->
-    for i = suf - (length r1 + 1 ) downto 0 do
+    for i = suf - matchlen + 1 downto 0 do
       if check_at i then Return.return label i
     done;
-    raise Not_found)
+    raise Invalid_rope)
 
-let rfind r1 r2 = rfind_from r1 (length r2 - 1) r2
+let rfind r1 r2 = rfind_from r1 (length r1 - 1) r2
 
-let exists r_str r_sub = try ignore(find r_str r_sub); true with Not_found -> false
+let exists r_str r_sub = try ignore(find r_str r_sub); true with Invalid_rope -> false
 
 let strip_default_chars = List.map UChar.of_char [' ';'\t';'\r';'\n']
 let strip ?(chars=strip_default_chars) rope =
@@ -770,10 +770,26 @@ let replace_chars f r = fold (fun acc s -> append_us acc (f s)) Empty r
 let split r sep =
   let i = find r sep in
   head r i, tail r (i+length sep)
+(*$T split
+  split (of_string "OCaml, the coolest FP language.") (of_char ' ') = \
+    (of_string "OCaml,", of_string "the coolest FP language.")
+  split (of_string "OCaml, the coolest FP language.") (of_char '.') = \
+    (of_string "OCaml, the coolest FP language", empty)
+  Result.(catch (split (of_string "OCaml, the coolest FP language.")) \
+		(of_char '!') |> is_exn Invalid_rope)
+*)
 
 let rsplit (r:t) sep =
   let i = rfind r sep in
   head r i, tail r (i+length sep)
+(*$T rsplit
+  rsplit (of_string "OCaml, the coolest FP language.") (of_char ' ') = \
+    (of_string "OCaml, the coolest FP", of_string "language.")
+  rsplit (of_string "OCaml, the coolest FP language.") (of_char 'O') = \
+    (empty, of_string "Caml, the coolest FP language.")
+  Result.(catch (rsplit (of_string "OCaml, the coolest FP language.")) \
+		(of_char '!') |> is_exn Invalid_rope)
+*)
 
 (** An implementation of [nsplit] in one pass.
 
@@ -788,19 +804,26 @@ let nsplit str sep =
   	   with Invalid_rope -> None
          with
 	   | Some idx ->
-  	     (* at this point, [idx] to [idx + seplen] contains the
+  	     (* at this point, [idx] to [idx + seplen - 1] contains the
   		separator, which is useless to us on the other hand,
   		[idx + seplen] to [ofs] contains what's just after the
   		separator, which is what we want*)
   	     let end_of_occurrence = idx + seplen in
   	     if end_of_occurrence >= ofs then
-	       aux acc idx (*We may be at the end of the string*)
+	       aux acc (idx - 1) (*We may be at the end of the string*)
   	     else
-	       aux ( sub str end_of_occurrence ( ofs - end_of_occurrence ) :: acc ) idx
-  	   | None -> (sub str 0 ofs)::acc
+	       aux ( sub str end_of_occurrence ( ofs - end_of_occurrence + 1) :: acc ) (idx - 1)
+  	   | None -> (sub str 0 (ofs + 1))::acc
        in
        aux [] (length str - 1 )
-
+(*$T nsplit
+  nsplit (of_string "OCaml, the coolest FP language.") (of_char ' ') = \
+    List.map of_string ["OCaml,"; "the"; "coolest"; "FP"; "language."]
+  nsplit (of_string "OCaml, the coolest FP language.") (of_char 'o') = \
+    List.map of_string ["OCaml, the c"; "lest FP language."]
+  nsplit (of_string "OCaml, the coolest FP language.") (of_char '!') = \
+    List.map of_string ["OCaml, the coolest FP language."]
+*)
 
 let join = concat
 
