@@ -776,7 +776,7 @@ let split r sep =
   split (of_string "OCaml, the coolest FP language.") (of_char '.') = \
     (of_string "OCaml, the coolest FP language", empty)
   Result.(catch (split (of_string "OCaml, the coolest FP language.")) \
-		(of_char '!') |> is_exn Invalid_rope)
+		(of_char '!') |> is_exn Not_found)
 *)
 
 let rsplit (r:t) sep =
@@ -788,7 +788,7 @@ let rsplit (r:t) sep =
   rsplit (of_string "OCaml, the coolest FP language.") (of_char 'O') = \
     (empty, of_string "Caml, the coolest FP language.")
   Result.(catch (rsplit (of_string "OCaml, the coolest FP language.")) \
-		(of_char '!') |> is_exn Invalid_rope)
+		(of_char '!') |> is_exn Not_found)
 *)
 
 (** An implementation of [nsplit] in one pass.
@@ -801,7 +801,7 @@ let nsplit str sep =
   else let seplen = length sep in
        let rec aux acc ofs = match
   	   try Some(rfind_from str ofs sep)
-  	   with Invalid_rope -> None
+  	   with Not_found -> None
          with
 	   | Some idx ->
   	     (* at this point, [idx] to [idx + seplen - 1] contains the
@@ -845,7 +845,7 @@ let replace ~str ~sub ~by =
     let i = find str sub in
     (true, append (slice ~last:i str)
       (append by (slice ~first:(i+(length sub)) str)))
-  with Invalid_rope -> (false, str)
+  with Not_found -> (false, str)
 
 
 let explode r = fold (fun a u -> u :: a) [] r
