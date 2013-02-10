@@ -696,7 +696,7 @@ let rfind_from r1 suf r2 =
 
 let rfind r1 r2 = rfind_from r1 (length r1 - 1) r2
 
-let exists r_str r_sub = try ignore(find r_str r_sub); true with Invalid_rope -> false
+let exists r_str r_sub = try ignore(find r_str r_sub); true with Not_found -> false
 
 let strip_default_chars = List.map UChar.of_char [' ';'\t';'\r';'\n']
 let strip ?(chars=strip_default_chars) rope =
