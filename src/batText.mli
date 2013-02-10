@@ -277,7 +277,7 @@ val find : t -> t -> int
 
       {b Note} This implementation is optimized for short ropes.
 
-      @raise Invalid_rope if [x] is not a subrope of [s]. *)
+      @raise Not_found if [x] is not a subrope of [s]. *)
 
 val find_from : t -> int -> t -> int
   (** [find_from s ofs x] behaves as [find s x] but starts searching
@@ -289,7 +289,7 @@ val rfind : t -> t -> int
 
       {b Note} This implementation is optimized for short ropes.
 
-      @raise Invalid_rope if [x] is not a subrope of [s]. *)
+      @raise Not_found if [x] is not a subrope of [s]. *)
 
 val rfind_from : t -> int -> t -> int
   (** [rfind_from s ofs x] behaves as [rfind s x] but starts searching
@@ -389,12 +389,12 @@ val replace : str:t -> sub:t -> by:t -> bool * t
 val split : t -> t -> t * t
   (** [split s sep] splits the rope [s] between the first
       occurrence of [sep].
-      @raise Invalid_rope if the separator is not found. *)
+      @raise Not_found if the separator is not found. *)
 
 val rsplit : t -> t -> t * t
   (** [rsplit s sep] splits the rope [s] between the last
       occurrence of [sep].
-      @raise Invalid_rope if the separator is not found. *)
+      @raise Not_found if the separator is not found. *)
 
 val nsplit : t -> t -> t list
   (** [nsplit s sep] splits the rope [s] into a list of ropes
