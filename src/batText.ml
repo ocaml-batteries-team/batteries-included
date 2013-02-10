@@ -694,18 +694,30 @@ let find_from rop ofs sub_rop =
 
 let find rop sub = find_from rop 0 sub
 
-let rfind_from r1 suf r2 =
-  let matchlen = length r2 in
-  let r2_string = to_ustring r2 in
-  let check_at pos = r2_string = (to_ustring (sub r1 pos matchlen)) in
+let rfind_from rop suf sub_rop =
+  if suf + 1 < 0 || suf + 1 > length rop then raise Out_of_bounds;
+  let matchlen = length sub_rop in
+  let sub_rop = to_ustring sub_rop in
+  let check_at pos = sub_rop = (to_ustring (sub rop pos matchlen)) in
   (* TODO: inefficient *)
   Return.with_label (fun label ->
     for i = suf - matchlen + 1 downto 0 do
       if check_at i then Return.return label i
     done;
     raise Not_found)
+(*$T rfind_from
+  rfind_from (of_string "foobarbaz") 5 (of_string "ba") = 3
+  rfind_from (of_string "foobarbaz") 7 (of_string "ba") = 6
+  rfind_from (of_string "foobarbaz") 6 (of_string "ba") = 3
+  rfind_from (of_string "foobarbaz") 7 (of_string "") = 8
+  Result.(catch (rfind_from (of_string "") 3) empty |> is_exn Out_of_bounds)
+  Result.(catch (rfind_from (of_string "") (-1)) (of_string "a") |> is_exn Not_found)
+  Result.(catch (rfind_from (of_string "foobarbaz") 2) (of_string "ba") |> is_exn Not_found)
+  Result.(catch (rfind_from (of_string "foo") 3) (of_string "foo") |> is_exn Out_of_bounds)
+  Result.(catch (rfind_from (of_string "foo") (-2)) (of_string "foo") |> is_exn Out_of_bounds)
+*)
 
-let rfind r1 r2 = rfind_from r1 (length r1 - 1) r2
+let rfind rop sub = rfind_from rop (length rop - 1) sub
 
 let exists r_str r_sub = try ignore(find r_str r_sub); true with Not_found -> false
 
