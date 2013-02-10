@@ -601,9 +601,16 @@ let index_from r base item =
     let index_aux i c =
       if c = item then Return.return label i
     in
-    range_iteri index_aux ~base base (length r - base) r;
+    range_iteri index_aux base (length r - base) r;
     raise Not_found)
-
+(*$T index_from
+  index_from (of_string "batteries") 0 (BatUChar.of_char 't') = 2
+  index_from (of_string "batteries") 3 (BatUChar.of_char 't') = 3
+  Result.(catch (index_from (of_string "batteries") 4) (BatUChar.of_char 't') \
+            |> is_exn Not_found)
+  Result.(catch (index_from (of_string "batteries") 20) (BatUChar.of_char 't') \
+            |> is_exn Out_of_bounds)
+ *)
 
 let rindex r char =
   Return.with_label (fun label ->
