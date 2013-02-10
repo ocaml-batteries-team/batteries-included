@@ -235,14 +235,18 @@ val filter : (BatUChar.t -> bool) -> t -> t
   (** {6 Finding}*)
 
 val index : t -> BatUChar.t -> int
-  (** [Rope.index s c] returns the position of the leftmost
+  (** [index s c] returns the position of the leftmost
       occurrence of character [c] in rope [s].
       Raise [Not_found] if [c] does not occur in [s]. *)
 
 val index_from : t -> int -> BatUChar.t -> int
-  (** Same as {!Rope.index}, but start searching at the character
-      position given as second argument.  [Rope.index s c] is
-      equivalent to [Rope.index_from s 0 c].*)
+  (** [index_from r i c] returns the character number of the
+      first occurrence of character [c] in rope [r] after position [i].
+      [index s c] is equivalent to [index_from s 0 c].
+
+      @raise Out_of_bounds if [i] is not a valid position in [r].
+      @raise Not_found if [c] does not occur in [r] after position [i].
+  *)
 
 val rindex : t -> BatUChar.t -> int
   (** [Rope.rindex s c] returns the position of the rightmost
