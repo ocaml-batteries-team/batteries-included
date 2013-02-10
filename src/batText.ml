@@ -672,7 +672,7 @@ let find_from r1 ofs r2 =
     for i = ofs to length r1 - matchlen do
       if check_at i then Return.return label i
     done;
-    raise Invalid_rope)
+    raise Not_found)
 
 let find r1 r2 = find_from r1 0 r2
 
@@ -685,7 +685,7 @@ let rfind_from r1 suf r2 =
     for i = suf - matchlen + 1 downto 0 do
       if check_at i then Return.return label i
     done;
-    raise Invalid_rope)
+    raise Not_found)
 
 let rfind r1 r2 = rfind_from r1 (length r1 - 1) r2
 
