@@ -669,19 +669,30 @@ let ends_with r suffix =
   in
   loop ()
 
-(** find [r2] within [r1] or raises Not_found *)
-let find_from r1 ofs r2 =
-  let matchlen = length r2 in
-  let r2_string = to_ustring r2 in
-  let check_at pos = r2_string = (to_ustring (sub r1 pos matchlen)) in
+(** find [sub] within [rop] or raises Not_found *)
+let find_from rop ofs sub_rop =
+  let len = length rop in
+  if ofs < 0 || ofs > len then raise Out_of_bounds;
+  let matchlen = length sub_rop in
+  let sub_rop = to_ustring sub_rop in
+  let check_at pos = sub_rop = (to_ustring (sub rop pos matchlen)) in
   (* TODO: inefficient *)
   Return.with_label (fun label ->
-    for i = ofs to length r1 - matchlen do
+    for i = ofs to len - matchlen do
       if check_at i then Return.return label i
     done;
     raise Not_found)
+(*$T find_from
+  find_from (of_string "foobarbaz") 4 (of_string "ba") = 6
+  find_from (of_string "foobarbaz") 7 (of_string "") = 7
+  Result.(catch (find_from (of_string "") 0) (of_string "a") |> is_exn Not_found)
+  let foo = of_string "foo" in Result.(catch (find_from foo 2) foo |> is_exn Not_found)
+  let foo = of_string "foo" in Result.(catch (find_from foo 3) foo |> is_exn Not_found)
+  let foo = of_string "foo" in Result.(catch (find_from foo 4) foo |> is_exn Out_of_bounds)
+  let foo = of_string "foo" in Result.(catch (find_from foo (-1)) foo |> is_exn Out_of_bounds)
+*)
 
-let find r1 r2 = find_from r1 0 r2
+let find rop sub = find_from rop 0 sub
 
 let rfind_from r1 suf r2 =
   let matchlen = length r2 in

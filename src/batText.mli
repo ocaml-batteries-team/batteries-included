@@ -285,7 +285,11 @@ val find : t -> t -> int
 
 val find_from : t -> int -> t -> int
   (** [find_from s ofs x] behaves as [find s x] but starts searching
-      at offset [ofs]. [find s x] is equivalent to [find_from s 0 x].*)
+      at offset [ofs]. [find s x] is equivalent to [find_from s 0 x].
+
+      @raise Out_of_bounds if [ofs] is not a valid_position in [s].
+      @raise Not_found if [x] is not a subrope of [s].
+  *)
 
 val rfind : t -> t -> int
   (** [rfind s x] returns the starting index of the last occurrence
