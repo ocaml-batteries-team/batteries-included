@@ -301,7 +301,11 @@ val rfind : t -> t -> int
 
 val rfind_from : t -> int -> t -> int
   (** [rfind_from s ofs x] behaves as [rfind s x] but starts searching
-      at offset [ofs]. [rfind s x] is equivalent to [rfind_from s (length s - 1) x].*)
+      at offset [ofs]. [rfind s x] is equivalent to [rfind_from s (length s - 1) x].
+
+      @raise Out_of_bounds if [ofs] is not a valid_position in [s].
+      @raise Not_found if [x] is not a subrope of [s].
+  *)
 
 
 val starts_with : t -> t -> bool
