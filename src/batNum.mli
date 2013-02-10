@@ -64,9 +64,17 @@ val of_int    : int -> num
 val to_int    : num -> int
 val of_float  : float -> num
 val to_float  : num     -> float
+
 val of_string : string -> num
 val to_string : num -> string
-(** Convert a number to a string, using fractional notation. *)
+(** Convert a number to a string, using fractional notation. Two
+    formats are recognized: simple integer literals and a pair of integer
+    literals separated by a '/', to indicate a rational number.*)
+
+val of_float_string: string -> num
+(** Convert a simple floating point literal to a num.  Plain integer
+    literals are also accepted; numbers written with a trailing exponent
+    are not currently accepted. *)
 
 val ( + ) : num -> num -> num
 val ( - ) : num -> num -> num

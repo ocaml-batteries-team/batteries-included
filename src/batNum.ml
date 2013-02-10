@@ -73,7 +73,7 @@ module TaggedInfix = struct
 end
 
 module Infix = struct
-  (* infix operators without / suffix: +-*/ *)
+  (* infix operators without / suffix: + - * / *)
   include BatNumber.MakeInfix (BaseNum)
   include TaggedInfix
 end
@@ -91,3 +91,24 @@ let quo   = quo_num
 let sign  = sign_num
 
 let print out t = BatInnerIO.nwrite out (to_string t)
+
+let of_float_string a =
+  try
+    let ipart_s,fpart_s = BatString.split a ~by:"." in
+    let ipart = if ipart_s = "" then zero else of_string ipart_s in
+    let fpart =
+      if fpart_s = "" then zero
+      else
+	let fpart = of_string fpart_s in
+	let num10 = of_int 10 in
+	let frac = pow num10 (of_int (String.length fpart_s)) in
+	Infix.(fpart/frac)
+    in
+    add ipart fpart
+  with Not_found -> of_string a
+
+(**T
+   of_float_string "2.5" = of_string "5/2"
+   of_float_string "2." = of_string "2"
+   of_float_string ".5" = of_string "1/2"
+*)
