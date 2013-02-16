@@ -47,7 +47,9 @@ type ('a, 'b) h_bucketlist =
 
 type ('a, 'b) h_t = {
   mutable size: int;
-  mutable data: ('a, 'b) h_bucketlist array
+  mutable data: ('a, 'b) h_bucketlist array;
+##V4##  mutable seed: int;
+##V4##  initial_size: int;
 }
 
 external h_conv : ('a, 'b) t -> ('a, 'b) h_t = "%identity"
@@ -118,10 +120,14 @@ let map f h =
 	| Empty -> Empty
 	| Cons (k,v,next) -> Cons (k,f k v,loop next)
   in
-  h_make {
-	  size = (h_conv h).size;
-	  data = Array.map loop (h_conv h).data;
-	}
+  let hc = h_conv h in
+  h_make { hc with data = Array.map loop hc.data; }
+
+(*$T map
+  (* non regression test for bug #354 *) \
+  let h = create 20 and k = (0,5) in add h k 3 ; \
+  let h2 = map (fun _ v -> v) h in mem h2 k
+*)
 
 let map_inplace f h =
   let rec loop = function
