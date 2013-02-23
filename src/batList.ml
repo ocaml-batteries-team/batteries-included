@@ -841,13 +841,20 @@ let cartesian_product l1 l2 =
   cp [1;2;3] ['x';'y'] = [1,'x';1,'y';2,'x';2,'y';3,'x';3,'y']
  *)
 
-let rec n_cartesian_product = function [] -> assert false
-  | [l] -> List.map (fun i -> [i]) l
+let rec n_cartesian_product = function
+  | [] -> [[]]
   | h :: t ->
       let rest = n_cartesian_product t in
       List.concat (List.map (fun i -> List.map (fun r -> i :: r) rest) h)
 
-
+(*$T n_cartesian_product as ncp
+  ncp []               = [[]]
+  ncp [[]]             = []
+  ncp [[1]; [2]; [3]]  = [[1;2;3]]
+  ncp [[1;2;3]]        = [[1]; [2]; [3]]
+  ncp [[1;2;3]; []]    = []
+  ncp [[1;2;3]; [4;5]] = [[1;4]; [1;5]; [2;4]; [2;5]; [3;4]; [3;5]]
+ *)
 
 let print ?(first="[") ?(last="]") ?(sep="; ") print_a  out = function
   | []   ->
