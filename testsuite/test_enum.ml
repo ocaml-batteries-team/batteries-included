@@ -160,6 +160,25 @@ let test_cycle () =
   let result = [1;2] |> BatList.enum |> cycle ~times:0 in
   assert_equal ~printer:string_of_int 0 (count result)
 
+let test_take () =
+  let open BatEnum in
+  let l = [1;2;3;4;5] in
+  let enum = l |> BatList.enum in
+  let first_take = BatEnum.take 2 enum in
+  assert_equal [1;2] (BatList.of_enum first_take);
+  let second_take = BatEnum.take 2 enum in
+  assert_equal [3;4] (BatList.of_enum second_take)
+
+let test_force () =
+  let open BatEnum in
+  let l = [1;2;3;4;5] in
+  let enum = BatList.enum l in
+  let enum' = BatEnum.clone enum in
+  force enum;
+  let l1 = BatList.of_enum enum in
+  let l2 = BatList.of_enum enum' in
+  assert_equal l1 l;
+  assert_equal l2 l  (* can iterate twice on the same list *)
 
 let tests = "BatEnum" >::: [
   "Array" >:: test_array_enums;
@@ -173,5 +192,7 @@ let tests = "BatEnum" >::: [
   "from" >:: test_from;
   "from_while" >:: test_from_while;
   "from_loop" >:: test_from_loop;
-  "test_cycle" >:: test_cycle
+  "test_cycle" >:: test_cycle;
+  "test_take" >:: test_take;
+  "test_force" >:: test_force;
 ]
