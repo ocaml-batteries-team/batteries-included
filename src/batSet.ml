@@ -144,6 +144,10 @@ module Concrete = struct
   let map cmp f s =
     fold (fun v acc -> add cmp (f v) acc) s empty
 
+  let rec op_map f = function
+    | Empty -> Empty
+    | Node (l,x,r,h) -> Node (op_map f l, f x, op_map f r, h)
+
   let singleton x = Node(Empty, x, Empty, 1)
 
   let rec add_min v = function
@@ -682,3 +686,15 @@ let disjoint s1 s2 = Concrete.disjoint Pervasives.compare s1 s2
     compare a b = - (compare b c)
   compare (of_list [1;2;3]) (of_list [3;1;2]) = 0
  *)
+
+
+module Incubator = struct (*$< Incubator *)
+  let op_map f s = Concrete.op_map f s
+(*$T op_map
+  of_enum (1--3) |> op_map ((+) 2) |> mem 5
+  of_enum (1--3) |> op_map ((+) 2) |> mem 4
+  of_enum (1--3) |> op_map ((+) 2) |> mem 3
+*)
+
+
+end (*$>*)

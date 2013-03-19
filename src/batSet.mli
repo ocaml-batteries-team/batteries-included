@@ -354,13 +354,16 @@ val iter: ('a -> unit) -> 'a t -> unit
       The elements of [s] are presented to [f] in increasing order
       with respect to the ordering over the type of the elements. *)
 
-val map: ('a -> 'a) -> 'a t -> 'a t
+val map: ('a -> 'b) -> 'a t -> 'b t
   (** [map f x] creates a new set with elements [f a0],
       [f a1]... [f aN], where [a0], [a1], ..., [aN] are the
-      values contained in [x]
+      elements of [x].
 
-      The resulting map uses the polymorphic [compare] function to
-      order elements.
+      This function places no restriction on [f]; it can map multiple
+      input values to the same output value, in which case the
+      resulting set will have smaller cardinality than the input.  [f]
+      does not need to be order preserving, although if it is, then
+      [Incubator.op_map] may be more efficient.
   *)
 
 val filter: ('a -> bool) -> 'a t -> 'a t
@@ -453,6 +456,18 @@ val of_list: 'a list -> 'a t
 val print :  ?first:string -> ?last:string -> ?sep:string ->
   ('a BatInnerIO.output -> 'c -> unit) ->
   'a BatInnerIO.output -> 'c t -> unit
+
+
+(** {6 Incubator} *)
+module Incubator : sig
+
+  val op_map : ('a -> 'b) -> 'a t -> 'b t
+(** Order Preserving map; as [map], but [f] must be order preserving;
+    i.e. if [a < b] then [f a < f b].  This allows the tree structure
+    to be maintained internally, resulting in O(n) work instead of O(n
+    log n).*)
+
+end
 
 
 module PSet : sig
