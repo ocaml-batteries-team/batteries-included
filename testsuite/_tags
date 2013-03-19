@@ -1,2 +1,1 @@
 true: pkg_oUnit, threads, debug
-"test_lazy_pattern.ml": with_pa_llist, syntax_camlp4o

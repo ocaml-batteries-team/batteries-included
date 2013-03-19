@@ -12,7 +12,6 @@ let packs = "bigarray,num,str"
 
 let doc_intro = "build/intro.text"
 let mkconf = "build/mkconf.byte"
-let pa_llist = "src/syntax/pa_llist/pa_llist.cmo"
 let compiler_libs = if Sys.ocaml_version.[0] = '4' then [A"-I"; A"+compiler-libs"] else []
 (* removes the trailing newlines in the stdout of s *)
 let run_and_read s =
@@ -148,12 +147,6 @@ let _ = dispatch begin function
         S[A"-syntax"; A"camlp4o"; A"-package"; A"camlp4"];
       flag ["ocaml"; "ocamldep"; "syntax_camlp4o"] &
         S[A"-syntax"; A"camlp4o"; A"-package"; A"camlp4"];
-
-      flag ["ocaml"; "compile";  "with_pa_llist"] &
-        S[A"-ppopt"; P pa_llist];
-      flag ["ocaml"; "ocamldep";  "with_pa_llist"] &
-        S[A"-ppopt"; P pa_llist];
-      dep ["ocaml"; "ocamldep"; "with_pa_llist"] [pa_llist];
 
       let flags_pa_bisect =
         S[A"-ppopt"; P"str.cma"; A"-ppopt"; P bisect_pp;
