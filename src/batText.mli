@@ -70,10 +70,6 @@ type t
 exception Out_of_bounds
 (** Raised when an operation violates the bounds of the rope. *)
 
-exception Invalid_rope
-(** An exception thrown when some operation required a rope and
-    received an unacceptable rope.*)
-
 val max_length : int
 (** Maximum length of the rope (number of UTF-8 characters). *)
 
