@@ -49,8 +49,6 @@ let splice s1 off len s2 =
   String.blit s1 (off+len) s (off+len2) (len1 - (off+len)); (* s1 after off+len *)
   s
 
-exception Invalid_rope
-
 type t =
     Empty                             (**An empty rope*)
   | Concat of t * int * t * int * int (**[Concat l ls r rs h] is the concatenation of
