@@ -55,11 +55,71 @@ let return_no_more_elements () = raise No_more_elements
 let return_no_more_count    () = 0
 let return_infinite_count   () = raise Infinite_enum
 
-(* Inlined from ExtList to avoid circular dependencies. *)
-type 'a _mut_list = {
-	hd : 'a;
-	mutable tl : 'a _mut_list;
-}
+(* Mutable unrolled list to serve as intermediate storage. It stores
+   elements in a linked list of "blocks", each block being an array.
+   Only the last block may not be full. *)
+module MList = struct
+  type 'a mlist = {
+    content : 'a array;   (* elements of the node *)
+    mutable len : int;    (* number of elements in content *)
+    mutable tl : 'a mlist;    (* tail *)
+  } (** A list that contains some elements, and may point to another list *)
+
+  let _empty () : 'a mlist = Obj.magic 0
+    (** Empty list, for the tl field *)
+
+  let make n =
+    assert (n > 0);
+    { content = Array.make n (Obj.magic 0);
+      len = 0;
+      tl = _empty ();
+    }
+
+  let rec is_empty l =
+    l.len = 0 && (l.tl == _empty () || is_empty l.tl)
+
+  (* length of list, but with an initial offset of [start] *)
+  let length ?(start=0) l =
+    let rec len acc l =
+      if l == _empty () then acc else len (acc+l.len) l.tl
+    in (len 0 l) - start
+
+  (** Push [x] at the end of the list. It returns the block in which the
+      element is inserted. *)
+  let rec push x l =
+    if l.len = Array.length l.content
+      then begin (* insert in the next block *)
+        (if l.tl == _empty () then l.tl <- make (Array.length l.content));
+        push x l.tl
+      end else begin  (* insert in l *)
+        l.content.(l.len) <- x;
+        l.len <- l.len + 1;
+        l
+      end
+
+  (** Create an enumeration *)
+  let rec enum (my_list : 'a mlist) : 'a t = 
+    let i = ref 0
+    and l = ref my_list in
+    let rec next () =
+      (if !l == _empty () then (raise No_more_elements));
+      if !i = (!l).len
+        then begin  (* go to next block *)
+          l := (!l).tl;
+          i := 0;
+          next ()
+        end else begin  (* next element in this block *)
+          let x = (!l).content.(!i) in
+          incr i;
+          x
+        end
+    in
+    { count = (fun () -> length ~start:(!i) !l);
+      next = next;
+      clone = (fun () -> enum my_list);
+      fast = true;
+    }
+end
 
 let rec empty () =
   {
@@ -74,42 +134,23 @@ let close e =
   e.count<- return_no_more_count;
   e.clone<- empty
 
-let force t =(** Transform [t] into a list *)
-  let rec clone enum count =
-    let enum = ref !enum
-    and	count = ref !count in
-      {
-	count = (fun () -> !count);
-	next  = (fun () ->
-		   match !enum with
-		     | []     -> raise No_more_elements
-		     | h :: t -> decr count; enum := t; h);
-	clone = (fun () ->
-		   let enum = ref !enum
-		   and count = ref !count in
-		     clone enum count);
-	fast  = true;
-      }
+let force (t : 'a t) : unit =(** Transform [t] into a list *)
+  let l = MList.make 64 in
+  (* consume the enum [t] and put its elements into [!l] *)
+  let rec fill current_l =
+    match (try Some(t.next()) with No_more_elements -> None) with
+    | None -> ()
+    | Some x ->
+      let current_l' = MList.push x current_l in
+      fill current_l'
   in
-  let count = ref 0 in
-  let _empty = Obj.magic [] in
-  let rec loop dst =
-    let x = { hd = t.next(); tl = _empty } in
-      incr count;
-      dst.tl <- x;
-      loop x
-  in
-  let enum = ref _empty  in
-    (try
-       enum := { hd = t.next(); tl = _empty };
-       incr count;
-       loop !enum;
-     with No_more_elements -> ());
-    let tc = clone (Obj.magic enum) count in
-      t.clone <- tc.clone;
-      t.next <- tc.next;
-      t.count <- tc.count;
-      t.fast <- true
+  fill l;
+  let enum = MList.enum l in
+  t.fast <- enum.fast;
+  t.count <- enum.count;
+  t.next <- enum.next;
+  t.clone <- enum.clone;
+  ()
 
 (* Inlined from {!LazyList}.
 
@@ -237,55 +278,19 @@ let peek t =
 		push t x;
 		Some x
 
-module MicroList = (*Inlined from ExtList to avoid circular dependencies*)
-struct
-  let enum l =
-    let rec aux lr count =
-      make
-	~next:(fun () ->
-		 match !lr with
-		   | [] -> raise No_more_elements
-		   | h :: t ->
-		       decr count;
-		       lr := t;
-		       h
-	      )
-	~count:(fun () ->
-		  if !count < 0 then count := List.length !lr;
-		  !count
-	       )
-	~clone:(fun () ->
-		  aux (ref !lr) (ref !count)
-	       )
-    in
-      aux (ref l) (ref (-1))
-end
-
-let take n e =
-  let r = ref [] in
-    begin
-      try
-	for i = 1 to n do
-	  r := e.next () :: !r
-	done
-      with No_more_elements -> ()
-    end;
-      MicroList.enum (List.rev !r)
-
-(*let take n e = (*Er... that looks quite weird.*)
-  let remaining = ref n in
-  let f () =
-    if !remaining >= 0 then
-      let result = e.next () in
-	decr remaining;
-	result
-    else raise No_more_elements
-  in let e = make
-       ~next: f
-       ~count:(fun () -> !remaining)
-       ~clone:_dummy
-  in e.clone <- (fun () -> force e; e.clone ());
-    e*)
+let take (n : int) (e : 'a t) : 'a t =
+  let l = MList.make 64 in
+  (* consume the enum [t] and put its elements into [l] *)
+  let rec fill n' current_l =
+    if n' = n then ()
+    else match get e with
+      | None -> ()
+      | Some x ->
+        let current_l' = MList.push x current_l in
+        fill (n'+1) current_l'
+  in
+  fill 0 l;
+  MList.enum l
 
 let junk t =
 	try
