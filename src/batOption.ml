@@ -66,6 +66,14 @@ let default v = function
   default 3 (Some 4) = 4
 *)
 
+let default_delayed l = function
+	| None -> l ()
+	| Some v -> v
+(*$T default_delayed
+  default_delayed (fun () -> 3) None = 3
+  default_delayed (fun () -> assert false) (Some 4) = 4
+*)
+
 let is_some = function
 	| None -> false
 	| _ -> true
@@ -102,6 +110,14 @@ let map_default f v = function
 (*$T map_default
   map_default succ 2 None = 2
   map_default succ 2 (Some 3) = 4
+*)
+
+let map_default_delayed f l = function
+	| None -> l ()
+	| Some v -> f v
+(*$T map_default_delayed
+  map_default_delayed succ (fun () -> 2) None = 2
+  map_default_delayed succ (fun () -> assert false) (Some 3) = 4
 *)
 
 let compare ?(cmp=Pervasives.compare) a b = match a with
