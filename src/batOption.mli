@@ -75,6 +75,11 @@ val ( |? ) : 'a option -> 'a -> 'a
 
     @since 2.0 *)
 
+val default_f : (unit -> 'a) -> 'a option -> 'a
+(** Like {!default} but the default computation is delayed until actually needed.
+
+    @since NEXT_RELEASE *)
+
 val map_default : ('a -> 'b) -> 'b -> 'a option -> 'b
 (** [map_default f x (Some v)] returns [f v] and [map_default f x None]
 	returns [x]. *)

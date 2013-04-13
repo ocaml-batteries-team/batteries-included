@@ -66,6 +66,14 @@ let default v = function
   default 3 (Some 4) = 4
 *)
 
+let default_f f = function
+	| None -> f ()
+	| Some v -> v
+(*$T default_f
+  default_f (fun () -> 3) None = 3
+  default_f (fun () -> assert false) (Some 4) = 4
+*)
+
 let is_some = function
 	| None -> false
 	| _ -> true
