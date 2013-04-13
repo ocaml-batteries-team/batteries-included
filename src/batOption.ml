@@ -66,6 +66,14 @@ let default v = function
   default 3 (Some 4) = 4
 *)
 
+let lazy_default l = function
+	| None -> Lazy.force l
+	| Some v -> v
+(*$T lazy_default
+  lazy_default (lazy 3) None = 3
+  lazy_default (lazy (assert false)) (Some 4) = 4
+*)
+
 let is_some = function
 	| None -> false
 	| _ -> true
@@ -102,6 +110,14 @@ let map_default f v = function
 (*$T map_default
   map_default succ 2 None = 2
   map_default succ 2 (Some 3) = 4
+*)
+
+let map_lazy_default f l = function
+	| None -> Lazy.force l
+	| Some v -> f v
+(*$T map_lazy_default
+  map_lazy_default succ (lazy 2) None = 2
+  map_lazy_default succ (lazy (assert false)) (Some 3) = 4
 *)
 
 let compare ?(cmp=Pervasives.compare) a b = match a with
