@@ -610,6 +610,17 @@ let mem x s = Concrete.mem Pervasives.compare x s
 
 let find x s = Concrete.find Pervasives.compare x s
 
+(*$T
+  (find 1 (of_list [1;2;3;4;5;6;7;8])) == 1
+  (find 8 (of_list [1;2;3;4;5;6;7;8])) == 8
+  (find 1 (singleton 1)) == 1
+  let x = "abc" in (find "abc" (singleton x)) == x
+  let x = (1,1) in (find (1,1) (singleton x)) == x
+  let x,y = (1,1),(1,1) in find x (singleton y) == y
+  let x,y = "a","a" in find x (singleton y) != x
+  try ignore (find (1,2) (singleton (1,1))); false with Not_found -> true
+*)
+
 let add x s  = Concrete.add Pervasives.compare x s
 
 let remove x s = Concrete.remove Pervasives.compare x s

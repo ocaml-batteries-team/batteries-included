@@ -311,6 +311,10 @@ val singleton : 'a -> 'a t
 val mem: 'a -> 'a t -> bool
 (** [mem x s] tests whether [x] belongs to the set [s]. *)
 
+val find: 'a -> 'a t -> 'a
+(** [find x s] returns the set element that compares equal to [x].
+  @raise Not_found if no such element exists *)
+
 val add: 'a -> 'a t -> 'a t
 (** [add x s] returns a set containing all elements of [s],
     plus [x]. If [x] was already in [s], [s] is returned unchanged. *)
