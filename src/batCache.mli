@@ -42,7 +42,7 @@
     Last, [c.enum ()] will enumerate all the currently memorized
     bindings as pairs.  This allows inspection of what is currently
     cached.
- *)
+*)
 type ('a,'b) manual_cache = {
   get : 'a -> 'b;
   del : 'a -> unit;
@@ -72,19 +72,19 @@ val make_map : gen:('a -> 'b) -> ('a,'b) manual_cache
     Each auto-cache can have a different policy to decide which entry
     to discard.
 
- *)
+*)
 type ('a, 'b) auto_cache = 'a -> 'b
 
 
 val lru_cache : gen:('a -> 'b) -> cap:int -> ('a, 'b) auto_cache
-(* Make a simple LRU (least-recently-used) automatic cache for
-   function [~gen] and with capacity [~cap].  When a new entry is
-   added to the cache, if its capacity was [cap], then the least
-   recently used entry in the cache will be removed to make room for
-   it. *)
+  (* Make a simple LRU (least-recently-used) automatic cache for
+     function [~gen] and with capacity [~cap].  When a new entry is
+     added to the cache, if its capacity was [cap], then the least
+     recently used entry in the cache will be removed to make room for
+     it. *)
 
 
-(* TODO
-   val rec_cache : gen:(('a -> 'b) -> 'a -> 'b) -> ('a, 'b) manual_cache
-   val other_fancy_caching_strategy : (as lru_cache, probably)
- *)
+  (* TODO
+     val rec_cache : gen:(('a -> 'b) -> 'a -> 'b) -> ('a, 'b) manual_cache
+     val other_fancy_caching_strategy : (as lru_cache, probably)
+  *)

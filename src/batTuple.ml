@@ -51,8 +51,8 @@ module Tuple2 = struct
   let of_enum e = match BatEnum.get e with
       None -> failwith "Tuple2.of_enum: not enough elements"
     | Some x -> match BatEnum.get e with
-	  None -> failwith "Tuple2.of_enum: not enough elements"
-        | Some y -> (x,y)
+        None -> failwith "Tuple2.of_enum: not enough elements"
+      | Some y -> (x,y)
 
   let print ?(first="(") ?(sep=",") ?(last=")") print_a print_b out (a,b) =
     BatIO.nwrite out first;
@@ -133,10 +133,10 @@ module Tuple3 = struct
   let of_enum e = match BatEnum.get e with
       None -> failwith "Tuple3.of_enum: not enough elements"
     | Some a -> match BatEnum.get e with
-	  None -> failwith "Tuple3.of_enum: not enough elements"
-        | Some b -> match BatEnum.get e with
-	      None -> failwith "Tuple3.of_enum: not enough elements"
-            | Some c -> (a,b,c)
+        None -> failwith "Tuple3.of_enum: not enough elements"
+      | Some b -> match BatEnum.get e with
+          None -> failwith "Tuple3.of_enum: not enough elements"
+        | Some c -> (a,b,c)
 
   let print ?(first="(") ?(sep=",") ?(last=")") print_a print_b print_c out (a,b,c) =
     BatIO.nwrite out first;
@@ -155,23 +155,23 @@ module Tuple3 = struct
     if c1 <> 0 then c1 else
       let c2 = cmp2 a2 b2 in
       if c2 <> 0 then c2 else
-	cmp3 a3 b3
+        cmp3 a3 b3
 
   open BatOrd
   let eq eq1 eq2 eq3 =
     fun (t1, t2, t3) (t1', t2', t3') ->
       bin_eq eq1 t1 t1'
-	(bin_eq eq2 t2 t2' eq3) t3 t3'
+        (bin_eq eq2 t2 t2' eq3) t3 t3'
 
   let ord ord1 ord2 ord3 =
     fun (t1, t2, t3) (t1', t2', t3') ->
       bin_ord ord1 t1 t1'
-	(bin_ord ord2 t2 t2' ord3) t3 t3'
+        (bin_ord ord2 t2 t2' ord3) t3 t3'
 
   let comp comp1 comp2 comp3 =
     fun (t1, t2, t3) (t1', t2', t3') ->
       bin_comp comp1 t1 t1'
-	(bin_comp comp2 t2 t2' comp3) t3 t3'
+        (bin_comp comp2 t2 t2' comp3) t3 t3'
 
   module Eq (A : Eq) (B : Eq) (C : Eq) = struct
     type t = A.t * B.t * C.t
@@ -235,12 +235,12 @@ module Tuple4 = struct
   let of_enum e = match BatEnum.get e with
       None -> failwith "Tuple4.of_enum: not enough elements"
     | Some a -> match BatEnum.get e with
-	  None -> failwith "Tuple4.of_enum: not enough elements"
-        | Some b -> match BatEnum.get e with
-	      None -> failwith "Tuple4.of_enum: not enough elements"
-            | Some c -> match BatEnum.get e with
-	          None -> failwith "Tuple4.of_enum: not enough elements"
-                | Some d -> (a,b,c,d)
+        None -> failwith "Tuple4.of_enum: not enough elements"
+      | Some b -> match BatEnum.get e with
+          None -> failwith "Tuple4.of_enum: not enough elements"
+        | Some c -> match BatEnum.get e with
+            None -> failwith "Tuple4.of_enum: not enough elements"
+          | Some d -> (a,b,c,d)
 
   let print ?(first="(") ?(sep=",") ?(last=")") print_a print_b print_c print_d out (a,b,c,d) =
     BatIO.nwrite out first;
@@ -263,26 +263,26 @@ module Tuple4 = struct
       if c2 <> 0 then c2 else
         let c3 = cmp3 a3 b3 in
         if c3 <> 0 then c3 else
-	  cmp4 a4 b4
+          cmp4 a4 b4
 
   open BatOrd
   let eq eq1 eq2 eq3 eq4 =
     fun (t1, t2, t3, t4) (t1', t2', t3', t4') ->
       bin_eq eq1 t1 t1'
-	(bin_eq eq2 t2 t2'
-	   (bin_eq eq3 t3 t3' eq4)) t4 t4'
+        (bin_eq eq2 t2 t2'
+           (bin_eq eq3 t3 t3' eq4)) t4 t4'
 
   let ord ord1 ord2 ord3 ord4 =
     fun (t1, t2, t3, t4) (t1', t2', t3', t4') ->
       bin_ord ord1 t1 t1'
-	(bin_ord ord2 t2 t2'
-	   (bin_ord ord3 t3 t3' ord4)) t4 t4'
+        (bin_ord ord2 t2 t2'
+           (bin_ord ord3 t3 t3' ord4)) t4 t4'
 
   let comp comp1 comp2 comp3 comp4 =
     fun (t1, t2, t3, t4) (t1', t2', t3', t4') ->
       bin_comp comp1 t1 t1'
-	(bin_comp comp2 t2 t2'
-	   (bin_comp comp3 t3 t3' comp4)) t4 t4'
+        (bin_comp comp2 t2 t2'
+           (bin_comp comp3 t3 t3' comp4)) t4 t4'
 
   module Eq (A : Eq) (B : Eq) (C : Eq) (D : Eq) = struct
     type t = A.t * B.t * C.t * D.t
@@ -367,14 +367,14 @@ module Tuple5 = struct
   let of_enum e = match BatEnum.get e with
       None -> failwith "Tuple5.of_enum: not enough elements"
     | Some a -> match BatEnum.get e with
-	  None -> failwith "Tuple5.of_enum: not enough elements"
-        | Some b -> match BatEnum.get e with
-	      None -> failwith "Tuple5.of_enum: not enough elements"
-            | Some c -> match BatEnum.get e with
-	          None -> failwith "Tuple5.of_enum: not enough elements"
-                | Some d -> match BatEnum.get e with
-	              None -> failwith "Tuple5.of_enum: not enough elements"
-                    | Some e -> (a,b,c,d,e)
+        None -> failwith "Tuple5.of_enum: not enough elements"
+      | Some b -> match BatEnum.get e with
+          None -> failwith "Tuple5.of_enum: not enough elements"
+        | Some c -> match BatEnum.get e with
+            None -> failwith "Tuple5.of_enum: not enough elements"
+          | Some d -> match BatEnum.get e with
+              None -> failwith "Tuple5.of_enum: not enough elements"
+            | Some e -> (a,b,c,d,e)
 
   let print ?(first="(") ?(sep=",") ?(last=")") print_a print_b print_c print_d print_e out (a,b,c,d,e) =
     BatIO.nwrite out first;
@@ -401,29 +401,29 @@ module Tuple5 = struct
         if c3 <> 0 then c3 else
           let c4 = cmp4 a4 b4 in
           if c4 <> 0 then c4 else
-	    cmp5 a5 b5
+            cmp5 a5 b5
 
   open BatOrd
   let eq eq1 eq2 eq3 eq4 eq5 =
     fun (t1, t2, t3, t4, t5) (t1', t2', t3', t4', t5') ->
       bin_eq eq1 t1 t1'
-	(bin_eq eq2 t2 t2'
-	   (bin_eq eq3 t3 t3'
-	      (bin_eq eq4 t4 t4' eq5))) t5 t5'
+        (bin_eq eq2 t2 t2'
+           (bin_eq eq3 t3 t3'
+              (bin_eq eq4 t4 t4' eq5))) t5 t5'
 
   let ord ord1 ord2 ord3 ord4 ord5 =
     fun (t1, t2, t3, t4, t5) (t1', t2', t3', t4', t5') ->
       bin_ord ord1 t1 t1'
-	(bin_ord ord2 t2 t2'
-	   (bin_ord ord3 t3 t3'
-	      (bin_ord ord4 t4 t4' ord5))) t5 t5'
+        (bin_ord ord2 t2 t2'
+           (bin_ord ord3 t3 t3'
+              (bin_ord ord4 t4 t4' ord5))) t5 t5'
 
   let comp comp1 comp2 comp3 comp4 comp5 =
     fun (t1, t2, t3, t4, t5) (t1', t2', t3', t4', t5') ->
       bin_comp comp1 t1 t1'
-	(bin_comp comp2 t2 t2'
-	   (bin_comp comp3 t3 t3'
-	      (bin_comp comp4 t4 t4' comp5))) t5 t5'
+        (bin_comp comp2 t2 t2'
+           (bin_comp comp3 t3 t3'
+              (bin_comp comp4 t4 t4' comp5))) t5 t5'
 
   module Eq (A : Eq) (B : Eq) (C : Eq) (D : Eq) (E : Eq) = struct
     type t = A.t * B.t * C.t * D.t * E.t

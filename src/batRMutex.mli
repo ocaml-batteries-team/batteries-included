@@ -28,9 +28,9 @@
     The typical use is (if [m] is the mutex associated with the data structure
     [D]):
     {[
-     RMutex.synchronize ~lock:m (fun () ->
+      RMutex.synchronize ~lock:m (fun () ->
         (* Critical section that operates over D *);
-     ) ()
+      ) ()
     ]}
 
     This module implements reentrant mutexes, i.e. a version of mutexes which
@@ -51,12 +51,12 @@ val create : unit -> t
 (** Return a new mutex. *)
 
 val lock : t -> unit
-  (** Lock the given mutex. Only one thread can have the mutex locked
-      at any time. A thread that attempts to lock a mutex already locked
-      will suspend until the other mutex is unlocked.
+(** Lock the given mutex. Only one thread can have the mutex locked
+    at any time. A thread that attempts to lock a mutex already locked
+    will suspend until the other mutex is unlocked.
 
-      {b Note} attempting to lock a mutex you already have locked from
-      the same thread will not suspend your thread.
+    {b Note} attempting to lock a mutex you already have locked from
+    the same thread will not suspend your thread.
 *)
 
 val try_lock : t -> bool
@@ -87,6 +87,6 @@ val synchronize : ?lock:t -> ('a -> 'b) -> 'a -> 'b
 
 
 val make : unit -> BatConcurrent.lock
-(**
-   Create a new abstract lock based on Reentrant Mutexes.
-*)
+  (**
+     Create a new abstract lock based on Reentrant Mutexes.
+  *)

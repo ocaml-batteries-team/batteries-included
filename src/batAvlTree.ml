@@ -81,7 +81,7 @@ let rec make_tree l v r =
   | Node (ll, lv, lr, lh), Node (rl, rv, rr, rh) ->
     if lh > rh + 1 then bal ll lv (make_tree lr v r) else
     if rh > lh + 1 then bal (make_tree l v rl) rv rr else
-    create l v r
+      create l v r
 
 (* Utilities *)
 let rec split_leftmost = function

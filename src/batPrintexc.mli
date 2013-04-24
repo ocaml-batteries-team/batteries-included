@@ -24,7 +24,7 @@
 
     @author Xavier Leroy (Base module)
     @author David Teller
- *)
+*)
 
 val pass : ('a -> 'b) -> 'a -> 'b
 (** [Printexc.pass fn x] applies [fn] to [x] and returns the result.
@@ -36,16 +36,16 @@ val pass : ('a -> 'b) -> 'a -> 'b
 
 val catch: ('a -> 'b) -> 'a -> 'b
 (** [Printexc.catch fn x] is similar to {!Printexc.print}, but aborts
-   the program with exit code 2 after printing the uncaught exception.
-   This function is deprecated: the runtime system is now able to
-   print uncaught exceptions as precisely as [Printexc.catch] does.
-   Moreover, calling [Printexc.catch] makes it harder to track the
-   location of the exception using the debugger or the stack backtrace
-   facility.  So, do not use [Printexc.catch] in new code.  *)
+    the program with exit code 2 after printing the uncaught exception.
+    This function is deprecated: the runtime system is now able to
+    print uncaught exceptions as precisely as [Printexc.catch] does.
+    Moreover, calling [Printexc.catch] makes it harder to track the
+    location of the exception using the debugger or the stack backtrace
+    facility.  So, do not use [Printexc.catch] in new code.  *)
 
 val to_string: exn -> string
 (** [Printexc.to_string e] returns a string representation of the
-   exception [e]. *)
+    exception [e]. *)
 
 val print_backtrace: _ BatInnerIO.output -> unit
 (** [print_backtrace oc] Prints the an exception backtrace on the
@@ -54,24 +54,24 @@ val print_backtrace: _ BatInnerIO.output -> unit
     was propagated through function calls.
 
     @since 1.4.0
- *)
+*)
 
 val get_backtrace: unit -> string
 (** [Printexc.get_backtrace ()] returns a string containing the same
     exception backtrace that [Printexc.print_backtrace] would print.
- *)
+*)
 
 val record_backtrace: bool -> unit
 (** [Printexc.record_backtrace b] turns recording of exception
     backtraces on (if [b = true]) or off (if [b = false]).  Initially,
     backtraces are not recorded, unless the [b] flag is given to the
     program through the [OCAMLRUNPARAM] variable.
- *)
+*)
 
 val backtrace_status: unit -> bool
 (** [Printexc.backtrace_status()] returns [true] if exception
     backtraces are currently recorded, [false] if not.
- *)
+*)
 
 val register_printer: (exn -> string option) -> unit
 (** [Printexc.register_printer fn] registers [fn] as an exception
@@ -84,7 +84,7 @@ val register_printer: (exn -> string option) -> unit
     in the reverse order of their registrations, until a printer returns
     a [Some s] value (if no such printer exists, the runtime will use a
     generic printer).
- *)
+*)
 
 val print : _ BatInnerIO.output -> exn -> unit
-(** Print an exception.  The stdlib [print] function is now named [!pass].*)
+  (** Print an exception.  The stdlib [print] function is now named [!pass].*)

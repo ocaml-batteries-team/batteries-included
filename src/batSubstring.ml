@@ -36,9 +36,9 @@ let create len = String.make len '\000', 0, len
 let equal (s1,o1,l1) (s2,o2,l2) = 
   if l1 <> l2 then false
   else BatReturn.label (fun label ->
-    for i = 0 to l1-1 do
-      if s1.[i+o1] <> s1.[i+o2] then BatReturn.return label false
-    done; true)
+      for i = 0 to l1-1 do
+        if s1.[i+o1] <> s1.[i+o2] then BatReturn.return label false
+      done; true)
 (*$T equal
    equal (of_string "abc") (of_string "abc") = true
    equal (substring "aba" 0 1) (substring "aba" 2 1) = true
@@ -218,9 +218,9 @@ let split_at k (str, off, len) =
 
 let span (str1, off1, _len1) (str2, off2, len2) =
   if str1 != str2 then invalid_arg
-    "Substring.span: must be substrings of same parent";
+      "Substring.span: must be substrings of same parent";
   if off1 > off2 + len2 then invalid_arg
-    "Substring.span: first substring must not be to the right of the second";
+      "Substring.span: first substring must not be to the right of the second";
   (str1, off1, off2+len2-off1)
 
 let translate f (str,off,len) =
@@ -275,11 +275,11 @@ let split_on_char c (str, off, len) =
     if pos = off - 1 then
       (str, off, last_pos - off) :: acc
     else
-      if str.[pos] = c then
-        let pos1 = pos + 1 in
-        let sub_str = str,pos1,(last_pos - pos1) in
-        loop (sub_str :: acc) pos (pos - 1)
-      else loop acc last_pos (pos - 1)
+    if str.[pos] = c then
+      let pos1 = pos + 1 in
+      let sub_str = str,pos1,(last_pos - pos1) in
+      loop (sub_str :: acc) pos (pos - 1)
+    else loop acc last_pos (pos - 1)
   in
   loop [] (off+len) (off + len - 1)
 
@@ -292,10 +292,10 @@ let rec enum (str, off, len) =
   let last_element = off + len - 1 in
   let i = ref off in 
   BatEnum.make
-      ~next:(fun () -> 
-        if !i > last_element then raise BatEnum.No_more_elements
-        else str.[BatRef.post_incr i] )
-      ~count:(fun () -> len - !i)
-      ~clone:(fun () -> enum (str, !i, len - !i))
+    ~next:(fun () ->
+      if !i > last_element then raise BatEnum.No_more_elements
+      else str.[BatRef.post_incr i] )
+    ~count:(fun () -> len - !i)
+    ~clone:(fun () -> enum (str, !i, len - !i))
 
 let print oc ss = iter (fun c -> BatIO.write oc c) ss

@@ -145,11 +145,11 @@ module Tuple3 : sig
   val map : ('a -> 'd) -> ('b -> 'e) -> ('c -> 'f) -> 'a * 'b * 'c -> 'd * 'e * 'f
 
   val mapn : ('a -> 'b) -> ('a * 'a * 'a) -> ('b * 'b * 'b)
-    (** Like {!map} but specialized for tuples with elements of the
-        same type.
+  (** Like {!map} but specialized for tuples with elements of the
+      same type.
 
-        [mapn f] is equivalent to [map f f f].
-    *)
+      [mapn f] is equivalent to [map f f f].
+  *)
 
   val map1 : ('a -> 'd) -> ('a * 'b * 'c) -> ('d * 'b * 'c)
   val map2 : ('b -> 'd) -> ('a * 'b * 'c) -> ('a * 'd * 'c)
@@ -160,8 +160,8 @@ module Tuple3 : sig
 
   val enum : ('a * 'a * 'a) -> 'a BatEnum.t
   val of_enum : 'a BatEnum.t -> ('a * 'a * 'a)
-    (** @raise Failure if enum does not contain at least 3
-        elements. *)
+  (** @raise Failure if enum does not contain at least 3
+      elements. *)
 
   val print : ?first:string -> ?sep:string -> ?last:string
     -> ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> ('o BatIO.output -> 'c -> unit)
@@ -214,11 +214,11 @@ module Tuple4 : sig
   val map : ('a -> 'e) -> ('b -> 'f) -> ('c -> 'g) -> ('d -> 'h) -> 'a * 'b * 'c * 'd -> 'e * 'f * 'g * 'h
 
   val mapn : ('a -> 'b) -> ('a * 'a * 'a * 'a) -> ('b * 'b * 'b * 'b)
-    (** Like {!map} but specialized for tuples with elements of the
-        same type.
+  (** Like {!map} but specialized for tuples with elements of the
+      same type.
 
-        [mapn f] is equivalent to [map f f f f].
-    *)
+      [mapn f] is equivalent to [map f f f f].
+  *)
 
   val map1 : ('a -> 'e) -> ('a * 'b * 'c * 'd) -> ('e * 'b * 'c * 'd)
   val map2 : ('b -> 'e) -> ('a * 'b * 'c * 'd) -> ('a * 'e * 'c * 'd)
@@ -230,8 +230,8 @@ module Tuple4 : sig
 
   val enum : ('a * 'a * 'a * 'a) -> 'a BatEnum.t
   val of_enum : 'a BatEnum.t -> ('a * 'a * 'a * 'a)
-    (** @raise Failure if enum does not contain at least 4
-        elements. *)
+  (** @raise Failure if enum does not contain at least 4
+      elements. *)
 
   val print : ?first:string -> ?sep:string -> ?last:string
     -> ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> ('o BatIO.output -> 'c -> unit) -> ('o BatIO.output -> 'd -> unit)
@@ -302,11 +302,11 @@ module Tuple5 : sig
   val map : ('a -> 'f) -> ('b -> 'g) -> ('c -> 'h) -> ('d -> 'i) -> ('e -> 'j) -> 'a * 'b * 'c * 'd * 'e -> 'f * 'g * 'h * 'i * 'j
 
   val mapn : ('a -> 'b) -> ('a * 'a * 'a * 'a * 'a) -> ('b * 'b * 'b * 'b * 'b)
-    (** Like {!map} but specialized for tuples with elements of the
-        same type.
+  (** Like {!map} but specialized for tuples with elements of the
+      same type.
 
-        [mapn f] is equivalent to [map f f f f f].
-    *)
+      [mapn f] is equivalent to [map f f f f f].
+  *)
 
   val map1 : ('a -> 'f) -> ('a * 'b * 'c * 'd * 'e) -> ('f * 'b * 'c * 'd * 'e)
   val map2 : ('b -> 'f) -> ('a * 'b * 'c * 'd * 'e) -> ('a * 'f * 'c * 'd * 'e)
@@ -319,8 +319,8 @@ module Tuple5 : sig
 
   val enum : ('a * 'a * 'a * 'a * 'a) -> 'a BatEnum.t
   val of_enum : 'a BatEnum.t -> ('a * 'a * 'a * 'a * 'a)
-    (** @raise Failure if enum does not contain at least 5
-        elements. *)
+  (** @raise Failure if enum does not contain at least 5
+      elements. *)
 
   val print : ?first:string -> ?sep:string -> ?last:string
     -> ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> ('o BatIO.output -> 'c -> unit) -> ('o BatIO.output -> 'd -> unit) -> ('o BatIO.output -> 'e -> unit)

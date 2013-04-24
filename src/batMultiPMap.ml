@@ -56,11 +56,11 @@ let remove_all k t =
 let remove k d t =
   try
     let set = S.remove d (M.find k t.content) in
-      {(t)
-       with content =
-	  if   S.is_empty set then M.remove k t.content
-	  else M.add k set t.content;
-      }
+    {(t)
+     with content =
+            if   S.is_empty set then M.remove k t.content
+            else M.add k set t.content;
+    }
   with Not_found -> t
 
 let mem k d = M.mem k d.content
@@ -94,11 +94,11 @@ let modify_opt k f t =
   {t with content = M.modify_opt k f t.content}
 
 let enum t =
-    BatEnum.concat (BatEnum.map (fun (k,e) -> BatEnum.map (fun x -> (k,x)) (S.enum e)) (M.enum t.content))
+  BatEnum.concat (BatEnum.map (fun (k,e) -> BatEnum.map (fun x -> (k,x)) (S.enum e)) (M.enum t.content))
 
 let of_enum ?(keys=compare) ?(data=compare) e =
   let base = create keys data in
-    BatEnum.fold (fun acc (k,d) -> add k d acc) base e
+  BatEnum.fold (fun acc (k,d) -> add k d acc) base e
 
 let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") ?(kvsep=": ") print_k print_v out t =
   BatEnum.print ~first ~last ~sep (fun out (k, v) -> BatPrintf.fprintf out "%a%s%a" print_k k kvsep print_v v) out (enum t)

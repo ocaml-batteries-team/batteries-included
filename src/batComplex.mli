@@ -144,13 +144,13 @@ val ( * ) : t -> t -> t
 val ( / ) : t -> t -> t
 val ( ** ) : t -> t -> t
 (* Available only in `Compare` submodule
-val ( <> ) : t -> t -> bool
-val ( >= ) : t -> t -> bool
-val ( <= ) : t -> t -> bool
-val ( > ) : t -> t -> bool
-val ( < ) : t -> t -> bool
-val ( = ) : t -> t -> bool
- *)
+   val ( <> ) : t -> t -> bool
+   val ( >= ) : t -> t -> bool
+   val ( <= ) : t -> t -> bool
+   val ( > ) : t -> t -> bool
+   val ( < ) : t -> t -> bool
+   val ( = ) : t -> t -> bool
+*)
 val ( -- ): t -> t -> t BatEnum.t
 val ( --- ): t -> t -> t BatEnum.t
 

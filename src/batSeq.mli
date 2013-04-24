@@ -36,7 +36,7 @@
 *)
 
 type 'a t = unit -> 'a node
-  (** A sequence is a computation which returns a list-like node *)
+(** A sequence is a computation which returns a list-like node *)
 
 and 'a node =
   | Nil
@@ -45,35 +45,35 @@ and 'a node =
 include BatInterfaces.Mappable with type 'a mappable = 'a t
 
 val enum : 'a t -> 'a BatEnum.t
-  (** [enum s] returns the enumeration of all element of [s].
+(** [enum s] returns the enumeration of all element of [s].
 
-      Since enumerations are consumable and sequence are not, it is
-      not possible to have the inverse operations, i.e. [of_enum] *)
+    Since enumerations are consumable and sequence are not, it is
+    not possible to have the inverse operations, i.e. [of_enum] *)
 
 (** {6 Base operations} *)
 
 val length : 'a t -> int
-  (** Return the number of elements of the given sequence. This may
-      never return if the sequence is infinite. *)
+(** Return the number of elements of the given sequence. This may
+    never return if the sequence is infinite. *)
 
 val hd : 'a t -> 'a
-  (** Returns the first element of the sequence or raise [Invalid_argument] if
-      the sequence is empty. *)
+(** Returns the first element of the sequence or raise [Invalid_argument] if
+    the sequence is empty. *)
 
 val tl : 'a t -> 'a t
-  (** Returns the sequence without its first elements or raise
-      [Invalid_argument] if the sequence is empty. *)
+(** Returns the sequence without its first elements or raise
+    [Invalid_argument] if the sequence is empty. *)
 
 val is_empty : 'a t -> bool
-  (** [is_empty e] returns true if [e] does not contains any
-      element. *)
+(** [is_empty e] returns true if [e] does not contains any
+    element. *)
 
 val first : 'a t -> 'a
-  (** Same as {!hd} *)
+(** Same as {!hd} *)
 
 val last : 'a t -> 'a
-  (** Returns the last element of the sequence, or raise [Invalid_argument] if
-      the sequence is empty. *)
+(** Returns the last element of the sequence, or raise [Invalid_argument] if
+    the sequence is empty. *)
 
 val at : 'a t -> int -> 'a
 (** [at l n] returns the element at index [n] (starting from [0]) in
@@ -85,41 +85,41 @@ val append : 'a t -> 'a t -> 'a t
     elements of [s1] then all elements of [s2]. *)
 
 val concat : 'a t t -> 'a t
-  (** [concat s] returns the sequence which returns all the elements
-      of all the elements of [s], in the same order. *)
+(** [concat s] returns the sequence which returns all the elements
+    of all the elements of [s], in the same order. *)
 
 val flatten : 'a t t -> 'a t
-  (** Same as {!concat}. *)
+(** Same as {!concat}. *)
 
 (** {6 Constructors} *)
 
 val nil : 'a t
-  (** [nil = fun () -> Nil] *)
+(** [nil = fun () -> Nil] *)
 
 val cons : 'a -> 'a t -> 'a t
-  (** [cons e s = fun () -> Cons(e, s)] *)
+(** [cons e s = fun () -> Cons(e, s)] *)
 
 val make : int -> 'a -> 'a t
-  (** [make n e] returns the sequence of length [n] where all elements
-      are [e] *)
+(** [make n e] returns the sequence of length [n] where all elements
+    are [e] *)
 
 val init : int -> (int -> 'a) -> 'a t
-  (** [init n f] returns the sequence returning the results of [f 0],
-      [f 1].... [f (n-1)]. @raise Invalid_argument if [n < 0]. *)
+(** [init n f] returns the sequence returning the results of [f 0],
+    [f 1].... [f (n-1)]. @raise Invalid_argument if [n < 0]. *)
 
 (** {6 Iterators} *)
 
 val iter : ('a -> unit) -> 'a t -> unit
-  (** [iter f s] applies [f] to all the elements of the sequence. Eager. *)
+(** [iter f s] applies [f] to all the elements of the sequence. Eager. *)
 
 val map : ('a -> 'b) -> 'a t -> 'b t
-  (** [map f s] returns the sequence where elements are elements of
-      [s] mapped with [f]. Lazy. *)
+(** [map f s] returns the sequence where elements are elements of
+    [s] mapped with [f]. Lazy. *)
 
 val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
-  (** [fold_left f a (cons b0 (... bn))] is [f (... (f (f a b0) b1) ...)
-      bn]. Tail-recursive, eager.
-  *)
+(** [fold_left f a (cons b0 (... bn))] is [f (... (f (f a b0) b1) ...)
+    bn]. Tail-recursive, eager.
+*)
 
 val fold_right : ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
 (** [fold_right f (cons a0 (cons a1 (cons a2 ...))) b] is [f a0 (f
@@ -133,12 +133,12 @@ val reduce : ('a -> 'a -> 'a) -> 'a t -> 'a
     @raise Invalid_argument on empty sequences. *)
 
 val max : 'a t -> 'a
-  (** [max s] returns the largest value in [s] as judged by
-      [Pervasives.compare] *)
+(** [max s] returns the largest value in [s] as judged by
+    [Pervasives.compare] *)
 
 val min : 'a t -> 'a
-  (** [min s] returns the smallest value in [s] as judged by
-      [Pervasives.compare] *)
+(** [min s] returns the smallest value in [s] as judged by
+    [Pervasives.compare] *)
 
 (** {6 Sequence scanning}
 
@@ -172,14 +172,14 @@ val mem : 'a -> 'a t -> bool
 (** {6 Sequence searching} *)
 
 val find : ('a -> bool) -> 'a t -> 'a option
-  (** [find p s] returns the first element of [s] such as [p e]
-      returns [true], if any. Eager, shortcut.
-  *)
+(** [find p s] returns the first element of [s] such as [p e]
+    returns [true], if any. Eager, shortcut.
+*)
 
 val find_map : ('a -> 'b option) -> 'a t -> 'b option
-  (** [find_map p s] finds the first element of [s] for which [p e]
-      returns [Some r], if any. Eager, short-cut.
-  *)
+(** [find_map p s] finds the first element of [s] for which [p e]
+    returns [Some r], if any. Eager, short-cut.
+*)
 
 val filter : ('a -> bool) -> 'a t -> 'a t
 (** [filter p s] returns the sequence of elements of [s] satisfying
@@ -210,16 +210,16 @@ val assoc : 'a -> ('a * 'b) t -> 'b option
 (** {6 Sequence transformations} *)
 
 val take : int -> 'a t -> 'a t
-  (** [take n s] returns up to the [n] first elements from sequence
-      [s], if available. Lazy. *)
+(** [take n s] returns up to the [n] first elements from sequence
+    [s], if available. Lazy. *)
 
 val drop : int -> 'a t -> 'a t
-  (** [drop n s] returns [s] without the first [n] elements, or the
-      empty sequence if [s] have less than [n] elements. Lazy. *)
+(** [drop n s] returns [s] without the first [n] elements, or the
+    empty sequence if [s] have less than [n] elements. Lazy. *)
 
 val take_while : ('a -> bool) -> 'a t -> 'a t
-  (** [take_while f s] returns the first elements of sequence [s]
-      which satisfy the predicate [f]. Lazy. *)
+(** [take_while f s] returns the first elements of sequence [s]
+    which satisfy the predicate [f]. Lazy. *)
 
 val drop_while : ('a -> bool) -> 'a t -> 'a t
 (** [drop_while f s] returns the sequence [s] with the first
@@ -228,17 +228,17 @@ val drop_while : ('a -> bool) -> 'a t -> 'a t
 (** {6 Sequence of pairs} *)
 
 val split : ('a * 'b) t -> 'a t * 'b t
-  (** [split s = (map fst s, map snd s)]. Lazy. *)
+(** [split s = (map fst s, map snd s)]. Lazy. *)
 
 val combine : 'a t -> 'b t -> ('a * 'b) t
-  (** Transform a pair of sequences into a sequence of pairs. Lazy.
+(** Transform a pair of sequences into a sequence of pairs. Lazy.
 
-      @raise Invalid_argument if given sequences of different length. *)
+    @raise Invalid_argument if given sequences of different length. *)
 
 (** {6 Printing} *)
 
 val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
-  (**Print the contents of a sequence*)
+(**Print the contents of a sequence*)
 
 module Infix : sig
   (** Infix operators matching those provided by {!BatEnum.Infix} *)

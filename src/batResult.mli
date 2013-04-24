@@ -79,7 +79,7 @@ module Monad : sig
       [bind r f] proceeds as [f x] if [r] is [Ok x], or returns [r] if
       [r] is an error.
       @since 2.0
-*)
+  *)
   val bind:    ('a, 'b) t -> ('a -> ('c, 'b) t) -> ('c, 'b) t
 
   (** as [bind] *)

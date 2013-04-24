@@ -23,16 +23,16 @@
 
 (** 64-bit integers.
 
-   This module provides operations on the type [int64]
-   of signed 64-bit integers.  Unlike the built-in [int] type,
-   the type [int64] is guaranteed to be exactly 64-bit wide on all
-   platforms.  All arithmetic operations over [int64] are taken
-   modulo 2{^64}.
+    This module provides operations on the type [int64]
+    of signed 64-bit integers.  Unlike the built-in [int] type,
+    the type [int64] is guaranteed to be exactly 64-bit wide on all
+    platforms.  All arithmetic operations over [int64] are taken
+    modulo 2{^64}.
 
-   Performance notice: values of type [int64] occupy more memory
-   space than values of type [int], and arithmetic operations on
-   [int64] are generally slower than those on [int].  Use [int64]
-   only when the application requires exact 64-bit arithmetic.
+    Performance notice: values of type [int64] occupy more memory
+    space than values of type [int], and arithmetic operations on
+    [int64] are generally slower than those on [int].  Use [int64]
+    only when the application requires exact 64-bit arithmetic.
 
     Any integer literal followed by [L] is taken to be an [int64].
     For instance, [1L] is {!Int64.one}.
@@ -261,4 +261,4 @@ val print: 'a BatInnerIO.output -> t -> unit
 (** prints as decimal string *)
 
 val print_hex: 'a BatInnerIO.output -> t -> unit
-(** prints as hex string *)
+  (** prints as hex string *)

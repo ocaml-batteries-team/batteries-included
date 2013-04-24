@@ -231,7 +231,7 @@ sig
   (** [iter_right] is equivalent to [List.iter o List.rev].
 
       O(n).
- *)
+  *)
 
   val compare : ('a -> 'a -> int) -> ('a, 'm) fg -> ('a, 'm) fg -> int
   (** [compare cmp t1 t2] compares the two sequences lexicographically.
@@ -339,7 +339,7 @@ end
 
 module Generic : sig
   include S
-  with type ('wrapped_type, 'a, 'm) wrap = monoid:'m monoid -> measure:('a -> 'm) -> 'wrapped_type
+    with type ('wrapped_type, 'a, 'm) wrap = monoid:'m monoid -> measure:('a -> 'm) -> 'wrapped_type
 
   val lookup : (('m -> bool) -> ('a, 'm) fg -> 'a, 'a, 'm) wrap
   (** [lookup p t], when [p] is monotonic, returns the first element
@@ -363,22 +363,22 @@ module Generic : sig
   *)
 
   val split : (('m -> bool) -> ('a, 'm) fg -> ('a, 'm) fg * ('a, 'm) fg, 'a, 'm) wrap
-  (**
-      [split p t], when [p] is monotonic, returns [(t1, t2)] where
-      [t1] is the longest prefix of [t] whose measure does not satifies
-      [p], and [t2] is the rest of [t].
-      @raise Empty is there is no such element
+    (**
+        [split p t], when [p] is monotonic, returns [(t1, t2)] where
+        [t1] is the longest prefix of [t] whose measure does not satifies
+        [p], and [t2] is the rest of [t].
+        @raise Empty is there is no such element
 
-      O(log(n)).
+        O(log(n)).
 
-      When [p] is not monotonic, take a look at the code or at the paper
-      cited above and see if you understand something.
-  *)
+        When [p] is not monotonic, take a look at the code or at the paper
+        cited above and see if you understand something.
+    *)
 end
 
 type 'a t
 include S with type ('wrapped_type, 'a, 'm) wrap = 'wrapped_type
-          and type ('a, 'm) fg = 'a t
+           and type ('a, 'm) fg = 'a t
 
 val size : 'a t -> int
 (** [size t] returns the number of elements in the sequence.
@@ -419,4 +419,4 @@ val update : 'a t -> int -> ('a -> 'a) -> 'a t
 val of_list_for_test : 'a list -> 'a t
 val verify_measure : 'a t -> 'a t
 val invariants : _ t -> unit
-(**/**)
+  (**/**)

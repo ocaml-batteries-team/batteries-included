@@ -41,7 +41,7 @@ exception Invalid_table
 type encoding_table = char array
 
 (** A decoding table maps chars 0..255 to the corresponding 0..63 value
- or -1 if the char is not accepted. *)
+    or -1 if the char is not accepted. *)
 type decoding_table = int array
 
 (** Encode a string into Base64. *)

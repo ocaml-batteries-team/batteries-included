@@ -52,25 +52,25 @@ include BatInterfaces.Mappable with type 'a mappable = 'a t
 
 exception Failure
 (** Raised by parsers when none of the first components of the stream
-   patterns is accepted. *)
+    patterns is accepted. *)
 
 exception Error of string
 (** Raised by parsers when the first component of a stream pattern is
-   accepted, but one of the following components is rejected. *)
+    accepted, but one of the following components is rejected. *)
 
 
 (** {6 Stream builders} *)
 
 val from : (int -> 'a option) -> 'a t
 (** [Stream.from f] returns a stream built from the function [f].
-   To create a new stream element, the function [f] is called with
-   the current stream count. The user function [f] must return either
-   [Some <value>] for a value or [None] to specify the end of the
-   stream. *)
+    To create a new stream element, the function [f] is called with
+    the current stream count. The user function [f] must return either
+    [Some <value>] for a value or [None] to specify the end of the
+    stream. *)
 
 val of_list : 'a list -> 'a t
 (** Return the stream holding the elements of the list in the same
-   order. *)
+    order. *)
 
 val of_string : string -> char t
 (** Return the stream of the characters of the string parameter. *)
@@ -80,55 +80,55 @@ val of_channel : in_channel -> char t
 
 (** {6 Other Stream builders}
 
-   Warning: these functions create streams with fast access; it is illegal
-   to mix them with streams built with [[< >]]; would raise [Failure]
-   when accessing such mixed streams.
+    Warning: these functions create streams with fast access; it is illegal
+    to mix them with streams built with [[< >]]; would raise [Failure]
+    when accessing such mixed streams.
 *)
 
 val of_fun : (unit -> 'a) -> 'a t
 (** [Stream.of_fun f] returns a stream built from the function [f].
-   To create a new stream element, the function [f] is called with
-   the current stream count. The user function [f] must return either
-   [Some <value>] for a value or [None] to specify the end of the
-   stream. *)
+    To create a new stream element, the function [f] is called with
+    the current stream count. The user function [f] must return either
+    [Some <value>] for a value or [None] to specify the end of the
+    stream. *)
 
 
 (** {6 Stream iterator} *)
 
 val iter : ('a -> unit) -> 'a t -> unit
 (** [Stream.iter f s] scans the whole stream s, applying function [f]
-   in turn to each stream element encountered. *)
+    in turn to each stream element encountered. *)
 
 val foldl : ('a -> 'b -> 'a * bool option) -> 'a -> 'b t -> 'a
-  (** [foldl f init stream] is a lazy fold_left. [f accu elt] should return
-      [(new_accu, state)] where [new_accu] is normal accumulation result, and
-      [state] is a flag representing whether the computation should continue
-      and whether the last operation is valid: [None] means continue, [Some b]
-      means stop where [b = true] means the last addition is still valid and [b
-      = false] means the last addition is invalid and should be revert. *)
+(** [foldl f init stream] is a lazy fold_left. [f accu elt] should return
+    [(new_accu, state)] where [new_accu] is normal accumulation result, and
+    [state] is a flag representing whether the computation should continue
+    and whether the last operation is valid: [None] means continue, [Some b]
+    means stop where [b = true] means the last addition is still valid and [b
+    = false] means the last addition is invalid and should be revert. *)
 
 val foldr : ('a -> 'b lazy_t -> 'b) -> 'b -> 'a t -> 'b
-  (** [foldr f init stream] is a lazy fold_right. Unlike the normal fold_right,
-      the accumulation parameter of [f elt accu] is lazy, hence it can decide
-      not to force the evaluation of [accu] if the current element [elt] can
-      determin the result by itself. *)
+(** [foldr f init stream] is a lazy fold_right. Unlike the normal fold_right,
+    the accumulation parameter of [f elt accu] is lazy, hence it can decide
+    not to force the evaluation of [accu] if the current element [elt] can
+    determin the result by itself. *)
 
 val fold : ('a -> 'a -> 'a * bool option) -> 'a t -> 'a
-  (** [fold] is [foldl] without initialization value, where the first
-      element of stream is taken as [init]. It raises [End_of_stream] exception
-      when the input stream is empty. *)
+(** [fold] is [foldl] without initialization value, where the first
+    element of stream is taken as [init]. It raises [End_of_stream] exception
+    when the input stream is empty. *)
 
 
 val filter : ('a -> bool) -> 'a t -> 'a t
-  (** [filter test stream] picks all the elements satisfying [test] from [stream]
-      and return the results in the same order as a stream. *)
+(** [filter test stream] picks all the elements satisfying [test] from [stream]
+    and return the results in the same order as a stream. *)
 
 
 (** {6 Predefined parsers} *)
 
 val next : 'a t -> 'a
 (** Return the first element of the stream and remove it from the
-   stream. @raise Stream.Failure if the stream is empty. *)
+    stream. @raise Stream.Failure if the stream is empty. *)
 
 val empty : 'a t -> unit
 (** Return [()] if the stream is empty, else raise [Stream.Failure]. *)
@@ -138,20 +138,20 @@ val empty : 'a t -> unit
 
 val peek : 'a t -> 'a option
 (** Return [Some] of "the first element" of the stream, or [None] if
-   the stream is empty. *)
+    the stream is empty. *)
 
 val junk : 'a t -> unit
 (** Remove the first element of the stream, possibly unfreezing
-   it before. *)
+    it before. *)
 
 val count : 'a t -> int
 (** Return the current count of the stream elements, i.e. the number
-   of the stream elements discarded. *)
+    of the stream elements discarded. *)
 
 val npeek : int -> 'a t -> 'a list
 (** [npeek n] returns the list of the [n] first elements of
-   the stream, or all its remaining elements if less than [n]
-   elements are available. *)
+    the stream, or all its remaining elements if less than [n]
+    elements are available. *)
 
 
 (** {6 Conversion functions} *)
@@ -194,14 +194,14 @@ val on_output:   'a BatIO.output-> char t -> unit
 *)
 
 val map : ('a -> 'b) -> 'a t -> 'b t
-  (** [map f stream] applies [f] in turn to elements from [stream] and return the
-      results as a stream in the same order. *)
+(** [map f stream] applies [f] in turn to elements from [stream] and return the
+    results as a stream in the same order. *)
 
 val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
-  (** [map2 f streama streamb] applies [f] in turn to elements of corresponding
-      positions from [streama] and [streamb]. The results are constructed in the
-      same order as a stream. If one stream is short, excess elements of the longer
-      stream are ignored. *)
+(** [map2 f streama streamb] applies [f] in turn to elements of corresponding
+    positions from [streama] and [streamb]. The results are constructed in the
+    same order as a stream. If one stream is short, excess elements of the longer
+    stream are ignored. *)
 
 val scanl : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a t
 (** [scanl f init stream] returns a stream of successive reduced
@@ -220,20 +220,20 @@ val concat : 'a t t -> 'a t
 (** concatenate a stream of streams *)
 
 val take : int -> 'a t -> 'a t
-  (** [take n stream] returns the prefix of [stream] of length [n], or [stream]
-      itself if [n] is greater than the length of [stream] *)
+(** [take n stream] returns the prefix of [stream] of length [n], or [stream]
+    itself if [n] is greater than the length of [stream] *)
 
 val drop : int -> 'a t -> 'a t
-  (** [drop n stream] returns the suffix of [stream] after the first [n] elements,
-      or a empty stream if [n] is greater than the length of [stream] *)
+(** [drop n stream] returns the suffix of [stream] after the first [n] elements,
+    or a empty stream if [n] is greater than the length of [stream] *)
 
 val take_while : ('a -> bool) -> 'a t -> 'a t
-  (** [take_while test stream] returns the longest (possibly empty) prefix of
-      [stream] of elements that satisfy [test]. *)
+(** [take_while test stream] returns the longest (possibly empty) prefix of
+    [stream] of elements that satisfy [test]. *)
 
 val drop_while : ('a -> bool) -> 'a t -> 'a t
-  (** [drop_while test stream] returns the remaining suffix of [take_while test
-      stream]. *)
+(** [drop_while test stream] returns the remaining suffix of [take_while test
+    stream]. *)
 
 (** {6 Streams pair arithmetic}
 
@@ -241,13 +241,13 @@ val drop_while : ('a -> bool) -> 'a t -> 'a t
 *)
 
 val dup : 'a t -> 'a t * 'a t
-  (** [dup stream] returns a pair of streams which are identical to [stream]. Note
-      that stream is a destructive data structure, the point of [dup] is to
-      return two streams can be used independently.
+(** [dup stream] returns a pair of streams which are identical to [stream]. Note
+    that stream is a destructive data structure, the point of [dup] is to
+    return two streams can be used independently.
 
-      NOT IMPLEMENTED CORRECTLY - WILL RAISE Failure UNTIL CORRECT
-      IMPLEMENTATION FOUND
-   *)
+    NOT IMPLEMENTED CORRECTLY - WILL RAISE Failure UNTIL CORRECT
+    IMPLEMENTATION FOUND
+*)
 
 val comb : 'a t * 'b t -> ('a * 'b) t
 (** [comb] transform a pair of stream into a stream of pairs of corresponding
@@ -255,23 +255,23 @@ val comb : 'a t * 'b t -> ('a * 'b) t
     ignored. *)
 
 val split : ('a * 'b) t -> 'a t * 'b t
-  (** [split] is the opposite of [comb] *)
+(** [split] is the opposite of [comb] *)
 
 val merge : (bool -> 'a -> bool) -> 'a t * 'a t -> 'a t
-  (** [merge test (streama, streamb)] merge the elements from [streama] and
-      [streamb] into a single stream. The [bool] type here represents the id of the
-      two input streams where [true] is the first and [false] represents the
-      second. The [test] function is applied to each element of the output stream
-      together with the id of the input stream from which it was extracted, to
-      decide which stream should the next element come from. The first element is
-      always taken from [streama]. When a stream runs out of elements, the merge
-      process will continue to take elements from the other stream until both
-      streams reach their ends. *)
+(** [merge test (streama, streamb)] merge the elements from [streama] and
+    [streamb] into a single stream. The [bool] type here represents the id of the
+    two input streams where [true] is the first and [false] represents the
+    second. The [test] function is applied to each element of the output stream
+    together with the id of the input stream from which it was extracted, to
+    decide which stream should the next element come from. The first element is
+    always taken from [streama]. When a stream runs out of elements, the merge
+    process will continue to take elements from the other stream until both
+    streams reach their ends. *)
 
 val switch : ('a -> bool) -> 'a t -> 'a t * 'a t
-  (** [switch test stream] split [stream] into two streams, where the first stream have
-      all the elements satisfying [test], the second stream is opposite. The
-      order of elements in the source stream is preserved. *)
+(** [switch test stream] split [stream] into two streams, where the first stream have
+    all the elements satisfying [test], the second stream is opposite. The
+    order of elements in the source stream is preserved. *)
 
 
 (** {6 Stream arithmetic}
@@ -279,30 +279,30 @@ val switch : ('a -> bool) -> 'a t -> 'a t * 'a t
     All the functions in this part are lazy.*)
 
 val cons : 'a -> 'a t -> 'a t
-  (** [cons x stream] equals [[<'x; stream>]]. *)
+(** [cons x stream] equals [[<'x; stream>]]. *)
 
 val apnd : 'a t -> 'a t -> 'a t
-  (** [apnd fla flb] equals [[<fla;flb>]]. *)
+(** [apnd fla flb] equals [[<fla;flb>]]. *)
 
 val is_empty : 'a t -> bool
-  (** [is_empty stream] tests whether [stream] is empty. But note that it forces
-      the evaluation of the head element if any. *)
+(** [is_empty stream] tests whether [stream] is empty. But note that it forces
+    the evaluation of the head element if any. *)
 
 (** {6 Predefined parsers} *)
 
 val next : 'a t -> 'a
 (** Return the first element of the stream and remove it from the
-   stream. @raise Stream.Failure if the stream is empty. *)
+    stream. @raise Stream.Failure if the stream is empty. *)
 
 
 
 module StreamLabels : sig
   (** {b Note} This module is provided essentially for
-   backwards-compatibility.  If you feel like using [Stream.t], please
-   take a look at [BatEnum] or [LazyList] and [GenParser].
+      backwards-compatibility.  If you feel like using [Stream.t], please
+      take a look at [BatEnum] or [LazyList] and [GenParser].
 
-   See the complete [Stream] module for the function documentations.
-   *)
+      See the complete [Stream] module for the function documentations.
+  *)
 
 
   val iter : f:('a -> unit) -> 'a t -> unit
@@ -339,4 +339,4 @@ val slazy : (unit -> 'a t) -> 'a t
 
 val dump : ('a -> unit) -> 'a t -> unit
 
-(**/**)
+  (**/**)

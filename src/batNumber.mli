@@ -60,7 +60,7 @@ exception NaN
    computation.
 *)
 type 'a numeric =
-{
+  {
     zero : 'a;
     one : 'a;
     neg : 'a -> 'a;
@@ -80,7 +80,7 @@ type 'a numeric =
     to_string : 'a -> string;
     of_float: float -> 'a;
     to_float: 'a -> float;
-}
+  }
 
 (**
    The infix operators available with any type of numbers
@@ -124,7 +124,7 @@ end
 
 (**
    The full set of operations of a type of numbers
- *)
+*)
 module type Numeric =
 sig
   type t
@@ -199,7 +199,7 @@ sig
   val zero : t
   val one  : t
 
-    (** {6 Arithmetic operations}
+  (** {6 Arithmetic operations}
 
 	Depending on the implementation, some of these operations
 	{i may} raise exceptions at run-time to represent over/under-flows.*)
@@ -215,15 +215,15 @@ sig
   val pow : t -> t -> t
   val compare : t -> t -> int
 
-    (** {6 Conversions} *)
+  (** {6 Conversions} *)
   val of_int : int -> t
-    (** Convert this number to the closest integer.*)
+  (** Convert this number to the closest integer.*)
 
   val to_int : t -> int
-    (** Convert an integer to the closest element of set [t].*)
+  (** Convert an integer to the closest element of set [t].*)
 
   val of_string : string -> t
-    (** Convert the representation of a number to the corresponding
+  (** Convert the representation of a number to the corresponding
 	number. @raise Invalid_argument if the string does not represent
 	a valid number of type [t]*)
 

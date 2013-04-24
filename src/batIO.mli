@@ -62,7 +62,7 @@
     faster and induce less wear on the hardware. Occasionally, you
     may wish to force all waiting operations to take place {e now}.
     For this purpose, you may either function {!flush} or function
-I    {!flush_out}.
+    I    {!flush_out}.
 
     Once you have finished using your {!type: input} or your {!type:
     output}, chances are that you will want to close it. This is not a
@@ -175,47 +175,47 @@ val read : input -> char
 
 val nread : input -> int -> string
 (** [nread i n] reads a string of size up to [n] from an input.
-  The function will raise [No_more_input] if no input is available.
-  It will raise [Invalid_argument] if [n] < 0.
+    The function will raise [No_more_input] if no input is available.
+    It will raise [Invalid_argument] if [n] < 0.
 
     Example: [let read_md5 ch = nread ch 32]
 *)
 
 val really_nread : input -> int -> string
 (** [really_nread i n] reads a string of exactly [n] characters
-  from the input. @raise No_more_input if at least [n] characters are
-  not available. @raise Invalid_argument if [n] < 0.
+    from the input. @raise No_more_input if at least [n] characters are
+    not available. @raise Invalid_argument if [n] < 0.
 
     Example: [let read_md5 ch = really_nread ch 32]
 *)
 
 val input : input -> string -> int -> int -> int
-  (** [input i s p l] reads up to [l] characters from the given input,
-      storing them in string [s], starting at character number [p]. It
-      returns the actual number of characters read (which may be 0) or
-      raise [No_more_input] if no character can be read. It will raise
-      [Invalid_argument] if [p] and [l] do not designate a valid
-      substring of [s].
+(** [input i s p l] reads up to [l] characters from the given input,
+    storing them in string [s], starting at character number [p]. It
+    returns the actual number of characters read (which may be 0) or
+    raise [No_more_input] if no character can be read. It will raise
+    [Invalid_argument] if [p] and [l] do not designate a valid
+    substring of [s].
 
-      Example: [let map_ch f ?(block_size=100) =
-      let b = String.create block_size in
-      try while true do
-        let l = input ch b 0 block_size in
-        f b 0 l;
-      done with No_more_input -> ()]
-  *)
+    Example: [let map_ch f ?(block_size=100) =
+    let b = String.create block_size in
+    try while true do
+      let l = input ch b 0 block_size in
+      f b 0 l;
+    done with No_more_input -> ()]
+*)
 
 val really_input : input -> string -> int -> int -> int
-  (** [really_input i s p l] reads exactly [l] characters from the
-      given input, storing them in the string [s], starting at
-      position [p]. For consistency with {!BatIO.input} it returns
-      [l]. @raise No_more_input if at [l] characters are not
-      available. @raise Invalid_argument if [p] and [l] do not
-      designate a valid substring of [s].
+(** [really_input i s p l] reads exactly [l] characters from the
+    given input, storing them in the string [s], starting at
+    position [p]. For consistency with {!BatIO.input} it returns
+    [l]. @raise No_more_input if at [l] characters are not
+    available. @raise Invalid_argument if [p] and [l] do not
+    designate a valid substring of [s].
 
-      Example: [let _ = really_input stdin b 0 3]
+    Example: [let _ = really_input stdin b 0 3]
 
-  *)
+*)
 
 val close_in : input -> unit
 (** Close the input. It can no longer be read from.
@@ -237,8 +237,8 @@ val nwrite : (string, _) printer
 
 val output : 'a output -> string -> int -> int -> int
 (** [output o s p l] writes up to [l] characters from string [s], starting at
-  offset [p]. It returns the number of characters written. It will raise
-  [Invalid_argument] if [p] and [l] do not designate a valid substring of [s].
+    offset [p]. It returns the number of characters written. It will raise
+    [Invalid_argument] if [p] and [l] do not designate a valid substring of [s].
 
     Example: [let str = "Foo Bar Baz" in let written = output stdout str 2 4;]
 
@@ -247,9 +247,9 @@ val output : 'a output -> string -> int -> int -> int
 
 val really_output : 'a output -> string -> int -> int -> int
 (** [really_output o s p l] writes exactly [l] characters from string [s] onto
-  the the output, starting with the character at offset [p]. For consistency with
-  {!BatIO.output} it returns [l]. @raise Invalid_argument if [p] and [l] do not
-  designate a valid substring of [s].
+    the the output, starting with the character at offset [p]. For consistency with
+    {!BatIO.output} it returns [l]. @raise Invalid_argument if [p] and [l] do not
+    designate a valid substring of [s].
 
     This function is useful for networking situations where the output
     buffer might fill resulting in not the entire substring being
@@ -258,11 +258,11 @@ val really_output : 'a output -> string -> int -> int -> int
 *)
 
 val flush : 'a output -> unit
-  (** Flush an output.
+(** Flush an output.
 
-      If previous write operations have caused errors, this may trigger an exception.
+    If previous write operations have caused errors, this may trigger an exception.
 
-      Example: [flush stdout;]
+    Example: [flush stdout;]
 *)
 
 val flush_all : unit -> unit
@@ -317,7 +317,7 @@ val input_string : string -> input
 
 val output_string : unit -> string output
 (** Create an output that will write into a string in an efficient way.
-  When closed, the output returns all the data written into it. *)
+    When closed, the output returns all the data written into it. *)
 
 val input_enum : char BatEnum.t -> input
 (** Create an input that will read from an [enum]. *)
@@ -331,19 +331,19 @@ val combine : ('a output * 'b output) -> ('a * 'b) output
     writing to [c] will actually write to both [a] and [b] *)
 
 val tab_out : ?tab:char -> int -> 'a output -> unit output
-  (** Create an output shifted to the right by a number of spaces
-      (or other character as specified by [tab]).
+(** Create an output shifted to the right by a number of spaces
+    (or other character as specified by [tab]).
 
-      [tab_out n out] produces a new output for writing into [out], in
-      which every new line starts with [n] spaces.
-      @raise Invalid_argument if [n] < 0.
+    [tab_out n out] produces a new output for writing into [out], in
+    which every new line starts with [n] spaces.
+    @raise Invalid_argument if [n] < 0.
 
-      Closing [tab_out n out] does not close [out]. Rather,
-      closing [out] closes [tab_out n out].
-  *)
+    Closing [tab_out n out] does not close [out]. Rather,
+    closing [out] closes [tab_out n out].
+*)
 
 (*val repeat: int -> 'a output -> unit output
-(** [repeat n out] create an output in which every character or string is repeated
+  (** [repeat n out] create an output in which every character or string is repeated
     [n] times to [out].*)*)
 
 (** {6 Utilities} *)
@@ -364,20 +364,20 @@ val copy : ?buffer:int -> input -> _ output -> unit
 *)
 
 val pos_in : input -> input * (unit -> int)
-  (** Create an input that provide a count function of the number of bytes
-      read from it. *)
+(** Create an input that provide a count function of the number of bytes
+    read from it. *)
 
 val progress_in : input -> (unit -> unit) -> input
-  (** [progress_in inp f] create an input that calls [f ()]
-      whenever some content is succesfully read from it.*)
+(** [progress_in inp f] create an input that calls [f ()]
+    whenever some content is succesfully read from it.*)
 
 val pos_out : 'a output -> unit output * (unit -> int)
 (** Create an output that provide a count function of the number of bytes
     written through it. *)
 
 val progress_out : 'a output -> (unit -> unit) -> unit output
-  (** [progress_out out f] create an output that calls [f ()]
-      whenever some content is succesfully written to it.*)
+(** [progress_out out f] create an output that calls [f ()]
+    whenever some content is succesfully written to it.*)
 
 external cast_output : 'a output -> unit output = "%identity"
 (** You can safely transform any output to an unit output in a safe way
@@ -409,8 +409,8 @@ val read_i16 : input -> int
 (** Read a signed 16-bit word. *)
 
 val read_i32 : input -> int
-  (** Read a signed 32-bit integer. @raise Overflow if the
-      read integer cannot be represented as an OCaml 31-bit integer. *)
+(** Read a signed 32-bit integer. @raise Overflow if the
+    read integer cannot be represented as an OCaml 31-bit integer. *)
 
 val read_real_i32 : input -> int32
 (** Read a signed 32-bit integer as an OCaml int32. *)
@@ -428,9 +428,9 @@ val read_string : input -> string
 (** Read a null-terminated string. *)
 
 val read_line : input -> string
-  (** Read a LF or CRLF terminated string. If the source runs out of
-      input before a LF is found, returns a string of the remaining input.
-      Will raise [No_more_input] only if no characters are available. *)
+(** Read a LF or CRLF terminated string. If the source runs out of
+    input before a LF is found, returns a string of the remaining input.
+    Will raise [No_more_input] only if no characters are available. *)
 
 val write_byte : (int, _) printer
 (** Write an unsigned 8-bit byte. *)
@@ -484,73 +484,73 @@ sig
 
   *)
 
-	val read_ui16 : input -> int
-	  (** Read an unsigned 16-bit word. *)
+  val read_ui16 : input -> int
+  (** Read an unsigned 16-bit word. *)
 
-	val read_i16 : input -> int
-	  (** Read a signed 16-bit word. *)
+  val read_i16 : input -> int
+  (** Read a signed 16-bit word. *)
 
-	val read_i32 : input -> int
-	  (** Read a signed 32-bit integer. @raise Overflow if the
+  val read_i32 : input -> int
+  (** Read a signed 32-bit integer. @raise Overflow if the
 	      read integer cannot be represented as an OCaml 31-bit integer. *)
 
-	val read_real_i32 : input -> int32
-	  (** Read a signed 32-bit integer as an OCaml int32. *)
+  val read_real_i32 : input -> int32
+  (** Read a signed 32-bit integer as an OCaml int32. *)
 
-	val read_i64 : input -> int64
-	  (** Read a signed 64-bit integer as an OCaml int64. *)
+  val read_i64 : input -> int64
+  (** Read a signed 64-bit integer as an OCaml int64. *)
 
 
-	val read_double : input -> float
-	  (** Read an IEEE double precision floating point value. *)
+  val read_double : input -> float
+  (** Read an IEEE double precision floating point value. *)
 
-	val read_float: input -> float
-	  (** Read an IEEE single precision floating point value. *)
+  val read_float: input -> float
+  (** Read an IEEE single precision floating point value. *)
 
-	val write_ui16 : (int, _) printer
-	  (** Write an unsigned 16-bit word. *)
+  val write_ui16 : (int, _) printer
+  (** Write an unsigned 16-bit word. *)
 
-	val write_i16 : (int, _) printer
-	  (** Write a signed 16-bit word. *)
+  val write_i16 : (int, _) printer
+  (** Write a signed 16-bit word. *)
 
-	val write_i32 : (int, _) printer
-	  (** Write a signed 32-bit integer. *)
+  val write_i32 : (int, _) printer
+  (** Write a signed 32-bit integer. *)
 
-	val write_real_i32 : (int32, _) printer
-	  (** Write an OCaml int32. *)
+  val write_real_i32 : (int32, _) printer
+  (** Write an OCaml int32. *)
 
-	val write_i64 : (int64, _) printer
-	  (** Write an OCaml int64. *)
+  val write_i64 : (int64, _) printer
+  (** Write an OCaml int64. *)
 
-	val write_double : (float, _) printer
-	  (** Write an IEEE double precision floating point value. *)
+  val write_double : (float, _) printer
+  (** Write an IEEE double precision floating point value. *)
 
-	val write_float  : (float, _) printer
-	  (** Write an IEEE single precision floating point value. *)
+  val write_float  : (float, _) printer
+  (** Write an IEEE single precision floating point value. *)
 
-	val ui16s_of : input -> int BatEnum.t
-	  (** Read an enumeration of unsigned 16-bit words. *)
+  val ui16s_of : input -> int BatEnum.t
+  (** Read an enumeration of unsigned 16-bit words. *)
 
-	val i16s_of : input -> int BatEnum.t
-	  (** Read an enumartion of signed 16-bit words. *)
+  val i16s_of : input -> int BatEnum.t
+  (** Read an enumartion of signed 16-bit words. *)
 
-	val i32s_of : input -> int BatEnum.t
-	(** Read an enumeration of signed 32-bit integers.
+  val i32s_of : input -> int BatEnum.t
+  (** Read an enumeration of signed 32-bit integers.
 
 	    @raise Overflow if the read integer cannot be represented as an OCaml
 	    31-bit integer. *)
 
-	val real_i32s_of : input -> int32 BatEnum.t
-	(** Read an enumeration of signed 32-bit integers as OCaml [int32]s. *)
+  val real_i32s_of : input -> int32 BatEnum.t
+  (** Read an enumeration of signed 32-bit integers as OCaml [int32]s. *)
 
-	val i64s_of : input -> int64 BatEnum.t
-	  (** Read an enumeration of signed 64-bit integers as OCaml [int64]s. *)
+  val i64s_of : input -> int64 BatEnum.t
+  (** Read an enumeration of signed 64-bit integers as OCaml [int64]s. *)
 
-	val doubles_of : input -> float BatEnum.t
-	  (** Read an enumeration of IEEE double precision floating point values. *)
+  val doubles_of : input -> float BatEnum.t
+  (** Read an enumeration of IEEE double precision floating point values. *)
 
-	val floats_of : input -> float BatEnum.t
-	  (** Read an enumeration of IEEE single precision floating point values. *)
+  val floats_of : input -> float BatEnum.t
+      (** Read an enumeration of IEEE single precision floating point values. *)
 
 end
 
@@ -577,7 +577,7 @@ val read_bits : in_bits -> int -> int
 
 val write_bits : out_bits -> nbits:int -> int -> unit
 (** Write up to 31 bits represented as a value, raise Bits_error if nbits < 0
- or nbits > 31 or the value representation excess nbits. *)
+    or nbits > 31 or the value representation excess nbits. *)
 
 val flush_bits : out_bits -> unit
 (** Flush remaining unwritten bits, adding up to 7 bits which values 0. *)
@@ -625,15 +625,15 @@ val inherit_in:
   ?input:(string -> int -> int -> int) ->
   ?close:(unit -> unit) ->
   input -> input
-  (** Simplified and optimized version of {!wrap_in} which may be used
-      whenever only one input appears as dependency.
+(** Simplified and optimized version of {!wrap_in} which may be used
+    whenever only one input appears as dependency.
 
-      [inherit_in inp] will return an input identical to [inp].
-      [inherit_in ~read inp] will return an input identical to
-      [inp] except for method [read], etc.
+    [inherit_in inp] will return an input identical to [inp].
+    [inherit_in ~read inp] will return an input identical to
+    [inp] except for method [read], etc.
 
-      You do not need to close [inp] in [close].
-  *)
+    You do not need to close [inp] in [close].
+*)
 
 
 val create_out :
@@ -642,7 +642,7 @@ val create_out :
   flush:(unit -> unit) ->
   close:(unit -> 'a) ->
   'a output
-    (**
+(**
 	Fully create an output by giving all the needed functions.
 
 	@param write  Write one character to the output (see {!write}).
@@ -653,7 +653,7 @@ val create_out :
 
 	{b Note} Do {e not} use this function for creating an output which
 	writes to one or more underlying outputs. Rather, use {!wrap_out}.
-    *)
+*)
 
 val wrap_out :
   write:(char -> unit)         ->
@@ -774,28 +774,28 @@ val to_input_channel : input -> in_channel
 
 class in_channel : input ->
   object
-	method input : string -> int -> int -> int
-	method close_in : unit -> unit
+    method input : string -> int -> int -> int
+    method close_in : unit -> unit
   end
 
 class out_channel : 'a output ->
   object
-	method output : string -> int -> int -> int
-	method flush : unit -> unit
-	method close_out : unit -> unit
+    method output : string -> int -> int -> int
+    method flush : unit -> unit
+    method close_out : unit -> unit
   end
 
 class in_chars : input ->
   object
-	method get : unit -> char
-	method close_in : unit -> unit
+    method get : unit -> char
+    method close_in : unit -> unit
   end
 
 class out_chars : 'a output ->
   object
-	method put : char -> unit
-	method flush : unit -> unit
-	method close_out : unit -> unit
+    method put : char -> unit
+    method flush : unit -> unit
+    method close_out : unit -> unit
   end
 
 val from_in_channel : #in_channel -> input
@@ -819,7 +819,7 @@ val i16s_of : input -> int BatEnum.t
 
 val i32s_of : input -> int BatEnum.t
 (** Read an enumeration of signed 32-bit integers. @raise Overflow if the
-  read integer cannot be represented as an OCaml 31-bit integer. *)
+    read integer cannot be represented as an OCaml 31-bit integer. *)
 
 val real_i32s_of : input -> int32 BatEnum.t
 (** Read an enumeration of signed 32-bit integers as OCaml [int32]s. *)
@@ -904,13 +904,13 @@ val lock: BatConcurrent.lock ref
 *)
 
 val lock_factory: (unit -> BatConcurrent.lock) ref
-  (**
-     A factory used to create locks. This is used transparently by {!synchronize_in}
-     and {!synchronize_out}.
+(**
+   A factory used to create locks. This is used transparently by {!synchronize_in}
+   and {!synchronize_out}.
 
-     By default, this always returns {!BatConcurrent.nolock}. However,
-     if you're using a version of Batteries compiled in threaded mode,
-     this uses {!BatMutex}.  *)
+   By default, this always returns {!BatConcurrent.nolock}. However,
+   if you're using a version of Batteries compiled in threaded mode,
+   this uses {!BatMutex}.  *)
 
 val to_string : ('a, string) printer -> 'a -> string
 
@@ -940,17 +940,17 @@ module Incubator : sig
       ?sep:string ->
       ?indent:int ->
       (Format.formatter -> 'a -> 'b) -> Format.formatter -> 'a array -> unit
-    (** Print the contents of an array, with [first] preceeding the first item
-        (default: ["\[|"]), [last] following the last item (default: ["|\]"])
-        and [sep] separating items (default: ["; "]). A printing function must
-        be provided to print the items in the array. The [flush] parameter
-        (default: [false]) should be set to [true] for the outer-most printing
-        call.  Setting inner calls to [true] - for example, for nested values -
-        prevent indentation from working properly.
+      (** Print the contents of an array, with [first] preceeding the first item
+          (default: ["\[|"]), [last] following the last item (default: ["|\]"])
+          and [sep] separating items (default: ["; "]). A printing function must
+          be provided to print the items in the array. The [flush] parameter
+          (default: [false]) should be set to [true] for the outer-most printing
+          call.  Setting inner calls to [true] - for example, for nested values -
+          prevent indentation from working properly.
 
-        Example:
-          [pp ~flush:true Format.pp_print_int Format.std_formatter \[|1; 2; 3|\]]
-    *)
+          Example:
+            [pp ~flush:true Format.pp_print_int Format.std_formatter \[|1; 2; 3|\]]
+      *)
   end
 
   module Enum : sig
@@ -961,16 +961,16 @@ module Incubator : sig
       ?sep:string ->
       ?indent:int ->
       (Format.formatter -> 'a -> 'b) -> Format.formatter -> 'a BatEnum.t -> unit
-    (** Print the contents of an enum, with [first] preceeding the first item
-        (default: [""]), [last] following the last item (default: [""])
-        and [sep] separating items (default: [" "]). A printing function must
-        be provided to print the items in the enum. The [flush] parameter
-        (default: [false]) should be set to [true] for the outer-most printing
-        call.  Setting inner calls to [true] - for example, for nested values -
-        prevent indentation from working properly.
+      (** Print the contents of an enum, with [first] preceeding the first item
+          (default: [""]), [last] following the last item (default: [""])
+          and [sep] separating items (default: [" "]). A printing function must
+          be provided to print the items in the enum. The [flush] parameter
+          (default: [false]) should be set to [true] for the outer-most printing
+          call.  Setting inner calls to [true] - for example, for nested values -
+          prevent indentation from working properly.
 
-        Example:
-          [pp ~flush:true Format.pp_print_int Format.std_formatter (1 -- 3)] *)
+          Example:
+            [pp ~flush:true Format.pp_print_int Format.std_formatter (1 -- 3)] *)
   end
 
   module List : sig
@@ -981,16 +981,16 @@ module Incubator : sig
       ?sep:string ->
       ?indent:int ->
       (Format.formatter -> 'a -> 'b) -> Format.formatter -> 'a list -> unit
-    (** Print the contents of a list, with [first] preceeding the first item
-        (default: ["\["]), [last] following the last item (default: ["\]"])
-        and [sep] separating items (default: ["; "]). A printing function must
-        be provided to print the items in the list. The [flush] parameter
-        (default: [false]) should be set to [true] for the outer-most printing
-        call.  Setting inner calls to [true] - for example, for nested values -
-        prevent indentation from working properly.
+      (** Print the contents of a list, with [first] preceeding the first item
+          (default: ["\["]), [last] following the last item (default: ["\]"])
+          and [sep] separating items (default: ["; "]). A printing function must
+          be provided to print the items in the list. The [flush] parameter
+          (default: [false]) should be set to [true] for the outer-most printing
+          call.  Setting inner calls to [true] - for example, for nested values -
+          prevent indentation from working properly.
 
-        Example:
-          [pp ~flush:true Format.pp_print_int Format.std_formatter \[1; 2; 3\]]
-    *)
+          Example:
+            [pp ~flush:true Format.pp_print_int Format.std_formatter \[1; 2; 3\]]
+      *)
   end
 end

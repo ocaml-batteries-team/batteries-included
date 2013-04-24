@@ -45,7 +45,7 @@ let enum q = BatEnum.from (fun () -> try pop q with Empty -> raise BatEnum.No_mo
 *)
 
 let print ?(first="") ?(last="") ?(sep="") print_a out t =
-    BatEnum.print ~first ~last ~sep print_a out (enum (copy t))
+  BatEnum.print ~first ~last ~sep print_a out (enum (copy t))
 (*$T print
   BatIO.to_string (print ~sep:"," ~first:"[" ~last:"]" BatInt.print) (of_enum (BatArray.enum [|2;4;66|])) = "[2,4,66]"
 *)

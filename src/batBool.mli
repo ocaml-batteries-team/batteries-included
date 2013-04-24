@@ -26,20 +26,20 @@
 *)
 
 type t = bool
-  (**The type of booleans. Formally, this is defined as [type t = true | false] *)
+(**The type of booleans. Formally, this is defined as [type t = true | false] *)
 
 external not : bool -> bool = "%boolnot"
-  (** The boolean negation. *)
+(** The boolean negation. *)
 
 external ( && ) : bool -> bool -> bool = "%sequand"
-  (** The boolean ``and''. Evaluation is sequential, left-to-right:
-      in [e1 && e2], [e1] is evaluated first, and if it returns [false],
-      [e2] is not evaluated at all. *)
+(** The boolean ``and''. Evaluation is sequential, left-to-right:
+    in [e1 && e2], [e1] is evaluated first, and if it returns [false],
+    [e2] is not evaluated at all. *)
 
 external ( || ) : bool -> bool -> bool = "%sequor"
-  (** The boolean ``or''. Evaluation is sequential, left-to-right:
-      in [e1 || e2], [e1] is evaluated first, and if it returns [true],
-      [e2] is not evaluated at all. *)
+(** The boolean ``or''. Evaluation is sequential, left-to-right:
+    in [e1 || e2], [e1] is evaluated first, and if it returns [true],
+    [e2] is not evaluated at all. *)
 
 val zero : bool
 val one : bool
@@ -61,9 +61,9 @@ val ord : bool -> bool -> BatOrd.order
 val of_int : int -> bool (** anything but [0] is [true] *)
 val to_int : bool -> int
 val of_string : string -> bool
-  (** Convert the given string to a boolean.
-      @raise Invalid_argument if the string is not
-      ["true"], ["false"], ["0"], ["1"], ["tt"] or ["ff"]. *)
+(** Convert the given string to a boolean.
+    @raise Invalid_argument if the string is not
+    ["true"], ["false"], ["0"], ["1"], ["tt"] or ["ff"]. *)
 
 val to_string : bool -> string
 val of_float  : float -> bool
@@ -76,13 +76,13 @@ val ( * ) : t -> t -> t
 val ( / ) : t -> t -> t
 val ( ** ) : t -> t -> t
 (* Available only in `Compare` submodule
-val ( <> ) : t -> t -> bool
-val ( >= ) : t -> t -> bool
-val ( <= ) : t -> t -> bool
-val ( > ) : t -> t -> bool
-val ( < ) : t -> t -> bool
-val ( = ) : t -> t -> bool
- *)
+   val ( <> ) : t -> t -> bool
+   val ( >= ) : t -> t -> bool
+   val ( <= ) : t -> t -> bool
+   val ( > ) : t -> t -> bool
+   val ( < ) : t -> t -> bool
+   val ( = ) : t -> t -> bool
+*)
 val ( -- ): t -> t -> t BatEnum.t
 val ( --- ): t -> t -> t BatEnum.t
 val operations : t BatNumber.numeric

@@ -116,8 +116,8 @@ type open_in_flag =
   [ `create
   | `excl     (**Fail if the file exists and [`create] is set               *)
   | `text     (**Open in ascii mode -- if this flag is not specified or if the
-		 operating system does not perform conversions, the file is
-		 opened in binary mode.                                     *)
+				 operating system does not perform conversions, the file is
+				 opened in binary mode.                                     *)
   | `nonblock (**Open in non-blocking mode                                  *)
   | `mmap     (**Open in memory-mapped mode (experimental)*)                 ]
 
@@ -143,22 +143,22 @@ type open_out_flag =
   | `trunc    (**Empty the file if it already exists; on by default         *)
   | `excl     (**Fail if the file exists and [`create] is set               *)
   | `text     (**Open in ascii mode -- if this flag is not specified or if the
-		 operating system does not perform conversions, the file is
-		 opened in binary mode.                                     *)
+				 operating system does not perform conversions, the file is
+				 opened in binary mode.                                     *)
   | `nonblock (**Open in non-blocking mode                                  *) ]
-    (** Flags governing file output; they correspond to the relevant
-        flags to the POSIX [open()] call.  The default flags are
-        [[`create; `trunc]]. *)
+(** Flags governing file output; they correspond to the relevant
+    flags to the POSIX [open()] call.  The default flags are
+    [[`create; `trunc]]. *)
 
 
 val open_out : ?mode:(open_out_flag list) -> ?perm:permission -> string -> unit output
-  (** [open_out file_name] opens the file named [file_name] for writing.
+(** [open_out file_name] opens the file named [file_name] for writing.
 
-      {b Note} You will need to close the file manually, with
-      {!BatIO.close_out}. An alternative is to call [with_file_out]
-      instead of [open_out].
+    {b Note} You will need to close the file manually, with
+    {!BatIO.close_out}. An alternative is to call [with_file_out]
+    instead of [open_out].
 
-      Naming conventions for files are platform-dependent.*)
+    Naming conventions for files are platform-dependent.*)
 
 val with_file_out: ?mode:(open_out_flag list) -> ?perm:permission -> string -> (unit output -> 'a) -> 'a
 (** [with_file_out file_name f] opens the file named [file_name] for writing,
@@ -189,16 +189,16 @@ val open_temporary_out: ?mode:(open_temporary_out_flag list) -> ?prefix:string -
     Naming conventions for files are platform-dependent.*)
 
 val with_temporary_out: ?mode:(open_temporary_out_flag list) -> ?prefix:string -> ?suffix:string -> ?temp_dir:string -> (unit output -> string -> 'a) -> 'a
-(** [with_temporary_out f] opens a new temporary file for writing, invokes [f] with
-    to write onto that file then, once [f] has returned or triggered an exception,
-    closes the file before proceeding.
+  (** [with_temporary_out f] opens a new temporary file for writing, invokes [f] with
+      to write onto that file then, once [f] has returned or triggered an exception,
+      closes the file before proceeding.
 
-    @param prefix a string which should appear at the start of your temporary file name
-    (by default ["ocaml"])
-    @param suffix a string which should appear at the end of your temporary file name
-    (by default ["tmp"])
-    @param temp_dir indicates what temp dir to use
+      @param prefix a string which should appear at the start of your temporary file name
+      (by default ["ocaml"])
+      @param suffix a string which should appear at the end of your temporary file name
+      (by default ["tmp"])
+      @param temp_dir indicates what temp dir to use
 
-    @return The name of the file and the [output] for writing in it.
+      @return The name of the file and the [output] for writing in it.
 
-    Naming conventions for files are platform-dependent.*)
+      Naming conventions for files are platform-dependent.*)

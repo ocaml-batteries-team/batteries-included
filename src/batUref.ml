@@ -97,8 +97,8 @@ let print elepr out ur =
   | Ranked (x, _) ->
     BatInnerIO.nwrite out "uref " ;
     elepr out x
-(*$T print
-  let u1 = uref 2 and u2 = uref 3 in unite ~sel:(+) u1 u2; \
-  BatIO.to_string (print BatInt.print) u1 = "uref 5" && \
-  BatIO.to_string (print BatInt.print) u2 = "uref 5"
-*)
+    (*$T print
+      let u1 = uref 2 and u2 = uref 3 in unite ~sel:(+) u1 u2; \
+      BatIO.to_string (print BatInt.print) u1 = "uref 5" && \
+      BatIO.to_string (print BatInt.print) u2 = "uref 5"
+    *)

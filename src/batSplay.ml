@@ -27,7 +27,7 @@ let size =
   let rec count tr k = match tr with
     | Empty -> k 0
     | Node (l, _, r) ->
-        count l (fun m -> count r (fun n -> k (1 + m + n)))
+      count l (fun m -> count r (fun n -> k (1 + m + n)))
   in
   fun tr -> count tr (fun n -> n)
 
@@ -47,37 +47,37 @@ type 'a cursor = C of 'a step list * 'a bst
 let rec top' cx t = match cx with
   | [] -> t
   | (Left (p, pr) :: cx) ->
-      top' cx (Node (t, p, pr))
+    top' cx (Node (t, p, pr))
   | (Right (pl, p) :: cx) ->
-      top' cx (Node (pl, p, t))
+    top' cx (Node (pl, p, t))
 
 let top (C (cx, t)) = top' cx t
 
 let rec csplay' cx l r = match cx with
   | [] ->
-      (l, r)
+    (l, r)
   | [Left (p, pr)] ->
-      (l, Node (r, p, pr))
+    (l, Node (r, p, pr))
   | [Right (pl, px)] ->
-      (Node (pl, px, l), r)
+    (Node (pl, px, l), r)
   | (Left (px, pr) :: Left (ppx, ppr) :: cx) ->
-      (* zig zig *)
-      let r = Node (r, px, Node (pr, ppx, ppr)) in
-      csplay' cx l r
+    (* zig zig *)
+    let r = Node (r, px, Node (pr, ppx, ppr)) in
+    csplay' cx l r
   | (Left (px, pr) :: Right (ppl, ppx) :: cx) ->
-      (* zig zag *)
-      let l = Node (ppl, ppx, l) in
-      let r = Node (r, px, pr) in
-      csplay' cx l r
+    (* zig zag *)
+    let l = Node (ppl, ppx, l) in
+    let r = Node (r, px, pr) in
+    csplay' cx l r
   | (Right (pl, px) :: Right (ppl, ppx) :: cx) ->
-      (* zig zig *)
-      let l = Node (Node (ppl, ppx, pl), px, l) in
-      csplay' cx l r
+    (* zig zig *)
+    let l = Node (Node (ppl, ppx, pl), px, l) in
+    csplay' cx l r
   | (Right (pl, px) :: Left (ppx, ppr) :: cx) ->
-      (* zig zag *)
-      let l = Node (pl, px, l) in
-      let r = Node (r, ppx, ppr) in
-      csplay' cx l r
+    (* zig zag *)
+    let l = Node (pl, px, l) in
+    let r = Node (r, ppx, ppr) in
+    csplay' cx l r
 
 let csplay = function
   | C (cx, Node (l, x, r)) ->
@@ -88,10 +88,10 @@ let csplay = function
 let rec cfind ?(cx=[]) ~sel = function
   | Empty -> C (cx, Empty)
   | Node (l, x, r) as node ->
-      let sx = sel x in
-      if sx = 0 then C (cx, node)
-      else if sx < 0 then cfind ~cx:(Left (x, r) :: cx) ~sel l
-      else cfind ~cx:(Right (l, x) :: cx) ~sel r
+    let sx = sel x in
+    if sx = 0 then C (cx, node)
+    else if sx < 0 then cfind ~cx:(Left (x, r) :: cx) ~sel l
+    else cfind ~cx:(Right (l, x) :: cx) ~sel r
 
 module Map (Ord : BatInterfaces.OrderedType) =
 struct
@@ -104,50 +104,50 @@ struct
 
   let is_empty (Map tr) = tr = Empty
 
-(*  let kcmp (j, _) (k, _) = Ord.compare j k*)
+  (*  let kcmp (j, _) (k, _) = Ord.compare j k*)
   let ksel j (k, _) = Ord.compare j k
 
   let singleton' k v = Node (Empty, (k, v), Empty)
   let singleton k v = Map (singleton' k v)
 
   let add k v (Map tr) = Map begin
-    csplay begin
-      match cfind ~sel:(ksel k) tr with
+      csplay begin
+        match cfind ~sel:(ksel k) tr with
         | C (cx, Node (l, (k, _), r)) -> C (cx, Node (l, (k, v), r))
         | C (cx, Empty) -> C (cx, singleton' k v)
+      end
     end
-  end
 
   let modify k fn (Map tr) = Map begin
-    csplay begin
-      match cfind ~sel:(ksel k) tr with
+      csplay begin
+        match cfind ~sel:(ksel k) tr with
         | C (cx, Node (l, (k, v), r)) -> C (cx, Node (l, (k, fn v), r))
         | C (cx, Empty) -> raise Not_found
+      end
     end
-  end
 
   let modify_def def k fn (Map tr) = Map begin
-    csplay begin
-      match cfind ~sel:(ksel k) tr with
+      csplay begin
+        match cfind ~sel:(ksel k) tr with
         | C (cx, Node (l, (k, v), r)) -> C (cx, Node (l, (k, fn v), r))
         | C (cx, Empty) -> C (cx, singleton' k (fn def))
+      end
     end
-  end
 
   let modify_opt k fn (Map tr) = Map begin
-    try
-      match cfind ~sel:(ksel k) tr with
+      try
+        match cfind ~sel:(ksel k) tr with
         | C (cx, Node (l, (k, v), r)) -> begin
             match fn (Some v) with
-              | Some v' -> csplay (C (cx, Node (l, (k, v'), r)))
-              | None    -> bst_append l r
-            end
+            | Some v' -> csplay (C (cx, Node (l, (k, v'), r)))
+            | None    -> bst_append l r
+          end
         | C (cx, Empty) ->
-            match fn None with
-              | Some v -> csplay (C (cx, singleton' k v))
-              | None   -> raise Exit
-    with Exit -> tr
-  end
+          match fn None with
+          | Some v -> csplay (C (cx, singleton' k v))
+          | None   -> raise Exit
+      with Exit -> tr
+    end
 
   (* Didactic implementation note : why that ugly Obj module here? Why not
      use a reference or mutable record field instead?
@@ -259,10 +259,10 @@ struct
   let find k (Map tr as m) =
     let tr = csplay (cfind ~sel:(ksel k) tr) in
     match tr with
-      | Node (_, (_, v), _) ->
-	rebalance m tr;
-	v
-      | _ -> raise Not_found
+    | Node (_, (_, v), _) ->
+      rebalance m tr;
+      v
+    | _ -> raise Not_found
 
   let cchange fn (C (cx, t)) = C (cx, fn t)
 
@@ -281,9 +281,9 @@ struct
     let rec visit = function
       | Empty -> ()
       | Node (l, (k, v), r) ->
-          visit l ;
-          fn k v ;
-          visit r
+        visit l ;
+        fn k v ;
+        visit r
     in
     visit tr
 
@@ -291,9 +291,9 @@ struct
     let rec visit acc = function
       | Empty -> acc
       | Node (l, (k, v), r) ->
-          let acc = visit acc l in
-          let acc = fn k v acc in
-          visit acc r
+        let acc = visit acc l in
+        let acc = fn k v acc in
+        visit acc r
     in
     visit acc tr
 
@@ -325,9 +325,9 @@ struct
           let w = f k v in
           visit r begin fun r ->
             match w with
-              | None -> cont (bst_append l r)
-              | Some w ->
-                cont (Node (l, (k, w), r))
+            | None -> cont (bst_append l r)
+            | Some w ->
+              cont (Node (l, (k, w), r))
           end
         end
     in
@@ -396,12 +396,12 @@ struct
   let equal cmp (Map tr1) (Map tr2) =
     let rec aux e1 e2 =
       match (e1, e2) with
-          (End, End) -> true
-        | (End, _)  -> false
-        | (_, End) -> false
-        | (More (v1, d1, r1, e1), More (v2, d2, r2, e2)) ->
-          Ord.compare v1 v2 = 0 && cmp d1 d2 &&
-      aux (cons_enum r1 e1) (cons_enum r2 e2)
+        (End, End) -> true
+      | (End, _)  -> false
+      | (_, End) -> false
+      | (More (v1, d1, r1, e1), More (v2, d2, r2, e2)) ->
+        Ord.compare v1 v2 = 0 && cmp d1 d2 &&
+        aux (cons_enum r1 e1) (cons_enum r2 e2)
     in aux (cons_enum tr1 End) (cons_enum tr2 End)
 
   let rec enum_bst cfn en =
@@ -423,8 +423,8 @@ struct
   let values m = Enum.map snd (enum m)
 
   let of_enum e = Enum.fold begin
-    fun acc (k, v) -> add k v acc
-  end empty e
+      fun acc (k, v) -> add k v acc
+    end empty e
 
   let to_list m = List.of_enum (enum m)
   let of_list l = of_enum (List.enum l)
@@ -480,14 +480,14 @@ struct
   let split k (Map tr as m) =
     let C (cx, center) = cfind ~sel:(ksel k) tr in
     match center with
-      | Empty ->
-        let l, r = csplay' cx Empty Empty in
-        (Map l, None, Map r)
-      | Node (l, x, r) ->
-        let l', r' = csplay' cx l r in
-        (* we rebalance as in 'find' *)
-        rebalance m (Node (l', x, r'));
-        (Map l', Some (snd x), Map r')
+    | Empty ->
+      let l, r = csplay' cx Empty Empty in
+      (Map l, None, Map r)
+    | Node (l, x, r) ->
+      let l', r' = csplay' cx l r in
+      (* we rebalance as in 'find' *)
+      rebalance m (Node (l', x, r'));
+      (Map l', Some (snd x), Map r')
 
   let merge f m1 m2 =
     (* The implementation is a bit long, but has the important
@@ -501,8 +501,8 @@ struct
        tree. *)
     let maybe_push acc k maybe_v1 maybe_v2 =
       match f k maybe_v1 maybe_v2 with
-        | None -> acc
-        | Some v -> Node (acc, (k, v), Empty) in
+      | None -> acc
+      | Some v -> Node (acc, (k, v), Empty) in
     let push1 acc (k, v1) = maybe_push acc k (Some v1) None in
     let push2 acc (k, v2) = maybe_push acc k None (Some v2) in
     (* we iterate simultaneously on both inputs, in increasing
@@ -516,8 +516,8 @@ struct
        - we know the next (key, value) pair of both e1 and e2 :
          both_known (k1, v1) (k2, v2)
     *)
-  let rec none_known acc =
-    match Enum.peek e1, Enum.peek e2 with
+    let rec none_known acc =
+      match Enum.peek e1, Enum.peek e2 with
       | None, None -> acc
       | None, Some kv2 ->
         Enum.junk e2;
@@ -528,34 +528,34 @@ struct
       | Some kv1, Some kv2 ->
         Enum.junk e1; Enum.junk e2;
         both_known acc kv1 kv2
-  and only_e1 acc kv1 =
-    Enum.fold push1 (push1 acc kv1) e1
-  and only_e2 acc kv2 =
-    Enum.fold push2 (push2 acc kv2) e2
-  and both_known acc ((k1, v1) as kv1) ((k2, v2) as kv2) =
-    let cmp = Ord.compare k1 k2 in
-    if cmp < 0 then begin
-      let acc = push1 acc kv1 in
-      match Enum.peek e1 with
+    and only_e1 acc kv1 =
+      Enum.fold push1 (push1 acc kv1) e1
+    and only_e2 acc kv2 =
+      Enum.fold push2 (push2 acc kv2) e2
+    and both_known acc ((k1, v1) as kv1) ((k2, v2) as kv2) =
+      let cmp = Ord.compare k1 k2 in
+      if cmp < 0 then begin
+        let acc = push1 acc kv1 in
+        match Enum.peek e1 with
         | None -> only_e2 acc kv2
         | Some kv1' ->
           Enum.junk e1;
           both_known acc kv1' kv2
-    end
-    else if cmp > 0 then begin
-      let acc = push2 acc kv2 in
-      match Enum.peek e2 with
+      end
+      else if cmp > 0 then begin
+        let acc = push2 acc kv2 in
+        match Enum.peek e2 with
         | None -> only_e1 acc kv1
         | Some kv2' ->
           Enum.junk e2;
           both_known acc kv1 kv2'
-    end
-    else begin
-      let acc = maybe_push acc k1 (Some v1) (Some v2) in
-      none_known acc
-    end
-  in
-  Map (none_known Empty)
+      end
+      else begin
+        let acc = maybe_push acc k1 (Some v1) (Some v2) in
+        none_known acc
+      end
+    in
+    Map (none_known Empty)
 
   let pop = function
     | Map Empty -> raise Not_found
@@ -574,6 +574,6 @@ struct
     let tr = top (cchange replace (cfind ~sel:(ksel k) tr)) in
     (* like in the `remove` case, we don't bother rebalancing *)
     match !maybe_v with
-      | None -> raise Not_found
-      | Some v -> v, Map tr
+    | None -> raise Not_found
+    | Some v -> v, Map tr
 end

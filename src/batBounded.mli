@@ -64,8 +64,8 @@ module type BoundedType = sig
       possible. *)
 
   val base_of_t_exn : t -> base_t
-  (** [base_of_t_exn x] converts a value of type {!t} back to a {!base_t}.  If
-      a conversion is not possible then an exception will be raised. *)
+    (** [base_of_t_exn x] converts a value of type {!t} back to a {!base_t}.  If
+        a conversion is not possible then an exception will be raised. *)
 end
 
 module type BoundedNumericType = sig
@@ -107,8 +107,8 @@ module type S = sig
       back to type {!base_u}, otherwise raise an exception. *)
 
   val map2_exn : (base_u -> base_u -> base_u) -> t -> t -> t
-  (** [map f x y] applies [f] to [x] and [y].  Returns [z] if [x] and [y]
-      can be converted back to type {!base_u}, otherwise raise an exception. *)
+    (** [map f x y] applies [f] to [x] and [y].  Returns [z] if [x] and [y]
+        can be converted back to type {!base_u}, otherwise raise an exception. *)
 end
 
 module type NumericSig = sig
@@ -126,13 +126,13 @@ end
 
 module Make : functor (M : BoundedType) ->
   S with type base_u = M.base_t
-    with type u = M.t
-    with type t = private M.t
+  with type u = M.t
+  with type t = private M.t
 (** Functor to build an implementation of a bounded type given the bounded
     values definition [M] *)
 
 module MakeNumeric : functor (M : BoundedNumericType) ->
   NumericSig with type base_u = M.base_t
-    with type u = M.t
-    with type t = private M.t
+  with type u = M.t
+  with type t = private M.t
 

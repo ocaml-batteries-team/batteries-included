@@ -61,14 +61,14 @@ let level_of_name = function
 let format_timestamp out ts =
   let tm = Unix.gmtime ts in
   let us, _ = modf ts in
-    fprintf out "%04d-%02d-%02dT%02d:%02d:%02d.%06dZ"
-      (1900 + tm.Unix.tm_year)
-      (1 + tm.Unix.tm_mon)
-      (tm.Unix.tm_mday)
-      (tm.Unix.tm_hour)
-      (tm.Unix.tm_min)
-      (tm.Unix.tm_sec)
-      (int_of_float (1_000_000. *. us))
+  fprintf out "%04d-%02d-%02dT%02d:%02d:%02d.%06dZ"
+    (1900 + tm.Unix.tm_year)
+    (1 + tm.Unix.tm_mon)
+    (tm.Unix.tm_mday)
+    (tm.Unix.tm_hour)
+    (tm.Unix.tm_min)
+    (tm.Unix.tm_sec)
+    (int_of_float (1_000_000. *. us))
 
 (******************************************************************************)
 (** log modules *)
@@ -88,7 +88,7 @@ let log_enable lm lev =  lm.level <- int_of_level lev
 
 let log_enabled lm lev =
   let lev_no = int_of_level lev in
-    lev_no <= lm.level
+  lev_no <= lm.level
 
 let log_name lm = lm.name
 let log_level lm = level_of_int lm.level
@@ -106,14 +106,14 @@ let unregister_formatter name =
 let rec format_kvl oc = function
   | [] -> ()
   | (k, v)::rest ->
-      fprintf oc "\t%s:%s" k v;
-      format_kvl oc rest
+    fprintf oc "\t%s:%s" k v;
+    format_kvl oc rest
 
 let make_std_formatter oc lm lev (event_name, event_args) timestamp =
   fprintf oc "D:%a\tE:%s.%s\tL:%s%a\n%!"
-    (*D:*) format_timestamp timestamp
-    (*E:*) lm.name event_name
-    (*L:*) (name_of_level lev)
+  (*D:*) format_timestamp timestamp
+  (*E:*) lm.name event_name
+  (*L:*) (name_of_level lev)
     format_kvl event_args
 
 let stderr_formatter = make_std_formatter BatIO.stderr
@@ -154,8 +154,8 @@ let with_log lm lev event_fun ?result body =
       log lm lev (fun () ->
         let event_name, event_args = event_fun () in
         let result_str = match result with
-        | Some f -> f rv
-        | None -> "-"
+          | Some f -> f rv
+          | None -> "-"
         in
         event_name, ("RESULT", result_str) ::event_args);
       rv
@@ -193,7 +193,7 @@ let init_from_string name_level_string formatter =
   List.iter init_key_value (BatSubstring.split_on_comma (BatSubstring.of_string name_level_string) );
   register_formatter "default" formatter
 
-(******************************************************************************)
+  (******************************************************************************)
 
 (*
 let test =
@@ -211,4 +211,4 @@ let test =
   in run ()
  *)
 
-(******************************************************************************)
+  (******************************************************************************)

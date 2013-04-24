@@ -147,13 +147,13 @@ let max a b = if a > b then a else b
    min (-3) 5 = -3
    min min_int max_int = min_int
 *) (*$T max
-   max 3 4 = 4
-   max 4 4 = 4
-   max (-3) 5 = 5
-   max min_int max_int = max_int
-   max max_int max_int = max_int
-   max min_int min_int = min_int
-*)
+     max 3 4 = 4
+     max 4 4 = 4
+     max (-3) 5 = 5
+     max min_int max_int = max_int
+     max max_int max_int = max_int
+     max min_int min_int = min_int
+   *)
 
 let mid a b =
   a land b + ((a lxor b) asr 1)
@@ -235,20 +235,20 @@ module BaseSafeInt = struct
 
   let mul a b =
     match a asr shift_bits, b asr shift_bits with
-      |	0,0 -> a * b
-      | 0,bh ->
-	let al = a land mask in
-	let cross = bh * al in
-	if cross > mask then raise Overflow;
-	let bl = b land mask in
-	add (cross lsl shift_bits) (al*bl)
-      | ah, 0 ->
-	let bl = b land mask in
-	let cross = ah * bl in
-	if cross > mask then raise Overflow;
-	let al = a land mask in
-	add (cross lsl shift_bits) (al+bl)
-      | _,_ -> raise Overflow
+    |	0,0 -> a * b
+    | 0,bh ->
+      let al = a land mask in
+      let cross = bh * al in
+      if cross > mask then raise Overflow;
+      let bl = b land mask in
+      add (cross lsl shift_bits) (al*bl)
+    | ah, 0 ->
+      let bl = b land mask in
+      let cross = ah * bl in
+      if cross > mask then raise Overflow;
+      let al = a land mask in
+      add (cross lsl shift_bits) (al+bl)
+    | _,_ -> raise Overflow
 
   let pow a b =
     if b < 0

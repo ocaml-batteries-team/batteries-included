@@ -34,7 +34,7 @@ let print_array =
     done;
     Buffer.contents buf
   in
-    Array.init 256 print_bchar
+  Array.init 256 print_bchar
 
 let print out t =
   for i = 0 to (String.length !t) - 1 do
@@ -77,23 +77,23 @@ let rec apply_bit_op sfun op t x =
     let mask = 1 lsl delta in
     let v = (c land mask) <> 0 in
     let bset c = String.unsafe_set !t pos (Char.unsafe_chr c) in
-      match op with 
-        | Set ->
-            if not v then
-              bset (c lor mask)
-        | Unset ->
-            if v then
-              bset (c lxor mask)
-            (* TODO: shrink *)
-        | Toggle ->
-            bset (c lxor mask);
+    match op with
+    | Set ->
+      if not v then
+        bset (c lor mask)
+    | Unset ->
+      if v then
+        bset (c lxor mask)
+    (* TODO: shrink *)
+    | Toggle ->
+      bset (c lxor mask);
   else
     match op with
-      | Set | Toggle -> 
-          extend t x;
-          apply_bit_op sfun op t x
-      | Unset ->
-          ()
+    | Set | Toggle ->
+      extend t x;
+      apply_bit_op sfun op t x
+    | Unset ->
+      ()
 
 let set t x = apply_bit_op "set" Set t x 
 
@@ -118,8 +118,8 @@ let remove x t = let dup = copy t in unset dup x; dup
 
 let put t = 
   function
-    | true -> set t
-    | false -> unset t
+  | true -> set t
+  | false -> unset t
 
 let create_full n =
   let t = create_ "create_full" '\255' n in
@@ -132,32 +132,32 @@ let create_full n =
 let compare t1 t2 =
   let len1 = String.length !t1 in
   let len2 = String.length !t2 in 
-    if len1 = len2 then 
-      String.compare !t1 !t2
+  if len1 = len2 then
+    String.compare !t1 !t2
+  else
+    let diff = ref 0 in
+    let idx = ref 0 in
+    let clen = min len1 len2 in
+    while !diff = 0 && !idx < clen do
+      diff := Char.compare
+          (String.unsafe_get !t1 !idx)
+          (String.unsafe_get !t2 !idx);
+      incr idx
+    done;
+    if len1 < len2 then
+      while !diff = 0 && !idx < len2 do
+        diff := Char.compare '\000' (String.unsafe_get !t2 !idx);
+        incr idx
+      done
     else
-      let diff = ref 0 in
-      let idx = ref 0 in
-      let clen = min len1 len2 in 
-        while !diff = 0 && !idx < clen do 
-          diff := Char.compare 
-                    (String.unsafe_get !t1 !idx)
-                    (String.unsafe_get !t2 !idx);
-          incr idx
-        done;
-        if len1 < len2 then 
-          while !diff = 0 && !idx < len2 do 
-            diff := Char.compare '\000' (String.unsafe_get !t2 !idx);
-            incr idx
-          done
-        else
-          while !diff = 0 && !idx < len1 do 
-            diff := Char.compare (String.unsafe_get !t1 !idx) '\000';
-            incr idx
-          done;
-        !diff
+      while !diff = 0 && !idx < len1 do
+        diff := Char.compare (String.unsafe_get !t1 !idx) '\000';
+        incr idx
+      done;
+    !diff
 
 let equal t1 t2 =
-	compare t1 t2 = 0
+  compare t1 t2 = 0
 
 let ord = BatOrd.ord compare
 
@@ -169,19 +169,19 @@ let count_array =
     else
       (count_bits (i / 2)) + (i mod 2)
   in
-    Array.init 256 count_bits
+  Array.init 256 count_bits
 
 let count t =
   let c = ref 0 in
-    for i = 0 to String.length !t do
-      c := !c +
+  for i = 0 to String.length !t do
+    c := !c +
         Array.unsafe_get count_array (Char.code (String.unsafe_get !t i))
-    done;
-    !c
+  done;
+  !c
 
 (* Array of array that given a char and a delta return the delta of the next
  * set bit.
- *)
+*)
 let next_set_bit_array =
   let eighth_bit = 1 lsl 7 in
   let mk c = 
@@ -197,14 +197,14 @@ let next_set_bit_array =
         arr.(i) <- last_set_bit;
         mk' last_set_bit (i - 1) (v lsl 1)
     in
-      mk' ~-1 7 c;
-      arr
+    mk' ~-1 7 c;
+    arr
   in
-    Array.init 256 mk
+  Array.init 256 mk
 
 (* DEBUG bit arrays.
-let () = 
-  Array.iteri
+   let () =
+   Array.iteri
     (fun idx arr ->
        let buf = Buffer.create 8 in
          for i = 0 to 7 do 
@@ -225,8 +225,8 @@ let () =
          Buffer.add_char buf '\n';
          Buffer.output_buffer stderr buf)
     next_set_bit_array;
-  flush stderr
- *)
+   flush stderr
+*)
 
 (* Find the first set bit in the bit array *)
 let rec next_set_bit t x =
@@ -234,24 +234,24 @@ let rec next_set_bit t x =
     invalid_arg "BitSet.next_set_bit"
   else
     let pos = x / 8 in
-      if pos < String.length !t then
-        begin
-          let delta = x mod 8 in
-          let c = Char.code (String.unsafe_get !t pos) in
-          let delta_next = 
-            Array.unsafe_get 
-              (Array.unsafe_get next_set_bit_array c)
-              delta
-          in
-            if delta_next < 0 then
-              next_set_bit t ((pos + 1) * 8)
-            else
-              Some (pos * 8 + delta_next)
-        end
-      else
-        begin
-          None
-        end
+    if pos < String.length !t then
+      begin
+        let delta = x mod 8 in
+        let c = Char.code (String.unsafe_get !t pos) in
+        let delta_next =
+          Array.unsafe_get
+            (Array.unsafe_get next_set_bit_array c)
+            delta
+        in
+        if delta_next < 0 then
+          next_set_bit t ((pos + 1) * 8)
+        else
+          Some (pos * 8 + delta_next)
+      end
+    else
+      begin
+        None
+      end
 
 let enum t =
   let rec make n cnt =
@@ -260,11 +260,11 @@ let enum t =
     let rec next () =
       match next_set_bit t !cur with
         Some elem ->
-          decr cnt;
-          cur := (elem+1);
-          elem
+        decr cnt;
+        cur := (elem+1);
+        elem
       | None ->
-          raise BatEnum.No_more_elements 
+        raise BatEnum.No_more_elements
     in
     BatEnum.make
       ~next
@@ -288,30 +288,30 @@ let apply_set_op op t1 t2 =
   let len1 = String.length !t1 in
   let len2 = String.length !t2 in
   let clen = min len1 len2 in
-    while !idx < clen do
-      let c1 = Char.code (String.unsafe_get !t1 !idx) in
-      let c2 = Char.code (String.unsafe_get !t2 !idx) in
-      let cr = 
-        match op with 
-          | Inter   -> c1 land c2 
-          | Diff    -> c1 land (lnot c2)
-          | Unite   -> c1 lor c2 
-          | DiffSym -> c1 lxor c2
-      in
-      String.unsafe_set !t1 !idx (Char.unsafe_chr cr);
-      incr idx
-    done;
-    if op = Unite && len1 < len2 then
-      begin
-        extend t1 (len2 * 8);
-        String.blit !t2 len1 !t1 len1 (len2 - len1)
-      end
-    else if op = DiffSym && len1 < len2 then
-      begin
-        let tmp = String.copy !t2 in
-        String.blit !t1 0 tmp 0 len1;
-        t1 := tmp
-      end
+  while !idx < clen do
+    let c1 = Char.code (String.unsafe_get !t1 !idx) in
+    let c2 = Char.code (String.unsafe_get !t2 !idx) in
+    let cr =
+      match op with
+      | Inter   -> c1 land c2
+      | Diff    -> c1 land (lnot c2)
+      | Unite   -> c1 lor c2
+      | DiffSym -> c1 lxor c2
+    in
+    String.unsafe_set !t1 !idx (Char.unsafe_chr cr);
+    incr idx
+  done;
+  if op = Unite && len1 < len2 then
+    begin
+      extend t1 (len2 * 8);
+      String.blit !t2 len1 !t1 len1 (len2 - len1)
+    end
+  else if op = DiffSym && len1 < len2 then
+    begin
+      let tmp = String.copy !t2 in
+      String.blit !t1 0 tmp 0 len1;
+      t1 := tmp
+    end
 
 let intersect t1 t2 = apply_set_op Inter t1 t2
 

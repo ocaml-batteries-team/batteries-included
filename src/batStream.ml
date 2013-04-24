@@ -43,10 +43,10 @@ let id x = x
 let rec of_fun f =
   Stream.slazy
     (fun _ ->
-     try
-       let h = f ()
-       in Stream.icons h (Stream.slazy (fun _ -> of_fun f))
-     with | End_of_flow -> Stream.sempty)
+      try
+        let h = f ()
+        in Stream.icons h (Stream.slazy (fun _ -> of_fun f))
+      with | End_of_flow -> Stream.sempty)
 
 let to_fun fl () = next fl
 
@@ -77,10 +77,10 @@ let on_output o = iter (BatIO.write o)
 let rec of_input i =
   Stream.slazy
     (fun _ ->
-     try
-       let h = BatIO.read i
-       in Stream.icons h (Stream.slazy (fun _ -> of_input i))
-     with | BatIO.No_more_input -> Stream.sempty)
+      try
+        let h = BatIO.read i
+        in Stream.icons h (Stream.slazy (fun _ -> of_input i))
+      with | BatIO.No_more_input -> Stream.sempty)
 
 let rec cycle times x =
   match times with
@@ -88,7 +88,7 @@ let rec cycle times x =
   | Some 1 -> x
   | (* in case of destriction *) Some n when n <= 0 -> Stream.sempty
   | Some n ->
-     Stream.iapp x (Stream.slazy (fun _ -> cycle (Some (n - 1)) x))
+    Stream.iapp x (Stream.slazy (fun _ -> cycle (Some (n - 1)) x))
 
 let repeat times x = cycle times (Stream.ising x)
 
@@ -114,10 +114,10 @@ let next (__strm : _ Stream.t) =
 let rec foldl f init s =
   match peek s with
   | Some h ->
-     (match f init h with
-      | (accu, None) -> (junk s; foldl f accu s)
-      | (accu, Some true) -> (junk s; accu)
-      | (_, Some false) -> init)
+    (match f init h with
+     | (accu, None) -> (junk s; foldl f accu s)
+     | (accu, Some true) -> (junk s; accu)
+     | (_, Some false) -> init)
   | None -> init
 
 let rec foldr f init s =
@@ -143,26 +143,26 @@ let is_empty s = match peek s with | None -> true | _ -> false
 let rec concat ss =
   Stream.slazy
     (fun _ ->
-     let (__strm : _ Stream.t) = ss
-     in
-     match Stream.peek __strm with
-     | Some p ->
-	(Stream.junk __strm;
-	 Stream.iapp p (Stream.slazy (fun _ -> concat ss)))
-     | _ -> Stream.sempty)
+      let (__strm : _ Stream.t) = ss
+      in
+      match Stream.peek __strm with
+      | Some p ->
+        (Stream.junk __strm;
+         Stream.iapp p (Stream.slazy (fun _ -> concat ss)))
+      | _ -> Stream.sempty)
 
 let rec filter f s =
   Stream.slazy
     (fun _ ->
-     let (__strm : _ Stream.t) = s
-     in
-     match Stream.peek __strm with
-     | Some h ->
-	(Stream.junk __strm;
-	 if f h
-	 then Stream.icons h (Stream.slazy (fun _ -> filter f s))
-	 else Stream.slazy (fun _ -> filter f s))
-     | _ -> Stream.sempty)
+      let (__strm : _ Stream.t) = s
+      in
+      match Stream.peek __strm with
+      | Some h ->
+        (Stream.junk __strm;
+         if f h
+         then Stream.icons h (Stream.slazy (fun _ -> filter f s))
+         else Stream.slazy (fun _ -> filter f s))
+      | _ -> Stream.sempty)
 
 let take n fl =
   let i = ref n in
@@ -180,59 +180,59 @@ let drop n fl =
 let rec take_while f s =
   Stream.slazy
     (fun _ ->
-     match peek s with
-     | Some h ->
-	if f h
-	then
-	  (junk s;
-	   Stream.icons h (Stream.slazy (fun _ -> take_while f s)))
-	else Stream.sempty
-     | None -> Stream.sempty)
+      match peek s with
+      | Some h ->
+        if f h
+        then
+          (junk s;
+           Stream.icons h (Stream.slazy (fun _ -> take_while f s)))
+        else Stream.sempty
+      | None -> Stream.sempty)
 
 let rec drop_while f s =
   Stream.slazy
     (fun _ ->
-     let (__strm : _ Stream.t) = s in
-     match Stream.peek __strm with
-     | Some h ->
-	(Stream.junk __strm;
-	 if f h
-	 then Stream.slazy (fun _ -> drop_while f s)
-	 else Stream.icons h s)
-     | _ -> Stream.sempty)
+      let (__strm : _ Stream.t) = s in
+      match Stream.peek __strm with
+      | Some h ->
+        (Stream.junk __strm;
+         if f h
+         then Stream.slazy (fun _ -> drop_while f s)
+         else Stream.icons h s)
+      | _ -> Stream.sempty)
 
 let span p s =
   let q = Queue.create () and sr = ref None in
   let rec get_head () =
     Stream.slazy
       (fun _ ->
-       if not (Queue.is_empty q)
-       then
-	 Stream.lcons (fun _ -> Queue.take q) (Stream.slazy get_head)
-       else
-	 (let (__strm : _ Stream.t) = s
-          in
-	  match Stream.peek __strm with
-	  | Some h ->
-	     (Stream.junk __strm;
-	      if p h
-	      then Stream.icons h (Stream.slazy get_head)
-	      else (sr := Some h; Stream.sempty))
-	  | _ -> Stream.sempty)) in
+        if not (Queue.is_empty q)
+        then
+          Stream.lcons (fun _ -> Queue.take q) (Stream.slazy get_head)
+        else
+          (let (__strm : _ Stream.t) = s
+           in
+           match Stream.peek __strm with
+           | Some h ->
+             (Stream.junk __strm;
+              if p h
+              then Stream.icons h (Stream.slazy get_head)
+              else (sr := Some h; Stream.sempty))
+           | _ -> Stream.sempty)) in
   let rec get_tail () =
     match !sr with
     | Some v -> Stream.icons v s
     | None ->
-       Stream.slazy
-	 (fun _ ->
-	  let (__strm : _ Stream.t) = s
-	  in
-	  match Stream.peek __strm with
-	  | Some h ->
-	     (Stream.junk __strm;
-	      if p h then Queue.add h q else sr := Some h;
-	      get_tail ())
-	  | _ -> Stream.sempty)
+      Stream.slazy
+        (fun _ ->
+          let (__strm : _ Stream.t) = s
+          in
+          match Stream.peek __strm with
+          | Some h ->
+            (Stream.junk __strm;
+             if p h then Queue.add h q else sr := Some h;
+             get_tail ())
+          | _ -> Stream.sempty)
   in ((get_head ()), (Stream.slazy get_tail))
 
 let break p s = span (p |- not) s
@@ -240,55 +240,55 @@ let break p s = span (p |- not) s
 let rec group p s =
   Stream.slazy
     (fun _ ->
-     match peek s with
-     | None -> Stream.sempty
-     | Some v -> if p v then group_aux p s else group_aux (p |- not) s)
+      match peek s with
+      | None -> Stream.sempty
+      | Some v -> if p v then group_aux p s else group_aux (p |- not) s)
 and group_aux p s =
   match peek s with
   | None -> Stream.sempty
   | Some _ ->
-     let h = next s in
-     let (s1, s2) = span p s
-     in
-     Stream.lcons (fun _ -> Stream.icons h s1)
-		  (Stream.slazy (fun _ -> group_aux (p |- not) s2))
+    let h = next s in
+    let (s1, s2) = span p s
+    in
+    Stream.lcons (fun _ -> Stream.icons h s1)
+      (Stream.slazy (fun _ -> group_aux (p |- not) s2))
 
 let rec map f s =
   Stream.slazy
     (fun _ ->
-     let (__strm : _ Stream.t) = s
-     in
-     match Stream.peek __strm with
-     | Some h ->
-	(Stream.junk __strm;
-	 Stream.lcons (fun _ -> f h)
-		      (Stream.slazy (fun _ -> map f s)))
-     | _ -> Stream.sempty)
+      let (__strm : _ Stream.t) = s
+      in
+      match Stream.peek __strm with
+      | Some h ->
+        (Stream.junk __strm;
+         Stream.lcons (fun _ -> f h)
+           (Stream.slazy (fun _ -> map f s)))
+      | _ -> Stream.sempty)
 
 let dup (_s: 'a Stream.t) = failwith "Correct implementation needed"
 (*      let rec gen q_in q_out =
-	Printf.printf "0%!";
-	Stream.slazy (fun () ->
-	  Printf.printf "a%!";
-	  if Queue.is_empty q_in
-	  then (* take from stream, put onto other queue *)
-	    match Stream.peek s with
-	      | Some h ->
-		Printf.printf "b%!";
-		Stream.junk s;
-		Queue.add h q_out;
-		Stream.icons h (Stream.slazy (fun () -> gen q_in q_out))
-	      | _ -> Stream.sempty
-	  else ( (* take from queue *)
-	    Printf.printf "c%!";
-	    Stream.lcons (fun () -> Queue.take q_in)
-	      (Stream.slazy (fun () -> gen q_in q_out))))
-      in
-      let q1 = Queue.create () in
-      let q2 = Queue.create () in
-      Printf.printf "!!%!";
-      gen q1 q2, gen q2 q1
- *)
+		Printf.printf "0%!";
+		Stream.slazy (fun () ->
+		  Printf.printf "a%!";
+		  if Queue.is_empty q_in
+		  then (* take from stream, put onto other queue *)
+		    match Stream.peek s with
+		      | Some h ->
+			Printf.printf "b%!";
+			Stream.junk s;
+			Queue.add h q_out;
+			Stream.icons h (Stream.slazy (fun () -> gen q_in q_out))
+		      | _ -> Stream.sempty
+		  else ( (* take from queue *)
+		    Printf.printf "c%!";
+		    Stream.lcons (fun () -> Queue.take q_in)
+		      (Stream.slazy (fun () -> gen q_in q_out))))
+        in
+        let q1 = Queue.create () in
+        let q2 = Queue.create () in
+        Printf.printf "!!%!";
+        gen q1 q2, gen q2 q1
+*)
 (* dup
      let block_stream =
        let x = ref 10 in
@@ -318,21 +318,21 @@ let dup (_s: 'a Stream.t) = failwith "Correct implementation needed"
            else
              Stream.lcons (fun _ -> Array.map next sa)
                (Stream.slazy (fun _ -> combn sa)))
- *)
+*)
 
 let rec comb (s1, s2) =
   Stream.slazy
     (fun _ ->
-     match peek s1 with
-     | Some h1 ->
-	(match peek s2 with
-	 | Some h2 ->
-	    (junk s1;
-	     junk s2;
-	     Stream.lcons (fun _ -> (h1, h2))
-			  (Stream.slazy (fun _ -> comb (s1, s2))))
-	 | None -> Stream.sempty)
-     | None -> Stream.sempty)
+      match peek s1 with
+      | Some h1 ->
+        (match peek s2 with
+         | Some h2 ->
+           (junk s1;
+            junk s2;
+            Stream.lcons (fun _ -> (h1, h2))
+              (Stream.slazy (fun _ -> comb (s1, s2))))
+         | None -> Stream.sempty)
+      | None -> Stream.sempty)
 
 (*NOT EXPORTED
     let dupn n s =
@@ -374,7 +374,7 @@ let rec comb (s1, s2) =
                        gen i)
                   | _ -> Stream.sempty))
       in Array.init n gen
- *)
+*)
 
 let split s = ( |- ) dup ((map fst) // (map snd)) s
 
@@ -383,25 +383,25 @@ let mergen f sa =
   let pt = Array.init n id in
   let rec alt x i =
     (i < n) &&
-      (if pt.((x + i) mod n) = pt.(x)
-       then alt x (i + 1)
-       else
-	 (for j = 0 to i - 1 do pt.((x + j) mod n) <- pt.((x + i) mod n)
-	  done;
-	  true)) in
+    (if pt.((x + i) mod n) = pt.(x)
+     then alt x (i + 1)
+     else
+       (for j = 0 to i - 1 do pt.((x + j) mod n) <- pt.((x + i) mod n)
+        done;
+        true)) in
   let rec aux i =
     Stream.slazy
       (fun _ ->
-       let (__strm : _ Stream.t) = sa.(pt.(i))
-       in
-       match Stream.peek __strm with
-       | Some h ->
-	  (Stream.junk __strm;
-	   let i' = pt.(i)
+        let (__strm : _ Stream.t) = sa.(pt.(i))
+        in
+        match Stream.peek __strm with
+        | Some h ->
+          (Stream.junk __strm;
+           let i' = pt.(i)
            in
-	   Stream.icons h
-			(Stream.slazy (fun _ -> aux pt.((f i' h) mod n))))
-       | _ -> if alt i 1 then aux i else Stream.sempty)
+           Stream.icons h
+             (Stream.slazy (fun _ -> aux pt.((f i' h) mod n))))
+        | _ -> if alt i 1 then aux i else Stream.sempty)
   in
   aux 0
 
@@ -415,22 +415,22 @@ let switchn n f s =
   let rec gen i =
     Stream.slazy
       (fun _ ->
-       if not (Queue.is_empty qa.(i))
-       then
-	 Stream.lcons (fun _ -> Queue.take qa.(i))
-		      (Stream.slazy (fun _ -> gen i))
-       else
-	 (let (__strm : _ Stream.t) = s in
-	  match Stream.peek __strm with
-	  | Some h ->
-	     (Stream.junk __strm;
-	      let i' = (f h) mod n in
-	      if i' = i
-	      then Stream.icons h (Stream.slazy (fun _ -> gen i))
-	      else
-		(Queue.add h qa.(i');
-		 Stream.slazy (fun _ -> gen i)))
-	  | _ -> Stream.sempty))
+        if not (Queue.is_empty qa.(i))
+        then
+          Stream.lcons (fun _ -> Queue.take qa.(i))
+            (Stream.slazy (fun _ -> gen i))
+        else
+          (let (__strm : _ Stream.t) = s in
+           match Stream.peek __strm with
+           | Some h ->
+             (Stream.junk __strm;
+              let i' = (f h) mod n in
+              if i' = i
+              then Stream.icons h (Stream.slazy (fun _ -> gen i))
+              else
+                (Queue.add h qa.(i');
+                 Stream.slazy (fun _ -> gen i)))
+           | _ -> Stream.sempty))
   in
   Array.init n gen
 
@@ -441,24 +441,24 @@ let switch f s =
 let rec scanl f init s =
   Stream.slazy
     (fun _ ->
-     let (__strm : _ Stream.t) = s
-     in
-     match Stream.peek __strm with
-     | Some h ->
-	(Stream.junk __strm;
-	 Stream.icons init
-		      (Stream.slazy (fun _ -> scanl f (f init h) s)))
-     | _ -> Stream.ising init)
+      let (__strm : _ Stream.t) = s
+      in
+      match Stream.peek __strm with
+      | Some h ->
+        (Stream.junk __strm;
+         Stream.icons init
+           (Stream.slazy (fun _ -> scanl f (f init h) s)))
+      | _ -> Stream.ising init)
 
 let scan f s =
   Stream.slazy
     (fun _ ->
-     let (__strm : _ Stream.t) = s
-     in
-     match Stream.peek __strm with
-     | Some h ->
-	(Stream.junk __strm; Stream.slazy (fun _ -> scanl f h s))
-     | _ -> Stream.sempty)
+      let (__strm : _ Stream.t) = s
+      in
+      match Stream.peek __strm with
+      | Some h ->
+        (Stream.junk __strm; Stream.slazy (fun _ -> scanl f h s))
+      | _ -> Stream.sempty)
 
 let map2 f = (comb |- (map (uncurry f))) |> curry
 
@@ -471,7 +471,7 @@ let map2 f = (comb |- (map (uncurry f))) |> curry
            | Some _ ->
                Stream.lcons (fun _ -> fold f s)
                  (Stream.slazy (fun _ -> map_fold f s)))
- *)
+*)
 
 let feed stf vf delay exp =
   let s_in' = ref Stream.sempty in
@@ -517,20 +517,20 @@ let farm par size path exp_gen s =
     let rec find_next cond last i =
       if i < par
       then
-	(let j = (last + i) mod par
-	 in if cond j then Some j else find_next cond last (i + 1))
+        (let j = (last + i) mod par
+         in if cond j then Some j else find_next cond last (i + 1))
       else None
     in
     fun last _ ->
-    (count.(last) <- count.(last) - 1;
-     let nth =
-       match find_next (fun i -> count.(i) >= (size i)) last 1 with
-       | Some j -> j
-       | None ->
-	  (match find_next (fun i -> count.(i) > 0) last 1 with
-	   | Some j -> j
-	   | None -> last + (1 mod par))
-     in nth) in
+      (count.(last) <- count.(last) - 1;
+       let nth =
+         match find_next (fun i -> count.(i) >= (size i)) last 1 with
+         | Some j -> j
+         | None ->
+           (match find_next (fun i -> count.(i) > 0) last 1 with
+            | Some j -> j
+            | None -> last + (1 mod par))
+       in nth) in
   let sa_in = switchn par path s in
   let sa_out = Array.mapi exp_gen sa_in in mergen choose sa_out
 
@@ -539,41 +539,41 @@ let farm par size path exp_gen s =
 let enum x =
   BatEnum.from
     (fun () ->
-     try next x with | End_of_flow -> raise BatEnum.No_more_elements)
+      try next x with | End_of_flow -> raise BatEnum.No_more_elements)
 
 let rec of_enum e =
   Stream.slazy
     (fun _ ->
-     match BatEnum.get e with
-     | Some h -> Stream.icons h (Stream.slazy (fun _ -> of_enum e))
-     | None -> Stream.sempty)
+      match BatEnum.get e with
+      | Some h -> Stream.icons h (Stream.slazy (fun _ -> of_enum e))
+      | None -> Stream.sempty)
 
 module StreamLabels =
-  struct
-    let iter ~f x = iter f x
-    let switch ~f x = switch f x
-    let to_string_fmt ~fmt = to_string_fmt fmt
-    let to_string_fun ~fn = to_string_fun fn
-    let foldl ~f ~init = foldl f init
-    let foldr ~f ~init = foldr f init
-    let fold ~f ~init = fold f init
-    let filter ~f = filter f
-    let map ~f = map f
-    let map2 ~f = map2 f
-    let scanl ~f = scanl f
-    let scan ~f = scan f
-    let while_do ?size ~f = while_do size f
-    let do_while ?size ~f = do_while size f
-    let range ?until p = range p until
-    let repeat ?times = repeat times
-    let cycle ?times = cycle times
-    let take_while ~f = take_while f
-    let drop_while ~f = drop_while f
-    let span ~f = span f
-    let break ~f = break f
-    let group ~f = group f
-    let merge ~f = merge f
-    let mergen ~f = mergen f
-    let switchn x ~f = switchn x f
-    let farm ?par ?size ?path = farm par size path
-  end
+struct
+  let iter ~f x = iter f x
+  let switch ~f x = switch f x
+  let to_string_fmt ~fmt = to_string_fmt fmt
+  let to_string_fun ~fn = to_string_fun fn
+  let foldl ~f ~init = foldl f init
+  let foldr ~f ~init = foldr f init
+  let fold ~f ~init = fold f init
+  let filter ~f = filter f
+  let map ~f = map f
+  let map2 ~f = map2 f
+  let scanl ~f = scanl f
+  let scan ~f = scan f
+  let while_do ?size ~f = while_do size f
+  let do_while ?size ~f = do_while size f
+  let range ?until p = range p until
+  let repeat ?times = repeat times
+  let cycle ?times = cycle times
+  let take_while ~f = take_while f
+  let drop_while ~f = drop_while f
+  let span ~f = span f
+  let break ~f = break f
+  let group ~f = group f
+  let merge ~f = merge f
+  let mergen ~f = mergen f
+  let switchn x ~f = switchn x f
+  let farm ?par ?size ?path = farm par size path
+end

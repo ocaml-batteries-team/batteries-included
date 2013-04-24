@@ -48,9 +48,9 @@ let link bt1 bt2 =
 let rec add_tree t = function
   | [] -> [t]
   | (ut :: uts) as ts ->
-      assert (t.rank <= ut.rank) ;
-      if t.rank < ut.rank then t :: ts
-      else add_tree (link t ut) uts
+    assert (t.rank <= ut.rank) ;
+    if t.rank < ut.rank then t :: ts
+    else add_tree (link t ut) uts
 
 let insert bh x =
   let size = bh.size + 1 in
@@ -73,12 +73,12 @@ let rec merge_data ts1 ts2 = match ts1, ts2 with
   | _, [] -> ts1
   | [], _ -> ts2
   | t1 :: tss1, t2 :: tss2 ->
-      if t1.rank < t2.rank then
-        t1 :: merge_data tss1 ts2
-      else if t1.rank > t2.rank then
-        t2 :: merge_data ts1 tss2
-      else
-        add_tree (link t1 t2) (merge_data tss1 tss2)
+    if t1.rank < t2.rank then
+      t1 :: merge_data tss1 ts2
+    else if t1.rank > t2.rank then
+      t2 :: merge_data ts1 tss2
+    else
+      add_tree (link t1 t2) (merge_data tss1 tss2)
 
 let merge bh1 bh2 =
   let size = bh1.size + bh2.size in
@@ -103,22 +103,22 @@ let rec find_min_tree ts k = match ts with
   | [] -> failwith "find_min_tree"
   | [t] -> k t
   | t :: ts ->
-      find_min_tree ts begin
-        fun u ->
-          if Pervasives.compare t.root u.root <= 0
-          then k t else k u
-      end
+    find_min_tree ts begin
+      fun u ->
+        if Pervasives.compare t.root u.root <= 0
+        then k t else k u
+    end
 
 let rec del_min_tree bts k = match bts with
   | [] -> invalid_arg "del_min"
   | [t] -> k t []
   | t :: ts ->
-      del_min_tree ts begin
-        fun u uts ->
-          if Pervasives.compare t.root u.root <= 0
-          then k t ts
-          else k u (t :: uts)
-      end
+    del_min_tree ts begin
+      fun u uts ->
+        if Pervasives.compare t.root u.root <= 0
+        then k t ts
+        else k u (t :: uts)
+    end
 
 let del_min bh =
   del_min_tree bh.data begin
@@ -232,9 +232,9 @@ module Make (Ord : BatInterfaces.OrderedType) = struct
   let rec add_tree t = function
     | [] -> [t]
     | (ut :: uts) as ts ->
-        assert (t.rank <= ut.rank) ;
-        if t.rank < ut.rank then t :: ts
-        else add_tree (link t ut) uts
+      assert (t.rank <= ut.rank) ;
+      if t.rank < ut.rank then t :: ts
+      else add_tree (link t ut) uts
 
   let insert bh x =
     let data = add_tree { rank = 0 ; root = x ; kids = [] } bh.data in
@@ -251,12 +251,12 @@ module Make (Ord : BatInterfaces.OrderedType) = struct
     | _, [] -> ts1
     | [], _ -> ts2
     | t1 :: tss1, t2 :: tss2 ->
-        if t1.rank < t2.rank then
-          t1 :: merge_data tss1 ts2
-        else if t1.rank > t2.rank then
-          t2 :: merge_data ts1 tss2
-        else
-          add_tree (link t1 t2) (merge_data tss1 tss2)
+      if t1.rank < t2.rank then
+        t1 :: merge_data tss1 ts2
+      else if t1.rank > t2.rank then
+        t2 :: merge_data ts1 tss2
+      else
+        add_tree (link t1 t2) (merge_data tss1 tss2)
 
   let merge bh1 bh2 =
     let size = bh1.size + bh2.size in
@@ -275,22 +275,22 @@ module Make (Ord : BatInterfaces.OrderedType) = struct
     | [] -> failwith "find_min_tree"
     | [t] -> k t
     | t :: ts ->
-        find_min_tree ts begin
-          fun u ->
-            if Ord.compare t.root u.root <= 0
-            then k t else k u
-        end
+      find_min_tree ts begin
+        fun u ->
+          if Ord.compare t.root u.root <= 0
+          then k t else k u
+      end
 
   let rec del_min_tree bts k = match bts with
     | [] -> invalid_arg "del_min"
     | [t] -> k t []
     | t :: ts ->
-        del_min_tree ts begin
-          fun u uts ->
-            if Ord.compare t.root u.root <= 0
-            then k t ts
-            else k u (t :: uts)
-        end
+      del_min_tree ts begin
+        fun u uts ->
+          if Ord.compare t.root u.root <= 0
+          then k t ts
+          else k u (t :: uts)
+      end
 
   let del_min bh =
     del_min_tree bh.data begin

@@ -15,74 +15,74 @@ let bounding_of_ord ~default_low ~default_high conv ord =
   fun ~(bounds : 'a bound_t * 'a bound_t) ->
     match bounds with
     | `c l, `c u -> begin
-      if ord l u = O.Gt then raise Invalid_bounds;
-      fun x ->
-        match ord x l, ord x u with
-        | O.Lt, _ -> default_low
-        | _, O.Gt -> default_high
-        | O.Eq, _
-        | _, O.Eq
-        | O.Gt, _ -> conv x
-    end
+        if ord l u = O.Gt then raise Invalid_bounds;
+        fun x ->
+          match ord x l, ord x u with
+          | O.Lt, _ -> default_low
+          | _, O.Gt -> default_high
+          | O.Eq, _
+          | _, O.Eq
+          | O.Gt, _ -> conv x
+      end
     | `u, `c u -> begin
-      fun x ->
-        match ord x u with
-        | O.Gt -> default_high
-        | O.Eq
-        | O.Lt -> conv x
-    end
+        fun x ->
+          match ord x u with
+          | O.Gt -> default_high
+          | O.Eq
+          | O.Lt -> conv x
+      end
     | `c l, `u -> begin
-      fun x ->
-        match ord x l with
-        | O.Lt -> default_low
-        | O.Gt
-        | O.Eq -> conv x
-    end
+        fun x ->
+          match ord x l with
+          | O.Lt -> default_low
+          | O.Gt
+          | O.Eq -> conv x
+      end
     | `u, `u -> conv
     | `o l, `o u -> begin
-      if ord l u = O.Gt then raise Invalid_bounds;
-      fun x ->
-        match ord x l, ord x u with
-        | O.Lt, _
-        | O.Eq, _ -> default_low
-        | _, O.Gt
-        | _, O.Eq -> default_high
-        | O.Gt, _ -> conv x
-    end
+        if ord l u = O.Gt then raise Invalid_bounds;
+        fun x ->
+          match ord x l, ord x u with
+          | O.Lt, _
+          | O.Eq, _ -> default_low
+          | _, O.Gt
+          | _, O.Eq -> default_high
+          | O.Gt, _ -> conv x
+      end
     | `u, `o u -> begin
-      fun x ->
-        match ord x u with
-        | O.Gt
-        | O.Eq -> default_high
-        | O.Lt -> conv x
-    end
+        fun x ->
+          match ord x u with
+          | O.Gt
+          | O.Eq -> default_high
+          | O.Lt -> conv x
+      end
     | `o l, `u -> begin
-      fun x ->
-        match ord x l with
-        | O.Lt
-        | O.Eq -> default_low
-        | O.Gt -> conv x
-    end
+        fun x ->
+          match ord x l with
+          | O.Lt
+          | O.Eq -> default_low
+          | O.Gt -> conv x
+      end
     | `c l, `o u -> begin
-      if ord l u = O.Gt then raise Invalid_bounds;
-      fun x ->
-        match ord x l, ord x u with
-        | O.Lt, _ -> default_low
-        | _, O.Gt
-        | _, O.Eq -> default_high
-        | O.Eq, _
-        | O.Gt, _ -> conv x
-    end
+        if ord l u = O.Gt then raise Invalid_bounds;
+        fun x ->
+          match ord x l, ord x u with
+          | O.Lt, _ -> default_low
+          | _, O.Gt
+          | _, O.Eq -> default_high
+          | O.Eq, _
+          | O.Gt, _ -> conv x
+      end
     | `o l, `c u -> begin
-      if ord l u = O.Gt then raise Invalid_bounds;
-      fun x ->
-        match ord x l, ord x u with
-        | O.Lt, _
-        | O.Eq, _ -> default_low
-        | _, O.Gt -> default_high
-        | _, O.Eq
-        | O.Gt, _ -> conv x
-    end
+        if ord l u = O.Gt then raise Invalid_bounds;
+        fun x ->
+          match ord x l, ord x u with
+          | O.Lt, _
+          | O.Eq, _ -> default_low
+          | _, O.Gt -> default_high
+          | _, O.Eq
+          | O.Gt, _ -> conv x
+      end
 
 (*$T bounding_of_ord
    bounding_of_ord ~default_low:None ~default_high:None (fun x -> Some x) BatInt.ord ~bounds:(`u, `u) 0 = Some 0
@@ -103,75 +103,75 @@ let bounding_of_ord_chain ~low ~high conv ord =
     match bounds with
     (* Closed bounds (inclusive) *)
     | `c l, `c u -> begin
-      if ord l u = O.Gt then raise Invalid_bounds;
-      fun x ->
-        match ord x l, ord x u with
-        | O.Lt, _ -> low x
-        | _, O.Gt -> high x
-        | O.Eq, _
-        | _, O.Eq
-        | O.Gt, _ -> conv x
-    end
+        if ord l u = O.Gt then raise Invalid_bounds;
+        fun x ->
+          match ord x l, ord x u with
+          | O.Lt, _ -> low x
+          | _, O.Gt -> high x
+          | O.Eq, _
+          | _, O.Eq
+          | O.Gt, _ -> conv x
+      end
     | `u, `c u -> begin
-      fun x ->
-        match ord x u with
-        | O.Gt -> high x
-        | O.Eq
-        | O.Lt -> conv x
-    end
+        fun x ->
+          match ord x u with
+          | O.Gt -> high x
+          | O.Eq
+          | O.Lt -> conv x
+      end
     | `c l, `u -> begin
-      fun x ->
-        match ord x l with
-        | O.Lt -> low x
-        | O.Gt
-        | O.Eq -> conv x
-    end
+        fun x ->
+          match ord x l with
+          | O.Lt -> low x
+          | O.Gt
+          | O.Eq -> conv x
+      end
     (* Open bounds (exclusive) *)
     | `o l, `o u -> begin
-      if ord l u = O.Gt then raise Invalid_bounds;
-      fun x ->
-        match ord x l, ord x u with
-        | O.Lt, _
-        | O.Eq, _ -> low x
-        | _, O.Gt
-        | _, O.Eq -> high x
-        | O.Gt, _ -> conv x
-    end
+        if ord l u = O.Gt then raise Invalid_bounds;
+        fun x ->
+          match ord x l, ord x u with
+          | O.Lt, _
+          | O.Eq, _ -> low x
+          | _, O.Gt
+          | _, O.Eq -> high x
+          | O.Gt, _ -> conv x
+      end
     | `u, `o u -> begin
-      fun x ->
-        match ord x u with
-        | O.Gt
-        | O.Eq -> high x
-        | O.Lt -> conv x
-    end
+        fun x ->
+          match ord x u with
+          | O.Gt
+          | O.Eq -> high x
+          | O.Lt -> conv x
+      end
     | `o l, `u -> begin
-      fun x ->
-        match ord x l with
-        | O.Lt
-        | O.Eq -> low x
-        | O.Gt -> conv x
-    end
+        fun x ->
+          match ord x l with
+          | O.Lt
+          | O.Eq -> low x
+          | O.Gt -> conv x
+      end
     (* Mixed open and closed bounds *)
     | `c l, `o u -> begin
-      if ord l u = O.Gt then raise Invalid_bounds;
-      fun x ->
-        match ord x l, ord x u with
-        | O.Lt, _ -> low x
-        | _, O.Gt
-        | _, O.Eq -> high x
-        | O.Eq, _
-        | O.Gt, _ -> conv x
-    end
+        if ord l u = O.Gt then raise Invalid_bounds;
+        fun x ->
+          match ord x l, ord x u with
+          | O.Lt, _ -> low x
+          | _, O.Gt
+          | _, O.Eq -> high x
+          | O.Eq, _
+          | O.Gt, _ -> conv x
+      end
     | `o l, `c u -> begin
-      if ord l u = O.Gt then raise Invalid_bounds;
-      fun x ->
-        match ord x l, ord x u with
-        | O.Lt, _
-        | O.Eq, _ -> low x
-        | _, O.Gt -> high x
-        | _, O.Eq
-        | O.Gt, _ -> conv x
-    end
+        if ord l u = O.Gt then raise Invalid_bounds;
+        fun x ->
+          match ord x l, ord x u with
+          | O.Lt, _
+          | O.Eq, _ -> low x
+          | _, O.Gt -> high x
+          | _, O.Eq
+          | O.Gt, _ -> conv x
+      end
     | `u, `u -> conv
 
 (*$T bounding_of_ord_chain as f
@@ -194,16 +194,16 @@ let saturate_of_ord ~(bounds : 'a bound_t * 'a bound_t) ord =
   | `c l, `c h
   | `o l, `c h
   | `c l, `o h ->
-      bounding_of_ord_chain
-        ~low:(const l) ~high:(const h) identity ord ~bounds
+    bounding_of_ord_chain
+      ~low:(const l) ~high:(const h) identity ord ~bounds
   | `u, `o h
   | `u, `c h ->
-      bounding_of_ord_chain ~low:identity ~high:(const h) identity ord ~bounds
+    bounding_of_ord_chain ~low:identity ~high:(const h) identity ord ~bounds
   | `o l, `u
   | `c l, `u ->
-      bounding_of_ord_chain ~low:(const l) ~high:identity identity ord ~bounds
+    bounding_of_ord_chain ~low:(const l) ~high:identity identity ord ~bounds
   | `u, `u ->
-      bounding_of_ord_chain ~low:identity ~high:identity identity ord ~bounds
+    bounding_of_ord_chain ~low:identity ~high:identity identity ord ~bounds
 
 let opt_of_ord ~(bounds : 'a bound_t * 'a bound_t) ord =
   bounding_of_ord_chain ~low:ret_none ~high:ret_none ret_some ord ~bounds
@@ -261,11 +261,11 @@ module Make(M : BoundedType) : (
   let map2 f x y =
     match base_of_t x, base_of_t y with
     | Some bx, Some by ->
-        Some (make (f bx by))
+      Some (make (f bx by))
     | None, Some _
     | Some _, None
     | None, None ->
-        None
+      None
   let map_exn f x =
     make (f (base_of_t_exn x))
   let map2_exn f x y =

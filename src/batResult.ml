@@ -1,7 +1,7 @@
 
 type ('a, 'b) t = ('a, 'b) BatPervasives.result =
- | Ok  of 'a
- | Bad of 'b
+  | Ok  of 'a
+  | Bad of 'b
 
 let catch f x = try Ok (f x) with e -> Bad e
 let catch2 f x y = try Ok (f x y) with e -> Bad e

@@ -23,13 +23,13 @@ open BatParserCo
 
 (** {6 Entry point} *)
 type position =
-{
-  offset: int;
-  line:   int
-}
+  {
+    offset: int;
+    line:   int
+  }
 let start_position =
-{ offset = 1;
-  line   = 1 }
+  { offset = 1;
+    line   = 1 }
 
 let advance c p =
   if BatChar.is_newline c then ((*Printf.eprintf "[Have reached line %i]\n%!" (p.line + 1);*) { offset = 1; line = p.line + 1})
@@ -58,25 +58,25 @@ let parse p s =
 let char   c = label ("\"" ^ BatString.of_char c ^ "\"") (exactly c)
 
 let string s = label ("\"" ^ s ^ "\"") (
-  let len = String.length s in
-  let rec aux i =
-    if i < len then exactly s.[i] >>= fun _ -> aux (i+1)
-    else return s
-  in aux 0
-)
+    let len = String.length s in
+    let rec aux i =
+      if i < len then exactly s.[i] >>= fun _ -> aux (i+1)
+      else return s
+    in aux 0
+  )
 
 let case_char c =
   if BatChar.is_letter c then one_of [Char.uppercase c; Char.lowercase c]
   else char c
 
 let case_string s = label ("case insensitive \"" ^ s ^ "\"") (
-  let s'  = String.lowercase s in
-  let len = String.length s'   in
-  let rec aux i =
-    if i < len then case_char s'.[i] >>= fun _ -> aux (i+1)
-    else return s
-  in aux 0
-)
+    let s'  = String.lowercase s in
+    let len = String.length s'   in
+    let rec aux i =
+      if i < len then case_char s'.[i] >>= fun _ -> aux (i+1)
+      else return s
+    in aux 0
+  )
 
 let whitespace = satisfy BatChar.is_whitespace
 
@@ -85,28 +85,28 @@ let lowercase = label "lower case char" (satisfy BatChar.is_lowercase)
 let letter    = label "letter" (satisfy BatChar.is_letter)
 
 let uppercase_latin1   = label "upper case char (possibly accentuated)"
-  ( satisfy BatChar.is_uppercase_latin1 )
+    ( satisfy BatChar.is_uppercase_latin1 )
 
 let lowercase_latin1   = label "lower case char (possibly accentuated)"
-  ( satisfy BatChar.is_lowercase_latin1 )
+    ( satisfy BatChar.is_lowercase_latin1 )
 let latin1    = label "letter (possibly accentuated)" (satisfy BatChar.is_latin1)
 
 let digit = label "digit"
-  ( satisfy BatChar.is_digit)
+    ( satisfy BatChar.is_digit)
 
 let hex = label "hex"
-  ( satisfy (fun x -> ( '0' <= x && x <= '9' ) || ('a' <= x && x <= 'f') || ('A' <= x && x <= 'F')))
+    ( satisfy (fun x -> ( '0' <= x && x <= '9' ) || ('a' <= x && x <= 'f') || ('A' <= x && x <= 'F')))
 
 let not_char c = label ("anything but '" ^ BatString.of_char c ^ "'")
-  (satisfy (fun x -> x <> c) (*>>=
-     fun x -> Printf.eprintf "(%c)\n" x; return x*)
-)
+    (satisfy (fun x -> x <> c) (*>>=
+                                 fun x -> Printf.eprintf "(%c)\n" x; return x*)
+    )
 
 let none_of l = label (
-  BatString.of_list (BatVect.to_list (BatVect.append ']'
-    (List.fold_left (fun acc x -> BatVect.append x acc)
-       (BatVect.of_list (BatString.to_list "anything but ['"))
-       l))))
-  (none_of l)
+    BatString.of_list (BatVect.to_list (BatVect.append ']'
+          (List.fold_left (fun acc x -> BatVect.append x acc)
+             (BatVect.of_list (BatString.to_list "anything but ['"))
+             l))))
+    (none_of l)
 
 let newline = satisfy BatChar.is_newline

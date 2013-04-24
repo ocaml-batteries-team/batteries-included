@@ -110,24 +110,24 @@ type error = Unix.error =
   | EOVERFLOW           (** File size or position not representable *)
   | EUNKNOWNERR of int  (** Unknown error *)
 (** The type of error codes.
-   Errors defined in the POSIX standard
-   and additional errors from UNIX98 and BSD.
-   All other errors are mapped to EUNKNOWNERR.
+    Errors defined in the POSIX standard
+    and additional errors from UNIX98 and BSD.
+    All other errors are mapped to EUNKNOWNERR.
 *)
 
 exception Unix_error of error * string * string
 (** Raised by the system calls below when an error is encountered.
-   The first component is the error code; the second component
-   is the function name; the third component is the string parameter
-   to the function, if it has one, or the empty string otherwise. *)
+    The first component is the error code; the second component
+    is the function name; the third component is the string parameter
+    to the function, if it has one, or the empty string otherwise. *)
 
 val error_message : error -> string
 (** Return a string describing the given error code. *)
 
 val handle_unix_error : ('a -> 'b) -> 'a -> 'b
 (** [handle_unix_error f x] applies [f] to [x] and returns the result.
-   If the exception [Unix_error] is raised, it prints a message
-   describing the error and exits with code 2. *)
+    If the exception [Unix_error] is raised, it prints a message
+    describing the error and exits with code 2. *)
 
 
 (** {6 Access to the process environment} *)
@@ -139,14 +139,14 @@ val environment : unit -> string array
 
 val getenv : string -> string
 (** Return the value associated to a variable in the process
-   environment. @raise Not_found if the variable is unbound.
-   (This function is identical to {!Sys.getenv}.) *)
+    environment. @raise Not_found if the variable is unbound.
+    (This function is identical to {!Sys.getenv}.) *)
 
 val putenv : string -> string -> unit
 (** [Unix.putenv name value] sets the value associated to a
-   variable in the process environment.
-   [name] is the name of the environment variable,
-   and [value] its new associated value. *)
+    variable in the process environment.
+    [name] is the name of the environment variable,
+    and [value] its new associated value. *)
 
 
 (** {6 Process handling} *)
@@ -154,14 +154,14 @@ val putenv : string -> string -> unit
 
 type process_status = Unix.process_status =
     WEXITED of int
-        (** The process terminated normally by [exit];
-           the argument is the return code. *)
+  (** The process terminated normally by [exit];
+      the argument is the return code. *)
   | WSIGNALED of int
-        (** The process was killed by a signal;
-           the argument is the signal number. *)
+  (** The process was killed by a signal;
+      the argument is the signal number. *)
   | WSTOPPED of int
-        (** The process was stopped by a signal; the argument is the
-           signal number. *)
+  (** The process was stopped by a signal; the argument is the
+      signal number. *)
 (** The termination status of a process.  See module {!Sys} for the
     definitions of the standard signal numbers.  Note that they are
     not the numbers used by the OS. *)
@@ -169,52 +169,52 @@ type process_status = Unix.process_status =
 
 type wait_flag = Unix.wait_flag =
     WNOHANG (** do not block if no child has
-               died yet, but immediately return with a pid equal to 0.*)
+                died yet, but immediately return with a pid equal to 0.*)
   | WUNTRACED (** report also the children that receive stop signals. *)
 (** Flags for {!Unix.waitpid}. *)
 
 val execv : string -> string array -> 'a
 (** [execv prog args] execute the program in file [prog], with
-   the arguments [args], and the current process environment.
-   These [execv*] functions never return: on success, the current
-   program is replaced by the new one;
-   @raise Unix.Unix_error on failure. *)
+    the arguments [args], and the current process environment.
+    These [execv*] functions never return: on success, the current
+    program is replaced by the new one;
+    @raise Unix.Unix_error on failure. *)
 
 val execve : string -> string array -> string array -> 'a
 (** Same as {!Unix.execv}, except that the third argument provides the
-   environment to the program executed. *)
+    environment to the program executed. *)
 
 val execvp : string -> string array -> 'a
 (** Same as {!Unix.execv}, except that
-   the program is searched in the path. *)
+    the program is searched in the path. *)
 
 val execvpe : string -> string array -> string array -> 'a
 (** Same as {!Unix.execve}, except that
-   the program is searched in the path. *)
+    the program is searched in the path. *)
 
 val fork : unit -> int
 (** Fork a new process. The returned integer is 0 for the child
-   process, the pid of the child process for the parent process. *)
+    process, the pid of the child process for the parent process. *)
 
 val wait : unit -> int * process_status
 (** Wait until one of the children processes die, and return its pid
-   and termination status. *)
+    and termination status. *)
 
 val waitpid : wait_flag list -> int -> int * process_status
 (** Same as {!Unix.wait}, but waits for the child process whose pid is given.
-   A pid of [-1] means wait for any child.
-   A pid of [0] means wait for any child in the same process group
-   as the current process.
-   Negative pid arguments represent process groups.
-   The list of options indicates whether [waitpid] should return
-   immediately without waiting, or also report stopped children. *)
+    A pid of [-1] means wait for any child.
+    A pid of [0] means wait for any child in the same process group
+    as the current process.
+    Negative pid arguments represent process groups.
+    The list of options indicates whether [waitpid] should return
+    immediately without waiting, or also report stopped children. *)
 
 val system : string -> process_status
 (** Execute the given command, wait until it terminates, and return
-   its termination status. The string is interpreted by the shell
-   [/bin/sh] and therefore can contain redirections, quotes, variables,
-   etc. The result [WEXITED 127] indicates that the shell couldn't
-   be executed. *)
+    its termination status. The string is interpreted by the shell
+    [/bin/sh] and therefore can contain redirections, quotes, variables,
+    etc. The result [WEXITED 127] indicates that the shell couldn't
+    be executed. *)
 
 val getpid : unit -> int
 (** Return the pid of the process. *)
@@ -224,8 +224,8 @@ val getppid : unit -> int
 
 val nice : int -> int
 (** Change the process priority. The integer argument is added to the
-   ``nice'' value. (Higher values of the ``nice'' value mean
-   lower priorities.) Return the new nice value. *)
+    ``nice'' value. (Higher values of the ``nice'' value mean
+    lower priorities.) Return the new nice value. *)
 
 
 (** {6 Basic file input/output} *)
@@ -254,11 +254,11 @@ type open_flag = Unix.open_flag =
   | O_EXCL                      (** Fail if existing *)
   | O_NOCTTY                    (** Don't make this dev a controlling tty *)
   | O_DSYNC                     (** Writes complete as `Synchronised I/O data
-                                   integrity completion' *)
+                                    integrity completion' *)
   | O_SYNC                      (** Writes complete as `Synchronised I/O file
-                                   integrity completion' *)
+                                    integrity completion' *)
   | O_RSYNC                     (** Reads complete as writes (depending on
-                                   O_SYNC/O_DSYNC) *)
+                                    O_SYNC/O_DSYNC) *)
 ##V4##  | O_SHARE_DELETE              (** OCaml 4 and Windows only: allow the file to be deleted
 ##V4##                                   while still open *)
 (** The flags to {!Unix.openfile}. *)
@@ -270,28 +270,28 @@ type file_perm = int
 
 val openfile : string -> open_flag list -> file_perm -> file_descr
 (** Open the named file with the given flags. Third argument is
-   the permissions to give to the file if it is created. Return
-   a file descriptor on the named file. *)
+    the permissions to give to the file if it is created. Return
+    a file descriptor on the named file. *)
 
 val close : file_descr -> unit
 (** Close a file descriptor. *)
 
 val read : file_descr -> string -> int -> int -> int
 (** [read fd buff ofs len] reads [len] characters from descriptor
-   [fd], storing them in string [buff], starting at position [ofs]
-   in string [buff]. Return the number of characters actually read. *)
+    [fd], storing them in string [buff], starting at position [ofs]
+    in string [buff]. Return the number of characters actually read. *)
 
 val write : file_descr -> string -> int -> int -> int
 (** [write fd buff ofs len] writes [len] characters to descriptor
-   [fd], taking them from string [buff], starting at position [ofs]
-   in string [buff]. Return the number of characters actually
-   written.  [write] repeats the writing operation until all characters
-   have been written or an error occurs.  *)
+    [fd], taking them from string [buff], starting at position [ofs]
+    in string [buff]. Return the number of characters actually
+    written.  [write] repeats the writing operation until all characters
+    have been written or an error occurs.  *)
 
 val single_write : file_descr -> string -> int -> int -> int
 (** Same as [write], but attempts to write only once.
-   Thus, if an error occurs, [single_write] guarantees that no data
-   has been written. *)
+    Thus, if an error occurs, [single_write] guarantees that no data
+    has been written. *)
 
 (** {6 Interfacing with the standard input/output library} *)
 
@@ -299,13 +299,13 @@ open BatInnerIO
 
 val in_channel_of_descr : file_descr -> in_channel
 (** Create an input channel reading from the given descriptor.
-   The channel is initially in binary mode; use
-   [set_binary_mode_in ic false] if text mode is desired. *)
+    The channel is initially in binary mode; use
+    [set_binary_mode_in ic false] if text mode is desired. *)
 
 val out_channel_of_descr : file_descr -> out_channel
 (** Create an output channel writing on the given descriptor.
-   The channel is initially in binary mode; use
-   [set_binary_mode_out oc false] if text mode is desired. *)
+    The channel is initially in binary mode; use
+    [set_binary_mode_out oc false] if text mode is desired. *)
 
 val descr_of_in_channel : in_channel -> file_descr
 (** Return the descriptor corresponding to an input channel. *)
@@ -334,14 +334,14 @@ val input_of_descr: ?autoclose:bool -> ?cleanup:bool -> file_descr -> BatInnerIO
 *)
 
 val output_of_descr: ?cleanup:bool -> file_descr -> unit BatInnerIO.output
-  (** Create an {!type:output} writing on the given descriptor.
-      The {!type:output} is initially in binary mode; use
-      [set_binary_mode_out oc false] if text mode is desired.
+(** Create an {!type:output} writing on the given descriptor.
+    The {!type:output} is initially in binary mode; use
+    [set_binary_mode_out oc false] if text mode is desired.
 
-      @param cleanup If true, close the underlying file descriptor
-      when the {!type:output} is closed. If false or unspecified,
-      do nothing, in which case you will need to close the underlying
-      file descriptor yourself to ensure proper cleanup.
+    @param cleanup If true, close the underlying file descriptor
+    when the {!type:output} is closed. If false or unspecified,
+    do nothing, in which case you will need to close the underlying
+    file descriptor yourself to ensure proper cleanup.
 *)
 
 val descr_of_input : BatInnerIO.input -> file_descr
@@ -355,20 +355,20 @@ val descr_of_input : BatInnerIO.input -> file_descr
 *)
 
 val descr_of_output : unit BatInnerIO.output -> file_descr
-  (** Return the descriptor corresponding to an output.
+(** Return the descriptor corresponding to an output.
 
-      Not all inputs have file descriptors. This function works
-      only for inputs which have been created from module Unix.
+    Not all inputs have file descriptors. This function works
+    only for inputs which have been created from module Unix.
 
-      @raise Invalid_argument if this input
-      channel doesn't have a file descriptor
-  *)
+    @raise Invalid_argument if this input
+    channel doesn't have a file descriptor
+*)
 
 
 
 (*val pipeio: unit -> file_descr * file_descr
   (** As {!pipe} but return an input and an output for the
-*)*)
+ *)*)
 
 
 
@@ -390,7 +390,7 @@ val truncate : string -> int -> unit
 
 val ftruncate : file_descr -> int -> unit
 (** Truncates the file corresponding to the given descriptor
-   to the given size. *)
+    to the given size. *)
 
 
 (** {6 File status} *)
@@ -426,50 +426,50 @@ val stat : string -> stats
 
 val lstat : string -> stats
 (** Same as {!Unix.stat}, but in case the file is a symbolic link,
-   return the information for the link itself. *)
+    return the information for the link itself. *)
 
 val fstat : file_descr -> stats
 (** Return the information for the file associated with the given
-   descriptor. *)
+    descriptor. *)
 
 val isatty : file_descr -> bool
 (** Return [true] if the given file descriptor refers to a terminal or
-   console window, [false] otherwise. *)
+    console window, [false] otherwise. *)
 
 (** {6 File operations on large files} *)
 
 module LargeFile :
-  sig
-    val lseek : file_descr -> int64 -> seek_command -> int64
-    val truncate : string -> int64 -> unit
-    val ftruncate : file_descr -> int64 -> unit
-    type stats = Unix.LargeFile.stats =
-      { st_dev : int;               (** Device number *)
-        st_ino : int;               (** Inode number *)
-        st_kind : file_kind;        (** Kind of the file *)
-        st_perm : file_perm;        (** Access rights *)
-        st_nlink : int;             (** Number of links *)
-        st_uid : int;               (** User id of the owner *)
-        st_gid : int;               (** Group ID of the file's group *)
-        st_rdev : int;              (** Device minor number *)
-        st_size : int64;            (** Size in bytes *)
-        st_atime : float;           (** Last access time *)
-        st_mtime : float;           (** Last modification time *)
-        st_ctime : float;           (** Last status change time *)
-      }
-    val stat : string -> stats
-    val lstat : string -> stats
-    val fstat : file_descr -> stats
-  end
+sig
+  val lseek : file_descr -> int64 -> seek_command -> int64
+  val truncate : string -> int64 -> unit
+  val ftruncate : file_descr -> int64 -> unit
+  type stats = Unix.LargeFile.stats =
+    { st_dev : int;               (** Device number *)
+      st_ino : int;               (** Inode number *)
+      st_kind : file_kind;        (** Kind of the file *)
+      st_perm : file_perm;        (** Access rights *)
+      st_nlink : int;             (** Number of links *)
+      st_uid : int;               (** User id of the owner *)
+      st_gid : int;               (** Group ID of the file's group *)
+      st_rdev : int;              (** Device minor number *)
+      st_size : int64;            (** Size in bytes *)
+      st_atime : float;           (** Last access time *)
+      st_mtime : float;           (** Last modification time *)
+      st_ctime : float;           (** Last status change time *)
+    }
+  val stat : string -> stats
+  val lstat : string -> stats
+  val fstat : file_descr -> stats
+end
 (** File operations on large files.
-  This sub-module provides 64-bit variants of the functions
-  {!Unix.lseek} (for positioning a file descriptor),
-  {!Unix.truncate} and {!Unix.ftruncate} (for changing the size of a file),
-  and {!Unix.stat}, {!Unix.lstat} and {!Unix.fstat} (for obtaining
-  information on files).  These alternate functions represent
-  positions and sizes by 64-bit integers (type [int64]) instead of
-  regular integers (type [int]), thus allowing operating on files
-  whose sizes are greater than [max_int]. *)
+    This sub-module provides 64-bit variants of the functions
+    {!Unix.lseek} (for positioning a file descriptor),
+    {!Unix.truncate} and {!Unix.ftruncate} (for changing the size of a file),
+    and {!Unix.stat}, {!Unix.lstat} and {!Unix.fstat} (for obtaining
+    information on files).  These alternate functions represent
+    positions and sizes by 64-bit integers (type [int64]) instead of
+    regular integers (type [int]), thus allowing operating on files
+    whose sizes are greater than [max_int]. *)
 
 
 (** {6 Operations on file names} *)
@@ -483,7 +483,7 @@ val rename : string -> string -> unit
 
 val link : string -> string -> unit
 (** [link source dest] creates a hard link named [dest] to the file
-   named [source]. *)
+    named [source]. *)
 
 
 (** {6 File permissions and ownership} *)
@@ -515,7 +515,7 @@ val umask : int -> int
 
 val access : string -> access_permission list -> unit
 (** Check that the process has the given permissions over the named
-   file. @raise Unix_error otherwise. *)
+    file. @raise Unix_error otherwise. *)
 
 
 (** {6 Operations on file descriptors} *)
@@ -523,33 +523,33 @@ val access : string -> access_permission list -> unit
 
 val dup : file_descr -> file_descr
 (** Return a new file descriptor referencing the same file as
-   the given descriptor. *)
+    the given descriptor. *)
 
 val dup2 : file_descr -> file_descr -> unit
 (** [dup2 fd1 fd2] duplicates [fd1] to [fd2], closing [fd2] if already
-   opened. *)
+    opened. *)
 
 val set_nonblock : file_descr -> unit
 (** Set the ``non-blocking'' flag on the given descriptor.
-   When the non-blocking flag is set, reading on a descriptor
-   on which there is temporarily no data available
-   raises EAGAIN or EWOULDBLOCK error instead of blocking;
-   writing on a descriptor on which there is temporarily no room
-   for writing also raises EAGAIN or EWOULDBLOCK. *)
+    When the non-blocking flag is set, reading on a descriptor
+    on which there is temporarily no data available
+    raises EAGAIN or EWOULDBLOCK error instead of blocking;
+    writing on a descriptor on which there is temporarily no room
+    for writing also raises EAGAIN or EWOULDBLOCK. *)
 
 val clear_nonblock : file_descr -> unit
 (** Clear the ``non-blocking'' flag on the given descriptor.
-   See {!Unix.set_nonblock}.*)
+    See {!Unix.set_nonblock}.*)
 
 val set_close_on_exec : file_descr -> unit
 (** Set the ``close-on-exec'' flag on the given descriptor.
-   A descriptor with the close-on-exec flag is automatically
-   closed when the current process starts another program with
-   one of the [exec] functions. *)
+    A descriptor with the close-on-exec flag is automatically
+    closed when the current process starts another program with
+    one of the [exec] functions. *)
 
 val clear_close_on_exec : file_descr -> unit
 (** Clear the ``close-on-exec'' flag on the given descriptor.
-   See {!Unix.set_close_on_exec}.*)
+    See {!Unix.set_close_on_exec}.*)
 
 
 (** {6 Directories} *)
@@ -578,7 +578,7 @@ val opendir : string -> dir_handle
 
 val readdir : dir_handle -> string
 (** Return the next entry in a directory.
-   @raise End_of_file when the end of the directory has been reached. *)
+    @raise End_of_file when the end of the directory has been reached. *)
 
 val rewinddir : dir_handle -> unit
 (** Reposition the descriptor to the beginning of the directory *)
@@ -592,8 +592,8 @@ val closedir : dir_handle -> unit
 
 val pipe : unit -> file_descr * file_descr
 (** Create a pipe. The first component of the result is opened
-   for reading, that's the exit to the pipe. The second component is
-   opened for writing, that's the entrance to the pipe. *)
+    for reading, that's the exit to the pipe. The second component is
+    opened for writing, that's the entrance to the pipe. *)
 
 val mkfifo : string -> file_perm -> unit
 (** Create a named pipe with the given permissions. *)
@@ -620,122 +620,122 @@ val open_process_in : ?autoclose: bool -> ?cleanup:bool -> string -> BatInnerIO.
 *)
 
 val open_process_out : ?cleanup:bool -> string -> unit BatInnerIO.output
-  (**
-      Same as {!Unix.open_process_in}, but redirect the standard input of
-      the command to a pipe.  Data written to the returned output
-      is sent to the standard input of the command.
+(**
+    Same as {!Unix.open_process_in}, but redirect the standard input of
+    the command to a pipe.  Data written to the returned output
+    is sent to the standard input of the command.
 
-      {b Warning} writes on outputs are buffered, hence be careful
-      to call {!Pervasives.flush} at the right times to ensure
-      correct synchronization.
+    {b Warning} writes on outputs are buffered, hence be careful
+    to call {!Pervasives.flush} at the right times to ensure
+    correct synchronization.
 
-      @param cleanup If true or unspecified, close the process when the {!type:output}
-      is closed. If false, do nothing, in which case you
-      will need to close the process yourself to ensure proper cleanup.
+    @param cleanup If true or unspecified, close the process when the {!type:output}
+    is closed. If false, do nothing, in which case you
+    will need to close the process yourself to ensure proper cleanup.
 *)
 
 val open_process : ?autoclose:bool -> ?cleanup:bool -> string -> BatInnerIO.input * unit BatInnerIO.output
-  (**
-      Same as {!Unix.open_process_out}, but redirects both the
-      standard input and standard output of the command to pipes
-      connected to the two returned {!type: input}/{!type: output}.
-      The returned {!type: input} is connected to the output of the
-      command, and the returned {!type: output} to the input of the
-      command.
+(**
+    Same as {!Unix.open_process_out}, but redirects both the
+    standard input and standard output of the command to pipes
+    connected to the two returned {!type: input}/{!type: output}.
+    The returned {!type: input} is connected to the output of the
+    command, and the returned {!type: output} to the input of the
+    command.
 
-      @param autoclose If true (default value), close the input
-      automatically once there is no more content to read. Otherwise,
-      the input will be closed according to the usual rules of module
-      {!BatIO}. Barring very specific needs (e.g. using file descriptors as
-      locks), you probably want [autoclose] to be [true].
+    @param autoclose If true (default value), close the input
+    automatically once there is no more content to read. Otherwise,
+    the input will be closed according to the usual rules of module
+    {!BatIO}. Barring very specific needs (e.g. using file descriptors as
+    locks), you probably want [autoclose] to be [true].
 
-      @param cleanup If true or unspecified, close the process when either the
-      {!type:output} or the {!type:output} is closed. If false,
-      do nothing, in which case you will need to close
-      the process yourself to ensure proper cleanup.
-  *)
+    @param cleanup If true or unspecified, close the process when either the
+    {!type:output} or the {!type:output} is closed. If false,
+    do nothing, in which case you will need to close
+    the process yourself to ensure proper cleanup.
+*)
 
 
 
 val open_process_full :
   ?autoclose:bool -> ?cleanup:bool -> string -> string array -> BatInnerIO.input * unit BatInnerIO.output * BatInnerIO.input
-  (** Similar to {!Unix.open_process}, but the second argument
-      specifies the environment passed to the command.  The result is
-      a triple of {!type:input}/{!type:output} connected respectively
-      to the standard output, standard input, and standard error of
-      the command.
+(** Similar to {!Unix.open_process}, but the second argument
+    specifies the environment passed to the command.  The result is
+    a triple of {!type:input}/{!type:output} connected respectively
+    to the standard output, standard input, and standard error of
+    the command.
 
-      @param autoclose If true (default value), close the input
-      automatically once there is no more content to read. Otherwise,
-      the input will be closed according to the usual rules of module
-      {!BatIO}. Barring very specific needs (e.g. using file descriptors as
-      locks), you probably want [autoclose] to be [true].
+    @param autoclose If true (default value), close the input
+    automatically once there is no more content to read. Otherwise,
+    the input will be closed according to the usual rules of module
+    {!BatIO}. Barring very specific needs (e.g. using file descriptors as
+    locks), you probably want [autoclose] to be [true].
 
-     @param cleanup If true or unspecified, close the process when either the
-      {!type:output} or the {!type:output} is closed. If false,
-      do nothing, in which case you will need to close
-      the process yourself to ensure proper cleanup.
-  *)
+    @param cleanup If true or unspecified, close the process when either the
+    {!type:output} or the {!type:output} is closed. If false,
+    do nothing, in which case you will need to close
+    the process yourself to ensure proper cleanup.
+*)
 
 val close_process_in : BatInnerIO.input -> process_status
-  (** Close {!type:input} opened by {!Unix.open_process_in},
-      wait for the associated command to terminate,
-      and return its termination status.
+(** Close {!type:input} opened by {!Unix.open_process_in},
+    wait for the associated command to terminate,
+    and return its termination status.
 
-      @raise Unix_error(EBADF, "close_process_in", "") if the argument
-      is not an {!type:input} opened by {!Unix.open_process_in}.
-  *)
+    @raise Unix_error(EBADF, "close_process_in", "") if the argument
+    is not an {!type:input} opened by {!Unix.open_process_in}.
+*)
 
 val close_process_out : unit BatInnerIO.output -> process_status
-  (** Close {!type:output} opened by {!Unix.open_process_out},
-      wait for the associated command to terminate,
-      and return its termination status.
+(** Close {!type:output} opened by {!Unix.open_process_out},
+    wait for the associated command to terminate,
+    and return its termination status.
 
-      @raise Unix_error(EBADF, "close_process_out", "") if the argument
-      is not an {!type:output} opened by {!Unix.open_process_out}.
+    @raise Unix_error(EBADF, "close_process_out", "") if the argument
+    is not an {!type:output} opened by {!Unix.open_process_out}.
 *)
 
 val close_process : BatInnerIO.input * unit BatInnerIO.output -> process_status
-  (** Close {!type:input}/{!type:output} opened by {!Unix.open_process},
-      wait for the associated command to terminate,
-      and return its termination status.
+(** Close {!type:input}/{!type:output} opened by {!Unix.open_process},
+    wait for the associated command to terminate,
+    and return its termination status.
 
-      @raise Unix_error(EBADF, "close_process", "") if the argument
-      is not pair of {!type:input}/{!type:output} opened by {!Unix.open_process}.
-  *)
+    @raise Unix_error(EBADF, "close_process", "") if the argument
+    is not pair of {!type:input}/{!type:output} opened by {!Unix.open_process}.
+*)
 
 val close_process_full :
   BatInnerIO.input * unit BatInnerIO.output * BatInnerIO.input -> process_status
-  (** Close i/o opened by {!Unix.open_process_full},
-      wait for the associated command to terminate,
-      and return its termination status.
+(** Close i/o opened by {!Unix.open_process_full},
+    wait for the associated command to terminate,
+    and return its termination status.
 
-      @raise Unix_error(EBADF, "close_process_full", "") if the argument
-      is not a triple of {!type:input}/{!type:output} opened by {!Unix.open_process_full}.
+    @raise Unix_error(EBADF, "close_process_full", "") if the argument
+    is not a triple of {!type:input}/{!type:output} opened by {!Unix.open_process_full}.
 *)
 
 
 val create_process :
   string -> string array -> file_descr -> file_descr -> file_descr -> int
 (** [create_process prog args new_stdin new_stdout new_stderr]
-   forks a new process that executes the program
-   in file [prog], with arguments [args]. The pid of the new
-   process is returned immediately; the new process executes
-   concurrently with the current process.
-   The standard input and outputs of the new process are connected
-   to the descriptors [new_stdin], [new_stdout] and [new_stderr].
-   Passing e.g. [stdout] for [new_stdout] prevents the redirection
-   and causes the new process to have the same standard output
-   as the current process.
-   The executable file [prog] is searched in the path.
-   The new process has the same environment as the current process. *)
+    forks a new process that executes the program
+    in file [prog], with arguments [args]. The pid of the new
+    process is returned immediately; the new process executes
+    concurrently with the current process.
+    The standard input and outputs of the new process are connected
+    to the descriptors [new_stdin], [new_stdout] and [new_stderr].
+    Passing e.g. [stdout] for [new_stdout] prevents the redirection
+    and causes the new process to have the same standard output
+    as the current process.
+    The executable file [prog] is searched in the path.
+    The new process has the same environment as the current process. *)
 
 val create_process_env :
   string -> string array -> string array -> file_descr -> file_descr ->
-    file_descr -> int
+  file_descr -> int
 (** [create_process_env prog args env new_stdin new_stdout new_stderr]
-   works as {!Unix.create_process}, except that the extra argument
-   [env] specifies the environment passed to the program. *)
+    works as {!Unix.create_process}, except that the extra argument
+    [env] specifies the environment passed to the program. *)
 
 
 (** {6 Symbolic links} *)
@@ -743,7 +743,7 @@ val create_process_env :
 
 val symlink : string -> string -> unit
 (** [symlink source dest] creates the file [dest] as a symbolic link
-   to the file [source]. *)
+    to the file [source]. *)
 
 val readlink : string -> string
 (** Read the contents of a link. *)
@@ -754,17 +754,17 @@ val readlink : string -> string
 
 val select :
   file_descr list -> file_descr list -> file_descr list -> float ->
-    file_descr list * file_descr list * file_descr list
+  file_descr list * file_descr list * file_descr list
 (** Wait until some input/output operations become possible on
-   some channels. The three list arguments are, respectively, a set
-   of descriptors to check for reading (first argument), for writing
-   (second argument), or for exceptional conditions (third argument).
-   The fourth argument is the maximal timeout, in seconds; a
-   negative fourth argument means no timeout (unbounded wait).
-   The result is composed of three sets of descriptors: those ready
-   for reading (first component), ready for writing (second component),
-   and over which an exceptional condition is pending (third
-   component). *)
+    some channels. The three list arguments are, respectively, a set
+    of descriptors to check for reading (first argument), for writing
+    (second argument), or for exceptional conditions (third argument).
+    The fourth argument is the maximal timeout, in seconds; a
+    negative fourth argument means no timeout (unbounded wait).
+    The result is composed of three sets of descriptors: those ready
+    for reading (first component), ready for writing (second component),
+    and over which an exceptional condition is pending (third
+    component). *)
 
 (** {6 Locking} *)
 
@@ -780,39 +780,39 @@ type lock_command = Unix.lock_command =
 
 val lockf : file_descr -> lock_command -> int -> unit
 (** [lockf fd cmd size] puts a lock on a region of the file opened
-   as [fd]. The region starts at the current read/write position for
-   [fd] (as set by {!Unix.lseek}), and extends [size] bytes forward if
-   [size] is positive, [size] bytes backwards if [size] is negative,
-   or to the end of the file if [size] is zero.
-   A write lock prevents any other
-   process from acquiring a read or write lock on the region.
-   A read lock prevents any other
-   process from acquiring a write lock on the region, but lets
-   other processes acquire read locks on it.
+    as [fd]. The region starts at the current read/write position for
+    [fd] (as set by {!Unix.lseek}), and extends [size] bytes forward if
+    [size] is positive, [size] bytes backwards if [size] is negative,
+    or to the end of the file if [size] is zero.
+    A write lock prevents any other
+    process from acquiring a read or write lock on the region.
+    A read lock prevents any other
+    process from acquiring a write lock on the region, but lets
+    other processes acquire read locks on it.
 
-   The [F_LOCK] and [F_TLOCK] commands attempts to put a write lock
-   on the specified region.
-   The [F_RLOCK] and [F_TRLOCK] commands attempts to put a read lock
-   on the specified region.
-   If one or several locks put by another process prevent the current process
-   from acquiring the lock, [F_LOCK] and [F_RLOCK] block until these locks
-   are removed, while [F_TLOCK] and [F_TRLOCK] fail immediately with an
-   exception.
-   The [F_ULOCK] removes whatever locks the current process has on
-   the specified region.
-   Finally, the [F_TEST] command tests whether a write lock can be
-   acquired on the specified region, without actually putting a lock.
-   It returns immediately if successful, or fails otherwise. *)
+    The [F_LOCK] and [F_TLOCK] commands attempts to put a write lock
+    on the specified region.
+    The [F_RLOCK] and [F_TRLOCK] commands attempts to put a read lock
+    on the specified region.
+    If one or several locks put by another process prevent the current process
+    from acquiring the lock, [F_LOCK] and [F_RLOCK] block until these locks
+    are removed, while [F_TLOCK] and [F_TRLOCK] fail immediately with an
+    exception.
+    The [F_ULOCK] removes whatever locks the current process has on
+    the specified region.
+    Finally, the [F_TEST] command tests whether a write lock can be
+    acquired on the specified region, without actually putting a lock.
+    It returns immediately if successful, or fails otherwise. *)
 
 
 (** {6 Signals}
-   Note: installation of signal handlers is performed via
-   the functions {!Sys.signal} and {!Sys.set_signal}.
+    Note: installation of signal handlers is performed via
+    the functions {!Sys.signal} and {!Sys.set_signal}.
 *)
 
 val kill : int -> int -> unit
 (** [kill pid sig] sends signal number [sig] to the process
-   with id [pid]. *)
+    with id [pid]. *)
 
 type sigprocmask_command = Unix.sigprocmask_command =
     SIG_SETMASK
@@ -821,21 +821,21 @@ type sigprocmask_command = Unix.sigprocmask_command =
 
 val sigprocmask : sigprocmask_command -> int list -> int list
 (** [sigprocmask cmd sigs] changes the set of blocked signals.
-   If [cmd] is [SIG_SETMASK], blocked signals are set to those in
-   the list [sigs].
-   If [cmd] is [SIG_BLOCK], the signals in [sigs] are added to
-   the set of blocked signals.
-   If [cmd] is [SIG_UNBLOCK], the signals in [sigs] are removed
-   from the set of blocked signals.
-   [sigprocmask] returns the set of previously blocked signals. *)
+    If [cmd] is [SIG_SETMASK], blocked signals are set to those in
+    the list [sigs].
+    If [cmd] is [SIG_BLOCK], the signals in [sigs] are added to
+    the set of blocked signals.
+    If [cmd] is [SIG_UNBLOCK], the signals in [sigs] are removed
+    from the set of blocked signals.
+    [sigprocmask] returns the set of previously blocked signals. *)
 
 val sigpending : unit -> int list
 (** Return the set of blocked signals that are currently pending. *)
 
 val sigsuspend : int list -> unit
 (** [sigsuspend sigs] atomically sets the blocked signals to [sigs]
-   and waits for a non-ignored, non-blocked signal to be delivered.
-   On return, the blocked signals are reset to their initial value. *)
+    and waits for a non-ignored, non-blocked signal to be delivered.
+    On return, the blocked signals are reset to their initial value. *)
 
 val pause : unit -> unit
 (** Wait until a non-ignored, non-blocked signal is delivered. *)
@@ -868,28 +868,28 @@ type tm = Unix.tm =
 
 val time : unit -> float
 (** Return the current time since 00:00:00 GMT, Jan. 1, 1970,
-   in seconds. *)
+    in seconds. *)
 
 val gettimeofday : unit -> float
 (** Same as {!Unix.time}, but with resolution better than 1 second. *)
 
 val gmtime : float -> tm
 (** Convert a time in seconds, as returned by {!Unix.time}, into a date and
-   a time. Assumes UTC (Coordinated Universal Time), also known as GMT. *)
+    a time. Assumes UTC (Coordinated Universal Time), also known as GMT. *)
 
 val localtime : float -> tm
 (** Convert a time in seconds, as returned by {!Unix.time}, into a date and
-   a time. Assumes the local time zone. *)
+    a time. Assumes the local time zone. *)
 
 val mktime : tm -> float * tm
 (** Convert a date and time, specified by the [tm] argument, into
-   a time in seconds, as returned by {!Unix.time}.  The [tm_isdst],
-   [tm_wday] and [tm_yday] fields of [tm] are ignored.  Also return a
-   normalized copy of the given [tm] record, with the [tm_wday],
-   [tm_yday], and [tm_isdst] fields recomputed from the other fields,
-   and the other fields normalized (so that, e.g., 40 October is
-   changed into 9 November).  The [tm] argument is interpreted in the
-   local time zone. *)
+    a time in seconds, as returned by {!Unix.time}.  The [tm_isdst],
+    [tm_wday] and [tm_yday] fields of [tm] are ignored.  Also return a
+    normalized copy of the given [tm] record, with the [tm_wday],
+    [tm_yday], and [tm_isdst] fields recomputed from the other fields,
+    and the other fields normalized (so that, e.g., 40 October is
+    changed into 9 November).  The [tm] argument is interpreted in the
+    local time zone. *)
 
 val alarm : int -> int
 (** Schedule a [SIGALRM] signal after the given number of seconds. *)
@@ -902,21 +902,21 @@ val times : unit -> process_times
 
 val utimes : string -> float -> float -> unit
 (** Set the last access time (second arg) and last modification time
-   (third arg) for a file. Times are expressed in seconds from
-   00:00:00 GMT, Jan. 1, 1970.  A time of [0.0] is interpreted as the
-   current time. *)
+    (third arg) for a file. Times are expressed in seconds from
+    00:00:00 GMT, Jan. 1, 1970.  A time of [0.0] is interpreted as the
+    current time. *)
 
 type interval_timer = Unix.interval_timer =
     ITIMER_REAL
-      (** decrements in real time, and sends the signal [SIGALRM] when
-         expired.*)
+  (** decrements in real time, and sends the signal [SIGALRM] when
+      expired.*)
   | ITIMER_VIRTUAL
-      (** decrements in process virtual time, and sends [SIGVTALRM]
-          when expired. *)
+  (** decrements in process virtual time, and sends [SIGVTALRM]
+      when expired. *)
   | ITIMER_PROF
-      (** (for profiling) decrements both when the process
-         is running and when the system is running on behalf of the
-         process; it sends [SIGPROF] when expired. *)
+  (** (for profiling) decrements both when the process
+      is running and when the system is running on behalf of the
+      process; it sends [SIGPROF] when expired. *)
 (** The three kinds of interval timers. *)
 
 type interval_timer_status = Unix.interval_timer_status =
@@ -931,13 +931,13 @@ val getitimer : interval_timer -> interval_timer_status
 val setitimer :
   interval_timer -> interval_timer_status -> interval_timer_status
 (** [setitimer t s] sets the interval timer [t] and returns
-   its previous status. The [s] argument is interpreted as follows:
-   [s.it_value], if nonzero, is the time to the next timer expiration;
-   [s.it_interval], if nonzero, specifies a value to
-   be used in reloading it_value when the timer expires.
-   Setting [s.it_value] to zero disable the timer.
-   Setting [s.it_interval] to zero causes the timer to be disabled
-   after its next expiration. *)
+    its previous status. The [s] argument is interpreted as follows:
+    [s.it_value], if nonzero, is the time to the next timer expiration;
+    [s.it_interval], if nonzero, specifies a value to
+    be used in reloading it_value when the timer expires.
+    Setting [s.it_value] to zero disable the timer.
+    Setting [s.it_interval] to zero causes the timer to be disabled
+    after its next expiration. *)
 
 
 (** {6 User id, group id} *)
@@ -963,17 +963,17 @@ val setgid : int -> unit
 
 val getgroups : unit -> int array
 (** Return the list of groups to which the user executing the process
-   belongs. *)
+    belongs. *)
 
 val setgroups : int array -> unit
-  (** [setgroups groups] sets the supplementary group IDs for the
-      calling process. Appropriate privileges are required. *)
+(** [setgroups groups] sets the supplementary group IDs for the
+    calling process. Appropriate privileges are required. *)
 
 val initgroups : string -> int -> unit
-  (** [initgroups user group] initializes the group access list by
-      reading the group database /etc/group and using all groups of
-      which [user] is a member. The additional group [group] is also
-      added to the list. *)
+(** [initgroups user group] initializes the group access list by
+    reading the group database /etc/group and using all groups of
+    which [user] is a member. The additional group [group] is also
+    added to the list. *)
 
 type passwd_entry = Unix.passwd_entry =
   { pw_name : string;
@@ -999,19 +999,19 @@ val getlogin : unit -> string
 
 val getpwnam : string -> passwd_entry
 (** Find an entry in [passwd] with the given name.
-   @raise Not_found if no such entry can be found. *)
+    @raise Not_found if no such entry can be found. *)
 
 val getgrnam : string -> group_entry
 (** Find an entry in [group] with the given name.
-   @raise Not_found if no such entry can be found. *)
+    @raise Not_found if no such entry can be found. *)
 
 val getpwuid : int -> passwd_entry
 (** Find an entry in [passwd] with the given user id.
-   @raise Not_found if no such entry can be found. *)
+    @raise Not_found if no such entry can be found. *)
 
 val getgrgid : int -> group_entry
 (** Find an entry in [group] with the given group id.
-   @raise Not_found if no such entry can be found. *)
+    @raise Not_found if no such entry can be found. *)
 
 
 (** {6 Internet addresses} *)
@@ -1035,14 +1035,14 @@ val string_of_inet_addr : inet_addr -> string
 
 val inet_addr_any : inet_addr
 (** A special IPv4 address, for use only with [bind], representing
-   all the Internet addresses that the host machine possesses. *)
+    all the Internet addresses that the host machine possesses. *)
 
 val inet_addr_loopback : inet_addr
 (** A special IPv4 address representing the host machine ([127.0.0.1]). *)
 
 val inet6_addr_any : inet_addr
 (** A special IPv6 address, for use only with [bind], representing
-   all the Internet addresses that the host machine possesses. *)
+    all the Internet addresses that the host machine possesses. *)
 
 val inet6_addr_loopback : inet_addr
 (** A special IPv6 address representing the host machine ([::1]). *)
@@ -1064,21 +1064,21 @@ type socket_type = Unix.socket_type =
   | SOCK_RAW                    (** Raw socket *)
   | SOCK_SEQPACKET              (** Sequenced packets socket *)
 (** The type of socket kinds, specifying the semantics of
-   communications. *)
+    communications. *)
 
 type sockaddr = Unix.sockaddr =
     ADDR_UNIX of string
   | ADDR_INET of inet_addr * int
-(** The type of socket addresses. [ADDR_UNIX name] is a socket
-   address in the Unix domain; [name] is a file name in the file
-   system. [ADDR_INET(addr,port)] is a socket address in the Internet
-   domain; [addr] is the Internet address of the machine, and
-   [port] is the port number. *)
+  (** The type of socket addresses. [ADDR_UNIX name] is a socket
+      address in the Unix domain; [name] is a file name in the file
+      system. [ADDR_INET(addr,port)] is a socket address in the Internet
+      domain; [addr] is the Internet address of the machine, and
+      [port] is the port number. *)
 
 val socket : socket_domain -> socket_type -> int -> file_descr
 (** Create a new socket in the given domain, and with the
-   given kind. The third argument is the protocol type; 0 selects
-   the default protocol for that kind of sockets. *)
+    given kind. The third argument is the protocol type; 0 selects
+    the default protocol for that kind of sockets. *)
 
 val domain_of_sockaddr: sockaddr -> socket_domain
 (** Return the socket domain adequate for the given socket address. *)
@@ -1089,8 +1089,8 @@ val socketpair :
 
 val accept : file_descr -> file_descr * sockaddr
 (** Accept connections on the given socket. The returned descriptor
-   is a socket connected to the client; the returned address is
-   the address of the connecting client. *)
+    is a socket connected to the client; the returned address is
+    the address of the connecting client. *)
 
 val bind : file_descr -> sockaddr -> unit
 (** Bind a socket to an address. *)
@@ -1100,7 +1100,7 @@ val connect : file_descr -> sockaddr -> unit
 
 val listen : file_descr -> int -> unit
 (** Set up a socket for receiving connection requests. The integer
-   argument is the maximal number of pending requests. *)
+    argument is the maximal number of pending requests. *)
 
 type shutdown_command = Unix.shutdown_command =
     SHUTDOWN_RECEIVE            (** Close for receiving *)
@@ -1111,10 +1111,10 @@ type shutdown_command = Unix.shutdown_command =
 
 val shutdown : file_descr -> shutdown_command -> unit
 (** Shutdown a socket connection. [SHUTDOWN_SEND] as second argument
-   causes reads on the other end of the connection to return
-   an end-of-file condition.
-   [SHUTDOWN_RECEIVE] causes writes on the other end of the connection
-   to return a closed pipe condition ([SIGPIPE] signal). *)
+    causes reads on the other end of the connection to return
+    an end-of-file condition.
+    [SHUTDOWN_RECEIVE] causes writes on the other end of the connection
+    to return a closed pipe condition ([SIGPIPE] signal). *)
 
 val getsockname : file_descr -> sockaddr
 (** Return the address of the given socket. *)
@@ -1126,8 +1126,8 @@ type msg_flag = Unix.msg_flag =
     MSG_OOB
   | MSG_DONTROUTE
   | MSG_PEEK
-(** The flags for {!Unix.recv},  {!Unix.recvfrom},
-   {!Unix.send} and {!Unix.sendto}. *)
+  (** The flags for {!Unix.recv},  {!Unix.recvfrom},
+      {!Unix.send} and {!Unix.sendto}. *)
 
 val recv : file_descr -> string -> int -> int -> msg_flag list -> int
 (** Receive data from a connected socket. *)
@@ -1159,8 +1159,8 @@ type socket_bool_option = Unix.socket_bool_option =
   | TCP_NODELAY    (** Control the Nagle algorithm for TCP sockets *)
   | IPV6_ONLY      (** Forbid binding an IPv6 socket to an IPv4 address *)
 (** The socket options that can be consulted with {!Unix.getsockopt}
-   and modified with {!Unix.setsockopt}.  These options have a boolean
-   ([true]/[false]) value. *)
+    and modified with {!Unix.setsockopt}.  These options have a boolean
+    ([true]/[false]) value. *)
 
 type socket_int_option = Unix.socket_int_option =
     SO_SNDBUF      (** Size of send buffer *)
@@ -1171,28 +1171,28 @@ type socket_int_option = Unix.socket_int_option =
   | SO_SNDLOWAT    (** Minimum number of bytes to process for output
                        operations *)
 (** The socket options that can be consulted with {!Unix.getsockopt_int}
-   and modified with {!Unix.setsockopt_int}.  These options have an
-   integer value. *)
+    and modified with {!Unix.setsockopt_int}.  These options have an
+    integer value. *)
 
 type socket_optint_option = Unix.socket_optint_option =
-  SO_LINGER      (** Whether to linger on closed connections
-                    that have data present, and for how long
-                    (in seconds) *)
+    SO_LINGER      (** Whether to linger on closed connections
+                       that have data present, and for how long
+                       (in seconds) *)
 (** The socket options that can be consulted with {!Unix.getsockopt_optint}
-   and modified with {!Unix.setsockopt_optint}.  These options have a
-   value of type [int option], with [None] meaning ``disabled''. *)
+    and modified with {!Unix.setsockopt_optint}.  These options have a
+    value of type [int option], with [None] meaning ``disabled''. *)
 
 type socket_float_option = Unix.socket_float_option =
     SO_RCVTIMEO    (** Timeout for input operations *)
   | SO_SNDTIMEO    (** Timeout for output operations *)
 (** The socket options that can be consulted with {!Unix.getsockopt_float}
-   and modified with {!Unix.setsockopt_float}.  These options have a
-   floating-point value representing a time in seconds.
-   The value 0 means infinite timeout. *)
+    and modified with {!Unix.setsockopt_float}.  These options have a
+    floating-point value representing a time in seconds.
+    The value 0 means infinite timeout. *)
 
 val getsockopt : file_descr -> socket_bool_option -> bool
 (** Return the current status of a boolean-valued option
-   in the given socket. *)
+    in the given socket. *)
 
 val setsockopt : file_descr -> socket_bool_option -> bool -> unit
 (** Set or clear a boolean-valued option in the given socket. *)
@@ -1205,20 +1205,20 @@ val setsockopt_int : file_descr -> socket_int_option -> int -> unit
 
 val getsockopt_optint : file_descr -> socket_optint_option -> int option
 (** Same as {!Unix.getsockopt} for a socket option whose value is an
-   [int option]. *)
+    [int option]. *)
 
 val setsockopt_optint :
-      file_descr -> socket_optint_option -> int option -> unit
+  file_descr -> socket_optint_option -> int option -> unit
 (** Same as {!Unix.setsockopt} for a socket option whose value is an
-   [int option]. *)
+    [int option]. *)
 
 val getsockopt_float : file_descr -> socket_float_option -> float
 (** Same as {!Unix.getsockopt} for a socket option whose value is a
-   floating-point number. *)
+    floating-point number. *)
 
 val setsockopt_float : file_descr -> socket_float_option -> float -> unit
 (** Same as {!Unix.setsockopt} for a socket option whose value is a
-   floating-point number. *)
+    floating-point number. *)
 
 val getsockopt_error : file_descr -> error option
 (** Return the error condition associated with the given socket,
@@ -1227,52 +1227,52 @@ val getsockopt_error : file_descr -> error option
 (** {6 High-level network connection functions} *)
 
 val open_connection : ?autoclose:bool -> sockaddr -> BatInnerIO.input * unit BatInnerIO.output
-  (** Connect to a server at the given address.
-      Return a pair of input/output connected to the server. The
-      connection is closed whenever either the input or the output
-      is closed.
+(** Connect to a server at the given address.
+    Return a pair of input/output connected to the server. The
+    connection is closed whenever either the input or the output
+    is closed.
 
-      Remember to call {!Pervasives.flush} on the output  at the right
-      times to ensure correct synchronization.
+    Remember to call {!Pervasives.flush} on the output  at the right
+    times to ensure correct synchronization.
 
-      @param autoclose If true (default value), close the input
-      automatically once there is no more content to read. Otherwise,
-      the input will be closed according to the usual rules of module
-      {!BatIO}. Barring very specific needs (e.g. using file descriptors as
-      locks), you probably want [autoclose] to be [true].
-  *)
+    @param autoclose If true (default value), close the input
+    automatically once there is no more content to read. Otherwise,
+    the input will be closed according to the usual rules of module
+    {!BatIO}. Barring very specific needs (e.g. using file descriptors as
+    locks), you probably want [autoclose] to be [true].
+*)
 
 val shutdown_connection : BatInnerIO.input -> unit
-  (**
-      ``Shut down'' a connection established with {!Unix.open_connection};
-      that is, transmit an end-of-file condition to the server reading
-      on the other side of the connection.
+(**
+    ``Shut down'' a connection established with {!Unix.open_connection};
+    that is, transmit an end-of-file condition to the server reading
+    on the other side of the connection.
 
-      @deprecated Connections do not require a special function anymore.
-      Use regular function {!BatIO.close_in} for closing connections.
+    @deprecated Connections do not require a special function anymore.
+    Use regular function {!BatIO.close_in} for closing connections.
 *)
 
 val establish_server : ?autoclose:bool -> ?cleanup:bool -> (BatInnerIO.input -> unit BatInnerIO.output -> unit) -> sockaddr -> unit
-  (** Establish a server on the given address.
+(** Establish a server on the given address.
 
-      [establish_server f addr] establishes a server on address
-      [addr].  For each connection on this address, function [f] is
-      called with two buffered channels connected to the client. A new
-      process is created for each connection. The function
-      {!Unix.establish_server} never returns normally.
+    [establish_server f addr] establishes a server on address
+    [addr].  For each connection on this address, function [f] is
+    called with two buffered channels connected to the client. A new
+    process is created for each connection. The function
+    {!Unix.establish_server} never returns normally.
 
-      @param autoclose If true (default value), inputs passed to [f]
-      close the input automatically once there is no more content to
-      read. Otherwise, the input will be closed according to the usual
-      rules of module {!BatIO}. Barring very specific needs (e.g. using
-      file descriptors as locks), you probably want [autoclose] to be
-      [true].
+    @param autoclose If true (default value), inputs passed to [f]
+    close the input automatically once there is no more content to
+    read. Otherwise, the input will be closed according to the usual
+    rules of module {!BatIO}. Barring very specific needs (e.g. using
+    file descriptors as locks), you probably want [autoclose] to be
+    [true].
 
-      @param cleanup If true or unspecified, close the connection when
-      the {!type:input} or the {!type:output} is closed or
-      garbage-collected. If false, do nothing, in which case you will
-      need to shutdown the connection using {!shutdown_connection} to
-      ensure proper cleanup.  *)
+    @param cleanup If true or unspecified, close the connection when
+    the {!type:input} or the {!type:output} is closed or
+    garbage-collected. If false, do nothing, in which case you will
+    need to shutdown the connection using {!shutdown_connection} to
+    ensure proper cleanup.  *)
 
 
 (** {6 Host and protocol databases} *)
@@ -1306,27 +1306,27 @@ val gethostname : unit -> string
 
 val gethostbyname : string -> host_entry
 (** Find an entry in [hosts] with the given name.
-   @raise Not_found if no such entry can be found. *)
+    @raise Not_found if no such entry can be found. *)
 
 val gethostbyaddr : inet_addr -> host_entry
 (** Find an entry in [hosts] with the given address.
-   @raise Not_found if no such entry can be found. *)
+    @raise Not_found if no such entry can be found. *)
 
 val getprotobyname : string -> protocol_entry
 (** Find an entry in [protocols] with the given name
-   @raise Not_found if no such entry can be found. *)
+    @raise Not_found if no such entry can be found. *)
 
 val getprotobynumber : int -> protocol_entry
 (** Find an entry in [protocols] with the given protocol number.
-   @raise Not_found if no such entry can be found. *)
+    @raise Not_found if no such entry can be found. *)
 
 val getservbyname : string -> string -> service_entry
 (** Find an entry in [services] with the given name.
-   @raise Not_found if no such entry can be found. *)
+    @raise Not_found if no such entry can be found. *)
 
 val getservbyport : int -> string -> service_entry
 (** Find an entry in [services] with the given service number.
-   @raise Not_found if no such entry can be found. *)
+    @raise Not_found if no such entry can be found. *)
 
 type addr_info = Unix.addr_info =
   { ai_family : socket_domain;          (** Socket domain *)
@@ -1393,9 +1393,9 @@ val getnameinfo : sockaddr -> getnameinfo_option list -> name_info
 
 
 (** The following functions implement the POSIX standard terminal
-   interface. They provide control over asynchronous communication ports
-   and pseudo-terminals. Refer to the [termios] man page for a
-   complete description. *)
+    interface. They provide control over asynchronous communication ports
+    and pseudo-terminals. Refer to the [termios] man page for a
+    complete description. *)
 
 type terminal_io = Unix.terminal_io =
   {
@@ -1426,7 +1426,7 @@ type terminal_io = Unix.terminal_io =
     (* Local modes: *)
     mutable c_isig : bool;    (** Generate signal on INTR, QUIT, SUSP. *)
     mutable c_icanon : bool;  (** Enable canonical processing
-                                 (line buffering and editing) *)
+                                  (line buffering and editing) *)
     mutable c_noflsh : bool;  (** Disable flush after INTR, QUIT, SUSP. *)
     mutable c_echo : bool;    (** Echo input characters. *)
     mutable c_echoe : bool;   (** Echo ERASE (to erase previous character). *)
@@ -1440,7 +1440,7 @@ type terminal_io = Unix.terminal_io =
     mutable c_veof : char;    (** End-of-file character (usually ctrl-D). *)
     mutable c_veol : char;    (** Alternate end-of-line char. (usually none). *)
     mutable c_vmin : int;     (** Minimum number of characters to read
-                                 before the read request is satisfied. *)
+                                  before the read request is satisfied. *)
     mutable c_vtime : int;    (** Maximum read wait (in 0.1s units). *)
     mutable c_vstart : char;  (** Start character (usually ctrl-Q). *)
     mutable c_vstop : char;   (** Stop character (usually ctrl-S). *)
@@ -1448,7 +1448,7 @@ type terminal_io = Unix.terminal_io =
 
 val tcgetattr : file_descr -> terminal_io
 (** Return the status of the terminal referred to by the given
-   file descriptor. *)
+    file descriptor. *)
 
 type setattr_when = Unix.setattr_when =
     TCSANOW
@@ -1457,22 +1457,22 @@ type setattr_when = Unix.setattr_when =
 
 val tcsetattr : file_descr -> setattr_when -> terminal_io -> unit
 (** Set the status of the terminal referred to by the given
-   file descriptor. The second argument indicates when the
-   status change takes place: immediately ([TCSANOW]),
-   when all pending output has been transmitted ([TCSADRAIN]),
-   or after flushing all input that has been received but not
-   read ([TCSAFLUSH]). [TCSADRAIN] is recommended when changing
-   the output parameters; [TCSAFLUSH], when changing the input
-   parameters. *)
+    file descriptor. The second argument indicates when the
+    status change takes place: immediately ([TCSANOW]),
+    when all pending output has been transmitted ([TCSADRAIN]),
+    or after flushing all input that has been received but not
+    read ([TCSAFLUSH]). [TCSADRAIN] is recommended when changing
+    the output parameters; [TCSAFLUSH], when changing the input
+    parameters. *)
 
 val tcsendbreak : file_descr -> int -> unit
 (** Send a break condition on the given file descriptor.
-   The second argument is the duration of the break, in 0.1s units;
-   0 means standard duration (0.25s). *)
+    The second argument is the duration of the break, in 0.1s units;
+    0 means standard duration (0.25s). *)
 
 val tcdrain : file_descr -> unit
 (** Waits until all output written on the given file descriptor
-   has been transmitted. *)
+    has been transmitted. *)
 
 type flush_queue = Unix.flush_queue =
     TCIFLUSH
@@ -1481,10 +1481,10 @@ type flush_queue = Unix.flush_queue =
 
 val tcflush : file_descr -> flush_queue -> unit
 (** Discard data written on the given file descriptor but not yet
-   transmitted, or data received but not yet read, depending on the
-   second argument: [TCIFLUSH] flushes data received but not read,
-   [TCOFLUSH] flushes data written but not transmitted, and
-   [TCIOFLUSH] flushes both. *)
+    transmitted, or data received but not yet read, depending on the
+    second argument: [TCIFLUSH] flushes data received but not read,
+    [TCOFLUSH] flushes data written but not transmitted, and
+    [TCIOFLUSH] flushes both. *)
 
 type flow_action = Unix.flow_action =
     TCOOFF
@@ -1494,14 +1494,14 @@ type flow_action = Unix.flow_action =
 
 val tcflow : file_descr -> flow_action -> unit
 (** Suspend or restart reception or transmission of data on
-   the given file descriptor, depending on the second argument:
-   [TCOOFF] suspends output, [TCOON] restarts output,
-   [TCIOFF] transmits a STOP character to suspend input,
-   and [TCION] transmits a START character to restart input. *)
+    the given file descriptor, depending on the second argument:
+    [TCOOFF] suspends output, [TCOON] restarts output,
+    [TCIOFF] transmits a STOP character to suspend input,
+    and [TCION] transmits a START character to restart input. *)
 
 val setsid : unit -> int
 (** Put the calling process in a new session and detach it from
-   its controlling terminal. *)
+    its controlling terminal. *)
 
 
 (** {6 Small tools} *)
@@ -1543,5 +1543,4 @@ val descr_of_in_channel : BatInnerIO.input -> file_descr
 (** @deprecated use {!descr_of_input}. *)
 
 val descr_of_out_channel : unit BatInnerIO.output -> file_descr
-(** @deprecated use {!descr_of_output}. *)
-
+  (** @deprecated use {!descr_of_output}. *)

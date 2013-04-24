@@ -71,7 +71,7 @@ module type Enumerable = sig
   type 'a enumerable (** The data structure, e.g. ['a List.t] *)
 
   val enum : 'a enumerable -> 'a t
-    (** Return an enumeration of the elements of the data structure *)
+  (** Return an enumeration of the elements of the data structure *)
 
   val of_enum : 'a t -> 'a enumerable
     (** Build a data structure from an enumeration *)
@@ -83,9 +83,9 @@ include BatInterfaces.Mappable with type 'a mappable = 'a t
 
 (** {6 Final functions}
 
- These functions consume the enumeration until
- it ends or an exception is raised by the first
- argument function.
+    These functions consume the enumeration until
+    it ends or an exception is raised by the first
+    argument function.
 *)
 
 val iter : ('a -> unit) -> 'a t -> unit
@@ -93,7 +93,7 @@ val iter : ('a -> unit) -> 'a t -> unit
 
 val iter2 : ('a -> 'b -> unit) -> 'a t -> 'b t -> unit
 (** [iter2 f e1 e2] calls the function [f] with the next elements of [e1] and
- [e2] repeatedly until one of the two enumerations ends. *)
+    [e2] repeatedly until one of the two enumerations ends. *)
 
 val exists: ('a -> bool) -> 'a t -> bool
 (** [exists f e] returns [true] if there is some [x] in [e] such
@@ -121,14 +121,14 @@ val reduce : ('a -> 'a -> 'a) -> 'a t -> 'a
       a2)...) aN] where [a0,a1..aN] are the elements of [e]. *)
 
 val sum : int t -> int
-  (** [sum] returns the sum of the given int enum.  If the argument is
-      empty, returns 0. Eager *)
+(** [sum] returns the sum of the given int enum.  If the argument is
+    empty, returns 0. Eager *)
 
 val fsum : float t -> float
 (** @returns the sum of the enum's elements.  Uses Kahan summing to
     get a more accurate answer than [reduce (+.)] would return, but runs slower.
     @since 2.0
- *)
+*)
 
 val fold2 : ('a -> 'b -> 'c -> 'c) -> 'c -> 'a t -> 'b t -> 'c
 (** [fold2] is similar to [fold] but will fold over two enumerations at the
@@ -149,8 +149,8 @@ val scan : ('a -> 'a -> 'a) -> 'a t -> 'a t
 
 
 (** Indexed functions : these functions are similar to previous ones
- except that they call the function with one additional argument which
- is an index starting at 0 and incremented after each call to the function. *)
+    except that they call the function with one additional argument which
+    is an index starting at 0 and incremented after each call to the function. *)
 
 val iteri : (int -> 'a -> unit) -> 'a t -> unit
 
@@ -163,15 +163,15 @@ val fold2i : (int -> 'a -> 'b -> 'c -> 'c) -> 'c -> 'a t -> 'b t -> 'c
 (** {6 Useful functions} *)
 
 val find : ('a -> bool) -> 'a t -> 'a
-  (** [find f e] returns the first element [x] of [e] such that [f x] returns
-      [true], consuming the enumeration up to and including the
-      found element.
-      @raise Not_found if no such element exists
-      in the enumeration, consuming the whole enumeration in the search.
+(** [find f e] returns the first element [x] of [e] such that [f x] returns
+    [true], consuming the enumeration up to and including the
+    found element.
+    @raise Not_found if no such element exists
+    in the enumeration, consuming the whole enumeration in the search.
 
-      Since [find] (eagerly) consumes a prefix of the enumeration, it
-      can be used several times on the same enumeration to find the
-      next element. *)
+    Since [find] (eagerly) consumes a prefix of the enumeration, it
+    can be used several times on the same enumeration to find the
+    next element. *)
 
 val find_map : ('a -> 'b option) -> 'a t -> 'b
 (** [find_map f e] finds the first element [x] of [e] such that [f x] returns
@@ -191,41 +191,41 @@ val is_empty : 'a t -> bool
     Forces at most one element. *)
 
 val peek : 'a t -> 'a option
-  (** [peek e] returns [None] if [e] is empty or [Some x] where [x] is
-      the next element of [e]. The element is not removed from the
-      enumeration. *)
+(** [peek e] returns [None] if [e] is empty or [Some x] where [x] is
+    the next element of [e]. The element is not removed from the
+    enumeration. *)
 
 val get : 'a t -> 'a option
-  (** [get e] returns [None] if [e] is empty or [Some x] where [x] is
-      the next element of [e], in which case the element is removed
-      from the enumeration. *)
+(** [get e] returns [None] if [e] is empty or [Some x] where [x] is
+    the next element of [e], in which case the element is removed
+    from the enumeration. *)
 
 val get_exn : 'a t -> 'a
-  (** [get_exn e] returns the first element of [e].
-      @raise No_more_elements if [e] is empty.
-      @since 2.0 *)
+(** [get_exn e] returns the first element of [e].
+    @raise No_more_elements if [e] is empty.
+    @since 2.0 *)
 
 val push : 'a t -> 'a -> unit
-  (** [push e x] will add [x] at the beginning of [e]. *)
+(** [push e x] will add [x] at the beginning of [e]. *)
 
 val junk : 'a t -> unit
-  (** [junk e] removes the first element from the enumeration, if any. *)
+(** [junk e] removes the first element from the enumeration, if any. *)
 
 val clone : 'a t -> 'a t
-  (** [clone e] creates a new enumeration that is copy of [e]. If [e]
-      is consumed by later operations, the clone will not get affected. *)
+(** [clone e] creates a new enumeration that is copy of [e]. If [e]
+    is consumed by later operations, the clone will not get affected. *)
 
 val force : 'a t -> unit
-  (** [force e] forces the application of all lazy functions and the
-      enumeration of all elements, exhausting the enumeration.
+(** [force e] forces the application of all lazy functions and the
+    enumeration of all elements, exhausting the enumeration.
 
-      An efficient intermediate data structure
-      of enumerated elements is constructed and [e] will now enumerate over
-      that data structure. *)
+    An efficient intermediate data structure
+    of enumerated elements is constructed and [e] will now enumerate over
+    that data structure. *)
 
 val take : int -> 'a t -> 'a t
-  (** [take n e] returns the prefix of [e] of length [n], or [e]
-      itself if [n] is greater than the length of [e] *)
+(** [take n e] returns the prefix of [e] of length [n], or [e]
+    itself if [n] is greater than the length of [e] *)
 
 val drop : int -> 'a t -> unit
 (** [drop n e] removes the first [n] element from the enumeration, if any. *)
@@ -239,21 +239,21 @@ val skip: int -> 'a t -> 'a t
     5 elements and then returns the next 3 elements.*)
 
 val take_while : ('a -> bool) -> 'a t -> 'a t
-  (** [take_while f e] produces a new enumeration in which only remain
-      the first few elements [x] of [e] such that [f x] *)
+(** [take_while f e] produces a new enumeration in which only remain
+    the first few elements [x] of [e] such that [f x] *)
 
 val drop_while : ('a -> bool) -> 'a t -> 'a t
-  (** [drop_while p e] produces a new enumeration in which only
-      all the first elements such that [f e] have been junked.*)
+(** [drop_while p e] produces a new enumeration in which only
+    all the first elements such that [f e] have been junked.*)
 
 val span : ('a -> bool) -> 'a t -> 'a t * 'a t
-  (** [span test e] produces two enumerations [(hd, tl)], such that
-      [hd] is the same as [take_while test e] and [tl] is the same
-      as [drop_while test e]. *)
+(** [span test e] produces two enumerations [(hd, tl)], such that
+    [hd] is the same as [take_while test e] and [tl] is the same
+    as [drop_while test e]. *)
 
 val break : ('a -> bool) -> 'a t -> 'a t * 'a t
-  (** Negated span.
-      [break test e] is equivalent to [span (fun x -> not (test x)) e] *)
+(** Negated span.
+    [break test e] is equivalent to [span (fun x -> not (test x)) e] *)
 
 val group : ('a -> 'b) -> 'a t -> 'a t t
 (** [group test e] divides [e] into an enumeration of enumerations,
@@ -279,7 +279,7 @@ val group_by : ('a -> 'a -> bool) -> 'a t -> 'a t t
     Warning: The result of this operation cannot be directly cloned
     safely; instead, reify to a non-lazy structure and read from that
     structure multiple times.
- *)
+*)
 
 val clump : int -> ('a -> unit) -> (unit -> 'b) -> 'a t -> 'b t
 (** [clump size add get e] runs [add] on [size] (or less at the end)
@@ -297,9 +297,9 @@ val clump : int -> ('a -> unit) -> (unit -> 'b) -> 'a t -> 'b t
     underlying enumerations they were created from are also consumed. *)
 
 val map : ('a -> 'b) -> 'a t -> 'b t
-  (** [map f e] returns an enumeration over [(f a0, f a1, ...)] where
-      [a0,a1...] are the elements of [e]. Lazy.
-   *)
+(** [map f e] returns an enumeration over [(f a0, f a1, ...)] where
+    [a0,a1...] are the elements of [e]. Lazy.
+*)
 
 val mapi : (int -> 'a -> 'b) -> 'a t -> 'b t
 (** [mapi] is similar to [map] except that [f] is passed one extra argument
@@ -308,8 +308,8 @@ val mapi : (int -> 'a -> 'b) -> 'a t -> 'b t
     [a0,a1...] are the elements of [e]. *)
 
 val filter : ('a -> bool) -> 'a t -> 'a t
-  (** [filter f e] returns an enumeration over all elements [x] of [e] such
-      as [f x] returns [true]. Lazy.
+(** [filter f e] returns an enumeration over all elements [x] of [e] such
+    as [f x] returns [true]. Lazy.
 
     {b Note} filter is lazy in that it returns a lazy enumeration, but
     each element in the result is eagerly searched in the input
@@ -330,13 +330,13 @@ val filter_map : ('a -> 'b option) -> 'a t -> 'b t
 *)
 
 val append : 'a t -> 'a t -> 'a t
-  (** [append e1 e2] returns an enumeration that will enumerate over all
-      elements of [e1] followed by all elements of [e2]. Lazy.
+(** [append e1 e2] returns an enumeration that will enumerate over all
+    elements of [e1] followed by all elements of [e2]. Lazy.
 
-      {b Note} The behavior of appending [e] to itself or to something
-      derived from [e] is not specified. In particular, cloning [append e e]
-      may destroy any sharing between the first and the second argument.
-  *)
+    {b Note} The behavior of appending [e] to itself or to something
+    derived from [e] is not specified. In particular, cloning [append e e]
+    may destroy any sharing between the first and the second argument.
+*)
 
 val prefix_action : (unit -> unit) -> 'a t -> 'a t
 (** [prefix_action f e] will behave as [e] but guarantees that [f ()]
@@ -364,11 +364,11 @@ val suffix_action : (unit -> unit) -> 'a t -> 'a t
 
 
 val concat : 'a t t -> 'a t
-  (** [concat e] returns an enumeration over all elements of all enumerations
-      of [e]. *)
+(** [concat e] returns an enumeration over all elements of all enumerations
+    of [e]. *)
 
 val flatten : 'a t t -> 'a t
-  (** Synonym of {!concat}*)
+(** Synonym of {!concat}*)
 
 (** {6 Constructors}
 
@@ -379,11 +379,11 @@ val flatten : 'a t t -> 'a t
 *)
 
 exception No_more_elements
-  (** This exception {i shall} be raised by the [next] function of [make]
-      or [from] when no more elements can be enumerated, it {i shall not}
-      be raised by any function which is an argument to any
-      other function specified in the interface.
-  *)
+(** This exception {i shall} be raised by the [next] function of [make]
+    or [from] when no more elements can be enumerated, it {i shall not}
+    be raised by any function which is an argument to any
+    other function specified in the interface.
+*)
 
 exception Infinite_enum
 (** As a convenience for debugging, this exception {i may} be raised by
@@ -410,12 +410,12 @@ val make : next:(unit -> 'a) -> count:(unit -> int) -> clone:(unit -> 'a t) -> '
 *)
 
 val from : (unit -> 'a) -> 'a t
-  (** [from next] creates an enumeration from the [next] function.
-      [next] {i shall} return the next element of the enumeration or raise
-      [No_more_elements] when no more elements can be enumerated. Since the
-      enumeration definition is incomplete, a call to [count] will result in
-      a call to [force] that will enumerate all elements in order to
-      return a correct value. *)
+(** [from next] creates an enumeration from the [next] function.
+    [next] {i shall} return the next element of the enumeration or raise
+    [No_more_elements] when no more elements can be enumerated. Since the
+    enumeration definition is incomplete, a call to [count] will result in
+    a call to [force] that will enumerate all elements in order to
+    return a correct value. *)
 
 val from_while : (unit -> 'a option) -> 'a t
 (** [from_while next] creates an enumeration from the [next] function.
@@ -426,68 +426,68 @@ val from_while : (unit -> 'a option) -> 'a t
     return a correct value. *)
 
 val from_loop: 'b -> ('b -> ('a * 'b)) -> 'a t
-  (**[from_loop data next] creates a (possibly infinite) enumeration from
-     the successive results of applying [next] to [data], then to the
-     result, etc. The list ends whenever the function raises
-     {!BatEnum.No_more_elements}.*)
+(**[from_loop data next] creates a (possibly infinite) enumeration from
+   the successive results of applying [next] to [data], then to the
+   result, etc. The list ends whenever the function raises
+   {!BatEnum.No_more_elements}.*)
 
 val seq : 'a -> ('a -> 'a) -> ('a -> bool) -> 'a t
-  (** [seq init step cond] creates a sequence of data, which starts
-      from [init],  extends by [step],  until the condition [cond]
-      fails. E.g. [seq 1 ((+) 1) ((>) 100)] returns [1, 2, ... 99]. If [cond
-      init] is false, the result is empty. *)
+(** [seq init step cond] creates a sequence of data, which starts
+    from [init],  extends by [step],  until the condition [cond]
+    fails. E.g. [seq 1 ((+) 1) ((>) 100)] returns [1, 2, ... 99]. If [cond
+    init] is false, the result is empty. *)
 
 
 val unfold: 'b -> ('b -> ('a * 'b) option) -> 'a t
-  (**As [from_loop], except uses option type to signal the end of the enumeration.
+(**As [from_loop], except uses option type to signal the end of the enumeration.
 
-     [unfold data next] creates a (possibly infinite) enumeration from
-     the successive results of applying [next] to [data], then to the
-     result, etc. The enumeration ends whenever the function returns [None]
+   [unfold data next] creates a (possibly infinite) enumeration from
+   the successive results of applying [next] to [data], then to the
+   result, etc. The enumeration ends whenever the function returns [None]
 
-     Example: [Enum.unfold n (fun x -> if x = 1 then None else Some
-     (x, if x land 1 = 1 then 3 * x + 1 else x / 2))] returns the
-     hailstone sequence starting at [n].
+   Example: [Enum.unfold n (fun x -> if x = 1 then None else Some
+   (x, if x land 1 = 1 then 3 * x + 1 else x / 2))] returns the
+   hailstone sequence starting at [n].
 
-  *)
+*)
 
 val init : int -> (int -> 'a) -> 'a t
 (** [init n f] creates a new enumeration over elements
-  [f 0, f 1, ..., f (n-1)] *)
+    [f 0, f 1, ..., f (n-1)] *)
 
 val singleton : 'a -> 'a t
 (** Create an enumeration consisting in exactly one element.*)
 
 val repeat : ?times:int -> 'a -> 'a t
-  (** [repeat ~times:n x] creates a enum sequence filled with [n] times of
-      [x]. It return infinite enum when [~times] is absent. It returns empty
-      enum when [times <= 0] *)
+(** [repeat ~times:n x] creates a enum sequence filled with [n] times of
+    [x]. It return infinite enum when [~times] is absent. It returns empty
+    enum when [times <= 0] *)
 
 val cycle : ?times:int -> 'a t -> 'a t
-  (** [cycle] is similar to [repeat], except that the content to fill is a
-      subenum rather than a single element. Note that [times] represents the
-      times of repeating not the length of enum. When [~times] is absent the
-      result is an infinite enum. *)
+(** [cycle] is similar to [repeat], except that the content to fill is a
+    subenum rather than a single element. Note that [times] represents the
+    times of repeating not the length of enum. When [~times] is absent the
+    result is an infinite enum. *)
 
 val delay : (unit -> 'a t) -> 'a t
-  (** [delay (fun () -> e)] produces an enumeration which behaves as [e].
-      The enumeration itself will only be computed when consumed.
+(** [delay (fun () -> e)] produces an enumeration which behaves as [e].
+    The enumeration itself will only be computed when consumed.
 
-      A typical use of this function is to explore lazily non-trivial
-      data structures, as follows:
+    A typical use of this function is to explore lazily non-trivial
+    data structures, as follows:
 
-      [type 'a tree = Leaf
-                    | Node of 'a * 'a tree * 'a tree
+    [type 'a tree = Leaf
+                  | Node of 'a * 'a tree * 'a tree
 
-      let enum_tree =
-      let rec aux = function
-      | Leaf           -> BatEnum.empty ()
-      | Node (n, l, r) -> BatEnum.append (BatEnum.singleton n)
-      (BatEnum.append (delay (fun () -> aux l))
-      (delay (fun () -> aux r)))
-      ]
+    let enum_tree =
+    let rec aux = function
+    | Leaf           -> BatEnum.empty ()
+    | Node (n, l, r) -> BatEnum.append (BatEnum.singleton n)
+    (BatEnum.append (delay (fun () -> aux l))
+    (delay (fun () -> aux r)))
+    ]
 
-  *)
+*)
 
 val to_object: 'a t -> (<next:'a; count:int; clone:'b> as 'b)
 (**[to_object e] returns a representation of [e] as an object.*)
@@ -503,28 +503,28 @@ val of_enum : 'a t -> 'a t
 (** {6 Counting} *)
 
 val count : 'a t -> int
-  (** [count e] returns the number of remaining elements in [e] without
-      consuming the enumeration.
+(** [count e] returns the number of remaining elements in [e] without
+    consuming the enumeration.
 
-      Depending of the underlying data structure that is implementing the
-      enumeration functions, the count operation can be costly, and even sometimes
-      can cause a call to [force]. *)
+    Depending of the underlying data structure that is implementing the
+    enumeration functions, the count operation can be costly, and even sometimes
+    can cause a call to [force]. *)
 
 val fast_count : 'a t -> bool
-  (** For users worried about the speed of [count] you can call the [fast_count]
-      function that will give an hint about [count] implementation. Basically, if
-      the enumeration has been created with [make] or [init] or if [force] has
-      been called on it, then [fast_count] will return true. *)
+(** For users worried about the speed of [count] you can call the [fast_count]
+    function that will give an hint about [count] implementation. Basically, if
+    the enumeration has been created with [make] or [init] or if [force] has
+    been called on it, then [fast_count] will return true. *)
 
 val hard_count : 'a t -> int
-  (** [hard_count] returns the number of remaining in elements in [e],
-      consuming the whole enumeration somewhere along the way. This
-      function is always at least as fast as the fastest of either
-      [count] or a [fold] on the elements of [t].
+(** [hard_count] returns the number of remaining in elements in [e],
+    consuming the whole enumeration somewhere along the way. This
+    function is always at least as fast as the fastest of either
+    [count] or a [fold] on the elements of [t].
 
-      This function is useful when you have opened an enumeration for
-      the sole purpose of counting its elements (e.g. the number of
-      lines in a file).*)
+    This function is useful when you have opened an enumeration for
+    the sole purpose of counting its elements (e.g. the number of
+    lines in a file).*)
 
 (**
    {6 Utilities }
@@ -536,41 +536,41 @@ val range : ?until:int -> int -> int t
     not-specified once [max_int] has been reached.*)
 
 val dup : 'a t -> 'a t * 'a t
-  (** [dup stream] returns a pair of streams which are identical to [stream]. Note
-      that stream is a destructive data structure, the point of [dup] is to
-      return two streams can be used independently. *)
+(** [dup stream] returns a pair of streams which are identical to [stream]. Note
+    that stream is a destructive data structure, the point of [dup] is to
+    return two streams can be used independently. *)
 
 val combine : 'a t * 'b t -> ('a * 'b) t
-  (** [combine] transform a pair of stream into a stream of pairs of corresponding
-      elements. If one stream is short, excess elements of the longer stream are
-      ignored. *)
+(** [combine] transform a pair of stream into a stream of pairs of corresponding
+    elements. If one stream is short, excess elements of the longer stream are
+    ignored. *)
 
 val uncombine : ('a * 'b) t -> 'a t * 'b t
-  (** [uncombine] is the opposite of [combine] *)
+(** [uncombine] is the opposite of [combine] *)
 
 val merge : ('a -> 'a -> bool) -> 'a t -> 'a t -> 'a t
-  (** [merge test (a, b)] merge the elements from [a] and [b] into a single
-      enumeration. At each step, [test] is applied to the first element of
-      [a] and the first element of [b] to determine which should get first
-      into resulting enumeration. If [a] or [b] runs out of elements,
-      the process will append all elements of the other enumeration to
-      the result.
-  *)
+(** [merge test (a, b)] merge the elements from [a] and [b] into a single
+    enumeration. At each step, [test] is applied to the first element of
+    [a] and the first element of [b] to determine which should get first
+    into resulting enumeration. If [a] or [b] runs out of elements,
+    the process will append all elements of the other enumeration to
+    the result.
+*)
 
 val uniq : 'a t -> 'a t
-  (** [uniq e] returns a duplicate of [e] with repeated values
-      omitted. (similar to unix's [uniq] command) *)
+(** [uniq e] returns a duplicate of [e] with repeated values
+    omitted. (similar to unix's [uniq] command) *)
 
 val switch : ('a -> bool) -> 'a t -> 'a t * 'a t
-  (** [switch test enum] splits [enum] into two enums, where the first enum have
-      all the elements satisfying [test], the second enum is opposite. The
-      order of elements in the source enum is preserved. *)
+(** [switch test enum] splits [enum] into two enums, where the first enum have
+    all the elements satisfying [test], the second enum is opposite. The
+    order of elements in the source enum is preserved. *)
 
 val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
-  (** as [switch]
+(** as [switch]
 
-      @added v1.4.0
-  *)
+    @added v1.4.0
+*)
 
 (*val switchn: int -> ('a -> int) -> 'a t -> 'a t array
   (** [switchn] is the array version of [switch]. [switch n f fl] split [fl] to an array of [n] enums, [f] is
@@ -615,39 +615,39 @@ val while_do : ('a -> bool) -> ('a t -> 'a t) -> 'a t -> 'a t
 
 module Infix : sig
   val ( -- ) : int -> int -> int t
-(** As [range], without the label.
+  (** As [range], without the label.
 
-    [5 -- 10] is the enumeration 5,6,7,8,9,10.
-    [10 -- 5] is the empty enumeration*)
+      [5 -- 10] is the enumeration 5,6,7,8,9,10.
+      [10 -- 5] is the empty enumeration*)
 
   val ( --^ ) : int -> int -> int t
-(** As [(--)] but without the right endpoint
+  (** As [(--)] but without the right endpoint
 
-    [5 --^ 10] is the enumeration 5,6,7,8,9.
-*)
+      [5 --^ 10] is the enumeration 5,6,7,8,9.
+  *)
 
   val ( --. ) : (float * float) -> float -> float t
-(** [(a, step) --. b)] creates a float enumeration from [a] to [b] with an
-    increment of [step] between elements.
+  (** [(a, step) --. b)] creates a float enumeration from [a] to [b] with an
+      increment of [step] between elements.
 
-    [(5.0, 1.0) --. 10.0] is the enumeration 5.0,6.0,7.0,8.0,9.0,10.0.
-    [(10.0, -1.0) --. 5.0] is the enumeration 10.0,9.0,8.0,7.0,6.0,5.0.
-    [(10.0, 1.0) --. 1.0] is the empty enumeration. *)
+      [(5.0, 1.0) --. 10.0] is the enumeration 5.0,6.0,7.0,8.0,9.0,10.0.
+      [(10.0, -1.0) --. 5.0] is the enumeration 10.0,9.0,8.0,7.0,6.0,5.0.
+      [(10.0, 1.0) --. 1.0] is the empty enumeration. *)
 
   val ( --- ) : int -> int -> int t
-(** As [--], but accepts enumerations in reverse order.
+  (** As [--], but accepts enumerations in reverse order.
 
-    [5 --- 10] is the enumeration 5,6,7,8,9,10.
-    [10 --- 5] is the enumeration 10,9,8,7,6,5.*)
+      [5 --- 10] is the enumeration 5,6,7,8,9,10.
+      [10 --- 5] is the enumeration 10,9,8,7,6,5.*)
 
   val ( --~ ) : char -> char -> char t
-(** As ( -- ), but for characters.*)
+  (** As ( -- ), but for characters.*)
 
   val ( // ) : 'a t -> ('a -> bool) -> 'a t
-(** Filtering (pronounce this operator name "such that").
+  (** Filtering (pronounce this operator name "such that").
 
-    For instance, [(1 -- 37) // odd] is the enumeration of all odd
-    numbers between 1 and 37.*)
+      For instance, [(1 -- 37) // odd] is the enumeration of all odd
+      numbers between 1 and 37.*)
 
   val ( /@ ) : 'a t -> ('a -> 'b) -> 'b t
 
@@ -663,9 +663,9 @@ module Infix : sig
   val ( //@ ) : 'a t -> ('a -> 'b option) -> 'b t
 
   val ( @// ) : ('a -> 'b option) -> 'a t -> 'b t
-  (**
-    Map combined with filter. Same as {!filter_map}.
-  *)
+    (**
+       Map combined with filter. Same as {!filter_map}.
+    *)
 end
 
 val ( -- ) : int -> int -> int t
@@ -687,15 +687,15 @@ val ( @// ) : ('a -> 'b option) -> 'a t -> 'b t
 *)
 module WithMonad : functor (Mon : BatInterfaces.Monad) -> sig
   type 'a m = 'a Mon.m
-(** Type of the monadic elements. *)
+  (** Type of the monadic elements. *)
 
   val sequence : 'a m t -> 'a t m
 (** [sequence e] evaluates each monadic elements (of type ['a m]) contained in the enumeration [e] to get a monadic enumeration of ['a] elements,
     of type ['a BatEnum.t m]. *)
 
-  val fold_monad : ('a -> 'b -> 'a m) -> 'a -> 'b t -> 'a m
-(** [fold_monad f init e] does a folding of the enumeration [e] applying step by step the function [f] that gives back results in the [Mon] monad,
-    with the [init] initial element. The result is a value in the [Mon] monad. *)
+val fold_monad : ('a -> 'b -> 'a m) -> 'a -> 'b t -> 'a m
+  (** [fold_monad f init e] does a folding of the enumeration [e] applying step by step the function [f] that gives back results in the [Mon] monad,
+      with the [init] initial element. The result is a value in the [Mon] monad. *)
 end
 
 (** The BatEnum Monad
@@ -705,14 +705,14 @@ end
 *)
 module Monad : sig
   type 'a m = 'a t
-(** The type of the BatEnum monad's elements, thus [BatEnum.t]. *)
+  (** The type of the BatEnum monad's elements, thus [BatEnum.t]. *)
 
   val return : 'a -> 'a m
-(** This function puts a single value in the BatEnum monad, that is to say it creates an enumeration containing a single element. *)
+  (** This function puts a single value in the BatEnum monad, that is to say it creates an enumeration containing a single element. *)
 
   val bind : 'a m -> ('a -> 'b m) -> 'b m
-(** [bind m f] takes the result of the monadic computation m, puts the f function in the monadic context passing it the result of m and then
-    returning a monadic result. *)
+    (** [bind m f] takes the result of the monadic computation m, puts the f function in the monadic context passing it the result of m and then
+        returning a monadic result. *)
 end
 
 
@@ -722,20 +722,20 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.outp
 (** Print and consume the contents of an enumeration.*)
 
 val compare : ('a -> 'a -> int) -> 'a t -> 'a t -> int
-  (** [compare cmp a b] compares enumerations [a] and [b]
-      by lexicographical order using comparison [cmp].
+(** [compare cmp a b] compares enumerations [a] and [b]
+    by lexicographical order using comparison [cmp].
 
-      @return 0 if [a] and [b] are equal wrt [cmp]
-      @return -1 if [a] is empty and [b] is not
-      @return 1 if [b] is empty and [a] is not
-      @return [cmp x y], where [x] is the first element of [a]
-      and [y] is the first element of [b], if [cmp x y <> 0]
-      @return [compare cmp a' b'], where [a'] and [b'] are
-      respectively equal to [a] and [b] without their first
-      element, if both [a] and [b] are non-empty and [cmp x y = 0],
-      where [x] is the first element of [a] and [y] is the first
-      element of [b]
-  *)
+    @return 0 if [a] and [b] are equal wrt [cmp]
+    @return -1 if [a] is empty and [b] is not
+    @return 1 if [b] is empty and [a] is not
+    @return [cmp x y], where [x] is the first element of [a]
+    and [y] is the first element of [b], if [cmp x y <> 0]
+    @return [compare cmp a' b'], where [a'] and [b'] are
+    respectively equal to [a] and [b] without their first
+    element, if both [a] and [b] are non-empty and [cmp x y = 0],
+    where [x] is the first element of [a] and [y] is the first
+    element of [b]
+*)
 
 val ord : ('a -> 'a -> BatOrd.order) -> 'a t -> 'a t -> BatOrd.order
 (** Same as [compare] but returning a {!BatOrd.order} instead of an interger. *)
@@ -757,12 +757,12 @@ val equal : ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
 module Exceptionless : sig
   val find : ('a -> bool) -> 'a t -> 'a option
     (** [find f e] returns [Some x] where [x] is the first element [x] of [e]
-	such that [f x] returns [true], consuming the enumeration up to and
-	including the found element, or [None] if no such element exists
-	in the enumeration, consuming the whole enumeration in the search.
+		such that [f x] returns [true], consuming the enumeration up to and
+		including the found element, or [None] if no such element exists
+		in the enumeration, consuming the whole enumeration in the search.
 
-	Since [find] consumes a prefix of the enumeration, it can be used several
-	times on the same enumeration to find the next element. *)
+		Since [find] consumes a prefix of the enumeration, it can be used several
+		times on the same enumeration to find the next element. *)
 end
 
 
@@ -824,4 +824,4 @@ val lsing : (unit -> 'a) -> 'a t
 val slazy : (unit -> 'a t) -> 'a t
 
 
-(**/**)
+  (**/**)

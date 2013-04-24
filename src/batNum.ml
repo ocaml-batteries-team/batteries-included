@@ -50,21 +50,21 @@ module BaseNum = struct
     match classify_float f with
     | FP_normal
     | FP_subnormal ->
-        let x,e = frexp f in
-        let n,e =
-          Big_int.big_int_of_int64 (Int64.of_float (ldexp x 52)),
-          (e-52)
-        in
-        if e >= 0 then
-          Big_int (Big_int.shift_left_big_int n e)
-        else
-          div
-            (Big_int n)
-            (Big_int Big_int.(shift_left_big_int unit_big_int ~-e))
+      let x,e = frexp f in
+      let n,e =
+        Big_int.big_int_of_int64 (Int64.of_float (ldexp x 52)),
+        (e-52)
+      in
+      if e >= 0 then
+        Big_int (Big_int.shift_left_big_int n e)
+      else
+        div
+          (Big_int n)
+          (Big_int Big_int.(shift_left_big_int unit_big_int ~-e))
     | FP_zero -> zero
     | FP_nan -> div zero zero
     | FP_infinite ->
-        if f >= 0. then div one zero else div (neg one) zero
+      if f >= 0. then div one zero else div (neg one) zero
 end
 
 module TaggedInfix = struct
@@ -99,16 +99,16 @@ let of_float_string a =
     let fpart =
       if fpart_s = "" then zero
       else
-	let fpart = of_string fpart_s in
-	let num10 = of_int 10 in
-	let frac = pow num10 (of_int (String.length fpart_s)) in
-	Infix.(fpart/frac)
+        let fpart = of_string fpart_s in
+        let num10 = of_int 10 in
+        let frac = pow num10 (of_int (String.length fpart_s)) in
+        Infix.(fpart/frac)
     in
     add ipart fpart
   with Not_found -> of_string a
 
-(**T
-   of_float_string "2.5" = of_string "5/2"
-   of_float_string "2." = of_string "2"
-   of_float_string ".5" = of_string "1/2"
-*)
+                    (**T
+                       of_float_string "2.5" = of_string "5/2"
+                       of_float_string "2." = of_string "2"
+                       of_float_string ".5" = of_string "1/2"
+                    *)

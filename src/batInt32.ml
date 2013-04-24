@@ -29,11 +29,11 @@ let of_byte b = Char.code b |> Int32.of_int
 
 (*Q to_byte, of_byte
   Q.char (fun c -> Pervasives.(=) (to_byte (of_byte c)) c)
- *)
+*)
 
 (*$T to_byte
   to_byte 256l = to_byte 0l
- *)
+*)
 
 (* really need to just blit an int32 word into a string and vice versa *)
 let pack str pos item =
@@ -64,8 +64,8 @@ let unpack str pos =
   let shift n = Int32.shift_left n 8
   and add b n = Int32.add (of_byte b) n in
   of_byte str.[pos+3] |> shift |> add str.[pos+2] |> shift
-    |> add str.[pos+1] |> shift |> add str.[pos]
-  (* TODO: improve performance of bit twiddling?  will these curried functions get inlined? *)
+  |> add str.[pos+1] |> shift |> add str.[pos]
+(* TODO: improve performance of bit twiddling?  will these curried functions get inlined? *)
 
 let unpack_big str pos =
   if String.length str > pos + 4 then failwith "Int32.unpack: pos + 4 not within string";
@@ -73,7 +73,7 @@ let unpack_big str pos =
   let shift n = Int32.shift_left n 8
   and add b n = Int32.add (of_byte b) n in
   of_byte str.[pos] |> shift |> add str.[pos+1] |> shift
-    |> add str.[pos+2] |> shift |> add str.[pos+3]
+  |> add str.[pos+2] |> shift |> add str.[pos+3]
 
 
 module BaseInt32 = struct

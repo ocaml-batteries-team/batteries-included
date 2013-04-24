@@ -41,8 +41,8 @@ let modifyi f a =
 (*$T modify
   let a = [|3;2;1|] in modify (fun x -> x + 1) a; a = [|4;3;2|]
 *)(*$T modifyi
-  let a = [|3;2;1|] in modifyi (fun i x -> i * x) a; a = [|0;2;2|]
-*)
+    let a = [|3;2;1|] in modifyi (fun i x -> i * x) a; a = [|0;2;2|]
+  *)
 
 let fold_lefti f x a =
   let r = ref x in
@@ -248,20 +248,20 @@ let partition p xs =
   let n2 = n - n1 in
   let j = ref 0 in
   let xs1 = init n1
-    (fun _ ->
-       (* Find the next set bit in the BitSet. *)
-       while not (BatBitSet.mem bs !j) do incr j done;
-       let r = xs.(!j) in
-       incr j;
-       r) in
+      (fun _ ->
+        (* Find the next set bit in the BitSet. *)
+        while not (BatBitSet.mem bs !j) do incr j done;
+        let r = xs.(!j) in
+        incr j;
+        r) in
   let j = ref 0 in
   let xs2 = init n2
-    (fun _ ->
-       (* Find the next clear bit in the BitSet. *)
-       while BatBitSet.mem bs !j do incr j done;
-       let r = xs.(!j) in
-       incr j;
-       r) in
+      (fun _ ->
+        (* Find the next clear bit in the BitSet. *)
+        while BatBitSet.mem bs !j do incr j done;
+        let r = xs.(!j) in
+        incr j;
+        r) in
   xs1, xs2
 (*$Q partition
   (Q.pair (Q.array Q.small_int) (Q.fun1 Q.small_int Q.bool)) (fun (a, f) -> \
@@ -276,17 +276,17 @@ let partition p xs =
 let enum xs =
   let rec make start xs =
     let n = length xs in
-      (* inside the loop, as [make] may later be called with another array *)
+    (* inside the loop, as [make] may later be called with another array *)
     BatEnum.make
       ~next:(fun () ->
-	       if !start < n then
-		 xs.(BatRef.post_incr start)
-	       else
-		 raise BatEnum.No_more_elements)
+        if !start < n then
+          xs.(BatRef.post_incr start)
+        else
+          raise BatEnum.No_more_elements)
       ~count:(fun () ->
-		n - !start)
+        n - !start)
       ~clone:(fun () ->
-		make (BatRef.copy start) xs)
+        make (BatRef.copy start) xs)
   in
   make (ref 0) xs
 (*$Q enum
@@ -309,14 +309,14 @@ let backwards xs =
   let rec make start xs =
     BatEnum.make
       ~next:(fun () ->
-	       if !start > 0 then
-		 xs.(BatRef.pre_decr start)
-	       else
-		 raise BatEnum.No_more_elements)
+        if !start > 0 then
+          xs.(BatRef.pre_decr start)
+        else
+          raise BatEnum.No_more_elements)
       ~count:(fun () ->
-		!start)
+        !start)
       ~clone:(fun () ->
-		make (BatRef.copy start) xs)
+        make (BatRef.copy start) xs)
   in
   make (ref (length xs)) xs
 (*$Q backwards
@@ -341,9 +341,9 @@ let of_enum e =
   (* This assumes, reasonably, that init traverses the array in order. *)
   Array.init n
     (fun _i ->
-       match BatEnum.get e with
-       | Some x -> x
-       | None -> assert false (*BISECT-VISIT*))
+      match BatEnum.get e with
+      | Some x -> x
+      | None -> assert false (*BISECT-VISIT*))
 
 let of_backwards e =
   of_list (BatList.of_backwards e)
@@ -476,9 +476,9 @@ let compare cmp a b =
       if result = 0 then aux (i + 1)
       else               result
     else
-      if length_a = length_b then	0
-      else if length_a < length_b then -1
-      else                              1
+    if length_a = length_b then	0
+    else if length_a < length_b then -1
+    else                              1
   in
   aux 0
 
@@ -493,17 +493,17 @@ let compare cmp a b =
 
 let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
   match length t with
-    | 0 ->
-	BatInnerIO.nwrite out first;
-	BatInnerIO.nwrite out last
-    | n ->
-	BatInnerIO.nwrite out first;
-	print_a out (unsafe_get t 0);
-	for i = 1 to n - 1 do
-	  BatInnerIO.nwrite out sep;
-	  print_a out (unsafe_get t i);
-	done;
-	BatInnerIO.nwrite out last
+  | 0 ->
+    BatInnerIO.nwrite out first;
+    BatInnerIO.nwrite out last
+  | n ->
+    BatInnerIO.nwrite out first;
+    print_a out (unsafe_get t 0);
+    for i = 1 to n - 1 do
+      BatInnerIO.nwrite out sep;
+      print_a out (unsafe_get t i);
+    done;
+    BatInnerIO.nwrite out last
 (*$T
   BatIO.to_string (print ~sep:"," ~first:"[" ~last:"]" BatInt.print) \
     [|2;4;66|] = "[2,4,66]"
@@ -537,20 +537,20 @@ let max a = reduce Pervasives.max a
   min [|1;2;3|] = 1
   min [|2;3;1|] = 1
 *)(*$T max
-  max [|1;2;3|] = 3
-  max [|2;3;1|] = 3
-*)
+    max [|1;2;3|] = 3
+    max [|2;3;1|] = 3
+  *)
 
 let sum = reduce (+)
 let fsum = reduce (+.)
 
 (*$T sum
- sum [|1;2;3|] = 6
- sum [|0|] = 0
+  sum [|1;2;3|] = 6
+  sum [|0|] = 0
 *) (*$T fsum
- fsum [|1.0;2.0;3.0|] = 6.0
- fsum [|0.0|] = 0.0
-*)
+     fsum [|1.0;2.0;3.0|] = 6.0
+     fsum [|0.0|] = 0.0
+   *)
 
 (* meant for tests, don't care about side effects being repeated
    or not failing early *)
@@ -650,10 +650,10 @@ end
 
 let left a len = if len >= length a then a else sub a 0 len
 let right a len = let alen = length a in
-		  if len >= alen then a else sub a (alen - len) len
+  if len >= alen then a else sub a (alen - len) len
 let head a pos = left a pos
 let tail a pos = let alen = length a in
-		 if pos >= alen then [||] else sub a pos (alen - pos)
+  if pos >= alen then [||] else sub a pos (alen - pos)
 
 (*$= left & ~printer:(IO.to_string (Array.print Int.print))
   (left [|1;2;3|] 1) [|1|]
@@ -662,20 +662,20 @@ let tail a pos = let alen = length a in
   (left [|1;2;3|] 10)[|1;2;3|]
   (left [|1;2;3|] 0) [||]
 *) (*$= right & ~printer:(IO.to_string (Array.print Int.print))
-  (right [|1;2;3|] 1) [|3|]
-  (right [|1;2|] 3) [|1;2|]
-  (right [|1;2;3|] 3) [|1;2;3|]
-  (right [|1;2;3|] 10) [|1;2;3|]
-  (right [|1;2;3|] 0) [||]
-*) (*$= tail & ~printer:(IO.to_string (Array.print Int.print))
-  (tail [|1;2;3|] 1) [|2;3|]
-  [||] (tail [|1;2;3|] 10)
-  (tail [|1;2;3|] 0) [|1;2;3|]
-*) (*$= head & ~printer:(IO.to_string (Array.print Int.print))
-  (head [|1;2;3|] 1) [|1|]
-  (head [|1;2;3|] 10) [|1;2;3|]
-  (head [|1;2;3|] 0) [||]
-*)
+     (right [|1;2;3|] 1) [|3|]
+     (right [|1;2|] 3) [|1;2|]
+     (right [|1;2;3|] 3) [|1;2;3|]
+     (right [|1;2;3|] 10) [|1;2;3|]
+     (right [|1;2;3|] 0) [||]
+   *) (*$= tail & ~printer:(IO.to_string (Array.print Int.print))
+        (tail [|1;2;3|] 1) [|2;3|]
+        [||] (tail [|1;2;3|] 10)
+        (tail [|1;2;3|] 0) [|1;2;3|]
+      *) (*$= head & ~printer:(IO.to_string (Array.print Int.print))
+        (head [|1;2;3|] 1) [|1|]
+        (head [|1;2;3|] 10) [|1;2;3|]
+        (head [|1;2;3|] 0) [||]
+      *)
 
 
 
@@ -747,32 +747,32 @@ struct
   (*BISECT-IGNORE-BEGIN*)
   module Labels =
   struct
-      let init i ~f = init i f
-      let create len ~init = create len init
-      let make = create
-      let make_matrix ~dimx ~dimy x = make_matrix dimx dimy x
-      let create_matrix = make_matrix
-      let sub a ~pos ~len = sub a pos len
-      let fill a ~pos ~len x = fill a pos len x
-      let blit ~src ~src_pos ~dst ~dst_pos ~len = blit src src_pos dst dst_pos len
-      let iter ~f a = iter f a
-      let map ~f a = map  f a
-      let iteri ~f a = iteri f a
-      let mapi ~f a = mapi f a
-      let modify ~f a = modify f a
-      let modifyi ~f a = modifyi f a
-      let fold_left ~f ~init a = fold_left f init a
-      let fold_right ~f a ~init= fold_right f a init
-      let sort ~cmp a = sort cmp a
-      let stable_sort ~cmp a = stable_sort cmp a
-      let fast_sort ~cmp a = fast_sort cmp a
-      let iter2 ~f a b = iter2 f a b
-      let exists ~f a  = exists f a
-      let for_all ~f a = for_all f a
-      let iter2i  ~f a b = iter2i f a b
-      let find ~f a = find f a
-      let filter ~f a = filter f a
-      let filter_map ~f a = filter_map f a
+    let init i ~f = init i f
+    let create len ~init = create len init
+    let make = create
+    let make_matrix ~dimx ~dimy x = make_matrix dimx dimy x
+    let create_matrix = make_matrix
+    let sub a ~pos ~len = sub a pos len
+    let fill a ~pos ~len x = fill a pos len x
+    let blit ~src ~src_pos ~dst ~dst_pos ~len = blit src src_pos dst dst_pos len
+    let iter ~f a = iter f a
+    let map ~f a = map  f a
+    let iteri ~f a = iteri f a
+    let mapi ~f a = mapi f a
+    let modify ~f a = modify f a
+    let modifyi ~f a = modifyi f a
+    let fold_left ~f ~init a = fold_left f init a
+    let fold_right ~f a ~init= fold_right f a init
+    let sort ~cmp a = sort cmp a
+    let stable_sort ~cmp a = stable_sort cmp a
+    let fast_sort ~cmp a = fast_sort cmp a
+    let iter2 ~f a b = iter2 f a b
+    let exists ~f a  = exists f a
+    let for_all ~f a = for_all f a
+    let iter2i  ~f a b = iter2i f a b
+    let find ~f a = find f a
+    let filter ~f a = filter f a
+    let filter_map ~f a = filter_map f a
   end
 
   module Exceptionless =

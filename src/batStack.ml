@@ -32,7 +32,7 @@ let of_enum e =
 (*$T of_enum
   let s = create () in push 3 s; push 5 s; [3;5] |> List.enum |> of_enum = s
   let s = create () in of_enum (BatEnum.empty ()) = s
- *)
+*)
 
 (* Consumes input stack *)
 let enum_destruct s =
@@ -42,7 +42,7 @@ let enum_destruct s =
 (*$T enum_destruct
   let s = of_enum (List.enum [2;4;6;8]) in \
    enum_destruct s |> List.of_enum = [8;6;4;2] && is_empty s
- *)
+*)
 
 (* consumes a copy *)
 let enum s = enum_destruct (copy s)
@@ -51,21 +51,21 @@ let print ?(first="") ?(last="") ?(sep="") print_a out t =
   BatEnum.print ~first ~last ~sep print_a out (enum t)
 
 (*$T print
- IO.to_string (print Int.print) (of_enum (List.enum [2;4;6;8])) = "8642"
- *)
+  IO.to_string (print Int.print) (of_enum (List.enum [2;4;6;8])) = "8642"
+*)
 
 let compare cmp a b = BatEnum.compare cmp (enum a) (enum b)
 let equal eq a b = BatEnum.equal eq (enum a) (enum b)
 
 (*$T equal
- not (equal Int.equal (create()) (of_enum (List.enum [2])))
- equal Int.equal (create()) (create())
- equal Int.equal (of_enum (List.enum [2])) (of_enum (List.enum [2]))
- *)
+  not (equal Int.equal (create()) (of_enum (List.enum [2])))
+  equal Int.equal (create()) (create())
+  equal Int.equal (of_enum (List.enum [2])) (of_enum (List.enum [2]))
+*)
 
 (*$T compare
- 0 <> (compare Int.compare (create()) (of_enum (List.enum [2])))
- *)
+  0 <> (compare Int.compare (create()) (of_enum (List.enum [2])))
+*)
 
 module Exceptionless = struct
   let top s = try Some (top s) with Empty -> None

@@ -22,14 +22,14 @@
 
 (** Locks for mutual exclusion.
 
-   Mutexes (mutual-exclusion locks) are used to implement critical sections
-   and protect shared mutable data structures against concurrent accesses.
-   The typical use is (if [m] is the mutex associated with the data structure
-   [D]):
+    Mutexes (mutual-exclusion locks) are used to implement critical sections
+    and protect shared mutable data structures against concurrent accesses.
+    The typical use is (if [m] is the mutex associated with the data structure
+    [D]):
     {[
-     Mutex.synchronize ~lock:m (fun () ->
+      Mutex.synchronize ~lock:m (fun () ->
         (* Critical section that operates over D *);
-     ) ()
+      ) ()
     ]}
 
     This module implements {!Control.Concurrency.Common}
@@ -68,13 +68,13 @@ val make : unit -> BatConcurrent.lock
 module DebugMutex:
 sig
 
-type t
-(** The type of mutexes. *)
+  type t
+  (** The type of mutexes. *)
 
-val create : unit -> t
-(** Return a new mutex. *)
+  val create : unit -> t
+  (** Return a new mutex. *)
 
-val lock : t -> unit
+  val lock : t -> unit
   (** Lock the given mutex. Only one thread can have the mutex locked
       at any time. A thread that attempts to lock a mutex already locked
       will suspend until the other mutex is unlocked.
@@ -82,40 +82,40 @@ val lock : t -> unit
       {b Note} attempting to lock a mutex you already have locked from
       the same thread will also suspend your thread, possibly forever.
       If this is not what you want, take a look at module {!RMutex}.
-*)
+  *)
 
-val try_lock : t -> bool
-(** Same as {!Mutex.lock}, but does not suspend the calling thread if
-    the mutex is already locked: just return [false] immediately
-    in that case. If the mutex is unlocked, lock it and
-    return [true]. *)
+  val try_lock : t -> bool
+  (** Same as {!Mutex.lock}, but does not suspend the calling thread if
+      the mutex is already locked: just return [false] immediately
+      in that case. If the mutex is unlocked, lock it and
+      return [true]. *)
 
-val unlock : t -> unit
-(** Unlock the given mutex. Other threads suspended trying to lock
-    the mutex will restart. If the mutex wasn't locked, nothing happens.*)
+  val unlock : t -> unit
+  (** Unlock the given mutex. Other threads suspended trying to lock
+      the mutex will restart. If the mutex wasn't locked, nothing happens.*)
 
-val synchronize : ?lock:t -> ('a -> 'b) -> 'a -> 'b
-(** Protect a function.
+  val synchronize : ?lock:t -> ('a -> 'b) -> 'a -> 'b
+  (** Protect a function.
 
-    [synchronize f] returns a new function [f'] with the same behavior
-    as [f] but such that concurrenty calls to [f'] are queued if
-    necessary to avoid races.
+      [synchronize f] returns a new function [f'] with the same behavior
+      as [f] but such that concurrenty calls to [f'] are queued if
+      necessary to avoid races.
 
-    [synchronize ~lock:l f] behaves as [synchronize f] but uses a
-    user-specified lock [l], which may be useful to share a lock
-    between several function. This is necessary in particular when
-    the lock is specific to a data structure rather than to a
-    function.
+      [synchronize ~lock:l f] behaves as [synchronize f] but uses a
+      user-specified lock [l], which may be useful to share a lock
+      between several function. This is necessary in particular when
+      the lock is specific to a data structure rather than to a
+      function.
 
-    In either case, the lock is acquired when entering the function
-    and released when the function call ends, whether this is due
-    to normal termination or to some exception being raised.
-*)
+      In either case, the lock is acquired when entering the function
+      and released when the function call ends, whether this is due
+      to normal termination or to some exception being raised.
+  *)
 
-val make : unit -> BatConcurrent.lock
-(**
-   Create a new abstract lock based on Mutexes.
-*)
+  val make : unit -> BatConcurrent.lock
+    (**
+       Create a new abstract lock based on Mutexes.
+    *)
 
 end
 (**/**)

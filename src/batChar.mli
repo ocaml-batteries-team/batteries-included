@@ -34,13 +34,13 @@ external code : char -> int = "%identity"
 
 val chr : int -> char
 (** Return the character with the given ASCII code.
-   @raise Invalid_argument if the argument is
-   outside the range 0--255. *)
+    @raise Invalid_argument if the argument is
+    outside the range 0--255. *)
 
 val escaped : char -> string
 (** Return a string representing the given character,
-   with special characters escaped following the lexical conventions
-   of OCaml. *)
+    with special characters escaped following the lexical conventions
+    of OCaml. *)
 
 val lowercase : char -> char
 (** Convert the given character to its equivalent lowercase character. *)

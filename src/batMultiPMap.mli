@@ -100,16 +100,16 @@ val modify : 'a -> ('b BatSet.PSet.t -> 'b BatSet.PSet.t) -> ('a, 'b) t -> ('a, 
     @raise Not_found is [x] is unbound in [m] *)
 
 val modify_def :
-    'b BatSet.PSet.t -> 'a -> ('b BatSet.PSet.t -> 'b BatSet.PSet.t) ->
-    ('a, 'b) t -> ('a, 'b) t
+  'b BatSet.PSet.t -> 'a -> ('b BatSet.PSet.t -> 'b BatSet.PSet.t) ->
+  ('a, 'b) t -> ('a, 'b) t
 (** [modify_def dfl x f m] performs as [modify x f m] but it adds
     [f dfl] in [m] instead of raising [Not_found] if [x] was unbound.
 
     @since NEXT_RELEASE *)
 
 val modify_opt:
-    'a -> ('b BatSet.PSet.t option -> 'b BatSet.PSet.t option) ->
-    ('a, 'b) t -> ('a, 'b) t
+  'a -> ('b BatSet.PSet.t option -> 'b BatSet.PSet.t option) ->
+  ('a, 'b) t -> ('a, 'b) t
 (** [modify_opt x f m] allows to modify the bindings for [k] in [m]
     or absence thereof.
 
@@ -120,13 +120,13 @@ val enum : ('a, 'b) t -> ('a * 'b) BatEnum.t
 
 val of_enum : ?keys:('a -> 'a -> int) -> ?data:('b -> 'b -> int) -> ('a * 'b) BatEnum.t -> ('a, 'b) t
 (** creates a map from an enumeration, using the specified function
-  for key comparison or [compare] by default. *)
+    for key comparison or [compare] by default. *)
 
 (** Infix operators over a {!BatMultiPMap} *)
 module Infix : sig
   val (-->) : ('a, 'b) t -> 'a -> 'b BatSet.PSet.t
-    (** [map-->key] returns the current binding of [key] in [map].
-        Equivalent to [find key map]. *)
+  (** [map-->key] returns the current binding of [key] in [map].
+      Equivalent to [find key map]. *)
 
   val (<--) : ('a, 'b) t -> 'a * 'b -> ('a, 'b) t
     (** [map<--(key, value)] returns a map containing the same bindings as
@@ -139,6 +139,6 @@ end
 (** {7 Printing}*)
 
 val print : ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
-                             ('a BatInnerIO.output -> 'b -> unit) ->
-                             ('a BatInnerIO.output -> 'c -> unit) ->
-                             'a BatInnerIO.output -> ('b, 'c) t -> unit
+  ('a BatInnerIO.output -> 'b -> unit) ->
+  ('a BatInnerIO.output -> 'c -> unit) ->
+  'a BatInnerIO.output -> ('b, 'c) t -> unit

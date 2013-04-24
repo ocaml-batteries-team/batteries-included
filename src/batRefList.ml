@@ -59,9 +59,9 @@ let first = hd
 
 let last rl =
   let rec loop = function
-  | x :: [] -> x
-  | _ :: l -> loop l
-  | [] -> assert false
+    | x :: [] -> x
+    | _ :: l -> loop l
+    | [] -> assert false
   in
   match !rl with
   | [] -> raise Empty_list
@@ -74,10 +74,10 @@ let filter pred rl = rl := List.filter pred !rl
 
 let add_sort ~cmp rl item =
   let rec add_aux = function
-  | x::lnext as l ->
+    | x::lnext as l ->
       let r = cmp x item in
       if r < 0 then item::l else x::(add_aux lnext)
-  | [] -> [item]
+    | [] -> [item]
   in
   rl := add_aux !rl
 
@@ -114,8 +114,8 @@ module Index = struct
   let remove_at rl pos =
     let p = ref (-1) in
     let rec del_aux = function
-    | x::l -> incr p; if !p = pos then l else x::(del_aux l)
-    | [] -> invalid_arg "remove_at: index not found"
+      | x::l -> incr p; if !p = pos then l else x::(del_aux l)
+      | [] -> invalid_arg "remove_at: index not found"
     in
     rl := del_aux !rl
 

@@ -44,7 +44,7 @@ val full_init : int array -> unit
 
 val self_init : unit -> unit
 (** Initialize the generator with a more-or-less random seed chosen
-   in a system-dependent way. *)
+    in a system-dependent way. *)
 
 val bits : unit -> int
 (** Return 30 random bits in a nonnegative integer. *)
@@ -67,9 +67,9 @@ val int64 : Int64.t -> Int64.t;;
 
 val float : float -> float
 (** [Random.float bound] returns a random floating-point number
-   between 0 (inclusive) and [bound] (exclusive).  If [bound] is
-   negative, the result is negative or zero.  If [bound] is 0,
-   the result is 0. *)
+    between 0 (inclusive) and [bound] (exclusive).  If [bound] is
+    negative, the result is negative or zero.  If [bound] is 0,
+    the result is 0. *)
 
 val bool : unit -> bool
 (** [Random.bool ()] returns [true] or [false] with probability 0.5 each. *)
@@ -78,7 +78,7 @@ val char : unit -> char
 (** Return a random Latin-1 character.*)
 
 (*val uchar : unit -> UChar.t
-(** Return a random Unicode character.*)*)
+  (** Return a random Unicode character.*)*)
 
 val full_range_int : unit -> int
 (** [full_range_int ()] returns the maximum entropy possible in a
@@ -140,7 +140,7 @@ val shuffle: 'a BatEnum.t -> 'a array
 *)
 module State : sig
   type t = Random.State.t
-    (** The type of PRNG states. *)
+  (** The type of PRNG states. *)
 
   val make : int array -> t
   (** Create a new state and initialize it with the given seed. *)
@@ -160,7 +160,7 @@ module State : sig
   val float      : t -> float -> float
   val bool       : t -> bool
   val char       : t -> char
-(*  val uchar      : t -> UChar.t*)
+  (*  val uchar      : t -> UChar.t*)
   val enum_bits  : t -> unit    -> int BatEnum.t
   val enum_int   : t -> int     -> int BatEnum.t
   val enum_bool  : t -> unit    -> bool BatEnum.t
@@ -169,10 +169,10 @@ module State : sig
   val enum_int64 : t -> Int64.t -> Int64.t BatEnum.t
   val enum_nativeint : t -> Nativeint.t -> Nativeint.t BatEnum.t
   val enum_char  : t -> unit    -> char BatEnum.t
-(*  val enum_uchar : t -> unit    -> UChar.t BatEnum.t*)
-  (** These functions are the same as the basic functions, except that they
-      use (and update) the given PRNG state instead of the default one.
-  *)
+      (*  val enum_uchar : t -> unit    -> UChar.t BatEnum.t*)
+      (** These functions are the same as the basic functions, except that they
+          use (and update) the given PRNG state instead of the default one.
+      *)
 
 end;;
 
@@ -194,7 +194,7 @@ module Incubator : sig
 
       val make_self_init : unit -> t
       (** Create a new state and initialize it with a system-dependent
-      low-entropy seed. *)
+          low-entropy seed. *)
 
       val copy : t -> t
       (** Return a copy of the given state. *)
@@ -209,9 +209,9 @@ module Incubator : sig
       val char       : t -> char
 
       (** A copy of the input state is made to start these generators;
-      the input state is not modified.  This means that two enums
-      constructed from the same state will produce the same value
-      sequence. *)
+          the input state is not modified.  This means that two enums
+          constructed from the same state will produce the same value
+          sequence. *)
       val enum_bits  : t -> unit    -> int BatEnum.t
       val enum_int   : t -> int     -> int BatEnum.t
       val enum_bool  : t -> unit    -> bool BatEnum.t
@@ -222,17 +222,17 @@ module Incubator : sig
       val enum_char  : t -> unit    -> char BatEnum.t
 
       (** [perturb s] returns a new state based on the given state
-      that is, in a sense, the hash of the input state.  This new
-      state should be quite different from the input. *)
+          that is, in a sense, the hash of the input state.  This new
+          state should be quite different from the input. *)
       val perturb : t -> t
 
     end
 
     (** These enumerations are built on a copy of the global RNG
-    state.  To keep successive constructions from using the same RNG
-    state, when any of these functions is called, the global RNG state
-    is perturbed by using its current internal state as seed to
-    construct a new state. *)
+        state.  To keep successive constructions from using the same RNG
+        state, when any of these functions is called, the global RNG state
+        is perturbed by using its current internal state as seed to
+        construct a new state. *)
     val enum_bits  : unit    -> int BatEnum.t
     val enum_int   : int     -> int BatEnum.t
     val enum_bool  : unit    -> bool BatEnum.t

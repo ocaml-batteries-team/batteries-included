@@ -24,16 +24,16 @@ exception No_value
 type 'a t = 'a option
 
 let may f = function
-	| None -> ()
-	| Some v -> f v
+  | None -> ()
+  | Some v -> f v
 (*$T may
   let x = ref 3 in may incr (Some x); !x = 4
 *)
 
 
 let map f = function
-	| None -> None
-	| Some v -> Some (f v)
+  | None -> None
+  | Some v -> Some (f v)
 (*$T map
   map succ None = None
   map succ (Some 3) = (Some 4)
@@ -59,8 +59,8 @@ let filter f = function
 
 
 let default v = function
-	| None -> v
-	| Some v -> v
+  | None -> v
+  | Some v -> v
 (*$T default
   default 3 None = 3
   default 3 (Some 4) = 4
@@ -75,24 +75,24 @@ let default_delayed l = function
 *)
 
 let is_some = function
-	| None -> false
-	| _ -> true
+  | None -> false
+  | _ -> true
 (*$T is_some
   not (is_some None)
   is_some (Some ())
 *)
 
 let is_none = function
-	| None -> true
-	| _ -> false
+  | None -> true
+  | _ -> false
 (*$T is_none
   is_none None
   not (is_none (Some ()))
 *)
 
 let get_exn s e = match s with
-        | None   -> raise e
-	| Some v -> v
+  | None   -> raise e
+  | Some v -> v
 (*$T get_exn
   try get_exn None Exit with Exit -> true
   try get_exn (Some true) Exit with Exit -> false
@@ -105,8 +105,8 @@ let get s = get_exn s (Invalid_argument "Option.get")
 *)
 
 let map_default f v = function
-	| None -> v
-	| Some v2 -> f v2
+  | None -> v
+  | Some v2 -> f v2
 (*$T map_default
   map_default succ 2 None = 2
   map_default succ 2 (Some 3) = 4
@@ -122,11 +122,11 @@ let map_default_delayed f l = function
 
 let compare ?(cmp=Pervasives.compare) a b = match a with
     None -> (match b with
-      None -> 0
-    | Some _ -> -1)
+        None -> 0
+      | Some _ -> -1)
   | Some x -> (match b with
-      None -> 1
-    | Some y -> cmp x y)
+        None -> 1
+      | Some y -> cmp x y)
 (*$T compare
    compare (Some 0) (Some 1) < 0
    compare (Some 0) (Some 0) = 0
@@ -150,8 +150,8 @@ let eq ?(eq=(=)) x y = match x,y with
 *)
 
 let enum = function
-        | None   -> BatEnum.from (fun () -> raise BatEnum.No_more_elements)
-        | Some e -> BatEnum.singleton e
+  | None   -> BatEnum.from (fun () -> raise BatEnum.No_more_elements)
+  | Some e -> BatEnum.singleton e
 (*$T enum
    BatList.of_enum (enum None) = []
    BatList.of_enum (enum (Some 3)) = [3]

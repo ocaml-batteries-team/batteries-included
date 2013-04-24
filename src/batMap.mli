@@ -21,12 +21,12 @@
 
 (** Association tables over ordered types.
 
-   This module implements applicative association tables, also known as
-   finite maps or dictionaries, given a total ordering function
-   over the keys.
-   All operations over maps are purely applicative (no side-effects).
-   The implementation uses balanced binary trees, and therefore searching
-   and insertion take time logarithmic in the size of the map.
+    This module implements applicative association tables, also known as
+    finite maps or dictionaries, given a total ordering function
+    over the keys.
+    All operations over maps are purely applicative (no side-effects).
+    The implementation uses balanced binary trees, and therefore searching
+    and insertion take time logarithmic in the size of the map.
 
     {b Note} OCaml, Batteries Included, provides two implementations of
     maps: polymorphic maps and functorized maps. Functorized maps (see
@@ -45,14 +45,14 @@
     Here is a typical example of use:
 
     {[
-    module MyKeyType = struct
-      type t = my_type
-      let compare = my_compare_function
-    end
-    module MyMap = Map.Make(MyKeyType)
+      module MyKeyType = struct
+        type t = my_type
+        let compare = my_compare_function
+      end
+      module MyMap = Map.Make(MyKeyType)
 
-    let some_map = MyMap.add something MyMap.empty
-    ...
+      let some_map = MyMap.add something MyMap.empty
+            ...
     ]}
 
     You can also use predefined maps such as {!IntMap} for maps with
@@ -67,280 +67,280 @@
 module type S =
 sig
   type key
-    (** The type of the map keys. *)
+  (** The type of the map keys. *)
 
-    type (+'a) t
-    (** The type of maps from type [key] to type ['a]. *)
+  type (+'a) t
+  (** The type of maps from type [key] to type ['a]. *)
 
-    val empty: 'a t
-    (** The empty map. *)
+  val empty: 'a t
+  (** The empty map. *)
 
-    val is_empty: 'a t -> bool
-    (** Test whether a map is empty or not. *)
+  val is_empty: 'a t -> bool
+  (** Test whether a map is empty or not. *)
 
-    val cardinal: 'a t -> int
-    (** Return the number of bindings of a map. *)
+  val cardinal: 'a t -> int
+  (** Return the number of bindings of a map. *)
 
-    val add: key -> 'a -> 'a t -> 'a t
-    (** [add x y m] returns a map containing the same bindings as
-       [m], plus a binding of [x] to [y]. If [x] was already bound
-       in [m], its previous binding disappears. *)
+  val add: key -> 'a -> 'a t -> 'a t
+  (** [add x y m] returns a map containing the same bindings as
+      [m], plus a binding of [x] to [y]. If [x] was already bound
+      in [m], its previous binding disappears. *)
 
-    val find: key -> 'a t -> 'a
-    (** [find x m] returns the current binding of [x] in [m],
-       or raises [Not_found] if no such binding exists. *)
+  val find: key -> 'a t -> 'a
+  (** [find x m] returns the current binding of [x] in [m],
+      or raises [Not_found] if no such binding exists. *)
 
-    val remove: key -> 'a t -> 'a t
-    (** [remove x m] returns a map containing the same bindings as
-       [m], except for [x] which is unbound in the returned map. *)
+  val remove: key -> 'a t -> 'a t
+  (** [remove x m] returns a map containing the same bindings as
+      [m], except for [x] which is unbound in the returned map. *)
 
-    val modify: key -> ('a -> 'a) -> 'a t -> 'a t
-      (** [modify k f m] replaces the previous binding for [k] with [f] applied to
+  val modify: key -> ('a -> 'a) -> 'a t -> 'a t
+  (** [modify k f m] replaces the previous binding for [k] with [f] applied to
 	  that value. If [k] is unbound in [m] or [Not_found] is raised during the
 	  search, [Not_found] is raised.
 
 	  @since 1.2.0
 	  @raise Not_found if [k] is unbound in [m] (or [f] raises [Not_found]) *)
 
-    val modify_def: 'a -> key -> ('a -> 'a) -> 'a t -> 'a t
-    (** [modify_def v0 k f m] replaces the previous binding for [k]
+  val modify_def: 'a -> key -> ('a -> 'a) -> 'a t -> 'a t
+  (** [modify_def v0 k f m] replaces the previous binding for [k]
 	with [f] applied to that value. If [k] is unbound in [m] or
 	[Not_found] is raised during the search, [f v0] is
 	inserted (as if the value found were [v0]).
 
 	@since 1.3.0 *)
 
-    val modify_opt: key -> ('a option -> 'a option) -> 'a t -> 'a t
-    (** [modify_opt k f m] allows to modify the binding for [k] in [m]
-        or absence thereof.
+  val modify_opt: key -> ('a option -> 'a option) -> 'a t -> 'a t
+  (** [modify_opt k f m] allows to modify the binding for [k] in [m]
+      or absence thereof.
 
-        @since NEXT_RELEASE *)
+      @since NEXT_RELEASE *)
 
-    val extract : key -> 'a t -> 'a * 'a t
-    (** [extract k m] removes the current binding of [k] from [m],
-        returning the value [k] was bound to and the updated [m].
+  val extract : key -> 'a t -> 'a * 'a t
+  (** [extract k m] removes the current binding of [k] from [m],
+      returning the value [k] was bound to and the updated [m].
 
-        @since 1.4.0
-    *)
+      @since 1.4.0
+  *)
 
-    val pop : 'a t -> (key * 'a) * 'a t
-    (** [pop m] returns a binding from [m] and [m] without that
-        binding.
+  val pop : 'a t -> (key * 'a) * 'a t
+  (** [pop m] returns a binding from [m] and [m] without that
+      binding.
 
-        @raise Not_found if [m] is empty
-        @since 1.4.0
-    *)
+      @raise Not_found if [m] is empty
+      @since 1.4.0
+  *)
 
-    val mem: key -> 'a t -> bool
-    (** [mem x m] returns [true] if [m] contains a binding for [x],
-       and [false] otherwise. *)
+  val mem: key -> 'a t -> bool
+  (** [mem x m] returns [true] if [m] contains a binding for [x],
+      and [false] otherwise. *)
 
-    val iter: (key -> 'a -> unit) -> 'a t -> unit
-    (** [iter f m] applies [f] to all bindings in map [m].
-       [f] receives the key as first argument, and the associated value
-       as second argument.  The bindings are passed to [f] in increasing
-       order with respect to the ordering over the type of the keys.
-       Only current bindings are presented to [f]:
-       bindings hidden by more recent bindings are not passed to [f]. *)
+  val iter: (key -> 'a -> unit) -> 'a t -> unit
+  (** [iter f m] applies [f] to all bindings in map [m].
+      [f] receives the key as first argument, and the associated value
+      as second argument.  The bindings are passed to [f] in increasing
+      order with respect to the ordering over the type of the keys.
+      Only current bindings are presented to [f]:
+      bindings hidden by more recent bindings are not passed to [f]. *)
 
-    val map: ('a -> 'b) -> 'a t -> 'b t
-    (** [map f m] returns a map with same domain as [m], where the
-       associated value [a] of all bindings of [m] has been
-       replaced by the result of the application of [f] to [a].
-       The bindings are passed to [f] in increasing order
-       with respect to the ordering over the type of the keys. *)
+  val map: ('a -> 'b) -> 'a t -> 'b t
+  (** [map f m] returns a map with same domain as [m], where the
+      associated value [a] of all bindings of [m] has been
+      replaced by the result of the application of [f] to [a].
+      The bindings are passed to [f] in increasing order
+      with respect to the ordering over the type of the keys. *)
 
-    val mapi: (key -> 'a -> 'b) -> 'a t -> 'b t
-    (** Same as {!Map.S.map}, but the function receives as arguments both the
-       key and the associated value for each binding of the map. *)
+  val mapi: (key -> 'a -> 'b) -> 'a t -> 'b t
+  (** Same as {!Map.S.map}, but the function receives as arguments both the
+      key and the associated value for each binding of the map. *)
 
-    val fold: (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
-    (** [fold f m a] computes [(f kN dN ... (f k1 d1 (f k0 d0 a))...)],
-       where [k0,k1..kN] are the keys of all bindings in [m]
-       (in increasing order), and [d1 ... dN] are the associated data. *)
+  val fold: (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+  (** [fold f m a] computes [(f kN dN ... (f k1 d1 (f k0 d0 a))...)],
+      where [k0,k1..kN] are the keys of all bindings in [m]
+      (in increasing order), and [d1 ... dN] are the associated data. *)
 
-    val filterv: ('a -> bool) -> 'a t -> 'a t
-      (**[filterv f m] returns a map where only the values [a] of [m]
+  val filterv: ('a -> bool) -> 'a t -> 'a t
+  (**[filterv f m] returns a map where only the values [a] of [m]
 	 such that [f a = true] remain. The bindings are passed to [f]
 	 in increasing order with respect to the ordering over the
 	 type of the keys. *)
 
-    val filter: (key -> 'a -> bool) -> 'a t -> 'a t
-      (**[filter f m] returns a map where only the key, values pairs
+  val filter: (key -> 'a -> bool) -> 'a t -> 'a t
+  (**[filter f m] returns a map where only the key, values pairs
 	 [key], [a] of [m] such that [f key a = true] remain. The
 	 bindings are passed to [f] in increasing order with respect
 	 to the ordering over the type of the keys. *)
 
-    val filter_map: (key -> 'a -> 'b option) -> 'a t -> 'b t
-      (** [filter_map f m] combines the features of [filter] and
+  val filter_map: (key -> 'a -> 'b option) -> 'a t -> 'b t
+  (** [filter_map f m] combines the features of [filter] and
 	  [map].  It calls calls [f key0 a0], [f key1 a1], [f keyn an]
 	  where [a0,a1..an] are the elements of [m] and [key0..keyn] the
 	  respective corresponding keys. It returns the map of
 	  pairs [keyi],[bi] such as [f keyi ai = Some bi] (when [f] returns
 	  [None], the corresponding element of [m] is discarded). *)
 
-    val compare: ('a -> 'a -> int) -> 'a t -> 'a t -> int
-      (** Total ordering between maps.  The first argument is a total ordering
-          used to compare data associated with equal keys in the two maps. *)
+  val compare: ('a -> 'a -> int) -> 'a t -> 'a t -> int
+  (** Total ordering between maps.  The first argument is a total ordering
+      used to compare data associated with equal keys in the two maps. *)
 
-    val equal: ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
-    (** [equal cmp m1 m2] tests whether the maps [m1] and [m2] are
-       equal, that is, contain equal keys and associate them with
-       equal data.  [cmp] is the equality predicate used to compare
-       the data associated with the keys. *)
+  val equal: ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
+  (** [equal cmp m1 m2] tests whether the maps [m1] and [m2] are
+      equal, that is, contain equal keys and associate them with
+      equal data.  [cmp] is the equality predicate used to compare
+      the data associated with the keys. *)
 
-    val keys : _ t -> key BatEnum.t
-      (** Return an enumeration of all the keys of a map.*)
+  val keys : _ t -> key BatEnum.t
+  (** Return an enumeration of all the keys of a map.*)
 
-    val values: 'a t -> 'a BatEnum.t
-      (** Return an enumeration of al the values of a map.*)
+  val values: 'a t -> 'a BatEnum.t
+  (** Return an enumeration of al the values of a map.*)
 
-    val min_binding : 'a t -> (key * 'a)
-      (** return the ([key,value]) pair with the smallest key *)
+  val min_binding : 'a t -> (key * 'a)
+  (** return the ([key,value]) pair with the smallest key *)
 
-    val max_binding : 'a t -> (key * 'a)
-      (** return the [(key,value)] pair with the largest key *)
+  val max_binding : 'a t -> (key * 'a)
+  (** return the [(key,value)] pair with the largest key *)
 
-   (* The following documentations comments are from stdlib's map.mli:
-        - choose
-        - split
-        - singleton
-        - partition
-   *)
-    val choose : 'a t -> (key * 'a)
-    (** Return one binding of the given map, or raise [Not_found] if
-       the map is empty. Which binding is chosen is unspecified,
-       but equal bindings will be chosen for equal maps.
-     *)
+  (* The following documentations comments are from stdlib's map.mli:
+       - choose
+       - split
+       - singleton
+       - partition
+  *)
+  val choose : 'a t -> (key * 'a)
+  (** Return one binding of the given map, or raise [Not_found] if
+      the map is empty. Which binding is chosen is unspecified,
+      but equal bindings will be chosen for equal maps.
+  *)
 
-    val split : key -> 'a t -> ('a t * 'a option * 'a t)
-    (** [split x m] returns a triple [(l, data, r)], where
-          [l] is the map with all the bindings of [m] whose key
-        is strictly less than [x];
-          [r] is the map with all the bindings of [m] whose key
-        is strictly greater than [x];
-          [data] is [None] if [m] contains no binding for [x],
-          or [Some v] if [m] binds [v] to [x].
-     *)
+  val split : key -> 'a t -> ('a t * 'a option * 'a t)
+  (** [split x m] returns a triple [(l, data, r)], where
+        [l] is the map with all the bindings of [m] whose key
+      is strictly less than [x];
+        [r] is the map with all the bindings of [m] whose key
+      is strictly greater than [x];
+        [data] is [None] if [m] contains no binding for [x],
+        or [Some v] if [m] binds [v] to [x].
+  *)
 
-    val partition: (key -> 'a -> bool) -> 'a t -> 'a t * 'a t
-    (** [partition p m] returns a pair of maps [(m1, m2)], where
-        [m1] contains all the bindings of [s] that satisfy the
-        predicate [p], and [m2] is the map with all the bindings of
-        [s] that do not satisfy [p].
-        @since 1.4.0
-     *)
+  val partition: (key -> 'a -> bool) -> 'a t -> 'a t * 'a t
+  (** [partition p m] returns a pair of maps [(m1, m2)], where
+      [m1] contains all the bindings of [s] that satisfy the
+      predicate [p], and [m2] is the map with all the bindings of
+      [s] that do not satisfy [p].
+      @since 1.4.0
+  *)
 
 
-    val singleton: key -> 'a -> 'a t
-    (** [singleton x y] returns the one-element map that contains a binding [y]
-        for [x].
-     *)
+  val singleton: key -> 'a -> 'a t
+  (** [singleton x y] returns the one-element map that contains a binding [y]
+      for [x].
+  *)
 
-    val bindings : 'a t -> (key * 'a) list
-    (** Return the list of all bindings of the given map.
-        The returned list is sorted in increasing key order.
+  val bindings : 'a t -> (key * 'a) list
+  (** Return the list of all bindings of the given map.
+      The returned list is sorted in increasing key order.
 
-        Added for compatibility with stdlib 3.12
-    *)
+      Added for compatibility with stdlib 3.12
+  *)
 
-    val enum  : 'a t -> (key * 'a) BatEnum.t
-      (** Return an enumeration of (key, value) pairs of a map.
-        The returned enumeration is sorted in increasing order with respect
-        to the ordering [Ord.compare], where [Ord] is the argument given to
-        {!Map.Make}. *)
+  val enum  : 'a t -> (key * 'a) BatEnum.t
+  (** Return an enumeration of (key, value) pairs of a map.
+      The returned enumeration is sorted in increasing order with respect
+      to the ordering [Ord.compare], where [Ord] is the argument given to
+      {!Map.Make}. *)
 
-    val backwards  : 'a t -> (key * 'a) BatEnum.t
-      (** Return an enumeration of (key, value) pairs of a map.
-        The returned enumeration is sorted in decreasing order with respect
-        to the ordering [Ord.compare], where [Ord] is the argument given to
-        {!Map.Make}. *)
+  val backwards  : 'a t -> (key * 'a) BatEnum.t
+  (** Return an enumeration of (key, value) pairs of a map.
+      The returned enumeration is sorted in decreasing order with respect
+      to the ordering [Ord.compare], where [Ord] is the argument given to
+      {!Map.Make}. *)
 
-    val of_enum: (key * 'a) BatEnum.t -> 'a t
-      (** Create a map from a (key, value) enumeration. *)
+  val of_enum: (key * 'a) BatEnum.t -> 'a t
+  (** Create a map from a (key, value) enumeration. *)
 
-    val for_all: (key -> 'a -> bool) -> 'a t -> bool
-    (** [for_all p m] checks if all the bindings of the map
-        satisfy the predicate [p].
-    *)
+  val for_all: (key -> 'a -> bool) -> 'a t -> bool
+  (** [for_all p m] checks if all the bindings of the map
+      satisfy the predicate [p].
+  *)
 
-    val exists: (key -> 'a -> bool) -> 'a t -> bool
-    (** [exists p m] checks if at least one binding of the map
-        satisfy the predicate [p].
-    *)
+  val exists: (key -> 'a -> bool) -> 'a t -> bool
+  (** [exists p m] checks if at least one binding of the map
+      satisfy the predicate [p].
+  *)
 
-    val merge:
-         (key -> 'a option -> 'b option -> 'c option) -> 'a t -> 'b t -> 'c t
-    (** [merge f m1 m2] computes a map whose keys is a subset of keys of [m1]
-        and of [m2]. The presence of each such binding, and the corresponding
-        value, is determined with the function [f].
-     *)
+  val merge:
+    (key -> 'a option -> 'b option -> 'c option) -> 'a t -> 'b t -> 'c t
+  (** [merge f m1 m2] computes a map whose keys is a subset of keys of [m1]
+      and of [m2]. The presence of each such binding, and the corresponding
+      value, is determined with the function [f].
+  *)
 
-    (** {6 Boilerplate code}*)
+  (** {6 Boilerplate code}*)
 
-    (** {7 Printing}*)
+  (** {7 Printing}*)
 
-    val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
-      ('a BatInnerIO.output -> key -> unit) ->
-      ('a BatInnerIO.output -> 'c -> unit) ->
-      'a BatInnerIO.output -> 'c t -> unit
+  val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
+    ('a BatInnerIO.output -> key -> unit) ->
+    ('a BatInnerIO.output -> 'c -> unit) ->
+    'a BatInnerIO.output -> 'c t -> unit
 
-    (** Output signature of the functor {!Map.Make}. *)
+  (** Output signature of the functor {!Map.Make}. *)
 
-    (** {6 Override modules}*)
+  (** {6 Override modules}*)
 
-    (**
-       The following modules replace functions defined in {!Map} with functions
-       behaving slightly differently but having the same name. This is by design:
-       the functions meant to override the corresponding functions of {!Map}.
+  (**
+     The following modules replace functions defined in {!Map} with functions
+     behaving slightly differently but having the same name. This is by design:
+     the functions meant to override the corresponding functions of {!Map}.
 
-    *)
+  *)
 
-    (** Operations on {!Map} without exceptions.*)
-    module Exceptionless : sig
-      val find: key -> 'a t -> 'a option
-    end
+  (** Operations on {!Map} without exceptions.*)
+  module Exceptionless : sig
+    val find: key -> 'a t -> 'a option
+  end
 
-    (** Infix operators over a {!BatMap} *)
-    module Infix : sig
-      val (-->) : 'a t -> key -> 'a
-        (** [map-->key] returns the current binding of [key] in [map],
-            or raises [Not_found]. Equivalent to [find key map]. *)
+  (** Infix operators over a {!BatMap} *)
+  module Infix : sig
+    val (-->) : 'a t -> key -> 'a
+    (** [map-->key] returns the current binding of [key] in [map],
+        or raises [Not_found]. Equivalent to [find key map]. *)
 
-      val (<--) : 'a t -> key * 'a -> 'a t
-        (** [map<--(key, value)] returns a map containing the same bindings as
-            [map], plus a binding of [key] to [value]. If [key] was already bound
-            in [map], its previous binding disappears. Equivalent
-            to [add key value map]*)
-    end
+    val (<--) : 'a t -> key * 'a -> 'a t
+      (** [map<--(key, value)] returns a map containing the same bindings as
+          [map], plus a binding of [key] to [value]. If [key] was already bound
+          in [map], its previous binding disappears. Equivalent
+          to [add key value map]*)
+  end
 
-    (** Operations on {!Map} with labels.
+  (** Operations on {!Map} with labels.
 
 	This module overrides a number of functions of {!Map} by
 	functions in which some arguments require labels. These labels are
 	there to improve readability and safety and to let you change the
 	order of arguments to functions. In every case, the behavior of the
 	function is identical to that of the corresponding function of {!Map}.
-    *)
-    module Labels : sig
-      val add : key:key -> data:'a -> 'a t -> 'a t
-      val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
-      val map : f:('a -> 'b) -> 'a t -> 'b t
-      val mapi : f:(key:key -> data:'a -> 'b) -> 'a t -> 'b t
-      val filterv: f:('a -> bool) -> 'a t -> 'a t
-      val filter:f:(key -> 'a -> bool) -> 'a t -> 'a t
-      val fold :
-	f:(key:key -> data:'a -> 'b -> 'b) ->
-	'a t -> init:'b -> 'b
-      val compare: cmp:('a -> 'a -> int) -> 'a t -> 'a t -> int
-      val equal: cmp:('a -> 'a -> bool) -> 'a t -> 'a t -> bool
-    end
+  *)
+  module Labels : sig
+    val add : key:key -> data:'a -> 'a t -> 'a t
+    val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
+    val map : f:('a -> 'b) -> 'a t -> 'b t
+    val mapi : f:(key:key -> data:'a -> 'b) -> 'a t -> 'b t
+    val filterv: f:('a -> bool) -> 'a t -> 'a t
+    val filter:f:(key -> 'a -> bool) -> 'a t -> 'a t
+    val fold :
+      f:(key:key -> data:'a -> 'b -> 'b) ->
+      'a t -> init:'b -> 'b
+    val compare: cmp:('a -> 'a -> int) -> 'a t -> 'a t -> int
+    val equal: cmp:('a -> 'a -> bool) -> 'a t -> 'a t -> bool
   end
+end
 
 
 module Make (Ord : BatInterfaces.OrderedType) : S with type key = Ord.t
 (** Functor building an implementation of the map structure
-   given a totally ordered type.
+    given a totally ordered type.
 *)
 
 
@@ -493,7 +493,7 @@ val add_carry : 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t * 'b option
 (** [add_carry k v m] adds the binding [(k,v)] to [m], returning the new map and optionally the previous value bound to [k]. *)
 
 val modify : 'a -> ('b -> 'b) -> ('a, 'b) t -> ('a, 'b) t
-    (** [modify k f m] replaces the previous binding for [k] with [f]
+(** [modify k f m] replaces the previous binding for [k] with [f]
 	applied to that value.  If [k] is unbound in [m] or [Not_found] is
 	raised during the search,  [Not_found] is raised.
 
@@ -566,8 +566,8 @@ end
 (** Infix operators over a {!BatPMap} *)
 module Infix : sig
   val (-->) : ('a, 'b) t -> 'a -> 'b
-    (** [map-->key] returns the current binding of [key] in [map],
-        or raises [Not_found]. Equivalent to [find key map]. *)
+  (** [map-->key] returns the current binding of [key] in [map],
+      or raises [Not_found]. Equivalent to [find key map]. *)
 
   val (<--) : ('a, 'b) t -> 'a * 'b -> ('a, 'b) t
     (** [map<--(key, value)] returns a map containing the same bindings as
@@ -577,8 +577,8 @@ module Infix : sig
 end
 
 (** Map find and insert from Infix *)
-  val (-->) : ('a, 'b) t -> 'a -> 'b
-  val (<--) : ('a, 'b) t -> 'a * 'b -> ('a, 'b) t
+val (-->) : ('a, 'b) t -> 'a -> 'b
+val (<--) : ('a, 'b) t -> 'a * 'b -> ('a, 'b) t
 
 
 val bindings : ('key, 'a) t -> ('key * 'a) list
@@ -619,7 +619,7 @@ module PMap : sig
       mixing non-sensical comparison functions together is to the
       programmer. If in doubt, you should rather use the {!Make}
       functor for additional safety.
-   *)
+  *)
 
   type ('a, 'b) t
 
@@ -710,7 +710,7 @@ module PMap : sig
   (* The following documentations comments are from stdlib's map.mli:
      - choose
      - split
-   *)
+  *)
   val choose : ('key, 'a) t -> ('key * 'a)
   (** Return one binding of the given map, or raise [Not_found] if
       the map is empty. Which binding is chosen is unspecified,
@@ -840,17 +840,17 @@ module PMap : sig
   end
 
 
-(** Infix operators over a {!PMap} *)
+  (** Infix operators over a {!PMap} *)
   module Infix : sig
     val (-->) : ('a, 'b) t -> 'a -> 'b
     (** [map-->key] returns the current binding of [key] in [map],
         or raises [Not_found]. Equivalent to [find key map]. *)
 
     val (<--) : ('a, 'b) t -> 'a * 'b -> ('a, 'b) t
-    (** [map<--(key, value)] returns a map containing the same bindings as
-        [map], plus a binding of [key] to [value]. If [key] was already bound
-        in [map], its previous binding disappears. Equivalent
-        to [add key value map]*)
+      (** [map<--(key, value)] returns a map containing the same bindings as
+          [map], plus a binding of [key] to [value]. If [key] was already bound
+          in [map], its previous binding disappears. Equivalent
+          to [add key value map]*)
   end
 
   (** Map find and insert from Infix *)

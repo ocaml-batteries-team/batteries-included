@@ -135,9 +135,9 @@ module Incubator : sig
   val eq_by : ('a -> 'b) -> 'a eq
   val comp_by : ('a -> 'b) -> 'a comp
   val ord_by : ('a -> 'b) -> 'a ord
-(** Build a [eq], [cmp] or [ord] function from a projection function.
-    For example, if you wanted to compare integers based on their
-    lowest 4 bits, you could write [let cmp_bot4 = cmp_by (fun x
-    -> x land 0xf)] and use cmp_bot4 as the desired integer
-    comparator. *)
+    (** Build a [eq], [cmp] or [ord] function from a projection function.
+        For example, if you wanted to compare integers based on their
+        lowest 4 bits, you could write [let cmp_bot4 = cmp_by (fun x
+        -> x land 0xf)] and use cmp_bot4 as the desired integer
+        comparator. *)
 end

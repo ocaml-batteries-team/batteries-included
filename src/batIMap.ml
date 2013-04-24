@@ -12,12 +12,12 @@ module Core = struct
   let make eq l (n1, n2, v) r =
     let n1, l =
       if is_empty l || n1 = min_int then n1, empty else
-	let (k1, k2, v0), l' = split_rightmost l in
-	if k2 + 1 = n1 && eq v v0 then k1, l' else n1, l in
+        let (k1, k2, v0), l' = split_rightmost l in
+        if k2 + 1 = n1 && eq v v0 then k1, l' else n1, l in
     let n2, r =
       if is_empty r || n2 = max_int then n2, empty else
-	let (k1, k2, v0), r' = split_leftmost r in
-	if n2 + 1 = k1 && eq v v0 then k2, r' else n2, r in
+        let (k1, k2, v0), r' = split_leftmost r in
+        if n2 + 1 = k1 && eq v v0 then k2, r' else n2, r in
     make_tree l (n1, n2, v) r
 
   let rec add ?(eq = (==)) n v m =
@@ -26,22 +26,22 @@ module Core = struct
       let l = left_branch m in
       let r = right_branch m in
       if n1 <> min_int && n = n1 - 1 && eq v v0 then
-	make eq l (n, n2, v) r
+        make eq l (n, n2, v) r
       else if n < n1 then
-	make_tree (add n v l) x r
+        make_tree (add n v l) x r
       else if n1 <= n && n <= n2 then
-	if eq v v0 then m else
-	  let l =
-	    if n1 = n then l else
-	      make_tree l (n1, n - 1, v0) empty in
-	  let r =
-	    if n2 = n then r else
-	      make_tree empty (n + 1, n2, v0) r in
-	  make eq l (n, n, v) r
+        if eq v v0 then m else
+          let l =
+            if n1 = n then l else
+              make_tree l (n1, n - 1, v0) empty in
+          let r =
+            if n2 = n then r else
+              make_tree empty (n + 1, n2, v0) r in
+          make eq l (n, n, v) r
       else if n2 <> max_int && n = n2 + 1 && eq v v0 then
-	make eq l (n1, n, v) r
+        make eq l (n1, n, v) r
       else
-	make_tree l x (add n v r)
+        make_tree l x (add n v r)
 
   let rec from n s =
     if is_empty s then empty else
@@ -49,8 +49,8 @@ module Core = struct
       let s0 = left_branch s in
       let s1 = right_branch s in
       if n < n1 then make_tree (from n s0) x s1 else
-	if n > n2 then from n s1 else
-	  make_tree empty (n, n2, v)  s1
+      if n > n2 then from n s1 else
+        make_tree empty (n, n2, v)  s1
 
   let after n s = if n = max_int then empty else from (n + 1) s
 
@@ -60,8 +60,8 @@ module Core = struct
       let s0 = left_branch s in
       let s1 = right_branch s in
       if n > n2 then make_tree s0 x (until n s1) else
-	if n < n1 then until n s0 else
-	  make_tree s0 (n1, n, v) empty
+      if n < n1 then until n s0 else
+        make_tree s0 (n1, n, v) empty
 
   let before n s = if n = min_int then empty else until (n - 1) s
 
@@ -73,36 +73,36 @@ module Core = struct
     if is_empty m then raise Not_found else
       let (n1, n2, v) = root m in
       if n < n1 then find n (left_branch m) else
-	if n1 <= n && n <= n2 then v else
-	  find n (right_branch m)
+      if n1 <= n && n <= n2 then v else
+        find n (right_branch m)
 
   let modify_opt ?(eq=(==)) (n:int) f m =
     let rec aux m =
       if is_empty m then
         match f None with
-	| Some v -> singleton n v
-	| None   -> raise Exit
+        | Some v -> singleton n v
+        | None   -> raise Exit
       else
         let (n1, n2, v) = root m in
         if n < n1 then aux (left_branch m) else
-	  if n > n2 then aux (right_branch m) else
-	    match f (Some v) with
-	    | None    ->
-	      concat (left_branch m) (right_branch m)
-	    | Some v' ->
-	      if eq v' v then
-	        raise Exit (* fast exit *)
-	      else
-	        if n = n1 && n = n2 then (* no need to rebalance *)
-		  create (left_branch m) (n, n, v') (right_branch m)
-	        else
-		  let l =
-		    if n = n1 then left_branch m
-		    else add_range ~eq n1 (n-1) v (left_branch m)
-		  and r =
-		    if n = n2 then right_branch m
-		    else add_range ~eq (n+1) n2 v (right_branch m) in
-		  make_tree l (n, n, v') r
+        if n > n2 then aux (right_branch m) else
+          match f (Some v) with
+          | None    ->
+            concat (left_branch m) (right_branch m)
+          | Some v' ->
+            if eq v' v then
+              raise Exit (* fast exit *)
+            else
+            if n = n1 && n = n2 then (* no need to rebalance *)
+              create (left_branch m) (n, n, v') (right_branch m)
+            else
+              let l =
+                if n = n1 then left_branch m
+                else add_range ~eq n1 (n-1) v (left_branch m)
+              and r =
+                if n = n2 then right_branch m
+                else add_range ~eq (n+1) n2 v (right_branch m) in
+              make_tree l (n, n, v') r
     in
     try aux m with Exit -> m
 
@@ -126,16 +126,16 @@ module Core = struct
       let l = left_branch m in
       let r = right_branch m in
       if n < n1 then
-	make_tree (remove n l) x r
+        make_tree (remove n l) x r
       else if n1 = n then
-	if n2 = n then concat l r else
-	  make_tree l (n + 1, n2, v) r
+        if n2 = n then concat l r else
+          make_tree l (n + 1, n2, v) r
       else if n1 < n && n < n2 then
-	make_tree (make_tree l (n1, n - 1, v) empty) (n + 1, n2, v) r
+        make_tree (make_tree l (n1, n - 1, v) empty) (n + 1, n2, v) r
       else if n = n2 then
-	make_tree l (n1, n - 1, v) r
+        make_tree l (n1, n - 1, v) r
       else
-	make_tree l x (remove n r)
+        make_tree l x (remove n r)
 
   let remove_range n1 n2 m =
     if n1 > n2 then invalid_arg "IMap.remove_range" else
@@ -145,8 +145,8 @@ module Core = struct
     if is_empty m then false else
       let (n1, n2, _) = root m in
       if n < n1 then mem n (left_branch m) else
-	if n1 <= n && n <= n2 then true else
-	  mem n (right_branch m)
+      if n1 <= n && n <= n2 then true else
+        mem n (right_branch m)
 
   let iter_range proc m =
     BatAvlTree.iter (fun (n1, n2, v) -> proc n1 n2 v) m
@@ -158,7 +158,7 @@ module Core = struct
     let rec loop n1 n2 v a =
       let a = f n1 v a in
       if n1 = n2 then a else
-	loop (n1 + 1) n2 v a in
+        loop (n1 + 1) n2 v a in
     fold_range loop m a
 
   let iter proc m =
@@ -194,25 +194,25 @@ module Core = struct
     if is_empty m then empty else
       let (k1, k2, _), m' = split_leftmost m in
       let f n1 n2 _ (k1, k2, s) =
-	if n1 = k2 + 1 then (k1, n2, s) else
-	  (n1, n2, make_tree s (k1, k2) empty) in
+        if n1 = k2 + 1 then (k1, n2, s) else
+          (n1, n2, make_tree s (k1, k2) empty) in
       let k1, k2, s = fold_range f m' (k1, k2, empty) in
       make_tree s (k1, k2) empty
 
   let map_to_set p m =
     let rec loop m =
       if is_empty m then None else
-	let (k1, k2, v), m' = split_leftmost m in
-	if p v then Some (k1, k2, m') else
-	  loop m' in
+        let (k1, k2, v), m' = split_leftmost m in
+        if p v then Some (k1, k2, m') else
+          loop m' in
     match loop m with
       Some (k1, k2, m') ->
       let f n1 n2 v (k1, k2, s) =
-	    if p v then
-	      if n1 = k2 + 1 then (k1, n2, s) else
-		(n1, n2, make_tree s (k1, k2) empty)
-	    else
-	      (k1, k2, s) in
+        if p v then
+          if n1 = k2 + 1 then (k1, n2, s) else
+            (n1, n2, make_tree s (k1, k2) empty)
+        else
+          (k1, k2, s) in
       let (k1, k2, s) = fold_range f m' (k1, k2, empty) in
       make_tree s (k1, k2) empty
     | None -> empty
@@ -223,33 +223,33 @@ module Core = struct
   let fold2_range f m1 m2 acc =
     let e1 = enum m1 and e2 = enum m2 in
     let rec aux acc = function
-	None,None -> acc
+        None,None -> acc
       | Some (lo,hi,rx), None ->
-	     aux (f lo hi (Some rx) None acc) (Enum.get e1, None)
+        aux (f lo hi (Some rx) None acc) (Enum.get e1, None)
       | None, Some (lo,hi,rx) ->
-	     aux (f lo hi None (Some rx) acc) (None, Enum.get e2)
+        aux (f lo hi None (Some rx) acc) (None, Enum.get e2)
       | Some (lo1,hi1,rx1), Some (lo2,hi2,rx2) when lo1 < lo2 ->
-	     let hi, v1 =
-	       if hi1 > lo2 then lo2-1, Some (lo2,hi1,rx1)
-	       else if hi1 = lo2 then hi1, Some (lo2,lo2,rx1)
-	       else hi1, Enum.get e1
-	     and v2 = Some (lo2,hi2,rx2) in
-	     aux (f lo1 hi (Some rx1) None acc) (v1, v2)
+        let hi, v1 =
+          if hi1 > lo2 then lo2-1, Some (lo2,hi1,rx1)
+          else if hi1 = lo2 then hi1, Some (lo2,lo2,rx1)
+          else hi1, Enum.get e1
+        and v2 = Some (lo2,hi2,rx2) in
+        aux (f lo1 hi (Some rx1) None acc) (v1, v2)
       | Some (lo1,hi1,rx1), Some (lo2,hi2,rx2) when lo2 < lo1 ->
-	     let hi, v2 =
-	       if hi2 > lo1 then lo1-1, Some (lo1,hi2,rx2)
-	       else if hi2 = lo1 then hi2, Some (lo1,lo1,rx2)
-	       else hi2, Enum.get e2
-	     and v1 = Some (lo1,hi1,rx1) in
-	     aux (f lo2 hi None (Some rx2) acc) (v1,v2)
+        let hi, v2 =
+          if hi2 > lo1 then lo1-1, Some (lo1,hi2,rx2)
+          else if hi2 = lo1 then hi2, Some (lo1,lo1,rx2)
+          else hi2, Enum.get e2
+        and v1 = Some (lo1,hi1,rx1) in
+        aux (f lo2 hi None (Some rx2) acc) (v1,v2)
       | Some (lo1,hi1,rx1), Some (_lo2,hi2,rx2) (* lo1 = lo2 *) ->
-	     let hi, v1, v2 =
-	       if hi1 = hi2 then hi1, Enum.get e1, Enum.get e2
-	       else if hi1 < hi2 then hi1, Enum.get e1, Some (hi1+1,hi2,rx2)
-	       else (* hi2 < hi1 *) hi2, Some (hi2+1,hi1,rx1), Enum.get e2
-	     in
-	 (*	printf "#@%a\n" print_rng (lo1, hi); *)
-	     aux (f lo1 hi (Some rx1) (Some rx2) acc) (v1, v2)
+        let hi, v1, v2 =
+          if hi1 = hi2 then hi1, Enum.get e1, Enum.get e2
+          else if hi1 < hi2 then hi1, Enum.get e1, Some (hi1+1,hi2,rx2)
+          else (* hi2 < hi1 *) hi2, Some (hi2+1,hi1,rx1), Enum.get e2
+        in
+        (*	printf "#@%a\n" print_rng (lo1, hi); *)
+        aux (f lo1 hi (Some rx1) (Some rx2) acc) (v1, v2)
     in
     aux acc (Enum.get e1, Enum.get e2)
 
@@ -270,30 +270,30 @@ module Core = struct
   let forall2_range f m1 m2 =
     let e1 = enum m1 and e2 = enum m2 in
     let rec aux = function
-	None,None -> true
+        None,None -> true
       | Some (lo,hi,rx), None ->
-	     (f lo hi (Some rx) None) && aux (Enum.get e1, None)
+        (f lo hi (Some rx) None) && aux (Enum.get e1, None)
       | None, Some (lo,hi,rx) ->
-	     (f lo hi None (Some rx)) && aux (None, Enum.get e2)
+        (f lo hi None (Some rx)) && aux (None, Enum.get e2)
       | Some (lo1,hi1,rx1), Some (lo2,hi2,rx2) when lo1 < lo2 ->
-	     let hi, v1 =
-	       if hi1 > lo2 then lo2-1, Some (lo2,hi1,rx1)
-	       else hi1, Enum.get e1
-	     and v2 = Some (lo2,hi2,rx2) in
-	     (f lo1 hi (Some rx1) None) && aux (v1, v2)
+        let hi, v1 =
+          if hi1 > lo2 then lo2-1, Some (lo2,hi1,rx1)
+          else hi1, Enum.get e1
+        and v2 = Some (lo2,hi2,rx2) in
+        (f lo1 hi (Some rx1) None) && aux (v1, v2)
       | Some (lo1,hi1,rx1), Some (lo2,hi2,rx2) when lo2 < lo1 ->
-	     let hi, v2 =
-	       if hi2 > lo1 then lo1-1, Some (lo1,hi2,rx2)
-	       else hi2, Enum.get e2
-	     and v1 = Some (lo1,hi1,rx1) in
-	     (f lo2 hi None (Some rx2)) && aux (v1,v2)
+        let hi, v2 =
+          if hi2 > lo1 then lo1-1, Some (lo1,hi2,rx2)
+          else hi2, Enum.get e2
+        and v1 = Some (lo1,hi1,rx1) in
+        (f lo2 hi None (Some rx2)) && aux (v1,v2)
       | Some (lo1,hi1,rx1), Some (_,hi2,rx2) (* lo1 = lo2 *) ->
-	     let hi, v1, v2 =
-	       if hi1 = hi2 then hi1, Enum.get e1, Enum.get e2
-	       else if hi1 < hi2 then hi1, Enum.get e1, Some (hi1+1,hi2,rx2)
-	       else (* hi2 < hi1 *) hi2, Some (hi2+1,hi1,rx1), Enum.get e2
-	     in
-	     (f lo1 hi (Some rx1) (Some rx2)) && aux (v1, v2)
+        let hi, v1, v2 =
+          if hi1 = hi2 then hi1, Enum.get e1, Enum.get e2
+          else if hi1 < hi2 then hi1, Enum.get e1, Some (hi1+1,hi2,rx2)
+          else (* hi2 < hi1 *) hi2, Some (hi2+1,hi1,rx1), Enum.get e2
+        in
+        (f lo1 hi (Some rx1) (Some rx2)) && aux (v1, v2)
     in
     aux (Enum.get e1, Enum.get e2)
 end
@@ -304,14 +304,14 @@ type key = int
 let empty ~eq = {m = Core.empty; eq}
 (*$T empty
   is_empty (empty ~eq:(=))
- *)
+*)
 
 let singleton ~eq x y = {m = Core.singleton x y; eq}
 (*$T singleton
   not (is_empty (singleton ~eq:(=) 1 'x'))
   find 1 (singleton ~eq:(=) 1 'x') = 'x'
   try ignore(find 0 (singleton ~eq:(=) 1 'x')); false with Not_found -> true
- *)
+*)
 
 let is_empty {m} = Core.is_empty m
 let add x y {m;eq} = {m=Core.add ~eq x y m; eq}
@@ -345,14 +345,14 @@ let modify x f {m;eq} = {m=Core.modify ~eq x f m; eq}
   empty ~eq:(=) |> add_range 1 5 1 |> modify 2 succ |> find 2 = 2
   empty ~eq:(=) |> add_range 1 5 1 |> modify 2 succ |> find 3 = 1
   empty ~eq:(=) |> add_range 1 5 1 |> modify 2 succ |> find 5 = 1
- *)
+*)
 
 let modify_def v0 x f {m;eq} = {m=Core.modify_def ~eq v0 x f m; eq}
 
 (*$T modify_def
   (* adding an entry *) \
   empty ~eq:(=) |> modify_def 0 1 succ |> find 1 = 1
- *)
+*)
 
 let modify_opt x f {m;eq} = {m=Core.modify_opt ~eq x f m; eq}
 
@@ -361,7 +361,7 @@ let modify_opt x f {m;eq} = {m=Core.modify_opt ~eq x f m; eq}
   empty ~eq:(=) |> modify_opt 1 (function None -> Some 1 | _ -> assert false) |> find 1 = 1
   (* deleting an entry *) \
   empty ~eq:(=) |> add 1 1 |> modify_opt 1 (function Some 1 -> None | _ -> assert false) |> mem 1 |> not
- *)
+*)
 
 let remove x {m;eq} = {m=Core.remove x m; eq}
 let remove_range lo hi {m;eq} = {m=Core.remove_range lo hi m; eq}
@@ -392,7 +392,7 @@ let get_dec_eq {eq} = eq
 *)
 
 let of_enum ~eq e =
-    BatEnum.fold (fun t (n1, n2, v) -> add_range n1 n2 v t) (empty ~eq) e
+  BatEnum.fold (fun t (n1, n2, v) -> add_range n1 n2 v t) (empty ~eq) e
 
 module Infix = struct
   let (-->) {m} k = Core.find k m

@@ -100,7 +100,7 @@ let rear q =
     let rear = List.rev rev_rear in
     Some ({ front = front ; flen = new_flen ;
             rear = List.tl rear ; rlen = new_rlen - 1 },
-          List.hd rear)
+      List.hd rear)
 
 (*$T rear
    match rear(empty |> cons 1 |> cons 2) with | Some(_, 1) -> true | _ -> false
@@ -137,8 +137,8 @@ let append_list q l =
 let prepend_list l q =
   let n = List.length l in
   { q with
-      front = BatList.append l q.front ;
-      flen = q.flen + n }
+    front = BatList.append l q.front ;
+    flen = q.flen + n }
 
 let at ?(backwards=false) q n =
   let size_front = q.flen in
@@ -151,15 +151,15 @@ let at ?(backwards=false) q n =
         if n < size_rear then BatList.at q.rear n
         else BatList.at q.front (size_front - 1 - (n - size_rear))
       else
-        if n < size_front then BatList.at q.front n
-        else BatList.at q.rear (size_rear - 1 - (n - size_front))
+      if n < size_front then BatList.at q.front n
+      else BatList.at q.rear (size_rear - 1 - (n - size_front))
     )
 
 let map f q =
   let rec go q r = match front q with
     | None -> r
     | Some (x, q) ->
-        go q (snoc r (f x))
+      go q (snoc r (f x))
   in
   go q empty
 
@@ -167,7 +167,7 @@ let mapi f q =
   let rec go n q r = match front q with
     | None -> r
     | Some (x, q) ->
-        go (n + 1) q (snoc r (f n x))
+      go (n + 1) q (snoc r (f n x))
   in
   go 0 q empty
 
@@ -175,7 +175,7 @@ let iter f q =
   let rec go q = match front q with
     | None -> ()
     | Some (x, q) ->
-        f x ; go q
+      f x ; go q
   in
   go q
 
@@ -183,8 +183,8 @@ let iteri f q =
   let rec go n q = match front q with
     | None -> ()
     | Some (x, q) ->
-        f n x ;
-        go (n + 1) q
+      f n x ;
+      go (n + 1) q
   in
   go 0 q
 
@@ -206,8 +206,8 @@ let find ?(backwards=false) test q =
         | _ -> spin k (List.rev r) []
       end
     | x :: f ->
-        if test x then Some (k, x)
-        else spin (k + 1) f r
+      if test x then Some (k, x)
+      else spin (k + 1) f r
   in
   if backwards then
     spin 0 q.rear q.front
@@ -219,7 +219,7 @@ let rec enum q =
   let next () = match front !cur with
     | None -> raise BatEnum.No_more_elements
     | Some (x, q) ->
-        cur := q ; x
+      cur := q ; x
   in
   let count () = size !cur in
   let clone () = enum !cur in
@@ -231,25 +231,25 @@ let of_enum e =
 (*$Q enum
    (Q.list Q.int) (fun l -> List.of_enum (enum (List.fold_left snoc empty l)) = l)
 *)(*$Q of_enum
-  (Q.list Q.int) (fun l -> to_list (of_enum (List.enum l)) = l)
-*)
+    (Q.list Q.int) (fun l -> to_list (of_enum (List.enum l)) = l)
+  *)
 
 let print ?(first="[") ?(last="]") ?(sep="; ") elepr out dq =
   let rec spin dq = match front dq with
     | None -> ()
     | Some (a, dq) when size dq = 0 ->
-        elepr out a
+      elepr out a
     | Some (a, dq) ->
-        elepr out a ;
-        BatInnerIO.nwrite out sep ;
-        spin dq
+      elepr out a ;
+      BatInnerIO.nwrite out sep ;
+      spin dq
   in
   BatInnerIO.nwrite out first ;
   spin dq ;
   BatInnerIO.nwrite out last
 
-(*$Q print
-  (Q.list Q.int) (fun l -> \
-    BatIO.to_string (print ~first:"<" ~last:">" ~sep:"," Int.print) (of_list l) \
-    = BatIO.to_string (List.print ~first:"<" ~last:">" ~sep:"," Int.print) l)
-*)
+  (*$Q print
+    (Q.list Q.int) (fun l -> \
+      BatIO.to_string (print ~first:"<" ~last:">" ~sep:"," Int.print) (of_list l) \
+      = BatIO.to_string (List.print ~first:"<" ~last:">" ~sep:"," Int.print) l)
+  *)

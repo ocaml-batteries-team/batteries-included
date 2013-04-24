@@ -25,7 +25,7 @@ let (browser: (_, _, _) format) = "@BROWSER_COMMAND@ %s";;
 (**The default function to open a www browser.*)
 let default_browse s =
   let command = Printf.sprintf browser s in
-    Sys.command command
+  Sys.command command
 let current_browse = ref default_browse
 
 let browse s = !current_browse s

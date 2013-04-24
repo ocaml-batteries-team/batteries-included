@@ -23,19 +23,19 @@ let big_int_base_default_symbols =
   let s = String.create (10 + 26*2) in
   let set off c k = s.[k] <- char_of_int (k - off + (int_of_char c)) in
   for k = 0 to String.length s - 1 do
-   if k < 10 then set  0 '0' k else if k < 36 then set 10 'a' k else set 36 'A' k
+    if k < 10 then set  0 '0' k else if k < 36 then set 10 'a' k else set 36 'A' k
   done; s
 
 
 let to_string_in_custom_base
-      symbols (* vector of digit symbols 0,1,...,a,b,... *)
-      b       (* base, int > 1 and <= number of defined symbols *)
-      n       (* big integer *)
+    symbols (* vector of digit symbols 0,1,...,a,b,... *)
+    b       (* base, int > 1 and <= number of defined symbols *)
+    n       (* big integer *)
   = let open Big_int in
   if b <= 1 then invalid_arg
-    "Big_int.to_string_in_custom_base: base must be > 1";
+      "Big_int.to_string_in_custom_base: base must be > 1";
   if b > String.length symbols then invalid_arg (
-    "Big_int.to_string_in_custom_base: big_int_base_default_symbols too small for base "
+      "Big_int.to_string_in_custom_base: big_int_base_default_symbols too small for base "
       ^ (string_of_int b) ^ ": only " ^ string_of_int (String.length symbols));
   let isnegative = sign_big_int n < 0 in
   (* generously over-approximate number of binary digits of n;
@@ -47,11 +47,11 @@ let to_string_in_custom_base
       digits in base b <= Ceiling[Log[b, 2 ]]    and   Log[b, 2 ] == -----------
                                                                        Log[b]    *)
   let basebdigits = int_of_float (ceil (
-    ((float_of_int base2digits) *. (log 2.))
-     /.
-    (log (float_of_int b))))
+        ((float_of_int base2digits) *. (log 2.))
+        /.
+          (log (float_of_int b))))
     +
-    (if isnegative then 1 else 0) (* the pesky '-' sign *)
+      (if isnegative then 1 else 0) (* the pesky '-' sign *)
   in
   let buff = String.create basebdigits in (* we know the buffer is large enough *)
   let curr = ref (basebdigits - 1) and count = ref 0 in
@@ -68,7 +68,7 @@ let to_string_in_custom_base
 
 let to_string_in_base b n =
   if b <= 1 || b > 36 then invalid_arg
-    "Big_int.to_string_in_base: base must be in 2..36"
+      "Big_int.to_string_in_base: base must be in 2..36"
   else to_string_in_custom_base big_int_base_default_symbols b n
 
 
@@ -85,22 +85,22 @@ let to_string_in_hexa   = to_string_in_base 16
   (to_string_in_base 36 (big_int_of_int 948565))  "kbx1"
   (to_string_in_base  3 (big_int_of_int 2765353)) "12012111100111"
 *) (*$= to_string_in_custom_base & ~printer:identity
-  (to_string_in_custom_base "*/!" 3 (big_int_of_int 2765353)) "/!*/!////**///"
-*) (*$= to_string_in_binary & ~printer:identity
-  (to_string_in_binary (big_int_of_int 9485))     "10010100001101"
-*) (*$= to_string_in_octal & ~printer:identity
-  (to_string_in_octal (big_int_of_int 9485))      "22415"
-*) (*$= to_string_in_hexa & ~printer:identity
-  (to_string_in_hexa (big_int_of_int 9485))       "250d"
-*) (*$T to_string_in_base
-  try ignore (to_string_in_base 37 (big_int_of_int 948565)); false \
-    with Invalid_argument _ -> true
-  try ignore (to_string_in_base 1 (big_int_of_int 948565)); false \
-    with Invalid_argument _ -> true
-*) (*$Q to_string_in_base
-  Q.int (fun i-> let bi = big_int_of_int i in \
-    to_string_in_base 10 bi = string_of_big_int bi)
-*)
+     (to_string_in_custom_base "*/!" 3 (big_int_of_int 2765353)) "/!*/!////**///"
+   *) (*$= to_string_in_binary & ~printer:identity
+        (to_string_in_binary (big_int_of_int 9485))     "10010100001101"
+      *) (*$= to_string_in_octal & ~printer:identity
+        (to_string_in_octal (big_int_of_int 9485))      "22415"
+      *) (*$= to_string_in_hexa & ~printer:identity
+        (to_string_in_hexa (big_int_of_int 9485))       "250d"
+      *) (*$T to_string_in_base
+        try ignore (to_string_in_base 37 (big_int_of_int 948565)); false \
+        with Invalid_argument _ -> true
+        try ignore (to_string_in_base 1 (big_int_of_int 948565)); false \
+        with Invalid_argument _ -> true
+      *) (*$Q to_string_in_base
+        Q.int (fun i-> let bi = big_int_of_int i in \
+        to_string_in_base 10 bi = string_of_big_int bi)
+      *)
 
 
 open BatNumber
@@ -152,8 +152,8 @@ include Big_int
 include MakeNumeric(BaseBig_int)
 
 let print out t = BatIO.nwrite out (to_string t)
-(*$T print
-  BatIO.to_string print (of_int 456) = "456"
-  BatIO.to_string print (power_int_positive_int 10 31) = "10000000000000000000000000000000"
-  BatIO.to_string print (power_int_positive_int (-10) 31) = "-10000000000000000000000000000000"
-*)
+  (*$T print
+    BatIO.to_string print (of_int 456) = "456"
+    BatIO.to_string print (power_int_positive_int 10 31) = "10000000000000000000000000000000"
+    BatIO.to_string print (power_int_positive_int (-10) 31) = "-10000000000000000000000000000000"
+  *)

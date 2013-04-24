@@ -42,18 +42,18 @@ val map : ('a -> 'b) -> 'a option -> 'b option
 val bind : 'a option -> ('a -> 'b option) -> 'b option
 (** [bind (Some x) f] returns [f x] and [bind None f] returns [None].
 
-@example "Our functions return option types. Compose them to propagate [None]."
-{[
-let pick_long case =
-  try
-    Some (List.find (fun data -> List.length data > 1000) case)
-  with Not_found -> None
-let last_null data = List.rindex_of 0 data
-let interesting_positions dataset =
-  List.filter_map
-    (fun case -> Option.bind last_null (pick_long case))
-    dataset
-]}
+    @example "Our functions return option types. Compose them to propagate [None]."
+    {[
+      let pick_long case =
+        try
+          Some (List.find (fun data -> List.length data > 1000) case)
+        with Not_found -> None
+      let last_null data = List.rindex_of 0 data
+      let interesting_positions dataset =
+        List.filter_map
+          (fun case -> Option.bind last_null (pick_long case))
+          dataset
+    ]}
 *)
 
 val apply : ('a -> 'a) option -> 'a -> 'a
@@ -133,15 +133,15 @@ val of_enum: 'a BatEnum.t -> 'a option
 *)
 module Monad : sig
   type 'a m = 'a option
-(** The type of values in this monad : option *)
+  (** The type of values in this monad : option *)
 
   val return : 'a -> 'a m
-(** [return x] puts a value in the Option monad, that is, returns [Some x]. *)
+  (** [return x] puts a value in the Option monad, that is, returns [Some x]. *)
 
   val bind : 'a m -> ('a -> 'b m) -> 'b m
-(** [bind m f] combines the calculation result [m] with the function [f].
-    E.g, in the Option monad :
-    [bind (Some 1) (fun x -> if x = 1 then Some 4 else None)] returns Some 4. *)
+    (** [bind m f] combines the calculation result [m] with the function [f].
+        E.g, in the Option monad :
+        [bind (Some 1) (fun x -> if x = 1 then Some 4 else None)] returns Some 4. *)
 end
 
 (** {6 Boilerplate code}*)
@@ -159,6 +159,6 @@ end
 
 module Infix : sig
   val ( |? ) : 'a option -> 'a -> 'a
-  (** Like {!default}, with the arguments reversed.
-      [None |? 10] returns [10], while [Some "foo" |? "bar"] returns ["foo"]. *)
+    (** Like {!default}, with the arguments reversed.
+        [None |? 10] returns [10], while [Some "foo" |? "bar"] returns ["foo"]. *)
 end

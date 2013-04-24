@@ -59,13 +59,13 @@ external to_int64 : nativeint -> int64 = "%int64_of_nativeint"
 
 (*$T of_int32
    (of_int32 8l) = 8n
- *)
+*)
 (*$T to_int32
    (to_int32 8n) = 8l
- *)
+*)
 (*$T of_int64
    (of_int64 9L) = 9n
- *)
+*)
 (*$T to_int64
    (to_int64 9n) = 9L
 *)

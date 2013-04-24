@@ -31,7 +31,7 @@
 
     @author Nicolas Cannasse
     @author David Teller (Boilerplate code)
- *)
+*)
 
 type t
 
@@ -40,7 +40,7 @@ val empty : unit ->  t
     automatically expand when needed.
 
     Example: [BitSet.empty ()]
- *)
+*)
 
 val create : int -> t
 (** Create an empty bitset with at least an initial capacity (in number of bits).
@@ -62,10 +62,10 @@ val copy : t -> t
     copy.
 
     Example: [
-let a = Bitset.create 8 in 
-let b = BitSet.copy a in 
-BitSet.set a 6; 
-BitSet.mem a 6 && not (BitSet.mem b 6)]
+    let a = Bitset.create 8 in
+    let b = BitSet.copy a in
+    BitSet.set a 6;
+    BitSet.mem a 6 && not (BitSet.mem b 6)]
 *)
 
 val mem : t -> int -> bool
@@ -127,7 +127,7 @@ val differentiate : t -> t -> unit
 
 val differentiate_sym : t -> t -> unit
 (** [differentiate_sym s t] sets [s] to the symmetrical difference of the
-  sets [s] and [t]. *)
+    sets [s] and [t]. *)
 
 (** {6 Return new bitset} *)
 
@@ -174,7 +174,7 @@ val of_enum : ?cap:int -> int BatEnum.t -> t
 
     Note: Performance of this function may be poor if enumeration is
     in increasing order and the max.
- *)
+*)
 
 val of_list : ?cap:int -> int list -> t
 (** As [of_enum], but from a list *)
@@ -195,9 +195,9 @@ val ord : t -> t -> BatOrd.order
 
 (** {6 Internals} *)
 val capacity : t -> int
-(** [capacity s] returns the number of bits, both set and unset, stored
-    in [s].  This is guaranteed to be larger than the largest element
-    (set bit index) in [s].
+  (** [capacity s] returns the number of bits, both set and unset, stored
+      in [s].  This is guaranteed to be larger than the largest element
+      (set bit index) in [s].
 
 
-*)
+  *)

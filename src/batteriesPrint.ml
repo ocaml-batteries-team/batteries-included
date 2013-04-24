@@ -47,7 +47,7 @@ let string_set = BatIO.to_f_printer (StringSet.print BatString.print)
 module TextSet = BatSet.Make(BatText)
 let text_set = BatIO.to_f_printer (TextSet.print BatText.print)
 (*module CharSet = BatSet.Make(BatChar)
-let char_set = BatIO.to_f_printer (CharSet.print BatChar.print) *)
+  let char_set = BatIO.to_f_printer (CharSet.print BatChar.print) *)
 
 let int_pset = BatIO.to_f_printer (BatSet.print BatInt.print)
 let string_pset = BatIO.to_f_printer (BatSet.print BatString.print)
@@ -60,8 +60,8 @@ let enum_print p oc e =
   let e = BatEnum.clone e in
   for _i = 1 to !enum_print_limit-1 do
     match BatEnum.get e with
-      | None -> ()
-      | Some x -> p oc x; BatIO.write oc ' '
+    | None -> ()
+    | Some x -> p oc x; BatIO.write oc ' '
   done;
   if not (BatEnum.is_empty e) then BatIO.nwrite oc "..."
 
@@ -77,4 +77,4 @@ let int_str_pmap = BatIO.to_f_printer (BatMap.print BatInt.print BatString.print
 let str_int_pmap = BatIO.to_f_printer (BatMap.print BatString.print BatInt.print)
 let str_str_pmap = BatIO.to_f_printer (BatMap.print BatString.print BatString.print)
 
-(*let bitset = BatIO.to_f_printer BatBitSet.print*)
+  (*let bitset = BatIO.to_f_printer BatBitSet.print*)

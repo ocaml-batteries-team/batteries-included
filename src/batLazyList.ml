@@ -59,8 +59,8 @@ let peek l = match next l with
 let from_while f =
   let rec aux () = lazy (
     match f () with
-      | None   -> Nil
-      | Some x -> Cons (x, aux ()) ) in aux ()
+    | None   -> Nil
+    | Some x -> Cons (x, aux ()) ) in aux ()
 
 let from f =
   let f' () =
@@ -93,14 +93,14 @@ let init n f =
     if i < n then lazy (Cons (f i, aux ( i + 1 ) ) )
     else          nil
   in if n < 0 then raise (Invalid_argument "LazyList.init")
-     else          aux 0
+  else          aux 0
 
 let make n x =
   let rec aux i =
     if i < n then lazy (Cons (x, aux ( i + 1 ) ) )
     else          nil
   in if n < 0 then raise (Invalid_argument "LazyList.make")
-     else          aux 0
+  else          aux 0
 
 (**
    {6  Iterators}
@@ -127,15 +127,15 @@ let map f l =
 let mapi f l =
   let rec aux rest i =
     match next rest with
-      | Cons (x, (t : 'a t)) -> Cons (f i x, lazy (aux t ( i + 1 ) ))
-      | Nil -> Nil
+    | Cons (x, (t : 'a t)) -> Cons (f i x, lazy (aux t ( i + 1 ) ))
+    | Nil -> Nil
   in lazy (aux l 0)
 
 let fold_left f init l =
   let rec aux acc rest =
     match next rest with
-      | Cons (x, t) -> aux (f acc x) t
-      | _           -> acc
+    | Cons (x, t) -> aux (f acc x) t
+    | _           -> acc
   in aux init l
 
 let fold_right f init l =
@@ -148,30 +148,30 @@ let fold_right f init l =
 let may_find p l =
   let rec aux l =
     match next l with
-      | Nil         -> None
-      | Cons (x, t) -> if p x then Some x else aux t
+    | Nil         -> None
+    | Cons (x, t) -> if p x then Some x else aux t
   in aux l
 
 let may_rfind p l =
   let rec aux l acc =
     match next l with
-      | Nil         -> acc
-      | Cons (x, t) -> aux t (if p x then Some x else acc)
+    | Nil         -> acc
+    | Cons (x, t) -> aux t (if p x then Some x else acc)
   in aux l None
 
 let may_findi p l =
   let rec aux l i =
     match next l with
-      | Nil                    -> None
-      | Cons (x, _) when p i x -> Some (i, x)
-      | Cons (_, t)            -> aux t (i+1)
+    | Nil                    -> None
+    | Cons (x, _) when p i x -> Some (i, x)
+    | Cons (_, t)            -> aux t (i+1)
   in aux l 0
 
 let may_rfindi p l =
   let rec aux l acc i =
     match next l with
-      | Nil         -> acc
-      | Cons (x, t) -> aux t (if p i x then Some (i, x) else acc) (i+1)
+    | Nil         -> acc
+    | Cons (x, t) -> aux t (if p i x then Some (i, x) else acc) (i+1)
   in aux l None 0
 
 let find_exn p e l =
@@ -192,23 +192,23 @@ let rfindi p l =
 
 let index_of e l =
   match may_findi (fun _ x -> e = x) l with
-    | None        -> None
-    | Some (i, _) -> Some i
+  | None        -> None
+  | Some (i, _) -> Some i
 
 let rindex_of e l =
   match may_rfindi (fun _ x -> e = x) l with
-    | None        -> None
-    | Some (i, _) -> Some i
+  | None        -> None
+  | Some (i, _) -> Some i
 
 let index_ofq e l =
   match may_findi (fun _ x -> e == x) l with
-    | None        -> None
-    | Some (i, _) -> Some i
+  | None        -> None
+  | Some (i, _) -> Some i
 
 let rindex_ofq e l =
   match may_rfindi (fun _ x -> e == x) l with
-    | None        -> None
-    | Some (i, _) -> Some i
+  | None        -> None
+  | Some (i, _) -> Some i
 
 
 (** {6  Common functions}*)
@@ -238,8 +238,8 @@ let last l =
     | Nil        -> acc
     | Cons(x, t) -> aux (Some x) t
   in match aux None l with
-    | None   -> raise Empty_list
-    | Some x -> x
+  | None   -> raise Empty_list
+  | Some x -> x
 
 let tl list =
   match next list with
@@ -287,8 +287,8 @@ let rev_append_of_list (l1 : 'a list) (l2 : 'a t) : 'a t =
 
 let append (l1 : 'a t) (l2 : 'a t) =
   let rec aux list =  match next list with
-      | Cons (x, (t : 'a t)) -> Cons (x, lazy (aux t))
-      | _                    -> Lazy.force l2
+    | Cons (x, (t : 'a t)) -> Cons (x, lazy (aux t))
+    | _                    -> Lazy.force l2
   in lazy (aux l1)
 
 let ( ^@^ ) = append
@@ -324,11 +324,11 @@ let to_array l = Array.of_list (to_list l)
 let enum l =
   let rec aux l =
     let reference = ref l in
-      BatEnum.make ~next:(fun () -> match next !reference with
-			 | Cons(x,t) -> reference := t; x
-			 | _         -> raise BatEnum.No_more_elements )
-        ~count:(fun () -> length !reference)
-        ~clone:(fun () -> aux !reference)
+    BatEnum.make ~next:(fun () -> match next !reference with
+      | Cons(x,t) -> reference := t; x
+      | _         -> raise BatEnum.No_more_elements )
+      ~count:(fun () -> length !reference)
+      ~clone:(fun () -> aux !reference)
   in aux l
 
 (**
@@ -352,9 +352,9 @@ let of_stream s =
   let rec aux s =
     let (__strm : _ Stream.t) = s
     in
-      match Stream.peek __strm with
-      | Some h -> (Stream.junk __strm; lazy (Cons (h, aux s)))
-      | _ -> nil
+    match Stream.peek __strm with
+    | Some h -> (Stream.junk __strm; lazy (Cons (h, aux s)))
+    | _ -> nil
   in aux s
 
 (**
@@ -378,7 +378,7 @@ let of_enum e =
       |	Some x -> Cons (x, aux () )
       | _      -> Nil )
   in
-    aux ()
+  aux ()
 
 (**
    {6  Predicates}
@@ -396,11 +396,11 @@ let filter f l =
 let filter_map f l =
   let rec next_true l = match next l with (*Compute the next accepted predicate without thunkification*)
     | Cons (x, l) ->
-	begin
-	  match f x with
-	    | Some v  -> Some (v, l)
-	    | None    -> next_true l
-	end
+      begin
+        match f x with
+        | Some v  -> Some (v, l)
+        | None    -> next_true l
+      end
     | Nil         -> None
   in
   let rec aux l = lazy(match next_true l with
@@ -433,11 +433,11 @@ let range a b =
   let rec increasing lo hi =
     if lo > hi then nil else lazy (Cons (lo, increasing (lo + 1) hi))
   in
-    (*      and     decreasing lo hi = if lo > hi then
-	nil
-      else
-	lazy (Cons hi (decreasing lo (hi - 1)))*)
-    if b >= a then increasing a b else (*decreasing b a*) nil
+  (*      and     decreasing lo hi = if lo > hi then
+		nil
+          else
+		lazy (Cons hi (decreasing lo (hi - 1)))*)
+  if b >= a then increasing a b else (*decreasing b a*) nil
 
 let split_at n l =
   let rec aux acc l i =
@@ -469,7 +469,7 @@ let mem_assq e l = BatOption.is_some (may_find (fun (a, _) -> a == e) l)
 	   | None   -> lazy (aux t)
 	   | Some x -> cons x (lazy (aux t)))
     | Nil -> Nil
-  in lazy (aux l)*)
+    in lazy (aux l)*)
 
 let unique ?(cmp = compare) l =
   let set      = ref (BatMap.PMap.create cmp) in
@@ -540,50 +540,50 @@ let stable_sort cmp l = of_list (List.stable_sort cmp (to_list l))
 
 let map2 f l1 l2 =
   let rec aux l1 l2 =
-      match (next l1, next l2) with
-	| (Cons (h1, t1), Cons(h2, t2)) -> lazy (Cons (f h1 h2, aux t1 t2))
-	| (Nil, Nil)                    -> nil
-	| _                             -> raise (Different_list_size "LazyList.map2")
+    match (next l1, next l2) with
+    | (Cons (h1, t1), Cons(h2, t2)) -> lazy (Cons (f h1 h2, aux t1 t2))
+    | (Nil, Nil)                    -> nil
+    | _                             -> raise (Different_list_size "LazyList.map2")
   in aux l1 l2
 
 let iter2 f l1 l2 =
   let rec aux l1 l2 =
-      match (next l1, next l2) with
-	| (Cons (h1, t1), Cons(h2, t2)) -> f h1 h2; aux t1 t2
-	| (Nil, Nil)                    -> ()
-	| _                             -> raise (Different_list_size "LazyList.iter2")
+    match (next l1, next l2) with
+    | (Cons (h1, t1), Cons(h2, t2)) -> f h1 h2; aux t1 t2
+    | (Nil, Nil)                    -> ()
+    | _                             -> raise (Different_list_size "LazyList.iter2")
   in aux l1 l2
 
 let fold_left2 f acc l1 l2 =
   let rec aux acc l1 l2 =
-      match (next l1, next l2) with
-	| (Cons (h1, t1), Cons(h2, t2)) -> aux (f acc h1 h2) t1 t2
-	| (Nil, Nil)                    -> acc
-	| _                             -> raise (Different_list_size "LazyList.fold_left2")
+    match (next l1, next l2) with
+    | (Cons (h1, t1), Cons(h2, t2)) -> aux (f acc h1 h2) t1 t2
+    | (Nil, Nil)                    -> acc
+    | _                             -> raise (Different_list_size "LazyList.fold_left2")
   in aux acc l1 l2
 
 let fold_right2 f l1 l2 acc =
   let rec aux l1 l2 =
-      match (next l1, next l2) with
-	| (Cons (h1, t1), Cons(h2, t2)) -> f h1 h2 (aux t1 t2)
-	| (Nil, Nil)                    -> acc
-	| _                             -> raise (Different_list_size "LazyList.fold_right2")
+    match (next l1, next l2) with
+    | (Cons (h1, t1), Cons(h2, t2)) -> f h1 h2 (aux t1 t2)
+    | (Nil, Nil)                    -> acc
+    | _                             -> raise (Different_list_size "LazyList.fold_right2")
   in aux l1 l2
 
 let for_all2 p l1 l2 =
   let rec aux l1 l2 =
-      match (next l1, next l2) with
-	| (Cons (h1, t1), Cons(h2, t2)) -> p h1 h2 && (aux t1 t2)
-	| (Nil, Nil)                    -> true
-	| _                             -> raise (Different_list_size "LazyList.for_all2")
+    match (next l1, next l2) with
+    | (Cons (h1, t1), Cons(h2, t2)) -> p h1 h2 && (aux t1 t2)
+    | (Nil, Nil)                    -> true
+    | _                             -> raise (Different_list_size "LazyList.for_all2")
   in aux l1 l2
 
 let exists2 p l1 l2 =
   let rec aux l1 l2 =
-      match (next l1, next l2) with
-	| (Cons (h1, t1), Cons(h2, t2)) -> p h1 h2 || (aux t1 t2)
-	| (Nil, Nil)                    -> false
-	| _                             -> raise (Different_list_size "LazyList.exists2")
+    match (next l1, next l2) with
+    | (Cons (h1, t1), Cons(h2, t2)) -> p h1 h2 || (aux t1 t2)
+    | (Nil, Nil)                    -> false
+    | _                             -> raise (Different_list_size "LazyList.exists2")
   in aux l1 l2
 
 let combine l1 l2 =
@@ -595,7 +595,7 @@ let combine l1 l2 =
 
 let uncombine l =
   let (l1, l2) = BatEnum.uncombine (enum l) in
-    (of_enum l1, of_enum l2)
+  (of_enum l1, of_enum l2)
 (*let uncombine l =
   let rec aux l = match next l with
     | Cons ((h1, h2), t) -> lazy (let (t1, t2) = aux t in
@@ -627,9 +627,9 @@ module Exceptionless = struct
   let at list n =
     let rec aux list i =
       match (next list, i) with
-	| (Cons (x, _), 0) -> `Ok x
-	| (Cons (_, t), _) -> aux t (i - 1)
-	| _ -> `Invalid_index n
+      | (Cons (x, _), 0) -> `Ok x
+      | (Cons (_, t), _) -> aux t (i - 1)
+      | _ -> `Invalid_index n
     in if n < 0 then `Invalid_index n else aux list n
 
   let assoc a (l:'a t) =
@@ -647,43 +647,43 @@ end
 
 module Labels = struct
   let iter ~f x         = iter f x
-let iter2 ~f x        = iter2 f x
-let iteri ~f x        = iteri f x
-let map   ~f x        = map   f x
-let map2  ~f x        = map2  f x
-let mapi   ~f x       = mapi  f x
-let filter ~f         = filter f
-let exists ~f         = exists f
-let exists2 ~f        = exists2 f
-let for_all ~f        = for_all f
-let for_all2 ~f       = for_all2 f
-let filter_map ~f     = filter_map f
-let find ~f           = find f
-let findi ~f          = findi f
-let rfind ~f          = rfind f
-let rfindi ~f         = rfindi f
-let find_exn ~f       = find_exn f
-let rfind_exn ~f      = rfind_exn f
-let remove_if ~f      = remove_if f
-let remove_all_such ~f= remove_all_such f
-let take_while      ~f= take_while f
-let drop_while      ~f= drop_while f
-let fold_left ~f ~init  = fold_left f init
-let fold_right ~f ~init = fold_right f init
-let fold_left2 ~f ~init = fold_left2 f init
-let fold_right2 ~f l1 l2 ~init = fold_right2 f l1 l2 init
+  let iter2 ~f x        = iter2 f x
+  let iteri ~f x        = iteri f x
+  let map   ~f x        = map   f x
+  let map2  ~f x        = map2  f x
+  let mapi   ~f x       = mapi  f x
+  let filter ~f         = filter f
+  let exists ~f         = exists f
+  let exists2 ~f        = exists2 f
+  let for_all ~f        = for_all f
+  let for_all2 ~f       = for_all2 f
+  let filter_map ~f     = filter_map f
+  let find ~f           = find f
+  let findi ~f          = findi f
+  let rfind ~f          = rfind f
+  let rfindi ~f         = rfindi f
+  let find_exn ~f       = find_exn f
+  let rfind_exn ~f      = rfind_exn f
+  let remove_if ~f      = remove_if f
+  let remove_all_such ~f= remove_all_such f
+  let take_while      ~f= take_while f
+  let drop_while      ~f= drop_while f
+  let fold_left ~f ~init  = fold_left f init
+  let fold_right ~f ~init = fold_right f init
+  let fold_left2 ~f ~init = fold_left2 f init
+  let fold_right2 ~f l1 l2 ~init = fold_right2 f l1 l2 init
 
-module Exceptionless = struct
-  let find   ~f = Exceptionless.find f
-  let rfind  ~f = Exceptionless.rfind f
-  let findi  ~f = Exceptionless.findi f
-  let rfindi ~f = Exceptionless.rfindi f
+  module Exceptionless = struct
+    let find   ~f = Exceptionless.find f
+    let rfind  ~f = Exceptionless.rfind f
+    let findi  ~f = Exceptionless.findi f
+    let rfindi ~f = Exceptionless.rfindi f
 
-  let assq      = Exceptionless.assq
-  let assoc     = Exceptionless.assoc
-  let at        = Exceptionless.at
-  let split_at  = Exceptionless.split_at
+    let assq      = Exceptionless.assq
+    let assoc     = Exceptionless.assoc
+    let at        = Exceptionless.at
+    let split_at  = Exceptionless.split_at
 
-end
+  end
 
 end

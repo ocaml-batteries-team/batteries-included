@@ -68,22 +68,22 @@ type unqualif  = string(**A kind of string used to represent unqualified names, 
 type package   = string(**A lomd pf stromg used to represent help providers.*)
 
 type suggestion =
-    {
-      url       : url(**The url to open in the browser to visit help on this suggestion.*);
-      spackage  : package(**The package which provides the url.*);
-    }
+  {
+    url       : url(**The url to open in the browser to visit help on this suggestion.*);
+    spackage  : package(**The package which provides the url.*);
+  }
 
 type completion =
-    {
-      qualified: qualified (**A possible qualified name matching the request*);
-      cpackage : package (**The package which provides the completion.*)
-    }
+  {
+    qualified: qualified (**A possible qualified name matching the request*);
+    cpackage : package (**The package which provides the completion.*)
+  }
 
 type table =
-    {
-      suggestions: (qualified, suggestion)     Hashtbl.t(**A map from fully qualified name to suggestions.*);
-      completions: (unqualif, completion list) Hashtbl.t(**A map from unqualified name to a list of completions.*)
-    }
+  {
+    suggestions: (qualified, suggestion)     Hashtbl.t(**A map from fully qualified name to suggestions.*);
+    completions: (unqualif, completion list) Hashtbl.t(**A map from unqualified name to a list of completions.*)
+  }
 
 
 (**
@@ -91,18 +91,18 @@ type table =
 *)
 let table_of_tableref t = 
   let result = Hashtbl.create (Hashtbl.length t) in
-    Hashtbl.iter (fun k d -> Hashtbl.add result k (BatRefList.to_list d)) t;
-    result
+  Hashtbl.iter (fun k d -> Hashtbl.add result k (BatRefList.to_list d)) t;
+  result
 
 let append_to_table table k v =
-    let found = 
-      try Hashtbl.find table k
-      with Not_found -> 
-	let l = BatRefList.empty ()
-	in Hashtbl.add table k l;
-	  l
-    in
-      BatRefList.push found v
+  let found =
+    try Hashtbl.find table k
+    with Not_found ->
+      let l = BatRefList.empty ()
+      in Hashtbl.add table k l;
+      l
+  in
+  BatRefList.push found v
 
 
 (**
@@ -112,8 +112,8 @@ let append_to_table table k v =
 let browse pages =
   try
     List.iter (fun page -> 
-		 debug "Showing %s\n" page.url;
-		 if BatteriesConfig.browse page.url <> 0 then failwith "Browser") pages
+      debug "Showing %s\n" page.url;
+      if BatteriesConfig.browse page.url <> 0 then failwith "Browser") pages
   with Failure "Browser" -> 
     Printf.eprintf "Sorry, I had a problem communicating with your browser and I couldn't open the manual.\n%!"
 
@@ -137,21 +137,21 @@ let load_index ~name ~index ~prefix ~suggestions ~completions =
   try
     BatEnum.iter
       (fun line -> 
-	 Scanf.sscanf line " %S : %S " 
-	   (fun item url ->
-	      let full_url = try ignore (BatString.find url "://"); url
-	      with Not_found -> prefix^url
-	      in
-		Hashtbl.add suggestions item {spackage = name; url = full_url}; (*Add fully qualified name -> url*)
-		let basename = Filename.basename item in
-		let leafname = local_name basename    in
-		let completion={cpackage = name; qualified = item} in
-		append_to_table completions basename completion;
-		  if leafname <> basename then append_to_table completions leafname completion;
-		debug "Adding manual %S => %S (%S)\n" item full_url name;
-		debug "Adding completion %S => %S (%S)\n" basename item name;
-		debug "Adding completion %S => %S (%S)\n" leafname item name
-	   ))
+        Scanf.sscanf line " %S : %S "
+          (fun item url ->
+            let full_url = try ignore (BatString.find url "://"); url
+            with Not_found -> prefix^url
+            in
+            Hashtbl.add suggestions item {spackage = name; url = full_url}; (*Add fully qualified name -> url*)
+            let basename = Filename.basename item in
+            let leafname = local_name basename    in
+            let completion={cpackage = name; qualified = item} in
+            append_to_table completions basename completion;
+            if leafname <> basename then append_to_table completions leafname completion;
+            debug "Adding manual %S => %S (%S)\n" item full_url name;
+            debug "Adding completion %S => %S (%S)\n" basename item name;
+            debug "Adding completion %S => %S (%S)\n" leafname item name
+          ))
       (BatFile.lines_of index)
   with e -> 
     Printf.eprintf
@@ -171,43 +171,43 @@ let get_table =
     with Not_found ->
       let root_dir   = BatteriesConfig.documentation_root           in
       let root_file  = Filename.concat root_dir "documentation.idex" in
-	try
-	  let suggestions = Hashtbl.create 256
-	  and completions = Hashtbl.create 256 in
-	  BatEnum.iter
-	    (fun line -> 
-	       try
-	       Scanf.sscanf line "%s %s " 
-		 (fun category index ->
-		    match kind_of_name category with
-		      | Some k when k = kind ->
-			  let index          = Filename.concat  root_dir index in
-			  let html_directory = Filename.dirname index          in
-			    if Sys.file_exists index then
-		              load_index
-				~name:"OCaml Batteries Included" 
-				~index
-				~prefix:("file://"^html_directory^"/")
-				~suggestions
-				~completions
-		      | _ -> ()
-		 )
-	       with _ -> () (*At this point, ignore syntax errors, they're probably comments.*)
-	    ) 
-	    (BatFile.lines_of root_file);
-	    let result = {suggestions = suggestions; completions = table_of_tableref completions} in
-	      Hashtbl.add tables kind result;
-	      result
-	      
-	with e ->
-	  Printf.eprintf
-	    "While initializing the on-line help, error in root doc file %S\n%s\n%!" root_file
-	    (Printexc.to_string e);
-	    let result = {suggestions = Hashtbl.create 0; completions = Hashtbl.create 0} in
-	      Hashtbl.add tables kind result;
-	      result
+      try
+        let suggestions = Hashtbl.create 256
+        and completions = Hashtbl.create 256 in
+        BatEnum.iter
+          (fun line ->
+            try
+              Scanf.sscanf line "%s %s "
+                (fun category index ->
+                  match kind_of_name category with
+                  | Some k when k = kind ->
+                    let index          = Filename.concat  root_dir index in
+                    let html_directory = Filename.dirname index          in
+                    if Sys.file_exists index then
+                      load_index
+                        ~name:"OCaml Batteries Included"
+                        ~index
+                        ~prefix:("file://"^html_directory^"/")
+                        ~suggestions
+                        ~completions
+                  | _ -> ()
+                )
+            with _ -> () (*At this point, ignore syntax errors, they're probably comments.*)
+          )
+          (BatFile.lines_of root_file);
+        let result = {suggestions = suggestions; completions = table_of_tableref completions} in
+        Hashtbl.add tables kind result;
+        result
 
-	      
+      with e ->
+        Printf.eprintf
+          "While initializing the on-line help, error in root doc file %S\n%s\n%!" root_file
+          (Printexc.to_string e);
+        let result = {suggestions = Hashtbl.create 0; completions = Hashtbl.create 0} in
+        Hashtbl.add tables kind result;
+        result
+
+
 
 
 (**
@@ -220,13 +220,13 @@ let inconsistency topic subject =
 
 (**
    Find all the URL of each qualified name from a list of completions.
-   
+
    Qualified names which can't be found in the table are dropped and a warning is printed.
 *)
 let result_of_completions table singular subject (l:completion list) =
   BatList.filter_map (fun {qualified = q; _} -> try Some (Hashtbl.find table.suggestions q) with Not_found -> 
-		inconsistency singular subject; (*Report internal inconsistency*)
-		None) l
+    inconsistency singular subject; (*Report internal inconsistency*)
+    None) l
 
 (**A deconstructor for [completion].*)
 let get_qualified {qualified = q; _} = q
@@ -245,13 +245,13 @@ let get_qualified {qualified = q; _} = q
 let man_aux ~kind ~singular ~plural subject =
   try
     let table = get_table kind in
-      try match Hashtbl.find table.completions subject with
-	| []                -> `No_result (*No completion on the subject, report subject not found*)
-	| [{qualified = q; _}] as l -> (*Check for inconsistency*)
-	    (try ignore (Hashtbl.find table.suggestions q); `Suggestions (l, table)
-	    with Not_found -> inconsistency singular subject; `No_result)
-	| l                -> `Suggestions (l, table)
-      with Not_found -> `No_result
+    try match Hashtbl.find table.completions subject with
+      | []                -> `No_result (*No completion on the subject, report subject not found*)
+      | [{qualified = q; _}] as l -> (*Check for inconsistency*)
+        (try ignore (Hashtbl.find table.suggestions q); `Suggestions (l, table)
+        with Not_found -> inconsistency singular subject; `No_result)
+      | l                -> `Suggestions (l, table)
+    with Not_found -> `No_result
   with Sys_error e -> 
     Printf.printf "Sorry, I had a problem loading the help on %s. Deactivating help on that subject.\n Detailed error message is %s\n" plural e;
     `No_result
@@ -273,13 +273,13 @@ let man_aux ~kind ~singular ~plural subject =
 let man ~cmd ~kind ~singular ~plural ~tabs subject =
   match man_aux ~kind ~singular ~plural subject
   with  `No_result       -> Printf.printf "Sorry, I don't know any %s named %S.\n%!" singular subject
-    |   `Suggestions (l,table) when tabs -> browse (result_of_completions table singular subject l)
-    |   `Suggestions ([h],table)         -> browse (result_of_completions table singular subject [h])
-    |   `Suggestions (l,_) -> 
-	  BatPrintf.printf "Several %s exist with name %S. To obtain help on one of them, please use one of\n %a%!"
-	    plural subject
-	    (BatList.print ~first:"" ~sep:"\n " ~last:"\n" (fun out {qualified = q; _} -> BatPrintf.fprintf out " %s %S\n" cmd q))
-	    l
+      |   `Suggestions (l,table) when tabs -> browse (result_of_completions table singular subject l)
+      |   `Suggestions ([h],table)         -> browse (result_of_completions table singular subject [h])
+      |   `Suggestions (l,_) ->
+        BatPrintf.printf "Several %s exist with name %S. To obtain help on one of them, please use one of\n %a%!"
+          plural subject
+          (BatList.print ~first:"" ~sep:"\n " ~last:"\n" (fun out {qualified = q; _} -> BatPrintf.fprintf out " %s %S\n" cmd q))
+          l
 
 (**
    Look for a given subject across all manuals and display the results.
@@ -288,48 +288,48 @@ let man_all sources ~tabs subject =
   let found_something = 
     if tabs then
       List.fold_left (fun was_found     (*Browse help directly*)
-			(_cmd, kind, singular, plural, _undefined) ->
-			  match man_aux ~kind ~singular ~plural subject with
-			    | `No_result     -> was_found
-			    | `Suggestions (l, table) -> 
-				match result_of_completions table singular subject l with
-				  | [] -> false (*Inconsistency*)
-				  | l' -> let _ = browse l' in true)
-	false sources
+        (_cmd, kind, singular, plural, _undefined) ->
+        match man_aux ~kind ~singular ~plural subject with
+        | `No_result     -> was_found
+        | `Suggestions (l, table) ->
+          match result_of_completions table singular subject l with
+          | [] -> false (*Inconsistency*)
+          | l' -> let _ = browse l' in true)
+        false sources
     else
       match
-    List.fold_left 
-      (fun (((result_as_strings : string list)(**The text to display, as a list of strings, one string per kind.*),
-	    _one_suggestion    (**The latest suggestion -- used only in case there's only one suggestion.*)) as acc)
-	 (cmd, kind, singular, plural, _undefined) ->
-	   match man_aux ~kind ~singular ~plural subject with
-	     | `No_result                -> acc
-	     | `Suggestions ([h], table) -> 
-		 let display : string =
-		   Printf.sprintf "There's information on %S in %s. To read this information, please use\n %s %S%!"
-		   subject plural cmd h.qualified in
-		 (display :: result_as_strings, `Browse (h, table, singular))
-	     | `Suggestions (l,_)  ->
-		 let display : string = 
-		   BatPrintf.sprintf2 "There's information on %S in %s. To read this information, please use one of\n%a%!"
-		     subject plural
-		     (BatList.print ~first:"" ~sep:"" ~last:"" 
-			(fun out {qualified = q; _} -> BatPrintf.fprintf out " %s %S\n" cmd q))
-		     l
-		 in (display::result_as_strings, `No_browsing))
-      ([], `No_result) sources
+        List.fold_left
+          (fun (((result_as_strings : string list)(**The text to display, as a list of strings, one string per kind.*),
+            _one_suggestion    (**The latest suggestion -- used only in case there's only one suggestion.*)) as acc)
+            (cmd, kind, singular, plural, _undefined) ->
+            match man_aux ~kind ~singular ~plural subject with
+            | `No_result                -> acc
+            | `Suggestions ([h], table) ->
+              let display : string =
+                Printf.sprintf "There's information on %S in %s. To read this information, please use\n %s %S%!"
+                  subject plural cmd h.qualified in
+              (display :: result_as_strings, `Browse (h, table, singular))
+            | `Suggestions (l,_)  ->
+              let display : string =
+                BatPrintf.sprintf2 "There's information on %S in %s. To read this information, please use one of\n%a%!"
+                  subject plural
+                  (BatList.print ~first:"" ~sep:"" ~last:""
+                     (fun out {qualified = q; _} -> BatPrintf.fprintf out " %s %S\n" cmd q))
+                  l
+              in (display::result_as_strings, `No_browsing))
+          ([], `No_result) sources
       with 
-	| ([], _)                 -> false (*No result*)
-	| ([_],`Browse (l,table, singular) ) -> (match result_of_completions table singular subject [l] with
-	    | [] -> false (*Inconsistency*)
-	    | l' -> let _ = browse l' in true)
-	| (texts, _) ->
-	    BatPrintf.printf "Several definitions exist for %S.\n%a%!" subject
-	      (BatList.print ~first:"" ~sep:"\n" ~last:"\n" BatString.print)
-	      texts;
-	    true
+      | ([], _)                 -> false (*No result*)
+      | ([_],`Browse (l,table, singular) ) -> (match result_of_completions table singular subject [l] with
+          | [] -> false (*Inconsistency*)
+          | l' -> let _ = browse l' in true)
+      | (texts, _) ->
+        BatPrintf.printf "Several definitions exist for %S.\n%a%!" subject
+          (BatList.print ~first:"" ~sep:"\n" ~last:"\n" BatString.print)
+          texts;
+        true
   in if not found_something then
-      Printf.printf "Sorry, I don't know anything about %S.\n%!" subject
+    Printf.printf "Sorry, I don't know anything about %S.\n%!" subject
 
 (**
    {6 Registration}
@@ -349,10 +349,10 @@ let helpers =
      ("#man_attribute", Attributes,"attribute",   "attributes", "an attribute"    );
      ("#man_objtype",   Objtypes , "object type", "object types", "an object type")]
   in
-    ("man", man_all sources ~tabs:false)::
+  ("man", man_all sources ~tabs:false)::
     (List.map (fun (cmd, kind, singular, plural, _undefined) -> (String.sub cmd 1 (String.length cmd - 1),
-								man ~cmd ~kind ~singular ~plural ~tabs:false)) sources)
-     
+         man ~cmd ~kind ~singular ~plural ~tabs:false)) sources)
+
 
 (**Launch the introductory help text.*)
 let help () =
@@ -365,7 +365,7 @@ let print_module name =
   try
     let flattened = Str.global_replace (Str.regexp "[^_0-9a-zA-Z]") "__" name in
     let phrase = !Toploop.parse_toplevel_phrase (Lexing.from_string (Printf.sprintf "module %s = %s;;" flattened name)) in
-      ignore (Toploop.execute_phrase true Format.std_formatter phrase)
+    ignore (Toploop.execute_phrase true Format.std_formatter phrase)
   with _ -> ();;
 
 let man = List.assoc "man" helpers

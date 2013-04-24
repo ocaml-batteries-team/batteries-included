@@ -184,23 +184,23 @@ val map : ('a -> 'b) -> 'a node_t -> 'b node_t
 (** Allocate a new list, with entirely new nodes, whose values are
     the transforms of the values of the original list.  Note that this
     does not modify the given list.  This is an O(N) operation.
- *)
+*)
 
 val filter : ('a -> bool) -> 'a node_t -> 'a node_t
-  (** [filter p l] returns a new list, with entirely new nodes, whose
-      values are all the elements of the list [l] that satisfy the
-      predicate [p].  The order of the elements in the input list is
-      preserved.
+(** [filter p l] returns a new list, with entirely new nodes, whose
+    values are all the elements of the list [l] that satisfy the
+    predicate [p].  The order of the elements in the input list is
+    preserved.
 
-      @raise Empty if the resulting list is empty.*)
+    @raise Empty if the resulting list is empty.*)
 
 val filter_map : ('a -> 'b option) -> 'a node_t -> 'b node_t
-  (** [filter_map f l] calls [(f a0) (f a1) ... (f an)] where [a0,a1...an]
-      are the elements of [l]. It returns a new list of elements [bi]
-      such as [f ai = Some bi] (when [f] returns [None], the
-      corresponding element of [l] is discarded).
+(** [filter_map f l] calls [(f a0) (f a1) ... (f an)] where [a0,a1...an]
+    are the elements of [l]. It returns a new list of elements [bi]
+    such as [f ai = Some bi] (when [f] returns [None], the
+    corresponding element of [l] is discarded).
 
-      @raise Empty if the resulting list is empty.*)
+    @raise Empty if the resulting list is empty.*)
 
 
 (** {6 list conversion } *)
@@ -254,4 +254,4 @@ val print : ?first:string -> ?last:string -> ?sep:string ->('a BatInnerIO.output
 
 (**/**)
 val invariants : _ t -> unit
-(**/**)
+  (**/**)

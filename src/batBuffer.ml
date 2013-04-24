@@ -24,12 +24,12 @@
 open BatString
 include Buffer
 
-  (** The underlying buffer type. *)
+(** The underlying buffer type. *)
 type buffer =
-    {mutable buffer : string;(** Contents of the buffer *)
-     mutable position : int; (** The end of the buffer  *)
-     mutable length : int;   (** The size of the buffer *)
-     initial_buffer : string (** For resetting to the original size **)}
+  {mutable buffer : string;(** Contents of the buffer *)
+   mutable position : int; (** The end of the buffer  *)
+   mutable length : int;   (** The size of the buffer *)
+   initial_buffer : string (** For resetting to the original size **)}
 
 external buffer_of_t : t -> buffer = "%identity"
 external t_of_buffer : buffer -> t = "%identity"
@@ -39,7 +39,7 @@ let print out t =
 
 (*$Q print
   (Q.string) (fun s -> let b = create 5 in add_string b "foo"; add_string b s; add_string b "bar"; BatIO.to_string print b = "foo" ^ s ^ "bar")
- *)
+*)
 
 let enum t =
   let buf = buffer_of_t t in
@@ -47,7 +47,7 @@ let enum t =
 
 (*$Q enum
   (Q.string) (fun s -> let b = create 10 in add_string b s; BatEnum.equal Char.equal (enum b) (BatString.enum s))
- *)
+*)
 
 let of_enum e =
   let buf =
@@ -63,14 +63,14 @@ let of_enum e =
   (Q.string) (fun s -> let e = BatString.enum s in \
                        let e = BatEnum.from (fun () -> BatEnum.get_exn e) in \
                        contents (of_enum e) = s)
- *)
+*)
 
 let add_input t inp n =
   add_string t (BatInnerIO.really_nread inp n)
 
 (*$Q add_input
   (Q.string) (fun s -> let b = create 10 in add_input b (BatIO.input_string s) (String.length s); contents b = s)
- *)
+*)
 
 let output_buffer buf =
   BatInnerIO.create_out

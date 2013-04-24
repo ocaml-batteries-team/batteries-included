@@ -123,9 +123,9 @@ module Make (H: Hashtbl.HashedType) : Hashtbl.S with type key = H.t = struct
 end
 
 module StdHash = Make
-  (struct
-     type t = Obj.t let equal x y = (compare x y) = 0 let hash = Hashtbl.hash
-  end)
+    (struct
+      type t = Obj.t let equal x y = (compare x y) = 0 let hash = Hashtbl.hash
+    end)
 open StdHash
 type ('a,'b) t = 'b StdHash.t
 let create = create and clear = clear and copy = copy and length = length

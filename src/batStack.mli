@@ -42,11 +42,11 @@ val push : 'a -> 'a t -> unit
 
 val pop : 'a t -> 'a
 (** [pop s] removes and returns the topmost element in stack [s],
-   or @raise Empty if the stack is empty. *)
+    or @raise Empty if the stack is empty. *)
 
 val top : 'a t -> 'a
 (** [top s] returns the topmost element in stack [s],
-   or @raise Empty if the stack is empty. *)
+    or @raise Empty if the stack is empty. *)
 
 val clear : 'a t -> unit
 (** Discard all elements from a stack. *)
@@ -62,8 +62,8 @@ val length : 'a t -> int
 
 val iter : ('a -> unit) -> 'a t -> unit
 (** [iter f s] applies [f] in turn to all elements of [s],
-   from the element at the top of the stack to the element at the
-   bottom of the stack. The stack itself is unchanged. *)
+    from the element at the top of the stack to the element at the
+    bottom of the stack. The stack itself is unchanged. *)
 
 
 include BatEnum.Enumerable with type 'a enumerable = 'a t
@@ -95,7 +95,7 @@ val of_enum : 'a BatEnum.t -> 'a t
 val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
 
 (* Comparison and equality tests can be constructed based on a
-comparison or equality function for elements. *)
+   comparison or equality function for elements. *)
 val compare : 'a BatOrd.comp -> 'a t BatOrd.comp
 val equal : 'a BatOrd.eq -> 'a t BatOrd.eq
 

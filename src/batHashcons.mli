@@ -29,43 +29,43 @@ type 'a hobj = private {
 }
 
 type 'a t = 'a hobj
-  (** A synonym for convenience *)
+(** A synonym for convenience *)
 
 val compare : 'a hobj -> 'a hobj -> int
-  (** Comparison on the tags *)
+(** Comparison on the tags *)
 
 (** Hashcons tables *)
 module type Table = sig
   type key
-    (** type of objects in the table *)
+  (** type of objects in the table *)
 
   type t
-    (** type of the table *)
+  (** type of the table *)
 
   val create : int -> t
-    (** [create n] creates a table with at least [n] cells. *)
+  (** [create n] creates a table with at least [n] cells. *)
 
   val clear  : t -> unit
-    (** [clear tab] removes all entries from the table [tab]. *)
+  (** [clear tab] removes all entries from the table [tab]. *)
 
   val hashcons : t -> key -> key hobj
-    (** [hashcons tab k] returns either [k], adding it to the table
-        [tab] as a side effect, or if [k] is already in the table then
-        it returns the hashed object corresponding to that entry.
-        @raise Failure if number of objects with the same hash reaches system limit of array size *)
+  (** [hashcons tab k] returns either [k], adding it to the table
+      [tab] as a side effect, or if [k] is already in the table then
+      it returns the hashed object corresponding to that entry.
+      @raise Failure if number of objects with the same hash reaches system limit of array size *)
 
   val iter : (key hobj -> unit) -> t -> unit
-    (** [iter f tab] applies [f] to every live hashed object in the
-        table [tab]. *)
+  (** [iter f tab] applies [f] to every live hashed object in the
+      table [tab]. *)
 
   val fold : (key hobj -> 'a -> 'a) -> t -> 'a -> 'a
   (** [fold f tab x0] folds [f] across every live hashed object in
-    the table [tab], starting with value [x0] *)
+      the table [tab], starting with value [x0] *)
 
   val count : t -> int
-  (** [count tab] returns a count of how many live objects are in
-  [tab]. This can decrease whenever the GC runs, even during
-  execution, so consider the returned value as an upper-bound. *)
+    (** [count tab] returns a count of how many live objects are in
+        [tab]. This can decrease whenever the GC runs, even during
+        execution, so consider the returned value as an upper-bound. *)
 end
 
 module MakeTable (HT : BatHashtbl.HashedType)
@@ -74,16 +74,16 @@ module MakeTable (HT : BatHashtbl.HashedType)
 (** Hashing utilities *)
 module H : sig
   val hc0_ : int -> int
-    (** [hc0_ h] corresponds to the hashcode of a first constructor
-        applied to an object of hashcode [h] *)
+  (** [hc0_ h] corresponds to the hashcode of a first constructor
+      applied to an object of hashcode [h] *)
 
   val hc0  : 'a hobj -> int
-    (** [hc0 ho] is the hashcode of a first constructor applied to the
-        hashed object [ho] *)
+  (** [hc0 ho] is the hashcode of a first constructor applied to the
+      hashed object [ho] *)
 
   val hc1_ : int -> int -> int
-    (** [hc1_ h k] corresponds to the hashcode of the [k]th
-        constructor applied to an object of hashcode [h]. *)
+  (** [hc1_ h k] corresponds to the hashcode of the [k]th
+      constructor applied to an object of hashcode [h]. *)
 
   val hc1  : 'a hobj -> int -> int
     (** [hc1 ho k] corresponds to the hashcode of the [k]th

@@ -86,9 +86,9 @@ let multi_choice n e =
        = 0 to n-1 in that order *)
     let chosen = Array.init n (fun i -> next e, i) in
     BatEnum.iteri (fun i x ->
-        let i = i + n + 1 in (* we've already chosen the n first items *)
-        let r = Random.int i in
-        if r < n then chosen.(r) <- x, i) e ;
+      let i = i + n + 1 in (* we've already chosen the n first items *)
+      let r = Random.int i in
+      if r < n then chosen.(r) <- x, i) e ;
     Array.sort (fun (_, i1) (_, i2) -> compare i1 i2) chosen ;
     BatArray.enum (Array.map fst chosen)
 
@@ -156,7 +156,7 @@ module Incubator = struct
         random_enum state char
 
       type implementation = { st : int array; mutable idx : int };;
-(*      external t_of_impl: implementation -> t = "%identity" *)
+      (*      external t_of_impl: implementation -> t = "%identity" *)
       external impl_of_t: t -> implementation = "%identity"
 
       let perturb state =

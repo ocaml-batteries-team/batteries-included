@@ -30,43 +30,43 @@ type 'a f_printer = Format.formatter -> 'a -> unit
 
 let pos_in i =
   let p = ref 0 in
-    (wrap_in
-      ~read:(fun () ->
-	       let c = read i in
-		 incr p;
-		 c
-	    )
-      ~input:(fun s sp l ->
-		let n = input i s sp l in
-		  p := !p + n;
-		  n
-	     )
-      ~close:noop
-      ~underlying:[i]
-      , (fun () -> !p))
+  (wrap_in
+     ~read:(fun () ->
+       let c = read i in
+       incr p;
+       c
+     )
+     ~input:(fun s sp l ->
+       let n = input i s sp l in
+       p := !p + n;
+       n
+     )
+     ~close:noop
+     ~underlying:[i]
+  , (fun () -> !p))
 
 let pos_out o =
   let p = ref 0 in
-    (wrap_out
-       ~write:(fun c ->
-		 write o c;
-		 incr p
-	      )
-       ~output:(fun s sp l ->
-		  let n = output o s sp l in
-		    p := !p + n;
-		    n
-	       )
-       ~close:noop
-       ~flush:(fun () -> flush o)
-       ~underlying:[o]
-     , fun () -> !p)
+  (wrap_out
+     ~write:(fun c ->
+       write o c;
+       incr p
+     )
+     ~output:(fun s sp l ->
+       let n = output o s sp l in
+       p := !p + n;
+       n
+     )
+     ~close:noop
+     ~flush:(fun () -> flush o)
+     ~underlying:[o]
+  , fun () -> !p)
 
 let progress_in inp f =
   wrap_in ~read: (fun ()    -> let c = read inp in f(); c)
-          ~input:(fun s i l -> let r = input inp s i l in f(); r)
-          ~close:ignore
-          ~underlying:[inp]
+    ~input:(fun s i l -> let r = input inp s i l in f(); r)
+    ~close:ignore
+    ~underlying:[inp]
 
 let progress_out out f =
   wrap_out ~write:(fun c -> write out c; f())
@@ -86,61 +86,61 @@ let string_enum s =
   let rec make i =
     BatEnum.make
       ~next:(fun () ->
-	       if !i = l then
-		 raise BatEnum.No_more_elements
-	       else
-		 let p = !i in
-		   incr i;
-		   String.unsafe_get s p
-	    )
+        if !i = l then
+          raise BatEnum.No_more_elements
+        else
+          let p = !i in
+          incr i;
+          String.unsafe_get s p
+      )
       ~count:(fun () -> l - !i)
       ~clone:(fun () -> make (ref !i))
   in
-    make (ref 0)
+  make (ref 0)
 
 
 let input_enum e =
   let pos = ref 0 in
-    create_in
-      ~read:(fun () ->
-	       match BatEnum.get e with
-		 | None -> raise No_more_input
-		 | Some c ->
-		     incr pos;
-		     c
-	    )
-      ~input:(fun s p l ->
-		let rec loop p l =
-		  if l = 0 then
-		    0
-		  else
-		    match BatEnum.get e with
-		      | None -> l
-		      | Some c ->
-			  String.unsafe_set s p c;
-			  loop (p + 1) (l - 1)
-		in
-		let k = loop p l in
-		  if k = l then raise No_more_input;
-		  l - k
-	     )
-      ~close:default_close
+  create_in
+    ~read:(fun () ->
+      match BatEnum.get e with
+      | None -> raise No_more_input
+      | Some c ->
+        incr pos;
+        c
+    )
+    ~input:(fun s p l ->
+      let rec loop p l =
+        if l = 0 then
+          0
+        else
+          match BatEnum.get e with
+          | None -> l
+          | Some c ->
+            String.unsafe_set s p c;
+            loop (p + 1) (l - 1)
+      in
+      let k = loop p l in
+      if k = l then raise No_more_input;
+      l - k
+    )
+    ~close:default_close
 
 let output_enum() =
   let b = Buffer.create default_buffer_size in
-    create_out
-      ~write:(fun x ->
-		Buffer.add_char b x
-	     )
-      ~output:(fun s p l ->
-		 Buffer.add_substring b s p l;
-		 l
-	      )
-      ~close:(fun () ->
-		let s = Buffer.contents b in
-		  string_enum s
-	     )
-      ~flush:default_close
+  create_out
+    ~write:(fun x ->
+      Buffer.add_char b x
+    )
+    ~output:(fun s p l ->
+      Buffer.add_substring b s p l;
+      l
+    )
+    ~close:(fun () ->
+      let s = Buffer.contents b in
+      string_enum s
+    )
+    ~flush:default_close
 
 
 (** [apply_enum f x] applies [f] to [x] and converts exceptions
@@ -148,8 +148,8 @@ let output_enum() =
 let apply_enum do_close f x =
   try f x
   with
-    | No_more_input -> raise BatEnum.No_more_elements
-    | Input_closed  -> do_close := false; raise BatEnum.No_more_elements
+  | No_more_input -> raise BatEnum.No_more_elements
+  | Input_closed  -> do_close := false; raise BatEnum.No_more_elements
 
 (** [close_at_end input e] returns an enumeration which behaves as [e]
     and has the secondary effect of closing [input] once everything has
@@ -164,16 +164,16 @@ let make_enum f input =
 
 let combine (a,b) =
   wrap_out ~write:(fun c ->
-		       write a c;
-		       write b c)
+    write a c;
+    write b c)
     ~output:(fun s i j ->
-	       let _ = output a s i j in
-		 output b s i j)
+      let _ = output a s i j in
+      output b s i j)
     ~flush:(fun () ->
-	      flush a;
-	      flush b)
+      flush a;
+      flush b)
     ~close:(fun () ->
-	      (close_out a, close_out b))
+      (close_out a, close_out b))
     ~underlying:[cast_output a; cast_output b]
 
 
@@ -212,7 +212,7 @@ module BigEndian = struct
     if ch4 land 128 <> 0 then begin (* negative number *)
       if ch4 land 64 = 0 then raise (Overflow "read_i32");
       (ch1 lor (ch2 lsl 8) lor (ch3 lsl 16) lor ((ch4 land 127) lsl 24))
-        lor fix (* FIX HERE *)
+      lor fix (* FIX HERE *)
     end else begin (*positive number*)
       if ch4 land 64 <> 0 then raise (Overflow "read_i32");
       ch1 lor (ch2 lsl 8) lor (ch3 lsl 16) lor (ch4 lsl 24)
@@ -293,9 +293,9 @@ end
 *)
 
 type 'a bc = {
-	ch : 'a;
-	mutable nbits : int;
-	mutable bits : int;
+  ch : 'a;
+  mutable nbits : int;
+  mutable bits : int;
 }
 
 type in_bits = input bc
@@ -304,66 +304,66 @@ type out_bits = unit output bc
 exception Bits_error
 
 let input_bits ch =
-	{
-		ch = ch;
-		nbits = 0;
-		bits = 0;
-	}
+  {
+    ch = ch;
+    nbits = 0;
+    bits = 0;
+  }
 
 let output_bits ch =
-	{
-		ch = cast_output ch;
-		nbits = 0;
-		bits = 0;
-	}
+  {
+    ch = cast_output ch;
+    nbits = 0;
+    bits = 0;
+  }
 
 let rec read_bits b n =
-	if b.nbits >= n then begin
-		let c = b.nbits - n in
-		let k = (b.bits asr c) land ((1 lsl n) - 1) in
-		b.nbits <- c;
-		k
-	end else begin
-		let k = read_byte b.ch in
-		if b.nbits >= 24 then begin
-			if n >= 31 then raise Bits_error;
-			let c = 8 + b.nbits - n in
-			let d = b.bits land ((1 lsl b.nbits) - 1) in
-			let d = (d lsl (8 - c)) lor (k lsr c) in
-			b.bits <- k;
-			b.nbits <- c;
-			d
-		end else begin
-			b.bits <- (b.bits lsl 8) lor k;
-			b.nbits <- b.nbits + 8;
-			read_bits b n;
-		end
-	end
+  if b.nbits >= n then begin
+    let c = b.nbits - n in
+    let k = (b.bits asr c) land ((1 lsl n) - 1) in
+    b.nbits <- c;
+    k
+  end else begin
+    let k = read_byte b.ch in
+    if b.nbits >= 24 then begin
+      if n >= 31 then raise Bits_error;
+      let c = 8 + b.nbits - n in
+      let d = b.bits land ((1 lsl b.nbits) - 1) in
+      let d = (d lsl (8 - c)) lor (k lsr c) in
+      b.bits <- k;
+      b.nbits <- c;
+      d
+    end else begin
+      b.bits <- (b.bits lsl 8) lor k;
+      b.nbits <- b.nbits + 8;
+      read_bits b n;
+    end
+  end
 
 let drop_bits b =
-	b.nbits <- 0
+  b.nbits <- 0
 
 let rec write_bits b ~nbits x =
-	let n = nbits in
-	if n + b.nbits >= 32 then begin
-		if n > 31 then raise Bits_error;
-		let n2 = 32 - b.nbits - 1 in
-		let n3 = n - n2 in
-		write_bits b ~nbits:n2 (x asr n3);
-		write_bits b ~nbits:n3 (x land ((1 lsl n3) - 1));
-	end else begin
-		if n < 0 then raise Bits_error;
-		if (x < 0 || x > (1 lsl n - 1)) && n <> 31 then raise Bits_error;
-		b.bits <- (b.bits lsl n) lor x;
-		b.nbits <- b.nbits + n;
-		while b.nbits >= 8 do
-			b.nbits <- b.nbits - 8;
-			write_byte b.ch (b.bits asr b.nbits)
-		done
-	end
+  let n = nbits in
+  if n + b.nbits >= 32 then begin
+    if n > 31 then raise Bits_error;
+    let n2 = 32 - b.nbits - 1 in
+    let n3 = n - n2 in
+    write_bits b ~nbits:n2 (x asr n3);
+    write_bits b ~nbits:n3 (x land ((1 lsl n3) - 1));
+  end else begin
+    if n < 0 then raise Bits_error;
+    if (x < 0 || x > (1 lsl n - 1)) && n <> 31 then raise Bits_error;
+    b.bits <- (b.bits lsl n) lor x;
+    b.nbits <- b.nbits + n;
+    while b.nbits >= 8 do
+      b.nbits <- b.nbits - 8;
+      write_byte b.ch (b.bits asr b.nbits)
+    done
+  end
 
 let flush_bits b =
-	if b.nbits > 0 then write_bits b ~nbits:(8 - b.nbits) 0
+  if b.nbits > 0 then write_bits b ~nbits:(8 - b.nbits) 0
 
 (**
    {6 Generic BatIO}
@@ -372,92 +372,92 @@ let flush_bits b =
 
 class in_channel ch =
   object
-	method input s pos len = input ch s pos len
-	method close_in() = close_in ch
+    method input s pos len = input ch s pos len
+    method close_in() = close_in ch
   end
 
 class out_channel ch =
   object
-	method output s pos len = output ch s pos len
-	method flush() = flush ch
-	method close_out() = ignore(close_out ch)
+    method output s pos len = output ch s pos len
+    method flush() = flush ch
+    method close_out() = ignore(close_out ch)
   end
 
 class in_chars ch =
   object
-	method get() = try read ch with No_more_input -> raise End_of_file
-	method close_in() = close_in ch
+    method get() = try read ch with No_more_input -> raise End_of_file
+    method close_in() = close_in ch
   end
 
 class out_chars ch =
   object
-	method put t = write ch t
-	method flush() = flush ch
-	method close_out() = ignore(close_out ch)
+    method put t = write ch t
+    method flush() = flush ch
+    method close_out() = ignore(close_out ch)
   end
 
 let from_in_channel ch =
-	let cbuf = String.create 1 in
-	let read() =
-		try
-			if ch#input cbuf 0 1 = 0 then raise Sys_blocked_io;
-			String.unsafe_get cbuf 0
-		with
-			End_of_file -> raise No_more_input
-	in
-	let input s p l =
-		ch#input s p l
-	in
-	create_in
-		~read
-		~input
-		~close:ch#close_in
+  let cbuf = String.create 1 in
+  let read() =
+    try
+      if ch#input cbuf 0 1 = 0 then raise Sys_blocked_io;
+      String.unsafe_get cbuf 0
+    with
+      End_of_file -> raise No_more_input
+  in
+  let input s p l =
+    ch#input s p l
+  in
+  create_in
+    ~read
+    ~input
+    ~close:ch#close_in
 
 let from_out_channel ch =
-	let cbuf = String.create 1 in
-	let write c =
-		String.unsafe_set cbuf 0 c;
-		if ch#output cbuf 0 1 = 0 then raise Sys_blocked_io;
-	in
-	let output s p l =
-		ch#output s p l
-	in
-	create_out
-	  ~write
-	  ~output
-	  ~flush:ch#flush
-	  ~close:ch#close_out
+  let cbuf = String.create 1 in
+  let write c =
+    String.unsafe_set cbuf 0 c;
+    if ch#output cbuf 0 1 = 0 then raise Sys_blocked_io;
+  in
+  let output s p l =
+    ch#output s p l
+  in
+  create_out
+    ~write
+    ~output
+    ~flush:ch#flush
+    ~close:ch#close_out
 
 let from_in_chars ch =
-	let input s p l =
-		let i = ref 0 in
-		try
-			while !i < l do
-				String.unsafe_set s (p + !i) (ch#get());
-				incr i
-			done;
-			l
-		with
-			End_of_file when !i > 0 ->
-				!i
-	in
-	create_in
-		~read:ch#get
-		~input
-		~close:ch#close_in
+  let input s p l =
+    let i = ref 0 in
+    try
+      while !i < l do
+        String.unsafe_set s (p + !i) (ch#get());
+        incr i
+      done;
+      l
+    with
+      End_of_file when !i > 0 ->
+      !i
+  in
+  create_in
+    ~read:ch#get
+    ~input
+    ~close:ch#close_in
 
 let from_out_chars ch =
-	let output s p l =
-		for i = p to p + l - 1 do
-			ch#put (String.unsafe_get s i)
-		done;
-		l
-	in
-	create_out
-	  ~write:ch#put
-	  ~output
-	  ~flush:ch#flush
-	  ~close:ch#close_out
+  let output s p l =
+    for i = p to p + l - 1 do
+      ch#put (String.unsafe_get s i)
+    done;
+    l
+  in
+  create_out
+    ~write:ch#put
+    ~output
+    ~flush:ch#flush
+    ~close:ch#close_out
 
 (**
    {6 Enumerations}
@@ -484,7 +484,7 @@ let buffer_size = 1024 (*Arbitrary size.*)
 let chars_of input =
   let do_close = ref true in
   close_at_end do_close input (BatEnum.concat (BatEnum.from (fun () ->
-    apply_enum do_close (fun source -> string_enum (nread source buffer_size)) input)))
+        apply_enum do_close (fun source -> string_enum (nread source buffer_size)) input)))
 
 let bits_of input =
   let do_close = ref true in
@@ -535,9 +535,9 @@ let lines_of2 ic =
         input_buf res 0 (n-1);
         input_buf " " 0 1; (* throw away EOL *)
         match accu with
-          | [] -> res
-          | _ -> let len = len + n-1 in
-                 join_strings (String.create len) len (res :: accu)
+        | [] -> res
+        | _ -> let len = len + n-1 in
+          join_strings (String.create len) len (res :: accu)
       else (* n < 0 ; no newline found *)
         let piece = String.create (-n) in
         input_buf piece 0 (-n);
@@ -565,16 +565,16 @@ let tab_out ?(tab=' ') n out =
       if is_newline c then nwrite out spaces;
     )
     ~output:(fun s p l -> (*Replace each newline within the segment with newline^spaces*) (*FIXME?: performance - instead output each line and a newline between each char? *)
-	       let length = String.length s                 in
-	       let buffer = Buffer.create (String.length s) in
-		 for i = p to min (length - 1) l do
-		   let c = String.unsafe_get s i in
-		     Buffer.add_char buffer c;
-		     if is_newline c then
-		       Buffer.add_string buffer spaces
-		 done;
-		 let s' = Buffer.contents buffer                  in
-		 output out s' 0 (String.length s'))
+      let length = String.length s                 in
+      let buffer = Buffer.create (String.length s) in
+      for i = p to min (length - 1) l do
+        let c = String.unsafe_get s i in
+        Buffer.add_char buffer c;
+        if is_newline c then
+          Buffer.add_string buffer spaces
+      done;
+      let s' = Buffer.contents buffer                  in
+      output out s' 0 (String.length s'))
     ~flush:noop
     ~close:noop
     ~underlying:[out]
@@ -586,16 +586,16 @@ let lmargin n (p:_ output -> 'a -> unit) out x =
 
 let comb (a,b) =
   create_out ~write:(fun c ->
-		       write a c;
-		       write b c)
+    write a c;
+    write b c)
     ~output:(fun s i j ->
-	       let _ = output a s i j in
-		 output b s i j)
+      let _ = output a s i j in
+      output b s i j)
     ~flush:(fun () ->
-	      flush a;
-	      flush b)
+      flush a;
+      flush b)
     ~close:(fun () ->
-	      ignore (close_out a); close_out b)
+      ignore (close_out a); close_out b)
 
 
 (*let repeat n out =
@@ -612,13 +612,13 @@ let comb (a,b) =
 let copy ?(buffer=4096) inp out =
   let n   = buffer          in
   let buf = String.create n in
-    try
-      while true do
-	let len = input inp buf 0 n in
-	  if len = 0 then raise No_more_input
-	  else            ignore (really_output out buf 0 len)
-      done
-    with No_more_input -> ()
+  try
+    while true do
+      let len = input inp buf 0 n in
+      if len = 0 then raise No_more_input
+      else            ignore (really_output out buf 0 len)
+    done
+  with No_more_input -> ()
 
 (*let fast_chunks_of n inp  =
   let buffer = String.create n in
@@ -699,17 +699,17 @@ let to_input_channel inp =
     let (name, cout) =
       Filename.open_temp_file ~mode:[Open_binary] "ocaml" "pipe" in
     let out          = output_channel cout                    in
-      copy inp out;
-      close_out out;
-      Pervasives.open_in_bin name
+    copy inp out;
+    close_out out;
+    Pervasives.open_in_bin name
 
 
 
 
 (*(**
    Copy everything to a temporary file
-*)
-let out_channel_of_output out =
+ *)
+  let out_channel_of_output out =
   let (name, cout) = Filename.open_temp_file "ocaml" "tmp" in
     create_out
 
@@ -759,29 +759,29 @@ module Incubator = struct
       pp_print_cut f ();
       match BatEnum.get e with
       | None ->
-          pp_print_string f last;
-          pp_close_box f ();
-          if flush then pp_print_flush f ()
+        pp_print_string f last;
+        pp_close_box f ();
+        if flush then pp_print_flush f ()
       | Some x ->
-          pp_open_box f indent;
-          pp f x;
-          let rec aux () =
-            match BatEnum.get e with
-            | None ->
-                pp_close_box f ();
-                pp_print_cut f ();
-                pp_print_string f last;
-                pp_close_box f ();
-                if flush then pp_print_flush f ()
-            | Some x ->
-                pp_print_string f sep;
-                pp_close_box f ();
-                pp_print_cut f ();
-                pp_open_box f indent;
-                pp f x;
-                aux ()
-          in
-          aux ()
+        pp_open_box f indent;
+        pp f x;
+        let rec aux () =
+          match BatEnum.get e with
+          | None ->
+            pp_close_box f ();
+            pp_print_cut f ();
+            pp_print_string f last;
+            pp_close_box f ();
+            if flush then pp_print_flush f ()
+          | Some x ->
+            pp_print_string f sep;
+            pp_close_box f ();
+            pp_print_cut f ();
+            pp_open_box f indent;
+            pp f x;
+            aux ()
+        in
+        aux ()
   end
 
   module List = struct
@@ -793,28 +793,28 @@ module Incubator = struct
       pp_print_cut f ();
       match l with
       | [] ->
-          pp_print_string f last;
-          pp_close_box f ();
-          if flush then pp_print_flush f ()
+        pp_print_string f last;
+        pp_close_box f ();
+        if flush then pp_print_flush f ()
       | hd :: tl ->
-          pp_open_box f indent;
-          pp f hd;
-          let rec aux rem =
-            match rem with
-            | [] ->
-                pp_close_box f ();
-                pp_print_cut f ();
-                pp_print_string f last;
-                pp_close_box f ();
-                if flush then pp_print_flush f ()
-            | hd :: tl ->
-                pp_print_string f sep;
-                pp_close_box f ();
-                pp_print_cut f ();
-                pp_open_box f indent;
-                pp f hd;
-                aux tl
-          in
-          aux tl
+        pp_open_box f indent;
+        pp f hd;
+        let rec aux rem =
+          match rem with
+          | [] ->
+            pp_close_box f ();
+            pp_print_cut f ();
+            pp_print_string f last;
+            pp_close_box f ();
+            if flush then pp_print_flush f ()
+          | hd :: tl ->
+            pp_print_string f sep;
+            pp_close_box f ();
+            pp_print_cut f ();
+            pp_open_box f indent;
+            pp f hd;
+            aux tl
+        in
+        aux tl
   end
 end

@@ -25,15 +25,15 @@ open BatNumber
 module BaseBool = struct
   type t = bool
   external not : bool -> bool = "%boolnot"
-      (** The boolean negation. *)
+  (** The boolean negation. *)
 
   external ( && ) : bool -> bool -> bool = "%sequand"
-      (** The boolean ``and''. Evaluation is sequential, left-to-right:
+  (** The boolean ``and''. Evaluation is sequential, left-to-right:
 	  in [e1 && e2], [e1] is evaluated first, and if it returns [false],
 	  [e2] is not evaluated at all. *)
 
   external ( || ) : bool -> bool -> bool = "%sequor"
-      (** The boolean ``or''. Evaluation is sequential, left-to-right:
+  (** The boolean ``or''. Evaluation is sequential, left-to-right:
 	  in [e1 || e2], [e1] is evaluated first, and if it returns [true],
 	  [e2] is not evaluated at all. *)
   let zero, one = false, true
@@ -86,27 +86,27 @@ include BatNumber.MakeNumeric(BaseBool)
 (*$T succ
   succ true = true
   succ false = true
- *)
+*)
 (*$T pred
   pred true = false
   pred false = false
- *)
+*)
 (*$T abs
   abs true = true
   abs false = false
- *)
+*)
 (*$T sub
   sub true  true  = false
   sub true  false = true
   sub false true  = false
   sub false false = true
- *)
+*)
 (*$Q of_int
   (Q.int) (fun i -> (of_int i) = (Int.(<>) i 0))
- *)
+*)
 (*$T of_int
   of_int 0 = false
- *)
+*)
 (*$T
   of_float (-1.) = true
   of_float 0. = false
@@ -129,7 +129,7 @@ type bounded = t
 let min_num, max_num = false, true
 
 let print out t = BatInnerIO.nwrite out (to_string t)
-(*$T
-  BatIO.to_string print true = "true"
-  BatIO.to_string print false = "false"
-*)
+  (*$T
+    BatIO.to_string print true = "true"
+    BatIO.to_string print false = "false"
+  *)

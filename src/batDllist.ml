@@ -303,12 +303,12 @@ let enum node =
       raise BatEnum.No_more_elements
     else
       begin
-      let rval = e.curr.data in
-      e.curr <- e.curr.next;
+        let rval = e.curr.data in
+        e.curr <- e.curr.next;
 
-      if (e.curr == node) then
-        e.valid <- false;
-      rval
+        if (e.curr == node) then
+          e.valid <- false;
+        rval
       end
   and count e () =
     if not e.valid then
@@ -335,12 +335,12 @@ let rev_enum node =
       raise BatEnum.No_more_elements
     else
       begin
-      let rval = e.curr.data in
-      e.curr <- e.curr.prev;
+        let rval = e.curr.data in
+        e.curr <- e.curr.prev;
 
-      if (e.curr == node) then
-        e.valid <- false;
-      rval
+        if (e.curr == node) then
+          e.valid <- false;
+        rval
       end
   and count e () =
     if not e.valid then

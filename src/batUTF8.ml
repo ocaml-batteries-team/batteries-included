@@ -42,38 +42,38 @@ type index = int
 
 let length0 n =
   if n < 0x80 then 1 else
-    if n < 0xe0 then 2 else
-      if n < 0xf0 then 3 else 4
+  if n < 0xe0 then 2 else
+  if n < 0xf0 then 3 else 4
 
 let look s i =
   let n' =
     let n = Char.code (String.unsafe_get s i) in
     if n < 0x80 then n else
-      if n <= 0xdf then
-	(n - 0xc0) lsl 6 lor (0x7f land (Char.code (String.unsafe_get s (i + 1))))
-      else if n <= 0xef then
-	let n' = n - 0xe0 in
-	let m = Char.code (String.unsafe_get s (i + 1)) in
-	let n' = n' lsl 6 lor (0x7f land m) in
-	let m = Char.code (String.unsafe_get s (i + 2)) in
-	n' lsl 6 lor (0x7f land m)
-      else
-	let n' = n - 0xf0 in
-	let m = Char.code (String.unsafe_get s (i + 1)) in
-	let n' = n' lsl 6 lor (0x7f land m) in
-	let m = Char.code (String.unsafe_get s (i + 2)) in
-	let n' = n' lsl 6 lor (0x7f land m) in
-	let m = Char.code (String.unsafe_get s (i + 3)) in
-	n' lsl 6 lor (0x7f land m)
+    if n <= 0xdf then
+      (n - 0xc0) lsl 6 lor (0x7f land (Char.code (String.unsafe_get s (i + 1))))
+    else if n <= 0xef then
+      let n' = n - 0xe0 in
+      let m = Char.code (String.unsafe_get s (i + 1)) in
+      let n' = n' lsl 6 lor (0x7f land m) in
+      let m = Char.code (String.unsafe_get s (i + 2)) in
+      n' lsl 6 lor (0x7f land m)
+    else
+      let n' = n - 0xf0 in
+      let m = Char.code (String.unsafe_get s (i + 1)) in
+      let n' = n' lsl 6 lor (0x7f land m) in
+      let m = Char.code (String.unsafe_get s (i + 2)) in
+      let n' = n' lsl 6 lor (0x7f land m) in
+      let m = Char.code (String.unsafe_get s (i + 3)) in
+      n' lsl 6 lor (0x7f land m)
   in
   BatUChar.unsafe_chr n'
 
 let next s i =
   let n = Char.code s.[i] in
   if n < 0x80 then i + 1 else
-    if n <= 0xdf then i + 2
-    else if n <= 0xef then i + 3
-    else i + 4
+  if n <= 0xdf then i + 2
+  else if n <= 0xef then i + 3
+  else i + 4
 
 let rec search_head_backward s i =
   if i < 0 then -1 else
@@ -143,8 +143,8 @@ let rec length_aux s c i =
     let n = Char.code (String.unsafe_get s i) in
     let k =
       if n < 0x80 then 1 else
-	if n < 0xe0 then 2 else
-	  if n < 0xf0 then 3 else 4
+      if n < 0xe0 then 2 else
+      if n < 0xf0 then 3 else 4
     in
     length_aux s (c + 1) (i + k)
 
@@ -178,28 +178,28 @@ exception Malformed_code
 let validate s =
   let rec trail c i a =
     if c = 0 then a else
-      if i >= String.length s then raise Malformed_code else
-	let n = Char.code (String.unsafe_get s i) in
-	if n < 0x80 || n >= 0xc0 then raise Malformed_code else
-	  trail (c - 1) (i + 1) (a lsl 6 lor (0x7f land n)) in
+    if i >= String.length s then raise Malformed_code else
+      let n = Char.code (String.unsafe_get s i) in
+      if n < 0x80 || n >= 0xc0 then raise Malformed_code else
+        trail (c - 1) (i + 1) (a lsl 6 lor (0x7f land n)) in
   let rec main i =
     if i >= String.length s then () else
       let n = Char.code (String.unsafe_get s i) in
       if n < 0x80 then main (i + 1) else
-	if n < 0xc2 then raise Malformed_code else
-	  if n <= 0xdf then
-	    if trail 1 (i + 1) (n - 0xc0) < 0x80 then raise Malformed_code else
-	      main (i + 2)
-	  else if n <= 0xef then
-	    let n' = trail 2 (i + 1) (n - 0xe0) in
-	    if n' < 0x800 then raise Malformed_code else
-	      if n' >= 0xd800 && n' <= 0xdfff then raise Malformed_code else
-		main (i + 3)
-	  else if n <= 0xf4 then
-	    let n = trail 3 (i + 1) (n - 0xf0) in
-	    if n < 0x10000 or n > 0x10FFFF then raise Malformed_code else
-	      main (i + 4)
-	  else raise Malformed_code in
+      if n < 0xc2 then raise Malformed_code else
+      if n <= 0xdf then
+        if trail 1 (i + 1) (n - 0xc0) < 0x80 then raise Malformed_code else
+          main (i + 2)
+      else if n <= 0xef then
+        let n' = trail 2 (i + 1) (n - 0xe0) in
+        if n' < 0x800 then raise Malformed_code else
+        if n' >= 0xd800 && n' <= 0xdfff then raise Malformed_code else
+          main (i + 3)
+      else if n <= 0xf4 then
+        let n = trail 3 (i + 1) (n - 0xf0) in
+        if n < 0x10000 or n > 0x10FFFF then raise Malformed_code else
+          main (i + 4)
+      else raise Malformed_code in
   main 0
 
 let of_ascii s =

@@ -20,7 +20,7 @@
  *)
 
 module STRING : sig
-(* this module must provide the following functions: *)
+  (* this module must provide the following functions: *)
   type 'a t = 'a array
   val length : 'a t -> int
   val make : int -> 'a -> 'a t
@@ -202,21 +202,21 @@ let concat l = function
   | Empty -> l
   | Leaf _ as r -> concat_str l r
   | Concat (Leaf rls, rlc, rr, rc, h) as r -> (
-    match l with
-    | Empty -> r
-    | Concat _ -> bal_if_needed l r
-    | Leaf ls ->
-      let slen = rlc + STRING.length ls in
-      if slen <= leaf_size then
-        Concat (Leaf (str_append ls rls), slen, rr, rc, h)
-      else
-        bal_if_needed l r
-  )
+      match l with
+      | Empty -> r
+      | Concat _ -> bal_if_needed l r
+      | Leaf ls ->
+        let slen = rlc + STRING.length ls in
+        if slen <= leaf_size then
+          Concat (Leaf (str_append ls rls), slen, rr, rc, h)
+        else
+          bal_if_needed l r
+    )
   | Concat _ as r -> (
-    match l with
-    | Empty -> r
-    | Leaf _ | Concat _ -> bal_if_needed l r
-  )
+      match l with
+      | Empty -> r
+      | Leaf _ | Concat _ -> bal_if_needed l r
+    )
 
 let prepend_char c r = concat (Leaf (STRING.make 1 c)) r
 
@@ -309,7 +309,7 @@ let rec sub start len = function
         if upto = cl + cr then r
         else if upto < cl then Empty
         else sub 0 (upto - cl) r
-        else sub (start - cl) len r in
+      else sub (start - cl) len r in
     concat left right
 
 (* change argument order on Vect.sub *)
@@ -581,7 +581,7 @@ let init n f =
 
 (*$T init
   init 1000 (fun x -> x * x) |> to_array = Array.init 1000 (fun x -> x * x)
- *)
+*)
 
 let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a out t =
   BatEnum.print ~first ~last ~sep print_a out (enum t)
@@ -589,8 +589,8 @@ let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a out t =
 let compare cmp_val v1 v2 = BatEnum.compare cmp_val (enum v1) (enum v2)
 let equal eq_val v1 v2 = BatEnum.equal eq_val (enum v1) (enum v2)
 let ord ord_val v1 v2 =
-    let cmp_val = BatOrd.comp ord_val in
-    BatOrd.ord0 (BatEnum.compare cmp_val (enum v1) (enum v2))
+  let cmp_val = BatOrd.comp ord_val in
+  BatOrd.ord0 (BatEnum.compare cmp_val (enum v1) (enum v2))
 
 (* Functorial interface *)
 
@@ -618,10 +618,10 @@ sig
 end
 
 module Make(RANDOMACCESS : RANDOMACCESS)
-           (PARAM : sig
-               val max_height : int
-               val leaf_size : int
-            end)=
+    (PARAM : sig
+       val max_height : int
+       val leaf_size : int
+     end)=
 struct
   module STRING = RANDOMACCESS
 
@@ -783,21 +783,21 @@ struct
     | Empty -> l
     | Leaf _ as r -> concat_str l r
     | Concat (Leaf rls, rlc, rr, rc, h) as r -> (
-      match l with
-      | Empty -> r
-      | Concat _ -> bal_if_needed l r
-      | Leaf ls ->
-        let slen = rlc + STRING.length ls in
-        if slen <= leaf_size then
-          Concat (Leaf (str_append ls rls), slen, rr, rc, h)
-        else
-          bal_if_needed l r
-    )
+        match l with
+        | Empty -> r
+        | Concat _ -> bal_if_needed l r
+        | Leaf ls ->
+          let slen = rlc + STRING.length ls in
+          if slen <= leaf_size then
+            Concat (Leaf (str_append ls rls), slen, rr, rc, h)
+          else
+            bal_if_needed l r
+      )
     | Concat _ as r -> (
-      match l with
-      | Empty -> r
-      | Leaf _ | Concat _ -> bal_if_needed l r
-    )
+        match l with
+        | Empty -> r
+        | Leaf _ | Concat _ -> bal_if_needed l r
+      )
 
   let prepend_char c r = concat (Leaf (STRING.make 1 c)) r
 
@@ -1094,7 +1094,7 @@ struct
       let rec aux = function
         | Empty -> ()
         | Leaf a -> STRING.iter (fun x -> if (f x) then BatReturn.return label x) a
-      | Concat (l, _, r, _, _) -> aux l; aux r in
+        | Concat (l, _, r, _, _) -> aux l; aux r in
       aux v;
       raise Not_found
     )

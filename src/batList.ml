@@ -71,7 +71,7 @@ let is_empty = function
 (*$T is_empty
   is_empty []
   not (is_empty [1])
- *)
+*)
 
 let nth l index =
   if index < 0 then invalid_arg "Negative index not allowed";
@@ -88,19 +88,19 @@ let at = nth
   try ignore (at [] 0); false with Invalid_argument _ -> true
   try ignore (at [1;2;3] (-1)); false with Invalid_argument _ -> true
   at [1;2;3] 2 = 3
- *)
+*)
 
 let append l1 l2 =
   match l1 with
   | [] -> l2
   | h :: t ->
     let rec loop dst = function
-    | [] ->
-      dst.tl <- l2
-    | h :: t ->
-      let cell = { hd = h; tl = [] } in
-      dst.tl <- inj cell;
-      loop cell t
+      | [] ->
+        dst.tl <- l2
+      | h :: t ->
+        let cell = { hd = h; tl = [] } in
+        dst.tl <- inj cell;
+        loop cell t
     in
     let r = { hd = h; tl = [] } in
     loop r t;
@@ -127,17 +127,17 @@ let concat = flatten
 (*$T flatten
   flatten [[1;2];[3];[];[4;5;6]] = [1;2;3;4;5;6]
   flatten [[]] = []
- *)
+*)
 
 let map f = function
   | [] -> []
   | h :: t ->
     let rec loop dst = function
-    | [] -> ()
-    | h :: t ->
-      let r = { hd = f h; tl = [] } in
-      dst.tl <- inj r;
-      loop r t
+      | [] -> ()
+      | h :: t ->
+        let r = { hd = f h; tl = [] } in
+        dst.tl <- inj r;
+        loop r t
     in
     let r = { hd = f h; tl = [] } in
     loop r t;
@@ -156,7 +156,7 @@ let rec drop n = function
   (drop 3 [1;2;3]) []
   (drop 4 [1;2;3]) []
   (drop 1 [1;2;3]) [2;3]
- *)
+*)
 
 let take n l =
   let rec loop n dst = function
@@ -176,7 +176,7 @@ let take n l =
   (take 3 [1;2;3]) [1;2;3]
   (take 4 [1;2;3]) [1;2;3]
   (take 1 [1;2;3]) [1]
- *)
+*)
 
 let take_while p li =
   let rec loop dst = function
@@ -196,7 +196,7 @@ let take_while p li =
   (take_while ((=) 3) [4]) []
   (take_while ((=) 3) []) []
   (take_while ((=) 2) [2; 2]) [2; 2]
- *)
+*)
 
 let rec drop_while f = function
   | [] -> []
@@ -206,7 +206,7 @@ let rec drop_while f = function
 (*$= drop_while & ~printer:(IO.to_string (List.print Int.print))
   (drop_while ((=) 3) [3;3;4;3;3]) [4;3;3]
   (drop_while ((=) 3) [3]) []
- *)
+*)
 
 let takewhile = take_while
 let dropwhile = drop_while
@@ -217,18 +217,18 @@ let interleave ?first ?last (sep:'a) (l:'a list) =
     | h::t -> aux (h::sep::acc) t
   in
   match (l,first, last) with
-    | ([],   None,   None)       -> []
-    | ([],   None,   Some x)     -> [x]
-    | ([],   Some x, None)       -> [x]
-    | ([],   Some x, Some y)     -> [x;y]
-    | ([h],  None,   None)       -> [h]
-    | ([h],  None,   Some x)     -> [h;x]
-    | ([h],  Some x, None)       -> [x;h]
-    | ([h],  Some x, Some y)     -> [x;h;y]
-    | (h::t, None  , None )      -> rev (aux [h] t)
-    | (h::t, Some x, None )      -> x::(rev (aux [h] t))
-    | (h::t, None,   Some y)     -> rev_append (aux [h] t) [y]
-    | (h::t, Some x, Some y)     -> x::rev_append (aux [h] t) [y]
+  | ([],   None,   None)       -> []
+  | ([],   None,   Some x)     -> [x]
+  | ([],   Some x, None)       -> [x]
+  | ([],   Some x, Some y)     -> [x;y]
+  | ([h],  None,   None)       -> [h]
+  | ([h],  None,   Some x)     -> [h;x]
+  | ([h],  Some x, None)       -> [x;h]
+  | ([h],  Some x, Some y)     -> [x;h;y]
+  | (h::t, None  , None )      -> rev (aux [h] t)
+  | (h::t, Some x, None )      -> x::(rev (aux [h] t))
+  | (h::t, None,   Some y)     -> rev_append (aux [h] t) [y]
+  | (h::t, Some x, Some y)     -> x::rev_append (aux [h] t) [y]
 
 (*$= interleave & ~printer:(IO.to_string (List.print Int.print))
   (interleave 0 [1;2;3]) [1;0;2;0;3]
@@ -265,7 +265,7 @@ let rec unique ?(eq = ( = )) l =
   [1;2;3;4;5;6] (unique [1;1;2;2;3;3;4;5;6;4;5;6])
   [1] (unique [1;1;1;1;1;1;1;1;1;1])
   [1;2] (unique ~eq:(fun x y -> x land 1 = y land 1) [2;2;2;4;6;8;3;1;2])
- *)
+*)
 
 let unique_cmp ?(cmp = Pervasives.compare) l =
   let set      = ref (BatMap.PMap.create cmp) in
@@ -280,7 +280,7 @@ let unique_cmp ?(cmp = Pervasives.compare) l =
   [1;2;3;4;5;6] (unique_cmp [1;1;2;2;3;3;4;5;6;4;5;6])
   [1] (unique_cmp [1;1;1;1;1;1;1;1;1;1])
   [2;3] (unique_cmp ~cmp:(fun x y -> Int.compare (x land 1) (y land 1)) [2;2;2;4;6;8;3;1;2])
- *)
+*)
 
 
 let unique_hash (type et) ?(hash = Hashtbl.hash) ?(eq = (=)) (l : et list) =
@@ -288,10 +288,10 @@ let unique_hash (type et) ?(hash = Hashtbl.hash) ?(eq = (=)) (l : et list) =
   let ht = HT.create (List.length l) in
   let rec loop dst = function
     | h::t when not (HT.mem ht h) ->
-	HT.add ht h (); (* put h in hash table *)
-	let r = {hd = h; tl = []} in (* and to output list *)
-	dst.tl <- inj r;
-	loop r t
+      HT.add ht h (); (* put h in hash table *)
+      let r = {hd = h; tl = []} in (* and to output list *)
+      dst.tl <- inj r;
+      loop r t
     | _::t -> (* if already in hashtable then don't add to output list *)
       loop dst t
     | [] -> ()
@@ -304,7 +304,7 @@ let unique_hash (type et) ?(hash = Hashtbl.hash) ?(eq = (=)) (l : et list) =
   [1;2;3;4;5;6] (unique_hash [1;1;2;2;3;3;4;5;6;4;5;6])
   [1] (unique_hash [1;1;1;1;1;1;1;1;1;1])
   [2;3] (unique_hash ~hash:(fun x -> Hashtbl.hash (x land 1)) ~eq:(fun x y -> x land 1 = y land 1) [2;2;2;4;6;8;3;1;2])
- *)
+*)
 
 let filter_map f l =
   let rec loop dst = function
@@ -324,9 +324,9 @@ let filter_map f l =
 let rec find_map f = function
   | [] -> raise Not_found
   | x :: xs ->
-      match f x with
-      | Some y -> y
-      | None -> find_map f xs
+    match f x with
+    | Some y -> y
+    | None -> find_map f xs
 
 let fold_right_max = 1000
 
@@ -348,12 +348,12 @@ let fold_right f l init =
 let map2 f l1 l2 =
   let rec loop dst src1 src2 =
     match src1, src2 with
-      | [], [] -> ()
-      | h1 :: t1, h2 :: t2 ->
-        let r = { hd = f h1 h2; tl = [] } in
-        dst.tl <- inj r;
-        loop r t1 t2
-      | _ -> invalid_arg "map2: Different_list_size"
+    | [], [] -> ()
+    | h1 :: t1, h2 :: t2 ->
+      let r = { hd = f h1 h2; tl = [] } in
+      dst.tl <- inj r;
+      loop r t1 t2
+    | _ -> invalid_arg "map2: Different_list_size"
   in
   let dummy = dummy_node () in
   loop dummy l1 l2;
@@ -402,9 +402,9 @@ let for_all2 p l1 l2 =
 let exists2 p l1 l2 =
   let rec loop l1 l2 =
     match l1, l2 with
-      | [], [] -> false
-      | h1 :: t1, h2 :: t2 -> if p h1 h2 then true else loop t1 t2
-      | _ -> invalid_arg "exists2: Different_list_size"
+    | [], [] -> false
+    | h1 :: t1, h2 :: t2 -> if p h1 h2 then true else loop t1 t2
+    | _ -> invalid_arg "exists2: Different_list_size"
   in
   loop l1 l2
 
@@ -606,12 +606,12 @@ let split_nth index = function
     else
       let rec loop n dst l =
         if n = 0 then l else
-        match l with
-        | [] -> invalid_arg "Index past end of list"
-        | h :: t ->
-          let r = { hd =  h; tl = [] } in
-          dst.tl <- inj r;
-          loop (n-1) r t
+          match l with
+          | [] -> invalid_arg "Index past end of list"
+          | h :: t ->
+            let r = { hd =  h; tl = [] } in
+            dst.tl <- inj r;
+            loop (n-1) r t
       in
       let r = { hd = h; tl = [] } in
       inj r, loop (index-1) r t
@@ -675,8 +675,8 @@ let transpose = function
   | x::xs ->
     let heads = List.map (fun x -> {hd=x; tl=[]}) x in
     ignore ( List.fold_left
-       (fun acc x -> List.map2 (fun x xs -> let r = {hd = x; tl = []} in xs.tl <- inj r; r) x acc)
-       heads xs);
+        (fun acc x -> List.map2 (fun x xs -> let r = {hd = x; tl = []} in xs.tl <- inj r; r) x acc)
+        heads xs);
     Obj.magic heads (* equivalent to List.map inj heads, but without creating a new list *)
 
 
@@ -710,9 +710,9 @@ let enum l =
 let of_enum e =
   let h = dummy_node() in
   let _ = BatEnum.fold (fun acc x ->
-    let r = { hd = x; tl = [] }  in
-    acc.tl <- inj r;
-    r) h e in
+      let r = { hd = x; tl = [] }  in
+      acc.tl <- inj r;
+      r) h e in
   h.tl
 
 
@@ -733,30 +733,30 @@ let of_backwards e =
 
 let assoc_inv e l =
   let rec aux = function
-  | []                  -> raise Not_found
-  | (a,b)::_ when b = e -> a
-  | _::t                -> aux t
+    | []                  -> raise Not_found
+    | (a,b)::_ when b = e -> a
+    | _::t                -> aux t
   in aux l
 
 let assq_inv e l =
   let rec aux = function
-  | []                    -> raise Not_found
-  | (a,b)::_ when b == e  -> a
-  | _::t                  -> aux t
+    | []                    -> raise Not_found
+    | (a,b)::_ when b == e  -> a
+    | _::t                  -> aux t
   in aux l
 
 let modify_opt a f l =
   let rec aux p = function
-  | [] ->
-    (match f None with
-    | None   -> raise Exit
-    | Some v -> rev ((a,v)::p))
-  | (a',b)::t when a' = a ->
-    (match f (Some b) with
-    | None    -> rev_append p t
-    | Some b' -> rev_append ((a,b')::p) t)
-  | p'::t ->
-    aux (p'::p) t
+    | [] ->
+      (match f None with
+       | None   -> raise Exit
+       | Some v -> rev ((a,v)::p))
+    | (a',b)::t when a' = a ->
+      (match f (Some b) with
+       | None    -> rev_append p t
+       | Some b' -> rev_append ((a,b')::p) t)
+    | p'::t ->
+      aux (p'::p) t
   in
   try aux [] l with Exit -> l
 
@@ -770,7 +770,7 @@ let modify_opt a f l =
   (* to remove a value *) \
   (modify_opt 5 (function Some 1 -> None | _ -> assert false) [ 1,0 ; 5,1 ; 8,2 ]) \
     [ 1,0 ; 8,2 ]
- *)
+*)
 
 let modify a f l =
   let f' = function
@@ -781,10 +781,10 @@ let modify a f l =
 
 (*$= modify & ~printer:(IO.to_string (List.print (fun fmt (a,b) -> Printf.fprintf fmt "%d,%d" a b)))
   (modify 5 succ [ 1,0 ; 5,1 ; 8,2 ]) [ 1,0 ; 5,2 ; 8,2 ]
- *)
+*)
 (*$T modify
   try ignore (modify 5 succ [ 1,0 ; 8,2 ]); false with Not_found -> true
- *)
+*)
 
 let modify_def dfl a f l =
   let f' = function
@@ -796,56 +796,56 @@ let modify_def dfl a f l =
 (*$= modify_def & ~printer:(IO.to_string (List.print (fun fmt (a,b) -> Printf.fprintf fmt "%d,%d" a b)))
   (modify_def 0 5 succ [ 1,0 ; 5,1 ; 8,2 ]) [ 1,0 ; 5,2 ; 8,2 ]
   (modify_def 0 5 succ [ 1,0 ; 8,2 ]) [ 1,0 ; 8,2 ; 5,1 ]
- *)
+*)
 
 let sort_unique cmp lst =
   let sorted = List.sort cmp lst in
   let fold first rest = List.fold_left
-    (fun (acc, last) elem ->
-       if (cmp last elem) = 0 then (acc, elem)
+      (fun (acc, last) elem ->
+        if (cmp last elem) = 0 then (acc, elem)
         else (elem::acc, elem)
-    )
-    ([first], first)
-    rest
-   in
+      )
+      ([first], first)
+      rest
+  in
   match sorted with
-   | [] -> []
-   | hd::tl ->
-   begin
-    let rev_result, _ = fold hd tl in
-    List.rev rev_result
-   end
+  | [] -> []
+  | hd::tl ->
+    begin
+      let rev_result, _ = fold hd tl in
+      List.rev rev_result
+    end
 
 let group cmp lst =
   let sorted = List.sort cmp lst in
   let fold first rest = List.fold_left
-    (fun (acc, agr, last) elem ->
-       if (cmp last elem) = 0 then (acc, elem::agr, elem)
+      (fun (acc, agr, last) elem ->
+        if (cmp last elem) = 0 then (acc, elem::agr, elem)
         else (agr::acc, [elem], elem)
-    )
-    ([], [first], first)
-    rest
-   in
+      )
+      ([], [first], first)
+      rest
+  in
   match sorted with
-   | [] -> []
-   | hd::tl ->
-   begin
-    let groups, lastgr, _ = fold hd tl in
-    List.rev_map List.rev (lastgr::groups)
-   end
+  | [] -> []
+  | hd::tl ->
+    begin
+      let groups, lastgr, _ = fold hd tl in
+      List.rev_map List.rev (lastgr::groups)
+    end
 
 let cartesian_product l1 l2 =
-   List.concat (List.map (fun i -> List.map (fun j -> (i,j)) l2) l1)
+  List.concat (List.map (fun i -> List.map (fun j -> (i,j)) l2) l1)
 
 (*$T cartesian_product as cp
   cp [1;2;3] ['x';'y'] = [1,'x';1,'y';2,'x';2,'y';3,'x';3,'y']
- *)
+*)
 
 let rec n_cartesian_product = function
   | [] -> [[]]
   | h :: t ->
-      let rest = n_cartesian_product t in
-      List.concat (List.map (fun i -> List.map (fun r -> i :: r) rest) h)
+    let rest = n_cartesian_product t in
+    List.concat (List.map (fun i -> List.map (fun r -> i :: r) rest) h)
 
 (*$T n_cartesian_product as ncp
   ncp []               = [[]]
@@ -854,7 +854,7 @@ let rec n_cartesian_product = function
   ncp [[1;2;3]]        = [[1]; [2]; [3]]
   ncp [[1;2;3]; []]    = []
   ncp [[1;2;3]; [4;5]] = [[1;4]; [1;5]; [2;4]; [2;5]; [3;4]; [3;5]]
- *)
+*)
 
 let print ?(first="[") ?(last="]") ?(sep="; ") print_a  out = function
   | []   ->
@@ -873,7 +873,7 @@ let print ?(first="[") ?(last="]") ?(sep="; ") print_a  out = function
 let t_printer a_printer _paren out x = print (a_printer false) out x
 
 let reduce f = function [] -> invalid_arg "Empty List"
-  | h::t -> fold_left f h t
+                      | h::t -> fold_left f h t
 
 let min l = reduce Pervasives.min l
 let max l = reduce Pervasives.max l
@@ -926,9 +926,9 @@ module Exceptionless = struct
     with Failure "tl" -> None
 
   let rec last = function
-  | [] -> None
-  | [x] -> Some x
-  | _ :: l -> last l
+    | [] -> None
+    | [x] -> Some x
+    | _ :: l -> last l
 end
 
 
@@ -988,27 +988,27 @@ open BatOrd
 
 let rec eq eq_elt l1 l2 =
   match l1 with
-    | [] -> (match l2 with [] -> true | _ -> false)
-    | hd1::tl1 ->
-      (match l2 with
-	| [] -> false
-	| hd2::tl2 -> bin_eq eq_elt hd1 hd2 (eq eq_elt) tl1 tl2)
+  | [] -> (match l2 with [] -> true | _ -> false)
+  | hd1::tl1 ->
+    (match l2 with
+     | [] -> false
+     | hd2::tl2 -> bin_eq eq_elt hd1 hd2 (eq eq_elt) tl1 tl2)
 
 let rec ord ord_elt l1 l2 =
   match l1 with
-    | [] -> (match l2 with [] -> Eq | _::_ -> Lt)
-    | hd1::tl1 ->
-      (match l2 with
-	| [] -> Gt
-	| hd2::tl2 -> bin_ord ord_elt hd1 hd2 (ord ord_elt) tl1 tl2)
+  | [] -> (match l2 with [] -> Eq | _::_ -> Lt)
+  | hd1::tl1 ->
+    (match l2 with
+     | [] -> Gt
+     | hd2::tl2 -> bin_ord ord_elt hd1 hd2 (ord ord_elt) tl1 tl2)
 
 let rec compare comp_elt l1 l2 =
   match l1 with
-    | [] -> (match l2 with [] -> 0 | _::_ -> -1)
-    | hd1::tl1 ->
-      (match l2 with
-	| [] -> 1
-	| hd2::tl2 -> bin_comp comp_elt hd1 hd2 (compare comp_elt) tl1 tl2)
+  | [] -> (match l2 with [] -> 0 | _::_ -> -1)
+  | hd1::tl1 ->
+    (match l2 with
+     | [] -> 1
+     | hd2::tl2 -> bin_comp comp_elt hd1 hd2 (compare comp_elt) tl1 tl2)
 
 module Eq (T : Eq) = struct
   type t = T.t list

@@ -41,9 +41,9 @@ let print_stat c = (*Copied from original module*)
   fprintf c "fragments: %d\n"         st.fragments;
   fprintf c "compactions: %d\n"       st.compactions
 
-(*$T print_stat
-  (IO.output_string () |> tap print_stat |> IO.close_out |> String.nsplit ~by:"\n" |> List.length) = 16
- *)
+    (*$T print_stat
+      (IO.output_string () |> tap print_stat |> IO.close_out |> String.nsplit ~by:"\n" |> List.length) = 16
+    *)
 
 (*
   let eventually_table = InnerWeaktbl.create 32

@@ -38,10 +38,10 @@ val output : unit output ref
 val prefix : string ref
 
 type flag = [
-| `Date (** Print the current date as 2011-06-28 *)
-| `Time (** Print the current time as 01:23:45 *)
-| `Filepos (** Print the file and linenum of this log command (UNIMPLEMENTED - needs syntax extension) *)
-| `Custom of unit -> string (** Print the results of running the given closure *)
+  | `Date (** Print the current date as 2011-06-28 *)
+  | `Time (** Print the current time as 01:23:45 *)
+  | `Filepos (** Print the file and linenum of this log command (UNIMPLEMENTED - needs syntax extension) *)
+  | `Custom of unit -> string (** Print the results of running the given closure *)
 ]
 
 (** This ref holds the output flags.  These flags control how the log
@@ -119,12 +119,12 @@ val make_logger :
   string ->
   [< `Custom of unit -> string | `Date | `Filepos | `Time ] list ->
   < fatal : ?fp:string -> string -> 'b;
- fatalf : ?fp:string ->
-	      ('c, 'a output, unit, unit, unit, 'd) format6 -> 'c;
- log : ?fp:string -> string -> unit;
- logf : ?fp:string -> ('e, 'a output, unit) format -> 'e >
+    fatalf : ?fp:string ->
+      ('c, 'a output, unit, unit, unit, 'd) format6 -> 'c;
+    log : ?fp:string -> string -> unit;
+    logf : ?fp:string -> ('e, 'a output, unit) format -> 'e >
 
-(** The different verbosity levels supported in the [Easy] logger *)
+        (** The different verbosity levels supported in the [Easy] logger *)
 type easy_lev = [ `trace | `debug | `info | `warn | `error | `fatal | `always ]
 
 (** A simple-to-use logger with verbosity levels that outputs by
@@ -163,8 +163,8 @@ module type Level_sig = sig
   (** The default level for loggers created with this; log messages
       with level less than this won't be printed by default. *)
   val default_level : t
-    (** a comparison function between levels, to know whether logging at a
-        particular level should be printed *)
+  (** a comparison function between levels, to know whether logging at a
+      particular level should be printed *)
   val compare : t -> t -> int
 end
 

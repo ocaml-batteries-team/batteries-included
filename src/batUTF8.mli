@@ -213,4 +213,4 @@ module ByteIndex : sig
   val move : t -> b_idx -> int -> b_idx
   val look : t -> b_idx -> BatUChar.t
 end
- (**/**)
+(**/**)

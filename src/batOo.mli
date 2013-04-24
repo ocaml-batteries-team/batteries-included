@@ -26,12 +26,12 @@
 *)
 
 val copy : (< .. > as 'a) -> 'a
-  (** [Oo.copy o] returns a copy of object [o], that is a fresh
-      object with the same methods and instance variables as [o]  *)
+(** [Oo.copy o] returns a copy of object [o], that is a fresh
+    object with the same methods and instance variables as [o]  *)
 
 external id : < .. > -> int = "%field1"
-  (** Return an integer identifying this object, unique for
-      the current execution of the program. *)
+(** Return an integer identifying this object, unique for
+    the current execution of the program. *)
 
 (**/**)
 (** For internal use (CamlIDL) *)
@@ -44,14 +44,14 @@ val public_method_label : string -> CamlinternalOO.tag(**As {!Internal.public_me
 module Internal:
 sig
 
-(** Run-time support for objects and classes.
-    All functions in this module are for system use only, not for the
-    casual user.
+  (** Run-time support for objects and classes.
+      All functions in this module are for system use only, not for the
+      casual user.
 
-    @documents CamlinternalOO
-*)
+      @documents CamlinternalOO
+  *)
 
-(** {6 Classes} *)
+  (** {6 Classes} *)
 
   type tag     = CamlinternalOO.tag
   type label   = CamlinternalOO.label
@@ -142,49 +142,49 @@ sig
 
   type impl  = CamlinternalOO.impl =
       GetConst
-	       | GetVar
-	       | GetEnv
-	       | GetMeth
-	       | SetVar
-	       | AppConst
-	       | AppVar
-	       | AppEnv
-	       | AppMeth
-	       | AppConstConst
-	       | AppConstVar
-	       | AppConstEnv
-	       | AppConstMeth
-	       | AppVarConst
-	       | AppEnvConst
-	       | AppMethConst
-	       | MethAppConst
-	       | MethAppVar
-	       | MethAppEnv
-	       | MethAppMeth
-	       | SendConst
-	       | SendVar
-	       | SendEnv
-	       | SendMeth
-	       | Closure of closure
+    | GetVar
+    | GetEnv
+    | GetMeth
+    | SetVar
+    | AppConst
+    | AppVar
+    | AppEnv
+    | AppMeth
+    | AppConstConst
+    | AppConstVar
+    | AppConstEnv
+    | AppConstMeth
+    | AppVarConst
+    | AppEnvConst
+    | AppMethConst
+    | MethAppConst
+    | MethAppVar
+    | MethAppEnv
+    | MethAppMeth
+    | SendConst
+    | SendVar
+    | SendEnv
+    | SendMeth
+    | Closure of closure
 
   (** {6 Parameters} *)
 
   (** currently disabled *)
   type params  = CamlinternalOO.params =
-      { mutable compact_table : bool;
-	mutable copy_parent : bool;
-	mutable clean_when_copying : bool;
-	mutable retry_count : int;
-	mutable bucket_small_size : int }
+    { mutable compact_table : bool;
+      mutable copy_parent : bool;
+      mutable clean_when_copying : bool;
+      mutable retry_count : int;
+      mutable bucket_small_size : int }
 
   val params : params
 
   (** {6 Statistics} *)
 
   type stats  = CamlinternalOO.stats =
-      { classes : int;
-	methods : int;
-	inst_vars : int }
+    { classes : int;
+      methods : int;
+      inst_vars : int }
   val stats : unit -> stats
 
 end

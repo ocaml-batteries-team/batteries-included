@@ -38,11 +38,11 @@ let length s =
 let rec enum_of_ref r =
   BatEnum.make
     ~next:(fun _ -> match !r () with
-             | Nil ->
-                 raise BatEnum.No_more_elements
-             | Cons(e, s) ->
-                 r := s;
-                 e)
+      | Nil ->
+        raise BatEnum.No_more_elements
+      | Cons(e, s) ->
+        r := s;
+        e)
     ~count:(fun _ -> length !r)
     ~clone:(fun _ -> enum_of_ref (ref !r))
 
@@ -66,20 +66,20 @@ let last s =
     | Cons(e, s) -> aux e s
   in
   match s () with
-    | Nil -> raise (Invalid_argument "Seq.last")
-    | Cons(e, s) -> aux e s
+  | Nil -> raise (Invalid_argument "Seq.last")
+  | Cons(e, s) -> aux e s
 
 let is_empty s = s () = Nil
 
 let at s n =
   let rec aux s n =
     match s () with
-      | Nil -> raise (Invalid_argument "Seq.at")
-      | Cons(e, s) ->
-          if n = 0 then
-            e
-          else
-            aux s (n - 1)
+    | Nil -> raise (Invalid_argument "Seq.at")
+    | Cons(e, s) ->
+      if n = 0 then
+        e
+      else
+        aux s (n - 1)
   in
   if n < 0 then
     invalid_arg "Seq.at"
@@ -93,13 +93,13 @@ let rec append s1 s2 () = match s1 () with
 let concat s =
   let rec aux current rest () = match current () with
     | Cons(e, s) ->
-        Cons(e, aux s rest)
+      Cons(e, aux s rest)
     | Nil ->
-        match rest () with
-          | Cons(e, s) ->
-              aux e s ()
-          | Nil ->
-              Nil
+      match rest () with
+      | Cons(e, s) ->
+        aux e s ()
+      | Nil ->
+        Nil
   in
   aux nil s
 
@@ -169,41 +169,41 @@ let mem e s = exists ((=) e) s
 
 let rec find f s = match s () with
   | Nil ->
-      None
+    None
   | Cons(e, s) ->
-      if f e then
-        Some e
-      else
-        find f s
+    if f e then
+      Some e
+    else
+      find f s
 
 let rec find_map f s = match s () with
   | Nil ->
-      None
+    None
   | Cons(e, s) ->
-      match f e with
-        | None ->
-            find_map f s
-        | x ->
-            x
+    match f e with
+    | None ->
+      find_map f s
+    | x ->
+      x
 
 let rec filter f s () = match s () with
   | Nil ->
-      Nil
+    Nil
   | Cons(e, s) ->
-      if f e then
-        Cons(e, filter f s)
-      else
-        filter f s ()
+    if f e then
+      Cons(e, filter f s)
+    else
+      filter f s ()
 
 let rec filter_map f s () = match s () with
   | Nil ->
-      Nil
+    Nil
   | Cons(e, s) ->
-      match f e with
-        | None ->
-            filter_map f s ()
-        | Some e ->
-            Cons(e, filter_map f s)
+    match f e with
+    | None ->
+      filter_map f s ()
+    | Some e ->
+      Cons(e, filter_map f s)
 
 let assoc key s = find_map (fun (k, v) -> if k = key then Some v else None) s
 
@@ -212,62 +212,62 @@ let rec take n s () =
     Nil
   else
     match s () with
-      | Nil ->
-          Nil
-      | Cons(e, s) ->
-          Cons(e, take (n - 1) s)
+    | Nil ->
+      Nil
+    | Cons(e, s) ->
+      Cons(e, take (n - 1) s)
 
 let rec drop n s =
   if n <= 0 then
     s
   else
     match s () with
-      | Nil ->
-          nil
-      | Cons(_e, s) ->
-          drop (n - 1) s
+    | Nil ->
+      nil
+    | Cons(_e, s) ->
+      drop (n - 1) s
 
 let rec take_while f s () = match s () with
   | Nil ->
-      Nil
+    Nil
   | Cons(e, s) ->
-      if f e then
-        Cons(e, take_while f s)
-      else
-        Nil
+    if f e then
+      Cons(e, take_while f s)
+    else
+      Nil
 
 let rec drop_while f s = match s () with
   | Nil ->
-      nil
+    nil
   | Cons(e, s) ->
-      if f e then
-        drop_while f s
-      else
-        cons e s
+    if f e then
+      drop_while f s
+    else
+      cons e s
 
 let split s = (map fst s, map snd s)
 
 let rec combine s1 s2 () = match s1 (), s2 () with
   | Nil, Nil ->
-      Nil
+    Nil
   | Cons(e1, s1), Cons(e2, s2) ->
-      Cons((e1, e2), combine s1 s2)
+    Cons((e1, e2), combine s1 s2)
   | _ ->
-      raise (Invalid_argument "Seq.combine")
+    raise (Invalid_argument "Seq.combine")
 
 let print ?(first="[") ?(last="]") ?(sep="; ") print_a out s = match s () with
   | Nil ->
-      BatInnerIO.nwrite out first;
-      BatInnerIO.nwrite out last
+    BatInnerIO.nwrite out first;
+    BatInnerIO.nwrite out last
   | Cons(e, s) ->
-      match s () with
-        | Nil ->
-            BatPrintf.fprintf out "%s%a%s" first print_a e last
-        | _ ->
-            BatInnerIO.nwrite out first;
-            print_a out e;
-            iter (BatPrintf.fprintf out "%s%a" sep print_a) s;
-            BatInnerIO.nwrite out last
+    match s () with
+    | Nil ->
+      BatPrintf.fprintf out "%s%a%s" first print_a e last
+    | _ ->
+      BatInnerIO.nwrite out first;
+      print_a out e;
+      iter (BatPrintf.fprintf out "%s%a" sep print_a) s;
+      BatInnerIO.nwrite out last
 
 module Infix = struct
   (** Infix operators matching those provided by {!BatEnum.Infix} *)
@@ -310,9 +310,9 @@ include Infix
 
 module Exceptionless = struct
   (* This function could be used to eliminate a lot of duplicate code below...
-  let exceptionless_arg f s e =
-    try Some (f s)
-    with Invalid_argument e -> None
+     let exceptionless_arg f s e =
+     try Some (f s)
+     with Invalid_argument e -> None
   *)
 
   let hd s =

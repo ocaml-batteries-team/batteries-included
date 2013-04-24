@@ -107,18 +107,18 @@ type 'a choice = 'a -> 'a -> 'a
 
 let min_ord ord = fun a b ->
   match ord a b with
-    | Lt | Eq -> a
-    | Gt -> b
+  | Lt | Eq -> a
+  | Gt -> b
 
 let min_comp comp = fun a b ->
   if comp a b <= 0 then a else b
 
 (*$T max_ord
    max_ord poly_ord 1 2 = 2
- *)
+*)
 (*$T max_comp
   max_comp poly_comp 1 2 = 2
- *)
+*)
 let max_ord ord = min_ord (rev_ord ord)
 let max_comp comp = min_comp (rev_comp comp)
 
@@ -130,13 +130,13 @@ let bin_eq eq1 t1 t1' eq2 t2 t2' =
 
 let bin_ord ord1 t1 t1' ord2 t2 t2' =
   match ord1 t1 t1' with
-    | Eq -> ord2 t2 t2'
-    | (Lt | Gt) as neq -> neq
+  | Eq -> ord2 t2 t2'
+  | (Lt | Gt) as neq -> neq
 
 let bin_comp comp1 t1 t1' comp2 t2 t2' =
   match comp1 t1 t1' with
-    | 0 -> comp2 t2 t2'
-    | nzero -> nzero
+  | 0 -> comp2 t2 t2'
+  | nzero -> nzero
 
 let map_eq f eq = fun a b -> eq (f a) (f b)
 let map_comp f comp = fun a b -> comp (f a) (f b)

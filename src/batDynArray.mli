@@ -190,20 +190,20 @@ val keep : ('a -> bool) -> 'a t -> unit
 *)
 
 val filter : ('a -> bool) -> 'a t -> 'a t
-  (** [filter p a] returns all the elements of the array [a]
-      that satisfy the predicate [p].  The order of the elements
-      in the input array is preserved.
+(** [filter p a] returns all the elements of the array [a]
+    that satisfy the predicate [p].  The order of the elements
+    in the input array is preserved.
 
-      {b Note} This function replaces another function called [filter],
-      available in previous versions of the library. As the old function
-      was incompatible with comprehension of dynamic arrays, its name
-      was changed to {!keep}.
-  *)
+    {b Note} This function replaces another function called [filter],
+    available in previous versions of the library. As the old function
+    was incompatible with comprehension of dynamic arrays, its name
+    was changed to {!keep}.
+*)
 
 val filter_map : ('a -> 'b option) -> 'a t -> 'b t
-  (** [filter_map f e] returns an array consisting in all elements
-      [x] such that [f y] returns [Some x] , where [y] is an element
-      of [e]. *)
+(** [filter_map f e] returns an array consisting in all elements
+    [x] such that [f y] returns [Some x] , where [y] is an element
+    of [e]. *)
 
 
 (** {6 Array resizers} *)
@@ -323,4 +323,4 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.outp
 
 (**/**)
 val invariants : _ t -> unit
-(**/**)
+  (**/**)

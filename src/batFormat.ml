@@ -35,10 +35,10 @@ let spaces_of out =
   let rec display_blanks n =
     if n > 0 then
       if n <= 80 then ignore (really_output out blank_line 0 n) else
-	begin
-	  ignore (really_output out blank_line 0 80);
-	  display_blanks (n - 80)
-	end
+        begin
+          ignore (really_output out blank_line 0 80);
+          display_blanks (n - 80)
+        end
   in display_blanks
 
 (**{6 New functions}*)

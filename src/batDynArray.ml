@@ -86,22 +86,22 @@ let conservative_exponential_resizer ~currslots ~oldlength ~newlength =
     else
       doubler currslots
   end else if oldlength < newlength then
-      halfer currslots
-    else
-      currslots
+    halfer currslots
+  else
+    currslots
 
 let default_resizer = conservative_exponential_resizer
 
 let changelen (d : 'a t) newlen =
   let oldsize = ilen d.arr in
   let r = d.resize
-    ~currslots:oldsize
-    ~oldlength:d.len
-    ~newlength:newlen
+      ~currslots:oldsize
+      ~oldlength:d.len
+      ~newlength:newlen
   in
   (* We require the size to be at least large enough to hold the number
    * of elements we know we need!
-   *)
+  *)
   let newsize = if r < newlen then newlen else r in
   if newsize <> oldsize then begin
     let newarr = imake newsize in
@@ -189,9 +189,9 @@ let delete d idx =
   let oldsize = ilen d.arr in
   (* we don't call changelen because we want to blit *)
   let r = d.resize
-    ~currslots:oldsize
-    ~oldlength:d.len
-    ~newlength:(d.len - 1)
+      ~currslots:oldsize
+      ~oldlength:d.len
+      ~newlength:(d.len - 1)
   in
   let newsize = (if r < d.len - 1 then d.len - 1 else r) in
   if oldsize <> newsize then begin
@@ -218,9 +218,9 @@ let delete_range d idx len =
   let oldsize = ilen d.arr in
   (* we don't call changelen because we want to blit *)
   let r = d.resize
-    ~currslots:oldsize
-    ~oldlength:d.len
-    ~newlength:(d.len - len)
+      ~currslots:oldsize
+      ~oldlength:d.len
+      ~newlength:(d.len - len)
   in
   let newsize = (if r < d.len - len then d.len - len else r) in
   if oldsize <> newsize then begin
@@ -312,12 +312,12 @@ let of_array src =
   let size = Array.length src in
   let is_float = Obj.tag (Obj.repr src) = Obj.double_array_tag in
   let arr = (if is_float then begin
-    let arr = imake size in
-    for i = 0 to size - 1 do
-      iset arr i (Array.unsafe_get src i);
-    done;
-    arr
-  end else
+      let arr = imake size in
+      for i = 0 to size - 1 do
+        iset arr i (Array.unsafe_get src i);
+      done;
+      arr
+    end else
       (* copy the fields *)
       idup (Obj.magic src : 'a intern))
   in
@@ -508,11 +508,11 @@ let filter_map f d =
   let i = ref 0 in
   while !i < d.len && !i < l do
     (match f (iget a2 !i) with
-    | None -> ()
-    | Some x -> begin
-      iset dest.arr !p x;
-      incr p;
-    end);
+     | None -> ()
+     | Some x -> begin
+         iset dest.arr !p x;
+         incr p;
+       end);
     incr i
   done;
   dest.len <- !p;
@@ -559,10 +559,10 @@ let index_of f d =
     if i >= d.len then
       raise Not_found
     else
-      if f (iget d.arr i) then
-        i
-      else
-        loop (i+1)
+    if f (iget d.arr i) then
+      i
+    else
+      loop (i+1)
   in
   loop 0
 

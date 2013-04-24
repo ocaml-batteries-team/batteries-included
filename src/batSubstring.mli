@@ -30,92 +30,92 @@ val equal : t -> t -> bool
 val of_input : BatIO.input -> t
 
 val substring : string -> int -> int -> t
-  (** [substring s o l] returns a substring with base-string [s], offset
-      [o] and length [l].  Arguments are checked for validity
+(** [substring s o l] returns a substring with base-string [s], offset
+    [o] and length [l].  Arguments are checked for validity
 
-      [substring s i n] creates the substring [(s, i, n)], consisting
-      of the substring of s with length n starting at i.
-      @raise Inavlid_argument if [i<0] or [n<0] or [i+n > size s].  Equivalent to
-      [extract s i (Some n)].  *)
+    [substring s i n] creates the substring [(s, i, n)], consisting
+    of the substring of s with length n starting at i.
+    @raise Inavlid_argument if [i<0] or [n<0] or [i+n > size s].  Equivalent to
+    [extract s i (Some n)].  *)
 
 val extract : string -> int -> int option -> t
-  (** [extract s i None] creates the substring (s, i, size s-i)
-      consisting of the tail of s starting at i.
-      @raise Invalid_argument if [i<0] or [i > size s].
+(** [extract s i None] creates the substring (s, i, size s-i)
+    consisting of the tail of s starting at i.
+    @raise Invalid_argument if [i<0] or [i > size s].
 
-      [extract s i (Some n)] creates the substring (s, i, n), consisting
-      of the substring of s with length n starting at i.
-      @raise Invalid_argument if [i<0] or [n<0] or [i+n > size s].
-  *)
+    [extract s i (Some n)] creates the substring (s, i, n), consisting
+    of the substring of s with length n starting at i.
+    @raise Invalid_argument if [i<0] or [n<0] or [i+n > size s].
+*)
 
 val all : string -> t
-  (** [all s] is the substring [(s, 0, size s)]. *)
+(** [all s] is the substring [(s, 0, size s)]. *)
 
 val base : t -> string * int * int
-  (** [base sus] is the concrete triple [(s, i, n)], where [psus = (s, i,
-      n)]. *)
+(** [base sus] is the concrete triple [(s, i, n)], where [psus = (s, i,
+    n)]. *)
 
 val is_empty : t -> bool
-  (** [isEmpty (s, i, n)] true if the substring is empty (that is,
-      [n = 0]). *)
+(** [isEmpty (s, i, n)] true if the substring is empty (that is,
+    [n = 0]). *)
 
 val getc : t -> (char * t) option
-  (** [getc sus] returns [Some(c, rst)] where [c] is the first character and
-      [rst] the remainder of [sus], if [sus] is non-empty; otherwise returns
-      [None]. *)
+(** [getc sus] returns [Some(c, rst)] where [c] is the first character and
+    [rst] the remainder of [sus], if [sus] is non-empty; otherwise returns
+    [None]. *)
 
 val first : t -> char option
-  (** [first sus] returns [Some c] where [c] is the first character in
-      [sus], if [sus] is non-empty; otherwise returns [None].  *)
+(** [first sus] returns [Some c] where [c] is the first character in
+    [sus], if [sus] is non-empty; otherwise returns [None].  *)
 
 val triml : int -> t -> t
-  (** [triml k sus] returns sus less its leftmost k characters; or the
-      empty string at the end of sus if it has less than k characters.
-      @raise Invalid_argument  if [k < 0], even in the partial application
-      [triml k].
-  *)
+(** [triml k sus] returns sus less its leftmost k characters; or the
+    empty string at the end of sus if it has less than k characters.
+    @raise Invalid_argument  if [k < 0], even in the partial application
+    [triml k].
+*)
 
 val trimr : int -> t -> t
-  (** [trimr k sus] returns sus less its rightmost k characters; or the
-      empty string at the beginning of sus if it has less than k
-      characters.  @raise Invalid_argument if [k < 0], even in the partial
-      application [trimr k].
-  *)
+(** [trimr k sus] returns sus less its rightmost k characters; or the
+    empty string at the beginning of sus if it has less than k
+    characters.  @raise Invalid_argument if [k < 0], even in the partial
+    application [trimr k].
+*)
 
 val get : t -> int -> char
-  (** [sub sus k] returns the k'th character of the substring; that
-      is, s(i+k) where sus = (s, i, n).  @raise Invalid_argument if
-      [k<0] or [k>=n].  *)
+(** [sub sus k] returns the k'th character of the substring; that
+    is, s(i+k) where sus = (s, i, n).  @raise Invalid_argument if
+    [k<0] or [k>=n].  *)
 
 val size : t -> int
-  (** [size (s, i, n)] returns the size of the substring, that is, [n].
-  *)
+(** [size (s, i, n)] returns the size of the substring, that is, [n].
+*)
 val length: t -> int
-  (** Equivalent to {!size}. *)
+(** Equivalent to {!size}. *)
 
 val slice : t -> int -> int option -> t
-  (** [slice sus i' None] returns the substring [(s, i+i', n-i')],
-      where [sus = (s, i, n)].
-      @raise Invalid_argument if [i' < 0] or [i' > n].
+(** [slice sus i' None] returns the substring [(s, i+i', n-i')],
+    where [sus = (s, i, n)].
+    @raise Invalid_argument if [i' < 0] or [i' > n].
 
-      [slice sus i' (Some n')] returns the substring [(s, i+i', n')],
-      where [sus] = [(s, i, n)].  @raise Invalid_argument if [i' < 0]
-      or [n' < 0] or [i'+n' >= n].
-  *)
+    [slice sus i' (Some n')] returns the substring [(s, i+i', n')],
+    where [sus] = [(s, i, n)].  @raise Invalid_argument if [i' < 0]
+    or [n' < 0] or [i'+n' >= n].
+*)
 val concat : t list -> string
-  (** [concat suss] returns a string consisting of the concatenation of
-      the substrings.  Equivalent to [String.concat (List.map to_string
-      suss)].
-  *)
+(** [concat suss] returns a string consisting of the concatenation of
+    the substrings.  Equivalent to [String.concat (List.map to_string
+    suss)].
+*)
 val explode : t -> char list
-  (** [explode sus] returns the list of characters of sus, that is,
-      [s(i), s(i+1), ..., s(i+n-1)] where [sus = (s, i, n)].  Equivalent
-      to [String.explode (to_string ss)].
-  *)
+(** [explode sus] returns the list of characters of sus, that is,
+    [s(i), s(i+1), ..., s(i+n-1)] where [sus = (s, i, n)].  Equivalent
+    to [String.explode (to_string ss)].
+*)
 val is_prefix : string -> t -> bool
-  (** [is_prefix s1 s2] is true if [s1] is a prefix of [s2]. That is, if
-      there exists a string [t] such that string [s1 ^ t = to_string s2].
-  *)
+(** [is_prefix s1 s2] is true if [s1] is a prefix of [s2]. That is, if
+    there exists a string [t] such that string [s1 ^ t = to_string s2].
+*)
 
 val compare : t -> t -> int
 (** [compare sus1 sus2] performs lexicographic comparison, using the
@@ -287,8 +287,8 @@ val iter : (char -> unit) -> t -> unit
 
 val iteri : (int -> char -> unit) -> t -> unit
 (** Same as {!iter}, but the
-   function is applied to the index of the element as first argument
-   (counting from 0), and the character itself as second argument.  *)
+    function is applied to the index of the element as first argument
+    (counting from 0), and the character itself as second argument.  *)
 
 val trim : t -> t
 (** removes whitespace from left and right ends of input *)
@@ -308,4 +308,4 @@ val enum : t -> char BatEnum.t
 *)
 
 val print : 'a BatIO.output -> t -> unit
-(** [print oc ss] prints [ss] to the output channel [oc] *)
+  (** [print oc ss] prints [ss] to the output channel [oc] *)

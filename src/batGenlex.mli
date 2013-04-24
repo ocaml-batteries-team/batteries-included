@@ -22,40 +22,40 @@
 (** A generic lexical analyzer.
 
 
-   This module implements a simple ``standard'' lexical analyzer, presented
-   as a function from character streams to token streams. It implements
-   roughly the lexical conventions of OCaml, but is parameterized by the
-   set of keywords of your language.
+    This module implements a simple ``standard'' lexical analyzer, presented
+    as a function from character streams to token streams. It implements
+    roughly the lexical conventions of OCaml, but is parameterized by the
+    set of keywords of your language.
 
 
-   Example: a lexer suitable for a desk calculator is obtained by
-   {[     let lexer = make_lexer ["+";"-";"*";"/";"let";"="; "("; ")"]  ]}
+    Example: a lexer suitable for a desk calculator is obtained by
+    {[     let lexer = make_lexer ["+";"-";"*";"/";"let";"="; "("; ")"]  ]}
 
-   The associated parser would be a function from [token stream]
-   to, for instance, [int], and would have rules such as:
+    The associated parser would be a function from [token stream]
+    to, for instance, [int], and would have rules such as:
 
-   {[
-           let parse_expr = parser
-                  [< 'Int n >] -> n
-                | [< 'Kwd "("; n = parse_expr; 'Kwd ")" >] -> n
-                | [< n1 = parse_expr; n2 = parse_remainder n1 >] -> n2
-           and parse_remainder n1 = parser
-                  [< 'Kwd "+"; n2 = parse_expr >] -> n1+n2
-                | ...
-   ]}
+    {[
+      let parse_expr = parser
+          [< 'Int n >] -> n
+                     | [< 'Kwd "("; n = parse_expr; 'Kwd ")" >] -> n
+                     | [< n1 = parse_expr; n2 = parse_remainder n1 >] -> n2
+      and parse_remainder n1 = parser
+          [< 'Kwd "+"; n2 = parse_expr >] -> n1+n2
+                             | ...
+    ]}
 
     @author Jacques Garrigue
     @author David Teller
 *)
 
 (** The type of tokens. The lexical classes are: [Int] and [Float]
-   for integer and floating-point numbers; [String] for
-   string literals, enclosed in double quotes; [Char] for
-   character literals, enclosed in single quotes; [Ident] for
-   identifiers (either sequences of letters, digits, underscores
-   and quotes, or sequences of ``operator characters'' such as
-   [+], [*], etc); and [Kwd] for keywords (either identifiers or
-   single ``special characters'' such as [(], [}], etc). *)
+    for integer and floating-point numbers; [String] for
+    string literals, enclosed in double quotes; [Char] for
+    character literals, enclosed in single quotes; [Ident] for
+    identifiers (either sequences of letters, digits, underscores
+    and quotes, or sequences of ``operator characters'' such as
+    [+], [*], etc); and [Kwd] for keywords (either identifiers or
+    single ``special characters'' such as [(], [}], etc). *)
 type token = Genlex.token =
     Kwd of string
   | Ident of string
@@ -66,13 +66,13 @@ type token = Genlex.token =
 
 val make_lexer : string list -> char Stream.t -> token Stream.t
 (** Construct the lexer function. The first argument is the list of
-   keywords. An identifier [s] is returned as [Kwd s] if [s]
-   belongs to this list, and as [Ident s] otherwise.
-   A special character [s] is returned as [Kwd s] if [s]
-   belongs to this list, and cause a lexical error (exception
-   [Parse_error]) otherwise. Blanks and newlines are skipped.
-   Comments delimited by [(*] and [*)] are skipped as well,
-   and can be nested. *)
+    keywords. An identifier [s] is returned as [Kwd s] if [s]
+    belongs to this list, and as [Ident s] otherwise.
+    A special character [s] is returned as [Kwd s] if [s]
+    belongs to this list, and cause a lexical error (exception
+    [Parse_error]) otherwise. Blanks and newlines are skipped.
+    Comments delimited by [(*] and [*)] are skipped as well,
+    and can be nested. *)
 
 (* {6 Batteries extensions to genlex } *)
 type lexer_error =
@@ -106,20 +106,20 @@ open BatCharParser
 module Languages :
 sig
   module type Definition =
-    sig
-      val comment_delimiters : (string * string) option
-      val line_comment_start : string option
-      val nested_comments    : bool
-      val ident_start        : (char, char, position) BatParserCo.t
-      val ident_letter       : (char, char, position) BatParserCo.t
-      val op_start           : (char, char, position) BatParserCo.t
-      val op_letter          : (char, char, position) BatParserCo.t
-      val reserved_names     : string list
-      val case_sensitive     : bool
+  sig
+    val comment_delimiters : (string * string) option
+    val line_comment_start : string option
+    val nested_comments    : bool
+    val ident_start        : (char, char, position) BatParserCo.t
+    val ident_letter       : (char, char, position) BatParserCo.t
+    val op_start           : (char, char, position) BatParserCo.t
+    val op_letter          : (char, char, position) BatParserCo.t
+    val reserved_names     : string list
+    val case_sensitive     : bool
     (**[true] if the language is case-sensitive, [false] otherwise.
        If the language is not case-sensitive, every identifier is returned
        as lower-case.*)
-    end
+  end
 
   module Library :
   sig
@@ -134,13 +134,13 @@ sig
     (** {6 High-level API} *)
 
     (** Drop comments, present reserved operators and reserved
-      names as [Kwd], operators and identifiers as [Ident],
-      integer numbers as [Int], floating-point numbers as
-      [Float] and characters as [Char].
+        names as [Kwd], operators and identifiers as [Ident],
+        integer numbers as [Int], floating-point numbers as
+        [Float] and characters as [Char].
 
-      If the language is not [case_sensitive], identifiers and
-      keywords are returned in lower-case.
-     *)
+        If the language is not [case_sensitive], identifiers and
+        keywords are returned in lower-case.
+    *)
     val feed               : (char, position) BatParserCo.Source.t -> (token, position) BatParserCo.Source.t
 
 
@@ -183,19 +183,19 @@ sig
     (** {6 Low-level API} *)
     val char         : char -> (char, char , position) BatParserCo.t
     (** As {!CharParser.char}, but case-insensitive if specified
-	by {!case_sensitive}. *)
+		by {!case_sensitive}. *)
 
     val string       : string -> (char, string, position) BatParserCo.t
     (** As {!CharParser.string}, but case-insensitive if specified
-	by {!case_sensitive}. *)
+		by {!case_sensitive}. *)
 
     val line_comment : (char, unit , position) BatParserCo.t
     val multiline_comment : (char, unit , position) BatParserCo.t
     val comment      : (char, unit , position) BatParserCo.t
     val whitespaces  : (char, unit , position) BatParserCo.t
-  (*  val lexeme       : (char, 'a , position) BatParserCo.t -> (char, 'a , position) BatParserCo.t*)
-  (**Apply this filter to your own parsers if you want them
-       to ignore following comments.*)
+        (*  val lexeme       : (char, 'a , position) BatParserCo.t -> (char, 'a , position) BatParserCo.t*)
+        (**Apply this filter to your own parsers if you want them
+             to ignore following comments.*)
 
   end
 

@@ -67,7 +67,7 @@ end
     documentation of pa_monad}.
 
     @author David Teller
- *)
+*)
 
 (** Signature for monads *)
 module type Monad = sig

@@ -57,8 +57,8 @@ let return_infinite_count   () = raise Infinite_enum
 
 (* Inlined from ExtList to avoid circular dependencies. *)
 type 'a _mut_list = {
-	hd : 'a;
-	mutable tl : 'a _mut_list;
+  hd : 'a;
+  mutable tl : 'a _mut_list;
 }
 
 let rec empty () =
@@ -78,38 +78,38 @@ let force t =(** Transform [t] into a list *)
   let rec clone enum count =
     let enum = ref !enum
     and	count = ref !count in
-      {
-	count = (fun () -> !count);
-	next  = (fun () ->
-		   match !enum with
-		     | []     -> raise No_more_elements
-		     | h :: t -> decr count; enum := t; h);
-	clone = (fun () ->
-		   let enum = ref !enum
-		   and count = ref !count in
-		     clone enum count);
-	fast  = true;
-      }
+    {
+      count = (fun () -> !count);
+      next  = (fun () ->
+        match !enum with
+        | []     -> raise No_more_elements
+        | h :: t -> decr count; enum := t; h);
+      clone = (fun () ->
+        let enum = ref !enum
+        and count = ref !count in
+        clone enum count);
+      fast  = true;
+    }
   in
   let count = ref 0 in
   let _empty = Obj.magic [] in
   let rec loop dst =
     let x = { hd = t.next(); tl = _empty } in
-      incr count;
-      dst.tl <- x;
-      loop x
+    incr count;
+    dst.tl <- x;
+    loop x
   in
   let enum = ref _empty  in
-    (try
-       enum := { hd = t.next(); tl = _empty };
-       incr count;
-       loop !enum;
-     with No_more_elements -> ());
-    let tc = clone (Obj.magic enum) count in
-      t.clone <- tc.clone;
-      t.next <- tc.next;
-      t.count <- tc.count;
-      t.fast <- true
+  (try
+    enum := { hd = t.next(); tl = _empty };
+    incr count;
+    loop !enum;
+  with No_more_elements -> ());
+  let tc = clone (Obj.magic enum) count in
+  t.clone <- tc.clone;
+  t.next <- tc.next;
+  t.count <- tc.count;
+  t.fast <- true
 
 (* Inlined from {!LazyList}.
 
@@ -127,27 +127,27 @@ module MicroLazyList = struct
     let rec aux (l:'a ll_t) : 'a t=
       let reference = ref l in
       let e = make
-	~next:(fun () -> match Lazy.force !reference with
-		 | Cons(x,t) -> reference := t; x
-		 | Nil       -> raise No_more_elements )
-        ~count:_dummy
-        ~clone:(fun () -> aux !reference)
+          ~next:(fun () -> match Lazy.force !reference with
+            | Cons(x,t) -> reference := t; x
+            | Nil       -> raise No_more_elements )
+          ~count:_dummy
+          ~clone:(fun () -> aux !reference)
       in e.count <- (fun () -> force e; e.count());
-         e.fast  <- false;
-         e
+      e.fast  <- false;
+      e
     in aux l
 
   let from f =
     let rec aux () =
       lazy (
-	let item = try  Some (f ())
-		   with No_more_elements -> None
-	in match item with
-	  | Some x -> Cons (x, aux () )
-	  | _      -> Nil
+        let item = try  Some (f ())
+        with No_more_elements -> None
+        in match item with
+        | Some x -> Cons (x, aux () )
+        | _      -> Nil
       )
     in
-      aux ()
+    aux ()
 end
 
 let from f =
@@ -157,25 +157,25 @@ let from f =
     clone = _dummy;
     fast = false;
   } in
-    e.next  <- (fun () -> try f () with No_more_elements -> close e ; raise No_more_elements);
-    e.count <- (fun () -> force e; e.count());
-    e.clone <- (fun () ->
-		  let e' =  MicroLazyList.enum(MicroLazyList.from f) in
-		    e.next <- e'.next;
-		    e.clone<- e'.clone;
-		    e.count<- (fun () -> force e; e.count());
-                    (* we can't use [e'.count] because that would force [e'],
-                       which doesn't update [e].  That would for example,
-                       cause e.fast to not be updated to true.  A simple test
-                       to see the problem with [e'.count] is to do the
-                       following: (1) create a enum using this [from]
-                       function, (2) clone that enum, (3) grab the count of
-                       the original enum and then iterate over it.  A
-                       discrepancy between the count and the elements will
-                       result. *)
-		    e.fast <- e'.fast;
-	            e.clone () );
-    e
+  e.next  <- (fun () -> try f () with No_more_elements -> close e ; raise No_more_elements);
+  e.count <- (fun () -> force e; e.count());
+  e.clone <- (fun () ->
+    let e' =  MicroLazyList.enum(MicroLazyList.from f) in
+    e.next <- e'.next;
+    e.clone<- e'.clone;
+    e.count<- (fun () -> force e; e.count());
+    (* we can't use [e'.count] because that would force [e'],
+       which doesn't update [e].  That would for example,
+       cause e.fast to not be updated to true.  A simple test
+       to see the problem with [e'.count] is to do the
+       following: (1) create a enum using this [from]
+       function, (2) clone that enum, (3) grab the count of
+       the original enum and then iterate over it.  A
+       discrepancy between the count and the elements will
+       result. *)
+    e.fast <- e'.fast;
+    e.clone () );
+  e
 
 
 let from2 next clone =
@@ -193,13 +193,13 @@ let init n f = (*Experimental fix for init*)
   let count = ref n in
   let f' () =
     match !count with
-      | 0 -> raise No_more_elements
-      | _ -> decr count;
-	  f ( n - 1 - !count)
+    | 0 -> raise No_more_elements
+    | _ -> decr count;
+      f ( n - 1 - !count)
   in let e = from f' in
-    e.fast  <- true;
-    e.count <- (fun () -> !count);
-    e
+  e.fast  <- true;
+  e.count <- (fun () -> !count);
+  e
 
 
 let get t =
@@ -209,68 +209,68 @@ let get t =
 let get_exn t = t.next ()
 
 let push t e =
-	let rec make t =
-		let fnext = t.next in
-		let fcount = t.count in
-		let fclone = t.clone in
-		let next_called = ref false in
-		t.next <- (fun () ->
-			next_called := true;
-			t.next <- fnext;
-			t.count <- fcount;
-			t.clone <- fclone;
-			e);
-		t.count <- (fun () ->
-			let n = fcount() in
-			if !next_called then n else n+1);
-		t.clone <- (fun () ->
-			let tc = fclone() in
-			if not !next_called then make tc;
-			tc);
-	in
-	make t
+  let rec make t =
+    let fnext = t.next in
+    let fcount = t.count in
+    let fclone = t.clone in
+    let next_called = ref false in
+    t.next <- (fun () ->
+      next_called := true;
+      t.next <- fnext;
+      t.count <- fcount;
+      t.clone <- fclone;
+      e);
+    t.count <- (fun () ->
+      let n = fcount() in
+      if !next_called then n else n+1);
+    t.clone <- (fun () ->
+      let tc = fclone() in
+      if not !next_called then make tc;
+      tc);
+  in
+  make t
 
 let peek t =
-	match get t with
-	| None -> None
-	| Some x ->
-		push t x;
-		Some x
+  match get t with
+  | None -> None
+  | Some x ->
+    push t x;
+    Some x
 
 module MicroList = (*Inlined from ExtList to avoid circular dependencies*)
 struct
   let enum l =
     let rec aux lr count =
       make
-	~next:(fun () ->
-		 match !lr with
-		   | [] -> raise No_more_elements
-		   | h :: t ->
-		       decr count;
-		       lr := t;
-		       h
-	      )
-	~count:(fun () ->
-		  if !count < 0 then count := List.length !lr;
-		  !count
-	       )
-	~clone:(fun () ->
-		  aux (ref !lr) (ref !count)
-	       )
+        ~next:(fun () ->
+          match !lr with
+          | [] -> raise No_more_elements
+          | h :: t ->
+            decr count;
+            lr := t;
+            h
+        )
+        ~count:(fun () ->
+          if !count < 0 then count := List.length !lr;
+          !count
+        )
+        ~clone:(fun () ->
+          aux (ref !lr) (ref !count)
+        )
     in
-      aux (ref l) (ref (-1))
+    aux (ref l) (ref (-1))
 end
 
 let take n e =
   let r = ref [] in
-    begin
-      try
-	for i = 1 to n do
-	  r := e.next () :: !r
-	done
-      with No_more_elements -> ()
-    end;
-      MicroList.enum (List.rev !r)
+  begin
+    try
+      for i = 1 to n do
+        r := e.next () :: !r
+      done
+    with No_more_elements -> ()
+  end;
+  MicroList.enum (List.rev !r)
 
 (*let take n e = (*Er... that looks quite weird.*)
   let remaining = ref n in
@@ -288,119 +288,119 @@ let take n e =
     e*)
 
 let junk t =
-	try
-		ignore(t.next())
-	with
-		No_more_elements -> ()
+  try
+    ignore(t.next())
+  with
+    No_more_elements -> ()
 
 let is_empty t =
-	if t.fast then
-		t.count() = 0
-	else
-		peek t = None
+  if t.fast then
+    t.count() = 0
+  else
+    peek t = None
 
 let count t =
-	t.count()
+  t.count()
 
 let fast_count t =
-	t.fast
+  t.fast
 
 
 
 let clone t =
-	t.clone()
+  t.clone()
 
 let iter f t =
-	let rec loop () =
-		f (t.next());
-		loop();
-	in
-	try
-		loop();
-	with
-		No_more_elements -> ()
+  let rec loop () =
+    f (t.next());
+    loop();
+  in
+  try
+    loop();
+  with
+    No_more_elements -> ()
 
 let iteri f t =
-	let rec loop idx =
-		f idx (t.next());
-		loop (idx+1);
-	in
-	try
-		loop 0;
-	with
-		No_more_elements -> ()
+  let rec loop idx =
+    f idx (t.next());
+    loop (idx+1);
+  in
+  try
+    loop 0;
+  with
+    No_more_elements -> ()
 
 let iter2 f t u =
-	let push_t = ref None in
-	let rec loop () =
-		push_t := None;
-		let e = t.next() in
-		push_t := Some e;
-		f e (u.next());
-		loop ()
-	in
-	try
-		loop ()
-	with
-		No_more_elements ->
-			match !push_t with
-			| None -> ()
-			| Some e ->
-				push t e
+  let push_t = ref None in
+  let rec loop () =
+    push_t := None;
+    let e = t.next() in
+    push_t := Some e;
+    f e (u.next());
+    loop ()
+  in
+  try
+    loop ()
+  with
+    No_more_elements ->
+    match !push_t with
+    | None -> ()
+    | Some e ->
+      push t e
 
 let iter2i f t u =
-	let push_t = ref None in
-	let rec loop idx =
-		push_t := None;
-		let e = t.next() in
-		push_t := Some e;
-		f idx e (u.next());
-		loop (idx + 1)
-	in
-	try
-		loop 0
-	with
-		No_more_elements ->
-			match !push_t with
-			| None -> ()
-			| Some e -> push t e
+  let push_t = ref None in
+  let rec loop idx =
+    push_t := None;
+    let e = t.next() in
+    push_t := Some e;
+    f idx e (u.next());
+    loop (idx + 1)
+  in
+  try
+    loop 0
+  with
+    No_more_elements ->
+    match !push_t with
+    | None -> ()
+    | Some e -> push t e
 
 let fold f init t =
-	let acc = ref init in
-	let rec loop() =
-		acc := f !acc (t.next());
-		loop()
-	in
-	try
-		loop()
-	with
-		No_more_elements -> !acc
+  let acc = ref init in
+  let rec loop() =
+    acc := f !acc (t.next());
+    loop()
+  in
+  try
+    loop()
+  with
+    No_more_elements -> !acc
 
 let reduce f t =
   match get t
   with None -> raise Not_found
-    |  Some init -> fold f init t
+     |  Some init -> fold f init t
 
 let sum t =
   match get t with
-    | None -> 0
-    | Some i -> fold (+) i t
+  | None -> 0
+  | Some i -> fold (+) i t
 
 (* Kahan summing.  [Enum.reduce (+.)] is 20% faster, but has
    cumulative error O(n) instead of O(1) *)
 let fsum t =
   match get t with
-    | None -> 0.
-    | Some i ->
-      let sum = ref i in
-      let c = ref 0. in
-      iter (fun x ->
-	let y = x -. !c in
-	let t = !sum +. y in
-	c := (t -. !sum) -. y;
-	sum := t
-      ) t;
-      !sum
+  | None -> 0.
+  | Some i ->
+    let sum = ref i in
+    let c = ref 0. in
+    iter (fun x ->
+      let y = x -. !c in
+      let t = !sum +. y in
+      c := (t -. !sum) -. y;
+      sum := t
+    ) t;
+    !sum
 
 (* NEED A PROPER TEST OF ROUNDING ERROR *)
 (*$T fsum
@@ -410,12 +410,12 @@ let fsum t =
 
 let exists f t =
   try let rec aux () = f (t.next()) || aux ()
-      in aux ()
+    in aux ()
   with No_more_elements -> false
 
 let for_all f t =
   try let rec aux () = f (t.next()) && aux ()
-      in aux ()
+    in aux ()
   with No_more_elements -> true
 
 (* test paired elements, ignore any extra elements from one enum *)
@@ -430,85 +430,85 @@ let scanl f init t =
   let gen () =
     acc := f !acc (t.next());
     !acc
-   in
+  in
   let e = from gen in
   push e init;
   e
 
 let scan f t =
-        match get t with
-	  | Some x -> scanl f x t
-	  | None   -> empty ()
+  match get t with
+  | Some x -> scanl f x t
+  | None   -> empty ()
 
 let foldi f init t =
-	let acc = ref init in
-	let rec loop idx =
-		acc := f idx (t.next()) !acc;
-		loop (idx + 1)
-	in
-	try
-		loop 0
-	with
-		No_more_elements -> !acc
+  let acc = ref init in
+  let rec loop idx =
+    acc := f idx (t.next()) !acc;
+    loop (idx + 1)
+  in
+  try
+    loop 0
+  with
+    No_more_elements -> !acc
 
 let fold2 f init t u =
-	let acc = ref init in
-	let push_t = ref None in
-	let rec loop() =
-		push_t := None;
-		let e = t.next() in
-		push_t := Some e;
-		acc := f e (u.next()) !acc;
-		loop()
-	in
-	try
-		loop()
-	with
-		No_more_elements ->
-			match !push_t with
-			| None -> !acc
-			| Some e ->
-				push t e;
-				!acc
+  let acc = ref init in
+  let push_t = ref None in
+  let rec loop() =
+    push_t := None;
+    let e = t.next() in
+    push_t := Some e;
+    acc := f e (u.next()) !acc;
+    loop()
+  in
+  try
+    loop()
+  with
+    No_more_elements ->
+    match !push_t with
+    | None -> !acc
+    | Some e ->
+      push t e;
+      !acc
 
 let fold2i f init t u =
-	let acc = ref init in
-	let push_t = ref None in
-	let rec loop idx =
-		push_t := None;
-		let e = t.next() in
-		push_t := Some e;
-		acc := f idx e (u.next()) !acc;
-		loop (idx + 1)
-	in
-	try
-		loop 0
-	with
-		No_more_elements ->
-			match !push_t with
-			| None -> !acc
-			| Some e ->
-				push t e;
-				!acc
+  let acc = ref init in
+  let push_t = ref None in
+  let rec loop idx =
+    push_t := None;
+    let e = t.next() in
+    push_t := Some e;
+    acc := f idx e (u.next()) !acc;
+    loop (idx + 1)
+  in
+  try
+    loop 0
+  with
+    No_more_elements ->
+    match !push_t with
+    | None -> !acc
+    | Some e ->
+      push t e;
+      !acc
 
 
 
 let find f t =
-	let rec loop () =
-		let x = t.next() in
-		if f x then x else loop()
-	in
-	try
-		loop()
-	with
-		No_more_elements -> raise Not_found
+  let rec loop () =
+    let x = t.next() in
+    if f x then x else loop()
+  in
+  try
+    loop()
+  with
+    No_more_elements -> raise Not_found
 
 
 let find_map f t =
   let rec loop () =
     match f (t.next ()) with
-      | Some x -> x
-      | None -> loop ()
+    | Some x -> x
+    | None -> loop ()
   in
   try
     loop ()
@@ -525,57 +525,57 @@ let find_map f t =
 (*qtest TODO: migrate try into an exception test *)
 
 let rec map f t =
-	{
-		count = t.count;
-		next = (fun () -> f (t.next()));
-		clone = (fun () -> map f (t.clone()));
-		fast = t.fast;
-	}
+  {
+    count = t.count;
+    next = (fun () -> f (t.next()));
+    clone = (fun () -> map f (t.clone()));
+    fast = t.fast;
+  }
 
 let rec mapi f t =
-	let idx = ref (-1) in
-	{
-		count = t.count;
-		next = (fun () -> incr idx; f !idx (t.next()));
-		clone = (fun () -> mapi f (t.clone()));
-		fast = t.fast;
-	}
+  let idx = ref (-1) in
+  {
+    count = t.count;
+    next = (fun () -> incr idx; f !idx (t.next()));
+    clone = (fun () -> mapi f (t.clone()));
+    fast = t.fast;
+  }
 
 let rec filter f t =
-	let rec next() =
-		let x = t.next() in
-		if f x then x else next()
-	in
-	from2 next (fun () -> filter f (t.clone()))
+  let rec next() =
+    let x = t.next() in
+    if f x then x else next()
+  in
+  from2 next (fun () -> filter f (t.clone()))
 
 let rec filter_map f t =
-    let rec next () =
-        match f (t.next()) with
-        | None -> next()
-        | Some x -> x
-    in
-	from2 next (fun () -> filter_map f (t.clone()))
+  let rec next () =
+    match f (t.next()) with
+    | None -> next()
+    | Some x -> x
+  in
+  from2 next (fun () -> filter_map f (t.clone()))
 
 let rec append ta tb =
-	let t = {
-		count = (fun () -> ta.count() + tb.count());
-		next = _dummy;
-		clone = (fun () -> append (ta.clone()) (tb.clone()));
-		fast = ta.fast && tb.fast;
-	} in
-	t.next <- (fun () ->
-		try
-			ta.next()
-		with
-			No_more_elements ->
-				(* add one indirection because tb can mute *)
-				t.next <- (fun () -> tb.next());
-				t.count <- (fun () -> tb.count());
-				t.clone <- (fun () -> tb.clone());
-				t.fast <- tb.fast;
-				t.next()
-	);
-	t
+  let t = {
+    count = (fun () -> ta.count() + tb.count());
+    next = _dummy;
+    clone = (fun () -> append (ta.clone()) (tb.clone()));
+    fast = ta.fast && tb.fast;
+  } in
+  t.next <- (fun () ->
+    try
+      ta.next()
+    with
+      No_more_elements ->
+      (* add one indirection because tb can mute *)
+      t.next <- (fun () -> tb.next());
+      t.count <- (fun () -> tb.count());
+      t.clone <- (fun () -> tb.clone());
+      t.fast <- tb.fast;
+      t.next()
+  );
+  t
 
 let prefix_action f t =
   let full_action e =
@@ -597,10 +597,10 @@ let suffix_action_without_raise (f:unit -> 'a) (t:'a t) =
   {
     count = t.count;
     next  = (fun () ->
-	       try  t.next ()
-	       with No_more_elements -> f() );
+      try  t.next ()
+      with No_more_elements -> f() );
     clone = (fun () -> t.clone());  (* needs to be delayed because [t] may
-				       mutate and we want the newest clone
+								       mutate and we want the newest clone
                                        function *)
     fast  = t.fast
   }
@@ -631,24 +631,24 @@ let switchn n f e =
   let queues = ArrayLabels.init n ~f:(fun _ -> Queue.create ())   in
   let gen i () = (*Generate the next value for the i^th enum*)
     let my_queue  = queues.(i) in
-      if Queue.is_empty my_queue then (*Need to fetch next*)
-	let rec aux () =     (*Keep fetching until an appropriate
-				     item has been found*)
-	  let next_item = e.next()    in
-	  let position  = f next_item in
-	    if  i = position then next_item
-	    else
-	      (
-		Queue.push next_item queues.(position);
-		aux ()
-	      )
-	in aux ()
-      else Queue.take my_queue
+    if Queue.is_empty my_queue then (*Need to fetch next*)
+      let rec aux () =     (*Keep fetching until an appropriate
+							     item has been found*)
+        let next_item = e.next()    in
+        let position  = f next_item in
+        if  i = position then next_item
+        else
+          (
+            Queue.push next_item queues.(position);
+            aux ()
+          )
+      in aux ()
+    else Queue.take my_queue
   in ArrayLabels.init ~f:(fun i -> from (gen i)) n
 
 let switch f e =
   let a = switchn 2 (fun x -> if f x then 0 else 1) e in
-    (a.(0), a.(1))
+  (a.(0), a.(1))
 
 let partition = switch
 
@@ -665,28 +665,28 @@ let partition = switch
 let seq init f cond =
   let acc = ref init in
   let aux () = if cond !acc then begin
-    let result = !acc in
+      let result = !acc in
       acc := f !acc;
       result
-  end
-  else raise No_more_elements
+    end
+    else raise No_more_elements
   in from aux
 
 let repeat ?times x = match times with
   | None ->
-      let rec aux =
-	{
-	  count = return_infinite_count;
-	  next  = (fun () -> x);
-	  clone = (fun () -> aux);
-	  fast  = true;
-	} in aux
+    let rec aux =
+      {
+        count = return_infinite_count;
+        next  = (fun () -> x);
+        clone = (fun () -> aux);
+        fast  = true;
+      } in aux
   | Some n ->
-      init n (fun _ -> x)
+    init n (fun _ -> x)
 
 let cycle ?times x =
   let enum   =
-  match times with
+    match times with
     | None   -> from (fun () -> clone x)
     | Some n -> init n (fun _ -> clone x)
   in concat enum
@@ -709,9 +709,9 @@ let skip n e =
 let drop_while p e =
   let rec aux () =
     match get e with
-      | Some x when p x -> aux ()
-      | Some x          -> push e x
-      | None            -> ()
+    | Some x when p x -> aux ()
+    | Some x          -> push e x
+    | None            -> ()
   in prefix_action aux e
 
 (*let drop_while p e =
@@ -728,10 +728,10 @@ let drop_while p e =
 let take_while f t =
   let next () =
     let x = t.next () in
-      if f x then x
-      else
-	(push t x;
-	 raise No_more_elements)
+    if f x then x
+    else
+      (push t x;
+       raise No_more_elements)
   in from next
 
 
@@ -750,37 +750,37 @@ let span f t =
     else let x = t.next () in
       if f x then x
       else (push t x;
-           raise No_more_elements)
+        raise No_more_elements)
   and tail () =
     if not !read_from_queue then (*Copy everything to the queue         *)
       begin
-	read_from_queue := true;
-	let rec aux () =
-	  match get t with
-	    | None            -> raise No_more_elements
-	    | Some x when f x -> Queue.push x queue; aux ()
-	    | Some x          -> x
-	in aux ()
+        read_from_queue := true;
+        let rec aux () =
+          match get t with
+          | None            -> raise No_more_elements
+          | Some x when f x -> Queue.push x queue; aux ()
+          | Some x          -> x
+        in aux ()
       end
     else t.next()
   in
-    (from head, from tail)
+  (from head, from tail)
 
 let while_do cont f e =
   let (head, tail) = span cont e in
-    append (f head) tail
+  append (f head) tail
 
 let break test e = span (fun x -> not (test x)) e
 
 let uniq e =
   match peek e with
-      None -> empty ()
-    | Some first ->
-	let prev = ref first in
-	let not_last x = (BatRef.post prev (fun _ -> x)) != x in
-	let result = filter not_last e in
-	push result first;
-	result
+    None -> empty ()
+  | Some first ->
+    let prev = ref first in
+    let not_last x = (BatRef.post prev (fun _ -> x)) != x in
+    let result = filter not_last e in
+    push result first;
+    result
 
 let dup t      = (t, t.clone())
 
@@ -788,10 +788,10 @@ let combine (x,y) =
   if x.fast && y.fast then (*Optimized case*)
     let rec aux (x,y) =
       {
-	count = (fun () -> min (x.count ()) (y.count ())) ;
-	next  = (fun () -> (x.next(), y.next()))          ;
-	clone = (fun () -> aux (x.clone(), y.clone()))    ;
-	fast  = true
+        count = (fun () -> min (x.count ()) (y.count ())) ;
+        next  = (fun () -> (x.next(), y.next()))          ;
+        clone = (fun () -> aux (x.clone(), y.clone()))    ;
+        fast  = true
       }
     in aux (x,y)
   else from (fun () -> (x.next(), y.next()))
@@ -802,28 +802,28 @@ let uncombine e =
   and queue_fst  = Queue.create () in
   let first () = match !advance with
     | `first ->
-	let (x,y) = e.next() in
-	  Queue.push y queue_snd;
-	  x
+      let (x,y) = e.next() in
+      Queue.push y queue_snd;
+      x
     | `second-> (*Second element has been read further*)
-	try  Queue.pop queue_fst
-	with Queue.Empty ->
-	  let (x,y) = e.next()  in
-	    Queue.push y queue_snd;
-	    advance := `first;
-	    x
+      try  Queue.pop queue_fst
+      with Queue.Empty ->
+        let (x,y) = e.next()  in
+        Queue.push y queue_snd;
+        advance := `first;
+        x
   and second() = match !advance with
     | `second ->
-	let (x,y) = e.next() in
-	  Queue.push x queue_fst;
-	  y
+      let (x,y) = e.next() in
+      Queue.push x queue_fst;
+      y
     | `first  -> (*Second element has been read further*)
-	try Queue.pop queue_snd
-	with Queue.Empty ->
-	  let (x,y) = e.next()  in
-	    Queue.push x queue_fst;
-	    advance := `second;
-	    y
+      try Queue.pop queue_snd
+      with Queue.Empty ->
+        let (x,y) = e.next()  in
+        Queue.push x queue_fst;
+        advance := `second;
+        y
   in (from first, from second)
 
 (*$R uncombine
@@ -849,14 +849,14 @@ let group_aux test eq e =
     let grp =
       let last_test = ref None in
       let check_test t =
-	let ok =
-	  match !last_test with
-	  | None -> true
-	  | Some t' -> eq t' t
-	in
-	if ok then
-	  last_test := Some t;
-	ok
+        let ok =
+          match !last_test with
+          | None -> true
+          | Some t' -> eq t' t
+        in
+        if ok then
+          last_test := Some t;
+        ok
       in
       take_while (fun x -> check_test (test x)) e
     in
@@ -889,59 +889,59 @@ let group_by eq e =
 let clump clump_size add get e = (* convert a uchar enum into a ustring enum *)
   let next () =
     match peek e with
-      | None   -> raise No_more_elements
-      | Some x ->
-	  add x;
-	  (try
-	     for i = 2 to clump_size do
-	       add (e.next ())
-	     done
-	   with No_more_elements -> ());
-	  get ()
+    | None   -> raise No_more_elements
+    | Some x ->
+      add x;
+      (try
+        for i = 2 to clump_size do
+          add (e.next ())
+        done
+      with No_more_elements -> ());
+      get ()
   in
   from next
 
 let from_while f =
   from (fun () -> match f () with
-	  | None   -> raise No_more_elements
-	  | Some x -> x )
+    | None   -> raise No_more_elements
+    | Some x -> x )
 
 
 let from_loop data next =
   let r = ref data in
-    from(fun () -> let (a,b) = next !r in
-	   r := b;
-	   a)
+  from(fun () -> let (a,b) = next !r in
+    r := b;
+    a)
 
 let unfold data next =
   from_loop data (fun data -> match next data with
-		    | None   -> raise No_more_elements
-		    | Some x -> x )
+    | None   -> raise No_more_elements
+    | Some x -> x )
 
 let arg_min f enum =
   match get enum with
-      None -> invalid_arg "arg_min: Empty enum"
-    | Some v ->
-	let item, eval = ref v, ref (f v) in
-	iter (fun v -> let fv = f v in
-		       if fv < !eval then (item := v; eval := fv)) enum;
-	!item
+    None -> invalid_arg "arg_min: Empty enum"
+  | Some v ->
+    let item, eval = ref v, ref (f v) in
+    iter (fun v -> let fv = f v in
+      if fv < !eval then (item := v; eval := fv)) enum;
+    !item
 
 let arg_max f enum =
   match get enum with
-      None -> invalid_arg "arg_max: Empty enum"
-    | Some v ->
-	let item, eval = ref v, ref (f v) in
-	iter (fun v -> let fv = f v in
-		       if fv > !eval then (item := v; eval := fv)) enum;
-	!item
+    None -> invalid_arg "arg_max: Empty enum"
+  | Some v ->
+    let item, eval = ref v, ref (f v) in
+    iter (fun v -> let fv = f v in
+      if fv > !eval then (item := v; eval := fv)) enum;
+    !item
 
 (*$T arg_max
    List.enum ["cat"; "canary"; "dog"; "dodo"; "ant"; "cow"] \
       |> arg_max String.length = "canary"
 *) (*$T arg_min
-   -5 -- 5 |> arg_min (fun x -> x * x + 6 * x - 5) = -3
-*)
+     -5 -- 5 |> arg_min (fun x -> x * x + 6 * x - 5) = -3
+   *)
 
 module Infix = struct
   let ( -- ) x y = range x ~until:y
@@ -980,7 +980,7 @@ let append_from a b =
     t.next <- (fun () -> b.next ());
     result
   in
-    suffix_action_without_raise f t
+  suffix_action_without_raise f t
 
 
 
@@ -988,25 +988,25 @@ let merge test a b =
   if   is_empty a    then b
   else if is_empty b then a
   else let next_a = ref (a.next())
-       and next_b = ref (b.next()) in
-  let aux () =
-    let (n, na, nb) =
-    if test !next_a !next_b then
-      try (!next_a, a.next(), !next_b)
-      with No_more_elements -> (*a is exhausted, b probably not*)
-	push b !next_b;
-	push b !next_a;
-	raise No_more_elements
-    else
-      try (!next_b, !next_a, b.next())
-      with No_more_elements -> (*b is exhausted, a probably not*)
-	push a !next_a;
-	push a !next_b;
-	raise No_more_elements
-    in next_a := na;
-       next_b := nb;
-       n
-  in append_from (append_from (from aux) a) b
+  and next_b = ref (b.next()) in
+    let aux () =
+      let (n, na, nb) =
+        if test !next_a !next_b then
+          try (!next_a, a.next(), !next_b)
+          with No_more_elements -> (*a is exhausted, b probably not*)
+            push b !next_b;
+            push b !next_a;
+            raise No_more_elements
+        else
+          try (!next_b, !next_a, b.next())
+          with No_more_elements -> (*b is exhausted, a probably not*)
+            push a !next_a;
+            push a !next_b;
+            raise No_more_elements
+      in next_a := na;
+      next_b := nb;
+      n
+    in append_from (append_from (from aux) a) b
 
 
 (*let mergen test a =
@@ -1021,9 +1021,9 @@ let merge test a b =
 
 let slazy f =
   let constructor = lazy (f ()) in
-    make ~next: (fun () -> (Lazy.force constructor).next ())
-      ~count:   (fun () -> (Lazy.force constructor).count())
-      ~clone:   (fun () -> (Lazy.force constructor).clone())
+  make ~next: (fun () -> (Lazy.force constructor).next ())
+    ~count:   (fun () -> (Lazy.force constructor).count())
+    ~clone:   (fun () -> (Lazy.force constructor).clone())
 
 let delay = slazy
 
@@ -1042,27 +1042,27 @@ let iapp      = append
 let hard_count t =
   if t.fast then
     let result = t.count () in
-      close t;
-      result
+    close t;
+    result
   else (*Counting would cache stuff, which we don't want here.*)
     let length = ref 0 in
-      try while true do ignore (t.next()); incr length done; assert false
-      with No_more_elements -> !length
+    try while true do ignore (t.next()); incr length done; assert false
+    with No_more_elements -> !length
 
 let print ?(first="") ?(last="") ?(sep=" ") print_a  out e =
   BatInnerIO.nwrite out first;
   match get e with
-    | None    -> BatInnerIO.nwrite out last
-    | Some x  ->
-	print_a out x;
-	let rec aux () =
-	  match get e with
-	    | None   -> BatInnerIO.nwrite out last
-	    | Some x ->
-		BatInnerIO.nwrite out sep;
-		print_a out x;
-		aux ()
-	in aux()
+  | None    -> BatInnerIO.nwrite out last
+  | Some x  ->
+    print_a out x;
+    let rec aux () =
+      match get e with
+      | None   -> BatInnerIO.nwrite out last
+      | Some x ->
+        BatInnerIO.nwrite out sep;
+        print_a out x;
+        aux ()
+    in aux()
 
 let t_printer a_printer _paren out e =
   print ~first:"[" ~sep:"; " ~last:"]" (a_printer false) out e
@@ -1070,32 +1070,32 @@ let t_printer a_printer _paren out e =
 let compare cmp t u =
   let rec aux () =
     match (get t, get u) with
-      | (None, None)     -> 0
-      | (None, _)        -> -1
-      | (_, None)        -> 1
-      | (Some x, Some y) -> match cmp x y with
-	  | 0 -> aux ()
-	  | n -> n
+    | (None, None)     -> 0
+    | (None, _)        -> -1
+    | (_, None)        -> 1
+    | (Some x, Some y) -> match cmp x y with
+      | 0 -> aux ()
+      | n -> n
   in aux ()
 
 let ord ord_val t u =
-    let cmp_val = BatOrd.comp ord_val in
-    BatOrd.ord0 (compare cmp_val t u)
+  let cmp_val = BatOrd.comp ord_val in
+  BatOrd.ord0 (compare cmp_val t u)
 
 let equal eq t u =
   let rec aux () =
     match (get t, get u) with
-      | (None, None)     -> true
-      | (Some x, Some y) -> eq x y && aux ()
-      | _ -> false
+    | (None, None)     -> true
+    | (Some x, Some y) -> eq x y && aux ()
+    | _ -> false
   in aux ()
 
 let rec to_object t =
-object
-  method next = t.next ()
-  method count= count t
-  method clone = to_object (clone t)
-end
+  object
+    method next = t.next ()
+    method count= count t
+    method clone = to_object (clone t)
+  end
 
 let rec of_object o =
   make ~next:(fun () -> o#next)
@@ -1166,10 +1166,10 @@ struct
       let li = ref (List.rev acc) in
       from (fun () ->
         match !li with
-          | [] -> raise No_more_elements
-          | hd::tl ->
-            li := tl;
-            hd)
+        | [] -> raise No_more_elements
+        | hd::tl ->
+          li := tl;
+          hd)
     in
     let rec loop acc = match get enum with
       | None -> return (of_acc acc)
@@ -1206,12 +1206,12 @@ module Incubator = struct
 
   let rec ord_elements ord_elt t u =
     match (get t, get u) with
-      | (None, None)     -> Eq
-      | (None, _)        -> Lt
-      | (_, None)        -> Gt
-      | (Some x, Some y) -> match ord_elt x y with
-	  | Eq -> ord_elements ord_elt t u
-	  | (Gt|Lt) as n -> n
+    | (None, None)     -> Eq
+    | (None, _)        -> Lt
+    | (_, None)        -> Gt
+    | (Some x, Some y) -> match ord_elt x y with
+      | Eq -> ord_elements ord_elt t u
+      | (Gt|Lt) as n -> n
 
   let eq eq_elt t1 t2 =
     bin_eq

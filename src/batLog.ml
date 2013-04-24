@@ -22,10 +22,10 @@ open BatInnerIO
 
 (** Flags enable features in logging *)
 type flag = [
-| `Date (** Print the current date as 2011/0628 *)
-| `Time (** Print the current time as 01:23:45 *)
-| `Filepos (** Print the file and position of this log command (UNIMPLEMENTED) *)
-| `Custom of unit -> string (** Print a generated string *)
+  | `Date (** Print the current date as 2011/0628 *)
+  | `Time (** Print the current time as 01:23:45 *)
+  | `Filepos (** Print the file and position of this log command (UNIMPLEMENTED) *)
+  | `Custom of unit -> string (** Print a generated string *)
 ]
 
 let output = ref stderr
@@ -111,26 +111,26 @@ module Make (S:Config) = struct
 end
 
 let make_logger out prefix flags =
-object
-  method log ?fp s =
-    write_flags ?fp out flags;
-    nwrite out prefix;
-    nwrite out s;
-    write out '\n'
-  method logf ?fp fmt =
-    write_flags ?fp out flags;
-    nwrite out prefix;
-    BatPrintf.fprintf out (fmt ^^ "\n")
-  method fatal ?fp s =
-    write_flags ?fp out flags;
-    nwrite out prefix;
-    nwrite out s;
-    write out '\n';
-    exit 1
-  method fatalf ?fp fmt =
-    BatPrintf.kfprintf (fun _ -> exit 1) out ("%a%s" ^^ fmt ^^ "%!")
-      (write_flags ?fp) flags prefix
-end
+  object
+    method log ?fp s =
+      write_flags ?fp out flags;
+      nwrite out prefix;
+      nwrite out s;
+      write out '\n'
+    method logf ?fp fmt =
+      write_flags ?fp out flags;
+      nwrite out prefix;
+      BatPrintf.fprintf out (fmt ^^ "\n")
+    method fatal ?fp s =
+      write_flags ?fp out flags;
+      nwrite out prefix;
+      nwrite out s;
+      write out '\n';
+      exit 1
+    method fatalf ?fp fmt =
+      BatPrintf.kfprintf (fun _ -> exit 1) out ("%a%s" ^^ fmt ^^ "%!")
+        (write_flags ?fp) flags prefix
+  end
 
 (*$= make_logger & ~printer:identity
   "abcLog1\nabc34\n" \

@@ -39,9 +39,9 @@ open Ratio
 
 (** The type of numbers. *)
 type num = Num.num =
-	   | Int of int
-	   | Big_int of big_int
-	   | Ratio of ratio
+  | Int of int
+  | Big_int of big_int
+  | Ratio of ratio
 
 type t = num
 
@@ -88,7 +88,7 @@ val ( ** ) : num -> num -> num
    val ( > ) : num -> num -> bool
    val ( < ) : num -> num -> bool
    val ( = ) : num -> num -> bool
- *)
+*)
 
 val max_num : num -> num -> num
 val min_num : num -> num -> num

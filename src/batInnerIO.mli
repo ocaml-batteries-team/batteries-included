@@ -41,7 +41,7 @@ type 'a output
 
 exception No_more_input
 (** This exception is raised when reading on an input with the [read] or
-  [nread] functions while there is no available token to read. *)
+    [nread] functions while there is no available token to read. *)
 
 exception Input_closed
 (** This exception is raised when reading on a closed input. *)
@@ -51,19 +51,19 @@ exception Output_closed
 
 val read : input -> char
 (** Read a single char from an input or raise [No_more_input] if
-  no input available. *)
+    no input available. *)
 
 val read_all : input -> string
 (** read all the contents of the input until [No_more_input] is raised. *)
 
 val pipe : unit -> input * unit output
 (** Create a pipe between an input and an ouput. Data written from
-  the output can be read from the input. *)
+    the output can be read from the input. *)
 
 val nread : input -> int -> string
 (** [nread i n] reads a string of size up to [n] from an input.
-  The function will raise [No_more_input] if no input is available.
-  It will raise [Invalid_argument] if [n] < 0. *)
+    The function will raise [No_more_input] if no input is available.
+    It will raise [Invalid_argument] if [n] < 0. *)
 
 val really_nread : input -> int -> string
 (** [really_nread i n] reads a string of exactly [n] characters
@@ -72,23 +72,23 @@ val really_nread : input -> int -> string
 
 val input : input -> string -> int -> int -> int
 (** [input i s p l] reads up to [l] characters from the given input, storing
-  them in string [s], starting at character number [p]. It returns the actual
-  number of characters read or raise [No_more_input] if no character can be
-  read. It will raise [Invalid_argument] if [p] and [l] do not designate a
-  valid substring of [s]. *)
+    them in string [s], starting at character number [p]. It returns the actual
+    number of characters read or raise [No_more_input] if no character can be
+    read. It will raise [Invalid_argument] if [p] and [l] do not designate a
+    valid substring of [s]. *)
 
 val really_input : input -> string -> int -> int -> int
 (** [really_input i s p l] reads exactly [l] characters from the given input,
-  storing them in the string [s], starting at position [p]. For consistency with
-  {!BatIO.input} it returns [l]. @raise No_more_input if at [l] characters are
-  not available. @raise Invalid_argument if [p] and [l] do not designate a
-  valid substring of [s]. *)
+    storing them in the string [s], starting at position [p]. For consistency with
+    {!BatIO.input} it returns [l]. @raise No_more_input if at [l] characters are
+    not available. @raise Invalid_argument if [p] and [l] do not designate a
+    valid substring of [s]. *)
 
 val close_in : input -> unit
 (** Close the input. It can no longer be read from. *)
 
 (*val auto_close_in : input -> input
-(** Create a new channel which will close automatically once there is nothing
+  (** Create a new channel which will close automatically once there is nothing
     left to read.*)*)
 
 val write : 'a output -> char -> unit
@@ -99,14 +99,14 @@ val nwrite : 'a output -> string -> unit
 
 val output : 'a output -> string -> int -> int -> int
 (** [output o s p l] writes up to [l] characters from string [s], starting at
-  offset [p]. It returns the number of characters written. It will raise
-  [Invalid_argument] if [p] and [l] do not designate a valid substring of [s]. *)
+    offset [p]. It returns the number of characters written. It will raise
+    [Invalid_argument] if [p] and [l] do not designate a valid substring of [s]. *)
 
 val really_output : 'a output -> string -> int -> int -> int
 (** [really_output o s p l] writes exactly [l] characters from string [s] onto
-  the the output, starting with the character at offset [p]. For consistency with
-  {!BatIO.output} it returns [l]. @raise Invalid_argument if [p] and [l] do not
-  designate a valid substring of [s]. *)
+    the the output, starting with the character at offset [p]. For consistency with
+    {!BatIO.output} it returns [l]. @raise Invalid_argument if [p] and [l] do not
+    designate a valid substring of [s]. *)
 
 val flush : 'a output -> unit
 (** Flush an output. *)
@@ -127,12 +127,12 @@ val input_string : string -> input
 
 val output_string : unit -> string output
 (** Create an output that will write into a string in an efficient way.
-  When closed, the output returns all the data written into it. *)
+    When closed, the output returns all the data written into it. *)
 
 val on_close_out : 'a output -> ('a output -> unit) -> unit
-  (**
-     Register a function to be triggered just before an output is closed.
-  *)
+(**
+   Register a function to be triggered just before an output is closed.
+*)
 
 val create_in :
   read:(unit -> char) ->
@@ -255,7 +255,7 @@ val wrap_out :
 *)
 
 val default_buffer_size : int
-  (**The default size of buffers.*)
+(**The default size of buffers.*)
 
 
 (** {6 Binary files API}
@@ -283,7 +283,7 @@ val read_i16 : input -> int
 
 val read_i32 : input -> int
 (** Read a signed 32-bit integer. @raise Overflow if the
-  read integer cannot be represented as an OCaml 31-bit integer. *)
+    read integer cannot be represented as an OCaml 31-bit integer. *)
 
 val read_real_i32 : input -> int32
 (** Read a signed 32-bit integer as an OCaml int32. *)
@@ -336,7 +336,7 @@ val write_line : 'a output -> string -> unit
 
 external cast_output : 'a output -> unit output = "%identity"
 (** You can safely transform any output to an unit output in a safe way
-  by using this function. *)
+    by using this function. *)
 
 (**
    {6 For compatibility purposes}
@@ -408,10 +408,10 @@ module Input :
 sig
   type t = input
   val compare : input -> input -> int
-    (**A total order on inputs*)
+  (**A total order on inputs*)
 
   val hash    : input -> int
-    (**A hash function for inputs*)
+  (**A hash function for inputs*)
 
   val equal : input -> input -> bool
 end
@@ -420,10 +420,10 @@ module Output :
 sig
   type t = unit output
   val compare : _ output -> _ output -> int
-    (**A total order on outputs*)
+  (**A total order on outputs*)
 
   val hash    : _ output -> int
-    (**A hash function for outputs*)
+  (**A hash function for outputs*)
 
   val equal : _ output -> _ output -> bool
 end
@@ -453,4 +453,4 @@ val lock : BatConcurrent.lock ref
 val get_output_id : _ output -> int
 val get_input_id  : input -> int
 
-(**/**)
+  (**/**)

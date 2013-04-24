@@ -20,7 +20,7 @@
  *)
 
 type 'a numeric =
-{
+  {
     zero : 'a;
     one : 'a;
     neg : 'a -> 'a;
@@ -40,7 +40,7 @@ type 'a numeric =
     to_string : 'a -> string;
     of_float : float -> 'a;
     to_float : 'a -> float
-}
+  }
 
 (**
    The infix operators
@@ -142,7 +142,7 @@ end
 *)
 module type NUMERIC_BASE = sig
   type t
-    (** A type of numbers*)
+  (** A type of numbers*)
 
   val zero : t
   val one  : t
@@ -168,17 +168,17 @@ module type NUMERIC_BASE = sig
 
   val compare : t -> t -> int
 
-    (** {6 Conversions} *)
+  (** {6 Conversions} *)
   val of_int : int -> t
-    (** Convert this number to the closest integer.*)
+  (** Convert this number to the closest integer.*)
 
   val to_int : t -> int
-    (** Convert an integer to the closest element of set [t].*)
+  (** Convert an integer to the closest element of set [t].*)
 
   val of_string : string -> t
-    (** Convert the representation of a number to the corresponding
+  (** Convert the representation of a number to the corresponding
 	number. @raise Invalid_argument if the string does not represent
-        a valid number of type [t]*)
+      a valid number of type [t]*)
 
   val to_string : t -> string
   val of_float  : float -> t
@@ -276,7 +276,7 @@ let generic_pow ~zero ~one ~div_two ~mod_two ~mul:( * ) =
     else if n = one  then a
     else
       let b = pow a (div_two n) in
-	b * b * (if mod_two n = zero then one else a)
+      b * b * (if mod_two n = zero then one else a)
   in pow
 
 exception Overflow

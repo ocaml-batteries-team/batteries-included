@@ -41,7 +41,7 @@ let unique ()     =
 
 (*$Q unique
    Q.unit (fun () -> unique () <> unique ())
- *)
+*)
 
 type ('a, 'b) result =
   | Ok  of 'a
@@ -63,10 +63,10 @@ let forever f x = ignore (while true do f x done)
 let ignore_exceptions f x = try ignore (f x) with _ -> ()
 
 
-(** {6 Operators}*)
+  (** {6 Operators}*)
 
 ##V3## let ( |> ) x f = f x
-##V4## external (|>) : 'a -> ('a -> 'b) -> 'b = "%revapply";;
+##V4## external (|>) : 'a -> ('a -> 'b) -> 'b = "%revapply"
 
 ##V3## let ( @@ ) f x = f x
 ##V4## external ( @@ ) : ('a -> 'b) -> 'a -> 'b = "%apply"
@@ -92,4 +92,3 @@ external identity : 'a -> 'a = "%identity"
 let tap f x = f x; x
 
 let ( |? ) = BatOption.Infix.( |? )
-

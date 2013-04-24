@@ -23,41 +23,41 @@
 module DebugMutex =
 struct
   module M =
-    struct
-      type t =
-	  { mutex : Mutex.t;
-	    id    : int }
+  struct
+    type t =
+      { mutex : Mutex.t;
+        id    : int }
 
-      let unique =
-	let counter = ref 0
-	and mutex   = Mutex.create ()
-	in
-	  Mutex.lock mutex;
-	  let result = !counter in
-	    incr counter;
-	    Mutex.unlock mutex;
-	    result
+    let unique =
+      let counter = ref 0
+      and mutex   = Mutex.create ()
+      in
+      Mutex.lock mutex;
+      let result = !counter in
+      incr counter;
+      Mutex.unlock mutex;
+      result
 
-      let create () =
-	{ mutex = Mutex.create () ;
-	  id    = unique }
+    let create () =
+      { mutex = Mutex.create () ;
+        id    = unique }
 
-      let lock t =
-	Printf.eprintf "[Mutex] Attempting to lock mutex %d\n" t.id;
-	Mutex.lock t.mutex;
-	Printf.eprintf "[Mutex] Mutex %d locked\n" t.id
+    let lock t =
+      Printf.eprintf "[Mutex] Attempting to lock mutex %d\n" t.id;
+      Mutex.lock t.mutex;
+      Printf.eprintf "[Mutex] Mutex %d locked\n" t.id
 
-      let unlock t =
-	Printf.eprintf "[Mutex] Attempting to unlock mutex %d\n" t.id;
-	Mutex.unlock t.mutex;
-	Printf.eprintf "[Mutex] Mutex %d unlocked\n" t.id
+    let unlock t =
+      Printf.eprintf "[Mutex] Attempting to unlock mutex %d\n" t.id;
+      Mutex.unlock t.mutex;
+      Printf.eprintf "[Mutex] Mutex %d unlocked\n" t.id
 
-      let try_lock t =
-	Printf.eprintf "[Mutex] Attempting to trylock mutex %d\n" t.id;
-	let result = Mutex.try_lock t.mutex in
-	  Printf.eprintf "[Mutex] Mutex %d trylocked\n" t.id;
-	  result
-    end
+    let try_lock t =
+      Printf.eprintf "[Mutex] Attempting to trylock mutex %d\n" t.id;
+      let result = Mutex.try_lock t.mutex in
+      Printf.eprintf "[Mutex] Mutex %d trylocked\n" t.id;
+      result
+  end
 
   include M
   module Lock = BatConcurrent.MakeLock(M)

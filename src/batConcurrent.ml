@@ -36,15 +36,15 @@ let compose {execute = a} {execute = b} =
 let create ~enter ~leave =
   {
     execute = (fun f x ->
-		 enter ();
-		 try
-		   let result = f x in
-		     leave ();
-		     result
-		 with e ->
-		   leave ();
-		   raise e
-	      )
+      enter ();
+      try
+        let result = f x in
+        leave ();
+        result
+      with e ->
+        leave ();
+        raise e
+    )
   }
 
 
@@ -85,16 +85,16 @@ struct
     try
       M.lock lock;
       let result = f x in
-	M.unlock lock;
-	result
+      M.unlock lock;
+      result
     with e -> M.unlock lock;
       raise e
 
   let make () =
     let lock = M.create () in
-      base_create
-	~enter:(fun () -> M.lock lock)
-	~leave:(fun () -> M.unlock lock)
+    base_create
+      ~enter:(fun () -> M.lock lock)
+      ~leave:(fun () -> M.unlock lock)
 
 end
 

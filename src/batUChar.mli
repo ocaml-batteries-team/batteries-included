@@ -1,6 +1,6 @@
 (** Unicode characters.
 
-   This module implements Unicode characters.
+    This module implements Unicode characters.
 *)
 
 (* Copyright (C) 2002, 2003, 2004, 2011 Yamagata Yoriyuki. *)
@@ -78,4 +78,4 @@ val of_int : int -> uchar
 
 val unsafe_chr : int -> t
 
-(**/**)
+  (**/**)

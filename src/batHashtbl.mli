@@ -43,41 +43,41 @@ type ('a, 'b) t = ('a, 'b) Hashtbl.t
 
 val create : int -> ('a, 'b) t
 (** [Hashtbl.create n] creates a new, empty hash table, with
-   initial size [n].  For best results, [n] should be on the
-   order of the expected number of elements that will be in
-   the table.  The table grows as needed, so [n] is just an
-   initial guess. *)
+    initial size [n].  For best results, [n] should be on the
+    order of the expected number of elements that will be in
+    the table.  The table grows as needed, so [n] is just an
+    initial guess. *)
 
 val length : ('a, 'b) t -> int
 (** [Hashtbl.length tbl] returns the number of bindings in [tbl].
-   Multiple bindings are counted multiply, so [Hashtbl.length]
-   gives the number of times [Hashtbl.iter] calls its first argument. *)
+    Multiple bindings are counted multiply, so [Hashtbl.length]
+    gives the number of times [Hashtbl.iter] calls its first argument. *)
 
 val is_empty : ('a, 'b) t -> bool
-  (** [Hashtbl.is_empty tbl] returns [true] if there are no bindings
-      in [tbl], false otherwise.*)
+(** [Hashtbl.is_empty tbl] returns [true] if there are no bindings
+    in [tbl], false otherwise.*)
 
 val add : ('a, 'b) t -> 'a -> 'b -> unit
 (** [Hashtbl.add tbl x y] adds a binding of [x] to [y] in table [tbl].
-   Previous bindings for [x] are not removed, but simply
-   hidden. That is, after performing {!Hashtbl.remove}[ tbl x],
-   the previous binding for [x], if any, is restored.
-   (Same behavior as with association lists.) *)
+    Previous bindings for [x] are not removed, but simply
+    hidden. That is, after performing {!Hashtbl.remove}[ tbl x],
+    the previous binding for [x], if any, is restored.
+    (Same behavior as with association lists.) *)
 
 val remove : ('a, 'b) t -> 'a -> unit
 (** [Hashtbl.remove tbl x] removes the current binding of [x] in [tbl],
-   restoring the previous binding if it exists.
-   It does nothing if [x] is not bound in [tbl]. *)
+    restoring the previous binding if it exists.
+    It does nothing if [x] is not bound in [tbl]. *)
 
 val remove_all : ('a,'b) t -> 'a -> unit
-  (** Remove all bindings for the given key *)
+(** Remove all bindings for the given key *)
 
 val replace : ('a, 'b) t -> 'a -> 'b -> unit
 (** [Hashtbl.replace tbl x y] replaces the current binding of [x]
-   in [tbl] by a binding of [x] to [y].  If [x] is unbound in [tbl],
-   a binding of [x] to [y] is added to [tbl].
-   This is functionally equivalent to {!Hashtbl.remove}[ tbl x]
-   followed by {!Hashtbl.add}[ tbl x y]. *)
+    in [tbl] by a binding of [x] to [y].  If [x] is unbound in [tbl],
+    a binding of [x] to [y] is added to [tbl].
+    This is functionally equivalent to {!Hashtbl.remove}[ tbl x]
+    followed by {!Hashtbl.add}[ tbl x y]. *)
 
 val modify : 'a -> ('b -> 'b) -> ('a, 'b) t -> unit
 (** [Hashtbl.modify k f tbl] replaces the first binding for [k] in [tbl]
@@ -106,39 +106,39 @@ val clear : ('a, 'b) t -> unit
 (**{6 Enumerations}*)
 
 val keys : ('a,'b) t -> 'a BatEnum.t
-  (** Return an enumeration of all the keys of a hashtable.
-      If the key is in the Hashtable multiple times, all occurrences
-      will be returned.  *)
+(** Return an enumeration of all the keys of a hashtable.
+    If the key is in the Hashtable multiple times, all occurrences
+    will be returned.  *)
 
 val values : ('a,'b) t -> 'b BatEnum.t
-  (** Return an enumeration of all the values of a hashtable. *)
+(** Return an enumeration of all the values of a hashtable. *)
 
 val enum : ('a, 'b) t -> ('a * 'b) BatEnum.t
-  (** Return an enumeration of (key,value) pairs of a hashtable. *)
+(** Return an enumeration of (key,value) pairs of a hashtable. *)
 
 val of_enum : ('a * 'b) BatEnum.t -> ('a, 'b) t
-  (** Create a hashtable from a (key,value) enumeration. *)
+(** Create a hashtable from a (key,value) enumeration. *)
 
 
 (**{6 Searching}*)
 
 val find : ('a, 'b) t -> 'a -> 'b
 (** [Hashtbl.find tbl x] returns the current binding of [x] in [tbl],
-   or raises [Not_found] if no such binding exists. *)
+    or raises [Not_found] if no such binding exists. *)
 
 val find_all : ('a, 'b) t -> 'a -> 'b list
 (** [Hashtbl.find_all tbl x] returns the list of all data
-   associated with [x] in [tbl].
-   The current binding is returned first, then the previous
-   bindings, in reverse order of introduction in the table. *)
+    associated with [x] in [tbl].
+    The current binding is returned first, then the previous
+    bindings, in reverse order of introduction in the table. *)
 
 val find_default : ('a,'b) t -> 'a -> 'b -> 'b
-  (** Find a binding for the key, and return a default
-      value if not found *)
+(** Find a binding for the key, and return a default
+    value if not found *)
 
 val find_option : ('a,'b) Hashtbl.t -> 'a -> 'b option
-  (** Find a binding for the key, or return [None] if no
-      value is found *)
+(** Find a binding for the key, or return [None] if no
+    value is found *)
 
 val mem : ('a, 'b) t -> 'a -> bool
 (** [Hashtbl.mem tbl x] checks if [x] is bound in [tbl]. *)
@@ -176,14 +176,14 @@ val iter : ('a -> 'b -> unit) -> ('a, 'b) t -> unit
 
 val fold : ('a -> 'b -> 'c -> 'c) -> ('a, 'b) t -> 'c -> 'c
 (** [Hashtbl.fold f tbl init] computes
-   [(f kN dN ... (f k1 d1 (f k0 d0 init))...)],
-   where [k0,k1..kN] are the keys of all bindings in [tbl],
-   and [d0,d1..dN] are the associated values.
-   Each binding is presented exactly once to [f].
-   The order in which the bindings are passed to [f] is unspecified.
-   However, if the table contains several bindings for the same key,
-   they are passed to [f] in reverse order of introduction, that is,
-   the most recent binding is passed first. *)
+    [(f kN dN ... (f k1 d1 (f k0 d0 init))...)],
+    where [k0,k1..kN] are the keys of all bindings in [tbl],
+    and [d0,d1..dN] are the associated values.
+    Each binding is presented exactly once to [f].
+    The order in which the bindings are passed to [f] is unspecified.
+    However, if the table contains several bindings for the same key,
+    they are passed to [f] in reverse order of introduction, that is,
+    the most recent binding is passed first. *)
 
 val map : ('a -> 'b -> 'c) -> ('a,'b) t -> ('a,'c) t
 (** [map f x] creates a new hashtable with the same
@@ -232,24 +232,24 @@ val filter_map_inplace: ('key -> 'a -> 'a option) -> ('key, 'a) t -> unit
 
 val hash : 'a -> int
 (** [Hashtbl.hash x] associates a positive integer to any value of
-   any type. It is guaranteed that
-   if [x = y] or [Pervasives.compare x y = 0], then [hash x = hash y].
-   Moreover, [hash] always terminates, even on cyclic
-   structures. *)
+    any type. It is guaranteed that
+    if [x = y] or [Pervasives.compare x y = 0], then [hash x = hash y].
+    Moreover, [hash] always terminates, even on cyclic
+    structures. *)
 
 external hash_param : int -> int -> 'a -> int = "caml_hash_univ_param" "noalloc"
 (** [Hashtbl.hash_param n m x] computes a hash value for [x], with the
-   same properties as for [hash]. The two extra parameters [n] and
-   [m] give more precise control over hashing. Hashing performs a
-   depth-first, right-to-left traversal of the structure [x], stopping
-   after [n] meaningful nodes were encountered, or [m] nodes,
-   meaningful or not, were encountered. Meaningful nodes are: integers;
-   floating-point numbers; strings; characters; booleans; and constant
-   constructors. Larger values of [m] and [n] means that more
-   nodes are taken into account to compute the final hash
-   value, and therefore collisions are less likely to happen.
-   However, hashing takes longer. The parameters [m] and [n]
-   govern the tradeoff between accuracy and speed. *)
+    same properties as for [hash]. The two extra parameters [n] and
+    [m] give more precise control over hashing. Hashing performs a
+    depth-first, right-to-left traversal of the structure [x], stopping
+    after [n] meaningful nodes were encountered, or [m] nodes,
+    meaningful or not, were encountered. Meaningful nodes are: integers;
+    floating-point numbers; strings; characters; booleans; and constant
+    constructors. Larger values of [m] and [n] means that more
+    nodes are taken into account to compute the final hash
+    value, and therefore collisions are less likely to happen.
+    However, hashing takes longer. The parameters [m] and [n]
+    govern the tradeoff between accuracy and speed. *)
 
 
 (** {6 Boilerplate code}*)
@@ -257,22 +257,22 @@ external hash_param : int -> int -> 'a -> int = "caml_hash_univ_param" "noalloc"
 (** {7 Printing}*)
 
 val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
-                              ('a BatInnerIO.output -> 'b -> unit) ->
-                              ('a BatInnerIO.output -> 'c -> unit) ->
-                              'a BatInnerIO.output -> ('b, 'c) t -> unit
+  ('a BatInnerIO.output -> 'b -> unit) ->
+  ('a BatInnerIO.output -> 'c -> unit) ->
+  'a BatInnerIO.output -> ('b, 'c) t -> unit
 
-     (** {6 Override modules}*)
+(** {6 Override modules}*)
 
-    (**
-       The following modules replace functions defined in {!Hashtbl} with functions
-       behaving slightly differently but having the same name. This is by design:
-       the functions meant to override the corresponding functions of {!Hashtbl}.
-    *)
+(**
+   The following modules replace functions defined in {!Hashtbl} with functions
+   behaving slightly differently but having the same name. This is by design:
+   the functions meant to override the corresponding functions of {!Hashtbl}.
+*)
 
-    (** Operations on {!Hashtbl} without exceptions.
+(** Operations on {!Hashtbl} without exceptions.
 
 	@documents Hashtbl.Exceptionless
-    *)
+*)
 module Exceptionless :
 sig
   val find : ('a, 'b) t -> 'a -> 'b option
@@ -288,15 +288,15 @@ sig
       Equivalent to [Hashtbl.find tbl x]*)
 
   val (<--) : ('a, 'b) t -> 'a * 'b -> unit
-  (** [tbl<--(x, y)] adds a binding of [x] to [y] in table [tbl].
-      Previous bindings for [x] are not removed, but simply
-      hidden. That is, after performing {!Hashtbl.remove}[ tbl x],
-      the previous binding for [x], if any, is restored.
-      (Same behavior as with association lists.)
-      Equivalent to [Hashtbl.add tbl x y]*)
+    (** [tbl<--(x, y)] adds a binding of [x] to [y] in table [tbl].
+        Previous bindings for [x] are not removed, but simply
+        hidden. That is, after performing {!Hashtbl.remove}[ tbl x],
+        the previous binding for [x], if any, is restored.
+        (Same behavior as with association lists.)
+        Equivalent to [Hashtbl.add tbl x y]*)
 end
 
-   (** Operations on {!Hashtbl} with labels.
+(** Operations on {!Hashtbl} with labels.
 
 	This module overrides a number of functions of {!Hashtbl} by
 	functions in which some arguments require labels. These labels are
@@ -304,8 +304,8 @@ end
 	order of arguments to functions. In every case, the behavior of the
 	function is identical to that of the corresponding function of {!Hashtbl}.
 
-       @documents Hashtbl.Labels
-    *)
+    @documents Hashtbl.Labels
+*)
 module Labels :
 sig
   val add : ('a, 'b) t -> key:'a -> data:'b -> unit
@@ -328,101 +328,101 @@ end
 (** {6 Functorial interface} *)
 
 module type HashedType =
-  sig
-    type t
-      (** The type of the hashtable keys. *)
-    val equal : t -> t -> bool
-      (** The equality predicate used to compare keys. *)
-    val hash : t -> int
-      (** A hashing function on keys. It must be such that if two keys are
-          equal according to [equal], then they have identical hash values
-          as computed by [hash].
-          Examples: suitable ([equal], [hash]) pairs for arbitrary key
-          types include
-          ([(=)], {!Hashtbl.hash}) for comparing objects by structure,
-          ([(fun x y -> compare x y = 0)], {!Hashtbl.hash})
-          for comparing objects by structure and handling {!Pervasives.nan}
-          correctly, and
-          ([(==)], {!Hashtbl.hash}) for comparing objects by addresses
-          (e.g. for cyclic keys). *)
-  end
+sig
+  type t
+  (** The type of the hashtable keys. *)
+  val equal : t -> t -> bool
+  (** The equality predicate used to compare keys. *)
+  val hash : t -> int
+    (** A hashing function on keys. It must be such that if two keys are
+        equal according to [equal], then they have identical hash values
+        as computed by [hash].
+        Examples: suitable ([equal], [hash]) pairs for arbitrary key
+        types include
+        ([(=)], {!Hashtbl.hash}) for comparing objects by structure,
+        ([(fun x y -> compare x y = 0)], {!Hashtbl.hash})
+        for comparing objects by structure and handling {!Pervasives.nan}
+        correctly, and
+        ([(==)], {!Hashtbl.hash}) for comparing objects by addresses
+        (e.g. for cyclic keys). *)
+end
 
 (** The output signature of the functor {!Hashtbl.Make}. *)
 module type S =
-  sig
-    type key
-    type 'a t
-    val create : int -> 'a t
-    val length : 'a t -> int
-    val is_empty : 'a t -> bool
-    val clear : 'a t -> unit
-    val copy : 'a t -> 'a t
-    val add : 'a t -> key -> 'a -> unit
-    val remove : 'a t -> key -> unit
-    val remove_all : 'a t -> key -> unit
-    val find : 'a t -> key -> 'a
-    val find_all : 'a t -> key -> 'a list
-    val find_default : 'a t -> key ->  'a -> 'a
-    val find_option : 'a t -> key -> 'a option
-    val replace : 'a t -> key -> 'a -> unit
-    val mem : 'a t -> key -> bool
-    val iter : (key -> 'a -> unit) -> 'a t -> unit
-    val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
-    val map : (key -> 'b -> 'c) -> 'b t -> 'c t
-    val map_inplace : (key -> 'a -> 'a) -> 'a t -> unit
-    val filter : ('a -> bool) -> 'a t -> 'a t
-    val filter_inplace : ('a -> bool) -> 'a t -> unit
-    val filteri : (key -> 'a -> bool) -> 'a t -> 'a t
-    val filteri_inplace : (key -> 'a -> bool) -> 'a t -> unit
-    val filter_map : (key -> 'a -> 'b option) -> 'a t -> 'b t
-    val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
-    val modify : key -> ('a -> 'a) -> 'a t -> unit
-    val modify_def : 'a -> key -> ('a -> 'a) -> 'a t -> unit
-    val modify_opt : key -> ('a option -> 'a option) -> 'a t -> unit
-    val keys : 'a t -> key BatEnum.t
-    val values : 'a t -> 'a BatEnum.t
-    val enum : 'a t -> (key * 'a) BatEnum.t
-    val of_enum : (key * 'a) BatEnum.t -> 'a t
-    val print :  ?first:string -> ?last:string -> ?sep:string ->
-      ('a BatInnerIO.output -> key -> unit) ->
-      ('a BatInnerIO.output -> 'b -> unit) ->
-      'a BatInnerIO.output -> 'b t -> unit
+sig
+  type key
+  type 'a t
+  val create : int -> 'a t
+  val length : 'a t -> int
+  val is_empty : 'a t -> bool
+  val clear : 'a t -> unit
+  val copy : 'a t -> 'a t
+  val add : 'a t -> key -> 'a -> unit
+  val remove : 'a t -> key -> unit
+  val remove_all : 'a t -> key -> unit
+  val find : 'a t -> key -> 'a
+  val find_all : 'a t -> key -> 'a list
+  val find_default : 'a t -> key ->  'a -> 'a
+  val find_option : 'a t -> key -> 'a option
+  val replace : 'a t -> key -> 'a -> unit
+  val mem : 'a t -> key -> bool
+  val iter : (key -> 'a -> unit) -> 'a t -> unit
+  val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+  val map : (key -> 'b -> 'c) -> 'b t -> 'c t
+  val map_inplace : (key -> 'a -> 'a) -> 'a t -> unit
+  val filter : ('a -> bool) -> 'a t -> 'a t
+  val filter_inplace : ('a -> bool) -> 'a t -> unit
+  val filteri : (key -> 'a -> bool) -> 'a t -> 'a t
+  val filteri_inplace : (key -> 'a -> bool) -> 'a t -> unit
+  val filter_map : (key -> 'a -> 'b option) -> 'a t -> 'b t
+  val filter_map_inplace : (key -> 'a -> 'a option) -> 'a t -> unit
+  val modify : key -> ('a -> 'a) -> 'a t -> unit
+  val modify_def : 'a -> key -> ('a -> 'a) -> 'a t -> unit
+  val modify_opt : key -> ('a option -> 'a option) -> 'a t -> unit
+  val keys : 'a t -> key BatEnum.t
+  val values : 'a t -> 'a BatEnum.t
+  val enum : 'a t -> (key * 'a) BatEnum.t
+  val of_enum : (key * 'a) BatEnum.t -> 'a t
+  val print :  ?first:string -> ?last:string -> ?sep:string ->
+    ('a BatInnerIO.output -> key -> unit) ->
+    ('a BatInnerIO.output -> 'b -> unit) ->
+    'a BatInnerIO.output -> 'b t -> unit
 
-    (** {6 Override modules}*)
+  (** {6 Override modules}*)
 
-    (**
-       The following modules replace functions defined in {!Hashtbl} with functions
-       behaving slightly differently but having the same name. This is by design:
-       the functions meant to override the corresponding functions of {!Hashtbl}.
-    *)
+  (**
+     The following modules replace functions defined in {!Hashtbl} with functions
+     behaving slightly differently but having the same name. This is by design:
+     the functions meant to override the corresponding functions of {!Hashtbl}.
+  *)
 
-    (** Operations on {!Hashtbl} without exceptions.
+  (** Operations on {!Hashtbl} without exceptions.
 
 	@documents Hashtbl.S.Exceptionless*)
-    module Exceptionless :
-    sig
-      val find : 'a t -> key -> 'a option
-      val modify : key -> ('a -> 'a) -> 'a t -> (unit, exn) BatPervasives.result
-    end
+  module Exceptionless :
+  sig
+    val find : 'a t -> key -> 'a option
+    val modify : key -> ('a -> 'a) -> 'a t -> (unit, exn) BatPervasives.result
+  end
 
-    (** Infix operators over a {!BatHashtbl} *)
-    module Infix :
-    sig
-      val (-->) : 'a t -> key -> 'a
-      (** [tbl-->x] returns the current binding of [x] in [tbl],
-          or raises [Not_found] if no such binding exists.
-          Equivalent to [Hashtbl.find tbl x]*)
+  (** Infix operators over a {!BatHashtbl} *)
+  module Infix :
+  sig
+    val (-->) : 'a t -> key -> 'a
+    (** [tbl-->x] returns the current binding of [x] in [tbl],
+        or raises [Not_found] if no such binding exists.
+        Equivalent to [Hashtbl.find tbl x]*)
 
-      val (<--) : 'a t -> key * 'a -> unit
+    val (<--) : 'a t -> key * 'a -> unit
       (** [tbl<--(x, y)] adds a binding of [x] to [y] in table [tbl].
           Previous bindings for [x] are not removed, but simply
           hidden. That is, after performing {!Hashtbl.remove}[ tbl x],
           the previous binding for [x], if any, is restored.
           (Same behavior as with association lists.)
           Equivalent to [Hashtbl.add tbl x y]*)
-    end
+  end
 
-    (** Operations on {!Hashtbl} with labels.
+  (** Operations on {!Hashtbl} with labels.
 
 	This module overrides a number of functions of {!Hashtbl} by
 	functions in which some arguments require labels. These labels are
@@ -431,38 +431,38 @@ module type S =
 	function is identical to that of the corresponding function of {!Hashtbl}.
 
 	@documents Hashtbl.S.Labels
-    *)
-    module Labels :
-    sig
-      val add : 'a t -> key:key -> data:'a -> unit
-      val replace : 'a t -> key:key -> data:'a -> unit
-      val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
-      val map : f:(key:key -> data:'a -> 'b) -> 'a t -> 'b t
-      val map_inplace : f:(key:key -> data:'a -> 'a) -> 'a t -> unit
-      val filter : f:('a -> bool) -> 'a t -> 'a t
-      val filter_inplace : f:('a -> bool) -> 'a t -> unit
-      val filteri : f:(key:key -> data:'a -> bool) -> 'a t -> 'a t
-      val filteri_inplace : f:(key:key -> data:'a -> bool) -> 'a t -> unit
-      val filter_map : f:(key:key -> data:'a -> 'b option) -> 'a t -> 'b t
-      val filter_map_inplace : f:(key:key -> data:'a -> 'a option) -> 'a t -> unit
-      val fold : f:(key:key -> data:'a -> 'b -> 'b) -> 'a t -> init:'b -> 'b
-      val modify : key:key -> f:('a -> 'a) -> 'a t -> unit
-      val modify_def : default:'a -> key:key -> f:('a -> 'a) -> 'a t -> unit
-      val modify_opt : key:key -> f:('a option -> 'a option) -> 'a t -> unit
-    end
-
+  *)
+  module Labels :
+  sig
+    val add : 'a t -> key:key -> data:'a -> unit
+    val replace : 'a t -> key:key -> data:'a -> unit
+    val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
+    val map : f:(key:key -> data:'a -> 'b) -> 'a t -> 'b t
+    val map_inplace : f:(key:key -> data:'a -> 'a) -> 'a t -> unit
+    val filter : f:('a -> bool) -> 'a t -> 'a t
+    val filter_inplace : f:('a -> bool) -> 'a t -> unit
+    val filteri : f:(key:key -> data:'a -> bool) -> 'a t -> 'a t
+    val filteri_inplace : f:(key:key -> data:'a -> bool) -> 'a t -> unit
+    val filter_map : f:(key:key -> data:'a -> 'b option) -> 'a t -> 'b t
+    val filter_map_inplace : f:(key:key -> data:'a -> 'a option) -> 'a t -> unit
+    val fold : f:(key:key -> data:'a -> 'b -> 'b) -> 'a t -> init:'b -> 'b
+    val modify : key:key -> f:('a -> 'a) -> 'a t -> unit
+    val modify_def : default:'a -> key:key -> f:('a -> 'a) -> 'a t -> unit
+    val modify_opt : key:key -> f:('a option -> 'a option) -> 'a t -> unit
   end
+
+end
 (** The output signature of the functor {!Hashtbl.Make}. *)
 
 module Make (H : HashedType) : S with type key = H.t
-  (** Functor building an implementation of the hashtable structure.
-      The functor [Hashtbl.Make] returns a structure containing
-      a type [key] of keys and a type ['a t] of hash tables
-      associating data of type ['a] to keys of type [key].
-      The operations perform similarly to those of the generic
-      interface, but use the hashing and equality functions
-      specified in the functor argument [H] instead of generic
-      equality and hashing. *)
+(** Functor building an implementation of the hashtable structure.
+    The functor [Hashtbl.Make] returns a structure containing
+    a type [key] of keys and a type ['a t] of hash tables
+    associating data of type ['a] to keys of type [key].
+    The operations perform similarly to those of the generic
+    interface, but use the hashing and equality functions
+    specified in the functor argument [H] instead of generic
+    equality and hashing. *)
 
 (** Capabilities for hashtables.
 
@@ -523,9 +523,9 @@ sig
   val find_option : ('a, 'b, [>`Read]) t -> 'a -> 'b option
   val mem : ('a, 'b, [>`Read]) t -> 'a -> bool
 
-(*val exists : ('a,'b) t -> 'a -> bool
-  (** [exists h k] returns true is at least one item with key [k] is
-      found in the hashtable. *)*)
+  (*val exists : ('a,'b) t -> 'a -> bool
+    (** [exists h k] returns true is at least one item with key [k] is
+        found in the hashtable. *)*)
 
   (**{6 Traversing}*)
 
@@ -552,9 +552,9 @@ sig
   (** {7 Printing}*)
 
   val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
-                                ('a BatInnerIO.output -> 'b -> unit) ->
-                                ('a BatInnerIO.output -> 'c -> unit) ->
-                                'a BatInnerIO.output -> ('b, 'c, [>`Read]) t -> unit
+    ('a BatInnerIO.output -> 'b -> unit) ->
+    ('a BatInnerIO.output -> 'c -> unit) ->
+    'a BatInnerIO.output -> ('b, 'c, [>`Read]) t -> unit
 
   (** {6 Override modules}*)
 

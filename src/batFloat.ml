@@ -88,13 +88,13 @@ let root m n =
 (* sign bit is top bit, shift all other 63 bits away and test if = one
 
    Negative numbers have this bit set, positive unset.
- *)
+*)
 let signbit x = Int64.shift_right_logical (Int64.bits_of_float x) 63 = Int64.one
 
 (*$T signbit
   signbit (-256.)
   not (signbit 1e50)
- *)
+*)
 
 let copysign x s =
   if signbit s then
@@ -161,11 +161,11 @@ type bounded = t
 let min_num, max_num = neg_infinity, infinity
 
 type fpkind = Pervasives.fpclass =
-	      | FP_normal
-	      | FP_subnormal
-	      | FP_zero
-	      | FP_infinite
-	      | FP_nan
+  | FP_normal
+  | FP_subnormal
+  | FP_zero
+  | FP_infinite
+  | FP_nan
 external classify : float -> fpkind = "caml_classify_float"
 
 let is_nan f = match classify f with
@@ -174,19 +174,19 @@ let is_nan f = match classify f with
 
 let is_special f =
   match classify f with
-    | FP_nan
-    | FP_infinite -> true
-    | FP_normal
-    | FP_subnormal
-    | FP_zero -> false
+  | FP_nan
+  | FP_infinite -> true
+  | FP_normal
+  | FP_subnormal
+  | FP_zero -> false
 
 let is_finite f =
   match classify f with
-    | FP_nan
-    | FP_infinite -> false
-    | FP_normal
-    | FP_subnormal
-    | FP_zero -> true
+  | FP_nan
+  | FP_infinite -> false
+  | FP_normal
+  | FP_subnormal
+  | FP_zero -> true
 
 let infinity     = Pervasives.infinity
 let neg_infinity = Pervasives.neg_infinity
@@ -212,15 +212,15 @@ let print out t = BatInnerIO.nwrite out (to_string t)
 let round_to_string ?(digits=0) x =
   if Pervasives.(<) digits 0 then invalid_arg "Float.round_to_string";
   match classify x with
-    | FP_normal
-    | FP_subnormal
-    | FP_zero ->
-      BatPrintf.sprintf "%.*f" digits x
-    (* we don't call sprintf in the 'special' cases as it seems to
-       behave weirdly in some cases (eg. on Windows, bug #191) *)
-    | FP_infinite ->
-      if x = neg_infinity then "-inf" else "inf"
-    | FP_nan -> "nan"
+  | FP_normal
+  | FP_subnormal
+  | FP_zero ->
+    BatPrintf.sprintf "%.*f" digits x
+  (* we don't call sprintf in the 'special' cases as it seems to
+     behave weirdly in some cases (eg. on Windows, bug #191) *)
+  | FP_infinite ->
+    if x = neg_infinity then "-inf" else "inf"
+  | FP_nan -> "nan"
 
 (*$T round_to_string
    List.mem (round_to_string 3.) ["3."; "3"]
@@ -295,11 +295,11 @@ module Safe_float = struct
   let min_num, max_num = neg_infinity, infinity
 
   type fpkind = Pervasives.fpclass =
-		| FP_normal
-		| FP_subnormal
-		| FP_zero
-		| FP_infinite
-		| FP_nan
+    | FP_normal
+    | FP_subnormal
+    | FP_zero
+    | FP_infinite
+    | FP_nan
   external classify : float -> fpkind = "caml_classify_float"
 
   let is_nan = is_nan

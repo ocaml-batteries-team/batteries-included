@@ -75,30 +75,30 @@ module Concrete = struct
     let hr = match r with Empty -> 0 | Node(_,_,_,_,h) -> h in
     if hl > hr + 2 then begin
       match l with
-          Empty -> invalid_arg "Map.bal"
-        | Node(ll, lv, ld, lr, _) ->
-          if height ll >= height lr then
-            create ll lv ld (create lr x d r)
-          else begin
-            match lr with
-                Empty -> invalid_arg "Map.bal"
-              | Node(lrl, lrv, lrd, lrr, _)->
-                create (create ll lv ld lrl) lrv lrd (create lrr x d r)
-          end
+        Empty -> invalid_arg "Map.bal"
+      | Node(ll, lv, ld, lr, _) ->
+        if height ll >= height lr then
+          create ll lv ld (create lr x d r)
+        else begin
+          match lr with
+            Empty -> invalid_arg "Map.bal"
+          | Node(lrl, lrv, lrd, lrr, _)->
+            create (create ll lv ld lrl) lrv lrd (create lrr x d r)
+        end
     end else if hr > hl + 2 then begin
       match r with
-          Empty -> invalid_arg "Map.bal"
-        | Node(rl, rv, rd, rr, _) ->
-          if height rr >= height rl then
-            create (create l x d rl) rv rd rr
-          else begin
-            match rl with
-                Empty -> invalid_arg "Map.bal"
-              | Node(rll, rlv, rld, rlr, _) ->
-                create (create l x d rll) rlv rld (create rlr rv rd rr)
-          end
+        Empty -> invalid_arg "Map.bal"
+      | Node(rl, rv, rd, rr, _) ->
+        if height rr >= height rl then
+          create (create l x d rl) rv rd rr
+        else begin
+          match rl with
+            Empty -> invalid_arg "Map.bal"
+          | Node(rll, rlv, rld, rlr, _) ->
+            create (create l x d rll) rlv rld (create rlr rv rd rr)
+        end
     end else
-        Node(l, x, d, r, (if hl >= hr then hl + 1 else hr + 1))
+      Node(l, x, d, r, (if hl >= hr then hl + 1 else hr + 1))
 
   let rec min_binding = function
     | Node (Empty, k, v, _, _) -> k, v
@@ -117,11 +117,11 @@ module Concrete = struct
 
   let merge t1 t2 =
     match t1, t2 with
-      | Empty, _ -> t2
-      | _, Empty -> t1
-      | _ ->
-        let k, v = min_binding t2 in
-        bal t1 k v (remove_min_binding t2)
+    | Empty, _ -> t2
+    | _, Empty -> t1
+    | _ ->
+      let k, v = min_binding t2 in
+      bal t1 k v (remove_min_binding t2)
 
   let add x d cmp map =
     let rec loop = function
@@ -156,7 +156,7 @@ module Concrete = struct
       | Node (l, k, v, r, _) ->
         let c = cmp x k in
         if c = 0 then merge l r else
-          if c < 0 then bal (loop l) k v r else bal l k v (loop r)
+        if c < 0 then bal (loop l) k v r else bal l k v (loop r)
       | Empty -> Empty in
     loop map
 
@@ -237,11 +237,11 @@ module Concrete = struct
      that would require to pass a comparison function.  *)
   let rec join l v d r =
     match (l, r) with
-        (Empty, _) -> add_min_binding v d r
-      | (_, Empty) -> add_max_binding v d l
-      | (Node(ll, lv, ld, lr, lh), Node(rl, rv, rd, rr, rh)) ->
-        if lh > rh + 2 then bal ll lv ld (join lr v d r) else
-        if rh > lh + 2 then bal (join l v d rl) rv rd rr else
+      (Empty, _) -> add_min_binding v d r
+    | (_, Empty) -> add_max_binding v d l
+    | (Node(ll, lv, ld, lr, lh), Node(rl, rv, rd, rr, rh)) ->
+      if lh > rh + 2 then bal ll lv ld (join lr v d r) else
+      if rh > lh + 2 then bal (join l v d rl) rv rd rr else
         create l v d r
 
   (* split also is from stdlib 3.12 *)
@@ -261,7 +261,7 @@ module Concrete = struct
     let rec loop acc = function
       | Empty -> acc
       | Node (l, _, _, r, _) ->
-	loop (loop (acc+1) r) l
+        loop (loop (acc+1) r) l
     in
     loop 0 map
 
@@ -340,26 +340,26 @@ module Concrete = struct
     let rec loop = function
       | Empty -> true
       | Node (l, k, v, r, _) ->
-	f k v && loop l && loop r in
+        f k v && loop l && loop r in
     loop map
 
   let exists f map =
     let rec loop = function
       | Empty -> false
       | Node (l, k, v, r, _) ->
-	f k v || loop l || loop r in
+        f k v || loop l || loop r in
     loop map
 
   let partition f cmp map =
     let rec loop m1 m2 = function
       | Empty -> (m1,m2)
       | Node (l, k, v, r, _) ->
-	let m1, m2 = loop m1 m2 l in
-	let m1, m2 = loop m1 m2 r in
-	if f k v then
-	  (add k v cmp m1, m2)
-	else
-	  (m1, add k v cmp m2)
+        let m1, m2 = loop m1 m2 l in
+        let m1, m2 = loop m1 m2 r in
+        if f k v then
+          (add k v cmp m1, m2)
+        else
+          (m1, add k v cmp m2)
     in
     loop empty empty map
 
@@ -417,8 +417,8 @@ module Concrete = struct
         let c = cmp x k in
         if c = 0 then
           match f (Some v) with
-            | None -> merge l r
-            | Some v' -> Node (l, x, v', r, h)
+          | None -> merge l r
+          | Some v' -> Node (l, x, v', r, h)
         else if c < 0 then
           let nl = loop l in
           bal nl k v r
@@ -427,8 +427,8 @@ module Concrete = struct
           bal l k v nr
       | Empty ->
         match f None with
-          | None   -> raise Exit (* fast exit *)
-          | Some d -> Node (Empty, x, d, Empty, 1)
+        | None   -> raise Exit (* fast exit *)
+        | Some d -> Node (Empty, x, d, Empty, 1)
     in
     try loop map with Exit -> map
 
@@ -437,20 +437,20 @@ module Concrete = struct
       | Node (l, k, v, r, _) ->
         let c = cmp x k in
         if c = 0 then v, merge l r else
-          if c < 0 then
-	    let vout, nl = loop l in
-	    vout, bal nl k v r
-	  else
-	    let vout, nr = loop r in
-	    vout, bal l k v nr
+        if c < 0 then
+          let vout, nl = loop l in
+          vout, bal nl k v r
+        else
+          let vout, nr = loop r in
+          vout, bal l k v nr
       | Empty -> raise Not_found in
     loop map
 
   let pop map =
     match map with
-      | Empty -> raise Not_found
-      | Node (l, k, v, r, _) ->
-	(k, v), merge l r
+    | Empty -> raise Not_found
+    | Node (l, k, v, r, _) ->
+      (k, v), merge l r
 
   (* Merge two trees l and r into one.
      All elements of l must precede the elements of r.
@@ -460,8 +460,8 @@ module Concrete = struct
       (Empty, t) -> t
     | (t, Empty) -> t
     | (_, _) ->
-        let (x, d) = min_binding t2 in
-        join t1 x d (remove_min_binding t2)
+      let (x, d) = min_binding t2 in
+      join t1 x d (remove_min_binding t2)
 
   let concat_or_join t1 v d t2 =
     match d with
@@ -471,16 +471,16 @@ module Concrete = struct
   let rec merge f cmp12 s1 s2 =
     let rec loop s1 s2 =
       match (s1, s2) with
-        | (Empty, Empty) -> Empty
-        | (Node (l1, v1, d1, r1, h1), _) when h1 >= height s2 ->
-          let (l2, d2, r2) = split v1 cmp12 s2 in
-          (* TODO force correct evaluation order *)
-          concat_or_join (loop l1 l2) v1 (f v1 (Some d1) d2) (loop r1 r2)
-        | (_, Node (l2, v2, d2, r2, _h2)) ->
-          let (l1, d1, r1) = split v2 cmp12 s1 in
-          concat_or_join (loop l1 l2) v2 (f v2 d1 (Some d2)) (loop r1 r2)
-        | _ ->
-          assert false in
+      | (Empty, Empty) -> Empty
+      | (Node (l1, v1, d1, r1, h1), _) when h1 >= height s2 ->
+        let (l2, d2, r2) = split v1 cmp12 s2 in
+        (* TODO force correct evaluation order *)
+        concat_or_join (loop l1 l2) v1 (f v1 (Some d1) d2) (loop r1 r2)
+      | (_, Node (l2, v2, d2, r2, _h2)) ->
+        let (l1, d1, r1) = split v2 cmp12 s1 in
+        concat_or_join (loop l1 l2) v2 (f v2 d1 (Some d2)) (loop r1 r2)
+      | _ ->
+        assert false in
     loop s1 s2
 
   let rec merge_diverse f cmp1 s1 cmp2 s2 =
@@ -539,8 +539,8 @@ module Concrete = struct
     let first_phase_result =
       foldi (fun k v1 acc ->
         match f k (Some v1) (find_option k cmp2 s2) with
-          | None -> acc
-          | Some v3 -> add k v3 cmp1 acc)
+        | None -> acc
+        | Some v3 -> add k v3 cmp1 acc)
         s1 empty in
     (* the second phase will return the result *)
     foldi (fun k v2 acc ->
@@ -576,8 +576,8 @@ module Concrete = struct
       try
         ignore
           (foldi (fun k _ last_k ->
-            if cmp last_k k >= 0 then raise Exit
-            else k)
+             if cmp last_k k >= 0 then raise Exit
+             else k)
              (remove_min_binding s)
              (fst (min_binding s)));
         true
@@ -626,14 +626,14 @@ module Concrete = struct
     if compatible_cmp cmp1 m1 cmp2 m2 then
       let merge_fun _k a b =
         match a, b with
-          | Some v1, Some v2 -> Some (f v1 v2)
-          | None, _ | _, None -> None in
+        | Some v1, Some v2 -> Some (f v1 v2)
+        | None, _ | _, None -> None in
       merge merge_fun cmp1 m1 m2
     else
       foldi (fun k v1 m ->
         match find_option k cmp2 m2 with
-          | None -> m
-          | Some v2 -> add k (f v1 v2) cmp1 m)
+        | None -> m
+        | Some v2 -> add k (f v1 v2) cmp1 m)
         m1 empty
 
   let compare ckey cval m1 m2 =
@@ -720,18 +720,18 @@ module Make(Ord : OrderedType) =
 struct
   include Map.Make(Ord)
 
-      (* We break the abstraction of stdlib's Map module by exposing
-         it's underlyding datatype, which is exactly ((key, 'a)
-         Concrete.map). We therefore have O(1) conversion to and from
-         Concrete, which allow us to add new features to the Map
-         module while reusing stdlib's implementation (and, in fact,
-         compiled code) for the old ones.
+  (* We break the abstraction of stdlib's Map module by exposing
+     it's underlyding datatype, which is exactly ((key, 'a)
+     Concrete.map). We therefore have O(1) conversion to and from
+     Concrete, which allow us to add new features to the Map
+     module while reusing stdlib's implementation (and, in fact,
+     compiled code) for the old ones.
 
-         If this was ever to be a problem, we could desynchronize our
-         Map implementation from stdlib's, simply reusing Concrete
-         implementations everywhere. Breaking this abstraction is not
-         our fate, it's only a convenient choice for now.
-      *)
+     If this was ever to be a problem, we could desynchronize our
+     Map implementation from stdlib's, simply reusing Concrete
+     implementations everywhere. Breaking this abstraction is not
+     our fate, it's only a convenient choice for now.
+  *)
   type 'a implementation = (key, 'a) Concrete.map
 
   external t_of_impl: 'a implementation -> 'a t = "%identity"
@@ -838,7 +838,7 @@ end
 
 (**
  * PMap - Polymorphic maps
- *)
+*)
 
 type ('k, 'v) t = ('k, 'v) Concrete.map
 
@@ -936,7 +936,7 @@ let modify_opt x f m = Concrete.modify_opt x f Pervasives.compare m
   empty |> add 1 true |> \
   modify_opt 1 (function Some true -> None | _ -> assert false) |> \
   mem 1 |> not
- *)
+*)
 
 let extract x m = Concrete.extract x Pervasives.compare m
 
@@ -987,22 +987,22 @@ end
 include Infix
 
 module PMap = struct (*$< PMap *)
-(**
-   * PMap - Polymorphic maps
- *)
+  (**
+     * PMap - Polymorphic maps
+  *)
 
   type ('k, 'v) t =
-      {
-        cmp : 'k -> 'k -> int;
-        map : ('k, 'v) Concrete.map;
-      }
+    {
+      cmp : 'k -> 'k -> int;
+      map : ('k, 'v) Concrete.map;
+    }
 
   let create cmp = { cmp = cmp; map = Concrete.empty }
   let get_cmp {cmp} = cmp
 
-(*$T get_cmp
-  get_cmp (create Int.compare) == Int.compare
-*)
+  (*$T get_cmp
+    get_cmp (create Int.compare) == Int.compare
+  *)
 
   let empty = { cmp = Pervasives.compare; map = Concrete.empty }
   let get_cmp {cmp; _} = cmp
@@ -1014,30 +1014,30 @@ module PMap = struct (*$< PMap *)
   let find x m =
     Concrete.find x m.cmp m.map
 
-(*$T add; find
-  empty |> add 1 true |> add 2 false |> find 1
-  empty |> add 1 true |> add 2 false |> find 2 |> not
-  create BatInt.compare |> add 1 true |> add 2 false |> find 1
-  create BatInt.compare |> add 1 true |> add 2 false |> find 2 |> not
-  empty |> add 2 'y' |> add 1 'x' |> find 1 = 'x'
-  empty |> add 2 'y' |> add 1 'x' |> find 2 = 'y'
- *)
+  (*$T add; find
+    empty |> add 1 true |> add 2 false |> find 1
+    empty |> add 1 true |> add 2 false |> find 2 |> not
+    create BatInt.compare |> add 1 true |> add 2 false |> find 1
+    create BatInt.compare |> add 1 true |> add 2 false |> find 2 |> not
+    empty |> add 2 'y' |> add 1 'x' |> find 1 = 'x'
+    empty |> add 2 'y' |> add 1 'x' |> find 2 = 'y'
+  *)
 
-(*$Q find ; add
-  (Q.list Q.small_int) (fun xs -> \
-  let of_list xs y m0 = List.fold_left (fun acc x -> add x y acc) m0 xs in \
-  of_list (List.filter ((<>) 100) xs) false (singleton 100 true) |> find 100)
- *)
+  (*$Q find ; add
+    (Q.list Q.small_int) (fun xs -> \
+    let of_list xs y m0 = List.fold_left (fun acc x -> add x y acc) m0 xs in \
+    of_list (List.filter ((<>) 100) xs) false (singleton 100 true) |> find 100)
+  *)
 
 
   let remove x m =
     { m with map = Concrete.remove x m.cmp m.map }
 
-(*$Q add ; remove
-  (Q.list Q.small_int) (fun xs -> \
-  let of_list xs y m0 = List.fold_left (fun acc x -> add x y acc) m0 xs in \
-  List.fold_left (fun acc x -> remove x acc) (of_list xs true empty) xs |> is_empty)
- *)
+  (*$Q add ; remove
+    (Q.list Q.small_int) (fun xs -> \
+    let of_list xs y m0 = List.fold_left (fun acc x -> add x y acc) m0 xs in \
+    List.fold_left (fun acc x -> remove x acc) (of_list xs true empty) xs |> is_empty)
+  *)
 
   let mem x m =
     Concrete.mem x m.cmp m.map
@@ -1057,20 +1057,20 @@ module PMap = struct (*$< PMap *)
   let foldi f m acc =
     Concrete.foldi f m.map acc
 
-(*$Q foldi
-  (Q.list Q.small_int) (fun xs -> \
-  let m = List.fold_left (fun acc x -> add x true acc) (create Int.compare) xs in \
-  foldi (fun x _y acc -> x :: acc) m [] |> List.rev = List.sort_unique Int.compare xs)
- *)
+  (*$Q foldi
+    (Q.list Q.small_int) (fun xs -> \
+    let m = List.fold_left (fun acc x -> add x true acc) (create Int.compare) xs in \
+    foldi (fun x _y acc -> x :: acc) m [] |> List.rev = List.sort_unique Int.compare xs)
+  *)
 
   let enum t = Concrete.enum t.map
 
-(*$Q keys
-  (Q.list Q.small_int) (fun xs -> \
-  List.fold_left (fun acc x -> add x true acc) \
-  (create Int.compare) xs |> keys |> List.of_enum \
-  = List.sort_unique Int.compare xs)
- *)
+  (*$Q keys
+    (Q.list Q.small_int) (fun xs -> \
+    List.fold_left (fun acc x -> add x true acc) \
+    (create Int.compare) xs |> keys |> List.of_enum \
+    = List.sort_unique Int.compare xs)
+  *)
 
   let backwards t = Concrete.backwards t.map
 

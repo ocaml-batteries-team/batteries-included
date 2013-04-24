@@ -21,33 +21,33 @@
 (** Unifiable references using destructive union-find *)
 
 type 'a uref
-  (** A [t uref] is a reference to a cell that contains a
-      value of type [t]. *)
+(** A [t uref] is a reference to a cell that contains a
+    value of type [t]. *)
 
 type 'a t = 'a uref
-  (** A synonym for convenience *)
+(** A synonym for convenience *)
 
 val uref : 'a -> 'a uref
-  (** [uref x] allocates a new uref and places the value [x] in it. *)
+(** [uref x] allocates a new uref and places the value [x] in it. *)
 
 val uget : 'a uref -> 'a
-  (** [uget ur] returns the value stored in the uref [ur]. *)
+(** [uget ur] returns the value stored in the uref [ur]. *)
 
 val uset : 'a uref -> 'a -> unit
-  (** [uset ur x] updates the contents of [ur] with [x]. *)
+(** [uset ur x] updates the contents of [ur] with [x]. *)
 
 val unite : ?sel:('a -> 'a -> 'a) -> 'a uref -> 'a uref -> unit
-  (** [unite ~sel ur1 ur2] unites the urefs [ur1] and [ur2], selecting
-      the result of [sel (uget ur1) (uget ur2)] for the contents of
-      the resulting united uref. After this operation, [uget ur1 ==
-      uget ur2]. By default, [sel] is [fun x _y -> x]. *)
+(** [unite ~sel ur1 ur2] unites the urefs [ur1] and [ur2], selecting
+    the result of [sel (uget ur1) (uget ur2)] for the contents of
+    the resulting united uref. After this operation, [uget ur1 ==
+    uget ur2]. By default, [sel] is [fun x _y -> x]. *)
 
 val equal : 'a uref -> 'a uref -> bool
-  (** [equal ur1 ur2] returns [true] iff [ur1] and [ur2] are equal
-      urefs, either because they are physically the same or because
-      they have been {!unite}d. *)
+(** [equal ur1 ur2] returns [true] iff [ur1] and [ur2] are equal
+    urefs, either because they are physically the same or because
+    they have been {!unite}d. *)
 
 (** {6 Printing} *)
 
 val print : ('a, 'b) BatIO.printer -> ('a uref, 'b) BatIO.printer
-(** Print the uref. *)
+    (** Print the uref. *)

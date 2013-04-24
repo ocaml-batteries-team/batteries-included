@@ -53,11 +53,11 @@ type t =
     Empty                             (**An empty rope*)
   | Concat of t * int * t * int * int (**[Concat l ls r rs h] is the concatenation of
                                          ropes [l] and [r], where [ls] is the total
-  					 length of [l], [rs] is the length of [r]
-  					 and [h] is the height of the node in the
-  					 tree, used for rebalancing. *)
+										 length of [l], [rs] is the length of [r]
+										 and [h] is the height of the node in the
+										 tree, used for rebalancing. *)
   | Leaf of int * UTF8.t              (**[Leaf l t] is string [t] with length [l],
-  					 measured in number of Unicode characters.*)
+										 measured in number of Unicode characters.*)
 
 type forest_element = { mutable c : t; mutable len : int }
 
@@ -120,8 +120,8 @@ let concat_fast l r = match l with
   | Empty -> r
   | Leaf _ | Concat(_,_,_,_,_) ->
     match r with
-      | Empty -> l
-      | Leaf _ | Concat(_,_,_,_,_) -> make_concat l r
+    | Empty -> l
+    | Leaf _ | Concat(_,_,_,_,_) -> make_concat l r
 
 (* based on Hans-J. Boehm's *)
 let add_forest forest rope len =
@@ -161,11 +161,11 @@ let rec balance_insert rope len forest = match rope with
 
 let balance r =
   match r with
-    | Empty | Leaf _ -> r
-    | _ ->
-      let forest = Array.init max_height (fun _ -> {c = Empty; len = 0}) in
-      balance_insert r (length r) forest;
-      concat_forest forest
+  | Empty | Leaf _ -> r
+  | _ ->
+    let forest = Array.init max_height (fun _ -> {c = Empty; len = 0}) in
+    balance_insert r (length r) forest;
+    concat_forest forest
 
 let bal_if_needed l r =
   let r = make_concat l r in
@@ -175,18 +175,18 @@ let concat_str l = function
   | Empty | Concat(_,_,_,_,_) -> invalid_arg "concat_str"
   | Leaf (lenr, rs) as r ->
     match l with
-      | Empty -> r
-      | Leaf (lenl, ls) ->
-        let slen = lenr + lenl in
-        if slen <= leaf_size then Leaf ((lenl+lenr),(str_append ls rs))
-        else make_concat l r (* height = 1 *)
-      | Concat(ll, cll, Leaf (lenlr ,lrs), clr, h) ->
-        let slen = clr + lenr in
-        if clr + lenr <= leaf_size then
-          Concat(ll, cll, Leaf ((lenlr + lenr),(str_append lrs rs)), slen, h)
-        else
-          bal_if_needed l r
-      | _ -> bal_if_needed l r
+    | Empty -> r
+    | Leaf (lenl, ls) ->
+      let slen = lenr + lenl in
+      if slen <= leaf_size then Leaf ((lenl+lenr),(str_append ls rs))
+      else make_concat l r (* height = 1 *)
+    | Concat(ll, cll, Leaf (lenlr ,lrs), clr, h) ->
+      let slen = clr + lenr in
+      if clr + lenr <= leaf_size then
+        Concat(ll, cll, Leaf ((lenlr + lenr),(str_append lrs rs)), slen, h)
+      else
+        bal_if_needed l r
+    | _ -> bal_if_needed l r
 
 let append_char c r = concat_str r (Leaf (1, (UTF8.make 1 c)))
 
@@ -195,14 +195,14 @@ let append l = function
   | Leaf _ as r -> concat_str l r
   | Concat(Leaf (lenrl,rls),rlc,rr,rc,h) as r ->
     (match l with
-        Empty -> r
-      | Concat(_,_,_,_,_) -> bal_if_needed l r
-      | Leaf (lenl, ls) ->
-        let slen = rlc + lenl in
-        if slen <= leaf_size then
-          Concat(Leaf((lenrl+lenl),(str_append ls rls)), slen, rr, rc, h)
-        else
-          bal_if_needed l r)
+       Empty -> r
+     | Concat(_,_,_,_,_) -> bal_if_needed l r
+     | Leaf (lenl, ls) ->
+       let slen = rlc + lenl in
+       if slen <= leaf_size then
+         Concat(Leaf((lenrl+lenl),(str_append ls rls)), slen, rr, rc, h)
+       else
+         bal_if_needed l r)
   | r -> (match l with Empty -> r | _ -> bal_if_needed l r)
 
 let ( ^^^ ) = append
@@ -211,7 +211,7 @@ let prepend_char c r = append (Leaf (1,(UTF8.make 1 c))) r
 
 let get r i =
   let rec aux i = function
-  Empty -> raise Out_of_bounds
+      Empty -> raise Out_of_bounds
     | Leaf (lens, s) ->
       if i >= 0 && i < lens then UTF8.get s i
       else raise Out_of_bounds
@@ -230,10 +230,10 @@ let copy_set us cpos c =
 
 let set r i v =
   let rec aux i = function
-  Empty -> raise Out_of_bounds
+      Empty -> raise Out_of_bounds
     | Leaf (lens, s) ->
       if i >= 0 && i < lens then
-  	let s = copy_set s i v in
+        let s = copy_set s i v in
         Leaf (lens, s)
       else raise Out_of_bounds
     | Concat(l, cl, r, cr, _) ->
@@ -280,13 +280,13 @@ module Iter = struct
     if UTF8.ByteIndex.at_end iter.leaf iter.idx then
       (* We are at the end of the current leaf, find another one: *)
       match next_leaf iter.rest with
-        | None ->
-          None
-        | Some(leaf, rest) ->
-          iter.leaf <- leaf;
-          iter.idx <- UTF8.ByteIndex.next leaf UTF8.ByteIndex.first;
-          iter.rest <- rest;
-          Some(UTF8.ByteIndex.look leaf UTF8.ByteIndex.first)
+      | None ->
+        None
+      | Some(leaf, rest) ->
+        iter.leaf <- leaf;
+        iter.idx <- UTF8.ByteIndex.next leaf UTF8.ByteIndex.first;
+        iter.rest <- rest;
+        Some(UTF8.ByteIndex.look leaf UTF8.ByteIndex.first)
     else begin
       (* Just advance in the current leaf: *)
       let ch = UTF8.ByteIndex.look iter.leaf iter.idx in
@@ -298,14 +298,14 @@ module Iter = struct
   let rec next_map f iter =
     if UTF8.ByteIndex.at_end iter.leaf iter.idx then
       match next_leaf iter.rest with
-        | None ->
-          None
-        | Some(leaf, rest) ->
-          let leaf = f leaf in
-          iter.leaf <- leaf;
-          iter.idx <- UTF8.ByteIndex.next leaf UTF8.ByteIndex.first;
-          iter.rest <- rest;
-          Some(UTF8.ByteIndex.look leaf UTF8.ByteIndex.first)
+      | None ->
+        None
+      | Some(leaf, rest) ->
+        let leaf = f leaf in
+        iter.leaf <- leaf;
+        iter.idx <- UTF8.ByteIndex.next leaf UTF8.ByteIndex.first;
+        iter.rest <- rest;
+        Some(UTF8.ByteIndex.look leaf UTF8.ByteIndex.first)
     else begin
       let ch = UTF8.ByteIndex.look iter.leaf iter.idx in
       iter.idx <- UTF8.ByteIndex.next iter.leaf iter.idx;
@@ -327,13 +327,13 @@ module Iter = struct
   let prev iter =
     if iter.idx = UTF8.ByteIndex.first then
       match prev_leaf iter.rest with
-        | None ->
-          None
-        | Some(leaf, rest) ->
-          iter.leaf <- leaf;
-          iter.idx <- UTF8.ByteIndex.last leaf;
-          iter.rest <- rest;
-          Some(UTF8.ByteIndex.look leaf iter.idx)
+      | None ->
+        None
+      | Some(leaf, rest) ->
+        iter.leaf <- leaf;
+        iter.idx <- UTF8.ByteIndex.last leaf;
+        iter.rest <- rest;
+        Some(UTF8.ByteIndex.look leaf iter.idx)
     else begin
       iter.idx <- UTF8.ByteIndex.prev iter.leaf iter.idx;
       Some(UTF8.ByteIndex.look iter.leaf iter.idx)
@@ -345,13 +345,13 @@ let compare a b =
   let ia = Iter.make a and ib = Iter.make b in
   let rec loop _ =
     match Iter.next ia, Iter.next ib with
-      | None, None -> 0
-      | None, _ -> -1
-      | _, None -> 1
-      | Some ca, Some cb ->
-        match UChar.compare ca cb with
-          | 0 -> loop ()
-          | n -> n
+    | None, None -> 0
+    | None, _ -> -1
+    | _, None -> 1
+    | Some ca, Some cb ->
+      match UChar.compare ca cb with
+      | 0 -> loop ()
+      | n -> n
   in
   loop ()
 
@@ -379,18 +379,18 @@ let of_ustring ustr =
         (* We have enough unicode characters for this slice, extract
            it and add a leaf to the rope: *)
         loop (add_slice rope start_byte_idx current_byte_idx slice_size)
-	  current_byte_idx current_byte_idx 0
+          current_byte_idx current_byte_idx 0
       else
-	let next_byte_idx = UTF8.next ustr current_byte_idx in
+        let next_byte_idx = UTF8.next ustr current_byte_idx in
         loop rope start_byte_idx next_byte_idx (slice_size + 1)
     end
   and add_slice rope start_byte_idx end_byte_idx slice_size =
     append rope (Leaf(slice_size,
-                      (* This is correct, we are just extracting a
-                         sequence of well-formed UTF-8 encoded unicode
-                         characters: *)
-                      UTF8.of_string_unsafe
-                        (String.sub bytes start_byte_idx (end_byte_idx - start_byte_idx))))
+        (* This is correct, we are just extracting a
+           sequence of well-formed UTF-8 encoded unicode
+           characters: *)
+        UTF8.of_string_unsafe
+          (String.sub bytes start_byte_idx (end_byte_idx - start_byte_idx))))
   in
   loop Empty 0 0 0
 
@@ -420,7 +420,7 @@ let of_char c = of_uchar (UChar.of_char c)
 
 let sub r start len =
   let rec aux start len = function
-  Empty -> if start <> 0 || len <> 0 then raise Out_of_bounds else Empty
+      Empty -> if start <> 0 || len <> 0 then raise Out_of_bounds else Empty
     | Leaf (lens, s) ->
       if len < 0 || start < 0 || start + len > lens then
         raise Out_of_bounds
@@ -444,7 +444,7 @@ let sub r start len =
           if upto = cl + cr then r
           else if upto < cl then Empty
           else aux 0 (upto - cl) r
-          else aux (start - cl) len r
+        else aux (start - cl) len r
       in
       append left right
   in aux start len r
@@ -525,7 +525,7 @@ let rec range_iteri f ?(base = 0) start len = function
     if start >= 0 && len >= 0 && n <= lens then
       for i = start to n - 1 do
         f (base+i) (UTF8.look s (UTF8.nth s i))
-  	  (*TODO: use enum to iterate efficiently*)
+        (*TODO: use enum to iterate efficiently*)
       done
     else raise Out_of_bounds
   | Concat(l,cl,r,cr,_) ->
@@ -584,10 +584,10 @@ let index r u =
   let i = Iter.make r in
   let rec loop n =
     match Iter.next i with
-      | None  -> raise Not_found
-      | Some u' ->
-        if UChar.eq u u' then n else
-	  loop (n + 1)
+    | None  -> raise Not_found
+    | Some u' ->
+      if UChar.eq u u' then n else
+        loop (n + 1)
   in
   loop 0
 
@@ -608,14 +608,14 @@ let index_from r base item =
             |> is_exn Not_found)
   Result.(catch (index_from (of_string "batteries") 20) (BatUChar.of_char 't') \
             |> is_exn Out_of_bounds)
- *)
+*)
 
 let rindex r char =
   Return.with_label (fun label ->
     let index_aux i us =
       try
-  	let p = UTF8.rindex us char in
-  	Return.return label (p+i)
+        let p = UTF8.rindex us char in
+        Return.return label (p+i)
       with Not_found -> ()
     in
     bulk_iteri_backwards ~top:(length r) index_aux r;
@@ -647,11 +647,11 @@ let starts_with r prefix =
   let ir = Iter.make r and iprefix = Iter.make prefix in
   let rec loop _ =
     match Iter.next iprefix with
-      | None -> true
-      | Some ch1 ->
-        match Iter.next ir with
-          | None -> false
-          | Some ch2 -> UChar.compare ch1 ch2 = 0 && loop ()
+    | None -> true
+    | Some ch1 ->
+      match Iter.next ir with
+      | None -> false
+      | Some ch2 -> UChar.compare ch1 ch2 = 0 && loop ()
   in
   loop ()
 
@@ -659,11 +659,11 @@ let ends_with r suffix =
   let ir = Iter.make r and isuffix = Iter.make suffix in
   let rec loop _ =
     match Iter.prev isuffix with
-      | None -> true
-      | Some ch1 ->
-        match Iter.prev ir with
-          | None -> false
-          | Some ch2 -> UChar.compare ch1 ch2 = 0 && loop ()
+    | None -> true
+    | Some ch1 ->
+      match Iter.prev ir with
+      | None -> false
+      | Some ch2 -> UChar.compare ch1 ch2 = 0 && loop ()
   in
   loop ()
 
@@ -723,20 +723,20 @@ let strip_default_chars = List.map UChar.of_char [' ';'\t';'\r';'\n']
 let strip ?(chars=strip_default_chars) rope =
   let rec strip_left n iter =
     match Iter.next iter with
-      | None ->
-        Empty
-      | Some ch when List.mem ch chars ->
-        strip_left (n + 1) iter
-      | _ ->
-        sub rope n (strip_right (length rope - n) (Iter.make rope))
+    | None ->
+      Empty
+    | Some ch when List.mem ch chars ->
+      strip_left (n + 1) iter
+    | _ ->
+      sub rope n (strip_right (length rope - n) (Iter.make rope))
   and strip_right n iter =
     match Iter.prev iter with
-      | None ->
-        assert false
-      | Some ch when List.mem ch chars ->
-        strip_right (n - 1) iter
-      | _ ->
-        n
+    | None ->
+      assert false
+    | Some ch when List.mem ch chars ->
+      strip_right (n - 1) iter
+    | _ ->
+      n
   in
   strip_left 0 (Iter.make rope)
 
@@ -753,18 +753,18 @@ let of_list l =
   let get_leaf () =
     Return.label
       (fun label ->
-	let b = Buffer.create 256 in
-	for i = 1 to 256 do
-	  match !e with
-	      []   -> Return.return label (false, UTF8.of_string_unsafe (Buffer.contents b))
-	    | c :: rest  -> Buffer.add_string b (UTF8.to_string_unsafe (UTF8.of_char c)); e := rest
-	done;
-	(true, UTF8.of_string_unsafe (Buffer.contents b) ))
+        let b = Buffer.create 256 in
+        for i = 1 to 256 do
+          match !e with
+            []   -> Return.return label (false, UTF8.of_string_unsafe (Buffer.contents b))
+          | c :: rest  -> Buffer.add_string b (UTF8.to_string_unsafe (UTF8.of_char c)); e := rest
+        done;
+        (true, UTF8.of_string_unsafe (Buffer.contents b) ))
   in
   let rec loop r = (* concat 256 characters at a time *)
     match get_leaf () with
-	(true,  us) -> loop     (append r (of_ustring us))
-      | (false, us) -> append r (of_ustring us)
+      (true,  us) -> loop     (append r (of_ustring us))
+    | (false, us) -> append r (of_ustring us)
   in
   loop Empty
 
@@ -781,7 +781,7 @@ let blit rsrc offsrc rdst offdst len =
 
 
 let list_reduce f = function [] -> invalid_arg "Empty List"
-  | h::t -> List.fold_left f h t
+                           | h::t -> List.fold_left f h t
 
 let concat sep r_list =
   if r_list = [] then empty else
@@ -789,7 +789,7 @@ let concat sep r_list =
 
 (**T concat
    Text.concat (Text.of_string "xyz") [] = Text.empty
-**)
+ **)
 
 let escaped r = bulk_map UTF8.escaped r
 
@@ -827,23 +827,23 @@ let rsplit (r:t) sep =
 let nsplit str sep =
   if is_empty str then []
   else let seplen = length sep in
-       let rec aux acc ofs = match
-  	   try Some(rfind_from str ofs sep)
-  	   with Not_found -> None
-         with
-	   | Some idx ->
-  	     (* at this point, [idx] to [idx + seplen - 1] contains the
-  		separator, which is useless to us on the other hand,
-  		[idx + seplen] to [ofs] contains what's just after the
-  		separator, which is what we want*)
-  	     let end_of_occurrence = idx + seplen in
-  	     if end_of_occurrence >= ofs then
-	       aux acc (idx - 1) (*We may be at the end of the string*)
-  	     else
-	       aux ( sub str end_of_occurrence ( ofs - end_of_occurrence + 1) :: acc ) (idx - 1)
-  	   | None -> (sub str 0 (ofs + 1))::acc
-       in
-       aux [] (length str - 1 )
+    let rec aux acc ofs = match
+      try Some(rfind_from str ofs sep)
+      with Not_found -> None
+    with
+    | Some idx ->
+      (* at this point, [idx] to [idx + seplen - 1] contains the
+			separator, which is useless to us on the other hand,
+			[idx + seplen] to [ofs] contains what's just after the
+			separator, which is what we want*)
+      let end_of_occurrence = idx + seplen in
+      if end_of_occurrence >= ofs then
+        aux acc (idx - 1) (*We may be at the end of the string*)
+      else
+        aux ( sub str end_of_occurrence ( ofs - end_of_occurrence + 1) :: acc ) (idx - 1)
+    | None -> (sub str 0 (ofs + 1))::acc
+    in
+    aux [] (length str - 1 )
 (*$T nsplit
   nsplit (of_string "OCaml, the coolest FP language.") (of_char ' ') = \
     List.map of_string ["OCaml,"; "the"; "coolest"; "FP"; "language."]
@@ -858,9 +858,9 @@ let join = concat
 let slice ?(first=0) ?(last=max_int) s =
   let clip _min _max x = int_max _min (int_min _max x) in
   let i = clip 0 (length s)
-    (if (first<0) then (length s) + first else first)
+      (if (first<0) then (length s) + first else first)
   and j = clip 0 (length s)
-    (if (last<0) then (length s) + last else last)
+      (if (last<0) then (length s) + last else last)
   in
   if i>=j || i=length s then
     Empty
@@ -872,7 +872,7 @@ let replace ~str ~sub ~by =
   try
     let i = find str sub in
     (true, append (slice ~last:i str)
-      (append by (slice ~first:(i+(length sub)) str)))
+       (append by (slice ~first:(i+(length sub)) str)))
   with Not_found -> (false, str)
 
 
@@ -890,7 +890,7 @@ open BatIO
 
 (** {7 Reading unicode}
 
-All these functions assume that the input is UTF-8 encoded.
+    All these functions assume that the input is UTF-8 encoded.
 *)
 
 (*val read_uchar: input -> UChar.t*)
@@ -936,7 +936,7 @@ let lines_of i = BatIO.make_enum read_line i
 
 (** {7 Writing unicode}
 
-All these functions assume that the output is UTF-8 encoded.*)
+    All these functions assume that the output is UTF-8 encoded.*)
 
 let write_string o c = write_string o c
 
