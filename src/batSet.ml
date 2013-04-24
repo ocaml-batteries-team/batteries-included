@@ -132,6 +132,12 @@ module Concrete = struct
         let c = cmp x v in
         c = 0 || mem cmp x (if c < 0 then l else r)
 
+  let rec find cmp x = function
+      Empty -> raise Not_found
+    | Node(l, v, r, _) ->
+        let c = cmp x v in
+        if c = 0 then v else  find cmp x (if c < 0 then l else r)
+
   let rec iter f = function
       Empty -> ()
     | Node(l, v, r, _) -> iter f l; f v; iter f r
@@ -368,6 +374,7 @@ sig
   val is_empty: t -> bool
   val singleton: elt -> t
   val mem: elt -> t -> bool
+  val find: elt -> t -> elt
   val add: elt -> t -> t
   val remove: elt -> t -> t
   val union: t -> t -> t
@@ -405,6 +412,7 @@ sig
     val min_elt: t -> elt option
     val max_elt: t -> elt option
     val choose:  t -> elt option
+    val find: elt -> t -> elt option
   end
   (** Operations on {!Set} with labels. *)
   module Labels : sig
@@ -445,6 +453,7 @@ struct
   let filter f t = t_of_impl (Concrete.filter Ord.compare f (impl_of_t t))
   let filter_map f t = t_of_impl (Concrete.filter_map Ord.compare f (impl_of_t t))
 
+  let find x t = Concrete.find Ord.compare x (impl_of_t t)
   let exists f t = Concrete.exists f (impl_of_t t)
   let for_all f t = Concrete.for_all f (impl_of_t t)
   let paritition f t =
@@ -502,6 +511,7 @@ struct
     let min_elt t = try Some (min_elt t) with Not_found -> None
     let max_elt t = try Some (max_elt t) with Not_found -> None
     let choose  t = try Some (choose t)  with Not_found -> None
+    let find  e t = try Some (find e t)  with Not_found -> None
   end
 
   module Labels =
@@ -539,6 +549,7 @@ module PSet = struct (*$< PSet *)
   let singleton ?(cmp = compare) x = { cmp = cmp; set = Concrete.singleton x }
   let is_empty s = Concrete.is_empty s.set
   let mem x s = Concrete.mem s.cmp x s.set
+  let find x s = Concrete.find s.cmp x s.set
   let add x s  = { s with set = Concrete.add s.cmp x s.set }
   let remove x s = { s with set = Concrete.remove s.cmp x s.set }
   let iter f s = Concrete.iter f s.set
@@ -596,6 +607,8 @@ let singleton x = Concrete.singleton x
 let is_empty s = s = Concrete.Empty
 
 let mem x s = Concrete.mem Pervasives.compare x s
+
+let find x s = Concrete.find Pervasives.compare x s
 
 let add x s  = Concrete.add Pervasives.compare x s
 

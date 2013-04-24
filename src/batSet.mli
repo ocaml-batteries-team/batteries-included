@@ -72,7 +72,12 @@ module type S =
 
     val add: elt -> t -> t
     (** [add x s] returns a set containing all elements of [s],
-       plus [x]. If [x] was already in [s], [s] is returned unchanged. *)
+	plus [x]. If [x] was already in [s], [s] is returned unchanged. *)
+
+    val find : elt -> t -> elt
+    (** [find x s] returns the element in s that tests equal to [x] under its comparison function.
+	@raise Not_found if no element is equal
+    *)
 
     val remove: elt -> t -> t
     (** [remove x s] returns a set containing all elements of [s],
@@ -224,6 +229,7 @@ module type S =
       val min_elt: t -> elt option
       val max_elt: t -> elt option
       val choose:  t -> elt option
+      val find: elt -> t -> elt option
     end
 
 
