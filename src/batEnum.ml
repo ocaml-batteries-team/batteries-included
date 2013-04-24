@@ -611,19 +611,17 @@ let suffix_action f t =
 
 
 let rec concat t =
-	let concat_ref = ref _dummy in
-	let rec concat_next() =
-		let tn = t.next() in
-		concat_ref := (fun () ->
-			try
-				tn.next()
-			with
-				No_more_elements ->
-					concat_next());
-		!concat_ref ()
-	in
-	concat_ref := concat_next;
-	from2 (fun () -> !concat_ref ()) (fun () -> concat (t.clone()))
+  let tn = ref (empty ()) in
+  let rec next () =
+    try (!tn).next ()
+    with No_more_elements -> tn := t.next(); next()
+  in
+  let clone () = append ((!tn).clone()) (concat (t.clone())) in
+  from2 next clone
+
+(*$T
+  let e = List.enum [ [| 1; 2; 3; 4|]; [| 5; 6 |] ] |> map Array.enum |> concat in drop 1 e; (count e) = (count (clone e))
+*)
 
 
 let singleton x =
