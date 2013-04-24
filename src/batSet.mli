@@ -70,14 +70,14 @@ sig
   val mem: elt -> t -> bool
   (** [mem x s] tests whether [x] belongs to the set [s]. *)
 
-  val add: elt -> t -> t
-  (** [add x s] returns a set containing all elements of [s],
-      plus [x]. If [x] was already in [s], [s] is returned unchanged. *)
-
   val find : elt -> t -> elt
   (** [find x s] returns the element in s that tests equal to [x] under its comparison function.
       @raise Not_found if no element is equal
   *)
+
+  val add: elt -> t -> t
+  (** [add x s] returns a set containing all elements of [s],
+      plus [x]. If [x] was already in [s], [s] is returned unchanged. *)
 
   val remove: elt -> t -> t
   (** [remove x s] returns a set containing all elements of [s],
