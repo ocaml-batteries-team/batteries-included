@@ -877,8 +877,18 @@ let replace ~str ~sub ~by =
 
 
 let explode r = fold (fun a u -> u :: a) [] r
+(*$T explode
+   explode (of_string "foo") = List.map UChar.of_char ['f'; 'o'; 'o']
+   explode (of_string "ếẶ") = List.map UChar.chr [0x1ebf; 0x1eb6]
+   explode (of_string "") = []
+*)
 
 let implode l = of_list l
+(*$T implode
+   implode (List.map UChar.of_char ['f'; 'o'; 'o']) = of_string "foo"
+   implode (List.map UChar.chr [0x1ebf; 0x1eb6]) = of_string "ếẶ"
+   implode [] = of_string ""
+*)
 
 let of_latin1 s = of_ustring (UTF8.of_latin1 s)
 
