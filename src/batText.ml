@@ -876,7 +876,7 @@ let replace ~str ~sub ~by =
   with Not_found -> (false, str)
 
 
-let explode r = fold (fun a u -> u :: a) [] r
+let explode r = List.rev (fold (fun a u -> u :: a) [] r)
 (*$T explode
    explode (of_string "foo") = List.map UChar.of_char ['f'; 'o'; 'o']
    explode (of_string "ếẶ") = List.map UChar.chr [0x1ebf; 0x1eb6]
