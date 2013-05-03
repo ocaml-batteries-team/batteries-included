@@ -108,10 +108,14 @@ let copysign x s =
 *)
 
 let round x =
+  (* 'halve' is the biggest representable double that is smaller than 0.5;
+     (halve +. 0.5) rounds to 1., which makes for incorrect rounding of 'halve',
+     while (halve +. halve) is strictly smaller than 1. as expected. *)
+  let halve = 0.499999999999999944 in    
   (* we test x >= 0. rather than x > 0. because otherwise
      round_to_string 0. returns "-0." (ceil of -0.5 is 'negative
      zero') which is confusing. *)
-  if x >= 0.0 then floor (x +. 0.5) else ceil (x -. 0.5)
+  if x >= 0.0 then floor (x +. halve) else ceil (x -. halve)
 
 (* the tests below look ugly with those Pervasives.(...); this is
    a temporary fix made necessary by BatFloat overriding the (=)
@@ -119,6 +123,8 @@ let round x =
 (*$T round
    Pervasives.(=) (List.map round [1.1; 2.4; 3.3; 3.5; 4.99]) [1.; 2.; 3.; 4.; 5.]
    Pervasives.(=) (List.map round [-1.1; -2.4; -3.3; -3.5; -4.99]) [-1.; -2.; -3.; -4.; -5.]
+   round 0.499999999999999944 = 0.
+   round (-0.499999999999999944) = 0.
 *)
 
 let round_to_int x =
