@@ -103,12 +103,12 @@ let toggle t x = apply_bit_op "toggle" Toggle t x
 
 let mem t x = 
   let pos = x / 8 in
-  if pos < 0 then 
-    invalid_arg ("BitSet.mem: negative index") 
-  else if pos <= String.length !t then 
-    let delta = x mod 8 in 
-    let c = Char.code (String.unsafe_get !t pos) in 
-    (c land (1 lsl delta)) <> 0 
+  if pos < 0 then
+    invalid_arg ("BitSet.mem: negative index")
+  else if pos < String.length !t then
+    let delta = x mod 8 in
+    let c = Char.code (String.unsafe_get !t pos) in
+    (c land (1 lsl delta)) <> 0
   else
     false
 
@@ -173,7 +173,7 @@ let count_array =
 
 let count t =
   let c = ref 0 in
-  for i = 0 to String.length !t do
+  for i = 0 to (String.length !t) - 1 do
     c := !c +
         Array.unsafe_get count_array (Char.code (String.unsafe_get !t i))
   done;
