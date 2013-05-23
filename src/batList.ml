@@ -130,6 +130,9 @@ let concat = flatten
 *)
 
 let singleton x = [x]
+(*$Q singleton
+  Q.int (fun x -> let s = singleton x in hd s = x && length s = 1)
+*)
 
 let map f = function
   | [] -> []
