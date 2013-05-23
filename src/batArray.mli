@@ -253,7 +253,7 @@ val reduce : ('a -> 'a -> 'a) -> 'a array -> 'a
     @raise Invalid_argument on empty arrays. *)
 
 val singleton : 'a -> 'a array
-(** Create an array consisting in exactly one element.*)
+(** Create an array consisting of exactly one element.*)
 
 
 (** {6 Sorting} *)
@@ -389,7 +389,7 @@ val filteri : (int -> 'a -> bool) -> 'a array -> 'a array
 (** As [filter] but with the index passed to the predicate. *)
 
 val filter_map : ('a -> 'b option) -> 'a array -> 'b array
-(** [filter_map f e] returns an array consisting in all elements
+(** [filter_map f e] returns an array consisting of all elements
     [x] such that [f y] returns [Some x] , where [y] is an element
     of [e]. *)
 

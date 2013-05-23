@@ -456,7 +456,7 @@ val init : int -> (int -> 'a) -> 'a t
     [f 0, f 1, ..., f (n-1)] *)
 
 val singleton : 'a -> 'a t
-(** Create an enumeration consisting in exactly one element.*)
+(** Create an enumeration consisting of exactly one element.*)
 
 val repeat : ?times:int -> 'a -> 'a t
 (** [repeat ~times:n x] creates a enum sequence filled with [n] times of

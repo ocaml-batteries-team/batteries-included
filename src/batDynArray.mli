@@ -201,7 +201,7 @@ val filter : ('a -> bool) -> 'a t -> 'a t
 *)
 
 val filter_map : ('a -> 'b option) -> 'a t -> 'b t
-(** [filter_map f e] returns an array consisting in all elements
+(** [filter_map f e] returns an array consisting of all elements
     [x] such that [f y] returns [Some x] , where [y] is an element
     of [e]. *)
 
