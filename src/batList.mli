@@ -114,6 +114,9 @@ val concat : 'a list list -> 'a list
 val flatten : 'a list list -> 'a list
 (** Same as [concat]. *)
 
+val singleton : 'a -> 'a list
+(** Create a list consisting in exactly one element.*)
+
 
 (**{6 Constructors}*)
 

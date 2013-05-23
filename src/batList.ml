@@ -129,6 +129,8 @@ let concat = flatten
   flatten [[]] = []
 *)
 
+let singleton x = [x]
+
 let map f = function
   | [] -> []
   | h :: t ->

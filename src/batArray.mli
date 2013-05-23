@@ -252,6 +252,9 @@ val reduce : ('a -> 'a -> 'a) -> 'a array -> 'a
 
     @raise Invalid_argument on empty arrays. *)
 
+val singleton : 'a -> 'a array
+(** Create an array consisting in exactly one element.*)
+
 
 (** {6 Sorting} *)
 
