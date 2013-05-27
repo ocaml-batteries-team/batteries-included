@@ -26,7 +26,10 @@ type 'a mappable = 'a t
 
 include Array
 
-let map = map
+let singleton x = [|x|]
+(*$Q singleton
+  Q.int (fun x -> let s = singleton x in s.(0) = x && length s = 1)
+*)
 
 let modify f a =
   for i = 0 to length a - 1 do
