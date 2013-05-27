@@ -130,6 +130,16 @@ val init : int -> (int -> 'a) -> 'a list
     the results of (f 0),(f 1).... (f (n-1)).
     @raise Invalid_argument if n < 0.*)
 
+val unfold: 'b -> ('b -> ('a * 'b) option) -> 'a list
+(** [unfold init f] creates a list by repeatedly applying [f] to the
+    second element of its own result, starting from the initial value
+    [init]. The first element of each result is accumulated in
+    a list. The list is terminated and returned as soon as [f] returns
+    [None].
+
+    Example: [List.unfold 0 (fun x -> if x = 3 then None else Some (string_of_int x, x+1))]
+    will return [["0";"1";"2"]]
+*)
 
 (**{6 Iterators}*)
 

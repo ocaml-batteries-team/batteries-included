@@ -885,6 +885,18 @@ let max l = reduce Pervasives.max l
 let sum l = reduce (+) l
 let fsum l = reduce (+.) l
 
+let unfold b f =
+  let rec loop acc v =
+    match f v with
+    | None -> List.rev acc
+    | Some (a, v) -> loop (a::acc) v
+  in loop [] b
+
+(*$T unfold
+  unfold 1 (fun x -> None) = []
+  unfold 0 (fun x -> if x > 3 then None else Some (x, succ x)) = [0;1;2;3]
+*)
+
 module Exceptionless = struct
   let rfind p l =
     try  Some (rfind p l)
