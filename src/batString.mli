@@ -602,10 +602,13 @@ val rev : string -> string
 
 (** {6 In-Place Transformations}*)
 
-val in_place_mirror : string -> unit
-(** [in_place_mirror s] mutates the string [s], so that its new value is
+val rev_in_place : string -> unit
+(** [rev_in_place s] mutates the string [s], so that its new value is
     the mirror of its old one: for instance if s contained ["Example!"], after
     the mutation it will contain ["!elpmaxE"]. *)
+
+val in_place_mirror : string -> unit
+(** @deprecated Use {!String.rev_in_place} instead *)
 
 (** {6 Splitting around}*)
 
