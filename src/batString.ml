@@ -422,27 +422,28 @@ let nsplit str ~by:sep =
   else
     (* str is non empty *)
     let seplen = String.length sep in
-    let rec aux acc ofs =
-      if ofs >= 0 then (
+    let rfind' = rfind_adaptive sep str in
+    let rec aux acc len =
+      if len > 0 then (
         match
-          try Some (rfind_from str ofs sep)
+          try Some (rfind' len)
           with Not_found -> None
         with
         | Some idx -> (* sep found *)
-          let end_of_sep = idx + seplen - 1 in
-          if end_of_sep = ofs (* sep at end of str *)
-          then aux (""::acc) (idx - 1)
+          let start_of_tok = idx + seplen in
+          if start_of_tok = len (* sep at end of str *)
+          then aux (""::acc) idx
           else
-            let token = sub str (end_of_sep + 1) (ofs - end_of_sep) in
-            aux (token::acc) (idx - 1)
+            let token = sub str start_of_tok (len - start_of_tok) in
+            aux (token::acc) idx
         | None -> (* sep NOT found *)
-          (sub str 0 (ofs + 1))::acc
+          (sub str 0 len)::acc
       )
       else
-        (* Negative ofs: the last sep started at the beginning of str *)
+        (* string is empty: the last sep started at the beginning of str *)
         ""::acc
     in
-    aux [] (length str - 1 )
+    aux [] (length str)
 
 (*$T nsplit
    nsplit "a;b;c" ~by:";" = ["a"; "b"; "c"]
@@ -926,19 +927,40 @@ let print_quoted out s = BatInnerIO.nwrite out (quote s)
 
 module Exceptionless =
 struct
-  let find_from str ofs sub =
-    try Some (find_from str ofs sub) with Not_found -> None
+  let
+    find_simple,
+    find_horspool,
+    find_adaptive,
+    rfind_simple,
+    rfind_horspool,
+    rfind_adaptive
+  =
+    let wrap f sub str pos =
+      try Some (f sub str pos) with Not_found -> None
+    in
+    wrap find_simple,
+    wrap find_horspool,
+    wrap find_adaptive,
+    wrap rfind_simple,
+    wrap rfind_horspool,
+    wrap rfind_adaptive
 
-  let find str sub = find_from str 0 sub
   (*$T
-    Exceptionless.find "a" "b" = None
+    Exceptionless.find_simple    "ab" "b" 0 = None
+    Exceptionless.find_horspool  "ab" "b" 0 = None
+    Exceptionless.find_adaptive  "ab" "b" 0 = None
+    Exceptionless.rfind_simple   "ab" "b" 1 = None
+    Exceptionless.rfind_horspool "ab" "b" 1 = None
+    Exceptionless.rfind_adaptive "ab" "b" 1 = None
   *)
 
-  let rfind_from str suf sub =
-    try Some (rfind_from str suf sub) with Not_found -> None
+  let find_from str pos sub = find_adaptive sub str pos
+  and rfind_from str pos sub = rfind_adaptive sub str pos
 
-  let rfind str sub = rfind_from str (String.length str - 1) sub
+  let find str sub = find_adaptive sub str 0
+  and rfind str sub = rfind_adaptive sub str (String.length str)
   (*$T
+    Exceptionless.find "a" "ab" = None
     Exceptionless.rfind "a" "b" = None
   *)
 
@@ -1011,10 +1033,18 @@ struct
   let contains      = contains
   let contains_from = contains_from
   let rcontains_from= rcontains_from
+  let find_simple   = find_simple
+  let find_horspool = find_horspool
+  let find_adaptive = find_adaptive
   let find          = find
   let find_from     = find_from
+  let find_all      = find_all
+  let rfind_simple  = rfind_simple
+  let rfind_horspool= rfind_horspool
+  let rfind_adaptive= rfind_adaptive
   let rfind         = rfind
   let rfind_from    = rfind_from
+  let rfind_all     = rfind_all
   let ends_with     = ends_with
   let starts_with   = starts_with
   let exists        = exists
@@ -1079,8 +1109,14 @@ struct
 
   module Exceptionless =
   struct
+    let find_simple = Exceptionless.find_simple
+    let find_horspool = Exceptionless.find_horspool
+    let find_adaptive = Exceptionless.find_adaptive
     let find_from = Exceptionless.find_from
     let find = Exceptionless.find
+    let rfind_simple = Exceptionless.find_simple
+    let rfind_horspool = Exceptionless.find_horspool
+    let rfind_adaptive = Exceptionless.find_adaptive
     let rfind_from = Exceptionless.rfind_from
     let rfind = Exceptionless.rfind
     let to_int = Exceptionless.to_int
