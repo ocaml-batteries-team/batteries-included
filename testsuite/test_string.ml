@@ -38,6 +38,70 @@ let test_ends_with () =
     check false "I'm Jon \"Maddog\" Orwant";
     check false "Jon"
 
+let assert_int = assert_equal ~printer:string_of_int
+let big_pattern, big_string =
+  BatRandom.init 0;
+  let pattern = BatString.init 300 (fun _ -> BatRandom.char ()) in
+  let string = BatString.init 600 (fun _ -> BatRandom.char ()) in
+  pattern, string ^ pattern ^ string
+
+let test_find find () =
+  let str = "abcd" in
+  assert_int 0 (find "a" str 0);
+  assert_int 1 (find "b" str 0);
+  assert_int 2 (find "c" str 2);
+  assert_int 3 (find "d" str 1);
+  assert_int 0 (find "" str 0);
+  assert_int 2 (find "" str 2);
+  assert_int 4 (find "" str 4);
+  assert_raises Not_found (fun () -> find "b" str 2);
+  assert_raises Not_found (fun () -> find "d" str 4);
+  assert_raises (Invalid_argument "String.find*")
+    (fun () -> find "" str ~-1);
+  assert_raises (Invalid_argument "String.find*")
+    (fun () -> find "" str 5);
+  let str = "ababababa" in
+  assert_int 0 (find "aba" str 0);
+  assert_int 6 (find "aba" str 5);
+  assert_int 0 (find str str 0);
+  assert_raises Not_found (fun () -> find str str 1);
+  assert_int 600 (find big_pattern big_string 0);
+  ()
+
+let test_rfind find () =
+  let str = "abcd" in
+  assert_int 0 (find "a" str 3);
+  assert_int 1 (find "b" str 2);
+  assert_int 2 (find "c" str 4);
+  assert_int 3 (find "d" str 4);
+  assert_int 0 (find "" str 0);
+  assert_int 2 (find "" str 2);
+  assert_int 4 (find "" str 4);
+  assert_raises Not_found (fun () -> find "c" str 2);
+  assert_raises Not_found (fun () -> find "d" str 3);
+  assert_raises (Invalid_argument "String.rfind*")
+    (fun () -> find "" str ~-1);
+  assert_raises (Invalid_argument "String.rfind*")
+    (fun () -> find "" str 5);
+  let str = "ababababa" in
+  assert_int 6 (find "aba" str 9);
+  assert_int 4 (find "aba" str 7);
+  assert_int 2 (find "aba" str 6);
+  assert_int 0 (find str str 9);
+  assert_raises Not_found (fun () -> find str str 8);
+  assert_int 600 (find big_pattern big_string 1500);
+  ()
+
+let test_find_all () =
+  assert_equal
+    (BatList.of_enum (BatString.find_all "aba" "ababababa"))
+    [0;2;4;6]
+
+let test_rfind_all () =
+  assert_equal
+    (BatList.of_enum (BatString.rfind_all "aba" "ababababa"))
+    [6;4;2;0]
+
 let test_nsplit () =
   let printer = BatPrintf.sprintf2 "%a" (BatList.print BatString.print) in
   let check exp s sep = assert_equal ~printer exp (nsplit s sep) in
@@ -76,6 +140,18 @@ let tests = "String" >::: [
   (*  "Taking and skipping" >:: test_take_and_skip; *)
   "Start with" >:: test_starts_with;
   "Ends with" >:: test_ends_with;
+  "Finding" >::: [
+    "find_from" >:: test_find (fun sub str pos -> BatString.find_from str pos sub);
+    "find_simple" >:: test_find BatString.find_simple;
+    "find_horspool" >:: test_find BatString.find_horspool;
+    "find_adaptive" >:: test_find BatString.find_adaptive;
+    "find_all" >:: test_find_all;
+    "rfind_from" >:: test_rfind (fun sub str pos -> BatString.rfind_from str (pos-1) sub);
+    "rfind_simple" >:: test_rfind BatString.rfind_simple;
+    "rfind_horspool" >:: test_rfind BatString.rfind_horspool;
+    "rfind_adaptive" >:: test_rfind BatString.rfind_adaptive;
+    "rfind_all" >:: test_rfind_all;
+  ];
   "Splitting with nsplit" >:: test_nsplit;
   "Exists" >:: test_exists;
 ]

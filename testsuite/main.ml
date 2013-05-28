@@ -15,7 +15,7 @@ let all_tests =
     Test_multipmap.tests;
 (*     Test_vect.tests; Moved inline to BatVect *)
     Test_file.tests;
-(*    Test_string.tests; Moved inline to BatString *)
+    Test_string.tests;
     Test_substring.tests;
     Test_digest.tests;
     Test_enum.tests;

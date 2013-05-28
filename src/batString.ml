@@ -89,10 +89,10 @@ let ends_with str p =
   not (ends_with "Jon \"Maddog\" Orwant" "Jon")
 *)
 
-let find_from str pos sub =
+let find_simple sub str pos =
   let len = length str in
   let sublen = length sub in
-  if pos < 0 || pos > len then raise (Invalid_argument "String.find_from");
+  if pos < 0 || pos > len then raise (Invalid_argument "String.find*");
   if sublen = 0 then pos else
     BatReturn.label (fun label ->
       for i = pos to len - sublen do
@@ -104,6 +104,69 @@ let find_from str pos sub =
       done;
       raise Not_found
     )
+
+let find_horspool sub =
+  let sublen = String.length sub in
+
+  (* initialize shifting table. improved horspool - all elements are >=1
+   * Abuse string as uint8 array. *)
+  let shift = make 256 (char_of_int (min 255 sublen)) in
+  for i = max 0 (sublen - 255) to sublen - 1 do
+    unsafe_set shift
+      (int_of_char (unsafe_get sub i))
+      (char_of_int (sublen - i))
+  done;
+
+  (* allow early initialization on partial binding *)
+  fun str pos ->
+    let strlen = length str in
+    let rec worker i =
+      if i+sublen >= strlen then raise Not_found;
+      (* shift according to shifting table - will shift >=1 *)
+      let i =
+          i + int_of_char (unsafe_get shift
+                (int_of_char (unsafe_get str (i+sublen))))
+      in
+      if i+sublen > strlen then raise Not_found;
+      let j = ref 0 in
+      (* compare - since order is not important unroll the loop a bit
+       * by doing two comparisons at once, starting at both ends. *)
+      while
+        unsafe_get str (i + !j) = unsafe_get sub !j &&
+        unsafe_get str (i + sublen - 1 - !j) = unsafe_get sub (sublen - 1 - !j) &&
+        (incr j; 2 * !j < sublen)
+      do () done;
+      (* all equal ? *)
+      if 2 * !j >= sublen
+      then i
+      else worker i
+    in
+    if pos < 0 || pos > strlen then raise (Invalid_argument "String.find*");
+    if sublen = 0 then pos
+    else worker (pos-1)
+
+let find_adaptive sub str =
+  let strlen = length str
+  and sublen = length sub in
+  if (sublen - 2) * strlen < 190 * sublen
+  then find_simple sub str
+  else find_horspool sub str
+
+let find_from str pos sub = find_adaptive sub str pos
+let find str sub = find_adaptive sub str 0
+
+let find_all sub ?(pos=0) str =
+  let worker = find_adaptive sub str in
+  let nexti = ref pos in
+  BatEnum.from begin fun () ->
+    let i =
+      try worker !nexti with
+      Not_found -> raise BatEnum.No_more_elements
+    in
+    nexti := i+1;
+    i
+  end
+
 (*$Q find_from
   (Q.triple Q.string Q.char Q.small_int) ~count:1000 (fun (s, c, ofs) -> \
     let v1 = try `res (find_from s ofs (String.make 1 c)) with Not_found -> `nf | Invalid_argument _ -> `inv in \
@@ -126,19 +189,18 @@ let find_from str pos sub =
   try ignore (find_from "foo" (-1) "foo"); false with Invalid_argument _ -> true
 *)
 
-let find str sub = find_from str 0 sub
 (*$T find
   find "foobarbaz" "bar" = 3
   try ignore (find "foo" "bar"); false with Not_found -> true
 *)
 
-let rfind_from str pos sub =
+let rfind_simple sub str pos =
   let sublen = length sub
   and len = length str in
-  if pos + 1 < 0 || pos + 1 > len then raise (Invalid_argument "String.rfind_from");
-  if sublen = 0 then pos + 1 else
+  if pos < 0 || pos  > len then raise (Invalid_argument "String.rfind*");
+  if sublen = 0 then pos else
     BatReturn.label (fun label ->
-      for i = pos - sublen + 1 downto 0 do
+      for i = pos - sublen downto 0 do
         let j = ref 0 in
         while unsafe_get str (i + !j) = unsafe_get sub !j do
           incr j;
@@ -147,6 +209,74 @@ let rfind_from str pos sub =
       done;
       raise Not_found
     )
+
+let rfind_horspool sub =
+  let sublen = String.length sub in
+
+  (* initialize shifting table. improved horspool - all elements are >=1
+   * Abuse string as uint8 array. *)
+  let shift = make 256 (char_of_int (min 255 sublen)) in
+  for i = min (sublen-1) 254 downto 0 do
+    unsafe_set shift
+      (int_of_char (unsafe_get sub i))
+      (char_of_int (i+1))
+  done;
+
+  (* allow early initialization on partial binding *)
+  fun str pos ->
+    let strlen = length str in
+    let rec worker i =
+      if i <= 0 then raise Not_found;
+      (* shift according to shifting table - will shift >=1 *)
+      let i =
+          i - int_of_char (unsafe_get shift
+                (int_of_char (unsafe_get str (i-1))))
+      in
+      if i < 0 then raise Not_found;
+      let j = ref 0 in
+      (* compare - since order is not important unroll the loop a bit
+       * by doing two comparisons at once, starting at both ends. *)
+      while
+        unsafe_get str (i + !j) = unsafe_get sub !j &&
+        unsafe_get str (i + sublen - 1 - !j) = unsafe_get sub (sublen - 1 - !j) &&
+        (incr j; 2 * !j < sublen)
+      do () done;
+      (* all equal ? *)
+      if 2 * !j >= sublen
+      then i
+      else worker i
+    in
+    if pos < 0 || pos > strlen then raise (Invalid_argument "String.rfind*");
+    if sublen = 0 then pos
+    else worker (pos-sublen+1)
+
+let rfind_adaptive sub str =
+  let strlen = length str
+  and sublen = length sub in
+  if (sublen - 2) * strlen < 190 * sublen
+  then rfind_simple sub str
+  else rfind_horspool sub str
+
+let rfind_from str pos sub = rfind_adaptive sub str (pos+1)
+let rfind str sub = rfind_from str (String.length str - 1) sub
+
+let rfind_all sub ?pos str =
+  let worker = rfind_adaptive sub str in
+  let pos = match pos with
+    |None -> length str
+    |Some pos -> pos
+  in
+  let sublen = String.length sub in
+  let nexti = ref pos in
+  BatEnum.from begin fun () ->
+    let i =
+      try worker !nexti with
+      Not_found -> raise BatEnum.No_more_elements
+    in
+    nexti := i + sublen - 1;
+    i
+  end
+
 (*$Q rfind_from
   (Q.triple Q.string Q.char Q.small_int) ~count:1000 (fun (s, c, ofs) -> \
     let v1 = try `res (rfind_from s ofs (String.make 1 c)) with Not_found -> `nf | Invalid_argument _ -> `inv in \
@@ -171,7 +301,6 @@ let rfind_from str pos sub =
   try ignore (rfind_from "foo" (-2) "foo"); false with Invalid_argument _ -> true
 *)
 
-let rfind str sub = rfind_from str (String.length str - 1) sub
 (*$T rfind
   rfind "foobarbaz" "ba" = 6
   try ignore (rfind "foo" "barr"); false with Not_found -> true
