@@ -597,6 +597,8 @@ val repeat: string -> int -> string
     Example: [String.repeat "foo" 4 = "foofoofoofoo"]
 *)
 
+val rev : string -> string
+(** [string s] returns the reverse of string [s] *)
 
 (** {6 In-Place Transformations}*)
 

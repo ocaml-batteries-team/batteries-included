@@ -670,6 +670,20 @@ let repeat s n =
    repeat "" 4 = ""
 *)
 
+let rev s = 
+  let len = String.length s in
+  let reversed = String.create len in
+  for i = 0 to len - 1 do
+    String.unsafe_set reversed (len - i - 1) (String.unsafe_get s i)
+  done;
+  reversed
+
+(*$T rev
+   rev "" = ""
+   rev "batteries" = "seirettab"
+   rev "even" = "neve"
+*)
+
 let trim s =
   let len = length s in
   let rec aux_1 i = (*locate leading whitespaces*)
