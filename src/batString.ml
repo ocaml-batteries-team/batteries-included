@@ -647,18 +647,20 @@ let nreplace ~str ~sub ~by =
 *)
 
 
-let in_place_mirror s =
+let rev_in_place s =
   let len = String.length s in
   if len > 0 then for k = 0 to (len - 1)/2 do
       let old = s.[k] and mirror = len - 1 - k in
       s.[k] <- s.[mirror]; s.[mirror] <- old;
     done
-(*$= in_place_mirror as f & ~printer:identity
+(*$= rev_in_place as f & ~printer:identity
   (let s="" in f s; s)          ""
   (let s="1" in f s; s)         "1"
   (let s="12" in f s; s)        "21"
   (let s="Example!" in f s; s)  "!elpmaxE"
 *)
+
+let in_place_mirror = rev_in_place
 
 let repeat s n =
   let buf = Buffer.create ( n * (String.length s) ) in
@@ -668,6 +670,20 @@ let repeat s n =
    repeat "fo" 4 = "fofofofo"
    repeat "fo" 0 = ""
    repeat "" 4 = ""
+*)
+
+let rev s = 
+  let len = String.length s in
+  let reversed = String.create len in
+  for i = 0 to len - 1 do
+    String.unsafe_set reversed (len - i - 1) (String.unsafe_get s i)
+  done;
+  reversed
+
+(*$T rev
+   rev "" = ""
+   rev "batteries" = "seirettab"
+   rev "even" = "neve"
 *)
 
 let trim s =
