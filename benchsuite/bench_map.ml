@@ -5,8 +5,7 @@
 
 let total_length = 500_000
 
-let (-|) = BatPervasives.(-|)
-let (<|) = BatPervasives.(<|)
+let (%) = BatPervasives.(%)
 
 module MapBench (M : sig val input_length : int end) = struct
   let input_length = M.input_length
@@ -58,8 +57,8 @@ module MapBench (M : sig val input_length : int end) = struct
     assert (same_elts std_created_map poly_created_map)
 
   let samples_create = make_samples create_input
-    [ "stdmap create", ignore -| create_std_map;
-      "pmap create", ignore -| create_poly_map ]
+    [ "stdmap create", ignore % create_std_map;
+      "pmap create", ignore % create_poly_map ]
 
   (* A benchmark for fast import *)
   let import_std_map input =
@@ -78,8 +77,8 @@ module MapBench (M : sig val input_length : int end) = struct
     ()
 
   let samples_import = make_samples import_input
-    [ "stdmap import", ignore -| import_std_map;
-      "pmap import", ignore -| import_poly_map ]
+    [ "stdmap import", ignore % import_std_map;
+      "pmap import", ignore % import_poly_map ]
 
   (* A benchmark for key lookup *)
   let lookup_input =
@@ -119,8 +118,8 @@ module MapBench (M : sig val input_length : int end) = struct
               (remove_poly_map remove_input))
 
   let samples_remove = make_samples remove_input
-    [ "stdmap remove", ignore -| remove_std_map;
-      "pmap remove", ignore -| remove_poly_map ]
+    [ "stdmap remove", ignore % remove_std_map;
+      "pmap remove", ignore % remove_poly_map ]
 
 
   (* A benchmark for merging *)
@@ -149,8 +148,8 @@ module MapBench (M : sig val input_length : int end) = struct
 
 
   let samples_merge = make_samples () [
-    "stdmap merge", ignore -| merge_std_map;
-    "pmap merge", ignore -| merge_poly_map;
+    "stdmap merge", ignore % merge_std_map;
+    "pmap merge", ignore % merge_poly_map;
   ]
 
   (* compare fold-based and merge-based union, diff, intersect *)
@@ -175,9 +174,9 @@ module MapBench (M : sig val input_length : int end) = struct
     ()
 
   let samples_union = make_samples union_input [
-    "pmap union", ignore -| pmap_union;
-    "fold-based union", ignore -| fold_union;
-    "merge-based union", ignore -| merge_union;
+    "pmap union", ignore % pmap_union;
+    "fold-based union", ignore % fold_union;
+    "merge-based union", ignore % merge_union;
   ]
 
   let pmap_diff (m1, m2) =
@@ -202,9 +201,9 @@ module MapBench (M : sig val input_length : int end) = struct
     ()
 
   let samples_diff = make_samples diff_input [
-    "pmap diff", ignore -| pmap_diff;
-    "fold-based diff", ignore -| fold_diff;
-    "merge-based diff", ignore -| merge_diff;
+    "pmap diff", ignore % pmap_diff;
+    "fold-based diff", ignore % fold_diff;
+    "merge-based diff", ignore % merge_diff;
   ]
 
   let pmap_intersect f (m1, m2) =
@@ -242,9 +241,9 @@ module MapBench (M : sig val input_length : int end) = struct
     ()
 
   let samples_intersect = make_samples intersect_input [
-    "pmap intersect", ignore -| pmap_intersect (-);
-    "filter-based intersect", ignore -| filter_intersect (-);
-    "merge-based intersect", ignore -| merge_intersect (-);
+    "pmap intersect", ignore % pmap_intersect (-);
+    "filter-based intersect", ignore % filter_intersect (-);
+    "merge-based intersect", ignore % merge_intersect (-);
   ]
 
   let () =
@@ -257,7 +256,7 @@ module MapBench (M : sig val input_length : int end) = struct
     let diff = samples_diff () in
     let intersect = samples_intersect () in
     List.iter
-      (print_newline -| Bench.summarize)
+      (print_newline % Bench.summarize)
       [
         create;
         import;
