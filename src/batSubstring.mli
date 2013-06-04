@@ -38,6 +38,10 @@ val substring : string -> int -> int -> t
     @raise Inavlid_argument if [i<0] or [n<0] or [i+n > size s].  Equivalent to
     [extract s i (Some n)].  *)
 
+val unsafe_substring : string -> int -> int -> t
+(** [unsafe_substring] behaves like [substring], but does not perform
+    any sanity check on the position and length. *)
+
 val extract : string -> int -> int option -> t
 (** [extract s i None] creates the substring (s, i, size s-i)
     consisting of the tail of s starting at i.

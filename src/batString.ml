@@ -645,11 +645,37 @@ let replace ~str ~sub ~by =
 
 
 let nreplace ~str ~sub ~by =
-  let parts = nsplit str ~by:sub in
-  String.concat by parts
+  if sub = "" then invalid_arg "nreplace: cannot replace all empty substrings" ;
+  let strlen = length str in
+  let sublen = length sub in
+  let bylen = length by in
+  let dlen = bylen - sublen in
+  let rec loop_subst idxes newlen i =
+    match (try rfind_from str (i-1) sub with Not_found -> -1) with
+    | -1 -> idxes, newlen
+    | i' -> loop_subst (i'::idxes) (newlen+dlen) i' in
+  let idxes, newlen = loop_subst [] strlen strlen in
+  let newstr = create newlen in
+  let rec loop_copy i j idxes =
+    match idxes with
+    | [] ->
+      (* still need the last chunk *)
+      unsafe_blit str i newstr j (strlen-i)
+    | i'::rest ->
+      let di = i' - i in
+      unsafe_blit str i newstr j di ;
+      unsafe_blit by 0 newstr (j + di) bylen ;
+      loop_copy (i + di + sublen) (j + di + bylen) rest in
+  loop_copy 0 0 idxes ;
+  newstr
 (*$T nreplace
    nreplace ~str:"bar foo aaa bar" ~sub:"aa" ~by:"foo" = "bar foo afoo bar"
    nreplace ~str:"bar foo bar" ~sub:"bar" ~by:"foo" = "foo foo foo"
+   nreplace ~str:"aaaaaa" ~sub:"aa" ~by:"aaa" = "aaaaaaaaa"
+   nreplace ~str:"" ~sub:"aa" ~by:"bb" = ""
+   nreplace ~str:"foo bar baz" ~sub:"foo bar baz" ~by:"" = ""
+   nreplace ~str:"abc" ~sub:"abc" ~by:"def" = "def"
+   let s1 = "foo" in let s2 = nreplace ~str:s1 ~sub:"X" ~by:"X" in set s2 0 'F' ; s1.[0] = 'f'
 *)
 
 

@@ -45,6 +45,7 @@ BENCH_TARGETS += benchsuite/deque.native
 BENCH_TARGETS += benchsuite/lines_of.native
 BENCH_TARGETS += benchsuite/bitset.native
 BENCH_TARGETS += benchsuite/bench_map.native
+BENCH_TARGETS += benchsuite/bench_nreplace.native
 TEST_TARGET = test-byte
 
 ifeq ($(BATTERIES_NATIVE_SHLIB), yes)
