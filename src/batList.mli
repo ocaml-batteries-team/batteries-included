@@ -180,7 +180,7 @@ val fold_right : ('a -> 'b -> 'b) -> 'a list -> 'b -> 'b
 val reduce : ('a -> 'a -> 'a) -> 'a list -> 'a
 (** [List.reduce f h::t] is [fold_left f h t].
 
-    @raise Empty_list on empty lists. *)
+    @raise Invalid_argument on empty list. *)
 
 val max : 'a list -> 'a
 (** [max l] returns the largest value in [l] as judged by
@@ -191,17 +191,21 @@ val min : 'a list -> 'a
     [Pervasives.compare] *)
 
 val sum : int list -> int
-(** [sum l] returns the sum of the integers of [l] *)
+(** [sum l] returns the sum of the integers of [l] 
+    @raise Invalid_argument on the empty list.
+ *)
 
 val fsum : float list -> float
-(** [fsum l] returns the sum of the floats of [l] *)
+(** [fsum l] returns the sum of the floats of [l] 
+    @raise Invalid_argument on the empty list.
+ *)
 
+val min_max : ?cmp:('a -> 'a -> int) -> 'a list -> 'a * 'a
 (** [min_max l] returns the pair (smallest, largest) from [l] as judged by
     [Pervasives.compare] (by default). You can provide another
     comparison function via the optional [cmp] parameter.
     @raise Invalid_argument on an empty list.
  *)
-val min_max : ?cmp:('a -> 'a -> int) -> 'a list -> 'a * 'a
 
 (** {6 Iterators on two lists} *)
 
