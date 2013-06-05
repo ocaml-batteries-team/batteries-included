@@ -552,6 +552,23 @@ let fsum = reduce (+.)
      fsum [|0.0|] = 0.0
    *)
 
+let flength a =
+  float_of_int (length a)
+
+let avg a =
+  (float_of_int (sum a)) /. (flength a)
+
+let favg a =
+  (fsum a) /. (flength a)
+;;
+(*$T avg
+  avg [|1; 2; 3|] = 2.
+  avg [|0|] = 0.
+*) (*$T favg
+     favg [|1.0; 2.0; 3.0|] = 2.0
+     favg [|0.0|] = 0.0
+   *)
+
 (* meant for tests, don't care about side effects being repeated
    or not failing early *)
 let is_sorted_by f xs =
