@@ -213,6 +213,29 @@ let rec drop_while f = function
   (drop_while ((=) 3) [3]) []
 *)
 
+let span p li =
+  let rec loop dst = function
+    | [] -> []
+    | x :: xs as l ->
+      if p x then
+        let r = { hd = x; tl = [] } in
+        dst.tl <- inj r;
+        loop r xs
+      else l
+  in
+  let dummy = dummy_node () in
+  let xs = loop dummy li in
+  (dummy.tl , xs)
+
+
+(*$= span 
+  (span ((=) 3) [3;3;4;3;3])  ([3;3],[4;3;3])
+  (span ((=) 3) [3])          ([3],[])
+  (span ((=) 3) [4])          ([],[4])
+  (span ((=) 3) [])           ([],[])
+  (span ((=) 2) [2; 2])       ([2; 2],[])
+*)
+
 let takewhile = take_while
 let dropwhile = drop_while
 
