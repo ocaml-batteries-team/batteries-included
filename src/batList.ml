@@ -227,13 +227,25 @@ let span p li =
   let xs = loop dummy li in
   (dummy.tl , xs)
 
-
 (*$= span 
   (span ((=) 3) [3;3;4;3;3])  ([3;3],[4;3;3])
   (span ((=) 3) [3])          ([3],[])
   (span ((=) 3) [4])          ([],[4])
   (span ((=) 3) [])           ([],[])
   (span ((=) 2) [2; 2])       ([2; 2],[])
+*)
+
+let rec group_nosort p = function
+| [] -> []
+| x :: ys ->
+  let xs, notxs = span (p x) ys in
+  (x :: xs) :: group_nosort p notxs
+
+(*$= group_nosort & ~printer:(IO.to_string (List.print (List.print Int.print)))
+  (group_nosort (=) [3;3;4;3;3])  [[3;3];[4];[3;3]]
+  (group_nosort (=) [3])          [[3]]
+  (group_nosort (=) [])           []
+  (group_nosort (=) [2; 2])       [[2; 2]]
 *)
 
 let takewhile = take_while

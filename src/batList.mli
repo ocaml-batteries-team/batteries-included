@@ -489,6 +489,12 @@ of elements that satisfy p and second element is the remainder of the list.
 This is equivalent to [(take_while p xs, drop_while p xs)], but 
 is done in one pass. *)
 
+val group_nosort : ('a -> 'a -> bool) -> 'a list -> 'a list list
+(** The [group_nosort] function takes a list and returns a list of lists such 
+that the concatenation of the result is equal to the argument. Moreover, each 
+sublist in the result contains only equal elements. For example, 
+[group_nosort (=) [3;3;4;3;3] =  [[3;3];[4];[3;3]]] *)
+
 val interleave : ?first:'a -> ?last:'a -> 'a -> 'a list -> 'a list
 (** [interleave ~first ~last sep [a0;a1;a2;...;an]] returns
     [first; a0; sep; a1; sep; a2; sep; ...; sep; an; last] *)
