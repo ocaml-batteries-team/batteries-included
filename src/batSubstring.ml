@@ -74,6 +74,9 @@ let substring str off len =
   if off + len > sl then invalid_arg "Substring.substring: offset + length past end of string";
   (str,off,len)
 
+let unsafe_substring str off len =
+  (str, off, len)
+
 let extract s o = function
     Some len -> substring s o len
   | None -> substring s o (String.length s - o)

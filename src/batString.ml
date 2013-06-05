@@ -756,12 +756,18 @@ let replace_chars f s =
 *)
 
 let replace ~str ~sub ~by =
-  try
-    let i = find str sub in
-    (true, (slice ~last:i str) ^ by ^
-           (slice ~first:(i + String.length sub) str))
-  with
-    Not_found -> (false, String.copy str)
+   try
+     let subpos = find str sub in
+     let strlen = length str in
+     let sublen = length sub in
+     let bylen  = length by in
+     let newstr = create (strlen - sublen + bylen) in
+     blit str 0 newstr 0 subpos ;
+     blit by 0 newstr subpos bylen ;
+     blit str (subpos + sublen) newstr (subpos + bylen) (strlen - subpos - sublen) ;
+     (true, newstr)
+   with Not_found ->  (* find failed *)
+     (false, str)
 (*$T replace
    replace ~str:"foobarbaz" ~sub:"bar" ~by:"rab" = (true, "foorabbaz")
    replace ~str:"foo" ~sub:"bar" ~by:"" = (false, "foo")
@@ -769,26 +775,54 @@ let replace ~str ~sub ~by =
 
 
 let nreplace ~str ~sub ~by =
-  let parts = nsplit str ~by:sub in
-  String.concat by parts
+  if sub = "" then invalid_arg "nreplace: cannot replace all empty substrings" ;
+  let strlen = length str in
+  let sublen = length sub in
+  let bylen = length by in
+  let dlen = bylen - sublen in
+  let rec loop_subst idxes newlen i =
+    match (try rfind_from str (i-1) sub with Not_found -> -1) with
+    | -1 -> idxes, newlen
+    | i' -> loop_subst (i'::idxes) (newlen+dlen) i' in
+  let idxes, newlen = loop_subst [] strlen strlen in
+  let newstr = create newlen in
+  let rec loop_copy i j idxes =
+    match idxes with
+    | [] ->
+      (* still need the last chunk *)
+      unsafe_blit str i newstr j (strlen-i)
+    | i'::rest ->
+      let di = i' - i in
+      unsafe_blit str i newstr j di ;
+      unsafe_blit by 0 newstr (j + di) bylen ;
+      loop_copy (i + di + sublen) (j + di + bylen) rest in
+  loop_copy 0 0 idxes ;
+  newstr
 (*$T nreplace
    nreplace ~str:"bar foo aaa bar" ~sub:"aa" ~by:"foo" = "bar foo afoo bar"
    nreplace ~str:"bar foo bar" ~sub:"bar" ~by:"foo" = "foo foo foo"
+   nreplace ~str:"aaaaaa" ~sub:"aa" ~by:"aaa" = "aaaaaaaaa"
+   nreplace ~str:"" ~sub:"aa" ~by:"bb" = ""
+   nreplace ~str:"foo bar baz" ~sub:"foo bar baz" ~by:"" = ""
+   nreplace ~str:"abc" ~sub:"abc" ~by:"def" = "def"
+   let s1 = "foo" in let s2 = nreplace ~str:s1 ~sub:"X" ~by:"X" in set s2 0 'F' ; s1.[0] = 'f'
 *)
 
 
-let in_place_mirror s =
+let rev_in_place s =
   let len = String.length s in
   if len > 0 then for k = 0 to (len - 1)/2 do
       let old = s.[k] and mirror = len - 1 - k in
       s.[k] <- s.[mirror]; s.[mirror] <- old;
     done
-(*$= in_place_mirror as f & ~printer:identity
+(*$= rev_in_place as f & ~printer:identity
   (let s="" in f s; s)          ""
   (let s="1" in f s; s)         "1"
   (let s="12" in f s; s)        "21"
   (let s="Example!" in f s; s)  "!elpmaxE"
 *)
+
+let in_place_mirror = rev_in_place
 
 let repeat s n =
   let buf = Buffer.create ( n * (String.length s) ) in
@@ -798,6 +832,20 @@ let repeat s n =
    repeat "fo" 4 = "fofofofo"
    repeat "fo" 0 = ""
    repeat "" 4 = ""
+*)
+
+let rev s = 
+  let len = String.length s in
+  let reversed = String.create len in
+  for i = 0 to len - 1 do
+    String.unsafe_set reversed (len - i - 1) (String.unsafe_get s i)
+  done;
+  reversed
+
+(*$T rev
+   rev "" = ""
+   rev "batteries" = "seirettab"
+   rev "even" = "neve"
 *)
 
 let trim s =

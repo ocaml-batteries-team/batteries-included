@@ -180,7 +180,7 @@ val fold_right : ('a -> 'b -> 'b) -> 'a list -> 'b -> 'b
 val reduce : ('a -> 'a -> 'a) -> 'a list -> 'a
 (** [List.reduce f h::t] is [fold_left f h t].
 
-    @raise Empty_list on empty lists. *)
+    @raise Invalid_argument on empty list. *)
 
 val max : 'a list -> 'a
 (** [max l] returns the largest value in [l] as judged by
@@ -191,11 +191,21 @@ val min : 'a list -> 'a
     [Pervasives.compare] *)
 
 val sum : int list -> int
-(** [sum l] returns the sum of the integers of [l] *)
+(** [sum l] returns the sum of the integers of [l] 
+    @raise Invalid_argument on the empty list.
+ *)
 
 val fsum : float list -> float
-(** [fsum l] returns the sum of the floats of [l] *)
+(** [fsum l] returns the sum of the floats of [l] 
+    @raise Invalid_argument on the empty list.
+ *)
 
+val min_max : ?cmp:('a -> 'a -> int) -> 'a list -> 'a * 'a
+(** [min_max l] returns the pair (smallest, largest) from [l] as judged by
+    [Pervasives.compare] (by default). You can provide another
+    comparison function via the optional [cmp] parameter.
+    @raise Invalid_argument on an empty list.
+ *)
 
 (** {6 Iterators on two lists} *)
 
@@ -470,7 +480,20 @@ val take_while : ('a -> bool) -> 'a list -> 'a list
 
 val drop_while : ('a -> bool) -> 'a list -> 'a list
 (** [drop_while p xs] returns the suffix remaining after
-    [takeWhile p xs]. *)
+    [take_while p xs]. *)
+    
+val span : ('a -> bool) -> 'a list -> 'a list * 'a list
+(** [span], applied to a predicate [p] and a list [xs], returns a 
+tuple where first element is longest prefix (possibly empty) of xs 
+of elements that satisfy p and second element is the remainder of the list.
+This is equivalent to [(take_while p xs, drop_while p xs)], but 
+is done in one pass. *)
+
+val group_nosort : ('a -> 'a -> bool) -> 'a list -> 'a list list
+(** The [group_nosort] function takes a list and returns a list of lists such 
+that the concatenation of the result is equal to the argument. Moreover, each 
+sublist in the result contains only equal elements. For example, 
+[group_nosort (=) [3;3;4;3;3] =  [[3;3];[4];[3;3]]] *)
 
 val interleave : ?first:'a -> ?last:'a -> 'a -> 'a list -> 'a list
 (** [interleave ~first ~last sep [a0;a1;a2;...;an]] returns

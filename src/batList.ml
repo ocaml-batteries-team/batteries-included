@@ -213,6 +213,41 @@ let rec drop_while f = function
   (drop_while ((=) 3) [3]) []
 *)
 
+let span p li =
+  let rec loop dst = function
+    | [] -> []
+    | x :: xs as l ->
+      if p x then
+        let r = { hd = x; tl = [] } in
+        dst.tl <- inj r;
+        loop r xs
+      else l
+  in
+  let dummy = dummy_node () in
+  let xs = loop dummy li in
+  (dummy.tl , xs)
+
+(*$= span 
+  (span ((=) 3) [3;3;4;3;3])  ([3;3],[4;3;3])
+  (span ((=) 3) [3])          ([3],[])
+  (span ((=) 3) [4])          ([],[4])
+  (span ((=) 3) [])           ([],[])
+  (span ((=) 2) [2; 2])       ([2; 2],[])
+*)
+
+let rec group_nosort p = function
+| [] -> []
+| x :: ys ->
+  let xs, notxs = span (p x) ys in
+  (x :: xs) :: group_nosort p notxs
+
+(*$= group_nosort & ~printer:(IO.to_string (List.print (List.print Int.print)))
+  (group_nosort (=) [3;3;4;3;3])  [[3;3];[4];[3;3]]
+  (group_nosort (=) [3])          [[3]]
+  (group_nosort (=) [])           []
+  (group_nosort (=) [2; 2])       [[2; 2]]
+*)
+
 let takewhile = take_while
 let dropwhile = drop_while
 
@@ -884,6 +919,32 @@ let min l = reduce Pervasives.min l
 let max l = reduce Pervasives.max l
 let sum l = reduce (+) l
 let fsum l = reduce (+.) l
+
+let min_max ?cmp:(cmp = Pervasives.compare) = function
+  | [] -> invalid_arg "List.min_max: Empty List"
+  | x :: xs ->
+    fold_left
+      (fun (curr_min, curr_max) y ->
+         let new_min =
+           if cmp curr_min y = 1
+           then y
+           else curr_min
+         in
+         let new_max =
+           if cmp curr_max y = -1
+           then y
+           else curr_max
+         in
+         (new_min, new_max)
+      )
+      (x, x)
+      xs
+
+(*$T min_max
+  min_max [1] = (1, 1)
+  min_max [1; 1] = (1, 1)
+  min_max [1; -2; 3; 4; 5; 60; 7; 8] = (-2, 60)
+*)
 
 let unfold b f =
   let rec loop acc v =

@@ -27,7 +27,7 @@ let (|>) x f = f x
 let to_byte n = Int32.logand 0xffl n |> Int32.to_int |> Char.chr
 let of_byte b = Char.code b |> Int32.of_int
 
-(*Q to_byte, of_byte
+(*$Q to_byte; of_byte
   Q.char (fun c -> Pervasives.(=) (to_byte (of_byte c)) c)
 *)
 
@@ -37,7 +37,7 @@ let of_byte b = Char.code b |> Int32.of_int
 
 (* really need to just blit an int32 word into a string and vice versa *)
 let pack str pos item =
-  if String.length str > pos + 4 then invalid_arg "Int32.pack: pos too close to end of string";
+  if String.length str < pos + 4 then invalid_arg "Int32.pack: pos too close to end of string";
   if pos < 0 then invalid_arg "Int32.pack: pos negative";
   str.[pos] <- to_byte item;
   let item = Int32.shift_right item 8 in
@@ -47,9 +47,17 @@ let pack str pos item =
   let item = Int32.shift_right item 8 in
   str.[pos+3] <- to_byte item (* optimize out last logand? *)
 
+(*$T pack
+  let str = "    " in pack str 0 0l; (str = "\000\000\000\000")
+  let str = "     " in pack str 0 0l; (str = "\000\000\000\000 ")
+  let str = "     " in pack str 1 0l; (str = " \000\000\000\000")
+  let str = "   " in try pack str 0 0l; false with Invalid_argument _ -> true
+  let str = "    " in try pack str 1 0l; false with Invalid_argument _ -> true
+*)
+
 let pack_big str pos item =
-  if String.length str > pos + 4 then failwith "Int32.pack_big: pos too close to end of string";
-  if pos < 0 then failwith "Int32.pack_big: pos negative";
+  if String.length str < pos + 4 then invalid_arg "Int32.pack_big: pos too close to end of string";
+  if pos < 0 then invalid_arg "Int32.pack_big: pos negative";
   str.[pos+3] <- to_byte item;
   let item = Int32.shift_right item 8 in
   str.[pos+2] <- to_byte item;
@@ -58,23 +66,53 @@ let pack_big str pos item =
   let item = Int32.shift_right item 8 in
   str.[pos] <- to_byte item (* optimize out last logand? *)
 
+(*$T pack_big
+  let str = "    " in pack_big str 0 0l; (str = "\000\000\000\000")
+  let str = "     " in pack_big str 0 0l; (str = "\000\000\000\000 ")
+  let str = "     " in pack_big str 1 0l; (str = " \000\000\000\000")
+  let str = "   " in try pack_big str 0 0l; false with Invalid_argument _ -> true
+  let str = "    " in try pack_big str 1 0l; false with Invalid_argument _ -> true
+*)
+
 let unpack str pos =
-  if String.length str > pos + 4 then failwith "Int32.unpack: pos + 4 not within string";
-  if pos < 0 then failwith "Int32.unpack: pos negative";
+  if String.length str < pos + 4 then invalid_arg "Int32.unpack: pos + 4 not within string";
+  if pos < 0 then invalid_arg "Int32.unpack: pos negative";
   let shift n = Int32.shift_left n 8
   and add b n = Int32.add (of_byte b) n in
   of_byte str.[pos+3] |> shift |> add str.[pos+2] |> shift
   |> add str.[pos+1] |> shift |> add str.[pos]
 (* TODO: improve performance of bit twiddling?  will these curried functions get inlined? *)
 
+(*$T unpack
+  unpack "\000\000\000\000" 0 = 0l
+  unpack "\000\000\000\000 " 0 = 0l
+  unpack " \000\000\000\000" 1 = 0l
+  unpack "\255\000\000\000" 0 = 255l
+*)
+
+(*$Q pack; unpack
+  Q.int (let str = "    " in fun x -> let x = Int32.of_int x in pack str 0 x; unpack str 0 = x)
+*)
+
+
 let unpack_big str pos =
-  if String.length str > pos + 4 then failwith "Int32.unpack: pos + 4 not within string";
-  if pos < 0 then failwith "Int32.unpack: pos negative";
+  if String.length str < pos + 4 then invalid_arg "Int32.unpack: pos + 4 not within string";
+  if pos < 0 then invalid_arg "Int32.unpack: pos negative";
   let shift n = Int32.shift_left n 8
   and add b n = Int32.add (of_byte b) n in
   of_byte str.[pos] |> shift |> add str.[pos+1] |> shift
   |> add str.[pos+2] |> shift |> add str.[pos+3]
 
+(*$T unpack_big
+  unpack_big "\000\000\000\000" 0 = 0l
+  unpack_big "\000\000\000\000 " 0 = 0l
+  unpack_big " \000\000\000\000 " 1 = 0l
+  unpack_big "\000\000\000\255" 0 = 255l
+*)
+
+(*$Q pack_big; unpack_big
+  Q.int (let str = "    " in fun x -> let x = Int32.of_int x in pack_big str 0 x; unpack_big str 0 = x)
+*)
 
 module BaseInt32 = struct
   include Int32
