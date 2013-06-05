@@ -886,7 +886,7 @@ let sum l = reduce (+) l
 let fsum l = reduce (+.) l
 
 let min_max ?cmp:(cmp = Pervasives.compare) = function
-  | [] -> invalid_arg "Empty List"
+  | [] -> invalid_arg "List.min_max: Empty List"
   | x :: xs ->
     fold_left
       (fun (curr_min, curr_max) y ->
