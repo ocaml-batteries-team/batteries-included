@@ -199,7 +199,7 @@ val fsum : float list -> float
 (** [min_max l] returns the pair (smallest, largest) from [l] as judged by
     [Pervasives.compare] (by default). You can provide another
     comparison function via the optional [cmp] parameter.
-    Raises Invalid_argument on an empty list.
+    @raise Invalid_argument on an empty list.
  *)
 val min_max : ?cmp:('a -> 'a -> int) -> 'a list -> 'a * 'a
 
