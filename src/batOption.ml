@@ -163,9 +163,9 @@ let of_enum = BatEnum.get
    let e = BatList.enum [1; 2; 3] in of_enum e = Some 1 && BatList.of_enum e = [2; 3]
 *)
 
-let print print_a out = function
-  | None   -> BatInnerIO.nwrite out "None"
-  | Some x -> BatPrintf.fprintf out "Some %a" print_a x
+let print ?(some="Some ") ?(none="None") print_a out = function
+  | None   -> BatInnerIO.nwrite out none
+  | Some x -> BatPrintf.fprintf out "%s%a" some print_a x
 
 let maybe_printer a_printer paren out = function
   | None -> ()

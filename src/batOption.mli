@@ -148,7 +148,9 @@ end
 
 (** {7 Printing}*)
 
-val print : ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> 'b t -> unit
+val print : ?some:string -> ?none:string ->
+      ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> 'b t -> unit
+(** Print the contents of an option *)
 
 (** Operations on options, with labels.*)
 module Labels : sig
