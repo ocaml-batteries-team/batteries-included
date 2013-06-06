@@ -306,6 +306,13 @@ val split_on_dot : t -> t list
 val split_on_comma : t -> t list
 val split_on_slash : t -> t list
 
+val enum : t -> char BatEnum.t
+(** [enum ss] returns an enumeration of the characters represented by ss. 
+    It does no copying so beweare of mutating the original string.
+*)
+
+val print : 'a BatIO.output -> t -> unit
+  (** [print oc ss] prints [ss] to the output channel [oc] *)
 
 
 (** {6 Finding}*)
@@ -315,8 +322,9 @@ sig
   val find_simple : string -> t -> int -> int
   val find_horspool : string -> t -> int -> int
   val find_adaptive : string -> t -> int -> int
-  (** [find_* pattern text pos] behave as [find text pattern] but start searching
+  (** [find_* pattern ?stop text pos] behave as [find text pattern] but start searching
       from right before position [pos] in [text].
+      The search can be limited by giving a stop index.
 
       - [find_simple] is a naive algorithm with avarage complexity of textlength
       - [find_horspool] is an improved horspool algorithm with avarage complexity
@@ -326,9 +334,9 @@ sig
 
       Use [find_adaptive] if unsure.
 
-      A partial binding of [find_horspool] or [find_adaptive] with only one argument
-      will do the constant processing overhead only once and all later calls to
-      the resulting function will run in textlength/patternlength on average.
+      A partial binding of [find_horspool] with the pattern or [find_adaptive]
+      with pattern and text will do the constant processing overhead only once and
+      all later calls to the resulting function will run without overhead.
 
       @raise Not_found if no substring is found
       @raise Invalid_argument if [pos] is not a valid index of the string.
@@ -339,9 +347,10 @@ sig
   val rfind_simple : string -> t -> int -> int
   val rfind_horspool : string -> t -> int -> int
   val rfind_adaptive : string -> t -> int -> int
-  (** [rfind_* pattern text pos] behave as [rfind text pattern] but start searching
+  (** [rfind_* pattern ?stop text pos] behave as [rfind text pattern] but start searching
       from {e right before} position [pos] in {e direction of the beginning of the
       string}. See examples below to get an idea what this means in practice.
+      The search can be limited by giving a stop index.
 
       see [find_*] above for some information about the complexity of the
       different algorithms.
@@ -382,10 +391,12 @@ val rfind : t -> string -> int
 *)
 
 val find_all: string -> t -> int BatEnum.t
-(** [find_all pattern ?pos text] returns the starting indices of all occurences
+(** [find_all pattern ?stop ?start text] returns the starting indices of all occurences
     of string [pattern] within substring [text] in a (lazy) enum.
-    Optionally a starting index can be given in [pos] to start the search
-    right before position [pos].
+
+    Optionally a start and stop index can be given in [start] and [stop]
+    to start the search right before position [start] to right before position
+    [stop].
 
     Changing the string while still using the enumeration might be a bad idea.
 
@@ -395,22 +406,16 @@ val find_all: string -> t -> int BatEnum.t
 *)
 
 val rfind_all: string -> t -> int BatEnum.t
-(** [rfind_all pattern ?pos text] returns the starting indices of all occurences
+(** [rfind_all pattern ?stop ?start text] returns the starting indices of all occurences
     of string [pattern] within substring [text] in a lazy enum.
     Search runs from end to beginning of [text], therefore returning the
     indices in reverse order.
-    Optionally a starting position can be given in [pos] to start the
-    reverse search from right before position [pos].
+
+    Optionally a start and stop index can be given in [start] and [stop]
+    to start the search right before position [start] to right before position
+    [stop].
 
     @raise Invalid_argument if [pos] is not a valid position in the string.
 
     Example: [String.find_all "ababa" 4 "aba" = enum (2;0)]
 *)
-
-val enum : t -> char BatEnum.t
-(** [enum ss] returns an enumeration of the characters represented by ss. 
-    It does no copying so beweare of mutating the original string.
-*)
-
-val print : 'a BatIO.output -> t -> unit
-  (** [print oc ss] prints [ss] to the output channel [oc] *)
