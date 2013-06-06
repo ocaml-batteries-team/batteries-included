@@ -45,7 +45,7 @@ let big_pattern, big_string =
   let string = BatString.init 600 (fun _ -> BatRandom.char ()) in
   pattern, string ^ pattern ^ string
 
-let test_find find () =
+let test_find (find :string -> ?stop:int -> string -> int -> int) () =
   let str = "abcd" in
   assert_int 0 (find "a" str 0);
   assert_int 1 (find "b" str 0);
@@ -54,6 +54,7 @@ let test_find find () =
   assert_int 0 (find "" str 0);
   assert_int 2 (find "" str 2);
   assert_int 4 (find "" str 4);
+  assert_raises Not_found (fun () -> find "d" ~stop:3 str 2);
   assert_raises Not_found (fun () -> find "b" str 2);
   assert_raises Not_found (fun () -> find "d" str 4);
   assert_raises (Invalid_argument "String.find*")
@@ -68,7 +69,7 @@ let test_find find () =
   assert_int 600 (find big_pattern big_string 0);
   ()
 
-let test_rfind find () =
+let test_rfind (find :string -> ?stop:int -> string -> int -> int) () =
   let str = "abcd" in
   assert_int 0 (find "a" str 3);
   assert_int 1 (find "b" str 2);
@@ -77,6 +78,7 @@ let test_rfind find () =
   assert_int 0 (find "" str 0);
   assert_int 2 (find "" str 2);
   assert_int 4 (find "" str 4);
+  assert_raises Not_found (fun () -> find "a" ~stop:1 str 4);
   assert_raises Not_found (fun () -> find "c" str 2);
   assert_raises Not_found (fun () -> find "d" str 3);
   assert_raises (Invalid_argument "String.rfind*")
@@ -141,15 +143,22 @@ let tests = "String" >::: [
   "Start with" >:: test_starts_with;
   "Ends with" >:: test_ends_with;
   "Finding" >::: [
-    "find_from" >:: test_find (fun sub str pos -> BatString.find_from str pos sub);
-    "find_simple" >:: test_find BatString.find_simple;
-    "find_horspool" >:: test_find BatString.find_horspool;
-    "find_adaptive" >:: test_find BatString.find_adaptive;
+    "find_from" >:: test_find
+      (fun pattern ?stop text start ->
+        let stop = match stop with None -> BatString.length text |Some x -> x in
+        let i = BatString.find_from text start pattern in
+        if i > stop - String.length pattern then raise Not_found else i);
+    "find_simple" >:: test_find BatString.Find.find_simple;
+    "find_horspool" >:: test_find BatString.Find.find_horspool;
+    "find_adaptive" >:: test_find BatString.Find.find_adaptive;
     "find_all" >:: test_find_all;
-    "rfind_from" >:: test_rfind (fun sub str pos -> BatString.rfind_from str (pos-1) sub);
-    "rfind_simple" >:: test_rfind BatString.rfind_simple;
-    "rfind_horspool" >:: test_rfind BatString.rfind_horspool;
-    "rfind_adaptive" >:: test_rfind BatString.rfind_adaptive;
+    "rfind_from" >:: test_rfind
+      (fun pattern ?(stop=0) text start ->
+        let i = BatString.rfind_from text (start-1) pattern in
+        if i < stop then raise Not_found else i);
+    "rfind_simple" >:: test_rfind BatString.Find.rfind_simple;
+    "rfind_horspool" >:: test_rfind BatString.Find.rfind_horspool;
+    "rfind_adaptive" >:: test_rfind BatString.Find.rfind_adaptive;
     "rfind_all" >:: test_rfind_all;
   ];
   "Splitting with nsplit" >:: test_nsplit;

@@ -89,75 +89,176 @@ let ends_with str p =
   not (ends_with "Jon \"Maddog\" Orwant" "Jon")
 *)
 
-let find_simple sub str pos =
-  let len = length str in
-  let sublen = length sub in
-  if pos < 0 || pos > len then raise (Invalid_argument "String.find*");
-  if sublen = 0 then pos else
-    BatReturn.label (fun label ->
-      for i = pos to len - sublen do
-        let j = ref 0 in
-        while unsafe_get str (i + !j) = unsafe_get sub !j do
-          incr j;
-          if !j = sublen then BatReturn.return label i
-        done;
-      done;
-      raise Not_found
-    )
+module Find = struct
 
-let find_horspool sub =
-  let sublen = String.length sub in
-
-  (* initialize shifting table. improved horspool - all elements are >=1
-   * Abuse string as uint8 array. *)
-  let shift = make 256 (char_of_int (min 255 sublen)) in
-  for i = max 0 (sublen - 255) to sublen - 1 do
-    unsafe_set shift
-      (int_of_char (unsafe_get sub i))
-      (char_of_int (sublen - i))
-  done;
-
-  (* allow early initialization on partial binding *)
-  fun str pos ->
-    let strlen = length str in
-    let rec worker i =
-      if i+sublen >= strlen then raise Not_found;
-      (* shift according to shifting table - will shift >=1 *)
-      let i =
-          i + int_of_char (unsafe_get shift
-                (int_of_char (unsafe_get str (i+sublen))))
-      in
-      if i+sublen > strlen then raise Not_found;
-      let j = ref 0 in
-      (* compare - since order is not important unroll the loop a bit
-       * by doing two comparisons at once, starting at both ends. *)
-      while
-        unsafe_get str (i + !j) = unsafe_get sub !j &&
-        unsafe_get str (i + sublen - 1 - !j) = unsafe_get sub (sublen - 1 - !j) &&
-        (incr j; 2 * !j < sublen)
-      do () done;
-      (* all equal ? *)
-      if 2 * !j >= sublen
-      then i
-      else worker i
+  let find_simple pattern ?stop text start =
+    let stop = match stop with
+      |None -> length text
+      |Some x when x < 0 || length text < x ->
+          invalid_arg "String.find*"
+      |Some x -> x
     in
-    if pos < 0 || pos > strlen then raise (Invalid_argument "String.find*");
-    if sublen = 0 then pos
-    else worker (pos-1)
+    let patlen = length pattern in
+    if start < 0 || stop < start then invalid_arg "String.find*";
+    if patlen = 0 then start else
+      BatReturn.label (fun label ->
+        for i = start to stop - patlen do
+          let j = ref 0 in
+          while unsafe_get text (i + !j) = unsafe_get pattern !j do
+            incr j;
+            if !j = patlen then BatReturn.return label i
+          done;
+        done;
+        raise Not_found
+      )
 
-let find_adaptive sub str =
-  let strlen = length str
-  and sublen = length sub in
-  if (sublen - 2) * strlen < 190 * sublen
-  then find_simple sub str
-  else find_horspool sub str
+  let find_horspool pattern =
+    let patlen = String.length pattern in
 
-let find_from str pos sub = find_adaptive sub str pos
-let find str sub = find_adaptive sub str 0
+    (* initialize shifting table. improved horspool - all elements are >=1
+     * Abuse string as uint8 array. *)
+    let shift = make 256 (char_of_int (min 255 patlen)) in
+    for i = max 0 (patlen - 255) to patlen - 1 do
+      unsafe_set shift
+        (int_of_char (unsafe_get pattern i))
+        (char_of_int (patlen - i))
+    done;
 
-let find_all sub ?(pos=0) str =
-  let worker = find_adaptive sub str in
-  let nexti = ref pos in
+    (* allow early initialization on partial binding *)
+    fun ?stop text ->
+      let stop = match stop with
+        |None -> length text
+        |Some x when x < 0 || length text < x ->
+            invalid_arg "String.find*"
+        |Some x -> x
+      in
+      let rec worker i =
+        if i+patlen >= stop then raise Not_found;
+        (* shift according to shifting table - will shift >=1 *)
+        let i =
+            i + int_of_char (unsafe_get shift
+                  (int_of_char (unsafe_get text (i+patlen))))
+        in
+        if i+patlen > stop then raise Not_found;
+        let j = ref 0 in
+        (* compare - since order is not important unroll the loop a bit
+         * by doing two comparisons at once, starting at both ends. *)
+        while
+          unsafe_get text (i + !j) = unsafe_get pattern !j &&
+          unsafe_get text (i + patlen - 1 - !j) = unsafe_get pattern (patlen - 1 - !j) &&
+          (incr j; 2 * !j < patlen)
+        do () done;
+        (* all equal ? *)
+        if 2 * !j >= patlen
+        then i
+        else worker i
+      in
+      function
+        |start when start < 0 || stop < start
+            -> invalid_arg "String.find*"
+        |start when patlen=0 -> start
+        |start -> worker (start-1)
+
+  let find_adaptive pattern ?stop text =
+    (* we assert a starting position of 0,
+     * don't check for stop out of bounds. Will be checked by worker functions *)
+    let patlen = length pattern
+    and textlen = match stop with
+      |None -> length text
+      |Some x -> x
+    in
+    if (patlen - 2) * textlen < 190 * patlen
+    then find_simple pattern ?stop text
+    else find_horspool pattern ?stop text
+
+  let rfind_simple pattern ?stop text start =
+    let stop = match stop with
+      |None -> 0
+      |Some x when x < 0 || length text < x ->
+          invalid_arg "String.rfind*"
+      |Some x -> x
+    in
+    let patlen = length pattern in
+    if start < stop || length text < start then invalid_arg "String.rfind*";
+    if patlen = 0 then start else
+      BatReturn.label (fun label ->
+        for i = start - patlen downto stop do
+          let j = ref 0 in
+          while unsafe_get text (i + !j) = unsafe_get pattern !j do
+            incr j;
+            if !j = patlen then BatReturn.return label i
+          done;
+        done;
+        raise Not_found
+      )
+
+  let rfind_horspool pattern =
+    let patlen = String.length pattern in
+
+    (* initialize shifting table. improved horspool - all elements are >=1
+     * Abuse string as uint8 array. *)
+    let shift = make 256 (char_of_int (min 255 patlen)) in
+    for i = min (patlen-1) 254 downto 0 do
+      unsafe_set shift
+        (int_of_char (unsafe_get pattern i))
+        (char_of_int (i+1))
+    done;
+
+    (* allow early initialization on partial binding *)
+    fun ?stop text ->
+      let textlen = length text in
+      let stop = match stop with
+        |None -> 0
+        |Some x when x < 0 || textlen < x ->
+            invalid_arg "String.rfind*"
+        |Some x -> x
+      in
+      let rec worker i =
+        if i <= stop then raise Not_found;
+        (* shift according to shifting table - will shift >=1 *)
+        let i =
+            i - int_of_char (unsafe_get shift
+                  (int_of_char (unsafe_get text (i-1))))
+        in
+        if i < stop then raise Not_found;
+        let j = ref 0 in
+        (* compare - since order is not important unroll the loop a bit
+         * by doing two comparisons at once, starting at both ends. *)
+        while
+          unsafe_get text (i + !j) = unsafe_get pattern !j &&
+          unsafe_get text (i + patlen - 1 - !j) = unsafe_get pattern (patlen - 1 - !j) &&
+          (incr j; 2 * !j < patlen)
+        do () done;
+        (* all equal ? *)
+        if 2 * !j >= patlen
+        then i
+        else worker i
+      in
+      function
+        |start when start < stop || textlen < start
+            -> invalid_arg "String.rfind*"
+        |start when patlen=0 -> start
+        |start -> worker (start-patlen+1)
+
+  let rfind_adaptive pattern ?stop text =
+    (* we assert a starting position of length text,
+     * don't check for stop out of bounds. Will be checked by worker functions *)
+    let patlen = length pattern
+    and textlen = match stop with
+      |None -> length text
+      |Some x -> length text - x
+    in
+    if (patlen - 2) * textlen < 190 * patlen
+    then rfind_simple pattern ?stop text
+    else rfind_horspool pattern ?stop text
+end
+
+let find_from text start pattern = Find.find_adaptive pattern text start
+let find text pattern = Find.find_adaptive pattern text 0
+
+let find_all pattern ?stop ?(start=0) text =
+  let worker = Find.find_adaptive pattern ?stop text in
+  let nexti = ref start in
   BatEnum.from begin fun () ->
     let i =
       try worker !nexti with
@@ -194,86 +295,20 @@ let find_all sub ?(pos=0) str =
   try ignore (find "foo" "bar"); false with Not_found -> true
 *)
 
-let rfind_simple sub str pos =
-  let sublen = length sub
-  and len = length str in
-  if pos < 0 || pos  > len then raise (Invalid_argument "String.rfind*");
-  if sublen = 0 then pos else
-    BatReturn.label (fun label ->
-      for i = pos - sublen downto 0 do
-        let j = ref 0 in
-        while unsafe_get str (i + !j) = unsafe_get sub !j do
-          incr j;
-          if !j = sublen then BatReturn.return label i
-        done;
-      done;
-      raise Not_found
-    )
+let rfind_from text start pattern = Find.rfind_adaptive pattern text (start+1)
+let rfind text pattern = Find.rfind_adaptive pattern text (String.length text)
 
-let rfind_horspool sub =
-  let sublen = String.length sub in
-
-  (* initialize shifting table. improved horspool - all elements are >=1
-   * Abuse string as uint8 array. *)
-  let shift = make 256 (char_of_int (min 255 sublen)) in
-  for i = min (sublen-1) 254 downto 0 do
-    unsafe_set shift
-      (int_of_char (unsafe_get sub i))
-      (char_of_int (i+1))
-  done;
-
-  (* allow early initialization on partial binding *)
-  fun str pos ->
-    let strlen = length str in
-    let rec worker i =
-      if i <= 0 then raise Not_found;
-      (* shift according to shifting table - will shift >=1 *)
-      let i =
-          i - int_of_char (unsafe_get shift
-                (int_of_char (unsafe_get str (i-1))))
-      in
-      if i < 0 then raise Not_found;
-      let j = ref 0 in
-      (* compare - since order is not important unroll the loop a bit
-       * by doing two comparisons at once, starting at both ends. *)
-      while
-        unsafe_get str (i + !j) = unsafe_get sub !j &&
-        unsafe_get str (i + sublen - 1 - !j) = unsafe_get sub (sublen - 1 - !j) &&
-        (incr j; 2 * !j < sublen)
-      do () done;
-      (* all equal ? *)
-      if 2 * !j >= sublen
-      then i
-      else worker i
-    in
-    if pos < 0 || pos > strlen then raise (Invalid_argument "String.rfind*");
-    if sublen = 0 then pos
-    else worker (pos-sublen+1)
-
-let rfind_adaptive sub str =
-  let strlen = length str
-  and sublen = length sub in
-  if (sublen - 2) * strlen < 190 * sublen
-  then rfind_simple sub str
-  else rfind_horspool sub str
-
-let rfind_from str pos sub = rfind_adaptive sub str (pos+1)
-let rfind str sub = rfind_from str (String.length str - 1) sub
-
-let rfind_all sub ?pos str =
-  let worker = rfind_adaptive sub str in
-  let pos = match pos with
-    |None -> length str
-    |Some pos -> pos
-  in
-  let sublen = String.length sub in
-  let nexti = ref pos in
+let rfind_all pattern ?stop ?start text =
+  let worker = Find.rfind_adaptive pattern ?stop text in
+  let patlen = length pattern in
+  let start = match start with None -> length text |Some x -> x in
+  let nexti = ref start in
   BatEnum.from begin fun () ->
     let i =
       try worker !nexti with
       Not_found -> raise BatEnum.No_more_elements
     in
-    nexti := i + sublen - 1;
+    nexti := i + patlen - 1;
     i
   end
 
@@ -422,7 +457,7 @@ let nsplit str ~by:sep =
   else
     (* str is non empty *)
     let seplen = String.length sep in
-    let rfind' = rfind_adaptive sep str in
+    let rfind' = Find.rfind_adaptive sep str in
     let rec aux acc len =
       if len > 0 then (
         match
@@ -975,38 +1010,48 @@ let print_quoted out s = BatInnerIO.nwrite out (quote s)
 
 module Exceptionless =
 struct
-  let
-    find_simple,
-    find_horspool,
-    find_adaptive,
-    rfind_simple,
-    rfind_horspool,
-    rfind_adaptive
-  =
-    let wrap f sub str pos =
-      try Some (f sub str pos) with Not_found -> None
-    in
-    wrap find_simple,
-    wrap find_horspool,
-    wrap find_adaptive,
-    wrap rfind_simple,
-    wrap rfind_horspool,
-    wrap rfind_adaptive
+  module Find =
+  struct
+    include Find
+    let
+      find_simple,
+      find_horspool,
+      find_adaptive,
+      rfind_simple,
+      rfind_horspool,
+      rfind_adaptive
+    =
+      (* allow partial application *)
+      let wrap f =
+        fun pattern ->
+          let f = f pattern in
+          fun ?stop text ->
+            let f = f ?stop text in
+            fun start ->
+              try Some (f start) with Not_found -> None
+      in
+      wrap find_simple,
+      wrap find_horspool,
+      wrap find_adaptive,
+      wrap rfind_simple,
+      wrap rfind_horspool,
+      wrap rfind_adaptive
 
-  (*$T
-    Exceptionless.find_simple    "ab" "b" 0 = None
-    Exceptionless.find_horspool  "ab" "b" 0 = None
-    Exceptionless.find_adaptive  "ab" "b" 0 = None
-    Exceptionless.rfind_simple   "ab" "b" 1 = None
-    Exceptionless.rfind_horspool "ab" "b" 1 = None
-    Exceptionless.rfind_adaptive "ab" "b" 1 = None
-  *)
+    (*$T
+      Exceptionless.Find.find_simple    "ab" "b" 0 = None
+      Exceptionless.Find.find_horspool  "ab" "b" 0 = None
+      Exceptionless.Find.find_adaptive  "ab" "b" 0 = None
+      Exceptionless.Find.rfind_simple   "ab" "b" 1 = None
+      Exceptionless.Find.rfind_horspool "ab" "b" 1 = None
+      Exceptionless.Find.rfind_adaptive "ab" "b" 1 = None
+    *)
+  end
 
-  let find_from str pos sub = find_adaptive sub str pos
-  and rfind_from str pos sub = rfind_adaptive sub str pos
+  let find_from text start pattern = Find.find_adaptive pattern text start
+  and rfind_from text start pattern = Find.rfind_adaptive pattern text start
 
-  let find str sub = find_adaptive sub str 0
-  and rfind str sub = rfind_adaptive sub str (String.length str)
+  let find text pattern = Find.find_adaptive pattern text 0
+  and rfind text pattern = Find.rfind_adaptive pattern text (length text)
   (*$T
     Exceptionless.find "a" "ab" = None
     Exceptionless.rfind "a" "b" = None
@@ -1081,15 +1126,10 @@ struct
   let contains      = contains
   let contains_from = contains_from
   let rcontains_from= rcontains_from
-  let find_simple   = find_simple
-  let find_horspool = find_horspool
-  let find_adaptive = find_adaptive
+  module Find = Find
   let find          = find
   let find_from     = find_from
   let find_all      = find_all
-  let rfind_simple  = rfind_simple
-  let rfind_horspool= rfind_horspool
-  let rfind_adaptive= rfind_adaptive
   let rfind         = rfind
   let rfind_from    = rfind_from
   let rfind_all     = rfind_all
@@ -1157,14 +1197,9 @@ struct
 
   module Exceptionless =
   struct
-    let find_simple = Exceptionless.find_simple
-    let find_horspool = Exceptionless.find_horspool
-    let find_adaptive = Exceptionless.find_adaptive
+    module Find = Exceptionless.Find
     let find_from = Exceptionless.find_from
     let find = Exceptionless.find
-    let rfind_simple = Exceptionless.find_simple
-    let rfind_horspool = Exceptionless.find_horspool
-    let rfind_adaptive = Exceptionless.find_adaptive
     let rfind_from = Exceptionless.rfind_from
     let rfind = Exceptionless.rfind
     let to_int = Exceptionless.to_int
