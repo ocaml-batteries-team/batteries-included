@@ -110,11 +110,22 @@ let do_bench length name =
        (fun (impl_name, implem) -> (name^" "^impl_name, run implem)) 
        implems)
 
-let main =
+let () =
+  let insane =
+    (* run for only a few samples to avoid taking hours *)
+    let open Bench in
+    let old_samples = config.samples in
+    config.samples <- 3;
+    let result = do_bench 1_000_000 "insanely long" in
+    config.samples <- samples;
+    result
+  in
+
   let benchs = [
     do_bench 100 "short";
     do_bench 1000 "long";
     do_bench 10_000 "very long";
+    insane;
   ] in
   List.iter (print_newline % Bench.run_outputs) benchs
 
