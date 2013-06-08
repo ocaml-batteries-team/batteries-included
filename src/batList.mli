@@ -489,11 +489,17 @@ of elements that satisfy p and second element is the remainder of the list.
 This is equivalent to [(take_while p xs, drop_while p xs)], but 
 is done in one pass. *)
 
-val group_nosort : ('a -> 'a -> bool) -> 'a list -> 'a list list
-(** The [group_nosort] function takes a list and returns a list of lists such 
+val group_consecutive : ('a -> 'a -> bool) -> 'a list -> 'a list list
+(** The [group_consecutive] function takes a list and returns a list of lists such 
 that the concatenation of the result is equal to the argument. Moreover, each 
 sublist in the result contains only equal elements. For example, 
-[group_nosort (=) [3;3;4;3;3] =  [[3;3];[4];[3;3]]] *)
+[group_consecutive (=) [3;3;4;3;3] =  [[3;3];[4];[3;3]]].
+
+{b Note:} In the next major version, this function is intended to replace the 
+current [group], which also sorts its input before grouping, and which will
+therefore be renamed into something more pertinent, such as [classify], 
+[regroup], or [group_sort].
+*)
 
 val interleave : ?first:'a -> ?last:'a -> 'a -> 'a list -> 'a list
 (** [interleave ~first ~last sep [a0;a1;a2;...;an]] returns
@@ -607,6 +613,8 @@ val group : ('a -> 'a -> int) -> 'a list -> 'a list list
     For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if
     following conditions are met:
     [cmp a b = 0], [cmp b c = -1], [cmp c d = -1], [cmp d e = 0],...
+    
+    See the note on [group_consecutive].
 *)
 
 val cartesian_product : 'a list -> 'b list -> ('a * 'b) list

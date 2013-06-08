@@ -235,17 +235,17 @@ let span p li =
   (span ((=) 2) [2; 2])       ([2; 2],[])
 *)
 
-let rec group_nosort p = function
+let rec group_consecutive p = function
 | [] -> []
 | x :: ys ->
   let xs, notxs = span (p x) ys in
-  (x :: xs) :: group_nosort p notxs
+  (x :: xs) :: group_consecutive p notxs
 
-(*$= group_nosort & ~printer:(IO.to_string (List.print (List.print Int.print)))
-  (group_nosort (=) [3;3;4;3;3])  [[3;3];[4];[3;3]]
-  (group_nosort (=) [3])          [[3]]
-  (group_nosort (=) [])           []
-  (group_nosort (=) [2; 2])       [[2; 2]]
+(*$= group_consecutive & ~printer:(IO.to_string (List.print (List.print Int.print)))
+  (group_consecutive (=) [3;3;4;3;3])  [[3;3];[4];[3;3]]
+  (group_consecutive (=) [3])          [[3]]
+  (group_consecutive (=) [])           []
+  (group_consecutive (=) [2; 2])       [[2; 2]]
 *)
 
 let takewhile = take_while
