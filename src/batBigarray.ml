@@ -217,7 +217,27 @@ module Array1 = struct
     | 0 -> 0     (* keep these magic constants in sync with bigarray.ml *)
     | 0x100 -> 1 (* and transitively with caml_ba_layout in bigarray.h  *)
     | _ -> failwith "Unknown layout" (* note four copies of this function *)
-  let enum t = Genarray.enum (genarray_of_array1 t)
+
+  let enum t =
+    let offset = ofs t in
+    BatEnum.init (dim t) (fun i -> t.{offset + i})
+
+  let of_enum kind layout enum =
+    let b_dim = BatEnum.count enum in
+    let b = create kind layout b_dim in
+    for i = ofs b to ofs b + b_dim - 1 do
+      b.{i} <- BatEnum.get_exn enum
+    done;
+    b
+
+  (*$Q
+    Q.string (fun s -> s = String.of_enum (Array1.enum \
+      (Array1.of_enum char c_layout (String.enum s))))
+    Q.string (fun s -> s = String.of_enum (Array1.enum \
+      (Array1.of_enum char fortran_layout (String.enum s))))
+    (Q.list Q.int) (fun li -> li = List.of_enum (Array1.enum \
+      (Array1.of_enum int c_layout (List.enum li))))
+  *)
 
   let map f b_kind a =
     let b_dim = dim a in

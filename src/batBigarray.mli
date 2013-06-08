@@ -549,14 +549,21 @@ module Array1 : sig
       See {!Bigarray.Genarray.map_file} for more details. *)
 
   val enum : ('a, 'b, 'c) t -> 'a BatEnum.t
-  (** [enum e] returns an enumeration on the elements of [e].
-	The order of enumeration is unspecified.*)
+  (** [Array1.enum e] returns an enumeration on the elements of [e].
+      Contrarily to the multi-dimensional case, order of elements is
+      specified: elements are in sequential order, from smaller to
+      larger indices. *)
+
+  val of_enum : ('a, 'b) kind -> 'c layout -> 'a BatEnum.t -> ('a, 'b, 'c) t
+  (** [Array1.of_enum kind layout enum] returns a new one-dimensional
+      big array of kind [kind] and layout [layout], with elements taken
+      from the enumeration [enum] in order. *)
 
   val map :
     ('a -> 'b) ->
     ('b, 'c) Bigarray.kind -> ('a, 'd, 'e) t -> ('b, 'c, 'e) t
   (** [Array1.map f a] applies function [f] to all the elements of [a],
-	and builds a {!Bigarray.Array1.t} with the results returned by [f]. *)
+      and builds a {!Bigarray.Array1.t} with the results returned by [f]. *)
 
   val mapi :
     (int -> 'a -> 'b) ->
