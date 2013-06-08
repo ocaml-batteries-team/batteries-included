@@ -181,7 +181,7 @@ test-byte: prefilter _build/testsuite/main.byte _build/$(QTESTDIR)/all_tests.byt
 	@echo "" # newline after "OK"
 	@_build/$(QTESTDIR)/all_tests.byte
 
-test-native: test-byte _build/testsuite/main.native _build/$(QTESTDIR)/all_tests.native
+test-native: prefilter _build/testsuite/main.native _build/$(QTESTDIR)/all_tests.native
 	@_build/testsuite/main.native
 	@echo "" # newline after "OK"
 	@_build/$(QTESTDIR)/all_tests.native
