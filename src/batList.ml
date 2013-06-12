@@ -235,17 +235,24 @@ let span p li =
   (span ((=) 2) [2; 2])       ([2; 2],[])
 *)
 
-let rec group_consecutive p = function
-| [] -> []
-| x :: ys ->
-  let xs, notxs = span (p x) ys in
-  (x :: xs) :: group_consecutive p notxs
+let group_consecutive p l =
+  let rec loop dst = function
+    | [] -> []
+    | x :: ys ->
+      let xs, notxs = span (p x) ys in
+      let r = { hd = x :: xs; tl = [] } in
+      dst.tl <- inj r;
+      loop r notxs
+  in
+  let dummy = dummy_node () in
+  let _ = loop dummy l in
+  dummy.tl
 
 (*$= group_consecutive & ~printer:(IO.to_string (List.print (List.print Int.print)))
-  (group_consecutive (=) [3;3;4;3;3])  [[3;3];[4];[3;3]]
-  (group_consecutive (=) [3])          [[3]]
-  (group_consecutive (=) [])           []
-  (group_consecutive (=) [2; 2])       [[2; 2]]
+  (group_consecutive (=) [3; 3; 4; 3; 3]) [[3; 3]; [4]; [3; 3]]
+  (group_consecutive (=) [3])             [[3]]
+  (group_consecutive (=) [])              []
+  (group_consecutive (=) [2; 2])          [[2; 2]]
 *)
 
 let takewhile = take_while
