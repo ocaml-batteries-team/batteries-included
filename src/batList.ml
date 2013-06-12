@@ -874,6 +874,13 @@ let group cmp lst =
       List.rev_map List.rev (lastgr::groups)
     end
 
+(*$T group
+  group Pervasives.compare []                 = []
+  group Pervasives.compare [1]                = [[1]]
+  group Pervasives.compare [2; 2]             = [[2; 2]]
+  group Pervasives.compare [5; 4; 4; 2; 1; 6] = [[1]; [2]; [4; 4]; [5]; [6]]
+*)
+
 let cartesian_product l1 l2 =
   List.concat (List.map (fun i -> List.map (fun j -> (i,j)) l2) l1)
 
