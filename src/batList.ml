@@ -249,10 +249,10 @@ let group_consecutive p l =
   dummy.tl
 
 (*$= group_consecutive & ~printer:(IO.to_string (List.print (List.print Int.print)))
-  (group_consecutive (=) [3;3;4;3;3])  [[3;3];[4];[3;3]]
-  (group_consecutive (=) [3])          [[3]]
-  (group_consecutive (=) [])           []
-  (group_consecutive (=) [2; 2])       [[2; 2]]
+  (group_consecutive (=) [3; 3; 4; 3; 3]) [[3; 3]; [4]; [3; 3]]
+  (group_consecutive (=) [3])             [[3]]
+  (group_consecutive (=) [])              []
+  (group_consecutive (=) [2; 2])          [[2; 2]]
 *)
 
 let takewhile = take_while
