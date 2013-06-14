@@ -581,16 +581,20 @@ let split lst =
 
 let nsplit p li =
   let not_p x = not (p x) in
-  let rec loop acc = function
-    | [] -> rev acc
+  let rec loop dst = function
+    | [] -> ()
     | (x :: xs) as l ->
         let ok, rest = span not_p l in
         if ok = [] then
-          loop acc xs
+          loop dst xs
         else
-          loop (ok :: acc) rest
+          let r = { hd = ok; tl = [] } in
+          dst.tl <- inj r;
+          loop r rest
   in
-  loop [] li
+  let dummy = dummy_node () in
+  loop dummy li;
+  dummy.tl
 
 (*$T nsplit
   nsplit ((=) 0) []                    = []
