@@ -579,6 +579,28 @@ let split lst =
   loop adummy bdummy lst;
   adummy.tl, bdummy.tl
 
+let nsplit p li =
+  let not_p x = not (p x) in
+  let rec loop acc = function
+    | [] -> rev acc
+    | (x :: xs) as l ->
+        let ok, rest = span not_p l in
+        if ok = [] then
+          loop acc xs
+        else
+          loop (ok :: acc) rest
+  in
+  loop [] li
+
+(*$T nsplit
+  nsplit ((=) 0) []                    = []
+  nsplit ((=) 0) [0]                   = []
+  nsplit ((=) 0) [1; 0]                = [[1]]
+  nsplit ((=) 0) [0; 1]                = [[1]]
+  nsplit ((=) 0) [1; 0; 1; 0; 1]       = [[1]; [1]; [1]]
+  nsplit ((=) 0) [1; 2; 0; 3; 4; 0; 5] = [[1; 2]; [3; 4]; [5]]
+*)
+
 let combine l1 l2 =
   let rec loop dst l1 l2 =
     match l1, l2 with
