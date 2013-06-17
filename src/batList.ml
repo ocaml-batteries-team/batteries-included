@@ -227,7 +227,7 @@ let span p li =
   let xs = loop dummy li in
   (dummy.tl , xs)
 
-(*$= span 
+(*$= span
   (span ((=) 3) [3;3;4;3;3])  ([3;3],[4;3;3])
   (span ((=) 3) [3])          ([3],[])
   (span ((=) 3) [4])          ([],[4])
@@ -583,14 +583,14 @@ let nsplit p li =
   let not_p x = not (p x) in
   let rec loop dst = function
     | [] -> ()
-    | (x :: xs) as l ->
-        let ok, rest = span not_p l in
-        if ok = [] then
-          loop dst xs
-        else
-          let r = { hd = ok; tl = [] } in
-          dst.tl <- inj r;
-          loop r rest
+    | l ->
+      let ok, rest = span not_p l in
+      let r = { hd = ok; tl = [] } in
+      dst.tl <- inj r;
+      match rest with
+        | [] -> ()
+        | x :: xs ->
+          loop r xs
   in
   let dummy = dummy_node () in
   loop dummy li;
@@ -598,9 +598,9 @@ let nsplit p li =
 
 (*$T nsplit
   nsplit ((=) 0) []                    = []
-  nsplit ((=) 0) [0]                   = []
+  nsplit ((=) 0) [0]                   = [[]]
   nsplit ((=) 0) [1; 0]                = [[1]]
-  nsplit ((=) 0) [0; 1]                = [[1]]
+  nsplit ((=) 0) [0; 1]                = [[]; [1]]
   nsplit ((=) 0) [1; 0; 1; 0; 1]       = [[1]; [1]; [1]]
   nsplit ((=) 0) [1; 2; 0; 3; 4; 0; 5] = [[1; 2]; [3; 4]; [5]]
 *)
