@@ -584,24 +584,25 @@ let accum acc x =
   acc.tl <- inj cell;
   cell
 
-let nsplit p li =
-  let not_p x = not (p x) in
-  let rec loop dst = function
-    | [] -> ()
-    | l -> let ok, rest = span not_p l in
-           let r = accum dst ok in
-           match rest with
-             | [] -> ()
-             | x :: xs -> loop r xs
-  in
-  let dummy = dummy_node () in
-  loop dummy li;
-  dummy.tl
+let nsplit p = function
+  | [] -> []
+  | li ->
+    let not_p x = not (p x) in
+    let rec loop dst l =
+      let ok, rest = span not_p l in
+      let r = accum dst ok in
+      match rest with
+        | [] -> ()
+        | x :: xs -> loop r xs
+    in
+    let dummy = dummy_node () in
+    loop dummy li;
+    dummy.tl
 
 (*$T nsplit
   nsplit ((=) 0) []                    = []
-  nsplit ((=) 0) [0]                   = [[]]
-  nsplit ((=) 0) [1; 0]                = [[1]]
+  nsplit ((=) 0) [0]                   = [[]; []]
+  nsplit ((=) 0) [1; 0]                = [[1]; []]
   nsplit ((=) 0) [0; 1]                = [[]; [1]]
   nsplit ((=) 0) [1; 0; 1; 0; 1]       = [[1]; [1]; [1]]
   nsplit ((=) 0) [1; 2; 0; 3; 4; 0; 5] = [[1; 2]; [3; 4]; [5]]
