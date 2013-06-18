@@ -579,18 +579,20 @@ let split lst =
   loop adummy bdummy lst;
   adummy.tl, bdummy.tl
 
+let accum acc x =
+  let cell = { hd = x; tl = [] } in
+  acc.tl <- inj cell;
+  cell
+
 let nsplit p li =
   let not_p x = not (p x) in
   let rec loop dst = function
     | [] -> ()
-    | l ->
-      let ok, rest = span not_p l in
-      let r = { hd = ok; tl = [] } in
-      dst.tl <- inj r;
-      match rest with
-        | [] -> ()
-        | x :: xs ->
-          loop r xs
+    | l -> let ok, rest = span not_p l in
+           let r = accum dst ok in
+           match rest with
+             | [] -> ()
+             | x :: xs -> loop r xs
   in
   let dummy = dummy_node () in
   loop dummy li;
