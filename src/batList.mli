@@ -489,6 +489,12 @@ of elements that satisfy p and second element is the remainder of the list.
 This is equivalent to [(take_while p xs, drop_while p xs)], but 
 is done in one pass. *)
 
+val nsplit : ('a -> bool) -> 'a list -> 'a list list
+(** [nsplit], applied to a predicate [p] and a list [xs], returns a
+    list of lists. [xs] is split when [p x] is true and [x] is excluded
+    from the result.
+*)
+
 val group_consecutive : ('a -> 'a -> bool) -> 'a list -> 'a list list
 (** The [group_consecutive] function takes a list and returns a list of lists such 
 that the concatenation of the result is equal to the argument. Moreover, each 
