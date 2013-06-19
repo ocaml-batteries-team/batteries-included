@@ -59,7 +59,10 @@ type 'a mappable = 'a t
 
 external inj : 'a mut_list -> 'a list = "%identity"
 
-let dummy_node () = { hd = Obj.magic (); tl = [] }
+module Acc = struct
+  let dummy () =
+    { hd = Obj.magic (); tl = [] }
+end
 
 let cons h t = h::t
 
@@ -118,7 +121,7 @@ let rec flatten l =
     | [] -> ()
     | h :: t -> outer (inner dst h) t
   in
-  let r = dummy_node () in
+  let r = Acc.dummy () in
   outer r l;
   r.tl
 
@@ -172,7 +175,7 @@ let take n l =
     | _ ->
       ()
   in
-  let dummy = dummy_node () in
+  let dummy = Acc.dummy () in
   loop n dummy l;
   dummy.tl
 
@@ -191,7 +194,7 @@ let take_while p li =
         let r = { hd = x; tl = [] } in
         dst.tl <- inj r;
         loop r xs in
-  let dummy = dummy_node () in
+  let dummy = Acc.dummy () in
   loop dummy li;
   dummy.tl
 
@@ -223,7 +226,7 @@ let span p li =
         loop r xs
       else l
   in
-  let dummy = dummy_node () in
+  let dummy = Acc.dummy () in
   let xs = loop dummy li in
   (dummy.tl , xs)
 
@@ -251,7 +254,7 @@ let nsplit p = function
         | [] -> ()
         | x :: xs -> loop r xs
     in
-    let dummy = dummy_node () in
+    let dummy = Acc.dummy () in
     loop dummy li;
     dummy.tl
 
@@ -284,7 +287,7 @@ let group_consecutive p l =
       dst.tl <- inj r;
       loop r rest
   in
-  let dummy = dummy_node () in
+  let dummy = Acc.dummy () in
   loop dummy l;
   dummy.tl
 
@@ -343,7 +346,7 @@ let rec unique ?(eq = ( = )) l =
         dst.tl <- inj r;
         loop r t
   in
-  let dummy = dummy_node () in
+  let dummy = Acc.dummy () in
   loop dummy l;
   dummy.tl
 
@@ -383,7 +386,7 @@ let unique_hash (type et) ?(hash = Hashtbl.hash) ?(eq = (=)) (l : et list) =
       loop dst t
     | [] -> ()
   in
-  let dummy = dummy_node () in
+  let dummy = Acc.dummy () in
   loop dummy l;
   dummy.tl
 
@@ -404,7 +407,7 @@ let filter_map f l =
         dst.tl <- inj r;
         loop r t
   in
-  let dummy = dummy_node () in
+  let dummy = Acc.dummy () in
   loop dummy l;
   dummy.tl
 
@@ -442,7 +445,7 @@ let map2 f l1 l2 =
       loop r t1 t2
     | _ -> invalid_arg "map2: Different_list_size"
   in
-  let dummy = dummy_node () in
+  let dummy = Acc.dummy () in
   loop dummy l1 l2;
   dummy.tl
 
@@ -506,7 +509,7 @@ let remove_assoc x lst =
         dst.tl <- inj r;
         loop r t
   in
-  let dummy = dummy_node () in
+  let dummy = Acc.dummy () in
   loop dummy lst;
   dummy.tl
 
@@ -521,7 +524,7 @@ let remove_assq x lst =
         dst.tl <- inj r;
         loop r t
   in
-  let dummy = dummy_node () in
+  let dummy = Acc.dummy () in
   loop dummy lst;
   dummy.tl
 
@@ -538,7 +541,7 @@ let find_all p l =
       else
         findnext dst t
   in
-  let dummy = dummy_node () in
+  let dummy = Acc.dummy () in
   findnext dummy l;
   dummy.tl
 
@@ -597,8 +600,8 @@ let partition p lst =
           loop yesdst r t
         end
   in
-  let yesdummy = dummy_node ()
-  and nodummy = dummy_node ()
+  let yesdummy = Acc.dummy ()
+  and nodummy = Acc.dummy ()
   in
   loop yesdummy nodummy lst;
   yesdummy.tl, nodummy.tl
@@ -613,8 +616,8 @@ let split lst =
       bdst.tl <- inj y;
       loop x y t
   in
-  let adummy = dummy_node ()
-  and bdummy = dummy_node ()
+  let adummy = Acc.dummy ()
+  and bdummy = Acc.dummy ()
   in
   loop adummy bdummy lst;
   adummy.tl, bdummy.tl
@@ -629,7 +632,7 @@ let combine l1 l2 =
       loop r t1 t2
     | _, _ -> invalid_arg "combine: Different_list_size"
   in
-  let dummy = dummy_node () in
+  let dummy = Acc.dummy () in
   loop dummy l1 l2;
   dummy.tl
 
@@ -722,7 +725,7 @@ let remove l x =
         dst.tl <- inj r;
         loop r t
   in
-  let dummy = dummy_node () in
+  let dummy = Acc.dummy () in
   loop dummy l;
   dummy.tl
 
@@ -737,7 +740,7 @@ let rec remove_if f lst =
         dst.tl <- inj r;
         loop r l
   in
-  let dummy = dummy_node () in
+  let dummy = Acc.dummy () in
   loop dummy lst;
   dummy.tl
 
@@ -752,7 +755,7 @@ let rec remove_all l x =
         dst.tl <- inj r;
         loop r t
   in
-  let dummy = dummy_node () in
+  let dummy = Acc.dummy () in
   loop dummy l;
   dummy.tl
 
@@ -795,7 +798,7 @@ let enum l =
   make (ref l) (ref (-1))
 
 let of_enum e =
-  let h = dummy_node () in
+  let h = Acc.dummy () in
   let _ = BatEnum.fold (fun acc x ->
       let r = { hd = x; tl = [] }  in
       acc.tl <- inj r;
