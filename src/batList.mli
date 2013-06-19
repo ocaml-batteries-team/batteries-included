@@ -493,18 +493,28 @@ val nsplit : ('a -> bool) -> 'a list -> 'a list list
 (** [nsplit], applied to a predicate [p] and a list [xs], returns a
     list of lists. [xs] is split when [p x] is true and [x] is excluded
     from the result.
+    
+    If elements that satisfy [p] are consecutive, or at the beginning
+    or end of the input list, the output list will contain empty lists
+    marking their position. For example,
+    [split (fun n -> n<0) [-1;2;-2;-3;4;-5]] is [[[];[2];[];[4];[]]].
+    This is consistent with the behavior of [String.nsplit], where
+    [String.nsplit ";" "1;2;;3;" = ["1";"2";"";"3";""]].
+    
+    Note that for any [xss : 'a list list] and [sep : 'a], we always have
+    that [flatten (interleave [sep] (nsplit ((=) sep) xss))] is [xss].
 *)
 
 val group_consecutive : ('a -> 'a -> bool) -> 'a list -> 'a list list
 (** The [group_consecutive] function takes a list and returns a list of lists such 
-that the concatenation of the result is equal to the argument. Moreover, each 
-sublist in the result contains only equal elements. For example, 
-[group_consecutive (=) [3;3;4;3;3] =  [[3;3];[4];[3;3]]].
+    that the concatenation of the result is equal to the argument. Moreover, each 
+    sublist in the result contains only equal elements. For example, 
+    [group_consecutive (=) [3;3;4;3;3] =  [[3;3];[4];[3;3]]].
 
-{b Note:} In the next major version, this function is intended to replace the 
-current [group], which also sorts its input before grouping, and which will
-therefore be renamed into something more pertinent, such as [classify], 
-[regroup], or [group_sort].
+    {b Note:} In the next major version, this function is intended to replace the 
+    current [group], which also sorts its input before grouping, and which will
+    therefore be renamed into something more pertinent, such as [classify], 
+    [regroup], or [group_sort].
 *)
 
 val interleave : ?first:'a -> ?last:'a -> 'a -> 'a list -> 'a list

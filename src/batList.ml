@@ -263,6 +263,18 @@ let nsplit p = function
   nsplit ((=) 0) [1; 2; 0; 0; 3; 4; 0; 5] = [[1; 2]; []; [3; 4]; [5]]
 *)
 
+(*$Q nsplit
+  (Q.list (Q.list Q.pos_int)) (fun xss -> \
+    let join sep xss = flatten (interleave [sep] xss) in \
+    let neg = -1 in \
+    xss = nsplit ((=) neg) (join neg xss) \
+  )
+  (Q.pair Q.small_int (Q.list Q.small_int)) (fun (sep,xs) -> \
+    let join sep xss = flatten (interleave [sep] xss) in \
+    xs = join sep (nsplit ((=) sep) xs) \
+  )
+*)
+
 let group_consecutive p l =
   let rec loop dst = function
     | [] -> ()
