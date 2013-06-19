@@ -172,7 +172,7 @@ let take n l =
     | _ ->
       ()
   in
-  let dummy = dummy_node() in
+  let dummy = dummy_node () in
   loop n dummy l;
   dummy.tl
 
@@ -359,7 +359,7 @@ let rec unique ?(eq = ( = )) l =
         dst.tl <- inj r;
         loop r t
   in
-  let dummy = dummy_node() in
+  let dummy = dummy_node () in
   loop dummy l;
   dummy.tl
 
@@ -399,7 +399,7 @@ let unique_hash (type et) ?(hash = Hashtbl.hash) ?(eq = (=)) (l : et list) =
       loop dst t
     | [] -> ()
   in
-  let dummy = dummy_node() in
+  let dummy = dummy_node () in
   loop dummy l;
   dummy.tl
 
@@ -420,7 +420,7 @@ let filter_map f l =
         dst.tl <- inj r;
         loop r t
   in
-  let dummy = dummy_node() in
+  let dummy = dummy_node () in
   loop dummy l;
   dummy.tl
 
@@ -537,7 +537,7 @@ let remove_assq x lst =
         dst.tl <- inj r;
         loop r t
   in
-  let dummy = dummy_node() in
+  let dummy = dummy_node () in
   loop dummy lst;
   dummy.tl
 
@@ -613,8 +613,8 @@ let partition p lst =
           loop yesdst r t
         end
   in
-  let yesdummy = dummy_node()
-  and nodummy = dummy_node()
+  let yesdummy = dummy_node ()
+  and nodummy = dummy_node ()
   in
   loop yesdummy nodummy lst;
   yesdummy.tl, nodummy.tl
@@ -811,7 +811,7 @@ let enum l =
   make (ref l) (ref (-1))
 
 let of_enum e =
-  let h = dummy_node() in
+  let h = dummy_node () in
   let _ = BatEnum.fold (fun acc x ->
       let r = { hd = x; tl = [] }  in
       acc.tl <- inj r;
