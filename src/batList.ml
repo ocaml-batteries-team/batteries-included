@@ -237,15 +237,15 @@ let span p li =
 
 let group_consecutive p l =
   let rec loop dst = function
-    | [] -> []
-    | x :: ys ->
-      let xs, notxs = span (p x) ys in
+    | [] -> ()
+    | x :: rest ->
+      let xs, rest = span (p x) rest in
       let r = { hd = x :: xs; tl = [] } in
       dst.tl <- inj r;
-      loop r notxs
+      loop r rest
   in
   let dummy = dummy_node () in
-  let _ = loop dummy l in
+  loop dummy l;
   dummy.tl
 
 (*$= group_consecutive & ~printer:(IO.to_string (List.print (List.print Int.print)))
