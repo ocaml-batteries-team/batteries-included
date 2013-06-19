@@ -105,9 +105,7 @@ let append l1 l2 =
       | [] ->
         dst.tl <- l2
       | h :: t ->
-        let cell = { hd = h; tl = [] } in
-        dst.tl <- inj cell;
-        loop cell t
+        loop (Acc.accum dst h) t
     in
     let r = { hd = h; tl = [] } in
     loop r t;
@@ -117,9 +115,7 @@ let rec flatten l =
   let rec inner dst = function
     | [] -> dst
     | h :: t ->
-      let r = { hd = h; tl = [] } in
-      dst.tl <- inj r;
-      inner r t
+      inner (Acc.accum dst h) t
   in
   let rec outer dst = function
     | [] -> ()
@@ -147,9 +143,7 @@ let map f = function
     let rec loop dst = function
       | [] -> ()
       | h :: t ->
-        let r = { hd = f h; tl = [] } in
-        dst.tl <- inj r;
-        loop r t
+        loop (Acc.accum dst (f h)) t
     in
     let r = { hd = f h; tl = [] } in
     loop r t;
@@ -173,9 +167,7 @@ let rec drop n = function
 let take n l =
   let rec loop n dst = function
     | h :: t when n > 0 ->
-      let r = { hd = h; tl = [] } in
-      dst.tl <- inj r;
-      loop (n-1) r t
+      loop (n - 1) (Acc.accum dst h) t
     | _ ->
       ()
   in
@@ -195,9 +187,7 @@ let take_while p li =
     | [] -> ()
     | x :: xs ->
       if p x then
-        let r = { hd = x; tl = [] } in
-        dst.tl <- inj r;
-        loop r xs in
+        loop (Acc.accum dst x) xs in
   let dummy = Acc.dummy () in
   loop dummy li;
   dummy.tl
@@ -225,16 +215,14 @@ let span p li =
     | [] -> []
     | x :: xs as l ->
       if p x then
-        let r = { hd = x; tl = [] } in
-        dst.tl <- inj r;
-        loop r xs
+        loop (Acc.accum dst x) xs
       else l
   in
   let dummy = Acc.dummy () in
   let xs = loop dummy li in
   (dummy.tl , xs)
 
-(*$= span 
+(*$= span
   (span ((=) 3) [3;3;4;3;3])  ([3;3],[4;3;3])
   (span ((=) 3) [3])          ([3],[])
   (span ((=) 3) [4])          ([],[4])
@@ -282,9 +270,7 @@ let group_consecutive p l =
     | [] -> ()
     | x :: rest ->
       let xs, rest = span (p x) rest in
-      let r = { hd = x :: xs; tl = [] } in
-      dst.tl <- inj r;
-      loop r rest
+      loop (Acc.accum dst (x :: xs)) rest
   in
   let dummy = Acc.dummy () in
   loop dummy l;
@@ -341,9 +327,7 @@ let rec unique ?(eq = ( = )) l =
       match exists (eq h) t with
       | true -> loop dst t
       | false ->
-        let r = { hd =  h; tl = [] }  in
-        dst.tl <- inj r;
-        loop r t
+        loop (Acc.accum dst h) t
   in
   let dummy = Acc.dummy () in
   loop dummy l;
@@ -378,9 +362,9 @@ let unique_hash (type et) ?(hash = Hashtbl.hash) ?(eq = (=)) (l : et list) =
   let rec loop dst = function
     | h::t when not (HT.mem ht h) ->
       HT.add ht h (); (* put h in hash table *)
-      let r = {hd = h; tl = []} in (* and to output list *)
-      dst.tl <- inj r;
-      loop r t
+      loop
+        (Acc.accum dst h) (* and to output list *)
+        t
     | _::t -> (* if already in hashtable then don't add to output list *)
       loop dst t
     | [] -> ()
@@ -402,9 +386,7 @@ let filter_map f l =
       match f h with
       | None -> loop dst t
       | Some x ->
-        let r = { hd = x; tl = [] }  in
-        dst.tl <- inj r;
-        loop r t
+        loop (Acc.accum dst x) t
   in
   let dummy = Acc.dummy () in
   loop dummy l;
@@ -439,9 +421,7 @@ let map2 f l1 l2 =
     match src1, src2 with
     | [], [] -> ()
     | h1 :: t1, h2 :: t2 ->
-      let r = { hd = f h1 h2; tl = [] } in
-      dst.tl <- inj r;
-      loop r t1 t2
+      loop (Acc.accum dst (f h1 h2)) t1 t2
     | _ -> invalid_arg "map2: Different_list_size"
   in
   let dummy = Acc.dummy () in
@@ -504,9 +484,7 @@ let remove_assoc x lst =
       if a = x then
         dst.tl <- t
       else
-        let r = { hd = pair; tl = [] } in
-        dst.tl <- inj r;
-        loop r t
+        loop (Acc.accum dst pair) t
   in
   let dummy = Acc.dummy () in
   loop dummy lst;
@@ -519,9 +497,7 @@ let remove_assq x lst =
       if a == x then
         dst.tl <- t
       else
-        let r = { hd =  pair; tl = [] } in
-        dst.tl <- inj r;
-        loop r t
+        loop (Acc.accum dst pair) t
   in
   let dummy = Acc.dummy () in
   loop dummy lst;
@@ -534,9 +510,7 @@ let find_all p l =
     | [] -> ()
     | h :: t ->
       if p h then
-        let r = { hd = h; tl = [] } in
-        dst.tl <- inj r;
-        findnext r t
+        findnext (Acc.accum dst h) t
       else
         findnext dst t
   in
@@ -583,6 +557,7 @@ let rec rindex_ofq e l =
 
 let filter = find_all
 
+(* berenger: it is not clear to me if I can use Acc.accum in there *)
 let partition p lst =
   let rec loop yesdst nodst = function
     | [] -> ()
@@ -609,11 +584,7 @@ let split lst =
   let rec loop adst bdst = function
     | [] -> ()
     | (a, b) :: t ->
-      let x = { hd = a; tl = [] }
-      and y = { hd = b; tl = [] } in
-      adst.tl <- inj x;
-      bdst.tl <- inj y;
-      loop x y t
+      loop (Acc.accum adst a) (Acc.accum bdst b) t
   in
   let adummy = Acc.dummy ()
   and bdummy = Acc.dummy ()
@@ -626,9 +597,7 @@ let combine l1 l2 =
     match l1, l2 with
     | [], [] -> ()
     | h1 :: t1, h2 :: t2 ->
-      let r = { hd = h1, h2; tl = [] } in
-      dst.tl <- inj r;
-      loop r t1 t2
+      loop (Acc.accum dst (h1, h2)) t1 t2
     | _, _ -> invalid_arg "combine: Different_list_size"
   in
   let dummy = Acc.dummy () in
@@ -641,9 +610,7 @@ let rec init size f =
   else
     let rec loop dst n =
       if n < size then
-        let r = { hd = f n; tl = [] } in
-        dst.tl <- inj r;
-        loop r (n+1)
+        loop (Acc.accum dst (f n)) (n+1)
     in
     let r = { hd = f 0; tl = [] } in
     loop r 1;
@@ -663,9 +630,7 @@ let mapi f = function
     let rec loop dst n = function
       | [] -> ()
       | h :: t ->
-        let r = { hd = f n h; tl = [] } in
-        dst.tl <- inj r;
-        loop r (n+1) t
+        loop (Acc.accum dst (f n h)) (n + 1) t
     in
     let r = { hd = f 0 h; tl = [] } in
     loop r 1 t;
@@ -698,9 +663,7 @@ let split_nth index = function
           match l with
           | [] -> invalid_arg "Index past end of list"
           | h :: t ->
-            let r = { hd =  h; tl = [] } in
-            dst.tl <- inj r;
-            loop (n-1) r t
+            loop (n - 1) (Acc.accum dst h) t
       in
       let r = { hd = h; tl = [] } in
       inj r, loop (index-1) r t
@@ -720,9 +683,7 @@ let remove l x =
       if x = h then
         dst.tl <- t
       else
-        let r = { hd = h; tl = [] } in
-        dst.tl <- inj r;
-        loop r t
+        loop (Acc.accum dst h) t
   in
   let dummy = Acc.dummy () in
   loop dummy l;
@@ -735,9 +696,7 @@ let rec remove_if f lst =
       if f x then
         dst.tl <- l
       else
-        let r = { hd = x; tl = [] } in
-        dst.tl <- inj r;
-        loop r l
+        loop (Acc.accum dst x) l
   in
   let dummy = Acc.dummy () in
   loop dummy lst;
@@ -750,9 +709,7 @@ let rec remove_all l x =
       if x = h then
         loop dst t
       else
-        let r = { hd = h; tl = [] } in
-        dst.tl <- inj r;
-        loop r t
+        loop (Acc.accum dst h) t
   in
   let dummy = Acc.dummy () in
   loop dummy l;
@@ -764,7 +721,10 @@ let transpose = function
   | x::xs ->
     let heads = List.map (fun x -> {hd=x; tl=[]}) x in
     ignore ( List.fold_left
-        (fun acc x -> List.map2 (fun x xs -> let r = {hd = x; tl = []} in xs.tl <- inj r; r) x acc)
+        (fun acc x ->
+           List.map2
+             (fun x xs -> Acc.accum xs x)
+             x acc)
         heads xs);
     Obj.magic heads (* equivalent to List.map inj heads, but without creating a new list *)
 
@@ -798,10 +758,7 @@ let enum l =
 
 let of_enum e =
   let h = Acc.dummy () in
-  let _ = BatEnum.fold (fun acc x ->
-      let r = { hd = x; tl = [] }  in
-      acc.tl <- inj r;
-      r) h e in
+  let _ = BatEnum.fold Acc.accum h e in
   h.tl
 
 
