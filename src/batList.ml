@@ -62,6 +62,10 @@ external inj : 'a mut_list -> 'a list = "%identity"
 module Acc = struct
   let dummy () =
     { hd = Obj.magic (); tl = [] }
+  let accum acc x =
+    let cell = { hd = x; tl = [] } in
+    acc.tl <- inj cell;
+    cell
 end
 
 let cons h t = h::t
@@ -238,11 +242,6 @@ let span p li =
   (span ((=) 2) [2; 2])       ([2; 2],[])
 *)
 
-let accum acc x =
-  let cell = { hd = x; tl = [] } in
-  acc.tl <- inj cell;
-  cell
-
 let nsplit p = function
   | [] -> []
   (* note that returning [] on empty inputs is an arbitrary choice
@@ -260,7 +259,7 @@ let nsplit p = function
     let not_p x = not (p x) in
     let rec loop dst l =
       let ok, rest = span not_p l in
-      let r = accum dst ok in
+      let r = Acc.accum dst ok in
       match rest with
         | [] -> ()
         | x :: xs -> loop r xs
