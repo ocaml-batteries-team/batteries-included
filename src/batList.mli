@@ -484,10 +484,10 @@ val drop_while : ('a -> bool) -> 'a list -> 'a list
     
 val span : ('a -> bool) -> 'a list -> 'a list * 'a list
 (** [span], applied to a predicate [p] and a list [xs], returns a 
-tuple where first element is longest prefix (possibly empty) of xs 
-of elements that satisfy p and second element is the remainder of the list.
-This is equivalent to [(take_while p xs, drop_while p xs)], but 
-is done in one pass. *)
+    tuple where first element is longest prefix (possibly empty) of xs 
+    of elements that satisfy p and second element is the remainder of
+    the list. This is equivalent to [(take_while p xs, drop_while p xs)],
+    but is done in one pass. *)
 
 val nsplit : ('a -> bool) -> 'a list -> 'a list list
 (** [nsplit], applied to a predicate [p] and a list [xs], returns a
