@@ -235,6 +235,46 @@ let span p li =
   (span ((=) 2) [2; 2])       ([2; 2],[])
 *)
 
+let accum acc x =
+  let cell = { hd = x; tl = [] } in
+  acc.tl <- inj cell;
+  cell
+
+let nsplit p = function
+  | [] -> []
+  | li ->
+    let not_p x = not (p x) in
+    let rec loop dst l =
+      let ok, rest = span not_p l in
+      let r = accum dst ok in
+      match rest with
+        | [] -> ()
+        | x :: xs -> loop r xs
+    in
+    let dummy = dummy_node () in
+    loop dummy li;
+    dummy.tl
+
+(*$T nsplit
+  nsplit ((=) 0) []                    = []
+  nsplit ((=) 0) [0]                   = [[]; []]
+  nsplit ((=) 0) [1; 0]                = [[1]; []]
+  nsplit ((=) 0) [0; 1]                = [[]; [1]]
+  nsplit ((=) 0) [1; 2; 0; 0; 3; 4; 0; 5] = [[1; 2]; []; [3; 4]; [5]]
+*)
+
+(*$Q nsplit
+  (Q.list (Q.list Q.pos_int)) (fun xss -> \
+    let join sep xss = flatten (interleave [sep] xss) in \
+    let neg = -1 in \
+    xss = nsplit ((=) neg) (join neg xss) \
+  )
+  (Q.pair Q.small_int (Q.list Q.small_int)) (fun (sep,xs) -> \
+    let join sep xss = flatten (interleave [sep] xss) in \
+    xs = join sep (nsplit ((=) sep) xs) \
+  )
+*)
+
 let group_consecutive p l =
   let rec loop dst = function
     | [] -> ()
