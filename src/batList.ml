@@ -257,7 +257,7 @@ let nsplit p = function
     dummy.tl
 
 (*$T nsplit
-  nsplit ((=) 0) []                    = [[]]
+  nsplit ((=) 0) []                    = []
   nsplit ((=) 0) [0]                   = [[]; []]
   nsplit ((=) 0) [1; 0]                = [[1]; []]
   nsplit ((=) 0) [0; 1]                = [[]; [1]]
@@ -609,16 +609,23 @@ let split lst =
   adummy.tl, bdummy.tl
 
 let combine l1 l2 =
-  let rec loop dst l1 l2 =
-    match l1, l2 with
-    | [], [] -> ()
-    | h1 :: t1, h2 :: t2 ->
-      loop (Acc.accum dst (h1, h2)) t1 t2
-    | _, _ -> invalid_arg "combine: Different_list_size"
-  in
-  let dummy = Acc.dummy () in
-  loop dummy l1 l2;
-  dummy.tl
+  let list_sizes_differ = Invalid_argument "combine: Different_list_size" in
+  match l1, l2 with
+    | [], [] -> []
+    | x :: xs, y :: ys ->
+      let acc = { hd = (x, y); tl = [] } in
+      let rec loop dst l1 l2 = match l1, l2 with
+        | [], [] -> inj acc
+        | h1 :: t1, h2 :: t2 -> loop (Acc.accum dst (h1, h2)) t1 t2
+        | _, _ -> raise list_sizes_differ
+      in loop acc xs ys
+    | _, _ -> raise list_sizes_differ
+
+(*$T combine
+  combine []     []     = []
+  combine [1]    [2]    = [(1, 2)]
+  combine [1; 3] [2; 4] = [(1, 2); (3, 4)]
+*)
 
 let rec init size f =
   if size = 0 then []
