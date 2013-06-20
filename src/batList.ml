@@ -257,7 +257,7 @@ let nsplit p = function
     dummy.tl
 
 (*$T nsplit
-  nsplit ((=) 0) []                    = [[]]
+  nsplit ((=) 0) []                    = []
   nsplit ((=) 0) [0]                   = [[]; []]
   nsplit ((=) 0) [1; 0]                = [[1]; []]
   nsplit ((=) 0) [0; 1]                = [[]; [1]]
