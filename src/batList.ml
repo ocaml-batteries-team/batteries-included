@@ -232,6 +232,17 @@ let span p li =
 
 let nsplit p = function
   | [] -> []
+  (* note that returning [] on empty inputs is an arbitrary choice
+     that is made for consistence with the behavior of
+     BatString.nsplit. Note having this hardcoded case would have
+     `nsplit p []` return `[[]]`, which is also a semantically valid
+     return value (in fact the two are equivalent, but `[[]]` would be
+     a more natural choice as it allows to enforce the simply
+     invariant that `nsplit` return values are always non-empty).
+
+     If that was to redo from scratch, `[[]]` would be a better return
+     value for both `BatList.nsplit` and `BatString.nsplit`.
+  *)
   | li ->
     let not_p x = not (p x) in
     let rec loop dst l =
@@ -246,7 +257,7 @@ let nsplit p = function
     dummy.tl
 
 (*$T nsplit
-  nsplit ((=) 0) []                    = []
+  nsplit ((=) 0) []                    = [[]]
   nsplit ((=) 0) [0]                   = [[]; []]
   nsplit ((=) 0) [1; 0]                = [[1]; []]
   nsplit ((=) 0) [0; 1]                = [[]; [1]]
@@ -256,14 +267,19 @@ let nsplit p = function
 (*$Q nsplit
   (Q.list (Q.list Q.pos_int)) (fun xss -> \
     let join sep xss = flatten (interleave [sep] xss) in \
+    (* normalize: the return type of nsplit \
+       is quotiented by the equivalence []~[[]] *) \
+    let normalize = function [] -> [[]] | li -> li in \
     let neg = -1 in \
-    xss = nsplit ((=) neg) (join neg xss) \
+    normalize xss = normalize (nsplit ((=) neg) (join neg xss)) \
   )
   (Q.pair Q.small_int (Q.list Q.small_int)) (fun (sep,xs) -> \
     let join sep xss = flatten (interleave [sep] xss) in \
     xs = join sep (nsplit ((=) sep) xs) \
   )
 *)
+
+(* nsplit ((=) sep) la @ nsplit ((=) sep) lb   = nsplit ((=) sep) (la @ [sep] @ lb) *)
 
 let group_consecutive p l =
   let rec loop dst = function

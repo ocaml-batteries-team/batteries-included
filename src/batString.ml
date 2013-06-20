@@ -316,9 +316,9 @@ let nsplit str ~by:sep =
     aux [] (length str - 1 )
 
 (*$T nsplit
-   nsplit "a;b;c" ~by:";" = ["a"; "b"; "c"]
-   nsplit "" ~by:"x" = []
-   try nsplit "abc" ~by:"" = ["a"; "b"; "c"] with Invalid_argument _ -> true
+  nsplit "a;b;c" ~by:";" = ["a"; "b"; "c"]
+  nsplit "" ~by:"x" = []
+  try nsplit "abc" ~by:"" = ["a"; "b"; "c"] with Invalid_argument _ -> true
   nsplit "a/b/c" ~by:"/" = ["a"; "b"; "c"]
   nsplit "/a/b/c//" ~by:"/" = [""; "a"; "b"; "c"; ""; ""]
   nsplit "FOOaFOObFOOcFOOFOO" ~by:"FOO" = [""; "a"; "b"; "c"; ""; ""]
