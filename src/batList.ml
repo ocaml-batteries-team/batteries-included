@@ -608,16 +608,18 @@ let split lst =
   loop adummy bdummy lst;
   adummy.tl, bdummy.tl
 
-let combine l1 l2 = match l1, l2 with
+let combine l1 l2 =
+  let list_sizes_differ = Invalid_argument "combine: Different_list_size" in
+  match l1, l2 with
   | [], [] -> []
   | x :: xs, y :: ys ->
     let acc = { hd = (x, y); tl = [] } in
     let rec loop dst l1 l2 = match l1, l2 with
       | [], [] -> inj acc
       | h1 :: t1, h2 :: t2 -> loop (Acc.accum dst (h1, h2)) t1 t2
-      | _, _ -> invalid_arg "combine: Different_list_size"
+      | _, _ -> raise list_sizes_differ
     in loop acc xs ys
-  | _, _ -> invalid_arg "combine: Different_list_size"
+  | _, _ -> raise list_sizes_differ
 
 let rec init size f =
   if size = 0 then []
