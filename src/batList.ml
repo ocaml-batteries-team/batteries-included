@@ -621,6 +621,12 @@ let combine l1 l2 =
     in loop acc xs ys
   | _, _ -> raise list_sizes_differ
 
+(*$T combine
+  combine []     []     = []
+  combine [1]    [2]    = [(1, 2)]
+  combine [1; 3] [2; 4] = [(1, 2); (3, 4)]
+*)
+
 let rec init size f =
   if size = 0 then []
   else if size < 0 then invalid_arg "BatList.init"
