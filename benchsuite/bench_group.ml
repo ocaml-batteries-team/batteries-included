@@ -3,6 +3,8 @@
  *)
 open Batteries
 
+module HT = Hashtbl
+
 let group_current cmp lst =
   let sorted = List.sort cmp lst in
   let fold first rest = List.fold_left
@@ -20,7 +22,6 @@ let group_current cmp lst =
       let groups, lastgr, _ = fold hd tl in
       List.rev_map List.rev (lastgr::groups)
     end
-
 
 let group_berenger cmp = function
   | [] -> []
@@ -43,6 +44,28 @@ let group_berenger cmp = function
         local :: global
       | _ -> assert false
 
+let group_ht_plus_set (type a) cmp = function
+  | []  -> []  (* FBR: really necessary? *)
+  | [x] -> [x] (* FBR: really necessary? *)
+  | l ->
+    let seen = Hashtbl.create 10 in
+    let module S = Set.Make(struct type t = a let compare = cmp end) in
+    let sorted =
+      List.fold_left
+        (fun acc x ->
+          try
+            let count = HT.find seen x in
+            count := !count + 1;
+            acc
+          with Not_found ->
+            HT.add seen x (ref 1);
+            S.add x acc
+        )
+        S.empty
+        l
+    in
+    failwith "not implemented yet"
+
 let group_map (type a) cmp li =
   let module M = Map.Make(struct type t = a let compare = cmp end) in
   let rec gather m = function
@@ -52,7 +75,7 @@ let group_map (type a) cmp li =
   let return m = List.rev (M.fold (fun _x xs li -> xs::li) m []) in
   return (gather M.empty li)
 
-let implems = [ 
+let implems = [
   "current", group_current;
   "berenger", group_berenger;
   "map", group_map;
@@ -86,7 +109,7 @@ let do_bench length name =
       group (fun x y -> compare (x / sqrt_length) (y / sqrt_length)) random_list;
     ]
   in
-  
+
   (* first check that the functions agree (~ are correct) *)
   let reference_result = test group_current in
   let () =
@@ -103,11 +126,11 @@ let do_bench length name =
     for i=1 to iters do
       ignore (test group);
     done
-  in  
+  in
 
   Bench.bench_n
     (List.map
-       (fun (impl_name, implem) -> (name^" "^impl_name, run implem)) 
+       (fun (impl_name, implem) -> (name^" "^impl_name, run implem))
        implems)
 
 let () =
