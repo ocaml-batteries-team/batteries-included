@@ -117,7 +117,7 @@ let () =
     let old_samples = config.samples in
     config.samples <- 3;
     let result = do_bench 1_000_000 "insanely long" in
-    config.samples <- samples;
+    config.samples <- old_samples;
     result
   in
 
