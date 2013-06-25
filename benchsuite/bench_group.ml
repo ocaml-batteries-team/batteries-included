@@ -93,11 +93,34 @@ let group_map2 (type a) cmp li =
   let return m = M.fold (fun _x xs li -> xs::li) m [] in
   return (gather M.empty li)
 
+let group_map3 (type a) cmp li =
+  let module M = Map.Make(struct type t = a let compare = cmp end) in
+  (* in the map: key are elements, values are refs to their count *)
+  let m =
+    L.fold_left
+      (fun acc key ->
+         try
+           let value = M.find key acc in
+           incr value;
+           acc
+         with Not_found ->
+           M.add key (ref 1) acc
+      )
+      M.empty
+      li
+  in
+  let rev_m = M.backwards m in
+  Enum.fold
+    (fun acc (key, value) -> (L.make !value key) :: acc)
+    []
+    rev_m
+
 let implems = [
   "current" , group_current;
   "berenger", group_berenger;
   "map"     , group_map;
-  "map2"    , group_map;
+  "map2"    , group_map2;
+  "map3"    , group_map3;
 ]
 
 let equiv_result res1 res2 =
@@ -153,7 +176,7 @@ let do_bench length name =
        implems)
 
 let () =
-  let _insane =
+  let insane =
     (* run for only a few samples to avoid taking hours *)
     let open Bench in
     let old_samples = config.samples in
@@ -167,7 +190,7 @@ let () =
     do_bench 100 "short";
     do_bench 1000 "long";
     do_bench 10_000 "very long";
-    (* insane; *)
+    insane;
   ] in
   List.iter (print_newline % Bench.run_outputs) benchs
 
