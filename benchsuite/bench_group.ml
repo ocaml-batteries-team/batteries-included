@@ -3,6 +3,9 @@
  *)
 open Batteries
 
+module HT = Hashtbl
+module L  = BatList
+
 let group_current cmp lst =
   let sorted = List.sort cmp lst in
   let fold first rest = List.fold_left
@@ -20,7 +23,6 @@ let group_current cmp lst =
       let groups, lastgr, _ = fold hd tl in
       List.rev_map List.rev (lastgr::groups)
     end
-
 
 let group_berenger cmp = function
   | [] -> []
@@ -43,6 +45,35 @@ let group_berenger cmp = function
         local :: global
       | _ -> assert false
 
+let group_ht_plus_set (type a) cmp = function
+  | []  -> []    (* FBR: really necessary? *)
+  | [x] -> [[x]] (* FBR: really necessary? *)
+  | l ->
+    let rev_cmp a b = cmp b a in
+    (* used to fold_right over the set
+       FBR: meaning we need this operation in sets in fact...
+    *)
+    let seen = Hashtbl.create 10 in
+    let module S = Set.Make(struct type t = a let compare = rev_cmp end) in
+    let sorted =
+      List.fold_left
+        (fun acc x ->
+          try
+            let count = HT.find seen x in
+            count := !count + 1;
+            acc
+          with Not_found ->
+            HT.add seen x (ref 1);
+            S.add x acc
+        )
+        S.empty
+        l
+    in
+    S.fold
+      (fun x acc -> (L.make !(HT.find seen x) x) :: acc)
+      sorted
+      []
+
 let group_map (type a) cmp li =
   let module M = Map.Make(struct type t = a let compare = cmp end) in
   let rec gather m = function
@@ -52,10 +83,44 @@ let group_map (type a) cmp li =
   let return m = List.rev (M.fold (fun _x xs li -> xs::li) m []) in
   return (gather M.empty li)
 
-let implems = [ 
-  "current", group_current;
+let group_map2 (type a) cmp li =
+  let rev_cmp a b = cmp b a in
+  let module M = Map.Make(struct type t = a let compare = rev_cmp end) in
+  let rec gather m = function
+    | [] -> m
+    | x::xs -> gather (M.modify_def [] x (fun xs -> x::xs) m) xs
+  in
+  let return m = M.fold (fun _x xs li -> xs::li) m [] in
+  return (gather M.empty li)
+
+let group_map3 (type a) cmp li =
+  let module M = Map.Make(struct type t = a let compare = cmp end) in
+  (* in the map: key are elements, values are refs to their count *)
+  let m =
+    L.fold_left
+      (fun acc key ->
+         try
+           let value = M.find key acc in
+           incr value;
+           acc
+         with Not_found ->
+           M.add key (ref 1) acc
+      )
+      M.empty
+      li
+  in
+  let rev_m = M.backwards m in
+  Enum.fold
+    (fun acc (key, value) -> (L.make !value key) :: acc)
+    []
+    rev_m
+
+let implems = [
+  "current" , group_current;
   "berenger", group_berenger;
-  "map", group_map;
+  "map"     , group_map;
+  "map2"    , group_map2;
+  "map3"    , group_map3;
 ]
 
 let equiv_result res1 res2 =
@@ -86,7 +151,7 @@ let do_bench length name =
       group (fun x y -> compare (x / sqrt_length) (y / sqrt_length)) random_list;
     ]
   in
-  
+
   (* first check that the functions agree (~ are correct) *)
   let reference_result = test group_current in
   let () =
@@ -103,11 +168,11 @@ let do_bench length name =
     for i=1 to iters do
       ignore (test group);
     done
-  in  
+  in
 
   Bench.bench_n
     (List.map
-       (fun (impl_name, implem) -> (name^" "^impl_name, run implem)) 
+       (fun (impl_name, implem) -> (name^" "^impl_name, run implem))
        implems)
 
 let () =
