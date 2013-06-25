@@ -4,6 +4,7 @@
 open Batteries
 
 module HT = Hashtbl
+module L  = BatList
 
 let group_current cmp lst =
   let sorted = List.sort cmp lst in
@@ -48,8 +49,12 @@ let group_ht_plus_set (type a) cmp = function
   | []  -> []  (* FBR: really necessary? *)
   | [x] -> [x] (* FBR: really necessary? *)
   | l ->
+    let rev_cmp a b = cmp b a in
+    (* used to fold_right over the set
+       FBR: meaning we need this operation in sets in fact...
+    *)
     let seen = Hashtbl.create 10 in
-    let module S = Set.Make(struct type t = a let compare = cmp end) in
+    let module S = Set.Make(struct type t = a let compare = rev_cmp end) in
     let sorted =
       List.fold_left
         (fun acc x ->
@@ -64,7 +69,10 @@ let group_ht_plus_set (type a) cmp = function
         S.empty
         l
     in
-    failwith "not implemented yet"
+    S.fold
+      (fun x acc -> L.append (L.make !(HT.find seen x) x) acc)
+      sorted
+      []
 
 let group_map (type a) cmp li =
   let module M = Map.Make(struct type t = a let compare = cmp end) in
