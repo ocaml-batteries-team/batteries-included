@@ -83,10 +83,21 @@ let group_map (type a) cmp li =
   let return m = List.rev (M.fold (fun _x xs li -> xs::li) m []) in
   return (gather M.empty li)
 
+let group_map2 (type a) cmp li =
+  let rev_cmp a b = cmp b a in
+  let module M = Map.Make(struct type t = a let compare = rev_cmp end) in
+  let rec gather m = function
+    | [] -> m
+    | x::xs -> gather (M.modify_def [] x (fun xs -> x::xs) m) xs
+  in
+  let return m = M.fold (fun _x xs li -> xs::li) m [] in
+  return (gather M.empty li)
+
 let implems = [
-  "current", group_current;
+  "current" , group_current;
   "berenger", group_berenger;
-  "map", group_map;
+  "map"     , group_map;
+  "map2"    , group_map;
 ]
 
 let equiv_result res1 res2 =
@@ -142,7 +153,7 @@ let do_bench length name =
        implems)
 
 let () =
-  let insane =
+  let _insane =
     (* run for only a few samples to avoid taking hours *)
     let open Bench in
     let old_samples = config.samples in
@@ -156,7 +167,7 @@ let () =
     do_bench 100 "short";
     do_bench 1000 "long";
     do_bench 10_000 "very long";
-    insane;
+    (* insane; *)
   ] in
   List.iter (print_newline % Bench.run_outputs) benchs
 
