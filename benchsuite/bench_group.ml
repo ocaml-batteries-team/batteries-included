@@ -46,8 +46,8 @@ let group_berenger cmp = function
       | _ -> assert false
 
 let group_ht_plus_set (type a) cmp = function
-  | []  -> []  (* FBR: really necessary? *)
-  | [x] -> [x] (* FBR: really necessary? *)
+  | []  -> []    (* FBR: really necessary? *)
+  | [x] -> [[x]] (* FBR: really necessary? *)
   | l ->
     let rev_cmp a b = cmp b a in
     (* used to fold_right over the set
@@ -70,7 +70,7 @@ let group_ht_plus_set (type a) cmp = function
         l
     in
     S.fold
-      (fun x acc -> L.append (L.make !(HT.find seen x) x) acc)
+      (fun x acc -> (L.make !(HT.find seen x) x) :: acc)
       sorted
       []
 
