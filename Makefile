@@ -115,7 +115,8 @@ reinstall:
 #	Pre-Processing of Source Code
 ###############################################################################
 
-prefilter: src/batUnix.mli src/batPervasives.mli src/batInnerPervasives.ml src/batHashtbl.ml
+prefilter: src/batMarshal.mli src/batUnix.mli src/batPervasives.mli \
+	   src/batInnerPervasives.ml src/batHashtbl.ml
 
 # Ocaml 4.00 can benefit strongly from some pre-processing to expose
 # slightly different interfaces
@@ -124,10 +125,10 @@ prefilter: src/batUnix.mli src/batPervasives.mli src/batInnerPervasives.ml src/b
 # Look for lines starting with ##Vx##, and delete just the tag or the
 # whole line depending whether the x matches the ocaml major version
 .mliv.mli:
-	sed -e 's/^##V$(OCAML_MAJOR_VERSION)##//' -e '/^##V.##/d' $< > $@
+	perl build/prefilter.pl < $^ > $@
 
 .mlv.ml:
-	sed -e 's/^##V$(OCAML_MAJOR_VERSION)##//' -e '/^##V.##/d' $< > $@
+	perl build/prefilter.pl < $^ > $@
 
 ###############################################################################
 #	BUILDING AND RUNNING UNIT TESTS
