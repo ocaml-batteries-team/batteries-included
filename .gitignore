@@ -28,3 +28,4 @@ src/batUnix.mli
 src/batPervasives.mli
 src/batInnerPervasives.ml
 src/batHashtbl.ml
+src/batMarshal.mli

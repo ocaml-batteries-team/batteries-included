@@ -125,10 +125,10 @@ prefilter: src/batMarshal.mli src/batUnix.mli src/batPervasives.mli \
 # Look for lines starting with ##Vx##, and delete just the tag or the
 # whole line depending whether the x matches the ocaml major version
 .mliv.mli:
-	perl build/prefilter.pl < $^ > $@
+	ocaml str.cma build/prefilter.ml < $^ > $@
 
 .mlv.ml:
-	perl build/prefilter.pl < $^ > $@
+	ocaml str.cma build/prefilter.ml < $^ > $@
 
 ###############################################################################
 #	BUILDING AND RUNNING UNIT TESTS
