@@ -50,7 +50,7 @@ let of_char = Char.code
 
 (* valid range: U+0000..U+D7FF and U+E000..U+10FFFF *)
 let chr n =
-  if (n >= 0 && n <= 0xd7ff) or (n >= 0xe000 && n <= 0x10ffff)
+  if (n >= 0 && n <= 0xd7ff) || (n >= 0xe000 && n <= 0x10ffff)
   then n
   else raise Out_of_range
 
