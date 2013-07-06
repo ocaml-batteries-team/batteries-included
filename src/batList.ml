@@ -983,11 +983,12 @@ let min_max ?cmp:(cmp = Pervasives.compare) = function
 *)
 
 let unfold b f =
-  let rec loop acc v =
+  let acc = Acc.dummy () in
+  let rec loop dst v =
     match f v with
-    | None -> List.rev acc
-    | Some (a, v) -> loop (a::acc) v
-  in loop [] b
+    | None -> acc.tl
+    | Some (a, v) -> loop (Acc.accum dst a) v
+  in loop acc b
 
 (*$T unfold
   unfold 1 (fun x -> None) = []
