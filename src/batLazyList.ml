@@ -296,7 +296,16 @@ let ( ^@^ ) = append
 let flatten (lol : ('a t) list) =
   ListLabels.fold_left ~init: nil ~f: append lol
 
-let concat  (lol : ('a t) t) = fold_left append nil lol
+let concat  (lol : ('a t) t) =
+  let rec aux list = match next list with
+    | Cons (li, t) -> Lazy.force (append li (lazy (aux t)))
+    | Nil -> Nil
+  in lazy (aux lol)
+
+(*$T concat 
+  to_list (concat (of_list (List.map of_list [[1;2]; [3]; [4;5]; []; [6]; []; []]))) = [1;2;3;4;5;6]
+  ignore (concat (lazy (Cons ((let () = failwith "foo" in nil), nil)))); true
+*)
 
 (**
    {6  Conversions}
