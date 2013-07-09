@@ -109,13 +109,13 @@ let make n x =
 let iter f l =
   let rec aux l = match next l with
     | Cons (x, t) -> (f x; aux t)
-    | _ -> ()
+    | Nil -> ()
   in aux l
 
 let iteri f l =
   let rec aux i l = match next l with
     | Cons (x, t) -> (f i x; aux (i + 1) t)
-    | _ -> ()
+    | Nil -> ()
   in aux 0 l
 
 let map f l =
@@ -135,12 +135,13 @@ let fold_left f init l =
   let rec aux acc rest =
     match next rest with
     | Cons (x, t) -> aux (f acc x) t
-    | _           -> acc
+    | Nil         -> acc
   in aux init l
 
 let fold_right f init l =
-  let rec aux rest =
-    match next rest with | Cons (x, t) -> f x (aux t) | _ -> init
+  let rec aux rest = match next rest with
+    | Cons (x, t) -> f x (aux t)
+    | Nil -> init
   in aux l
 
 (** {6 Finding}*)
@@ -215,8 +216,8 @@ let rindex_ofq e l =
 let length l = fold_left (fun n _ -> n + 1) 0 l
 
 let is_empty l = match next l with
-  | Nil -> true
-  | _   -> false
+  | Nil    -> true
+  | Cons _ -> false
 
 let would_at_fail n =
   let rec aux l i = match next l with
@@ -228,7 +229,7 @@ let would_at_fail n =
 let hd list =
   match next list with
   | Cons (x, _) -> x
-  | _ -> raise Empty_list
+  | Nil -> raise Empty_list
 
 let first = hd
 
@@ -244,7 +245,7 @@ let last l =
 let tl list =
   match next list with
   | Cons (_, t) -> t
-  | _ -> raise Empty_list
+  | Nil -> raise Empty_list
 
 
 let at list n =
@@ -252,7 +253,7 @@ let at list n =
     match ((next list), i) with
     | (Cons (x, _), 0) -> x
     | (Cons (_, t), _) -> aux t (i - 1)
-    | _ -> raise (Invalid_index n)
+    | (Nil, _) -> raise (Invalid_index n)
   in if n < 0 then raise (Invalid_index n) else aux list n
 
 let nth = at
@@ -267,14 +268,14 @@ let eager_append (l1 : 'a t) (l2 : 'a t) =
   let rec aux list =
     match next list with
     | Cons (x, t) -> cons x (aux t)
-    | _           -> l2
+    | Nil         -> l2
   in aux l1
 
 let rev_append (l1 : 'a t) (l2 : 'a t) =
   let rec aux list acc =
     match next list with
-    | Cons (x, t) -> aux t (lazy (Cons (x, acc)))
-    | _ -> acc
+    | Cons (x, t) -> aux t (Lazy.lazy_from_val (Cons (x, acc)))
+    | Nil -> acc
   in aux l1 l2
 
 (**Revert a list, convert it to a lazy list and append it.
@@ -311,7 +312,7 @@ let concat  (lol : ('a t) t) =
    {6  Conversions}
 *)
 (**
-   Eager conversion to string.
+   Eager conversion to list.
 *)
 let to_list l = fold_right (fun x acc -> x :: acc) [] l
 
@@ -322,7 +323,7 @@ let to_stream l =
   let rec aux rest =
     match next rest with
     | Cons (x, t) -> Stream.icons x (Stream.slazy (fun _ -> aux t))
-    | _ -> Stream.sempty
+    | Nil -> Stream.sempty
   in aux l
 
 (**
@@ -335,7 +336,7 @@ let enum l =
     let reference = ref l in
     BatEnum.make ~next:(fun () -> match next !reference with
       | Cons(x,t) -> reference := t; x
-      | _         -> raise BatEnum.No_more_elements )
+      | Nil       -> raise BatEnum.No_more_elements )
       ~count:(fun () -> length !reference)
       ~clone:(fun () -> aux !reference)
   in aux l
@@ -363,7 +364,7 @@ let of_stream s =
     in
     match Stream.peek __strm with
     | Some h -> (Stream.junk __strm; lazy (Cons (h, aux s)))
-    | _ -> nil
+    | None -> nil
   in aux s
 
 (**
@@ -385,7 +386,7 @@ let of_enum e =
   let rec aux () =
     lazy (match BatEnum.get e with
       |	Some x -> Cons (x, aux () )
-      | _      -> Nil )
+      | None   -> Nil )
   in
   aux ()
 
@@ -537,10 +538,11 @@ let drop_while p =
     | Cons(_,_)          -> l
   in aux
 
+(* TODO: make lazy *)
 let take_while p =
   let rec aux acc l = match next l with
     | Cons(h,t) when p h -> aux (h::acc) t
-    | _                  -> rev_of_list acc
+    | Cons _ | Nil       -> rev_of_list acc
   in aux []
 
 let sort ?(cmp=Pervasives.compare) l = of_list (List.sort cmp (to_list l))
@@ -552,7 +554,7 @@ let map2 f l1 l2 =
     match (next l1, next l2) with
     | (Cons (h1, t1), Cons(h2, t2)) -> lazy (Cons (f h1 h2, aux t1 t2))
     | (Nil, Nil)                    -> nil
-    | _                             -> raise (Different_list_size "LazyList.map2")
+    | (Cons _, Nil) | (Nil, Cons _) -> raise (Different_list_size "LazyList.map2")
   in aux l1 l2
 
 let iter2 f l1 l2 =
@@ -560,7 +562,7 @@ let iter2 f l1 l2 =
     match (next l1, next l2) with
     | (Cons (h1, t1), Cons(h2, t2)) -> f h1 h2; aux t1 t2
     | (Nil, Nil)                    -> ()
-    | _                             -> raise (Different_list_size "LazyList.iter2")
+    | (Cons _, Nil) | (Nil, Cons _) -> raise (Different_list_size "LazyList.iter2")
   in aux l1 l2
 
 let fold_left2 f acc l1 l2 =
@@ -568,7 +570,7 @@ let fold_left2 f acc l1 l2 =
     match (next l1, next l2) with
     | (Cons (h1, t1), Cons(h2, t2)) -> aux (f acc h1 h2) t1 t2
     | (Nil, Nil)                    -> acc
-    | _                             -> raise (Different_list_size "LazyList.fold_left2")
+    | (Cons _, Nil) | (Nil, Cons _) -> raise (Different_list_size "LazyList.fold_left2")
   in aux acc l1 l2
 
 let fold_right2 f l1 l2 acc =
@@ -576,7 +578,7 @@ let fold_right2 f l1 l2 acc =
     match (next l1, next l2) with
     | (Cons (h1, t1), Cons(h2, t2)) -> f h1 h2 (aux t1 t2)
     | (Nil, Nil)                    -> acc
-    | _                             -> raise (Different_list_size "LazyList.fold_right2")
+    | (Cons _, Nil) | (Nil, Cons _) -> raise (Different_list_size "LazyList.fold_right2")
   in aux l1 l2
 
 let for_all2 p l1 l2 =
@@ -584,7 +586,7 @@ let for_all2 p l1 l2 =
     match (next l1, next l2) with
     | (Cons (h1, t1), Cons(h2, t2)) -> p h1 h2 && (aux t1 t2)
     | (Nil, Nil)                    -> true
-    | _                             -> raise (Different_list_size "LazyList.for_all2")
+    | (Cons _, Nil) | (Nil, Cons _) -> raise (Different_list_size "LazyList.for_all2")
   in aux l1 l2
 
 let exists2 p l1 l2 =
@@ -592,14 +594,14 @@ let exists2 p l1 l2 =
     match (next l1, next l2) with
     | (Cons (h1, t1), Cons(h2, t2)) -> p h1 h2 || (aux t1 t2)
     | (Nil, Nil)                    -> false
-    | _                             -> raise (Different_list_size "LazyList.exists2")
+    | (Cons _, Nil) | (Nil, Cons _) -> raise (Different_list_size "LazyList.exists2")
   in aux l1 l2
 
 let combine l1 l2 =
   let rec aux l1 l2 = match (next l1, next l2) with
     | (Cons(h1, t1), Cons(h2, t2)) -> lazy (Cons ((h1, h2), ( aux t1 t2 )))
     | (Nil,          Nil         ) -> nil
-    | _                            -> raise (Different_list_size "LazyList.combine")
+    | (Cons _, Nil) | (Nil, Cons _) -> raise (Different_list_size "LazyList.combine")
   in aux l1 l2
 
 let uncombine l =
@@ -638,7 +640,7 @@ module Exceptionless = struct
       match (next list, i) with
       | (Cons (x, _), 0) -> `Ok x
       | (Cons (_, t), _) -> aux t (i - 1)
-      | _ -> `Invalid_index n
+      | (Nil, _) -> `Invalid_index n
     in if n < 0 then `Invalid_index n else aux list n
 
   let assoc a (l:'a t) =
