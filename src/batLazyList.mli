@@ -188,8 +188,21 @@ val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
 val fold_right : ('a -> 'b -> 'b) -> 'b -> 'a t -> 'b
 (**Eager fold_right
 
-   [fold_right f a [^ b0; b1; ...; bn ^]] is [f ( f (... (f (f a bn) ...) b1) b0]. This causes
-   evaluation of all the elements of the list. Not tail-recursive.*)
+   [fold_right f b [^ a0; a1; ...; an ^]] is [f a0 (f a1 (... (f an b) ...))].
+   This causes evaluation of all the elements of the list. Not
+   tail-recursive.
+*)
+
+val lazy_fold_right :
+  ('a -> 'b Lazy.t -> 'b) -> 'a t -> 'b Lazy.t -> 'b Lazy.t
+(**Lazy fold_right
+   [lazy_fold_right f (Cons (a0, Cons (a1, Cons (a2, nil)))) b] is
+   [lazy (f a0 (lazy (f a1 (lazy (f a2 b)))))].
+
+   Forcing the result of [lazy_fold_right] forces the first element of
+   the list; the rest is forced only if/when the function [f] forces
+   its accumulator argument.
+*)
 
 (** {6 Finding}*)
 
