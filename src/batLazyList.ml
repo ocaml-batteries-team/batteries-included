@@ -144,6 +144,14 @@ let fold_right f init l =
     | Nil -> init
   in aux l
 
+let lazy_fold_right f l init =
+  let rec aux rest = lazy begin
+    match next rest with
+    | Cons (x, t) -> f x (aux t)
+    | Nil -> Lazy.force init
+  end in
+  aux l
+
 (** {6 Finding}*)
 
 let may_find p l =
@@ -287,21 +295,21 @@ let rev_append_of_list (l1 : 'a list) (l2 : 'a t) : 'a t =
   in aux l1 l2
 
 let append (l1 : 'a t) (l2 : 'a t) =
-  let rec aux list =  match next list with
-    | Cons (x, (t : 'a t)) -> Cons (x, lazy (aux t))
-    | _                    -> Lazy.force l2
-  in lazy (aux l1)
+  lazy_fold_right (fun x xs -> Cons (x, xs)) l1 l2
+
+(*$T append
+  to_list (append (of_list [1;2]) (of_list [3;4])) = [1;2;3;4]
+  ignore (append (lazy (failwith "lazy cell")) nil); true  
+  hd (append (cons () nil) (lazy (failwith "lazy cell"))); true
+*)
 
 let ( ^@^ ) = append
 
 let flatten (lol : ('a t) list) =
   ListLabels.fold_left ~init: nil ~f: append lol
 
-let concat  (lol : ('a t) t) =
-  let rec aux list = match next list with
-    | Cons (li, t) -> Lazy.force (append li (lazy (aux t)))
-    | Nil -> Nil
-  in lazy (aux lol)
+let concat lol =
+  lazy_fold_right (fun li rest -> Lazy.force (append li rest)) lol nil
 
 (*$T concat 
   to_list (concat (of_list (List.map of_list [[1;2]; [3]; [4;5]; []; [6]; []; []]))) = [1;2;3;4;5;6]
