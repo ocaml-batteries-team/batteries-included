@@ -144,6 +144,8 @@ let fold_right f init l =
     | Nil -> init
   in aux l
 
+let eager_fold_right f l init = fold_right f init l
+
 let lazy_fold_right f l init =
   let rec aux rest = lazy begin
     match next rest with
