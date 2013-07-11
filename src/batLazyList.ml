@@ -443,12 +443,22 @@ let exists f l =
     | Nil                  -> false
   in aux l
 
+(*$T exists
+  exists (fun x -> x = 3) (append (of_list [0;1;2]) (map (fun () -> 3) eternity))
+  not (exists (fun x -> x < 0) (init 100 (fun i -> i)))
+*)
+
 let for_all f l =
   let rec aux rest = match next rest with
     | Cons (x, t) when f x -> aux t
     | Cons _               -> false
     | Nil                  -> true
   in aux l
+
+(*$T for_all
+  not (for_all (fun x -> x <> 3) (append (of_list [0;1;2]) (map (fun () -> 3) eternity)))
+  for_all (fun x -> x >= 0) (init 100 (fun i -> i))
+*)
 
 let range a b =
   let rec increasing lo hi =
