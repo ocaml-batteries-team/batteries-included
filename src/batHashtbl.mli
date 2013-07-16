@@ -83,19 +83,19 @@ val modify : 'a -> ('b -> 'b) -> ('a, 'b) t -> unit
 (** [Hashtbl.modify k f tbl] replaces the first binding for [k] in [tbl]
     with [f] applied to that value.
     @raise Not_found if [k] is unbound in [tbl].
-    @since NEXT_RELEASE *)
+    @since 2.1 *)
 
 val modify_def : 'b -> 'a -> ('b -> 'b) -> ('a, 'b) t -> unit
 (** [Hashtbl.modify_def v k f tbl] does the same as [Hashtbl.modify k f tbl]
     but [f v] is inserted in [tbl] if [k] was unbound.
-    @since NEXT_RELEASE *)
+    @since 2.1 *)
 
 val modify_opt : 'a -> ('b option -> 'b option) -> ('a, 'b) t -> unit
 (** [Hashtbl.modify_opt k f tbl] allows to remove, modify or add a binding for
     [k] in [tbl]. [f] will be called with [None] if [k] was unbound.
     first previous binding of [k] in [tbl] will be deleted if [f] returns [None].
     Otherwise, the previous binding is replaced by the value produced by [f].
-    @since NEXT_RELEASE *)
+    @since 2.1 *)
 
 val copy : ('a, 'b) t -> ('a, 'b) t
 (** Return a copy of the given hashtable. *)
@@ -194,7 +194,7 @@ val map_inplace : ('a -> 'b -> 'b) -> ('a,'b) t -> unit
 (** [map_inplace f x] replace all values currently bound in [x]
     by [f] applied to each value.
 
-    @since NEXT_RELEASE *)
+    @since 2.1 *)
 
 val filter: ('a -> bool) -> ('key, 'a) t -> ('key, 'a) t
 (** [filter f m] returns a new hashtable where only the values [a] of [m]
@@ -204,7 +204,7 @@ val filter_inplace : ('a -> bool) -> ('key,'a) t -> unit
 (** [filter_inplace f m] removes from [m] all bindings that does not
     satisfy the predicate f.
 
-    @since NEXT_RELEASE *)
+    @since 2.1 *)
 
 val filteri: ('key -> 'a -> bool) -> ('key, 'a) t -> ('key, 'a) t
 (** [filter f m] returns a hashtbl where only the key, values pairs
@@ -214,7 +214,7 @@ val filteri_inplace : ('key -> 'a -> bool) -> ('key, 'a) t -> unit
 (** [filteri_inplace f m] performs as filter_inplace but [f]
     receive the value in additiuon to the key.
 
-    @since NEXT_RELEASE *)
+    @since 2.1 *)
 
 val filter_map: ('key -> 'a -> 'b option) -> ('key, 'a) t -> ('key, 'b) t
 (** [filter_map f m] combines the features of [filteri] and [map].  It

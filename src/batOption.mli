@@ -79,7 +79,7 @@ val default_delayed : (unit -> 'a) -> 'a option -> 'a
 (** Like {!default}, but the default value is passed as a thunk that
     is only computed if needed.
 
-    @since NEXT_RELEASE *)
+    @since 2.1 *)
 
 val map_default : ('a -> 'b) -> 'b -> 'a option -> 'b
 (** [map_default f x (Some v)] returns [f v] and [map_default f x None]
@@ -89,7 +89,7 @@ val map_default_delayed : ('a -> 'b) -> (unit -> 'b) -> 'a option -> 'b
 (** Like {!map_default}, but the default value is passed as a thunk that
     is only computed if needed.
 
-    @since NEXT_RELEASE *)
+    @since 2.1 *)
 
 val is_none : 'a option -> bool
 (** [is_none None] returns [true] otherwise it returns [false]. *)

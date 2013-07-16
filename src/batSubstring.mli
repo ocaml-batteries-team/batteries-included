@@ -25,7 +25,10 @@ val make : int -> char -> t
 val create : int -> t
 
 val equal : t -> t -> bool
-(** Substring equality *)
+(** Substring equality
+
+    @since 2.1
+*)
 
 val of_input : BatIO.input -> t
 
@@ -152,7 +155,10 @@ val rindex_from : t -> int -> char -> int
     range of [sus], @raise Invalid_argument. It is equivalent to [rindex (trimr i sus) c]. *)
 
 val contains : t -> char -> bool
-(** [contains s c] tests if character [c] appears in the substring [s]. *)
+(** [contains s c] tests if character [c] appears in the substring [s].
+
+    @since 2.1
+*)
 
 val dropl : (char -> bool) -> t -> t
 (** [dropl p sus] drops the longest prefix (left substring) of [sus]
@@ -292,7 +298,10 @@ val iter : (char -> unit) -> t -> unit
 val iteri : (int -> char -> unit) -> t -> unit
 (** Same as {!iter}, but the
     function is applied to the index of the element as first argument
-    (counting from 0), and the character itself as second argument.  *)
+    (counting from 0), and the character itself as second argument.
+
+    @since 2.1
+*)
 
 val trim : t -> t
 (** removes whitespace from left and right ends of input *)
@@ -309,6 +318,8 @@ val split_on_slash : t -> t list
 val enum : t -> char BatEnum.t
 (** [enum ss] returns an enumeration of the characters represented by ss. 
     It does no copying so beweare of mutating the original string.
+
+    @since 2.1
 *)
 
 val print : 'a BatIO.output -> t -> unit

@@ -34,19 +34,19 @@ val modify : int -> ('a -> 'a) -> 'a t -> 'a t
 (** [modify x f t] replaces the [y] that is bound to [x] in [t] by [f y].
 
     @raise Not_found if [x] is unbound
-    @since NEXT_RELEASE *)
+    @since 2.1 *)
 
 val modify_def : 'a -> int -> ('a -> 'a) -> 'a t -> 'a t
 (** [modify_def dft x f t] does the same as [modify x f t] but binds
     [x] to [f dft] if [x] was not bound.
 
-    @since NEXT_RELEASE *)
+    @since 2.1 *)
 
 val modify_opt : int -> ('a option -> 'a option) -> 'a t -> 'a t
 (** [modify_opt x f t] allows to modify the binding for [x] in [t]
     or absence thereof.
 
-    @since NEXT_RELEASE *)
+    @since 2.1 *)
 
 val remove : int -> 'a t -> 'a t
 (** Remove any bindings from the given value. *)

@@ -175,10 +175,16 @@ val fsum : float array -> float
 (** [fsum l] returns the sum of the floats of [l] *)
 
 val avg : int array -> float
-(** [avg l] returns the average of [l] *)
+(** [avg l] returns the average of [l]
+
+    @since 2.1
+ *)
 
 val favg : float array -> float
-(** [favg l] returns the average of [l] *)
+(** [favg l] returns the average of [l]
+
+    @since 2.1
+*)
 
 val left : 'a array -> int -> 'a array
 (**[left r len] returns the array containing the [len] first
@@ -259,7 +265,10 @@ val reduce : ('a -> 'a -> 'a) -> 'a array -> 'a
     @raise Invalid_argument on empty arrays. *)
 
 val singleton : 'a -> 'a array
-(** Create an array consisting of exactly one element.*)
+(** Create an array consisting of exactly one element.
+
+    @since 2.1
+*)
 
 
 (** {6 Sorting} *)

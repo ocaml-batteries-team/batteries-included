@@ -557,7 +557,10 @@ module Array1 : sig
   val of_enum : ('a, 'b) kind -> 'c layout -> 'a BatEnum.t -> ('a, 'b, 'c) t
   (** [Array1.of_enum kind layout enum] returns a new one-dimensional
       big array of kind [kind] and layout [layout], with elements taken
-      from the enumeration [enum] in order. *)
+      from the enumeration [enum] in order.
+  
+      @since 2.1
+  *)
 
   val map :
     ('a -> 'b) ->

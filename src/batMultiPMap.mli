@@ -96,7 +96,7 @@ val modify : 'a -> ('b BatSet.PSet.t -> 'b BatSet.PSet.t) -> ('a, 'b) t -> ('a, 
 (** [modify x f m] replaces the binding for [x] with [f] applied to
     these values.
 
-    @since NEXT_RELEASE
+    @since 2.1
     @raise Not_found is [x] is unbound in [m] *)
 
 val modify_def :
@@ -105,7 +105,7 @@ val modify_def :
 (** [modify_def dfl x f m] performs as [modify x f m] but it adds
     [f dfl] in [m] instead of raising [Not_found] if [x] was unbound.
 
-    @since NEXT_RELEASE *)
+    @since 2.1 *)
 
 val modify_opt:
   'a -> ('b BatSet.PSet.t option -> 'b BatSet.PSet.t option) ->
@@ -113,7 +113,7 @@ val modify_opt:
 (** [modify_opt x f m] allows to modify the bindings for [k] in [m]
     or absence thereof.
 
-    @since NEXT_RELEASE *)
+    @since 2.1 *)
 
 val enum : ('a, 'b) t -> ('a * 'b) BatEnum.t
 (** creates an enumeration for this map. *)

@@ -202,6 +202,8 @@ val lazy_fold_right :
    Forcing the result of [lazy_fold_right] forces the first element of
    the list; the rest is forced only if/when the function [f] forces
    its accumulator argument.
+
+   @since 2.1
 *)
 
 (** {6 Finding}*)

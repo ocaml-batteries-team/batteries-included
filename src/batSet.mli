@@ -313,7 +313,10 @@ val mem: 'a -> 'a t -> bool
 
 val find: 'a -> 'a t -> 'a
 (** [find x s] returns the set element that compares equal to [x].
-  @raise Not_found if no such element exists *)
+    @raise Not_found if no such element exists
+
+    @since 2.1
+*)
 
 val add: 'a -> 'a t -> 'a t
 (** [add x s] returns a set containing all elements of [s],
@@ -475,7 +478,10 @@ module Incubator : sig
     (** Order Preserving map; as [map], but [f] must be order preserving;
         i.e. if [a < b] then [f a < f b].  This allows the tree structure
         to be maintained internally, resulting in O(n) work instead of O(n
-        log n).*)
+        log n).
+
+        @since 2.1
+    *)
 
 end
 

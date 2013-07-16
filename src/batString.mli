@@ -598,7 +598,10 @@ val repeat: string -> int -> string
 *)
 
 val rev : string -> string
-(** [string s] returns the reverse of string [s] *)
+(** [string s] returns the reverse of string [s]
+
+    @since 2.1
+*)
 
 (** {6 In-Place Transformations}*)
 

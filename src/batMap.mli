@@ -114,7 +114,7 @@ sig
   (** [modify_opt k f m] allows to modify the binding for [k] in [m]
       or absence thereof.
 
-      @since NEXT_RELEASE *)
+      @since 2.1 *)
 
   val extract : key -> 'a t -> 'a * 'a t
   (** [extract k m] removes the current binding of [k] from [m],
@@ -512,7 +512,7 @@ val modify_opt: 'a -> ('b option -> 'b option) -> ('a,'b) t -> ('a,'b) t
 (** [modify_opt k f m] allow to modify the binding for [k] in [m]
     or absence thereof.
 
-    @since NEXT_RELEASE *)
+    @since 2.1 *)
 
 
 val extract : 'a -> ('a, 'b) t -> 'b * ('a, 'b) t
@@ -783,7 +783,7 @@ module PMap : sig
   (** [modify_opt k f m] allow to modify the binding for [k] in [m]
       or absence thereof.
 
-      @since NEXT_RELEASE *)
+      @since 2.1 *)
 
   val extract : 'a -> ('a, 'b) t -> 'b * ('a, 'b) t
   (** [extract k m] removes the current binding of [k] from [m],
