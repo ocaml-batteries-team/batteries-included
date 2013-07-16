@@ -87,3 +87,5 @@ header Typos: \
 header Typos: \
   grep -n Invald_argument *.ml *.mli
 
+header "consisting in => consisting of"
+  grep -n "consisting in" *.ml *.mli
