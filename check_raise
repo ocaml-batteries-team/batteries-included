@@ -22,7 +22,7 @@ setminus() {
 
 # Capitalized Raise should be rare
 header "Interesting places:" \
-  grep -n Raise *.ml *.mli
+  grep -n Raise *.ml *.mli | grep -v " *Raised"
 
 #header "Needs source style:" \
 #  grep -n "Invalid_argument[[:space:]]\"" *.mli
