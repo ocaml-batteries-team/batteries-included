@@ -148,7 +148,9 @@ val get : t -> int -> BatUChar.t
 (** [get r n] returns the (n+1)th character from the rope [r]; i.e.
     [get r 0] returns the first character.
     Operates in worst-case [O(log size)] time.
-    Raises Out_of_bounds if a character out of bounds is requested. *)
+
+    @raise Out_of_bounds if a character out of bounds is requested.
+*)
 
 val set : t -> int -> BatUChar.t -> t
 (** [set r n c] returns a copy of rope [r]  where the (n+1)th character
@@ -158,8 +160,10 @@ val set : t -> int -> BatUChar.t -> t
 val sub : t -> int -> int -> t
 (** [sub r m n] returns a sub-rope of [r] containing all characters
     whose indexes range from [m] to [m + n - 1] (included).
-    Raises Out_of_bounds in the same cases as sub.
-    Operates in worst-case [O(log size)] time. *)
+    Operates in worst-case [O(log size)] time. 
+    
+    @raise Out_of_bounds in the same cases as sub.
+*)
 
 val insert : int -> t -> t -> t
 (** [insert n r u] returns a copy of the [u] rope where [r] has been
@@ -197,7 +201,9 @@ val range_iter : (BatUChar.t -> unit) -> int -> int -> t -> unit
     create an intermediary rope. [rangeiter] operates in worst-case
     [O(n + log m)] time, which improves on the [O(n log m)] bound
     from an explicit loop using [get].
-    Raises Out_of_bounds in the same cases as [sub]. *)
+
+    @raise Out_of_bounds in the same cases as [sub].
+*)
 
 val range_iteri :
   (int -> BatUChar.t -> unit) -> ?base:int -> int -> int -> t -> unit
@@ -233,7 +239,9 @@ val filter : (BatUChar.t -> bool) -> t -> t
 val index : t -> BatUChar.t -> int
 (** [index s c] returns the position of the leftmost
     occurrence of character [c] in rope [s].
-    Raise [Not_found] if [c] does not occur in [s]. *)
+    
+    @raise Not_found if [c] does not occur in [s].
+*)
 
 val index_from : t -> int -> BatUChar.t -> int
 (** [index_from r i c] returns the character number of the
@@ -247,7 +255,9 @@ val index_from : t -> int -> BatUChar.t -> int
 val rindex : t -> BatUChar.t -> int
 (** [Rope.rindex s c] returns the position of the rightmost
     occurrence of character [c] in rope [s].
-    Raise [Not_found] if [c] does not occur in [s]. *)
+
+    @raise Not_found if [c] does not occur in [s].
+*)
 
 val rindex_from : t -> int -> BatUChar.t -> int
 (** Same as {!rindex}, but start

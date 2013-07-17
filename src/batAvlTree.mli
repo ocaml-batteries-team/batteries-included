@@ -19,10 +19,14 @@ val create : 'a tree -> 'a -> 'a tree -> 'a tree
 
 val height : 'a tree -> int
 
-(* If tree is empty, then raise Not_found *)
 val left_branch : 'a tree -> 'a tree
+(** @raise Not_found if the tree is empty *)
+
 val right_branch : 'a tree -> 'a tree
+(** @raise Not_found if the tree is empty *)
+
 val root : 'a tree -> 'a
+(** @raise Not_found if the tree is empty *)
 
 (* Utilities *)
 val singleton_tree : 'a -> 'a tree
