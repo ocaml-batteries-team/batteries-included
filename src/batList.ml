@@ -182,6 +182,22 @@ let take n l =
   (take 1 [1;2;3]) [1]
 *)
 
+let take_drop n l =
+  let rec loop n dst = function
+    | h :: t when n > 0 -> loop (n - 1) (Acc.accum dst h) t
+    | rest -> rest
+  in
+  let dummy = Acc.dummy () in
+  let rest = loop n dummy l in
+  (dummy.tl, rest)
+
+(*$T take_drop
+  take_drop 0 [1; 2; 3] = ([],        [1; 2; 3])
+  take_drop 3 [1; 2; 3] = ([1; 2; 3], [])
+  take_drop 4 [1; 2; 3] = ([1; 2; 3], [])
+  take_drop 1 [1; 2; 3] = ([1],       [2; 3])
+*)
+
 let take_while p li =
   let rec loop dst = function
     | [] -> ()
