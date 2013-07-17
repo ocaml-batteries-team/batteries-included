@@ -198,6 +198,25 @@ let take_drop n l =
   take_drop 1 [1; 2; 3] = ([1],       [2; 3])
 *)
 
+let slice_by n l =
+  if n < 1 then invalid_arg "BatList.slice_by";
+  let dummy = Acc.dummy () in
+  let rec loop dst = function
+    | [] -> dummy.tl
+    | li ->
+      let taken, rest = take_drop n li in
+      loop (Acc.accum dst taken) rest
+  in
+  loop dummy l
+
+(*$T slice_by
+  slice_by 2 []           = [[]]
+  slice_by 2 [1]          = [[1]]
+  slice_by 2 [1; 2]       = [[1; 2]]
+  slice_by 2 [1; 2; 3]    = [[1; 2]; [3]]
+  slice_by 2 [1; 2; 3; 4] = [[1; 2]; [3; 4]]
+*)
+
 let take_while p li =
   let rec loop dst = function
     | [] -> ()
