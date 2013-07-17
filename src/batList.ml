@@ -210,7 +210,7 @@ let slice_by n l =
   loop dummy l
 
 (*$T slice_by
-  slice_by 2 []           = [[]]
+  slice_by 2 []           = []
   slice_by 2 [1]          = [[1]]
   slice_by 2 [1; 2]       = [[1; 2]]
   slice_by 2 [1; 2; 3]    = [[1; 2]; [3]]
