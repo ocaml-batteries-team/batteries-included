@@ -62,8 +62,10 @@ external inj : 'a mut_list -> 'a list = "%identity"
 module Acc = struct
   let dummy () =
     { hd = Obj.magic (); tl = [] }
+  let create x =
+    { hd = x; tl = [] }
   let accum acc x =
-    let cell = { hd = x; tl = [] } in
+    let cell = create x in
     acc.tl <- inj cell;
     cell
 end
@@ -107,7 +109,7 @@ let append l1 l2 =
       | h :: t ->
         loop (Acc.accum dst h) t
     in
-    let r = { hd = h; tl = [] } in
+    let r = Acc.create h in
     loop r t;
     inj r
 
@@ -145,7 +147,7 @@ let map f = function
       | h :: t ->
         loop (Acc.accum dst (f h)) t
     in
-    let r = { hd = f h; tl = [] } in
+    let r = Acc.create (f h) in
     loop r t;
     inj r
 (*$Q map
@@ -561,7 +563,7 @@ let partition p lst =
   let rec loop yesdst nodst = function
     | [] -> ()
     | h :: t ->
-      let r = { hd = h; tl = [] } in
+      let r = Acc.create h in
       if p h then
         begin
           yesdst.tl <- inj r;
@@ -596,7 +598,7 @@ let combine l1 l2 =
   match l1, l2 with
     | [], [] -> []
     | x :: xs, y :: ys ->
-      let acc = { hd = (x, y); tl = [] } in
+      let acc = Acc.create (x, y) in
       let rec loop dst l1 l2 = match l1, l2 with
         | [], [] -> inj acc
         | h1 :: t1, h2 :: t2 -> loop (Acc.accum dst (h1, h2)) t1 t2
@@ -618,7 +620,7 @@ let rec init size f =
       if n < size then
         loop (Acc.accum dst (f n)) (n+1)
     in
-    let r = { hd = f 0; tl = [] } in
+    let r = Acc.create (f 0) in
     loop r 1;
     inj r
 
@@ -638,7 +640,7 @@ let mapi f = function
       | h :: t ->
         loop (Acc.accum dst (f n h)) (n + 1) t
     in
-    let r = { hd = f 0 h; tl = [] } in
+    let r = Acc.create (f 0 h) in
     loop r 1 t;
     inj r
 
@@ -671,7 +673,7 @@ let split_nth index = function
           | h :: t ->
             loop (n - 1) (Acc.accum dst h) t
       in
-      let r = { hd = h; tl = [] } in
+      let r = Acc.create h in
       inj r, loop (index-1) r t
 
 let split_at = split_nth
@@ -725,7 +727,7 @@ let transpose = function
   | [] -> []
   | [x] -> List.map (fun x -> [x]) x
   | x::xs ->
-    let heads = List.map (fun x -> {hd=x; tl=[]}) x in
+    let heads = List.map Acc.create x in
     ignore ( List.fold_left
         (fun acc x ->
            List.map2
