@@ -106,25 +106,26 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : Batteries.FingerTree</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="Batteries.Heap.html" title="Batteries.Heap">Previous</a>
-&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
-&nbsp;<a class="post" href="Batteries.Logger.html" title="Batteries.Logger">Next</a>
+<div class="navbar"><a href="Batteries.Heap.html">Previous</a>
+&nbsp;<a href="Batteries.html">Up</a>
+&nbsp;<a href="Batteries.Logger.html">Next</a>
 </div>
-<h1>Module <a href="type_Batteries.FingerTree.html">Batteries.FingerTree</a></h1>
+<center><h1>Module <a href="type_Batteries.FingerTree.html">Batteries.FingerTree</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> FingerTree: <code class="type">BatFingerTree</code></pre><hr width="100%">
-<pre><code><span id="TYPEmonoid"><span class="keyword">type</span> <code class="type">'a</code> monoid</span> = {</code></pre><table class="typetable">
+<br><code><span id="TYPEmonoid"><span class="keyword">type</span> <code class="type">'a</code> monoid</span> = {</code><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTmonoid.zero">zero</span>&nbsp;:<code class="type">'a</code>;</code></td>
+<code>zero&nbsp;: <code class="type">'a</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >The neutral element of the monoid.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTmonoid.combine">combine</span>&nbsp;:<code class="type">'a -> 'a -> 'a</code>;</code></td>
+<code>combine&nbsp;: <code class="type">'a -> 'a -> 'a</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><code class="code">combine</code> should be associative, and have <code class="code">zero</code> as neutral element.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 }

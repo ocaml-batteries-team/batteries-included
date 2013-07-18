@@ -106,11 +106,12 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatNumber</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatNum.html" title="BatNum">Previous</a>
-&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="BatOo.html" title="BatOo">Next</a>
+<div class="navbar"><a href="BatNum.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="BatOo.html">Next</a>
 </div>
-<h1>Module <a href="type_BatNumber.html">BatNumber</a></h1>
+<center><h1>Module <a href="type_BatNumber.html">BatNumber</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> BatNumber: <code class="code"><span class="keyword">sig</span></code> <a href="BatNumber.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>A common interface for numbers.<br>
 <b>Author(s):</b> Gabriel Scherer, David Teller<br>
 <hr width="100%">
@@ -141,138 +142,138 @@ Not a Number
    By opposition, with module <code class="code"><span class="constructor">Float</span></code>, <code class="code">0.0 / 0.0</code> does not interrupt
    computation and returns a special value <code class="code">nan</code>.<br>
 </div>
-<pre><code><span id="TYPEnumeric"><span class="keyword">type</span> <code class="type">'a</code> numeric</span> = {</code></pre><table class="typetable">
+<br><code><span id="TYPEnumeric"><span class="keyword">type</span> <code class="type">'a</code> numeric</span> = {</code><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnumeric.zero">zero</span>&nbsp;:<code class="type">'a</code>;</code></td>
+<code>zero&nbsp;: <code class="type">'a</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnumeric.one">one</span>&nbsp;:<code class="type">'a</code>;</code></td>
+<code>one&nbsp;: <code class="type">'a</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnumeric.neg">neg</span>&nbsp;:<code class="type">'a -> 'a</code>;</code></td>
+<code>neg&nbsp;: <code class="type">'a -> 'a</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnumeric.succ">succ</span>&nbsp;:<code class="type">'a -> 'a</code>;</code></td>
+<code>succ&nbsp;: <code class="type">'a -> 'a</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnumeric.pred">pred</span>&nbsp;:<code class="type">'a -> 'a</code>;</code></td>
+<code>pred&nbsp;: <code class="type">'a -> 'a</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnumeric.abs">abs</span>&nbsp;:<code class="type">'a -> 'a</code>;</code></td>
+<code>abs&nbsp;: <code class="type">'a -> 'a</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnumeric.add">add</span>&nbsp;:<code class="type">'a -> 'a -> 'a</code>;</code></td>
+<code>add&nbsp;: <code class="type">'a -> 'a -> 'a</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnumeric.sub">sub</span>&nbsp;:<code class="type">'a -> 'a -> 'a</code>;</code></td>
+<code>sub&nbsp;: <code class="type">'a -> 'a -> 'a</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnumeric.mul">mul</span>&nbsp;:<code class="type">'a -> 'a -> 'a</code>;</code></td>
+<code>mul&nbsp;: <code class="type">'a -> 'a -> 'a</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnumeric.div">div</span>&nbsp;:<code class="type">'a -> 'a -> 'a</code>;</code></td>
+<code>div&nbsp;: <code class="type">'a -> 'a -> 'a</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnumeric.modulo">modulo</span>&nbsp;:<code class="type">'a -> 'a -> 'a</code>;</code></td>
+<code>modulo&nbsp;: <code class="type">'a -> 'a -> 'a</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnumeric.pow">pow</span>&nbsp;:<code class="type">'a -> 'a -> 'a</code>;</code></td>
+<code>pow&nbsp;: <code class="type">'a -> 'a -> 'a</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnumeric.compare">compare</span>&nbsp;:<code class="type">'a -> 'a -> int</code>;</code></td>
+<code>compare&nbsp;: <code class="type">'a -> 'a -> int</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnumeric.of_int">of_int</span>&nbsp;:<code class="type">int -> 'a</code>;</code></td>
+<code>of_int&nbsp;: <code class="type">int -> 'a</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnumeric.to_int">to_int</span>&nbsp;:<code class="type">'a -> int</code>;</code></td>
+<code>to_int&nbsp;: <code class="type">'a -> int</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnumeric.of_string">of_string</span>&nbsp;:<code class="type">string -> 'a</code>;</code></td>
+<code>of_string&nbsp;: <code class="type">string -> 'a</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnumeric.to_string">to_string</span>&nbsp;:<code class="type">'a -> string</code>;</code></td>
+<code>to_string&nbsp;: <code class="type">'a -> string</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnumeric.of_float">of_float</span>&nbsp;:<code class="type">float -> 'a</code>;</code></td>
+<code>of_float&nbsp;: <code class="type">float -> 'a</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnumeric.to_float">to_float</span>&nbsp;:<code class="type">'a -> float</code>;</code></td>
+<code>to_float&nbsp;: <code class="type">'a -> float</code>;</code></td>
 
 </tr></table>
 }

@@ -105,10 +105,11 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatHashcons.MakeTable</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a class="up" href="BatHashcons.html" title="BatHashcons">Up</a>
-&nbsp;<a class="post" href="BatHashcons.H.html" title="BatHashcons.H">Next</a>
+<div class="navbar">&nbsp;<a href="BatHashcons.html">Up</a>
+&nbsp;<a href="BatHashcons.H.html">Next</a>
 </div>
-<h1>Functor <a href="type_BatHashcons.MakeTable.html">BatHashcons.MakeTable</a></h1>
+<center><h1>Functor <a href="type_BatHashcons.MakeTable.html">BatHashcons.MakeTable</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> MakeTable: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">HT</span></code><code class="code"> : </code><code class="type"><a href="BatHashtbl.HashedType.html">BatHashtbl.HashedType</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatHashcons.Table.html">Table</a></code><code class="type">  with type key = HT.t</code></div></pre><table border="0" cellpadding="3" width="100%">
 <tr>
 <td align="left" valign="top" width="1%%"><b>Parameters: </b></td>
@@ -142,21 +143,21 @@ type of the table<br>
 </div>
 <pre><span id="VALhashcons"><span class="keyword">val</span> hashcons</span> : <code class="type"><a href="BatHashcons.Table.html#TYPEt">t</a> -><br>       <a href="BatHashcons.Table.html#TYPEkey">key</a> -> <a href="BatHashcons.Table.html#TYPEkey">key</a> <a href="BatHashcons.html#TYPEhobj">BatHashcons.hobj</a></code></pre><div class="info">
 <code class="code">hashcons tab k</code> returns either <code class="code">k</code>, adding it to the table
-        <code class="code">tab</code> as a side effect, or if <code class="code">k</code> is already in the table then
-        it returns the hashed object corresponding to that entry.<br>
+      <code class="code">tab</code> as a side effect, or if <code class="code">k</code> is already in the table then
+      it returns the hashed object corresponding to that entry.<br>
 <b>Raises</b> <code>Failure</code> if number of objects with the same hash reaches system limit of array size<br>
 </div>
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(<a href="BatHashcons.Table.html#TYPEkey">key</a> <a href="BatHashcons.html#TYPEhobj">BatHashcons.hobj</a> -> unit) -><br>       <a href="BatHashcons.Table.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 <code class="code">iter f tab</code> applies <code class="code">f</code> to every live hashed object in the
-        table <code class="code">tab</code>.<br>
+      table <code class="code">tab</code>.<br>
 </div>
 <pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">(<a href="BatHashcons.Table.html#TYPEkey">key</a> <a href="BatHashcons.html#TYPEhobj">BatHashcons.hobj</a> -> 'a -> 'a) -><br>       <a href="BatHashcons.Table.html#TYPEt">t</a> -> 'a -> 'a</code></pre><div class="info">
 <code class="code">fold f tab x0</code> folds <code class="code">f</code> across every live hashed object in
-    the table <code class="code">tab</code>, starting with value <code class="code">x0</code><br>
+      the table <code class="code">tab</code>, starting with value <code class="code">x0</code><br>
 </div>
 <pre><span id="VALcount"><span class="keyword">val</span> count</span> : <code class="type"><a href="BatHashcons.Table.html#TYPEt">t</a> -> int</code></pre><div class="info">
 <code class="code">count tab</code> returns a count of how many live objects are in
-  <code class="code">tab</code>. This can decrease whenever the GC runs, even during
-  execution, so consider the returned value as an upper-bound.<br>
+        <code class="code">tab</code>. This can decrease whenever the GC runs, even during
+        execution, so consider the returned value as an upper-bound.<br>
 </div>
 </body></html>

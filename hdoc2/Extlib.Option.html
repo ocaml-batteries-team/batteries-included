@@ -109,11 +109,12 @@
 <title>Batteries user guide : Extlib.Option</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="Extlib.OptParse.html" title="Extlib.OptParse">Previous</a>
-&nbsp;<a class="up" href="Extlib.html" title="Extlib">Up</a>
-&nbsp;<a class="post" href="Extlib.PMap.html" title="Extlib.PMap">Next</a>
+<div class="navbar"><a href="Extlib.OptParse.html">Previous</a>
+&nbsp;<a href="Extlib.html">Up</a>
+&nbsp;<a href="Extlib.PMap.html">Next</a>
 </div>
-<h1>Module <a href="type_Extlib.Option.html">Extlib.Option</a></h1>
+<center><h1>Module <a href="type_Extlib.Option.html">Extlib.Option</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Option: <code class="type">BatOption</code></pre><hr width="100%">
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a option</code> </pre>
 
@@ -145,9 +146,19 @@ Like <a href="BatOption.html#VALdefault"><code class="code"><span class="constru
     Both arguments will be evaluated.<br>
 <b>Since</b> 2.0<br>
 </div>
+<pre><span id="VALdefault_delayed"><span class="keyword">val</span> default_delayed</span> : <code class="type">(unit -> 'a) -> 'a option -> 'a</code></pre><div class="info">
+Like <a href="BatOption.html#VALdefault"><code class="code"><span class="constructor">BatOption</span>.default</code></a>, but the default value is passed as a thunk that
+    is only computed if needed.<br>
+<b>Since</b> 2.1<br>
+</div>
 <pre><span id="VALmap_default"><span class="keyword">val</span> map_default</span> : <code class="type">('a -> 'b) -> 'b -> 'a option -> 'b</code></pre><div class="info">
 <code class="code">map_default f x (<span class="constructor">Some</span> v)</code> returns <code class="code">f v</code> and <code class="code">map_default f x <span class="constructor">None</span></code>
 	returns <code class="code">x</code>.<br>
+</div>
+<pre><span id="VALmap_default_delayed"><span class="keyword">val</span> map_default_delayed</span> : <code class="type">('a -> 'b) -> (unit -> 'b) -> 'a option -> 'b</code></pre><div class="info">
+Like <a href="BatOption.html#VALmap_default"><code class="code"><span class="constructor">BatOption</span>.map_default</code></a>, but the default value is passed as a thunk that
+    is only computed if needed.<br>
+<b>Since</b> 2.1<br>
 </div>
 <pre><span id="VALis_none"><span class="keyword">val</span> is_none</span> : <code class="type">'a option -> bool</code></pre><div class="info">
 <code class="code">is_none <span class="constructor">None</span></code> returns <code class="code"><span class="keyword">true</span></code> otherwise it returns <code class="code"><span class="keyword">false</span></code>.<br>

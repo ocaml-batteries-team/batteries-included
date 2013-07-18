@@ -115,11 +115,12 @@
 <title>Batteries user guide : Batteries.Seq</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="Batteries.Return.html" title="Batteries.Return">Previous</a>
-&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
-&nbsp;<a class="post" href="Batteries.Tuple.html" title="Batteries.Tuple">Next</a>
+<div class="navbar"><a href="Batteries.Return.html">Previous</a>
+&nbsp;<a href="Batteries.html">Up</a>
+&nbsp;<a href="Batteries.Tuple.html">Next</a>
 </div>
-<h1>Module <a href="type_Batteries.Seq.html">Batteries.Seq</a></h1>
+<center><h1>Module <a href="type_Batteries.Seq.html">Batteries.Seq</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Seq: <code class="type">BatSeq</code></pre><hr width="100%">
 <br>
 A sequence represent a collection of elements, for which you never
@@ -142,19 +143,19 @@ A sequence represent a collection of elements, for which you never
 A sequence is a computation which returns a list-like node<br>
 </div>
 
-<pre><code><span id="TYPEnode"><span class="keyword">type</span> <code class="type">'a</code> node</span> = </code></pre><table class="typetable">
+<br><code><span id="TYPEnode"><span class="keyword">type</span> <code class="type">'a</code> node</span> = </code><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnode.Nil"><span class="constructor">Nil</span></span></code></td>
+<code><span class="constructor">Nil</span></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnode.Cons"><span class="constructor">Cons</span></span> <span class="keyword">of</span> <code class="type">'a * 'a <a href="BatSeq.html#TYPEt">t</a></code></code></td>
+<code><span class="constructor">Cons</span> <span class="keyword">of</span> <code class="type">'a * 'a <a href="BatSeq.html#TYPEt">t</a></code></code></td>
 
 </tr></table>
 
@@ -164,33 +165,33 @@ A sequence is a computation which returns a list-like node<br>
 <code class="code">enum s</code> returns the enumeration of all element of <code class="code">s</code>.
 <p>
 
-      Since enumerations are consumable and sequence are not, it is
-      not possible to have the inverse operations, i.e. <code class="code">of_enum</code><br>
+    Since enumerations are consumable and sequence are not, it is
+    not possible to have the inverse operations, i.e. <code class="code">of_enum</code><br>
 </div>
 <br>
 <span id="6_Baseoperations"><h6>Base operations</h6></span><br>
 <pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">t</a> -> int</code></pre><div class="info">
 Return the number of elements of the given sequence. This may
-      never return if the sequence is infinite.<br>
+    never return if the sequence is infinite.<br>
 </div>
 <pre><span id="VALhd"><span class="keyword">val</span> hd</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 Returns the first element of the sequence or raise <code class="code"><span class="constructor">Invalid_argument</span></code> if
-      the sequence is empty.<br>
+    the sequence is empty.<br>
 </div>
 <pre><span id="VALtl"><span class="keyword">val</span> tl</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">t</a> -> 'a <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info">
 Returns the sequence without its first elements or raise
-      <code class="code"><span class="constructor">Invalid_argument</span></code> if the sequence is empty.<br>
+    <code class="code"><span class="constructor">Invalid_argument</span></code> if the sequence is empty.<br>
 </div>
 <pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 <code class="code">is_empty e</code> returns true if <code class="code">e</code> does not contains any
-      element.<br>
+    element.<br>
 </div>
 <pre><span id="VALfirst"><span class="keyword">val</span> first</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 Same as <a href="BatSeq.html#VALhd"><code class="code"><span class="constructor">BatSeq</span>.hd</code></a><br>
 </div>
 <pre><span id="VALlast"><span class="keyword">val</span> last</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 Returns the last element of the sequence, or raise <code class="code"><span class="constructor">Invalid_argument</span></code> if
-      the sequence is empty.<br>
+    the sequence is empty.<br>
 </div>
 <pre><span id="VALat"><span class="keyword">val</span> at</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">t</a> -> int -> 'a</code></pre><div class="info">
 <code class="code">at l n</code> returns the element at index <code class="code">n</code> (starting from <code class="code">0</code>) in
@@ -203,7 +204,7 @@ Returns the last element of the sequence, or raise <code class="code"><span clas
 </div>
 <pre><span id="VALconcat"><span class="keyword">val</span> concat</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">t</a> <a href="BatSeq.html#TYPEt">t</a> -> 'a <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">concat s</code> returns the sequence which returns all the elements
-      of all the elements of <code class="code">s</code>, in the same order.<br>
+    of all the elements of <code class="code">s</code>, in the same order.<br>
 </div>
 <pre><span id="VALflatten"><span class="keyword">val</span> flatten</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">t</a> <a href="BatSeq.html#TYPEt">t</a> -> 'a <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info">
 Same as <a href="BatSeq.html#VALconcat"><code class="code"><span class="constructor">BatSeq</span>.concat</code></a>.<br>
@@ -218,11 +219,11 @@ Same as <a href="BatSeq.html#VALconcat"><code class="code"><span class="construc
 </div>
 <pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">int -> 'a -> 'a <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">make n e</code> returns the sequence of length <code class="code">n</code> where all elements
-      are <code class="code">e</code><br>
+    are <code class="code">e</code><br>
 </div>
 <pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> (int -> 'a) -> 'a <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">init n f</code> returns the sequence returning the results of <code class="code">f 0</code>,
-      <code class="code">f 1</code>.... <code class="code">f (n-1)</code>.<br>
+    <code class="code">f 1</code>.... <code class="code">f (n-1)</code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> if <code class="code">n &lt; 0</code>.<br>
 </div>
 <br>
@@ -232,11 +233,11 @@ Same as <a href="BatSeq.html#VALconcat"><code class="code"><span class="construc
 </div>
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> 'a <a href="BatSeq.html#TYPEt">t</a> -> 'b <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">map f s</code> returns the sequence where elements are elements of
-      <code class="code">s</code> mapped with <code class="code">f</code>. Lazy.<br>
+    <code class="code">s</code> mapped with <code class="code">f</code>. Lazy.<br>
 </div>
 <pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatSeq.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 <code class="code">fold_left f a (cons b0 (... bn))</code> is <code class="code">f (... (f (f a b0) b1) ...)
-      bn</code>. Tail-recursive, eager.<br>
+    bn</code>. Tail-recursive, eager.<br>
 </div>
 <pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">('a -> 'b -> 'b) -> 'a <a href="BatSeq.html#TYPEt">t</a> -> 'b -> 'b</code></pre><div class="info">
 <code class="code">fold_right f (cons a0 (cons a1 (cons a2 ...))) b</code> is <code class="code">f a0 (f
@@ -249,11 +250,11 @@ Same as <a href="BatSeq.html#VALconcat"><code class="code"><span class="construc
 </div>
 <pre><span id="VALmax"><span class="keyword">val</span> max</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 <code class="code">max s</code> returns the largest value in <code class="code">s</code> as judged by
-      <code class="code"><span class="constructor">Pervasives</span>.compare</code><br>
+    <code class="code"><span class="constructor">Pervasives</span>.compare</code><br>
 </div>
 <pre><span id="VALmin"><span class="keyword">val</span> min</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 <code class="code">min s</code> returns the smallest value in <code class="code">s</code> as judged by
-      <code class="code"><span class="constructor">Pervasives</span>.compare</code><br>
+    <code class="code"><span class="constructor">Pervasives</span>.compare</code><br>
 </div>
 <br>
 <span id="6_Sequencescanning"><h6>Sequence scanning</h6></span>
@@ -286,11 +287,11 @@ Same as <a href="BatSeq.html#VALconcat"><code class="code"><span class="construc
 <span id="6_Sequencesearching"><h6>Sequence searching</h6></span><br>
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('a -> bool) -> 'a <a href="BatSeq.html#TYPEt">t</a> -> 'a option</code></pre><div class="info">
 <code class="code">find p s</code> returns the first element of <code class="code">s</code> such as <code class="code">p e</code>
-      returns <code class="code"><span class="keyword">true</span></code>, if any. Eager, shortcut.<br>
+    returns <code class="code"><span class="keyword">true</span></code>, if any. Eager, shortcut.<br>
 </div>
 <pre><span id="VALfind_map"><span class="keyword">val</span> find_map</span> : <code class="type">('a -> 'b option) -> 'a <a href="BatSeq.html#TYPEt">t</a> -> 'b option</code></pre><div class="info">
 <code class="code">find_map p s</code> finds the first element of <code class="code">s</code> for which <code class="code">p e</code>
-      returns <code class="code"><span class="constructor">Some</span> r</code>, if any. Eager, short-cut.<br>
+    returns <code class="code"><span class="constructor">Some</span> r</code>, if any. Eager, short-cut.<br>
 </div>
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('a -> bool) -> 'a <a href="BatSeq.html#TYPEt">t</a> -> 'a <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">filter p s</code> returns the sequence of elements of <code class="code">s</code> satisfying
@@ -322,15 +323,15 @@ Same as <a href="BatSeq.html#VALconcat"><code class="code"><span class="construc
 <span id="6_Sequencetransformations"><h6>Sequence transformations</h6></span><br>
 <pre><span id="VALtake"><span class="keyword">val</span> take</span> : <code class="type">int -> 'a <a href="BatSeq.html#TYPEt">t</a> -> 'a <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">take n s</code> returns up to the <code class="code">n</code> first elements from sequence
-      <code class="code">s</code>, if available. Lazy.<br>
+    <code class="code">s</code>, if available. Lazy.<br>
 </div>
 <pre><span id="VALdrop"><span class="keyword">val</span> drop</span> : <code class="type">int -> 'a <a href="BatSeq.html#TYPEt">t</a> -> 'a <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">drop n s</code> returns <code class="code">s</code> without the first <code class="code">n</code> elements, or the
-      empty sequence if <code class="code">s</code> have less than <code class="code">n</code> elements. Lazy.<br>
+    empty sequence if <code class="code">s</code> have less than <code class="code">n</code> elements. Lazy.<br>
 </div>
 <pre><span id="VALtake_while"><span class="keyword">val</span> take_while</span> : <code class="type">('a -> bool) -> 'a <a href="BatSeq.html#TYPEt">t</a> -> 'a <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">take_while f s</code> returns the first elements of sequence <code class="code">s</code>
-      which satisfy the predicate <code class="code">f</code>. Lazy.<br>
+    which satisfy the predicate <code class="code">f</code>. Lazy.<br>
 </div>
 <pre><span id="VALdrop_while"><span class="keyword">val</span> drop_while</span> : <code class="type">('a -> bool) -> 'a <a href="BatSeq.html#TYPEt">t</a> -> 'a <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">drop_while f s</code> returns the sequence <code class="code">s</code> with the first

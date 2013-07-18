@@ -108,15 +108,16 @@
 <title>Batteries user guide : Batteries.Map</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="Batteries.List.html" title="Batteries.List">Previous</a>
-&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
-&nbsp;<a class="post" href="Batteries.Marshal.html" title="Batteries.Marshal">Next</a>
+<div class="navbar"><a href="Batteries.List.html">Previous</a>
+&nbsp;<a href="Batteries.html">Up</a>
+&nbsp;<a href="Batteries.Marshal.html">Next</a>
 </div>
-<h1>Module <a href="type_Batteries.Map.html">Batteries.Map</a></h1>
+<center><h1>Module <a href="type_Batteries.Map.html">Batteries.Map</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Map: <code class="type">BatMap</code></pre><hr width="100%">
 <pre><span class="keyword">module type</span> <a href="BatMap.S.html">S</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatMap.S.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><pre><span class="keyword">module</span> <a href="BatMap.Make.html">Make</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">Ord</span></code><code class="code"> : </code><code class="type"><a href="BatInterfaces.OrderedType.html">BatInterfaces.OrderedType</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatMap.S.html">S</a></code><code class="type">  with type key = Ord.t</code></div></pre><div class="info">
 Functor building an implementation of the map structure
-   given a totally ordered type.
+    given a totally ordered type.
 </div>
 <br>
 <span id="4_Polymorphicmaps"><h4>Polymorphic maps</h4></span>
@@ -169,7 +170,7 @@ Return the number of bindings of a map.<br>
     <code class="code">f</code> is unspecified. Only current bindings are presented to <code class="code">f</code>:
     bindings hidden by more recent bindings are not passed to <code class="code">f</code>.<br>
 </div>
-<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('b -> 'c) -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'c) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> ('c, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('c, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">map f m</code> returns a map with same domain as <code class="code">m</code>, where the
     associated value <code class="code">a</code> of all bindings of <code class="code">m</code> has been
     replaced by the result of the application of <code class="code">f</code> to <code class="code">a</code>.
@@ -180,7 +181,7 @@ Return the number of bindings of a map.<br>
 Same as <code class="code">map</code>, but the function receives as arguments both the
     key and the associated value for each binding of the map.<br>
 </div>
-<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('b -> 'c -> 'c) -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> 'c -> 'c</code></pre><div class="info">
+<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -> 'b -> 'b) -> ('c, 'a) <a href="BatMap.html#TYPEt">t</a> -> 'b -> 'b</code></pre><div class="info">
 <code class="code">fold f m a</code> computes <code class="code">(f kN dN ... (f k1 d1 (f k0 d0 a))...)</code>,
     where <code class="code">k0,k1..kN</code> are the keys of all bindings in <code class="code">m</code>,
     and <code class="code">d0,d1..dN</code> are the associated data.
@@ -191,19 +192,19 @@ Same as <code class="code">map</code>, but the function receives as arguments bo
 Same as <code class="code">fold</code>, but the function receives as arguments both the
     key and the associated value for each binding of the map.<br>
 </div>
-<pre><span id="VALfilterv"><span class="keyword">val</span> filterv</span> : <code class="type">('a -> bool) -> ('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('key, 'a) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALfilterv"><span class="keyword">val</span> filterv</span> : <code class="type">('a -> bool) -> ('b, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('b, 'a) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">filterv f m</code> returns a map where only the values <code class="code">a</code> of <code class="code">m</code>
    such that <code class="code">f a = <span class="keyword">true</span></code> remain. The bindings are passed to <code class="code">f</code>
    in increasing order with respect to the ordering over the
    type of the keys.<br>
 </div>
-<pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('key -> 'a -> bool) -> ('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('key, 'a) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('a -> 'b -> bool) -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">filter f m</code> returns a map where only the (key, value) pairs
    <code class="code">key</code>, <code class="code">a</code> of <code class="code">m</code> such that <code class="code">f key a = <span class="keyword">true</span></code> remain. The
    bindings are passed to <code class="code">f</code> in increasing order with respect
    to the ordering over the type of the keys.<br>
 </div>
-<pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">('key -> 'a -> 'b option) -> ('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('key, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">('a -> 'b -> 'c option) -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'c) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">filter_map f m</code> combines the features of <code class="code">filter</code> and
     <code class="code">map</code>.  It calls calls <code class="code">f key0 a0</code>, <code class="code">f key1 a1</code>, <code class="code">f keyn an</code>
     where <code class="code">a0..an</code> are the elements of <code class="code">m</code> and <code class="code">key0..keyn</code> the
@@ -211,12 +212,12 @@ Same as <code class="code">fold</code>, but the function receives as arguments b
     pairs <code class="code">keyi</code>,<code class="code">bi</code> such as <code class="code">f keyi ai = <span class="constructor">Some</span> bi</code> (when <code class="code">f</code> returns
     <code class="code"><span class="constructor">None</span></code>, the corresponding element of <code class="code">m</code> is discarded).<br>
 </div>
-<pre><span id="VALchoose"><span class="keyword">val</span> choose</span> : <code class="type">('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> 'key * 'a</code></pre><div class="info">
+<pre><span id="VALchoose"><span class="keyword">val</span> choose</span> : <code class="type">('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> 'a * 'b</code></pre><div class="info">
 Return one binding of the given map, or raise <code class="code"><span class="constructor">Not_found</span></code> if
     the map is empty. Which binding is chosen is unspecified,
     but equal bindings will be chosen for equal maps.<br>
 </div>
-<pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type">'key -><br>       ('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('key, 'a) <a href="BatMap.html#TYPEt">t</a> * 'a option * ('key, 'a) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type">'a -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> * 'b option * ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">split x m</code> returns a triple <code class="code">(l, data, r)</code>, where
       <code class="code">l</code> is the map with all the bindings of <code class="code">m</code> whose key
     is strictly less than <code class="code">x</code>;
@@ -225,10 +226,10 @@ Return one binding of the given map, or raise <code class="code"><span class="co
       <code class="code">data</code> is <code class="code"><span class="constructor">None</span></code> if <code class="code">m</code> contains no binding for <code class="code">x</code>,
       or <code class="code"><span class="constructor">Some</span> v</code> if <code class="code">m</code> binds <code class="code">v</code> to <code class="code">x</code>.<br>
 </div>
-<pre><span id="VALmin_binding"><span class="keyword">val</span> min_binding</span> : <code class="type">('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> 'key * 'a</code></pre><div class="info">
+<pre><span id="VALmin_binding"><span class="keyword">val</span> min_binding</span> : <code class="type">('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> 'a * 'b</code></pre><div class="info">
 returns the binding with the smallest key<br>
 </div>
-<pre><span id="VALmax_binding"><span class="keyword">val</span> max_binding</span> : <code class="type">('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> 'key * 'a</code></pre><div class="info">
+<pre><span id="VALmax_binding"><span class="keyword">val</span> max_binding</span> : <code class="type">('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> 'a * 'b</code></pre><div class="info">
 returns the binding with the largest key<br>
 </div>
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
@@ -268,12 +269,17 @@ Tests whether some key value pair satisfies some predicate function<br>
 <b>Since</b> 1.2.0<br>
 <b>Raises</b> <code>Not_found</code> if <code class="code">k</code> is unbound in <code class="code">m</code> (or <code class="code">f</code> raises <code class="code"><span class="constructor">Not_found</span></code>)<br>
 </div>
-<pre><span id="VALmodify_def"><span class="keyword">val</span> modify_def</span> : <code class="type">'b -> 'a -> ('b -> 'b) -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALmodify_def"><span class="keyword">val</span> modify_def</span> : <code class="type">'a -> 'b -> ('a -> 'a) -> ('b, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('b, 'a) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">modify_def v0 k f m</code> replaces the previous binding for <code class="code">k</code>
     with <code class="code">f</code> applied to that value. If <code class="code">k</code> is unbound in <code class="code">m</code> or
     <code class="code"><span class="constructor">Not_found</span></code> is raised during the search, <code class="code">f v0</code> is
     inserted (as if the value found were <code class="code">v0</code>).<br>
 <b>Since</b> 1.3.0<br>
+</div>
+<pre><span id="VALmodify_opt"><span class="keyword">val</span> modify_opt</span> : <code class="type">'a -> ('b option -> 'b option) -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">modify_opt k f m</code> allow to modify the binding for <code class="code">k</code> in <code class="code">m</code>
+    or absence thereof.<br>
+<b>Since</b> 2.1<br>
 </div>
 <pre><span id="VALextract"><span class="keyword">val</span> extract</span> : <code class="type">'a -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> 'b * ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">extract k m</code> removes the current binding of <code class="code">k</code> from <code class="code">m</code>,
@@ -295,19 +301,19 @@ Tests whether some key value pair satisfies some predicate function<br>
       <code class="code">foldi (<span class="keyword">fun</span> k _v m <span class="keywordsign">-&gt;</span> remove k m) m2 m1</code>
     The resulting map uses the comparison function of <code class="code">m1</code>.<br>
 </div>
-<pre><span id="VALintersect"><span class="keyword">val</span> intersect</span> : <code class="type">('b -> 'c -> 'd) -><br>       ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'c) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'd) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALintersect"><span class="keyword">val</span> intersect</span> : <code class="type">('a -> 'b -> 'c) -><br>       ('d, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('d, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('d, 'c) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">intersect merge_f m1 m2</code> returns a map with bindings only for
     keys bound in both <code class="code">m1</code> and <code class="code">m2</code>, and with <code class="code">k</code> bound to <code class="code">merge_f
     v1 v2</code>, where <code class="code">v1</code> and <code class="code">v2</code> are <code class="code">k</code>'s bindings in <code class="code">m1</code> and <code class="code">m2</code>.
     The resulting map uses the comparison function of <code class="code">m1</code>.<br>
 </div>
-<pre><span id="VALmerge"><span class="keyword">val</span> merge</span> : <code class="type">('key -> 'a option -> 'b option -> 'c option) -><br>       ('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('key, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('key, 'c) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALmerge"><span class="keyword">val</span> merge</span> : <code class="type">('a -> 'b option -> 'c option -> 'd option) -><br>       ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'c) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'd) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">merge f m1 m2</code> computes a map whose keys is a subset of keys of <code class="code">m1</code>
     and of <code class="code">m2</code>. The presence of each such binding, and the corresponding
     value, is determined with the function <code class="code">f</code>.
     The resulting map uses the comparison function of <code class="code">m1</code>.<br>
 </div>
-<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">('b -> 'b -> int) -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> int</code></pre><pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">('b -> 'b -> bool) -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">('a -> 'a -> int) -> ('b, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('b, 'a) <a href="BatMap.html#TYPEt">t</a> -> int</code></pre><pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">('a -> 'a -> bool) -> ('b, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('b, 'a) <a href="BatMap.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 Construct a comparison or equality function for maps based on a
     value comparison or equality function.  Uses the key comparison
     function to compare keys<br>
@@ -321,7 +327,7 @@ Infix operators over a <code class="code"><span class="constructor">BatPMap</spa
 <pre><span id="VAL(-->)"><span class="keyword">val</span> (--&gt;)</span> : <code class="type">('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> 'a -> 'b</code></pre><div class="info">
 Map find and insert from Infix<br>
 </div>
-<pre><span id="VAL(<--)"><span class="keyword">val</span> (&lt;--)</span> : <code class="type">('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> 'a * 'b -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><pre><span id="VALbindings"><span class="keyword">val</span> bindings</span> : <code class="type">('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('key * 'a) list</code></pre><div class="info">
+<pre><span id="VAL(<--)"><span class="keyword">val</span> (&lt;--)</span> : <code class="type">('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> 'a * 'b -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><pre><span id="VALbindings"><span class="keyword">val</span> bindings</span> : <code class="type">('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a * 'b) list</code></pre><div class="info">
 Return the list of all bindings of the given map.
     The returned list is sorted in increasing key order.
 <p>

@@ -111,32 +111,33 @@
 <title>Batteries user guide : Batteries.Num</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="Batteries.Big_int.html" title="Batteries.Big_int">Previous</a>
-&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
-&nbsp;<a class="post" href="Batteries.Bigarray.html" title="Batteries.Bigarray">Next</a>
+<div class="navbar"><a href="Batteries.Big_int.html">Previous</a>
+&nbsp;<a href="Batteries.html">Up</a>
+&nbsp;<a href="Batteries.Bigarray.html">Next</a>
 </div>
-<h1>Module <a href="type_Batteries.Num.html">Batteries.Num</a></h1>
+<center><h1>Module <a href="type_Batteries.Num.html">Batteries.Num</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Num: <code class="type">BatNum</code></pre><hr width="100%">
 <pre><span id="TYPEnum"><span class="keyword">type</span> <code class="type"></code>num</span> = <code class="type">Num.num</code> = </pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnum.Int"><span class="constructor">Int</span></span> <span class="keyword">of</span> <code class="type">int</code></code></td>
+<code><span class="constructor">Int</span> <span class="keyword">of</span> <code class="type">int</code></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnum.Big_int"><span class="constructor">Big_int</span></span> <span class="keyword">of</span> <code class="type">Big_int.big_int</code></code></td>
+<code><span class="constructor">Big_int</span> <span class="keyword">of</span> <code class="type">Big_int.big_int</code></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnum.Ratio"><span class="constructor">Ratio</span></span> <span class="keyword">of</span> <code class="type">Ratio.ratio</code></code></td>
+<code><span class="constructor">Ratio</span> <span class="keyword">of</span> <code class="type">Ratio.ratio</code></code></td>
 
 </tr></table>
 
@@ -150,7 +151,14 @@ The type of numbers.<br>
 <span id="6_Usualoperations"><h6>Usual operations</h6></span><br>
 </div>
 <pre><span id="VALone"><span class="keyword">val</span> one</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALneg"><span class="keyword">val</span> neg</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALabs"><span class="keyword">val</span> abs</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALmul"><span class="keyword">val</span> mul</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALdiv"><span class="keyword">val</span> div</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALmodulo"><span class="keyword">val</span> modulo</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALpow"><span class="keyword">val</span> pow</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> int</code></pre><pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre><pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre><pre><span id="VALof_int"><span class="keyword">val</span> of_int</span> : <code class="type">int -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALto_int"><span class="keyword">val</span> to_int</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> int</code></pre><pre><span id="VALof_float"><span class="keyword">val</span> of_float</span> : <code class="type">float -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALto_float"><span class="keyword">val</span> to_float</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> float</code></pre><pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> string</code></pre><div class="info">
-Convert a number to a string, using fractional notation.<br>
+Convert a number to a string, using fractional notation. Two
+    formats are recognized: simple integer literals and a pair of integer
+    literals separated by a '/', to indicate a rational number.<br>
+</div>
+<pre><span id="VALof_float_string"><span class="keyword">val</span> of_float_string</span> : <code class="type">string -> <a href="BatNum.html#TYPEnum">num</a></code></pre><div class="info">
+Convert a simple floating point literal to a num.  Plain integer
+    literals are also accepted; numbers written with a trailing exponent
+    are not currently accepted.<br>
 </div>
 <pre><span id="VAL(+)"><span class="keyword">val</span> (+)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VAL(-)"><span class="keyword">val</span> (-)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VAL( * )"><span class="keyword">val</span> ( * )</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VAL(/)"><span class="keyword">val</span> (/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VAL( ** )"><span class="keyword">val</span> ( ** )</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALmax_num"><span class="keyword">val</span> max_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALmin_num"><span class="keyword">val</span> min_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALquo"><span class="keyword">val</span> quo</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><div class="info">
 <span id="6_Additionaloperations"><h6>Additional operations</h6></span>

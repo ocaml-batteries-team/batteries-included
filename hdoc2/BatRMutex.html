@@ -106,11 +106,12 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatRMutex</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatQueue.html" title="BatQueue">Previous</a>
-&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="BatRandom.html" title="BatRandom">Next</a>
+<div class="navbar"><a href="BatQueue.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="BatRandom.html">Next</a>
 </div>
-<h1>Module <a href="type_BatRMutex.html">BatRMutex</a></h1>
+<center><h1>Module <a href="type_BatRMutex.html">BatRMutex</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> BatRMutex: <code class="code"><span class="keyword">sig</span></code> <a href="BatRMutex.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Reentrant Mutexes
 <p>
 
@@ -118,10 +119,10 @@
     and protect shared mutable data structures against concurrent accesses.
     The typical use is (if <code class="code">m</code> is the mutex associated with the data structure
     <code class="code"><span class="constructor">D</span></code>):
-    <code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">RMutex</span>.synchronize&nbsp;~lock:m&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span><br>
+    <pre></pre><code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">RMutex</span>.synchronize&nbsp;~lock:m&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;Critical&nbsp;section&nbsp;that&nbsp;operates&nbsp;over&nbsp;D&nbsp;*)</span>;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)&nbsp;()<br>
-&nbsp;&nbsp;&nbsp;&nbsp;</code>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)&nbsp;()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;</code><pre></pre>
 <p>
 
     This module implements reentrant mutexes, i.e. a version of mutexes which
@@ -139,12 +140,12 @@ Return a new mutex.<br>
 </div>
 <pre><span id="VALlock"><span class="keyword">val</span> lock</span> : <code class="type"><a href="BatRMutex.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 Lock the given mutex. Only one thread can have the mutex locked
-      at any time. A thread that attempts to lock a mutex already locked
-      will suspend until the other mutex is unlocked.
+    at any time. A thread that attempts to lock a mutex already locked
+    will suspend until the other mutex is unlocked.
 <p>
 
-      <b>Note</b> attempting to lock a mutex you already have locked from
-      the same thread will not suspend your thread.<br>
+    <b>Note</b> attempting to lock a mutex you already have locked from
+    the same thread will not suspend your thread.<br>
 </div>
 <pre><span id="VALtry_lock"><span class="keyword">val</span> try_lock</span> : <code class="type"><a href="BatRMutex.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 Same as <code class="code"><span class="constructor">RMutex</span>.lock</code>, but does not suspend the calling thread if

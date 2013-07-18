@@ -106,11 +106,12 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : Batteries.Return</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="Batteries.Result.html" title="Batteries.Result">Previous</a>
-&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
-&nbsp;<a class="post" href="Batteries.Seq.html" title="Batteries.Seq">Next</a>
+<div class="navbar"><a href="Batteries.Result.html">Previous</a>
+&nbsp;<a href="Batteries.html">Up</a>
+&nbsp;<a href="Batteries.Seq.html">Next</a>
 </div>
-<h1>Module <a href="type_Batteries.Return.html">Batteries.Return</a></h1>
+<center><h1>Module <a href="type_Batteries.Return.html">Batteries.Return</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Return: <code class="type">BatReturn</code></pre><hr width="100%">
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
 <div class="info">
@@ -135,13 +136,13 @@ as <code class="code">label</code><br>
 </div>
 <pre><span id="VALreturn"><span class="keyword">val</span> return</span> : <code class="type">'a <a href="BatReturn.html#TYPEt">t</a> -> 'a -> 'b</code></pre><div class="info">
 Return to a label. <code class="code">return l v</code> returns
-    to the point where label <code class="code">l</code> was obtained
-    and produces value <code class="code">l</code>.
+      to the point where label <code class="code">l</code> was obtained
+      and produces value <code class="code">l</code>.
 <p>
 
-    Calling <code class="code">return l v</code> from outside the scope
-    of <code class="code">l</code> (i.e. the call to function <code class="code">label</code>
-    which produced <code class="code">l</code>) is a run-time error
-    and causes termination of the program.<br>
+      Calling <code class="code">return l v</code> from outside the scope
+      of <code class="code">l</code> (i.e. the call to function <code class="code">label</code>
+      which produced <code class="code">l</code>) is a run-time error
+      and causes termination of the program.<br>
 </div>
 </body></html>

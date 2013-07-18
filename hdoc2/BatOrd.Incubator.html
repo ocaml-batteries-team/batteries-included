@@ -105,16 +105,17 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatOrd.Incubator</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatOrd.Eq.html" title="BatOrd.Eq">Previous</a>
-&nbsp;<a class="up" href="BatOrd.html" title="BatOrd">Up</a>
+<div class="navbar"><a href="BatOrd.Eq.html">Previous</a>
+&nbsp;<a href="BatOrd.html">Up</a>
 &nbsp;</div>
-<h1>Module <a href="type_BatOrd.Incubator.html">BatOrd.Incubator</a></h1>
+<center><h1>Module <a href="type_BatOrd.Incubator.html">BatOrd.Incubator</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Incubator: <code class="code"><span class="keyword">sig</span></code> <a href="BatOrd.Incubator.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 <pre><span id="VALeq_by"><span class="keyword">val</span> eq_by</span> : <code class="type">('a -> 'b) -> 'a <a href="BatOrd.html#TYPEeq">BatOrd.eq</a></code></pre><pre><span id="VALcomp_by"><span class="keyword">val</span> comp_by</span> : <code class="type">('a -> 'b) -> 'a <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a></code></pre><pre><span id="VALord_by"><span class="keyword">val</span> ord_by</span> : <code class="type">('a -> 'b) -> 'a <a href="BatOrd.html#TYPEord">BatOrd.ord</a></code></pre><div class="info">
 Build a <code class="code">eq</code>, <code class="code">cmp</code> or <code class="code">ord</code> function from a projection function.
-    For example, if you wanted to compare integers based on their
-    lowest 4 bits, you could write <code class="code"><span class="keyword">let</span> cmp_bot4 = cmp_by (<span class="keyword">fun</span> x
-    <span class="keywordsign">-&gt;</span> x <span class="keyword">land</span> 0xf)</code> and use cmp_bot4 as the desired integer
-    comparator.<br>
+        For example, if you wanted to compare integers based on their
+        lowest 4 bits, you could write <code class="code"><span class="keyword">let</span> cmp_bot4 = cmp_by (<span class="keyword">fun</span> x
+        <span class="keywordsign">-&gt;</span> x <span class="keyword">land</span> 0xf)</code> and use cmp_bot4 as the desired integer
+        comparator.<br>
 </div>
 </body></html>

@@ -106,22 +106,23 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatMutex</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatMultiPMap.html" title="BatMultiPMap">Previous</a>
-&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="BatNativeint.html" title="BatNativeint">Next</a>
+<div class="navbar"><a href="BatMultiPMap.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="BatNativeint.html">Next</a>
 </div>
-<h1>Module <a href="type_BatMutex.html">BatMutex</a></h1>
+<center><h1>Module <a href="type_BatMutex.html">BatMutex</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> BatMutex: <code class="code"><span class="keyword">sig</span></code> <a href="BatMutex.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Locks for mutual exclusion.
 <p>
 
-   Mutexes (mutual-exclusion locks) are used to implement critical sections
-   and protect shared mutable data structures against concurrent accesses.
-   The typical use is (if <code class="code">m</code> is the mutex associated with the data structure
-   <code class="code"><span class="constructor">D</span></code>):
-    <code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Mutex</span>.synchronize&nbsp;~lock:m&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span><br>
+    Mutexes (mutual-exclusion locks) are used to implement critical sections
+    and protect shared mutable data structures against concurrent accesses.
+    The typical use is (if <code class="code">m</code> is the mutex associated with the data structure
+    <code class="code"><span class="constructor">D</span></code>):
+    <pre></pre><code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Mutex</span>.synchronize&nbsp;~lock:m&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;Critical&nbsp;section&nbsp;that&nbsp;operates&nbsp;over&nbsp;D&nbsp;*)</span>;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)&nbsp;()<br>
-&nbsp;&nbsp;&nbsp;&nbsp;</code>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)&nbsp;()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;</code><pre></pre>
 <p>
 
     This module implements <code class="code"><span class="constructor">Control</span>.<span class="constructor">Concurrency</span>.<span class="constructor">Common</span></code><br>

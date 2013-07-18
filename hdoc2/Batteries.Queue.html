@@ -108,11 +108,12 @@
 <title>Batteries user guide : Batteries.Queue</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="Batteries.Printf.html" title="Batteries.Printf">Previous</a>
-&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
-&nbsp;<a class="post" href="Batteries.Random.html" title="Batteries.Random">Next</a>
+<div class="navbar"><a href="Batteries.Printf.html">Previous</a>
+&nbsp;<a href="Batteries.html">Up</a>
+&nbsp;<a href="Batteries.Random.html">Next</a>
 </div>
-<h1>Module <a href="type_Batteries.Queue.html">Batteries.Queue</a></h1>
+<center><h1>Module <a href="type_Batteries.Queue.html">Batteries.Queue</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Queue: <code class="type">BatQueue</code></pre><hr width="100%">
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a Queue.t</code> </pre>
 <div class="info">
@@ -134,14 +135,14 @@ Return a new queue, initially empty.<br>
 </div>
 <pre><span id="VALtake"><span class="keyword">val</span> take</span> : <code class="type">'a <a href="BatQueue.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 <code class="code">take q</code> removes and returns the first element in queue <code class="code">q</code>,
-   or raises <code class="code"><span class="constructor">Empty</span></code> if the queue is empty.<br>
+    or raises <code class="code"><span class="constructor">Empty</span></code> if the queue is empty.<br>
 </div>
 <pre><span id="VALpop"><span class="keyword">val</span> pop</span> : <code class="type">'a <a href="BatQueue.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 <code class="code">pop</code> is a synonym for <code class="code">take</code>.<br>
 </div>
 <pre><span id="VALpeek"><span class="keyword">val</span> peek</span> : <code class="type">'a <a href="BatQueue.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 <code class="code">peek q</code> returns the first element in queue <code class="code">q</code>, without removing
-   it from the queue, or raises <code class="code"><span class="constructor">Empty</span></code> if the queue is empty.<br>
+    it from the queue, or raises <code class="code"><span class="constructor">Empty</span></code> if the queue is empty.<br>
 </div>
 <pre><span id="VALtop"><span class="keyword">val</span> top</span> : <code class="type">'a <a href="BatQueue.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 <code class="code">top</code> is a synonym for <code class="code">peek</code>.<br>
@@ -160,19 +161,19 @@ Return the number of elements in a queue.<br>
 </div>
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> 'a <a href="BatQueue.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 <code class="code">iter f q</code> applies <code class="code">f</code> in turn to all elements of <code class="code">q</code>,
-   from the least recently entered to the most recently entered.
-   The queue itself is unchanged.<br>
+    from the least recently entered to the most recently entered.
+    The queue itself is unchanged.<br>
 </div>
-<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('b -> 'a -> 'b) -> 'b -> 'a <a href="BatQueue.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
+<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatQueue.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 <code class="code">fold f accu q</code> is equivalent to <code class="code"><span class="constructor">List</span>.fold_left f accu l</code>,
-   where <code class="code">l</code> is the list of <code class="code">q</code>'s elements. The queue remains
-   unchanged.<br>
+    where <code class="code">l</code> is the list of <code class="code">q</code>'s elements. The queue remains
+    unchanged.<br>
 </div>
 <pre><span id="VALtransfer"><span class="keyword">val</span> transfer</span> : <code class="type">'a <a href="BatQueue.html#TYPEt">t</a> -> 'a <a href="BatQueue.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 <code class="code">transfer q1 q2</code> adds all of <code class="code">q1</code>'s elements at the end of
-   the queue <code class="code">q2</code>, then clears <code class="code">q1</code>. It is equivalent to the
-   sequence <code class="code">iter (<span class="keyword">fun</span> x <span class="keywordsign">-&gt;</span> add x q2) q1; clear q1</code>, but runs
-   in constant time.<br>
+    the queue <code class="code">q2</code>, then clears <code class="code">q1</code>. It is equivalent to the
+    sequence <code class="code">iter (<span class="keyword">fun</span> x <span class="keywordsign">-&gt;</span> add x q2) q1; clear q1</code>, but runs
+    in constant time.<br>
 </div>
 <pre><span id="TYPEenumerable"><span class="keyword">type</span> <code class="type">'a</code> enumerable</span> = <code class="type">'a <a href="BatQueue.html#TYPEt">t</a></code> </pre>
 

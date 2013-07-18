@@ -109,6 +109,7 @@
 <link title="List creation" rel="Section" href="#6_Listcreation">
 <link title="Higher-order functions" rel="Section" href="#6_Higherorderfunctions">
 <link title="Finding" rel="Section" href="#6_Finding">
+<link title=" Common functions" rel="Section" href="#6_Commonfunctions">
 <link title="Association lists" rel="Section" href="#6_Associationlists">
 <link title="Transformations" rel="Section" href="#6_Transformations">
 <link title="Dropping elements" rel="Section" href="#6_Droppingelements">
@@ -116,34 +117,36 @@
 <link title=" Predicates" rel="Section" href="#6_Predicates">
 <link title="Misc." rel="Section" href="#6_Misc">
 <link title="Sorting" rel="Section" href="#6_Sorting">
+<link title="Operations on two lists" rel="Section" href="#6_Operationsontwolists">
 <link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
 <link title="Override modules" rel="Section" href="#6_Overridemodules">
 <link title="Printing" rel="Subsection" href="#7_Printing">
 <title>Batteries user guide : Batteries.LazyList</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="Batteries.IO.html" title="Batteries.IO">Previous</a>
-&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
-&nbsp;<a class="post" href="Batteries.MultiPMap.html" title="Batteries.MultiPMap">Next</a>
+<div class="navbar"><a href="Batteries.IO.html">Previous</a>
+&nbsp;<a href="Batteries.html">Up</a>
+&nbsp;<a href="Batteries.MultiPMap.html">Next</a>
 </div>
-<h1>Module <a href="type_Batteries.LazyList.html">Batteries.LazyList</a></h1>
+<center><h1>Module <a href="type_Batteries.LazyList.html">Batteries.LazyList</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> LazyList: <code class="type">BatLazyList</code></pre><hr width="100%">
 <br>
 <span id="6_Exceptions"><h6>Exceptions</h6></span><br>
 <pre><span id="EXCEPTIONEmpty_list"><span class="keyword">exception</span> Empty_list</span></pre>
 <div class="info">
 <code class="code"><span class="constructor">Empty_list</span></code> is raised when an operation applied on an empty list
-      is invalid. For instance, <code class="code">hd nil</code> will raise <code class="code"><span class="constructor">Empty_list</span></code>.<br>
+    is invalid. For instance, <code class="code">hd nil</code> will raise <code class="code"><span class="constructor">Empty_list</span></code>.<br>
 </div>
 <pre><span id="EXCEPTIONInvalid_index"><span class="keyword">exception</span> Invalid_index</span> <span class="keyword">of</span> <code class="type">int</code></pre>
 <div class="info">
 <code class="code"><span class="constructor">Invalid_index</span></code> is raised when an indexed access on a list is
-      out of list bounds.<br>
+    out of list bounds.<br>
 </div>
 <pre><span id="EXCEPTIONDifferent_list_size"><span class="keyword">exception</span> Different_list_size</span> <span class="keyword">of</span> <code class="type">string</code></pre>
 <div class="info">
 <code class="code"><span class="constructor">Different_list_size</span></code> is raised when applying functions such as
-      <code class="code">iter2</code> on two lists having different size.<br>
+    <code class="code">iter2</code> on two lists having different size.<br>
 </div>
 <pre><span id="EXCEPTIONNo_more_elements"><span class="keyword">exception</span> No_more_elements</span></pre>
 <div class="info">
@@ -160,19 +163,19 @@ See <a href="BatLazyList.html#VALfrom"><code class="code"><span class="construct
 The type of a lazy list.<br>
 </div>
 
-<pre><code><span id="TYPEnode_t"><span class="keyword">type</span> <code class="type">'a</code> node_t</span> = </code></pre><table class="typetable">
+<br><code><span id="TYPEnode_t"><span class="keyword">type</span> <code class="type">'a</code> node_t</span> = </code><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnode_t.Nil"><span class="constructor">Nil</span></span></code></td>
+<code><span class="constructor">Nil</span></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnode_t.Cons"><span class="constructor">Cons</span></span> <span class="keyword">of</span> <code class="type">'a * 'a <a href="BatLazyList.html#TYPEt">t</a></code></code></td>
+<code><span class="constructor">Cons</span> <span class="keyword">of</span> <code class="type">'a * 'a <a href="BatLazyList.html#TYPEt">t</a></code></code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >The type of an item in the list.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 
@@ -200,39 +203,39 @@ As <code class="code">cons</code>: <code class="code">x^:^l</code> is the lazy l
 <span id="6_Listcreation"><h6>List creation</h6></span><br>
 <pre><span id="VALfrom"><span class="keyword">val</span> from</span> : <code class="type">(unit -> 'a) -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">from next</code> creates a (possibly infinite) lazy list from the successive
-     results of <code class="code">next</code>.<br>
+   results of <code class="code">next</code>.<br>
 <b>Raises</b> <code>LazyList.No_more_elements</code> to denote the end of the list.<br>
 </div>
 <pre><span id="VALfrom_while"><span class="keyword">val</span> from_while</span> : <code class="type">(unit -> 'a option) -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">from next</code> creates a (possibly infinite) lazy list from the successive
-     results of <code class="code">next</code>.
-     The list ends whenever <code class="code">next</code> returns <code class="code"><span class="constructor">None</span></code>.<br>
+   results of <code class="code">next</code>.
+   The list ends whenever <code class="code">next</code> returns <code class="code"><span class="constructor">None</span></code>.<br>
 </div>
-<pre><span id="VALfrom_loop"><span class="keyword">val</span> from_loop</span> : <code class="type">'b -> ('b -> 'a * 'b) -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALfrom_loop"><span class="keyword">val</span> from_loop</span> : <code class="type">'a -> ('a -> 'b * 'a) -> 'b <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">from_loop data next</code> creates a (possibly infinite) lazy list from
-     the successive results of applying <code class="code">next</code> to <code class="code">data</code>, then to the
-     result, etc. The list ends whenever the function raises
-     <code class="code"><span class="constructor">LazyList</span>.<span class="constructor">No_more_elements</span></code>.<br>
+   the successive results of applying <code class="code">next</code> to <code class="code">data</code>, then to the
+   result, etc. The list ends whenever the function raises
+   <code class="code"><span class="constructor">LazyList</span>.<span class="constructor">No_more_elements</span></code>.<br>
 </div>
 <pre><span id="VALseq"><span class="keyword">val</span> seq</span> : <code class="type">'a -> ('a -> 'a) -> ('a -> bool) -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">seq init step cond</code> creates a sequence of data, which starts
-      from <code class="code">init</code>,  extends by <code class="code">step</code>,  until the condition <code class="code">cond</code>
-      fails. E.g. <code class="code">seq 1 ((+) 1) ((&gt;) 100)</code> returns <code class="code">^[1, 2, ... 99]^</code>. If <code class="code">cond
-      init</code> is false, the result is empty.<br>
+    from <code class="code">init</code>,  extends by <code class="code">step</code>,  until the condition <code class="code">cond</code>
+    fails. E.g. <code class="code">seq 1 ((+) 1) ((&gt;) 100)</code> returns <code class="code">[^1, 2, ... 99^]</code>. If <code class="code">cond
+    init</code> is false, the result is empty.<br>
 </div>
-<pre><span id="VALunfold"><span class="keyword">val</span> unfold</span> : <code class="type">'b -> ('b -> ('a * 'b) option) -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALunfold"><span class="keyword">val</span> unfold</span> : <code class="type">'a -> ('a -> ('b * 'a) option) -> 'b <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">unfold data next</code> creates a (possibly infinite) lazy list from
-     the successive results of applying <code class="code">next</code> to <code class="code">data</code>, then to the
-     result, etc. The list ends whenever the function returns <code class="code"><span class="constructor">None</span></code><br>
+   the successive results of applying <code class="code">next</code> to <code class="code">data</code>, then to the
+   result, etc. The list ends whenever the function returns <code class="code"><span class="constructor">None</span></code><br>
 </div>
 <pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> (int -> 'a) -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 Similar to <code class="code"><span class="constructor">Array</span>.init</code>, <code class="code">init n f</code> returns the lazy list
-      containing the results of (f 0),(f 1).... (f (n-1)).<br>
+    containing the results of (f 0),(f 1).... (f (n-1)).<br>
 <b>Raises</b> <code>Invalid_argument</code> <code class="code"><span class="string">"LazyList.init"</span></code> if n &lt; 0.<br>
 </div>
 <pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">int -> 'a -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 Similar to <code class="code"><span class="constructor">String</span>.make</code>, <code class="code">make n x</code> returns a
-      list containing <code class="code">n</code> elements <code class="code">x</code>.<br>
+    list containing <code class="code">n</code> elements <code class="code">x</code>.<br>
 </div>
 <pre><span id="VALrange"><span class="keyword">val</span> range</span> : <code class="type">int -> int -> int <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 Compute lazily a range of integers a .. b as a lazy list.
@@ -290,80 +293,92 @@ Eager fold_left
 Eager fold_right
 <p>
 
-   <code class="code">fold_right f a [^ b0; b1; ...; bn ^]</code> is <code class="code">f ( f (... (f (f a bn) ...) b1) b0</code>. This causes
-   evaluation of all the elements of the list. Not tail-recursive.<br>
+   <code class="code">fold_right f b [^ a0; a1; ...; an ^]</code> is <code class="code">f a0 (f a1 (... (f an b) ...))</code>.
+   This causes evaluation of all the elements of the list. Not
+   tail-recursive.<br>
+</div>
+<pre><span id="VALlazy_fold_right"><span class="keyword">val</span> lazy_fold_right</span> : <code class="type">('a -> 'b Lazy.t -> 'b) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'b Lazy.t -> 'b Lazy.t</code></pre><div class="info">
+Lazy fold_right
+   <code class="code">lazy_fold_right f (<span class="constructor">Cons</span> (a0, <span class="constructor">Cons</span> (a1, <span class="constructor">Cons</span> (a2, nil)))) b</code> is
+   <code class="code"><span class="keyword">lazy</span> (f a0 (<span class="keyword">lazy</span> (f a1 (<span class="keyword">lazy</span> (f a2 b)))))</code>.
+<p>
+
+   Forcing the result of <code class="code">lazy_fold_right</code> forces the first element of
+   the list; the rest is forced only if/when the function <code class="code">f</code> forces
+   its accumulator argument.<br>
+<b>Since</b> 2.1<br>
 </div>
 <br>
 <span id="6_Finding"><h6>Finding</h6></span><br>
 <pre><span id="VALmem"><span class="keyword">val</span> mem</span> : <code class="type">'a -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 <code class="code">mem x l</code> determines if <code class="code">x</code> is part of <code class="code">l</code>.
-      Evaluates all the elements of <code class="code">l</code> which appear
-      before <code class="code">x</code>.<br>
+    Evaluates all the elements of <code class="code">l</code> which appear
+    before <code class="code">x</code>.<br>
 </div>
 <pre><span id="VALmemq"><span class="keyword">val</span> memq</span> : <code class="type">'a -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 As <code class="code">mem</code>, but with physical equality<br>
 </div>
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('a -> bool) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 <code class="code">find p l</code> returns the first element of <code class="code">l</code> such as <code class="code">p x</code>
-      returns <code class="code"><span class="keyword">true</span></code>.<br>
+    returns <code class="code"><span class="keyword">true</span></code>.<br>
 <b>Raises</b> <code>Not_found</code> if such an element has not been found.<br>
 </div>
 <pre><span id="VALrfind"><span class="keyword">val</span> rfind</span> : <code class="type">('a -> bool) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 <code class="code">rfind p l</code> returns the last element <code class="code">x</code> of <code class="code">l</code> such as <code class="code">p x</code> returns
-      <code class="code"><span class="keyword">true</span></code>.<br>
+    <code class="code"><span class="keyword">true</span></code>.<br>
 <b>Raises</b> <code>Not_found</code> if such element as not been found.<br>
 </div>
 <pre><span id="VALfind_exn"><span class="keyword">val</span> find_exn</span> : <code class="type">('a -> bool) -> exn -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 <code class="code">find_exn p e l</code> returns the first element of <code class="code">l</code> such as <code class="code">p x</code>
-      returns <code class="code"><span class="keyword">true</span></code> or raises <code class="code">e</code> if such an element has not been found.<br>
+    returns <code class="code"><span class="keyword">true</span></code> or raises <code class="code">e</code> if such an element has not been found.<br>
 </div>
 <pre><span id="VALrfind_exn"><span class="keyword">val</span> rfind_exn</span> : <code class="type">('a -> bool) -> exn -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 <code class="code">find_exn p e l</code> returns the last element of <code class="code">l</code> such as <code class="code">p x</code>
-      returns <code class="code"><span class="keyword">true</span></code> or raises <code class="code">e</code> if such an element has not been found.<br>
+    returns <code class="code"><span class="keyword">true</span></code> or raises <code class="code">e</code> if such an element has not been found.<br>
 </div>
 <pre><span id="VALfindi"><span class="keyword">val</span> findi</span> : <code class="type">(int -> 'a -> bool) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> int * 'a</code></pre><div class="info">
 <code class="code">findi p e l</code> returns the first element <code class="code">ai</code> of <code class="code">l</code> along with its
-      index <code class="code">i</code> such that <code class="code">p i ai</code> is true.<br>
+    index <code class="code">i</code> such that <code class="code">p i ai</code> is true.<br>
 <b>Raises</b> <code>Not_found</code> if no such element has been found.<br>
 </div>
 <pre><span id="VALrfindi"><span class="keyword">val</span> rfindi</span> : <code class="type">(int -> 'a -> bool) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> int * 'a</code></pre><div class="info">
 <code class="code">findi p e l</code> returns the last element <code class="code">ai</code> of <code class="code">l</code> along with its
-      index <code class="code">i</code> such that <code class="code">p i ai</code> is true.<br>
+    index <code class="code">i</code> such that <code class="code">p i ai</code> is true.<br>
 <b>Raises</b> <code>Not_found</code> if no such element has been found.<br>
 </div>
 <pre><span id="VALindex_of"><span class="keyword">val</span> index_of</span> : <code class="type">'a -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> int option</code></pre><div class="info">
 <code class="code">index_of e l</code> returns the index of the first occurrence of <code class="code">e</code>
-      in <code class="code">l</code>, or <code class="code"><span class="constructor">None</span></code> if there is no occurrence of <code class="code">e</code> in <code class="code">l</code><br>
+    in <code class="code">l</code>, or <code class="code"><span class="constructor">None</span></code> if there is no occurrence of <code class="code">e</code> in <code class="code">l</code><br>
 </div>
 <pre><span id="VALindex_ofq"><span class="keyword">val</span> index_ofq</span> : <code class="type">'a -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> int option</code></pre><div class="info">
 <code class="code">index_ofq e l</code> behaves as <code class="code">index_of e l</code> except it uses
-      physical equality<br>
+    physical equality<br>
 </div>
 <pre><span id="VALrindex_of"><span class="keyword">val</span> rindex_of</span> : <code class="type">'a -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> int option</code></pre><div class="info">
 <code class="code">index_of e l</code> returns the index of the last occurrence of <code class="code">e</code>
-      in <code class="code">l</code>, or <code class="code"><span class="constructor">None</span></code> if there is no occurrence of <code class="code">e</code> in <code class="code">l</code><br>
+    in <code class="code">l</code>, or <code class="code"><span class="constructor">None</span></code> if there is no occurrence of <code class="code">e</code> in <code class="code">l</code><br>
 </div>
 <pre><span id="VALrindex_ofq"><span class="keyword">val</span> rindex_ofq</span> : <code class="type">'a -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> int option</code></pre><div class="info">
 <code class="code">rindex_ofq e l</code> behaves as <code class="code">rindex_of e l</code> except it uses
-      physical equality<br>
+    physical equality<br>
 </div>
+<br>
+<span id="6_Commonfunctions"><h6> Common functions</h6></span><br>
 <pre><span id="VALnext"><span class="keyword">val</span> next</span> : <code class="type">'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEnode_t">node_t</a></code></pre><div class="info">
-<span id="6_Commonfunctions"><h6> Common functions</h6></span>
-<p>
 Compute and return the next value of the list<br>
 </div>
 <pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type">'a <a href="BatLazyList.html#TYPEt">t</a> -> int</code></pre><div class="info">
 Return the length (number of elements) of the given list.
 <p>
 
-     Causes the evaluation of all the elements of the list.<br>
+   Causes the evaluation of all the elements of the list.<br>
 </div>
 <pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">'a <a href="BatLazyList.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 Returns <code class="code"><span class="keyword">true</span></code> if the list is empty, false otherwise.<br>
 </div>
 <pre><span id="VALwould_at_fail"><span class="keyword">val</span> would_at_fail</span> : <code class="type">'a <a href="BatLazyList.html#TYPEt">t</a> -> int -> bool</code></pre><div class="info">
 <code class="code">would_at_fail l n</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">l</code> contains strictly less
-     than <code class="code">n</code> elements, <code class="code"><span class="keyword">false</span></code> otherwise<br>
+   than <code class="code">n</code> elements, <code class="code"><span class="keyword">false</span></code> otherwise<br>
 </div>
 <pre><span id="VALhd"><span class="keyword">val</span> hd</span> : <code class="type">'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 Return the first element of the given list.<br>
@@ -387,8 +402,8 @@ As <code class="code">hd</code><br>
 <pre><span id="VALlast"><span class="keyword">val</span> last</span> : <code class="type">'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 Returns the last element of the list.<br>
 <b>Raises</b> <code>Empty_list</code> if
-      the list is empty. This function takes linear time and causes the
-      evaluation of all elements of the list<br>
+    the list is empty. This function takes linear time and causes the
+    evaluation of all elements of the list<br>
 </div>
 <pre><span id="VALat"><span class="keyword">val</span> at</span> : <code class="type">'a <a href="BatLazyList.html#TYPEt">t</a> -> int -> 'a</code></pre><div class="info">
 <code class="code">at l n</code> returns the element at index <code class="code">n</code> (starting from <code class="code">0</code>) in
@@ -408,17 +423,17 @@ Obsolete. As <code class="code">at</code><br>
     slower for for large number of associations.<br>
 <pre><span id="VALassoc"><span class="keyword">val</span> assoc</span> : <code class="type">'a -> ('a * 'b) <a href="BatLazyList.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
 <code class="code">assoc a l</code> returns the value associated with key <code class="code">a</code> in the list of
-      pairs <code class="code">l</code>. That is, <code class="code">assoc a [^ ...; (a,b); ...^] = b</code>
-      if <code class="code">(a,b)</code> is the leftmost binding of <code class="code">a</code> in list <code class="code">l</code>.<br>
+    pairs <code class="code">l</code>. That is, <code class="code">assoc a [^ ...; (a,b); ...^] = b</code>
+    if <code class="code">(a,b)</code> is the leftmost binding of <code class="code">a</code> in list <code class="code">l</code>.<br>
 <b>Raises</b> <code>Not_found</code> if there is no value associated with <code class="code">a</code> in the
-      list <code class="code">l</code>.<br>
+    list <code class="code">l</code>.<br>
 </div>
 <pre><span id="VALassq"><span class="keyword">val</span> assq</span> : <code class="type">'a -> ('a * 'b) <a href="BatLazyList.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
 As <a href="BatLazyList.html#VALassoc"><code class="code"><span class="constructor">BatLazyList</span>.assoc</code></a> but with physical equality<br>
 </div>
 <pre><span id="VALmem_assoc"><span class="keyword">val</span> mem_assoc</span> : <code class="type">'a -> ('a * 'b) <a href="BatLazyList.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 As <a href="BatLazyList.html#VALassoc"><code class="code"><span class="constructor">BatLazyList</span>.assoc</code></a> but simply returns <code class="code"><span class="keyword">true</span></code> if a binding exists, <code class="code"><span class="keyword">false</span></code>
-      otherwise.<br>
+    otherwise.<br>
 </div>
 <pre><span id="VALmem_assq"><span class="keyword">val</span> mem_assq</span> : <code class="type">'a -> ('a * 'b) <a href="BatLazyList.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 As <a href="BatLazyList.html#VALmem_assoc"><code class="code"><span class="constructor">BatLazyList</span>.mem_assoc</code></a> but with physical equality.<br>
@@ -459,9 +474,9 @@ Lazy concatenation of a list of lazy lists<br>
 </div>
 <pre><span id="VALsplit_at"><span class="keyword">val</span> split_at</span> : <code class="type">int -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEt">t</a> * 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">split_at n l</code> returns two lists <code class="code">l1</code> and <code class="code">l2</code>, <code class="code">l1</code> containing the
-      first <code class="code">n</code> elements of <code class="code">l</code> and <code class="code">l2</code> the others.<br>
+    first <code class="code">n</code> elements of <code class="code">l</code> and <code class="code">l2</code> the others.<br>
 <b>Raises</b> <code>Invalid_index</code> if
-      <code class="code">n</code> is outside of <code class="code">l</code> size bounds.<br>
+    <code class="code">n</code> is outside of <code class="code">l</code> size bounds.<br>
 </div>
 <pre><span id="VALsplit_nth"><span class="keyword">val</span> split_nth</span> : <code class="type">int -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEt">t</a> * 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 Obsolete. As <code class="code">split_at</code>.<br>
@@ -470,7 +485,7 @@ Obsolete. As <code class="code">split_at</code>.<br>
 <span id="6_Droppingelements"><h6>Dropping elements</h6></span><br>
 <pre><span id="VALunique"><span class="keyword">val</span> unique</span> : <code class="type">?cmp:('a -> 'a -> int) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">unique cmp l</code> returns the list <code class="code">l</code> without any duplicate element.
-      Default comparator ( = ) is used if no comparison function specified.<br>
+    Default comparator ( = ) is used if no comparison function specified.<br>
 </div>
 <pre><span id="VALunique_eq"><span class="keyword">val</span> unique_eq</span> : <code class="type">?eq:('a -> 'a -> bool) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 as <code class="code">unique</code> except only uses an equality function.  Use for
@@ -485,31 +500,31 @@ as <code class="code">unique</code> except only uses an equality function.  Use 
 </div>
 <pre><span id="VALremove_if"><span class="keyword">val</span> remove_if</span> : <code class="type">('a -> bool) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">remove_if cmp l</code> is similar to <code class="code">remove</code>, but with <code class="code">cmp</code> used
-      instead of ( = ).<br>
+    instead of ( = ).<br>
 </div>
 <pre><span id="VALremove_all"><span class="keyword">val</span> remove_all</span> : <code class="type">'a -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">remove_all l x</code> is similar to <code class="code">remove</code> but removes all elements that
-      are equal to <code class="code">x</code> and not only the first one.<br>
+    are equal to <code class="code">x</code> and not only the first one.<br>
 </div>
 <pre><span id="VALremove_all_such"><span class="keyword">val</span> remove_all_such</span> : <code class="type">('a -> bool) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">remove_all l x</code> is similar to <code class="code">remove</code> but removes all elements that
-      are equal to <code class="code">x</code> and not only the first one.<br>
+    are equal to <code class="code">x</code> and not only the first one.<br>
 </div>
 <pre><span id="VALtake"><span class="keyword">val</span> take</span> : <code class="type">int -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">take n l</code> returns up to the <code class="code">n</code> first elements from list <code class="code">l</code>, if
-      available.<br>
+    available.<br>
 </div>
 <pre><span id="VALdrop"><span class="keyword">val</span> drop</span> : <code class="type">int -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">drop n l</code> returns <code class="code">l</code> without the first <code class="code">n</code> elements, or the empty
-      list if <code class="code">l</code> have less than <code class="code">n</code> elements.<br>
+    list if <code class="code">l</code> have less than <code class="code">n</code> elements.<br>
 </div>
 <pre><span id="VALtake_while"><span class="keyword">val</span> take_while</span> : <code class="type">('a -> bool) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">take_while f xs</code> returns the first elements of list <code class="code">xs</code>
-      which satisfy the predicate <code class="code">f</code>.<br>
+    which satisfy the predicate <code class="code">f</code>.<br>
 </div>
 <pre><span id="VALdrop_while"><span class="keyword">val</span> drop_while</span> : <code class="type">('a -> bool) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">drop_while f xs</code> returns the list <code class="code">xs</code> with the first
-      elements satisfying the predicate <code class="code">f</code> dropped.<br>
+    elements satisfying the predicate <code class="code">f</code> dropped.<br>
 </div>
 <br>
 <span id="6_Conversions"><h6> Conversions</h6></span><br>
@@ -599,9 +614,9 @@ An infinite list of nothing<br>
 <pre><span id="VALsort"><span class="keyword">val</span> sort</span> : <code class="type">?cmp:('a -> 'a -> int) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 Sort the list using optional comparator (by default <code class="code">compare</code>).<br>
 </div>
-<pre><span id="VALstable_sort"><span class="keyword">val</span> stable_sort</span> : <code class="type">('a -> 'a -> int) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><pre><span id="VALmap2"><span class="keyword">val</span> map2</span> : <code class="type">('a -> 'b -> 'c) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'b <a href="BatLazyList.html#TYPEt">t</a> -> 'c <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
-<span id="6_Operationsontwolists"><h6>Operations on two lists</h6></span>
-<p>
+<pre><span id="VALstable_sort"><span class="keyword">val</span> stable_sort</span> : <code class="type">('a -> 'a -> int) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><br>
+<span id="6_Operationsontwolists"><h6>Operations on two lists</h6></span><br>
+<pre><span id="VALmap2"><span class="keyword">val</span> map2</span> : <code class="type">('a -> 'b -> 'c) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'b <a href="BatLazyList.html#TYPEt">t</a> -> 'c <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">map2 f [^ a0; a1; ...^] [^ b0; b1; ... ^]</code> is <code class="code">[^ f a0 b0; f a1
     b1; ... ^]</code>.<br>
 <b>Raises</b> <code>Different_list_size</code> if the two lists have
@@ -617,32 +632,32 @@ Sort the list using optional comparator (by default <code class="code">compare</
 </div>
 <pre><span id="VALfold_left2"><span class="keyword">val</span> fold_left2</span> : <code class="type">('a -> 'b -> 'c -> 'a) -> 'a -> 'b <a href="BatLazyList.html#TYPEt">t</a> -> 'c <a href="BatLazyList.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 <code class="code">fold_left2 f a [^ b0; b1; ...; bn ^] [^ c0; c1; ...; cn ^]</code> is
-      <code class="code">f (... (f (f a b0 c0) b1 c1) ...) bn cn</code>. Eager.<br>
+    <code class="code">f (... (f (f a b0 c0) b1 c1) ...) bn cn</code>. Eager.<br>
 <b>Raises</b> <code>Different_list_size</code> if the two lists have
-      different lengths.<br>
+    different lengths.<br>
 </div>
 <pre><span id="VALfold_right2"><span class="keyword">val</span> fold_right2</span> : <code class="type">('a -> 'b -> 'c -> 'c) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'b <a href="BatLazyList.html#TYPEt">t</a> -> 'c -> 'c</code></pre><div class="info">
 <code class="code">fold_right2 f [^ a0; a1; ...; an ^] [^ b0; b1; ...; bn ^] c</code> is
-      <code class="code">f a0 b0 (f a1 b1 (... (f an bn c) ...))</code>. Eager.<br>
+    <code class="code">f a0 b0 (f a1 b1 (... (f an bn c) ...))</code>. Eager.<br>
 <b>Raises</b> <code>Different_list_size</code> if the two lists have
-      different lengths.  Tail-recursive.<br>
+    different lengths.  Tail-recursive.<br>
 </div>
 <pre><span id="VALfor_all2"><span class="keyword">val</span> for_all2</span> : <code class="type">('a -> 'b -> bool) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'b <a href="BatLazyList.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 Same as <a href="BatLazyList.html#VALfor_all"><code class="code"><span class="constructor">BatLazyList</span>.for_all</code></a>, but for a two-argument predicate.<br>
 <b>Raises</b> <code>Different_list_size</code> if the two lists have
-      different lengths.<br>
+    different lengths.<br>
 </div>
 <pre><span id="VALexists2"><span class="keyword">val</span> exists2</span> : <code class="type">('a -> 'b -> bool) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'b <a href="BatLazyList.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 Same as <a href="BatLazyList.html#VALexists"><code class="code"><span class="constructor">BatLazyList</span>.exists</code></a>, but for a two-argument predicate.<br>
 <b>Raises</b> <code>Different_list_size</code> if the two lists have
-      different lengths.<br>
+    different lengths.<br>
 </div>
 <pre><span id="VALcombine"><span class="keyword">val</span> combine</span> : <code class="type">'a <a href="BatLazyList.html#TYPEt">t</a> -> 'b <a href="BatLazyList.html#TYPEt">t</a> -> ('a * 'b) <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 Transform a pair of lists into a list of pairs:
-      <code class="code">combine [^ a0; a1; ... ^] [^ b0; b1; ... ^]</code> is
-      <code class="code">[^ (a0, b0); (a1, b1); ... ^]</code>.<br>
+    <code class="code">combine [^ a0; a1; ... ^] [^ b0; b1; ... ^]</code> is
+    <code class="code">[^ (a0, b0); (a1, b1); ... ^]</code>.<br>
 <b>Raises</b> <code>Different_list_size</code> if the two lists
-      have different lengths.  Tail-recursive, lazy.<br>
+    have different lengths.  Tail-recursive, lazy.<br>
 </div>
 <pre><span id="VALuncombine"><span class="keyword">val</span> uncombine</span> : <code class="type">('a * 'b) <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEt">t</a> * 'b <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info">
 Divide a list of pairs into a pair of lists.<br>

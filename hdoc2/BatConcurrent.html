@@ -106,24 +106,25 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatConcurrent</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatComplex.html" title="BatComplex">Previous</a>
-&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="BatDeque.html" title="BatDeque">Next</a>
+<div class="navbar"><a href="BatComplex.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="BatDeque.html">Next</a>
 </div>
-<h1>Module <a href="type_BatConcurrent.html">BatConcurrent</a></h1>
+<center><h1>Module <a href="type_BatConcurrent.html">BatConcurrent</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> BatConcurrent: <code class="code"><span class="keyword">sig</span></code> <a href="BatConcurrent.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Definition of concurrency primitives.<br>
 <b>Author(s):</b> David Teller<br>
 <hr width="100%">
 <pre><span id="TYPElock"><span class="keyword">type</span> <code class="type"></code>lock</span> </pre>
 <div class="info">
 The light-weight type of a lock, i.e. a construction which may be
-      used to guarantee that a section will not be interrupted by
-      another thread.
+    used to guarantee that a section will not be interrupted by
+    another thread.
 <p>
 
-      This light-weight type is independent of the underlying locking
-      mechanism and can be used if you do not know whether your code
-      will run with vmthreads, Posix threads, coThreads, etc.<br>
+    This light-weight type is independent of the underlying locking
+    mechanism and can be used if you do not know whether your code
+    will run with vmthreads, Posix threads, coThreads, etc.<br>
 </div>
 
 <pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">enter:(unit -> unit) -> leave:(unit -> unit) -> <a href="BatConcurrent.html#TYPElock">lock</a></code></pre><div class="info">
@@ -131,22 +132,22 @@ Create a lock from a pair of locking/unlocking functions<br>
 </div>
 <div class="param_info"><code class="code">enter</code> : Enter critical section.</div>
 <div class="param_info"><code class="code">leave</code> : Leave critical section.
-.</div>
+    .</div>
 <pre><span id="VALnolock"><span class="keyword">val</span> nolock</span> : <code class="type"><a href="BatConcurrent.html#TYPElock">lock</a></code></pre><div class="info">
 A lock which does nothing.<br>
 </div>
 <pre><span id="VALsynchronize"><span class="keyword">val</span> synchronize</span> : <code class="type">(unit -> <a href="BatConcurrent.html#TYPElock">lock</a>) -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info">
 <code class="code">synchronize locker f</code> returns a function <code class="code">f'</code> which behaves as
-     <code class="code">f</code> but whose executions are protected by one lock obtained from
-     <code class="code">locker</code>.  The same lock will be reused for all subsequent uses of
-     <code class="code">f'</code>.
+   <code class="code">f</code> but whose executions are protected by one lock obtained from
+   <code class="code">locker</code>.  The same lock will be reused for all subsequent uses of
+   <code class="code">f'</code>.
 <p>
 
-     For instance,
-     <code class="code">synchronize <span class="constructor">Mutex</span>.make f</code> is a new function whose executions
-     will by synchronized by a new lock. Conversely,
-     <code class="code">synchronize (const my_lock) f</code> is a new function whose executions
-     will be synchronized by an existing lock <code class="code">my_lock</code>.<br>
+   For instance,
+   <code class="code">synchronize <span class="constructor">Mutex</span>.make f</code> is a new function whose executions
+   will by synchronized by a new lock. Conversely,
+   <code class="code">synchronize (const my_lock) f</code> is a new function whose executions
+   will be synchronized by an existing lock <code class="code">my_lock</code>.<br>
 </div>
 <pre><span id="VALsync"><span class="keyword">val</span> sync</span> : <code class="type"><a href="BatConcurrent.html#TYPElock">lock</a> -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info">
 Specialized version of <code class="code">synchronized</code>.

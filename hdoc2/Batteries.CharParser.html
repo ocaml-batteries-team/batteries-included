@@ -107,25 +107,26 @@
 <title>Batteries user guide : Batteries.CharParser</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="Batteries.Cache.html" title="Batteries.Cache">Previous</a>
-&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
-&nbsp;<a class="post" href="Batteries.Deque.html" title="Batteries.Deque">Next</a>
+<div class="navbar"><a href="Batteries.Cache.html">Previous</a>
+&nbsp;<a href="Batteries.html">Up</a>
+&nbsp;<a href="Batteries.Deque.html">Next</a>
 </div>
-<h1>Module <a href="type_Batteries.CharParser.html">Batteries.CharParser</a></h1>
+<center><h1>Module <a href="type_Batteries.CharParser.html">Batteries.CharParser</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> CharParser: <code class="type">BatCharParser</code></pre><hr width="100%">
-<pre><code><span id="TYPEposition"><span class="keyword">type</span> <code class="type"></code>position</span> = {</code></pre><table class="typetable">
+<br><code><span id="TYPEposition"><span class="keyword">type</span> <code class="type"></code>position</span> = {</code><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTposition.offset">offset</span>&nbsp;:<code class="type">int</code>;</code></td>
+<code>offset&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Offset on the line (starting at 0)</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTposition.line">line</span>&nbsp;:<code class="type">int</code>;</code></td>
+<code>line&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Line number (starting at 0)</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 }
@@ -158,11 +159,11 @@ Recognize exactly one char<br>
 </div>
 <pre><span id="VALnone_of"><span class="keyword">val</span> none_of</span> : <code class="type">char list -> (char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 Accept any value not in a list
-     As <code class="code"><span class="constructor">ParserCo</span>.none_of</code>, just with improved error message.<br>
+   As <code class="code"><span class="constructor">ParserCo</span>.none_of</code>, just with improved error message.<br>
 </div>
 <pre><span id="VALnot_char"><span class="keyword">val</span> not_char</span> : <code class="type">char -> (char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 Accept any value not a given char
-     As <code class="code">none_of</code>.<br>
+   As <code class="code">none_of</code>.<br>
 </div>
 <pre><span id="VALstring"><span class="keyword">val</span> string</span> : <code class="type">string -> (char, string, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 Recognize exactly one string<br>
@@ -181,27 +182,27 @@ Recognizes white-space<br>
 </div>
 <pre><span id="VALuppercase"><span class="keyword">val</span> uppercase</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 Recognizes one upper-case ASCII character, including
-     accentuated characters.<br>
+   accentuated characters.<br>
 </div>
 <pre><span id="VALlowercase"><span class="keyword">val</span> lowercase</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 Recognizes one lower-case ASCII character, including
-     accentuated characters.<br>
+   accentuated characters.<br>
 </div>
 <pre><span id="VALletter"><span class="keyword">val</span> letter</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 Recognizes one lower- or upper-case ASCII character, including
-     accentuated characters.<br>
+   accentuated characters.<br>
 </div>
 <pre><span id="VALuppercase_latin1"><span class="keyword">val</span> uppercase_latin1</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 Recognizes one upper-case Latin-1 character, including
-     accentuated characters.<br>
+   accentuated characters.<br>
 </div>
 <pre><span id="VALlowercase_latin1"><span class="keyword">val</span> lowercase_latin1</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 Recognizes one lower-case Latin-1 character, including
-     accentuated characters.<br>
+   accentuated characters.<br>
 </div>
 <pre><span id="VALlatin1"><span class="keyword">val</span> latin1</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 Recognizes one lower- or upper-case Latin1 character, including
-     accentuated characters.<br>
+   accentuated characters.<br>
 </div>
 <pre><span id="VALdigit"><span class="keyword">val</span> digit</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
 Recognizes one decimal digit<br>

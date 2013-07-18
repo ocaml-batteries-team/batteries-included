@@ -105,13 +105,14 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatBounded.Make</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a class="up" href="BatBounded.html" title="BatBounded">Up</a>
-&nbsp;<a class="post" href="BatBounded.MakeNumeric.html" title="BatBounded.MakeNumeric">Next</a>
+<div class="navbar">&nbsp;<a href="BatBounded.html">Up</a>
+&nbsp;<a href="BatBounded.MakeNumeric.html">Next</a>
 </div>
-<h1>Functor <a href="type_BatBounded.Make.html">BatBounded.Make</a></h1>
+<center><h1>Functor <a href="type_BatBounded.Make.html">BatBounded.Make</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Make: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">M</span></code><code class="code"> : </code><code class="type"><a href="BatBounded.BoundedType.html">BoundedType</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatBounded.S.html">S</a></code><code class="type">  with type base_u = M.base_t</code><code class="type"> 
-    with type u = M.t</code><code class="type"> 
-    with type t = private M.t</code></div></pre>Functor to build an implementation of a bounded type given the bounded
+  with type u = M.t</code><code class="type"> 
+  with type t = private M.t</code></div></pre>Functor to build an implementation of a bounded type given the bounded
     values definition <code class="code"><span class="constructor">M</span></code><br>
 <table border="0" cellpadding="3" width="100%">
 <tr>
@@ -168,6 +169,6 @@ Private version of <a href="BatBounded.S.html#TYPEu"><code class="code"><span cl
 </div>
 <pre><span id="VALmap2_exn"><span class="keyword">val</span> map2_exn</span> : <code class="type">(<a href="BatBounded.S.html#TYPEbase_u">base_u</a> -> <a href="BatBounded.S.html#TYPEbase_u">base_u</a> -> <a href="BatBounded.S.html#TYPEbase_u">base_u</a>) -><br>       <a href="BatBounded.S.html#TYPEt">t</a> -> <a href="BatBounded.S.html#TYPEt">t</a> -> <a href="BatBounded.S.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">map f x y</code> applies <code class="code">f</code> to <code class="code">x</code> and <code class="code">y</code>.  Returns <code class="code">z</code> if <code class="code">x</code> and <code class="code">y</code>
-      can be converted back to type <a href="BatBounded.S.html#TYPEbase_u"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">S</span>.base_u</code></a>, otherwise raise an exception.<br>
+        can be converted back to type <a href="BatBounded.S.html#TYPEbase_u"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">S</span>.base_u</code></a>, otherwise raise an exception.<br>
 </div>
 </body></html>

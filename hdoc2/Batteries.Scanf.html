@@ -119,11 +119,12 @@
 <title>Batteries user guide : Batteries.Scanf</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="Batteries.Random.html" title="Batteries.Random">Previous</a>
-&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
-&nbsp;<a class="post" href="Batteries.Set.html" title="Batteries.Set">Next</a>
+<div class="navbar"><a href="Batteries.Random.html">Previous</a>
+&nbsp;<a href="Batteries.html">Up</a>
+&nbsp;<a href="Batteries.Set.html">Next</a>
 </div>
-<h1>Module <a href="type_Batteries.Scanf.html">Batteries.Scanf</a></h1>
+<center><h1>Module <a href="type_Batteries.Scanf.html">Batteries.Scanf</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Scanf: <code class="type">BatScanf</code></pre><hr width="100%">
 <br>
 <span id="6_Introduction"><h6>Introduction</h6></span><br>
@@ -364,7 +365,7 @@ Same as <code class="code"><span class="constructor">Scanf</span>.bscanf</code>,
 Same as <code class="code"><span class="constructor">Scanf</span>.bscanf</code>, but reads from the predefined scanning
     buffer <code class="code"><span class="constructor">Scanf</span>.<span class="constructor">Scanning</span>.stdib</code> that is connected to <code class="code">stdin</code>.<br>
 </div>
-<pre><span id="VALkscanf"><span class="keyword">val</span> kscanf</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">Scanning.scanbuf</a> -><br>       (<a href="BatScanf.Scanning.html#TYPEscanbuf">Scanning.scanbuf</a> -> exn -> 'd) -> ('a, 'b, 'c, 'd) <a href="BatScanf.html#TYPEscanner">scanner</a></code></pre><div class="info">
+<pre><span id="VALkscanf"><span class="keyword">val</span> kscanf</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">Scanning.scanbuf</a> -><br>       (<a href="BatScanf.Scanning.html#TYPEscanbuf">Scanning.scanbuf</a> -> exn -> 'a) -> ('b, 'c, 'd, 'a) <a href="BatScanf.html#TYPEscanner">scanner</a></code></pre><div class="info">
 Same as <code class="code"><span class="constructor">Scanf</span>.bscanf</code>, but takes an additional function argument
     <code class="code">ef</code> that is called in case of error: if the scanning process or
     some conversion fails, the scanning function aborts and calls the

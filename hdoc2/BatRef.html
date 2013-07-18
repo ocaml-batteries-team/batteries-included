@@ -107,11 +107,12 @@
 <title>Batteries user guide : BatRef</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatRandom.html" title="BatRandom">Previous</a>
-&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="BatRefList.html" title="BatRefList">Next</a>
+<div class="navbar"><a href="BatRandom.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="BatRefList.html">Next</a>
 </div>
-<h1>Module <a href="type_BatRef.html">BatRef</a></h1>
+<center><h1>Module <a href="type_BatRef.html">BatRef</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> BatRef: <code class="code"><span class="keyword">sig</span></code> <a href="BatRef.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Operations on references.
 <p>
 
@@ -148,23 +149,23 @@ As <code class="code"> ! </code><br>
 </div>
 <pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">'a Pervasives.ref -> 'a Pervasives.ref</code></pre><div class="info">
 <code class="code">copy r</code> returns a new reference with the same initial
-      content as <code class="code">r</code>.<br>
+    content as <code class="code">r</code>.<br>
 </div>
 <pre><span id="VALpre"><span class="keyword">val</span> pre</span> : <code class="type">'a Pervasives.ref -> ('a -> 'a) -> 'a</code></pre><div class="info">
 Perform an operation on a reference and return the
-      new value of that reference.
+    new value of that reference.
 <p>
 
-      For instance, if <code class="code">x</code> is a reference to <code class="code">1</code>,
-      <code class="code">pre x ( ( + ) 1) </code> returns <code class="code">2</code> and sets <code class="code">x</code> to <code class="code">2</code>.<br>
+    For instance, if <code class="code">x</code> is a reference to <code class="code">1</code>,
+    <code class="code">pre x ( ( + ) 1) </code> returns <code class="code">2</code> and sets <code class="code">x</code> to <code class="code">2</code>.<br>
 </div>
 <pre><span id="VALpost"><span class="keyword">val</span> post</span> : <code class="type">'a Pervasives.ref -> ('a -> 'a) -> 'a</code></pre><div class="info">
 Perform an operation on a reference and return the
-      previous value of that reference.
+    previous value of that reference.
 <p>
 
-      For instance, if <code class="code">x</code> is a reference to <code class="code">1</code>,
-      <code class="code">post x ( ( + ) 1)</code> returns <code class="code">1</code> and sets <code class="code">x</code> to <code class="code">2</code>.<br>
+    For instance, if <code class="code">x</code> is a reference to <code class="code">1</code>,
+    <code class="code">post x ( ( + ) 1)</code> returns <code class="code">1</code> and sets <code class="code">x</code> to <code class="code">2</code>.<br>
 </div>
 <pre><span id="VALswap"><span class="keyword">val</span> swap</span> : <code class="type">'a Pervasives.ref -> 'a Pervasives.ref -> unit</code></pre><div class="info">
 <code class="code">swap a b</code> puts <code class="code">!b</code> in <code class="code">a</code> and <code class="code">!a</code> in <code class="code">b</code><br>
@@ -173,34 +174,34 @@ Perform an operation on a reference and return the
 Increment an integer, return the old value.
 <p>
 
-     Comparable to C or Java's <code class="code">i++</code>.<br>
+   Comparable to C or Java's <code class="code">i++</code>.<br>
 </div>
 <pre><span id="VALpost_decr"><span class="keyword">val</span> post_decr</span> : <code class="type">int Pervasives.ref -> int</code></pre><div class="info">
 Decrement an integer, return the old value.
 <p>
 
-     Comparable to C or Java 's <code class="code">i--</code>.<br>
+   Comparable to C or Java 's <code class="code">i--</code>.<br>
 </div>
 <pre><span id="VALpre_incr"><span class="keyword">val</span> pre_incr</span> : <code class="type">int Pervasives.ref -> int</code></pre><div class="info">
 Increment an integer, return the new value.
 <p>
 
-     Comparable to C or Java's <code class="code">++i</code>.<br>
+   Comparable to C or Java's <code class="code">++i</code>.<br>
 </div>
 <pre><span id="VALpre_decr"><span class="keyword">val</span> pre_decr</span> : <code class="type">int Pervasives.ref -> int</code></pre><div class="info">
 Increment an integer, return the new value.
 <p>
 
-     Comparable to C or Java's <code class="code">--i</code>.<br>
+   Comparable to C or Java's <code class="code">--i</code>.<br>
 </div>
 <pre><span id="VALprotect"><span class="keyword">val</span> protect</span> : <code class="type">'a Pervasives.ref -> 'a -> (unit -> 'b) -> 'b</code></pre><div class="info">
 Assign a reference temporarily.
 <p>
 
-     <code class="code">protect r v body</code> sets the value of <code class="code">r</code> to <code class="code">v</code> and executes
-     <code class="code">body</code>. Once body has been executed, whether termination happens
-     as a consequence of regular evaluation or exception, the previous
-     value of <code class="code">r</code> is restored.<br>
+   <code class="code">protect r v body</code> sets the value of <code class="code">r</code> to <code class="code">v</code> and executes
+   <code class="code">body</code>. Once body has been executed, whether termination happens
+   as a consequence of regular evaluation or exception, the previous
+   value of <code class="code">r</code> is restored.<br>
 </div>
 <pre><span id="VALtoggle"><span class="keyword">val</span> toggle</span> : <code class="type">bool Pervasives.ref -> unit</code></pre><div class="info">
 Invert the boolean stored in the reference<br>
@@ -214,7 +215,7 @@ Get a value from an option ref;<br>
 </div>
 <br>
 <span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
-<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">('b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'a -> unit) -><br>       'b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'a <a href="BatRef.html#TYPEt">t</a> -> unit</code></pre><br>
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatRef.html#TYPEt">t</a> -> unit</code></pre><br>
 Given a printing function for the value in the ref, produce a
     printing function for the ref.
 <p>

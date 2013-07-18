@@ -106,11 +106,12 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatGlobal</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatGenlex.html" title="BatGenlex">Previous</a>
-&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="BatHashcons.html" title="BatHashcons">Next</a>
+<div class="navbar"><a href="BatGenlex.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="BatHashcons.html">Next</a>
 </div>
-<h1>Module <a href="type_BatGlobal.html">BatGlobal</a></h1>
+<center><h1>Module <a href="type_BatGlobal.html">BatGlobal</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> BatGlobal: <code class="code"><span class="keyword">sig</span></code> <a href="BatGlobal.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Mutable global variable.
 <p>
 
@@ -128,7 +129,7 @@ Abstract type of a global<br>
 <pre><span id="EXCEPTIONGlobal_not_initialized"><span class="keyword">exception</span> Global_not_initialized</span> <span class="keyword">of</span> <code class="type">string</code></pre>
 <div class="info">
 Raised when a global variable is accessed without first having been
- assigned a value. The parameter contains the name of the global.<br>
+    assigned a value. The parameter contains the name of the global.<br>
 </div>
 <pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">string -> 'a <a href="BatGlobal.html#TYPEt">t</a></code></pre><div class="info">
 Returns an new named empty global. The name of the global can be
@@ -144,7 +145,7 @@ Set the global value contents.<br>
 </div>
 <pre><span id="VALget_exn"><span class="keyword">val</span> get_exn</span> : <code class="type">'a <a href="BatGlobal.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 Get the global value contents - raise Global_not_initialized if not
- defined.<br>
+    defined.<br>
 </div>
 <pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a <a href="BatGlobal.html#TYPEt">t</a> -> 'a option</code></pre><div class="info">
 Return <code class="code"><span class="constructor">None</span></code> if the global is undefined, else <code class="code"><span class="constructor">Some</span> v</code> where <code class="code">v</code> is

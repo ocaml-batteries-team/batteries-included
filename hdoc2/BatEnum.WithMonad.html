@@ -106,11 +106,12 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatEnum.WithMonad</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatEnum.Infix.html" title="BatEnum.Infix">Previous</a>
-&nbsp;<a class="up" href="BatEnum.html" title="BatEnum">Up</a>
-&nbsp;<a class="post" href="BatEnum.Monad.html" title="BatEnum.Monad">Next</a>
+<div class="navbar"><a href="BatEnum.Infix.html">Previous</a>
+&nbsp;<a href="BatEnum.html">Up</a>
+&nbsp;<a href="BatEnum.Monad.html">Next</a>
 </div>
-<h1>Functor <a href="type_BatEnum.WithMonad.html">BatEnum.WithMonad</a></h1>
+<center><h1>Functor <a href="type_BatEnum.WithMonad.html">BatEnum.WithMonad</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> WithMonad: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">Mon</span></code><code class="code"> : </code><code class="type"><a href="BatInterfaces.Monad.html">BatInterfaces.Monad</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.WithMonad.html">..</a> <code class="code"><span class="keyword">end</span></code></div></pre>Monadic operations on Enumerations containing monadic elements
 <p>
 
@@ -141,6 +142,6 @@ Type of the monadic elements.<br>
 </div>
 <pre><span id="VALfold_monad"><span class="keyword">val</span> fold_monad</span> : <code class="type">('a -> 'b -> 'a <a href="BatEnum.WithMonad.html#TYPEm">m</a>) -><br>       'a -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatEnum.WithMonad.html#TYPEm">m</a></code></pre><div class="info">
 <code class="code">fold_monad f init e</code> does a folding of the enumeration <code class="code">e</code> applying step by step the function <code class="code">f</code> that gives back results in the <code class="code"><span class="constructor">Mon</span></code> monad,
-    with the <code class="code">init</code> initial element. The result is a value in the <code class="code"><span class="constructor">Mon</span></code> monad.<br>
+      with the <code class="code">init</code> initial element. The result is a value in the <code class="code"><span class="constructor">Mon</span></code> monad.<br>
 </div>
 </body></html>

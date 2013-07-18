@@ -105,10 +105,11 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatteriesThread.RMutex</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatteriesThread.Mutex.html" title="BatteriesThread.Mutex">Previous</a>
-&nbsp;<a class="up" href="BatteriesThread.html" title="BatteriesThread">Up</a>
+<div class="navbar"><a href="BatteriesThread.Mutex.html">Previous</a>
+&nbsp;<a href="BatteriesThread.html">Up</a>
 &nbsp;</div>
-<h1>Module <a href="type_BatteriesThread.RMutex.html">BatteriesThread.RMutex</a></h1>
+<center><h1>Module <a href="type_BatteriesThread.RMutex.html">BatteriesThread.RMutex</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> RMutex: <code class="type">BatRMutex</code></pre><hr width="100%">
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
 <div class="info">
@@ -120,12 +121,12 @@ Return a new mutex.<br>
 </div>
 <pre><span id="VALlock"><span class="keyword">val</span> lock</span> : <code class="type"><a href="BatRMutex.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 Lock the given mutex. Only one thread can have the mutex locked
-      at any time. A thread that attempts to lock a mutex already locked
-      will suspend until the other mutex is unlocked.
+    at any time. A thread that attempts to lock a mutex already locked
+    will suspend until the other mutex is unlocked.
 <p>
 
-      <b>Note</b> attempting to lock a mutex you already have locked from
-      the same thread will not suspend your thread.<br>
+    <b>Note</b> attempting to lock a mutex you already have locked from
+    the same thread will not suspend your thread.<br>
 </div>
 <pre><span id="VALtry_lock"><span class="keyword">val</span> try_lock</span> : <code class="type"><a href="BatRMutex.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 Same as <code class="code"><span class="constructor">RMutex</span>.lock</code>, but does not suspend the calling thread if

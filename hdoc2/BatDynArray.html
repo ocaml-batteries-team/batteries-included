@@ -114,11 +114,12 @@
 <title>Batteries user guide : BatDynArray</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatDllist.html" title="BatDllist">Previous</a>
-&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="BatEnum.html" title="BatEnum">Next</a>
+<div class="navbar"><a href="BatDllist.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="BatEnum.html">Next</a>
 </div>
-<h1>Module <a href="type_BatDynArray.html">BatDynArray</a></h1>
+<center><h1>Module <a href="type_BatDynArray.html">BatDynArray</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> BatDynArray: <code class="code"><span class="keyword">sig</span></code> <a href="BatDynArray.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Dynamic arrays.
 <p>
 
@@ -286,19 +287,19 @@ remove all elements from the array and resize it to 0.<br>
 </div>
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('a -> bool) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">filter p a</code> returns all the elements of the array <code class="code">a</code>
-      that satisfy the predicate <code class="code">p</code>.  The order of the elements
-      in the input array is preserved.
+    that satisfy the predicate <code class="code">p</code>.  The order of the elements
+    in the input array is preserved.
 <p>
 
-      <b>Note</b> This function replaces another function called <code class="code">filter</code>,
-      available in previous versions of the library. As the old function
-      was incompatible with comprehension of dynamic arrays, its name
-      was changed to <a href="BatDynArray.html#VALkeep"><code class="code"><span class="constructor">BatDynArray</span>.keep</code></a>.<br>
+    <b>Note</b> This function replaces another function called <code class="code">filter</code>,
+    available in previous versions of the library. As the old function
+    was incompatible with comprehension of dynamic arrays, its name
+    was changed to <a href="BatDynArray.html#VALkeep"><code class="code"><span class="constructor">BatDynArray</span>.keep</code></a>.<br>
 </div>
 <pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">('a -> 'b option) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> 'b <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info">
-<code class="code">filter_map f e</code> returns an array consisting in all elements
-      <code class="code">x</code> such that <code class="code">f y</code> returns <code class="code"><span class="constructor">Some</span> x</code> , where <code class="code">y</code> is an element
-      of <code class="code">e</code>.<br>
+<code class="code">filter_map f e</code> returns an array consisting of all elements
+    <code class="code">x</code> such that <code class="code">f y</code> returns <code class="code"><span class="constructor">Some</span> x</code> , where <code class="code">y</code> is an element
+    of <code class="code">e</code>.<br>
 </div>
 <br>
 <span id="6_Arrayresizers"><h6>Array resizers</h6></span><br>

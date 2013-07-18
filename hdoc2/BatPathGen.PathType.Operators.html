@@ -106,32 +106,33 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatPathGen.PathType.Operators</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatPathGen.PathType.OperatorLift.html" title="BatPathGen.PathType.OperatorLift">Previous</a>
-&nbsp;<a class="up" href="BatPathGen.PathType.html" title="BatPathGen.PathType">Up</a>
-&nbsp;<a class="post" href="BatPathGen.PathType.Infix.html" title="BatPathGen.PathType.Infix">Next</a>
+<div class="navbar"><a href="BatPathGen.PathType.OperatorLift.html">Previous</a>
+&nbsp;<a href="BatPathGen.PathType.html">Up</a>
+&nbsp;<a href="BatPathGen.PathType.Infix.html">Next</a>
 </div>
-<h1>Module <a href="type_BatPathGen.PathType.Operators.html">BatPathGen.PathType.Operators</a></h1>
+<center><h1>Module <a href="type_BatPathGen.PathType.Operators.html">BatPathGen.PathType.Operators</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Operators: <code class="code"><span class="keyword">sig</span></code> <a href="BatPathGen.PathType.Operators.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Infix operators for path construction. They are in separate module, so one can <code class="code"><span class="keyword">open</span> <span class="constructor">Path</span>.<span class="constructor">Operators</span></code> to use them.<br>
 <hr width="100%">
 <pre><span id="VAL(/:)"><span class="keyword">val</span> (/:)</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">BatPathGen.PathType.t</a> -> <a href="BatPathGen.PathType.html#TYPEustring">BatPathGen.PathType.ustring</a> -> <a href="BatPathGen.PathType.html#TYPEt">BatPathGen.PathType.t</a></code></pre><div class="info">
 <code class="code">path/:name</code> is a path of <code class="code">name</code> located in a directory <code class="code">path</code>. For example:<ul>
 <li><a href="BatPathGen.PathType.html#VALroot"><code class="code"><span class="constructor">BatPathGen</span>.<span class="constructor">PathType</span>.root</code></a><code class="code">/:<span class="string">"var"</span>/:<span class="string">"log"</span></code> builds absolute path "/var/log"</li>
 <li><code class="code">[user]/:<span class="string">".ssh"</span></code> can be either:
- <ul>
+        <ul>
 <li>absolute path "/.ssh" in case <code class="code">user</code> is an empty string</li>
 <li>relative path otherwise</li>
 </ul>
 </li>
 </ul>
 
- <a href="BatPathGen.PathType.html#VALdefault_validator"><code class="code"><span class="constructor">BatPathGen</span>.<span class="constructor">PathType</span>.default_validator</code></a> is applied to the argument. <code class="code">name</code> must not contain path separator (causes Illegal_char exception).<br>
+        <a href="BatPathGen.PathType.html#VALdefault_validator"><code class="code"><span class="constructor">BatPathGen</span>.<span class="constructor">PathType</span>.default_validator</code></a> is applied to the argument. <code class="code">name</code> must not contain path separator (causes Illegal_char exception).<br>
 <b>Raises</b> <code>Illegal_char</code> (raised by validator on any bad character)<br>
 </div>
 <pre><span id="VAL(//@)"><span class="keyword">val</span> (//@)</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">BatPathGen.PathType.t</a> -> <a href="BatPathGen.PathType.html#TYPEt">BatPathGen.PathType.t</a> -> <a href="BatPathGen.PathType.html#TYPEt">BatPathGen.PathType.t</a></code></pre><div class="info">
 <code class="code">basepath//@relpath</code> catenates two paths.
 <p>
 
-<em>Windows:</em> As a special exception it is possible to pass absolute path as <code class="code">relpath</code>, provided that <code class="code">basepath</code> is simple absolute path (i.e. of the form <code class="code">[...; <span class="string">""</span>]</code>) and <code class="code">relpath</code> is not simple absolute path.<br>
+          <em>Windows:</em> As a special exception it is possible to pass absolute path as <code class="code">relpath</code>, provided that <code class="code">basepath</code> is simple absolute path (i.e. of the form <code class="code">[...; <span class="string">""</span>]</code>) and <code class="code">relpath</code> is not simple absolute path.<br>
 <b>Raises</b> <code>Invalid_argument</code> if the second argument is an absolute path (<em>Windows:</em> see above).<br>
 </div>
 </body></html>

@@ -106,32 +106,33 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : Batteries.Hashcons</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="Batteries.Deque.html" title="Batteries.Deque">Previous</a>
-&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
-&nbsp;<a class="post" href="Batteries.Heap.html" title="Batteries.Heap">Next</a>
+<div class="navbar"><a href="Batteries.Deque.html">Previous</a>
+&nbsp;<a href="Batteries.html">Up</a>
+&nbsp;<a href="Batteries.Heap.html">Next</a>
 </div>
-<h1>Module <a href="type_Batteries.Hashcons.html">Batteries.Hashcons</a></h1>
+<center><h1>Module <a href="type_Batteries.Hashcons.html">Batteries.Hashcons</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Hashcons: <code class="type">BatHashcons</code></pre><hr width="100%">
-<pre><code><span id="TYPEhobj"><span class="keyword">type</span> <code class="type">'a</code> hobj</span> = private {</code></pre><table class="typetable">
+<br><code><span id="TYPEhobj"><span class="keyword">type</span> <code class="type">'a</code> hobj</span> = private {</code><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELThobj.obj">obj</span>&nbsp;:<code class="type">'a</code>;</code></td>
+<code>obj&nbsp;: <code class="type">'a</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELThobj.tag">tag</span>&nbsp;:<code class="type">int</code>;</code></td>
+<code>tag&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Unique id for this object</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELThobj.hcode">hcode</span>&nbsp;:<code class="type">int</code>;</code></td>
+<code>hcode&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Hash code for this object</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 }

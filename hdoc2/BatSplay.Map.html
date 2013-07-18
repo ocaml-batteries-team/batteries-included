@@ -104,9 +104,10 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatSplay.Map</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a class="up" href="BatSplay.html" title="BatSplay">Up</a>
+<div class="navbar">&nbsp;<a href="BatSplay.html">Up</a>
 &nbsp;</div>
-<h1>Functor <a href="type_BatSplay.Map.html">BatSplay.Map</a></h1>
+<center><h1>Functor <a href="type_BatSplay.Map.html">BatSplay.Map</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Map: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">Ord</span></code><code class="code"> : </code><code class="type"><a href="BatInterfaces.OrderedType.html">BatInterfaces.OrderedType</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="code"><span class="keyword">sig</span></code> <a href="BatSplay.Map.html">..</a> <code class="code"><span class="keyword">end</span></code></div></pre><table border="0" cellpadding="3" width="100%">
 <tr>
 <td align="left" valign="top" width="1%%"><b>Parameters: </b></td>
@@ -123,4 +124,4 @@
 </table>
 <hr width="100%">
 <pre><span class="keyword">include</span> <a href="BatMap.S.html">BatMap.S</a></pre>
-<pre><span id="VALprint_as_list"><span class="keyword">val</span> print_as_list</span> : <code class="type">('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> key -> unit) -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'c -> unit) -> 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'c t -> unit</code></pre><pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">(Ord.t * 'a) list -> 'a t</code></pre><pre><span id="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type">'a t -> (Ord.t * 'a) list</code></pre></body></html>
+<pre><span id="VALprint_as_list"><span class="keyword">val</span> print_as_list</span> : <code class="type">('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> key -> unit) -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -> 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b t -> unit</code></pre><pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">(Ord.t * 'a) list -> 'a t</code></pre><pre><span id="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type">'a t -> (Ord.t * 'a) list</code></pre></body></html>

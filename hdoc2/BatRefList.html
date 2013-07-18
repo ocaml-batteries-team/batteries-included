@@ -108,11 +108,12 @@
 <title>Batteries user guide : BatRefList</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatRef.html" title="BatRef">Previous</a>
-&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="BatResult.html" title="BatResult">Next</a>
+<div class="navbar"><a href="BatRef.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="BatResult.html">Next</a>
 </div>
-<h1>Module <a href="type_BatRefList.html">BatRefList</a></h1>
+<center><h1>Module <a href="type_BatRefList.html">BatRefList</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> BatRefList: <code class="code"><span class="keyword">sig</span></code> <a href="BatRefList.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Reference on lists.
 <p>
 
@@ -185,12 +186,12 @@ Returns the last element - O(n) or
 </div>
 <pre><span id="VALpop"><span class="keyword">val</span> pop</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 Removes and returns the first element or
-   raises <code class="code"><span class="constructor">Empty_list</span></code> if the ref list is empty<br>
+    raises <code class="code"><span class="constructor">Empty_list</span></code> if the ref list is empty<br>
 </div>
 <pre><span id="VALnpop"><span class="keyword">val</span> npop</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">t</a> -> int -> 'a list</code></pre><div class="info">
 Removes and returns the n first elements or
-   raises <code class="code"><span class="constructor">Empty_list</span></code> if the ref list does not
-   contain enough elements<br>
+    raises <code class="code"><span class="constructor">Empty_list</span></code> if the ref list does not
+    contain enough elements<br>
 </div>
 <pre><span id="VALhd"><span class="keyword">val</span> hd</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 same as <code class="code">first</code><br>
@@ -207,11 +208,11 @@ Reverses the ref list - O(n)<br>
 <span id="6_FunctionalOperations"><h6>Functional Operations</h6></span><br>
 <pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatRefList.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 <code class="code"><span class="constructor">List</span>.fold_left f a (ref [b0; b1; ...; bn])</code> is
-      <code class="code">f (... (f (f a b0) b1) ...) bn</code>.<br>
+    <code class="code">f (... (f (f a b0) b1) ...) bn</code>.<br>
 </div>
 <pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">('a -> 'b -> 'b) -> 'a <a href="BatRefList.html#TYPEt">t</a> -> 'b -> 'b</code></pre><div class="info">
 <code class="code"><span class="constructor">List</span>.fold_right f (ref [a0; a1; ...; an]) b</code> is
-      <code class="code">f a0 (f a1 (... (f an b) ...))</code>.  Tail-recursive.<br>
+    <code class="code">f a0 (f a1 (... (f an b) ...))</code>.  Tail-recursive.<br>
 </div>
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> 'a <a href="BatRefList.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 Apply the given function to all elements of the

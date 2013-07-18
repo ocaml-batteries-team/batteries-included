@@ -108,11 +108,12 @@
 <title>Batteries user guide : BatStack</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatSplay.html" title="BatSplay">Previous</a>
-&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="BatStream.html" title="BatStream">Next</a>
+<div class="navbar"><a href="BatSplay.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="BatStream.html">Next</a>
 </div>
-<h1>Module <a href="type_BatStack.html">BatStack</a></h1>
+<center><h1>Module <a href="type_BatStack.html">BatStack</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> BatStack: <code class="code"><span class="keyword">sig</span></code> <a href="BatStack.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Last-in first-out stacks.
 <p>
 
@@ -136,12 +137,12 @@ Return a new stack, initially empty.<br>
 </div>
 <pre><span id="VALpop"><span class="keyword">val</span> pop</span> : <code class="type">'a <a href="BatStack.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 <code class="code">pop s</code> removes and returns the topmost element in stack <code class="code">s</code>,
-   or<br>
+    or<br>
 <b>Raises</b> <code>Empty</code> if the stack is empty.<br>
 </div>
 <pre><span id="VALtop"><span class="keyword">val</span> top</span> : <code class="type">'a <a href="BatStack.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 <code class="code">top s</code> returns the topmost element in stack <code class="code">s</code>,
-   or<br>
+    or<br>
 <b>Raises</b> <code>Empty</code> if the stack is empty.<br>
 </div>
 <pre><span id="VALclear"><span class="keyword">val</span> clear</span> : <code class="type">'a <a href="BatStack.html#TYPEt">t</a> -> unit</code></pre><div class="info">
@@ -158,8 +159,8 @@ Return the number of elements in a stack.<br>
 </div>
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> 'a <a href="BatStack.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 <code class="code">iter f s</code> applies <code class="code">f</code> in turn to all elements of <code class="code">s</code>,
-   from the element at the top of the stack to the element at the
-   bottom of the stack. The stack itself is unchanged.<br>
+    from the element at the top of the stack to the element at the
+    bottom of the stack. The stack itself is unchanged.<br>
 </div>
 <pre><span class="keyword">include</span> <a href="BatEnum.Enumerable.html">BatEnum.Enumerable</a></pre>
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a <a href="BatStack.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">

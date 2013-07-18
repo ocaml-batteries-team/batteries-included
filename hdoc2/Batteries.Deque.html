@@ -111,11 +111,12 @@
 <title>Batteries user guide : Batteries.Deque</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="Batteries.CharParser.html" title="Batteries.CharParser">Previous</a>
-&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
-&nbsp;<a class="post" href="Batteries.Hashcons.html" title="Batteries.Hashcons">Next</a>
+<div class="navbar"><a href="Batteries.CharParser.html">Previous</a>
+&nbsp;<a href="Batteries.html">Up</a>
+&nbsp;<a href="Batteries.Hashcons.html">Next</a>
 </div>
-<h1>Module <a href="type_Batteries.Deque.html">Batteries.Deque</a></h1>
+<center><h1>Module <a href="type_Batteries.Deque.html">Batteries.Deque</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Deque: <code class="type">BatDeque</code></pre><hr width="100%">
 <pre><span id="TYPEdq"><span class="keyword">type</span> <code class="type">+'a</code> dq</span> </pre>
 <div class="info">
@@ -147,13 +148,13 @@ The empty deque.<br>
 <span id="6_Deconstruction"><h6>Deconstruction</h6></span><br>
 <pre><span id="VALfront"><span class="keyword">val</span> front</span> : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> ('a * 'a <a href="BatDeque.html#TYPEdq">dq</a>) option</code></pre><div class="info">
 <code class="code">front dq</code> returns <code class="code"><span class="constructor">Some</span> (x, dq')</code> iff <code class="code">x</code> is at the front of
-      <code class="code">dq</code> and <code class="code">dq'</code> is the rest of <code class="code">dq</code> excluding <code class="code">x</code>, and <code class="code"><span class="constructor">None</span></code> if
-      <code class="code">dq</code> has no elements. O(1) amortized, O(n) worst case<br>
+    <code class="code">dq</code> and <code class="code">dq'</code> is the rest of <code class="code">dq</code> excluding <code class="code">x</code>, and <code class="code"><span class="constructor">None</span></code> if
+    <code class="code">dq</code> has no elements. O(1) amortized, O(n) worst case<br>
 </div>
 <pre><span id="VALrear"><span class="keyword">val</span> rear</span> : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> ('a <a href="BatDeque.html#TYPEdq">dq</a> * 'a) option</code></pre><div class="info">
 <code class="code">rear dq</code> returns <code class="code"><span class="constructor">Some</span> (dq', x)</code> iff <code class="code">x</code> is at the rear of <code class="code">dq</code>
-      and <code class="code">dq'</code> is the rest of <code class="code">dq</code> excluding <code class="code">x</code>, and <code class="code"><span class="constructor">None</span></code> if <code class="code">dq</code>
-      has no elements. O(1) amortized, O(n) worst case<br>
+    and <code class="code">dq'</code> is the rest of <code class="code">dq</code> excluding <code class="code">x</code>, and <code class="code"><span class="constructor">None</span></code> if <code class="code">dq</code>
+    has no elements. O(1) amortized, O(n) worst case<br>
 </div>
 <br>
 <span id="6_Basicoperations"><h6>Basic operations</h6></span><br>
@@ -165,72 +166,72 @@ The empty deque.<br>
 </div>
 <pre><span id="VALat"><span class="keyword">val</span> at</span> : <code class="type">?backwards:bool -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> int -> 'a option</code></pre><div class="info">
 <code class="code">at ~backwards dq k</code> returns the <code class="code">k</code>th element of <code class="code">dq</code>, from
-      the front if <code class="code">backwards</code> is false, and from the rear if
-      <code class="code">backwards</code> is true. By default, <code class="code">backwards = <span class="keyword">false</span></code>. O(n)<br>
+    the front if <code class="code">backwards</code> is false, and from the rear if
+    <code class="code">backwards</code> is true. By default, <code class="code">backwards = <span class="keyword">false</span></code>. O(n)<br>
 </div>
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'b <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
 <code class="code">map f dq</code> returns a deque where every element <code class="code">x</code> of <code class="code">dq</code> has
-      been replaces with <code class="code">f x</code>. O(n)<br>
+    been replaces with <code class="code">f x</code>. O(n)<br>
 </div>
 <pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">(int -> 'a -> 'b) -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'b <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
 <code class="code">map f dq</code> returns a deque where every element <code class="code">x</code> of <code class="code">dq</code> has
-      been replaces with <code class="code">f n x</code>, where <code class="code">n</code> is the position of <code class="code">x</code>
-      from the front of <code class="code">dq</code>. O(n)<br>
+    been replaces with <code class="code">f n x</code>, where <code class="code">n</code> is the position of <code class="code">x</code>
+    from the front of <code class="code">dq</code>. O(n)<br>
 </div>
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> unit</code></pre><div class="info">
 <code class="code">iter f dq</code> calls <code class="code">f x</code> on each element <code class="code">x</code> of <code class="code">dq</code>. O(n)<br>
 </div>
 <pre><span id="VALiteri"><span class="keyword">val</span> iteri</span> : <code class="type">(int -> 'a -> unit) -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> unit</code></pre><div class="info">
 <code class="code">iteri f dq</code> calls <code class="code">f n x</code> on each element <code class="code">x</code> of <code class="code">dq</code>. The first
-      argument to <code class="code">f</code> is the position of the element from the front of
-      <code class="code">dq</code>. O(n)<br>
+    argument to <code class="code">f</code> is the position of the element from the front of
+    <code class="code">dq</code>. O(n)<br>
 </div>
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">?backwards:bool -> ('a -> bool) -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> (int * 'a) option</code></pre><div class="info">
 <code class="code">find ~backwards f dq</code> returns <code class="code"><span class="constructor">Some</span> (n, x)</code> if <code class="code">x</code> at position
-      <code class="code">n</code> is such that <code class="code">f x</code> is true, or <code class="code"><span class="constructor">None</span></code> if there is no such
-      element. The position <code class="code">n</code> is from the rear if <code class="code">backwards</code> is
-      true, and from the front if <code class="code">backwards</code> is <code class="code"><span class="keyword">false</span></code>. By default,
-      <code class="code">backwards</code> is <code class="code"><span class="keyword">false</span></code>. O(n)<br>
+    <code class="code">n</code> is such that <code class="code">f x</code> is true, or <code class="code"><span class="constructor">None</span></code> if there is no such
+    element. The position <code class="code">n</code> is from the rear if <code class="code">backwards</code> is
+    true, and from the front if <code class="code">backwards</code> is <code class="code"><span class="keyword">false</span></code>. By default,
+    <code class="code">backwards</code> is <code class="code"><span class="keyword">false</span></code>. O(n)<br>
 </div>
-<pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">('acc -> 'a -> 'acc) -> 'acc -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'acc</code></pre><div class="info">
+<pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatDeque.html#TYPEdq">dq</a> -> 'a</code></pre><div class="info">
 <code class="code">fold_left f acc dq</code> is equivalent to <code class="code"><span class="constructor">List</span>.fold_left f acc
-      (to_list dq)</code>, but more efficient. O(n)<br>
+    (to_list dq)</code>, but more efficient. O(n)<br>
 </div>
-<pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">('a -> 'acc -> 'acc) -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'acc -> 'acc</code></pre><div class="info">
+<pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">('a -> 'b -> 'b) -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'b -> 'b</code></pre><div class="info">
 <code class="code">fold_right f dq acc</code> is equivalent to <code class="code"><span class="constructor">List</span>.fold_right f
-      (to_list dq) acc</code>, but more efficient. O(n)<br>
+    (to_list dq) acc</code>, but more efficient. O(n)<br>
 </div>
 <pre><span id="VALappend"><span class="keyword">val</span> append</span> : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
 <code class="code">append dq1 dq2</code> represents the concatenateion of <code class="code">dq1</code> and
-      <code class="code">dq2</code>. O(min(m, n))<br>
+    <code class="code">dq2</code>. O(min(m, n))<br>
 </div>
 <pre><span id="VALappend_list"><span class="keyword">val</span> append_list</span> : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a list -> 'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
 <code class="code">append_list dq l</code> is equivalent to <code class="code">append dq (of_list l)</code>, but
-      more efficient. O(min(m, n))<br>
+    more efficient. O(min(m, n))<br>
 </div>
 <pre><span id="VALprepend_list"><span class="keyword">val</span> prepend_list</span> : <code class="type">'a list -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
 <code class="code">prepent_list l dq</code> is equivalent to <code class="code">append (of_list l) dq</code>,
-      but more efficient. O(min(m, n))<br>
+    but more efficient. O(min(m, n))<br>
 </div>
 <br>
 <span id="6_Transformation"><h6>Transformation</h6></span><br>
 <pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">'a list -> 'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
 <code class="code">of_list l</code> is a deque representation of the elements of <code class="code">l</code>.
-      O(n)<br>
+    O(n)<br>
 </div>
 <pre><span id="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a list</code></pre><div class="info">
 <code class="code">to_list dq</code> is a list representation of the elements of <code class="code">dq</code>.
-      O(n)<br>
+    O(n)<br>
 </div>
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info">
 <code class="code">of_enum e</code> is a deque representation of the elements of <code class="code">e</code>.
-      Consumes the enumeration <code class="code">e</code>. O(n)<br>
+    Consumes the enumeration <code class="code">e</code>. O(n)<br>
 </div>
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 <code class="code">enum dq</code> is an enumeration of the elements of <code class="code">dq</code> from the
-      front to the rear.
-      This function is O(1), but generating each element of the enumeration
-      is amortized O(1), and O(n) worst case.<br>
+    front to the rear.
+    This function is O(1), but generating each element of the enumeration
+    is amortized O(1), and O(n) worst case.<br>
 </div>
 <br>
 <span id="6_Printing"><h6>Printing</h6></span><br>

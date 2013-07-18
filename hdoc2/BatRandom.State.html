@@ -105,10 +105,11 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatRandom.State</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a class="up" href="BatRandom.html" title="BatRandom">Up</a>
-&nbsp;<a class="post" href="BatRandom.Incubator.html" title="BatRandom.Incubator">Next</a>
+<div class="navbar">&nbsp;<a href="BatRandom.html">Up</a>
+&nbsp;<a href="BatRandom.Incubator.html">Next</a>
 </div>
-<h1>Module <a href="type_BatRandom.State.html">BatRandom.State</a></h1>
+<center><h1>Module <a href="type_BatRandom.State.html">BatRandom.State</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> State: <code class="code"><span class="keyword">sig</span></code> <a href="BatRandom.State.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Manipulate the current state of the random generator.
 <p>
 
@@ -133,5 +134,5 @@ Return a copy of the given state.<br>
 </div>
 <pre><span id="VALbits"><span class="keyword">val</span> bits</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> int</code></pre><pre><span id="VALint"><span class="keyword">val</span> int</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> int -> int</code></pre><pre><span id="VALint32"><span class="keyword">val</span> int32</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Int32.t -> Int32.t</code></pre><pre><span id="VALnativeint"><span class="keyword">val</span> nativeint</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Nativeint.t -> Nativeint.t</code></pre><pre><span id="VALint64"><span class="keyword">val</span> int64</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Int64.t -> Int64.t</code></pre><pre><span id="VALfloat"><span class="keyword">val</span> float</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> float -> float</code></pre><pre><span id="VALbool"><span class="keyword">val</span> bool</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> bool</code></pre><pre><span id="VALchar"><span class="keyword">val</span> char</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> char</code></pre><pre><span id="VALenum_bits"><span class="keyword">val</span> enum_bits</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> unit -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_int"><span class="keyword">val</span> enum_int</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> int -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_bool"><span class="keyword">val</span> enum_bool</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> unit -> bool <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_float"><span class="keyword">val</span> enum_float</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> float -> float <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_int32"><span class="keyword">val</span> enum_int32</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Int32.t -> Int32.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_int64"><span class="keyword">val</span> enum_int64</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Int64.t -> Int64.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_nativeint"><span class="keyword">val</span> enum_nativeint</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Nativeint.t -> Nativeint.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_char"><span class="keyword">val</span> enum_char</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> unit -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><br>
 These functions are the same as the basic functions, except that they
-      use (and update) the given PRNG state instead of the default one.<br>
+          use (and update) the given PRNG state instead of the default one.<br>
 </body></html>

@@ -110,11 +110,12 @@
 <title>Batteries user guide : BatInnerIO</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatISet.html" title="BatISet">Previous</a>
-&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="BatInnerPervasives.html" title="BatInnerPervasives">Next</a>
+<div class="navbar"><a href="BatISet.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="BatInnerPervasives.html">Next</a>
 </div>
-<h1>Module <a href="type_BatInnerIO.html">BatInnerIO</a></h1>
+<center><h1>Module <a href="type_BatInnerIO.html">BatInnerIO</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> BatInnerIO: <code class="code"><span class="keyword">sig</span></code> <a href="BatInnerIO.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Core of the BatIO module.
 <p>
 
@@ -133,7 +134,7 @@
 <pre><span id="EXCEPTIONNo_more_input"><span class="keyword">exception</span> No_more_input</span></pre>
 <div class="info">
 This exception is raised when reading on an input with the <code class="code">read</code> or
-  <code class="code">nread</code> functions while there is no available token to read.<br>
+    <code class="code">nread</code> functions while there is no available token to read.<br>
 </div>
 <pre><span id="EXCEPTIONInput_closed"><span class="keyword">exception</span> Input_closed</span></pre>
 <div class="info">
@@ -145,19 +146,19 @@ This exception is raised when reading on a closed output.<br>
 </div>
 <pre><span id="VALread"><span class="keyword">val</span> read</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> char</code></pre><div class="info">
 Read a single char from an input or raise <code class="code"><span class="constructor">No_more_input</span></code> if
-  no input available.<br>
+    no input available.<br>
 </div>
 <pre><span id="VALread_all"><span class="keyword">val</span> read_all</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> string</code></pre><div class="info">
 read all the contents of the input until <code class="code"><span class="constructor">No_more_input</span></code> is raised.<br>
 </div>
 <pre><span id="VALpipe"><span class="keyword">val</span> pipe</span> : <code class="type">unit -> <a href="BatInnerIO.html#TYPEinput">input</a> * unit <a href="BatInnerIO.html#TYPEoutput">output</a></code></pre><div class="info">
 Create a pipe between an input and an ouput. Data written from
-  the output can be read from the input.<br>
+    the output can be read from the input.<br>
 </div>
 <pre><span id="VALnread"><span class="keyword">val</span> nread</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> int -> string</code></pre><div class="info">
 <code class="code">nread i n</code> reads a string of size up to <code class="code">n</code> from an input.
-  The function will raise <code class="code"><span class="constructor">No_more_input</span></code> if no input is available.
-  It will raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">n</code> &lt; 0.<br>
+    The function will raise <code class="code"><span class="constructor">No_more_input</span></code> if no input is available.
+    It will raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">n</code> &lt; 0.<br>
 </div>
 <pre><span id="VALreally_nread"><span class="keyword">val</span> really_nread</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> int -> string</code></pre><div class="info">
 <code class="code">really_nread i n</code> reads a string of exactly <code class="code">n</code> characters
@@ -169,19 +170,19 @@ Create a pipe between an input and an ouput. Data written from
 </div>
 <pre><span id="VALinput"><span class="keyword">val</span> input</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> string -> int -> int -> int</code></pre><div class="info">
 <code class="code">input i s p l</code> reads up to <code class="code">l</code> characters from the given input, storing
-  them in string <code class="code">s</code>, starting at character number <code class="code">p</code>. It returns the actual
-  number of characters read or raise <code class="code"><span class="constructor">No_more_input</span></code> if no character can be
-  read. It will raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">p</code> and <code class="code">l</code> do not designate a
-  valid substring of <code class="code">s</code>.<br>
+    them in string <code class="code">s</code>, starting at character number <code class="code">p</code>. It returns the actual
+    number of characters read or raise <code class="code"><span class="constructor">No_more_input</span></code> if no character can be
+    read. It will raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">p</code> and <code class="code">l</code> do not designate a
+    valid substring of <code class="code">s</code>.<br>
 </div>
 <pre><span id="VALreally_input"><span class="keyword">val</span> really_input</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> string -> int -> int -> int</code></pre><div class="info">
 <code class="code">really_input i s p l</code> reads exactly <code class="code">l</code> characters from the given input,
-  storing them in the string <code class="code">s</code>, starting at position <code class="code">p</code>. For consistency with
-  <a href="BatIO.html#VALinput"><code class="code"><span class="constructor">BatIO</span>.input</code></a> it returns <code class="code">l</code>.<br>
+    storing them in the string <code class="code">s</code>, starting at position <code class="code">p</code>. For consistency with
+    <a href="BatIO.html#VALinput"><code class="code"><span class="constructor">BatIO</span>.input</code></a> it returns <code class="code">l</code>.<br>
 <b>Raises</b><ul><li><code>No_more_input</code> if at <code class="code">l</code> characters are
-  not available.</li>
+    not available.</li>
 <li><code>Invalid_argument</code> if <code class="code">p</code> and <code class="code">l</code> do not designate a
-  valid substring of <code class="code">s</code>.</li>
+    valid substring of <code class="code">s</code>.</li>
 </ul>
 </div>
 <pre><span id="VALclose_in"><span class="keyword">val</span> close_in</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> unit</code></pre><div class="info">
@@ -195,15 +196,15 @@ Write a string to an output.<br>
 </div>
 <pre><span id="VALoutput"><span class="keyword">val</span> output</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> string -> int -> int -> int</code></pre><div class="info">
 <code class="code">output o s p l</code> writes up to <code class="code">l</code> characters from string <code class="code">s</code>, starting at
-  offset <code class="code">p</code>. It returns the number of characters written. It will raise
-  <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">p</code> and <code class="code">l</code> do not designate a valid substring of <code class="code">s</code>.<br>
+    offset <code class="code">p</code>. It returns the number of characters written. It will raise
+    <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">p</code> and <code class="code">l</code> do not designate a valid substring of <code class="code">s</code>.<br>
 </div>
 <pre><span id="VALreally_output"><span class="keyword">val</span> really_output</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> string -> int -> int -> int</code></pre><div class="info">
 <code class="code">really_output o s p l</code> writes exactly <code class="code">l</code> characters from string <code class="code">s</code> onto
-  the the output, starting with the character at offset <code class="code">p</code>. For consistency with
-  <a href="BatIO.html#VALoutput"><code class="code"><span class="constructor">BatIO</span>.output</code></a> it returns <code class="code">l</code>.<br>
+    the the output, starting with the character at offset <code class="code">p</code>. For consistency with
+    <a href="BatIO.html#VALoutput"><code class="code"><span class="constructor">BatIO</span>.output</code></a> it returns <code class="code">l</code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> if <code class="code">p</code> and <code class="code">l</code> do not
-  designate a valid substring of <code class="code">s</code>.<br>
+    designate a valid substring of <code class="code">s</code>.<br>
 </div>
 <pre><span id="VALflush"><span class="keyword">val</span> flush</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> unit</code></pre><div class="info">
 Flush an output.<br>
@@ -224,7 +225,7 @@ Create an input that will read from a string.<br>
 </div>
 <pre><span id="VALoutput_string"><span class="keyword">val</span> output_string</span> : <code class="type">unit -> string <a href="BatInnerIO.html#TYPEoutput">output</a></code></pre><div class="info">
 Create an output that will write into a string in an efficient way.
-  When closed, the output returns all the data written into it.<br>
+    When closed, the output returns all the data written into it.<br>
 </div>
 <pre><span id="VALon_close_out"><span class="keyword">val</span> on_close_out</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> ('a <a href="BatInnerIO.html#TYPEoutput">output</a> -> unit) -> unit</code></pre><div class="info">
 Register a function to be triggered just before an output is closed.<br>
@@ -343,7 +344,7 @@ Read a signed 16-bit word.<br>
 <pre><span id="VALread_i32"><span class="keyword">val</span> read_i32</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> int</code></pre><div class="info">
 Read a signed 32-bit integer.<br>
 <b>Raises</b> <code>Overflow</code> if the
-  read integer cannot be represented as an OCaml 31-bit integer.<br>
+    read integer cannot be represented as an OCaml 31-bit integer.<br>
 </div>
 <pre><span id="VALread_real_i32"><span class="keyword">val</span> read_real_i32</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> int32</code></pre><div class="info">
 Read a signed 32-bit integer as an OCaml int32.<br>
@@ -396,7 +397,7 @@ Write a line and append a LF (it might be converted
 </div>
 <pre><span id="VALcast_output"><span class="keyword">val</span> cast_output</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> unit <a href="BatInnerIO.html#TYPEoutput">output</a></code></pre><div class="info">
 You can safely transform any output to an unit output in a safe way
-  by using this function.<br>
+    by using this function.<br>
 </div>
 <br>
 <span id="6_Forcompatibilitypurposes"><h6>For compatibility purposes</h6></span><br>

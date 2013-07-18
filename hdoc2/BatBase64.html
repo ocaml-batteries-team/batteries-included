@@ -106,11 +106,12 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatBase64</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatAvlTree.html" title="BatAvlTree">Previous</a>
-&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="BatBig_int.html" title="BatBig_int">Next</a>
+<div class="navbar"><a href="BatAvlTree.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="BatBig_int.html">Next</a>
 </div>
-<h1>Module <a href="type_BatBase64.html">BatBase64</a></h1>
+<center><h1>Module <a href="type_BatBase64.html">BatBase64</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> BatBase64: <code class="code"><span class="keyword">sig</span></code> <a href="BatBase64.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Base64 codec.
 <p>
 
@@ -137,7 +138,7 @@ An encoding table maps integers 0..63 to the corresponding char.<br>
 <pre><span id="TYPEdecoding_table"><span class="keyword">type</span> <code class="type"></code>decoding_table</span> = <code class="type">int array</code> </pre>
 <div class="info">
 A decoding table maps chars 0..255 to the corresponding 0..63 value
- or -1 if the char is not accepted.<br>
+    or -1 if the char is not accepted.<br>
 </div>
 
 <pre><span id="VALstr_encode"><span class="keyword">val</span> str_encode</span> : <code class="type">?tbl:<a href="BatBase64.html#TYPEencoding_table">encoding_table</a> -> string -> string</code></pre><div class="info">

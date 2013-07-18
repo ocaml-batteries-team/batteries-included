@@ -109,12 +109,13 @@
 <title>Batteries user guide : BatOptParse.Opt</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a class="up" href="BatOptParse.html" title="BatOptParse">Up</a>
-&nbsp;<a class="post" href="BatOptParse.StdOpt.html" title="BatOptParse.StdOpt">Next</a>
+<div class="navbar">&nbsp;<a href="BatOptParse.html">Up</a>
+&nbsp;<a href="BatOptParse.StdOpt.html">Next</a>
 </div>
-<h1>Module <a href="type_BatOptParse.Opt.html">BatOptParse.Opt</a></h1>
+<center><h1>Module <a href="type_BatOptParse.Opt.html">BatOptParse.Opt</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Opt: <code class="code"><span class="keyword">sig</span></code> <a href="BatOptParse.Opt.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>This module contains the basic functions and types for defining
-  new option types and accessing the values of options.<br>
+    new option types and accessing the values of options.<br>
 <hr width="100%">
 <br>
 <span id="6_Exceptions"><h6>Exceptions</h6></span><br>
@@ -143,40 +144,40 @@ When an option wants to display a usage message, this exception
 </div>
 <br>
 <span id="6_Types"><h6>Types</h6></span><br>
-<pre><code><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = {</code></pre><table class="typetable">
+<br><code><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = {</code><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTt.option_set">option_set</span>&nbsp;:<code class="type">string -> string list -> unit</code>;</code></td>
+<code>option_set&nbsp;: <code class="type">string -> string list -> unit</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTt.option_set_value">option_set_value</span>&nbsp;:<code class="type">'a -> unit</code>;</code></td>
+<code>option_set_value&nbsp;: <code class="type">'a -> unit</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTt.option_get">option_get</span>&nbsp;:<code class="type">unit -> 'a option</code>;</code></td>
+<code>option_get&nbsp;: <code class="type">unit -> 'a option</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTt.option_metavars">option_metavars</span>&nbsp;:<code class="type">string list</code>;</code></td>
+<code>option_metavars&nbsp;: <code class="type">string list</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTt.option_defhelp">option_defhelp</span>&nbsp;:<code class="type">string option</code>;</code></td>
+<code>option_defhelp&nbsp;: <code class="type">string option</code>;</code></td>
 
 </tr></table>
 }
@@ -262,13 +263,13 @@ Make an option which takes a single argument.
 Make a callback option which takes a single argument.
 <p>
 
-      <code class="code">callback_option metavar coerce errfmt f</code> returns an option which
-      takes a single argument from the command line and calls <code class="code">coerce</code>
-      to coerce it to the proper type. If <code class="code">coerce</code> raises an exception
-      <code class="code">errfmt exn argval</code> is called to format an error message for
-      display. If <code class="code">coerce</code> succeeds, the callback function <code class="code">f</code> is called
-      with the coerced value. Finally, <code class="code">metavar</code> is the name of the
-      metavariable of the option.<br>
+        <code class="code">callback_option metavar coerce errfmt f</code> returns an option which
+        takes a single argument from the command line and calls <code class="code">coerce</code>
+        to coerce it to the proper type. If <code class="code">coerce</code> raises an exception
+        <code class="code">errfmt exn argval</code> is called to format an error message for
+        display. If <code class="code">coerce</code> succeeds, the callback function <code class="code">f</code> is called
+        with the coerced value. Finally, <code class="code">metavar</code> is the name of the
+        metavariable of the option.<br>
 <b>Returns</b> the newly created option.<br>
 </div>
 </body></html>

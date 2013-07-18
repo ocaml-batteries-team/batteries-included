@@ -107,104 +107,105 @@
 <title>Batteries user guide : Batteries.Genlex</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="Batteries.Gc.html" title="Batteries.Gc">Previous</a>
-&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
-&nbsp;<a class="post" href="Batteries.Hashtbl.html" title="Batteries.Hashtbl">Next</a>
+<div class="navbar"><a href="Batteries.Gc.html">Previous</a>
+&nbsp;<a href="Batteries.html">Up</a>
+&nbsp;<a href="Batteries.Hashtbl.html">Next</a>
 </div>
-<h1>Module <a href="type_Batteries.Genlex.html">Batteries.Genlex</a></h1>
+<center><h1>Module <a href="type_Batteries.Genlex.html">Batteries.Genlex</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Genlex: <code class="type">BatGenlex</code></pre><hr width="100%">
 <pre><span id="TYPEtoken"><span class="keyword">type</span> <code class="type"></code>token</span> = <code class="type">Genlex.token</code> = </pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTtoken.Kwd"><span class="constructor">Kwd</span></span> <span class="keyword">of</span> <code class="type">string</code></code></td>
+<code><span class="constructor">Kwd</span> <span class="keyword">of</span> <code class="type">string</code></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTtoken.Ident"><span class="constructor">Ident</span></span> <span class="keyword">of</span> <code class="type">string</code></code></td>
+<code><span class="constructor">Ident</span> <span class="keyword">of</span> <code class="type">string</code></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTtoken.Int"><span class="constructor">Int</span></span> <span class="keyword">of</span> <code class="type">int</code></code></td>
+<code><span class="constructor">Int</span> <span class="keyword">of</span> <code class="type">int</code></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTtoken.Float"><span class="constructor">Float</span></span> <span class="keyword">of</span> <code class="type">float</code></code></td>
+<code><span class="constructor">Float</span> <span class="keyword">of</span> <code class="type">float</code></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTtoken.String"><span class="constructor">String</span></span> <span class="keyword">of</span> <code class="type">string</code></code></td>
+<code><span class="constructor">String</span> <span class="keyword">of</span> <code class="type">string</code></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTtoken.Char"><span class="constructor">Char</span></span> <span class="keyword">of</span> <code class="type">char</code></code></td>
+<code><span class="constructor">Char</span> <span class="keyword">of</span> <code class="type">char</code></code></td>
 
 </tr></table>
 
 <div class="info">
 The type of tokens. The lexical classes are: <code class="code"><span class="constructor">Int</span></code> and <code class="code"><span class="constructor">Float</span></code>
-   for integer and floating-point numbers; <code class="code"><span class="constructor">String</span></code> for
-   string literals, enclosed in double quotes; <code class="code"><span class="constructor">Char</span></code> for
-   character literals, enclosed in single quotes; <code class="code"><span class="constructor">Ident</span></code> for
-   identifiers (either sequences of letters, digits, underscores
-   and quotes, or sequences of ``operator characters'' such as
-   <code class="code">+</code>, <code class="code">*</code>, etc); and <code class="code"><span class="constructor">Kwd</span></code> for keywords (either identifiers or
-   single ``special characters'' such as <code class="code">(</code>, <code class="code">}</code>, etc).<br>
+    for integer and floating-point numbers; <code class="code"><span class="constructor">String</span></code> for
+    string literals, enclosed in double quotes; <code class="code"><span class="constructor">Char</span></code> for
+    character literals, enclosed in single quotes; <code class="code"><span class="constructor">Ident</span></code> for
+    identifiers (either sequences of letters, digits, underscores
+    and quotes, or sequences of ``operator characters'' such as
+    <code class="code">+</code>, <code class="code">*</code>, etc); and <code class="code"><span class="constructor">Kwd</span></code> for keywords (either identifiers or
+    single ``special characters'' such as <code class="code">(</code>, <code class="code">}</code>, etc).<br>
 </div>
 
 <pre><span id="VALmake_lexer"><span class="keyword">val</span> make_lexer</span> : <code class="type">string list -> char Stream.t -> <a href="BatGenlex.html#TYPEtoken">token</a> Stream.t</code></pre><div class="info">
 Construct the lexer function. The first argument is the list of
-   keywords. An identifier <code class="code">s</code> is returned as <code class="code"><span class="constructor">Kwd</span> s</code> if <code class="code">s</code>
-   belongs to this list, and as <code class="code"><span class="constructor">Ident</span> s</code> otherwise.
-   A special character <code class="code">s</code> is returned as <code class="code"><span class="constructor">Kwd</span> s</code> if <code class="code">s</code>
-   belongs to this list, and cause a lexical error (exception
-   <code class="code"><span class="constructor">Parse_error</span></code>) otherwise. Blanks and newlines are skipped.
-   Comments delimited by <code class="code">(*</code> and <code class="code">*)</code> are skipped as well,
-   and can be nested.<br>
+    keywords. An identifier <code class="code">s</code> is returned as <code class="code"><span class="constructor">Kwd</span> s</code> if <code class="code">s</code>
+    belongs to this list, and as <code class="code"><span class="constructor">Ident</span> s</code> otherwise.
+    A special character <code class="code">s</code> is returned as <code class="code"><span class="constructor">Kwd</span> s</code> if <code class="code">s</code>
+    belongs to this list, and cause a lexical error (exception
+    <code class="code"><span class="constructor">Parse_error</span></code>) otherwise. Blanks and newlines are skipped.
+    Comments delimited by <code class="code">(*</code> and <code class="code">*)</code> are skipped as well,
+    and can be nested.<br>
 </div>
-<pre><code><span id="TYPElexer_error"><span class="keyword">type</span> <code class="type"></code>lexer_error</span> = </code></pre><table class="typetable">
+<br><code><span id="TYPElexer_error"><span class="keyword">type</span> <code class="type"></code>lexer_error</span> = </code><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTlexer_error.IllegalCharacter"><span class="constructor">IllegalCharacter</span></span> <span class="keyword">of</span> <code class="type">char</code></code></td>
+<code><span class="constructor">IllegalCharacter</span> <span class="keyword">of</span> <code class="type">char</code></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTlexer_error.NotReallyAChar"><span class="constructor">NotReallyAChar</span></span></code></td>
+<code><span class="constructor">NotReallyAChar</span></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTlexer_error.NotReallyAnEscape"><span class="constructor">NotReallyAnEscape</span></span></code></td>
+<code><span class="constructor">NotReallyAnEscape</span></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTlexer_error.EndOfStream"><span class="constructor">EndOfStream</span></span></code></td>
+<code><span class="constructor">EndOfStream</span></code></td>
 
 </tr></table>
 

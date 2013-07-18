@@ -110,11 +110,12 @@
 <title>Batteries user guide : Batteries.Random</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="Batteries.Queue.html" title="Batteries.Queue">Previous</a>
-&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
-&nbsp;<a class="post" href="Batteries.Scanf.html" title="Batteries.Scanf">Next</a>
+<div class="navbar"><a href="Batteries.Queue.html">Previous</a>
+&nbsp;<a href="Batteries.html">Up</a>
+&nbsp;<a href="Batteries.Scanf.html">Next</a>
 </div>
-<h1>Module <a href="type_Batteries.Random.html">Batteries.Random</a></h1>
+<center><h1>Module <a href="type_Batteries.Random.html">Batteries.Random</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Random: <code class="type">BatRandom</code></pre><hr width="100%">
 <br>
 <span id="6_Basicfunctions"><h6>Basic functions</h6></span><br>
@@ -127,7 +128,7 @@ Same as <code class="code"><span class="constructor">Random</span>.init</code> b
 </div>
 <pre><span id="VALself_init"><span class="keyword">val</span> self_init</span> : <code class="type">unit -> unit</code></pre><div class="info">
 Initialize the generator with a more-or-less random seed chosen
-   in a system-dependent way.<br>
+    in a system-dependent way.<br>
 </div>
 <pre><span id="VALbits"><span class="keyword">val</span> bits</span> : <code class="type">unit -> int</code></pre><div class="info">
 Return 30 random bits in a nonnegative integer.<br>
@@ -151,9 +152,9 @@ Return 30 random bits in a nonnegative integer.<br>
 </div>
 <pre><span id="VALfloat"><span class="keyword">val</span> float</span> : <code class="type">float -> float</code></pre><div class="info">
 <code class="code"><span class="constructor">Random</span>.float bound</code> returns a random floating-point number
-   between 0 (inclusive) and <code class="code">bound</code> (exclusive).  If <code class="code">bound</code> is
-   negative, the result is negative or zero.  If <code class="code">bound</code> is 0,
-   the result is 0.<br>
+    between 0 (inclusive) and <code class="code">bound</code> (exclusive).  If <code class="code">bound</code> is
+    negative, the result is negative or zero.  If <code class="code">bound</code> is 0,
+    the result is 0.<br>
 </div>
 <pre><span id="VALbool"><span class="keyword">val</span> bool</span> : <code class="type">unit -> bool</code></pre><div class="info">
 <code class="code"><span class="constructor">Random</span>.bool ()</code> returns <code class="code"><span class="keyword">true</span></code> or <code class="code"><span class="keyword">false</span></code> with probability 0.5 each.<br>

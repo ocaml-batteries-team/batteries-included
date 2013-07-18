@@ -117,11 +117,12 @@
 <title>Batteries user guide : Batteries.Stream</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="Batteries.Stack.html" title="Batteries.Stack">Previous</a>
-&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
-&nbsp;<a class="post" href="Batteries.String.html" title="Batteries.String">Next</a>
+<div class="navbar"><a href="Batteries.Stack.html">Previous</a>
+&nbsp;<a href="Batteries.html">Up</a>
+&nbsp;<a href="Batteries.String.html">Next</a>
 </div>
-<h1>Module <a href="type_Batteries.Stream.html">Batteries.Stream</a></h1>
+<center><h1>Module <a href="type_Batteries.Stream.html">Batteries.Stream</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Stream: <code class="type">BatStream</code></pre><hr width="100%">
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a Stream.t</code> </pre>
 
@@ -132,25 +133,25 @@ The type of streams holding values of type <code class="code"><span class="keywo
 <pre><span id="EXCEPTIONFailure"><span class="keyword">exception</span> Failure</span></pre>
 <div class="info">
 Raised by parsers when none of the first components of the stream
-   patterns is accepted.<br>
+    patterns is accepted.<br>
 </div>
 <pre><span id="EXCEPTIONError"><span class="keyword">exception</span> Error</span> <span class="keyword">of</span> <code class="type">string</code></pre>
 <div class="info">
 Raised by parsers when the first component of a stream pattern is
-   accepted, but one of the following components is rejected.<br>
+    accepted, but one of the following components is rejected.<br>
 </div>
 <br>
 <span id="6_Streambuilders"><h6>Stream builders</h6></span><br>
 <pre><span id="VALfrom"><span class="keyword">val</span> from</span> : <code class="type">(int -> 'a option) -> 'a <a href="BatStream.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code"><span class="constructor">Stream</span>.from f</code> returns a stream built from the function <code class="code">f</code>.
-   To create a new stream element, the function <code class="code">f</code> is called with
-   the current stream count. The user function <code class="code">f</code> must return either
-   <code class="code"><span class="constructor">Some</span> &lt;value&gt;</code> for a value or <code class="code"><span class="constructor">None</span></code> to specify the end of the
-   stream.<br>
+    To create a new stream element, the function <code class="code">f</code> is called with
+    the current stream count. The user function <code class="code">f</code> must return either
+    <code class="code"><span class="constructor">Some</span> &lt;value&gt;</code> for a value or <code class="code"><span class="constructor">None</span></code> to specify the end of the
+    stream.<br>
 </div>
 <pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">'a list -> 'a <a href="BatStream.html#TYPEt">t</a></code></pre><div class="info">
 Return the stream holding the elements of the list in the same
-   order.<br>
+    order.<br>
 </div>
 <pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -> char <a href="BatStream.html#TYPEt">t</a></code></pre><div class="info">
 Return the stream of the characters of the string parameter.<br>
@@ -162,50 +163,50 @@ Return the stream of the characters read from the input channel.<br>
 <span id="6_OtherStreambuilders"><h6>Other Stream builders</h6></span>
 <p>
 
-   Warning: these functions create streams with fast access; it is illegal
-   to mix them with streams built with <code class="code">[&lt; &gt;]</code>; would raise <code class="code"><span class="constructor">Failure</span></code>
-   when accessing such mixed streams.<br>
+    Warning: these functions create streams with fast access; it is illegal
+    to mix them with streams built with <code class="code">[&lt; &gt;]</code>; would raise <code class="code"><span class="constructor">Failure</span></code>
+    when accessing such mixed streams.<br>
 <pre><span id="VALof_fun"><span class="keyword">val</span> of_fun</span> : <code class="type">(unit -> 'a) -> 'a <a href="BatStream.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code"><span class="constructor">Stream</span>.of_fun f</code> returns a stream built from the function <code class="code">f</code>.
-   To create a new stream element, the function <code class="code">f</code> is called with
-   the current stream count. The user function <code class="code">f</code> must return either
-   <code class="code"><span class="constructor">Some</span> &lt;value&gt;</code> for a value or <code class="code"><span class="constructor">None</span></code> to specify the end of the
-   stream.<br>
+    To create a new stream element, the function <code class="code">f</code> is called with
+    the current stream count. The user function <code class="code">f</code> must return either
+    <code class="code"><span class="constructor">Some</span> &lt;value&gt;</code> for a value or <code class="code"><span class="constructor">None</span></code> to specify the end of the
+    stream.<br>
 </div>
 <br>
 <span id="6_Streamiterator"><h6>Stream iterator</h6></span><br>
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> 'a <a href="BatStream.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 <code class="code"><span class="constructor">Stream</span>.iter f s</code> scans the whole stream s, applying function <code class="code">f</code>
-   in turn to each stream element encountered.<br>
+    in turn to each stream element encountered.<br>
 </div>
 <pre><span id="VALfoldl"><span class="keyword">val</span> foldl</span> : <code class="type">('a -> 'b -> 'a * bool option) -> 'a -> 'b <a href="BatStream.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 <code class="code">foldl f init stream</code> is a lazy fold_left. <code class="code">f accu elt</code> should return
-      <code class="code">(new_accu, state)</code> where <code class="code">new_accu</code> is normal accumulation result, and
-      <code class="code">state</code> is a flag representing whether the computation should continue
-      and whether the last operation is valid: <code class="code"><span class="constructor">None</span></code> means continue, <code class="code"><span class="constructor">Some</span> b</code>
-      means stop where <code class="code">b = <span class="keyword">true</span></code> means the last addition is still valid and <code class="code">b
-      = <span class="keyword">false</span></code> means the last addition is invalid and should be revert.<br>
+    <code class="code">(new_accu, state)</code> where <code class="code">new_accu</code> is normal accumulation result, and
+    <code class="code">state</code> is a flag representing whether the computation should continue
+    and whether the last operation is valid: <code class="code"><span class="constructor">None</span></code> means continue, <code class="code"><span class="constructor">Some</span> b</code>
+    means stop where <code class="code">b = <span class="keyword">true</span></code> means the last addition is still valid and <code class="code">b
+    = <span class="keyword">false</span></code> means the last addition is invalid and should be revert.<br>
 </div>
 <pre><span id="VALfoldr"><span class="keyword">val</span> foldr</span> : <code class="type">('a -> 'b lazy_t -> 'b) -> 'b -> 'a <a href="BatStream.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
 <code class="code">foldr f init stream</code> is a lazy fold_right. Unlike the normal fold_right,
-      the accumulation parameter of <code class="code">f elt accu</code> is lazy, hence it can decide
-      not to force the evaluation of <code class="code">accu</code> if the current element <code class="code">elt</code> can
-      determin the result by itself.<br>
+    the accumulation parameter of <code class="code">f elt accu</code> is lazy, hence it can decide
+    not to force the evaluation of <code class="code">accu</code> if the current element <code class="code">elt</code> can
+    determin the result by itself.<br>
 </div>
 <pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -> 'a -> 'a * bool option) -> 'a <a href="BatStream.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 <code class="code">fold</code> is <code class="code">foldl</code> without initialization value, where the first
-      element of stream is taken as <code class="code">init</code>. It raises <code class="code"><span class="constructor">End_of_stream</span></code> exception
-      when the input stream is empty.<br>
+    element of stream is taken as <code class="code">init</code>. It raises <code class="code"><span class="constructor">End_of_stream</span></code> exception
+    when the input stream is empty.<br>
 </div>
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('a -> bool) -> 'a <a href="BatStream.html#TYPEt">t</a> -> 'a <a href="BatStream.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">filter test stream</code> picks all the elements satisfying <code class="code">test</code> from <code class="code">stream</code>
-      and return the results in the same order as a stream.<br>
+    and return the results in the same order as a stream.<br>
 </div>
 <br>
 <span id="6_Predefinedparsers"><h6>Predefined parsers</h6></span><br>
 <pre><span id="VALnext"><span class="keyword">val</span> next</span> : <code class="type">'a <a href="BatStream.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 Return the first element of the stream and remove it from the
-   stream.<br>
+    stream.<br>
 <b>Raises</b> <code>Stream.Failure</code> if the stream is empty.<br>
 </div>
 <pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">'a <a href="BatStream.html#TYPEt">t</a> -> unit</code></pre><div class="info">
@@ -215,20 +216,20 @@ Return <code class="code">()</code> if the stream is empty, else raise <code cla
 <span id="6_Usefulfunctions"><h6>Useful functions</h6></span><br>
 <pre><span id="VALpeek"><span class="keyword">val</span> peek</span> : <code class="type">'a <a href="BatStream.html#TYPEt">t</a> -> 'a option</code></pre><div class="info">
 Return <code class="code"><span class="constructor">Some</span></code> of "the first element" of the stream, or <code class="code"><span class="constructor">None</span></code> if
-   the stream is empty.<br>
+    the stream is empty.<br>
 </div>
 <pre><span id="VALjunk"><span class="keyword">val</span> junk</span> : <code class="type">'a <a href="BatStream.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 Remove the first element of the stream, possibly unfreezing
-   it before.<br>
+    it before.<br>
 </div>
 <pre><span id="VALcount"><span class="keyword">val</span> count</span> : <code class="type">'a <a href="BatStream.html#TYPEt">t</a> -> int</code></pre><div class="info">
 Return the current count of the stream elements, i.e. the number
-   of the stream elements discarded.<br>
+    of the stream elements discarded.<br>
 </div>
 <pre><span id="VALnpeek"><span class="keyword">val</span> npeek</span> : <code class="type">int -> 'a <a href="BatStream.html#TYPEt">t</a> -> 'a list</code></pre><div class="info">
 <code class="code">npeek n</code> returns the list of the <code class="code">n</code> first elements of
-   the stream, or all its remaining elements if less than <code class="code">n</code>
-   elements are available.<br>
+    the stream, or all its remaining elements if less than <code class="code">n</code>
+    elements are available.<br>
 </div>
 <br>
 <span id="6_Conversionfunctions"><h6>Conversion functions</h6></span><br>
@@ -270,13 +271,13 @@ Convert an <code class="code">output</code> to a stream.<br>
     All the functions in this part are lazy.<br>
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> 'a <a href="BatStream.html#TYPEt">t</a> -> 'b <a href="BatStream.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">map f stream</code> applies <code class="code">f</code> in turn to elements from <code class="code">stream</code> and return the
-      results as a stream in the same order.<br>
+    results as a stream in the same order.<br>
 </div>
 <pre><span id="VALmap2"><span class="keyword">val</span> map2</span> : <code class="type">('a -> 'b -> 'c) -> 'a <a href="BatStream.html#TYPEt">t</a> -> 'b <a href="BatStream.html#TYPEt">t</a> -> 'c <a href="BatStream.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">map2 f streama streamb</code> applies <code class="code">f</code> in turn to elements of corresponding
-      positions from <code class="code">streama</code> and <code class="code">streamb</code>. The results are constructed in the
-      same order as a stream. If one stream is short, excess elements of the longer
-      stream are ignored.<br>
+    positions from <code class="code">streama</code> and <code class="code">streamb</code>. The results are constructed in the
+    same order as a stream. If one stream is short, excess elements of the longer
+    stream are ignored.<br>
 </div>
 <pre><span id="VALscanl"><span class="keyword">val</span> scanl</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatStream.html#TYPEt">t</a> -> 'a <a href="BatStream.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">scanl f init stream</code> returns a stream of successive reduced
@@ -294,19 +295,19 @@ concatenate a stream of streams<br>
 </div>
 <pre><span id="VALtake"><span class="keyword">val</span> take</span> : <code class="type">int -> 'a <a href="BatStream.html#TYPEt">t</a> -> 'a <a href="BatStream.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">take n stream</code> returns the prefix of <code class="code">stream</code> of length <code class="code">n</code>, or <code class="code">stream</code>
-      itself if <code class="code">n</code> is greater than the length of <code class="code">stream</code><br>
+    itself if <code class="code">n</code> is greater than the length of <code class="code">stream</code><br>
 </div>
 <pre><span id="VALdrop"><span class="keyword">val</span> drop</span> : <code class="type">int -> 'a <a href="BatStream.html#TYPEt">t</a> -> 'a <a href="BatStream.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">drop n stream</code> returns the suffix of <code class="code">stream</code> after the first <code class="code">n</code> elements,
-      or a empty stream if <code class="code">n</code> is greater than the length of <code class="code">stream</code><br>
+    or a empty stream if <code class="code">n</code> is greater than the length of <code class="code">stream</code><br>
 </div>
 <pre><span id="VALtake_while"><span class="keyword">val</span> take_while</span> : <code class="type">('a -> bool) -> 'a <a href="BatStream.html#TYPEt">t</a> -> 'a <a href="BatStream.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">take_while test stream</code> returns the longest (possibly empty) prefix of
-      <code class="code">stream</code> of elements that satisfy <code class="code">test</code>.<br>
+    <code class="code">stream</code> of elements that satisfy <code class="code">test</code>.<br>
 </div>
 <pre><span id="VALdrop_while"><span class="keyword">val</span> drop_while</span> : <code class="type">('a -> bool) -> 'a <a href="BatStream.html#TYPEt">t</a> -> 'a <a href="BatStream.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">drop_while test stream</code> returns the remaining suffix of <code class="code">take_while test
-      stream</code>.<br>
+    stream</code>.<br>
 </div>
 <br>
 <span id="6_Streamspairarithmetic"><h6>Streams pair arithmetic</h6></span>
@@ -315,12 +316,12 @@ concatenate a stream of streams<br>
     All the functions in this part are lazy.<br>
 <pre><span id="VALdup"><span class="keyword">val</span> dup</span> : <code class="type">'a <a href="BatStream.html#TYPEt">t</a> -> 'a <a href="BatStream.html#TYPEt">t</a> * 'a <a href="BatStream.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">dup stream</code> returns a pair of streams which are identical to <code class="code">stream</code>. Note
-      that stream is a destructive data structure, the point of <code class="code">dup</code> is to
-      return two streams can be used independently.
+    that stream is a destructive data structure, the point of <code class="code">dup</code> is to
+    return two streams can be used independently.
 <p>
 
-      NOT IMPLEMENTED CORRECTLY - WILL RAISE Failure UNTIL CORRECT
-      IMPLEMENTATION FOUND<br>
+    NOT IMPLEMENTED CORRECTLY - WILL RAISE Failure UNTIL CORRECT
+    IMPLEMENTATION FOUND<br>
 </div>
 <pre><span id="VALcomb"><span class="keyword">val</span> comb</span> : <code class="type">'a <a href="BatStream.html#TYPEt">t</a> * 'b <a href="BatStream.html#TYPEt">t</a> -> ('a * 'b) <a href="BatStream.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">comb</code> transform a pair of stream into a stream of pairs of corresponding
@@ -332,19 +333,19 @@ concatenate a stream of streams<br>
 </div>
 <pre><span id="VALmerge"><span class="keyword">val</span> merge</span> : <code class="type">(bool -> 'a -> bool) -> 'a <a href="BatStream.html#TYPEt">t</a> * 'a <a href="BatStream.html#TYPEt">t</a> -> 'a <a href="BatStream.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">merge test (streama, streamb)</code> merge the elements from <code class="code">streama</code> and
-      <code class="code">streamb</code> into a single stream. The <code class="code">bool</code> type here represents the id of the
-      two input streams where <code class="code"><span class="keyword">true</span></code> is the first and <code class="code"><span class="keyword">false</span></code> represents the
-      second. The <code class="code">test</code> function is applied to each element of the output stream
-      together with the id of the input stream from which it was extracted, to
-      decide which stream should the next element come from. The first element is
-      always taken from <code class="code">streama</code>. When a stream runs out of elements, the merge
-      process will continue to take elements from the other stream until both
-      streams reach their ends.<br>
+    <code class="code">streamb</code> into a single stream. The <code class="code">bool</code> type here represents the id of the
+    two input streams where <code class="code"><span class="keyword">true</span></code> is the first and <code class="code"><span class="keyword">false</span></code> represents the
+    second. The <code class="code">test</code> function is applied to each element of the output stream
+    together with the id of the input stream from which it was extracted, to
+    decide which stream should the next element come from. The first element is
+    always taken from <code class="code">streama</code>. When a stream runs out of elements, the merge
+    process will continue to take elements from the other stream until both
+    streams reach their ends.<br>
 </div>
 <pre><span id="VALswitch"><span class="keyword">val</span> switch</span> : <code class="type">('a -> bool) -> 'a <a href="BatStream.html#TYPEt">t</a> -> 'a <a href="BatStream.html#TYPEt">t</a> * 'a <a href="BatStream.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">switch test stream</code> split <code class="code">stream</code> into two streams, where the first stream have
-      all the elements satisfying <code class="code">test</code>, the second stream is opposite. The
-      order of elements in the source stream is preserved.<br>
+    all the elements satisfying <code class="code">test</code>, the second stream is opposite. The
+    order of elements in the source stream is preserved.<br>
 </div>
 <br>
 <span id="6_Streamarithmetic"><h6>Stream arithmetic</h6></span>
@@ -359,13 +360,13 @@ concatenate a stream of streams<br>
 </div>
 <pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">'a <a href="BatStream.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 <code class="code">is_empty stream</code> tests whether <code class="code">stream</code> is empty. But note that it forces
-      the evaluation of the head element if any.<br>
+    the evaluation of the head element if any.<br>
 </div>
 <br>
 <span id="6_Predefinedparsers"><h6>Predefined parsers</h6></span><br>
 <pre><span id="VALnext"><span class="keyword">val</span> next</span> : <code class="type">'a <a href="BatStream.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 Return the first element of the stream and remove it from the
-   stream.<br>
+    stream.<br>
 <b>Raises</b> <code>Stream.Failure</code> if the stream is empty.<br>
 </div>
 <pre><span class="keyword">module</span> <a href="BatStream.StreamLabels.html">StreamLabels</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatStream.StreamLabels.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>

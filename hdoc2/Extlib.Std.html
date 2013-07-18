@@ -118,11 +118,12 @@
 <title>Batteries user guide : Extlib.Std</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="Extlib.RefList.html" title="Extlib.RefList">Previous</a>
-&nbsp;<a class="up" href="Extlib.html" title="Extlib">Up</a>
-&nbsp;<a class="post" href="Extlib.UChar.html" title="Extlib.UChar">Next</a>
+<div class="navbar"><a href="Extlib.RefList.html">Previous</a>
+&nbsp;<a href="Extlib.html">Up</a>
+&nbsp;<a href="Extlib.UChar.html">Next</a>
 </div>
-<h1>Module <a href="type_Extlib.Std.html">Extlib.Std</a></h1>
+<center><h1>Module <a href="type_Extlib.Std.html">Extlib.Std</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Std: <code class="type">BatPervasives</code></pre><hr width="100%">
 <br>
 The initially opened module.
@@ -138,7 +139,7 @@ The initially opened module.
     name, without prefixing them by <code class="code"><span class="constructor">BatPervasives</span></code>.<br>
 <pre><span id="VALinput_lines"><span class="keyword">val</span> input_lines</span> : <code class="type">Pervasives.in_channel -> string <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Returns an enumeration over lines of an input channel, as read by the
- <code class="code">input_line</code> function.<br>
+    <code class="code">input_line</code> function.<br>
 </div>
 <pre><span id="VALinput_chars"><span class="keyword">val</span> input_chars</span> : <code class="type">Pervasives.in_channel -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Returns an enumeration over characters of an input channel.<br>
@@ -148,7 +149,7 @@ Returns the list of lines read from an input channel.<br>
 </div>
 <pre><span id="VALinput_all"><span class="keyword">val</span> input_all</span> : <code class="type">Pervasives.in_channel -> string</code></pre><div class="info">
 Return the whole contents of an input channel as a single
- string.<br>
+    string.<br>
 </div>
 <pre><span id="VALdump"><span class="keyword">val</span> dump</span> : <code class="type">'a -> string</code></pre><div class="info">
 Attempt to convert a value to a string.
@@ -162,7 +163,7 @@ Attempt to convert a value to a string.
     <code class="code">dump</code> may fail for ill-formed values, such as obtained from
     a faulty C binding or crazy uses of <code class="code"><span class="constructor">Obj</span>.set_tag</code>.<br>
 </div>
-<pre><span id="VALprint_any"><span class="keyword">val</span> print_any</span> : <code class="type">'b <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'a -> unit</code></pre><div class="info">
+<pre><span id="VALprint_any"><span class="keyword">val</span> print_any</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'b -> unit</code></pre><div class="info">
 Attempt to print a value to an output.
 <p>
 
@@ -224,9 +225,9 @@ Print a boolean on standard output.<br>
 </div>
 <pre><span id="VALprint_guess"><span class="keyword">val</span> print_guess</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'b -> unit</code></pre><div class="info">
 Attempt to print the representation of a runtime value on the
-      standard output.  See remarks for <a href="BatPervasives.html#VALdump"><code class="code"><span class="constructor">BatPervasives</span>.dump</code></a>. This function is
-      useful mostly for debugging. As a general rule, it should not be
-      used in production code.<br>
+    standard output.  See remarks for <a href="BatPervasives.html#VALdump"><code class="code"><span class="constructor">BatPervasives</span>.dump</code></a>. This function is
+    useful mostly for debugging. As a general rule, it should not be
+    used in production code.<br>
 </div>
 <pre><span id="VALprint_all"><span class="keyword">val</span> print_all</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> unit</code></pre><div class="info">
 Print the contents of an input to the standard output.<br>
@@ -238,8 +239,8 @@ Print a boolean to stderr.<br>
 </div>
 <pre><span id="VALprerr_guess"><span class="keyword">val</span> prerr_guess</span> : <code class="type">'a -> unit</code></pre><div class="info">
 Attempt to print the representation of a runtime value on the
-      error output.  See remarks for <a href="BatPervasives.html#VALdump"><code class="code"><span class="constructor">BatPervasives</span>.dump</code></a>. This function is
-      useful mostly for debugging.<br>
+    error output.  See remarks for <a href="BatPervasives.html#VALdump"><code class="code"><span class="constructor">BatPervasives</span>.dump</code></a>. This function is
+    useful mostly for debugging.<br>
 </div>
 <pre><span id="VALprerr_all"><span class="keyword">val</span> prerr_all</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> unit</code></pre><div class="info">
 Print the contents of an input to the error output.<br>
@@ -251,44 +252,44 @@ creates a filename, write text into it and close it.<br>
 </div>
 <pre><span id="VALopen_out"><span class="keyword">val</span> open_out</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_out_flag">BatFile.open_out_flag</a> list -><br>       ?perm:<a href="BatFile.html#TYPEpermission">BatFile.permission</a> -> string -> unit <a href="BatIO.html#TYPEoutput">BatIO.output</a></code></pre><div class="info">
 Open the named file for writing, and return a new output channel
-      on that file. You will need to close the file once you have
-      finished using it.
+    on that file. You will need to close the file once you have
+    finished using it.
 <p>
 
-      You may use optional argument <code class="code">mode</code> to decide whether the
-      output will overwrite the contents of the file (by default) or
-      to add things at the end of the file, whether the file should be
-      created if it does not exist yet (the default) or not, whether
-      this operation should proceed if the file exists already (the
-      default) or not, whether the file should be opened as text
-      (the default) or as binary, and whether the file should be
-      opened for non-blocking operations.
+    You may use optional argument <code class="code">mode</code> to decide whether the
+    output will overwrite the contents of the file (by default) or
+    to add things at the end of the file, whether the file should be
+    created if it does not exist yet (the default) or not, whether
+    this operation should proceed if the file exists already (the
+    default) or not, whether the file should be opened as text
+    (the default) or as binary, and whether the file should be
+    opened for non-blocking operations.
 <p>
 
-      You may use optional argument <code class="code">perm</code> to specify the permissions
-      of the file, as per Unix conventions. By default, files are created
-      with default permissions (which depend on your setup).<br>
+    You may use optional argument <code class="code">perm</code> to specify the permissions
+    of the file, as per Unix conventions. By default, files are created
+    with default permissions (which depend on your setup).<br>
 <b>Raises</b> <code>Sys_error</code> if the file could not be opened.<br>
 </div>
 <pre><span id="VALopen_out_bin"><span class="keyword">val</span> open_out_bin</span> : <code class="type">string -> unit <a href="BatIO.html#TYPEoutput">BatIO.output</a></code></pre><div class="info">
 Same as <a href="BatPervasives.html#VALopen_out"><code class="code"><span class="constructor">BatPervasives</span>.open_out</code></a>, but the file is opened in binary mode, so
-      that no translation takes place during writes. On operating
-      systems that do not distinguish between text mode and binary
-      mode, this function behaves like <a href="BatPervasives.html#VALopen_out"><code class="code"><span class="constructor">BatPervasives</span>.open_out</code></a> without any
-      <code class="code">mode</code> or <code class="code">perm</code>.<br>
+    that no translation takes place during writes. On operating
+    systems that do not distinguish between text mode and binary
+    mode, this function behaves like <a href="BatPervasives.html#VALopen_out"><code class="code"><span class="constructor">BatPervasives</span>.open_out</code></a> without any
+    <code class="code">mode</code> or <code class="code">perm</code>.<br>
 </div>
 <pre><span id="VALopen_out_gen"><span class="keyword">val</span> open_out_gen</span> : <code class="type">Pervasives.open_flag list -> int -> string -> unit <a href="BatIO.html#TYPEoutput">BatIO.output</a></code></pre><div class="info">
 <span class="warning">Deprecated.</span>Use <code class="code">open_out instead</code><br>
 <code class="code">open_out_gen mode perm filename</code> opens the named file for writing,
-     as described above. The extra argument <code class="code">mode</code>
-     specifies the opening mode. The extra argument <code class="code">perm</code> specifies
-     the file permissions, in case the file must be created.<br>
+   as described above. The extra argument <code class="code">mode</code>
+   specifies the opening mode. The extra argument <code class="code">perm</code> specifies
+   the file permissions, in case the file must be created.<br>
 </div>
 <pre><span id="VALflush"><span class="keyword">val</span> flush</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> unit</code></pre><div class="info">
 Flush the buffer associated with the given output, performing
-      all pending writes on that channel. Interactive programs must be
-      careful about flushing standard output and standard error at the
-      right time.<br>
+    all pending writes on that channel. Interactive programs must be
+    careful about flushing standard output and standard error at the
+    right time.<br>
 </div>
 <pre><span id="VALoutput_char"><span class="keyword">val</span> output_char</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> char -> unit</code></pre><div class="info">
 Write the character on the given output channel.<br>
@@ -298,45 +299,45 @@ Write the string on the given output channel.<br>
 </div>
 <pre><span id="VALoutput"><span class="keyword">val</span> output</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> string -> int -> int -> unit</code></pre><div class="info">
 <code class="code">output oc buf pos len</code> writes <code class="code">len</code> characters from string <code class="code">buf</code>,
-   starting at offset <code class="code">pos</code>, to the given output channel <code class="code">oc</code>.<br>
+    starting at offset <code class="code">pos</code>, to the given output channel <code class="code">oc</code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> if <code class="code">pos</code> and <code class="code">len</code> do not
-   designate a valid substring of <code class="code">buf</code>.<br>
+    designate a valid substring of <code class="code">buf</code>.<br>
 </div>
 <pre><span id="VALoutput_byte"><span class="keyword">val</span> output_byte</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> int -> unit</code></pre><div class="info">
 Write one 8-bit integer (as the single character with that code)
-   on the given output channel. The given integer is taken modulo
-   256.<br>
+    on the given output channel. The given integer is taken modulo
+    256.<br>
 </div>
 <pre><span id="VALoutput_binary_int"><span class="keyword">val</span> output_binary_int</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> int -> unit</code></pre><div class="info">
 Write one integer in binary format (4 bytes, big-endian)
-      on the given output channel.
-      The given integer is taken modulo 2<sup class="superscript">32</sup>.
-      The only reliable way to read it back is through the
-      <code class="code"><span class="constructor">Pervasives</span>.input_binary_int</code> function. The format is compatible across
-      all machines for a given version of OCaml.<br>
+    on the given output channel.
+    The given integer is taken modulo 2<sup class="superscript">32</sup>.
+    The only reliable way to read it back is through the
+    <code class="code"><span class="constructor">Pervasives</span>.input_binary_int</code> function. The format is compatible across
+    all machines for a given version of OCaml.<br>
 </div>
 <pre><span id="VALoutput_binary_float"><span class="keyword">val</span> output_binary_float</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> float -> unit</code></pre><div class="info">
 Write one float in binary format (8 bytes, IEEE 754 double format)
-      on the given output channel.
-      The only reliable way to read it back is through the
-      <code class="code"><span class="constructor">Pervasives</span>.input_binary_float</code> function. The format is compatible across
-      all machines for a given version of OCaml.<br>
+    on the given output channel.
+    The only reliable way to read it back is through the
+    <code class="code"><span class="constructor">Pervasives</span>.input_binary_float</code> function. The format is compatible across
+    all machines for a given version of OCaml.<br>
 </div>
 <pre><span id="VALoutput_value"><span class="keyword">val</span> output_value</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'a -> unit</code></pre><div class="info">
 Write the representation of a structured value of any type
-      to a channel. Circularities and sharing inside the value
-      are detected and preserved. The object can be read back,
-      by the function <a href="BatPervasives.html#VALinput_value"><code class="code"><span class="constructor">BatPervasives</span>.input_value</code></a>. See the description of module
-      <code class="code"><span class="constructor">Marshal</span></code> for more information. <a href="BatPervasives.html#VALoutput_value"><code class="code"><span class="constructor">BatPervasives</span>.output_value</code></a> is equivalent
-      to <code class="code"><span class="constructor">Marshal</span>.output</code> with an empty list of flags.<br>
+    to a channel. Circularities and sharing inside the value
+    are detected and preserved. The object can be read back,
+    by the function <a href="BatPervasives.html#VALinput_value"><code class="code"><span class="constructor">BatPervasives</span>.input_value</code></a>. See the description of module
+    <code class="code"><span class="constructor">Marshal</span></code> for more information. <a href="BatPervasives.html#VALoutput_value"><code class="code"><span class="constructor">BatPervasives</span>.output_value</code></a> is equivalent
+    to <code class="code"><span class="constructor">Marshal</span>.output</code> with an empty list of flags.<br>
 </div>
 <pre><span id="VALclose_out"><span class="keyword">val</span> close_out</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> unit</code></pre><div class="info">
 Close the given channel, flushing all buffered write operations.
-      Output functions raise a <code class="code"><span class="constructor">Sys_error</span></code> exception when they are
-      applied to a closed output channel, except <code class="code">close_out</code> and <code class="code">flush</code>,
-      which do nothing when applied to an already closed channel.<br>
+    Output functions raise a <code class="code"><span class="constructor">Sys_error</span></code> exception when they are
+    applied to a closed output channel, except <code class="code">close_out</code> and <code class="code">flush</code>,
+    which do nothing when applied to an already closed channel.<br>
 <b>Raises</b> <code>Sys_error</code> if the operating
-      system signals an error when flushing or closing.<br>
+    system signals an error when flushing or closing.<br>
 </div>
 <pre><span id="VALclose_out_noerr"><span class="keyword">val</span> close_out_noerr</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> unit</code></pre><div class="info">
 Same as <code class="code">close_out</code>, but ignore all errors.<br>
@@ -367,9 +368,9 @@ Open the named file for reading. You will need to close the file once you have
 </div>
 <pre><span id="VALopen_in_bin"><span class="keyword">val</span> open_in_bin</span> : <code class="type">string -> <a href="BatIO.html#TYPEinput">BatIO.input</a></code></pre><div class="info">
 Same as <code class="code"><span class="constructor">Pervasives</span>.open_in</code>, but the file is opened in binary mode,
-   so that no translation takes place during reads. On operating
-   systems that do not distinguish between text mode and binary
-   mode, this function behaves like <code class="code"><span class="constructor">Pervasives</span>.open_in</code>.<br>
+    so that no translation takes place during reads. On operating
+    systems that do not distinguish between text mode and binary
+    mode, this function behaves like <code class="code"><span class="constructor">Pervasives</span>.open_in</code>.<br>
 </div>
 <pre><span id="VALopen_in_gen"><span class="keyword">val</span> open_in_gen</span> : <code class="type">Pervasives.open_flag list -> int -> string -> <a href="BatIO.html#TYPEinput">BatIO.input</a></code></pre><div class="info">
 <span class="warning">Deprecated.</span>Use <code class="code">open_in instead</code><br>
@@ -385,27 +386,27 @@ Read one character from the given input channel.<br>
 </div>
 <pre><span id="VALinput_line"><span class="keyword">val</span> input_line</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> string</code></pre><div class="info">
 Read characters from the given input channel, until a
-   newline character is encountered. Return the string of
-   all characters read, without the newline character at the end.<br>
+    newline character is encountered. Return the string of
+    all characters read, without the newline character at the end.<br>
 <b>Raises</b> <code>End_of_file</code> if the end of the file is reached
-   at the beginning of line.<br>
+    at the beginning of line.<br>
 </div>
 <pre><span id="VALinput"><span class="keyword">val</span> input</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> string -> int -> int -> int</code></pre><div class="info">
 <code class="code">input ic buf pos len</code> reads up to <code class="code">len</code> characters from
-   the given channel <code class="code">ic</code>, storing them in string <code class="code">buf</code>, starting at
-   character number <code class="code">pos</code>.
-   It returns the actual number of characters read, between 0 and
-   <code class="code">len</code> (inclusive).
-   A return value of 0 means that the end of file was reached.
-   A return value between 0 and <code class="code">len</code> exclusive means that
-   not all requested <code class="code">len</code> characters were read, either because
-   no more characters were available at that time, or because
-   the implementation found it convenient to do a partial read;
-   <code class="code">input</code> must be called again to read the remaining characters,
-   if desired.  (See also <code class="code"><span class="constructor">Pervasives</span>.really_input</code> for reading
-   exactly <code class="code">len</code> characters.)<br>
+    the given channel <code class="code">ic</code>, storing them in string <code class="code">buf</code>, starting at
+    character number <code class="code">pos</code>.
+    It returns the actual number of characters read, between 0 and
+    <code class="code">len</code> (inclusive).
+    A return value of 0 means that the end of file was reached.
+    A return value between 0 and <code class="code">len</code> exclusive means that
+    not all requested <code class="code">len</code> characters were read, either because
+    no more characters were available at that time, or because
+    the implementation found it convenient to do a partial read;
+    <code class="code">input</code> must be called again to read the remaining characters,
+    if desired.  (See also <code class="code"><span class="constructor">Pervasives</span>.really_input</code> for reading
+    exactly <code class="code">len</code> characters.)<br>
 <b>Raises</b> <code>Invalid_argument</code> if <code class="code">pos</code> and <code class="code">len</code>
-   do not designate a valid substring of <code class="code">buf</code>.<br>
+    do not designate a valid substring of <code class="code">buf</code>.<br>
 </div>
 <pre><span id="VALreally_input"><span class="keyword">val</span> really_input</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> string -> int -> int -> unit</code></pre><div class="info">
 <code class="code">really_input ic buf pos len</code> reads <code class="code">len</code> characters from channel <code class="code">ic</code>,
@@ -442,11 +443,11 @@ Read the representation of a structured value, as produced
 </div>
 <pre><span id="VALclose_in"><span class="keyword">val</span> close_in</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> unit</code></pre><div class="info">
 Close the given channel.  Input functions raise a <code class="code"><span class="constructor">Sys_error</span></code>
-      exception when they are applied to a closed input channel,
-      except <code class="code">close_in</code>, which does nothing when applied to an already
-      closed channel.<br>
+    exception when they are applied to a closed input channel,
+    except <code class="code">close_in</code>, which does nothing when applied to an already
+    closed channel.<br>
 <b>Raises</b> <code>Sys_error</code> if
-      the operating system signals an error.<br>
+    the operating system signals an error.<br>
 </div>
 <pre><span id="VALclose_in_noerr"><span class="keyword">val</span> close_in_noerr</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> unit</code></pre><div class="info">
 Same as <code class="code">close_in</code>, but ignore all errors.<br>
@@ -460,25 +461,25 @@ The identity function.<br>
 The undefined function.
 <p>
 
-    Evaluating <code class="code">undefined x</code> always fails and raises an exception
-    "Undefined". Optional argument <code class="code">message</code> permits the
-    customization of the error message.<br>
+      Evaluating <code class="code">undefined x</code> always fails and raises an exception
+      "Undefined". Optional argument <code class="code">message</code> permits the
+      customization of the error message.<br>
 </div>
 <pre><span id="VAL(@@)"><span class="keyword">val</span> (@@)</span> : <code class="type">('a -> 'b) -> 'a -> 'b</code></pre><br>
 Function application. <code class="code">f @@ x</code> is equivalent to <code class="code">f x</code>.
-However, it binds less tightly (between <code class="code">::</code> and <code class="code">=</code>,<code class="code">&lt;</code>,<code class="code">&gt;</code>,etc)
-and is right-associative, which makes it useful for composing sequences of
-function calls without too many parentheses. It is similar to Haskell's <code class="code">$</code>.
-Note that it replaces pre-2.0 <code class="code">**&gt;</code> and <code class="code">&lt;|</code>.<br>
+    However, it binds less tightly (between <code class="code">::</code> and <code class="code">=</code>,<code class="code">&lt;</code>,<code class="code">&gt;</code>,etc)
+    and is right-associative, which makes it useful for composing sequences of
+    function calls without too many parentheses. It is similar to Haskell's <code class="code">$</code>.
+    Note that it replaces pre-2.0 <code class="code">**&gt;</code> and <code class="code">&lt;|</code>.<br>
 <pre><span id="VAL(%)"><span class="keyword">val</span> (%)</span> : <code class="type">('a -> 'b) -> ('c -> 'a) -> 'c -> 'b</code></pre><div class="info">
 Function composition: the mathematical <code class="code">o</code> operator.
- <code class="code">f % g</code> is <code class="code"><span class="keyword">fun</span> x <span class="keywordsign">-&gt;</span> f (g x)</code>. It is similar to Haskell's <code class="code">.</code>.
+      <code class="code">f % g</code> is <code class="code"><span class="keyword">fun</span> x <span class="keywordsign">-&gt;</span> f (g x)</code>. It is similar to Haskell's <code class="code">.</code>.
 <p>
 
-Examples: the following are equivalent:
-<code class="code">f (g (h x))</code>, <code class="code">f @@ g @@ h x</code>, <code class="code">f % g % h @@ x</code>.<br>
+      Examples: the following are equivalent:
+      <code class="code">f (g (h x))</code>, <code class="code">f @@ g @@ h x</code>, <code class="code">f % g % h @@ x</code>.<br>
 </div>
-<pre><span id="VAL(|>)"><span class="keyword">val</span> (|&gt;)</span> : <code class="type">'a -> ('a -> 'b) -> 'b</code></pre><div class="info">
+<pre><span id="VAL(|>)"><span class="keyword">val</span> (|&gt;)</span> : <code class="type">'a -> ('a -> 'b) -> 'b</code></pre><br>
 The "pipe": function application. <code class="code">x |&gt; f</code> is equivalent to <code class="code">f x</code>.
 <p>
 
@@ -497,16 +498,15 @@ The "pipe": function application. <code class="code">x |&gt; f</code> is equival
 
     This operator may also be useful for composing sequences of
     function calls without too many parentheses.<br>
-</div>
 <pre><span id="VAL(%>)"><span class="keyword">val</span> (%&gt;)</span> : <code class="type">('a -> 'b) -> ('b -> 'c) -> 'a -> 'c</code></pre><div class="info">
 Piping function composition. <code class="code">f %&gt; g</code> is <code class="code"><span class="keyword">fun</span> x <span class="keywordsign">-&gt;</span> g (f x)</code>.
-Whereas <code class="code">f % g</code> applies <code class="code">g</code> first and <code class="code">f</code> second, <code class="code">f @&gt; g</code>
-applies <code class="code">f</code>, then <code class="code">g</code>.
-Note that it plays well with pipes, so for instance
-<code class="code">x |&gt; f %&gt; g %&gt; h |&gt; i %&gt; j</code> yields the expected result...
-but in such cases it's still recommended to use <code class="code">|&gt;</code> only.
-Note that it replaces pre-2.0 <code class="code">|-</code>, which <i>didn't</i> integrate with
-pipes.<br>
+    Whereas <code class="code">f % g</code> applies <code class="code">g</code> first and <code class="code">f</code> second, <code class="code">f @&gt; g</code>
+    applies <code class="code">f</code>, then <code class="code">g</code>.
+    Note that it plays well with pipes, so for instance
+    <code class="code">x |&gt; f %&gt; g %&gt; h |&gt; i %&gt; j</code> yields the expected result...
+    but in such cases it's still recommended to use <code class="code">|&gt;</code> only.
+    Note that it replaces pre-2.0 <code class="code">|-</code>, which <i>didn't</i> integrate with
+    pipes.<br>
 </div>
 <pre><span id="VAL(|?)"><span class="keyword">val</span> (|?)</span> : <code class="type">'a option -> 'a -> 'a</code></pre><div class="info">
 Like <a href="BatOption.html#VALdefault"><code class="code"><span class="constructor">BatOption</span>.default</code></a>, with the arguments reversed.
@@ -565,13 +565,13 @@ Returns an unique identifier every time it is called.
 </div>
 <pre><span id="VALtap"><span class="keyword">val</span> tap</span> : <code class="type">('a -> unit) -> 'a -> 'a</code></pre><div class="info">
 Allows application of a function in the middle of a pipe
-      sequence without disturbing the sequence.  <code class="code">x |&gt; tap f</code>
-      evaluates to <code class="code">x</code>, but has the side effect of <code class="code">f x</code>.  Useful for
-      debugging.<br>
+    sequence without disturbing the sequence.  <code class="code">x |&gt; tap f</code>
+    evaluates to <code class="code">x</code>, but has the side effect of <code class="code">f x</code>.  Useful for
+    debugging.<br>
 </div>
 <pre><span id="VALfinally"><span class="keyword">val</span> finally</span> : <code class="type">(unit -> unit) -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info">
 <code class="code">finally fend f x</code> calls <code class="code">f x</code> and then <code class="code">fend()</code> even if <code class="code">f x</code> raised
-      an exception.<br>
+    an exception.<br>
 </div>
 <pre><span id="VALwith_dispose"><span class="keyword">val</span> with_dispose</span> : <code class="type">dispose:('a -> unit) -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info">
 <code class="code">with_dispose dispose f x</code> invokes <code class="code">f</code> on <code class="code">x</code>, calling <code class="code">dispose x</code>
@@ -594,13 +594,13 @@ Allows application of a function in the middle of a pipe
 An enumeration of the arguments passed to this program through the command line.
 <p>
 
-      <code class="code">args ()</code> is given by the elements of <code class="code"><span class="constructor">Sys</span>.argv</code>, minus the first element.<br>
+    <code class="code">args ()</code> is given by the elements of <code class="code"><span class="constructor">Sys</span>.argv</code>, minus the first element.<br>
 </div>
 <pre><span id="VALexe"><span class="keyword">val</span> exe</span> : <code class="type">string</code></pre><div class="info">
 The name of the current executable.
 <p>
 
-      <code class="code">exe</code> is given by the first argument of <code class="code"><span class="constructor">Sys</span>.argv</code><br>
+    <code class="code">exe</code> is given by the first argument of <code class="code"><span class="constructor">Sys</span>.argv</code><br>
 </div>
 <br>
 <span id="6_Enumerations"><h6>Enumerations</h6></span>
@@ -641,17 +641,17 @@ The name of the current executable.
 Imperative loop on an enumeration.
 <p>
 
-      <code class="code">foreach e f</code> applies function <code class="code">f</code> to each successive element of <code class="code">e</code>.
-      For instance, <code class="code">foreach (1 -- 10) print_int</code> invokes function <code class="code">print_int</code>
-      on <code class="code">1</code>, <code class="code">2</code>, ..., <code class="code">10</code>, printing <code class="code">12345678910</code>.
+    <code class="code">foreach e f</code> applies function <code class="code">f</code> to each successive element of <code class="code">e</code>.
+    For instance, <code class="code">foreach (1 -- 10) print_int</code> invokes function <code class="code">print_int</code>
+    on <code class="code">1</code>, <code class="code">2</code>, ..., <code class="code">10</code>, printing <code class="code">12345678910</code>.
 <p>
 
-      <b>Note</b> This function is one of the many loops available on
-      enumerations.  Other commonly used loops are <a href="BatPervasives.html#VALiter"><code class="code"><span class="constructor">BatPervasives</span>.iter</code></a> (same usage
-      scenario as <code class="code">foreach</code>, but with different notations), <a href="BatPervasives.html#VALmap"><code class="code"><span class="constructor">BatPervasives</span>.map</code></a>
-      (convert an enumeration to another enumeration) or <a href="BatPervasives.html#VALfold"><code class="code"><span class="constructor">BatPervasives</span>.fold</code></a>
-      (flatten an enumeration by applying an operation to each
-      element).<br>
+    <b>Note</b> This function is one of the many loops available on
+    enumerations.  Other commonly used loops are <a href="BatPervasives.html#VALiter"><code class="code"><span class="constructor">BatPervasives</span>.iter</code></a> (same usage
+    scenario as <code class="code">foreach</code>, but with different notations), <a href="BatPervasives.html#VALmap"><code class="code"><span class="constructor">BatPervasives</span>.map</code></a>
+    (convert an enumeration to another enumeration) or <a href="BatPervasives.html#VALfold"><code class="code"><span class="constructor">BatPervasives</span>.fold</code></a>
+    (flatten an enumeration by applying an operation to each
+    element).<br>
 </div>
 <br>
 <span id="7_Generalpurposeloops"><div class="h7">General-purpose loops</div></span>
@@ -675,130 +675,130 @@ Imperative loop on an enumeration.
    Included) by applying <a href="BatPervasives.html#VALiter"><code class="code"><span class="constructor">BatPervasives</span>.iter</code></a>, <a href="BatPervasives.html#VALmap"><code class="code"><span class="constructor">BatPervasives</span>.map</code></a> or <a href="BatPervasives.html#VALfold"><code class="code"><span class="constructor">BatPervasives</span>.fold</code></a> to this function.<br>
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
 Imperative loop on an enumeration. This loop is typically used
-      to lift a function with an effect but no meaningful result and
-      get it to work on enumerations.
+    to lift a function with an effect but no meaningful result and
+    get it to work on enumerations.
 <p>
 
-      If <code class="code">f</code> is a function <code class="code">iter f</code> is a function which behaves as <code class="code">f</code>
-      but acts upon enumerations rather than individual elements. As
-      indicated in the type of <code class="code">iter</code>, <code class="code">f</code> must produce values of type
-      <code class="code">unit</code> (i.e. <code class="code">f</code> has no meaningful result) the resulting function
-      produces no meaningful result either.
+    If <code class="code">f</code> is a function <code class="code">iter f</code> is a function which behaves as <code class="code">f</code>
+    but acts upon enumerations rather than individual elements. As
+    indicated in the type of <code class="code">iter</code>, <code class="code">f</code> must produce values of type
+    <code class="code">unit</code> (i.e. <code class="code">f</code> has no meaningful result) the resulting function
+    produces no meaningful result either.
 <p>
 
-      In other words, <code class="code">iter f</code> is a function which, when applied upon
-      an enumeration <code class="code">e</code>, calls <code class="code">f</code> with each element of <code class="code">e</code> in turn.
+    In other words, <code class="code">iter f</code> is a function which, when applied upon
+    an enumeration <code class="code">e</code>, calls <code class="code">f</code> with each element of <code class="code">e</code> in turn.
 <p>
 
-      For instance, <code class="code">iter f (1 -- 10)</code> invokes function <code class="code">f</code> on <code class="code">1</code>,
-      <code class="code">2</code>, ..., <code class="code">10</code> and produces value <code class="code">()</code>.<br>
+    For instance, <code class="code">iter f (1 -- 10)</code> invokes function <code class="code">f</code> on <code class="code">1</code>,
+    <code class="code">2</code>, ..., <code class="code">10</code> and produces value <code class="code">()</code>.<br>
 </div>
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Transformation loop on an enumeration, used to build an enumeration
-      from another enumeration. This loop is typically used to transform
-      an enumeration into another enumeration with the same number of
-      elements, in the same order.
+    from another enumeration. This loop is typically used to transform
+    an enumeration into another enumeration with the same number of
+    elements, in the same order.
 <p>
 
-      If <code class="code">f</code> is a function, <code class="code">map f e</code> is a function which behaves as
-      <code class="code">f</code> but acts upon enumerations rather than individual elements --
-      and builds a new enumeration from the results of each application.
+    If <code class="code">f</code> is a function, <code class="code">map f e</code> is a function which behaves as
+    <code class="code">f</code> but acts upon enumerations rather than individual elements --
+    and builds a new enumeration from the results of each application.
 <p>
 
-      In other words, <code class="code">map f</code> is a function which, when applied
-      upon an enumeration containing elements <code class="code">e0</code>, <code class="code">e1</code>, ...,
-      produces enumeration <code class="code">f e0</code>, <code class="code">f e1</code>, ...
+    In other words, <code class="code">map f</code> is a function which, when applied
+    upon an enumeration containing elements <code class="code">e0</code>, <code class="code">e1</code>, ...,
+    produces enumeration <code class="code">f e0</code>, <code class="code">f e1</code>, ...
 <p>
 
-      For instance, if <code class="code">odd</code> is the function which returns <code class="code"><span class="keyword">true</span></code>
-      when applied to an odd number or <code class="code"><span class="keyword">false</span></code> when applied to
-      an even number, <code class="code">map odd (1 -- 10)</code> produces enumeration
-      <code class="code"><span class="keyword">true</span></code>, <code class="code"><span class="keyword">false</span></code>, <code class="code"><span class="keyword">true</span></code>, ..., <code class="code"><span class="keyword">false</span></code>.
+    For instance, if <code class="code">odd</code> is the function which returns <code class="code"><span class="keyword">true</span></code>
+    when applied to an odd number or <code class="code"><span class="keyword">false</span></code> when applied to
+    an even number, <code class="code">map odd (1 -- 10)</code> produces enumeration
+    <code class="code"><span class="keyword">true</span></code>, <code class="code"><span class="keyword">false</span></code>, <code class="code"><span class="keyword">true</span></code>, ..., <code class="code"><span class="keyword">false</span></code>.
 <p>
 
-      Similarly, if <code class="code">square</code> is the function <code class="code"><span class="keyword">fun</span> x <span class="keywordsign">-&gt;</span> x * x</code>,
-      <code class="code">map square (1 -- 10)</code> produces the enumeration of the
-      square numbers of all numbers between <code class="code">1</code> and <code class="code">10</code>.<br>
+    Similarly, if <code class="code">square</code> is the function <code class="code"><span class="keyword">fun</span> x <span class="keywordsign">-&gt;</span> x * x</code>,
+    <code class="code">map square (1 -- 10)</code> produces the enumeration of the
+    square numbers of all numbers between <code class="code">1</code> and <code class="code">10</code>.<br>
 </div>
 <pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">('a -> 'b option) -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Similar to a map, except that you can skip over some items of the
-      incoming enumeration by returning None instead of Some value.
-      Think of it as a <a href="BatPervasives.html#VALfilter"><code class="code"><span class="constructor">BatPervasives</span>.filter</code></a> combined with a <a href="BatPervasives.html#VALmap"><code class="code"><span class="constructor">BatPervasives</span>.map</code></a>.<br>
+    incoming enumeration by returning None instead of Some value.
+    Think of it as a <a href="BatPervasives.html#VALfilter"><code class="code"><span class="constructor">BatPervasives</span>.filter</code></a> combined with a <a href="BatPervasives.html#VALmap"><code class="code"><span class="constructor">BatPervasives</span>.map</code></a>.<br>
 </div>
 <pre><span id="VALreduce"><span class="keyword">val</span> reduce</span> : <code class="type">('a -> 'a -> 'a) -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a</code></pre><div class="info">
 Transformation loop on an enumeration, used to build a single value
-      from an enumeration.
+    from an enumeration.
 <p>
 
-      If <code class="code">f</code> is a function and <code class="code">e</code> is an enumeration, <code class="code">reduce f e</code> applies
-      function <code class="code">f</code> to the first two elements of <code class="code">e</code>, then to the result of this
-      expression and to the third element of <code class="code">e</code>, then to the result of this
-      new expression and to the fourth element of <code class="code">e</code>...
+    If <code class="code">f</code> is a function and <code class="code">e</code> is an enumeration, <code class="code">reduce f e</code> applies
+    function <code class="code">f</code> to the first two elements of <code class="code">e</code>, then to the result of this
+    expression and to the third element of <code class="code">e</code>, then to the result of this
+    new expression and to the fourth element of <code class="code">e</code>...
 <p>
 
-      In other words, <code class="code">reduce f e</code> returns <code class="code">a0</code> if <code class="code">e</code> contains only
-      one element <code class="code">a0</code>, otherwise <code class="code">f (... (f (f a0) a1) ...) aN</code> where
-      <code class="code">a0,a1..aN</code> are the elements of <code class="code">e</code>.<br>
+    In other words, <code class="code">reduce f e</code> returns <code class="code">a0</code> if <code class="code">e</code> contains only
+    one element <code class="code">a0</code>, otherwise <code class="code">f (... (f (f a0) a1) ...) aN</code> where
+    <code class="code">a0,a1..aN</code> are the elements of <code class="code">e</code>.<br>
 <b>Raises</b> <code>Not_found</code> if <code class="code">e</code> is empty.
 <p>
 
-      For instance, if <code class="code">add</code> is the function <code class="code"><span class="keyword">fun</span> x y <span class="keywordsign">-&gt;</span> x + y</code>,
-      <code class="code">reduce add</code> is the function which computes the sum of the
-      elements of an enumeration -- and doesn't work on empty
-      enumerations. Therefore, <code class="code">reduce add (1 -- 10)</code>
-      produces result <code class="code">55</code>.<br>
+    For instance, if <code class="code">add</code> is the function <code class="code"><span class="keyword">fun</span> x y <span class="keywordsign">-&gt;</span> x + y</code>,
+    <code class="code">reduce add</code> is the function which computes the sum of the
+    elements of an enumeration -- and doesn't work on empty
+    enumerations. Therefore, <code class="code">reduce add (1 -- 10)</code>
+    produces result <code class="code">55</code>.<br>
 </div>
-<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('b -> 'a -> 'b) -> 'b -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'b</code></pre><div class="info">
+<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a</code></pre><div class="info">
 Transformation loop on an enumeration, used to build a single value
-      from an enumeration. This is the most powerful general-purpose
-      loop and also the most complex.
+    from an enumeration. This is the most powerful general-purpose
+    loop and also the most complex.
 <p>
 
-      If <code class="code">f</code> is a function, <code class="code">fold f v e</code> applies <code class="code">f v</code> to the first
-      element of <code class="code">e</code>, then, calling <code class="code">acc_1</code> the result of this
-      operation, applies <code class="code">f acc_1</code> to the second element of <code class="code">e</code>, then,
-      calling <code class="code">acc_2</code> the result of this operation, applies <code class="code">f acc_2</code>
-      to the third element of <code class="code">e</code>...
+    If <code class="code">f</code> is a function, <code class="code">fold f v e</code> applies <code class="code">f v</code> to the first
+    element of <code class="code">e</code>, then, calling <code class="code">acc_1</code> the result of this
+    operation, applies <code class="code">f acc_1</code> to the second element of <code class="code">e</code>, then,
+    calling <code class="code">acc_2</code> the result of this operation, applies <code class="code">f acc_2</code>
+    to the third element of <code class="code">e</code>...
 <p>
 
-      In other words, <code class="code">fold f v e</code> returns <code class="code">v</code> if <code class="code">e</code> is empty,
-      otherwise <code class="code">f (... (f (f v a0) a1) ...) aN</code> where a0,a1..aN are
-      the elements of <code class="code">e</code>.
+    In other words, <code class="code">fold f v e</code> returns <code class="code">v</code> if <code class="code">e</code> is empty,
+    otherwise <code class="code">f (... (f (f v a0) a1) ...) aN</code> where a0,a1..aN are
+    the elements of <code class="code">e</code>.
 <p>
 
-      For instance, if <code class="code">add</code> is the function <code class="code"><span class="keyword">fun</span> x y <span class="keywordsign">-&gt;</span> x + y</code>,
-      <code class="code">fold add 0</code> is the function which computes the sum of the
-      elements of an enumeration. Therefore, <code class="code">fold add 0 (1 -- 10)</code>
-      produces result <code class="code">55</code>.<br>
+    For instance, if <code class="code">add</code> is the function <code class="code"><span class="keyword">fun</span> x y <span class="keywordsign">-&gt;</span> x + y</code>,
+    <code class="code">fold add 0</code> is the function which computes the sum of the
+    elements of an enumeration. Therefore, <code class="code">fold add 0 (1 -- 10)</code>
+    produces result <code class="code">55</code>.<br>
 </div>
-<pre><span id="VALscanl"><span class="keyword">val</span> scanl</span> : <code class="type">('b -> 'a -> 'b) -> 'b -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+<pre><span id="VALscanl"><span class="keyword">val</span> scanl</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Functional loop on an enumeration, used to build an enumeration
-      from both an enumeration and an initial value. This function may
-      be seen as a variant of <a href="BatPervasives.html#VALfold"><code class="code"><span class="constructor">BatPervasives</span>.fold</code></a> which returns not only the final
-      result of <a href="BatPervasives.html#VALfold"><code class="code"><span class="constructor">BatPervasives</span>.fold</code></a> but the enumeration of all the intermediate
-      results of <a href="BatPervasives.html#VALfold"><code class="code"><span class="constructor">BatPervasives</span>.fold</code></a>.
+    from both an enumeration and an initial value. This function may
+    be seen as a variant of <a href="BatPervasives.html#VALfold"><code class="code"><span class="constructor">BatPervasives</span>.fold</code></a> which returns not only the final
+    result of <a href="BatPervasives.html#VALfold"><code class="code"><span class="constructor">BatPervasives</span>.fold</code></a> but the enumeration of all the intermediate
+    results of <a href="BatPervasives.html#VALfold"><code class="code"><span class="constructor">BatPervasives</span>.fold</code></a>.
 <p>
 
-      If <code class="code">f</code> is a function, <code class="code">scanl f v e</code> is applies <code class="code">f v</code> to the first
-      element of <code class="code">e</code>, then, calling <code class="code">acc_1</code> the result of this
-      operation, applies <code class="code">f acc_1</code> to the second element of <code class="code">e</code>, then,
-      calling <code class="code">acc_2</code> the result of this operation, applies <code class="code">f acc_2</code>
-      to the third element of <code class="code">e</code>...
+    If <code class="code">f</code> is a function, <code class="code">scanl f v e</code> is applies <code class="code">f v</code> to the first
+    element of <code class="code">e</code>, then, calling <code class="code">acc_1</code> the result of this
+    operation, applies <code class="code">f acc_1</code> to the second element of <code class="code">e</code>, then,
+    calling <code class="code">acc_2</code> the result of this operation, applies <code class="code">f acc_2</code>
+    to the third element of <code class="code">e</code>...
 <p>
 
-      For instance, if <code class="code">add</code> is the function <code class="code"><span class="keyword">fun</span> x y <span class="keywordsign">-&gt;</span> x + y</code>,
-      <code class="code">scanl add 0</code> is the function which computes the sum of the
-      elements of an enumeration. Therefore, <code class="code">scanl add 0 (1 -- 10)</code>
-      produces result the enumeration with elements <code class="code">0, 1, 3, 6, 10,
-      15, 21, 28, 36, 45, 55</code>.<br>
+    For instance, if <code class="code">add</code> is the function <code class="code"><span class="keyword">fun</span> x y <span class="keywordsign">-&gt;</span> x + y</code>,
+    <code class="code">scanl add 0</code> is the function which computes the sum of the
+    elements of an enumeration. Therefore, <code class="code">scanl add 0 (1 -- 10)</code>
+    produces result the enumeration with elements <code class="code">0, 1, 3, 6, 10,
+    15, 21, 28, 36, 45, 55</code>.<br>
 </div>
 <pre><span id="VAL(/@)"><span class="keyword">val</span> (/@)</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> ('a -> 'b) -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VAL(@/)"><span class="keyword">val</span> (@/)</span> : <code class="type">('a -> 'b) -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Mapping operators.
 <p>
 
-     These operators have the same meaning as function <a href="BatPervasives.html#VALmap"><code class="code"><span class="constructor">BatPervasives</span>.map</code></a> but are
-     sometimes more readable than this function, when chaining
-     several transformations in a row.<br>
+   These operators have the same meaning as function <a href="BatPervasives.html#VALmap"><code class="code"><span class="constructor">BatPervasives</span>.map</code></a> but are
+   sometimes more readable than this function, when chaining
+   several transformations in a row.<br>
 </div>
 <pre><span id="VAL(//@)"><span class="keyword">val</span> (//@)</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> ('a -> 'b option) -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VAL(@//)"><span class="keyword">val</span> (@//)</span> : <code class="type">('a -> 'b option) -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Map combined with filter. Same as <a href="BatPervasives.html#VALfilter_map"><code class="code"><span class="constructor">BatPervasives</span>.filter_map</code></a>.<br>
@@ -814,24 +814,24 @@ Map combined with filter. Same as <a href="BatPervasives.html#VALfilter_map"><co
 </div>
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a</code></pre><div class="info">
 <code class="code">find f e</code> returns the first element <code class="code">x</code> of <code class="code">e</code> such that <code class="code">f x</code> returns
-      <code class="code"><span class="keyword">true</span></code>, consuming the enumeration up to and including the
-      found element, or, raises <code class="code"><span class="constructor">Not_found</span></code> if no such element exists
-      in the enumeration, consuming the whole enumeration in the search.
+    <code class="code"><span class="keyword">true</span></code>, consuming the enumeration up to and including the
+    found element, or, raises <code class="code"><span class="constructor">Not_found</span></code> if no such element exists
+    in the enumeration, consuming the whole enumeration in the search.
 <p>
 
-      Since <code class="code">find</code> consumes a prefix of the enumeration, it can be used several
-      times on the same enumeration to find the next element.<br>
+    Since <code class="code">find</code> consumes a prefix of the enumeration, it can be used several
+    times on the same enumeration to find the next element.<br>
 <b>Raises</b> <code>Not_found</code> if no element in the whole enumeration satisfies the predicate<br>
 </div>
 <pre><span id="VALpeek"><span class="keyword">val</span> peek</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a option</code></pre><div class="info">
 <code class="code">peek e</code> returns <code class="code"><span class="constructor">None</span></code> if <code class="code">e</code> is empty or <code class="code"><span class="constructor">Some</span> x</code> where <code class="code">x</code> is
-      the next element of <code class="code">e</code>. The element is not removed from the
-      enumeration.<br>
+    the next element of <code class="code">e</code>. The element is not removed from the
+    enumeration.<br>
 </div>
 <pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a option</code></pre><div class="info">
 <code class="code">get e</code> returns <code class="code"><span class="constructor">None</span></code> if <code class="code">e</code> is empty or <code class="code"><span class="constructor">Some</span> x</code> where <code class="code">x</code> is
-      the next element of <code class="code">e</code>, in which case the element is removed
-      from the enumeration.<br>
+    the next element of <code class="code">e</code>, in which case the element is removed
+    from the enumeration.<br>
 </div>
 <pre><span id="VALpush"><span class="keyword">val</span> push</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a -> unit</code></pre><div class="info">
 <code class="code">push e x</code> will add <code class="code">x</code> at the beginning of <code class="code">e</code>.<br>
@@ -841,7 +841,7 @@ Map combined with filter. Same as <a href="BatPervasives.html#VALfilter_map"><co
 </div>
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 <code class="code">filter f e</code> returns an enumeration over all elements <code class="code">x</code> of <code class="code">e</code> such
-      as <code class="code">f x</code> returns <code class="code"><span class="keyword">true</span></code>.<br>
+    as <code class="code">f x</code> returns <code class="code"><span class="keyword">true</span></code>.<br>
 </div>
 <pre><span id="VAL(//)"><span class="keyword">val</span> (//)</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> ('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Filtering (pronounce this operator name "such that").
@@ -852,7 +852,7 @@ Filtering (pronounce this operator name "such that").
 </div>
 <pre><span id="VALconcat"><span class="keyword">val</span> concat</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 <code class="code">concat e</code> returns an enumeration over all elements of all enumerations
-      of <code class="code">e</code>.<br>
+    of <code class="code">e</code>.<br>
 </div>
 <pre><span id="VAL(--)"><span class="keyword">val</span> (--)</span> : <code class="type">int -> int -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Enumerate numbers.
@@ -896,17 +896,17 @@ Print and consume the contents of an enumeration.<br>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTresult.Ok"><span class="constructor">Ok</span></span> <span class="keyword">of</span> <code class="type">'a</code></code></td>
+<code><span class="constructor">Ok</span> <span class="keyword">of</span> <code class="type">'a</code></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTresult.Bad"><span class="constructor">Bad</span></span> <span class="keyword">of</span> <code class="type">'b</code></code></td>
+<code><span class="constructor">Bad</span> <span class="keyword">of</span> <code class="type">'b</code></code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >The result of a computation - either an <code class="code"><span class="constructor">Ok</span></code> with the normal
-result or a <code class="code"><span class="constructor">Bad</span></code> with some value (often an exception) containing
-failure information</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+      result or a <code class="code"><span class="constructor">Bad</span></code> with some value (often an exception) containing
+      failure information</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 
 <div class="info">
@@ -927,16 +927,16 @@ This type represents the outcome of a function which has the
 
 <pre><span id="VALignore_ok"><span class="keyword">val</span> ignore_ok</span> : <code class="type">('a, exn) <a href="BatPervasives.html#TYPEresult">result</a> -> unit</code></pre><div class="info">
 <code class="code">ignore_ok (f x)</code> ignores the result of <code class="code">f x</code> if it's ok, but
-throws the exception contained if <code class="code"><span class="constructor">Bad</span></code> is returned.<br>
+    throws the exception contained if <code class="code"><span class="constructor">Bad</span></code> is returned.<br>
 </div>
 <pre><span id="VALok"><span class="keyword">val</span> ok</span> : <code class="type">('a, exn) <a href="BatPervasives.html#TYPEresult">result</a> -> 'a</code></pre><div class="info">
 <code class="code">f x |&gt; ok</code> unwraps the <code class="code"><span class="constructor">Ok</span></code> result of <code class="code">f x</code> and returns it, or
-throws the exception contained if <code class="code"><span class="constructor">Bad</span></code> is returned.<br>
+    throws the exception contained if <code class="code"><span class="constructor">Bad</span></code> is returned.<br>
 </div>
 <pre><span id="VALwrap"><span class="keyword">val</span> wrap</span> : <code class="type">('a -> 'b) -> 'a -> ('b, exn) <a href="BatPervasives.html#TYPEresult">result</a></code></pre><div class="info">
 <code class="code">wrap f x</code> wraps a function that would normally throw an exception
-on failure such that it now returns a result with either the <code class="code"><span class="constructor">Ok</span></code>
-return value or the <code class="code"><span class="constructor">Bad</span></code> exception.<br>
+    on failure such that it now returns a result with either the <code class="code"><span class="constructor">Ok</span></code>
+    return value or the <code class="code"><span class="constructor">Bad</span></code> exception.<br>
 </div>
 <br>
 <span id="6_Threadsafetyinternals"><h6>Thread-safety internals</h6></span>
@@ -948,9 +948,9 @@ return value or the <code class="code"><span class="constructor">Bad</span></cod
 A lock used to synchronize internal operations.
 <p>
 
-   By default, this is <a href="BatConcurrent.html#VALnolock"><code class="code"><span class="constructor">BatConcurrent</span>.nolock</code></a>. However, if you're
-   using a version of Batteries compiled in threaded mode, this uses
-   <a href="BatMutex.html"><code class="code"><span class="constructor">BatMutex</span></code></a>. If you're attempting to use Batteries with another
-   concurrency model, set the lock appropriately.<br>
+     By default, this is <a href="BatConcurrent.html#VALnolock"><code class="code"><span class="constructor">BatConcurrent</span>.nolock</code></a>. However, if you're
+     using a version of Batteries compiled in threaded mode, this uses
+     <a href="BatMutex.html"><code class="code"><span class="constructor">BatMutex</span></code></a>. If you're attempting to use Batteries with another
+     concurrency model, set the lock appropriately.<br>
 </div>
 </body></html>

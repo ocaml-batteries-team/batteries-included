@@ -107,11 +107,12 @@
 <title>Batteries user guide : Batteries.Char</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="Batteries.Buffer.html" title="Batteries.Buffer">Previous</a>
-&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
-&nbsp;<a class="post" href="Batteries.Complex.html" title="Batteries.Complex">Next</a>
+<div class="navbar"><a href="Batteries.Buffer.html">Previous</a>
+&nbsp;<a href="Batteries.html">Up</a>
+&nbsp;<a href="Batteries.Complex.html">Next</a>
 </div>
-<h1>Module <a href="type_Batteries.Char.html">Batteries.Char</a></h1>
+<center><h1>Module <a href="type_Batteries.Char.html">Batteries.Char</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Char: <code class="type">BatChar</code></pre><hr width="100%">
 <pre><span id="VALcode"><span class="keyword">val</span> code</span> : <code class="type">char -> int</code></pre><div class="info">
 Return the ASCII code of the argument.<br>
@@ -119,12 +120,12 @@ Return the ASCII code of the argument.<br>
 <pre><span id="VALchr"><span class="keyword">val</span> chr</span> : <code class="type">int -> char</code></pre><div class="info">
 Return the character with the given ASCII code.<br>
 <b>Raises</b> <code>Invalid_argument</code> if the argument is
-   outside the range 0--255.<br>
+    outside the range 0--255.<br>
 </div>
 <pre><span id="VALescaped"><span class="keyword">val</span> escaped</span> : <code class="type">char -> string</code></pre><div class="info">
 Return a string representing the given character,
-   with special characters escaped following the lexical conventions
-   of OCaml.<br>
+    with special characters escaped following the lexical conventions
+    of OCaml.<br>
 </div>
 <pre><span id="VALlowercase"><span class="keyword">val</span> lowercase</span> : <code class="type">char -> char</code></pre><div class="info">
 Convert the given character to its equivalent lowercase character.<br>

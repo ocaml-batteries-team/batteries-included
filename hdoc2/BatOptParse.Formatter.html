@@ -108,55 +108,56 @@
 <title>Batteries user guide : BatOptParse.Formatter</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatOptParse.StdOpt.html" title="BatOptParse.StdOpt">Previous</a>
-&nbsp;<a class="up" href="BatOptParse.html" title="BatOptParse">Up</a>
-&nbsp;<a class="post" href="BatOptParse.OptParser.html" title="BatOptParse.OptParser">Next</a>
+<div class="navbar"><a href="BatOptParse.StdOpt.html">Previous</a>
+&nbsp;<a href="BatOptParse.html">Up</a>
+&nbsp;<a href="BatOptParse.OptParser.html">Next</a>
 </div>
-<h1>Module <a href="type_BatOptParse.Formatter.html">BatOptParse.Formatter</a></h1>
+<center><h1>Module <a href="type_BatOptParse.Formatter.html">BatOptParse.Formatter</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Formatter: <code class="code"><span class="keyword">sig</span></code> <a href="BatOptParse.Formatter.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>This module contains the types and functions for implementing
-  custom usage message formatters.<br>
+    custom usage message formatters.<br>
 <hr width="100%">
-<pre><code><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = {</code></pre><table class="typetable">
+<br><code><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = {</code><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTt.indent">indent</span>&nbsp;:<code class="type">unit -> unit</code>;</code></td>
+<code>indent&nbsp;: <code class="type">unit -> unit</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Increase the indentation level.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTt.dedent">dedent</span>&nbsp;:<code class="type">unit -> unit</code>;</code></td>
+<code>dedent&nbsp;: <code class="type">unit -> unit</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Decrease the indentation level.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTt.format_usage">format_usage</span>&nbsp;:<code class="type">string -> string</code>;</code></td>
+<code>format_usage&nbsp;: <code class="type">string -> string</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Format usage string into style of this formatter.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTt.format_heading">format_heading</span>&nbsp;:<code class="type">string -> string</code>;</code></td>
+<code>format_heading&nbsp;: <code class="type">string -> string</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Format heading into style of this formatter.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTt.format_description">format_description</span>&nbsp;:<code class="type">string -> string</code>;</code></td>
+<code>format_description&nbsp;: <code class="type">string -> string</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Format description into style of this formatter.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTt.format_option">format_option</span>&nbsp;:<code class="type">char list * string list -> string list -> string option -> string</code>;</code></td>
+<code>format_option&nbsp;: <code class="type">char list * string list -> string list -> string option -> string</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Format option into style of this formatter (see explanation below).</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 }

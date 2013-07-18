@@ -105,14 +105,16 @@
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Submodules grouping all infix operators" rel="Section" href="#6_Submodulesgroupingallinfixoperators">
 <link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
+<link title="Printing" rel="Subsection" href="#7_Printing">
 <title>Batteries user guide : Batteries.Int64</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="Batteries.Int32.html" title="Batteries.Int32">Previous</a>
-&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
-&nbsp;<a class="post" href="Batteries.Lexing.html" title="Batteries.Lexing">Next</a>
+<div class="navbar"><a href="Batteries.Int32.html">Previous</a>
+&nbsp;<a href="Batteries.html">Up</a>
+&nbsp;<a href="Batteries.Lexing.html">Next</a>
 </div>
-<h1>Module <a href="type_Batteries.Int64.html">Batteries.Int64</a></h1>
+<center><h1>Module <a href="type_Batteries.Int64.html">Batteries.Int64</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Int64: <code class="type">BatInt64</code></pre><hr width="100%">
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">int64</code> </pre>
 
@@ -284,9 +286,9 @@ Equality function for 64-bit integers, useful for <code class="code"><span class
 <span id="6_Submodulesgroupingallinfixoperators"><h6>Submodules grouping all infix operators</h6></span><br>
 <pre><span class="keyword">module</span> <a href="BatInt64.Infix.html">Infix</a>: <code class="type"><a href="BatNumber.Infix.html">BatNumber.Infix</a></code><code class="type">  with type bat__infix_t = t</code></pre><pre><span class="keyword">module</span> <a href="BatInt64.Compare.html">Compare</a>: <code class="type"><a href="BatNumber.Compare.html">BatNumber.Compare</a></code><code class="type">  with type bat__compare_t = t</code></pre><pre><span id="VALmodulo"><span class="keyword">val</span> modulo</span> : <code class="type">int64 -> int64 -> int64</code></pre><pre><span id="VALpow"><span class="keyword">val</span> pow</span> : <code class="type">int64 -> int64 -> int64</code></pre><pre><span id="VAL(+)"><span class="keyword">val</span> (+)</span> : <code class="type"><a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a></code></pre><pre><span id="VAL(-)"><span class="keyword">val</span> (-)</span> : <code class="type"><a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a></code></pre><pre><span id="VAL( * )"><span class="keyword">val</span> ( * )</span> : <code class="type"><a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a></code></pre><pre><span id="VAL(/)"><span class="keyword">val</span> (/)</span> : <code class="type"><a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a></code></pre><pre><span id="VAL( ** )"><span class="keyword">val</span> ( ** )</span> : <code class="type"><a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a></code></pre><pre><span id="VALoperations"><span class="keyword">val</span> operations</span> : <code class="type"><a href="BatInt64.html#TYPEt">t</a> <a href="BatNumber.html#TYPEnumeric">BatNumber.numeric</a></code></pre><br>
 <span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
+<br>
+<span id="7_Printing"><div class="h7">Printing</div></span><br>
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatInt64.html#TYPEt">t</a> -> unit</code></pre><div class="info">
-<span id="7_Printing"><div class="h7">Printing</div></span>
-<p>
 prints as decimal string<br>
 </div>
 <pre><span id="VALprint_hex"><span class="keyword">val</span> print_hex</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatInt64.html#TYPEt">t</a> -> unit</code></pre><div class="info">

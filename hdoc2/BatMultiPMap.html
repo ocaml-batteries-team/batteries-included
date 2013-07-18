@@ -108,11 +108,12 @@
 <title>Batteries user guide : BatMultiPMap</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatMultiMap.html" title="BatMultiMap">Previous</a>
-&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="BatMutex.html" title="BatMutex">Next</a>
+<div class="navbar"><a href="BatMultiMap.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="BatMutex.html">Next</a>
 </div>
-<h1>Module <a href="type_BatMultiPMap.html">BatMultiPMap</a></h1>
+<center><h1>Module <a href="type_BatMultiPMap.html">BatMultiPMap</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> BatMultiPMap: <code class="code"><span class="keyword">sig</span></code> <a href="BatMultiPMap.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Polymorphic Multi-Map.
 <p>
 
@@ -159,7 +160,7 @@ creates a new empty map, using the provided function for key comparison.<br>
     <code class="code">f</code> is unspecified. Only current bindings are presented to <code class="code">f</code>:
     bindings hidden by more recent bindings are not passed to <code class="code">f</code>.<br>
 </div>
-<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('b <a href="BatSet.PSet.html#TYPEt">BatSet.PSet.t</a> -> 'c <a href="BatSet.PSet.html#TYPEt">BatSet.PSet.t</a>) -><br>       (('b -> 'b -> int) -> 'c -> 'c -> int) -><br>       ('a, 'b) <a href="BatMultiPMap.html#TYPEt">t</a> -> ('a, 'c) <a href="BatMultiPMap.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a <a href="BatSet.PSet.html#TYPEt">BatSet.PSet.t</a> -> 'b <a href="BatSet.PSet.html#TYPEt">BatSet.PSet.t</a>) -><br>       (('a -> 'a -> int) -> 'b -> 'b -> int) -><br>       ('c, 'a) <a href="BatMultiPMap.html#TYPEt">t</a> -> ('c, 'b) <a href="BatMultiPMap.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">map f m</code> returns a map with same domain as <code class="code">m</code>, where the
     associated value <code class="code">a</code> of all bindings of <code class="code">m</code> has been
     replaced by the result of the application of <code class="code">f</code> to <code class="code">a</code>.
@@ -170,7 +171,7 @@ creates a new empty map, using the provided function for key comparison.<br>
 Same as <code class="code">map</code>, but the function receives as arguments both the
     key and the associated value for each binding of the map.<br>
 </div>
-<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('b <a href="BatSet.PSet.html#TYPEt">BatSet.PSet.t</a> -> 'c -> 'c) -> ('a, 'b) <a href="BatMultiPMap.html#TYPEt">t</a> -> 'c -> 'c</code></pre><div class="info">
+<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a <a href="BatSet.PSet.html#TYPEt">BatSet.PSet.t</a> -> 'b -> 'b) -> ('c, 'a) <a href="BatMultiPMap.html#TYPEt">t</a> -> 'b -> 'b</code></pre><div class="info">
 <code class="code">fold f m a</code> computes <code class="code">(f kN dN ... (f k1 d1 (f k0 d0 a))...)</code>,
     where <code class="code">k0,k1..kN</code> are the keys of all bindings in <code class="code">m</code>,
     and <code class="code">d0,d1..dN</code> are the associated data.
@@ -181,12 +182,28 @@ Same as <code class="code">map</code>, but the function receives as arguments bo
 Same as <code class="code">fold</code>, but the function receives as arguments both the
     key and the associated value for each binding of the map.<br>
 </div>
+<pre><span id="VALmodify"><span class="keyword">val</span> modify</span> : <code class="type">'a -><br>       ('b <a href="BatSet.PSet.html#TYPEt">BatSet.PSet.t</a> -> 'b <a href="BatSet.PSet.html#TYPEt">BatSet.PSet.t</a>) -><br>       ('a, 'b) <a href="BatMultiPMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMultiPMap.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">modify x f m</code> replaces the binding for <code class="code">x</code> with <code class="code">f</code> applied to
+    these values.<br>
+<b>Since</b> 2.1<br>
+<b>Raises</b> <code>Not_found</code> is <code class="code">x</code> is unbound in <code class="code">m</code><br>
+</div>
+<pre><span id="VALmodify_def"><span class="keyword">val</span> modify_def</span> : <code class="type">'a <a href="BatSet.PSet.html#TYPEt">BatSet.PSet.t</a> -><br>       'b -><br>       ('a <a href="BatSet.PSet.html#TYPEt">BatSet.PSet.t</a> -> 'a <a href="BatSet.PSet.html#TYPEt">BatSet.PSet.t</a>) -><br>       ('b, 'a) <a href="BatMultiPMap.html#TYPEt">t</a> -> ('b, 'a) <a href="BatMultiPMap.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">modify_def dfl x f m</code> performs as <code class="code">modify x f m</code> but it adds
+    <code class="code">f dfl</code> in <code class="code">m</code> instead of raising <code class="code"><span class="constructor">Not_found</span></code> if <code class="code">x</code> was unbound.<br>
+<b>Since</b> 2.1<br>
+</div>
+<pre><span id="VALmodify_opt"><span class="keyword">val</span> modify_opt</span> : <code class="type">'a -><br>       ('b <a href="BatSet.PSet.html#TYPEt">BatSet.PSet.t</a> option -> 'b <a href="BatSet.PSet.html#TYPEt">BatSet.PSet.t</a> option) -><br>       ('a, 'b) <a href="BatMultiPMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMultiPMap.html#TYPEt">t</a></code></pre><div class="info">
+<code class="code">modify_opt x f m</code> allows to modify the bindings for <code class="code">k</code> in <code class="code">m</code>
+    or absence thereof.<br>
+<b>Since</b> 2.1<br>
+</div>
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">('a, 'b) <a href="BatMultiPMap.html#TYPEt">t</a> -> ('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 creates an enumeration for this map.<br>
 </div>
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">?keys:('a -> 'a -> int) -><br>       ?data:('b -> 'b -> int) -> ('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> ('a, 'b) <a href="BatMultiPMap.html#TYPEt">t</a></code></pre><div class="info">
 creates a map from an enumeration, using the specified function
-  for key comparison or <code class="code">compare</code> by default.<br>
+    for key comparison or <code class="code">compare</code> by default.<br>
 </div>
 <pre><span class="keyword">module</span> <a href="BatMultiPMap.Infix.html">Infix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatMultiPMap.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
 Infix operators over a <a href="BatMultiPMap.html"><code class="code"><span class="constructor">BatMultiPMap</span></code></a>

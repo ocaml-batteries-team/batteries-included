@@ -106,11 +106,12 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatOrd</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatOption.html" title="BatOption">Previous</a>
-&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="BatParserCo.html" title="BatParserCo">Next</a>
+<div class="navbar"><a href="BatOption.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="BatParserCo.html">Next</a>
 </div>
-<h1>Module <a href="type_BatOrd.html">BatOrd</a></h1>
+<center><h1>Module <a href="type_BatOrd.html">BatOrd</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> BatOrd: <code class="code"><span class="keyword">sig</span></code> <a href="BatOrd.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>An algebraic datatype for ordering.
 <p>
 
@@ -120,26 +121,26 @@
     for comparison producers (no arbitrary choice of a positive and
     negative value) and consumers (nice pattern-matching elimination).<br>
 <hr width="100%">
-<pre><code><span id="TYPEorder"><span class="keyword">type</span> <code class="type"></code>order</span> = </code></pre><table class="typetable">
+<br><code><span id="TYPEorder"><span class="keyword">type</span> <code class="type"></code>order</span> = </code><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTorder.Lt"><span class="constructor">Lt</span></span></code></td>
+<code><span class="constructor">Lt</span></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTorder.Eq"><span class="constructor">Eq</span></span></code></td>
+<code><span class="constructor">Eq</span></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTorder.Gt"><span class="constructor">Gt</span></span></code></td>
+<code><span class="constructor">Gt</span></code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >An algebraic datatype for ordering.
 <p>
 
@@ -228,9 +229,9 @@ choice functions, see <code class="code">min</code> and <code class="code">max</
     For example, <code class="code">min <span class="constructor">Int</span>.ord 1 2</code> will return <code class="code">1</code>.
 <p>
 
-    <code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;the&nbsp;minimum&nbsp;element&nbsp;of&nbsp;a&nbsp;list&nbsp;*)</span><br>
+    <pre></pre><code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;the&nbsp;minimum&nbsp;element&nbsp;of&nbsp;a&nbsp;list&nbsp;*)</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;list_min&nbsp;ord&nbsp;=&nbsp;<span class="constructor">List</span>.reduce&nbsp;(min&nbsp;ord)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;</code><pre></pre><br>
 </div>
 <pre><span id="VALmax"><span class="keyword">val</span> max</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">ord</a> -> 'a <a href="BatOrd.html#TYPEchoice">choice</a></code></pre><div class="info">
 <code class="code">max ord</code> will choose the biggest element according to <code class="code">ord</code>.<br>

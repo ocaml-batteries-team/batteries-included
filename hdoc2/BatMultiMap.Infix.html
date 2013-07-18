@@ -104,14 +104,15 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatMultiMap.Infix</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a class="up" href="BatMultiMap.html" title="BatMultiMap">Up</a>
+<div class="navbar">&nbsp;<a href="BatMultiMap.html">Up</a>
 &nbsp;</div>
-<h1>Module <a href="type_BatMultiMap.Infix.html">BatMultiMap.Infix</a></h1>
+<center><h1>Module <a href="type_BatMultiMap.Infix.html">BatMultiMap.Infix</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Infix: <code class="code"><span class="keyword">sig</span></code> <a href="BatMultiMap.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Infix operators over a <a href="BatMultiPMap.html"><code class="code"><span class="constructor">BatMultiPMap</span></code></a><br>
 <hr width="100%">
 <pre><span id="VAL(-->)"><span class="keyword">val</span> (--&gt;)</span> : <code class="type">('a, 'b) <a href="BatMultiMap.html#TYPEt">BatMultiMap.t</a> -> 'a -> 'b <a href="BatSet.html#TYPEt">BatSet.t</a></code></pre><div class="info">
 <code class="code">map--&gt;key</code> returns the current binding of <code class="code">key</code> in <code class="code">map</code>.
-        Equivalent to <code class="code">find key map</code>.<br>
+      Equivalent to <code class="code">find key map</code>.<br>
 </div>
 <pre><span id="VAL(<--)"><span class="keyword">val</span> (&lt;--)</span> : <code class="type">('a, 'b) <a href="BatMultiMap.html#TYPEt">BatMultiMap.t</a> -> 'a * 'b -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">BatMultiMap.t</a></code></pre><div class="info">
 <code class="code">map&lt;--(key, value)</code> returns a map containing the same bindings as

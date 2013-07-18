@@ -108,11 +108,12 @@
 <title>Batteries user guide : BatSys</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatSubstring.html" title="BatSubstring">Previous</a>
-&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="BatText.html" title="BatText">Next</a>
+<div class="navbar"><a href="BatSubstring.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="BatText.html">Next</a>
 </div>
-<h1>Module <a href="type_BatSys.html">BatSys</a></h1>
+<center><h1>Module <a href="type_BatSys.html">BatSys</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> BatSys: <code class="code"><span class="keyword">sig</span></code> <a href="BatSys.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>System interface.
 <p>
 
@@ -123,9 +124,9 @@
 <hr width="100%">
 <pre><span id="VALargv"><span class="keyword">val</span> argv</span> : <code class="type">string array</code></pre><div class="info">
 The command line arguments given to the process.
-   The first element is the command name used to invoke the program.
-   The following elements are the command-line arguments
-   given to the program.<br>
+    The first element is the command name used to invoke the program.
+    The following elements are the command-line arguments
+    given to the program.<br>
 </div>
 <pre><span id="VALexecutable_name"><span class="keyword">val</span> executable_name</span> : <code class="type">string</code></pre><div class="info">
 The name of the file containing the executable currently running.<br>
@@ -144,13 +145,13 @@ Remove the given file name from the file system.<br>
 </div>
 <pre><span id="VALrename"><span class="keyword">val</span> rename</span> : <code class="type">string -> string -> unit</code></pre><div class="info">
 Rename a file. The first argument is the old name and the
-   second is the new name. If there is already another file
-   under the new name, <code class="code">rename</code> may replace it, or raise an
-   exception, depending on your operating system.<br>
+    second is the new name. If there is already another file
+    under the new name, <code class="code">rename</code> may replace it, or raise an
+    exception, depending on your operating system.<br>
 </div>
 <pre><span id="VALgetenv"><span class="keyword">val</span> getenv</span> : <code class="type">string -> string</code></pre><div class="info">
 Return the value associated to a variable in the process
-   environment.<br>
+    environment.<br>
 <b>Raises</b> <code>Not_found</code> if the variable is unbound.<br>
 </div>
 <pre><span id="VALcommand"><span class="keyword">val</span> command</span> : <code class="type">string -> int</code></pre><div class="info">
@@ -158,7 +159,7 @@ Execute the given shell command and return its exit code.<br>
 </div>
 <pre><span id="VALtime"><span class="keyword">val</span> time</span> : <code class="type">unit -> float</code></pre><div class="info">
 Return the processor time, in seconds, used by the program
-   since the beginning of execution.<br>
+    since the beginning of execution.<br>
 </div>
 <pre><span id="VALchdir"><span class="keyword">val</span> chdir</span> : <code class="type">string -> unit</code></pre><div class="info">
 Change the current working directory of the process.<br>
@@ -168,17 +169,17 @@ Return the current working directory of the process.<br>
 </div>
 <pre><span id="VALreaddir"><span class="keyword">val</span> readdir</span> : <code class="type">string -> string array</code></pre><div class="info">
 Return the names of all files present in the given directory.
-   Names denoting the current directory and the parent directory
-   (<code class="code"><span class="string">"."</span></code> and <code class="code"><span class="string">".."</span></code> in Unix) are not returned.  Each string in the
-   result is a file name rather than a complete path.  There is no
-   guarantee that the name strings in the resulting array will appear
-   in any specific order; they are not, in particular, guaranteed to
-   appear in alphabetical order.<br>
+    Names denoting the current directory and the parent directory
+    (<code class="code"><span class="string">"."</span></code> and <code class="code"><span class="string">".."</span></code> in Unix) are not returned.  Each string in the
+    result is a file name rather than a complete path.  There is no
+    guarantee that the name strings in the resulting array will appear
+    in any specific order; they are not, in particular, guaranteed to
+    appear in alphabetical order.<br>
 </div>
 <pre><span id="VALinteractive"><span class="keyword">val</span> interactive</span> : <code class="type">bool Pervasives.ref</code></pre><div class="info">
 This reference is initially set to <code class="code"><span class="keyword">false</span></code> in standalone
-   programs and to <code class="code"><span class="keyword">true</span></code> if the code is being executed under
-   the interactive toplevel system <code class="code">ocaml</code>.<br>
+    programs and to <code class="code"><span class="keyword">true</span></code> if the code is being executed under
+    the interactive toplevel system <code class="code">ocaml</code>.<br>
 </div>
 <pre><span id="VALos_type"><span class="keyword">val</span> os_type</span> : <code class="type">string</code></pre><div class="info">
 Operating system currently executing the OCaml program. One of<ul>
@@ -190,7 +191,7 @@ Operating system currently executing the OCaml program. One of<ul>
 </div>
 <pre><span id="VALword_size"><span class="keyword">val</span> word_size</span> : <code class="type">int</code></pre><div class="info">
 Size of one word on the machine currently executing the OCaml
-   program, in bits: 32 or 64.<br>
+    program, in bits: 32 or 64.<br>
 </div>
 <pre><span id="VALbig_endian"><span class="keyword">val</span> big_endian</span> : <code class="type">bool</code></pre><div class="info">
 Whether the machine currently executing the OCaml program is big-endian.<br>
@@ -211,27 +212,27 @@ Maximum length of a normal array.  The maximum length of a float
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTsignal_behavior.Signal_default"><span class="constructor">Signal_default</span></span></code></td>
+<code><span class="constructor">Signal_default</span></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTsignal_behavior.Signal_ignore"><span class="constructor">Signal_ignore</span></span></code></td>
+<code><span class="constructor">Signal_ignore</span></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTsignal_behavior.Signal_handle"><span class="constructor">Signal_handle</span></span> <span class="keyword">of</span> <code class="type">(int -> unit)</code></code></td>
+<code><span class="constructor">Signal_handle</span> <span class="keyword">of</span> <code class="type">(int -> unit)</code></code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >What to do when receiving a signal:<ul>
 <li><code class="code"><span class="constructor">Signal_default</span></code>: take the default behavior
-     (usually: abort the program)</li>
+       (usually: abort the program)</li>
 <li><code class="code"><span class="constructor">Signal_ignore</span></code>: ignore the signal</li>
 <li><code class="code"><span class="constructor">Signal_handle</span> f</code>: call function <code class="code">f</code>, giving it the signal
-   number as argument.</li>
+      number as argument.</li>
 </ul>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
@@ -239,10 +240,10 @@ Maximum length of a normal array.  The maximum length of a float
 
 <pre><span id="VALsignal"><span class="keyword">val</span> signal</span> : <code class="type">int -> <a href="BatSys.html#TYPEsignal_behavior">signal_behavior</a> -> <a href="BatSys.html#TYPEsignal_behavior">signal_behavior</a></code></pre><div class="info">
 Set the behavior of the system on receipt of a given signal.  The
-   first argument is the signal number.  Return the behavior
-   previously associated with the signal.<br>
+    first argument is the signal number.  Return the behavior
+    previously associated with the signal.<br>
 <b>Raises</b> <code>Invalid_argument</code> If the signal number is
-   invalid (or not available on your system).<br>
+    invalid (or not available on your system).<br>
 </div>
 <pre><span id="VALset_signal"><span class="keyword">val</span> set_signal</span> : <code class="type">int -> <a href="BatSys.html#TYPEsignal_behavior">signal_behavior</a> -> unit</code></pre><div class="info">
 Same as <code class="code"><span class="constructor">Sys</span>.signal</code> but return value is ignored.<br>
@@ -315,14 +316,14 @@ Profiling interrupt<br>
 <pre><span id="EXCEPTIONBreak"><span class="keyword">exception</span> Break</span></pre>
 <div class="info">
 Exception raised on interactive interrupt if <code class="code"><span class="constructor">Sys</span>.catch_break</code>
-   is on.<br>
+    is on.<br>
 </div>
 <pre><span id="VALcatch_break"><span class="keyword">val</span> catch_break</span> : <code class="type">bool -> unit</code></pre><div class="info">
 <code class="code">catch_break</code> governs whether interactive interrupt (ctrl-C)
-   terminates the program or raises <code class="code"><span class="constructor">Break</span></code>.
-   Call <code class="code">catch_break <span class="keyword">true</span></code> to enable raising <code class="code"><span class="constructor">Break</span></code>,
-   and <code class="code">catch_break <span class="keyword">false</span></code> to let the system
-   terminate the program on user interrupt.<br>
+    terminates the program or raises <code class="code"><span class="constructor">Break</span></code>.
+    Call <code class="code">catch_break <span class="keyword">true</span></code> to enable raising <code class="code"><span class="constructor">Break</span></code>,
+    and <code class="code">catch_break <span class="keyword">false</span></code> to let the system
+    terminate the program on user interrupt.<br>
 </div>
 <pre><span id="VALocaml_version"><span class="keyword">val</span> ocaml_version</span> : <code class="type">string</code></pre><div class="info">
 <code class="code">ocaml_version</code> is the version of OCaml.
@@ -333,6 +334,6 @@ Exception raised on interactive interrupt if <code class="code"><span class="con
 </div>
 <pre><span id="VALfiles_of"><span class="keyword">val</span> files_of</span> : <code class="type">string -> string <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 As <a href="BatSys.html#VALreaddir"><code class="code"><span class="constructor">BatSys</span>.readdir</code></a> but the results are presented as an enumeration
-   of names.<br>
+       of names.<br>
 </div>
 </body></html>

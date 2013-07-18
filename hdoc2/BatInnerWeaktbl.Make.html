@@ -104,17 +104,18 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatInnerWeaktbl.Make</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a class="up" href="BatInnerWeaktbl.html" title="BatInnerWeaktbl">Up</a>
+<div class="navbar">&nbsp;<a href="BatInnerWeaktbl.html">Up</a>
 &nbsp;</div>
-<h1>Functor <a href="type_BatInnerWeaktbl.Make.html">BatInnerWeaktbl.Make</a></h1>
+<center><h1>Functor <a href="type_BatInnerWeaktbl.Make.html">BatInnerWeaktbl.Make</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Make: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">H</span></code><code class="code"> : </code><code class="type">Hashtbl.HashedType</code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type">Hashtbl.S</code><code class="type">  with type key = H.t</code></div></pre>Functor building an implementation of the hashtable structure.
-    The functor <code class="code"><span class="constructor">Weaktbl</span>.<span class="constructor">Make</span></code> returns a structure containing
-    a type <code class="code">key</code> of keys and a type <code class="code"><span class="keywordsign">'</span>a t</code> of hash tables
-    associating data of type <code class="code"><span class="keywordsign">'</span>a</code> to keys of type <code class="code">key</code>.
-    The operations perform similarly to those of the generic
-    interface, but use the hashing and equality functions
-    specified in the functor argument <code class="code"><span class="constructor">H</span></code> instead of generic
-    equality and hashing.<br>
+      The functor <code class="code"><span class="constructor">Weaktbl</span>.<span class="constructor">Make</span></code> returns a structure containing
+      a type <code class="code">key</code> of keys and a type <code class="code"><span class="keywordsign">'</span>a t</code> of hash tables
+      associating data of type <code class="code"><span class="keywordsign">'</span>a</code> to keys of type <code class="code">key</code>.
+      The operations perform similarly to those of the generic
+      interface, but use the hashing and equality functions
+      specified in the functor argument <code class="code"><span class="constructor">H</span></code> instead of generic
+      equality and hashing.<br>
 <table border="0" cellpadding="3" width="100%">
 <tr>
 <td align="left" valign="top" width="1%%"><b>Parameters: </b></td>

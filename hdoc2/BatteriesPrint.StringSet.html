@@ -109,11 +109,12 @@
 <title>Batteries user guide : BatteriesPrint.StringSet</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatteriesPrint.IntSet.html" title="BatteriesPrint.IntSet">Previous</a>
-&nbsp;<a class="up" href="BatteriesPrint.html" title="BatteriesPrint">Up</a>
-&nbsp;<a class="post" href="BatteriesPrint.TextSet.html" title="BatteriesPrint.TextSet">Next</a>
+<div class="navbar"><a href="BatteriesPrint.IntSet.html">Previous</a>
+&nbsp;<a href="BatteriesPrint.html">Up</a>
+&nbsp;<a href="BatteriesPrint.TextSet.html">Next</a>
 </div>
-<h1>Module <a href="type_BatteriesPrint.StringSet.html">BatteriesPrint.StringSet</a></h1>
+<center><h1>Module <a href="type_BatteriesPrint.StringSet.html">BatteriesPrint.StringSet</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> StringSet: <code class="type"><a href="BatSet.Make.html">BatSet.Make</a></code><code class="code">(</code><code class="type">String</code><code class="code">)</code></pre><hr width="100%">
 <pre><span id="TYPEelt"><span class="keyword">type</span> <code class="type"></code>elt</span> </pre>
 <div class="info">
@@ -137,13 +138,17 @@ Test whether a set is empty or not.<br>
 <pre><span id="VALmem"><span class="keyword">val</span> mem</span> : <code class="type"><a href="BatSet.S.html#TYPEelt">elt</a> -> <a href="BatSet.S.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 <code class="code">mem x s</code> tests whether <code class="code">x</code> belongs to the set <code class="code">s</code>.<br>
 </div>
+<pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type"><a href="BatSet.S.html#TYPEelt">elt</a> -> <a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEelt">elt</a></code></pre><div class="info">
+<code class="code">find x s</code> returns the element in s that tests equal to <code class="code">x</code> under its comparison function.<br>
+<b>Raises</b> <code>Not_found</code> if no element is equal<br>
+</div>
 <pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type"><a href="BatSet.S.html#TYPEelt">elt</a> -> <a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">add x s</code> returns a set containing all elements of <code class="code">s</code>,
-       plus <code class="code">x</code>. If <code class="code">x</code> was already in <code class="code">s</code>, <code class="code">s</code> is returned unchanged.<br>
+      plus <code class="code">x</code>. If <code class="code">x</code> was already in <code class="code">s</code>, <code class="code">s</code> is returned unchanged.<br>
 </div>
 <pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type"><a href="BatSet.S.html#TYPEelt">elt</a> -> <a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">remove x s</code> returns a set containing all elements of <code class="code">s</code>,
-       except <code class="code">x</code>. If <code class="code">x</code> was not in <code class="code">s</code>, <code class="code">s</code> is returned unchanged.<br>
+      except <code class="code">x</code>. If <code class="code">x</code> was not in <code class="code">s</code>, <code class="code">s</code> is returned unchanged.<br>
 </div>
 <pre><span id="VALunion"><span class="keyword">val</span> union</span> : <code class="type"><a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEt">t</a></code></pre><div class="info">
 Set union.<br>
@@ -165,23 +170,23 @@ Total ordering between sets. Can be used as the ordering function
 </div>
 <pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 <code class="code">equal s1 s2</code> tests whether the sets <code class="code">s1</code> and <code class="code">s2</code> are
-       equal, that is, contain equal elements.<br>
+      equal, that is, contain equal elements.<br>
 </div>
 <pre><span id="VALsubset"><span class="keyword">val</span> subset</span> : <code class="type"><a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 <code class="code">subset s1 s2</code> tests whether the set <code class="code">s1</code> is a subset of
-       the set <code class="code">s2</code>.<br>
+      the set <code class="code">s2</code>.<br>
 </div>
 <pre><span id="VALdisjoint"><span class="keyword">val</span> disjoint</span> : <code class="type"><a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 <code class="code">disjoint s1 s2</code> tests whether the sets <code class="code">s1</code> and <code class="code">s2</code> contain no shared
-        elements. (i.e. <code class="code">inter s1 s2</code> is empty.)<br>
+      elements. (i.e. <code class="code">inter s1 s2</code> is empty.)<br>
 </div>
 <pre><span id="VALcompare_subset"><span class="keyword">val</span> compare_subset</span> : <code class="type"><a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEt">t</a> -> int</code></pre><div class="info">
 Partial ordering between sets as generated by <code class="code">subset</code><br>
 </div>
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(<a href="BatSet.S.html#TYPEelt">elt</a> -> unit) -> <a href="BatSet.S.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 <code class="code">iter f s</code> applies <code class="code">f</code> in turn to all elements of <code class="code">s</code>.
-       The elements of <code class="code">s</code> are presented to <code class="code">f</code> in increasing order
-       with respect to the ordering over the type of the elements.<br>
+      The elements of <code class="code">s</code> are presented to <code class="code">f</code> in increasing order
+      with respect to the ordering over the type of the elements.<br>
 </div>
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">(<a href="BatSet.S.html#TYPEelt">elt</a> -> <a href="BatSet.S.html#TYPEelt">elt</a>) -> <a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">map f x</code> creates a new set with elements <code class="code">f a0</code>,
@@ -190,7 +195,7 @@ Partial ordering between sets as generated by <code class="code">subset</code><b
 </div>
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">(<a href="BatSet.S.html#TYPEelt">elt</a> -> bool) -> <a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">filter p s</code> returns the set of all elements in <code class="code">s</code>
-       that satisfy predicate <code class="code">p</code>.<br>
+      that satisfy predicate <code class="code">p</code>.<br>
 </div>
 <pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">(<a href="BatSet.S.html#TYPEelt">elt</a> -> <a href="BatSet.S.html#TYPEelt">elt</a> option) -> <a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">filter_map f m</code> combines the features of <code class="code">filter</code> and
@@ -205,49 +210,49 @@ Partial ordering between sets as generated by <code class="code">subset</code><b
 </div>
 <pre><span id="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">(<a href="BatSet.S.html#TYPEelt">elt</a> -> bool) -> <a href="BatSet.S.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 <code class="code">for_all p s</code> checks if all elements of the set
-       satisfy the predicate <code class="code">p</code>.<br>
+      satisfy the predicate <code class="code">p</code>.<br>
 </div>
 <pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">(<a href="BatSet.S.html#TYPEelt">elt</a> -> bool) -> <a href="BatSet.S.html#TYPEt">t</a> -> bool</code></pre><div class="info">
 <code class="code">exists p s</code> checks if at least one element of
-       the set satisfies the predicate <code class="code">p</code>.<br>
+      the set satisfies the predicate <code class="code">p</code>.<br>
 </div>
 <pre><span id="VALpartition"><span class="keyword">val</span> partition</span> : <code class="type">(<a href="BatSet.S.html#TYPEelt">elt</a> -> bool) -> <a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEt">t</a> * <a href="BatSet.S.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">partition p s</code> returns a pair of sets <code class="code">(s1, s2)</code>, where
-       <code class="code">s1</code> is the set of all the elements of <code class="code">s</code> that satisfy the
-       predicate <code class="code">p</code>, and <code class="code">s2</code> is the set of all the elements of
-       <code class="code">s</code> that do not satisfy <code class="code">p</code>.<br>
+      <code class="code">s1</code> is the set of all the elements of <code class="code">s</code> that satisfy the
+      predicate <code class="code">p</code>, and <code class="code">s2</code> is the set of all the elements of
+      <code class="code">s</code> that do not satisfy <code class="code">p</code>.<br>
 </div>
 <pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type"><a href="BatSet.S.html#TYPEelt">elt</a> -> <a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEt">t</a> * bool * <a href="BatSet.S.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">split x s</code> returns a triple <code class="code">(l, present, r)</code>, where
-          <code class="code">l</code> is the set of elements of <code class="code">s</code> that are
-          strictly less than <code class="code">x</code>;
-          <code class="code">r</code> is the set of elements of <code class="code">s</code> that are
-          strictly greater than <code class="code">x</code>;
-          <code class="code">present</code> is <code class="code"><span class="keyword">false</span></code> if <code class="code">s</code> contains no element equal to <code class="code">x</code>,
-          or <code class="code"><span class="keyword">true</span></code> if <code class="code">s</code> contains an element equal to <code class="code">x</code>.<br>
+        <code class="code">l</code> is the set of elements of <code class="code">s</code> that are
+        strictly less than <code class="code">x</code>;
+        <code class="code">r</code> is the set of elements of <code class="code">s</code> that are
+        strictly greater than <code class="code">x</code>;
+        <code class="code">present</code> is <code class="code"><span class="keyword">false</span></code> if <code class="code">s</code> contains no element equal to <code class="code">x</code>,
+        or <code class="code"><span class="keyword">true</span></code> if <code class="code">s</code> contains an element equal to <code class="code">x</code>.<br>
 </div>
 <pre><span id="VALcardinal"><span class="keyword">val</span> cardinal</span> : <code class="type"><a href="BatSet.S.html#TYPEt">t</a> -> int</code></pre><div class="info">
 Return the number of elements of a set.<br>
 </div>
 <pre><span id="VALelements"><span class="keyword">val</span> elements</span> : <code class="type"><a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEelt">elt</a> list</code></pre><div class="info">
 Return the list of all elements of the given set.
-       The returned list is sorted in increasing order with respect
-       to the ordering <code class="code"><span class="constructor">Ord</span>.compare</code>, where <code class="code"><span class="constructor">Ord</span></code> is the argument
-       given to <code class="code"><span class="constructor">Set</span>.<span class="constructor">Make</span></code>.<br>
+      The returned list is sorted in increasing order with respect
+      to the ordering <code class="code"><span class="constructor">Ord</span>.compare</code>, where <code class="code"><span class="constructor">Ord</span></code> is the argument
+      given to <code class="code"><span class="constructor">Set</span>.<span class="constructor">Make</span></code>.<br>
 </div>
 <pre><span id="VALmin_elt"><span class="keyword">val</span> min_elt</span> : <code class="type"><a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEelt">elt</a></code></pre><div class="info">
 Return the smallest element of the given set
-       (with respect to the <code class="code"><span class="constructor">Ord</span>.compare</code> ordering).<br>
+      (with respect to the <code class="code"><span class="constructor">Ord</span>.compare</code> ordering).<br>
 <b>Raises</b> <code>Not_found</code> if the set is empty.<br>
 </div>
 <pre><span id="VALmax_elt"><span class="keyword">val</span> max_elt</span> : <code class="type"><a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEelt">elt</a></code></pre><div class="info">
 Same as <code class="code"><span class="constructor">Set</span>.<span class="constructor">S</span>.min_elt</code>, but returns the largest element of the
-       given set.<br>
+      given set.<br>
 </div>
 <pre><span id="VALchoose"><span class="keyword">val</span> choose</span> : <code class="type"><a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEelt">elt</a></code></pre><div class="info">
 Return one element of the given set, or raise <code class="code"><span class="constructor">Not_found</span></code> if
-       the set is empty. Which element is chosen is unspecified,
-       but equal elements will be chosen for equal sets.<br>
+      the set is empty. Which element is chosen is unspecified,
+      but equal elements will be chosen for equal sets.<br>
 </div>
 <pre><span id="VALpop"><span class="keyword">val</span> pop</span> : <code class="type"><a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEelt">elt</a> * <a href="BatSet.S.html#TYPEt">t</a></code></pre><div class="info">
 returns one element of the set and the set without that element.<br>
@@ -273,8 +278,8 @@ Return an enumeration of all elements of the given set.
 <span id="6_Overridemodules"><h6>Override modules</h6></span><br>
 <br>
 The following modules replace functions defined in <code class="code"><span class="constructor">Set</span></code> with functions
-       behaving slightly differently but having the same name. This is by design:
-       the functions meant to override the corresponding functions of <code class="code"><span class="constructor">Set</span></code>.<br>
+     behaving slightly differently but having the same name. This is by design:
+     the functions meant to override the corresponding functions of <code class="code"><span class="constructor">Set</span></code>.<br>
 <pre><span class="keyword">module</span> <a href="BatSet.S.Exceptionless.html">Exceptionless</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatSet.S.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
 Operations on <code class="code"><span class="constructor">Set</span></code> without exceptions.
 </div>

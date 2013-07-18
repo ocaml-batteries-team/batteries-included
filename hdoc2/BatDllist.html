@@ -111,11 +111,12 @@
 <title>Batteries user guide : BatDllist</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatDigest.html" title="BatDigest">Previous</a>
-&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="BatDynArray.html" title="BatDynArray">Next</a>
+<div class="navbar"><a href="BatDigest.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="BatDynArray.html">Next</a>
 </div>
-<h1>Module <a href="type_BatDllist.html">BatDllist</a></h1>
+<center><h1>Module <a href="type_BatDllist.html">BatDllist</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> BatDllist: <code class="code"><span class="keyword">sig</span></code> <a href="BatDllist.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>A mutable, imperative, circular, doubly linked list library
 <p>
 
@@ -260,16 +261,16 @@ Allocate a new list, with entirely new nodes, whose values are
 </div>
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('a -> bool) -> 'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> 'a <a href="BatDllist.html#TYPEnode_t">node_t</a></code></pre><div class="info">
 <code class="code">filter p l</code> returns a new list, with entirely new nodes, whose
-      values are all the elements of the list <code class="code">l</code> that satisfy the
-      predicate <code class="code">p</code>.  The order of the elements in the input list is
-      preserved.<br>
+    values are all the elements of the list <code class="code">l</code> that satisfy the
+    predicate <code class="code">p</code>.  The order of the elements in the input list is
+    preserved.<br>
 <b>Raises</b> <code>Empty</code> if the resulting list is empty.<br>
 </div>
 <pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">('a -> 'b option) -> 'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> 'b <a href="BatDllist.html#TYPEnode_t">node_t</a></code></pre><div class="info">
 <code class="code">filter_map f l</code> calls <code class="code">(f a0) (f a1) ... (f an)</code> where <code class="code">a0,a1...an</code>
-      are the elements of <code class="code">l</code>. It returns a new list of elements <code class="code">bi</code>
-      such as <code class="code">f ai = <span class="constructor">Some</span> bi</code> (when <code class="code">f</code> returns <code class="code"><span class="constructor">None</span></code>, the
-      corresponding element of <code class="code">l</code> is discarded).<br>
+    are the elements of <code class="code">l</code>. It returns a new list of elements <code class="code">bi</code>
+    such as <code class="code">f ai = <span class="constructor">Some</span> bi</code> (when <code class="code">f</code> returns <code class="code"><span class="constructor">None</span></code>, the
+    corresponding element of <code class="code">l</code> is discarded).<br>
 <b>Raises</b> <code>Empty</code> if the resulting list is empty.<br>
 </div>
 <br>

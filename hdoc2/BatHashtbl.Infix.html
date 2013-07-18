@@ -106,11 +106,12 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatHashtbl.Infix</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatHashtbl.Exceptionless.html" title="BatHashtbl.Exceptionless">Previous</a>
-&nbsp;<a class="up" href="BatHashtbl.html" title="BatHashtbl">Up</a>
-&nbsp;<a class="post" href="BatHashtbl.Labels.html" title="BatHashtbl.Labels">Next</a>
+<div class="navbar"><a href="BatHashtbl.Exceptionless.html">Previous</a>
+&nbsp;<a href="BatHashtbl.html">Up</a>
+&nbsp;<a href="BatHashtbl.Labels.html">Next</a>
 </div>
-<h1>Module <a href="type_BatHashtbl.Infix.html">BatHashtbl.Infix</a></h1>
+<center><h1>Module <a href="type_BatHashtbl.Infix.html">BatHashtbl.Infix</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Infix: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Infix operators over a <a href="BatHashtbl.html"><code class="code"><span class="constructor">BatHashtbl</span></code></a><br>
 <hr width="100%">
 <pre><span id="VAL(-->)"><span class="keyword">val</span> (--&gt;)</span> : <code class="type">('a, 'b) <a href="BatHashtbl.html#TYPEt">BatHashtbl.t</a> -> 'a -> 'b</code></pre><div class="info">
@@ -120,10 +121,10 @@
 </div>
 <pre><span id="VAL(<--)"><span class="keyword">val</span> (&lt;--)</span> : <code class="type">('a, 'b) <a href="BatHashtbl.html#TYPEt">BatHashtbl.t</a> -> 'a * 'b -> unit</code></pre><div class="info">
 <code class="code">tbl&lt;--(x, y)</code> adds a binding of <code class="code">x</code> to <code class="code">y</code> in table <code class="code">tbl</code>.
-      Previous bindings for <code class="code">x</code> are not removed, but simply
-      hidden. That is, after performing <code class="code"><span class="constructor">Hashtbl</span>.remove</code><code class="code"> tbl x</code>,
-      the previous binding for <code class="code">x</code>, if any, is restored.
-      (Same behavior as with association lists.)
-      Equivalent to <code class="code"><span class="constructor">Hashtbl</span>.add tbl x y</code><br>
+        Previous bindings for <code class="code">x</code> are not removed, but simply
+        hidden. That is, after performing <code class="code"><span class="constructor">Hashtbl</span>.remove</code><code class="code"> tbl x</code>,
+        the previous binding for <code class="code">x</code>, if any, is restored.
+        (Same behavior as with association lists.)
+        Equivalent to <code class="code"><span class="constructor">Hashtbl</span>.add tbl x y</code><br>
 </div>
 </body></html>

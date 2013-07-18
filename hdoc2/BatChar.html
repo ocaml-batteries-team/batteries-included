@@ -107,11 +107,12 @@
 <title>Batteries user guide : BatChar</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatCache.html" title="BatCache">Previous</a>
-&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="BatCharParser.html" title="BatCharParser">Next</a>
+<div class="navbar"><a href="BatCache.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="BatCharParser.html">Next</a>
 </div>
-<h1>Module <a href="type_BatChar.html">BatChar</a></h1>
+<center><h1>Module <a href="type_BatChar.html">BatChar</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> BatChar: <code class="code"><span class="keyword">sig</span></code> <a href="BatChar.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Operations on characters.
 <p>
 
@@ -126,12 +127,12 @@ Return the ASCII code of the argument.<br>
 <pre><span id="VALchr"><span class="keyword">val</span> chr</span> : <code class="type">int -> char</code></pre><div class="info">
 Return the character with the given ASCII code.<br>
 <b>Raises</b> <code>Invalid_argument</code> if the argument is
-   outside the range 0--255.<br>
+    outside the range 0--255.<br>
 </div>
 <pre><span id="VALescaped"><span class="keyword">val</span> escaped</span> : <code class="type">char -> string</code></pre><div class="info">
 Return a string representing the given character,
-   with special characters escaped following the lexical conventions
-   of OCaml.<br>
+    with special characters escaped following the lexical conventions
+    of OCaml.<br>
 </div>
 <pre><span id="VALlowercase"><span class="keyword">val</span> lowercase</span> : <code class="type">char -> char</code></pre><div class="info">
 Convert the given character to its equivalent lowercase character.<br>

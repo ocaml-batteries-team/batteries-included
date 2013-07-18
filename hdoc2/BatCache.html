@@ -106,11 +106,12 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatCache</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatBuffer.html" title="BatBuffer">Previous</a>
-&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="BatChar.html" title="BatChar">Next</a>
+<div class="navbar"><a href="BatBuffer.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="BatChar.html">Next</a>
 </div>
-<h1>Module <a href="type_BatCache.html">BatCache</a></h1>
+<center><h1>Module <a href="type_BatCache.html">BatCache</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> BatCache: <code class="code"><span class="keyword">sig</span></code> <a href="BatCache.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>The data structure for a manual cache with keys <code class="code"><span class="keywordsign">'</span>a</code> and values <code class="code"><span class="keywordsign">'</span>b</code>.
 <p>
 
@@ -139,26 +140,26 @@
     bindings as pairs.  This allows inspection of what is currently
     cached.<br>
 <hr width="100%">
-<pre><code><span id="TYPEmanual_cache"><span class="keyword">type</span> <code class="type">('a, 'b)</code> manual_cache</span> = {</code></pre><table class="typetable">
+<br><code><span id="TYPEmanual_cache"><span class="keyword">type</span> <code class="type">('a, 'b)</code> manual_cache</span> = {</code><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTmanual_cache.get">get</span>&nbsp;:<code class="type">'a -> 'b</code>;</code></td>
+<code>get&nbsp;: <code class="type">'a -> 'b</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTmanual_cache.del">del</span>&nbsp;:<code class="type">'a -> unit</code>;</code></td>
+<code>del&nbsp;: <code class="type">'a -> unit</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTmanual_cache.enum">enum</span>&nbsp;:<code class="type">unit -> ('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code>;</code></td>
+<code>enum&nbsp;: <code class="type">unit -> ('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code>;</code></td>
 
 </tr></table>
 }

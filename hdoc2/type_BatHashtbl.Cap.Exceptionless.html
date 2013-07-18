@@ -104,4 +104,9 @@
 <code class="code"><span class="keyword">sig</span><br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;find&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;[&lt;&nbsp;<span class="keywordsign">`</span><span class="constructor">Read</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keywordsign">`</span><span class="constructor">Write</span>&nbsp;&gt;&nbsp;<span class="keywordsign">`</span><span class="constructor">Read</span>&nbsp;])&nbsp;<span class="constructor">BatHashtbl</span>.<span class="constructor">Cap</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b&nbsp;option<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;modify&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>b&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;[&lt;&nbsp;<span class="keywordsign">`</span><span class="constructor">Read</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keywordsign">`</span><span class="constructor">Write</span>&nbsp;&gt;&nbsp;<span class="keywordsign">`</span><span class="constructor">Read</span>&nbsp;])&nbsp;<span class="constructor">BatHashtbl</span>.<span class="constructor">Cap</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(unit,&nbsp;exn)&nbsp;<span class="constructor">BatPervasives</span>.result<br>
 <span class="keyword">end</span></code></body></html>

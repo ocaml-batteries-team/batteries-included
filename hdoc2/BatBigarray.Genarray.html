@@ -105,10 +105,11 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatBigarray.Genarray</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a class="up" href="BatBigarray.html" title="BatBigarray">Up</a>
-&nbsp;<a class="post" href="BatBigarray.Array1.html" title="BatBigarray.Array1">Next</a>
+<div class="navbar">&nbsp;<a href="BatBigarray.html">Up</a>
+&nbsp;<a href="BatBigarray.Array1.html">Next</a>
 </div>
-<h1>Module <a href="type_BatBigarray.Genarray.html">BatBigarray.Genarray</a></h1>
+<center><h1>Module <a href="type_BatBigarray.Genarray.html">BatBigarray.Genarray</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Genarray: <code class="code"><span class="keyword">sig</span></code> <a href="BatBigarray.Genarray.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Generic arrays (of arbitrarily many dimensions)<br>
 <hr width="100%">
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b, 'c)</code> t</span> = <code class="type">('a, 'b, 'c) Bigarray.Genarray.t</code> </pre>
@@ -354,17 +355,17 @@ Memory mapping of a file as a big array.
 </div>
 <pre><span id="VALiteri"><span class="keyword">val</span> iteri</span> : <code class="type">((int, [ `Read ]) <a href="BatArray.Cap.html#TYPEt">BatArray.Cap.t</a> -> 'a -> unit) -><br>       ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 Same as <a href="BatBigarray.Genarray.html#VALiter"><code class="code"><span class="constructor">BatBigarray</span>.<span class="constructor">Genarray</span>.iter</code></a>, but the function is applied to the index of
-        the element as the first argument, and the element itself as
-        the second argument.<br>
+      the element as the first argument, and the element itself as
+      the second argument.<br>
 </div>
 <pre><span id="VALmodify"><span class="keyword">val</span> modify</span> : <code class="type">('a -> 'a) -> ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 <code class="code">modify f a</code> changes each element <code class="code">x</code> in <code class="code">a</code> to <code class="code">f x</code>
-        in-place.<br>
+      in-place.<br>
 </div>
 <pre><span id="VALmodifyi"><span class="keyword">val</span> modifyi</span> : <code class="type">((int, [ `Read ]) <a href="BatArray.Cap.html#TYPEt">BatArray.Cap.t</a> -> 'a -> 'a) -><br>       ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 Same as <a href="BatBigarray.Genarray.html#VALmodify"><code class="code"><span class="constructor">BatBigarray</span>.<span class="constructor">Genarray</span>.modify</code></a>, but the function is applied to the index of
-        the coordinates as the first argument, and the element itself
-        as the second argument.<br>
+      the coordinates as the first argument, and the element itself
+      as the second argument.<br>
 </div>
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 <code class="code">enum e</code> returns an enumeration on the elements of <code class="code">e</code>.
@@ -372,12 +373,12 @@ Same as <a href="BatBigarray.Genarray.html#VALmodify"><code class="code"><span c
 </div>
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -><br>       ('b, 'c) Bigarray.kind -><br>       ('a, 'd, 'e) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> ('b, 'c, 'e) <a href="BatBigarray.Genarray.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">map f kind a</code> applies function <code class="code">f</code> to all the elements of <code class="code">a</code>,
-       and builds a <code class="code"><span class="constructor">Bigarray</span>.t</code> of kind <code class="code">kind</code> with the results
-       returned by <code class="code">f</code>.<br>
+      and builds a <code class="code"><span class="constructor">Bigarray</span>.t</code> of kind <code class="code">kind</code> with the results
+      returned by <code class="code">f</code>.<br>
 </div>
 <pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">((int, [ `Read ]) <a href="BatArray.Cap.html#TYPEt">BatArray.Cap.t</a> -> 'a -> 'b) -><br>       ('b, 'c) Bigarray.kind -><br>       ('a, 'd, 'e) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> ('b, 'c, 'e) <a href="BatBigarray.Genarray.html#TYPEt">t</a></code></pre><div class="info">
 Same as <a href="BatBigarray.Genarray.html#VALmap"><code class="code"><span class="constructor">BatBigarray</span>.<span class="constructor">Genarray</span>.map</code></a>, but the function is applied to the index of the
-      coordinates as the first argument, and the element itself as the
-      second argument.<br>
+        coordinates as the first argument, and the element itself as the
+        second argument.<br>
 </div>
 </body></html>

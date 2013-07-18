@@ -102,9 +102,7 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : Index of types</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;</div>
-<h1>Index of types</h1>
+<center><h1>Index of types</h1></center>
 <table>
 <tr><td align="left"><br>A</td></tr>
 <tr><td><a href="BatUnix.html#TYPEaccess_permission">access_permission</a> [<a href="BatUnix.html">BatUnix</a>]</td>
@@ -120,7 +118,7 @@ Address information returned by <code class="code"><span class="constructor">Uni
 <tr><td><a href="BatGc.html#TYPEalarm">alarm</a> [<a href="BatGc.html">BatGc</a>]</td>
 <td><div class="info">
 An alarm is a piece of data that calls a user function at the end of
-   each major GC cycle.
+    each major GC cycle.
 </div>
 </td></tr>
 <tr><td><a href="BatCache.html#TYPEauto_cache">auto_cache</a> [<a href="BatCache.html">BatCache</a>]</td>
@@ -195,7 +193,7 @@ The legacy int-returning comparisons : compare a b &lt; 0 means a &lt; b, compar
 <tr><td><a href="BatPathGen.PathType.html#TYPEcomponents">components</a> [<a href="BatPathGen.PathType.html">BatPathGen.PathType</a>]</td>
 <td><div class="info">
 A <code class="code">path</code> can be represented by the following triple:
-  <code class="code">(<span class="constructor">Path</span>.parent path, <span class="constructor">Path</span>.name_core path, <span class="constructor">Path</span>.ext path)</code>
+      <code class="code">(<span class="constructor">Path</span>.parent path, <span class="constructor">Path</span>.name_core path, <span class="constructor">Path</span>.ext path)</code>
 </div>
 </td></tr>
 <tr><td><a href="BatGc.html#TYPEcontrol">control</a> [<a href="BatGc.html">BatGc</a>]</td>
@@ -207,7 +205,7 @@ The GC parameters are given as a <code class="code">control</code> record.
 <tr><td><a href="BatBase64.html#TYPEdecoding_table">decoding_table</a> [<a href="BatBase64.html">BatBase64</a>]</td>
 <td><div class="info">
 A decoding table maps chars 0..255 to the corresponding 0..63 value
- or -1 if the char is not accepted.
+    or -1 if the char is not accepted.
 </div>
 </td></tr>
 <tr><td><a href="BatUnix.html#TYPEdir_handle">dir_handle</a> [<a href="BatUnix.html">BatUnix</a>]</td>
@@ -270,14 +268,11 @@ The type of error codes.
 <tr><td><a href="BatLogger.html#TYPEevent">event</a> [<a href="BatLogger.html">BatLogger</a>]</td>
 <td><div class="info">
 A log <code class="code">event</code> consists of an event name and a list of key-value
-       parameters (an association list).
+    parameters (an association list).
 </div>
 </td></tr>
 <tr><td><a href="BatMarshal.html#TYPEextern_flags">extern_flags</a> [<a href="BatMarshal.html">BatMarshal</a>]</td>
-<td><div class="info">
-The flags to the <code class="code"><span class="constructor">Marshal</span>.to_*</code> functions below.
-</div>
-</td></tr>
+<td></td></tr>
 <tr><td align="left"><br>F</td></tr>
 <tr><td><a href="BatIO.html#TYPEf_printer">f_printer</a> [<a href="BatIO.html">BatIO</a>]</td>
 <td></td></tr>
@@ -312,32 +307,32 @@ The type of file access rights, e.g.
 <tr><td><a href="BatLogger.html#TYPEformatter">formatter</a> [<a href="BatLogger.html">BatLogger</a>]</td>
 <td><div class="info">
 the type of a log formatter is a function that takes the
-       logger, the level of the log statement (which will be the
-       currently enabled level or one of its successors), the event
-       record, and a unix timestamp indicating the time the event was
-       created.
+    logger, the level of the log statement (which will be the
+    currently enabled level or one of its successors), the event
+    record, and a unix timestamp indicating the time the event was
+    created.
 </div>
 </td></tr>
 <tr><td><a href="BatFormat.html#TYPEformatter">formatter</a> [<a href="BatFormat.html">BatFormat</a>]</td>
 <td><div class="info">
 Abstract data corresponding to a pretty-printer (also called a
-  formatter) and all its machinery.
+    formatter) and all its machinery.
 </div>
 </td></tr>
 <tr><td><a href="BatFormat.html#TYPEformatter_tag_functions">formatter_tag_functions</a> [<a href="BatFormat.html">BatFormat</a>]</td>
 <td><div class="info">
 The tag handling functions specific to a formatter:
-   <code class="code">mark</code> versions are the ``tag marking'' functions that associate a string
-   marker to a tag in order for the pretty-printing engine to flush
-   those markers as 0 length tokens in the output device of the formatter.
+    <code class="code">mark</code> versions are the ``tag marking'' functions that associate a string
+    marker to a tag in order for the pretty-printing engine to flush
+    those markers as 0 length tokens in the output device of the formatter.
 </div>
 </td></tr>
 <tr><td><a href="BatBigarray.html#TYPEfortran_layout">fortran_layout</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
 <td><div class="info">
 To facilitate interoperability with existing C and Fortran code,
-   this library supports two different memory layouts for big arrays,
-   one compatible with the C conventions,
-   the other compatible with the Fortran conventions.
+    this library supports two different memory layouts for big arrays,
+    one compatible with the C conventions,
+    the other compatible with the Fortran conventions.
 </div>
 </td></tr>
 <tr><td><a href="BatFloat.Safe_float.html#TYPEfpkind">fpkind</a> [<a href="BatFloat.Safe_float.html">BatFloat.Safe_float</a>]</td>
@@ -448,8 +443,8 @@ type of objects in the table
 <tr><td><a href="BatBigarray.html#TYPEkind">kind</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
 <td><div class="info">
 To each element kind is associated an OCaml type, which is
-   the type of OCaml values that can be stored in the big array
-   or read back from it.
+    the type of OCaml values that can be stored in the big array
+    or read back from it.
 </div>
 </td></tr>
 <tr><td align="left"><br>L</td></tr>
@@ -458,8 +453,8 @@ To each element kind is associated an OCaml type, which is
 <tr><td><a href="BatBigarray.html#TYPElayout">layout</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
 <td><div class="info">
 The type <code class="code"><span class="keywordsign">'</span>a layout</code> represents one of the two supported
-   memory layouts: C-style if <code class="code"><span class="keywordsign">'</span>a</code> is <code class="code"><span class="constructor">Bigarray</span>.c_layout</code>, Fortran-style
-   if <code class="code"><span class="keywordsign">'</span>a</code> is <code class="code"><span class="constructor">Bigarray</span>.fortran_layout</code>.
+    memory layouts: C-style if <code class="code"><span class="keywordsign">'</span>a</code> is <code class="code"><span class="constructor">Bigarray</span>.c_layout</code>, Fortran-style
+    if <code class="code"><span class="keywordsign">'</span>a</code> is <code class="code"><span class="constructor">Bigarray</span>.fortran_layout</code>.
 </div>
 </td></tr>
 <tr><td><a href="BatLogger.html#TYPElevel">level</a> [<a href="BatLogger.html">BatLogger</a>]</td>
@@ -551,16 +546,13 @@ Internal representation of an object.
 </div>
 </td></tr>
 <tr><td><a href="BatUnix.html#TYPEopen_flag">open_flag</a> [<a href="BatUnix.html">BatUnix</a>]</td>
-<td><div class="info">
-The flags to <code class="code"><span class="constructor">Unix</span>.openfile</code>.
-</div>
-</td></tr>
+<td></td></tr>
 <tr><td><a href="BatFile.html#TYPEopen_in_flag">open_in_flag</a> [<a href="BatFile.html">BatFile</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatFile.html#TYPEopen_out_flag">open_out_flag</a> [<a href="BatFile.html">BatFile</a>]</td>
 <td><div class="info">
 Flags governing file output; they correspond to the relevant
-        flags to the POSIX <code class="code"><span class="keyword">open</span>()</code> call.
+    flags to the POSIX <code class="code"><span class="keyword">open</span>()</code> call.
 </div>
 </td></tr>
 <tr><td><a href="BatFile.html#TYPEopen_temporary_out_flag">open_temporary_out_flag</a> [<a href="BatFile.html">BatFile</a>]</td>
@@ -687,7 +679,7 @@ The type of commands for <code class="code">shutdown</code>.
 <tr><td><a href="BatUnix.html#TYPEsocket_bool_option">socket_bool_option</a> [<a href="BatUnix.html">BatUnix</a>]</td>
 <td><div class="info">
 The socket options that can be consulted with <code class="code"><span class="constructor">Unix</span>.getsockopt</code>
-   and modified with <code class="code"><span class="constructor">Unix</span>.setsockopt</code>.
+    and modified with <code class="code"><span class="constructor">Unix</span>.setsockopt</code>.
 </div>
 </td></tr>
 <tr><td><a href="BatUnix.html#TYPEsocket_domain">socket_domain</a> [<a href="BatUnix.html">BatUnix</a>]</td>
@@ -698,25 +690,25 @@ The type of socket domains.
 <tr><td><a href="BatUnix.html#TYPEsocket_float_option">socket_float_option</a> [<a href="BatUnix.html">BatUnix</a>]</td>
 <td><div class="info">
 The socket options that can be consulted with <code class="code"><span class="constructor">Unix</span>.getsockopt_float</code>
-   and modified with <code class="code"><span class="constructor">Unix</span>.setsockopt_float</code>.
+    and modified with <code class="code"><span class="constructor">Unix</span>.setsockopt_float</code>.
 </div>
 </td></tr>
 <tr><td><a href="BatUnix.html#TYPEsocket_int_option">socket_int_option</a> [<a href="BatUnix.html">BatUnix</a>]</td>
 <td><div class="info">
 The socket options that can be consulted with <code class="code"><span class="constructor">Unix</span>.getsockopt_int</code>
-   and modified with <code class="code"><span class="constructor">Unix</span>.setsockopt_int</code>.
+    and modified with <code class="code"><span class="constructor">Unix</span>.setsockopt_int</code>.
 </div>
 </td></tr>
 <tr><td><a href="BatUnix.html#TYPEsocket_optint_option">socket_optint_option</a> [<a href="BatUnix.html">BatUnix</a>]</td>
 <td><div class="info">
 The socket options that can be consulted with <code class="code"><span class="constructor">Unix</span>.getsockopt_optint</code>
-   and modified with <code class="code"><span class="constructor">Unix</span>.setsockopt_optint</code>.
+    and modified with <code class="code"><span class="constructor">Unix</span>.setsockopt_optint</code>.
 </div>
 </td></tr>
 <tr><td><a href="BatUnix.html#TYPEsocket_type">socket_type</a> [<a href="BatUnix.html">BatUnix</a>]</td>
 <td><div class="info">
 The type of socket kinds, specifying the semantics of
-   communications.
+    communications.
 </div>
 </td></tr>
 <tr><td><a href="BatGc.html#TYPEstat">stat</a> [<a href="BatGc.html">BatGc</a>]</td>
@@ -888,8 +880,8 @@ A source of elements of type <code class="code"><span class="keywordsign">'</spa
 <tr><td><a href="BatParserCo.html#TYPEt">t</a> [<a href="BatParserCo.html">BatParserCo</a>]</td>
 <td><div class="info">
 A parser for elements of type <code class="code"><span class="keywordsign">'</span>a</code>, producing
-     elements of type <code class="code"><span class="keywordsign">'</span>b</code>, with user-defined states
-     of type <code class="code"><span class="keywordsign">'</span>c</code>.
+   elements of type <code class="code"><span class="keywordsign">'</span>b</code>, with user-defined states
+   of type <code class="code"><span class="keywordsign">'</span>c</code>.
 </div>
 </td></tr>
 <tr><td><a href="BatOption.html#TYPEt">t</a> [<a href="BatOption.html">BatOption</a>]</td>
@@ -1103,19 +1095,19 @@ The type of booleans.
 <tr><td><a href="BatBigarray.Array3.html#TYPEt">t</a> [<a href="BatBigarray.Array3.html">BatBigarray.Array3</a>]</td>
 <td><div class="info">
 The type of three-dimensional big arrays whose elements have
-     OCaml type <code class="code"><span class="keywordsign">'</span>a</code>, representation kind <code class="code"><span class="keywordsign">'</span>b</code>, and memory layout <code class="code"><span class="keywordsign">'</span>c</code>.
+      OCaml type <code class="code"><span class="keywordsign">'</span>a</code>, representation kind <code class="code"><span class="keywordsign">'</span>b</code>, and memory layout <code class="code"><span class="keywordsign">'</span>c</code>.
 </div>
 </td></tr>
 <tr><td><a href="BatBigarray.Array2.html#TYPEt">t</a> [<a href="BatBigarray.Array2.html">BatBigarray.Array2</a>]</td>
 <td><div class="info">
 The type of two-dimensional big arrays whose elements have
-     OCaml type <code class="code"><span class="keywordsign">'</span>a</code>, representation kind <code class="code"><span class="keywordsign">'</span>b</code>, and memory layout <code class="code"><span class="keywordsign">'</span>c</code>.
+      OCaml type <code class="code"><span class="keywordsign">'</span>a</code>, representation kind <code class="code"><span class="keywordsign">'</span>b</code>, and memory layout <code class="code"><span class="keywordsign">'</span>c</code>.
 </div>
 </td></tr>
 <tr><td><a href="BatBigarray.Array1.html#TYPEt">t</a> [<a href="BatBigarray.Array1.html">BatBigarray.Array1</a>]</td>
 <td><div class="info">
 The type of one-dimensional big arrays whose elements have
-     OCaml type <code class="code"><span class="keywordsign">'</span>a</code>, representation kind <code class="code"><span class="keywordsign">'</span>b</code>, and memory layout <code class="code"><span class="keywordsign">'</span>c</code>.
+      OCaml type <code class="code"><span class="keywordsign">'</span>a</code>, representation kind <code class="code"><span class="keywordsign">'</span>b</code>, and memory layout <code class="code"><span class="keywordsign">'</span>c</code>.
 </div>
 </td></tr>
 <tr><td><a href="BatBigarray.Genarray.html#TYPEt">t</a> [<a href="BatBigarray.Genarray.html">BatBigarray.Genarray</a>]</td>
@@ -1189,7 +1181,7 @@ Type of characters.
 <tr><td><a href="BatUref.html#TYPEuref">uref</a> [<a href="BatUref.html">BatUref</a>]</td>
 <td><div class="info">
 A <code class="code">t uref</code> is a reference to a cell that contains a
-      value of type <code class="code">t</code>.
+    value of type <code class="code">t</code>.
 </div>
 </td></tr>
 <tr><td><a href="BatPathGen.PathType.html#TYPEustring">ustring</a> [<a href="BatPathGen.PathType.html">BatPathGen.PathType</a>]</td>
@@ -1214,6 +1206,6 @@ Flags for <code class="code"><span class="constructor">Unix</span>.waitpid</code
 A type meant to avoid duplication of signatures.
 </div>
 </td></tr>
-</table>
+</table><br>
 </body>
 </html>

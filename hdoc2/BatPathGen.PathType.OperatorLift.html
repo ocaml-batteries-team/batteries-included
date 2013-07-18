@@ -105,17 +105,18 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatPathGen.PathType.OperatorLift</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a class="up" href="BatPathGen.PathType.html" title="BatPathGen.PathType">Up</a>
-&nbsp;<a class="post" href="BatPathGen.PathType.Operators.html" title="BatPathGen.PathType.Operators">Next</a>
+<div class="navbar">&nbsp;<a href="BatPathGen.PathType.html">Up</a>
+&nbsp;<a href="BatPathGen.PathType.Operators.html">Next</a>
 </div>
-<h1>Module <a href="type_BatPathGen.PathType.OperatorLift.html">BatPathGen.PathType.OperatorLift</a></h1>
+<center><h1>Module <a href="type_BatPathGen.PathType.OperatorLift.html">BatPathGen.PathType.OperatorLift</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> OperatorLift: <code class="code"><span class="keyword">sig</span></code> <a href="BatPathGen.PathType.OperatorLift.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Convenience operator for lifting primitive strings to <code class="code">ustring</code> type.<br>
 <hr width="100%">
 <pre><span id="VAL(!!)"><span class="keyword">val</span> (!!)</span> : <code class="type">string -> <a href="BatPathGen.PathType.html#TYPEustring">BatPathGen.PathType.ustring</a></code></pre><div class="info">
 Prefix operator that converts primitive string to <code class="code">ustring</code>. May raise some exceptions depending on actual strings implementation.
 <p>
 
-  You might want to <code class="code"><span class="keyword">open</span> <span class="constructor">Path</span>.<span class="constructor">OperatorLift</span></code> to improve readability of path construction using string literals. Example:
-<code class="code"><span class="constructor">Path</span>.root/:!!<span class="string">"foo"</span>/:!!<span class="string">"bar"</span></code> = <code class="code"><span class="constructor">Path</span>.root/:(<span class="constructor">S</span>.lift <span class="string">"foo"</span>)/:(<span class="constructor">S</span>.lift <span class="string">"bar"</span>)</code> (where <code class="code"><span class="constructor">S</span>.lift</code> converts to  <code class="code">ustring</code> type)<br>
+          You might want to <code class="code"><span class="keyword">open</span> <span class="constructor">Path</span>.<span class="constructor">OperatorLift</span></code> to improve readability of path construction using string literals. Example:
+          <code class="code"><span class="constructor">Path</span>.root/:!!<span class="string">"foo"</span>/:!!<span class="string">"bar"</span></code> = <code class="code"><span class="constructor">Path</span>.root/:(<span class="constructor">S</span>.lift <span class="string">"foo"</span>)/:(<span class="constructor">S</span>.lift <span class="string">"bar"</span>)</code> (where <code class="code"><span class="constructor">S</span>.lift</code> converts to  <code class="code">ustring</code> type)<br>
 </div>
 </body></html>

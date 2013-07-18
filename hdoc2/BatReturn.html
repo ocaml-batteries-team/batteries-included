@@ -106,11 +106,12 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatReturn</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatResult.html" title="BatResult">Previous</a>
-&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="BatScanf.html" title="BatScanf">Next</a>
+<div class="navbar"><a href="BatResult.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="BatScanf.html">Next</a>
 </div>
-<h1>Module <a href="type_BatReturn.html">BatReturn</a></h1>
+<center><h1>Module <a href="type_BatReturn.html">BatReturn</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> BatReturn: <code class="code"><span class="keyword">sig</span></code> <a href="BatReturn.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Local exceptions/labels/goto/return.
 <p>
 
@@ -126,13 +127,13 @@
 </ul>
 
    Example:
-   <code class="code">&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;find_in_array&nbsp;a&nbsp;e&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;label&nbsp;(<span class="keyword">fun</span>&nbsp;label&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span>&nbsp;i&nbsp;=&nbsp;0&nbsp;<span class="keyword">to</span>&nbsp;<span class="constructor">Array</span>.length&nbsp;a&nbsp;-&nbsp;1&nbsp;<span class="keyword">do</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;<span class="constructor">Array</span>.get&nbsp;a&nbsp;i&nbsp;=&nbsp;e&nbsp;<span class="keyword">then</span>&nbsp;return&nbsp;label&nbsp;(<span class="constructor">Some</span>&nbsp;i)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">done</span>;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">None</span>)<br>
-&nbsp;&nbsp;&nbsp;</code><br>
+   <pre></pre><code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;find_in_array&nbsp;a&nbsp;e&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;label&nbsp;(<span class="keyword">fun</span>&nbsp;label&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span>&nbsp;i&nbsp;=&nbsp;0&nbsp;<span class="keyword">to</span>&nbsp;<span class="constructor">Array</span>.length&nbsp;a&nbsp;-&nbsp;1&nbsp;<span class="keyword">do</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;<span class="constructor">Array</span>.get&nbsp;a&nbsp;i&nbsp;=&nbsp;e&nbsp;<span class="keyword">then</span>&nbsp;return&nbsp;label&nbsp;(<span class="constructor">Some</span>&nbsp;i)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">done</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">None</span>)<br>
+&nbsp;&nbsp;&nbsp;</code><pre></pre><br>
 <b>Author(s):</b> David Teller<br>
 <hr width="100%">
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
@@ -158,13 +159,13 @@ as <code class="code">label</code><br>
 </div>
 <pre><span id="VALreturn"><span class="keyword">val</span> return</span> : <code class="type">'a <a href="BatReturn.html#TYPEt">t</a> -> 'a -> 'b</code></pre><div class="info">
 Return to a label. <code class="code">return l v</code> returns
-    to the point where label <code class="code">l</code> was obtained
-    and produces value <code class="code">l</code>.
+      to the point where label <code class="code">l</code> was obtained
+      and produces value <code class="code">l</code>.
 <p>
 
-    Calling <code class="code">return l v</code> from outside the scope
-    of <code class="code">l</code> (i.e. the call to function <code class="code">label</code>
-    which produced <code class="code">l</code>) is a run-time error
-    and causes termination of the program.<br>
+      Calling <code class="code">return l v</code> from outside the scope
+      of <code class="code">l</code> (i.e. the call to function <code class="code">label</code>
+      which produced <code class="code">l</code>) is a run-time error
+      and causes termination of the program.<br>
 </div>
 </body></html>

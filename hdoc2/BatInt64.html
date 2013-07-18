@@ -105,28 +105,30 @@
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Submodules grouping all infix operators" rel="Section" href="#6_Submodulesgroupingallinfixoperators">
 <link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
+<link title="Printing" rel="Subsection" href="#7_Printing">
 <title>Batteries user guide : BatInt64</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatInt32.html" title="BatInt32">Previous</a>
-&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="BatInterfaces.html" title="BatInterfaces">Next</a>
+<div class="navbar"><a href="BatInt32.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="BatInterfaces.html">Next</a>
 </div>
-<h1>Module <a href="type_BatInt64.html">BatInt64</a></h1>
+<center><h1>Module <a href="type_BatInt64.html">BatInt64</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> BatInt64: <code class="code"><span class="keyword">sig</span></code> <a href="BatInt64.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>64-bit integers.
 <p>
 
-   This module provides operations on the type <code class="code">int64</code>
-   of signed 64-bit integers.  Unlike the built-in <code class="code">int</code> type,
-   the type <code class="code">int64</code> is guaranteed to be exactly 64-bit wide on all
-   platforms.  All arithmetic operations over <code class="code">int64</code> are taken
-   modulo 2<sup class="superscript">64</sup>.
+    This module provides operations on the type <code class="code">int64</code>
+    of signed 64-bit integers.  Unlike the built-in <code class="code">int</code> type,
+    the type <code class="code">int64</code> is guaranteed to be exactly 64-bit wide on all
+    platforms.  All arithmetic operations over <code class="code">int64</code> are taken
+    modulo 2<sup class="superscript">64</sup>.
 <p>
 
-   Performance notice: values of type <code class="code">int64</code> occupy more memory
-   space than values of type <code class="code">int</code>, and arithmetic operations on
-   <code class="code">int64</code> are generally slower than those on <code class="code">int</code>.  Use <code class="code">int64</code>
-   only when the application requires exact 64-bit arithmetic.
+    Performance notice: values of type <code class="code">int64</code> occupy more memory
+    space than values of type <code class="code">int</code>, and arithmetic operations on
+    <code class="code">int64</code> are generally slower than those on <code class="code">int</code>.  Use <code class="code">int64</code>
+    only when the application requires exact 64-bit arithmetic.
 <p>
 
     Any integer literal followed by <code class="code"><span class="constructor">L</span></code> is taken to be an <code class="code">int64</code>.
@@ -309,9 +311,9 @@ Equality function for 64-bit integers, useful for <code class="code"><span class
 <span id="6_Submodulesgroupingallinfixoperators"><h6>Submodules grouping all infix operators</h6></span><br>
 <pre><span class="keyword">module</span> <a href="BatInt64.Infix.html">Infix</a>: <code class="type"><a href="BatNumber.Infix.html">BatNumber.Infix</a></code><code class="type">  with type bat__infix_t = t</code></pre><pre><span class="keyword">module</span> <a href="BatInt64.Compare.html">Compare</a>: <code class="type"><a href="BatNumber.Compare.html">BatNumber.Compare</a></code><code class="type">  with type bat__compare_t = t</code></pre><pre><span id="VALmodulo"><span class="keyword">val</span> modulo</span> : <code class="type">int64 -> int64 -> int64</code></pre><pre><span id="VALpow"><span class="keyword">val</span> pow</span> : <code class="type">int64 -> int64 -> int64</code></pre><pre><span id="VAL(+)"><span class="keyword">val</span> (+)</span> : <code class="type"><a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a></code></pre><pre><span id="VAL(-)"><span class="keyword">val</span> (-)</span> : <code class="type"><a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a></code></pre><pre><span id="VAL( * )"><span class="keyword">val</span> ( * )</span> : <code class="type"><a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a></code></pre><pre><span id="VAL(/)"><span class="keyword">val</span> (/)</span> : <code class="type"><a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a></code></pre><pre><span id="VAL( ** )"><span class="keyword">val</span> ( ** )</span> : <code class="type"><a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a></code></pre><pre><span id="VALoperations"><span class="keyword">val</span> operations</span> : <code class="type"><a href="BatInt64.html#TYPEt">t</a> <a href="BatNumber.html#TYPEnumeric">BatNumber.numeric</a></code></pre><br>
 <span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
+<br>
+<span id="7_Printing"><div class="h7">Printing</div></span><br>
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatInt64.html#TYPEt">t</a> -> unit</code></pre><div class="info">
-<span id="7_Printing"><div class="h7">Printing</div></span>
-<p>
 prints as decimal string<br>
 </div>
 <pre><span id="VALprint_hex"><span class="keyword">val</span> print_hex</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatInt64.html#TYPEt">t</a> -> unit</code></pre><div class="info">

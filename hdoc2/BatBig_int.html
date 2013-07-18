@@ -115,11 +115,12 @@
 <title>Batteries user guide : BatBig_int</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatBase64.html" title="BatBase64">Previous</a>
-&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="BatBigarray.html" title="BatBigarray">Next</a>
+<div class="navbar"><a href="BatBase64.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="BatBigarray.html">Next</a>
 </div>
-<h1>Module <a href="type_BatBig_int.html">BatBig_int</a></h1>
+<center><h1>Module <a href="type_BatBig_int.html">BatBig_int</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> BatBig_int: <code class="code"><span class="keyword">sig</span></code> <a href="BatBig_int.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Operations on arbitrary-precision integers.
 <p>
 
@@ -182,34 +183,34 @@ Return the square of the given big integer<br>
 </div>
 <pre><span id="VALsqrt_big_int"><span class="keyword">val</span> sqrt_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatBig_int.html#TYPEbig_int">big_int</a></code></pre><div class="info">
 <code class="code">sqrt_big_int a</code> returns the integer square root of <code class="code">a</code>,
-           that is, the largest big integer <code class="code">r</code> such that <code class="code">r * r &lt;= a</code>.<br>
+    that is, the largest big integer <code class="code">r</code> such that <code class="code">r * r &lt;= a</code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> if <code class="code">a</code> is negative.<br>
 </div>
 <pre><span id="VALquomod_big_int"><span class="keyword">val</span> quomod_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -><br>       <a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatBig_int.html#TYPEbig_int">big_int</a> * <a href="BatBig_int.html#TYPEbig_int">big_int</a></code></pre><div class="info">
 Euclidean division of two big integers.
-           The first part of the result is the quotient,
-           the second part is the remainder.
-           Writing <code class="code">(q,r) = quomod_big_int a b</code>, we have
-           <code class="code">a = q * b + r</code> and <code class="code">0 &lt;= r &lt; <span class="keywordsign">|</span>b<span class="keywordsign">|</span></code>.<br>
+    The first part of the result is the quotient,
+    the second part is the remainder.
+    Writing <code class="code">(q,r) = quomod_big_int a b</code>, we have
+    <code class="code">a = q * b + r</code> and <code class="code">0 &lt;= r &lt; <span class="keywordsign">|</span>b<span class="keywordsign">|</span></code>.<br>
 <b>Raises</b> <code>Division_by_zero</code> if the divisor is zero.<br>
 </div>
 <pre><span id="VALdiv_big_int"><span class="keyword">val</span> div_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatBig_int.html#TYPEbig_int">big_int</a></code></pre><div class="info">
 Euclidean quotient of two big integers.
-           This is the first result <code class="code">q</code> of <code class="code">quomod_big_int</code> (see above).<br>
+    This is the first result <code class="code">q</code> of <code class="code">quomod_big_int</code> (see above).<br>
 </div>
 <pre><span id="VALmod_big_int"><span class="keyword">val</span> mod_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatBig_int.html#TYPEbig_int">big_int</a></code></pre><div class="info">
 Euclidean modulus of two big integers.
-           This is the second result <code class="code">r</code> of <code class="code">quomod_big_int</code> (see above).<br>
+    This is the second result <code class="code">r</code> of <code class="code">quomod_big_int</code> (see above).<br>
 </div>
 <pre><span id="VALgcd_big_int"><span class="keyword">val</span> gcd_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatBig_int.html#TYPEbig_int">big_int</a></code></pre><div class="info">
 Greatest common divisor of two big integers.<br>
 </div>
 <pre><span id="VALpower_int_positive_int"><span class="keyword">val</span> power_int_positive_int</span> : <code class="type">int -> int -> <a href="BatBig_int.html#TYPEbig_int">big_int</a></code></pre><pre><span id="VALpower_big_int_positive_int"><span class="keyword">val</span> power_big_int_positive_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> int -> <a href="BatBig_int.html#TYPEbig_int">big_int</a></code></pre><pre><span id="VALpower_int_positive_big_int"><span class="keyword">val</span> power_int_positive_big_int</span> : <code class="type">int -> <a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatBig_int.html#TYPEbig_int">big_int</a></code></pre><pre><span id="VALpower_big_int_positive_big_int"><span class="keyword">val</span> power_big_int_positive_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatBig_int.html#TYPEbig_int">big_int</a></code></pre><div class="info">
 Exponentiation functions.  Return the big integer
-           representing the first argument <code class="code">a</code> raised to the power <code class="code">b</code>
-           (the second argument).  Depending
-           on the function, <code class="code">a</code> and <code class="code">b</code> can be either small integers
-           or big integers.<br>
+    representing the first argument <code class="code">a</code> raised to the power <code class="code">b</code>
+    (the second argument).  Depending
+    on the function, <code class="code">a</code> and <code class="code">b</code> can be either small integers
+    or big integers.<br>
 <b>Raises</b> <code>Invalid_argument</code> if <code class="code">b</code> is negative.<br>
 </div>
 <pre><span id="VALoperations"><span class="keyword">val</span> operations</span> : <code class="type"><a href="BatBig_int.html#TYPEt">t</a> <a href="BatNumber.html#TYPEnumeric">BatNumber.numeric</a></code></pre><br>
@@ -218,12 +219,12 @@ Exponentiation functions.  Return the big integer
 <span id="6_Comparisonsandtests"><h6>Comparisons and tests</h6></span><br>
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatBig_int.html#TYPEbig_int">big_int</a> -> int</code></pre><pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre><pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatBig_int.html#TYPEbig_int">big_int</a> -> bool</code></pre><pre><span id="VALsign_big_int"><span class="keyword">val</span> sign_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> int</code></pre><div class="info">
 Return <code class="code">0</code> if the given big integer is zero,
-           <code class="code">1</code> if it is positive, and <code class="code">-1</code> if it is negative.<br>
+    <code class="code">1</code> if it is positive, and <code class="code">-1</code> if it is negative.<br>
 </div>
 <pre><span id="VALcompare_big_int"><span class="keyword">val</span> compare_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatBig_int.html#TYPEbig_int">big_int</a> -> int</code></pre><div class="info">
 <code class="code">compare_big_int a b</code> returns <code class="code">0</code> if <code class="code">a</code> and <code class="code">b</code> are equal,
-           <code class="code">1</code> if <code class="code">a</code> is greater than <code class="code">b</code>, and <code class="code">-1</code> if <code class="code">a</code> is smaller
-           than <code class="code">b</code>.<br>
+    <code class="code">1</code> if <code class="code">a</code> is greater than <code class="code">b</code>, and <code class="code">-1</code> if <code class="code">a</code> is smaller
+    than <code class="code">b</code>.<br>
 </div>
 <pre><span id="VALeq_big_int"><span class="keyword">val</span> eq_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatBig_int.html#TYPEbig_int">big_int</a> -> bool</code></pre><pre><span id="VALle_big_int"><span class="keyword">val</span> le_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatBig_int.html#TYPEbig_int">big_int</a> -> bool</code></pre><pre><span id="VALge_big_int"><span class="keyword">val</span> ge_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatBig_int.html#TYPEbig_int">big_int</a> -> bool</code></pre><pre><span id="VALlt_big_int"><span class="keyword">val</span> lt_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatBig_int.html#TYPEbig_int">big_int</a> -> bool</code></pre><pre><span id="VALgt_big_int"><span class="keyword">val</span> gt_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatBig_int.html#TYPEbig_int">big_int</a> -> bool</code></pre><div class="info">
 Usual boolean comparisons between two big integers.<br>
@@ -236,18 +237,18 @@ Return the smaller of its two arguments.<br>
 </div>
 <pre><span id="VALnum_digits_big_int"><span class="keyword">val</span> num_digits_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> int</code></pre><div class="info">
 Return the number of machine words used to store the
-           given big integer.<br>
+    given big integer.<br>
 </div>
 <br>
 <span id="6_Conversionstoandfromstrings"><h6>Conversions to and from strings</h6></span><br>
 <pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> string</code></pre><pre><span id="VALstring_of_big_int"><span class="keyword">val</span> string_of_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> string</code></pre><div class="info">
 Return the string representation of the given big integer,
-           in decimal (base 10).<br>
+    in decimal (base 10).<br>
 </div>
 <pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -> <a href="BatBig_int.html#TYPEbig_int">big_int</a></code></pre><pre><span id="VALbig_int_of_string"><span class="keyword">val</span> big_int_of_string</span> : <code class="type">string -> <a href="BatBig_int.html#TYPEbig_int">big_int</a></code></pre><div class="info">
 Convert a string to a big integer, in decimal.
-           The string consists of an optional <code class="code">-</code> or <code class="code">+</code> sign,
-           followed by one or several decimal digits.<br>
+    The string consists of an optional <code class="code">-</code> or <code class="code">+</code> sign,
+    followed by one or several decimal digits.<br>
 </div>
 <pre><span id="VALto_string_in_binary"><span class="keyword">val</span> to_string_in_binary</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> string</code></pre><div class="info">
 as <code class="code">string_of_big_int</code>, but in base 2<br>
@@ -260,35 +261,35 @@ as <code class="code">string_of_big_int</code>, but in base 16<br>
 </div>
 <pre><span id="VALto_string_in_base"><span class="keyword">val</span> to_string_in_base</span> : <code class="type">int -> <a href="BatBig_int.html#TYPEbig_int">big_int</a> -> string</code></pre><div class="info">
 <code class="code">to_string_in_base b n</code> returns the string representation in base <code class="code">b</code> of
-the given big integer <code class="code">n</code>. Should you have advanced needs (arbitrarily large
-bases, or custom digits instead of the usual <code class="code">0,1,...9,a,b,...,z</code>), use
-<code class="code">to_string_in_custom_base</code> instead.<br>
+    the given big integer <code class="code">n</code>. Should you have advanced needs (arbitrarily large
+    bases, or custom digits instead of the usual <code class="code">0,1,...9,a,b,...,z</code>), use
+    <code class="code">to_string_in_custom_base</code> instead.<br>
 <b>Raises</b> <code>Invalid_argument</code> if b is not in
-<code class="code">2 .. 36</code>.<br>
+    <code class="code">2 .. 36</code>.<br>
 </div>
 <pre><span id="VALto_string_in_custom_base"><span class="keyword">val</span> to_string_in_custom_base</span> : <code class="type">string -> int -> <a href="BatBig_int.html#TYPEbig_int">big_int</a> -> string</code></pre><div class="info">
 First argument, called <code class="code">symbols</code>, is the vector of the symbols used to
-represent the digits in base <code class="code">b</code>. <code class="code">to_string_in_base</code> is almost equivalent to
-<code class="code">to_string_in_custom_base big_int_base_default_symbols</code>, the difference being
-that <code class="code">to_string_in_custom_base</code> allows the base to be arbitrarily large,
-provided that <code class="code">symbols</code> can accommodate it. Concretely, the base <code class="code">b</code> must be at
-least <code class="code">2</code>, and <code class="code">symbols</code> must be of size at least <code class="code">b</code>. The default value of
-<code class="code">big_int_base_default_symbols</code> contains 62 symbols, as it uses lowercase and
-uppercase letters both. See below for more information.<br>
+    represent the digits in base <code class="code">b</code>. <code class="code">to_string_in_base</code> is almost equivalent to
+    <code class="code">to_string_in_custom_base big_int_base_default_symbols</code>, the difference being
+    that <code class="code">to_string_in_custom_base</code> allows the base to be arbitrarily large,
+    provided that <code class="code">symbols</code> can accommodate it. Concretely, the base <code class="code">b</code> must be at
+    least <code class="code">2</code>, and <code class="code">symbols</code> must be of size at least <code class="code">b</code>. The default value of
+    <code class="code">big_int_base_default_symbols</code> contains 62 symbols, as it uses lowercase and
+    uppercase letters both. See below for more information.<br>
 <b>Raises</b> <code>Invalid_argument</code> if <code class="code">b</code> is incorrect.<br>
 </div>
 <pre><span id="VALbig_int_base_default_symbols"><span class="keyword">val</span> big_int_base_default_symbols</span> : <code class="type">string</code></pre><div class="info">
 Default vector of symbols used by <code class="code">to_string_in_base</code> and its fixed-base
-derivatives <code class="code">to_string_in_binary</code>, <code class="code">to_string_in_octal</code> and <code class="code">to_string_in_hexa</code>
-to represent digits. The symbol at position <code class="code">p</code> encodes the value <code class="code">p</code>. The
-original value of this vector is, schematically, <code class="code">[<span class="string">'0'</span>..<span class="string">'9'</span> <span class="string">'a'</span> <span class="string">'b'</span>..<span class="string">'z'</span> <span class="string">'A'</span>
-<span class="string">'B'</span>..<span class="string">'Z'</span>]</code>, which is sufficient for bases up to and including 62. The basic
-<code class="code">to_string_in_base</code> function is capped to base 36 to avoid unexpected
-behaviours do to the case-sensitivity of the output in bases 37 to 62. You
-technically <i>can</i> mutate the vector, for instance if you prefer to exchange
-lower- and upper-case symbols program-wide. As usual where mutability is
-concerned, discretion is advised. Most of the time, it is better to build
-custom functions using <code class="code">to_string_in_custom_base</code>.<br>
+    derivatives <code class="code">to_string_in_binary</code>, <code class="code">to_string_in_octal</code> and <code class="code">to_string_in_hexa</code>
+    to represent digits. The symbol at position <code class="code">p</code> encodes the value <code class="code">p</code>. The
+    original value of this vector is, schematically, <code class="code">[<span class="string">'0'</span>..<span class="string">'9'</span> <span class="string">'a'</span> <span class="string">'b'</span>..<span class="string">'z'</span> <span class="string">'A'</span>
+    <span class="string">'B'</span>..<span class="string">'Z'</span>]</code>, which is sufficient for bases up to and including 62. The basic
+    <code class="code">to_string_in_base</code> function is capped to base 36 to avoid unexpected
+    behaviours do to the case-sensitivity of the output in bases 37 to 62. You
+    technically <i>can</i> mutate the vector, for instance if you prefer to exchange
+    lower- and upper-case symbols program-wide. As usual where mutability is
+    concerned, discretion is advised. Most of the time, it is better to build
+    custom functions using <code class="code">to_string_in_custom_base</code>.<br>
 </div>
 <br>
 <span id="6_Conversionstoandfromothernumericaltypes"><h6>Conversions to and from other numerical types</h6></span><br>
@@ -297,17 +298,17 @@ Convert a small integer to a big integer.<br>
 </div>
 <pre><span id="VALis_int_big_int"><span class="keyword">val</span> is_int_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> bool</code></pre><div class="info">
 Test whether the given big integer is small enough to
-           be representable as a small integer (type <code class="code">int</code>)
-           without loss of precision.  On a 32-bit platform,
-           <code class="code">is_int_big_int a</code> returns <code class="code"><span class="keyword">true</span></code> if and only if
-           <code class="code">a</code> is between -2<sup class="superscript">30</sup> and 2<sup class="superscript">30</sup>-1.  On a 64-bit platform,
-           <code class="code">is_int_big_int a</code> returns <code class="code"><span class="keyword">true</span></code> if and only if
-           <code class="code">a</code> is between -2<sup class="superscript">62</sup> and 2<sup class="superscript">62</sup>-1.<br>
+    be representable as a small integer (type <code class="code">int</code>)
+    without loss of precision.  On a 32-bit platform,
+    <code class="code">is_int_big_int a</code> returns <code class="code"><span class="keyword">true</span></code> if and only if
+    <code class="code">a</code> is between -2<sup class="superscript">30</sup> and 2<sup class="superscript">30</sup>-1.  On a 64-bit platform,
+    <code class="code">is_int_big_int a</code> returns <code class="code"><span class="keyword">true</span></code> if and only if
+    <code class="code">a</code> is between -2<sup class="superscript">62</sup> and 2<sup class="superscript">62</sup>-1.<br>
 </div>
 <pre><span id="VALto_int"><span class="keyword">val</span> to_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> int</code></pre><pre><span id="VALint_of_big_int"><span class="keyword">val</span> int_of_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> int</code></pre><div class="info">
 Convert a big integer to a small integer (type <code class="code">int</code>).<br>
 <b>Raises</b> <code>Failure</code> if the big integer
-           is not representable as a small integer.<br>
+    is not representable as a small integer.<br>
 </div>
 <pre><span id="VALbig_int_of_int32"><span class="keyword">val</span> big_int_of_int32</span> : <code class="type">int32 -> <a href="BatBig_int.html#TYPEbig_int">big_int</a></code></pre><div class="info">
 Convert a 32-bit integer to a big integer.<br>
@@ -321,21 +322,21 @@ Convert a 64-bit integer to a big integer.<br>
 <pre><span id="VALint32_of_big_int"><span class="keyword">val</span> int32_of_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> int32</code></pre><div class="info">
 Convert a big integer to a 32-bit integer.<br>
 <b>Raises</b> <code>Failure</code> if the big integer is outside the
-            range <code class="code">[-2{^31}, 2{^31}-1]</code>.<br>
+    range <code class="code">[-2{^31}, 2{^31}-1]</code>.<br>
 </div>
 <pre><span id="VALnativeint_of_big_int"><span class="keyword">val</span> nativeint_of_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> nativeint</code></pre><div class="info">
 Convert a big integer to a native integer.<br>
 <b>Raises</b> <code>Failure</code> if the big integer is outside the
-            range <code class="code">[<span class="constructor">Nativeint</span>.min_int, <span class="constructor">Nativeint</span>.max_int]</code>.<br>
+    range <code class="code">[<span class="constructor">Nativeint</span>.min_int, <span class="constructor">Nativeint</span>.max_int]</code>.<br>
 </div>
 <pre><span id="VALint64_of_big_int"><span class="keyword">val</span> int64_of_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> int64</code></pre><div class="info">
 Convert a big integer to a 64-bit integer.<br>
 <b>Raises</b> <code>Failure</code> if the big integer is outside the
-            range <code class="code">[-2{^63}, 2{^63}-1]</code>.<br>
+    range <code class="code">[-2{^63}, 2{^63}-1]</code>.<br>
 </div>
 <pre><span id="VALfloat_of_big_int"><span class="keyword">val</span> float_of_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> float</code></pre><div class="info">
 Returns a floating-point number approximating the
-           given big integer.<br>
+    given big integer.<br>
 </div>
 <pre><span id="VALof_float"><span class="keyword">val</span> of_float</span> : <code class="type">float -> <a href="BatBig_int.html#TYPEbig_int">big_int</a></code></pre><div class="info">
 rounds to the nearest integer<br>
@@ -345,37 +346,37 @@ rounds to the nearest integer<br>
 <span id="6_Bitorientedoperations"><h6>Bit-oriented operations</h6></span><br>
 <pre><span id="VALand_big_int"><span class="keyword">val</span> and_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatBig_int.html#TYPEbig_int">big_int</a></code></pre><div class="info">
 Bitwise logical ``and''.
-            The arguments must be positive or zero.<br>
+    The arguments must be positive or zero.<br>
 </div>
 <pre><span id="VALor_big_int"><span class="keyword">val</span> or_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatBig_int.html#TYPEbig_int">big_int</a></code></pre><div class="info">
 Bitwise logical ``or''.
-            The arguments must be positive or zero.<br>
+    The arguments must be positive or zero.<br>
 </div>
 <pre><span id="VALxor_big_int"><span class="keyword">val</span> xor_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatBig_int.html#TYPEbig_int">big_int</a> -> <a href="BatBig_int.html#TYPEbig_int">big_int</a></code></pre><div class="info">
 Bitwise logical ``exclusive or''.
-            The arguments must be positive or zero.<br>
+    The arguments must be positive or zero.<br>
 </div>
 <pre><span id="VALshift_left_big_int"><span class="keyword">val</span> shift_left_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> int -> <a href="BatBig_int.html#TYPEbig_int">big_int</a></code></pre><div class="info">
 <code class="code">shift_left_big_int b n</code> returns <code class="code">b</code> shifted left by <code class="code">n</code> bits.
-            Equivalent to multiplication by <code class="code">2^n</code>.<br>
+    Equivalent to multiplication by <code class="code">2^n</code>.<br>
 </div>
 <pre><span id="VALshift_right_big_int"><span class="keyword">val</span> shift_right_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> int -> <a href="BatBig_int.html#TYPEbig_int">big_int</a></code></pre><div class="info">
 <code class="code">shift_right_big_int b n</code> returns <code class="code">b</code> shifted right by <code class="code">n</code> bits.
-            Equivalent to division by <code class="code">2^n</code> with the result being
-            rounded towards minus infinity.<br>
+    Equivalent to division by <code class="code">2^n</code> with the result being
+    rounded towards minus infinity.<br>
 </div>
 <pre><span id="VALshift_right_towards_zero_big_int"><span class="keyword">val</span> shift_right_towards_zero_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> int -> <a href="BatBig_int.html#TYPEbig_int">big_int</a></code></pre><div class="info">
 <code class="code">shift_right_towards_zero_big_int b n</code> returns <code class="code">b</code> shifted
-            right by <code class="code">n</code> bits.  The shift is performed on the absolute
-            value of <code class="code">b</code>, and the result has the same sign as <code class="code">b</code>.
-            Equivalent to division by <code class="code">2^n</code> with the result being
-            rounded towards zero.<br>
+    right by <code class="code">n</code> bits.  The shift is performed on the absolute
+    value of <code class="code">b</code>, and the result has the same sign as <code class="code">b</code>.
+    Equivalent to division by <code class="code">2^n</code> with the result being
+    rounded towards zero.<br>
 </div>
 <pre><span id="VALextract_big_int"><span class="keyword">val</span> extract_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> int -> int -> <a href="BatBig_int.html#TYPEbig_int">big_int</a></code></pre><div class="info">
 <code class="code">extract_big_int bi ofs n</code> returns a nonnegative number
-            corresponding to bits <code class="code">ofs</code> to <code class="code">ofs + n - 1</code> of the
-            binary representation of <code class="code">bi</code>.  If <code class="code">bi</code> is negative,
-            a two's complement representation is used.<br>
+    corresponding to bits <code class="code">ofs</code> to <code class="code">ofs + n - 1</code> of the
+    binary representation of <code class="code">bi</code>.  If <code class="code">bi</code> is negative,
+    a two's complement representation is used.<br>
 </div>
 <br>
 <span id="6_Submodulesgroupingallinfixoperators"><h6>Submodules grouping all infix operators</h6></span><br>

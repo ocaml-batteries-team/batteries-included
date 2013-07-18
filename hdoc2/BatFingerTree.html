@@ -106,11 +106,12 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatFingerTree</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatFile.html" title="BatFile">Previous</a>
-&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="BatFloat.html" title="BatFloat">Next</a>
+<div class="navbar"><a href="BatFile.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="BatFloat.html">Next</a>
 </div>
-<h1>Module <a href="type_BatFingerTree.html">BatFingerTree</a></h1>
+<center><h1>Module <a href="type_BatFingerTree.html">BatFingerTree</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> BatFingerTree: <code class="code"><span class="keyword">sig</span></code> <a href="BatFingerTree.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>This module implements a generic finger tree datastructure
    as described here:
    Finger Trees: A Simple General-purpose Data Structure
@@ -142,19 +143,19 @@
    None of the functions on finger trees can cause stack overflow:
    they use at worst a logarithmic amount of stack space.<br>
 <hr width="100%">
-<pre><code><span id="TYPEmonoid"><span class="keyword">type</span> <code class="type">'a</code> monoid</span> = {</code></pre><table class="typetable">
+<br><code><span id="TYPEmonoid"><span class="keyword">type</span> <code class="type">'a</code> monoid</span> = {</code><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTmonoid.zero">zero</span>&nbsp;:<code class="type">'a</code>;</code></td>
+<code>zero&nbsp;: <code class="type">'a</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >The neutral element of the monoid.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTmonoid.combine">combine</span>&nbsp;:<code class="type">'a -> 'a -> 'a</code>;</code></td>
+<code>combine&nbsp;: <code class="type">'a -> 'a -> 'a</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><code class="code">combine</code> should be associative, and have <code class="code">zero</code> as neutral element.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 }

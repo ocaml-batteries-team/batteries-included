@@ -105,20 +105,21 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatMap.PMap.Infix</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatMap.PMap.Exceptionless.html" title="BatMap.PMap.Exceptionless">Previous</a>
-&nbsp;<a class="up" href="BatMap.PMap.html" title="BatMap.PMap">Up</a>
+<div class="navbar"><a href="BatMap.PMap.Exceptionless.html">Previous</a>
+&nbsp;<a href="BatMap.PMap.html">Up</a>
 &nbsp;</div>
-<h1>Module <a href="type_BatMap.PMap.Infix.html">BatMap.PMap.Infix</a></h1>
+<center><h1>Module <a href="type_BatMap.PMap.Infix.html">BatMap.PMap.Infix</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Infix: <code class="code"><span class="keyword">sig</span></code> <a href="BatMap.PMap.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Infix operators over a <a href="BatMap.PMap.html"><code class="code"><span class="constructor">BatMap</span>.<span class="constructor">PMap</span></code></a><br>
 <hr width="100%">
 <pre><span id="VAL(-->)"><span class="keyword">val</span> (--&gt;)</span> : <code class="type">('a, 'b) <a href="BatMap.PMap.html#TYPEt">BatMap.PMap.t</a> -> 'a -> 'b</code></pre><div class="info">
 <code class="code">map--&gt;key</code> returns the current binding of <code class="code">key</code> in <code class="code">map</code>,
-      or raises <code class="code"><span class="constructor">Not_found</span></code>. Equivalent to <code class="code">find key map</code>.<br>
+        or raises <code class="code"><span class="constructor">Not_found</span></code>. Equivalent to <code class="code">find key map</code>.<br>
 </div>
 <pre><span id="VAL(<--)"><span class="keyword">val</span> (&lt;--)</span> : <code class="type">('a, 'b) <a href="BatMap.PMap.html#TYPEt">BatMap.PMap.t</a> -> 'a * 'b -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">BatMap.PMap.t</a></code></pre><div class="info">
 <code class="code">map&lt;--(key, value)</code> returns a map containing the same bindings as
-    <code class="code">map</code>, plus a binding of <code class="code">key</code> to <code class="code">value</code>. If <code class="code">key</code> was already bound
-    in <code class="code">map</code>, its previous binding disappears. Equivalent
-    to <code class="code">add key value map</code><br>
+          <code class="code">map</code>, plus a binding of <code class="code">key</code> to <code class="code">value</code>. If <code class="code">key</code> was already bound
+          in <code class="code">map</code>, its previous binding disappears. Equivalent
+          to <code class="code">add key value map</code><br>
 </div>
 </body></html>

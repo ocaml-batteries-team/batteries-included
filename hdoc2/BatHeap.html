@@ -111,11 +111,12 @@
 <title>Batteries user guide : BatHeap</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatHashtbl.html" title="BatHashtbl">Previous</a>
-&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="BatIMap.html" title="BatIMap">Next</a>
+<div class="navbar"><a href="BatHashtbl.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="BatIMap.html">Next</a>
 </div>
-<h1>Module <a href="type_BatHeap.html">BatHeap</a></h1>
+<center><h1>Module <a href="type_BatHeap.html">BatHeap</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> BatHeap: <code class="code"><span class="keyword">sig</span></code> <a href="BatHeap.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Functional heaps over ordered types
 <p>
 
@@ -142,7 +143,7 @@ Insert an element into the heap. Duplicates are kept. O(log m)<br>
 </div>
 <pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">'a -> 'a <a href="BatHeap.html#TYPEt">t</a> -> 'a <a href="BatHeap.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">add x h</code> is the same as <code class="code">insert h x</code>. This function is intended
-      to be used with <code class="code">fold_right</code>.<br>
+    to be used with <code class="code">fold_right</code>.<br>
 </div>
 <br>
 <span id="6_Operations"><h6>Operations</h6></span><br>
@@ -170,11 +171,11 @@ Enumerate the elements of the heap. O(n log n)<br>
 </div>
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatHeap.html#TYPEt">t</a></code></pre><div class="info">
 Build a heap from an enumeration. Consumes the enumeration.
-      O(n log n)<br>
+    O(n log n)<br>
 </div>
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a <a href="BatHeap.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
 Enumerate the elements of the heap in heap order. O(log n) per
-      <a href="BatEnum.html#VALget"><code class="code"><span class="constructor">BatEnum</span>.get</code></a>.<br>
+    <a href="BatEnum.html#VALget"><code class="code"><span class="constructor">BatEnum</span>.get</code></a>.<br>
 </div>
 <br>
 <span id="6_Printing"><h6>Printing</h6></span><br>

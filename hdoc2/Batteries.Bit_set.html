@@ -109,11 +109,12 @@
 <title>Batteries user guide : Batteries.Bit_set</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="Batteries.BitSet.html" title="Batteries.BitSet">Previous</a>
-&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
-&nbsp;<a class="post" href="Batteries.Dllist.html" title="Batteries.Dllist">Next</a>
+<div class="navbar"><a href="Batteries.BitSet.html">Previous</a>
+&nbsp;<a href="Batteries.html">Up</a>
+&nbsp;<a href="Batteries.Dllist.html">Next</a>
 </div>
-<h1>Module <a href="type_Batteries.Bit_set.html">Batteries.Bit_set</a></h1>
+<center><h1>Module <a href="type_Batteries.Bit_set.html">Batteries.Bit_set</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> Bit_set: <code class="type">BatBitSet</code></pre><hr width="100%">
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
 
@@ -145,10 +146,10 @@ Copy a bitset : further modifications of first one will not affect the
 <p>
 
     Example: <code class="code">
-<span class="keyword">let</span> a = <span class="constructor">Bitset</span>.create 8 <span class="keyword">in</span> 
-<span class="keyword">let</span> b = <span class="constructor">BitSet</span>.copy a <span class="keyword">in</span> 
-<span class="constructor">BitSet</span>.set a 6; 
-<span class="constructor">BitSet</span>.mem a 6 <span class="keywordsign">&amp;&amp;</span> not (<span class="constructor">BitSet</span>.mem b 6)</code><br>
+    <span class="keyword">let</span> a = <span class="constructor">Bitset</span>.create 8 <span class="keyword">in</span>
+    <span class="keyword">let</span> b = <span class="constructor">BitSet</span>.copy a <span class="keyword">in</span>
+    <span class="constructor">BitSet</span>.set a 6;
+    <span class="constructor">BitSet</span>.mem a 6 <span class="keywordsign">&amp;&amp;</span> not (<span class="constructor">BitSet</span>.mem b 6)</code><br>
 </div>
 <pre><span id="VALmem"><span class="keyword">val</span> mem</span> : <code class="type"><a href="BatBitSet.html#TYPEt">t</a> -> int -> bool</code></pre><div class="info">
 <code class="code">mem s n</code> returns true if nth-bit in the bitset <code class="code">s</code> is set,
@@ -205,7 +206,7 @@ These functions modify an existing bitset.<br>
 </div>
 <pre><span id="VALdifferentiate_sym"><span class="keyword">val</span> differentiate_sym</span> : <code class="type"><a href="BatBitSet.html#TYPEt">t</a> -> <a href="BatBitSet.html#TYPEt">t</a> -> unit</code></pre><div class="info">
 <code class="code">differentiate_sym s t</code> sets <code class="code">s</code> to the symmetrical difference of the
-  sets <code class="code">s</code> and <code class="code">t</code>.<br>
+    sets <code class="code">s</code> and <code class="code">t</code>.<br>
 </div>
 <br>
 <span id="6_Returnnewbitset"><h6>Return new bitset</h6></span><br>
@@ -267,7 +268,7 @@ As <code class="code">of_enum</code>, but from a list<br>
 <span id="6_Internals"><h6>Internals</h6></span>
 <p>
 <code class="code">capacity s</code> returns the number of bits, both set and unset, stored
-    in <code class="code">s</code>.  This is guaranteed to be larger than the largest element
-    (set bit index) in <code class="code">s</code>.<br>
+      in <code class="code">s</code>.  This is guaranteed to be larger than the largest element
+      (set bit index) in <code class="code">s</code>.<br>
 </div>
 </body></html>

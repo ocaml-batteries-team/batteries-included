@@ -115,11 +115,12 @@
 <title>Batteries user guide : BatPrintf</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatPrintexc.html" title="BatPrintexc">Previous</a>
-&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="BatQueue.html" title="BatQueue">Next</a>
+<div class="navbar"><a href="BatPrintexc.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="BatQueue.html">Next</a>
 </div>
-<h1>Module <a href="type_BatPrintf.html">BatPrintf</a></h1>
+<center><h1>Module <a href="type_BatPrintf.html">BatPrintf</a></h1></center>
+<br>
 <pre><span class="keyword">module</span> BatPrintf: <code class="code"><span class="keyword">sig</span></code> <a href="BatPrintf.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Formatted output functions (also known as unparsing).<br>
 <b>Author(s):</b> Xavier Leroy, Pierre Weiss, David Teller<br>
 <hr width="100%">
@@ -163,8 +164,8 @@ Formatted output functions (also known as unparsing).<br>
    when passed string <code class="code"><span class="string">"foobar"</span></code> prints <code class="code"><span class="string">"(foobar)"</span></code> and ends the
    line. Similarly, <code class="code">printf <span class="string">"Here's the result: %s.\n\tComputation
    took %i seconds.\n"</span> <span class="string">"foobar"</span> 5</code> prints
-   <code class="code"><span class="constructor">Here's</span>&nbsp;the&nbsp;result:&nbsp;foobar<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Computation</span>&nbsp;took&nbsp;5&nbsp;seconds.</code>
+   <pre></pre><code class="code"><span class="constructor">Here's</span>&nbsp;the&nbsp;result:&nbsp;foobar<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Computation</span>&nbsp;took&nbsp;5&nbsp;seconds.</code><pre></pre>
 <p>
 
    Note that <code class="code">\n</code> (the newline character) and <code class="code">\t</code> (the tabulation)
@@ -303,90 +304,90 @@ The format to use for displaying the various arguments passed to the function.
 
 <br>
 <span id="6_Commonfunctions"><h6>Common functions</h6></span><br>
-<pre><span id="VALprintf"><span class="keyword">val</span> printf</span> : <code class="type">('b, 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatPrintf.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
+<pre><span id="VALprintf"><span class="keyword">val</span> printf</span> : <code class="type">('a, 'b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatPrintf.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 The usual <code class="code">printf</code> function, prints to the standard output <code class="code">stdout</code>, i.e. normally
-     to the screen. If you are lost, this is probably the function you're looking for.<br>
+   to the screen. If you are lost, this is probably the function you're looking for.<br>
 </div>
-<pre><span id="VALeprintf"><span class="keyword">val</span> eprintf</span> : <code class="type">('b, 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatPrintf.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
+<pre><span id="VALeprintf"><span class="keyword">val</span> eprintf</span> : <code class="type">('a, 'b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatPrintf.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 The usual <code class="code">eprintf</code> function, prints to the standard error output <code class="code">stderr</code>, used
-     to display warnings and errors. Otherwise identical to <a href="BatPrintf.html#VALprintf"><code class="code"><span class="constructor">BatPrintf</span>.printf</code></a>.<br>
+   to display warnings and errors. Otherwise identical to <a href="BatPrintf.html#VALprintf"><code class="code"><span class="constructor">BatPrintf</span>.printf</code></a>.<br>
 </div>
 <pre><span id="VALsprintf"><span class="keyword">val</span> sprintf</span> : <code class="type">('a, unit, string) <a href="BatPrintf.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 A function which doesn't print its result but returns it as a string. Useful
-      for building messages, for translation purposes or for display in a window,
-      for instance.
+    for building messages, for translation purposes or for display in a window,
+    for instance.
 <p>
 
-      While this function is quite convenient, don't abuse it to create very large
-      strings such as files, that's not its role. For this kind of usage, prefer
-      the more modular and usually faster <a href="BatPrintf.html#VALfprintf"><code class="code"><span class="constructor">BatPrintf</span>.fprintf</code></a>.
+    While this function is quite convenient, don't abuse it to create very large
+    strings such as files, that's not its role. For this kind of usage, prefer
+    the more modular and usually faster <a href="BatPrintf.html#VALfprintf"><code class="code"><span class="constructor">BatPrintf</span>.fprintf</code></a>.
 <p>
 
-      Note that any function called with <code class="code">%a</code> should return strings, i.e.
-      should have type <code class="code">unit <span class="keywordsign">-&gt;</span> string</code>.<br>
+    Note that any function called with <code class="code">%a</code> should return strings, i.e.
+    should have type <code class="code">unit <span class="keywordsign">-&gt;</span> string</code>.<br>
 </div>
 <pre><span id="VALsprintf2"><span class="keyword">val</span> sprintf2</span> : <code class="type">('a, 'b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, string) Pervasives.format4 -> 'a</code></pre><div class="info">
 A function which doesn't print its result but returns it as a string. Useful
-      for building messages, for translation purposes or for display in a window,
-      for instance.
+    for building messages, for translation purposes or for display in a window,
+    for instance.
 <p>
 
-      While this function is quite convenient, don't abuse it to create very large
-      strings such as files, that's not its role. For this kind of usage, prefer
-      the more modular and usually faster <a href="BatPrintf.html#VALfprintf"><code class="code"><span class="constructor">BatPrintf</span>.fprintf</code></a>.
-      Note that any function called with <code class="code">%a</code> should be able to print its result,
-      i.e. should have type <code class="code"><span class="keywordsign">'</span>b output <span class="keywordsign">-&gt;</span> unit</code>.<br>
+    While this function is quite convenient, don't abuse it to create very large
+    strings such as files, that's not its role. For this kind of usage, prefer
+    the more modular and usually faster <a href="BatPrintf.html#VALfprintf"><code class="code"><span class="constructor">BatPrintf</span>.fprintf</code></a>.
+    Note that any function called with <code class="code">%a</code> should be able to print its result,
+    i.e. should have type <code class="code"><span class="keywordsign">'</span>b output <span class="keywordsign">-&gt;</span> unit</code>.<br>
 </div>
 <br>
 <span id="6_Generalfunctions"><h6>General functions</h6></span><br>
 <pre><span id="VALfprintf"><span class="keyword">val</span> fprintf</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> ('b, 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatPrintf.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
 General function. This function prints to any output. Typically,
-     if you are attempting to build a large output such as a file,
-     this is probably the function you are looking for. If you are
-     writing a pretty-printer, this is probably the function you are
-     looking for. If you are you are looking for a function to use for
-     argument <code class="code">%a</code> with <a href="BatPrintf.html#VALprintf"><code class="code"><span class="constructor">BatPrintf</span>.printf</code></a>, <a href="BatPrintf.html#VALeprintf"><code class="code"><span class="constructor">BatPrintf</span>.eprintf</code></a>, <a href="BatPrintf.html#VALsprintf2"><code class="code"><span class="constructor">BatPrintf</span>.sprintf2</code></a>,
-     <a href="BatPrintf.html#VALifprintf"><code class="code"><span class="constructor">BatPrintf</span>.ifprintf</code></a>, <a href="BatPrintf.html#VALbprintf2"><code class="code"><span class="constructor">BatPrintf</span>.bprintf2</code></a>, <a href="BatPrintf.html#VALkfprintf"><code class="code"><span class="constructor">BatPrintf</span>.kfprintf</code></a>, <a href="BatPrintf.html#VALksprintf2"><code class="code"><span class="constructor">BatPrintf</span>.ksprintf2</code></a>, <a href="BatPrintf.html#VALkbprintf2"><code class="code"><span class="constructor">BatPrintf</span>.kbprintf2</code></a>
-     or any other function with type <code class="code">(_, _ output, unit) format</code> or
-     <code class="code">(_, _ output, unit, _) format4</code>, this is also probably the
-     function you are looking for.<br>
+   if you are attempting to build a large output such as a file,
+   this is probably the function you are looking for. If you are
+   writing a pretty-printer, this is probably the function you are
+   looking for. If you are you are looking for a function to use for
+   argument <code class="code">%a</code> with <a href="BatPrintf.html#VALprintf"><code class="code"><span class="constructor">BatPrintf</span>.printf</code></a>, <a href="BatPrintf.html#VALeprintf"><code class="code"><span class="constructor">BatPrintf</span>.eprintf</code></a>, <a href="BatPrintf.html#VALsprintf2"><code class="code"><span class="constructor">BatPrintf</span>.sprintf2</code></a>,
+   <a href="BatPrintf.html#VALifprintf"><code class="code"><span class="constructor">BatPrintf</span>.ifprintf</code></a>, <a href="BatPrintf.html#VALbprintf2"><code class="code"><span class="constructor">BatPrintf</span>.bprintf2</code></a>, <a href="BatPrintf.html#VALkfprintf"><code class="code"><span class="constructor">BatPrintf</span>.kfprintf</code></a>, <a href="BatPrintf.html#VALksprintf2"><code class="code"><span class="constructor">BatPrintf</span>.ksprintf2</code></a>, <a href="BatPrintf.html#VALkbprintf2"><code class="code"><span class="constructor">BatPrintf</span>.kbprintf2</code></a>
+   or any other function with type <code class="code">(_, _ output, unit) format</code> or
+   <code class="code">(_, _ output, unit, _) format4</code>, this is also probably the
+   function you are looking for.<br>
 </div>
-<pre><span id="VALifprintf"><span class="keyword">val</span> ifprintf</span> : <code class="type">'c -> ('b, 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatPrintf.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
+<pre><span id="VALifprintf"><span class="keyword">val</span> ifprintf</span> : <code class="type">'a -> ('b, 'c <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatPrintf.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
 As <a href="BatPrintf.html#VALfprintf"><code class="code"><span class="constructor">BatPrintf</span>.fprintf</code></a> but doesn't actually print anything.
-     Sometimes useful for debugging.<br>
+   Sometimes useful for debugging.<br>
 </div>
 <pre><span id="VALbprintf"><span class="keyword">val</span> bprintf</span> : <code class="type">Buffer.t -> ('a, Buffer.t, unit) <a href="BatPrintf.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 As <a href="BatPrintf.html#VALfprintf"><code class="code"><span class="constructor">BatPrintf</span>.fprintf</code></a>, but with buffers instead of outputs.
-     In particular, any unparser called with <code class="code">%a</code> should
-     write to a buffer rather than to an output<br>
+   In particular, any unparser called with <code class="code">%a</code> should
+   write to a buffer rather than to an output<br>
 </div>
-<pre><span id="VALbprintf2"><span class="keyword">val</span> bprintf2</span> : <code class="type">Buffer.t -> ('b, 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatPrintf.html#TYPEt">t</a> -> 'b</code></pre><div class="info">
+<pre><span id="VALbprintf2"><span class="keyword">val</span> bprintf2</span> : <code class="type">Buffer.t -> ('a, 'b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatPrintf.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
 As <a href="BatPrintf.html#VALprintf"><code class="code"><span class="constructor">BatPrintf</span>.printf</code></a> but writes to a buffer instead
-     of printing to the output. By opposition to
-     <a href="BatPrintf.html#VALbprintf"><code class="code"><span class="constructor">BatPrintf</span>.bprintf</code></a>, only the result is changed with
-     respect to <a href="BatPrintf.html#VALprintf"><code class="code"><span class="constructor">BatPrintf</span>.printf</code></a>, not the inner workings.<br>
+   of printing to the output. By opposition to
+   <a href="BatPrintf.html#VALbprintf"><code class="code"><span class="constructor">BatPrintf</span>.bprintf</code></a>, only the result is changed with
+   respect to <a href="BatPrintf.html#VALprintf"><code class="code"><span class="constructor">BatPrintf</span>.printf</code></a>, not the inner workings.<br>
 </div>
 <br>
 <span id="6_Functionswithcontinuations"><h6>Functions with continuations</h6></span><br>
 <pre><span id="VALkfprintf"><span class="keyword">val</span> kfprintf</span> : <code class="type">('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -><br>       ('c, 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, 'b) Pervasives.format4 -> 'c</code></pre><div class="info">
 Same as <code class="code">fprintf</code>, but instead of returning immediately, passes the <code class="code">output</code> to its first
-     argument at the end of printing.<br>
+   argument at the end of printing.<br>
 </div>
 <pre><span id="VALksprintf"><span class="keyword">val</span> ksprintf</span> : <code class="type">(string -> 'a) -> ('b, unit, string, 'a) Pervasives.format4 -> 'b</code></pre><div class="info">
 Same as <code class="code">sprintf</code> above, but instead of returning the string,
-      passes it to the first argument.<br>
+    passes it to the first argument.<br>
 </div>
-<pre><span id="VALksprintf2"><span class="keyword">val</span> ksprintf2</span> : <code class="type">(string -> 'b) -><br>       ('c, 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, 'b) Pervasives.format4 -> 'c</code></pre><div class="info">
+<pre><span id="VALksprintf2"><span class="keyword">val</span> ksprintf2</span> : <code class="type">(string -> 'a) -><br>       ('b, 'c <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, 'a) Pervasives.format4 -> 'b</code></pre><div class="info">
 Same as <code class="code">sprintf2</code> above, but instead of returning the string,
-      passes it to the first argument.<br>
+    passes it to the first argument.<br>
 </div>
 <pre><span id="VALkbprintf"><span class="keyword">val</span> kbprintf</span> : <code class="type">(Buffer.t -> 'a) -><br>       Buffer.t -> ('b, Buffer.t, unit, 'a) Pervasives.format4 -> 'b</code></pre><div class="info">
 Same as <code class="code">bprintf</code>, but instead of returning immediately,
-      passes the buffer to its first argument at the end of printing.<br>
+    passes the buffer to its first argument at the end of printing.<br>
 </div>
-<pre><span id="VALkbprintf2"><span class="keyword">val</span> kbprintf2</span> : <code class="type">(Buffer.t -> 'b) -><br>       Buffer.t -> ('c, 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, 'b) Pervasives.format4 -> 'c</code></pre><div class="info">
+<pre><span id="VALkbprintf2"><span class="keyword">val</span> kbprintf2</span> : <code class="type">(Buffer.t -> 'a) -><br>       Buffer.t -> ('b, 'c <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, 'a) Pervasives.format4 -> 'b</code></pre><div class="info">
 Same as <code class="code">bprintf2</code>, but instead of returning immediately,
-      passes the buffer to its first argument at the end of printing.<br>
+    passes the buffer to its first argument at the end of printing.<br>
 </div>
 <pre><span id="VALkprintf"><span class="keyword">val</span> kprintf</span> : <code class="type">(string -> 'a) -> ('b, unit, string, 'a) Pervasives.format4 -> 'b</code></pre><div class="info">
 <span class="warning">Deprecated.</span>This is a deprecated synonym for <code class="code">ksprintf</code>.<br>
