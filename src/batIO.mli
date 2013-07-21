@@ -301,7 +301,7 @@ val close_all : unit -> unit
 (** {6 Creation of BatIO Inputs/Outputs}
 
     To open a file for reading/writing, see {!File.open_in}
-    and {!File.open_file_out}*)
+    and {!File.open_out}*)
 
 val input_string : string -> input
 (** Create an input that will read from a string.
