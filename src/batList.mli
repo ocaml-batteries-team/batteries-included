@@ -481,6 +481,16 @@ val drop : int -> 'a list -> 'a list
 (** [drop n l] returns [l] without the first [n] elements, or the empty
     list if [l] have less than [n] elements. *)
 
+val take_drop : int -> 'a list -> 'a list * 'a list
+(** [take_drop n l] is equivalent to [(take n l, drop n l)]
+    but is done in one pass. *)
+
+val slice_by : int -> 'a list -> 'a list list
+(** [slice_by n l] transforms [l] into a list of lists.
+    [n] must be > 0.
+    Each list in the result has size n, except the last
+    one which may have fewer elements in case [l] was too short. *)
+
 val take_while : ('a -> bool) -> 'a list -> 'a list
 (** [take_while p xs] returns the (possibly empty) longest prefix of
     elements of [xs] that satisfy the predicate [p].*)

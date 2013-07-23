@@ -184,6 +184,41 @@ let take n l =
   (take 1 [1;2;3]) [1]
 *)
 
+let take_drop n l =
+  let rec loop n dst = function
+    | h :: t when n > 0 -> loop (n - 1) (Acc.accum dst h) t
+    | rest -> rest
+  in
+  let dummy = Acc.dummy () in
+  let rest = loop n dummy l in
+  (dummy.tl, rest)
+
+(*$T take_drop
+  take_drop 0 [1; 2; 3] = ([],        [1; 2; 3])
+  take_drop 3 [1; 2; 3] = ([1; 2; 3], [])
+  take_drop 4 [1; 2; 3] = ([1; 2; 3], [])
+  take_drop 1 [1; 2; 3] = ([1],       [2; 3])
+*)
+
+let slice_by n l =
+  if n < 1 then invalid_arg "BatList.slice_by";
+  let dummy = Acc.dummy () in
+  let rec loop dst = function
+    | [] -> dummy.tl
+    | li ->
+      let taken, rest = take_drop n li in
+      loop (Acc.accum dst taken) rest
+  in
+  loop dummy l
+
+(*$T slice_by
+  slice_by 2 []           = []
+  slice_by 2 [1]          = [[1]]
+  slice_by 2 [1; 2]       = [[1; 2]]
+  slice_by 2 [1; 2; 3]    = [[1; 2]; [3]]
+  slice_by 2 [1; 2; 3; 4] = [[1; 2]; [3; 4]]
+*)
+
 let take_while p li =
   let rec loop dst = function
     | [] -> ()
