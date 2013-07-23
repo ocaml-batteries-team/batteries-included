@@ -202,17 +202,17 @@ let takedrop n l =
 
 let ntake n l =
   if n < 1 then invalid_arg "BatList.ntake";
-  let dummy = Acc.dummy () in
+  let took, left = takedrop n l in
+  let acc = Acc.create took in
   let rec loop dst = function
-    | [] -> dummy.tl
-    | li ->
-      let taken, rest = takedrop n li in
-      loop (Acc.accum dst taken) rest
+    | [] -> inj acc
+    | li -> let taken, rest = takedrop n li in
+            loop (Acc.accum dst taken) rest
   in
-  loop dummy l
+  loop acc left
 
 (*$T ntake
-  ntake 2 []           = []
+  ntake 2 []           = [[]]
   ntake 2 [1]          = [[1]]
   ntake 2 [1; 2]       = [[1; 2]]
   ntake 2 [1; 2; 3]    = [[1; 2]; [3]]
