@@ -196,12 +196,12 @@ val min : 'a list -> 'a
     [Pervasives.compare] *)
 
 val sum : int list -> int
-(** [sum l] returns the sum of the integers of [l] 
+(** [sum l] returns the sum of the integers of [l]
     @raise Invalid_argument on the empty list.
  *)
 
 val fsum : float list -> float
-(** [fsum l] returns the sum of the floats of [l] 
+(** [fsum l] returns the sum of the floats of [l]
     @raise Invalid_argument on the empty list.
  *)
 
@@ -477,9 +477,21 @@ val take : int -> 'a list -> 'a list
 (** [take n l] returns up to the [n] first elements from list [l], if
     available. *)
 
+val ntake : int -> 'a list -> 'a list list
+(** [ntake n l] cuts [l] into lists of size at most [n].
+    [n] must be > 0.
+    @raise Invalid_argument if [n] <= 0.
+    Each list in the result has size n, except the last
+    one which may have fewer elements in case [l] was too short.
+    Example: [ntake 2 [1; 2; 3; 4; 5] = [[1; 2]; [3; 4]; [5]]] *)
+
 val drop : int -> 'a list -> 'a list
 (** [drop n l] returns [l] without the first [n] elements, or the empty
     list if [l] have less than [n] elements. *)
+
+val takedrop : int -> 'a list -> 'a list * 'a list
+(** [take_drop n l] is equivalent to [(take n l, drop n l)]
+    but is done in one pass. *)
 
 val take_while : ('a -> bool) -> 'a list -> 'a list
 (** [take_while p xs] returns the (possibly empty) longest prefix of
@@ -488,13 +500,13 @@ val take_while : ('a -> bool) -> 'a list -> 'a list
 val drop_while : ('a -> bool) -> 'a list -> 'a list
 (** [drop_while p xs] returns the suffix remaining after
     [take_while p xs]. *)
-    
+
 val span : ('a -> bool) -> 'a list -> 'a list * 'a list
-(** [span], applied to a predicate [p] and a list [xs], returns a 
-    tuple where first element is longest prefix (possibly empty) of xs 
+(** [span], applied to a predicate [p] and a list [xs], returns a
+    tuple where first element is longest prefix (possibly empty) of xs
     of elements that satisfy p and second element is the remainder of
     the list. This is equivalent to [(take_while p xs, drop_while p xs)],
-    but is done in one pass. 
+    but is done in one pass.
 
     @since 2.1
 *)
@@ -503,14 +515,14 @@ val nsplit : ('a -> bool) -> 'a list -> 'a list list
 (** [nsplit], applied to a predicate [p] and a list [xs], returns a
     list of lists. [xs] is split when [p x] is true and [x] is excluded
     from the result.
-    
+
     If elements that satisfy [p] are consecutive, or at the beginning
     or end of the input list, the output list will contain empty lists
     marking their position. For example,
     [split (fun n -> n<0) [-1;2;-2;-3;4;-5]] is [[[];[2];[];[4];[]]].
     This is consistent with the behavior of [String.nsplit], where
     [String.nsplit ";" "1;2;;3;" = ["1";"2";"";"3";""]].
-    
+
     Note that for any [xss : 'a list list] and [sep : 'a], we always have
     that [flatten (interleave [sep] (nsplit ((=) sep) xss))] is [xss].
 
@@ -518,14 +530,14 @@ val nsplit : ('a -> bool) -> 'a list -> 'a list list
 *)
 
 val group_consecutive : ('a -> 'a -> bool) -> 'a list -> 'a list list
-(** The [group_consecutive] function takes a list and returns a list of lists such 
-    that the concatenation of the result is equal to the argument. Moreover, each 
-    sublist in the result contains only equal elements. For example, 
+(** The [group_consecutive] function takes a list and returns a list of lists such
+    that the concatenation of the result is equal to the argument. Moreover, each
+    sublist in the result contains only equal elements. For example,
     [group_consecutive (=) [3;3;4;3;3] =  [[3;3];[4];[3;3]]].
 
-    {b Note:} In the next major version, this function is intended to replace the 
+    {b Note:} In the next major version, this function is intended to replace the
     current [group], which also sorts its input before grouping, and which will
-    therefore be renamed into something more pertinent, such as [classify], 
+    therefore be renamed into something more pertinent, such as [classify],
     [regroup], or [group_sort].
 
     @since 2.1
@@ -643,7 +655,7 @@ val group : ('a -> 'a -> int) -> 'a list -> 'a list list
     For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if
     following conditions are met:
     [cmp a b = 0], [cmp b c = -1], [cmp c d = -1], [cmp d e = 0],...
-    
+
     See the note on [group_consecutive].
 *)
 

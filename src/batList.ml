@@ -184,6 +184,41 @@ let take n l =
   (take 1 [1;2;3]) [1]
 *)
 
+let takedrop n l =
+  let rec loop n dst = function
+    | h :: t when n > 0 -> loop (n - 1) (Acc.accum dst h) t
+    | rest -> rest
+  in
+  let dummy = Acc.dummy () in
+  let rest = loop n dummy l in
+  (dummy.tl, rest)
+
+(*$T takedrop
+  takedrop 0 [1; 2; 3] = ([],        [1; 2; 3])
+  takedrop 3 [1; 2; 3] = ([1; 2; 3], [])
+  takedrop 4 [1; 2; 3] = ([1; 2; 3], [])
+  takedrop 1 [1; 2; 3] = ([1],       [2; 3])
+*)
+
+let ntake n l =
+  if n < 1 then invalid_arg "BatList.ntake";
+  let took, left = takedrop n l in
+  let acc = Acc.create took in
+  let rec loop dst = function
+    | [] -> inj acc
+    | li -> let taken, rest = takedrop n li in
+            loop (Acc.accum dst taken) rest
+  in
+  loop acc left
+
+(*$T ntake
+  ntake 2 []           = [[]]
+  ntake 2 [1]          = [[1]]
+  ntake 2 [1; 2]       = [[1; 2]]
+  ntake 2 [1; 2; 3]    = [[1; 2]; [3]]
+  ntake 2 [1; 2; 3; 4] = [[1; 2]; [3; 4]]
+*)
+
 let take_while p li =
   let rec loop dst = function
     | [] -> ()
