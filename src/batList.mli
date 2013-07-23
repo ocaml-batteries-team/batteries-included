@@ -477,6 +477,14 @@ val take : int -> 'a list -> 'a list
 (** [take n l] returns up to the [n] first elements from list [l], if
     available. *)
 
+val ntake : int -> 'a list -> 'a list list
+(** [ntake n l] cuts [l] into lists of size at most [n].
+    [n] must be > 0.
+    @raise Invalid_argument if [n] <= 0.
+    Each list in the result has size n, except the last
+    one which may have fewer elements in case [l] was too short.
+    Example: [ntake 2 [1; 2; 3; 4; 5] = [[1; 2]; [3; 4]; [5]]] *)
+
 val drop : int -> 'a list -> 'a list
 (** [drop n l] returns [l] without the first [n] elements, or the empty
     list if [l] have less than [n] elements. *)
