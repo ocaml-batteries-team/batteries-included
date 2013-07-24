@@ -607,31 +607,22 @@ let rec rindex_ofq e l =
     | _::t             -> loop ( n + 1 ) acc       t
   in loop 0 None l
 
-
 let filter = find_all
 
-(* berenger: it is not clear to me if I can use Acc.accum in there *)
 let partition p lst =
   let rec loop yesdst nodst = function
     | [] -> ()
     | h :: t ->
-      let r = Acc.create h in
       if p h then
-        begin
-          yesdst.tl <- inj r;
-          loop r nodst t
-        end
+        loop (Acc.accum yesdst h) nodst t
       else
-        begin
-          nodst.tl <- inj r;
-          loop yesdst r t
-        end
+        loop yesdst (Acc.accum nodst h) t
   in
   let yesdummy = Acc.dummy ()
   and nodummy = Acc.dummy ()
   in
   loop yesdummy nodummy lst;
-  yesdummy.tl, nodummy.tl
+  (yesdummy.tl, nodummy.tl)
 
 let split lst =
   let rec loop adst bdst = function
