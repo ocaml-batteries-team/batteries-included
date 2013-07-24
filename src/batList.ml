@@ -166,16 +166,6 @@ let rec drop n = function
   (drop 1 [1;2;3]) [2;3]
 *)
 
-let take n l =
-  fst (takedrop n l)
-
-(*$= take & ~printer:(IO.to_string (List.print Int.print))
-  (take 0 [1;2;3]) []
-  (take 3 [1;2;3]) [1;2;3]
-  (take 4 [1;2;3]) [1;2;3]
-  (take 1 [1;2;3]) [1]
-*)
-
 let takedrop n l =
   let rec loop n dst = function
     | h :: t when n > 0 -> loop (n - 1) (Acc.accum dst h) t
@@ -190,6 +180,16 @@ let takedrop n l =
   takedrop 3 [1; 2; 3] = ([1; 2; 3], [])
   takedrop 4 [1; 2; 3] = ([1; 2; 3], [])
   takedrop 1 [1; 2; 3] = ([1],       [2; 3])
+*)
+
+let take n l =
+  fst (takedrop n l)
+
+(*$= take & ~printer:(IO.to_string (List.print Int.print))
+  (take 0 [1;2;3]) []
+  (take 3 [1;2;3]) [1;2;3]
+  (take 4 [1;2;3]) [1;2;3]
+  (take 1 [1;2;3]) [1]
 *)
 
 let ntake n l =
