@@ -167,15 +167,7 @@ let rec drop n = function
 *)
 
 let take n l =
-  let rec loop n dst = function
-    | h :: t when n > 0 ->
-      loop (n - 1) (Acc.accum dst h) t
-    | _ ->
-      ()
-  in
-  let dummy = Acc.dummy () in
-  loop n dummy l;
-  dummy.tl
+  fst (takedrop n l)
 
 (*$= take & ~printer:(IO.to_string (List.print Int.print))
   (take 0 [1;2;3]) []
