@@ -210,6 +210,19 @@ module Concrete = struct
         let (lr, pres, rr) = split_opt cmp x r in
         (join l v lr, pres, rr)
 
+  (*$inject
+    let l12 = [1; 2] ;;
+    let l45 = [4; 5] ;;
+    let s1245 = of_list [1; 2; 4; 5] ;;
+    let s12345 = of_list [1; 2; 3; 4; 5] ;;
+  *)
+  (*$T split_opt
+    let l1, mv1, r1 = split_opt 3 s1245 in \
+    (elements l1, mv1, elements r1) = (l12, None, l45)
+    let l2, mv2, r2 = split_opt 3 s12345 in \
+    (elements l2, mv2, elements r2) = (l12, Some 3, l45)
+  *)
+
   type 'a iter = E | C of 'a * 'a set * 'a iter
 
   let rec cardinal = function
