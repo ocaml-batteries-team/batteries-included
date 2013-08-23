@@ -212,6 +212,8 @@ module Concrete = struct
 
   (*$inject
     let l12 = [1; 2] ;;
+    let l123 = [1; 2; 3] ;;
+    let l345 = [3; 4; 5] ;;
     let l45 = [4; 5] ;;
     let s1245 = of_list [1; 2; 4; 5] ;;
     let s12345 = of_list [1; 2; 3; 4; 5] ;;
@@ -230,12 +232,22 @@ module Concrete = struct
         | None -> l, r
         | Some eq_x -> l, add cmp eq_x r
 
+  (*$T split_lt
+    let l, r = split_lt 3 s12345 in \
+    (elements l, elements r) = (l12, l345)
+  *)
+
   (* returns a pair of sets: ({y | y <= x}, {y | y > x}) *)
   let split_le cmp x s =
     let l, maybe, r = split_opt cmp x s in
     match maybe with
       | None -> l, r
       | Some eq_x -> add cmp eq_x l, r
+
+  (*$T split_le
+    let l, r = split_le 3 s12345 in \
+    (elements l, elements r) = (l123, l45)
+  *)
 
   type 'a iter = E | C of 'a * 'a set * 'a iter
 
