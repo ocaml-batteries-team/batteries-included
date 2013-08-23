@@ -694,6 +694,15 @@ let range i dir j =
   in
   loop [] j
 
+(*$T range
+  range 1 `To 3     = [1; 2; 3]
+  range 1 `To 1     = [1]
+  range 3 `Downto 1 = [3; 2; 1]
+  range 3 `Downto 3 = [3]
+  try ignore(range 1 `To 0); true with Invalid_argument _ -> true
+  try ignore(range 1 `Downto 2); true with Invalid_argument _ -> true
+*)
+
 let mapi f = function
   | [] -> []
   | h :: t ->
