@@ -129,12 +129,10 @@ val make : int -> 'a -> 'a list
     list containing [n] elements [x]. *)
 
 val range : int -> [< `To | `Downto ] -> int -> int list
-(** [range 1 `To 3] = [[1; 2; 3]]
+(** [range 1 `To 3] = [[1; 2; 3]].
     [range 3 `Downto 1] = [[3; 2; 1]].
-    In [range i `To j], i must be <= j
-    or an Invalid_argument exception will be thrown.
-    In [range i `Downto j], i must be >= j
-    or an Invalid_argument exception will be thrown. *)
+    @raise Invalid_argument in ([range i `To j]) if (i > j).
+    @raise Invalid_argument in ([range i `Downto j]) if (i < j). *)
 
 val init : int -> (int -> 'a) -> 'a list
 (** Similar to [Array.init], [init n f] returns the list containing
