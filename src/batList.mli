@@ -128,6 +128,14 @@ val make : int -> 'a -> 'a list
 (** Similar to [String.make], [make n x] returns a
     list containing [n] elements [x]. *)
 
+val range : int -> [< `To | `Downto ] -> int -> int list
+(** [range 1 `To 3] = [[1; 2; 3]]
+    [range 3 `Downto 1] = [[3; 2; 1]].
+    In [range i `To j], i must be <= j
+    or an Invalid_argument exception will be thrown.
+    In [range i `Downto j], i must be >= j
+    or an Invalid_argument exception will be thrown. *)
+
 val init : int -> (int -> 'a) -> 'a list
 (** Similar to [Array.init], [init n f] returns the list containing
     the results of (f 0),(f 1).... (f (n-1)).
