@@ -211,18 +211,14 @@ module Concrete = struct
         (join l v lr, pres, rr)
 
   (*$inject
-    let l12 = [1; 2] ;;
-    let l123 = [1; 2; 3] ;;
-    let l345 = [3; 4; 5] ;;
-    let l45 = [4; 5] ;;
-    let s1245 = of_list [1; 2; 4; 5] ;;
+    let s1245  = of_list [1; 2;    4; 5] ;;
     let s12345 = of_list [1; 2; 3; 4; 5] ;;
   *)
   (*$T split_opt
     let l1, mv1, r1 = split_opt 3 s1245 in \
-    (elements l1, mv1, elements r1) = (l12, None, l45)
+    (elements l1, mv1, elements r1) = ([1; 2], None  , [4; 5])
     let l2, mv2, r2 = split_opt 3 s12345 in \
-    (elements l2, mv2, elements r2) = (l12, Some 3, l45)
+    (elements l2, mv2, elements r2) = ([1; 2], Some 3, [4; 5])
   *)
 
   (* returns a pair of sets: ({y | y < x}, {y | y >= x}) *)
@@ -234,7 +230,7 @@ module Concrete = struct
 
   (*$T split_lt
     let l, r = split_lt 3 s12345 in \
-    (elements l, elements r) = (l12, l345)
+    (elements l, elements r) = ([1; 2], [3; 4; 5])
   *)
 
   (* returns a pair of sets: ({y | y <= x}, {y | y > x}) *)
@@ -246,7 +242,7 @@ module Concrete = struct
 
   (*$T split_le
     let l, r = split_le 3 s12345 in \
-    (elements l, elements r) = (l123, l45)
+    (elements l, elements r) = ([1; 2; 3], [4; 5])
   *)
 
   type 'a iter = E | C of 'a * 'a set * 'a iter
