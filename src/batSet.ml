@@ -193,6 +193,23 @@ module Concrete = struct
       else
         let (lr, pres, rr) = split cmp x r in (join l v lr, pres, rr)
 
+  (* split_opt x s returns a triple (l, maybe_v, r) where
+     - l is the set of elements of s that are < x
+     - r is the set of elements of s that are > x
+     - maybe_v is None if s contains no element equal to x,
+       or (Some v) if s contains an element v that compares equal to x. *)
+  let rec split_opt cmp x = function
+    | Empty -> (Empty, None, Empty)
+    | Node(l, v, r, _) ->
+      let c = cmp x v in
+      if c = 0 then (l, Some v, r)
+      else if c < 0 then
+        let (ll, pres, rl) = split_opt cmp x l in
+        (ll, pres, join rl v r)
+      else (* c > 0 *)
+        let (lr, pres, rr) = split_opt cmp x r in
+        (join l v lr, pres, rr)
+
   type 'a iter = E | C of 'a * 'a set * 'a iter
 
   let rec cardinal = function
@@ -395,6 +412,7 @@ sig
   val exists: (elt -> bool) -> t -> bool
   val partition: (elt -> bool) -> t -> t * t
   val split: elt -> t -> t * bool * t
+  val split_opt: elt -> t -> t * elt option * t
   val cardinal: t -> int
   val elements: t -> elt list
   val min_elt: t -> elt
@@ -471,13 +489,21 @@ struct
     let l, v, r = Concrete.split Ord.compare e (impl_of_t s) in
     (t_of_impl l, v, t_of_impl r)
 
+  let split_opt e s =
+    let l, maybe_v, r = Concrete.split_opt Ord.compare e (impl_of_t s) in
+    (t_of_impl l, maybe_v, t_of_impl r)
+
   let singleton e = t_of_impl (Concrete.singleton e)
   let elements t = Concrete.elements (impl_of_t t)
 
-  let union s1 s2 = t_of_impl (Concrete.union Ord.compare (impl_of_t s1) (impl_of_t s2))
-  let diff s1 s2 = t_of_impl (Concrete.diff Ord.compare (impl_of_t s1) (impl_of_t s2))
-  let inter s1 s2 = t_of_impl (Concrete.inter Ord.compare (impl_of_t s1) (impl_of_t s2))
-  let sym_diff s1 s2 = t_of_impl (Concrete.sym_diff Ord.compare (impl_of_t s1) (impl_of_t s2))
+  let union s1 s2 =
+    t_of_impl (Concrete.union Ord.compare (impl_of_t s1) (impl_of_t s2))
+  let diff s1 s2 =
+    t_of_impl (Concrete.diff Ord.compare (impl_of_t s1) (impl_of_t s2))
+  let inter s1 s2 =
+    t_of_impl (Concrete.inter Ord.compare (impl_of_t s1) (impl_of_t s2))
+  let sym_diff s1 s2 =
+    t_of_impl (Concrete.sym_diff Ord.compare (impl_of_t s1) (impl_of_t s2))
 
   let compare t1 t2 = Concrete.compare Ord.compare (impl_of_t t1) (impl_of_t t2)
   let equal t1 t2 = Concrete.equal Ord.compare (impl_of_t t1) (impl_of_t t2)
@@ -581,6 +607,9 @@ module PSet = struct (*$< PSet *)
   let split e s =
     let s1, found, s2 = Concrete.split s.cmp e s.set in
     { s with set = s1 }, found, { s with set = s2 }
+  let split_opt e s =
+    let s1, maybe_v, s2 = Concrete.split_opt s.cmp e s.set in
+    { s with set = s1 }, maybe_v, { s with set = s2 }
   let union s1 s2 =
     { s1 with set = Concrete.union s1.cmp s1.set s2.set }
   let diff s1 s2 =
@@ -688,6 +717,7 @@ let for_all f s = Concrete.for_all f s
 let partition f s = Concrete.partition Pervasives.compare f s
 let pop s = Concrete.pop s
 let split e s = Concrete.split Pervasives.compare e s
+let split_opt e s = Concrete.split_opt Pervasives.compare e s
 let union s1 s2 = Concrete.union Pervasives.compare s1 s2
 let diff s1 s2 = Concrete.diff Pervasives.compare s1 s2
 let sym_diff s1 s2 = Concrete.sym_diff Pervasives.compare s1 s2
