@@ -32,15 +32,16 @@ struct
       let counter = ref 0
       and mutex   = Mutex.create ()
       in
-      Mutex.lock mutex;
-      let result = !counter in
-      incr counter;
-      Mutex.unlock mutex;
-      result
+      fun () ->
+        Mutex.lock mutex;
+        let result = !counter in
+        incr counter;
+        Mutex.unlock mutex;
+        result
 
     let create () =
       { mutex = Mutex.create () ;
-        id    = unique }
+        id    = unique () }
 
     let lock t =
       Printf.eprintf "[Mutex] Attempting to lock mutex %d\n" t.id;
