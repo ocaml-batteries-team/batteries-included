@@ -211,16 +211,38 @@ module Concrete = struct
         (join l v lr, pres, rr)
 
   (*$inject
-    let l12 = [1; 2] ;;
-    let l45 = [4; 5] ;;
-    let s1245 = of_list [1; 2; 4; 5] ;;
+    let s1245  = of_list [1; 2;    4; 5] ;;
     let s12345 = of_list [1; 2; 3; 4; 5] ;;
   *)
   (*$T split_opt
     let l1, mv1, r1 = split_opt 3 s1245 in \
-    (elements l1, mv1, elements r1) = (l12, None, l45)
+    (elements l1, mv1, elements r1) = ([1; 2], None  , [4; 5])
     let l2, mv2, r2 = split_opt 3 s12345 in \
-    (elements l2, mv2, elements r2) = (l12, Some 3, l45)
+    (elements l2, mv2, elements r2) = ([1; 2], Some 3, [4; 5])
+  *)
+
+  (* returns a pair of sets: ({y | y < x}, {y | y >= x}) *)
+  let split_lt cmp x s =
+      let l, maybe, r = split_opt cmp x s in
+      match maybe with
+        | None -> l, r
+        | Some eq_x -> l, add cmp eq_x r
+
+  (*$T split_lt
+    let l, r = split_lt 3 s12345 in \
+    (elements l, elements r) = ([1; 2], [3; 4; 5])
+  *)
+
+  (* returns a pair of sets: ({y | y <= x}, {y | y > x}) *)
+  let split_le cmp x s =
+    let l, maybe, r = split_opt cmp x s in
+    match maybe with
+      | None -> l, r
+      | Some eq_x -> add cmp eq_x l, r
+
+  (*$T split_le
+    let l, r = split_le 3 s12345 in \
+    (elements l, elements r) = ([1; 2; 3], [4; 5])
   *)
 
   type 'a iter = E | C of 'a * 'a set * 'a iter
@@ -426,6 +448,8 @@ sig
   val partition: (elt -> bool) -> t -> t * t
   val split: elt -> t -> t * bool * t
   val split_opt: elt -> t -> t * elt option * t
+  val split_lt: elt -> t -> t * t
+  val split_le: elt -> t -> t * t
   val cardinal: t -> int
   val elements: t -> elt list
   val min_elt: t -> elt
@@ -505,6 +529,14 @@ struct
   let split_opt e s =
     let l, maybe_v, r = Concrete.split_opt Ord.compare e (impl_of_t s) in
     (t_of_impl l, maybe_v, t_of_impl r)
+
+  let split_lt e s =
+    let l, r = Concrete.split_lt Ord.compare e (impl_of_t s) in
+    (t_of_impl l, t_of_impl r)
+
+  let split_le e s =
+    let l, r = Concrete.split_le Ord.compare e (impl_of_t s) in
+    (t_of_impl l, t_of_impl r)
 
   let singleton e = t_of_impl (Concrete.singleton e)
   let elements t = Concrete.elements (impl_of_t t)
@@ -623,6 +655,12 @@ module PSet = struct (*$< PSet *)
   let split_opt e s =
     let s1, maybe_v, s2 = Concrete.split_opt s.cmp e s.set in
     { s with set = s1 }, maybe_v, { s with set = s2 }
+  let split_lt e s =
+    let s1, s2 = Concrete.split_lt s.cmp e s.set in
+    { s with set = s1 }, {s with set = s2 }
+  let split_le e s =
+    let s1, s2 = Concrete.split_le s.cmp e s.set in
+    { s with set = s1 }, {s with set = s2 }
   let union s1 s2 =
     { s1 with set = Concrete.union s1.cmp s1.set s2.set }
   let diff s1 s2 =
@@ -731,6 +769,8 @@ let partition f s = Concrete.partition Pervasives.compare f s
 let pop s = Concrete.pop s
 let split e s = Concrete.split Pervasives.compare e s
 let split_opt e s = Concrete.split_opt Pervasives.compare e s
+let split_lt e s = Concrete.split_lt Pervasives.compare e s
+let split_le e s = Concrete.split_le Pervasives.compare e s
 let union s1 s2 = Concrete.union Pervasives.compare s1 s2
 let diff s1 s2 = Concrete.diff Pervasives.compare s1 s2
 let sym_diff s1 s2 = Concrete.sym_diff Pervasives.compare s1 s2

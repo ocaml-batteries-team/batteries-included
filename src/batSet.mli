@@ -174,6 +174,16 @@ sig
         or [Some v] if [s] contains an element [v] that compares equal to [x].
   *)
 
+  val split_lt: elt -> t -> t * t
+  (** [split_lt x s] returns a pair of sets [(l, r)], such that
+      [l] is the subset of [s] with elements < [x];
+      [r] is the subset of [s] with elements >= [x]. *)
+
+  val split_le: elt -> t -> t * t
+  (** [split_le x s] returns a pair of sets [(l, r)], such that
+      [l] is the subset of [s] with elements <= [x];
+      [r] is the subset of [s] with elements > [x]. *)
+
   val cardinal: t -> int
   (** Return the number of elements of a set. *)
 
@@ -439,6 +449,16 @@ val split_opt: 'a -> 'a t -> 'a t * 'a option * 'a t
       or [Some v] if [s] contains an element [v] that compares equal to [x].
 *)
 
+val split_lt: 'a -> 'a t -> 'a t * 'a t
+(** [split_lt x s] returns a pair of sets [(l, r)], such that
+    [l] is the subset of [s] with elements < [x];
+    [r] is the subset of [s] with elements >= [x]. *)
+
+val split_le: 'a -> 'a t -> 'a t * 'a t
+(** [split_le x s] returns a pair of sets [(l, r)], such that
+    [l] is the subset of [s] with elements <= [x];
+    [r] is the subset of [s] with elements > [x]. *)
+
 val cardinal: 'a t -> int
 (** Return the number of elements of a set. *)
 
@@ -653,6 +673,16 @@ module PSet : sig
         [maybe_v] is [None] if [s] contains no element equal to [x],
         or [Some v] if [s] contains an element [v] that compares equal to [x].
   *)
+
+  val split_lt: 'a -> 'a t -> 'a t * 'a t
+  (** [split_lt x s] returns a pair of sets [(l, r)], such that
+      [l] is the subset of [s] with elements < [x];
+      [r] is the subset of [s] with elements >= [x]. *)
+
+  val split_le: 'a -> 'a t -> 'a t * 'a t
+  (** [split_le x s] returns a pair of sets [(l, r)], such that
+      [l] is the subset of [s] with elements <= [x];
+      [r] is the subset of [s] with elements > [x]. *)
 
   val cardinal: 'a t -> int
   (** Return the number of elements of a set. *)
