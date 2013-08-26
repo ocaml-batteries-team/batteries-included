@@ -675,6 +675,34 @@ let make i x =
   in
   loop x [] i
 
+let range i dir j =
+  let op = match dir with
+    | `To ->
+      if i > j
+      then invalid_arg (Printf.sprintf "List.range %d `To %d" i j)
+      else pred
+    | `Downto ->
+      if i < j
+      then invalid_arg (Printf.sprintf "List.range %d `Downto %d" i j)
+      else succ
+  in
+  let rec loop acc k =
+    if i = k then
+      k :: acc
+    else
+      loop (k :: acc) (op k)
+  in
+  loop [] j
+
+(*$T range
+  range 1 `To 3     = [1; 2; 3]
+  range 1 `To 1     = [1]
+  range 3 `Downto 1 = [3; 2; 1]
+  range 3 `Downto 3 = [3]
+  try ignore(range 1 `To 0); true with Invalid_argument _ -> true
+  try ignore(range 1 `Downto 2); true with Invalid_argument _ -> true
+*)
+
 let mapi f = function
   | [] -> []
   | h :: t ->
