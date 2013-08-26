@@ -164,6 +164,16 @@ sig
         [present] is [false] if [s] contains no element equal to [x],
         or [true] if [s] contains an element equal to [x]. *)
 
+  val split_opt: elt -> t -> t * elt option * t
+  (** [split_opt x s] returns a triple [(l, maybe_v, r)], where
+        [l] is the set of elements of [s] that are
+        strictly less than [x];
+        [r] is the set of elements of [s] that are
+        strictly greater than [x];
+        [maybe_v] is [None] if [s] contains no element equal to [x],
+        or [Some v] if [s] contains an element [v] that compares equal to [x].
+  *)
+
   val cardinal: t -> int
   (** Return the number of elements of a set. *)
 
@@ -419,6 +429,16 @@ val split : 'a -> 'a t -> 'a t * bool * 'a t
     [present] is [false] if [s] contains no element equal to [x],
     or [true] if [s] contains an element equal to [x]. *)
 
+val split_opt: 'a -> 'a t -> 'a t * 'a option * 'a t
+(** [split_opt x s] returns a triple [(l, maybe_v, r)], where
+      [l] is the set of elements of [s] that are
+      strictly less than [x];
+      [r] is the set of elements of [s] that are
+      strictly greater than [x];
+      [maybe_v] is [None] if [s] contains no element equal to [x],
+      or [Some v] if [s] contains an element [v] that compares equal to [x].
+*)
+
 val cardinal: 'a t -> int
 (** Return the number of elements of a set. *)
 
@@ -623,6 +643,16 @@ module PSet : sig
       strictly greater than [x];
       [present] is [false] if [s] contains no element equal to [x],
       or [true] if [s] contains an element equal to [x]. *)
+
+  val split_opt: 'a -> 'a t -> 'a t * 'a option * 'a t
+  (** [split_opt x s] returns a triple [(l, maybe_v, r)], where
+        [l] is the set of elements of [s] that are
+        strictly less than [x];
+        [r] is the set of elements of [s] that are
+        strictly greater than [x];
+        [maybe_v] is [None] if [s] contains no element equal to [x],
+        or [Some v] if [s] contains an element [v] that compares equal to [x].
+  *)
 
   val cardinal: 'a t -> int
   (** Return the number of elements of a set. *)
