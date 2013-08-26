@@ -680,17 +680,17 @@ let range i dir j =
     | `To ->
       if i > j
       then invalid_arg (Printf.sprintf "List.range %d `To %d" i j)
-      else (-)
+      else pred
     | `Downto ->
       if i < j
       then invalid_arg (Printf.sprintf "List.range %d `Downto %d" i j)
-      else (+)
+      else succ
   in
   let rec loop acc k =
     if i = k then
       k :: acc
     else
-      loop (k :: acc) (op k 1)
+      loop (k :: acc) (op k)
   in
   loop [] j
 
