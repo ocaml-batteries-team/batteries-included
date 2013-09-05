@@ -193,6 +193,9 @@ sig
       to the ordering [Ord.compare], where [Ord] is the argument
       given to {!Set.Make}. *)
 
+  val to_list: t -> elt list
+  (** Alias for [elements]. *)
+
   val min_elt: t -> elt
   (** Return the smallest element of the given set
       (with respect to the [Ord.compare] ordering).
@@ -467,6 +470,9 @@ val elements: 'a t -> 'a list
     The returned list is sorted in increasing order with respect
     to the ordering of the given set. *)
 
+val to_list: 'a t -> 'a list
+(** Alias for [elements]. *)
+
 val min_elt : 'a t -> 'a
 (** returns the smallest element of the set.
     @raise Invalid_argument if given an empty set. *)
@@ -691,6 +697,9 @@ module PSet : sig
   (** Return the list of all elements of the given set.
       The returned list is sorted in increasing order with respect
       to the ordering of the given set. *)
+
+  val to_list: 'a t -> 'a list
+  (** Alias for [elements]. *)
 
   val min_elt : 'a t -> 'a
   (** returns the smallest element of the set.
