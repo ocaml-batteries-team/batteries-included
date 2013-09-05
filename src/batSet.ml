@@ -211,6 +211,8 @@ module Concrete = struct
         (join l v lr, pres, rr)
 
   (*$inject
+    let s12    = of_list [1; 2         ] ;;
+    let s45    = of_list [         4; 5] ;;
     let s1245  = of_list [1; 2;    4; 5] ;;
     let s12345 = of_list [1; 2; 3; 4; 5] ;;
   *)
@@ -231,6 +233,10 @@ module Concrete = struct
   (*$T split_lt
     let l, r = split_lt 3 s12345 in \
     (elements l, elements r) = ([1; 2], [3; 4; 5])
+    let l, r = split_lt 3 s12 in \
+    (elements l, elements r) = ([1; 2], [])
+    let l, r = split_lt 3 s45 in \
+    (elements l, elements r) = ([], [4; 5])
   *)
 
   (* returns a pair of sets: ({y | y <= x}, {y | y > x}) *)
@@ -243,6 +249,10 @@ module Concrete = struct
   (*$T split_le
     let l, r = split_le 3 s12345 in \
     (elements l, elements r) = ([1; 2; 3], [4; 5])
+    let l, r = split_le 3 s12 in \
+    (elements l, elements r) = ([1; 2], [])
+    let l, r = split_le 3 s45 in \
+    (elements l, elements r) = ([], [4; 5])
   *)
 
   type 'a iter = E | C of 'a * 'a set * 'a iter
