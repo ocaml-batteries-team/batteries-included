@@ -255,8 +255,8 @@ module Concrete = struct
       Empty -> accu
     | Node(l, v, r, _) -> elements_aux (v :: elements_aux accu r) l
 
-  let elements s =
-    elements_aux [] s
+  let elements s = elements_aux [] s
+  let to_list = elements
 
   let rec cons_iter s t = match s with
       Empty -> t
@@ -452,6 +452,7 @@ sig
   val split_le: elt -> t -> t * t
   val cardinal: t -> int
   val elements: t -> elt list
+  val to_list: t -> elt list
   val min_elt: t -> elt
   val max_elt: t -> elt
   val choose: t -> elt
@@ -540,6 +541,7 @@ struct
 
   let singleton e = t_of_impl (Concrete.singleton e)
   let elements t = Concrete.elements (impl_of_t t)
+  let to_list = elements
 
   let union s1 s2 =
     t_of_impl (Concrete.union Ord.compare (impl_of_t s1) (impl_of_t s2))
@@ -633,6 +635,7 @@ module PSet = struct (*$< PSet *)
   let exists f s = Concrete.exists f s.set
   let cardinal s = fold (fun _ acc -> acc + 1) s 0
   let elements s = Concrete.elements s.set
+  let to_list = elements
   let choose s = Concrete.choose s.set
   let min_elt s = Concrete.min_elt s.set
   let max_elt s = Concrete.max_elt s.set
@@ -724,6 +727,7 @@ let exists f s = Concrete.exists f s
 let cardinal s = fold (fun _ acc -> acc + 1) s 0
 
 let elements s = Concrete.elements s
+let to_list = elements
 
 let choose s = Concrete.choose s
 
