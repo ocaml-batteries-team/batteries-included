@@ -191,6 +191,26 @@ val fold_right : ('a -> 'b -> 'b) -> 'b -> 'a t -> 'b
    [fold_right f b [^ a0; a1; ...; an ^]] is [f a0 (f a1 (... (f an b) ...))].
    This causes evaluation of all the elements of the list. Not
    tail-recursive.
+
+   Note that the argument order of this function is the same as
+   [fold_left] above, but inconsistent with other [fold_right]
+   functions in Batteries. We hope to fix this inconsistency in the
+   next compatibility-breaking release, so you should rather use the
+   more consistent [eager_fold_right].
+*)
+
+val eager_fold_right : ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+(** Eager fold_right
+
+    As [fold_right] above, but with the usual argument order for
+    a fold_right.
+
+    Just as [fold_left] on a structure ['a t] turns an element-level
+    function of type [('b -> 'a -> 'b)], with the accumulator argument
+    ['b] on the left, into a structure-level function
+    ['b -> 'a t -> 'b], [fold_right] turns a function
+    [('a -> 'b -> 'b)] (accumulator on the right) into
+    a ['a t -> 'b -> 'b].
 *)
 
 val lazy_fold_right :
