@@ -80,6 +80,10 @@ val first : 'a list -> 'a
 val hd : 'a list -> 'a
 (** Similar to [first], but @raise Failure if the list is empty. *)
 
+val hd_exn : 'a list -> exn -> 'a
+(** Returns the first element of the list, or raise the provided
+    exception if the list is empty. *)
+
 val tl : 'a list -> 'a list
 (** Return the given list without its first element.
     @raise Failure if the list is empty. *)
