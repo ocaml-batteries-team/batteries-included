@@ -116,7 +116,8 @@ reinstall:
 ###############################################################################
 
 prefilter: src/batMarshal.mli src/batUnix.mli src/batPervasives.mli \
-	   src/batInnerPervasives.ml src/batHashtbl.ml
+	   src/batInnerPervasives.ml src/batHashtbl.ml \
+	   src/batPrintexc.mli src/batSys.mli src/batBigarray.mli
 
 # Ocaml 4.00 can benefit strongly from some pre-processing to expose
 # slightly different interfaces
