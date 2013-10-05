@@ -445,6 +445,25 @@ let filter_map f l =
   loop dummy l;
   dummy.tl
 
+let filteri_map f l =
+  let rec loop i dst = function
+    | [] -> ()
+    | h :: t ->
+      match f i h with
+      | None -> loop (succ i) dst t
+      | Some x ->
+        loop (succ i) (Acc.accum dst x) t
+  in
+  let dummy = Acc.dummy () in
+  loop 0 dummy l;
+  dummy.tl
+(*$T filteri_map
+  (let r = ref (-1) in filteri_map (fun i _ -> incr r; if i = !r then Some i else None) [5; 4; 8] = [1; 2; 3])
+  filteri_map (fun _ x -> if x > 4 then Some (x, string_of_int x) else None) [5; 4; 8] = [(5, "5"); (8, "8")]
+  filteri_map (fun _ _ -> Some ()) [] = []
+  filteri_map (fun _ _ -> None) [1; 2] = []
+*)
+
 let rec find_map f = function
   | [] -> raise Not_found
   | x :: xs ->

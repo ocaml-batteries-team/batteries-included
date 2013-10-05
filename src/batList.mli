@@ -336,6 +336,12 @@ val filter_map : ('a -> 'b option) -> 'a list -> 'b list
     [f ai = Some bi] (when [f] returns [None], the corresponding element of
     [l] is discarded). *)
 
+val filteri_map : (int -> 'a -> 'b option) -> 'a list -> 'b list
+(** [filter_map f l] calls [(f 0 a0) (f 1 a1).... (f n an)] where [a0,a1..an] are
+    the elements of [l]. It returns the list of elements [bi] such as
+    [f ai = Some bi] (when [f] returns [None], the corresponding element of
+    [l] is discarded). *)
+
 val find_all : ('a -> bool) -> 'a list -> 'a list
 (** [find_all] is another name for {!List.filter}. *)
 
