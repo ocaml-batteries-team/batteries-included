@@ -327,8 +327,9 @@ val filter : ('a -> bool) -> 'a list -> 'a list
 
 val filteri : (int -> 'a -> bool) -> 'a list -> 'a list
 (** [filter p l] returns all the elements of the list [l]
-    that satisfy the predicate [p i ai].  The order of the elements
-    in the input list is preserved.  *)
+    that satisfy the predicate [p i ai] where [i] is the index and [ai] is
+    the element of the list [l] at index [i].
+    The order of the elements in the input list is preserved.  *)
 
 val filter_map : ('a -> 'b option) -> 'a list -> 'b list
 (** [filter_map f l] calls [(f a0) (f a1).... (f an)] where [a0,a1..an] are
