@@ -190,7 +190,7 @@ test-native: prefilter _build/testsuite/main.native _build/$(QTESTDIR)/all_tests
 
 full-test: $(TEST_TARGET)
 
-test-compat: src/batteries_compattest.ml
+test-compat: prefilter src/batteries_compattest.ml
 	ocamlbuild src/batteries_compattest.byte -no-links
 
 test: test-byte test-compat
