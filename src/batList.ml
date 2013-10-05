@@ -612,13 +612,13 @@ let filter = find_all
 let filteri f =
   let rec aux i = function
     | [] -> []
-    | x::xs when f i x -> (i, x) :: aux (succ i) xs
+    | x::xs when f i x -> x :: aux (succ i) xs
     | x::xs -> aux (succ i) xs
   in
   aux 0
 (*$T filteri
-  (let r = ref (-1) in filteri (fun i _ -> incr r; i = !r) [5; 4; 8] = [(0, 5); (1, 4); (2, 8)])
-  filteri (fun _ x -> x > 4) [5; 4; 8] = [(0, 5); (2, 8)]
+  (let r = ref (-1) in filteri (fun i _ -> incr r; i = !r) [5; 4; 8] = [5; 4; 8])
+  filteri (fun _ x -> x > 4) [5; 4; 8] = [5; 8]
   filteri (fun _ _ -> true) [] = []
 *)
 
