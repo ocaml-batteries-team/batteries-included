@@ -155,12 +155,12 @@ val unfold: 'b -> ('b -> ('a * 'b) option) -> 'a list
 (**{6 Iterators}*)
 
 val iter : ('a -> unit) -> 'a list -> unit
-(** [List.iter f [a1; ...; an]] applies function [f] in turn to
-    [a1; ...; an]. It is equivalent to
-    [begin f a1; f a2; ...; f an; () end]. *)
+(** [List.iter f [a0; a1; ...; an]] applies function [f] in turn to
+    [a0; a1; ...; an]. It is equivalent to
+    [begin f a0; f a1; ...; f an; () end]. *)
 
 val iteri : (int -> 'a -> unit) -> 'a list -> unit
-(** [iteri f l] will call [(f 0 a0);(f 1 a1) ... (f n an)] where
+(** [iteri f l] will call [(f 0 a0); (f 1 a1) ... (f n an)] where
     [a0..an] are the elements of the list [l]. *)
 
 val map : ('a -> 'b) -> 'a list -> 'b list
@@ -177,12 +177,12 @@ val rev_map : ('a -> 'b) -> 'a list -> 'b list
 
 val mapi : (int -> 'a -> 'b) -> 'a list -> 'b list
 (** [mapi f l] will build the list containing
-    [(f 0 a0);(f 1 a1) ... (f n an)] where [a0..an] are the elements of
+    [(f 0 a0); (f 1 a1) ... (f n an)] where [a0..an] are the elements of
     the list [l]. *)
 
 val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b list -> 'a
-(** [List.fold_left f a [b1; ...; bn]] is
-    [f (... (f (f a b1) b2) ...) bn]. *)
+(** [List.fold_left f a [b0; b1; ...; bn]] is
+    [f (... (f (f a b0) b1) ...) bn]. *)
 
 val fold_right : ('a -> 'b -> 'b) -> 'a list -> 'b -> 'b
 (** [List.fold_right f [a0; a1; ...; an] b] is
@@ -268,14 +268,14 @@ val memq : 'a -> 'a list -> bool
 (**{7 Unary predicate, One list}*)
 
 val for_all : ('a -> bool) -> 'a list -> bool
-(** [for_all p [a1; ...; an]] checks if all elements of the list
+(** [for_all p [a0; a1; ...; an]] checks if all elements of the list
     satisfy the predicate [p]. That is, it returns
-    [(p a1) && (p a2) && ... && (p an)]. *)
+    [(p a0) && (p a1) && ... && (p an)]. *)
 
 val exists : ('a -> bool) -> 'a list -> bool
-(** [exists p [a1; ...; an]] checks if at least one element of
+(** [exists p [a0; a1; ...; an]] checks if at least one element of
     the list satisfies the predicate [p]. That is, it returns
-    [(p a1) || (p a2) || ... || (p an)]. *)
+    [(p a0) || (p a1) || ... || (p an)]. *)
 
 (**{7 Binary predicate, Two lists}*)
 
@@ -326,7 +326,7 @@ val filter : ('a -> bool) -> 'a list -> 'a list
     in the input list is preserved.  *)
 
 val filteri : (int -> 'a -> bool) -> 'a list -> 'a list
-(** [filter p l] returns all the elements of the list [l]
+(** [filter p [a0; a1; ...; an]] returns all the elements [ai] of index [i]
     that satisfy the predicate [p i ai].  The order of the elements
     in the input list is preserved.  *)
 
