@@ -29,3 +29,6 @@ src/batPervasives.mli
 src/batInnerPervasives.ml
 src/batHashtbl.ml
 src/batMarshal.mli
+src/batPrintexc.mli
+src/batSys.mli
+src/batBigarray.mli
