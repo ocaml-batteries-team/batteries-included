@@ -88,3 +88,34 @@ val register_printer: (exn -> string option) -> unit
 
 val print : _ BatInnerIO.output -> exn -> unit
   (** Print an exception.  The stdlib [print] function is now named [!pass].*)
+
+
+##V4.1##(** {6 Raw backtraces} *)
+##V4.1##
+##V4.1##type raw_backtrace = Printexc.raw_backtrace
+##V4.1##
+##V4.1##(** The abstract type [backtrace] stores exception backtraces in
+##V4.1##    a low-level format, instead of directly exposing them as string as
+##V4.1##    the [get_backtrace()] function does.
+##V4.1##
+##V4.1##    This allows to pay the performance overhead of representation
+##V4.1##    conversion and formatting only at printing time, which is useful
+##V4.1##    if you want to record more backtrace than you actually print.
+##V4.1##*)
+##V4.1##
+##V4.1##val get_raw_backtrace: unit -> raw_backtrace
+##V4.1##val print_raw_backtrace: out_channel -> raw_backtrace -> unit
+##V4.1##val raw_backtrace_to_string: raw_backtrace -> string
+##V4.1##
+##V4.1##
+##V4.1##(** {6 Current call stack} *)
+##V4.1##
+##V4.1##val get_callstack: int -> raw_backtrace
+##V4.1##
+##V4.1##(** [Printexc.get_callstack n] returns a description of the top of the
+##V4.1##    call stack on the current program point (for the current thread),
+##V4.1##    with at most [n] entries.  (Note: this function is not related to
+##V4.1##    exceptions at all, despite being part of the [Printexc] module.)
+##V4.1##
+##V4.1##    @since 4.01.0
+##V4.1##*)

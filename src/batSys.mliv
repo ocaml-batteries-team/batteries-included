@@ -95,6 +95,18 @@ val os_type : string
     -  ["Win32"] (for MS-Windows, OCaml compiled with MSVC++ or Mingw),
     -  ["Cygwin"] (for MS-Windows, OCaml compiled with Cygwin). *)
 
+##V4.1##val unix : bool
+##V4.1##(** True if [Sys.os_type = "Unix"].
+##V4.1##    @since 4.01.0 *)
+##V4.1##
+##V4.1##val win32 : bool
+##V4.1##(** True if [Sys.os_type = "Win32"].
+##V4.1##    @since 4.01.0 *)
+##V4.1##
+##V4.1##val cygwin : bool
+##V4.1##(** True if [Sys.os_type = "Cygwin"].
+##V4.1##    @since 4.01.0 *)
+
 val word_size : int
 (** Size of one word on the machine currently executing the OCaml
     program, in bits: 32 or 64. *)
