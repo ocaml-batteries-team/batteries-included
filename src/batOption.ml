@@ -23,6 +23,8 @@ exception No_value
 
 type 'a t = 'a option
 
+let some x = Some x
+
 let may f = function
   | None -> ()
   | Some v -> f v
