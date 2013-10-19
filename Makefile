@@ -65,6 +65,10 @@ else
 endif
 endif
 
+PREPROCESSED_FILES = src/batMarshal.mli src/batUnix.mli src/batPervasives.mli \
+		     src/batInnerPervasives.ml src/batHashtbl.ml \
+		     src/batPrintexc.mli src/batSys.mli src/batBigarray.mli
+
 .PHONY: all clean doc install uninstall reinstall test qtest qtest-clean camfail camfailunk coverage man
 
 all: prefilter
@@ -75,7 +79,7 @@ clean:
 	@${RM} src/batteriesConfig.ml src/batUnix.mli batteries.odocl bench.log
 	@${RM} -r man/
 	@$(OCAMLBUILD) -clean
-	@git clean -xfd
+	@${RM} $(PREPROCESSED_FILES)
 	@echo " Cleaned up working copy" # Note: ocamlbuild eats the first char!
 
 batteries.odocl: src/batteries.mllib src/batteriesThread.mllib
@@ -115,9 +119,7 @@ reinstall:
 #	Pre-Processing of Source Code
 ###############################################################################
 
-prefilter: src/batMarshal.mli src/batUnix.mli src/batPervasives.mli \
-	   src/batInnerPervasives.ml src/batHashtbl.ml \
-	   src/batPrintexc.mli src/batSys.mli src/batBigarray.mli
+prefilter: $(PREPROCESSED_FILES)
 
 # Ocaml 4.00 can benefit strongly from some pre-processing to expose
 # slightly different interfaces
