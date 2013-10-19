@@ -758,6 +758,15 @@ let iteri f l =
 
 let first = hd
 
+let hd_exn l exn = match l with
+  | x :: _ -> x
+  | _ -> raise exn
+
+(*$T hd_exn
+  hd_exn [1] (Failure "your message of choice") = 1
+  try let _ = hd_exn [] (Failure "Ouch!") in false with Failure _ -> true
+*)
+
 let rec last = function
   | [] -> invalid_arg "Empty List"
   | h :: [] -> h
