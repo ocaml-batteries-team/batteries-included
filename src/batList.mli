@@ -328,7 +328,10 @@ val filter : ('a -> bool) -> 'a list -> 'a list
 val filteri : (int -> 'a -> bool) -> 'a list -> 'a list
 (** [filter p [a0; a1; ...; an]] returns all the elements [ai] of index [i]
     that satisfy the predicate [p i ai].  The order of the elements
-    in the input list is preserved.  *)
+    in the input list is preserved.
+
+    @since NEXT_RELEASE
+ *)
 
 val filter_map : ('a -> 'b option) -> 'a list -> 'b list
 (** [filter_map f l] calls [(f a0) (f a1).... (f an)] where [a0,a1..an] are
@@ -340,7 +343,10 @@ val filteri_map : (int -> 'a -> 'b option) -> 'a list -> 'b list
 (** [filter_map f l] calls [(f 0 a0) (f 1 a1).... (f n an)] where [a0,a1..an] are
     the elements of [l]. It returns the list of elements [bi] such as
     [f ai = Some bi] (when [f] returns [None], the corresponding element of
-    [l] is discarded). *)
+    [l] is discarded).
+
+    @since NEXT_RELEASE
+*)
 
 val find_all : ('a -> bool) -> 'a list -> 'a list
 (** [find_all] is another name for {!List.filter}. *)

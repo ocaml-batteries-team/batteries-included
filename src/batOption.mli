@@ -34,7 +34,10 @@
 type 'a t = 'a option
 
 val some : 'a -> 'a option
-(** [some x] returns [Some x]. *)
+(** [some x] returns [Some x].
+
+    @since NEXT_RELEASE
+ *)
 
 val may : ('a -> unit) -> 'a option -> unit
 (** [may f (Some x)] calls [f x] and [may f None] does nothing. *)
