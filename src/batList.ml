@@ -1044,6 +1044,36 @@ let max l = reduce Pervasives.max l
 let sum l = reduce (+) l
 let fsum l = reduce (+.) l
 
+let kahan_sum li =
+  (* This algorithm is written in a particularly untasteful imperative
+     style to benefit from the nice unboxing of float references that
+     is harder to obtain with recursive functions today. See the
+     definition of kahan sum on arrays, on which this one is directly
+     modeled. *)
+  let li = ref li in
+  let continue = ref (!li <> []) in
+  let sum = ref 0. in
+  let err = ref 0. in
+  while !continue do
+    match !li with
+      | [] -> continue := false
+      | x::xs ->
+        li := xs;
+        let x = x -. !err in
+        let new_sum = !sum +. x in
+        err := (new_sum -. !sum) -. x;
+        sum := new_sum +. 0.;
+  done;
+  !sum +. 0.
+
+(*$T kahan_sum
+   kahan_sum [ ] = 0.
+   kahan_sum [ 1.; 2. ] = 3.
+   let n, x = 1_000, 1.1 in \
+     Float.approx_equal (float n *. x) \
+                        (kahan_sum (List.make n x))
+*)
+
 let min_max ?cmp:(cmp = Pervasives.compare) = function
   | [] -> invalid_arg "List.min_max: Empty List"
   | x :: xs ->

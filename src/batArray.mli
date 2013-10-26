@@ -174,6 +174,25 @@ val sum : int array -> int
 val fsum : float array -> float
 (** [fsum l] returns the sum of the floats of [l] *)
 
+val kahan_sum : float array -> float
+(** [kahan_sum l] returns a numerically-accurate
+    sum of the floats of [l].
+
+    You should consider using Kahan summation when you really care
+    about very small differences in the result, while the result or
+    one of the intermediate sums can be very large (which usually
+    results in loss of precision of floating-point addition).
+
+    The worst-case rounding error is constant, instead of growing with
+    (the square root of) the length of the input array as with {!
+    fsum}. On the other hand, processing each element requires four
+    floating-point operations instead of one. See
+    {{: https://en.wikipedia.org/wiki/Kahan_summation_algorithm }
+    the wikipedia article} on Kahan summation for more details.
+
+    @since NEXT_RELEASE
+*)
+
 val avg : int array -> float
 (** [avg l] returns the average of [l]
 

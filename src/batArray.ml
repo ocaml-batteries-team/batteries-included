@@ -555,6 +555,29 @@ let fsum = reduce (+.)
      fsum [|0.0|] = 0.0
    *)
 
+let kahan_sum arr =
+  let sum = ref 0. in
+  let err = ref 0. in
+  for i = 0 to Array.length arr - 1 do
+    let x = arr.(i) -. !err in
+    let new_sum = !sum +. x in
+    err := (new_sum -. !sum) -. x;
+    sum := new_sum +. 0.;
+    (* this suspicious +. 0. is added to help
+       the hand of the somewhat flaky unboxing optimizer;
+       it hopefully won't be necessary anymore
+       in a few OCaml versions *)
+  done;
+  !sum +. 0.
+
+(*$T kahan_sum
+   kahan_sum [| |] = 0.
+   kahan_sum [| 1.; 2. |] = 3.
+   let n, x = 1_000, 1.1 in \
+     Float.approx_equal (float n *. x) \
+                        (kahan_sum (Array.make n x))
+*)
+
 let flength a =
   float_of_int (length a)
 

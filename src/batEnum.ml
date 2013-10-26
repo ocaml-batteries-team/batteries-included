@@ -402,11 +402,22 @@ let fsum t =
     ) t;
     !sum
 
+let kahan_sum = fsum
+
 (* NEED A PROPER TEST OF ROUNDING ERROR *)
 (*$T fsum
    let arr = Array.make 10001 1e-10 in arr.(0) <- 1e10; \
       Float.approx_equal (fsum (Array.enum arr)) (1e10 +. 1e-5)
 *)
+
+(*$T kahan_sum
+   kahan_sum (Array.enum [| |]) = 0.
+   kahan_sum (Array.enum [| 1.; 2. |]) = 3.
+   let n, x = 1_000, 1.1 in \
+     Float.approx_equal (float n *. x) \
+                        (kahan_sum (Array.enum (Array.make n x)))
+*)
+
 
 let exists f t =
   try let rec aux () = f (t.next()) || aux ()
@@ -619,7 +630,7 @@ let rec concat t =
   let clone () = append ((!tn).clone()) (concat (t.clone())) in
   from2 next clone
 
-(*$T
+(*$T concat
   let e = List.enum [ [| 1; 2; 3; 4|]; [| 5; 6 |] ] |> map Array.enum |> concat in drop 1 e; (count e) = (count (clone e))
 *)
 

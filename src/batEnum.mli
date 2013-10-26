@@ -130,6 +130,13 @@ val fsum : float t -> float
     @since 2.0
 *)
 
+val kahan_sum : float t -> float
+(** [kahan_sum l] returns a numerically-accurate sum of the floats of
+    [l]. See {!BatArray.fsum} for more details.
+
+    @since NEXT_RELEASE
+*)
+
 val fold2 : ('a -> 'b -> 'c -> 'c) -> 'c -> 'a t -> 'b t -> 'c
 (** [fold2] is similar to [fold] but will fold over two enumerations at the
     same time until one of the two enumerations ends. *)
