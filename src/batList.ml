@@ -458,7 +458,7 @@ let filteri_map f l =
   loop 0 dummy l;
   dummy.tl
 (*$T filteri_map
-  (let r = ref (-1) in filteri_map (fun i _ -> incr r; if i = !r then Some i else None) [5; 4; 8] = [1; 2; 3])
+  (let r = ref (-1) in filteri_map (fun i _ -> incr r; if i = !r then Some i else None) [5; 4; 8] = [0; 1; 2])
   filteri_map (fun _ x -> if x > 4 then Some (x, string_of_int x) else None) [5; 4; 8] = [(5, "5"); (8, "8")]
   filteri_map (fun _ _ -> Some ()) [] = []
   filteri_map (fun _ _ -> None) [1; 2] = []
