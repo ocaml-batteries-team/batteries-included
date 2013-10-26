@@ -89,3 +89,6 @@ header Typos: \
 
 header "consisting in => consisting of"
   grep -n "consisting in" *.ml *.mli
+
+header "@since NEXT_RELEASE should be filled before release"
+  grep "@since [^0123456789]" *.ml *.mli
