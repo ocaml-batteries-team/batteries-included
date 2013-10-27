@@ -84,4 +84,5 @@ BatInnerPervasives
   BatteriesConfig
   BatteriesPrint
   Batteries
+  BatteriesExceptionless
   Extlib
