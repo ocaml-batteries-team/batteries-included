@@ -89,18 +89,22 @@ let _ = dispatch begin function
           @ [
             Cmd(S[Sh"bisect-report -html coverage bisect*.out"]);
           ])
-        end;
+        end
 
+  | After_rules ->
+
+      (* Rules to create libraries from .mllib instead of .cmo.
+         We need this because src/batteries.mllib is hidden by src/batteries.ml *)
       rule ".mllib --> .cma"
+        ~insert:`top
         ~prod:"%.cma"
         ~dep:"%.mllib"
         (Pack.Ocaml_compiler.byte_library_link_mllib "%.mllib" "%.cma");
       rule ".mllib --> .cmxa"
+        ~insert:`top
         ~prod:"%.cmxa"
         ~dep:"%.mllib"
-        (Pack.Ocaml_compiler.native_library_link_mllib "%.mllib" "%.cmxa")
-
-  | After_rules ->
+        (Pack.Ocaml_compiler.native_library_link_mllib "%.mllib" "%.cmxa");
 
     for n = 1 to 30 do
       List.iter (fun symbol ->
