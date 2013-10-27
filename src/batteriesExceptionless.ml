@@ -1,4 +1,19 @@
-(* open this to extend all Foo with BatFoo.Exceptionless if available *)
+(* open this to extend all Foo with BatFoo and BatFoo.Exceptionless if available *)
+
+include (Batteries :
+           module type of Batteries
+         with module Array := Batteries.Array
+          and module Hashtbl := Batteries.Hashtbl
+          and module List := Batteries.List
+          and module Map := Batteries.Map
+          and module Queue := Batteries.Queue
+          and module Stack := Batteries.Stack
+          and module String := Batteries.String
+          and module Enum := Batteries.Enum
+          and module LazyList := Batteries.LazyList
+          and module Seq := Batteries.Seq
+          and module Splay := Batteries.Splay
+        )
 
 module Array = struct
   include (BatArray :
@@ -65,15 +80,11 @@ module String = struct
   end
 end
 
-(* Fix weird compilation errors *)
-module BatEnum = BatEnum
-module BatLazyList = BatLazyList
-
 (* Extlib modules not replacing stdlib *)
 module Enum = struct
   include (BatEnum :
-             module type of BatEnum
-           with module Labels := BatEnum.Labels
+             module type of Batteries.Enum
+           with module Labels := Batteries.Enum.Labels
           )
   include BatEnum.Exceptionless
   module Labels = struct
@@ -83,8 +94,8 @@ module Enum = struct
 end
 module LazyList = struct
   include (BatLazyList :
-             module type of BatLazyList
-           with module Labels := BatLazyList.Labels
+             module type of Batteries.LazyList
+           with module Labels := Batteries.LazyList.Labels
           )
   include BatLazyList.Exceptionless
   module Labels = struct
