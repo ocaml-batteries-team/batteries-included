@@ -5,6 +5,7 @@
  * Gallium wiki. *)
 
 open Ocamlbuild_plugin
+module Pack = Ocamlbuild_pack
 
 let ocamlfind x = S[A"ocamlfind"; A x]
 
@@ -88,7 +89,16 @@ let _ = dispatch begin function
           @ [
             Cmd(S[Sh"bisect-report -html coverage bisect*.out"]);
           ])
-        end
+        end;
+
+      rule ".mllib --> .cma"
+        ~prod:"%.cma"
+        ~dep:"%.mllib"
+        (Pack.Ocaml_compiler.byte_library_link_mllib "%.mllib" "%.cma");
+      rule ".mllib --> .cmxa"
+        ~prod:"%.cmxa"
+        ~dep:"%.mllib"
+        (Pack.Ocaml_compiler.native_library_link_mllib "%.mllib" "%.cmxa")
 
   | After_rules ->
 
