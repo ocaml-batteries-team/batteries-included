@@ -211,6 +211,13 @@ val fsum : float list -> float
     @raise Invalid_argument on the empty list.
  *)
 
+val kahan_sum : float list -> float
+(** [kahan_sum l] returns a numerically-accurate sum of the floats of
+    [l]. See {!BatArray.fsum} for more details.
+
+    @since NEXT_RELEASE
+*)
+
 val min_max : ?cmp:('a -> 'a -> int) -> 'a list -> 'a * 'a
 (** [min_max l] returns the pair (smallest, largest) from [l] as judged by
     [Pervasives.compare] (by default). You can provide another
