@@ -106,6 +106,33 @@ let rear q =
    match rear(empty |> cons 1 |> cons 2) with | Some(_, 1) -> true | _ -> false
 *)
 
+let eq ?(eq=(=)) q1 q2 =
+  (* lexicographic comparison of the lists
+    (front1 @ rev rear1) and (front2 @ rev rear2). If front1 is a prefix of
+    front2, then (rev rear1) is used to continue.
+    Reversing rear lists is only used if front lists are equal. *)
+  let rec eq_lexico front1 rear1 front2 rear2 = match front1, front2 with
+    | [], [] ->
+      begin match rear1, rear2 with
+      | [], [] -> true
+      | _::_, _::_ -> eq_lexico rear1 [] rear2 []
+      | _ -> false
+      end
+    | _::_, [] ->
+      begin match rear2 with
+        | [] -> false
+        | _::_ -> eq_lexico front1 rear1 (List.rev rear2) []
+      end
+    | [], _::_ ->
+      begin match rear1 with
+        | [] -> false
+        | _::_ -> eq_lexico (List.rev rear1) [] front2 rear2
+      end
+    | x1::front1', x2::front2' ->
+      eq x1 x2 && eq_lexico front1' rear1 front2' rear2
+  in
+  q1.flen + q1.rlen = q2.flen + q2.rlen && eq_lexico q1.front q1.rear q2.front q2.rear
+
 let rev q = { front = q.rear ; flen = q.rlen ;
               rear = q.front ; rlen = q.flen }
 
@@ -113,8 +140,17 @@ let rev q = { front = q.rear ; flen = q.rlen ;
    (Q.list Q.pos_int) (fun l -> let q = of_list l in rev q |> to_list = List.rev l)
 *)
 
+(*$T eq
+   eq (empty |> cons 1 |> cons 2 |> cons 3) (rev (empty |> cons 3 |> cons 2 |> cons 1))
+   not (eq (empty |> cons 1 |> cons 2) (empty |> cons 2 |> cons 1))
+*)
+
 let of_list l = { front = l ; flen = List.length l ;
                   rear = [] ; rlen = 0 }
+
+(*$Q eq
+   (Q.list Q.pos_int) ~count:20 (fun l -> eq (of_list l) (rev (of_list (List.rev l))))
+*)
 
 let is_empty q = size q = 0
 
