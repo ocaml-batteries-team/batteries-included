@@ -107,6 +107,9 @@ val init : int -> (int -> 'a) -> 'a t
 (** [init n f] returns the sequence returning the results of [f 0],
     [f 1].... [f (n-1)]. @raise Invalid_argument if [n < 0]. *)
 
+val of_list : 'a list -> 'a t
+(** Convenience function to build a seq from a list *)
+
 (** {6 Iterators} *)
 
 val iter : ('a -> unit) -> 'a t -> unit
@@ -139,6 +142,11 @@ val max : 'a t -> 'a
 val min : 'a t -> 'a
 (** [min s] returns the smallest value in [s] as judged by
     [Pervasives.compare] *)
+
+val equal : ?eq:('a -> 'a -> bool) -> 'a t -> 'a t -> bool
+  (** [equal ~eq s1 s2] compares elements of [s1] and [s2] pairwise
+      using [eq]
+      @param eq optional equality function (default {!Pervasives.(=)}) *)
 
 (** {6 Sequence scanning}
 
