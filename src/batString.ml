@@ -819,6 +819,47 @@ struct
   let compare = numeric_compare
 end
 
+let edit_distance s1 s2 =
+  if s1 = s2
+    then 0
+  else if String.length s1 = 0
+    then String.length s2
+  else if String.length s2 = 0
+    then String.length s1
+  else begin
+    (* distance vectors (v0=previous, v1=current) *)
+    let v0 = Array.make (String.length s2 + 1) 0 in
+    let v1 = Array.make (String.length s2 + 1) 0 in
+    (* initialize v0: v0(i) = A(0)(i) = delete i chars from t *)
+    for i = 0 to String.length s2 do
+      v0.(i) <- i
+    done;
+    (* main loop for the bottom up dynamic algorithm *)
+    for i = 0 to String.length s1 - 1 do
+      (* first edit distance is the deletion of i+1 elements from s *)
+      v1.(0) <- i+1;
+
+      (* try add/delete/replace operations *)
+      for j = 0 to String.length s2 - 1 do
+        let cost = if s1.[i] = s2.[j] then 0 else 1 in
+        v1.(j+1) <- min (v1.(j) + 1) (min (v0.(j+1) + 1) (v0.(j) + cost));
+      done;
+
+      (* copy v1 into v0 for next iteration *)
+      Array.blit v1 0 v0 0 (String.length s2 + 1);
+    done;
+    v1.(String.length s2)
+  end
+
+(*$T edit_distance
+  edit_distance "foo" "fo0" = 1
+  edit_distance "hello" "hell" = 1
+  edit_distance "kitten" "sitton" = 2
+*)
+
+(*$Q edit_distance
+  Q.(pair string string) (fun (s1, s2) -> edit_distance s1 s2 = edit_distance s2 s1)
+*)
 
 let print = BatInnerIO.nwrite
 let println out s = BatInnerIO.nwrite out s; BatInnerIO.write out '\n'
