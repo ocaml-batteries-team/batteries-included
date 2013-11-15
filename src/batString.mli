@@ -743,9 +743,15 @@ module NumString : BatInterfaces.OrderedType with type t = t
     Example: [module FilenameSet = Set.Make(String.NumString)]
 *)
 
-val edit_distance : t -> t -> int
+val edit_distance : ?cutoff:int -> t -> t -> int
 (** Edition distance (also known as "Levenshtein distance").
-    See {{:http://en.wikipedia.org/wiki/Levenshtein_distance} wikipedia}
+    See {{:http://en.wikipedia.org/wiki/Levenshtein_distance} wikipedia}.
+
+    @param cutoff optional maximal bound on the distance computed. If provided,
+      and we know that the distance is greater or equal to the cutoff,
+      then the computation stops and returns cutoff.
+
+    @raise Invalid_argument if the cutoff is <= 0.
 *)
 
 (** {6 Boilerplate code}*)
