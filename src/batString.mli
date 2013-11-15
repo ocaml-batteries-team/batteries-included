@@ -743,6 +743,11 @@ module NumString : BatInterfaces.OrderedType with type t = t
     Example: [module FilenameSet = Set.Make(String.NumString)]
 *)
 
+val edit_distance : t -> t -> int
+(** Edition distance (also known as "Levenshtein distance").
+    See {{:http://en.wikipedia.org/wiki/Levenshtein_distance} wikipedia}
+*)
+
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)
