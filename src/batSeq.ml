@@ -129,6 +129,13 @@ let init n f =
   else
     aux 0
 
+let of_list l =
+  let rec aux l () = match l with
+    | [] -> Nil
+    | x::l' -> Cons(x, aux l')
+  in
+  aux l
+
 let rec iter f s = match s () with
   | Nil -> ()
   | Cons(e, s) -> f e; iter f s
@@ -156,6 +163,20 @@ let max s = match s () with
 let min s = match s () with
   | Nil -> raise (Invalid_argument "Seq.min")
   | Cons(e, s) -> fold_left Pervasives.min e s
+
+let equal ?(eq=(=)) s1 s2 =
+  let rec recurse eq s1 s2 =
+    match s1 (), s2 () with
+    | Nil, Nil -> true
+    | Nil, Cons _
+    | Cons _, Nil -> false
+    | Cons (x1, s1'), Cons (x2, s2') -> eq x1 x2 && recurse eq s1' s2'
+  in
+  recurse eq s1 s2
+
+(*$T of_list
+  equal (of_list [1;2;3]) (nil |> cons 3 |> cons 2 |> cons 1)
+*)
 
 let rec for_all f s = match s () with
   | Nil -> true
@@ -360,4 +381,8 @@ module Exceptionless = struct
   let combine s1 s2 =
     try Some (combine s1 s2)
     with Invalid_argument "Seq.combine" -> None
+
+  (*$T combine
+    equal (combine (of_list [1;2]) (of_list ["a";"b"])) (of_list [1,"a"; 2,"b"]) 
+  *)
 end
