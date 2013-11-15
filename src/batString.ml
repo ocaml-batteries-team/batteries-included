@@ -820,12 +820,12 @@ struct
 end
 
 let edit_distance s1 s2 =
-  if s1 = s2
-    then 0
-  else if String.length s1 = 0
+  if String.length s1 = 0
     then String.length s2
   else if String.length s2 = 0
     then String.length s1
+  else if s1 = s2
+    then 0
   else begin
     (* distance vectors (v0=previous, v1=current) *)
     let v0 = Array.make (String.length s2 + 1) 0 in
