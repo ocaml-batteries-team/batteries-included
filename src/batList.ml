@@ -1113,6 +1113,24 @@ let unfold b f =
   unfold 0 (fun x -> if x > 3 then None else Some (x, succ x)) = [0;1;2;3]
 *)
 
+let is_contained_in cmp l l' = for_all (fun x -> exists (cmp x) l') l
+
+(*$T is_contained_in
+  is_contained_in (=) [1;2;3;4] [1;2;3] = false
+  is_contained_in (=) [1;2;3] [1;2;3] = true
+  is_contained_in (=) [3;2;1] [1;2;3] = true
+  is_contained_in (=) [1;2] [1;2;3] = true
+*)
+
+let image cmp l l' = map (fun x -> find (cmp x) l') l
+
+(*$T image
+  image (fun x y -> x = fst y) [1; 2] [1, "1"; 2, "2"; 3, "3"] = [1, "1"; 2, "2"]
+  image (fun x y -> x = fst y) [2; 1] [1, "1"; 2, "2"; 3, "3"] = [2, "2"; 1, "1"]
+  try ignore (image (fun x y -> x = fst y) [4] [1, "1"; 2, "2"; 3, "3"]); false with Not_found -> true
+*)
+
+
 module Exceptionless = struct
   let rfind p l =
     try  Some (rfind p l)
@@ -1162,6 +1180,10 @@ module Exceptionless = struct
     | [] -> None
     | [x] -> Some x
     | _ :: l -> last l
+
+  let image cmp l l' =
+    try Some (image cmp l l')
+    with Not_found -> None
 end
 
 
@@ -1198,6 +1220,8 @@ module Labels = struct
   let for_all ~f    = for_all f
   let for_all2 ~f   = for_all2 f
   let exists ~f     = exists f
+  let is_contained_in ~cmp = is_contained_in cmp
+  let image ~cmp = image cmp
   let stable_sort ?(cmp=compare)  = stable_sort cmp
   let fast_sort ?(cmp=compare)    = fast_sort cmp
   let sort ?(cmp=compare)         = sort cmp
@@ -1208,6 +1232,7 @@ module Labels = struct
     let rfind ~f l = rfind f l
     let find ~f l = find f l
     let findi ~f l = findi f l
+    let image ~cmp = image cmp
   end
 end
 
