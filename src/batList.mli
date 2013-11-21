@@ -300,7 +300,7 @@ val exists2 : ('a -> 'b -> bool) -> 'a list -> 'b list -> bool
 
 val is_contained_in : ('a -> 'b -> bool) -> 'a list -> 'b list -> bool
 (** [is_contained_in cmp l l'] check if all elements of the list [l]
-    is contained in the list [l'] by appling [cmp] as predicate.
+    is contained in the list [l'] by applying [cmp] as predicate.
 
     @since NEXT_RELEASE
 *)
