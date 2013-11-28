@@ -114,6 +114,18 @@ let tests = "BitSet" >::: [
         10, false;
         100, false]);
 
+  "create 0" >::
+  (fun () ->
+     let t = BS.create 0 in
+     BS.set t 0;
+     assert_mem t
+       [0, true;
+        1, false;
+        2, false;
+        9, false;
+        10, false;
+        100, false]);
+
   "full" >::
   (fun () ->
      let t = BS.create_full 10 in
