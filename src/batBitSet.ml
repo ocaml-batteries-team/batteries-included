@@ -90,7 +90,7 @@ let rec apply_bit_op sfun op t x =
   else
     match op with
     | Set | Toggle ->
-      extend t x;
+      extend t (x+1);
       apply_bit_op sfun op t x
     | Unset ->
       ()
