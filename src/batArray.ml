@@ -627,6 +627,32 @@ let decorate_fast_sort f xs =
     (fun (a, f) -> is_sorted_by f (decorate_fast_sort f a))
 *)
 
+let bisect f arr x =
+  let open BatOrd in
+  let rec bisect i j =
+    if i > j
+      then `JustAfter j
+      else
+        let middle = i + (j-i) / 2 in  (* avoid overflow *)
+        match f x arr.(middle) with
+        | Eq -> `Ok middle
+        | Lt -> bisect i (middle-1)
+        | Gt -> bisect (middle+1) j
+  in
+  if length arr = 0 then `AllLower
+  else match f arr.(0) x, f arr.(length arr-1) x with
+  | Gt, _ -> `AllBigger
+  | _, Lt -> `AllLower
+  | _ -> bisect 0 (length arr - 1)
+
+(*$T bisect
+  bisect BatInt.ord [|1;2;2;3;4;10|] 3 = `Ok 3
+  bisect BatInt.ord [|1;2;2;3;4;10|] 5 = `JustAfter 4
+  bisect BatInt.ord [|1;2;5;5;11;12|] 1 = `Ok 0
+  bisect BatInt.ord [|1;2;5;5;11;12|] 12 = `Ok 5
+*)
+
+
 let insert xs x i =
   if i > Array.length xs then invalid_arg "Array.insert: offset out of range";
   Array.init (Array.length xs + 1) (fun j -> if j < i then xs.(j) else if j > i then xs.(j-1) else x)
