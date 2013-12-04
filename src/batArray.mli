@@ -349,6 +349,23 @@ val decorate_stable_sort : ('a -> 'b) -> 'a array -> 'a array
 val decorate_fast_sort : ('a -> 'b) -> 'a array -> 'a array
 (** As {!Array.decorate_stable_sort}, but uses fast_sort internally. *)
 
+val bisect : 'a BatOrd.ord -> 'a array -> 'a ->
+            [ `AllLower | `AllBigger | `JustAfter of int | `Empty | `Ok of int ]
+(** [bisect cmp arr x] finds the index of the object [x] in the array [arr],
+    provided [arr] is {b sorted} using [cmp]. If the array is not sorted,
+    the result is not specified (may raise Invalid_argument).
+
+    Complexity: O(log n) where n is the length of the array (dichotomic search).
+
+    @return
+      - [`Ok i] if [cmp arr.(i) x = 0] (for some i)
+      - [`AllLower] if all elements of [arr] are lower than [x]
+      - [`AllBigger] if all elements of [arr] are bigger than [x]
+      - [`JustAfter i] if [arr.(i) < x < arr.(i+1)]
+      - [`Empty] if the array is empty
+
+    @raise Invalid_argument if the array is found not to be sorted w.r.t [cmp] *)
+
 
 (**{6 Operations on two arrays}*)
 
