@@ -683,6 +683,53 @@ let bsearch cmp arr x =
   bsearch BatInt.ord [| |] 3 = `Empty
 *)
 
+let split compare_fun arr x =
+  let open BatOrd in
+  let n = length arr in
+  (* find left edge between i and j *)
+  let rec search_left i j =
+    if i > j
+    then i
+    else
+      let middle = i + (j-i)/2 in
+      match compare_fun arr.(middle) x with
+      | Lt -> search_left (middle+1) j
+      | Gt -> search_left i (middle-1)
+      | Eq ->
+        (* check whether [middle] is the edge, ie the leftmost index
+           where arr.(_) = x *)
+        if middle-1 >= 0 && compare_fun arr.(middle-1) x = Lt
+          then middle    (* found! *)
+          else search_left i (middle-1)  (* go further on left *)
+  (* find right edge, between i and j *)
+  and search_right i j =
+    if i > j
+    then j
+    else
+      let middle = i + (j-i)/2 in
+      match compare_fun arr.(middle) x with
+      | Lt -> search_right (middle+1) j
+      | Gt -> search_right i (middle-1)
+      | Eq ->
+        if middle+1 < n && compare_fun arr.(middle+1) x = Gt
+          then middle+1    (* found! *)
+          else search_right (middle+1) j (* go further on right *)
+  in
+  if n = 0
+    then `Empty
+    else match compare_fun arr.(0) x, compare_fun arr.(n-1) x with
+    | Gt, _ -> `All_bigger
+    | _, Lt -> `All_lower
+    | _ -> `At (search_left 0 (n-1), search_right 0 (n-1))
+
+(*$T split
+  split BatInt.ord [| |] 1 = `Empty
+  split BatInt.ord [|1;2;2;3;3;4;5|] 3 = `At (3,5)
+  split BatInt.ord [|1;1;1;2;3;3;4;5|] 1 = `At (0,3)
+  split BatInt.ord [|1;2;2;3;3;4;5|] 10 = `All_lower
+  split BatInt.ord [|1;2;2;3;3;4;5|] 0 = `All_bigger
+*)
+
 let insert xs x i =
   if i > Array.length xs then invalid_arg "Array.insert: offset out of range";
   Array.init (Array.length xs + 1) (fun j -> if j < i then xs.(j) else if j > i then xs.(j-1) else x)
