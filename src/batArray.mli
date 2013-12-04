@@ -349,6 +349,21 @@ val decorate_stable_sort : ('a -> 'b) -> 'a array -> 'a array
 val decorate_fast_sort : ('a -> 'b) -> 'a array -> 'a array
 (** As {!Array.decorate_stable_sort}, but uses fast_sort internally. *)
 
+val split : 'a BatOrd.ord -> 'a array -> 'a ->
+            [ `AllLower | `AllBigger | `Ok of int * int ]
+(** [split cmp arr x] assumes that [arr] is {b sorted} w.r.t [cmp]. It splits
+    [arr] into three parts, by returning a variant:
+
+    - [`AllLower] if all elements of [arr] are lower than [x]
+    - [`AllBigger] if all elements of [arr] are bigger than [x]
+    - [`Ok (i,j)] otherwise, where:
+      - [cmp arr.(k) x < 0] for [k = 0 ... i-1]
+      - [cmp arr.(k) x = 0] for [k = i ... j-1]
+      - [cmp arr.(k) x > 0] for [k = j ... length arr - 1]
+
+    Complexity: logarithmic in the size of the array
+    @raise Invalid_argument if the array is found not to be sorted
+*)
 
 (**{6 Operations on two arrays}*)
 
