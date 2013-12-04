@@ -165,6 +165,19 @@ let of_enum = BatEnum.get
    let e = BatList.enum [1; 2; 3] in of_enum e = Some 1 && BatList.of_enum e = [2; 3]
 *)
 
+open BatOrd
+
+let ord o x y = match x, y with
+  | None, None -> Eq
+  | Some x', Some y' -> o x' y'
+  | Some _, None -> Gt
+  | None, Some _ -> Lt
+
+(*$T ord
+  ord BatInt.ord (Some 1) (Some 2) = BatOrd.Lt
+  ord BatInt.ord (Some 1) None = BatOrd.Gt
+*)
+
 let print print_a out = function
   | None   -> BatInnerIO.nwrite out "None"
   | Some x -> BatPrintf.fprintf out "Some %a" print_a x

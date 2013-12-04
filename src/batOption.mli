@@ -152,6 +152,9 @@ end
 
 (** {6 Boilerplate code}*)
 
+open BatOrd
+val ord : 'a ord -> 'a option ord
+
 (** {7 Printing}*)
 
 val print : ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> 'b t -> unit
