@@ -382,6 +382,9 @@ val map2 : ('a -> 'b -> 'c) -> 'a array -> 'b array -> 'c array
 
     @raise Invalid_argument if the two arrays have different lengths. *)
 
+val product : 'a array -> 'b array -> ('a * 'b) array
+(** Cartesian product of the two arrays. *)
+
 (**{6 Predicates}*)
 
 val for_all : ('a -> bool) -> 'a array -> bool
