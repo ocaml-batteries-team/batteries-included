@@ -627,20 +627,20 @@ let decorate_fast_sort f xs =
     (fun (a, f) -> is_sorted_by f (decorate_fast_sort f a))
 *)
 
-let bisect f arr x =
+let bisect compare_fun arr x =
   let open BatOrd in
   let rec bisect i j =
     if i > j
       then `JustAfter j
       else
         let middle = i + (j-i) / 2 in  (* avoid overflow *)
-        match f x arr.(middle) with
+        match compare_fun x arr.(middle) with
         | Eq -> `Ok middle
         | Lt -> bisect i (middle-1)
         | Gt -> bisect (middle+1) j
   in
   if length arr = 0 then `AllLower
-  else match f arr.(0) x, f arr.(length arr-1) x with
+  else match compare_fun arr.(0) x, compare_fun arr.(length arr-1) x with
   | Gt, _ -> `AllBigger
   | _, Lt -> `AllLower
   | _ -> bisect 0 (length arr - 1)
@@ -652,7 +652,7 @@ let bisect f arr x =
   bisect BatInt.ord [|1;2;5;5;11;12|] 12 = `Ok 5
 *)
 
-let split f arr x =
+let split compare_fun arr x =
   let open BatOrd in
   let n = length arr in
   (* find left edge between i and j *)
@@ -661,13 +661,13 @@ let split f arr x =
     then i
     else
       let middle = i + (j-i)/2 in
-      match f arr.(middle) x with
+      match compare_fun arr.(middle) x with
       | Lt -> search_left (middle+1) j
       | Gt -> search_left i (middle-1)
       | Eq ->
         (* check whether [middle] is the edge, ie the leftmost index
            where arr.(_) = x *)
-        if middle-1 >= 0 && f arr.(middle-1) x = Lt
+        if middle-1 >= 0 && compare_fun arr.(middle-1) x = Lt
           then middle    (* found! *)
           else search_left i (middle-1)  (* go further on left *)
   (* find right edge, between i and j *)
@@ -676,17 +676,17 @@ let split f arr x =
     then j
     else
       let middle = i + (j-i)/2 in
-      match f arr.(middle) x with
+      match compare_fun arr.(middle) x with
       | Lt -> search_right (middle+1) j
       | Gt -> search_right i (middle-1)
       | Eq ->
-        if middle+1 < n && f arr.(middle+1) x = Gt
+        if middle+1 < n && compare_fun arr.(middle+1) x = Gt
           then middle+1    (* found! *)
           else search_right (middle+1) j (* go further on right *)
   in
   if n = 0
     then `Ok (0, 0)
-    else match f arr.(0) x, f arr.(n-1) x with
+    else match compare_fun arr.(0) x, compare_fun arr.(n-1) x with
     | Gt, _ -> `AllBigger
     | _, Lt -> `AllLower
     | _ -> `Ok (search_left 0 (n-1), search_right 0 (n-1))
