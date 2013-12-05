@@ -1075,6 +1075,30 @@ let print ?(first="") ?(last="") ?(sep=" ") print_a  out e =
         aux ()
     in aux()
 
+let print_at_most ?(first="") ?(last="") ?(sep=" ") ~limit print_a out e =
+  if limit <= 0 then raise (Invalid_argument "enum.print_at_most");
+  BatInnerIO.nwrite out first;
+  match get e with
+  | None    -> BatInnerIO.nwrite out last
+  | Some x  ->
+    print_a out x;
+    let rec aux limit =
+      match get e with
+      | None   -> BatInnerIO.nwrite out last
+      | Some _ when limit = 0 ->
+        BatInnerIO.nwrite out "...";
+        BatInnerIO.nwrite out last
+      | Some x ->
+        BatInnerIO.nwrite out sep;
+        print_a out x;
+        aux (limit-1)
+    in aux (limit-1)
+
+(*$T print_at_most
+  Printf.sprintf2 "yolo %a" (print_at_most ~limit:3 Int.print) \
+    (range 0 ~until:10) = "yolo 0 1 2..."
+*)
+
 let t_printer a_printer _paren out e =
   print ~first:"[" ~sep:"; " ~last:"]" (a_printer false) out e
 
