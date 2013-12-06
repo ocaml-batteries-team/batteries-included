@@ -660,17 +660,18 @@ let split compare_fun arr x =
           else search_right (middle+1) j (* go further on right *)
   in
   if n = 0
-    then `Ok (0, 0)
+    then `Empty
     else match compare_fun arr.(0) x, compare_fun arr.(n-1) x with
-    | Gt, _ -> `AllBigger
-    | _, Lt -> `AllLower
-    | _ -> `Ok (search_left 0 (n-1), search_right 0 (n-1))
+    | Gt, _ -> `All_bigger
+    | _, Lt -> `All_lower
+    | _ -> `At (search_left 0 (n-1), search_right 0 (n-1))
 
 (*$T split
-  split BatInt.ord [|1;2;2;3;3;4;5|] 3 = `Ok (3,5)
-  split BatInt.ord [|1;1;1;2;3;3;4;5|] 1 = `Ok (0,3)
-  split BatInt.ord [|1;2;2;3;3;4;5|] 10 = `AllLower
-  split BatInt.ord [|1;2;2;3;3;4;5|] 0 = `AllBigger
+  split BatInt.ord [| |] 1 = `Empty
+  split BatInt.ord [|1;2;2;3;3;4;5|] 3 = `At (3,5)
+  split BatInt.ord [|1;1;1;2;3;3;4;5|] 1 = `At (0,3)
+  split BatInt.ord [|1;2;2;3;3;4;5|] 10 = `All_lower
+  split BatInt.ord [|1;2;2;3;3;4;5|] 0 = `All_bigger
 *)
 
 let insert xs x i =
