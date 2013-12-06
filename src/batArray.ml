@@ -639,7 +639,7 @@ let bisect compare_fun arr x =
         | Lt -> bisect i (middle-1)
         | Gt -> bisect (middle+1) j
   in
-  if length arr = 0 then `AllLower
+  if length arr = 0 then `Empty
   else match compare_fun arr.(0) x, compare_fun arr.(length arr-1) x with
   | Gt, _ -> `AllBigger
   | _, Lt -> `AllLower
@@ -685,7 +685,7 @@ let split compare_fun arr x =
           else search_right (middle+1) j (* go further on right *)
   in
   if n = 0
-    then `Ok (0, 0)
+    then `Empty
     else match compare_fun arr.(0) x, compare_fun arr.(n-1) x with
     | Gt, _ -> `AllBigger
     | _, Lt -> `AllLower
