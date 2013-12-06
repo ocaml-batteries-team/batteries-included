@@ -1060,39 +1060,31 @@ let hard_count t =
     try while true do ignore (t.next()); incr length done; assert false
     with No_more_elements -> !length
 
-let print ?(first="") ?(last="") ?(sep=" ") print_a  out e =
-  BatInnerIO.nwrite out first;
-  match get e with
-  | None    -> BatInnerIO.nwrite out last
-  | Some x  ->
-    print_a out x;
-    let rec aux () =
-      match get e with
-      | None   -> BatInnerIO.nwrite out last
-      | Some x ->
-        BatInnerIO.nwrite out sep;
-        print_a out x;
-        aux ()
-    in aux()
-
-let print_at_most ?(first="") ?(last="") ?(sep=" ") ~limit print_a out e =
-  if limit <= 0 then raise (Invalid_argument "enum.print_at_most");
+(* common hidden function for print and print_at_most *)
+let _print_common ~first ~last ~sep ~limit print_a out e =
   BatInnerIO.nwrite out first;
   match get e with
   | None    -> BatInnerIO.nwrite out last
   | Some x  ->
     print_a out x;
     let rec aux limit =
-      match get e with
-      | None   -> BatInnerIO.nwrite out last
-      | Some _ when limit = 0 ->
+      match get e, limit with
+      | None, _ -> BatInnerIO.nwrite out last
+      | Some _, 0 ->
         BatInnerIO.nwrite out "...";
         BatInnerIO.nwrite out last
-      | Some x ->
+      | Some x, _ ->
         BatInnerIO.nwrite out sep;
         print_a out x;
         aux (limit-1)
     in aux (limit-1)
+
+let print ?(first="") ?(last="") ?(sep=" ") print_a  out e =
+  _print_common ~first ~last ~sep ~limit:max_int print_a out e
+
+let print_at_most ?(first="") ?(last="") ?(sep=" ") ~limit print_a out e =
+  if limit <= 0 then raise (Invalid_argument "enum.print_at_most");
+  _print_common ~first ~last ~sep ~limit print_a out e
 
 (*$T print_at_most
   Printf.sprintf2 "yolo %a" (print_at_most ~limit:3 Int.print) \
