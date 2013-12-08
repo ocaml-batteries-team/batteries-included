@@ -1113,13 +1113,13 @@ let unfold b f =
   unfold 0 (fun x -> if x > 3 then None else Some (x, succ x)) = [0;1;2;3]
 *)
 
-let is_contained_in cmp l l' = for_all (fun x -> exists (cmp x) l') l
+let subset cmp l l' = for_all (fun x -> exists (cmp x) l') l
 
-(*$T is_contained_in
-  is_contained_in (=) [1;2;3;4] [1;2;3] = false
-  is_contained_in (=) [1;2;3] [1;2;3] = true
-  is_contained_in (=) [3;2;1] [1;2;3] = true
-  is_contained_in (=) [1;2] [1;2;3] = true
+(*$T subset
+  subset (=) [1;2;3;4] [1;2;3] = false
+  subset (=) [1;2;3] [1;2;3] = true
+  subset (=) [3;2;1] [1;2;3] = true
+  subset (=) [1;2] [1;2;3] = true
 *)
 
 let image cmp l l' = map (fun x -> find (cmp x) l') l
@@ -1220,7 +1220,7 @@ module Labels = struct
   let for_all ~f    = for_all f
   let for_all2 ~f   = for_all2 f
   let exists ~f     = exists f
-  let is_contained_in ~cmp = is_contained_in cmp
+  let subset ~cmp = subset cmp
   let image ~cmp = image cmp
   let stable_sort ?(cmp=compare)  = stable_sort cmp
   let fast_sort ?(cmp=compare)    = fast_sort cmp

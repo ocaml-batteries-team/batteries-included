@@ -298,8 +298,8 @@ val exists2 : ('a -> 'b -> bool) -> 'a list -> 'b list -> bool
     @raise Invalid_argument if the two lists have
     different lengths. *)
 
-val is_contained_in : ('a -> 'b -> bool) -> 'a list -> 'b list -> bool
-(** [is_contained_in cmp l l'] check if all elements of the list [l]
+val subset : ('a -> 'b -> bool) -> 'a list -> 'b list -> bool
+(** [subset cmp l l'] check if all elements of the list [l]
     is contained in the list [l'] by applying [cmp] as predicate.
 
     @since NEXT_RELEASE
@@ -877,7 +877,7 @@ module Labels : sig
   val exists : f:('a -> bool) -> 'a list -> bool
   val for_all2 : f:('a -> 'b -> bool) -> 'a list -> 'b list -> bool
   val exists2 : f:('a -> 'b -> bool) -> 'a list -> 'b list -> bool
-  val is_contained_in : cmp:('a -> 'b -> bool) -> 'a list -> 'b list -> bool
+  val subset : cmp:('a -> 'b -> bool) -> 'a list -> 'b list -> bool
   val image : cmp:('a -> 'b -> bool) -> 'a list -> 'b list -> 'b list
   val find : f:('a -> bool) -> 'a list -> 'a
   val find_exn : f:('a -> bool) -> exn -> 'a list -> 'a
