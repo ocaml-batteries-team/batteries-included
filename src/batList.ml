@@ -98,14 +98,14 @@ let at = nth
   at [1;2;3] 2 = 3
 *)
 
-let mem_cmp ?(cmp = Pervasives.compare) x l =
+let mem_cmp cmp x l =
   exists (fun y -> cmp x y = 0) l
 
 (*$T mem_cmp
-  mem_cmp 0 []     = false
-  mem_cmp 0 [1; 2] = false
-  mem_cmp 1 [1; 2] = true
-  mem_cmp 2 [1; 2] = true
+  mem_cmp Pervasives.compare 0 []     = false
+  mem_cmp Pervasives.compare 0 [1; 2] = false
+  mem_cmp Pervasives.compare 1 [1; 2] = true
+  mem_cmp Pervasives.compare 2 [1; 2] = true
 *)
 
 let append l1 l2 =

@@ -260,9 +260,9 @@ val mem : 'a -> 'a list -> bool
 (** [mem a l] is true if and only if [a] is equal
     to an element of [l]. *)
 
-val mem_cmp : ?cmp:('a -> 'a -> int) -> 'a -> 'a list -> bool
-(** Same as {!List.mem}, but the comparator function can be changed.
-    Default comparator is [Pervasives.compare]. *)
+val mem_cmp : ('a -> 'a -> int) -> 'a -> 'a list -> bool
+(** Same as {!List.mem}, but the comparator function is explicitely
+    provided. *)
 
 val memq : 'a -> 'a list -> bool
 (** Same as {!List.mem}, but uses physical equality instead of structural
