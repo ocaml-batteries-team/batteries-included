@@ -113,7 +113,7 @@ let append l1 l2 =
     loop r t;
     inj r
 
-let rec flatten l =
+let flatten l =
   let rec inner dst = function
     | [] -> dst
     | h :: t ->
@@ -373,7 +373,7 @@ let interleave ?first ?last (sep:'a) (l:'a list) =
   (interleave ~first:(-1) ~last:(-2) 0 []) [-1;-2]
 *)
 
-let rec unique ?(eq = ( = )) l =
+let unique ?(eq = ( = )) l =
   let rec loop dst = function
     | [] -> ()
     | h :: t ->
@@ -687,7 +687,7 @@ let combine l1 l2 =
   combine [1; 3] [2; 4] = [(1, 2); (3, 4)]
 *)
 
-let rec init size f =
+let init size f =
   if size = 0 then []
   else if size < 0 then invalid_arg "BatList.init"
   else
@@ -800,7 +800,7 @@ let remove l x =
   loop dummy l;
   dummy.tl
 
-let rec remove_if f lst =
+let remove_if f lst =
   let rec loop dst = function
     | [] -> ()
     | x :: l ->
@@ -813,7 +813,7 @@ let rec remove_if f lst =
   loop dummy lst;
   dummy.tl
 
-let rec remove_all l x =
+let remove_all l x =
   let rec loop dst = function
     | [] -> ()
     | h :: t ->
