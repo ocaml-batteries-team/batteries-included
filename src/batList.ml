@@ -76,7 +76,6 @@ let is_empty = function
   | [] -> true
   | _  -> false
 
-
 (*$T is_empty
   is_empty []
   not (is_empty [1])
@@ -97,6 +96,16 @@ let at = nth
   try ignore (at [] 0); false with Invalid_argument _ -> true
   try ignore (at [1;2;3] (-1)); false with Invalid_argument _ -> true
   at [1;2;3] 2 = 3
+*)
+
+let mem_cmp ?(cmp = Pervasives.compare) x l =
+  exists (fun y -> cmp x y = 0) l
+
+(*$T mem_cmp
+  mem_cmp 0 []     = false
+  mem_cmp 0 [1; 2] = false
+  mem_cmp 1 [1; 2] = true
+  mem_cmp 2 [1; 2] = true
 *)
 
 let append l1 l2 =
