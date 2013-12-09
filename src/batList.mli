@@ -267,10 +267,13 @@ val mem : 'a -> 'a list -> bool
 (** [mem a l] is true if and only if [a] is equal
     to an element of [l]. *)
 
+val mem_cmp : ('a -> 'a -> int) -> 'a -> 'a list -> bool
+(** Same as {!List.mem}, but the comparator function is explicitely
+    provided. *)
+
 val memq : 'a -> 'a list -> bool
 (** Same as {!List.mem}, but uses physical equality instead of structural
     equality to compare list elements. *)
-
 
 (**{7 Unary predicate, One list}*)
 
