@@ -627,29 +627,32 @@ let decorate_fast_sort f xs =
     (fun (a, f) -> is_sorted_by f (decorate_fast_sort f a))
 *)
 
-let bisect compare_fun arr x =
+let bsearch compare_fun arr x =
   let open BatOrd in
-  let rec bisect i j =
+  let rec bsearch i j =
     if i > j
       then `JustAfter j
       else
         let middle = i + (j-i) / 2 in  (* avoid overflow *)
         match compare_fun x arr.(middle) with
         | Eq -> `Ok middle
-        | Lt -> bisect i (middle-1)
-        | Gt -> bisect (middle+1) j
+        | Lt -> bsearch i (middle-1)
+        | Gt -> bsearch (middle+1) j
   in
   if length arr = 0 then `Empty
   else match compare_fun arr.(0) x, compare_fun arr.(length arr-1) x with
   | Gt, _ -> `AllBigger
   | _, Lt -> `AllLower
-  | _ -> bisect 0 (length arr - 1)
+  | _ -> bsearch 0 (length arr - 1)
 
-(*$T bisect
-  bisect BatInt.ord [|1;2;2;3;4;10|] 3 = `Ok 3
-  bisect BatInt.ord [|1;2;2;3;4;10|] 5 = `JustAfter 4
-  bisect BatInt.ord [|1;2;5;5;11;12|] 1 = `Ok 0
-  bisect BatInt.ord [|1;2;5;5;11;12|] 12 = `Ok 5
+(*$T bsearch
+  bsearch BatInt.ord [|1;2;2;3;4;10|] 3 = `Ok 3
+  bsearch BatInt.ord [|1;2;2;3;4;10|] 5 = `JustAfter 4
+  bsearch BatInt.ord [|1;2;5;5;11;12|] 1 = `Ok 0
+  bsearch BatInt.ord [|1;2;5;5;11;12|] 12 = `Ok 5
+  bsearch BatInt.ord [|1;2;2;3;4;9|] 10 = `AllLower
+  bsearch BatInt.ord [|1;2;2;3;4;9|] 0 = `AllBigger
+  bsearch BatInt.ord [| |] 3 = `Empty
 *)
 
 
