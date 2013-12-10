@@ -479,14 +479,14 @@ let product a b =
   c
 
 (*$T product
-  let a = BatArray.product [|1;2|] [|"a";"b"|] in \
+  let a = product [|1;2|] [|"a";"b"|] in \
     sort Pervasives.compare a; \
     a = [|1,"a"; 1,"b"; 2,"a"; 2, "b" |]
 *)
 
 (*$Q product
   (Q.pair (Q.array Q.small_int) (Q.array Q.small_int)) \
-    (fun (a,b) -> length (Array.product a b) = length a * length b)
+    (fun (a,b) -> length (product a b) = length a * length b)
 *)
 
 let compare cmp a b =
