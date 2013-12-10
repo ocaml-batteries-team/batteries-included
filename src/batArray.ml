@@ -469,6 +469,26 @@ let map2 f xs ys =
      with Invalid_argument _ -> true
 *)
 
+let product a b =
+  let nb = length b in
+  let c = init (length a * nb)
+    (fun j ->
+      let i = j / nb in
+      a.(i), b.(j - i*nb))
+  in
+  c
+
+(*$T product
+  let a = BatArray.product [|1;2|] [|"a";"b"|] in \
+    sort Pervasives.compare a; \
+    a = [|1,"a"; 1,"b"; 2,"a"; 2, "b" |]
+*)
+
+(*$Q product
+  (Q.pair (Q.array Q.small_int) (Q.array Q.small_int)) \
+    (fun (a,b) -> length (Array.product a b) = length a * length b)
+*)
+
 let compare cmp a b =
   let length_a = Array.length a in
   let length_b = Array.length b in
