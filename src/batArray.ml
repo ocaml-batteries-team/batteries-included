@@ -470,13 +470,12 @@ let map2 f xs ys =
 *)
 
 let cartesian_product a b =
+  let na = length a in
   let nb = length b in
-  let c = init (length a * nb)
-    (fun j ->
-      let i = j / nb in
-      a.(i), b.(j - i*nb))
-  in
-  c
+  init
+    (na * nb)
+    (fun j -> let i = j / nb in
+              a.(i), b.(j - i*nb))
 
 (*$T cartesian_product
   let a = cartesian_product [|1;2|] [|"a";"b"|] in \
