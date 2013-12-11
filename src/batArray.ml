@@ -627,34 +627,33 @@ let decorate_fast_sort f xs =
     (fun (a, f) -> is_sorted_by f (decorate_fast_sort f a))
 *)
 
-let bsearch compare_fun arr x =
+let bsearch cmp arr x =
   let open BatOrd in
   let rec bsearch i j =
     if i > j
-      then `JustAfter j
+      then `Just_after j
       else
-        let middle = i + (j-i) / 2 in  (* avoid overflow *)
-        match compare_fun x arr.(middle) with
-        | Eq -> `Ok middle
-        | Lt -> bsearch i (middle-1)
-        | Gt -> bsearch (middle+1) j
+        let middle = i + (j - i) / 2 in (* avoid overflow *)
+        match cmp x arr.(middle) with
+        | Eq -> `At middle
+        | Lt -> bsearch i (middle - 1)
+        | Gt -> bsearch (middle + 1) j
   in
   if length arr = 0 then `Empty
-  else match compare_fun arr.(0) x, compare_fun arr.(length arr-1) x with
-  | Gt, _ -> `AllBigger
-  | _, Lt -> `AllLower
+  else match cmp arr.(0) x, cmp arr.(length arr - 1) x with
+  | Gt, _ -> `All_bigger
+  | _, Lt -> `All_lower
   | _ -> bsearch 0 (length arr - 1)
 
 (*$T bsearch
-  bsearch BatInt.ord [|1;2;2;3;4;10|] 3 = `Ok 3
-  bsearch BatInt.ord [|1;2;2;3;4;10|] 5 = `JustAfter 4
-  bsearch BatInt.ord [|1;2;5;5;11;12|] 1 = `Ok 0
-  bsearch BatInt.ord [|1;2;5;5;11;12|] 12 = `Ok 5
-  bsearch BatInt.ord [|1;2;2;3;4;9|] 10 = `AllLower
-  bsearch BatInt.ord [|1;2;2;3;4;9|] 0 = `AllBigger
+  bsearch BatInt.ord [|1; 2; 2; 3; 4; 10|] 3 = `At 3
+  bsearch BatInt.ord [|1; 2; 2; 3; 4; 10|] 5 = `Just_after 4
+  bsearch BatInt.ord [|1; 2; 5; 5; 11; 12|] 1 = `At 0
+  bsearch BatInt.ord [|1; 2; 5; 5; 11; 12|] 12 = `At 5
+  bsearch BatInt.ord [|1; 2; 2; 3; 4; 9|] 10 = `All_lower
+  bsearch BatInt.ord [|1; 2; 2; 3; 4; 9|] 0 = `All_bigger
   bsearch BatInt.ord [| |] 3 = `Empty
 *)
-
 
 let insert xs x i =
   if i > Array.length xs then invalid_arg "Array.insert: offset out of range";
