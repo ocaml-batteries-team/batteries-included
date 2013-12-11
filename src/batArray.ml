@@ -628,21 +628,20 @@ let decorate_fast_sort f xs =
 *)
 
 let bsearch cmp arr x =
-  let open BatOrd in
   let rec bsearch i j =
     if i > j
       then `Just_after j
       else
         let middle = i + (j - i) / 2 in (* avoid overflow *)
         match cmp x arr.(middle) with
-        | Eq -> `At middle
-        | Lt -> bsearch i (middle - 1)
-        | Gt -> bsearch (middle + 1) j
+        | BatOrd.Eq -> `At middle
+        | BatOrd.Lt -> bsearch i (middle - 1)
+        | BatOrd.Gt -> bsearch (middle + 1) j
   in
   if length arr = 0 then `Empty
   else match cmp arr.(0) x, cmp arr.(length arr - 1) x with
-  | Gt, _ -> `All_bigger
-  | _, Lt -> `All_lower
+  | BatOrd.Gt, _ -> `All_bigger
+  | _, BatOrd.Lt -> `All_lower
   | _ -> bsearch 0 (length arr - 1)
 
 (*$T bsearch
