@@ -1122,13 +1122,13 @@ let unfold b f =
   unfold 0 (fun x -> if x > 3 then None else Some (x, succ x)) = [0;1;2;3]
 *)
 
-let subset cmp l l' = for_all (fun x -> exists (cmp x) l') l
+let subset cmp l l' = for_all (fun x -> mem_cmp cmp x l') l
 
 (*$T subset
-  subset (=) [1;2;3;4] [1;2;3] = false
-  subset (=) [1;2;3] [1;2;3] = true
-  subset (=) [3;2;1] [1;2;3] = true
-  subset (=) [1;2] [1;2;3] = true
+  subset Pervasives.compare [1;2;3;4] [1;2;3] = false
+  subset Pervasives.compare [1;2;3] [1;2;3] = true
+  subset Pervasives.compare [3;2;1] [1;2;3] = true
+  subset Pervasives.compare [1;2] [1;2;3] = true
 *)
 
 module Exceptionless = struct
