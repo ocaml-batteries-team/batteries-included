@@ -301,6 +301,12 @@ val exists2 : ('a -> 'b -> bool) -> 'a list -> 'b list -> bool
     @raise Invalid_argument if the two lists have
     different lengths. *)
 
+val subset : ('a -> 'b -> bool) -> 'a list -> 'b list -> bool
+(** [subset cmp l l'] check if all elements of the list [l]
+    is contained in the list [l'] by applying [cmp] as predicate.
+
+    @since NEXT_RELEASE
+*)
 
 (**{6 List searching}*)
 
@@ -712,6 +718,15 @@ val transpose : 'a list list -> 'a list list
     @since 2.0.0
 *)
 
+val image : ('a -> 'b -> bool) -> 'a list -> 'b list -> 'b list
+(** [image cmp l l'] transpose the list [l] to the equivalant list [l']
+    using the predicate [cmp].
+    @raise Not_found if an element of [l] cannot find it's equivalant in [l'].
+
+    @since NEXT_RELEASE
+*)
+
+
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)
@@ -824,6 +839,14 @@ module Exceptionless : sig
   val last : 'a list -> 'a option
     (** [last l] returns either [Some x] where [x] is the last element of the list, or [None] if
         the list is empty. This function takes linear time. *)
+
+  val image : ('a -> 'b -> bool) -> 'a list -> 'b list -> 'b list option
+  (** [image cmp l l'] transpose the list [l] to the equivalant list [l']
+      using the predicate [cmp]. If an element of [l] cannot find it's
+      equivalant in [l'], then [None] is returned.
+
+      @since NEXT_RELEASE
+  *)
 end
 
 (** {6 Infix submodule regrouping all infix operators} *)
@@ -857,6 +880,8 @@ module Labels : sig
   val exists : f:('a -> bool) -> 'a list -> bool
   val for_all2 : f:('a -> 'b -> bool) -> 'a list -> 'b list -> bool
   val exists2 : f:('a -> 'b -> bool) -> 'a list -> 'b list -> bool
+  val subset : cmp:('a -> 'b -> bool) -> 'a list -> 'b list -> bool
+  val image : cmp:('a -> 'b -> bool) -> 'a list -> 'b list -> 'b list
   val find : f:('a -> bool) -> 'a list -> 'a
   val find_exn : f:('a -> bool) -> exn -> 'a list -> 'a
   val findi : f:(int -> 'a -> bool) -> 'a list -> (int * 'a)
@@ -881,6 +906,7 @@ module Labels : sig
     val assoc : 'a -> ('a * 'b) list -> 'b option
     val assoc_inv : 'b -> ('a * 'b) list -> 'a option
     val assq : 'a -> ('a * 'b) list -> 'b option
+    val image : cmp:('a -> 'b -> bool) -> 'a list -> 'b list -> 'b list option
   end
 end
 
