@@ -382,22 +382,23 @@ val bsearch : 'a BatOrd.ord -> 'a array -> 'a ->
     @raise Invalid_argument if the array is found to be unsorted w.r.t [cmp]
     @since 2.2.0 *)
 
-val split : 'a BatOrd.ord -> 'a array -> 'a ->
-            [ `All_lower | `All_bigger | `At of int * int | `Empty ]
-(** [split cmp arr x] assumes that [arr] is {b sorted} w.r.t [cmp]. It splits
-    [arr] into three parts, by returning a variant:
+val split : 'a BatOrd.ord -> 'a array -> 'a -> int * int
+(** [split cmp arr x] assumes that [arr] is {b sorted} w.r.t
+    [cmp]. It splits an array [arr] of length [len] into three parts,
+    by returning a couple (i,j) such as:
+    - all elements with indices 0..i-1 ([sub arr 0 i]) are lower than [x]
+    - all elements with indices i..j-1 ([sub arr i (j-i)]) are equal to [x]
+    - all elements with indices j..len-1 ([sub arr j (len-j)]) are bigger than [x]
 
-    - [`All_lower] if all elements of [arr] are lower than [x]
-    - [`All_bigger] if all elements of [arr] are bigger than [x]
-    - [`Empty] if the array is empty
-    - [`At (i,j)] otherwise, where:
-      - [cmp arr.(k) x < 0] for [k = 0 ... i-1]
-      - [cmp arr.(k) x = 0] for [k = i ... j-1]
-      - [cmp arr.(k) x > 0] for [k = j ... length arr - 1]
+    In particular, it returns:
+    - (0, 0) if all elements of [arr] are bigger than [x]
+    - (len, len) if all elements are lower than [x]
+    - (0, len) if all elements are equal to [x]
 
     Complexity: logarithmic in the size of the array
     @raise Invalid_argument if the array is found not to be sorted
 *)
+
 
 (**{6 Operations on two arrays}*)
 
