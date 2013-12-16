@@ -646,6 +646,33 @@ let decorate_fast_sort f xs =
     (fun (a, f) -> is_sorted_by f (decorate_fast_sort f a))
 *)
 
+let bsearch cmp arr x =
+  let rec bsearch i j =
+    if i > j
+      then `Just_after j
+      else
+        let middle = i + (j - i) / 2 in (* avoid overflow *)
+        match cmp x arr.(middle) with
+        | BatOrd.Eq -> `At middle
+        | BatOrd.Lt -> bsearch i (middle - 1)
+        | BatOrd.Gt -> bsearch (middle + 1) j
+  in
+  if length arr = 0 then `Empty
+  else match cmp arr.(0) x, cmp arr.(length arr - 1) x with
+  | BatOrd.Gt, _ -> `All_bigger
+  | _, BatOrd.Lt -> `All_lower
+  | _ -> bsearch 0 (length arr - 1)
+
+(*$T bsearch
+  bsearch BatInt.ord [|1; 2; 2; 3; 4; 10|] 3 = `At 3
+  bsearch BatInt.ord [|1; 2; 2; 3; 4; 10|] 5 = `Just_after 4
+  bsearch BatInt.ord [|1; 2; 5; 5; 11; 12|] 1 = `At 0
+  bsearch BatInt.ord [|1; 2; 5; 5; 11; 12|] 12 = `At 5
+  bsearch BatInt.ord [|1; 2; 2; 3; 4; 9|] 10 = `All_lower
+  bsearch BatInt.ord [|1; 2; 2; 3; 4; 9|] 0 = `All_bigger
+  bsearch BatInt.ord [| |] 3 = `Empty
+*)
+
 let insert xs x i =
   if i > Array.length xs then invalid_arg "Array.insert: offset out of range";
   Array.init (Array.length xs + 1) (fun j -> if j < i then xs.(j) else if j > i then xs.(j-1) else x)
