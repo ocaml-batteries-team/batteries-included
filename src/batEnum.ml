@@ -912,6 +912,91 @@ let clump clump_size add get e = (* convert a uchar enum into a ustring enum *)
   in
   from next
 
+(* mutable state used for {!product}. Use module to have a private
+    namespace. *)
+module ProductState = struct
+  type ('a,'b) t = {
+    e1 : 'a enumerable;
+    e2 : 'b enumerable;
+    mutable all1 : 'a list;
+    mutable all2 : 'b list;
+    mutable cur : [ `GetLeft | `GetRight | `Stop
+                  | `ProdLeft of 'a * 'b list | `ProdRight of 'b * 'a list];
+  }
+end
+
+let product e1 e2 =
+  let open ProductState in
+  (* sketch of the algo: state machine that alternates between taking a
+     new element from [e1] and yield its product with [state.all2], and
+     taking a new element from [e2] and make its product with [state.all1]
+
+     [state.cur]: current state of automaton, i.e., what we have to do next.
+     Can be `Stop,
+     `GetLeft/`GetRight (to obtain next element from first/second generator),
+     or `ProdLeft/`ProdRIght to compute the product of an element with a list
+     of already met elements *)
+  let rec next state () =
+    match state.cur with
+    | `Stop -> raise No_more_elements
+    | `GetLeft ->
+      let x1 = try Some (state.e1.next()) with No_more_elements -> None in
+      begin match x1 with
+        | None -> state.cur <- `GetRight
+        | Some x ->
+          state.all1 <- x :: state.all1;
+          state.cur <- `ProdLeft (x, state.all2)
+      end;
+      next state ()
+    | `GetRight ->
+      let x2 = try Some (state.e2.next()) with No_more_elements -> None in
+      begin match x2 with
+        | None -> state.cur <- `Stop; raise No_more_elements
+        | Some y ->
+          state.all2 <- y::state.all2;
+          state.cur <- `ProdRight (y, state.all1)
+      end;
+      next state ()
+    | `ProdLeft (_, []) ->
+      state.cur <- `GetRight;
+      next state ()
+    | `ProdLeft (x, y::l) ->
+      state.cur <- `ProdLeft (x, l);
+      x, y
+    | `ProdRight (_, []) ->
+      state.cur <- `GetLeft;
+      next state()
+    | `ProdRight (y, x::l) ->
+      state.cur <- `ProdRight (y, l);
+      x, y
+  and clone state () =
+    let state' = {state with e1=state.e1.clone(); e2=state.e2.clone();} in
+    _make state'
+  and count state () = state.e1.count () * state.e2.count ()
+  (* build enum from the state *)
+  and _make state = {
+    next = next state;
+    clone = clone state;
+    count = count state;
+    fast = false;
+  }
+  in
+  let state = {e1; e2; cur=`GetLeft; all1=[]; all2=[]} in
+  _make state
+
+(*$T product
+  product (List.enum [1;2;3]) (List.enum ["a";"b"]) \
+    |> List.of_enum |> List.sort Pervasives.compare = \
+    [1,"a"; 1,"b"; 2,"a"; 2,"b"; 3,"a"; 3,"b"]
+*)
+
+(*$Q product
+  Q.(pair (list small_int) (list small_int)) \
+    (fun (l1,l2) -> \
+      product (List.enum l1) (List.enum l2) |> count = \
+      List.length l1 * List.length l2)
+*)
+
 let from_while f =
   from (fun () -> match f () with
     | None   -> raise No_more_elements
