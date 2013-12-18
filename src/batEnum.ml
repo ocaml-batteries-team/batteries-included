@@ -912,7 +912,7 @@ let clump clump_size add get e = (* convert a uchar enum into a ustring enum *)
   in
   from next
 
-(* mutable state used for {!product}. Use a module to have a private namespace. *)
+(* mutable state used for {!cartesian_product}. Use a module to have a private namespace. *)
 module ProductState = struct
   type ('a, 'b) current_state =
     | GetLeft
@@ -930,7 +930,7 @@ module ProductState = struct
   }
 end
 
-let product e1 e2 =
+let cartesian_product e1 e2 =
   let open ProductState in
   (* sketch of the algo: state machine that alternates between taking a
      new element from [e1] and yield its product with [state.all2], and
@@ -999,17 +999,20 @@ let product e1 e2 =
   let state = {e1; e2; cur=GetLeft; all1=[]; all2=[]} in
   _make state
 
-(*$T product
-  product (List.enum [1;2;3]) (List.enum ["a";"b"]) \
+(*$T cartesian_product
+  cartesian_product (List.enum [1;2;3]) (List.enum ["a";"b"]) \
     |> List.of_enum |> List.sort Pervasives.compare = \
     [1,"a"; 1,"b"; 2,"a"; 2,"b"; 3,"a"; 3,"b"]
 *)
 
-(*$Q product
+(*$Q cartesian_product
   Q.(pair (list small_int) (list small_int)) \
     (fun (l1,l2) -> \
-      product (List.enum l1) (List.enum l2) |> count = \
+      cartesian_product (List.enum l1) (List.enum l2) |> count = \
       List.length l1 * List.length l2)
+  Q.(pair (list small_int) (list small_int)) \
+    (fun (l1,l2) -> cartesian_product (List.enum l1) (List.enum l2) \
+      |> List.of_enum |> List.length = List.length l1 * List.length l2)
 *)
 
 let from_while f =

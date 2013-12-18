@@ -294,10 +294,10 @@ val clump : int -> ('a -> unit) -> (unit -> 'b) -> 'a t -> 'b t
     result enumeration.  Useful to convert a char enum into string
     enum. *)
 
-val product : 'a t -> 'b t -> ('a * 'b) t
-(** [product e1 e2] computes the cartesian product of [e1] and [e2]. Pairs
-    are enumerated in a non-specified order, but in fair enough an order so
-    that it works on infinite enums (i.e. even then, any pair is eventually
+val cartesian_product : 'a t -> 'b t -> ('a * 'b) t
+(** [cartesian_product e1 e2] computes the cartesian product of [e1] and [e2].
+    Pairs are enumerated in a non-specified order, but in fair enough an order
+    so that it works on infinite enums (i.e. even then, any pair is eventually
     returned) *)
 
 (** {6 Lazy constructors}
