@@ -917,6 +917,7 @@ module ProductState = struct
   type ('a, 'b) current_state =
     | GetLeft
     | GetRight
+    | GetRightOrStop
     | Stop
     | ProdLeft of 'a * 'b list
     | ProdRight of 'b * 'a list
@@ -947,19 +948,21 @@ let cartesian_product e1 e2 =
     | GetLeft ->
       let x1 = try Some (state.e1.next()) with No_more_elements -> None in
       begin match x1 with
-        | None -> state.cur <- GetRight
+        | None -> state.cur <- GetRightOrStop
         | Some x ->
           state.all1 <- x :: state.all1;
           state.cur <- ProdLeft (x, state.all2)
       end;
       next state ()
-    | GetRight ->
+    | GetRight | GetRightOrStop ->
       let x2 = try Some (state.e2.next()) with No_more_elements -> None in
-      begin match x2 with
-        | None -> state.cur <- Stop; raise No_more_elements
-        | Some y ->
+      begin match x2, state.cur with
+        | None, GetRightOrStop -> state.cur <- Stop; raise No_more_elements
+        | None, GetRight -> state.cur <- GetLeft
+        | Some y, _ ->
           state.all2 <- y::state.all2;
           state.cur <- ProdRight (y, state.all1)
+        | None, _ -> assert false
       end;
       next state ()
     | ProdLeft (_, []) ->
@@ -986,8 +989,7 @@ let cartesian_product e1 e2 =
     | ProdRight (_, l) -> n + List.length l
     | ProdLeft (_, l) -> n + List.length l
     | Stop -> 0
-    | GetLeft
-    | GetRight -> n
+    | GetLeft | GetRight | GetRightOrStop -> n
   (* build enum from the state *)
   and _make state = {
     next = next state;
