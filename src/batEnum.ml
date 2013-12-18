@@ -912,16 +912,21 @@ let clump clump_size add get e = (* convert a uchar enum into a ustring enum *)
   in
   from next
 
-(* mutable state used for {!product}. Use module to have a private
-    namespace. *)
+(* mutable state used for {!product}. Use a module to have a private namespace. *)
 module ProductState = struct
+  type ('a, 'b) current_state =
+    | GetLeft
+    | GetRight
+    | Stop
+    | ProdLeft of 'a * 'b list
+    | ProdRight of 'b * 'a list
+
   type ('a,'b) t = {
     e1 : 'a enumerable;
     e2 : 'b enumerable;
     mutable all1 : 'a list;
     mutable all2 : 'b list;
-    mutable cur : [ `GetLeft | `GetRight | `Stop
-                  | `ProdLeft of 'a * 'b list | `ProdRight of 'b * 'a list];
+    mutable cur : ('a,'b) current_state;
   }
 end
 
@@ -938,36 +943,36 @@ let product e1 e2 =
      of already met elements *)
   let rec next state () =
     match state.cur with
-    | `Stop -> raise No_more_elements
-    | `GetLeft ->
+    | Stop -> raise No_more_elements
+    | GetLeft ->
       let x1 = try Some (state.e1.next()) with No_more_elements -> None in
       begin match x1 with
-        | None -> state.cur <- `GetRight
+        | None -> state.cur <- GetRight
         | Some x ->
           state.all1 <- x :: state.all1;
-          state.cur <- `ProdLeft (x, state.all2)
+          state.cur <- ProdLeft (x, state.all2)
       end;
       next state ()
-    | `GetRight ->
+    | GetRight ->
       let x2 = try Some (state.e2.next()) with No_more_elements -> None in
       begin match x2 with
-        | None -> state.cur <- `Stop; raise No_more_elements
+        | None -> state.cur <- Stop; raise No_more_elements
         | Some y ->
           state.all2 <- y::state.all2;
-          state.cur <- `ProdRight (y, state.all1)
+          state.cur <- ProdRight (y, state.all1)
       end;
       next state ()
-    | `ProdLeft (_, []) ->
-      state.cur <- `GetRight;
+    | ProdLeft (_, []) ->
+      state.cur <- GetRight;
       next state ()
-    | `ProdLeft (x, y::l) ->
-      state.cur <- `ProdLeft (x, l);
+    | ProdLeft (x, y::l) ->
+      state.cur <- ProdLeft (x, l);
       x, y
-    | `ProdRight (_, []) ->
-      state.cur <- `GetLeft;
+    | ProdRight (_, []) ->
+      state.cur <- GetLeft;
       next state()
-    | `ProdRight (y, x::l) ->
-      state.cur <- `ProdRight (y, l);
+    | ProdRight (y, x::l) ->
+      state.cur <- ProdRight (y, l);
       x, y
   and clone state () =
     let state' = {state with e1=state.e1.clone(); e2=state.e2.clone();} in
@@ -978,11 +983,11 @@ let product e1 e2 =
     (* 3 products to make: e1 with e2, and ei with all{2-i} for i in {1,2} *)
     let n = n1 * n2 + n1 * List.length state.all2 + n2 * List.length state.all1 in
     match state.cur with
-    | `ProdRight (_, l) -> n + List.length l
-    | `ProdLeft (_, l) -> n + List.length l
-    | `Stop -> 0
-    | `GetLeft
-    | `GetRight -> n
+    | ProdRight (_, l) -> n + List.length l
+    | ProdLeft (_, l) -> n + List.length l
+    | Stop -> 0
+    | GetLeft
+    | GetRight -> n
   (* build enum from the state *)
   and _make state = {
     next = next state;
@@ -991,7 +996,7 @@ let product e1 e2 =
     fast = false;
   }
   in
-  let state = {e1; e2; cur=`GetLeft; all1=[]; all2=[]} in
+  let state = {e1; e2; cur=GetLeft; all1=[]; all2=[]} in
   _make state
 
 (*$T product
