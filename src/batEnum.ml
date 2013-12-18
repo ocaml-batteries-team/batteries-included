@@ -1005,6 +1005,15 @@ let cartesian_product e1 e2 =
   cartesian_product (List.enum [1;2;3]) (List.enum ["a";"b"]) \
     |> List.of_enum |> List.sort Pervasives.compare = \
     [1,"a"; 1,"b"; 2,"a"; 2,"b"; 3,"a"; 3,"b"]
+  let e = cartesian_product (List.enum [1;2;3]) (List.enum [1]) in \
+    e |> List.of_enum |> List.sort Pervasives.compare = [1,1; 2,1; 3,1]
+  let e = cartesian_product (List.enum [1]) (List.enum [1;2;3]) in \
+    e |> List.of_enum |> List.sort Pervasives.compare = [1,1; 1,2; 1,3]
+  let e = cartesian_product (List.enum [1;2;3]) (List.enum [1;2;3]) in \
+    ignore (Enum.get e); Enum.count e = 8
+  let e = cartesian_product (List.enum [1;2]) (Enum.repeat 3) in\
+    e |> Enum.take 4 |> Enum.map fst |> List.of_enum \
+      |> List.sort Pervasives.compare = [1; 1; 2; 2]
 *)
 
 (*$Q cartesian_product
