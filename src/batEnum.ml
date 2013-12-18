@@ -972,7 +972,17 @@ let product e1 e2 =
   and clone state () =
     let state' = {state with e1=state.e1.clone(); e2=state.e2.clone();} in
     _make state'
-  and count state () = state.e1.count () * state.e2.count ()
+  and count state () =
+    let n1 = state.e1.count ()
+    and n2 = state.e2.count () in
+    (* 3 products to make: e1 with e2, and ei with all{2-i} for i in {1,2} *)
+    let n = n1 * n2 + n1 * List.length state.all2 + n2 * List.length state.all1 in
+    match state.cur with
+    | `ProdRight (_, l) -> n + List.length l
+    | `ProdLeft (_, l) -> n + List.length l
+    | `Stop -> 0
+    | `GetLeft
+    | `GetRight -> n
   (* build enum from the state *)
   and _make state = {
     next = next state;
