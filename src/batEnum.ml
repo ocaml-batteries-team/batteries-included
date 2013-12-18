@@ -993,7 +993,7 @@ let product e1 e2 =
     next = next state;
     clone = clone state;
     count = count state;
-    fast = false;
+    fast = state.e1.fast && state.e2.fast;
   }
   in
   let state = {e1; e2; cur=GetLeft; all1=[]; all2=[]} in
