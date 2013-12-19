@@ -728,6 +728,15 @@ end
 val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> 'b t -> unit
 (** Print and consume the contents of an enumeration.*)
 
+val print_at_most :  ?first:string -> ?last:string -> ?sep:string ->
+                     limit:int -> ('a BatInnerIO.output -> 'b -> unit) ->
+                     'a BatInnerIO.output -> 'b t -> unit
+(** [print_at_most pp limit out enum] consumes [enum] to print its elements
+    into [out] (using [pp] to print individual elements).
+    At most [limit] arguments are printed, if more elements are
+      available an ellipsis "..." is added.
+    @raise Invalid_argument if the limit is <= 0. *)
+
 val compare : ('a -> 'a -> int) -> 'a t -> 'a t -> int
 (** [compare cmp a b] compares enumerations [a] and [b]
     by lexicographical order using comparison [cmp].
