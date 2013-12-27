@@ -172,6 +172,63 @@ let test_is_prefix =
     end;
   ];;
 
+let assert_int = assert_equal ~printer:string_of_int
+
+let test_find find () =
+  let str = substring "xxxabcdxxx" 3 4 in
+  assert_int 0 (find "a" str 0);
+  assert_int 1 (find "b" str 0);
+  assert_int 2 (find "c" str 2);
+  assert_int 3 (find "d" str 1);
+  assert_int 0 (find "" str 0);
+  assert_int 2 (find "" str 2);
+  assert_int 4 (find "" str 4);
+  assert_raises Not_found (fun () -> find "b" str 2);
+  assert_raises Not_found (fun () -> find "d" str 4);
+  assert_raises (Invalid_argument "Substring.find*")
+    (fun () -> find "" str ~-1);
+  assert_raises (Invalid_argument "Substring.find*")
+    (fun () -> find "" str 5);
+  let str = substring "xxxababababaxxx" 3 9 in
+  assert_int 0 (find "aba" str 0);
+  assert_int 6 (find "aba" str 5);
+  assert_int 0 (find (to_string str) str 0);
+  assert_raises Not_found (fun () -> find (to_string str) str 1);
+  ()
+
+let test_rfind find () =
+  let str = substring "xxxabcdxxx" 3 4 in
+  assert_int 0 (find "a" str 3);
+  assert_int 1 (find "b" str 2);
+  assert_int 2 (find "c" str 4);
+  assert_int 3 (find "d" str 4);
+  assert_int 0 (find "" str 0);
+  assert_int 2 (find "" str 2);
+  assert_int 4 (find "" str 4);
+  assert_raises Not_found (fun () -> find "c" str 2);
+  assert_raises Not_found (fun () -> find "d" str 3);
+  assert_raises (Invalid_argument "Substring.rfind*")
+    (fun () -> find "" str ~-1);
+  assert_raises (Invalid_argument "Substring.rfind*")
+    (fun () -> find "" str 5);
+  let str = substring "xxxababababaxxx" 3 9 in
+  assert_int 6 (find "aba" str 9);
+  assert_int 4 (find "aba" str 7);
+  assert_int 2 (find "aba" str 6);
+  assert_int 0 (find (to_string str) str 9);
+  assert_raises Not_found (fun () -> find (to_string str) str 8);
+  ()
+
+let str = substring "xxxababababaxxx" 3 9
+let test_find_all () =
+  assert_equal
+    (BatList.of_enum (find_all "aba" str))
+    [0;2;4;6]
+let test_rfind_all () =
+  assert_equal
+    (BatList.of_enum (rfind_all "aba" str))
+    [6;4;2;0]
+
 let test_enum =
   let ss = of_string "testing" in
   let test_enum substring = ss |> to_string |> BatString.enum in
@@ -206,6 +263,16 @@ let tests = "Substring" >::: [
   "slice" >::: test_slice;
   "index_from" >::: test_index_from;
   "is_prefix" >::: test_is_prefix;
+  "Finding" >::: [
+    "find_simple" >:: test_find BatSubstring.Find.find_simple;
+    "find_horspool" >:: test_find BatSubstring.Find.find_horspool;
+    "find_adaptive" >:: test_find BatSubstring.Find.find_adaptive;
+    "find_all" >:: test_find_all;
+    "rfind_simple" >:: test_rfind BatSubstring.Find.rfind_simple;
+    "rfind_horspool" >:: test_rfind BatSubstring.Find.rfind_horspool;
+    "rfind_adaptive" >:: test_rfind BatSubstring.Find.rfind_adaptive;
+    "rfind_all" >:: test_rfind_all;
+  ];
   "enum" >::: test_enum;
   "test_iteri" >::: test_iteri;
 ];;

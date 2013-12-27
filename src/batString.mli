@@ -416,51 +416,114 @@ val iteri : (int -> char -> unit) -> string -> unit
 
 
 
-val find : string -> string -> int
-(** [find s x] returns the starting index of the first occurrence of
-    string [x] within string [s].
+module Find :
+sig
+  val find_simple : string -> ?stop:int -> string -> int -> int
+  val find_horspool : string -> ?stop:int -> string -> int -> int
+  val find_adaptive : string -> ?stop:int -> string -> int -> int
+  (** [find_* pattern ?stop text pos] behave as [find text pattern] but start searching
+      from right before position [pos] in [text]. The search can be limited by
+      giving a stop index.
 
-    {b Note} This implementation is optimized for short strings.
+      - [find_simple] is a naive algorithm with avarage complexity of textlength
+      - [find_horspool] is an improved horspool algorithm with avarage complexity
+      of textlength/patternlength+patternlength.
+      - [find_adaptive] tries to make a smart choice between the former two
+      algorithms based on text and patternlength.
+
+      Use [find_adaptive] if unsure.
+
+      A partial binding of [find_horspool] with the pattern or [find_adaptive]
+      with pattern and text will do the constant processing overhead only once and
+      all later calls to the resulting function will run without overhead.
+
+      @raise Not_found if no substring is found
+      @raise Invalid_argument if [pos] is not a valid index of the string.
+
+      Example: [String.find_adaptive "ba" "foobarbaz" 4 = 6]
+  *)
+
+  val rfind_simple : string -> ?stop:int -> string -> int -> int
+  val rfind_horspool : string -> ?stop:int -> string -> int -> int
+  val rfind_adaptive : string -> ?stop:int -> string -> int -> int
+  (** [rfind_* pattern ?stop text pos] behave as [rfind text pattern] but start searching
+      from {e right before} position [pos] in {e direction of the beginning of the
+      string}. See examples below to get an idea what this means in practice.
+      The search can be limited by giving a stop index.
+
+      see [find_*] above for some information about the complexity of the
+      different algorithms.
+      Use [rfind_adaptive] if unsure.
+
+      @raise Not_found if no substring is found
+      @raise Invalid_argument if [pos] is not a valid position in the string.
+
+      Example:
+      {[
+        [String.rfind_adaptive pattern text (String.length text) = String.rfind text pattern]
+        [String.rfind_adaptive "ba" "foobarbaz" 7 = 3]
+        [String.rfind_adaptive "ba" "foobarbaz" 8 = 6]
+      ]}
+  *)
+end
+
+val find : string -> string -> int
+(** [find text pattern] returns the starting index of the first occurrence of
+    string [pattern] within string [text].
+
+    Simply calls [Find.find_adaptive pattern text 0].
 
     @raise Not_found if [x] is not a substring of [s].
 
     Example: [String.find "foobarbaz" "bar" = 3]
 *)
 
-val find_from: string -> int -> string -> int
-(** [find_from s pos x] behaves as [find s x] but starts searching
-    at position [pos]. [find s x] is equivalent to [find_from s 0 x].
-
-    @raise Not_found if not substring is found
-    @raise Invalid_argument if [pos] is not a valid position in the string.
-
-    Example: [String.find_from "foobarbaz" 4 "ba" = 6]
-*)
-
 val rfind : string -> string -> int
-(** [rfind s x] returns the starting index of the last occurrence
-    of string [x] within string [s].
+(** [rfind text pattern] returns the starting index of the last occurrence
+    of string [pattern] within string [text].
 
-    {b Note} This implementation is optimized for short strings.
+    Simply calls [Find.rfind_adaptive pattern text (length text)].
 
-    @raise Not_found if [x] is not a substring of [s].
+    @raise Not_found if [pattern] is not a substring of [text].
 
     Example: [String.rfind "foobarbaz" "ba" = 6]
 *)
 
-val rfind_from: string -> int -> string -> int
-(** [rfind_from s pos x] behaves as [rfind s x] but starts searching
-    from the right at position [pos + 1]. [rfind s x] is equivalent to
-    [rfind_from s (String.length s - 1) x].
+val find_all: string -> ?stop:int -> ?start:int -> string -> int BatEnum.t
+(** [find_all pattern ?stop ?start text] returns the starting indices of all occurences
+    of string [pattern] within string [text] in a (lazy) enum.
 
-    {b Beware}, it search between the {e beginning} of the string to
-    the position [pos + 1], {e not} between [pos + 1] and the end.
+    Optionally a start and stop index can be given in [start] and [stop]
+    to start the search right before position [start] to right before position
+    [stop].
 
-    @raise Not_found if not substring is found
+    Changing the string while still using the enumeration might be a bad idea.
+
     @raise Invalid_argument if [pos] is not a valid position in the string.
 
-    Example: [String.rfind_from "foobarbaz" 6 "ba" = 6]
+    Example: [String.find_all "aba" "ababa" = enum (0;2)]
 *)
+
+val rfind_all: string -> ?stop:int -> ?start:int -> string -> int BatEnum.t
+(** [rfind_all pattern ?stop ?start text] returns the starting indices of all occurences
+    of string [pattern] within string [text] in a lazy enum.
+    Search runs from end to beginning of [text], therefore returning the
+    indices in reverse order.
+
+    Optionally a start and stop index can be given in [start] and [stop]
+    to start the search right before position [start] to right before position
+    [stop].
+
+    @raise Invalid_argument if [pos] is not a valid position in the string.
+
+    Example: [String.find_all "ababa" 4 "aba" = enum (2;0)]
+*)
+
+val find_from: string -> int -> string -> int
+(** @deprecated [find_from text pos pattern] calls [Find.find_adaptive pattern text pos]. *)
+
+val rfind_from: string -> int -> string -> int
+(** @deprecated [find_from text pos pattern] calls [Find.rfind_adaptive pattern text (pos+1)]. *)
 
 
 val ends_with : string -> string -> bool
@@ -807,28 +870,78 @@ sig
       [rindex s c] is equivalent to
       [rindex_from s (String.length s - 1) c]. *)
 
+  module Find :
+  sig
+    val find_simple : string -> ?stop:int -> string -> int -> int option
+    val find_horspool : string -> ?stop:int -> string -> int -> int option
+    val find_adaptive : string -> ?stop:int -> string -> int -> int option
+    (** [find_* pattern ?stop text pos] behave as [find text pattern] but start searching
+        from right before position [pos] in [text].
+        The search can be limited by giving a stop index.
+
+        - [find_simple] is a naive algorithm with avarage complexity of textlength
+        - [find_horspool] is an improved horspool algorithm with avarage complexity
+        of textlength/patternlength+patternlength.
+        - [find_adaptive] tries to make a smart choice between the former two
+        algorithms based on text and patternlength.
+
+        Use [find_adaptive] if unsure.
+
+        A partial binding of [find_horspool] with the pattern or [find_adaptive]
+        with pattern and text will do the constant processing overhead only once and
+        all later calls to the resulting function will run without overhead.
+
+        @raise Invalid_argument if [pos] is not a valid index of the string.
+
+        Example: [String.find_adaptive "ba" "foobarbaz" 4 = 6]
+    *)
+
+    val rfind_simple : string -> ?stop:int -> string -> int -> int option
+    val rfind_horspool : string -> ?stop:int -> string -> int -> int option
+    val rfind_adaptive : string -> ?stop:int -> string -> int -> int option
+    (** [rfind_* pattern ?stop text pos] behave as [rfind text pattern] but start searching
+        from {e right before} position [pos] in {e direction of the beginning of the
+        string}. See examples below to get an idea what this means in practice.
+        The search can be limited by giving a stop index.
+
+        see [find_*] above for some information about the complexity of the
+        different algorithms.
+        Use [rfind_adaptive] if unsure.
+
+        @raise Invalid_argument if [pos] is not a valid position in the string.
+
+        Example:
+        {[
+          [String.rfind_adaptive pattern text (String.length text) = String.rfind text pattern]
+          [String.rfind_adaptive "ba" "foobarbaz" 7 = 3]
+          [String.rfind_adaptive "ba" "foobarbaz" 8 = 6]
+        ]}
+    *)
+  end
+
   val find : string -> string -> int option
-  (** [find s x] returns [Some i], the starting index of the first
-      occurrence of string [x] within string [s], or [None] if [x]
-      is not a substring of [s].
+  (** [find text pattern] returns the starting index of the first occurrence of
+      string [pattern] within string [text].
 
-      {b Note} This implementation is optimized for short strings. *)
+      Simply calls [find_adaptive pattern text 0].
 
-  val find_from : string -> int -> string -> int option
-  (** [find_from s ofs x] behaves as [find s x] but starts searching
-      at offset [ofs]. [find s x] is equivalent to [find_from s 0 x].*)
+      Example: [String.find "foobarbaz" "bar" = 3]
+  *)
+
+  val find_from: string -> int -> string -> int option
+  (** @deprecated [find_from text pos pattern] calls [find_adaptive pattern text pos]. *)
 
   val rfind : string -> string -> int option
-  (** [rfind s x] returns [Some i], the starting index of the last occurrence
-      of string [x] within string [s], or [None] if [x] is not a substring
-      of [s].
+  (** [rfind text pattern] returns the starting index of the last occurrence
+      of string [pattern] within string [text].
 
-      {b Note} This implementation is optimized for short strings. *)
+      Simply calls [rfind_adaptive pattern text (length text)].
+
+      Example: [String.rfind "foobarbaz" "ba" = 6]
+  *)
 
   val rfind_from: string -> int -> string -> int option
-  (** [rfind_from s ofs x] behaves as [rfind s x] but starts searching
-      at offset [ofs]. [rfind s x] is equivalent to
-      [rfind_from s (String.length s - 1) x]. *)
+  (** @deprecated [find_from text pos pattern] calls [rfind_adaptive pattern text (pos+1)]. *)
 
   val split : string -> by:string -> (string * string) option
   (** [split s sep] splits the string [s] between the first
@@ -950,13 +1063,28 @@ sig
 
   val rcontains_from : [> `Read] t -> int -> char -> bool
 
+  module Find :
+  sig
+    val find_simple:   [> `Read] t -> ?stop:int -> [> `Read] t -> int -> int
+    val find_horspool: [> `Read] t -> ?stop:int -> [> `Read] t -> int -> int
+    val find_adaptive: [> `Read] t -> ?stop:int -> [> `Read] t -> int -> int
+
+    val rfind_simple:   [> `Read] t -> ?stop:int -> [> `Read] t -> int -> int
+    val rfind_horspool: [> `Read] t -> ?stop:int -> [> `Read] t -> int -> int
+    val rfind_adaptive: [> `Read] t -> ?stop:int -> [> `Read] t -> int -> int
+  end
+
   val find : [> `Read] t -> [> `Read] t -> int
 
   val find_from: [> `Read] t -> int -> [> `Read] t -> int
 
+  val find_all : [> `Read] t -> ?stop:int -> ?start:int -> [> `Read] t -> int BatEnum.t
+
   val rfind : [> `Read] t -> [> `Read] t -> int
 
   val rfind_from: [> `Read] t -> int -> [> `Read] t -> int
+
+  val rfind_all : [> `Read] t -> ?stop:int -> ?start:int -> [> `Read] t -> int BatEnum.t
 
   val ends_with : [> `Read] t -> [> `Read] t -> bool
 
@@ -1070,6 +1198,17 @@ sig
     val index_from : [> `Read] t -> int -> char -> int option
 
     val rindex_from : [> `Read] t -> int -> char -> int option
+
+    module Find :
+    sig
+      val find_simple:   [> `Read] t -> ?stop:int -> [> `Read] t -> int -> int option
+      val find_horspool: [> `Read] t -> ?stop:int -> [> `Read] t -> int -> int option
+      val find_adaptive: [> `Read] t -> ?stop:int -> [> `Read] t -> int -> int option
+
+      val rfind_simple:   [> `Read] t -> ?stop:int -> [> `Read] t -> int -> int option
+      val rfind_horspool: [> `Read] t -> ?stop:int -> [> `Read] t -> int -> int option
+      val rfind_adaptive: [> `Read] t -> ?stop:int -> [> `Read] t -> int -> int option
+    end
 
     val find : [> `Read] t -> [> `Read] t -> int option
 

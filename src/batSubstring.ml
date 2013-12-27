@@ -291,6 +291,60 @@ let split_on_dot str = split_on_char '.' str;;
 let split_on_comma str = split_on_char ',' str;;
 let split_on_slash str = split_on_char '/' str;;
 
+module Find =
+struct
+  open BatString.Find
+  let
+    find_simple,
+    find_horspool,
+    find_adaptive,
+    rfind_simple,
+    rfind_horspool,
+    rfind_adaptive
+  =
+    (* allow partial application *)
+    let wrap reverse (find :string -> ?stop:int -> string -> int -> int) =
+      fun pattern ->
+        let find = find pattern in
+        fun (text, off, len) ->
+          let find =
+            find
+              ~stop:(if reverse then off else off+len)
+              text
+          in
+          function
+            |start when start < 0 || len < start ->
+                if reverse
+                then invalid_arg "Substring.rfind*"
+                else invalid_arg "Substring.find*"
+            |start -> find (start+off) - off
+    in
+    wrap false find_simple,
+    wrap false find_horspool,
+    wrap false find_adaptive,
+    wrap true rfind_simple,
+    wrap true rfind_horspool,
+    wrap true rfind_adaptive
+end
+
+let find ((_, off, _) as text) pattern =
+  Find.find_adaptive pattern text off
+
+let rfind ((_, off, len) as text) pattern =
+  Find.rfind_adaptive pattern text (off+len)
+
+let find_all pattern =
+  let find = BatString.find_all pattern in
+  fun (text, off, len) ->
+    BatEnum.map ((+) ~-off)
+      (find ~start:off ~stop:(off+len) text)
+
+let rfind_all pattern =
+  let rfind = BatString.rfind_all pattern in
+  fun (text, off, len) ->
+    BatEnum.map ((+) ~-off)
+      (rfind ~stop:off ~start:(off+len) text)
+
 let rec enum (str, off, len) = 
   let last_element = off + len - 1 in
   let i = ref off in 

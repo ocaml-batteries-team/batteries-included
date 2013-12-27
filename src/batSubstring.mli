@@ -324,3 +324,99 @@ val enum : t -> char BatEnum.t
 
 val print : 'a BatIO.output -> t -> unit
   (** [print oc ss] prints [ss] to the output channel [oc] *)
+
+
+(** {6 Finding}*)
+
+module Find :
+sig
+  val find_simple : string -> t -> int -> int
+  val find_horspool : string -> t -> int -> int
+  val find_adaptive : string -> t -> int -> int
+  (** [find_* pattern text pos] behave as [find text pattern] but start searching
+      from right before position [pos] in [text].
+
+      - [find_simple] is a naive algorithm with avarage complexity of textlength
+      - [find_horspool] is an improved horspool algorithm with avarage complexity
+      of textlength/patternlength+patternlength.
+      - [find_adaptive] tries to make a smart choice between the former two
+      algorithms based on text and patternlength.
+
+      Use [find_adaptive] if unsure.
+
+      A partial binding of [find_horspool] with the pattern or [find_adaptive]
+      with pattern and text will do the constant processing overhead only once and
+      all later calls to the resulting function will run without overhead.
+
+      @raise Not_found if no substring is found
+      @raise Invalid_argument if [pos] is not a valid index of the string.
+
+      Example: [String.find_adaptive "ba" "foobarbaz" 4 = 6]
+  *)
+
+  val rfind_simple : string -> t -> int -> int
+  val rfind_horspool : string -> t -> int -> int
+  val rfind_adaptive : string -> t -> int -> int
+  (** [rfind_* pattern text pos] behave as [rfind text pattern] but start searching
+      from {e right before} position [pos] in {e direction of the beginning of the
+      string}. See examples below to get an idea what this means in practice.
+
+      see [find_*] above for some information about the complexity of the
+      different algorithms.
+      Use [rfind_adaptive] if unsure.
+
+      @raise Not_found if no substring is found
+      @raise Invalid_argument if [pos] is not a valid position in the string.
+
+      Example:
+      {[
+        [String.rfind_adaptive pattern text (String.length text) = String.rfind text pattern]
+        [String.rfind_adaptive "ba" "foobarbaz" 7 = 3]
+        [String.rfind_adaptive "ba" "foobarbaz" 8 = 6]
+      ]}
+  *)
+end
+
+val find : t -> string -> int
+(** [find text pattern] returns the starting index of the first occurrence of
+    string [pattern] within substring [text].
+
+    Simply calls [Find.find_adaptive pattern text 0].
+
+    @raise Not_found if [x] is not a substring of [s].
+
+    Example: [String.find "foobarbaz" "bar" = 3]
+*)
+
+val rfind : t -> string -> int
+(** [rfind text pattern] returns the starting index of the last occurrence
+    of string [pattern] within substring [text].
+
+    Simply calls [Find.rfind_adaptive pattern text (length text)].
+
+    @raise Not_found if [pattern] is not a substring of [text].
+
+    Example: [String.rfind "foobarbaz" "ba" = 6]
+*)
+
+val find_all: string -> t -> int BatEnum.t
+(** [find_all pattern text] returns the starting indices of all occurences
+    of string [pattern] within substring [text] in a (lazy) enum.
+
+    Changing the string while still using the enumeration might be a bad idea.
+
+    @raise Invalid_argument if [pos] is not a valid position in the string.
+
+    Example: [String.find_all "aba" "ababa" = enum (0;2)]
+*)
+
+val rfind_all: string -> t -> int BatEnum.t
+(** [rfind_all pattern text] returns the starting indices of all occurences
+    of string [pattern] within substring [text] in a lazy enum.
+    Search runs from end to beginning of [text], therefore returning the
+    indices in reverse order.
+
+    @raise Invalid_argument if [pos] is not a valid position in the string.
+
+    Example: [String.find_all "ababa" 4 "aba" = enum (2;0)]
+*)
