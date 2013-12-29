@@ -140,9 +140,32 @@ let rec iter f s = match s () with
   | Nil -> ()
   | Cons(e, s) -> f e; iter f s
 
+let iteri f s =
+  let rec iteri f i s = match s () with
+  | Nil -> ()
+  | Cons(e, s) -> f i e; iteri f (i+1) s
+  in iteri f 0 s
+
+let rec iter2 f s1 s2 = match s1 (), s2 () with
+  | Nil, _
+  | _, Nil -> ()
+  | Cons (x1, s1'), Cons (x2, s2') -> f x1 x2; iter2 f s1' s2'
+
 let rec map f s () = match s () with
   | Nil -> Nil
   | Cons(x, s) -> Cons(f x, map f s)
+
+let mapi f s =
+  let rec mapi f i s () = match s () with
+  | Nil -> Nil
+  | Cons(x, s) -> Cons(f i x, mapi f (i+1) s)
+  in mapi f 0 s
+
+let rec map2 f s1 s2 () = match s1 (), s2 () with
+  | Nil, _
+  | _, Nil -> Nil
+  | Cons (x1, s1'), Cons (x2, s2') ->
+    Cons (f x1 x2, map2 f s1' s2')
 
 let rec fold_left f acc s = match s () with
   | Nil -> acc

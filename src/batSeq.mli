@@ -115,9 +115,26 @@ val of_list : 'a list -> 'a t
 val iter : ('a -> unit) -> 'a t -> unit
 (** [iter f s] applies [f] to all the elements of the sequence. Eager. *)
 
+val iteri : (int -> 'a -> unit) -> 'a t -> unit
+(** [iteri f s] is the same as [iter f s], but [f] is given the index
+  * of each element (starting at 0) *)
+
+val iter2 : ('a -> 'b -> unit) -> 'a t -> 'b t -> unit
+(** [iter2 f s1 s2] iterates on elements of [s1] and [s2] pairwise, and
+  * stops when it meets the end of [s1] or [s2] *)
+
 val map : ('a -> 'b) -> 'a t -> 'b t
 (** [map f s] returns the sequence where elements are elements of
     [s] mapped with [f]. Lazy. *)
+
+val mapi : (int -> 'a -> 'b) -> 'a t -> 'b t
+(** [mapi f s] lazily maps elements of [s] into a new sequence,
+  * using [f]. [f] is also given elements' indexes. *)
+
+val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
+(** [map2 f s1 s2] returns a sequence of elements, resulting from combininig
+  * elements of [s1] and [s2] at the same index using [f]. The result is as
+  * long as the shortest argument. *)
 
 val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
 (** [fold_left f a (cons b0 (... bn))] is [f (... (f (f a b0) b1) ...)
