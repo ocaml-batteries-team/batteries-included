@@ -1014,6 +1014,12 @@ let cartesian_product e1 e2 =
   let e = cartesian_product (List.enum [1;2]) (Enum.repeat 3) in\
     e |> Enum.take 4 |> Enum.map fst |> List.of_enum \
       |> List.sort Pervasives.compare = [1; 1; 2; 2]
+  let e = cartesian_product (Enum.repeat 3) (List.enum [1;2]) in\
+    e |> Enum.take 4 |> Enum.map snd |> List.of_enum \
+      |> List.sort Pervasives.compare = [1; 1; 2; 2]
+  let e = cartesian_product (Enum.repeat 3) (Enum.repeat "a") in\
+    e |> Enum.take 3 |> List.of_enum \
+      |> List.sort Pervasives.compare = [3, "a"; 3, "a"; 3, "a"]
 *)
 
 (*$Q cartesian_product
