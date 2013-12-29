@@ -641,6 +641,10 @@ val interleave : ?first:'a -> ?last:'a -> 'a -> 'a list -> 'a list
     [first; a0; sep; a1; sep; a2; sep; ...; sep; an; last] *)
 
 
+(** {6 Monadic interface} *)
+
+module Monad : BatInterfaces.Monad with type 'a m = 'a list
+
 (** {6 BatEnum functions}
 
     Abstraction layer.*)
