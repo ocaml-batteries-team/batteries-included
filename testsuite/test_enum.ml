@@ -169,6 +169,7 @@ let tests = "BatEnum" >::: [
   "UTF8" >:: test_UTF8_enums; *)
   "bigarray" >:: test_bigarray_enums;
   "Set" >:: test_set_enums;
+  "Map" >:: test_map_enums;
   "uncombine" >:: test_uncombine;
   "from" >:: test_from;
   "from_while" >:: test_from_while;
