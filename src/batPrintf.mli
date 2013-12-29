@@ -221,7 +221,11 @@ val sprintf2: ('a, 'b output, unit, string) format4 -> 'a
     strings such as files, that's not its role. For this kind of usage, prefer
     the more modular and usually faster {!fprintf}.
     Note that any function called with [%a] should be able to print its result,
-    i.e. should have type ['b output -> unit].*)
+    i.e. should have type ['b output -> unit].
+    
+    Warning: a partial application of this function can only be used once,
+    because the {!BatInnerIO.output} that it uses is closed afterwards.
+    Example: [let f = sprintf2 "%a" Int.print in [f 1; f 2]] will fail. *)
 
 
 (** {6 General functions}*)
