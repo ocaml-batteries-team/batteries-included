@@ -736,7 +736,7 @@ val input_channel : ?autoclose:bool -> ?cleanup:bool -> in_channel -> input
 
     @param cleanup If true, the channel
     will be automatically closed when the {!type: input} is closed.
-    Otherwise, you will need to close the channel manually.
+    Otherwise, you will need to close the channel manually. Default is [true].
 *)
 
 val output_channel : ?cleanup:bool -> out_channel -> unit output

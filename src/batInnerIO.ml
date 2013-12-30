@@ -362,7 +362,7 @@ let placeholder_in =
     in_close = noop;
     in_id    = (-1);
     in_upstream= weak_create 0 }
-let input_channel ?(autoclose=true) ?(cleanup=false) ch =
+let input_channel ?(autoclose=true) ?(cleanup=true) ch =
   let me = ref placeholder_in (*placeholder*)
   in let result =
     create_in
