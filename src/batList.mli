@@ -645,6 +645,9 @@ val interleave : ?first:'a -> ?last:'a -> 'a -> 'a list -> 'a list
 
 module Monad : BatInterfaces.Monad with type 'a m = 'a list
 
+module Traverse(M : BatInterfaces.Monad) :
+  BatInterfaces.Traversable with type 'a m = 'a M.m and type 'a t = 'a list
+
 (** {6 BatEnum functions}
 
     Abstraction layer.*)
