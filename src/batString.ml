@@ -177,6 +177,37 @@ let rfind str sub = rfind_from str (String.length str - 1) sub
   try ignore (rfind "foo" "barr"); false with Not_found -> true
 *)
 
+let find_all str sub =
+  (* enumerator *)
+  let rec next r () =
+    try
+      let i = find_from str !r sub in
+      r := i+1;
+      i
+    with Not_found -> raise BatEnum.No_more_elements
+  and count r () =
+    let n = ref 0 in
+    let r' = BatRef.copy r in
+    begin try while true do ignore (next r' ()); incr n; done;
+    with BatEnum.No_more_elements -> ();
+    end;
+    !n
+  and clone r () = make (BatRef.copy r)
+  and make r =
+    BatEnum.make ~next:(next r) ~count:(count r) ~clone:(clone r)
+  in
+  let r = ref 0 in
+  make r
+
+(*$T find_all
+  find_all "aaabbaabaaa" "aa" |> BatList.of_enum = [0;1;5;8;9]
+  find_all "abcde" "bd" |> BatList.of_enum = []
+  find_all "baaaaaaaaaaaaaaaaaaaab" "baa" |> BatList.of_enum = [0]
+  find_all "aaabbaabaaa" "aa" |> BatEnum.skip 1 |> BatEnum.clone \
+    |> BatList.of_enum = [1;5;8;9]
+  find_all "aaabbaabaaa" "aa" |> BatEnum.skip 1 |> BatEnum.count = 4 
+ *)
+
 let exists str sub =
   try
     ignore (find str sub);
