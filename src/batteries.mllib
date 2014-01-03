@@ -1,5 +1,6 @@
 BatInnerPervasives
   BatArray
+  BatBencode
   BatBigarray
   BatBig_int
   BatBool

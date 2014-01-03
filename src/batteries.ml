@@ -154,6 +154,7 @@ module Unit = BatUnit
 
 (* Modules in-progress, API stability not guaranteed *)
 module Incubator = struct
+  module Bencode = BatBencode
   module Log = BatLog
   module Substring = BatSubstring
   module Bounded = BatBounded
