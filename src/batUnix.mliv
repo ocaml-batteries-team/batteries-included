@@ -1041,6 +1041,13 @@ val lockf : file_descr -> lock_command -> int -> unit
     acquired on the specified region, without actually putting a lock.
     It returns immediately if successful, or fails otherwise. *)
 
+val with_file_lock : kind:[`Read|`Write] -> string -> (unit -> 'a) -> 'a
+(** [with_file_lock ~kind filename f] puts a lock on the offset 0
+    of the file named [filename], calls [f] and returns its result after
+    the file is unlocked. If [f ()] raises an exception the exception is
+    re-raised after the file is unlocked.
+
+    @param kind specifies whether the lock is read-only or read-write. *)
 
 (** {6 Signals}
     Note: installation of signal handlers is performed via
