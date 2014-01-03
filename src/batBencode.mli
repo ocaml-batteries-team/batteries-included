@@ -134,8 +134,58 @@ val decode_enum : ?dec:Decoder.t -> string BatEnum.t -> (t,string) BatResult.t B
     @param dec optional decoder to use (a fresh one is created if none
     is provided). *)
 
+val decode_string : ?dec:Decoder.t -> string -> (t, string) BatResult.t BatEnum.t
+(** Parse values from the string *)
+
 val decode_input : ?dec:Decoder.t -> BatIO.input -> (t, string) BatResult.t BatEnum.t
 (** Parse values from the input using the given decoder. *)
 
-val decode_string : ?dec:Decoder.t -> string -> (t, string) BatResult.t BatEnum.t
-(** Parse values from the string *)
+(** {6 Type serialization} *)
+
+type bencode = t
+
+module Convert : sig
+  exception Error of string
+  (** To be raised by conversion function that try to transform a B-encode value
+      into some other type *)
+
+  type 'a t = {
+    to_bencode : 'a -> bencode;
+    of_bencode : bencode -> 'a; (** Raise [Error] if it fails *)
+  } (** Conversion between ['a] and B-encode values *)
+
+  val make : to_bencode:('a -> bencode) -> of_bencode:(bencode -> 'a) -> 'a t
+  (** create a conversion structure *)
+
+  (** {7 Utils}
+  
+  The reading functions can raise {!Error}. *)
+
+  val to_bencode : 'a t -> 'a -> bencode
+
+  val of_bencode : 'a t -> bencode -> 'a
+
+  val to_string : 'a t -> 'a -> string
+
+  val print : 'a t -> 'a BatInnerIO.output -> 'a -> unit
+
+  val of_string : 'a t -> string -> 'a
+  (** read exactly one B-encode value from the string, and convert it *)
+
+  val get : 'a t -> bencode -> ('a, string) BatResult.t
+  (** exceptionless version of {!of_bencode} *)
+
+  val read : 'a t -> BatIO.input -> ('a,string) BatResult.t BatEnum.t
+  (** [read convert i] reads B-encode values from the input, and
+      converts them using [convert] *)
+
+  (** {7 Basic instances} *)
+
+  val string : string t
+
+  val int : int t
+
+  val list : 'a t -> 'a list t
+
+  val dict : 'a t -> 'a SMap.t t
+end

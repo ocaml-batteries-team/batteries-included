@@ -450,8 +450,79 @@ let decode_enum ?(dec=Decoder.create()) e =
   in
   BatEnum.from resume
 
+let decode_string ?dec s =
+  decode_enum ?dec (BatEnum.singleton s)
+
 let decode_input ?dec i =
   decode_enum ?dec (BatIO.chunks_of 256 i)
 
-let decode_string ?dec s =
-  decode_enum ?dec (BatEnum.singleton s)
+(** {6 Type serialization} *)
+
+type bencode = t
+
+module Convert = struct
+  exception Error of string
+  (** To be raised by conversion function that try to transform a B-encode value
+      into some other type *)
+  
+  type 'a t = {
+    to_bencode : 'a -> bencode;
+    of_bencode : bencode -> 'a; (** Raise [Error] if it fails *)
+  } (** Conversion between ['a] and B-encode values *)
+
+  let make ~to_bencode ~of_bencode = {to_bencode; of_bencode; }
+
+  let to_bencode c x = c.to_bencode x
+
+  let of_bencode c b = c.of_bencode b
+
+  let to_string c x = to_string (to_bencode c x)
+
+  let print c out x = print out (to_bencode c x)
+
+  let of_string c s =
+    match of_string s with
+      | BatResult.Bad e -> raise (Error e)
+      | BatResult.Ok b -> of_bencode c b
+
+  let get c b =
+    try BatResult.Ok (of_bencode c b)
+    with Error e -> BatResult.Bad e
+
+  let read c input =
+    BatEnum.map
+      (fun res -> BatResult.Monad.bind res (get c))
+      (decode_input input)
+
+  let string =
+    let to_bencode s = S s in
+    let of_bencode = function
+      | S s -> s
+      | b -> raise (Error"expected a string")
+    in
+    make ~to_bencode ~of_bencode
+
+  let int =
+    let to_bencode i = I i in
+    let of_bencode = function
+      | I i -> i
+      | b -> raise (Error "expected an int")
+    in
+    make ~to_bencode ~of_bencode
+
+  let list c =
+    let to_bencode l = L (List.map c.to_bencode l) in
+    let of_bencode b = match b with
+      | L l -> List.map c.of_bencode l
+      | _ -> raise (Error "expected a list")
+    in
+    make ~to_bencode ~of_bencode
+
+  let dict c =
+    let to_bencode m = D (SMap.map c.to_bencode m) in
+    let of_bencode b = match b with
+      | D d -> SMap.map c.of_bencode d 
+      | _ -> raise (Error "expected a list")
+    in
+    make ~to_bencode ~of_bencode
+end
