@@ -175,3 +175,22 @@ let is_directory fn = (lstat fn).st_kind = S_DIR
 let rec restart_on_EINTR f x =
   try f x
   with Unix_error(EINTR, _, _) -> restart_on_EINTR f x
+
+(** {6 Locking} *)
+
+let with_file_lock ~kind filename f =
+  let lock_file = openfile filename [O_CREAT; O_WRONLY] 0o644 in
+  let lock_action = match kind with
+    | `Read -> Unix.F_RLOCK
+    | `Write -> Unix.F_LOCK
+  in
+  lockf lock_file lock_action 0;
+  try
+    let x = f () in
+    lockf lock_file F_ULOCK 0;
+    close lock_file;
+    x
+  with e ->
+    lockf lock_file F_ULOCK 0;
+    close lock_file;
+    raise e
