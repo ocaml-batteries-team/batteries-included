@@ -463,9 +463,9 @@ val rfind_from: string -> int -> string -> int
 *)
 
 val find_all : string -> string -> int BatEnum.t
-(** [find_all s x] enumerates positions of [s] at which [x] occurs. It
-    behaves like a repetition of [find_from] that starts after the previous
-    call to [find_from]. *)
+(** [find_all s x] enumerates positions of [s] at which [x] occurs.
+    Example: [find_all "aabaabaa" "aba" |> List.of_enum] will return
+    the list [[1; 4]]. *)
 
 val ends_with : string -> string -> bool
 (** [ends_with s x] returns [true] if the string [s] is ending with [x], [false] otherwise.

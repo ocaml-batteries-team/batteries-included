@@ -185,27 +185,32 @@ let find_all str sub =
       r := i+1;
       i
     with Not_found -> raise BatEnum.No_more_elements
-  and count r () =
+  in
+  let count r () =
     let n = ref 0 in
     let r' = BatRef.copy r in
     begin try while true do ignore (next r' ()); incr n; done;
     with BatEnum.No_more_elements -> ();
     end;
     !n
-  and clone r () = make (BatRef.copy r)
-  and make r =
-    BatEnum.make ~next:(next r) ~count:(count r) ~clone:(clone r)
+  in
+  let rec clone r () = make (BatRef.copy r)
+  and make r = BatEnum.make ~next:(next r) ~count:(count r) ~clone:(clone r)
   in
   let r = ref 0 in
   make r
 
 (*$T find_all
-  find_all "aaabbaabaaa" "aa" |> BatList.of_enum = [0;1;5;8;9]
-  find_all "abcde" "bd" |> BatList.of_enum = []
-  find_all "baaaaaaaaaaaaaaaaaaaab" "baa" |> BatList.of_enum = [0]
-  find_all "aaabbaabaaa" "aa" |> BatEnum.skip 1 |> BatEnum.clone \
-    |> BatList.of_enum = [1;5;8;9]
-  find_all "aaabbaabaaa" "aa" |> BatEnum.skip 1 |> BatEnum.count = 4 
+  find_all "aaabbaabaaa" "aa" |> List.of_enum = [0;1;5;8;9]
+  find_all "abcde" "bd" |> List.of_enum = []
+  find_all "baaaaaaaaaaaaaaaaaaaab" "baa" |> List.of_enum = [0]
+  find_all "aaabbaabaaa" "aa" |> Enum.skip 1 |> Enum.clone \
+    |> List.of_enum = [1;5;8;9]
+  find_all "aaabbaabaaa" "aa" |> Enum.skip 1 |> Enum.count = 4 
+  find_all "" "foo" |> BatEnum.is_empty
+  let e = find_all "aaabbaabaaa" "aa" in \
+    Enum.drop 2 e; let e' = Enum.clone e in \
+    (List.of_enum e = [5;8;9]) && (Enum.skip 1 e' |> List.of_enum = [8;9])
  *)
 
 let exists str sub =
