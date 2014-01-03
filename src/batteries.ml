@@ -142,6 +142,7 @@ module UChar = BatUChar
 module UTF8 = BatUTF8
 module Text = BatText
 module Concurrent = BatConcurrent
+module Monomorph = BatMonomorph
 
 (* Batteries Specific *)
 module Interfaces = BatInterfaces
