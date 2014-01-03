@@ -232,7 +232,14 @@ val filter : (BatUChar.t -> bool) -> t -> t
 (** [filter f s] returns a copy of rope [s] in which only
     characters [c] such that [f c = true] remain.*)
 
+val enum : t -> BatUChar.t BatEnum.t
+(** enumerate the rope's characters *)
 
+val backwards : t -> BatUChar.t BatEnum.t
+(** enumerates the rope's characters, in reverse order *)
+
+val of_enum : BatUChar.t BatEnum.t -> t
+(** converts the enumeration into a rope *)
 
 (** {6 Finding}*)
 
@@ -427,6 +434,8 @@ val compare : t -> t -> int
     allows the module [Rope] to be passed as argument to the functors
     {!Set.Make} and {!Map.Make}. *)
 
+val equal : t -> t -> bool
+(** Equality of ropes (based on compare) *)
 
 open BatIO
 
