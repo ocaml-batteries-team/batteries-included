@@ -64,3 +64,5 @@ type uchar = t
 
 let int_of u = code u
 let of_int n = chr n
+
+let is_ascii u = u < 128

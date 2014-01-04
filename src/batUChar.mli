@@ -74,6 +74,9 @@ val int_of : uchar -> int
 (** Alias of [chr] *)
 val of_int : int -> uchar
 
+(** [true] if the char is a regular ascii char, i.e. if its code is <= 127 *)
+val is_ascii : uchar -> bool
+
 (**/**)
 
 val unsafe_chr : int -> t
