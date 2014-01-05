@@ -639,7 +639,9 @@ let of_enum e =
        with BatEnum.No_more_elements -> assert false)
 
 (*$Q enum; of_enum
-  Q.string (fun s -> s = (of_string s |> enum |> of_enum |> to_string))
+  (Q.array Q.small_int) (fun a -> \
+    let s = BatUTF8.init (Array.length a) (fun i -> BatUChar.chr (Array.get a i)) in \
+    s = (of_string s |> enum |> of_enum |> to_string))
 *)
 
 module Return = BatReturn

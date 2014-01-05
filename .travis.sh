@@ -1,6 +1,6 @@
-OPAM_DEPENDS="ocamlfind omake core.$CORE_VERSION"
+OPAM_DEPENDS="ocamlfind ounit qtest"
 
-case "$OCAML_VERSION" in
+case "$OCAML_VERSION,$OPAM_VERSION" in
 3.12.1,1.0.0) ppa=avsm/ocaml312+opam10 ;;
 3.12.1,1.1.0) ppa=avsm/ocaml312+opam11 ;;
 4.00.1,1.0.0) ppa=avsm/ocaml40+opam10 ;;
@@ -33,5 +33,5 @@ make
 echo "==== Tests ===="
 make test-native
 
-echo "==== Doc ===="
-make doc
+#echo "==== Doc ===="
+#make doc
