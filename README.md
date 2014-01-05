@@ -13,6 +13,7 @@ Batteries
 
 * provides a consistent API for otherwise independent libraries.
 
+[![Build Status](https://travis-ci.org/c-cube/batteries-included.png?branch=travis)](https://travis-ci.org/c-cube/batteries-included)
 
 Building Batteries
 ------------------
