@@ -1251,6 +1251,8 @@ let rec of_object o =
 
 let flatten = concat
 
+let concat_map f e = concat (map f e)
+
 module Exceptionless = struct
   let find f e =
     try  Some (find f e)

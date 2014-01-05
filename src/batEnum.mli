@@ -383,6 +383,10 @@ val concat : 'a t t -> 'a t
 val flatten : 'a t t -> 'a t
 (** Synonym of {!concat}*)
 
+val concat_map : ('a -> 'b t) -> 'a t -> 'b t
+(** Synonym of {!Monad.bind}, with flipped arguments.
+    [concat_map f e] is the same as [concat (map f e)]. *)
+
 (** {6 Constructors}
 
     In this section the word {i shall} denotes a semantic
