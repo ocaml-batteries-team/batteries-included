@@ -13,7 +13,7 @@ Batteries
 
 * provides a consistent API for otherwise independent libraries.
 
-[![Build Status](https://travis-ci.org/c-cube/batteries-included.png?branch=master)](https://travis-ci.org/c-cube/batteries-included)
+[![Build Status](https://travis-ci.org/ocaml-batteries-team/batteries-included.png?branch=master)](https://travis-ci.org/ocaml-batteries-team/batteries-included)
 
 Building Batteries
 ------------------
