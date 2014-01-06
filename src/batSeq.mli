@@ -91,6 +91,16 @@ val concat : 'a t t -> 'a t
 val flatten : 'a t t -> 'a t
 (** Same as {!concat}. *)
 
+(** {6 Monad} *)
+
+val concat_map : ('a -> 'b t) -> 'a t -> 'b t
+(** [concat_map f s] is the same as [map f s |> concat] *)
+
+module Monad : BatInterfaces.Monad with type 'a m = 'a t
+
+module Traverse(M : BatInterfaces.Monad) :
+  BatInterfaces.Traversable with type 'a m = 'a M.m and type 'a t = 'a t
+
 (** {6 Constructors} *)
 
 val nil : 'a t
