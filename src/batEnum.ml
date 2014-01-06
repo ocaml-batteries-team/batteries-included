@@ -1253,6 +1253,21 @@ let flatten = concat
 
 let concat_map f e = concat (map f e)
 
+(*$T concat_map
+  (1 -- 10 |> concat_map (fun x -> List.enum [x;-x]) |> sum) = 0
+  let e = (1 -- 10 |> concat_map (fun x -> List.enum [x;-x])) in \
+    let n = Enum.count e in \
+    n = (List.of_enum e |> List.length)
+  let e = (1 -- 10 |> concat_map (fun x -> List.enum [x;-x])) in \
+    Enum.count e = 20
+*)
+
+(*$Q concat_map
+  Q.small_int (fun i -> \
+    let i = abs i in \
+    equal (=) (0 -- i) (concat_map singleton (0 -- i)))
+ *)
+
 module Exceptionless = struct
   let find f e =
     try  Some (find f e)
