@@ -248,6 +248,8 @@ external format : string -> int32 -> string = "caml_int32_format"
     This function is deprecated; use {!Printf.sprintf} with a [%lx] format
     instead. *)
 
+(**/**)
+
 val ( + ) : t -> t -> t
 val ( - ) : t -> t -> t
 val ( * ) : t -> t -> t
