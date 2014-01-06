@@ -393,6 +393,16 @@ val split_at : int -> 'a t -> 'a t * 'a t
 val split_nth : int -> 'a t -> 'a t * 'a t
 (** Obsolete. As [split_at]. *)
 
+(** {6 Monad} *)
+
+val concat_map : ('a -> 'b t) -> 'a t -> 'b t
+(** [concat_map f l] is the same as [map f l |> concat] *)
+
+module Monad : BatInterfaces.Monad with type 'a m = 'a t
+
+module Traverse(M : BatInterfaces.Monad) :
+  BatInterfaces.Traversable with type 'a t = 'a t and type 'a m = 'a M.m
+
 (**{6 Dropping elements}*)
 
 val unique : ?cmp:('a -> 'a -> int) -> 'a t -> 'a t
