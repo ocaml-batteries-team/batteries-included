@@ -489,6 +489,9 @@ val pop : 'a t -> 'a * 'a t
 (** returns one element of the set and the set without that element.
     @raise Not_found if given an empty set *)
 
+val cartesian_product : 'a t -> 'b t -> ('a * 'b) t
+(** cartesian product of the two sets *)
+
 val enum: 'a t -> 'a BatEnum.t
 (** Return an enumeration of all elements of the given set.
     The returned enumeration is sorted in increasing order with respect
