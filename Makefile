@@ -141,7 +141,7 @@ prefilter: $(PREPROCESSED_FILES)
 
 DONTTEST=src/batteriesHelp.ml
 TESTABLE ?= $(filter-out $(DONTTEST), $(wildcard src/*.ml))
-TESTDEPS = $(TESTABLE)
+TESTDEPS = prefilter $(TESTABLE)
 
 ### Test suite: "offline" unit tests
 ##############################################
@@ -236,6 +236,6 @@ upload-docs:
 ###############################################################################
 
 coverage/index.html: $(TESTDEPS) $(QTESTDIR)/all_tests.ml
-	$(OCAMLBUILD) coverage/index.html
+	$(OCAMLBUILD) -use-ocamlfind coverage/index.html
 
 coverage: coverage/index.html
