@@ -646,6 +646,22 @@ struct
   end
 end
 
+module Make2(O1 : OrderedType)(O2 : OrderedType) = struct
+  module Set1 = Make(O1)
+  module Set2 = Make(O2)
+  module Product = Make(
+  struct
+    type t = O1.t * O2.t
+    let compare (x1,y1)(x2,y2) =
+      let c = O1.compare x1 x2 in
+        if c = 0 then O2.compare y1 y2 else c
+  end)
+
+  let cartesian_product set1 set2 =
+    let p = Concrete.cartesian_product (Set1.impl_of_t set1) (Set2.impl_of_t set2) in
+    Product.t_of_impl p
+end
+
 module PSet = struct (*$< PSet *)
 
   type 'a t = {
