@@ -166,6 +166,22 @@ module Concrete = struct
     | Node (l, x, r, h) ->
       bal l x (add_max v r)
 
+  let cartesian_product a b =
+    let rec product acc a b = match a with
+      | Empty -> acc
+      | Node (la, xa, ra, _) ->
+        let acc = product acc la b in
+        let acc = product_right acc xa b in
+        product acc ra b
+    and product_right acc xa b = match b with
+      | Empty -> acc
+      | Node (lb, xb, rb, _) ->
+        let acc = product_right acc xa lb in
+        let acc = add_max (xa,xb) acc in
+        product_right acc xa rb
+    in
+    product Empty a b
+
   (* Same as create and bal, but no assumptions are made on the
      relative heights of l and r. *)
   let rec join l v r =
@@ -781,6 +797,7 @@ let print ?first ?last ?sep print_elt out s =
 let for_all f s = Concrete.for_all f s
 let partition f s = Concrete.partition Pervasives.compare f s
 let pop s = Concrete.pop s
+let cartesian_product = Concrete.cartesian_product
 let split e s = Concrete.split Pervasives.compare e s
 let split_opt e s = Concrete.split_opt Pervasives.compare e s
 let split_lt e s = Concrete.split_lt Pervasives.compare e s
@@ -807,6 +824,13 @@ let disjoint s1 s2 = Concrete.disjoint Pervasives.compare s1 s2
     compare a b = - (compare b c)
   compare (of_list [1;2;3]) (of_list [3;1;2]) = 0
 *)
+
+(*$T cartesian_product
+  cartesian_product (of_list [1;2;3]) (of_list ["a"; "b"]) |> to_list = \
+    [1, "a"; 1, "b"; 2, "a"; 2, "b"; 3, "a"; 3, "b"]
+  is_empty @@ cartesian_product (of_list [1;2;3]) empty 
+  is_empty @@ cartesian_product empty (of_list [1;2;3])
+ *)
 
 
 module Incubator = struct (*$< Incubator *)
