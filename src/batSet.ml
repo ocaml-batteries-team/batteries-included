@@ -166,22 +166,6 @@ module Concrete = struct
     | Node (l, x, r, h) ->
       bal l x (add_max v r)
 
-  let cartesian_product a b =
-    let rec product acc a b = match a with
-      | Empty -> acc
-      | Node (la, xa, ra, _) ->
-        let acc = product acc la b in
-        let acc = product_right acc xa b in
-        product acc ra b
-    and product_right acc xa b = match b with
-      | Empty -> acc
-      | Node (lb, xb, rb, _) ->
-        let acc = product_right acc xa lb in
-        let acc = add_max (xa,xb) acc in
-        product_right acc xa rb
-    in
-    product Empty a b
-
   (* Same as create and bal, but no assumptions are made on the
      relative heights of l and r. *)
   let rec join l v r =
@@ -352,6 +336,17 @@ module Concrete = struct
       (Empty, t) -> t
     | (t, Empty) -> t
     | (_, _) -> join t1 (min_elt t2) (remove_min_elt t2)
+
+  let cartesian_product a b =
+    let rec product a b = match a with
+      | Empty -> Empty
+      | Node (la, xa, ra, _) ->
+        let lab = product la b in
+        let xab = op_map (fun xb -> (xa,xb)) b in
+        let rab = product ra b in
+        concat lab (concat xab rab)
+    in
+    product a b
 
   let rec union cmp12 s1 s2 =
     match (s1, s2) with
@@ -830,6 +825,9 @@ let disjoint s1 s2 = Concrete.disjoint Pervasives.compare s1 s2
     [1, "a"; 1, "b"; 2, "a"; 2, "b"; 3, "a"; 3, "b"]
   is_empty @@ cartesian_product (of_list [1;2;3]) empty 
   is_empty @@ cartesian_product empty (of_list [1;2;3])
+  let s1, s2 = of_list ["a"; "b"; "c"], of_list [1;2;3] in \
+    equal (cartesian_product s1 s2) \
+          (map BatTuple.Tuple2.swap (cartesian_product s2 s1))
  *)
 
 
