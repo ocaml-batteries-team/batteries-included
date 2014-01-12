@@ -855,17 +855,24 @@ struct
   let compare = numeric_compare
 end
 
-let edit_distance s1 s2 =
+let edit_distance ?cutoff s1 s2 =
+  let cutoff = match cutoff with
+    | None -> max_int
+    | Some c ->
+    if c <= 0 then raise (Invalid_argument "String.edit_distance") else c
+  in
   if String.length s1 = 0
     then String.length s2
   else if String.length s2 = 0
     then String.length s1
   else if s1 = s2
     then 0
-  else begin
+  else try
     (* distance vectors (v0=previous, v1=current) *)
     let v0 = Array.make (String.length s2 + 1) 0 in
     let v1 = Array.make (String.length s2 + 1) 0 in
+    (* lower bound on cost *)
+    let lower_bound = ref max_int in
     (* initialize v0: v0(i) = A(0)(i) = delete i chars from t *)
     for i = 0 to String.length s2 do
       v0.(i) <- i
@@ -881,20 +888,29 @@ let edit_distance s1 s2 =
         v1.(j+1) <- min (v1.(j) + 1) (min (v0.(j+1) + 1) (v0.(j) + cost));
       done;
 
+      if cutoff < Array.length v1 && 2 * cutoff - i < String.length s2
+        then lower_bound := min !lower_bound v1.(2 * cutoff - i);
+
+      (* did we compute up to the diagonal 2*cutoff+1? *)
+      if i = cutoff * 2 && !lower_bound >= cutoff then raise Exit;
+
       (* copy v1 into v0 for next iteration *)
       Array.blit v1 0 v0 0 (String.length s2 + 1);
     done;
     v1.(String.length s2)
-  end
+  with Exit -> cutoff
 
 (*$T edit_distance
   edit_distance "foo" "fo0" = 1
   edit_distance "hello" "hell" = 1
   edit_distance "kitten" "sitton" = 2
+  edit_distance ~cutoff:2 "aaaaa" "bbbbb" = 2
+  edit_distance ~cutoff:3 "aaaaa" "bbaaa" = 2
 *)
 
 (*$Q edit_distance
   Q.(pair string string) (fun (s1, s2) -> edit_distance s1 s2 = edit_distance s2 s1)
+  Q.(pair string string) (fun (s1, s2) -> not (edit_distance ~cutoff:3 s1 s2 = 3) || (edit_distance s1 s2 >= 3))
 *)
 
 let print = BatInnerIO.nwrite
