@@ -304,7 +304,7 @@ let append (l1 : 'a t) (l2 : 'a t) =
 
 (*$T append
   to_list (append (of_list [1;2]) (of_list [3;4])) = [1;2;3;4]
-  ignore (append (lazy (failwith "lazy cell")) nil); true  
+  ignore (append (lazy (failwith "lazy cell")) nil); true
   hd (append (cons () nil) (lazy (failwith "lazy cell"))); true
 *)
 
@@ -316,7 +316,7 @@ let flatten (lol : ('a t) list) =
 let concat lol =
   lazy_fold_right (fun li rest -> Lazy.force (append li rest)) lol nil
 
-(*$T concat 
+(*$T concat
   to_list (concat (of_list (List.map of_list [[1;2]; [3]; [4;5]; []; [6]; []; []]))) = [1;2;3;4;5;6]
   ignore (concat (lazy (Cons ((let () = failwith "foo" in nil), nil)))); true
 *)
@@ -348,8 +348,8 @@ let enum l =
   let rec aux l =
     let reference = ref l in
     BatEnum.make ~next:(fun () -> match next !reference with
-      | Cons(x,t) -> reference := t; x
-      | Nil       -> raise BatEnum.No_more_elements )
+        | Cons(x,t) -> reference := t; x
+        | Nil       -> raise BatEnum.No_more_elements )
       ~count:(fun () -> length !reference)
       ~clone:(fun () -> aux !reference)
   in aux l
@@ -398,8 +398,8 @@ let of_array l =
 let of_enum e =
   let rec aux () =
     lazy (match BatEnum.get e with
-      |	Some x -> Cons (x, aux () )
-      | None   -> Nil )
+        |   Some x -> Cons (x, aux () )
+        | None   -> Nil )
   in
   aux ()
 
@@ -412,8 +412,8 @@ let filter f l =
     | l                          -> l
   in
   let rec aux l = lazy(match next_true l with
-    | Cons (x, l) -> Cons (x, aux l)
-    | Nil         -> Nil)
+      | Cons (x, l) -> Cons (x, aux l)
+      | Nil         -> Nil)
   in aux l
 
 let filter_map f l =
@@ -427,8 +427,8 @@ let filter_map f l =
     | Nil         -> None
   in
   let rec aux l = lazy(match next_true l with
-    | Some (x, l) -> Cons (x, aux l)
-    | None        -> Nil)
+      | Some (x, l) -> Cons (x, aux l)
+      | None        -> Nil)
   in aux l
 (*let filter f l =
   let rec aux rest =
@@ -467,9 +467,9 @@ let range a b =
     if lo > hi then nil else lazy (Cons (lo, increasing (lo + 1) hi))
   in
   (*      and     decreasing lo hi = if lo > hi then
-		nil
+          nil
           else
-		lazy (Cons hi (decreasing lo (hi - 1)))*)
+          lazy (Cons hi (decreasing lo (hi - 1)))*)
   if b >= a then increasing a b else (*decreasing b a*) nil
 
 let split_at n l =
@@ -499,8 +499,8 @@ let mem_assq e l = BatOption.is_some (may_find (fun (a, _) -> a == e) l)
 (*  let rec aux rest = match next rest with
     | Cons (h, t) ->
         (match f h with
-	   | None   -> lazy (aux t)
-	   | Some x -> cons x (lazy (aux t)))
+    | None   -> lazy (aux t)
+    | Some x -> cons x (lazy (aux t)))
     | Nil -> Nil
     in lazy (aux l)*)
 
@@ -519,8 +519,8 @@ let unique_eq ?(eq = (=)) l =
     | l                                -> l
   in
   let rec aux l = lazy(match next_true l with
-    | Cons (x, l) -> Cons (x, aux l)
-    | Nil         -> Nil)
+      | Cons (x, l) -> Cons (x, aux l)
+      | Nil         -> Nil)
   in aux l
 
 let remove_if p l =
@@ -633,14 +633,14 @@ let uncombine l =
 (*let uncombine l =
   let rec aux l = match next l with
     | Cons ((h1, h2), t) -> lazy (let (t1, t2) = aux t in
-				    Cons (h1, t1), Cons(h2, t2))
+  Cons (h1, t1), Cons(h2, t2))
     | Nil                -> lazy (Nil, Nil)
   in aux l*)
 
 (*let uncombine l =
   unfold l (fun l -> match peek l with
-	      | None -> None
-	      | Cons (h1, h2), t*)
+  | None -> None
+  | Cons (h1, h2), t*)
 
 
 let print ?(first="[^") ?(last="^]") ?(sep="; ") print_a out t =
