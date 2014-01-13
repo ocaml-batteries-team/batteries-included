@@ -38,11 +38,11 @@ let length s =
 let rec enum_of_ref r =
   BatEnum.make
     ~next:(fun _ -> match !r () with
-      | Nil ->
-        raise BatEnum.No_more_elements
-      | Cons(e, s) ->
-        r := s;
-        e)
+        | Nil ->
+          raise BatEnum.No_more_elements
+        | Cons(e, s) ->
+          r := s;
+          e)
     ~count:(fun _ -> length !r)
     ~clone:(fun _ -> enum_of_ref (ref !r))
 
@@ -142,8 +142,8 @@ let rec iter f s = match s () with
 
 let iteri f s =
   let rec iteri f i s = match s () with
-  | Nil -> ()
-  | Cons(e, s) -> f i e; iteri f (i+1) s
+    | Nil -> ()
+    | Cons(e, s) -> f i e; iteri f (i+1) s
   in iteri f 0 s
 
 (*$T iteri
@@ -160,7 +160,7 @@ let rec iter2 f s1 s2 = match s1 (), s2 () with
   let r = ref 0 in \
     iter2 (fun i j -> r := !r + i*j) (of_list [1;2]) (of_list [3;2;1]); \
     !r = 3 + 2*2
- *)
+*)
 
 let rec map f s () = match s () with
   | Nil -> Nil
@@ -168,14 +168,14 @@ let rec map f s () = match s () with
 
 let mapi f s =
   let rec mapi f i s () = match s () with
-  | Nil -> Nil
-  | Cons(x, s) -> Cons(f i x, mapi f (i+1) s)
+    | Nil -> Nil
+    | Cons(x, s) -> Cons(f i x, mapi f (i+1) s)
   in mapi f 0 s
 
 (*$T mapi
   equal (of_list [0;0;0;0]) \
     (mapi (fun i x -> i - x) (of_list [0;1;2;3]))
- *)
+*)
 
 let rec map2 f s1 s2 () = match s1 (), s2 () with
   | Nil, _
@@ -186,7 +186,7 @@ let rec map2 f s1 s2 () = match s1 (), s2 () with
 (*$T map2
   equal (map2 (+) (of_list [1;2;3]) (of_list [3;2])) \
     (of_list [4;4])
- *)
+*)
 
 let rec fold_left f acc s = match s () with
   | Nil -> acc
@@ -427,6 +427,6 @@ module Exceptionless = struct
     with Invalid_argument "Seq.combine" -> None
 
   (*$T combine
-    equal (combine (of_list [1;2]) (of_list ["a";"b"])) (of_list [1,"a"; 2,"b"]) 
+    equal (combine (of_list [1;2]) (of_list ["a";"b"])) (of_list [1,"a"; 2,"b"])
   *)
 end

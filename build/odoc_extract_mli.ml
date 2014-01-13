@@ -44,10 +44,10 @@ open Format
 *)
 let interleave f g l =
   match l with
-    | []   -> ()
-    | [x]  -> f x
-    | h::t -> f h;
-	List.iter (fun x -> g (); f x) t
+  | []   -> ()
+  | [x]  -> f x
+  | h::t -> f h;
+    List.iter (fun x -> g (); f x) t
 
 let o out   = Format.fprintf out "%s\n"
 let p out f = Format.fprintf out f
@@ -60,47 +60,47 @@ let get_root l =
 class mli_generator = object(self)
 
   method generate modules =
-      match !Odoc_args.dump with
-	| Some _ -> assert false
-	| None ->
-	    verbose "Generation started";
-	    let name = Filename.concat !Args.target_dir "generated.mli" in
-	    let cout = open_out name                                    in
-	    let out  = Format.formatter_of_out_channel cout             in
-	      self#handle_root out (get_root (fst (rebuild_structure modules)));
-	      flush cout;
-	      close_out cout;
-	      Printf.eprintf "Output printed to %S\n" name;
-	      Odoc_info.verbose (Odoc_messages.file_generated name)
+    match !Odoc_args.dump with
+    | Some _ -> assert false
+    | None ->
+      verbose "Generation started";
+      let name = Filename.concat !Args.target_dir "generated.mli" in
+      let cout = open_out name                                    in
+      let out  = Format.formatter_of_out_channel cout             in
+      self#handle_root out (get_root (fst (rebuild_structure modules)));
+      flush cout;
+      close_out cout;
+      Printf.eprintf "Output printed to %S\n" name;
+      Odoc_info.verbose (Odoc_messages.file_generated name)
 
 
   method handle_root out m =
     self#handle_info_option out m.m_info;
     match m.m_kind with
-	Module_struct l -> (*Don't print "struct..end"*)
-	  interleave (self#handle_module_element out) (pp_print_newline out) l
-      | _ -> assert false (*Normally, the root module should be a structure.*)
+      Module_struct l -> (*Don't print "struct..end"*)
+      interleave (self#handle_module_element out) (pp_print_newline out) l
+    | _ -> assert false (*Normally, the root module should be a structure.*)
 
   method handle_module_kind out = function
     | Module_struct  l ->
-	fprintf out "struct@[<v 2>@\n%a@\n@]end@\n"
-	  (fun out ->
-	     interleave (self#handle_module_element out) (pp_print_newline out)
-	  ) l
+      fprintf out "struct@[<v 2>@\n%a@\n@]end@\n"
+        (fun out ->
+           interleave (self#handle_module_element out) (pp_print_newline out)
+        ) l
     | Module_alias   a -> self#handle_module_alias out a
     | Module_functor (p, k) ->
-	fprintf out "functor(%s: %a) ->@\n%a"
-	  (Name.simple p.mp_name)
-	  self#handle_module_type_kind p.mp_kind
-	  self#handle_module_kind k
+      fprintf out "functor(%s: %a) ->@\n%a"
+        (Name.simple p.mp_name)
+        self#handle_module_type_kind p.mp_kind
+        self#handle_module_kind k
     | Module_apply (x, y) ->
-	fprintf out "%a(%a)"
-	  self#handle_module_kind x
-	  self#handle_module_kind y
+      fprintf out "%a(%a)"
+        self#handle_module_kind x
+        self#handle_module_kind y
     | Module_with (k, t) ->
-	fprintf out "%a with %s"
-	  self#handle_module_type_kind k
-	  t
+      fprintf out "%a with %s"
+        self#handle_module_type_kind k
+        t
     | Module_constraint (_, _) -> assert false
 
   method handle_info_option out = function
@@ -133,9 +133,9 @@ class mli_generator = object(self)
 
   method handle_module_alias out x =
     match x.ma_module with
-      | None             -> fprintf out "module alias not found ??\n"
-      | Some (Mod m)     -> self#handle_anonymous_module out m
-      | Some (Modtype m) -> self#handle_anonymous_module_type out m
+    | None             -> fprintf out "module alias not found ??\n"
+    | Some (Mod m)     -> self#handle_anonymous_module out m
+    | Some (Modtype m) -> self#handle_anonymous_module_type out m
 
   method handle_module out m =
     fprintf out "%amodule %s = %a@\n"
@@ -148,9 +148,9 @@ class mli_generator = object(self)
       self#handle_info_option m.mt_info
       (Name.simple m.mt_name)
       (fun out m ->
-      match m.mt_kind with
-	| None   -> fprintf out "module type ??@\n"
-	| Some x -> self#handle_module_type_kind out x) m
+         match m.mt_kind with
+         | None   -> fprintf out "module type ??@\n"
+         | Some x -> self#handle_module_type_kind out x) m
 
   method handle_anonymous_module out m =
     fprintf out "%a%a@\n"
@@ -160,38 +160,38 @@ class mli_generator = object(self)
   method handle_anonymous_module_type out m =
     self#handle_info_option out m.mt_info;
     match m.mt_kind with
-      | None   -> fprintf out "module type ??@\n"
-      | Some x -> self#handle_module_type_kind out x
+    | None   -> fprintf out "module type ??@\n"
+    | Some x -> self#handle_module_type_kind out x
 
   method handle_module_type_kind out = function
     | Module_type_struct l       ->
-	fprintf out "sig@[<v 2>%a@]end@\n"
-	  (fun out ->
-	     interleave (self#handle_module_element out) (pp_print_newline out)
-	  ) l
+      fprintf out "sig@[<v 2>%a@]end@\n"
+        (fun out ->
+           interleave (self#handle_module_element out) (pp_print_newline out)
+        ) l
     | Module_type_functor (x,y)     ->
-	fprintf out "functor(%s: %a) ->@\n%a"
-	  (Name.simple x.mp_name)
-	  self#handle_module_type_kind x.mp_kind
-	  self#handle_module_type_kind y
+      fprintf out "functor(%s: %a) ->@\n%a"
+        (Name.simple x.mp_name)
+        self#handle_module_type_kind x.mp_kind
+        self#handle_module_type_kind y
     | Module_type_alias x ->
-	self#handle_module_type_alias out x
+      self#handle_module_type_alias out x
     | Module_type_with (x, y)       ->
-	fprintf out "%a with %s"
-	  self#handle_module_type_kind x
-	  y
-	
+      fprintf out "%a with %s"
+        self#handle_module_type_kind x
+        y
+
 
   method handle_module_type_alias out x =
     match x.mta_module with
-      | None -> fprintf out "module type alias ??\n"
-      | Some m -> self#handle_module_type out m
+    | None -> fprintf out "module type alias ??\n"
+    | Some m -> self#handle_module_type out m
 
   method handle_included_module out x =
     match x.im_module with
-      | None             -> fprintf out "include ??\n"
-      | Some (Mod m)     -> self#handle_module out m
-      | Some (Modtype m) -> self#handle_module_type out m
+    | None             -> fprintf out "include ??\n"
+    | Some (Mod m)     -> self#handle_module out m
+    | Some (Modtype m) -> self#handle_module_type out m
 
   method handle_class out x =
     fprintf out "class not implemented yet??\n"
@@ -204,10 +204,10 @@ class mli_generator = object(self)
       self#handle_info_option x.val_info
       (Name.simple x.val_name)
       self#handle_type_expr   x.val_type
-      (*x.val_name
-      (fun out l ->
-	 interleave (self#handle_parameter out) (fun () -> fprintf out " -> ") l
-      ) x.val_parameters*)
+  (*x.val_name
+    (fun out l ->
+    interleave (self#handle_parameter out) (fun () -> fprintf out " -> ") l
+    ) x.val_parameters*)
 
   method handle_exception out x =
     fprintf out "%a@[<h>exception %s %a @]@\n"
@@ -232,24 +232,24 @@ class mli_generator = object(self)
     | [] -> ()
     | [x]-> fprintf out "%a" self#handle_type_arg x
     | l  -> fprintf out "(%a)"
-	(fun out l ->
-	   interleave (self#handle_type_arg out)
-	     (fun () -> fprintf out ", ") l) l
+              (fun out l ->
+                 interleave (self#handle_type_arg out)
+                   (fun () -> fprintf out ", ") l) l
 
   method handle_type_kind out = function
     | Type_abstract  -> ()
     | Type_variant l ->
-	fprintf out "@[<v 2>@\n%a@]@\n"
-	  (fun out l ->
-	     interleave (self#handle_variant_constructor out)
-	       (fun () -> fprintf out "@\n|") l
-	  ) l
+      fprintf out "@[<v 2>@\n%a@]@\n"
+        (fun out l ->
+           interleave (self#handle_variant_constructor out)
+             (fun () -> fprintf out "@\n|") l
+        ) l
     | Type_record  l ->
-	fprintf out "@[<v 2>{%a}@]@\n"
-	  (fun out l ->
-	     interleave (self#handle_record_field out)
-	       (fun () -> fprintf out ";@\n") l
-	  ) l
+      fprintf out "@[<v 2>{%a}@]@\n"
+        (fun out l ->
+           interleave (self#handle_record_field out)
+             (fun () -> fprintf out ";@\n") l
+        ) l
 
   method handle_variant_constructor out x =
     fprintf out "%s %a%a"
@@ -260,10 +260,10 @@ class mli_generator = object(self)
   method handle_type_expr_list out = function
     | [] -> ()
     | l  -> fprintf out " of %a "
-	(fun out l ->
-	   interleave
-	     (self#handle_type_expr out) (fun () -> fprintf out " * ") l
-	) l
+              (fun out l ->
+                 interleave
+                   (self#handle_type_expr out) (fun () -> fprintf out " * ") l
+              ) l
 
   method handle_record_field out x =
     fprintf out "%a%s: %a%a"
@@ -287,13 +287,14 @@ warning "Loading batteries.mli generator";;
 let generator = (new mli_generator :> Args.doc_generator)
 
 let set_mli_generator () =
-    Args.set_doc_generator (Some generator)
+  Args.set_doc_generator (Some generator)
 
 let _ =
   Odoc_args.verbose := true;
   set_mli_generator ();
   verbose ("Generator loaded");
   Args.add_option ("-html", Arg.Unit
-		     (fun _ -> Odoc_info.verbose "Deactivating built-in html generator";
-			set_mli_generator())
-		     , "<workaround for ocamlbuild adding -html even when we don't want to>")
+                     (fun _ -> Odoc_info.verbose "Deactivating built-in html generator";
+                       set_mli_generator())
+                  , "<workaround for ocamlbuild adding -html even when we don't want to>")
+

@@ -263,7 +263,7 @@ type open_flag = Unix.open_flag =
 ##V4##                                   while still open *)
 ##V4.1##  | O_CLOEXEC                   (** Set the close-on-exec flag on the
 ##V4.1##                                    descriptor returned by {!openfile}
-##V4.1##                                    
+##V4.1##
 ##V4.1##                                    Since OCaml 4.1 *)
 (** The flags to {!Unix.openfile}. *)
 
