@@ -172,17 +172,20 @@ sig
         strictly greater than [x];
         [maybe_v] is [None] if [s] contains no element equal to [x],
         or [Some v] if [s] contains an element [v] that compares equal to [x].
+      @since NEXT_RELEASE
   *)
 
   val split_lt: elt -> t -> t * t
   (** [split_lt x s] returns a pair of sets [(l, r)], such that
       [l] is the subset of [s] with elements < [x];
-      [r] is the subset of [s] with elements >= [x]. *)
+      [r] is the subset of [s] with elements >= [x].
+      @since NEXT_RELEASE *)
 
   val split_le: elt -> t -> t * t
   (** [split_le x s] returns a pair of sets [(l, r)], such that
       [l] is the subset of [s] with elements <= [x];
-      [r] is the subset of [s] with elements > [x]. *)
+      [r] is the subset of [s] with elements > [x].
+      @since NEXT_RELEASE *)
 
   val cardinal: t -> int
   (** Return the number of elements of a set. *)
@@ -194,7 +197,8 @@ sig
       given to {!Set.Make}. *)
 
   val to_list: t -> elt list
-  (** Alias for [elements]. *)
+  (** Alias for [elements].
+      @since NEXT_RELEASE *)
 
   val min_elt: t -> elt
   (** Return the smallest element of the given set
@@ -450,17 +454,20 @@ val split_opt: 'a -> 'a t -> 'a t * 'a option * 'a t
       strictly greater than [x];
       [maybe_v] is [None] if [s] contains no element equal to [x],
       or [Some v] if [s] contains an element [v] that compares equal to [x].
+    @since NEXT_RELEASE
 *)
 
 val split_lt: 'a -> 'a t -> 'a t * 'a t
 (** [split_lt x s] returns a pair of sets [(l, r)], such that
     [l] is the subset of [s] with elements < [x];
-    [r] is the subset of [s] with elements >= [x]. *)
+    [r] is the subset of [s] with elements >= [x].
+    @since NEXT_RELEASE *)
 
 val split_le: 'a -> 'a t -> 'a t * 'a t
 (** [split_le x s] returns a pair of sets [(l, r)], such that
     [l] is the subset of [s] with elements <= [x];
-    [r] is the subset of [s] with elements > [x]. *)
+    [r] is the subset of [s] with elements > [x].
+    @since NEXT_RELEASE *)
 
 val cardinal: 'a t -> int
 (** Return the number of elements of a set. *)
@@ -471,7 +478,8 @@ val elements: 'a t -> 'a list
     to the ordering of the given set. *)
 
 val to_list: 'a t -> 'a list
-(** Alias for [elements]. *)
+(** Alias for [elements].
+    @since NEXT_RELEASE *)
 
 val min_elt : 'a t -> 'a
 (** returns the smallest element of the set.
@@ -490,7 +498,8 @@ val pop : 'a t -> 'a * 'a t
     @raise Not_found if given an empty set *)
 
 val cartesian_product : 'a t -> 'b t -> ('a * 'b) t
-(** cartesian product of the two sets *)
+(** cartesian product of the two sets
+    @since NEXT_RELEASE *)
 
 val enum: 'a t -> 'a BatEnum.t
 (** Return an enumeration of all elements of the given set.

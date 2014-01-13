@@ -233,13 +233,16 @@ val filter : (BatUChar.t -> bool) -> t -> t
     characters [c] such that [f c = true] remain.*)
 
 val enum : t -> BatUChar.t BatEnum.t
-(** enumerate the rope's characters *)
+(** enumerate the rope's characters
+    @since NEXT_RELEASE *)
 
 val backwards : t -> BatUChar.t BatEnum.t
-(** enumerates the rope's characters, in reverse order *)
+(** enumerates the rope's characters, in reverse order
+    @since NEXT_RELEASE *)
 
 val of_enum : BatUChar.t BatEnum.t -> t
-(** converts the enumeration into a rope *)
+(** converts the enumeration into a rope
+    @since NEXT_RELEASE *)
 
 (** {6 Finding}*)
 
@@ -435,7 +438,8 @@ val compare : t -> t -> int
     {!Set.Make} and {!Map.Make}. *)
 
 val equal : t -> t -> bool
-(** Equality of ropes (based on compare) *)
+(** Equality of ropes (based on compare)
+    @since NEXT_RELEASE *)
 
 open BatIO
 

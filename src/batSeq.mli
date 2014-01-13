@@ -108,7 +108,8 @@ val init : int -> (int -> 'a) -> 'a t
     [f 1].... [f (n-1)]. @raise Invalid_argument if [n < 0]. *)
 
 val of_list : 'a list -> 'a t
-(** Convenience function to build a seq from a list *)
+(** Convenience function to build a seq from a list.
+    @since NEXT_RELEASE *)
 
 (** {6 Iterators} *)
 
@@ -117,11 +118,13 @@ val iter : ('a -> unit) -> 'a t -> unit
 
 val iteri : (int -> 'a -> unit) -> 'a t -> unit
 (** [iteri f s] is the same as [iter f s], but [f] is given the index
-  * of each element (starting at 0) *)
+    of each element (starting at 0).
+    @since NEXT_RELEASE *)
 
 val iter2 : ('a -> 'b -> unit) -> 'a t -> 'b t -> unit
 (** [iter2 f s1 s2] iterates on elements of [s1] and [s2] pairwise, and
-  * stops when it meets the end of [s1] or [s2] *)
+    stops when it meets the end of [s1] or [s2]
+    @since NEXT_RELEASE *)
 
 val map : ('a -> 'b) -> 'a t -> 'b t
 (** [map f s] returns the sequence where elements are elements of
@@ -129,12 +132,14 @@ val map : ('a -> 'b) -> 'a t -> 'b t
 
 val mapi : (int -> 'a -> 'b) -> 'a t -> 'b t
 (** [mapi f s] lazily maps elements of [s] into a new sequence,
-  * using [f]. [f] is also given elements' indexes. *)
+    using [f]. [f] is also given elements' indexes.
+    @since NEXT_RELEASE *)
 
 val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
 (** [map2 f s1 s2] returns a sequence of elements, resulting from combininig
-  * elements of [s1] and [s2] at the same index using [f]. The result is as
-  * long as the shortest argument. *)
+    elements of [s1] and [s2] at the same index using [f]. The result is as
+    long as the shortest argument.
+    @since NEXT_RELEASE *)
 
 val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
 (** [fold_left f a (cons b0 (... bn))] is [f (... (f (f a b0) b1) ...)
@@ -163,7 +168,8 @@ val min : 'a t -> 'a
 val equal : ?eq:('a -> 'a -> bool) -> 'a t -> 'a t -> bool
   (** [equal ~eq s1 s2] compares elements of [s1] and [s2] pairwise
       using [eq]
-      @param eq optional equality function (default {!Pervasives.(=)}) *)
+      @param eq optional equality function (default {!Pervasives.(=)})
+      @since NEXT_RELEASE *)
 
 (** {6 Sequence scanning}
 

@@ -132,7 +132,8 @@ val range : int -> [< `To | `Downto ] -> int -> int list
 (** [range 1 `To 3] = [[1; 2; 3]].
     [range 3 `Downto 1] = [[3; 2; 1]].
     @raise Invalid_argument in ([range i `To j]) if (i > j).
-    @raise Invalid_argument in ([range i `Downto j]) if (i < j). *)
+    @raise Invalid_argument in ([range i `Downto j]) if (i < j).
+    @since NEXT_RELEASE *)
 
 val init : int -> (int -> 'a) -> 'a list
 (** Similar to [Array.init], [init n f] returns the list containing
@@ -269,7 +270,8 @@ val mem : 'a -> 'a list -> bool
 
 val mem_cmp : ('a -> 'a -> int) -> 'a -> 'a list -> bool
 (** Same as {!List.mem}, but the comparator function is explicitely
-    provided. *)
+    provided.
+    @since NEXT_RELEASE *)
 
 val memq : 'a -> 'a list -> bool
 (** Same as {!List.mem}, but uses physical equality instead of structural
@@ -523,7 +525,9 @@ val ntake : int -> 'a list -> 'a list list
     @raise Invalid_argument if [n] <= 0.
     Each list in the result has size n, except the last
     one which may have fewer elements in case [l] was too short.
-    Example: [ntake 2 [1; 2; 3; 4; 5] = [[1; 2]; [3; 4]; [5]]] *)
+    Example: [ntake 2 [1; 2; 3; 4; 5] = [[1; 2]; [3; 4]; [5]]]
+    
+    @since NEXT_RELEASE *)
 
 val drop : int -> 'a list -> 'a list
 (** [drop n l] returns [l] without the first [n] elements, or the empty
@@ -531,7 +535,8 @@ val drop : int -> 'a list -> 'a list
 
 val takedrop : int -> 'a list -> 'a list * 'a list
 (** [take_drop n l] is equivalent to [(take n l, drop n l)]
-    but is done in one pass. *)
+    but is done in one pass.
+    @since NEXT_RELEASE *)
 
 val take_while : ('a -> bool) -> 'a list -> 'a list
 (** [take_while p xs] returns the (possibly empty) longest prefix of

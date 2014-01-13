@@ -197,6 +197,8 @@ val fold_right : ('a -> 'b -> 'b) -> 'b -> 'a t -> 'b
    functions in Batteries. We hope to fix this inconsistency in the
    next compatibility-breaking release, so you should rather use the
    more consistent [eager_fold_right].
+
+   @since NEXT_RELEASE
 *)
 
 val eager_fold_right : ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
