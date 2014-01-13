@@ -48,11 +48,11 @@ let starts_with str p =
   else
     BatReturn.label
       (fun label ->
-        for i = 0 to len - 1 do
-          if unsafe_get str i <> unsafe_get p i then
-            BatReturn.return label false
-        done;
-        true)
+         for i = 0 to len - 1 do
+           if unsafe_get str i <> unsafe_get p i then
+             BatReturn.return label false
+         done;
+         true)
 (*$T starts_with
   starts_with "foobarbaz" "foob"
   starts_with "foobarbaz" ""
@@ -73,11 +73,11 @@ let ends_with str p =
   else
     BatReturn.label
       (fun label ->
-        for i = 0 to el - 1 do
-          if get str (diff + i) <> get p i then
-            BatReturn.return label false
-        done;
-        true)
+         for i = 0 to el - 1 do
+           if get str (diff + i) <> get p i then
+             BatReturn.return label false
+         done;
+         true)
 (*$T ends_with
   ends_with "foobarbaz" "rbaz"
   ends_with "foobarbaz" ""
@@ -95,15 +95,15 @@ let find_from str pos sub =
   if pos < 0 || pos > len then raise (Invalid_argument "String.find_from");
   if sublen = 0 then pos else
     BatReturn.label (fun label ->
-      for i = pos to len - sublen do
-        let j = ref 0 in
-        while unsafe_get str (i + !j) = unsafe_get sub !j do
-          incr j;
-          if !j = sublen then BatReturn.return label i
+        for i = pos to len - sublen do
+          let j = ref 0 in
+          while unsafe_get str (i + !j) = unsafe_get sub !j do
+            incr j;
+            if !j = sublen then BatReturn.return label i
+          done;
         done;
-      done;
-      raise Not_found
-    )
+        raise Not_found
+      )
 (*$Q find_from
   (Q.triple Q.string Q.char Q.small_int) ~count:1000 (fun (s, c, ofs) -> \
     let v1 = try `res (find_from s ofs (String.make 1 c)) with Not_found -> `nf | Invalid_argument _ -> `inv in \
@@ -138,15 +138,15 @@ let rfind_from str pos sub =
   if pos + 1 < 0 || pos + 1 > len then raise (Invalid_argument "String.rfind_from");
   if sublen = 0 then pos + 1 else
     BatReturn.label (fun label ->
-      for i = pos - sublen + 1 downto 0 do
-        let j = ref 0 in
-        while unsafe_get str (i + !j) = unsafe_get sub !j do
-          incr j;
-          if !j = sublen then BatReturn.return label i
+        for i = pos - sublen + 1 downto 0 do
+          let j = ref 0 in
+          while unsafe_get str (i + !j) = unsafe_get sub !j do
+            incr j;
+            if !j = sublen then BatReturn.return label i
+          done;
         done;
-      done;
-      raise Not_found
-    )
+        raise Not_found
+      )
 (*$Q rfind_from
   (Q.triple Q.string Q.char Q.small_int) ~count:1000 (fun (s, c, ofs) -> \
     let v1 = try `res (rfind_from s ofs (String.make 1 c)) with Not_found -> `nf | Invalid_argument _ -> `inv in \
@@ -190,7 +190,7 @@ let find_all str sub =
     let n = ref 0 in
     let r' = BatRef.copy r in
     begin try while true do ignore (next r' ()); incr n; done;
-    with BatEnum.No_more_elements -> ();
+      with BatEnum.No_more_elements -> ();
     end;
     !n
   in
@@ -206,12 +206,12 @@ let find_all str sub =
   find_all "baaaaaaaaaaaaaaaaaaaab" "baa" |> List.of_enum = [0]
   find_all "aaabbaabaaa" "aa" |> Enum.skip 1 |> Enum.clone \
     |> List.of_enum = [1;5;8;9]
-  find_all "aaabbaabaaa" "aa" |> Enum.skip 1 |> Enum.count = 4 
+  find_all "aaabbaabaaa" "aa" |> Enum.skip 1 |> Enum.count = 4
   find_all "" "foo" |> BatEnum.is_empty
   let e = find_all "aaabbaabaaa" "aa" in \
     Enum.drop 2 e; let e' = Enum.clone e in \
     (List.of_enum e = [5;8;9]) && (Enum.skip 1 e' |> List.of_enum = [8;9])
- *)
+*)
 
 let exists str sub =
   try
@@ -285,10 +285,10 @@ let tail s pos =
         tail "abc" 10 = ""
         tail "abc" 0 = "abc"
       *) (*$T head
-        head "abc" 0 = ""
-        head "abc" 10 = "abc"
-        head "abc" 3 = "abc"
-      *)
+           head "abc" 0 = ""
+           head "abc" 10 = "abc"
+           head "abc" 3 = "abc"
+         *)
 
 let split str ~by:sep =
   let p = find str sep in
@@ -448,11 +448,11 @@ let enum s =
   let rec make i =
     BatEnum.make
       ~next:(fun () ->
-        if !i = l then
-          raise BatEnum.No_more_elements
-        else
-          unsafe_get s (BatRef.post_incr i)
-      )
+          if !i = l then
+            raise BatEnum.No_more_elements
+          else
+            unsafe_get s (BatRef.post_incr i)
+        )
       ~count:(fun () -> l - !i)
       ~clone:(fun () -> make (BatRef.copy i))
   in
@@ -470,11 +470,11 @@ let backwards s =
   let rec make i =
     BatEnum.make
       ~next:(fun () ->
-        if !i <= 0 then
-          raise BatEnum.No_more_elements
-        else
-          unsafe_get s (BatRef.pre_decr i)
-      )
+          if !i <= 0 then
+            raise BatEnum.No_more_elements
+          else
+            unsafe_get s (BatRef.pre_decr i)
+        )
       ~count:(fun () -> !i)
       ~clone:(fun () -> make (BatRef.copy i))
   in
@@ -662,18 +662,18 @@ let replace_chars f s =
 *)
 
 let replace ~str ~sub ~by =
-   try
-     let subpos = find str sub in
-     let strlen = length str in
-     let sublen = length sub in
-     let bylen  = length by in
-     let newstr = create (strlen - sublen + bylen) in
-     blit str 0 newstr 0 subpos ;
-     blit by 0 newstr subpos bylen ;
-     blit str (subpos + sublen) newstr (subpos + bylen) (strlen - subpos - sublen) ;
-     (true, newstr)
-   with Not_found ->  (* find failed *)
-     (false, str)
+  try
+    let subpos = find str sub in
+    let strlen = length str in
+    let sublen = length sub in
+    let bylen  = length by in
+    let newstr = create (strlen - sublen + bylen) in
+    blit str 0 newstr 0 subpos ;
+    blit by 0 newstr subpos bylen ;
+    blit str (subpos + sublen) newstr (subpos + bylen) (strlen - subpos - sublen) ;
+    (true, newstr)
+  with Not_found ->  (* find failed *)
+    (false, str)
 (*$T replace
    replace ~str:"foobarbaz" ~sub:"bar" ~by:"rab" = (true, "foorabbaz")
    replace ~str:"foo" ~sub:"bar" ~by:"" = (false, "foo")
@@ -740,7 +740,7 @@ let repeat s n =
    repeat "" 4 = ""
 *)
 
-let rev s = 
+let rev s =
   let len = String.length s in
   let reversed = String.create len in
   for i = 0 to len - 1 do
@@ -821,15 +821,15 @@ let numeric_compare s1 s2 =
   let e1 = BatEnum.group BatChar.is_digit (enum s1) in
   let e2 = BatEnum.group BatChar.is_digit (enum s2) in
   BatEnum.compare (fun g1 g2 ->
-    let s1 = of_enum g1 in
-    let s2 = of_enum g2 in
-    if BatChar.is_digit s1.[0] && BatChar.is_digit s2.[0] then
-      let n1 = Big_int.big_int_of_string s1 in
-      let n2 = Big_int.big_int_of_string s2 in
-      Big_int.compare_big_int n1 n2
-    else
-      String.compare s1 s2
-  ) e1 e2
+      let s1 = of_enum g1 in
+      let s2 = of_enum g2 in
+      if BatChar.is_digit s1.[0] && BatChar.is_digit s2.[0] then
+        let n1 = Big_int.big_int_of_string s1 in
+        let n2 = Big_int.big_int_of_string s2 in
+        Big_int.compare_big_int n1 n2
+      else
+        String.compare s1 s2
+    ) e1 e2
 
 (*$T numeric_compare
    numeric_compare "xx43" "xx320" = -1
@@ -857,11 +857,11 @@ end
 
 let edit_distance s1 s2 =
   if String.length s1 = 0
-    then String.length s2
+  then String.length s2
   else if String.length s2 = 0
-    then String.length s1
+  then String.length s1
   else if s1 = s2
-    then 0
+  then 0
   else begin
     (* distance vectors (v0=previous, v1=current) *)
     let v0 = Array.make (String.length s2 + 1) 0 in
