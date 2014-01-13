@@ -111,7 +111,7 @@ let round x =
   (* 'halve' is the biggest representable double that is smaller than 0.5;
      (halve +. 0.5) rounds to 1., which makes for incorrect rounding of 'halve',
      while (halve +. halve) is strictly smaller than 1. as expected. *)
-  let halve = 0.499999999999999944 in    
+  let halve = 0.499999999999999944 in
   (* we test x >= 0. rather than x > 0. because otherwise
      round_to_string 0. returns "-0." (ceil of -0.5 is 'negative
      zero') which is confusing. *)
@@ -387,3 +387,4 @@ end
   try ignore (Safe_float.modf neg_infinity); false with Number.Overflow -> true
   let (frac, int) = Safe_float.modf 3.234 in approx_equal frac 0.234 && approx_equal int 3.
 *)
+
