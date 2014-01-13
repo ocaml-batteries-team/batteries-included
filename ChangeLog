@@ -12,6 +12,10 @@ will print a nice change log showing commit ids like the following:
 * 1c65b81 - (github/v1.4.0) V1.4 iniital commit (2 weeks ago)
 * 8926634 - (github/master) Forgot Bat prefix on substring, compile fix (3 weeks ago)
 
+Simpler version:
+
+    git log --no-merges previous_version..HEAD --pretty=%s
+
 The following bash script generates a GNU-style ChangeLog file, if
 that's your thing.
 
