@@ -1,4 +1,4 @@
-# qTest 
+# qTest
 
 ## Info:
 The inline tests are generated and run here. The qTest code itself has moved to a new location:
