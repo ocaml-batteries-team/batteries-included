@@ -201,6 +201,11 @@ let popcount_sparse x =
   (Q.int) (fun x -> popcount x = popcount_sparse x)
 *)
 
+let hash i = i land max_int
+(*$Q hash
+  (Q.int) (fun x -> hash x >= 0)
+*)
+
 module BaseSafeInt = struct
   include BaseInt
 

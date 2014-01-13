@@ -216,6 +216,8 @@ val equal : t -> t -> bool
 
 val ord : t -> t -> BatOrd.order
 
+val hash : t BatHash.hash
+
 (**
     Safe operations on integers.
 

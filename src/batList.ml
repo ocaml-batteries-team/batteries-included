@@ -1262,6 +1262,9 @@ let rec compare comp_elt l1 l2 =
      | [] -> 1
      | hd2::tl2 -> bin_comp comp_elt hd1 hd2 (compare comp_elt) tl1 tl2)
 
+let hash h_elem l =
+  fold_left (fun h x -> BatHash.sdbm h (h_elem x)) 0 l
+
 module Eq (T : Eq) = struct
   type t = T.t list
   let eq = eq T.eq

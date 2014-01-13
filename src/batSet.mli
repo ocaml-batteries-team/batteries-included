@@ -101,6 +101,9 @@ sig
   (** Total ordering between sets. Can be used as the ordering function
 	for doing sets of sets. *)
 
+  val hash : elt BatHash.hash -> t BatHash.hash
+  (** Hash the set by hashing its elements *)
+
   val equal: t -> t -> bool
   (** [equal s1 s2] tests whether the sets [s1] and [s2] are
       equal, that is, contain equal elements. *)
@@ -605,6 +608,9 @@ module PSet : sig
   val compare: 'a t -> 'a t -> int
   (** Total ordering between sets. Can be used as the ordering function
       for doing sets of sets. *)
+
+  val hash : 'a BatHash.hash -> 'a t BatHash.hash
+  (** Hash polymorphic set by hashing its elements *)
 
   val equal: 'a t -> 'a t -> bool
   (** [equal s1 s2] tests whether the sets [s1] and [s2] are

@@ -30,6 +30,17 @@ let compare = String.compare
 let equal a b = String.compare a b = 0
 let ord = BatOrd.ord String.compare
 
+external old_hash_param :
+  int -> int -> 'a -> int = "caml_hash_univ_param" "noalloc"
+
+let hash s = old_hash_param 10 100 s
+
+let hash_sdbm s =
+  let h = ref 0 in
+  for i = 0 to length s - 1 do
+    h := BatHash.sdbm !h (Char.code s.[i])
+  done;
+  !h
 
 let init len f =
   let s = create len in

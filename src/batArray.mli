@@ -517,6 +517,9 @@ val ord : 'a BatOrd.ord -> 'a array BatOrd.ord
     lexicographically for arrays of the same size.  This is a
     different ordering than [compare], but is often faster. *)
 
+val hash : 'a BatHash.hash -> 'a array BatHash.hash
+(** Hash array by its elements, from left to right *)
+
 val equal : 'a BatOrd.eq -> 'a array BatOrd.eq
 (** Hoist a equality test for elements to arrays.  Arrays are only
     equal if their lengths are the same and corresponding elements

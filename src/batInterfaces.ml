@@ -29,6 +29,11 @@ sig
   val compare : t -> t -> int
 end
 
+module type Hashable = sig
+  type t
+  val hash : t -> int
+end
+
 module type Monad = sig
   type 'a m
   val bind : 'a m -> ('a -> 'b m) -> 'b m

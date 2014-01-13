@@ -704,6 +704,12 @@ val equal : t -> t -> bool
 val ord : t -> t -> BatOrd.order
 (** Ordering function for strings, see {!BatOrd} *)
 
+val hash : t BatHash.hash
+(** The standard polymorphic hash function *)
+
+val hash_sdbm : t BatHash.hash
+(** Reimplementation of Hash *)
+
 val compare: t -> t -> int
 (** The comparison function for strings, with the same specification as
     {!Pervasives.compare}.  Along with the type [t], this function [compare]

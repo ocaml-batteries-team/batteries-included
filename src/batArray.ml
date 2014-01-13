@@ -513,6 +513,13 @@ let compare cmp a b =
    compare (fun x y -> -(Pervasives.compare x y)) [|2;1|] [|1;2|] = -1
 *)
 
+let hash h_elem a =
+  let h = ref 0 in
+  for i = 0 to length a - 1 do
+    h := BatHash.sdbm !h (h_elem (unsafe_get a i));
+  done;
+  !h land max_int
+
 let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
   match length t with
   | 0 ->

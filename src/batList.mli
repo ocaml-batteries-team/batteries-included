@@ -731,6 +731,7 @@ open BatOrd
 val eq : 'a eq -> 'a list eq
 val ord : 'a ord -> 'a list ord
 val compare : 'a comp -> 'a list comp
+val hash : 'a BatHash.hash -> 'a list BatHash.hash
 
 (** Comparison and equality for lists based on element comparison and
     equality *)
