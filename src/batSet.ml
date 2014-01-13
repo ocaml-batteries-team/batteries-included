@@ -225,10 +225,10 @@ module Concrete = struct
 
   (* returns a pair of sets: ({y | y < x}, {y | y >= x}) *)
   let split_lt cmp x s =
-      let l, maybe, r = split_opt cmp x s in
-      match maybe with
-        | None -> l, r
-        | Some eq_x -> l, add cmp eq_x r
+    let l, maybe, r = split_opt cmp x s in
+    match maybe with
+    | None -> l, r
+    | Some eq_x -> l, add cmp eq_x r
 
   (*$T split_lt
     let l, r = split_lt 3 s12345 in \
@@ -243,8 +243,8 @@ module Concrete = struct
   let split_le cmp x s =
     let l, maybe, r = split_opt cmp x s in
     match maybe with
-      | None -> l, r
-      | Some eq_x -> add cmp eq_x l, r
+    | None -> l, r
+    | Some eq_x -> add cmp eq_x l, r
 
   (*$T split_le
     let l, r = split_le 3 s12345 in \
@@ -823,21 +823,21 @@ let disjoint s1 s2 = Concrete.disjoint Pervasives.compare s1 s2
 (*$T cartesian_product
   cartesian_product (of_list [1;2;3]) (of_list ["a"; "b"]) |> to_list = \
     [1, "a"; 1, "b"; 2, "a"; 2, "b"; 3, "a"; 3, "b"]
-  is_empty @@ cartesian_product (of_list [1;2;3]) empty 
+  is_empty @@ cartesian_product (of_list [1;2;3]) empty
   is_empty @@ cartesian_product empty (of_list [1;2;3])
   let s1, s2 = of_list ["a"; "b"; "c"], of_list [1;2;3] in \
     equal (cartesian_product s1 s2) \
           (map BatTuple.Tuple2.swap (cartesian_product s2 s1))
- *)
+*)
 
 
 module Incubator = struct (*$< Incubator *)
   let op_map f s = Concrete.op_map f s
-    (*$T op_map
-      of_enum (1--3) |> op_map ((+) 2) |> mem 5
-      of_enum (1--3) |> op_map ((+) 2) |> mem 4
-      of_enum (1--3) |> op_map ((+) 2) |> mem 3
-    *)
+  (*$T op_map
+    of_enum (1--3) |> op_map ((+) 2) |> mem 5
+    of_enum (1--3) |> op_map ((+) 2) |> mem 4
+    of_enum (1--3) |> op_map ((+) 2) |> mem 3
+  *)
 
 
 end (*$>*)
