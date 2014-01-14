@@ -160,8 +160,8 @@ val set : t -> int -> BatUChar.t -> t
 val sub : t -> int -> int -> t
 (** [sub r m n] returns a sub-rope of [r] containing all characters
     whose indexes range from [m] to [m + n - 1] (included).
-    Operates in worst-case [O(log size)] time. 
-    
+    Operates in worst-case [O(log size)] time.
+
     @raise Out_of_bounds in the same cases as sub.
 *)
 
@@ -246,7 +246,7 @@ val of_enum : BatUChar.t BatEnum.t -> t
 val index : t -> BatUChar.t -> int
 (** [index s c] returns the position of the leftmost
     occurrence of character [c] in rope [s].
-    
+
     @raise Not_found if [c] does not occur in [s].
 *)
 
