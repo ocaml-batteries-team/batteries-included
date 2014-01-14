@@ -491,7 +491,7 @@ class batlib_generator =
 
    Only document modules which may be reached from the root.
 *)
-	
+
     method generate_types_index module_list =
       self#generate_elements_index
 	((map (fun t -> `Primitive t) primitive_types_names) @
@@ -504,7 +504,7 @@ class batlib_generator =
 	   |   `Primitive (_, alias)-> Naming.complete_target Naming.mark_type alias)
         Odoc_messages.index_of_types
         self#index_types
-	
+
 
     (** A method to create index files. *)
     method generate_elements_index :
@@ -638,7 +638,7 @@ class batlib_generator =
 	  warning ("Module "^m.m_name^" has no associated information")
 	end
       with _ -> assert false
-	
+
 
     method html_of_Ref b name ref_opt =
       let renamed = find_renaming renamings name in
