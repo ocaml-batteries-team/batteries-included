@@ -161,7 +161,7 @@ let test_rindex_from =
     end;
   ];;
 
-let test_is_prefix = 
+let test_is_prefix =
   let aeq = assert_equal ~printer:string_of_bool in
   [
     begin "is_prefix" >:: fun () ->
@@ -184,7 +184,7 @@ let test_enum =
     end
   ]
 
-let test_iteri = 
+let test_iteri =
   let ss = of_string "test" in
   let mark = ref false in
   let r = ref [] in
