@@ -304,7 +304,7 @@ let append (l1 : 'a t) (l2 : 'a t) =
 
 (*$T append
   to_list (append (of_list [1;2]) (of_list [3;4])) = [1;2;3;4]
-  ignore (append (lazy (failwith "lazy cell")) nil); true  
+  ignore (append (lazy (failwith "lazy cell")) nil); true
   hd (append (cons () nil) (lazy (failwith "lazy cell"))); true
 *)
 
@@ -316,7 +316,7 @@ let flatten (lol : ('a t) list) =
 let concat lol =
   lazy_fold_right (fun li rest -> Lazy.force (append li rest)) lol nil
 
-(*$T concat 
+(*$T concat
   to_list (concat (of_list (List.map of_list [[1;2]; [3]; [4;5]; []; [6]; []; []]))) = [1;2;3;4;5;6]
   ignore (concat (lazy (Cons ((let () = failwith "foo" in nil), nil)))); true
 *)
