@@ -33,7 +33,7 @@ let make len c = String.make len c, 0, len
 
 let create len = String.make len '\000', 0, len
 
-let equal (s1,o1,l1) (s2,o2,l2) = 
+let equal (s1,o1,l1) (s2,o2,l2) =
   if l1 <> l2 then false
   else BatReturn.label (fun label ->
       for i = 0 to l1-1 do
@@ -151,24 +151,24 @@ let compare (str1, off1, len1) (str2, off2, len2) =
   in
   loop 0
 
-let index_from (str, off, len) i c = 
-  let rec aux k = 
+let index_from (str, off, len) i c =
+  let rec aux k =
     if k = len then raise Not_found
     else if str.[off+k] = c then k
     else aux (k+1)
-  in 
-  if i > len || i < 0 then invalid_arg "Substring.index_from" 
+  in
+  if i > len || i < 0 then invalid_arg "Substring.index_from"
   else aux i
 
 let index sus c = index_from sus 0 c
 
-let rindex_from (str, off, len) i c = 
-  let rec aux k = 
+let rindex_from (str, off, len) i c =
+  let rec aux k =
     if k < 0 then raise Not_found
     else if str.[off+k] = c then k
     else aux (k-1)
-  in 
-  if i > len || i < 0 then invalid_arg "Substring.rindex_from" 
+  in
+  if i > len || i < 0 then invalid_arg "Substring.rindex_from"
   else aux i
 
 let rindex sus c = rindex_from sus (size sus - 1) c
@@ -291,9 +291,9 @@ let split_on_dot str = split_on_char '.' str;;
 let split_on_comma str = split_on_char ',' str;;
 let split_on_slash str = split_on_char '/' str;;
 
-let rec enum (str, off, len) = 
+let rec enum (str, off, len) =
   let last_element = off + len - 1 in
-  let i = ref off in 
+  let i = ref off in
   BatEnum.make
     ~next:(fun () ->
       if !i > last_element then raise BatEnum.No_more_elements
