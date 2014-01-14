@@ -212,13 +212,13 @@ struct
 	  raise Invalid_string
 	with
 	    Exit -> !found
-		
+
   let split str sep =
     let p = find str sep in
     let len = length sep in
     let slen = length str in
       sub str 0 p, sub str (p + len) (slen - p - len)
-	
+
   let nsplit str sep =
     if str = "" then []
     else (
@@ -446,7 +446,7 @@ let sort_modules: ((StringSet.t, _) sigtree list as 'a) -> (string -> string) ->
 			    StringSet.iter (fun dep -> Depsort.add_dependency dependencies name' dep) depends_on
 		 | other -> others := other :: !others) list;
     List.rev_append !others (List.map (fun name -> Hashtbl.find modules name) (Depsort.sort dependencies))
-			
+
 
 
 (**Recursively sort by dependencies each level of the tree.
@@ -503,5 +503,3 @@ let _ =
     in
       driver !in_file cin cout;
       flush_all ()
-
-
