@@ -179,7 +179,7 @@ class batlib_generator =
 	   |   `Primitive (_, alias)-> Naming.complete_target Naming.mark_type alias)
         Odoc_messages.index_of_types
         self#index_types
-	
+
 
     (** A method to create index files. *)
     method generate_elements_index :
