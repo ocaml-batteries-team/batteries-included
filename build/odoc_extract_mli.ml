@@ -180,7 +180,7 @@ class mli_generator = object(self)
 	fprintf out "%a with %s"
 	  self#handle_module_type_kind x
 	  y
-	
+
 
   method handle_module_type_alias out x =
     match x.mta_module with
