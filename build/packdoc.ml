@@ -62,7 +62,7 @@ struct
     let len = length sep in
     let slen = length str in
       sub str 0 p, sub str (p + len) (slen - p - len)
-	
+
   let nsplit str sep =
     if str = "" then []
     else (

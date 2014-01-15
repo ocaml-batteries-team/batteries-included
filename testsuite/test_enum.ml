@@ -156,7 +156,7 @@ let test_from_loop () =
   assert_equal ~printer:string_of_int 10 nb_res ;
   assert_equal ~printer:string_of_int 6 !nb_calls
 
-let test_cycle () = 
+let test_cycle () =
   let open BatEnum in
   let expected = [1;2;3;1;2;3] in
   let result = [1;2;3] |> BatList.enum |> cycle ~times:2 |> BatList.of_enum in

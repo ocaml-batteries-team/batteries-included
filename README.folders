@@ -1,8 +1,8 @@
 The following directories contain:
 
+* benchsuite/ provide performance evaluations of Batteries functions
 * build/      various (old) files needed for building
 * examples/   example files showing how to use various features of batteries
-* apidocs/    the html documentation
-* src/	      the core of Batteries Included, all the batFoo modules
+* qtest/      the inline tests
+* src/        the core of Batteries Included, all the batFoo modules
 * testsuite/  a minimal testsuite for batteries
-

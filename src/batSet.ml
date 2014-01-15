@@ -823,7 +823,7 @@ let disjoint s1 s2 = Concrete.disjoint Pervasives.compare s1 s2
 (*$T cartesian_product
   cartesian_product (of_list [1;2;3]) (of_list ["a"; "b"]) |> to_list = \
     [1, "a"; 1, "b"; 2, "a"; 2, "b"; 3, "a"; 3, "b"]
-  is_empty @@ cartesian_product (of_list [1;2;3]) empty 
+  is_empty @@ cartesian_product (of_list [1;2;3]) empty
   is_empty @@ cartesian_product empty (of_list [1;2;3])
   let s1, s2 = of_list ["a"; "b"; "c"], of_list [1;2;3] in \
     equal (cartesian_product s1 s2) \

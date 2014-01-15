@@ -206,7 +206,7 @@ let find_all str sub =
   find_all "baaaaaaaaaaaaaaaaaaaab" "baa" |> List.of_enum = [0]
   find_all "aaabbaabaaa" "aa" |> Enum.skip 1 |> Enum.clone \
     |> List.of_enum = [1;5;8;9]
-  find_all "aaabbaabaaa" "aa" |> Enum.skip 1 |> Enum.count = 4 
+  find_all "aaabbaabaaa" "aa" |> Enum.skip 1 |> Enum.count = 4
   find_all "" "foo" |> BatEnum.is_empty
   let e = find_all "aaabbaabaaa" "aa" in \
     Enum.drop 2 e; let e' = Enum.clone e in \
@@ -740,7 +740,7 @@ let repeat s n =
    repeat "" 4 = ""
 *)
 
-let rev s = 
+let rev s =
   let len = String.length s in
   let reversed = String.create len in
   for i = 0 to len - 1 do

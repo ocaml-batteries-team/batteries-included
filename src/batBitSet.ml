@@ -22,9 +22,9 @@
 
 type t = string ref
 
-let print_array = 
+let print_array =
   let buf = Buffer.create 8 in
-  let print_bchar c = 
+  let print_bchar c =
     let rc = ref c in
     Buffer.clear buf;
     for i = 1 to 8 do
@@ -38,7 +38,7 @@ let print_array =
 
 let print out t =
   for i = 0 to (String.length !t) - 1 do
-    BatInnerIO.nwrite out 
+    BatInnerIO.nwrite out
       (Array.unsafe_get print_array (Char.code (String.unsafe_get !t i)))
   done
 
@@ -62,14 +62,14 @@ let extend t n = (* len in bits *)
     String.blit !t 0 !t' 0 (String.length !t);
     t := !t'
 
-type bit_op = 
-  | Set 
+type bit_op =
+  | Set
   | Unset
   | Toggle
 
 let rec apply_bit_op sfun op t x =
   let pos = x / 8 in
-  if pos < 0 then 
+  if pos < 0 then
     invalid_arg ("BitSet."^sfun^": negative index")
   else if pos < String.length !t then
     let delta = x mod 8 in
@@ -95,13 +95,13 @@ let rec apply_bit_op sfun op t x =
     | Unset ->
       ()
 
-let set t x = apply_bit_op "set" Set t x 
+let set t x = apply_bit_op "set" Set t x
 
-let unset t x = apply_bit_op "unset" Unset t x 
+let unset t x = apply_bit_op "unset" Unset t x
 
-let toggle t x = apply_bit_op "toggle" Toggle t x 
+let toggle t x = apply_bit_op "toggle" Toggle t x
 
-let mem t x = 
+let mem t x =
   let pos = x / 8 in
   if pos < 0 then
     invalid_arg ("BitSet.mem: negative index")
@@ -116,22 +116,22 @@ let add x t = let dup = copy t in set dup x; dup
 
 let remove x t = let dup = copy t in unset dup x; dup
 
-let put t = 
+let put t =
   function
   | true -> set t
   | false -> unset t
 
 let create_full n =
   let t = create_ "create_full" '\255' n in
-  (* Fix the tail *) 
-  for i = n to (capacity t) - 1 do 
+  (* Fix the tail *)
+  for i = n to (capacity t) - 1 do
     unset t i
   done;
   t
 
 let compare t1 t2 =
   let len1 = String.length !t1 in
-  let len2 = String.length !t2 in 
+  let len2 = String.length !t2 in
   if len1 = len2 then
     String.compare !t1 !t2
   else
@@ -162,7 +162,7 @@ let equal t1 t2 =
 let ord = BatOrd.ord compare
 
 (* Array that return the count of bits for a char *)
-let count_array = 
+let count_array =
   let rec count_bits i =
     if i = 0 then
       0
@@ -184,11 +184,11 @@ let count t =
 *)
 let next_set_bit_array =
   let eighth_bit = 1 lsl 7 in
-  let mk c = 
+  let mk c =
     let arr = Array.create 8 ~-1 in
     let rec mk' last_set_bit i v =
-      if i >= 0 then 
-        let last_set_bit = 
+      if i >= 0 then
+        let last_set_bit =
           if v land eighth_bit <> 0 then
             i
           else
@@ -207,8 +207,8 @@ let next_set_bit_array =
    Array.iteri
     (fun idx arr ->
        let buf = Buffer.create 8 in
-         for i = 0 to 7 do 
-           let c = 
+         for i = 0 to 7 do
+           let c =
              if (idx land (1 lsl (7 - i))) = 0 then
                '0'
              else
@@ -217,7 +217,7 @@ let next_set_bit_array =
              Buffer.add_char buf c
          done;
          Buffer.add_string buf  ": ";
-         for i = 0 to 7 do 
+         for i = 0 to 7 do
            Buffer.add_string buf
              (Printf.sprintf "%d -> %d; "
                 i arr.(i))
@@ -230,7 +230,7 @@ let next_set_bit_array =
 
 (* Find the first set bit in the bit array *)
 let rec next_set_bit t x =
-  if x < 0 then 
+  if x < 0 then
     invalid_arg "BitSet.next_set_bit"
   else
     let pos = x / 8 in
@@ -277,13 +277,13 @@ let of_enum ?(cap=128) e = let bs = create cap in BatEnum.iter (set bs) e; bs
 
 let of_list ?(cap=128) lst = let bs = create cap in List.iter (set bs) lst; bs
 
-type set_op = 
-  | Inter 
+type set_op =
+  | Inter
   | Diff
   | Unite
   | DiffSym
 
-let apply_set_op op t1 t2 = 
+let apply_set_op op t1 t2 =
   let idx  = ref 0 in
   let len1 = String.length !t1 in
   let len2 = String.length !t2 in
@@ -321,7 +321,7 @@ let unite t1 t2 = apply_set_op Unite t1 t2
 
 let differentiate_sym t1 t2 = apply_set_op DiffSym t1 t2
 
-let biop_with_copy f a b = 
+let biop_with_copy f a b =
   let a' = copy a in
   f a' b;
   a'
@@ -333,7 +333,7 @@ let union a b =
   biop_with_copy unite a b
 
 let diff a b =
-  biop_with_copy differentiate a b 
+  biop_with_copy differentiate a b
 
 let sym_diff a b =
   biop_with_copy differentiate_sym a b

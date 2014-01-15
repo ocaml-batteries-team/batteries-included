@@ -427,6 +427,6 @@ module Exceptionless = struct
     with Invalid_argument "Seq.combine" -> None
 
   (*$T combine
-    equal (combine (of_list [1;2]) (of_list ["a";"b"])) (of_list [1,"a"; 2,"b"]) 
+    equal (combine (of_list [1;2]) (of_list ["a";"b"])) (of_list [1,"a"; 2,"b"])
   *)
 end

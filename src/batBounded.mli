@@ -33,14 +33,14 @@ val bounding_of_ord_chain :
     default values. *)
 
 val saturate_of_ord :
-  bounds:('a bound_t * 'a bound_t) -> 
+  bounds:('a bound_t * 'a bound_t) ->
   ('a -> 'a -> BatOrd.order) -> 'a -> 'a
 (** [saturate_of_ord ~bounds:(low, high) ord] will returning a bounding
     function using [ord] for value comparison and [low] and [high] for values
     which fall outside of the requested range. *)
 
 val opt_of_ord :
-  bounds:('a bound_t * 'a bound_t) -> 
+  bounds:('a bound_t * 'a bound_t) ->
   ('a -> 'a -> BatOrd.order) -> 'a -> 'a option
 (** [opt_of_ord ~bounds:(low, high) ord] will returning a bounding function
     using [ord] for value comparison and [None] for values which fall outside
@@ -50,7 +50,7 @@ module type BoundedType = sig
   type base_t
   (** The base/raw type *)
 
-  type t 
+  type t
   (** The type that makes up the bounded range *)
 
   val bounds : base_t bound_t * base_t bound_t
@@ -135,4 +135,3 @@ module MakeNumeric : functor (M : BoundedNumericType) ->
   NumericSig with type base_u = M.base_t
   with type u = M.t
   with type t = private M.t
-
