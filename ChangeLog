@@ -37,3 +37,4 @@ Changelog
 - Added List.Acc.create and use it
 - Add a LazyList.eager_fold_right alias to LazyList.fold_right, with sane argument order
 - and many tests and documentation
+- cleanup of whitespace
