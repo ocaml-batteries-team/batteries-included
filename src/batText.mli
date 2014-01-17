@@ -234,15 +234,15 @@ val filter : (BatUChar.t -> bool) -> t -> t
 
 val enum : t -> BatUChar.t BatEnum.t
 (** enumerate the rope's characters
-    @since NEXT_RELEASE *)
+    @since 2.2.0 *)
 
 val backwards : t -> BatUChar.t BatEnum.t
 (** enumerates the rope's characters, in reverse order
-    @since NEXT_RELEASE *)
+    @since 2.2.0 *)
 
 val of_enum : BatUChar.t BatEnum.t -> t
 (** converts the enumeration into a rope
-    @since NEXT_RELEASE *)
+    @since 2.2.0 *)
 
 (** {6 Finding}*)
 
@@ -439,7 +439,7 @@ val compare : t -> t -> int
 
 val equal : t -> t -> bool
 (** Equality of ropes (based on compare)
-    @since NEXT_RELEASE *)
+    @since 2.2.0 *)
 
 open BatIO
 

@@ -190,7 +190,7 @@ val kahan_sum : float array -> float
     {{: https://en.wikipedia.org/wiki/Kahan_summation_algorithm }
     the wikipedia article} on Kahan summation for more details.
 
-    @since NEXT_RELEASE
+    @since 2.2.0
 *)
 
 val avg : int array -> float
@@ -366,7 +366,7 @@ val bsearch : 'a BatOrd.ord -> 'a array -> 'a ->
     - [`Empty] if the array is empty
 
     @raise Invalid_argument if the array is found to be unsorted w.r.t [cmp]
-    @since NEXT_RELEASE *)
+    @since 2.2.0 *)
 
 (**{6 Operations on two arrays}*)
 
@@ -402,7 +402,7 @@ val map2 : ('a -> 'b -> 'c) -> 'a array -> 'b array -> 'c array
 
 val cartesian_product : 'a array -> 'b array -> ('a * 'b) array
 (** Cartesian product of the two arrays.
-    @since NEXT_RELEASE *)
+    @since 2.2.0 *)
 
 (**{6 Predicates}*)
 

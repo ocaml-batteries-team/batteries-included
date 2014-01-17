@@ -62,7 +62,7 @@ val eq : ?eq:('a -> 'a -> bool) -> 'a dq -> 'a dq -> bool
       of elements. A custom function can be optionally provided with
       the [eq] parameter (default is {!Pervasives.(=)}).
       
-      @since NEXT_RELEASE *)
+      @since 2.2.0 *)
 
 val rev : 'a dq -> 'a dq
 (** [rev dq] reverses [dq]. O(1) *)

@@ -36,7 +36,7 @@ type 'a t = 'a option
 val some : 'a -> 'a option
 (** [some x] returns [Some x].
 
-    @since NEXT_RELEASE
+    @since 2.2.0
  *)
 
 val may : ('a -> unit) -> 'a option -> unit
@@ -155,7 +155,7 @@ end
 open BatOrd
 val ord : 'a ord -> 'a option ord
 (** Comparison between optional values
-    @since NEXT_RELEASE *)
+    @since 2.2.0 *)
 
 (** {7 Printing}*)
 

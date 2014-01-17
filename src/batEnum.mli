@@ -134,7 +134,7 @@ val kahan_sum : float t -> float
 (** [kahan_sum l] returns a numerically-accurate sum of the floats of
     [l]. See {!BatArray.fsum} for more details.
 
-    @since NEXT_RELEASE
+    @since 2.2.0
 *)
 
 val fold2 : ('a -> 'b -> 'c -> 'c) -> 'c -> 'a t -> 'b t -> 'c
@@ -299,7 +299,7 @@ val cartesian_product : 'a t -> 'b t -> ('a * 'b) t
     Pairs are enumerated in a non-specified order, but in fair enough an order
     so that it works on infinite enums (i.e. even then, any pair is eventually
     returned)
-    @since NEXT_RELEASE *)
+    @since 2.2.0 *)
 
 (** {6 Lazy constructors}
 
@@ -387,7 +387,7 @@ val flatten : 'a t t -> 'a t
 val concat_map : ('a -> 'b t) -> 'a t -> 'b t
 (** Synonym of {!Monad.bind}, with flipped arguments.
     [concat_map f e] is the same as [concat (map f e)].
-    @since NEXT_RELEASE *)
+    @since 2.2.0 *)
 
 (** {6 Constructors}
 
@@ -748,7 +748,7 @@ val print_at_most :  ?first:string -> ?last:string -> ?sep:string ->
     At most [limit] arguments are printed, if more elements are
       available an ellipsis "..." is added.
     @raise Invalid_argument if the limit is <= 0.
-    @since NEXT_RELEASE *)
+    @since 2.2.0 *)
 
 val compare : ('a -> 'a -> int) -> 'a t -> 'a t -> int
 (** [compare cmp a b] compares enumerations [a] and [b]

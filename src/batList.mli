@@ -133,7 +133,7 @@ val range : int -> [< `To | `Downto ] -> int -> int list
     [range 3 `Downto 1] = [[3; 2; 1]].
     @raise Invalid_argument in ([range i `To j]) if (i > j).
     @raise Invalid_argument in ([range i `Downto j]) if (i < j).
-    @since NEXT_RELEASE *)
+    @since 2.2.0 *)
 
 val init : int -> (int -> 'a) -> 'a list
 (** Similar to [Array.init], [init n f] returns the list containing
@@ -216,7 +216,7 @@ val kahan_sum : float list -> float
 (** [kahan_sum l] returns a numerically-accurate sum of the floats of
     [l]. See {!BatArray.fsum} for more details.
 
-    @since NEXT_RELEASE
+    @since 2.2.0
 *)
 
 val min_max : ?cmp:('a -> 'a -> int) -> 'a list -> 'a * 'a
@@ -271,7 +271,7 @@ val mem : 'a -> 'a list -> bool
 val mem_cmp : ('a -> 'a -> int) -> 'a -> 'a list -> bool
 (** Same as {!List.mem}, but the comparator function is explicitely
     provided.
-    @since NEXT_RELEASE *)
+    @since 2.2.0 *)
 
 val memq : 'a -> 'a list -> bool
 (** Same as {!List.mem}, but uses physical equality instead of structural
@@ -307,7 +307,7 @@ val subset : ('a -> 'b -> int) -> 'a list -> 'b list -> bool
 (** [subset cmp l l'] check if all elements of the list [l]
     is contained in the list [l'] by applying [cmp] as comparator.
 
-    @since NEXT_RELEASE
+    @since 2.2.0
 *)
 
 
@@ -349,7 +349,7 @@ val filteri : (int -> 'a -> bool) -> 'a list -> 'a list
     that satisfy the predicate [p i ai].  The order of the elements
     in the input list is preserved.
 
-    @since NEXT_RELEASE
+    @since 2.2.0
  *)
 
 val filter_map : ('a -> 'b option) -> 'a list -> 'b list
@@ -364,7 +364,7 @@ val filteri_map : (int -> 'a -> 'b option) -> 'a list -> 'b list
     [f ai = Some bi] (when [f] returns [None], the corresponding element of
     [l] is discarded).
 
-    @since NEXT_RELEASE
+    @since 2.2.0
 *)
 
 val find_all : ('a -> bool) -> 'a list -> 'a list
@@ -527,7 +527,7 @@ val ntake : int -> 'a list -> 'a list list
     one which may have fewer elements in case [l] was too short.
     Example: [ntake 2 [1; 2; 3; 4; 5] = [[1; 2]; [3; 4]; [5]]]
     
-    @since NEXT_RELEASE *)
+    @since 2.2.0 *)
 
 val drop : int -> 'a list -> 'a list
 (** [drop n l] returns [l] without the first [n] elements, or the empty
@@ -536,7 +536,7 @@ val drop : int -> 'a list -> 'a list
 val takedrop : int -> 'a list -> 'a list * 'a list
 (** [take_drop n l] is equivalent to [(take n l, drop n l)]
     but is done in one pass.
-    @since NEXT_RELEASE *)
+    @since 2.2.0 *)
 
 val take_while : ('a -> bool) -> 'a list -> 'a list
 (** [take_while p xs] returns the (possibly empty) longest prefix of

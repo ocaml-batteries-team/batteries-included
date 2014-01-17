@@ -75,7 +75,7 @@ val int_of : uchar -> int
 val of_int : int -> uchar
 
 (** [true] if the char is a regular ascii char, i.e. if its code is <= 127
-    @since NEXT_RELEASE *)
+    @since 2.2.0 *)
 val is_ascii : uchar -> bool
 
 (**/**)
