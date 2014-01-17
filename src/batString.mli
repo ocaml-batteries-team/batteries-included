@@ -465,7 +465,8 @@ val rfind_from: string -> int -> string -> int
 val find_all : string -> string -> int BatEnum.t
 (** [find_all s x] enumerates positions of [s] at which [x] occurs.
     Example: [find_all "aabaabaa" "aba" |> List.of_enum] will return
-    the list [[1; 4]]. *)
+    the list [[1; 4]].
+    @since NEXT_RELEASE *)
 
 val ends_with : string -> string -> bool
 (** [ends_with s x] returns [true] if the string [s] is ending with [x], [false] otherwise.
@@ -750,6 +751,7 @@ module NumString : BatInterfaces.OrderedType with type t = t
 val edit_distance : t -> t -> int
 (** Edition distance (also known as "Levenshtein distance").
     See {{:http://en.wikipedia.org/wiki/Levenshtein_distance} wikipedia}
+    @since NEXT_RELEASE
 *)
 
 (** {6 Boilerplate code}*)

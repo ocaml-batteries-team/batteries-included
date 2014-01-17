@@ -1,0 +1,36 @@
+Look in git log for list of changes.
+
+The command
+
+    git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+
+will print a nice change log showing commit ids like the following:
+
+* 9d571fc - (HEAD, v1.4.0) Bump version to 1.4.0 (11 minutes ago)
+* 0097761 - Merge in fixes from upstream camomile (8 days ago)
+* a29bb96 - v1.4.0pre2 (tweaks to _oasis) (2 weeks ago)
+* 1c65b81 - (github/v1.4.0) V1.4 iniital commit (2 weeks ago)
+* 8926634 - (github/master) Forgot Bat prefix on substring, compile fix (3 weeks ago)
+
+Simpler version:
+
+    git log --no-merges previous_version..HEAD --pretty=%s
+
+The following bash script generates a GNU-style ChangeLog file, if
+that's your thing.
+
+#!/bin/sh
+# Convert git log to GNU-style ChangeLog file.
+# (C) Chris
+if test -d ".git"; then
+    git log --date-order --date=short | \
+    sed -e '/^commit.*$/d' | \
+    awk '/^Author/ {sub(/\\$/,""); getline t; print $0 t; next}; 1' | \
+    sed -e 's/^Author: //g' | \
+    sed -e 's/>Date:   \([0-9]*-[0-9]*-[0-9]*\)/>\t\1/g' | \
+    sed -e 's/^\(.*\) \(\)\t\(.*\)/\3    \1    \2/g' > ChangeLog
+    exit 0
+else
+    echo "No git repository present."
+    exit 1
+fi

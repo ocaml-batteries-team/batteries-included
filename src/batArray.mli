@@ -365,7 +365,8 @@ val bsearch : 'a BatOrd.ord -> 'a array -> 'a ->
     - [`Just_after i] if [arr.(i) < x < arr.(i+1)]
     - [`Empty] if the array is empty
 
-    @raise Invalid_argument if the array is found to be unsorted w.r.t [cmp] *)
+    @raise Invalid_argument if the array is found to be unsorted w.r.t [cmp]
+    @since NEXT_RELEASE *)
 
 (**{6 Operations on two arrays}*)
 
@@ -400,7 +401,8 @@ val map2 : ('a -> 'b -> 'c) -> 'a array -> 'b array -> 'c array
     @raise Invalid_argument if the two arrays have different lengths. *)
 
 val cartesian_product : 'a array -> 'b array -> ('a * 'b) array
-(** Cartesian product of the two arrays. *)
+(** Cartesian product of the two arrays.
+    @since NEXT_RELEASE *)
 
 (**{6 Predicates}*)
 

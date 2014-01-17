@@ -1,32 +1,40 @@
-Look in git log for list of changes.
+Changelog
+---------
 
-The command
+## v2.2.0
 
-    git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
-
-will print a nice change log showing commit ids like the following:
-
-* 9d571fc - (HEAD, v1.4.0) Bump version to 1.4.0 (11 minutes ago)
-* 0097761 - Merge in fixes from upstream camomile (8 days ago)
-* a29bb96 - v1.4.0pre2 (tweaks to _oasis) (2 weeks ago)
-* 1c65b81 - (github/v1.4.0) V1.4 iniital commit (2 weeks ago)
-* 8926634 - (github/master) Forgot Bat prefix on substring, compile fix (3 weeks ago)
-
-The following bash script generates a GNU-style ChangeLog file, if
-that's your thing.
-
-#!/bin/sh
-# Convert git log to GNU-style ChangeLog file.
-# (C) Chris
-if test -d ".git"; then
-    git log --date-order --date=short | \
-    sed -e '/^commit.*$/d' | \
-    awk '/^Author/ {sub(/\\$/,""); getline t; print $0 t; next}; 1' | \
-    sed -e 's/^Author: //g' | \
-    sed -e 's/>Date:   \([0-9]*-[0-9]*-[0-9]*\)/>\t\1/g' | \
-    sed -e 's/^\(.*\) \(\)\t\(.*\)/\3    \1    \2/g' > ChangeLog
-    exit 0
-else
-    echo "No git repository present."
-    exit 1
-fi
+- cartesian product in batSet
+- Enum.concat_map alias
+- UChar.is_ascii
+- equality and enumeration (from, to UChar enum) in batText
+- String.find_all function
+- Seq.iteri, mapi, iter2, map2 (see issue #417)
+- cartesian product of enums (issue #442)
+- List.subset
+- Array.bsearch dichotomic search (issue #433)
+- Enum.print_at_most (issue #425)
+- BatOption.ord instance, (issue #393)
+- Fix infinite loop in BitSet
+- Levenshtein distance on strings
+- Seq.{of_list, equal}
+- basic .merlin file for merlin users
+- BatDeque.eq function to compare Deques by content
+- BatteriesExceptionless
+- More explicit overridding of ocamlbuild rules, use batteries.mllib
+- Add Kahan summation (numerically-accurate sum of floats) to List,Array,Enum
+- Add BatOption.some
+- (text) improve element indexing in BatList's mli documentation
+- Add BatList.filteri_map
+- Compatibility with ocaml 4.01
+- Add BatList.filteri
+- Add Set.split_lt and split_le
+- Add split_opt wherever there is split
+- Add List.range
+- Add the new O_CLOEXEC flag to Unix.open_flag in version 4.01
+- Fix BatMutex.DebugMutex.id is always 0.
+- Simplify List.partition code
+- Add List.ntake and List.takedrop
+- Added List.Acc.create and use it
+- Add a LazyList.eager_fold_right alias to LazyList.fold_right, with sane argument order
+- and many tests and documentation
+- cleanup of whitespace

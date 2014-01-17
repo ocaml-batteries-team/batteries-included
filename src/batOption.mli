@@ -154,6 +154,8 @@ end
 
 open BatOrd
 val ord : 'a ord -> 'a option ord
+(** Comparison between optional values
+    @since NEXT_RELEASE *)
 
 (** {7 Printing}*)
 
