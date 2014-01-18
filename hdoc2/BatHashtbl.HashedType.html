@@ -100,26 +100,30 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatHashtbl.HashedType</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a href="BatHashtbl.html">Up</a>
-&nbsp;<a href="BatHashtbl.S.html">Next</a>
+<div class="navbar">&nbsp;<a class="up" href="BatHashtbl.html" title="BatHashtbl">Up</a>
+&nbsp;<a class="post" href="BatHashtbl.S.html" title="BatHashtbl.S">Next</a>
 </div>
-<center><h1>Module type <a href="type_BatHashtbl.HashedType.html">BatHashtbl.HashedType</a></h1></center>
-<br>
+<h1>Module type <a href="type_BatHashtbl.HashedType.html">BatHashtbl.HashedType</a></h1>
+
 <pre><span class="keyword">module type</span> HashedType = <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.HashedType.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
+
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
-<div class="info">
+<div class="info ">
 The type of the hashtable keys.<br>
 </div>
 
-<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="BatHashtbl.HashedType.html#TYPEt">t</a> -> <a href="BatHashtbl.HashedType.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+
+<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="BatHashtbl.HashedType.html#TYPEt">t</a> -> <a href="BatHashtbl.HashedType.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
 The equality predicate used to compare keys.<br>
 </div>
-<pre><span id="VALhash"><span class="keyword">val</span> hash</span> : <code class="type"><a href="BatHashtbl.HashedType.html#TYPEt">t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALhash"><span class="keyword">val</span> hash</span> : <code class="type"><a href="BatHashtbl.HashedType.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 A hashing function on keys. It must be such that if two keys are
         equal according to <code class="code">equal</code>, then they have identical hash values
         as computed by <code class="code">hash</code>.

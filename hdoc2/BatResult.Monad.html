@@ -100,18 +100,20 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatResult.Monad</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a href="BatResult.html">Up</a>
-&nbsp;<a href="BatResult.Infix.html">Next</a>
+<div class="navbar">&nbsp;<a class="up" href="BatResult.html" title="BatResult">Up</a>
+&nbsp;<a class="post" href="BatResult.Infix.html" title="BatResult.Infix">Next</a>
 </div>
-<center><h1>Module <a href="type_BatResult.Monad.html">BatResult.Monad</a></h1></center>
-<br>
+<h1>Module <a href="type_BatResult.Monad.html">BatResult.Monad</a></h1>
+
 <pre><span class="keyword">module</span> Monad: <code class="code"><span class="keyword">sig</span></code> <a href="BatResult.Monad.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
-<pre><span id="VALbind"><span class="keyword">val</span> bind</span> : <code class="type">('a, 'b) <a href="BatResult.html#TYPEt">BatResult.t</a> -> ('a -> ('c, 'b) <a href="BatResult.html#TYPEt">BatResult.t</a>) -> ('c, 'b) <a href="BatResult.html#TYPEt">BatResult.t</a></code></pre><div class="info">
+
+<pre><span id="VALbind"><span class="keyword">val</span> bind</span> : <code class="type">('a, 'b) <a href="BatResult.html#TYPEt">BatResult.t</a> -> ('a -> ('c, 'b) <a href="BatResult.html#TYPEt">BatResult.t</a>) -> ('c, 'b) <a href="BatResult.html#TYPEt">BatResult.t</a></code></pre><div class="info ">
 Monadic composition.
 <p>
 
@@ -119,10 +121,12 @@ Monadic composition.
       <code class="code">r</code> is an error.<br>
 <b>Since</b> 2.0<br>
 </div>
-<pre><span id="VAL(>>=)"><span class="keyword">val</span> (&gt;&gt;=)</span> : <code class="type">('a, 'b) <a href="BatResult.html#TYPEt">BatResult.t</a> -> ('a -> ('c, 'b) <a href="BatResult.html#TYPEt">BatResult.t</a>) -> ('c, 'b) <a href="BatResult.html#TYPEt">BatResult.t</a></code></pre><div class="info">
+
+<pre><span id="VAL(>>=)"><span class="keyword">val</span> (&gt;&gt;=)</span> : <code class="type">('a, 'b) <a href="BatResult.html#TYPEt">BatResult.t</a> -> ('a -> ('c, 'b) <a href="BatResult.html#TYPEt">BatResult.t</a>) -> ('c, 'b) <a href="BatResult.html#TYPEt">BatResult.t</a></code></pre><div class="info ">
 as <code class="code">bind</code><br>
 </div>
-<pre><span id="VALreturn"><span class="keyword">val</span> return</span> : <code class="type">'a -> ('a, 'b) <a href="BatResult.html#TYPEt">BatResult.t</a></code></pre><div class="info">
+
+<pre><span id="VALreturn"><span class="keyword">val</span> return</span> : <code class="type">'a -> ('a, 'b) <a href="BatResult.html#TYPEt">BatResult.t</a></code></pre><div class="info ">
 Monadic return, just encapsulates the given value with Ok<br>
 </div>
 </body></html>

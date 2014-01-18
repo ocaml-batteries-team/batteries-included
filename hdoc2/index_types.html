@@ -97,12 +97,15 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : Index of types</title>
 </head>
 <body>
-<center><h1>Index of types</h1></center>
+<div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;</div>
+<h1>Index of types</h1>
 <table>
 <tr><td align="left"><br>A</td></tr>
 <tr><td><a href="BatUnix.html#TYPEaccess_permission">access_permission</a> [<a href="BatUnix.html">BatUnix</a>]</td>
@@ -272,7 +275,10 @@ A log <code class="code">event</code> consists of an event name and a list of ke
 </div>
 </td></tr>
 <tr><td><a href="BatMarshal.html#TYPEextern_flags">extern_flags</a> [<a href="BatMarshal.html">BatMarshal</a>]</td>
-<td></td></tr>
+<td><div class="info">
+The flags to the <code class="code"><span class="constructor">Marshal</span>.to_*</code> functions below.
+</div>
+</td></tr>
 <tr><td align="left"><br>F</td></tr>
 <tr><td><a href="BatIO.html#TYPEf_printer">f_printer</a> [<a href="BatIO.html">BatIO</a>]</td>
 <td></td></tr>
@@ -546,7 +552,10 @@ Internal representation of an object.
 </div>
 </td></tr>
 <tr><td><a href="BatUnix.html#TYPEopen_flag">open_flag</a> [<a href="BatUnix.html">BatUnix</a>]</td>
-<td></td></tr>
+<td><div class="info">
+The flags to <code class="code"><span class="constructor">Unix</span>.openfile</code>.
+</div>
+</td></tr>
 <tr><td><a href="BatFile.html#TYPEopen_in_flag">open_in_flag</a> [<a href="BatFile.html">BatFile</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatFile.html#TYPEopen_out_flag">open_out_flag</a> [<a href="BatFile.html">BatFile</a>]</td>
@@ -622,6 +631,8 @@ Structure of entries in the <code class="code">protocols</code> database.
 </div>
 </td></tr>
 <tr><td align="left"><br>R</td></tr>
+<tr><td><a href="BatPrintexc.html#TYPEraw_backtrace">raw_backtrace</a> [<a href="BatPrintexc.html">BatPrintexc</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatParserCo.html#TYPEreport">report</a> [<a href="BatParserCo.html">BatParserCo</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatDynArray.html#TYPEresizer_t">resizer_t</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
@@ -1206,6 +1217,6 @@ Flags for <code class="code"><span class="constructor">Unix</span>.waitpid</code
 A type meant to avoid duplication of signatures.
 </div>
 </td></tr>
-</table><br>
+</table>
 </body>
 </html>

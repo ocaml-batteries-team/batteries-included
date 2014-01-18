@@ -100,20 +100,28 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatConcurrent.NoLock</title>
 </head>
 <body>
-<div class="navbar"><a href="BatConcurrent.MakeLock.html">Previous</a>
-&nbsp;<a href="BatConcurrent.html">Up</a>
+<div class="navbar"><a class="pre" href="BatConcurrent.MakeLock.html" title="BatConcurrent.MakeLock">Previous</a>
+&nbsp;<a class="up" href="BatConcurrent.html" title="BatConcurrent">Up</a>
 &nbsp;</div>
-<center><h1>Module <a href="type_BatConcurrent.NoLock.html">BatConcurrent.NoLock</a></h1></center>
-<br>
+<h1>Module <a href="type_BatConcurrent.NoLock.html">BatConcurrent.NoLock</a></h1>
+
 <pre><span class="keyword">module</span> NoLock: <code class="type"><a href="BatConcurrent.Lock.html">Lock</a></code><code class="type"> </code></pre><hr width="100%">
+
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
-<div class="info">
+<div class="info ">
 The type of a lock.<br>
 </div>
 
-<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">unit -> <a href="BatConcurrent.Lock.html#TYPEt">t</a></code></pre><pre><span id="VALlock"><span class="keyword">val</span> lock</span> : <code class="type"><a href="BatConcurrent.Lock.html#TYPEt">t</a> -> unit</code></pre><pre><span id="VALunlock"><span class="keyword">val</span> unlock</span> : <code class="type"><a href="BatConcurrent.Lock.html#TYPEt">t</a> -> unit</code></pre><pre><span id="VALtry_lock"><span class="keyword">val</span> try_lock</span> : <code class="type"><a href="BatConcurrent.Lock.html#TYPEt">t</a> -> bool</code></pre><pre><span id="VALsynchronize"><span class="keyword">val</span> synchronize</span> : <code class="type">?lock:<a href="BatConcurrent.Lock.html#TYPEt">t</a> -> ('a -> 'b) -> 'a -> 'b</code></pre><pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">unit -> <a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a></code></pre></body></html>
+
+<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">unit -> <a href="BatConcurrent.Lock.html#TYPEt">t</a></code></pre>
+<pre><span id="VALlock"><span class="keyword">val</span> lock</span> : <code class="type"><a href="BatConcurrent.Lock.html#TYPEt">t</a> -> unit</code></pre>
+<pre><span id="VALunlock"><span class="keyword">val</span> unlock</span> : <code class="type"><a href="BatConcurrent.Lock.html#TYPEt">t</a> -> unit</code></pre>
+<pre><span id="VALtry_lock"><span class="keyword">val</span> try_lock</span> : <code class="type"><a href="BatConcurrent.Lock.html#TYPEt">t</a> -> bool</code></pre>
+<pre><span id="VALsynchronize"><span class="keyword">val</span> synchronize</span> : <code class="type">?lock:<a href="BatConcurrent.Lock.html#TYPEt">t</a> -> ('a -> 'b) -> 'a -> 'b</code></pre>
+<pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">unit -> <a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a></code></pre></body></html>

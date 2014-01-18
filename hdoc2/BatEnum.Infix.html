@@ -100,31 +100,35 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatEnum.Infix</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a href="BatEnum.html">Up</a>
-&nbsp;<a href="BatEnum.WithMonad.html">Next</a>
+<div class="navbar">&nbsp;<a class="up" href="BatEnum.html" title="BatEnum">Up</a>
+&nbsp;<a class="post" href="BatEnum.WithMonad.html" title="BatEnum.WithMonad">Next</a>
 </div>
-<center><h1>Module <a href="type_BatEnum.Infix.html">BatEnum.Infix</a></h1></center>
-<br>
+<h1>Module <a href="type_BatEnum.Infix.html">BatEnum.Infix</a></h1>
+
 <pre><span class="keyword">module</span> Infix: <code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
-<pre><span id="VAL(--)"><span class="keyword">val</span> (--)</span> : <code class="type">int -> int -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+
+<pre><span id="VAL(--)"><span class="keyword">val</span> (--)</span> : <code class="type">int -> int -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 As <code class="code">range</code>, without the label.
 <p>
 
       <code class="code">5 -- 10</code> is the enumeration 5,6,7,8,9,10.
       <code class="code">10 -- 5</code> is the empty enumeration<br>
 </div>
-<pre><span id="VAL(--^)"><span class="keyword">val</span> (--^)</span> : <code class="type">int -> int -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+
+<pre><span id="VAL(--^)"><span class="keyword">val</span> (--^)</span> : <code class="type">int -> int -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 As <code class="code">(--)</code> but without the right endpoint
 <p>
 
       <code class="code">5 --^ 10</code> is the enumeration 5,6,7,8,9.<br>
 </div>
-<pre><span id="VAL(--.)"><span class="keyword">val</span> (--.)</span> : <code class="type">float * float -> float -> float <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+
+<pre><span id="VAL(--.)"><span class="keyword">val</span> (--.)</span> : <code class="type">float * float -> float -> float <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 <code class="code">(a, step) --. b)</code> creates a float enumeration from <code class="code">a</code> to <code class="code">b</code> with an
       increment of <code class="code">step</code> between elements.
 <p>
@@ -133,24 +137,29 @@ As <code class="code">(--)</code> but without the right endpoint
       <code class="code">(10.0, -1.0) --. 5.0</code> is the enumeration 10.0,9.0,8.0,7.0,6.0,5.0.
       <code class="code">(10.0, 1.0) --. 1.0</code> is the empty enumeration.<br>
 </div>
-<pre><span id="VAL(---)"><span class="keyword">val</span> (---)</span> : <code class="type">int -> int -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+
+<pre><span id="VAL(---)"><span class="keyword">val</span> (---)</span> : <code class="type">int -> int -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 As <code class="code">--</code>, but accepts enumerations in reverse order.
 <p>
 
       <code class="code">5 --- 10</code> is the enumeration 5,6,7,8,9,10.
       <code class="code">10 --- 5</code> is the enumeration 10,9,8,7,6,5.<br>
 </div>
-<pre><span id="VAL(--~)"><span class="keyword">val</span> (--~)</span> : <code class="type">char -> char -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+
+<pre><span id="VAL(--~)"><span class="keyword">val</span> (--~)</span> : <code class="type">char -> char -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 As ( -- ), but for characters.<br>
 </div>
-<pre><span id="VAL(//)"><span class="keyword">val</span> (//)</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> ('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+
+<pre><span id="VAL(//)"><span class="keyword">val</span> (//)</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> ('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 Filtering (pronounce this operator name "such that").
 <p>
 
       For instance, <code class="code">(1 -- 37) // odd</code> is the enumeration of all odd
       numbers between 1 and 37.<br>
 </div>
-<pre><span id="VAL(/@)"><span class="keyword">val</span> (/@)</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> ('a -> 'b) -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VAL(@/)"><span class="keyword">val</span> (@/)</span> : <code class="type">('a -> 'b) -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+
+<pre><span id="VAL(/@)"><span class="keyword">val</span> (/@)</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> ('a -> 'b) -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
+<pre><span id="VAL(@/)"><span class="keyword">val</span> (@/)</span> : <code class="type">('a -> 'b) -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 Mapping operators.
 <p>
 
@@ -158,7 +167,9 @@ Mapping operators.
      sometimes more readable than this function, when chaining
      several transformations in a row.<br>
 </div>
-<pre><span id="VAL(//@)"><span class="keyword">val</span> (//@)</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> ('a -> 'b option) -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VAL(@//)"><span class="keyword">val</span> (@//)</span> : <code class="type">('a -> 'b option) -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+
+<pre><span id="VAL(//@)"><span class="keyword">val</span> (//@)</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> ('a -> 'b option) -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
+<pre><span id="VAL(@//)"><span class="keyword">val</span> (@//)</span> : <code class="type">('a -> 'b option) -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 Map combined with filter. Same as <a href="BatEnum.html#VALfilter_map"><code class="code"><span class="constructor">BatEnum</span>.filter_map</code></a>.<br>
 </div>
 </body></html>

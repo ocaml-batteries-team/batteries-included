@@ -100,19 +100,24 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatOrd.Comp</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a href="BatOrd.html">Up</a>
-&nbsp;<a href="BatOrd.Ord.html">Next</a>
+<div class="navbar">&nbsp;<a class="up" href="BatOrd.html" title="BatOrd">Up</a>
+&nbsp;<a class="post" href="BatOrd.Ord.html" title="BatOrd.Ord">Next</a>
 </div>
-<center><h1>Module type <a href="type_BatOrd.Comp.html">BatOrd.Comp</a></h1></center>
-<br>
-<pre><span class="keyword">module type</span> Comp = <code class="code"><span class="keyword">sig</span></code> <a href="BatOrd.Comp.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>We use <code class="code">compare</code> as member name instead of <code class="code">comp</code>, so that the
+<h1>Module type <a href="type_BatOrd.Comp.html">BatOrd.Comp</a></h1>
+
+<pre><span class="keyword">module type</span> Comp = <code class="code"><span class="keyword">sig</span></code> <a href="BatOrd.Comp.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info modtype top">
+We use <code class="code">compare</code> as member name instead of <code class="code">comp</code>, so that the
     Comp modules can be used as the legacy OrderedType interface.<br>
+</div>
 <hr width="100%">
+
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
+
 
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatOrd.Comp.html#TYPEt">t</a> <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a></code></pre></body></html>

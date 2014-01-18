@@ -100,19 +100,23 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatPathGen.PathType.OperatorLift</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a href="BatPathGen.PathType.html">Up</a>
-&nbsp;<a href="BatPathGen.PathType.Operators.html">Next</a>
+<div class="navbar">&nbsp;<a class="up" href="BatPathGen.PathType.html" title="BatPathGen.PathType">Up</a>
+&nbsp;<a class="post" href="BatPathGen.PathType.Operators.html" title="BatPathGen.PathType.Operators">Next</a>
 </div>
-<center><h1>Module <a href="type_BatPathGen.PathType.OperatorLift.html">BatPathGen.PathType.OperatorLift</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> OperatorLift: <code class="code"><span class="keyword">sig</span></code> <a href="BatPathGen.PathType.OperatorLift.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Convenience operator for lifting primitive strings to <code class="code">ustring</code> type.<br>
+<h1>Module <a href="type_BatPathGen.PathType.OperatorLift.html">BatPathGen.PathType.OperatorLift</a></h1>
+
+<pre><span class="keyword">module</span> OperatorLift: <code class="code"><span class="keyword">sig</span></code> <a href="BatPathGen.PathType.OperatorLift.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+Convenience operator for lifting primitive strings to <code class="code">ustring</code> type.<br>
+</div>
 <hr width="100%">
-<pre><span id="VAL(!!)"><span class="keyword">val</span> (!!)</span> : <code class="type">string -> <a href="BatPathGen.PathType.html#TYPEustring">BatPathGen.PathType.ustring</a></code></pre><div class="info">
+
+<pre><span id="VAL(!!)"><span class="keyword">val</span> (!!)</span> : <code class="type">string -> <a href="BatPathGen.PathType.html#TYPEustring">BatPathGen.PathType.ustring</a></code></pre><div class="info ">
 Prefix operator that converts primitive string to <code class="code">ustring</code>. May raise some exceptions depending on actual strings implementation.
 <p>
 

@@ -101,6 +101,7 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Comparisons between numbers" rel="Section" href="#6_Comparisonsbetweennumbers">
@@ -111,84 +112,137 @@
 <title>Batteries user guide : Batteries.Num</title>
 </head>
 <body>
-<div class="navbar"><a href="Batteries.Big_int.html">Previous</a>
-&nbsp;<a href="Batteries.html">Up</a>
-&nbsp;<a href="Batteries.Bigarray.html">Next</a>
+<div class="navbar"><a class="pre" href="Batteries.Big_int.html" title="Batteries.Big_int">Previous</a>
+&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
+&nbsp;<a class="post" href="Batteries.Bigarray.html" title="Batteries.Bigarray">Next</a>
 </div>
-<center><h1>Module <a href="type_Batteries.Num.html">Batteries.Num</a></h1></center>
-<br>
+<h1>Module <a href="type_Batteries.Num.html">Batteries.Num</a></h1>
+
 <pre><span class="keyword">module</span> Num: <code class="type">BatNum</code></pre><hr width="100%">
+
 <pre><span id="TYPEnum"><span class="keyword">type</span> <code class="type"></code>num</span> = <code class="type">Num.num</code> = </pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span class="constructor">Int</span> <span class="keyword">of</span> <code class="type">int</code></code></td>
+<code><span id="TYPEELTnum.Int"><span class="constructor">Int</span></span> <span class="keyword">of</span> <code class="type">int</code></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span class="constructor">Big_int</span> <span class="keyword">of</span> <code class="type">Big_int.big_int</code></code></td>
+<code><span id="TYPEELTnum.Big_int"><span class="constructor">Big_int</span></span> <span class="keyword">of</span> <code class="type">Big_int.big_int</code></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span class="constructor">Ratio</span> <span class="keyword">of</span> <code class="type">Ratio.ratio</code></code></td>
+<code><span id="TYPEELTnum.Ratio"><span class="constructor">Ratio</span></span> <span class="keyword">of</span> <code class="type">Ratio.ratio</code></code></td>
 
 </tr></table>
 
-<div class="info">
+<div class="info ">
 The type of numbers.<br>
 </div>
 
+
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type"><a href="BatNum.html#TYPEnum">num</a></code> </pre>
 
-<pre><span id="VALzero"><span class="keyword">val</span> zero</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a></code></pre><div class="info">
-<span id="6_Usualoperations"><h6>Usual operations</h6></span><br>
+
+<pre><span id="VALzero"><span class="keyword">val</span> zero</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a></code></pre><div class="info ">
+<h6 id="6_Usualoperations">Usual operations</h6><br>
 </div>
-<pre><span id="VALone"><span class="keyword">val</span> one</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALneg"><span class="keyword">val</span> neg</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALabs"><span class="keyword">val</span> abs</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALmul"><span class="keyword">val</span> mul</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALdiv"><span class="keyword">val</span> div</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALmodulo"><span class="keyword">val</span> modulo</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALpow"><span class="keyword">val</span> pow</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> int</code></pre><pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre><pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre><pre><span id="VALof_int"><span class="keyword">val</span> of_int</span> : <code class="type">int -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALto_int"><span class="keyword">val</span> to_int</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> int</code></pre><pre><span id="VALof_float"><span class="keyword">val</span> of_float</span> : <code class="type">float -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALto_float"><span class="keyword">val</span> to_float</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> float</code></pre><pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> string</code></pre><div class="info">
+
+<pre><span id="VALone"><span class="keyword">val</span> one</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALneg"><span class="keyword">val</span> neg</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALabs"><span class="keyword">val</span> abs</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALmul"><span class="keyword">val</span> mul</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALdiv"><span class="keyword">val</span> div</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALmodulo"><span class="keyword">val</span> modulo</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALpow"><span class="keyword">val</span> pow</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> int</code></pre>
+<pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre>
+<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre>
+<pre><span id="VALof_int"><span class="keyword">val</span> of_int</span> : <code class="type">int -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALto_int"><span class="keyword">val</span> to_int</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> int</code></pre>
+<pre><span id="VALof_float"><span class="keyword">val</span> of_float</span> : <code class="type">float -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALto_float"><span class="keyword">val</span> to_float</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> float</code></pre>
+<pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> string</code></pre><div class="info ">
 Convert a number to a string, using fractional notation. Two
     formats are recognized: simple integer literals and a pair of integer
     literals separated by a '/', to indicate a rational number.<br>
 </div>
-<pre><span id="VALof_float_string"><span class="keyword">val</span> of_float_string</span> : <code class="type">string -> <a href="BatNum.html#TYPEnum">num</a></code></pre><div class="info">
+
+<pre><span id="VALof_float_string"><span class="keyword">val</span> of_float_string</span> : <code class="type">string -> <a href="BatNum.html#TYPEnum">num</a></code></pre><div class="info ">
 Convert a simple floating point literal to a num.  Plain integer
     literals are also accepted; numbers written with a trailing exponent
     are not currently accepted.<br>
 </div>
-<pre><span id="VAL(+)"><span class="keyword">val</span> (+)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VAL(-)"><span class="keyword">val</span> (-)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VAL( * )"><span class="keyword">val</span> ( * )</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VAL(/)"><span class="keyword">val</span> (/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VAL( ** )"><span class="keyword">val</span> ( ** )</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALmax_num"><span class="keyword">val</span> max_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALmin_num"><span class="keyword">val</span> min_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALquo"><span class="keyword">val</span> quo</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><div class="info">
-<span id="6_Additionaloperations"><h6>Additional operations</h6></span>
+
+<pre><span id="VAL(+)"><span class="keyword">val</span> (+)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VAL(-)"><span class="keyword">val</span> (-)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VAL( * )"><span class="keyword">val</span> ( * )</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VAL(/)"><span class="keyword">val</span> (/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VAL( ** )"><span class="keyword">val</span> ( ** )</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALmax_num"><span class="keyword">val</span> max_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALmin_num"><span class="keyword">val</span> min_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALquo"><span class="keyword">val</span> quo</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><div class="info ">
+<h6 id="6_Additionaloperations">Additional operations</h6>
 <p>
 Euclidian divisiom<br>
 </div>
-<pre><span id="VALsquare"><span class="keyword">val</span> square</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALsucc"><span class="keyword">val</span> succ</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><div class="info">
+
+<pre><span id="VALsquare"><span class="keyword">val</span> square</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALsucc"><span class="keyword">val</span> succ</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><div class="info ">
 <b>Raises</b> <code>Invalid_argument</code> <code class="code"><span class="string">"Num.succ"</span></code> for <code class="code"><span class="constructor">Num</span>.<span class="constructor">Ratio</span> _</code> argument<br>
 </div>
-<pre><span id="VALpred"><span class="keyword">val</span> pred</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><div class="info">
+
+<pre><span id="VALpred"><span class="keyword">val</span> pred</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><div class="info ">
 <b>Raises</b> <code>Invalid_argument</code> <code class="code"><span class="string">"Num.pred"</span></code> for <code class="code"><span class="constructor">Num</span>.<span class="constructor">Ratio</span> _</code> argument<br>
 </div>
-<pre><span id="VALis_integer"><span class="keyword">val</span> is_integer</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre><div class="info">
+
+<pre><span id="VALis_integer"><span class="keyword">val</span> is_integer</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre><div class="info ">
 <code class="code">is_integer x</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">x</code> represents an integer value,
     <code class="code"><span class="keyword">false</span></code> otherwise<br>
 </div>
-<pre><span id="VALround"><span class="keyword">val</span> round</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALfloor"><span class="keyword">val</span> floor</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALceil"><span class="keyword">val</span> ceil</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALapprox"><span class="keyword">val</span> approx</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><div class="info">
+
+<pre><span id="VALround"><span class="keyword">val</span> round</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALfloor"><span class="keyword">val</span> floor</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALceil"><span class="keyword">val</span> ceil</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALapprox"><span class="keyword">val</span> approx</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><div class="info ">
 <code class="code">approx n</code> return the integer closest to <code class="code">n</code><br>
 </div>
-<pre><span id="VALsign"><span class="keyword">val</span> sign</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALsign"><span class="keyword">val</span> sign</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> int</code></pre><div class="info ">
 Return <code class="code">-1</code>, <code class="code">0</code> or <code class="code">1</code> according to the sign of the argument.<br>
 </div>
+
 <pre><span id="VALoperations"><span class="keyword">val</span> operations</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> <a href="BatNumber.html#TYPEnumeric">BatNumber.numeric</a></code></pre><br>
-<span id="6_Comparisonsbetweennumbers"><h6>Comparisons between numbers</h6></span><br>
-<pre><span id="VAL(=/)"><span class="keyword">val</span> (=/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre><pre><span id="VAL(</)"><span class="keyword">val</span> (&lt;/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre><pre><span id="VAL(>/)"><span class="keyword">val</span> (&gt;/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre><pre><span id="VAL(<=/)"><span class="keyword">val</span> (&lt;=/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre><pre><span id="VAL(>=/)"><span class="keyword">val</span> (&gt;=/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre><pre><span id="VAL(<>/)"><span class="keyword">val</span> (&lt;&gt;/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre><pre><span id="VALeq_num"><span class="keyword">val</span> eq_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre><pre><span id="VALlt_num"><span class="keyword">val</span> lt_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre><pre><span id="VALle_num"><span class="keyword">val</span> le_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre><pre><span id="VALgt_num"><span class="keyword">val</span> gt_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre><pre><span id="VALge_num"><span class="keyword">val</span> ge_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre><br>
-<span id="6_Coercionswithstrings"><h6>Coercions with strings</h6></span><br>
-<pre><span id="VALapprox_num_fix"><span class="keyword">val</span> approx_num_fix</span> : <code class="type">int -> <a href="BatNum.html#TYPEnum">num</a> -> string</code></pre><div class="info">
+<h6 id="6_Comparisonsbetweennumbers">Comparisons between numbers</h6><br>
+
+<pre><span id="VAL(=/)"><span class="keyword">val</span> (=/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre>
+<pre><span id="VAL(</)"><span class="keyword">val</span> (&lt;/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre>
+<pre><span id="VAL(>/)"><span class="keyword">val</span> (&gt;/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre>
+<pre><span id="VAL(<=/)"><span class="keyword">val</span> (&lt;=/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre>
+<pre><span id="VAL(>=/)"><span class="keyword">val</span> (&gt;=/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre>
+<pre><span id="VAL(<>/)"><span class="keyword">val</span> (&lt;&gt;/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre>
+<pre><span id="VALeq_num"><span class="keyword">val</span> eq_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre>
+<pre><span id="VALlt_num"><span class="keyword">val</span> lt_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre>
+<pre><span id="VALle_num"><span class="keyword">val</span> le_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre>
+<pre><span id="VALgt_num"><span class="keyword">val</span> gt_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre>
+<pre><span id="VALge_num"><span class="keyword">val</span> ge_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre><br>
+<h6 id="6_Coercionswithstrings">Coercions with strings</h6><br>
+
+<pre><span id="VALapprox_num_fix"><span class="keyword">val</span> approx_num_fix</span> : <code class="type">int -> <a href="BatNum.html#TYPEnum">num</a> -> string</code></pre><div class="info ">
 See <code class="code"><span class="constructor">Num</span>.approx_num_exp</code>.<br>
 </div>
-<pre><span id="VALapprox_num_exp"><span class="keyword">val</span> approx_num_exp</span> : <code class="type">int -> <a href="BatNum.html#TYPEnum">num</a> -> string</code></pre><div class="info">
+
+<pre><span id="VALapprox_num_exp"><span class="keyword">val</span> approx_num_exp</span> : <code class="type">int -> <a href="BatNum.html#TYPEnum">num</a> -> string</code></pre><div class="info ">
 Approximate a number by a decimal. The first argument is the
     required precision. The second argument is the number to
     approximate. <code class="code"><span class="constructor">Num</span>.approx_num_fix</code> uses decimal notation; the first
@@ -196,16 +250,57 @@ Approximate a number by a decimal. The first argument is the
     <code class="code">approx_num_exp</code> uses scientific (exponential) notation; the
     first argument is the number of digits in the mantissa.<br>
 </div>
-<pre><span id="VALnat_of_num"><span class="keyword">val</span> nat_of_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> Nat.nat</code></pre><div class="info">
-<span id="6_Coercionsbetweennumericaltypes"><h6>Coercions between numerical types</h6></span><br>
+
+<pre><span id="VALnat_of_num"><span class="keyword">val</span> nat_of_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> Nat.nat</code></pre><div class="info ">
+<h6 id="6_Coercionsbetweennumericaltypes">Coercions between numerical types</h6><br>
 </div>
-<pre><span id="VALnum_of_nat"><span class="keyword">val</span> num_of_nat</span> : <code class="type">Nat.nat -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALnum_of_big_int"><span class="keyword">val</span> num_of_big_int</span> : <code class="type">Big_int.big_int -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALbig_int_of_num"><span class="keyword">val</span> big_int_of_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> Big_int.big_int</code></pre><pre><span id="VALratio_of_num"><span class="keyword">val</span> ratio_of_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> Ratio.ratio</code></pre><pre><span id="VALnum_of_ratio"><span class="keyword">val</span> num_of_ratio</span> : <code class="type">Ratio.ratio -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALfloat_of_num"><span class="keyword">val</span> float_of_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> float</code></pre><br>
-<span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
-<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatNum.html#TYPEt">t</a> -> unit</code></pre><div class="info">
-<span id="7_Printing"><div class="h7">Printing</div></span><br>
+
+<pre><span id="VALnum_of_nat"><span class="keyword">val</span> num_of_nat</span> : <code class="type">Nat.nat -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALnum_of_big_int"><span class="keyword">val</span> num_of_big_int</span> : <code class="type">Big_int.big_int -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALbig_int_of_num"><span class="keyword">val</span> big_int_of_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> Big_int.big_int</code></pre>
+<pre><span id="VALratio_of_num"><span class="keyword">val</span> ratio_of_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> Ratio.ratio</code></pre>
+<pre><span id="VALnum_of_ratio"><span class="keyword">val</span> num_of_ratio</span> : <code class="type">Ratio.ratio -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALfloat_of_num"><span class="keyword">val</span> float_of_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> float</code></pre><br>
+<h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
+
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatNum.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
+<div class="h7" id="7_Printing">Printing</div><br>
 </div>
 <br>
-<span id="6_Submodulesgroupingallinfixoperators"><h6>Submodules grouping all infix operators</h6></span><br>
-<pre><span class="keyword">module</span> <a href="BatNum.TaggedInfix.html">TaggedInfix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatNum.TaggedInfix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><pre><span class="keyword">module</span> <a href="BatNum.Infix.html">Infix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatNum.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><pre><span class="keyword">module</span> <a href="BatNum.Compare.html">Compare</a>: <code class="type"><a href="BatNumber.Compare.html">BatNumber.Compare</a></code><code class="type">  with type bat__compare_t = t</code></pre><br>
-<span id="6_Deprecated"><h6>Deprecated</h6></span><br>
-<pre><span id="VAL(+/)"><span class="keyword">val</span> (+/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALadd_num"><span class="keyword">val</span> add_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALminus_num"><span class="keyword">val</span> minus_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VAL(-/)"><span class="keyword">val</span> (-/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALsub_num"><span class="keyword">val</span> sub_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VAL( */ )"><span class="keyword">val</span> ( */ )</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALmult_num"><span class="keyword">val</span> mult_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALsquare_num"><span class="keyword">val</span> square_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VAL(//)"><span class="keyword">val</span> (//)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALdiv_num"><span class="keyword">val</span> div_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALquo_num"><span class="keyword">val</span> quo_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALmod_num"><span class="keyword">val</span> mod_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VAL( **/ )"><span class="keyword">val</span> ( **/ )</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALpower_num"><span class="keyword">val</span> power_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALabs_num"><span class="keyword">val</span> abs_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALsucc_num"><span class="keyword">val</span> succ_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALpred_num"><span class="keyword">val</span> pred_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALincr_num"><span class="keyword">val</span> incr_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> Pervasives.ref -> unit</code></pre><pre><span id="VALdecr_num"><span class="keyword">val</span> decr_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> Pervasives.ref -> unit</code></pre><pre><span id="VALis_integer_num"><span class="keyword">val</span> is_integer_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre><pre><span id="VALinteger_num"><span class="keyword">val</span> integer_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALfloor_num"><span class="keyword">val</span> floor_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALround_num"><span class="keyword">val</span> round_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALceiling_num"><span class="keyword">val</span> ceiling_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALsign_num"><span class="keyword">val</span> sign_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> int</code></pre><pre><span id="VALstring_of_num"><span class="keyword">val</span> string_of_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> string</code></pre><pre><span id="VALnum_of_string"><span class="keyword">val</span> num_of_string</span> : <code class="type">string -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALint_of_num"><span class="keyword">val</span> int_of_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> int</code></pre><pre><span id="VALnum_of_int"><span class="keyword">val</span> num_of_int</span> : <code class="type">int -> <a href="BatNum.html#TYPEnum">num</a></code></pre><pre><span id="VALcompare_num"><span class="keyword">val</span> compare_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> int</code></pre></body></html>
+<h6 id="6_Submodulesgroupingallinfixoperators">Submodules grouping all infix operators</h6><br>
+
+<pre><span class="keyword">module</span> <a href="BatNum.TaggedInfix.html">TaggedInfix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatNum.TaggedInfix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span class="keyword">module</span> <a href="BatNum.Infix.html">Infix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatNum.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span class="keyword">module</span> <a href="BatNum.Compare.html">Compare</a>: <code class="type"><a href="BatNumber.Compare.html">BatNumber.Compare</a></code><code class="type">  with type bat__compare_t = t</code></pre><br>
+<h6 id="6_Deprecated">Deprecated</h6><br>
+
+<pre><span id="VAL(+/)"><span class="keyword">val</span> (+/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALadd_num"><span class="keyword">val</span> add_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALminus_num"><span class="keyword">val</span> minus_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VAL(-/)"><span class="keyword">val</span> (-/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALsub_num"><span class="keyword">val</span> sub_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VAL( */ )"><span class="keyword">val</span> ( */ )</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALmult_num"><span class="keyword">val</span> mult_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALsquare_num"><span class="keyword">val</span> square_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VAL(//)"><span class="keyword">val</span> (//)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALdiv_num"><span class="keyword">val</span> div_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALquo_num"><span class="keyword">val</span> quo_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALmod_num"><span class="keyword">val</span> mod_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VAL( **/ )"><span class="keyword">val</span> ( **/ )</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALpower_num"><span class="keyword">val</span> power_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALabs_num"><span class="keyword">val</span> abs_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALsucc_num"><span class="keyword">val</span> succ_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALpred_num"><span class="keyword">val</span> pred_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALincr_num"><span class="keyword">val</span> incr_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> Pervasives.ref -> unit</code></pre>
+<pre><span id="VALdecr_num"><span class="keyword">val</span> decr_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> Pervasives.ref -> unit</code></pre>
+<pre><span id="VALis_integer_num"><span class="keyword">val</span> is_integer_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre>
+<pre><span id="VALinteger_num"><span class="keyword">val</span> integer_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALfloor_num"><span class="keyword">val</span> floor_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALround_num"><span class="keyword">val</span> round_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALceiling_num"><span class="keyword">val</span> ceiling_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALsign_num"><span class="keyword">val</span> sign_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> int</code></pre>
+<pre><span id="VALstring_of_num"><span class="keyword">val</span> string_of_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> string</code></pre>
+<pre><span id="VALnum_of_string"><span class="keyword">val</span> num_of_string</span> : <code class="type">string -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALint_of_num"><span class="keyword">val</span> int_of_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> int</code></pre>
+<pre><span id="VALnum_of_int"><span class="keyword">val</span> num_of_int</span> : <code class="type">int -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
+<pre><span id="VALcompare_num"><span class="keyword">val</span> compare_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> int</code></pre></body></html>

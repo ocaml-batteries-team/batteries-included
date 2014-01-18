@@ -100,24 +100,29 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatString.IString</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a href="BatString.html">Up</a>
-&nbsp;<a href="BatString.NumString.html">Next</a>
+<div class="navbar">&nbsp;<a class="up" href="BatString.html" title="BatString">Up</a>
+&nbsp;<a class="post" href="BatString.NumString.html" title="BatString.NumString">Next</a>
 </div>
-<center><h1>Module <a href="type_BatString.IString.html">BatString.IString</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> IString: <code class="type"><a href="BatInterfaces.OrderedType.html">BatInterfaces.OrderedType</a></code><code class="type">  with type t = t</code></pre>uses icompare as ordering function
+<h1>Module <a href="type_BatString.IString.html">BatString.IString</a></h1>
+
+<pre><span class="keyword">module</span> IString: <code class="type"><a href="BatInterfaces.OrderedType.html">BatInterfaces.OrderedType</a></code><code class="type">  with type t = t</code></pre><div class="info module top">
+uses icompare as ordering function
 <p>
 
     Example: <code class="code"><span class="keyword">module</span> <span class="constructor">Nameset</span> = <span class="constructor">Set</span>.<span class="constructor">Make</span>(<span class="constructor">String</span>.<span class="constructor">IString</span>)</code><br>
+</div>
 <hr width="100%">
+
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
 
-<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatInterfaces.OrderedType.html#TYPEt">t</a> -> <a href="BatInterfaces.OrderedType.html#TYPEt">t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatInterfaces.OrderedType.html#TYPEt">t</a> -> <a href="BatInterfaces.OrderedType.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 A total ordering function
         This is a two-argument function <code class="code">f</code> such that
         <code class="code">f e1 e2</code> is zero if the values <code class="code">e1</code> and <code class="code">e2</code> are equal,

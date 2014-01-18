@@ -96,6 +96,7 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : Batteries.Legacy.Arg</title>
@@ -122,9 +123,15 @@
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;usage_msg&nbsp;=&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;anon_fun&nbsp;=&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;parse&nbsp;:&nbsp;(key&nbsp;*&nbsp;spec&nbsp;*&nbsp;doc)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;anon_fun&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;usage_msg&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;parse_dynamic&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(string&nbsp;*&nbsp;spec&nbsp;*&nbsp;string)&nbsp;list&nbsp;ref&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;anon_fun&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;parse_argv&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;?current:int&nbsp;ref&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;array&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(key&nbsp;*&nbsp;spec&nbsp;*&nbsp;doc)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;anon_fun&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;usage_msg&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;parse_argv_dynamic&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;?current:int&nbsp;ref&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;array&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(string&nbsp;*&nbsp;spec&nbsp;*&nbsp;string)&nbsp;list&nbsp;ref&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;anon_fun&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">exception</span>&nbsp;<span class="constructor">Help</span>&nbsp;<span class="keyword">of</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">exception</span>&nbsp;<span class="constructor">Bad</span>&nbsp;<span class="keyword">of</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;usage&nbsp;:&nbsp;(key&nbsp;*&nbsp;spec&nbsp;*&nbsp;doc)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;usage_msg&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>

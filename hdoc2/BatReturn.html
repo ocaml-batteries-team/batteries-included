@@ -101,18 +101,20 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatReturn</title>
 </head>
 <body>
-<div class="navbar"><a href="BatResult.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatScanf.html">Next</a>
+<div class="navbar"><a class="pre" href="BatResult.html" title="BatResult">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatScanf.html" title="BatScanf">Next</a>
 </div>
-<center><h1>Module <a href="type_BatReturn.html">BatReturn</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> BatReturn: <code class="code"><span class="keyword">sig</span></code> <a href="BatReturn.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Local exceptions/labels/goto/return.
+<h1>Module <a href="type_BatReturn.html">BatReturn</a></h1>
+
+<pre><span class="keyword">module</span> BatReturn: <code class="code"><span class="keyword">sig</span></code> <a href="BatReturn.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+Local exceptions/labels/goto/return.
 <p>
 
    This module defines a mechanism akin to SML's exception generators
@@ -127,21 +129,24 @@
 </ul>
 
    Example:
-   <pre></pre><code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;find_in_array&nbsp;a&nbsp;e&nbsp;=<br>
+   <pre class="codepre"><code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;find_in_array&nbsp;a&nbsp;e&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;label&nbsp;(<span class="keyword">fun</span>&nbsp;label&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span>&nbsp;i&nbsp;=&nbsp;0&nbsp;<span class="keyword">to</span>&nbsp;<span class="constructor">Array</span>.length&nbsp;a&nbsp;-&nbsp;1&nbsp;<span class="keyword">do</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;<span class="constructor">Array</span>.get&nbsp;a&nbsp;i&nbsp;=&nbsp;e&nbsp;<span class="keyword">then</span>&nbsp;return&nbsp;label&nbsp;(<span class="constructor">Some</span>&nbsp;i)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">done</span>;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">None</span>)<br>
-&nbsp;&nbsp;&nbsp;</code><pre></pre><br>
+&nbsp;&nbsp;&nbsp;</code></pre><br>
 <b>Author(s):</b> David Teller<br>
+</div>
 <hr width="100%">
+
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
-<div class="info">
+<div class="info ">
 A label which may be used to return values of type <code class="code"><span class="keywordsign">'</span>a</code><br>
 </div>
 
-<pre><span id="VALlabel"><span class="keyword">val</span> label</span> : <code class="type">('a <a href="BatReturn.html#TYPEt">t</a> -> 'a) -> 'a</code></pre><div class="info">
+
+<pre><span id="VALlabel"><span class="keyword">val</span> label</span> : <code class="type">('a <a href="BatReturn.html#TYPEt">t</a> -> 'a) -> 'a</code></pre><div class="info ">
 <code class="code">label f</code> creates a new label <code class="code">x</code> and invokes
     <code class="code">f x</code>. If, during the execution of <code class="code">f</code>, <code class="code">return x v</code>
     is invoked, the execution of <code class="code">f x</code> stops
@@ -154,10 +159,12 @@ A label which may be used to return values of type <code class="code"><span clas
     is a run-time error and causes termination
     of the program.<br>
 </div>
-<pre><span id="VALwith_label"><span class="keyword">val</span> with_label</span> : <code class="type">('a <a href="BatReturn.html#TYPEt">t</a> -> 'a) -> 'a</code></pre><div class="info">
+
+<pre><span id="VALwith_label"><span class="keyword">val</span> with_label</span> : <code class="type">('a <a href="BatReturn.html#TYPEt">t</a> -> 'a) -> 'a</code></pre><div class="info ">
 as <code class="code">label</code><br>
 </div>
-<pre><span id="VALreturn"><span class="keyword">val</span> return</span> : <code class="type">'a <a href="BatReturn.html#TYPEt">t</a> -> 'a -> 'b</code></pre><div class="info">
+
+<pre><span id="VALreturn"><span class="keyword">val</span> return</span> : <code class="type">'a <a href="BatReturn.html#TYPEt">t</a> -> 'a -> 'b</code></pre><div class="info ">
 Return to a label. <code class="code">return l v</code> returns
       to the point where label <code class="code">l</code> was obtained
       and produces value <code class="code">l</code>.

@@ -101,6 +101,7 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Utilities" rel="Section" href="#6_Utilities">
@@ -111,29 +112,35 @@
 <title>Batteries user guide : BatFile</title>
 </head>
 <body>
-<div class="navbar"><a href="BatEnum.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatFingerTree.html">Next</a>
+<div class="navbar"><a class="pre" href="BatEnum.html" title="BatEnum">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatFingerTree.html" title="BatFingerTree">Next</a>
 </div>
-<center><h1>Module <a href="type_BatFile.html">BatFile</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> BatFile: <code class="code"><span class="keyword">sig</span></code> <a href="BatFile.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>File manipulation.<br>
+<h1>Module <a href="type_BatFile.html">BatFile</a></h1>
+
+<pre><span class="keyword">module</span> BatFile: <code class="code"><span class="keyword">sig</span></code> <a href="BatFile.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+File manipulation.<br>
 <b>Author(s):</b> David Teller<br>
+</div>
 <hr width="100%">
 <br>
-<span id="6_Utilities"><h6>Utilities</h6></span><br>
-<pre><span id="VALlines_of"><span class="keyword">val</span> lines_of</span> : <code class="type">string -> string <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+<h6 id="6_Utilities">Utilities</h6><br>
+
+<pre><span id="VALlines_of"><span class="keyword">val</span> lines_of</span> : <code class="type">string -> string <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 <code class="code">line_of name</code> reads the contents of file <code class="code">name</code> as an enumeration of lines.
     The file is automatically closed once the last line has been reached or the
     enumeration is garbage-collected.<br>
 </div>
-<pre><span id="VALwrite_lines"><span class="keyword">val</span> write_lines</span> : <code class="type">string -> string <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info">
+
+<pre><span id="VALwrite_lines"><span class="keyword">val</span> write_lines</span> : <code class="type">string -> string <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info ">
 <code class="code">write_lines name lines</code> writes strings given by <code class="code">lines</code> to file <code class="code">name</code> with newline character appended to each line.<br>
 </div>
-<pre><span id="VALsize_of"><span class="keyword">val</span> size_of</span> : <code class="type">string -> int</code></pre><div class="info">
+
+<pre><span id="VALsize_of"><span class="keyword">val</span> size_of</span> : <code class="type">string -> int</code></pre><div class="info ">
 <code class="code">size_of name</code> returns the size of file <code class="code">name</code> in bytes.<br>
 </div>
-<pre><span id="VALsize_of_big"><span class="keyword">val</span> size_of_big</span> : <code class="type">string -> Int64.t</code></pre><div class="info">
+
+<pre><span id="VALsize_of_big"><span class="keyword">val</span> size_of_big</span> : <code class="type">string -> Int64.t</code></pre><div class="info ">
 <code class="code">size_of_big name</code> returns the size of file <code class="code">name</code> in bytes, as a 64-bit integer.
 <p>
 
@@ -141,76 +148,93 @@
     be represented with an <code class="code">int</code> on a 32-bit machine.<br>
 </div>
 <br>
-<span id="6_Filepermissions"><h6>File permissions</h6></span>
+<h6 id="6_Filepermissions">File permissions</h6>
 <p>
 
     File permissions are used when creating a file to allow controlling which users
     may read, write or open that file. To use a permission, create a value of type
     <a href="BatFile.html#TYPEpermission"><code class="code"><span class="constructor">BatFile</span>.permission</code></a> and pass it as argument to <a href="BatFile.html#VALopen_in"><code class="code"><span class="constructor">BatFile</span>.open_in</code></a>, <a href="BatFile.html#VALopen_out"><code class="code"><span class="constructor">BatFile</span>.open_out</code></a>, <a href="BatFile.html#VALwith_file_in"><code class="code"><span class="constructor">BatFile</span>.with_file_in</code></a> or
     <a href="BatFile.html#VALwith_file_out"><code class="code"><span class="constructor">BatFile</span>.with_file_out</code></a>.<br>
+
 <pre><span id="TYPEpermission"><span class="keyword">type</span> <code class="type"></code>permission</span> </pre>
-<div class="info">
+<div class="info ">
 The list of operations which are permitted on a file.<br>
 </div>
 
-<pre><span id="VALdefault_permission"><span class="keyword">val</span> default_permission</span> : <code class="type"><a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info">
+
+<pre><span id="VALdefault_permission"><span class="keyword">val</span> default_permission</span> : <code class="type"><a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info ">
 Default permissions.<br>
 </div>
-<pre><span id="VALuser_read"><span class="keyword">val</span> user_read</span> : <code class="type"><a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info">
+
+<pre><span id="VALuser_read"><span class="keyword">val</span> user_read</span> : <code class="type"><a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info ">
 Give the current user permission to read the file.
    Ignored under Windows.<br>
 </div>
-<pre><span id="VALuser_write"><span class="keyword">val</span> user_write</span> : <code class="type"><a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info">
+
+<pre><span id="VALuser_write"><span class="keyword">val</span> user_write</span> : <code class="type"><a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info ">
 Give the current user permission to write the file<br>
 </div>
-<pre><span id="VALuser_exec"><span class="keyword">val</span> user_exec</span> : <code class="type"><a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info">
+
+<pre><span id="VALuser_exec"><span class="keyword">val</span> user_exec</span> : <code class="type"><a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info ">
 Give the current user permission to execute the file.
    Ignored under Windows.<br>
 </div>
-<pre><span id="VALgroup_read"><span class="keyword">val</span> group_read</span> : <code class="type"><a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info">
+
+<pre><span id="VALgroup_read"><span class="keyword">val</span> group_read</span> : <code class="type"><a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info ">
 Give the permission to read the file to the group
    containing the user. Ignored under Windows.<br>
 </div>
-<pre><span id="VALgroup_write"><span class="keyword">val</span> group_write</span> : <code class="type"><a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info">
+
+<pre><span id="VALgroup_write"><span class="keyword">val</span> group_write</span> : <code class="type"><a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info ">
 Give the permission to write the file to the group
    containing the user. Ignored under Windows.<br>
 </div>
-<pre><span id="VALgroup_exec"><span class="keyword">val</span> group_exec</span> : <code class="type"><a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info">
+
+<pre><span id="VALgroup_exec"><span class="keyword">val</span> group_exec</span> : <code class="type"><a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info ">
 Give the permission to execute the file to the group
    containing the user. Ignored under Windows.<br>
 </div>
-<pre><span id="VALother_read"><span class="keyword">val</span> other_read</span> : <code class="type"><a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info">
+
+<pre><span id="VALother_read"><span class="keyword">val</span> other_read</span> : <code class="type"><a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info ">
 Give the permission to read the file to the rest
    of the world. Ignored under Windows.<br>
 </div>
-<pre><span id="VALother_write"><span class="keyword">val</span> other_write</span> : <code class="type"><a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info">
+
+<pre><span id="VALother_write"><span class="keyword">val</span> other_write</span> : <code class="type"><a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info ">
 Give the permission to modify the file to the rest
    of the world. Ignored under Windows.<br>
 </div>
-<pre><span id="VALother_exec"><span class="keyword">val</span> other_exec</span> : <code class="type"><a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info">
+
+<pre><span id="VALother_exec"><span class="keyword">val</span> other_exec</span> : <code class="type"><a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info ">
 Give the permission to execute the file to the rest
    of the world. Ignored under Windows.<br>
 </div>
-<pre><span id="VALperm"><span class="keyword">val</span> perm</span> : <code class="type"><a href="BatFile.html#TYPEpermission">permission</a> list -> <a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info">
+
+<pre><span id="VALperm"><span class="keyword">val</span> perm</span> : <code class="type"><a href="BatFile.html#TYPEpermission">permission</a> list -> <a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info ">
 Join permissions<br>
 </div>
-<pre><span id="VALunix_perm"><span class="keyword">val</span> unix_perm</span> : <code class="type">int -> <a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info">
+
+<pre><span id="VALunix_perm"><span class="keyword">val</span> unix_perm</span> : <code class="type">int -> <a href="BatFile.html#TYPEpermission">permission</a></code></pre><div class="info ">
 Create a permission from a Unix-style octal integer.
    See your favorite Unix documentation on <code class="code">chmod</code>
    for more details.<br>
 <b>Raises</b> <code>Invalid_argument</code> if given number outside the <code class="code">[0, 0o777]</code> range<br>
 </div>
-<pre><span id="VALset_permissions"><span class="keyword">val</span> set_permissions</span> : <code class="type">string -> <a href="BatFile.html#TYPEpermission">permission</a> -> unit</code></pre><div class="info">
+
+<pre><span id="VALset_permissions"><span class="keyword">val</span> set_permissions</span> : <code class="type">string -> <a href="BatFile.html#TYPEpermission">permission</a> -> unit</code></pre><div class="info ">
 Set the permissions on a file.<br>
 </div>
-<pre><span id="VALchmod"><span class="keyword">val</span> chmod</span> : <code class="type">string -> <a href="BatFile.html#TYPEpermission">permission</a> -> unit</code></pre><div class="info">
+
+<pre><span id="VALchmod"><span class="keyword">val</span> chmod</span> : <code class="type">string -> <a href="BatFile.html#TYPEpermission">permission</a> -> unit</code></pre><div class="info ">
 As <a href="BatFile.html#VALset_permissions"><code class="code"><span class="constructor">BatFile</span>.set_permissions</code></a><br>
 </div>
 <br>
-<span id="6_Openingafileforreading"><h6>Opening a file for reading</h6></span><br>
+<h6 id="6_Openingafileforreading">Opening a file for reading</h6><br>
+
 <pre><span id="TYPEopen_in_flag"><span class="keyword">type</span> <code class="type"></code>open_in_flag</span> = <code class="type">[ `create | `excl | `mmap | `nonblock | `text ]</code> </pre>
 
-<pre><span id="VALopen_in"><span class="keyword">val</span> open_in</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_in_flag">open_in_flag</a> list -><br>       ?perm:<a href="BatFile.html#TYPEpermission">permission</a> -> string -> <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a></code></pre><div class="info">
+
+<pre><span id="VALopen_in"><span class="keyword">val</span> open_in</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_in_flag">open_in_flag</a> list -><br>       ?perm:<a href="BatFile.html#TYPEpermission">permission</a> -> string -> <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a></code></pre><div class="info ">
 <code class="code">open_in file_name</code> opens the file named <code class="code">file_name</code> for reading.
 <p>
 
@@ -221,21 +245,24 @@ As <a href="BatFile.html#VALset_permissions"><code class="code"><span class="con
 
     Naming conventions for files are platform-dependent.<br>
 </div>
-<pre><span id="VALwith_file_in"><span class="keyword">val</span> with_file_in</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_in_flag">open_in_flag</a> list -><br>       ?perm:<a href="BatFile.html#TYPEpermission">permission</a> -> string -> (<a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> 'a) -> 'a</code></pre><div class="info">
+
+<pre><span id="VALwith_file_in"><span class="keyword">val</span> with_file_in</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_in_flag">open_in_flag</a> list -><br>       ?perm:<a href="BatFile.html#TYPEpermission">permission</a> -> string -> (<a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> 'a) -> 'a</code></pre><div class="info ">
 <code class="code">with_file_in file_name f</code> opens the file named <code class="code">file_name</code> for reading,
     invokes <code class="code">f</code> to process the contents of that file then, once <code class="code">f</code> has returned
     or triggered an exception, closes the file before proceeding.<br>
 </div>
 <br>
-<span id="6_Openingafileforwriting"><h6>Opening a file for writing</h6></span><br>
+<h6 id="6_Openingafileforwriting">Opening a file for writing</h6><br>
+
 <pre><span id="TYPEopen_out_flag"><span class="keyword">type</span> <code class="type"></code>open_out_flag</span> = <code class="type">[ `append | `create | `excl | `nonblock | `text | `trunc ]</code> </pre>
-<div class="info">
+<div class="info ">
 Flags governing file output; they correspond to the relevant
     flags to the POSIX <code class="code"><span class="keyword">open</span>()</code> call.  The default flags are
     <code class="code">[<span class="keywordsign">`</span>create; <span class="keywordsign">`</span>trunc]</code>.<br>
 </div>
 
-<pre><span id="VALopen_out"><span class="keyword">val</span> open_out</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_out_flag">open_out_flag</a> list -><br>       ?perm:<a href="BatFile.html#TYPEpermission">permission</a> -> string -> unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a></code></pre><div class="info">
+
+<pre><span id="VALopen_out"><span class="keyword">val</span> open_out</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_out_flag">open_out_flag</a> list -><br>       ?perm:<a href="BatFile.html#TYPEpermission">permission</a> -> string -> unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a></code></pre><div class="info ">
 <code class="code">open_out file_name</code> opens the file named <code class="code">file_name</code> for writing.
 <p>
 
@@ -246,16 +273,19 @@ Flags governing file output; they correspond to the relevant
 
     Naming conventions for files are platform-dependent.<br>
 </div>
-<pre><span id="VALwith_file_out"><span class="keyword">val</span> with_file_out</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_out_flag">open_out_flag</a> list -><br>       ?perm:<a href="BatFile.html#TYPEpermission">permission</a> -> string -> (unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'a) -> 'a</code></pre><div class="info">
+
+<pre><span id="VALwith_file_out"><span class="keyword">val</span> with_file_out</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_out_flag">open_out_flag</a> list -><br>       ?perm:<a href="BatFile.html#TYPEpermission">permission</a> -> string -> (unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'a) -> 'a</code></pre><div class="info ">
 <code class="code">with_file_out file_name f</code> opens the file named <code class="code">file_name</code> for writing,
     invokes <code class="code">f</code> to write onto that file then, once <code class="code">f</code> has returned or triggered
     an exception, closes the file before proceeding.<br>
 </div>
 <br>
-<span id="6_Openingatemporaryfileforwriting"><h6>Opening a temporary file for writing</h6></span><br>
+<h6 id="6_Openingatemporaryfileforwriting">Opening a temporary file for writing</h6><br>
+
 <pre><span id="TYPEopen_temporary_out_flag"><span class="keyword">type</span> <code class="type"></code>open_temporary_out_flag</span> = <code class="type">[ `append | `create | `delete_on_exit | `excl | `nonblock | `text | `trunc ]</code> </pre>
 
-<pre><span id="VALopen_temporary_out"><span class="keyword">val</span> open_temporary_out</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_temporary_out_flag">open_temporary_out_flag</a> list -><br>       ?prefix:string -><br>       ?suffix:string -> ?temp_dir:string -> unit -> unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> * string</code></pre><div class="info">
+
+<pre><span id="VALopen_temporary_out"><span class="keyword">val</span> open_temporary_out</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_temporary_out_flag">open_temporary_out_flag</a> list -><br>       ?prefix:string -><br>       ?suffix:string -> ?temp_dir:string -> unit -> unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> * string</code></pre><div class="info ">
 <code class="code">open_temporary_out ()</code> opens a new temporary file for writing.<br>
 <b>Returns</b> The name of the file and the <code class="code">output</code> for writing in it.
 <p>
@@ -271,7 +301,8 @@ Flags governing file output; they correspond to the relevant
 <div class="param_info"><code class="code">suffix</code> : a string which should appear at the end of your temporary file name
     (by default <code class="code"><span class="string">"tmp"</span></code>)</div>
 <div class="param_info"><code class="code">temp_dir</code> : indicates what temp dir to use</div>
-<pre><span id="VALwith_temporary_out"><span class="keyword">val</span> with_temporary_out</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_temporary_out_flag">open_temporary_out_flag</a> list -><br>       ?prefix:string -><br>       ?suffix:string -><br>       ?temp_dir:string -> (unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> string -> 'a) -> 'a</code></pre><div class="info">
+
+<pre><span id="VALwith_temporary_out"><span class="keyword">val</span> with_temporary_out</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_temporary_out_flag">open_temporary_out_flag</a> list -><br>       ?prefix:string -><br>       ?suffix:string -><br>       ?temp_dir:string -> (unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> string -> 'a) -> 'a</code></pre><div class="info ">
 <code class="code">with_temporary_out f</code> opens a new temporary file for writing, invokes <code class="code">f</code> with
       to write onto that file then, once <code class="code">f</code> has returned or triggered an exception,
       closes the file before proceeding.<br>

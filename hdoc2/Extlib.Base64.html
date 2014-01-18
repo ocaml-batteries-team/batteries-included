@@ -100,52 +100,62 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : Extlib.Base64</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a href="Extlib.html">Up</a>
-&nbsp;<a href="Extlib.BitSet.html">Next</a>
+<div class="navbar">&nbsp;<a class="up" href="Extlib.html" title="Extlib">Up</a>
+&nbsp;<a class="post" href="Extlib.BitSet.html" title="Extlib.BitSet">Next</a>
 </div>
-<center><h1>Module <a href="type_Extlib.Base64.html">Extlib.Base64</a></h1></center>
-<br>
+<h1>Module <a href="type_Extlib.Base64.html">Extlib.Base64</a></h1>
+
 <pre><span class="keyword">module</span> Base64: <code class="type">BatBase64</code></pre><hr width="100%">
+
 <pre><span id="EXCEPTIONInvalid_char"><span class="keyword">exception</span> Invalid_char</span></pre>
-<div class="info">
+<div class="info ">
 This exception is raised when reading an invalid character
 	from a base64 input.<br>
 </div>
+
 <pre><span id="EXCEPTIONInvalid_table"><span class="keyword">exception</span> Invalid_table</span></pre>
-<div class="info">
+<div class="info ">
 This exception is raised if the encoding or decoding table
 	size is not correct.<br>
 </div>
+
 <pre><span id="TYPEencoding_table"><span class="keyword">type</span> <code class="type"></code>encoding_table</span> = <code class="type">char array</code> </pre>
-<div class="info">
+<div class="info ">
 An encoding table maps integers 0..63 to the corresponding char.<br>
 </div>
 
+
 <pre><span id="TYPEdecoding_table"><span class="keyword">type</span> <code class="type"></code>decoding_table</span> = <code class="type">int array</code> </pre>
-<div class="info">
+<div class="info ">
 A decoding table maps chars 0..255 to the corresponding 0..63 value
     or -1 if the char is not accepted.<br>
 </div>
 
-<pre><span id="VALstr_encode"><span class="keyword">val</span> str_encode</span> : <code class="type">?tbl:<a href="BatBase64.html#TYPEencoding_table">encoding_table</a> -> string -> string</code></pre><div class="info">
+
+<pre><span id="VALstr_encode"><span class="keyword">val</span> str_encode</span> : <code class="type">?tbl:<a href="BatBase64.html#TYPEencoding_table">encoding_table</a> -> string -> string</code></pre><div class="info ">
 Encode a string into Base64.<br>
 </div>
-<pre><span id="VALstr_decode"><span class="keyword">val</span> str_decode</span> : <code class="type">?tbl:<a href="BatBase64.html#TYPEdecoding_table">decoding_table</a> -> string -> string</code></pre><div class="info">
+
+<pre><span id="VALstr_decode"><span class="keyword">val</span> str_decode</span> : <code class="type">?tbl:<a href="BatBase64.html#TYPEdecoding_table">decoding_table</a> -> string -> string</code></pre><div class="info ">
 Decode a string encoded into Base64, raise <code class="code"><span class="constructor">Invalid_char</span></code> if a
 	character in the input string is not a valid one.<br>
 </div>
-<pre><span id="VALencode"><span class="keyword">val</span> encode</span> : <code class="type">?tbl:<a href="BatBase64.html#TYPEencoding_table">encoding_table</a> -> 'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'a <a href="BatIO.html#TYPEoutput">BatIO.output</a></code></pre><div class="info">
+
+<pre><span id="VALencode"><span class="keyword">val</span> encode</span> : <code class="type">?tbl:<a href="BatBase64.html#TYPEencoding_table">encoding_table</a> -> 'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'a <a href="BatIO.html#TYPEoutput">BatIO.output</a></code></pre><div class="info ">
 Generic base64 encoding over an output.<br>
 </div>
-<pre><span id="VALdecode"><span class="keyword">val</span> decode</span> : <code class="type">?tbl:<a href="BatBase64.html#TYPEdecoding_table">decoding_table</a> -> <a href="BatIO.html#TYPEinput">BatIO.input</a> -> <a href="BatIO.html#TYPEinput">BatIO.input</a></code></pre><div class="info">
+
+<pre><span id="VALdecode"><span class="keyword">val</span> decode</span> : <code class="type">?tbl:<a href="BatBase64.html#TYPEdecoding_table">decoding_table</a> -> <a href="BatIO.html#TYPEinput">BatIO.input</a> -> <a href="BatIO.html#TYPEinput">BatIO.input</a></code></pre><div class="info ">
 Generic base64 decoding over an input.<br>
 </div>
-<pre><span id="VALmake_decoding_table"><span class="keyword">val</span> make_decoding_table</span> : <code class="type"><a href="BatBase64.html#TYPEencoding_table">encoding_table</a> -> <a href="BatBase64.html#TYPEdecoding_table">decoding_table</a></code></pre><div class="info">
+
+<pre><span id="VALmake_decoding_table"><span class="keyword">val</span> make_decoding_table</span> : <code class="type"><a href="BatBase64.html#TYPEencoding_table">encoding_table</a> -> <a href="BatBase64.html#TYPEdecoding_table">decoding_table</a></code></pre><div class="info ">
 Create a valid decoding table from an encoding one.<br>
 </div>
 </body></html>

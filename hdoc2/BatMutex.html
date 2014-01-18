@@ -101,34 +101,38 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatMutex</title>
 </head>
 <body>
-<div class="navbar"><a href="BatMultiPMap.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatNativeint.html">Next</a>
+<div class="navbar"><a class="pre" href="BatMultiPMap.html" title="BatMultiPMap">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatNativeint.html" title="BatNativeint">Next</a>
 </div>
-<center><h1>Module <a href="type_BatMutex.html">BatMutex</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> BatMutex: <code class="code"><span class="keyword">sig</span></code> <a href="BatMutex.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Locks for mutual exclusion.
+<h1>Module <a href="type_BatMutex.html">BatMutex</a></h1>
+
+<pre><span class="keyword">module</span> BatMutex: <code class="code"><span class="keyword">sig</span></code> <a href="BatMutex.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+Locks for mutual exclusion.
 <p>
 
     Mutexes (mutual-exclusion locks) are used to implement critical sections
     and protect shared mutable data structures against concurrent accesses.
     The typical use is (if <code class="code">m</code> is the mutex associated with the data structure
     <code class="code"><span class="constructor">D</span></code>):
-    <pre></pre><code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Mutex</span>.synchronize&nbsp;~lock:m&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span><br>
+    <pre class="codepre"><code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Mutex</span>.synchronize&nbsp;~lock:m&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;Critical&nbsp;section&nbsp;that&nbsp;operates&nbsp;over&nbsp;D&nbsp;*)</span>;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)&nbsp;()<br>
-&nbsp;&nbsp;&nbsp;&nbsp;</code><pre></pre>
+&nbsp;&nbsp;&nbsp;&nbsp;</code></pre>
 <p>
 
     This module implements <code class="code"><span class="constructor">Control</span>.<span class="constructor">Concurrency</span>.<span class="constructor">Common</span></code><br>
 <b>Author(s):</b> Xavier Leroy (Base module), Damien Doligez (Base module), David Teller<br>
+</div>
 <hr width="100%">
-<pre><span id="VALsynchronize"><span class="keyword">val</span> synchronize</span> : <code class="type">?lock:Mutex.t -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info">
+
+<pre><span id="VALsynchronize"><span class="keyword">val</span> synchronize</span> : <code class="type">?lock:Mutex.t -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info ">
 Protect a function.
 <p>
 
@@ -148,7 +152,8 @@ Protect a function.
     and released when the function call ends, whether this is due
     to normal termination or to some exception being raised.<br>
 </div>
-<pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">unit -> <a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a></code></pre><div class="info">
+
+<pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">unit -> <a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a></code></pre><div class="info ">
 Create a new abstract lock based on Mutexes.<br>
 </div>
 </body></html>

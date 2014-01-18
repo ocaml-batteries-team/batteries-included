@@ -101,21 +101,24 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatEnum.WithMonad</title>
 </head>
 <body>
-<div class="navbar"><a href="BatEnum.Infix.html">Previous</a>
-&nbsp;<a href="BatEnum.html">Up</a>
-&nbsp;<a href="BatEnum.Monad.html">Next</a>
+<div class="navbar"><a class="pre" href="BatEnum.Infix.html" title="BatEnum.Infix">Previous</a>
+&nbsp;<a class="up" href="BatEnum.html" title="BatEnum">Up</a>
+&nbsp;<a class="post" href="BatEnum.Monad.html" title="BatEnum.Monad">Next</a>
 </div>
-<center><h1>Functor <a href="type_BatEnum.WithMonad.html">BatEnum.WithMonad</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> WithMonad: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">Mon</span></code><code class="code"> : </code><code class="type"><a href="BatInterfaces.Monad.html">BatInterfaces.Monad</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.WithMonad.html">..</a> <code class="code"><span class="keyword">end</span></code></div></pre>Monadic operations on Enumerations containing monadic elements
+<h1>Functor <a href="type_BatEnum.WithMonad.html">BatEnum.WithMonad</a></h1>
+
+<pre><span class="keyword">module</span> WithMonad: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">Mon</span></code><code class="code"> : </code><code class="type"><a href="BatInterfaces.Monad.html">BatInterfaces.Monad</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.WithMonad.html">..</a> <code class="code"><span class="keyword">end</span></code></div></pre><div class="info module top">
+Monadic operations on Enumerations containing monadic elements
 <p>
 
     This module will let you use sequence and fold_monad functions over enumerations.<br>
+</div>
 <table border="0" cellpadding="3" width="100%">
 <tr>
 <td align="left" valign="top" width="1%%"><b>Parameters: </b></td>
@@ -131,16 +134,19 @@
 </tr>
 </table>
 <hr width="100%">
+
 <pre><span id="TYPEm"><span class="keyword">type</span> <code class="type">'a</code> m</span> = <code class="type">'a Mon.m</code> </pre>
-<div class="info">
+<div class="info ">
 Type of the monadic elements.<br>
 </div>
 
-<pre><span id="VALsequence"><span class="keyword">val</span> sequence</span> : <code class="type">'a <a href="BatEnum.WithMonad.html#TYPEm">m</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> <a href="BatEnum.WithMonad.html#TYPEm">m</a></code></pre><div class="info">
+
+<pre><span id="VALsequence"><span class="keyword">val</span> sequence</span> : <code class="type">'a <a href="BatEnum.WithMonad.html#TYPEm">m</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> <a href="BatEnum.WithMonad.html#TYPEm">m</a></code></pre><div class="info ">
 <code class="code">sequence e</code> evaluates each monadic elements (of type <code class="code"><span class="keywordsign">'</span>a m</code>) contained in the enumeration <code class="code">e</code> to get a monadic enumeration of <code class="code"><span class="keywordsign">'</span>a</code> elements,
     of type <code class="code"><span class="keywordsign">'</span>a <span class="constructor">BatEnum</span>.t m</code>.<br>
 </div>
-<pre><span id="VALfold_monad"><span class="keyword">val</span> fold_monad</span> : <code class="type">('a -> 'b -> 'a <a href="BatEnum.WithMonad.html#TYPEm">m</a>) -><br>       'a -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatEnum.WithMonad.html#TYPEm">m</a></code></pre><div class="info">
+
+<pre><span id="VALfold_monad"><span class="keyword">val</span> fold_monad</span> : <code class="type">('a -> 'b -> 'a <a href="BatEnum.WithMonad.html#TYPEm">m</a>) -><br>       'a -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatEnum.WithMonad.html#TYPEm">m</a></code></pre><div class="info ">
 <code class="code">fold_monad f init e</code> does a folding of the enumeration <code class="code">e</code> applying step by step the function <code class="code">f</code> that gives back results in the <code class="code"><span class="constructor">Mon</span></code> monad,
       with the <code class="code">init</code> initial element. The result is a value in the <code class="code"><span class="constructor">Mon</span></code> monad.<br>
 </div>

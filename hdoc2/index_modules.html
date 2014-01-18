@@ -97,17 +97,22 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : Index of modules</title>
 </head>
 <body>
-<center><h1>Index of modules</h1></center>
+<div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;</div>
+<h1>Index of modules</h1>
 <table>
 <tr><td align="left"><br>A</td></tr>
 <tr><td><a href="Batteries.Legacy.Arg.html">Arg</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
 <td></td></tr>
 <tr><td><a href="Extlib.ExtArray.Array.html">Array</a> [<a href="Extlib.ExtArray.html">Extlib.ExtArray</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatteriesExceptionless.Array.html">Array</a> [<a href="BatteriesExceptionless.html">BatteriesExceptionless</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Array.html">Array</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
@@ -572,6 +577,8 @@ Extensible vectors with constant-time append/prepend.
 The default function to open a www browser.
 </div>
 </td></tr>
+<tr><td><a href="BatteriesExceptionless.html">BatteriesExceptionless</a> </td>
+<td></td></tr>
 <tr><td><a href="BatteriesPrint.html">BatteriesPrint</a> </td>
 <td></td></tr>
 <tr><td><a href="BatteriesThread.html">BatteriesThread</a> </td>
@@ -614,6 +621,10 @@ Buffer module for UTF-8 strings
 <tr><td><a href="Batteries.Cache.html">Cache</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Callback.html">Callback</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatteriesExceptionless.String.Cap.html">Cap</a> [<a href="BatteriesExceptionless.String.html">BatteriesExceptionless.String</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatteriesExceptionless.Array.Cap.html">Cap</a> [<a href="BatteriesExceptionless.Array.html">BatteriesExceptionless.Array</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatString.Cap.html">Cap</a> [<a href="BatString.html">BatString</a>]</td>
 <td><div class="info">
@@ -658,6 +669,8 @@ Capabilities for arrays.
 <td></td></tr>
 <tr><td><a href="BatInt64.Compare.html">Compare</a> [<a href="BatInt64.html">BatInt64</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatInt32.Compare.html">Compare</a> [<a href="BatInt32.html">BatInt32</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatInt.Safe_int.Compare.html">Compare</a> [<a href="BatInt.Safe_int.html">BatInt.Safe_int</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatInt.Compare.html">Compare</a> [<a href="BatInt.html">BatInt</a>]</td>
@@ -700,6 +713,8 @@ A simple-to-use logger with verbosity levels that outputs by
 </div>
 </td></tr>
 <tr><td><a href="Extlib.Enum.html">Enum</a> [<a href="Extlib.html">Extlib</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatteriesExceptionless.Enum.html">Enum</a> [<a href="BatteriesExceptionless.html">BatteriesExceptionless</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Enum.html">Enum</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
@@ -860,6 +875,8 @@ Hashing utilities
 <td></td></tr>
 <tr><td><a href="Extlib.ExtHashtbl.Hashtbl.html">Hashtbl</a> [<a href="Extlib.ExtHashtbl.html">Extlib.ExtHashtbl</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatteriesExceptionless.Hashtbl.html">Hashtbl</a> [<a href="BatteriesExceptionless.html">BatteriesExceptionless</a>]</td>
+<td></td></tr>
 <tr><td><a href="Batteries.Hashtbl.html">Hashtbl</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Hashtbl.html">Hashtbl</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
@@ -963,6 +980,8 @@ Infix submodule regrouping all infix operators
 </td></tr>
 <tr><td><a href="BatInt64.Infix.html">Infix</a> [<a href="BatInt64.html">BatInt64</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatInt32.Infix.html">Infix</a> [<a href="BatInt32.html">BatInt32</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatInt.Safe_int.Infix.html">Infix</a> [<a href="BatInt.Safe_int.html">BatInt.Safe_int</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatInt.Infix.html">Infix</a> [<a href="BatInt.html">BatInt</a>]</td>
@@ -1023,6 +1042,14 @@ Infix submodule regrouping all infix operators
 <tr><td><a href="BatEnum.Labels.LExceptionless.html">LExceptionless</a> [<a href="BatEnum.Labels.html">BatEnum.Labels</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatArray.Labels.LExceptionless.html">LExceptionless</a> [<a href="BatArray.Labels.html">BatArray.Labels</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatteriesExceptionless.LazyList.Labels.html">Labels</a> [<a href="BatteriesExceptionless.LazyList.html">BatteriesExceptionless.LazyList</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatteriesExceptionless.Enum.Labels.html">Labels</a> [<a href="BatteriesExceptionless.Enum.html">BatteriesExceptionless.Enum</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatteriesExceptionless.List.Labels.html">Labels</a> [<a href="BatteriesExceptionless.List.html">BatteriesExceptionless.List</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatteriesExceptionless.Array.Labels.html">Labels</a> [<a href="BatteriesExceptionless.Array.html">BatteriesExceptionless.Array</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatSet.S.Labels.html">Labels</a> [<a href="BatSet.S.html">BatSet.S</a>]</td>
 <td><div class="info">
@@ -1088,6 +1115,8 @@ File operations on large files.
 </td></tr>
 <tr><td><a href="Batteries.Legacy.Lazy.html">Lazy</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatteriesExceptionless.LazyList.html">LazyList</a> [<a href="BatteriesExceptionless.html">BatteriesExceptionless</a>]</td>
+<td></td></tr>
 <tr><td><a href="Batteries.LazyList.html">LazyList</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.html">Legacy</a> [<a href="Batteries.html">Batteries</a>]</td>
@@ -1099,6 +1128,8 @@ File operations on large files.
 <tr><td><a href="BatGenlex.Languages.Library.html">Library</a> [<a href="BatGenlex.Languages.html">BatGenlex.Languages</a>]</td>
 <td></td></tr>
 <tr><td><a href="Extlib.ExtList.List.html">List</a> [<a href="Extlib.ExtList.html">Extlib.ExtList</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatteriesExceptionless.List.html">List</a> [<a href="BatteriesExceptionless.html">BatteriesExceptionless</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.List.html">List</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
@@ -1169,6 +1200,10 @@ Functor to build an implementation of a bounded type given the bounded
 Make your own level-based logger, like <code class="code"><span class="constructor">Easy</span></code>
 </div>
 </td></tr>
+<tr><td><a href="BatteriesExceptionless.Splay.Map.html">Map</a> [<a href="BatteriesExceptionless.Splay.html">BatteriesExceptionless.Splay</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatteriesExceptionless.Map.html">Map</a> [<a href="BatteriesExceptionless.html">BatteriesExceptionless</a>]</td>
+<td></td></tr>
 <tr><td><a href="Batteries.Map.html">Map</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Map.html">Map</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
@@ -1278,6 +1313,8 @@ This module contains the option parser itself.
 <tr><td align="left"><br>P</td></tr>
 <tr><td><a href="Extlib.PMap.html">PMap</a> [<a href="Extlib.html">Extlib</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatteriesExceptionless.Map.PMap.html">PMap</a> [<a href="BatteriesExceptionless.Map.html">BatteriesExceptionless.Map</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatMap.PMap.html">PMap</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatSet.PSet.html">PSet</a> [<a href="BatSet.html">BatSet</a>]</td>
@@ -1301,6 +1338,8 @@ This module contains the option parser itself.
 <tr><td><a href="BatRandom.Incubator.Private_state_enums.html">Private_state_enums</a> [<a href="BatRandom.Incubator.html">BatRandom.Incubator</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>Q</td></tr>
+<tr><td><a href="BatteriesExceptionless.Queue.html">Queue</a> [<a href="BatteriesExceptionless.html">BatteriesExceptionless</a>]</td>
+<td></td></tr>
 <tr><td><a href="Batteries.Queue.html">Queue</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Queue.html">Queue</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
@@ -1349,6 +1388,8 @@ Safe operations on integers.
 Scanning buffers
 </div>
 </td></tr>
+<tr><td><a href="BatteriesExceptionless.Seq.html">Seq</a> [<a href="BatteriesExceptionless.html">BatteriesExceptionless</a>]</td>
+<td></td></tr>
 <tr><td><a href="Batteries.Seq.html">Seq</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Set.html">Set</a> [<a href="Batteries.html">Batteries</a>]</td>
@@ -1362,7 +1403,11 @@ Scanning buffers
 A source for parsing.
 </div>
 </td></tr>
+<tr><td><a href="BatteriesExceptionless.Splay.html">Splay</a> [<a href="BatteriesExceptionless.html">BatteriesExceptionless</a>]</td>
+<td></td></tr>
 <tr><td><a href="Batteries.Splay.html">Splay</a> [<a href="Batteries.html">Batteries</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatteriesExceptionless.Stack.html">Stack</a> [<a href="BatteriesExceptionless.html">BatteriesExceptionless</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Stack.html">Stack</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
@@ -1393,6 +1438,8 @@ This module contains various standard options.
 <tr><td><a href="BatStream.StreamLabels.html">StreamLabels</a> [<a href="BatStream.html">BatStream</a>]</td>
 <td></td></tr>
 <tr><td><a href="Extlib.ExtString.String.html">String</a> [<a href="Extlib.ExtString.html">Extlib.ExtString</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatteriesExceptionless.String.html">String</a> [<a href="BatteriesExceptionless.html">BatteriesExceptionless</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.String.html">String</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
@@ -1473,6 +1520,6 @@ Triples.
 Monadic operations on Enumerations containing monadic elements
 </div>
 </td></tr>
-</table><br>
+</table>
 </body>
 </html>

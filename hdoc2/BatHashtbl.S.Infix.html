@@ -101,25 +101,30 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatHashtbl.S.Infix</title>
 </head>
 <body>
-<div class="navbar"><a href="BatHashtbl.S.Exceptionless.html">Previous</a>
-&nbsp;<a href="BatHashtbl.S.html">Up</a>
-&nbsp;<a href="BatHashtbl.S.Labels.html">Next</a>
+<div class="navbar"><a class="pre" href="BatHashtbl.S.Exceptionless.html" title="BatHashtbl.S.Exceptionless">Previous</a>
+&nbsp;<a class="up" href="BatHashtbl.S.html" title="BatHashtbl.S">Up</a>
+&nbsp;<a class="post" href="BatHashtbl.S.Labels.html" title="BatHashtbl.S.Labels">Next</a>
 </div>
-<center><h1>Module <a href="type_BatHashtbl.S.Infix.html">BatHashtbl.S.Infix</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> Infix: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.S.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Infix operators over a <a href="BatHashtbl.html"><code class="code"><span class="constructor">BatHashtbl</span></code></a><br>
+<h1>Module <a href="type_BatHashtbl.S.Infix.html">BatHashtbl.S.Infix</a></h1>
+
+<pre><span class="keyword">module</span> Infix: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.S.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+Infix operators over a <a href="BatHashtbl.html"><code class="code"><span class="constructor">BatHashtbl</span></code></a><br>
+</div>
 <hr width="100%">
-<pre><span id="VAL(-->)"><span class="keyword">val</span> (--&gt;)</span> : <code class="type">'a <a href="BatHashtbl.S.html#TYPEt">BatHashtbl.S.t</a> -> <a href="BatHashtbl.S.html#TYPEkey">BatHashtbl.S.key</a> -> 'a</code></pre><div class="info">
+
+<pre><span id="VAL(-->)"><span class="keyword">val</span> (--&gt;)</span> : <code class="type">'a <a href="BatHashtbl.S.html#TYPEt">BatHashtbl.S.t</a> -> <a href="BatHashtbl.S.html#TYPEkey">BatHashtbl.S.key</a> -> 'a</code></pre><div class="info ">
 <code class="code">tbl--&gt;x</code> returns the current binding of <code class="code">x</code> in <code class="code">tbl</code>,
         or raises <code class="code"><span class="constructor">Not_found</span></code> if no such binding exists.
         Equivalent to <code class="code"><span class="constructor">Hashtbl</span>.find tbl x</code><br>
 </div>
-<pre><span id="VAL(<--)"><span class="keyword">val</span> (&lt;--)</span> : <code class="type">'a <a href="BatHashtbl.S.html#TYPEt">BatHashtbl.S.t</a> -> <a href="BatHashtbl.S.html#TYPEkey">BatHashtbl.S.key</a> * 'a -> unit</code></pre><div class="info">
+
+<pre><span id="VAL(<--)"><span class="keyword">val</span> (&lt;--)</span> : <code class="type">'a <a href="BatHashtbl.S.html#TYPEt">BatHashtbl.S.t</a> -> <a href="BatHashtbl.S.html#TYPEkey">BatHashtbl.S.key</a> * 'a -> unit</code></pre><div class="info ">
 <code class="code">tbl&lt;--(x, y)</code> adds a binding of <code class="code">x</code> to <code class="code">y</code> in table <code class="code">tbl</code>.
           Previous bindings for <code class="code">x</code> are not removed, but simply
           hidden. That is, after performing <code class="code"><span class="constructor">Hashtbl</span>.remove</code><code class="code"> tbl x</code>,

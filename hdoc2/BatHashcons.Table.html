@@ -99,48 +99,59 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatHashcons.Table</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a href="BatHashcons.html">Up</a>
+<div class="navbar">&nbsp;<a class="up" href="BatHashcons.html" title="BatHashcons">Up</a>
 &nbsp;</div>
-<center><h1>Module type <a href="type_BatHashcons.Table.html">BatHashcons.Table</a></h1></center>
-<br>
-<pre><span class="keyword">module type</span> Table = <code class="code"><span class="keyword">sig</span></code> <a href="BatHashcons.Table.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Hashcons tables<br>
+<h1>Module type <a href="type_BatHashcons.Table.html">BatHashcons.Table</a></h1>
+
+<pre><span class="keyword">module type</span> Table = <code class="code"><span class="keyword">sig</span></code> <a href="BatHashcons.Table.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info modtype top">
+Hashcons tables<br>
+</div>
 <hr width="100%">
+
 <pre><span id="TYPEkey"><span class="keyword">type</span> <code class="type"></code>key</span> </pre>
-<div class="info">
+<div class="info ">
 type of objects in the table<br>
 </div>
 
+
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
-<div class="info">
+<div class="info ">
 type of the table<br>
 </div>
 
-<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -> <a href="BatHashcons.Table.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -> <a href="BatHashcons.Table.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">create n</code> creates a table with at least <code class="code">n</code> cells.<br>
 </div>
-<pre><span id="VALclear"><span class="keyword">val</span> clear</span> : <code class="type"><a href="BatHashcons.Table.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+
+<pre><span id="VALclear"><span class="keyword">val</span> clear</span> : <code class="type"><a href="BatHashcons.Table.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 <code class="code">clear tab</code> removes all entries from the table <code class="code">tab</code>.<br>
 </div>
-<pre><span id="VALhashcons"><span class="keyword">val</span> hashcons</span> : <code class="type"><a href="BatHashcons.Table.html#TYPEt">t</a> -><br>       <a href="BatHashcons.Table.html#TYPEkey">key</a> -> <a href="BatHashcons.Table.html#TYPEkey">key</a> <a href="BatHashcons.html#TYPEhobj">BatHashcons.hobj</a></code></pre><div class="info">
+
+<pre><span id="VALhashcons"><span class="keyword">val</span> hashcons</span> : <code class="type"><a href="BatHashcons.Table.html#TYPEt">t</a> -><br>       <a href="BatHashcons.Table.html#TYPEkey">key</a> -> <a href="BatHashcons.Table.html#TYPEkey">key</a> <a href="BatHashcons.html#TYPEhobj">BatHashcons.hobj</a></code></pre><div class="info ">
 <code class="code">hashcons tab k</code> returns either <code class="code">k</code>, adding it to the table
       <code class="code">tab</code> as a side effect, or if <code class="code">k</code> is already in the table then
       it returns the hashed object corresponding to that entry.<br>
 <b>Raises</b> <code>Failure</code> if number of objects with the same hash reaches system limit of array size<br>
 </div>
-<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(<a href="BatHashcons.Table.html#TYPEkey">key</a> <a href="BatHashcons.html#TYPEhobj">BatHashcons.hobj</a> -> unit) -><br>       <a href="BatHashcons.Table.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+
+<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(<a href="BatHashcons.Table.html#TYPEkey">key</a> <a href="BatHashcons.html#TYPEhobj">BatHashcons.hobj</a> -> unit) -><br>       <a href="BatHashcons.Table.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 <code class="code">iter f tab</code> applies <code class="code">f</code> to every live hashed object in the
       table <code class="code">tab</code>.<br>
 </div>
-<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">(<a href="BatHashcons.Table.html#TYPEkey">key</a> <a href="BatHashcons.html#TYPEhobj">BatHashcons.hobj</a> -> 'a -> 'a) -><br>       <a href="BatHashcons.Table.html#TYPEt">t</a> -> 'a -> 'a</code></pre><div class="info">
+
+<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">(<a href="BatHashcons.Table.html#TYPEkey">key</a> <a href="BatHashcons.html#TYPEhobj">BatHashcons.hobj</a> -> 'a -> 'a) -><br>       <a href="BatHashcons.Table.html#TYPEt">t</a> -> 'a -> 'a</code></pre><div class="info ">
 <code class="code">fold f tab x0</code> folds <code class="code">f</code> across every live hashed object in
       the table <code class="code">tab</code>, starting with value <code class="code">x0</code><br>
 </div>
-<pre><span id="VALcount"><span class="keyword">val</span> count</span> : <code class="type"><a href="BatHashcons.Table.html#TYPEt">t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALcount"><span class="keyword">val</span> count</span> : <code class="type"><a href="BatHashcons.Table.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 <code class="code">count tab</code> returns a count of how many live objects are in
         <code class="code">tab</code>. This can decrease whenever the GC runs, even during
         execution, so consider the returned value as an upper-bound.<br>

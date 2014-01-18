@@ -101,37 +101,66 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Operators" rel="Section" href="#6_Operators">
 <title>Batteries user guide : BatInnerPervasives</title>
 </head>
 <body>
-<div class="navbar"><a href="BatInnerIO.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatInnerWeaktbl.html">Next</a>
+<div class="navbar"><a class="pre" href="BatInnerIO.html" title="BatInnerIO">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatInnerWeaktbl.html" title="BatInnerWeaktbl">Next</a>
 </div>
-<center><h1>Module <a href="type_BatInnerPervasives.html">BatInnerPervasives</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> BatInnerPervasives: <code class="code"><span class="keyword">sig</span></code> <a href="BatInnerPervasives.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><span id="6_Operators"><h6>Operators</h6></span><br>
+<h1>Module <a href="type_BatInnerPervasives.html">BatInnerPervasives</a></h1>
+
+<pre><span class="keyword">module</span> BatInnerPervasives: <code class="code"><span class="keyword">sig</span></code> <a href="BatInnerPervasives.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<h6 id="6_Operators">Operators</h6><br>
+</div>
 <hr width="100%">
-<pre><span id="VALfinally"><span class="keyword">val</span> <a href="code_VALBatInnerPervasives.finally.html">finally</a></span> : <code class="type">(unit -> 'a) -> ('b -> 'c) -> 'b -> 'c</code></pre><pre><span id="VALwith_dispose"><span class="keyword">val</span> <a href="code_VALBatInnerPervasives.with_dispose.html">with_dispose</a></span> : <code class="type">dispose:('a -> 'b) -> ('a -> 'c) -> 'a -> 'c</code></pre><pre><span id="VALunique_value"><span class="keyword">val</span> <a href="code_VALBatInnerPervasives.unique_value.html">unique_value</a></span> : <code class="type">int Pervasives.ref</code></pre><pre><span id="VALlock"><span class="keyword">val</span> <a href="code_VALBatInnerPervasives.lock.html">lock</a></span> : <code class="type"><a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a> Pervasives.ref</code></pre><pre><span id="VALunique"><span class="keyword">val</span> <a href="code_VALBatInnerPervasives.unique.html">unique</a></span> : <code class="type">unit -> int</code></pre><br><code><span id="TYPEresult"><span class="keyword">type</span> <code class="type">('a, 'b)</code> result</span> = </code><table class="typetable">
+
+<pre><span id="VALfinally"><span class="keyword">val</span> finally</span> : <code class="type">(unit -> 'a) -> ('b -> 'c) -> 'b -> 'c</code></pre>
+<pre><span id="VALwith_dispose"><span class="keyword">val</span> with_dispose</span> : <code class="type">dispose:('a -> 'b) -> ('a -> 'c) -> 'a -> 'c</code></pre>
+<pre><span id="VALunique_value"><span class="keyword">val</span> unique_value</span> : <code class="type">int Pervasives.ref</code></pre>
+<pre><span id="VALlock"><span class="keyword">val</span> lock</span> : <code class="type"><a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a> Pervasives.ref</code></pre>
+<pre><span id="VALunique"><span class="keyword">val</span> unique</span> : <code class="type">unit -> int</code></pre>
+<pre><code><span id="TYPEresult"><span class="keyword">type</span> <code class="type">('a, 'b)</code> result</span> = </code></pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span class="constructor">Ok</span> <span class="keyword">of</span> <code class="type">'a</code></code></td>
+<code><span id="TYPEELTresult.Ok"><span class="constructor">Ok</span></span> <span class="keyword">of</span> <code class="type">'a</code></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span class="constructor">Bad</span> <span class="keyword">of</span> <code class="type">'b</code></code></td>
+<code><span id="TYPEELTresult.Bad"><span class="constructor">Bad</span></span> <span class="keyword">of</span> <code class="type">'b</code></code></td>
 
 </tr></table>
 
 
-<pre><span id="VALignore_ok"><span class="keyword">val</span> <a href="code_VALBatInnerPervasives.ignore_ok.html">ignore_ok</a></span> : <code class="type">('a, exn) <a href="BatInnerPervasives.html#TYPEresult">result</a> -> unit</code></pre><pre><span id="VALok"><span class="keyword">val</span> <a href="code_VALBatInnerPervasives.ok.html">ok</a></span> : <code class="type">('a, exn) <a href="BatInnerPervasives.html#TYPEresult">result</a> -> 'a</code></pre><pre><span id="VALwrap"><span class="keyword">val</span> <a href="code_VALBatInnerPervasives.wrap.html">wrap</a></span> : <code class="type">('a -> 'b) -> 'a -> ('b, exn) <a href="BatInnerPervasives.html#TYPEresult">result</a></code></pre><pre><span id="VALforever"><span class="keyword">val</span> <a href="code_VALBatInnerPervasives.forever.html">forever</a></span> : <code class="type">('a -> 'b) -> 'a -> unit</code></pre><pre><span id="VALignore_exceptions"><span class="keyword">val</span> <a href="code_VALBatInnerPervasives.ignore_exceptions.html">ignore_exceptions</a></span> : <code class="type">('a -> 'b) -> 'a -> unit</code></pre><br>
-<span id="6_Operators"><h6>Operators</h6></span><br>
-<pre><span id="VAL(|>)"><span class="keyword">val</span> <a href="code_VALBatInnerPervasives.(_pipe__gt_).html">(|&gt;)</a></span> : <code class="type">'a -> ('a -> 'b) -> 'b</code></pre><pre><span id="VAL(@@)"><span class="keyword">val</span> <a href="code_VALBatInnerPervasives.(_at__at_).html">(@@)</a></span> : <code class="type">('a -> 'b) -> 'a -> 'b</code></pre><pre><span id="VAL(%>)"><span class="keyword">val</span> <a href="code_VALBatInnerPervasives.(_percent__gt_).html">(%&gt;)</a></span> : <code class="type">('a -> 'b) -> ('b -> 'c) -> 'a -> 'c</code></pre><pre><span id="VAL(%)"><span class="keyword">val</span> <a href="code_VALBatInnerPervasives.(_percent_).html">(%)</a></span> : <code class="type">('a -> 'b) -> ('c -> 'a) -> 'c -> 'b</code></pre><pre><span id="VALflip"><span class="keyword">val</span> <a href="code_VALBatInnerPervasives.flip.html">flip</a></span> : <code class="type">('a -> 'b -> 'c) -> 'b -> 'a -> 'c</code></pre><pre><span id="VALcurry"><span class="keyword">val</span> <a href="code_VALBatInnerPervasives.curry.html">curry</a></span> : <code class="type">('a * 'b -> 'c) -> 'a -> 'b -> 'c</code></pre><pre><span id="VALuncurry"><span class="keyword">val</span> <a href="code_VALBatInnerPervasives.uncurry.html">uncurry</a></span> : <code class="type">('a -> 'b -> 'c) -> 'a * 'b -> 'c</code></pre><pre><span id="VALconst"><span class="keyword">val</span> <a href="code_VALBatInnerPervasives.const.html">const</a></span> : <code class="type">'a -> 'b -> 'a</code></pre><pre><span id="VALneg"><span class="keyword">val</span> <a href="code_VALBatInnerPervasives.neg.html">neg</a></span> : <code class="type">('a -> bool) -> 'a -> bool</code></pre><pre><span id="VALneg2"><span class="keyword">val</span> <a href="code_VALBatInnerPervasives.neg2.html">neg2</a></span> : <code class="type">('a -> 'b -> bool) -> 'a -> 'b -> bool</code></pre><pre><span id="VALidentity"><span class="keyword">val</span> <a href="code_VALBatInnerPervasives.identity.html">identity</a></span> : <code class="type">'a -> 'a</code></pre><pre><span id="VALtap"><span class="keyword">val</span> <a href="code_VALBatInnerPervasives.tap.html">tap</a></span> : <code class="type">('a -> 'b) -> 'a -> 'a</code></pre><pre><span id="VAL(|?)"><span class="keyword">val</span> <a href="code_VALBatInnerPervasives.(_pipe__questionmark_).html">(|?)</a></span> : <code class="type">'a option -> 'a -> 'a</code></pre></body></html>
+
+<pre><span id="VALignore_ok"><span class="keyword">val</span> ignore_ok</span> : <code class="type">('a, exn) <a href="BatInnerPervasives.html#TYPEresult">result</a> -> unit</code></pre>
+<pre><span id="VALok"><span class="keyword">val</span> ok</span> : <code class="type">('a, exn) <a href="BatInnerPervasives.html#TYPEresult">result</a> -> 'a</code></pre>
+<pre><span id="VALwrap"><span class="keyword">val</span> wrap</span> : <code class="type">('a -> 'b) -> 'a -> ('b, exn) <a href="BatInnerPervasives.html#TYPEresult">result</a></code></pre>
+<pre><span id="VALforever"><span class="keyword">val</span> forever</span> : <code class="type">('a -> 'b) -> 'a -> unit</code></pre>
+<pre><span id="VALignore_exceptions"><span class="keyword">val</span> ignore_exceptions</span> : <code class="type">('a -> 'b) -> 'a -> unit</code></pre><br>
+<h6 id="6_Operators">Operators</h6><br>
+
+<pre><span id="VAL(|>)"><span class="keyword">val</span> (|&gt;)</span> : <code class="type">'a -> ('a -> 'b) -> 'b</code></pre>
+<pre><span id="VAL(|>)"><span class="keyword">val</span> (|&gt;)</span> : <code class="type">'a -> ('a -> 'b) -> 'b</code></pre>
+<pre><span id="VAL(@@)"><span class="keyword">val</span> (@@)</span> : <code class="type">('a -> 'b) -> 'a -> 'b</code></pre>
+<pre><span id="VAL(@@)"><span class="keyword">val</span> (@@)</span> : <code class="type">('a -> 'b) -> 'a -> 'b</code></pre>
+<pre><span id="VAL(%>)"><span class="keyword">val</span> (%&gt;)</span> : <code class="type">('a -> 'b) -> ('b -> 'c) -> 'a -> 'c</code></pre>
+<pre><span id="VAL(%)"><span class="keyword">val</span> (%)</span> : <code class="type">('a -> 'b) -> ('c -> 'a) -> 'c -> 'b</code></pre>
+<pre><span id="VALflip"><span class="keyword">val</span> flip</span> : <code class="type">('a -> 'b -> 'c) -> 'b -> 'a -> 'c</code></pre>
+<pre><span id="VALcurry"><span class="keyword">val</span> curry</span> : <code class="type">('a * 'b -> 'c) -> 'a -> 'b -> 'c</code></pre>
+<pre><span id="VALuncurry"><span class="keyword">val</span> uncurry</span> : <code class="type">('a -> 'b -> 'c) -> 'a * 'b -> 'c</code></pre>
+<pre><span id="VALconst"><span class="keyword">val</span> const</span> : <code class="type">'a -> 'b -> 'a</code></pre>
+<pre><span id="VALneg"><span class="keyword">val</span> neg</span> : <code class="type">('a -> bool) -> 'a -> bool</code></pre>
+<pre><span id="VALneg2"><span class="keyword">val</span> neg2</span> : <code class="type">('a -> 'b -> bool) -> 'a -> 'b -> bool</code></pre>
+<pre><span id="VALidentity"><span class="keyword">val</span> identity</span> : <code class="type">'a -> 'a</code></pre>
+<pre><span id="VALtap"><span class="keyword">val</span> tap</span> : <code class="type">('a -> 'b) -> 'a -> 'a</code></pre>
+<pre><span id="VAL(|?)"><span class="keyword">val</span> (|?)</span> : <code class="type">'a option -> 'a -> 'a</code></pre></body></html>

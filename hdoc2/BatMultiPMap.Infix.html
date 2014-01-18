@@ -99,22 +99,27 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatMultiPMap.Infix</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a href="BatMultiPMap.html">Up</a>
+<div class="navbar">&nbsp;<a class="up" href="BatMultiPMap.html" title="BatMultiPMap">Up</a>
 &nbsp;</div>
-<center><h1>Module <a href="type_BatMultiPMap.Infix.html">BatMultiPMap.Infix</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> Infix: <code class="code"><span class="keyword">sig</span></code> <a href="BatMultiPMap.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Infix operators over a <a href="BatMultiPMap.html"><code class="code"><span class="constructor">BatMultiPMap</span></code></a><br>
+<h1>Module <a href="type_BatMultiPMap.Infix.html">BatMultiPMap.Infix</a></h1>
+
+<pre><span class="keyword">module</span> Infix: <code class="code"><span class="keyword">sig</span></code> <a href="BatMultiPMap.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+Infix operators over a <a href="BatMultiPMap.html"><code class="code"><span class="constructor">BatMultiPMap</span></code></a><br>
+</div>
 <hr width="100%">
-<pre><span id="VAL(-->)"><span class="keyword">val</span> (--&gt;)</span> : <code class="type">('a, 'b) <a href="BatMultiPMap.html#TYPEt">BatMultiPMap.t</a> -> 'a -> 'b <a href="BatSet.PSet.html#TYPEt">BatSet.PSet.t</a></code></pre><div class="info">
+
+<pre><span id="VAL(-->)"><span class="keyword">val</span> (--&gt;)</span> : <code class="type">('a, 'b) <a href="BatMultiPMap.html#TYPEt">BatMultiPMap.t</a> -> 'a -> 'b <a href="BatSet.PSet.html#TYPEt">BatSet.PSet.t</a></code></pre><div class="info ">
 <code class="code">map--&gt;key</code> returns the current binding of <code class="code">key</code> in <code class="code">map</code>.
       Equivalent to <code class="code">find key map</code>.<br>
 </div>
-<pre><span id="VAL(<--)"><span class="keyword">val</span> (&lt;--)</span> : <code class="type">('a, 'b) <a href="BatMultiPMap.html#TYPEt">BatMultiPMap.t</a> -> 'a * 'b -> ('a, 'b) <a href="BatMultiPMap.html#TYPEt">BatMultiPMap.t</a></code></pre><div class="info">
+
+<pre><span id="VAL(<--)"><span class="keyword">val</span> (&lt;--)</span> : <code class="type">('a, 'b) <a href="BatMultiPMap.html#TYPEt">BatMultiPMap.t</a> -> 'a * 'b -> ('a, 'b) <a href="BatMultiPMap.html#TYPEt">BatMultiPMap.t</a></code></pre><div class="info ">
 <code class="code">map&lt;--(key, value)</code> returns a map containing the same bindings as
         <code class="code">map</code>, plus a binding of <code class="code">key</code> to <code class="code">value</code>. Equivalent to
         <code class="code">add key value map</code><br>

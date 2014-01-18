@@ -101,17 +101,30 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatNum.Infix</title>
 </head>
 <body>
-<div class="navbar"><a href="BatNum.TaggedInfix.html">Previous</a>
-&nbsp;<a href="BatNum.html">Up</a>
-&nbsp;<a href="BatNum.Compare.html">Next</a>
+<div class="navbar"><a class="pre" href="BatNum.TaggedInfix.html" title="BatNum.TaggedInfix">Previous</a>
+&nbsp;<a class="up" href="BatNum.html" title="BatNum">Up</a>
+&nbsp;<a class="post" href="BatNum.Compare.html" title="BatNum.Compare">Next</a>
 </div>
-<center><h1>Module <a href="type_BatNum.Infix.html">BatNum.Infix</a></h1></center>
-<br>
+<h1>Module <a href="type_BatNum.Infix.html">BatNum.Infix</a></h1>
+
 <pre><span class="keyword">module</span> Infix: <code class="code"><span class="keyword">sig</span></code> <a href="BatNum.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
+
 <pre><span class="keyword">include</span> <a href="BatNumber.Infix.html">BatNumber.Infix</a></pre>
-<pre><span id="VAL(=/)"><span class="keyword">val</span> (=/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a> -> bool</code></pre><pre><span id="VAL(</)"><span class="keyword">val</span> (&lt;/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a> -> bool</code></pre><pre><span id="VAL(>/)"><span class="keyword">val</span> (&gt;/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a> -> bool</code></pre><pre><span id="VAL(<=/)"><span class="keyword">val</span> (&lt;=/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a> -> bool</code></pre><pre><span id="VAL(>=/)"><span class="keyword">val</span> (&gt;=/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a> -> bool</code></pre><pre><span id="VAL(<>/)"><span class="keyword">val</span> (&lt;&gt;/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a> -> bool</code></pre><pre><span id="VAL(+/)"><span class="keyword">val</span> (+/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a></code></pre><pre><span id="VAL(-/)"><span class="keyword">val</span> (-/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a></code></pre><pre><span id="VAL( */ )"><span class="keyword">val</span> ( */ )</span> : <code class="type"><a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a></code></pre><pre><span id="VAL(//)"><span class="keyword">val</span> (//)</span> : <code class="type"><a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a></code></pre><pre><span id="VAL( **/ )"><span class="keyword">val</span> ( **/ )</span> : <code class="type"><a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a></code></pre></body></html>
+
+<pre><span id="VAL(=/)"><span class="keyword">val</span> (=/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a> -> bool</code></pre>
+<pre><span id="VAL(</)"><span class="keyword">val</span> (&lt;/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a> -> bool</code></pre>
+<pre><span id="VAL(>/)"><span class="keyword">val</span> (&gt;/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a> -> bool</code></pre>
+<pre><span id="VAL(<=/)"><span class="keyword">val</span> (&lt;=/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a> -> bool</code></pre>
+<pre><span id="VAL(>=/)"><span class="keyword">val</span> (&gt;=/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a> -> bool</code></pre>
+<pre><span id="VAL(<>/)"><span class="keyword">val</span> (&lt;&gt;/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a> -> bool</code></pre>
+<pre><span id="VAL(+/)"><span class="keyword">val</span> (+/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a></code></pre>
+<pre><span id="VAL(-/)"><span class="keyword">val</span> (-/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a></code></pre>
+<pre><span id="VAL( */ )"><span class="keyword">val</span> ( */ )</span> : <code class="type"><a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a></code></pre>
+<pre><span id="VAL(//)"><span class="keyword">val</span> (//)</span> : <code class="type"><a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a></code></pre>
+<pre><span id="VAL( **/ )"><span class="keyword">val</span> ( **/ )</span> : <code class="type"><a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a> -> <a href="BatNum.html#TYPEnum">BatNum.num</a></code></pre></body></html>

@@ -99,16 +99,18 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatUnix.LargeFile</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a href="BatUnix.html">Up</a>
+<div class="navbar">&nbsp;<a class="up" href="BatUnix.html" title="BatUnix">Up</a>
 &nbsp;</div>
-<center><h1>Module <a href="type_BatUnix.LargeFile.html">BatUnix.LargeFile</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> LargeFile: <code class="code"><span class="keyword">sig</span></code> <a href="BatUnix.LargeFile.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>File operations on large files.
+<h1>Module <a href="type_BatUnix.LargeFile.html">BatUnix.LargeFile</a></h1>
+
+<pre><span class="keyword">module</span> LargeFile: <code class="code"><span class="keyword">sig</span></code> <a href="BatUnix.LargeFile.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+File operations on large files.
     This sub-module provides 64-bit variants of the functions
     <code class="code"><span class="constructor">Unix</span>.lseek</code> (for positioning a file descriptor),
     <code class="code"><span class="constructor">Unix</span>.truncate</code> and <code class="code"><span class="constructor">Unix</span>.ftruncate</code> (for changing the size of a file),
@@ -117,93 +119,101 @@
     positions and sizes by 64-bit integers (type <code class="code">int64</code>) instead of
     regular integers (type <code class="code">int</code>), thus allowing operating on files
     whose sizes are greater than <code class="code">max_int</code>.<br>
+</div>
 <hr width="100%">
-<pre><span id="VALlseek"><span class="keyword">val</span> lseek</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">BatUnix.file_descr</a> -> int64 -> <a href="BatUnix.html#TYPEseek_command">BatUnix.seek_command</a> -> int64</code></pre><pre><span id="VALtruncate"><span class="keyword">val</span> truncate</span> : <code class="type">string -> int64 -> unit</code></pre><pre><span id="VALftruncate"><span class="keyword">val</span> ftruncate</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">BatUnix.file_descr</a> -> int64 -> unit</code></pre><pre><span id="TYPEstats"><span class="keyword">type</span> <code class="type"></code>stats</span> = <code class="type">Unix.LargeFile.stats</code> = {</pre><table class="typetable">
+
+<pre><span id="VALlseek"><span class="keyword">val</span> lseek</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">BatUnix.file_descr</a> -> int64 -> <a href="BatUnix.html#TYPEseek_command">BatUnix.seek_command</a> -> int64</code></pre>
+<pre><span id="VALtruncate"><span class="keyword">val</span> truncate</span> : <code class="type">string -> int64 -> unit</code></pre>
+<pre><span id="VALftruncate"><span class="keyword">val</span> ftruncate</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">BatUnix.file_descr</a> -> int64 -> unit</code></pre>
+<pre><span id="TYPEstats"><span class="keyword">type</span> <code class="type"></code>stats</span> = <code class="type">Unix.LargeFile.stats</code> = {</pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>st_dev&nbsp;: <code class="type">int</code>;</code></td>
+<code><span id="TYPEELTstats.st_dev">st_dev</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Device number</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>st_ino&nbsp;: <code class="type">int</code>;</code></td>
+<code><span id="TYPEELTstats.st_ino">st_ino</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Inode number</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>st_kind&nbsp;: <code class="type"><a href="BatUnix.html#TYPEfile_kind">BatUnix.file_kind</a></code>;</code></td>
+<code><span id="TYPEELTstats.st_kind">st_kind</span>&nbsp;: <code class="type"><a href="BatUnix.html#TYPEfile_kind">BatUnix.file_kind</a></code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Kind of the file</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>st_perm&nbsp;: <code class="type"><a href="BatUnix.html#TYPEfile_perm">BatUnix.file_perm</a></code>;</code></td>
+<code><span id="TYPEELTstats.st_perm">st_perm</span>&nbsp;: <code class="type"><a href="BatUnix.html#TYPEfile_perm">BatUnix.file_perm</a></code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Access rights</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>st_nlink&nbsp;: <code class="type">int</code>;</code></td>
+<code><span id="TYPEELTstats.st_nlink">st_nlink</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Number of links</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>st_uid&nbsp;: <code class="type">int</code>;</code></td>
+<code><span id="TYPEELTstats.st_uid">st_uid</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >User id of the owner</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>st_gid&nbsp;: <code class="type">int</code>;</code></td>
+<code><span id="TYPEELTstats.st_gid">st_gid</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Group ID of the file's group</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>st_rdev&nbsp;: <code class="type">int</code>;</code></td>
+<code><span id="TYPEELTstats.st_rdev">st_rdev</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Device minor number</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>st_size&nbsp;: <code class="type">int64</code>;</code></td>
+<code><span id="TYPEELTstats.st_size">st_size</span>&nbsp;: <code class="type">int64</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Size in bytes</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>st_atime&nbsp;: <code class="type">float</code>;</code></td>
+<code><span id="TYPEELTstats.st_atime">st_atime</span>&nbsp;: <code class="type">float</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Last access time</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>st_mtime&nbsp;: <code class="type">float</code>;</code></td>
+<code><span id="TYPEELTstats.st_mtime">st_mtime</span>&nbsp;: <code class="type">float</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Last modification time</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>st_ctime&nbsp;: <code class="type">float</code>;</code></td>
+<code><span id="TYPEELTstats.st_ctime">st_ctime</span>&nbsp;: <code class="type">float</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Last status change time</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 }
 
 
-<pre><span id="VALstat"><span class="keyword">val</span> stat</span> : <code class="type">string -> <a href="BatUnix.LargeFile.html#TYPEstats">stats</a></code></pre><pre><span id="VALlstat"><span class="keyword">val</span> lstat</span> : <code class="type">string -> <a href="BatUnix.LargeFile.html#TYPEstats">stats</a></code></pre><pre><span id="VALfstat"><span class="keyword">val</span> fstat</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">BatUnix.file_descr</a> -> <a href="BatUnix.LargeFile.html#TYPEstats">stats</a></code></pre></body></html>
+
+<pre><span id="VALstat"><span class="keyword">val</span> stat</span> : <code class="type">string -> <a href="BatUnix.LargeFile.html#TYPEstats">stats</a></code></pre>
+<pre><span id="VALlstat"><span class="keyword">val</span> lstat</span> : <code class="type">string -> <a href="BatUnix.LargeFile.html#TYPEstats">stats</a></code></pre>
+<pre><span id="VALfstat"><span class="keyword">val</span> fstat</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">BatUnix.file_descr</a> -> <a href="BatUnix.LargeFile.html#TYPEstats">stats</a></code></pre></body></html>

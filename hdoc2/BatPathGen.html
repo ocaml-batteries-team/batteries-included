@@ -101,19 +101,21 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Functorized interface" rel="Section" href="#6_Functorizedinterface">
 <title>Batteries user guide : BatPathGen</title>
 </head>
 <body>
-<div class="navbar"><a href="BatParserCo.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatPervasives.html">Next</a>
+<div class="navbar"><a class="pre" href="BatParserCo.html" title="BatParserCo">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatPervasives.html" title="BatPervasives">Next</a>
 </div>
-<center><h1>Module <a href="type_BatPathGen.html">BatPathGen</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> BatPathGen: <code class="code"><span class="keyword">sig</span></code> <a href="BatPathGen.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Filepath handling.
+<h1>Module <a href="type_BatPathGen.html">BatPathGen</a></h1>
+
+<pre><span class="keyword">module</span> BatPathGen: <code class="code"><span class="keyword">sig</span></code> <a href="BatPathGen.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+Filepath handling.
 <p>
 
     Paths can be used with different string implementations:<ul>
@@ -122,18 +124,23 @@
 </ul>
 <br>
 <b>Author(s):</b> Dawid Toton<br>
+</div>
 <hr width="100%">
 <br>
-<span id="6_Functorizedinterface"><h6>Functorized interface</h6></span><br>
+<h6 id="6_Functorizedinterface">Functorized interface</h6><br>
+
 <pre><span class="keyword">module type</span> <a href="BatPathGen.StringType.html">StringType</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatPathGen.StringType.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
 This signature lists few basic operations provided by all string types.
 </div>
+
 <pre><span class="keyword">module type</span> <a href="BatPathGen.PathType.html">PathType</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatPathGen.PathType.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
 All implementations of <code class="code"><span class="constructor">Path</span></code> functionality have this module type.
 </div>
+
 <pre><span class="keyword">module</span> <a href="BatPathGen.Make.html">Make</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">S</span></code><code class="code"> : </code><code class="type"><a href="BatPathGen.StringType.html">StringType</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatPathGen.PathType.html">PathType</a></code><code class="type">  with type ustring = S.t and type uchar = S.tchar</code></div></pre><div class="info">
 Constructs path handling module for string-like type and its operations given in <code class="code"><span class="constructor">S</span></code>.
 </div>
+
 <pre><span class="keyword">module</span> <a href="BatPathGen.OfString.html">OfString</a>: <code class="type"><a href="BatPathGen.PathType.html">PathType</a></code><code class="type">  with type ustring = string and type uchar = char</code></pre><div class="info">
 This implementation can be used with UTF-8, but encoding of used strings is not verified.
 </div>

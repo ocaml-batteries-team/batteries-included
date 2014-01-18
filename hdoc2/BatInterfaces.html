@@ -101,23 +101,28 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatInterfaces</title>
 </head>
 <body>
-<div class="navbar"><a href="BatInt64.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatLazyList.html">Next</a>
+<div class="navbar"><a class="pre" href="BatInt64.html" title="BatInt64">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatLazyList.html" title="BatLazyList">Next</a>
 </div>
-<center><h1>Module <a href="type_BatInterfaces.html">BatInterfaces</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> BatInterfaces: <code class="code"><span class="keyword">sig</span></code> <a href="BatInterfaces.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Common signatures for data structures.<br>
+<h1>Module <a href="type_BatInterfaces.html">BatInterfaces</a></h1>
+
+<pre><span class="keyword">module</span> BatInterfaces: <code class="code"><span class="keyword">sig</span></code> <a href="BatInterfaces.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+Common signatures for data structures.<br>
+</div>
 <hr width="100%">
+
 <pre><span class="keyword">module type</span> <a href="BatInterfaces.Mappable.html">Mappable</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatInterfaces.Mappable.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
 A signature for data structures which have a
     <code class="code">map : (<span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b) <span class="keywordsign">-&gt;</span> (<span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b t)</code> operation.
 </div>
+
 <pre><span class="keyword">module type</span> <a href="BatInterfaces.OrderedType.html">OrderedType</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatInterfaces.OrderedType.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><br>
 Monads are a design pattern which may be used to enforce strong
     functional or non-functional constraints on the manipulation of
@@ -137,6 +142,7 @@ Monads are a design pattern which may be used to enforce strong
     for monads.  For more information, see
     <a href="http://www.cas.mcmaster.ca/~carette/pa_monad/"> the
     documentation of pa_monad</a>.<br>
+
 <pre><span class="keyword">module type</span> <a href="BatInterfaces.Monad.html">Monad</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatInterfaces.Monad.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
 Signature for monads
 </div>

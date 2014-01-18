@@ -101,18 +101,20 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatFingerTree</title>
 </head>
 <body>
-<div class="navbar"><a href="BatFile.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatFloat.html">Next</a>
+<div class="navbar"><a class="pre" href="BatFile.html" title="BatFile">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatFloat.html" title="BatFloat">Next</a>
 </div>
-<center><h1>Module <a href="type_BatFingerTree.html">BatFingerTree</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> BatFingerTree: <code class="code"><span class="keyword">sig</span></code> <a href="BatFingerTree.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>This module implements a generic finger tree datastructure
+<h1>Module <a href="type_BatFingerTree.html">BatFingerTree</a></h1>
+
+<pre><span class="keyword">module</span> BatFingerTree: <code class="code"><span class="keyword">sig</span></code> <a href="BatFingerTree.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+This module implements a generic finger tree datastructure
    as described here:
    Finger Trees: A Simple General-purpose Data Structure
    http://www.soi.city.ac.uk/~ross/papers/FingerTree.pdf
@@ -142,64 +144,76 @@
 
    None of the functions on finger trees can cause stack overflow:
    they use at worst a logarithmic amount of stack space.<br>
+</div>
 <hr width="100%">
-<br><code><span id="TYPEmonoid"><span class="keyword">type</span> <code class="type">'a</code> monoid</span> = {</code><table class="typetable">
+
+<pre><code><span id="TYPEmonoid"><span class="keyword">type</span> <code class="type">'a</code> monoid</span> = {</code></pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>zero&nbsp;: <code class="type">'a</code>;</code></td>
+<code><span id="TYPEELTmonoid.zero">zero</span>&nbsp;: <code class="type">'a</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >The neutral element of the monoid.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>combine&nbsp;: <code class="type">'a -> 'a -> 'a</code>;</code></td>
+<code><span id="TYPEELTmonoid.combine">combine</span>&nbsp;: <code class="type">'a -> 'a -> 'a</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><code class="code">combine</code> should be associative, and have <code class="code">zero</code> as neutral element.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 }
 
-<div class="info">
+<div class="info ">
 The type of the element of a monoid.<br>
 </div>
 
+
 <pre><span id="EXCEPTIONEmpty"><span class="keyword">exception</span> Empty</span></pre>
-<div class="info">
+<div class="info ">
 An exception that is thrown by various operations when
     trying to get a non existing element.<br>
 </div>
-<pre><span class="keyword">module type</span> <a href="BatFingerTree.S.html">S</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatFingerTree.S.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><pre><span class="keyword">module</span> <a href="BatFingerTree.Generic.html">Generic</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatFingerTree.Generic.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
+
+<pre><span class="keyword">module type</span> <a href="BatFingerTree.S.html">S</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatFingerTree.S.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span class="keyword">module</span> <a href="BatFingerTree.Generic.html">Generic</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatFingerTree.Generic.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
+
 
 <pre><span class="keyword">include</span> <a href="BatFingerTree.S.html">BatFingerTree.S</a></pre>
-<pre><span id="VALsize"><span class="keyword">val</span> size</span> : <code class="type">'a <a href="BatFingerTree.html#TYPEt">t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALsize"><span class="keyword">val</span> size</span> : <code class="type">'a <a href="BatFingerTree.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 <code class="code">size t</code> returns the number of elements in the sequence.
 <p>
 
     Unlike the generic <code class="code">size</code> on finger trees, this one has complexity O(1).<br>
 </div>
-<pre><span id="VALsplit_at"><span class="keyword">val</span> split_at</span> : <code class="type">'a <a href="BatFingerTree.html#TYPEt">t</a> -> int -> 'a <a href="BatFingerTree.html#TYPEt">t</a> * 'a <a href="BatFingerTree.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALsplit_at"><span class="keyword">val</span> split_at</span> : <code class="type">'a <a href="BatFingerTree.html#TYPEt">t</a> -> int -> 'a <a href="BatFingerTree.html#TYPEt">t</a> * 'a <a href="BatFingerTree.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">split_at</code> is equivalent to <code class="code"><span class="constructor">List</span>.split_at</code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> when the index is out of bounds.
 <p>
 
     O(log(n)).<br>
 </div>
-<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a <a href="BatFingerTree.html#TYPEt">t</a> -> int -> 'a</code></pre><div class="info">
+
+<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a <a href="BatFingerTree.html#TYPEt">t</a> -> int -> 'a</code></pre><div class="info ">
 <code class="code">get t i</code> returns the <code class="code">i</code>-th element of <code class="code">t</code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> when the index is out of bounds.
 <p>
 
     O(log(n)).<br>
 </div>
-<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">'a <a href="BatFingerTree.html#TYPEt">t</a> -> int -> 'a -> 'a <a href="BatFingerTree.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">'a <a href="BatFingerTree.html#TYPEt">t</a> -> int -> 'a -> 'a <a href="BatFingerTree.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">set t i v</code> returns <code class="code">t</code> where the <code class="code">i</code>-th element is now <code class="code">v</code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> when the index is out of bounds.
 <p>
 
     O(log(n)).<br>
 </div>
-<pre><span id="VALupdate"><span class="keyword">val</span> update</span> : <code class="type">'a <a href="BatFingerTree.html#TYPEt">t</a> -> int -> ('a -> 'a) -> 'a <a href="BatFingerTree.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALupdate"><span class="keyword">val</span> update</span> : <code class="type">'a <a href="BatFingerTree.html#TYPEt">t</a> -> int -> ('a -> 'a) -> 'a <a href="BatFingerTree.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">update t i f</code> returns <code class="code">t</code> where the <code class="code">i</code>-th element is now <code class="code">f (get i t)</code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> when the index is out of bounds.
 <p>

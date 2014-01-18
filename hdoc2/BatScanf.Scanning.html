@@ -99,20 +99,24 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Obsolete" rel="Section" href="#6_Obsolete">
 <title>Batteries user guide : BatScanf.Scanning</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a href="BatScanf.html">Up</a>
+<div class="navbar">&nbsp;<a class="up" href="BatScanf.html" title="BatScanf">Up</a>
 &nbsp;</div>
-<center><h1>Module <a href="type_BatScanf.Scanning.html">BatScanf.Scanning</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> Scanning: <code class="code"><span class="keyword">sig</span></code> <a href="BatScanf.Scanning.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><span id="6_Scanningbuffers"><h6>Scanning buffers</h6></span><br>
+<h1>Module <a href="type_BatScanf.Scanning.html">BatScanf.Scanning</a></h1>
+
+<pre><span class="keyword">module</span> Scanning: <code class="code"><span class="keyword">sig</span></code> <a href="BatScanf.Scanning.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<h6 id="6_Scanningbuffers">Scanning buffers</h6><br>
+</div>
 <hr width="100%">
+
 <pre><span id="TYPEscanbuf"><span class="keyword">type</span> <code class="type"></code>scanbuf</span> = <code class="type">Scanf.Scanning.scanbuf</code> </pre>
-<div class="info">
+<div class="info ">
 The type of scanning buffers. A scanning buffer is the source from which a
       formatted input function gets characters. The scanning buffer holds the
       current state of the scan, plus a function to get the next char from the
@@ -125,7 +129,8 @@ The type of scanning buffers. A scanning buffer is the source from which a
       character read.<br>
 </div>
 
-<pre><span id="VALstdib"><span class="keyword">val</span> stdib</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a></code></pre><div class="info">
+
+<pre><span id="VALstdib"><span class="keyword">val</span> stdib</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a></code></pre><div class="info ">
 The scanning buffer reading from <code class="code">stdin</code>.
       <code class="code">stdib</code> is equivalent to <code class="code"><span class="constructor">Scanning</span>.from_input stdin</code>.
 <p>
@@ -135,13 +140,15 @@ The scanning buffer reading from <code class="code">stdin</code>.
       specifications must properly skip this character (simply add a <code class="code"><span class="string">'\n'</span></code>
       as the last character of the format string).<br>
 </div>
-<pre><span id="VALfrom_string"><span class="keyword">val</span> from_string</span> : <code class="type">string -> <a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a></code></pre><div class="info">
+
+<pre><span id="VALfrom_string"><span class="keyword">val</span> from_string</span> : <code class="type">string -> <a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a></code></pre><div class="info ">
 <code class="code"><span class="constructor">Scanning</span>.from_string s</code> returns a scanning buffer which reads from the
       given string.
       Reading starts from the first character in the string.
       The end-of-input condition is set when the end of the string is reached.<br>
 </div>
-<pre><span id="VALfrom_file"><span class="keyword">val</span> from_file</span> : <code class="type">string -> <a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a></code></pre><div class="info">
+
+<pre><span id="VALfrom_file"><span class="keyword">val</span> from_file</span> : <code class="type">string -> <a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a></code></pre><div class="info ">
 Bufferized file reading in text mode. The efficient and usual
       way to scan text mode files (in effect, <code class="code">from_file</code> returns a
       scanning buffer that reads characters in large chunks, rather than one
@@ -149,10 +156,12 @@ Bufferized file reading in text mode. The efficient and usual
       <code class="code"><span class="constructor">Scanning</span>.from_file fname</code> returns a scanning buffer which reads
       from the given file <code class="code">fname</code> in text mode.<br>
 </div>
-<pre><span id="VALfrom_file_bin"><span class="keyword">val</span> from_file_bin</span> : <code class="type">string -> <a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a></code></pre><div class="info">
+
+<pre><span id="VALfrom_file_bin"><span class="keyword">val</span> from_file_bin</span> : <code class="type">string -> <a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a></code></pre><div class="info ">
 Bufferized file reading in binary mode.<br>
 </div>
-<pre><span id="VALfrom_function"><span class="keyword">val</span> from_function</span> : <code class="type">(unit -> char) -> <a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a></code></pre><div class="info">
+
+<pre><span id="VALfrom_function"><span class="keyword">val</span> from_function</span> : <code class="type">(unit -> char) -> <a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a></code></pre><div class="info ">
 <code class="code"><span class="constructor">Scanning</span>.from_function f</code> returns a scanning buffer with the given
       function as its reading method.
 <p>
@@ -163,24 +172,29 @@ Bufferized file reading in binary mode.<br>
       When the function has no more character to provide, it must signal an
       end-of-input condition by raising the exception <code class="code"><span class="constructor">End_of_file</span></code>.<br>
 </div>
-<pre><span id="VALfrom_input"><span class="keyword">val</span> from_input</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> <a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a></code></pre><div class="info">
+
+<pre><span id="VALfrom_input"><span class="keyword">val</span> from_input</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> <a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a></code></pre><div class="info ">
 <code class="code"><span class="constructor">Scanning</span>.from_channel ic</code> returns a scanning buffer which reads from the
       input channel <code class="code">ic</code>, starting at the current reading position.<br>
 </div>
-<pre><span id="VALend_of_input"><span class="keyword">val</span> end_of_input</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a> -> bool</code></pre><div class="info">
+
+<pre><span id="VALend_of_input"><span class="keyword">val</span> end_of_input</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a> -> bool</code></pre><div class="info ">
 <code class="code"><span class="constructor">Scanning</span>.end_of_input ib</code> tests the end-of-input condition of the given
       scanning buffer.<br>
 </div>
-<pre><span id="VALbeginning_of_input"><span class="keyword">val</span> beginning_of_input</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a> -> bool</code></pre><div class="info">
+
+<pre><span id="VALbeginning_of_input"><span class="keyword">val</span> beginning_of_input</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a> -> bool</code></pre><div class="info ">
 <code class="code"><span class="constructor">Scanning</span>.beginning_of_input ib</code> tests the beginning of input condition of
       the given scanning buffer.<br>
 </div>
-<pre><span id="VALname_of_input"><span class="keyword">val</span> name_of_input</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a> -> string</code></pre><div class="info">
+
+<pre><span id="VALname_of_input"><span class="keyword">val</span> name_of_input</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a> -> string</code></pre><div class="info ">
 <code class="code"><span class="constructor">Scanning</span>.file_name_of_input ib</code> returns the name of the character source
       for the scanning buffer <code class="code">ib</code>.<br>
 </div>
 <br>
-<span id="6_Obsolete"><h6>Obsolete</h6></span><br>
-<pre><span id="VALfrom_channel"><span class="keyword">val</span> from_channel</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> <a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a></code></pre><div class="info">
+<h6 id="6_Obsolete">Obsolete</h6><br>
+
+<pre><span id="VALfrom_channel"><span class="keyword">val</span> from_channel</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> <a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a></code></pre><div class="info ">
 </div>
 </body></html>

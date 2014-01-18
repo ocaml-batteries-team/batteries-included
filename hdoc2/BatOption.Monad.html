@@ -100,28 +100,34 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatOption.Monad</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a href="BatOption.html">Up</a>
-&nbsp;<a href="BatOption.Labels.html">Next</a>
+<div class="navbar">&nbsp;<a class="up" href="BatOption.html" title="BatOption">Up</a>
+&nbsp;<a class="post" href="BatOption.Labels.html" title="BatOption.Labels">Next</a>
 </div>
-<center><h1>Module <a href="type_BatOption.Monad.html">BatOption.Monad</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> Monad: <code class="code"><span class="keyword">sig</span></code> <a href="BatOption.Monad.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>This module provides everything needed to write and execute computations
+<h1>Module <a href="type_BatOption.Monad.html">BatOption.Monad</a></h1>
+
+<pre><span class="keyword">module</span> Monad: <code class="code"><span class="keyword">sig</span></code> <a href="BatOption.Monad.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+This module provides everything needed to write and execute computations
     in the Option monad.<br>
+</div>
 <hr width="100%">
+
 <pre><span id="TYPEm"><span class="keyword">type</span> <code class="type">'a</code> m</span> = <code class="type">'a option</code> </pre>
-<div class="info">
+<div class="info ">
 The type of values in this monad : option<br>
 </div>
 
-<pre><span id="VALreturn"><span class="keyword">val</span> return</span> : <code class="type">'a -> 'a <a href="BatOption.Monad.html#TYPEm">m</a></code></pre><div class="info">
+
+<pre><span id="VALreturn"><span class="keyword">val</span> return</span> : <code class="type">'a -> 'a <a href="BatOption.Monad.html#TYPEm">m</a></code></pre><div class="info ">
 <code class="code">return x</code> puts a value in the Option monad, that is, returns <code class="code"><span class="constructor">Some</span> x</code>.<br>
 </div>
-<pre><span id="VALbind"><span class="keyword">val</span> bind</span> : <code class="type">'a <a href="BatOption.Monad.html#TYPEm">m</a> -> ('a -> 'b <a href="BatOption.Monad.html#TYPEm">m</a>) -> 'b <a href="BatOption.Monad.html#TYPEm">m</a></code></pre><div class="info">
+
+<pre><span id="VALbind"><span class="keyword">val</span> bind</span> : <code class="type">'a <a href="BatOption.Monad.html#TYPEm">m</a> -> ('a -> 'b <a href="BatOption.Monad.html#TYPEm">m</a>) -> 'b <a href="BatOption.Monad.html#TYPEm">m</a></code></pre><div class="info ">
 <code class="code">bind m f</code> combines the calculation result <code class="code">m</code> with the function <code class="code">f</code>.
         E.g, in the Option monad :
         <code class="code">bind (<span class="constructor">Some</span> 1) (<span class="keyword">fun</span> x <span class="keywordsign">-&gt;</span> <span class="keyword">if</span> x = 1 <span class="keyword">then</span> <span class="constructor">Some</span> 4 <span class="keyword">else</span> <span class="constructor">None</span>)</code> returns Some 4.<br>

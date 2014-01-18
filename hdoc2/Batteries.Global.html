@@ -101,52 +101,62 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : Batteries.Global</title>
 </head>
 <body>
-<div class="navbar"><a href="Batteries.File.html">Previous</a>
-&nbsp;<a href="Batteries.html">Up</a>
-&nbsp;<a href="Batteries.IO.html">Next</a>
+<div class="navbar"><a class="pre" href="Batteries.File.html" title="Batteries.File">Previous</a>
+&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
+&nbsp;<a class="post" href="Batteries.IO.html" title="Batteries.IO">Next</a>
 </div>
-<center><h1>Module <a href="type_Batteries.Global.html">Batteries.Global</a></h1></center>
-<br>
+<h1>Module <a href="type_Batteries.Global.html">Batteries.Global</a></h1>
+
 <pre><span class="keyword">module</span> Global: <code class="type">BatGlobal</code></pre><hr width="100%">
+
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
-<div class="info">
+<div class="info ">
 Abstract type of a global<br>
 </div>
 
+
 <pre><span id="EXCEPTIONGlobal_not_initialized"><span class="keyword">exception</span> Global_not_initialized</span> <span class="keyword">of</span> <code class="type">string</code></pre>
-<div class="info">
+<div class="info ">
 Raised when a global variable is accessed without first having been
     assigned a value. The parameter contains the name of the global.<br>
 </div>
-<pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">string -> 'a <a href="BatGlobal.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">string -> 'a <a href="BatGlobal.html#TYPEt">t</a></code></pre><div class="info ">
 Returns an new named empty global. The name of the global can be
     any string. It identifies the global and makes debugging
     easier. Using the same string twice will not return the same
     global twice, but will create two globals with the same name.<br>
 </div>
-<pre><span id="VALname"><span class="keyword">val</span> name</span> : <code class="type">'a <a href="BatGlobal.html#TYPEt">t</a> -> string</code></pre><div class="info">
+
+<pre><span id="VALname"><span class="keyword">val</span> name</span> : <code class="type">'a <a href="BatGlobal.html#TYPEt">t</a> -> string</code></pre><div class="info ">
 Retrieve the name of a global.<br>
 </div>
-<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">'a <a href="BatGlobal.html#TYPEt">t</a> -> 'a -> unit</code></pre><div class="info">
+
+<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">'a <a href="BatGlobal.html#TYPEt">t</a> -> 'a -> unit</code></pre><div class="info ">
 Set the global value contents.<br>
 </div>
-<pre><span id="VALget_exn"><span class="keyword">val</span> get_exn</span> : <code class="type">'a <a href="BatGlobal.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+
+<pre><span id="VALget_exn"><span class="keyword">val</span> get_exn</span> : <code class="type">'a <a href="BatGlobal.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
 Get the global value contents - raise Global_not_initialized if not
     defined.<br>
 </div>
-<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a <a href="BatGlobal.html#TYPEt">t</a> -> 'a option</code></pre><div class="info">
+
+<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a <a href="BatGlobal.html#TYPEt">t</a> -> 'a option</code></pre><div class="info ">
 Return <code class="code"><span class="constructor">None</span></code> if the global is undefined, else <code class="code"><span class="constructor">Some</span> v</code> where <code class="code">v</code> is
     the current global value contents.<br>
 </div>
-<pre><span id="VALundef"><span class="keyword">val</span> undef</span> : <code class="type">'a <a href="BatGlobal.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+
+<pre><span id="VALundef"><span class="keyword">val</span> undef</span> : <code class="type">'a <a href="BatGlobal.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 Reset the global value contents to undefined.<br>
 </div>
-<pre><span id="VALisdef"><span class="keyword">val</span> isdef</span> : <code class="type">'a <a href="BatGlobal.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+
+<pre><span id="VALisdef"><span class="keyword">val</span> isdef</span> : <code class="type">'a <a href="BatGlobal.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
 Return <code class="code"><span class="keyword">true</span></code> if the global value has been set.<br>
 </div>
 </body></html>

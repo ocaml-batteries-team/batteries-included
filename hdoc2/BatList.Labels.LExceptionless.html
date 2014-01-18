@@ -99,14 +99,23 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatList.Labels.LExceptionless</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a href="BatList.Labels.html">Up</a>
+<div class="navbar">&nbsp;<a class="up" href="BatList.Labels.html" title="BatList.Labels">Up</a>
 &nbsp;</div>
-<center><h1>Module <a href="type_BatList.Labels.LExceptionless.html">BatList.Labels.LExceptionless</a></h1></center>
-<br>
+<h1>Module <a href="type_BatList.Labels.LExceptionless.html">BatList.Labels.LExceptionless</a></h1>
+
 <pre><span class="keyword">module</span> LExceptionless: <code class="code"><span class="keyword">sig</span></code> <a href="BatList.Labels.LExceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
-<pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a option</code></pre><pre><span id="VALrfind"><span class="keyword">val</span> rfind</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a option</code></pre><pre><span id="VALfindi"><span class="keyword">val</span> findi</span> : <code class="type">f:(int -> 'a -> bool) -> 'a list -> (int * 'a) option</code></pre><pre><span id="VALsplit_at"><span class="keyword">val</span> split_at</span> : <code class="type">int -> 'a list -> [ `Invalid_argument of string | `Ok of 'a list * 'a list ]</code></pre><pre><span id="VALat"><span class="keyword">val</span> at</span> : <code class="type">'a list -> int -> [ `Invalid_argument of string | `Ok of 'a ]</code></pre><pre><span id="VALassoc"><span class="keyword">val</span> assoc</span> : <code class="type">'a -> ('a * 'b) list -> 'b option</code></pre><pre><span id="VALassoc_inv"><span class="keyword">val</span> assoc_inv</span> : <code class="type">'a -> ('b * 'a) list -> 'b option</code></pre><pre><span id="VALassq"><span class="keyword">val</span> assq</span> : <code class="type">'a -> ('a * 'b) list -> 'b option</code></pre></body></html>
+
+<pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a option</code></pre>
+<pre><span id="VALrfind"><span class="keyword">val</span> rfind</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a option</code></pre>
+<pre><span id="VALfindi"><span class="keyword">val</span> findi</span> : <code class="type">f:(int -> 'a -> bool) -> 'a list -> (int * 'a) option</code></pre>
+<pre><span id="VALsplit_at"><span class="keyword">val</span> split_at</span> : <code class="type">int -> 'a list -> [ `Invalid_argument of string | `Ok of 'a list * 'a list ]</code></pre>
+<pre><span id="VALat"><span class="keyword">val</span> at</span> : <code class="type">'a list -> int -> [ `Invalid_argument of string | `Ok of 'a ]</code></pre>
+<pre><span id="VALassoc"><span class="keyword">val</span> assoc</span> : <code class="type">'a -> ('a * 'b) list -> 'b option</code></pre>
+<pre><span id="VALassoc_inv"><span class="keyword">val</span> assoc_inv</span> : <code class="type">'b -> ('a * 'b) list -> 'a option</code></pre>
+<pre><span id="VALassq"><span class="keyword">val</span> assq</span> : <code class="type">'a -> ('a * 'b) list -> 'b option</code></pre></body></html>

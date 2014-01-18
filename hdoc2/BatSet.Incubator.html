@@ -101,20 +101,24 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatSet.Incubator</title>
 </head>
 <body>
-<div class="navbar"><a href="BatSet.Make.html">Previous</a>
-&nbsp;<a href="BatSet.html">Up</a>
-&nbsp;<a href="BatSet.PSet.html">Next</a>
+<div class="navbar"><a class="pre" href="BatSet.Make.html" title="BatSet.Make">Previous</a>
+&nbsp;<a class="up" href="BatSet.html" title="BatSet">Up</a>
+&nbsp;<a class="post" href="BatSet.PSet.html" title="BatSet.PSet">Next</a>
 </div>
-<center><h1>Module <a href="type_BatSet.Incubator.html">BatSet.Incubator</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> Incubator: <code class="code"><span class="keyword">sig</span></code> <a href="BatSet.Incubator.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><span id="6_Incubator"><h6>Incubator</h6></span><br>
+<h1>Module <a href="type_BatSet.Incubator.html">BatSet.Incubator</a></h1>
+
+<pre><span class="keyword">module</span> Incubator: <code class="code"><span class="keyword">sig</span></code> <a href="BatSet.Incubator.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<h6 id="6_Incubator">Incubator</h6><br>
+</div>
 <hr width="100%">
-<pre><span id="VALop_map"><span class="keyword">val</span> op_map</span> : <code class="type">('a -> 'b) -> 'a <a href="BatSet.html#TYPEt">BatSet.t</a> -> 'b <a href="BatSet.html#TYPEt">BatSet.t</a></code></pre><div class="info">
+
+<pre><span id="VALop_map"><span class="keyword">val</span> op_map</span> : <code class="type">('a -> 'b) -> 'a <a href="BatSet.html#TYPEt">BatSet.t</a> -> 'b <a href="BatSet.html#TYPEt">BatSet.t</a></code></pre><div class="info ">
 Order Preserving map; as <code class="code">map</code>, but <code class="code">f</code> must be order preserving;
         i.e. if <code class="code">a &lt; b</code> then <code class="code">f a &lt; f b</code>.  This allows the tree structure
         to be maintained internally, resulting in O(n) work instead of O(n

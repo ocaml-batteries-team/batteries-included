@@ -99,18 +99,21 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatFingerTree.Generic</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a href="BatFingerTree.html">Up</a>
+<div class="navbar">&nbsp;<a class="up" href="BatFingerTree.html" title="BatFingerTree">Up</a>
 &nbsp;</div>
-<center><h1>Module <a href="type_BatFingerTree.Generic.html">BatFingerTree.Generic</a></h1></center>
-<br>
+<h1>Module <a href="type_BatFingerTree.Generic.html">BatFingerTree.Generic</a></h1>
+
 <pre><span class="keyword">module</span> Generic: <code class="code"><span class="keyword">sig</span></code> <a href="BatFingerTree.Generic.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
+
 <pre><span class="keyword">include</span> <a href="BatFingerTree.S.html">BatFingerTree.S</a></pre>
-<pre><span id="VALlookup"><span class="keyword">val</span> lookup</span> : <code class="type">(('a -> bool) -> ('b, 'a) fg -> 'b, 'b, 'a) wrap</code></pre><div class="info">
+
+<pre><span id="VALlookup"><span class="keyword">val</span> lookup</span> : <code class="type">(('m -> bool) -> ('a, 'm) fg -> 'a, 'a, 'm) wrap</code></pre><div class="info ">
 <code class="code">lookup p t</code>, when <code class="code">p</code> is monotonic, returns the first element
       of the sequence for which the measure of its predecessors in the
       sequence (itself included) satisfies <code class="code">p</code>.<br>
@@ -125,14 +128,16 @@
       specialized version of splitTree that returns the element without
       building the left and right tree).<br>
 </div>
-<pre><span id="VALmeasure"><span class="keyword">val</span> measure</span> : <code class="type">(('a, 'b) fg -> 'b, 'a, 'b) wrap</code></pre><div class="info">
+
+<pre><span id="VALmeasure"><span class="keyword">val</span> measure</span> : <code class="type">(('a, 'm) fg -> 'm, 'a, 'm) wrap</code></pre><div class="info ">
 <code class="code">measure m</code> gives the measure of the whole tree, whose meaning
       depends on the measure chosen.
 <p>
 
       O(1).<br>
 </div>
-<pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type">(('a -> bool) -> ('b, 'a) fg -> ('b, 'a) fg * ('b, 'a) fg, 'b, 'a) wrap</code></pre><div class="info">
+
+<pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type">(('m -> bool) -> ('a, 'm) fg -> ('a, 'm) fg * ('a, 'm) fg, 'a, 'm) wrap</code></pre><div class="info ">
 <code class="code">split p t</code>, when <code class="code">p</code> is monotonic, returns <code class="code">(t1, t2)</code> where
         <code class="code">t1</code> is the longest prefix of <code class="code">t</code> whose measure does not satifies
         <code class="code">p</code>, and <code class="code">t2</code> is the rest of <code class="code">t</code>.<br>

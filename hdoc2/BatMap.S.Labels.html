@@ -100,17 +100,19 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatMap.S.Labels</title>
 </head>
 <body>
-<div class="navbar"><a href="BatMap.S.Infix.html">Previous</a>
-&nbsp;<a href="BatMap.S.html">Up</a>
+<div class="navbar"><a class="pre" href="BatMap.S.Infix.html" title="BatMap.S.Infix">Previous</a>
+&nbsp;<a class="up" href="BatMap.S.html" title="BatMap.S">Up</a>
 &nbsp;</div>
-<center><h1>Module <a href="type_BatMap.S.Labels.html">BatMap.S.Labels</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> Labels: <code class="code"><span class="keyword">sig</span></code> <a href="BatMap.S.Labels.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Operations on <code class="code"><span class="constructor">Map</span></code> with labels.
+<h1>Module <a href="type_BatMap.S.Labels.html">BatMap.S.Labels</a></h1>
+
+<pre><span class="keyword">module</span> Labels: <code class="code"><span class="keyword">sig</span></code> <a href="BatMap.S.Labels.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+Operations on <code class="code"><span class="constructor">Map</span></code> with labels.
 <p>
 
 	This module overrides a number of functions of <code class="code"><span class="constructor">Map</span></code> by
@@ -118,5 +120,15 @@
 	there to improve readability and safety and to let you change the
 	order of arguments to functions. In every case, the behavior of the
 	function is identical to that of the corresponding function of <code class="code"><span class="constructor">Map</span></code>.<br>
+</div>
 <hr width="100%">
-<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">key:<a href="BatMap.S.html#TYPEkey">BatMap.S.key</a> -> data:'a -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a> -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a></code></pre><pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">f:(key:<a href="BatMap.S.html#TYPEkey">BatMap.S.key</a> -> data:'a -> unit) -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a> -> unit</code></pre><pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">f:('a -> 'b) -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a> -> 'b <a href="BatMap.S.html#TYPEt">BatMap.S.t</a></code></pre><pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">f:(key:<a href="BatMap.S.html#TYPEkey">BatMap.S.key</a> -> data:'a -> 'b) -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a> -> 'b <a href="BatMap.S.html#TYPEt">BatMap.S.t</a></code></pre><pre><span id="VALfilterv"><span class="keyword">val</span> filterv</span> : <code class="type">f:('a -> bool) -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a> -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a></code></pre><pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">f:(<a href="BatMap.S.html#TYPEkey">BatMap.S.key</a> -> 'a -> bool) -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a> -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a></code></pre><pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">f:(key:<a href="BatMap.S.html#TYPEkey">BatMap.S.key</a> -> data:'a -> 'b -> 'b) -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a> -> init:'b -> 'b</code></pre><pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">cmp:('a -> 'a -> int) -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a> -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a> -> int</code></pre><pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">cmp:('a -> 'a -> bool) -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a> -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a> -> bool</code></pre></body></html>
+
+<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">key:<a href="BatMap.S.html#TYPEkey">BatMap.S.key</a> -> data:'a -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a> -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a></code></pre>
+<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">f:(key:<a href="BatMap.S.html#TYPEkey">BatMap.S.key</a> -> data:'a -> unit) -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a> -> unit</code></pre>
+<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">f:('a -> 'b) -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a> -> 'b <a href="BatMap.S.html#TYPEt">BatMap.S.t</a></code></pre>
+<pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">f:(key:<a href="BatMap.S.html#TYPEkey">BatMap.S.key</a> -> data:'a -> 'b) -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a> -> 'b <a href="BatMap.S.html#TYPEt">BatMap.S.t</a></code></pre>
+<pre><span id="VALfilterv"><span class="keyword">val</span> filterv</span> : <code class="type">f:('a -> bool) -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a> -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a></code></pre>
+<pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">f:(<a href="BatMap.S.html#TYPEkey">BatMap.S.key</a> -> 'a -> bool) -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a> -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a></code></pre>
+<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">f:(key:<a href="BatMap.S.html#TYPEkey">BatMap.S.key</a> -> data:'a -> 'b -> 'b) -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a> -> init:'b -> 'b</code></pre>
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">cmp:('a -> 'a -> int) -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a> -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a> -> int</code></pre>
+<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">cmp:('a -> 'a -> bool) -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a> -> 'a <a href="BatMap.S.html#TYPEt">BatMap.S.t</a> -> bool</code></pre></body></html>

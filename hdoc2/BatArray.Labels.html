@@ -101,18 +101,20 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatArray.Labels</title>
 </head>
 <body>
-<div class="navbar"><a href="BatArray.Exceptionless.html">Previous</a>
-&nbsp;<a href="BatArray.html">Up</a>
-&nbsp;<a href="BatArray.Cap.html">Next</a>
+<div class="navbar"><a class="pre" href="BatArray.Exceptionless.html" title="BatArray.Exceptionless">Previous</a>
+&nbsp;<a class="up" href="BatArray.html" title="BatArray">Up</a>
+&nbsp;<a class="post" href="BatArray.Cap.html" title="BatArray.Cap">Next</a>
 </div>
-<center><h1>Module <a href="type_BatArray.Labels.html">BatArray.Labels</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> Labels: <code class="code"><span class="keyword">sig</span></code> <a href="BatArray.Labels.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Operations on <code class="code"><span class="constructor">Array</span></code> with labels.
+<h1>Module <a href="type_BatArray.Labels.html">BatArray.Labels</a></h1>
+
+<pre><span class="keyword">module</span> Labels: <code class="code"><span class="keyword">sig</span></code> <a href="BatArray.Labels.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+Operations on <code class="code"><span class="constructor">Array</span></code> with labels.
 <p>
 
     This module overrides a number of functions of <code class="code"><span class="constructor">Array</span></code> by
@@ -120,5 +122,35 @@
     there to improve readability and safety and to let you change the
     order of arguments to functions. In every case, the behavior of the
     function is identical to that of the corresponding function of <code class="code"><span class="constructor">Array</span></code>.<br>
+</div>
 <hr width="100%">
-<pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> f:(int -> 'a) -> 'a array</code></pre><pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -> init:'a -> 'a array</code></pre><pre><span id="VALmake_matrix"><span class="keyword">val</span> make_matrix</span> : <code class="type">dimx:int -> dimy:int -> 'a -> 'a array array</code></pre><pre><span id="VALcreate_matrix"><span class="keyword">val</span> create_matrix</span> : <code class="type">dimx:int -> dimy:int -> 'a -> 'a array array</code></pre><pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type">'a array -> pos:int -> len:int -> 'a array</code></pre><pre><span id="VALfill"><span class="keyword">val</span> fill</span> : <code class="type">'a array -> pos:int -> len:int -> 'a -> unit</code></pre><pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type">src:'a array -> src_pos:int -> dst:'a array -> dst_pos:int -> len:int -> unit</code></pre><pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">f:('a -> unit) -> 'a array -> unit</code></pre><pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">f:('a -> 'b) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> 'b <a href="BatArray.html#TYPEt">BatArray.t</a></code></pre><pre><span id="VALiteri"><span class="keyword">val</span> iteri</span> : <code class="type">f:(int -> 'a -> unit) -> 'a array -> unit</code></pre><pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">f:(int -> 'a -> 'b) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> 'b <a href="BatArray.html#TYPEt">BatArray.t</a></code></pre><pre><span id="VALmodify"><span class="keyword">val</span> modify</span> : <code class="type">f:('a -> 'a) -> 'a array -> unit</code></pre><pre><span id="VALmodifyi"><span class="keyword">val</span> modifyi</span> : <code class="type">f:(int -> 'a -> 'a) -> 'a array -> unit</code></pre><pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">f:('a -> 'b -> 'a) -> init:'a -> 'b array -> 'a</code></pre><pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">f:('a -> 'b -> 'b) -> 'a array -> init:'b -> 'b</code></pre><pre><span id="VALsort"><span class="keyword">val</span> sort</span> : <code class="type">cmp:('a -> 'a -> int) -> 'a array -> unit</code></pre><pre><span id="VALstable_sort"><span class="keyword">val</span> stable_sort</span> : <code class="type">cmp:('a -> 'a -> int) -> 'a array -> unit</code></pre><pre><span id="VALfast_sort"><span class="keyword">val</span> fast_sort</span> : <code class="type">cmp:('a -> 'a -> int) -> 'a array -> unit</code></pre><pre><span id="VALiter2"><span class="keyword">val</span> iter2</span> : <code class="type">f:('a -> 'b -> unit) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> 'b <a href="BatArray.html#TYPEt">BatArray.t</a> -> unit</code></pre><pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">f:('a -> bool) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> bool</code></pre><pre><span id="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">f:('a -> bool) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> bool</code></pre><pre><span id="VALiter2i"><span class="keyword">val</span> iter2i</span> : <code class="type">f:(int -> 'a -> 'b -> unit) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> 'b <a href="BatArray.html#TYPEt">BatArray.t</a> -> unit</code></pre><pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">f:('a -> bool) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> 'a</code></pre><pre><span id="VALfindi"><span class="keyword">val</span> findi</span> : <code class="type">f:('a -> bool) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> int</code></pre><pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">f:('a -> 'b) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> 'b <a href="BatArray.html#TYPEt">BatArray.t</a></code></pre><pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">f:(int -> 'a -> 'b) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> 'b <a href="BatArray.html#TYPEt">BatArray.t</a></code></pre><pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">f:('a -> bool) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a></code></pre><pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">f:('a -> 'b option) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> 'b <a href="BatArray.html#TYPEt">BatArray.t</a></code></pre><pre><span class="keyword">module</span> <a href="BatArray.Labels.LExceptionless.html">LExceptionless</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatArray.Labels.LExceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>
+
+<pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> f:(int -> 'a) -> 'a array</code></pre>
+<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -> init:'a -> 'a array</code></pre>
+<pre><span id="VALmake_matrix"><span class="keyword">val</span> make_matrix</span> : <code class="type">dimx:int -> dimy:int -> 'a -> 'a array array</code></pre>
+<pre><span id="VALcreate_matrix"><span class="keyword">val</span> create_matrix</span> : <code class="type">dimx:int -> dimy:int -> 'a -> 'a array array</code></pre>
+<pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type">'a array -> pos:int -> len:int -> 'a array</code></pre>
+<pre><span id="VALfill"><span class="keyword">val</span> fill</span> : <code class="type">'a array -> pos:int -> len:int -> 'a -> unit</code></pre>
+<pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type">src:'a array -> src_pos:int -> dst:'a array -> dst_pos:int -> len:int -> unit</code></pre>
+<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">f:('a -> unit) -> 'a array -> unit</code></pre>
+<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">f:('a -> 'b) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> 'b <a href="BatArray.html#TYPEt">BatArray.t</a></code></pre>
+<pre><span id="VALiteri"><span class="keyword">val</span> iteri</span> : <code class="type">f:(int -> 'a -> unit) -> 'a array -> unit</code></pre>
+<pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">f:(int -> 'a -> 'b) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> 'b <a href="BatArray.html#TYPEt">BatArray.t</a></code></pre>
+<pre><span id="VALmodify"><span class="keyword">val</span> modify</span> : <code class="type">f:('a -> 'a) -> 'a array -> unit</code></pre>
+<pre><span id="VALmodifyi"><span class="keyword">val</span> modifyi</span> : <code class="type">f:(int -> 'a -> 'a) -> 'a array -> unit</code></pre>
+<pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">f:('a -> 'b -> 'a) -> init:'a -> 'b array -> 'a</code></pre>
+<pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">f:('b -> 'a -> 'a) -> 'b array -> init:'a -> 'a</code></pre>
+<pre><span id="VALsort"><span class="keyword">val</span> sort</span> : <code class="type">cmp:('a -> 'a -> int) -> 'a array -> unit</code></pre>
+<pre><span id="VALstable_sort"><span class="keyword">val</span> stable_sort</span> : <code class="type">cmp:('a -> 'a -> int) -> 'a array -> unit</code></pre>
+<pre><span id="VALfast_sort"><span class="keyword">val</span> fast_sort</span> : <code class="type">cmp:('a -> 'a -> int) -> 'a array -> unit</code></pre>
+<pre><span id="VALiter2"><span class="keyword">val</span> iter2</span> : <code class="type">f:('a -> 'b -> unit) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> 'b <a href="BatArray.html#TYPEt">BatArray.t</a> -> unit</code></pre>
+<pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">f:('a -> bool) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> bool</code></pre>
+<pre><span id="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">f:('a -> bool) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> bool</code></pre>
+<pre><span id="VALiter2i"><span class="keyword">val</span> iter2i</span> : <code class="type">f:(int -> 'a -> 'b -> unit) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> 'b <a href="BatArray.html#TYPEt">BatArray.t</a> -> unit</code></pre>
+<pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">f:('a -> bool) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> 'a</code></pre>
+<pre><span id="VALfindi"><span class="keyword">val</span> findi</span> : <code class="type">f:('a -> bool) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> int</code></pre>
+<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">f:('a -> 'b) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> 'b <a href="BatArray.html#TYPEt">BatArray.t</a></code></pre>
+<pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">f:(int -> 'a -> 'b) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> 'b <a href="BatArray.html#TYPEt">BatArray.t</a></code></pre>
+<pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">f:('a -> bool) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a></code></pre>
+<pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">f:('a -> 'b option) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> 'b <a href="BatArray.html#TYPEt">BatArray.t</a></code></pre>
+<pre><span class="keyword">module</span> <a href="BatArray.Labels.LExceptionless.html">LExceptionless</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatArray.Labels.LExceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>

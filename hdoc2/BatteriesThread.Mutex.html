@@ -100,18 +100,20 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatteriesThread.Mutex</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a href="BatteriesThread.html">Up</a>
-&nbsp;<a href="BatteriesThread.RMutex.html">Next</a>
+<div class="navbar">&nbsp;<a class="up" href="BatteriesThread.html" title="BatteriesThread">Up</a>
+&nbsp;<a class="post" href="BatteriesThread.RMutex.html" title="BatteriesThread.RMutex">Next</a>
 </div>
-<center><h1>Module <a href="type_BatteriesThread.Mutex.html">BatteriesThread.Mutex</a></h1></center>
-<br>
+<h1>Module <a href="type_BatteriesThread.Mutex.html">BatteriesThread.Mutex</a></h1>
+
 <pre><span class="keyword">module</span> Mutex: <code class="type">BatMutex</code></pre><hr width="100%">
-<pre><span id="VALsynchronize"><span class="keyword">val</span> synchronize</span> : <code class="type">?lock:Mutex.t -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info">
+
+<pre><span id="VALsynchronize"><span class="keyword">val</span> synchronize</span> : <code class="type">?lock:Mutex.t -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info ">
 Protect a function.
 <p>
 
@@ -131,7 +133,8 @@ Protect a function.
     and released when the function call ends, whether this is due
     to normal termination or to some exception being raised.<br>
 </div>
-<pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">unit -> <a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a></code></pre><div class="info">
+
+<pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">unit -> <a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a></code></pre><div class="info ">
 Create a new abstract lock based on Mutexes.<br>
 </div>
 </body></html>

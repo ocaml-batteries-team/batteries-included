@@ -101,6 +101,7 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Introduction" rel="Section" href="#6_Introduction">
@@ -119,19 +120,21 @@
 <title>Batteries user guide : BatScanf</title>
 </head>
 <body>
-<div class="navbar"><a href="BatReturn.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatSeq.html">Next</a>
+<div class="navbar"><a class="pre" href="BatReturn.html" title="BatReturn">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatSeq.html" title="BatSeq">Next</a>
 </div>
-<center><h1>Module <a href="type_BatScanf.html">BatScanf</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> BatScanf: <code class="code"><span class="keyword">sig</span></code> <a href="BatScanf.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Formatted input functions.<br>
+<h1>Module <a href="type_BatScanf.html">BatScanf</a></h1>
+
+<pre><span class="keyword">module</span> BatScanf: <code class="code"><span class="keyword">sig</span></code> <a href="BatScanf.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+Formatted input functions.<br>
 <b>Author(s):</b> Pierre Weis (Base module), David Teller<br>
+</div>
 <hr width="100%">
 <br>
-<span id="6_Introduction"><h6>Introduction</h6></span><br>
+<h6 id="6_Introduction">Introduction</h6><br>
 <br>
-<span id="7_Functionalinputwithformatstrings"><div class="h7">Functional input with format strings</div></span><br>
+<div class="h7" id="7_Functionalinputwithformatstrings">Functional input with format strings</div><br>
 <br>
 The module <code class="code"><span class="constructor">Scanf</span></code> provides formatted input functions or <em>scanners</em>.
 <p>
@@ -167,7 +170,7 @@ The module <code class="code"><span class="constructor">Scanf</span></code> prov
 </ul>
 <br>
 <br>
-<span id="7_Asimpleexample"><div class="h7">A simple example</div></span><br>
+<div class="h7" id="7_Asimpleexample">A simple example</div><br>
 <br>
 As suggested above, the expression <code class="code">bscanf ib <span class="string">"%d"</span> f</code> reads a decimal
     integer <code class="code">n</code> from the source of characters <code class="code">ib</code> and returns <code class="code">f n</code>.
@@ -188,7 +191,7 @@ As suggested above, the expression <code class="code">bscanf ib <span class="str
     <span class="string">"%d"</span> f</code>, and then enter <code class="code">41</code> at the keyboard, we get <code class="code">42</code> as the final
     result.<br>
 <br>
-<span id="7_Formattedinputasafunctionalfeature"><div class="h7">Formatted input as a functional feature</div></span><br>
+<div class="h7" id="7_Formattedinputasafunctionalfeature">Formatted input as a functional feature</div><br>
 <br>
 The OCaml scanning facility is reminiscent of the corresponding C feature.
     However, it is also largely different, simpler, and yet more powerful:
@@ -201,13 +204,15 @@ The OCaml scanning facility is reminiscent of the corresponding C feature.
     support polymorphism, in particular arbitrary interaction with
     polymorphic user-defined scanners.  Furthermore, the OCaml formatted input
     facility is fully type-checked at compile time.<br>
+
 <pre><span class="keyword">module</span> <a href="BatScanf.Scanning.html">Scanning</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatScanf.Scanning.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
 Scanning buffers
 </div>
 <br>
-<span id="6_Typeofformattedinputfunctions"><h6>Type of formatted input functions</h6></span><br>
+<h6 id="6_Typeofformattedinputfunctions">Type of formatted input functions</h6><br>
+
 <pre><span id="TYPEscanner"><span class="keyword">type</span> <code class="type">('a, 'b, 'c, 'd)</code> scanner</span> = <code class="type">('a, <a href="BatScanf.Scanning.html#TYPEscanbuf">Scanning.scanbuf</a>, 'b, 'c, 'a -> 'd, 'd) format6 -> 'c</code> </pre>
-<div class="info">
+<div class="info ">
 The type of formatted input scanners: <code class="code">(<span class="keywordsign">'</span>a, <span class="keywordsign">'</span>b, <span class="keywordsign">'</span>c, <span class="keywordsign">'</span>d) scanner</code> is the
     type of a formatted input function that reads from some scanning buffer
     according to some format string; more precisely, if <code class="code">scan</code> is some
@@ -229,14 +234,16 @@ The type of formatted input scanners: <code class="code">(<span class="keywordsi
     by a <code class="code"><span class="string">';'</span></code> character, and returns <code class="code">f v</code>.<br>
 </div>
 
+
 <pre><span id="EXCEPTIONScan_failure"><span class="keyword">exception</span> Scan_failure</span> <span class="keyword">of</span> <code class="type">string</code></pre>
-<div class="info">
+<div class="info ">
 The exception that formatted input functions raise when the input cannot be
     read according to the given format.<br>
 </div>
 <br>
-<span id="6_Thegeneralformattedinputfunction"><h6>The general formatted input function</h6></span><br>
-<pre><span id="VALbscanf"><span class="keyword">val</span> bscanf</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">Scanning.scanbuf</a> -> ('a, 'b, 'c, 'd) <a href="BatScanf.html#TYPEscanner">scanner</a></code></pre><div class="info">
+<h6 id="6_Thegeneralformattedinputfunction">The general formatted input function</h6><br>
+
+<pre><span id="VALbscanf"><span class="keyword">val</span> bscanf</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">Scanning.scanbuf</a> -> ('a, 'b, 'c, 'd) <a href="BatScanf.html#TYPEscanner">scanner</a></code></pre><div class="info ">
 <code class="code">bscanf ib fmt r1 ... rN f</code> reads arguments for the function <code class="code">f</code>, from the
     scanning buffer <code class="code">ib</code>, according to the format string <code class="code">fmt</code>, and applies <code class="code">f</code>
     to these values.
@@ -250,7 +257,7 @@ The exception that formatted input functions raise when the input cannot be
     argument corresponding to a <code class="code">%r</code> conversion.<br>
 </div>
 <br>
-<span id="6_Formatstringdescription"><h6>Format string description</h6></span><br>
+<h6 id="6_Formatstringdescription">Format string description</h6><br>
 <br>
 The format is a character string which contains three types of
     objects:<ul>
@@ -262,7 +269,7 @@ The format is a character string which contains three types of
 </ul>
 <br>
 <br>
-<span id="7_Thespacecharacterinformatstrings"><div class="h7">The space character in format strings</div></span><br>
+<div class="h7" id="7_Thespacecharacterinformatstrings">The space character in format strings</div><br>
 <br>
 As mentioned above, a plain character in the format string is just
     matched with the characters of the input; however, one character is a
@@ -279,7 +286,7 @@ As mentioned above, a plain character in the format string is just
     input with various whitespace in it, such as <code class="code"><span class="constructor">Price</span> = 1 $</code>,
     <code class="code"><span class="constructor">Price</span>  =  1    $</code>, or even <code class="code"><span class="constructor">Price</span>=1$</code>.<br>
 <br>
-<span id="7_Conversionspecificationsinformatstrings"><div class="h7">Conversion specifications in format strings</div></span><br>
+<div class="h7" id="7_Conversionspecificationsinformatstrings">Conversion specifications in format strings</div><br>
 <br>
 Conversion specifications consist in the <code class="code">%</code> character, followed by
     an optional flag, an optional field width, and followed by one or
@@ -308,7 +315,7 @@ Conversion specifications consist in the <code class="code">%</code> character, 
 </ul>
 <br>
 <br>
-<span id="7_Scanningindicationsinformatstrings"><div class="h7">Scanning indications in format strings</div></span><br>
+<div class="h7" id="7_Scanningindicationsinformatstrings">Scanning indications in format strings</div><br>
 <br>
 Scanning indications appear just after the string conversions <code class="code">%s</code>
     and <code class="code">%[ range ]</code> to delimit the end of the token. A scanning
@@ -336,7 +343,7 @@ Scanning indications appear just after the string conversions <code class="code"
 </ul>
 <br>
 <br>
-<span id="7_Exceptionsduringscanning"><div class="h7">Exceptions during scanning</div></span><br>
+<div class="h7" id="7_Exceptionsduringscanning">Exceptions during scanning</div><br>
 <br>
 Scanners may raise the following exceptions when the input cannot be read
     according to the format string:
@@ -344,8 +351,9 @@ Scanners may raise the following exceptions when the input cannot be read
 
     -<br>
 <br>
-<span id="6_Specializedformattedinputfunctions"><h6>Specialized formatted input functions</h6></span><br>
-<pre><span id="VALfscanf"><span class="keyword">val</span> fscanf</span> : <code class="type">Pervasives.in_channel -> ('a, 'b, 'c, 'd) <a href="BatScanf.html#TYPEscanner">scanner</a></code></pre><div class="info">
+<h6 id="6_Specializedformattedinputfunctions">Specialized formatted input functions</h6><br>
+
+<pre><span id="VALfscanf"><span class="keyword">val</span> fscanf</span> : <code class="type">Pervasives.in_channel -> ('a, 'b, 'c, 'd) <a href="BatScanf.html#TYPEscanner">scanner</a></code></pre><div class="info ">
 Same as <code class="code"><span class="constructor">Scanf</span>.bscanf</code>, but reads from the given channel.
 <p>
 
@@ -360,14 +368,17 @@ Same as <code class="code"><span class="constructor">Scanf</span>.bscanf</code>,
     As a consequence, never mixt direct low level reading and high level
     scanning from the same input channel.<br>
 </div>
-<pre><span id="VALsscanf"><span class="keyword">val</span> sscanf</span> : <code class="type">string -> ('a, 'b, 'c, 'd) <a href="BatScanf.html#TYPEscanner">scanner</a></code></pre><div class="info">
+
+<pre><span id="VALsscanf"><span class="keyword">val</span> sscanf</span> : <code class="type">string -> ('a, 'b, 'c, 'd) <a href="BatScanf.html#TYPEscanner">scanner</a></code></pre><div class="info ">
 Same as <code class="code"><span class="constructor">Scanf</span>.bscanf</code>, but reads from the given string.<br>
 </div>
-<pre><span id="VALscanf"><span class="keyword">val</span> scanf</span> : <code class="type">('a, 'b, 'c, 'd) <a href="BatScanf.html#TYPEscanner">scanner</a></code></pre><div class="info">
+
+<pre><span id="VALscanf"><span class="keyword">val</span> scanf</span> : <code class="type">('a, 'b, 'c, 'd) <a href="BatScanf.html#TYPEscanner">scanner</a></code></pre><div class="info ">
 Same as <code class="code"><span class="constructor">Scanf</span>.bscanf</code>, but reads from the predefined scanning
     buffer <code class="code"><span class="constructor">Scanf</span>.<span class="constructor">Scanning</span>.stdib</code> that is connected to <code class="code">stdin</code>.<br>
 </div>
-<pre><span id="VALkscanf"><span class="keyword">val</span> kscanf</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">Scanning.scanbuf</a> -><br>       (<a href="BatScanf.Scanning.html#TYPEscanbuf">Scanning.scanbuf</a> -> exn -> 'a) -> ('b, 'c, 'd, 'a) <a href="BatScanf.html#TYPEscanner">scanner</a></code></pre><div class="info">
+
+<pre><span id="VALkscanf"><span class="keyword">val</span> kscanf</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">Scanning.scanbuf</a> -><br>       (<a href="BatScanf.Scanning.html#TYPEscanbuf">Scanning.scanbuf</a> -> exn -> 'd) -> ('a, 'b, 'c, 'd) <a href="BatScanf.html#TYPEscanner">scanner</a></code></pre><div class="info ">
 Same as <code class="code"><span class="constructor">Scanf</span>.bscanf</code>, but takes an additional function argument
     <code class="code">ef</code> that is called in case of error: if the scanning process or
     some conversion fails, the scanning function aborts and calls the
@@ -375,18 +386,21 @@ Same as <code class="code"><span class="constructor">Scanf</span>.bscanf</code>,
     exception that aborted the scanning process.<br>
 </div>
 <br>
-<span id="6_Readingformatstringsfrominput"><h6>Reading format strings from input</h6></span><br>
-<pre><span id="VALbscanf_format"><span class="keyword">val</span> bscanf_format</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">Scanning.scanbuf</a> -><br>       ('a, 'b, 'c, 'd, 'e, 'f) format6 -><br>       (('a, 'b, 'c, 'd, 'e, 'f) format6 -> 'g) -> 'g</code></pre><div class="info">
+<h6 id="6_Readingformatstringsfrominput">Reading format strings from input</h6><br>
+
+<pre><span id="VALbscanf_format"><span class="keyword">val</span> bscanf_format</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">Scanning.scanbuf</a> -><br>       ('a, 'b, 'c, 'd, 'e, 'f) format6 -><br>       (('a, 'b, 'c, 'd, 'e, 'f) format6 -> 'g) -> 'g</code></pre><div class="info ">
 <code class="code">bscanf_format ib fmt f</code> reads a format string token from the scannning
     buffer <code class="code">ib</code>, according to the given format string <code class="code">fmt</code>, and applies <code class="code">f</code> to
     the resulting format string value.<br>
 <b>Raises</b> <code>Scan_failure</code> if the format string value read does not have the
     same type as <code class="code">fmt</code>.<br>
 </div>
-<pre><span id="VALsscanf_format"><span class="keyword">val</span> sscanf_format</span> : <code class="type">string -><br>       ('a, 'b, 'c, 'd, 'e, 'f) format6 -><br>       (('a, 'b, 'c, 'd, 'e, 'f) format6 -> 'g) -> 'g</code></pre><div class="info">
+
+<pre><span id="VALsscanf_format"><span class="keyword">val</span> sscanf_format</span> : <code class="type">string -><br>       ('a, 'b, 'c, 'd, 'e, 'f) format6 -><br>       (('a, 'b, 'c, 'd, 'e, 'f) format6 -> 'g) -> 'g</code></pre><div class="info ">
 Same as <code class="code"><span class="constructor">Scanf</span>.bscanf_format</code>, but reads from the given string.<br>
 </div>
-<pre><span id="VALformat_from_string"><span class="keyword">val</span> format_from_string</span> : <code class="type">string -><br>       ('a, 'b, 'c, 'd, 'e, 'f) format6 -> ('a, 'b, 'c, 'd, 'e, 'f) format6</code></pre><div class="info">
+
+<pre><span id="VALformat_from_string"><span class="keyword">val</span> format_from_string</span> : <code class="type">string -><br>       ('a, 'b, 'c, 'd, 'e, 'f) format6 -> ('a, 'b, 'c, 'd, 'e, 'f) format6</code></pre><div class="info ">
 <code class="code">format_from_string s fmt</code> converts a string argument to a format string,
     according to the given format string <code class="code">fmt</code>.<br>
 <b>Raises</b> <code>Scan_failure</code> if <code class="code">s</code>, considered as a format string, does not

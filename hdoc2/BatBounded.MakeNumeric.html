@@ -100,16 +100,17 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatBounded.MakeNumeric</title>
 </head>
 <body>
-<div class="navbar"><a href="BatBounded.Make.html">Previous</a>
-&nbsp;<a href="BatBounded.html">Up</a>
+<div class="navbar"><a class="pre" href="BatBounded.Make.html" title="BatBounded.Make">Previous</a>
+&nbsp;<a class="up" href="BatBounded.html" title="BatBounded">Up</a>
 &nbsp;</div>
-<center><h1>Functor <a href="type_BatBounded.MakeNumeric.html">BatBounded.MakeNumeric</a></h1></center>
-<br>
+<h1>Functor <a href="type_BatBounded.MakeNumeric.html">BatBounded.MakeNumeric</a></h1>
+
 <pre><span class="keyword">module</span> MakeNumeric: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">M</span></code><code class="code"> : </code><code class="type"><a href="BatBounded.BoundedNumericType.html">BoundedNumericType</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatBounded.NumericSig.html">NumericSig</a></code><code class="type">  with type base_u = M.base_t</code><code class="type"> 
   with type u = M.t</code><code class="type"> 
   with type t = private M.t</code></div></pre><table border="0" cellpadding="3" width="100%">
@@ -127,5 +128,14 @@
 </tr>
 </table>
 <hr width="100%">
+
 <pre><span class="keyword">include</span> <a href="BatBounded.S.html">BatBounded.S</a></pre>
-<pre><span id="VAL(+)"><span class="keyword">val</span> (+)</span> : <code class="type">t -> base_u -> t</code></pre><pre><span id="VAL(-)"><span class="keyword">val</span> (-)</span> : <code class="type">t -> base_u -> t</code></pre><pre><span id="VAL( * )"><span class="keyword">val</span> ( * )</span> : <code class="type">t -> base_u -> t</code></pre><pre><span id="VAL(/)"><span class="keyword">val</span> (/)</span> : <code class="type">t -> base_u -> t</code></pre><pre><span id="VAL(+:)"><span class="keyword">val</span> (+:)</span> : <code class="type">t -> t -> t</code></pre><pre><span id="VAL(-:)"><span class="keyword">val</span> (-:)</span> : <code class="type">t -> t -> t</code></pre><pre><span id="VAL( *: )"><span class="keyword">val</span> ( *: )</span> : <code class="type">t -> t -> t</code></pre><pre><span id="VAL(/:)"><span class="keyword">val</span> (/:)</span> : <code class="type">t -> t -> t</code></pre></body></html>
+
+<pre><span id="VAL(+)"><span class="keyword">val</span> (+)</span> : <code class="type">t -> base_u -> t</code></pre>
+<pre><span id="VAL(-)"><span class="keyword">val</span> (-)</span> : <code class="type">t -> base_u -> t</code></pre>
+<pre><span id="VAL( * )"><span class="keyword">val</span> ( * )</span> : <code class="type">t -> base_u -> t</code></pre>
+<pre><span id="VAL(/)"><span class="keyword">val</span> (/)</span> : <code class="type">t -> base_u -> t</code></pre>
+<pre><span id="VAL(+:)"><span class="keyword">val</span> (+:)</span> : <code class="type">t -> t -> t</code></pre>
+<pre><span id="VAL(-:)"><span class="keyword">val</span> (-:)</span> : <code class="type">t -> t -> t</code></pre>
+<pre><span id="VAL( *: )"><span class="keyword">val</span> ( *: )</span> : <code class="type">t -> t -> t</code></pre>
+<pre><span id="VAL(/:)"><span class="keyword">val</span> (/:)</span> : <code class="type">t -> t -> t</code></pre></body></html>

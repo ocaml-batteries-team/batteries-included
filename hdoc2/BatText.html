@@ -101,6 +101,7 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Creation and conversions" rel="Section" href="#6_Creationandconversions">
@@ -112,13 +113,14 @@
 <title>Batteries user guide : BatText</title>
 </head>
 <body>
-<div class="navbar"><a href="BatSys.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatTuple.html">Next</a>
+<div class="navbar"><a class="pre" href="BatSys.html" title="BatSys">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatTuple.html" title="BatTuple">Next</a>
 </div>
-<center><h1>Module <a href="type_BatText.html">BatText</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> BatText: <code class="code"><span class="keyword">sig</span></code> <a href="BatText.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Heavyweight strings ("ropes")
+<h1>Module <a href="type_BatText.html">BatText</a></h1>
+
+<pre><span class="keyword">module</span> BatText: <code class="code"><span class="keyword">sig</span></code> <a href="BatText.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+Heavyweight strings ("ropes")
 <p>
 
     This module implements ropes as described in
@@ -133,7 +135,7 @@
 <li>access to and modification of ropes in logarithmic time</li>
 </ul>
 
-    <span id="8_Functionalnatureandpersistence"><div class="h8">Functional nature and persistence</div></span>
+    <div class="h8" id="8_Functionalnatureandpersistence">Functional nature and persistence</div>
 <p>
 
     All operations are non-destructive: the original rope is never modified. When a
@@ -152,141 +154,172 @@
     calling <code class="code">balance</code> after each modification would defeat the purpose of amortization.
 <p>
 
-    <span id="8_Limitations"><div class="h8">Limitations</div></span>
+    <div class="h8" id="8_Limitations">Limitations</div>
 <p>
 
     The length of ropes is limited to approximately 700 Mb on 32-bit
     architectures, 220 Gb on 64 bit architectures.<br>
 <b>Author(s):</b> Mauricio Fernandez, Yoriyuki Yamagata, The Batteries Included Team<br>
+</div>
 <hr width="100%">
+
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
-<div class="info">
+<div class="info ">
 The type of the rope.<br>
 </div>
 
+
 <pre><span id="EXCEPTIONOut_of_bounds"><span class="keyword">exception</span> Out_of_bounds</span></pre>
-<div class="info">
+<div class="info ">
 Raised when an operation violates the bounds of the rope.<br>
 </div>
-<pre><span id="VALmax_length"><span class="keyword">val</span> max_length</span> : <code class="type">int</code></pre><div class="info">
+
+<pre><span id="VALmax_length"><span class="keyword">val</span> max_length</span> : <code class="type">int</code></pre><div class="info ">
 Maximum length of the rope (number of UTF-8 characters).<br>
 </div>
 <br>
-<span id="6_Creationandconversions"><h6>Creation and conversions</h6></span><br>
-<pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type"><a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+<h6 id="6_Creationandconversions">Creation and conversions</h6><br>
+
+<pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type"><a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 The empty rope.<br>
 </div>
-<pre><span id="VALof_latin1"><span class="keyword">val</span> of_latin1</span> : <code class="type">string -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALof_latin1"><span class="keyword">val</span> of_latin1</span> : <code class="type">string -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 Constructs a unicode rope from a latin-1 string.<br>
 </div>
-<pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">of_string s</code> returns a rope corresponding to the UTF-8 encoded string <code class="code">s</code>.<br>
 </div>
-<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> string</code></pre><div class="info">
+
+<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> string</code></pre><div class="info ">
 <code class="code">to_string t</code> returns a UTF-8 encoded string representing <code class="code">t</code><br>
 </div>
-<pre><span id="VALof_uchar"><span class="keyword">val</span> of_uchar</span> : <code class="type"><a href="BatUChar.html#TYPEt">BatUChar.t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALof_uchar"><span class="keyword">val</span> of_uchar</span> : <code class="type"><a href="BatUChar.html#TYPEt">BatUChar.t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">of_uchar c</code> returns a rope containing exactly character <code class="code">c</code>.<br>
 </div>
-<pre><span id="VALof_char"><span class="keyword">val</span> of_char</span> : <code class="type">char -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALof_char"><span class="keyword">val</span> of_char</span> : <code class="type">char -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">of_char c</code> returns a rope containing exactly Latin-1 character <code class="code">c</code>.<br>
 </div>
-<pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">int -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">int -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">make i c</code> returns a rope of length <code class="code">i</code> consisting of <code class="code">c</code> chars;
     it is similar to String.make<br>
 </div>
-<pre><span id="VALjoin"><span class="keyword">val</span> join</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> list -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALjoin"><span class="keyword">val</span> join</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> list -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 Same as <a href="BatText.html#VALconcat"><code class="code"><span class="constructor">BatText</span>.concat</code></a><br>
 </div>
-<pre><span id="VALexplode"><span class="keyword">val</span> explode</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> list</code></pre><div class="info">
+
+<pre><span id="VALexplode"><span class="keyword">val</span> explode</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> list</code></pre><div class="info ">
 <code class="code">explode s</code> returns the list of characters in the rope <code class="code">s</code>.<br>
 </div>
-<pre><span id="VALimplode"><span class="keyword">val</span> implode</span> : <code class="type"><a href="BatUChar.html#TYPEt">BatUChar.t</a> list -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALimplode"><span class="keyword">val</span> implode</span> : <code class="type"><a href="BatUChar.html#TYPEt">BatUChar.t</a> list -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">implode cs</code> returns a rope resulting from concatenating
     the characters in the list <code class="code">cs</code>.<br>
 </div>
 <br>
-<span id="6_Properties"><h6>Properties </h6></span><br>
-<pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+<h6 id="6_Properties">Properties </h6><br>
+
+<pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
 Returns whether the rope is empty or not.<br>
 </div>
-<pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 Returns the length of the rope (<code class="code"><span class="constructor">O</span>(1)</code>).
     This is number of UTF-8 characters.<br>
 </div>
-<pre><span id="VALheight"><span class="keyword">val</span> height</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALheight"><span class="keyword">val</span> height</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 Returns the height (depth) of the rope.<br>
 </div>
-<pre><span id="VALbalance"><span class="keyword">val</span> balance</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALbalance"><span class="keyword">val</span> balance</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">balance r</code> returns a balanced copy of the <code class="code">r</code> rope. Note that ropes are
     automatically rebalanced when their height exceeds a given threshold, but
     <code class="code">balance</code> allows to invoke that operation explicity.<br>
 </div>
 <br>
-<span id="6_Operations"><h6>Operations </h6></span><br>
-<pre><span id="VALappend"><span class="keyword">val</span> append</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+<h6 id="6_Operations">Operations </h6><br>
+
+<pre><span id="VALappend"><span class="keyword">val</span> append</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">append r u</code> concatenates the <code class="code">r</code> and <code class="code">u</code> ropes. In general, it operates
     in <code class="code"><span class="constructor">O</span>(log(min n1 n2))</code> amortized time.
     Small ropes are treated specially and can be appended/prepended in
     amortized <code class="code"><span class="constructor">O</span>(1)</code> time.<br>
 </div>
-<pre><span id="VAL(^^^)"><span class="keyword">val</span> (^^^)</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VAL(^^^)"><span class="keyword">val</span> (^^^)</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 As <a href="BatText.html#VALappend"><code class="code"><span class="constructor">BatText</span>.append</code></a><br>
 </div>
-<pre><span id="VALappend_char"><span class="keyword">val</span> append_char</span> : <code class="type"><a href="BatUChar.html#TYPEt">BatUChar.t</a> -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALappend_char"><span class="keyword">val</span> append_char</span> : <code class="type"><a href="BatUChar.html#TYPEt">BatUChar.t</a> -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">append_char c r</code> returns a new rope with the <code class="code">c</code> character at the end
     in amortized <code class="code"><span class="constructor">O</span>(1)</code> time.<br>
 </div>
-<pre><span id="VALprepend_char"><span class="keyword">val</span> prepend_char</span> : <code class="type"><a href="BatUChar.html#TYPEt">BatUChar.t</a> -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALprepend_char"><span class="keyword">val</span> prepend_char</span> : <code class="type"><a href="BatUChar.html#TYPEt">BatUChar.t</a> -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">prepend_char c r</code> returns a new rope with the <code class="code">c</code> character at the
     beginning in amortized <code class="code"><span class="constructor">O</span>(1)</code> time.<br>
 </div>
-<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatUChar.html#TYPEt">BatUChar.t</a></code></pre><div class="info">
+
+<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatUChar.html#TYPEt">BatUChar.t</a></code></pre><div class="info ">
 <code class="code">get r n</code> returns the (n+1)th character from the rope <code class="code">r</code>; i.e.
     <code class="code">get r 0</code> returns the first character.
     Operates in worst-case <code class="code"><span class="constructor">O</span>(log size)</code> time.<br>
 <b>Raises</b> <code>Out_of_bounds</code> if a character out of bounds is requested.<br>
 </div>
-<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">set r n c</code> returns a copy of rope <code class="code">r</code>  where the (n+1)th character
     has been set to <code class="code">c</code>. See also <a href="BatText.html#VALget"><code class="code"><span class="constructor">BatText</span>.get</code></a>.
     Operates in worst-case <code class="code"><span class="constructor">O</span>(log size)</code> time.<br>
 </div>
-<pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> int -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> int -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">sub r m n</code> returns a sub-rope of <code class="code">r</code> containing all characters
     whose indexes range from <code class="code">m</code> to <code class="code">m + n - 1</code> (included).
     Operates in worst-case <code class="code"><span class="constructor">O</span>(log size)</code> time.<br>
 <b>Raises</b> <code>Out_of_bounds</code> in the same cases as sub.<br>
 </div>
-<pre><span id="VALinsert"><span class="keyword">val</span> insert</span> : <code class="type">int -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALinsert"><span class="keyword">val</span> insert</span> : <code class="type">int -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">insert n r u</code> returns a copy of the <code class="code">u</code> rope where <code class="code">r</code> has been
     inserted between the characters with index <code class="code">n</code> and <code class="code">n + 1</code> in the
     original rope. The length of the new rope is
     <code class="code">length u + length r</code>.
     Operates in amortized <code class="code"><span class="constructor">O</span>(log(size r) + log(size u))</code> time.<br>
 </div>
-<pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">int -> int -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">int -> int -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">remove m n r</code> returns the rope resulting from deleting the
     characters with indexes ranging from <code class="code">m</code> to <code class="code">m + n - 1</code> (included)
     from the original rope <code class="code">r</code>. The length of the new rope is
     <code class="code">length r - n</code>.
     Operates in amortized <code class="code"><span class="constructor">O</span>(log(size r))</code> time.<br>
 </div>
-<pre><span id="VALconcat"><span class="keyword">val</span> concat</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> list -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALconcat"><span class="keyword">val</span> concat</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> list -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">concat sep sl</code> concatenates the list of ropes <code class="code">sl</code>,
     inserting the separator rope <code class="code">sep</code> between each.<br>
 </div>
 <br>
-<span id="6_Iteration"><h6>Iteration</h6></span><br>
-<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(<a href="BatUChar.html#TYPEt">BatUChar.t</a> -> unit) -> <a href="BatText.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+<h6 id="6_Iteration">Iteration</h6><br>
+
+<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(<a href="BatUChar.html#TYPEt">BatUChar.t</a> -> unit) -> <a href="BatText.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 <code class="code">iter f r</code> applies <code class="code">f</code> to all the characters in the <code class="code">r</code> rope,
     in order.<br>
 </div>
-<pre><span id="VALiteri"><span class="keyword">val</span> iteri</span> : <code class="type">?base:int -> (int -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> unit) -> <a href="BatText.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+
+<pre><span id="VALiteri"><span class="keyword">val</span> iteri</span> : <code class="type">?base:int -> (int -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> unit) -> <a href="BatText.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 Operates like <code class="code">iter</code>, but also passes the index of the character
     to the given function.<br>
 </div>
-<pre><span id="VALrange_iter"><span class="keyword">val</span> range_iter</span> : <code class="type">(<a href="BatUChar.html#TYPEt">BatUChar.t</a> -> unit) -> int -> int -> <a href="BatText.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+
+<pre><span id="VALrange_iter"><span class="keyword">val</span> range_iter</span> : <code class="type">(<a href="BatUChar.html#TYPEt">BatUChar.t</a> -> unit) -> int -> int -> <a href="BatText.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 <code class="code">rangeiter f m n r</code> applies <code class="code">f</code> to all the characters whose
     indices <code class="code">k</code> satisfy <code class="code">m</code> &lt;= <code class="code">k</code> &lt; <code class="code">m + n</code>.
     It is thus equivalent to <code class="code">iter f (sub m n r)</code>, but does not
@@ -295,40 +328,63 @@ Operates like <code class="code">iter</code>, but also passes the index of the c
     from an explicit loop using <code class="code">get</code>.<br>
 <b>Raises</b> <code>Out_of_bounds</code> in the same cases as <code class="code">sub</code>.<br>
 </div>
-<pre><span id="VALrange_iteri"><span class="keyword">val</span> range_iteri</span> : <code class="type">(int -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> unit) -> ?base:int -> int -> int -> <a href="BatText.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+
+<pre><span id="VALrange_iteri"><span class="keyword">val</span> range_iteri</span> : <code class="type">(int -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> unit) -> ?base:int -> int -> int -> <a href="BatText.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 As <code class="code">range_iter</code>, but passes base + index of the character in the
     subrope defined by next to arguments.<br>
 </div>
-<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> 'a) -> 'a -> <a href="BatText.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+
+<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> 'a) -> 'a -> <a href="BatText.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
 <code class="code"><span class="constructor">Rope</span>.fold f a r</code> computes <code class="code"> f (... (f (f a r0) r1)...) rN-1 </code>
     where <code class="code">rn = <span class="constructor">Rope</span>.get n r </code> and <code class="code"><span class="constructor">N</span> = length r</code>.<br>
 </div>
-<pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> (int -> <a href="BatUChar.html#TYPEt">BatUChar.t</a>) -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> (int -> <a href="BatUChar.html#TYPEt">BatUChar.t</a>) -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">init l f</code> returns the rope of length <code class="code">l</code> with the chars f 0 , f
     1 , f 2 ... f (l-1).<br>
 </div>
-<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">(<a href="BatUChar.html#TYPEt">BatUChar.t</a> -> <a href="BatUChar.html#TYPEt">BatUChar.t</a>) -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">(<a href="BatUChar.html#TYPEt">BatUChar.t</a> -> <a href="BatUChar.html#TYPEt">BatUChar.t</a>) -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">map f s</code> returns a rope where all characters <code class="code">c</code> in <code class="code">s</code> have been
     replaced by <code class="code">f c</code>. *<br>
 </div>
-<pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">(<a href="BatUChar.html#TYPEt">BatUChar.t</a> -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> option) -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">(<a href="BatUChar.html#TYPEt">BatUChar.t</a> -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> option) -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">filter_map f l</code> calls <code class="code">(f a0) (f a1).... (f an)</code> where <code class="code">a0..an</code> are
     the characters of <code class="code">l</code>. It returns the list of elements <code class="code">bi</code> such as
     <code class="code">f ai = <span class="constructor">Some</span> bi</code> (when <code class="code">f</code> returns <code class="code"><span class="constructor">None</span></code>, the corresponding element of
     <code class="code">l</code> is discarded).<br>
 </div>
-<pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">(<a href="BatUChar.html#TYPEt">BatUChar.t</a> -> bool) -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">(<a href="BatUChar.html#TYPEt">BatUChar.t</a> -> bool) -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">filter f s</code> returns a copy of rope <code class="code">s</code> in which only
     characters <code class="code">c</code> such that <code class="code">f c = <span class="keyword">true</span></code> remain.<br>
 </div>
+
+<pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
+enumerate the rope's characters<br>
+<b>Since</b> 2.2.0<br>
+</div>
+
+<pre><span id="VALbackwards"><span class="keyword">val</span> backwards</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
+enumerates the rope's characters, in reverse order<br>
+<b>Since</b> 2.2.0<br>
+</div>
+
+<pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type"><a href="BatUChar.html#TYPEt">BatUChar.t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
+converts the enumeration into a rope<br>
+<b>Since</b> 2.2.0<br>
+</div>
 <br>
-<span id="6_Finding"><h6>Finding</h6></span><br>
-<pre><span id="VALindex"><span class="keyword">val</span> index</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> int</code></pre><div class="info">
+<h6 id="6_Finding">Finding</h6><br>
+
+<pre><span id="VALindex"><span class="keyword">val</span> index</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> int</code></pre><div class="info ">
 <code class="code">index s c</code> returns the position of the leftmost
     occurrence of character <code class="code">c</code> in rope <code class="code">s</code>.<br>
 <b>Raises</b> <code>Not_found</code> if <code class="code">c</code> does not occur in <code class="code">s</code>.<br>
 </div>
-<pre><span id="VALindex_from"><span class="keyword">val</span> index_from</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALindex_from"><span class="keyword">val</span> index_from</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> int</code></pre><div class="info ">
 <code class="code">index_from r i c</code> returns the character number of the
     first occurrence of character <code class="code">c</code> in rope <code class="code">r</code> after position <code class="code">i</code>.
     <code class="code">index s c</code> is equivalent to <code class="code">index_from s 0 c</code>.<br>
@@ -336,33 +392,39 @@ As <code class="code">range_iter</code>, but passes base + index of the characte
 <li><code>Not_found</code> if <code class="code">c</code> does not occur in <code class="code">r</code> after position <code class="code">i</code>.</li>
 </ul>
 </div>
-<pre><span id="VALrindex"><span class="keyword">val</span> rindex</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALrindex"><span class="keyword">val</span> rindex</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> int</code></pre><div class="info ">
 <code class="code"><span class="constructor">Rope</span>.rindex s c</code> returns the position of the rightmost
     occurrence of character <code class="code">c</code> in rope <code class="code">s</code>.<br>
 <b>Raises</b> <code>Not_found</code> if <code class="code">c</code> does not occur in <code class="code">s</code>.<br>
 </div>
-<pre><span id="VALrindex_from"><span class="keyword">val</span> rindex_from</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALrindex_from"><span class="keyword">val</span> rindex_from</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> int</code></pre><div class="info ">
 Same as <a href="BatText.html#VALrindex"><code class="code"><span class="constructor">BatText</span>.rindex</code></a>, but start
     searching at the character position given as second argument.
     <code class="code">rindex s c</code> is equivalent to
     <code class="code">rindex_from s (length s - 1) c</code>.<br>
 </div>
-<pre><span id="VALcontains"><span class="keyword">val</span> contains</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> bool</code></pre><div class="info">
+
+<pre><span id="VALcontains"><span class="keyword">val</span> contains</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> bool</code></pre><div class="info ">
 <code class="code">contains s c</code> tests if character <code class="code">c</code>
     appears in the rope <code class="code">s</code>.<br>
 </div>
-<pre><span id="VALcontains_from"><span class="keyword">val</span> contains_from</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> bool</code></pre><div class="info">
+
+<pre><span id="VALcontains_from"><span class="keyword">val</span> contains_from</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> bool</code></pre><div class="info ">
 <code class="code">contains_from s start c</code> tests if character <code class="code">c</code> appears in
     the subrope of <code class="code">s</code> starting from <code class="code">start</code> to the end of <code class="code">s</code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> if <code class="code">start</code> is not a valid index of <code class="code">s</code>.<br>
 </div>
-<pre><span id="VALrcontains_from"><span class="keyword">val</span> rcontains_from</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> bool</code></pre><div class="info">
+
+<pre><span id="VALrcontains_from"><span class="keyword">val</span> rcontains_from</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> bool</code></pre><div class="info ">
 <code class="code">rcontains_from s stop c</code> tests if character <code class="code">c</code>
     appears in the subrope of <code class="code">s</code> starting from the beginning
     of <code class="code">s</code> to index <code class="code">stop</code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> if <code class="code">stop</code> is not a valid index of <code class="code">s</code>.<br>
 </div>
-<pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 <code class="code">find s x</code> returns the starting index of the first occurrence of
     rope <code class="code">x</code> within rope <code class="code">s</code>.
 <p>
@@ -370,14 +432,16 @@ Same as <a href="BatText.html#VALrindex"><code class="code"><span class="constru
     <b>Note</b> This implementation is optimized for short ropes.<br>
 <b>Raises</b> <code>Not_found</code> if <code class="code">x</code> is not a subrope of <code class="code">s</code>.<br>
 </div>
-<pre><span id="VALfind_from"><span class="keyword">val</span> find_from</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatText.html#TYPEt">t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALfind_from"><span class="keyword">val</span> find_from</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatText.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 <code class="code">find_from s ofs x</code> behaves as <code class="code">find s x</code> but starts searching
     at offset <code class="code">ofs</code>. <code class="code">find s x</code> is equivalent to <code class="code">find_from s 0 x</code>.<br>
 <b>Raises</b><ul><li><code>Out_of_bounds</code> if <code class="code">ofs</code> is not a valid_position in <code class="code">s</code>.</li>
 <li><code>Not_found</code> if <code class="code">x</code> is not a subrope of <code class="code">s</code>.</li>
 </ul>
 </div>
-<pre><span id="VALrfind"><span class="keyword">val</span> rfind</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALrfind"><span class="keyword">val</span> rfind</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 <code class="code">rfind s x</code> returns the starting index of the last occurrence
     of rope <code class="code">x</code> within rope <code class="code">s</code>.
 <p>
@@ -385,48 +449,60 @@ Same as <a href="BatText.html#VALrindex"><code class="code"><span class="constru
     <b>Note</b> This implementation is optimized for short ropes.<br>
 <b>Raises</b> <code>Not_found</code> if <code class="code">x</code> is not a subrope of <code class="code">s</code>.<br>
 </div>
-<pre><span id="VALrfind_from"><span class="keyword">val</span> rfind_from</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatText.html#TYPEt">t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALrfind_from"><span class="keyword">val</span> rfind_from</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatText.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 <code class="code">rfind_from s ofs x</code> behaves as <code class="code">rfind s x</code> but starts searching
     at offset <code class="code">ofs</code>. <code class="code">rfind s x</code> is equivalent to <code class="code">rfind_from s (length s - 1) x</code>.<br>
 <b>Raises</b><ul><li><code>Out_of_bounds</code> if <code class="code">ofs</code> is not a valid_position in <code class="code">s</code>.</li>
 <li><code>Not_found</code> if <code class="code">x</code> is not a subrope of <code class="code">s</code>.</li>
 </ul>
 </div>
-<pre><span id="VALstarts_with"><span class="keyword">val</span> starts_with</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+
+<pre><span id="VALstarts_with"><span class="keyword">val</span> starts_with</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
 <code class="code">starts_with s x</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">s</code> is starting with <code class="code">x</code>, <code class="code"><span class="keyword">false</span></code> otherwise.<br>
 </div>
-<pre><span id="VALends_with"><span class="keyword">val</span> ends_with</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+
+<pre><span id="VALends_with"><span class="keyword">val</span> ends_with</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
 <code class="code">ends_with s x</code> returns <code class="code"><span class="keyword">true</span></code> if the rope <code class="code">s</code> is ending with <code class="code">x</code>, <code class="code"><span class="keyword">false</span></code> otherwise.<br>
 </div>
-<pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+
+<pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
 <code class="code">exists str sub</code> returns true if <code class="code">sub</code> is a subrope of <code class="code">str</code> or
     false otherwise.<br>
 </div>
-<pre><span id="VALleft"><span class="keyword">val</span> left</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALleft"><span class="keyword">val</span> left</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">left r len</code> returns the rope containing the <code class="code">len</code> first characters of <code class="code">r</code><br>
 </div>
-<pre><span id="VALright"><span class="keyword">val</span> right</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALright"><span class="keyword">val</span> right</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">left r len</code> returns the rope containing the <code class="code">len</code> last characters of <code class="code">r</code><br>
 </div>
-<pre><span id="VALhead"><span class="keyword">val</span> head</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALhead"><span class="keyword">val</span> head</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 as <a href="BatText.html#VALleft"><code class="code"><span class="constructor">BatText</span>.left</code></a><br>
 </div>
-<pre><span id="VALtail"><span class="keyword">val</span> tail</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALtail"><span class="keyword">val</span> tail</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">tail r pos</code> returns the rope containing all but the <code class="code">pos</code> first characters of <code class="code">r</code><br>
 </div>
-<pre><span id="VALstrip"><span class="keyword">val</span> strip</span> : <code class="type">?chars:<a href="BatUChar.html#TYPEt">BatUChar.t</a> list -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALstrip"><span class="keyword">val</span> strip</span> : <code class="type">?chars:<a href="BatUChar.html#TYPEt">BatUChar.t</a> list -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 Returns the rope without the chars if they are at the beginning or
     at the end of the rope. By default chars are " \t\r\n".<br>
 </div>
-<pre><span id="VALlchop"><span class="keyword">val</span> lchop</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALlchop"><span class="keyword">val</span> lchop</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 Returns the same rope but without the first character.
     does nothing if the rope is empty.<br>
 </div>
-<pre><span id="VALrchop"><span class="keyword">val</span> rchop</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALrchop"><span class="keyword">val</span> rchop</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 Returns the same rope but without the last character.
     does nothing if the rope is empty.<br>
 </div>
-<pre><span id="VALslice"><span class="keyword">val</span> slice</span> : <code class="type">?first:int -> ?last:int -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALslice"><span class="keyword">val</span> slice</span> : <code class="type">?first:int -> ?last:int -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">slice ?first ?last s</code> returns a "slice" of the rope
     which corresponds to the characters <code class="code">s.[first]</code>,
     <code class="code">s.[first+1]</code>, ..., <code class="code">s[last-1]</code>. Note that the character at
@@ -445,21 +521,24 @@ Returns the same rope but without the last character.
     This function <b>never</b> raises any exceptions. If the
     indexes are out of bounds they are automatically clipped.<br>
 </div>
-<pre><span id="VALsplice"><span class="keyword">val</span> splice</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> int -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALsplice"><span class="keyword">val</span> splice</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> int -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">splice s off len rep</code> returns the rope in which the section of <code class="code">s</code>
     indicated by <code class="code">off</code> and <code class="code">len</code> has been cut and replaced by <code class="code">rep</code>.
 <p>
 
     Negative indices are interpreted as counting from the end of the string.<br>
 </div>
-<pre><span id="VALfill"><span class="keyword">val</span> fill</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> int -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALfill"><span class="keyword">val</span> fill</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> int -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">fill s start len c</code> returns the rope in which
     characters number <code class="code">start</code> to <code class="code">start + len - 1</code> of <code class="code">s</code> has
     been replaced by <code class="code">c</code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> if <code class="code">start</code> and <code class="code">len</code> do not
     designate a valid subrope of <code class="code">s</code>.<br>
 </div>
-<pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatText.html#TYPEt">t</a> -> int -> int -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatText.html#TYPEt">t</a> -> int -> int -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">blit src srcoff dst dstoff len</code> returns a copy
     of <code class="code">dst</code> in which <code class="code">len</code> characters have been copied
     from rope <code class="code">src</code>, starting at character number <code class="code">srcoff</code>, to
@@ -470,72 +549,94 @@ Returns the same rope but without the last character.
     designate a valid subrope of <code class="code">src</code>, or if <code class="code">dstoff</code> and <code class="code">len</code>
     do not designate a valid subrope of <code class="code">dst</code>.<br>
 </div>
-<pre><span id="VALconcat"><span class="keyword">val</span> concat</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> list -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALconcat"><span class="keyword">val</span> concat</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> list -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">concat sep sl</code> concatenates the list of ropes <code class="code">sl</code>,
     inserting the separator rope <code class="code">sep</code> between each.<br>
 </div>
-<pre><span id="VALreplace"><span class="keyword">val</span> replace</span> : <code class="type">str:<a href="BatText.html#TYPEt">t</a> -> sub:<a href="BatText.html#TYPEt">t</a> -> by:<a href="BatText.html#TYPEt">t</a> -> bool * <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALreplace"><span class="keyword">val</span> replace</span> : <code class="type">str:<a href="BatText.html#TYPEt">t</a> -> sub:<a href="BatText.html#TYPEt">t</a> -> by:<a href="BatText.html#TYPEt">t</a> -> bool * <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">replace ~str ~sub ~by</code> returns a tuple constisting of a boolean
     and a rope where the first occurrence of the rope <code class="code">sub</code>
     within <code class="code">str</code> has been replaced by the rope <code class="code">by</code>. The boolean
     is <code class="code"><span class="keyword">true</span></code> if a substitution has taken place, <code class="code"><span class="keyword">false</span></code> otherwise.<br>
 </div>
 <br>
-<span id="6_Splittingaround"><h6>Splitting around</h6></span><br>
-<pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> * <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+<h6 id="6_Splittingaround">Splitting around</h6><br>
+
+<pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> * <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">split s sep</code> splits the rope <code class="code">s</code> between the first
     occurrence of <code class="code">sep</code>.<br>
 <b>Raises</b> <code>Not_found</code> if the separator is not found.<br>
 </div>
-<pre><span id="VALrsplit"><span class="keyword">val</span> rsplit</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> * <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALrsplit"><span class="keyword">val</span> rsplit</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> * <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">rsplit s sep</code> splits the rope <code class="code">s</code> between the last
     occurrence of <code class="code">sep</code>.<br>
 <b>Raises</b> <code>Not_found</code> if the separator is not found.<br>
 </div>
-<pre><span id="VALnsplit"><span class="keyword">val</span> nsplit</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> list</code></pre><div class="info">
+
+<pre><span id="VALnsplit"><span class="keyword">val</span> nsplit</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> list</code></pre><div class="info ">
 <code class="code">nsplit s sep</code> splits the rope <code class="code">s</code> into a list of ropes
     which are separated by <code class="code">sep</code>.
     <code class="code">nsplit <span class="string">""</span> _</code> returns the empty list.
     If the separator is not found, it returns a list of
     the rope <code class="code">s</code>.<br>
 </div>
-<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 The comparison function for ropes, with the same specification as
     <code class="code"><span class="constructor">Pervasives</span>.compare</code>.  Along with the type <code class="code">t</code>, this function <code class="code">compare</code>
     allows the module <code class="code"><span class="constructor">Rope</span></code> to be passed as argument to the functors
     <code class="code"><span class="constructor">Set</span>.<span class="constructor">Make</span></code> and <code class="code"><span class="constructor">Map</span>.<span class="constructor">Make</span></code>.<br>
 </div>
-<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">(<a href="BatText.html#TYPEt">t</a>, 'a) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info">
+
+<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
+Equality of ropes (based on compare)<br>
+<b>Since</b> 2.2.0<br>
+</div>
+
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">(<a href="BatText.html#TYPEt">t</a>, 'a) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info ">
 Prints a rope to the given out_channel<br>
 </div>
-<pre><span id="VALread_char"><span class="keyword">val</span> read_char</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> <a href="BatUChar.html#TYPEt">BatUChar.t</a></code></pre><div class="info">
+
+<pre><span id="VALread_char"><span class="keyword">val</span> read_char</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> <a href="BatUChar.html#TYPEt">BatUChar.t</a></code></pre><div class="info ">
 Read one Unicode char from a UTF-8 encoded input<br>
 </div>
-<pre><span id="VALread_text"><span class="keyword">val</span> read_text</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALread_text"><span class="keyword">val</span> read_text</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 Read up to n chars from a UTF-8 encoded input<br>
 </div>
-<pre><span id="VALread_line"><span class="keyword">val</span> read_line</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALread_line"><span class="keyword">val</span> read_line</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 Read a line of UTF-8<br>
 </div>
-<pre><span id="VALread_all"><span class="keyword">val</span> read_all</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALread_all"><span class="keyword">val</span> read_all</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> <a href="BatText.html#TYPEt">t</a></code></pre><div class="info ">
 Read the whole contents of a UTF-8 encoded input<br>
 </div>
-<pre><span id="VALwrite_char"><span class="keyword">val</span> write_char</span> : <code class="type">(<a href="BatUChar.html#TYPEt">BatUChar.t</a>, 'a) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info">
+
+<pre><span id="VALwrite_char"><span class="keyword">val</span> write_char</span> : <code class="type">(<a href="BatUChar.html#TYPEt">BatUChar.t</a>, 'a) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info ">
 Write one uchar to a UTF-8 encoded output.<br>
 </div>
-<pre><span id="VALwrite_text"><span class="keyword">val</span> write_text</span> : <code class="type">(<a href="BatText.html#TYPEt">t</a>, 'a) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info">
+
+<pre><span id="VALwrite_text"><span class="keyword">val</span> write_text</span> : <code class="type">(<a href="BatText.html#TYPEt">t</a>, 'a) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info ">
 Write a character text onto a UTF-8 encoded output.<br>
 </div>
-<pre><span id="VALwrite_line"><span class="keyword">val</span> write_line</span> : <code class="type">(<a href="BatText.html#TYPEt">t</a>, 'a) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info">
+
+<pre><span id="VALwrite_line"><span class="keyword">val</span> write_line</span> : <code class="type">(<a href="BatText.html#TYPEt">t</a>, 'a) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info ">
 Write one line onto a UTF-8 encoded output, followed by a \n.<br>
 </div>
-<pre><span id="VALlines_of"><span class="keyword">val</span> lines_of</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> <a href="BatText.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+
+<pre><span id="VALlines_of"><span class="keyword">val</span> lines_of</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> <a href="BatText.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 offer the lines of a UTF-8 encoded input as an enumeration<br>
 </div>
-<pre><span id="VALchars_of"><span class="keyword">val</span> chars_of</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+
+<pre><span id="VALchars_of"><span class="keyword">val</span> chars_of</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 offer the characters of an UTF-8 encoded input as an enumeration<br>
 </div>
-<pre><span id="VALoutput_text"><span class="keyword">val</span> output_text</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> <a href="BatText.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+
+<pre><span id="VALoutput_text"><span class="keyword">val</span> output_text</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> <a href="BatText.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 Write the text on the given output channel.<br>
 </div>
 </body></html>

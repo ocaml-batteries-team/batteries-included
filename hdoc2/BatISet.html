@@ -101,18 +101,20 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatISet</title>
 </head>
 <body>
-<div class="navbar"><a href="BatIO.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatInnerIO.html">Next</a>
+<div class="navbar"><a class="pre" href="BatIO.html" title="BatIO">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatInnerIO.html" title="BatInnerIO">Next</a>
 </div>
-<center><h1>Module <a href="type_BatISet.html">BatISet</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> BatISet: <code class="code"><span class="keyword">sig</span></code> <a href="BatISet.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>DIET : Discrete Interval Encoding Trees
+<h1>Module <a href="type_BatISet.html">BatISet</a></h1>
+
+<pre><span class="keyword">module</span> BatISet: <code class="code"><span class="keyword">sig</span></code> <a href="BatISet.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+DIET : Discrete Interval Encoding Trees
 <p>
 
     Sets of integers represented as ranges
@@ -122,140 +124,181 @@
     many adjacent integers are all part of the set.  This will have
     higher overhead for sets with lots of point elements, but will be
     much more efficient for sets containing mostly ranges.<br>
+</div>
 <hr width="100%">
+
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">(int * int) <a href="BatAvlTree.html#TYPEtree">BatAvlTree.tree</a></code> </pre>
-<div class="info">
+<div class="info ">
 the underlying representation is a balanced tree of ranges<br>
 </div>
 
+
 <pre><span id="TYPEelt"><span class="keyword">type</span> <code class="type"></code>elt</span> = <code class="type">int</code> </pre>
-<div class="info">
+<div class="info ">
 This kind of set only holds ints<br>
 </div>
 
-<pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a></code></pre><div class="info ">
 The empty set<br>
 </div>
-<pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+
+<pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
 Test whether a set is empty, returns <code class="code"><span class="keyword">true</span></code> if the set is empty.<br>
 </div>
-<pre><span id="VALmem"><span class="keyword">val</span> mem</span> : <code class="type">int -> <a href="BatISet.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+
+<pre><span id="VALmem"><span class="keyword">val</span> mem</span> : <code class="type">int -> <a href="BatISet.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
 test whether a given int is a member of the set<br>
 </div>
-<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">int -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">int -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info ">
 Add the given int to the set, returning a new set<br>
 </div>
-<pre><span id="VALadd_range"><span class="keyword">val</span> add_range</span> : <code class="type">int -> int -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALadd_range"><span class="keyword">val</span> add_range</span> : <code class="type">int -> int -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">add_range lo hi t</code> adds the range of integers <code class="code">lo, hi</code> (including both endpoints) to
     the given set, returning a new set<br>
 <b>Raises</b> <code>Invalid_argument</code> if <code class="code">lo</code> &gt; <code class="code">hi</code><br>
 </div>
-<pre><span id="VALsingleton"><span class="keyword">val</span> singleton</span> : <code class="type">int -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALsingleton"><span class="keyword">val</span> singleton</span> : <code class="type">int -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info ">
 Return the singleton set containing only the given element<br>
 </div>
-<pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">int -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">int -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info ">
 Remove an element from the given set, returning a new set<br>
 </div>
-<pre><span id="VALremove_range"><span class="keyword">val</span> remove_range</span> : <code class="type">int -> int -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALremove_range"><span class="keyword">val</span> remove_range</span> : <code class="type">int -> int -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">remove_range lo hi t</code> removes a range of elements from the given set, returning a new set<br>
 <b>Raises</b> <code>Invalid_argument</code> if <code class="code">lo</code> &gt; <code class="code">hi</code><br>
 </div>
-<pre><span id="VALunion"><span class="keyword">val</span> union</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALunion"><span class="keyword">val</span> union</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info ">
 Compute the union of two sets.  This is the set whose elements are
     those elements in either input set.<br>
 </div>
-<pre><span id="VALinter"><span class="keyword">val</span> inter</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALinter"><span class="keyword">val</span> inter</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info ">
 Compute the intersection of two sets.  This is the set whose
     elements are those in *both* of the input sets.<br>
 </div>
-<pre><span id="VALdiff"><span class="keyword">val</span> diff</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALdiff"><span class="keyword">val</span> diff</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info ">
 Compute the difference between two sets.  This is the set of
     elements that are in the first but not in the second. Unlike
     <code class="code">union</code> and <code class="code">inter</code>, order matters here.<br>
 </div>
-<pre><span id="VALcompl"><span class="keyword">val</span> compl</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALcompl"><span class="keyword">val</span> compl</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info ">
 Create the complement of the given set - i.e. the set of all
     values not in the input set.<br>
 </div>
-<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 Compare two sets.  It is not safe to use the polymorphic (&lt;) and
     related functions to compare these sets, as the tree representation
     used can balance in multiple ways.<br>
 </div>
-<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+
+<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
 Test whether two sets are equal.  It is not safe to use the
     polymorphic (=) on these sets, as the same set can have multiple
     representations depending on how it was built.<br>
 </div>
-<pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre><div class="info">
+
+<pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre><div class="info ">
 Same as <code class="code">compare</code> but returns <code class="code"><span class="constructor">BatOrd</span>.<span class="constructor">Lt</span> <span class="keywordsign">|</span> <span class="constructor">BatOrd</span>.<span class="constructor">Eq</span> <span class="keywordsign">|</span> <span class="constructor">BatOrd</span>.<span class="constructor">Gt</span></code>
     instead of an int.<br>
 </div>
-<pre><span id="VALsubset"><span class="keyword">val</span> subset</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+
+<pre><span id="VALsubset"><span class="keyword">val</span> subset</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
 <code class="code">subset t u</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">t</code> is a subset of <code class="code">u</code><br>
 </div>
-<pre><span id="VALfrom"><span class="keyword">val</span> from</span> : <code class="type">int -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALfrom"><span class="keyword">val</span> from</span> : <code class="type">int -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">from x t</code> returns the portion of <code class="code">t</code> in the range <code class="code">x, max_int</code><br>
 </div>
-<pre><span id="VALafter"><span class="keyword">val</span> after</span> : <code class="type">int -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALafter"><span class="keyword">val</span> after</span> : <code class="type">int -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">after x t</code> returns the portion of <code class="code">t</code> in the range <code class="code">x+1, max_int</code><br>
 </div>
-<pre><span id="VALuntil"><span class="keyword">val</span> until</span> : <code class="type">int -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALuntil"><span class="keyword">val</span> until</span> : <code class="type">int -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">until x t</code> returns the portion of <code class="code">t</code> in the range <code class="code">min_int, x</code><br>
 </div>
-<pre><span id="VALbefore"><span class="keyword">val</span> before</span> : <code class="type">int -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALbefore"><span class="keyword">val</span> before</span> : <code class="type">int -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">before x t</code> returns the portion of <code class="code">t</code> in the range <code class="code">min_int, x-1</code><br>
 </div>
-<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(int -> unit) -> <a href="BatISet.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+
+<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(int -> unit) -> <a href="BatISet.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 <code class="code">iter f t</code> calls <code class="code">f</code> once for each element of <code class="code">t</code><br>
 </div>
-<pre><span id="VALiter_range"><span class="keyword">val</span> iter_range</span> : <code class="type">(int -> int -> unit) -> <a href="BatISet.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+
+<pre><span id="VALiter_range"><span class="keyword">val</span> iter_range</span> : <code class="type">(int -> int -> unit) -> <a href="BatISet.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 <code class="code">iter_range f t</code> calls <code class="code">f</code> once for each contiguous range of <code class="code">t</code>.
     The contiguous ranges of a set are sequences of adjacent integers
     all part of the set.<br>
 </div>
-<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">(int -> 'a -> 'a) -> <a href="BatISet.html#TYPEt">t</a> -> 'a -> 'a</code></pre><div class="info">
+
+<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">(int -> 'a -> 'a) -> <a href="BatISet.html#TYPEt">t</a> -> 'a -> 'a</code></pre><div class="info ">
 <code class="code">fold f t x0</code> returns the final result of merging each element of
     <code class="code">t</code> into <code class="code">x0</code> using merge function <code class="code">f</code><br>
 </div>
-<pre><span id="VALfold_range"><span class="keyword">val</span> fold_range</span> : <code class="type">(int -> int -> 'a -> 'a) -> <a href="BatISet.html#TYPEt">t</a> -> 'a -> 'a</code></pre><div class="info">
+
+<pre><span id="VALfold_range"><span class="keyword">val</span> fold_range</span> : <code class="type">(int -> int -> 'a -> 'a) -> <a href="BatISet.html#TYPEt">t</a> -> 'a -> 'a</code></pre><div class="info ">
 As fold, but operates on contiguous ranges<br>
 </div>
-<pre><span id="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">(int -> bool) -> <a href="BatISet.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+
+<pre><span id="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">(int -> bool) -> <a href="BatISet.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
 Tests whether a predicate applies to all elements of the set<br>
 </div>
-<pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">(int -> bool) -> <a href="BatISet.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+
+<pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">(int -> bool) -> <a href="BatISet.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
 Test whether some element of a set satisfies a predicate<br>
 </div>
-<pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">(int -> bool) -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">(int -> bool) -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info ">
 Builds the subset of those elements that satisfy the predicate<br>
 </div>
-<pre><span id="VALpartition"><span class="keyword">val</span> partition</span> : <code class="type">(int -> bool) -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a> * <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALpartition"><span class="keyword">val</span> partition</span> : <code class="type">(int -> bool) -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a> * <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info ">
 partitions the input set into two sets with elements that satisfy
     the predicate and those that don't<br>
 </div>
-<pre><span id="VALcardinal"><span class="keyword">val</span> cardinal</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALcardinal"><span class="keyword">val</span> cardinal</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 Returns the number of elements in the set<br>
 </div>
-<pre><span id="VALelements"><span class="keyword">val</span> elements</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> int list</code></pre><div class="info">
+
+<pre><span id="VALelements"><span class="keyword">val</span> elements</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> int list</code></pre><div class="info ">
 Returns a list of all elements in the set<br>
 </div>
-<pre><span id="VALranges"><span class="keyword">val</span> ranges</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> (int * int) list</code></pre><div class="info">
+
+<pre><span id="VALranges"><span class="keyword">val</span> ranges</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> (int * int) list</code></pre><div class="info ">
 Returns a list of all contiguous ranges in the set<br>
 </div>
-<pre><span id="VALmin_elt"><span class="keyword">val</span> min_elt</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALmin_elt"><span class="keyword">val</span> min_elt</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 Returns the minimum element in the set<br>
 </div>
-<pre><span id="VALmax_elt"><span class="keyword">val</span> max_elt</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALmax_elt"><span class="keyword">val</span> max_elt</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 Returns the maximum element in the set<br>
 </div>
-<pre><span id="VALchoose"><span class="keyword">val</span> choose</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALchoose"><span class="keyword">val</span> choose</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 Returns some element in the set<br>
 </div>
-<pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> (int * int) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+
+<pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> (int * int) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 Enumerates all contiguous ranges in the set<br>
 </div>
-<pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">(int * int) <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">(int * int) list -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">(int * int) <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre>
+<pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">(int * int) list -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info ">
 Build a ISet.t out of a list or enum of ranges<br>
 </div>
+
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> <a href="BatISet.html#TYPEt">t</a> -> unit</code></pre></body></html>

@@ -100,31 +100,38 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatLog.Level_sig</title>
 </head>
 <body>
-<div class="navbar"><a href="BatLog.Config.html">Previous</a>
-&nbsp;<a href="BatLog.html">Up</a>
+<div class="navbar"><a class="pre" href="BatLog.Config.html" title="BatLog.Config">Previous</a>
+&nbsp;<a class="up" href="BatLog.html" title="BatLog">Up</a>
 &nbsp;</div>
-<center><h1>Module type <a href="type_BatLog.Level_sig.html">BatLog.Level_sig</a></h1></center>
-<br>
-<pre><span class="keyword">module type</span> Level_sig = <code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Level_sig.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>The details of a level scheme for verbosity-level loggers<br>
+<h1>Module type <a href="type_BatLog.Level_sig.html">BatLog.Level_sig</a></h1>
+
+<pre><span class="keyword">module type</span> Level_sig = <code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Level_sig.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info modtype top">
+The details of a level scheme for verbosity-level loggers<br>
+</div>
 <hr width="100%">
+
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
-<div class="info">
+<div class="info ">
 A type for level values, usually a polymorphic variant
 <p>
 Convert each level to a string<br>
 </div>
 
-<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="BatLog.Level_sig.html#TYPEt">t</a> -> string</code></pre><div class="info">
+
+<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="BatLog.Level_sig.html#TYPEt">t</a> -> string</code></pre><div class="info ">
 The default level for loggers created with this; log messages
       with level less than this won't be printed by default.<br>
 </div>
-<pre><span id="VALdefault_level"><span class="keyword">val</span> default_level</span> : <code class="type"><a href="BatLog.Level_sig.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALdefault_level"><span class="keyword">val</span> default_level</span> : <code class="type"><a href="BatLog.Level_sig.html#TYPEt">t</a></code></pre><div class="info ">
 a comparison function between levels, to know whether logging at a
       particular level should be printed<br>
 </div>
+
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatLog.Level_sig.html#TYPEt">t</a> -> <a href="BatLog.Level_sig.html#TYPEt">t</a> -> int</code></pre></body></html>

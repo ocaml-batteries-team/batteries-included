@@ -100,17 +100,20 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatLog.Make_lev</title>
 </head>
 <body>
-<div class="navbar"><a href="BatLog.Easy.html">Previous</a>
-&nbsp;<a href="BatLog.html">Up</a>
+<div class="navbar"><a class="pre" href="BatLog.Easy.html" title="BatLog.Easy">Previous</a>
+&nbsp;<a class="up" href="BatLog.html" title="BatLog">Up</a>
 &nbsp;</div>
-<center><h1>Functor <a href="type_BatLog.Make_lev.html">BatLog.Make_lev</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> Make_lev: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">L</span></code><code class="code"> : </code><code class="type"><a href="BatLog.Level_sig.html">Level_sig</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">S</span></code><code class="code"> : </code><code class="type"><a href="BatLog.Config.html">Config</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Make_lev.html">..</a> <code class="code"><span class="keyword">end</span></code></div></div></pre>Make your own level-based logger, like <code class="code"><span class="constructor">Easy</span></code><br>
+<h1>Functor <a href="type_BatLog.Make_lev.html">BatLog.Make_lev</a></h1>
+
+<pre><span class="keyword">module</span> Make_lev: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">L</span></code><code class="code"> : </code><code class="type"><a href="BatLog.Level_sig.html">Level_sig</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">S</span></code><code class="code"> : </code><code class="type"><a href="BatLog.Config.html">Config</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Make_lev.html">..</a> <code class="code"><span class="keyword">end</span></code></div></div></pre><div class="info module top">
+Make your own level-based logger, like <code class="code"><span class="constructor">Easy</span></code><br>
+</div>
 <table border="0" cellpadding="3" width="100%">
 <tr>
 <td align="left" valign="top" width="1%%"><b>Parameters: </b></td>
@@ -131,4 +134,8 @@
 </tr>
 </table>
 <hr width="100%">
-<pre><span id="VALlevel"><span class="keyword">val</span> level</span> : <code class="type">L.t Pervasives.ref</code></pre><pre><span id="VALoutput"><span class="keyword">val</span> output</span> : <code class="type">S.t <a href="BatIO.html#TYPEoutput">BatIO.output</a> Pervasives.ref</code></pre><pre><span id="VALlog"><span class="keyword">val</span> log</span> : <code class="type">?fp:string -> L.t -> string -> unit</code></pre><pre><span id="VALlogf"><span class="keyword">val</span> logf</span> : <code class="type">?fp:string -> L.t -> ('a, S.t <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit) Pervasives.format -> 'a</code></pre></body></html>
+
+<pre><span id="VALlevel"><span class="keyword">val</span> level</span> : <code class="type">L.t Pervasives.ref</code></pre>
+<pre><span id="VALoutput"><span class="keyword">val</span> output</span> : <code class="type">S.t <a href="BatIO.html#TYPEoutput">BatIO.output</a> Pervasives.ref</code></pre>
+<pre><span id="VALlog"><span class="keyword">val</span> log</span> : <code class="type">?fp:string -> L.t -> string -> unit</code></pre>
+<pre><span id="VALlogf"><span class="keyword">val</span> logf</span> : <code class="type">?fp:string -> L.t -> ('a, S.t <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit) Pervasives.format -> 'a</code></pre></body></html>

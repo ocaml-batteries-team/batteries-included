@@ -101,41 +101,44 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Utilities" rel="Section" href="#6_Utilities">
 <title>Batteries user guide : Batteries.CharParser</title>
 </head>
 <body>
-<div class="navbar"><a href="Batteries.Cache.html">Previous</a>
-&nbsp;<a href="Batteries.html">Up</a>
-&nbsp;<a href="Batteries.Deque.html">Next</a>
+<div class="navbar"><a class="pre" href="Batteries.Cache.html" title="Batteries.Cache">Previous</a>
+&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
+&nbsp;<a class="post" href="Batteries.Deque.html" title="Batteries.Deque">Next</a>
 </div>
-<center><h1>Module <a href="type_Batteries.CharParser.html">Batteries.CharParser</a></h1></center>
-<br>
+<h1>Module <a href="type_Batteries.CharParser.html">Batteries.CharParser</a></h1>
+
 <pre><span class="keyword">module</span> CharParser: <code class="type">BatCharParser</code></pre><hr width="100%">
-<br><code><span id="TYPEposition"><span class="keyword">type</span> <code class="type"></code>position</span> = {</code><table class="typetable">
+
+<pre><code><span id="TYPEposition"><span class="keyword">type</span> <code class="type"></code>position</span> = {</code></pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>offset&nbsp;: <code class="type">int</code>;</code></td>
+<code><span id="TYPEELTposition.offset">offset</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Offset on the line (starting at 0)</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>line&nbsp;: <code class="type">int</code>;</code></td>
+<code><span id="TYPEELTposition.line">line</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Line number (starting at 0)</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 }
 
-<div class="info">
+<div class="info ">
 The position inside one file or one stream.<br>
 </div>
 
-<pre><span id="VALadvance"><span class="keyword">val</span> advance</span> : <code class="type">char -> <a href="BatCharParser.html#TYPEposition">position</a> -> <a href="BatCharParser.html#TYPEposition">position</a></code></pre><div class="info">
+
+<pre><span id="VALadvance"><span class="keyword">val</span> advance</span> : <code class="type">char -> <a href="BatCharParser.html#TYPEposition">position</a> -> <a href="BatCharParser.html#TYPEposition">position</a></code></pre><div class="info ">
 Advance by one char.
 <p>
 
@@ -143,71 +146,90 @@ Advance by one char.
    the result is <code class="code">{offset = 0; line = p.line + 1}</code>. Other wise, the result is
    <code class="code">{offset = p.offset + 1; line = p.line}</code>.<br>
 </div>
-<pre><span id="VALsource_of_string"><span class="keyword">val</span> source_of_string</span> : <code class="type">string -> (char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.Source.html#TYPEt">BatParserCo.Source.t</a></code></pre><div class="info">
+
+<pre><span id="VALsource_of_string"><span class="keyword">val</span> source_of_string</span> : <code class="type">string -> (char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.Source.html#TYPEt">BatParserCo.Source.t</a></code></pre><div class="info ">
 Create a source from a latin-1 character string.<br>
 </div>
-<pre><span id="VALsource_of_enum"><span class="keyword">val</span> source_of_enum</span> : <code class="type">char <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> (char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.Source.html#TYPEt">BatParserCo.Source.t</a></code></pre><div class="info">
+
+<pre><span id="VALsource_of_enum"><span class="keyword">val</span> source_of_enum</span> : <code class="type">char <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> (char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.Source.html#TYPEt">BatParserCo.Source.t</a></code></pre><div class="info ">
 Create a source from a latin-1 character.<br>
 </div>
-<pre><span id="VALparse"><span class="keyword">val</span> parse</span> : <code class="type">(char, 'a, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a> -><br>       string -><br>       ('a, <a href="BatCharParser.html#TYPEposition">position</a> <a href="BatParserCo.html#TYPEreport">BatParserCo.report</a>) <a href="BatPervasives.html#TYPEresult">BatPervasives.result</a></code></pre><div class="info">
+
+<pre><span id="VALparse"><span class="keyword">val</span> parse</span> : <code class="type">(char, 'a, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a> -><br>       string -><br>       ('a, <a href="BatCharParser.html#TYPEposition">position</a> <a href="BatParserCo.html#TYPEreport">BatParserCo.report</a>) <a href="BatPervasives.html#TYPEresult">BatPervasives.result</a></code></pre><div class="info ">
 Apply a parser to a string.<br>
 </div>
 <br>
-<span id="6_Utilities"><h6>Utilities</h6></span><br>
-<pre><span id="VALchar"><span class="keyword">val</span> char</span> : <code class="type">char -> (char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+<h6 id="6_Utilities">Utilities</h6><br>
+
+<pre><span id="VALchar"><span class="keyword">val</span> char</span> : <code class="type">char -> (char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info ">
 Recognize exactly one char<br>
 </div>
-<pre><span id="VALnone_of"><span class="keyword">val</span> none_of</span> : <code class="type">char list -> (char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+
+<pre><span id="VALnone_of"><span class="keyword">val</span> none_of</span> : <code class="type">char list -> (char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info ">
 Accept any value not in a list
    As <code class="code"><span class="constructor">ParserCo</span>.none_of</code>, just with improved error message.<br>
 </div>
-<pre><span id="VALnot_char"><span class="keyword">val</span> not_char</span> : <code class="type">char -> (char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+
+<pre><span id="VALnot_char"><span class="keyword">val</span> not_char</span> : <code class="type">char -> (char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info ">
 Accept any value not a given char
    As <code class="code">none_of</code>.<br>
 </div>
-<pre><span id="VALstring"><span class="keyword">val</span> string</span> : <code class="type">string -> (char, string, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+
+<pre><span id="VALstring"><span class="keyword">val</span> string</span> : <code class="type">string -> (char, string, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info ">
 Recognize exactly one string<br>
 </div>
-<pre><span id="VALcase_char"><span class="keyword">val</span> case_char</span> : <code class="type">char -> (char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+
+<pre><span id="VALcase_char"><span class="keyword">val</span> case_char</span> : <code class="type">char -> (char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info ">
 As <code class="code">char</code>, but case-insensitive<br>
 </div>
-<pre><span id="VALcase_string"><span class="keyword">val</span> case_string</span> : <code class="type">string -> (char, string, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+
+<pre><span id="VALcase_string"><span class="keyword">val</span> case_string</span> : <code class="type">string -> (char, string, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info ">
 As <code class="code">case_string</code>, but case-insensitive<br>
 </div>
-<pre><span id="VALnewline"><span class="keyword">val</span> newline</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+
+<pre><span id="VALnewline"><span class="keyword">val</span> newline</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info ">
 Recognizes a newline<br>
 </div>
-<pre><span id="VALwhitespace"><span class="keyword">val</span> whitespace</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+
+<pre><span id="VALwhitespace"><span class="keyword">val</span> whitespace</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info ">
 Recognizes white-space<br>
 </div>
-<pre><span id="VALuppercase"><span class="keyword">val</span> uppercase</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+
+<pre><span id="VALuppercase"><span class="keyword">val</span> uppercase</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info ">
 Recognizes one upper-case ASCII character, including
    accentuated characters.<br>
 </div>
-<pre><span id="VALlowercase"><span class="keyword">val</span> lowercase</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+
+<pre><span id="VALlowercase"><span class="keyword">val</span> lowercase</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info ">
 Recognizes one lower-case ASCII character, including
    accentuated characters.<br>
 </div>
-<pre><span id="VALletter"><span class="keyword">val</span> letter</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+
+<pre><span id="VALletter"><span class="keyword">val</span> letter</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info ">
 Recognizes one lower- or upper-case ASCII character, including
    accentuated characters.<br>
 </div>
-<pre><span id="VALuppercase_latin1"><span class="keyword">val</span> uppercase_latin1</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+
+<pre><span id="VALuppercase_latin1"><span class="keyword">val</span> uppercase_latin1</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info ">
 Recognizes one upper-case Latin-1 character, including
    accentuated characters.<br>
 </div>
-<pre><span id="VALlowercase_latin1"><span class="keyword">val</span> lowercase_latin1</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+
+<pre><span id="VALlowercase_latin1"><span class="keyword">val</span> lowercase_latin1</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info ">
 Recognizes one lower-case Latin-1 character, including
    accentuated characters.<br>
 </div>
-<pre><span id="VALlatin1"><span class="keyword">val</span> latin1</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+
+<pre><span id="VALlatin1"><span class="keyword">val</span> latin1</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info ">
 Recognizes one lower- or upper-case Latin1 character, including
    accentuated characters.<br>
 </div>
-<pre><span id="VALdigit"><span class="keyword">val</span> digit</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+
+<pre><span id="VALdigit"><span class="keyword">val</span> digit</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info ">
 Recognizes one decimal digit<br>
 </div>
-<pre><span id="VALhex"><span class="keyword">val</span> hex</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info">
+
+<pre><span id="VALhex"><span class="keyword">val</span> hex</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre><div class="info ">
 Recognizes one hexadecimal digit (case-insensitive)<br>
 </div>
 </body></html>

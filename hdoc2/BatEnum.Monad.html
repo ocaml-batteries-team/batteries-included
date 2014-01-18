@@ -101,32 +101,38 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatEnum.Monad</title>
 </head>
 <body>
-<div class="navbar"><a href="BatEnum.WithMonad.html">Previous</a>
-&nbsp;<a href="BatEnum.html">Up</a>
-&nbsp;<a href="BatEnum.Exceptionless.html">Next</a>
+<div class="navbar"><a class="pre" href="BatEnum.WithMonad.html" title="BatEnum.WithMonad">Previous</a>
+&nbsp;<a class="up" href="BatEnum.html" title="BatEnum">Up</a>
+&nbsp;<a class="post" href="BatEnum.Exceptionless.html" title="BatEnum.Exceptionless">Next</a>
 </div>
-<center><h1>Module <a href="type_BatEnum.Monad.html">BatEnum.Monad</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> Monad: <code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.Monad.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>The BatEnum Monad
+<h1>Module <a href="type_BatEnum.Monad.html">BatEnum.Monad</a></h1>
+
+<pre><span class="keyword">module</span> Monad: <code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.Monad.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+The BatEnum Monad
 <p>
 
     This module provides everything needed for writing and executing
     computations in the BatEnum Monad.<br>
+</div>
 <hr width="100%">
+
 <pre><span id="TYPEm"><span class="keyword">type</span> <code class="type">'a</code> m</span> = <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code> </pre>
-<div class="info">
+<div class="info ">
 The type of the BatEnum monad's elements, thus <code class="code"><span class="constructor">BatEnum</span>.t</code>.<br>
 </div>
 
-<pre><span id="VALreturn"><span class="keyword">val</span> return</span> : <code class="type">'a -> 'a <a href="BatEnum.Monad.html#TYPEm">m</a></code></pre><div class="info">
+
+<pre><span id="VALreturn"><span class="keyword">val</span> return</span> : <code class="type">'a -> 'a <a href="BatEnum.Monad.html#TYPEm">m</a></code></pre><div class="info ">
 This function puts a single value in the BatEnum monad, that is to say it creates an enumeration containing a single element.<br>
 </div>
-<pre><span id="VALbind"><span class="keyword">val</span> bind</span> : <code class="type">'a <a href="BatEnum.Monad.html#TYPEm">m</a> -> ('a -> 'b <a href="BatEnum.Monad.html#TYPEm">m</a>) -> 'b <a href="BatEnum.Monad.html#TYPEm">m</a></code></pre><div class="info">
+
+<pre><span id="VALbind"><span class="keyword">val</span> bind</span> : <code class="type">'a <a href="BatEnum.Monad.html#TYPEm">m</a> -> ('a -> 'b <a href="BatEnum.Monad.html#TYPEm">m</a>) -> 'b <a href="BatEnum.Monad.html#TYPEm">m</a></code></pre><div class="info ">
 <code class="code">bind m f</code> takes the result of the monadic computation m, puts the f function in the monadic context passing it the result of m and then
         returning a monadic result.<br>
 </div>

@@ -100,53 +100,70 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatPathGen.StringType</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a href="BatPathGen.html">Up</a>
-&nbsp;<a href="BatPathGen.PathType.html">Next</a>
+<div class="navbar">&nbsp;<a class="up" href="BatPathGen.html" title="BatPathGen">Up</a>
+&nbsp;<a class="post" href="BatPathGen.PathType.html" title="BatPathGen.PathType">Next</a>
 </div>
-<center><h1>Module type <a href="type_BatPathGen.StringType.html">BatPathGen.StringType</a></h1></center>
-<br>
-<pre><span class="keyword">module type</span> StringType = <code class="code"><span class="keyword">sig</span></code> <a href="BatPathGen.StringType.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>This signature lists few basic operations provided by all string types.<br>
+<h1>Module type <a href="type_BatPathGen.StringType.html">BatPathGen.StringType</a></h1>
+
+<pre><span class="keyword">module type</span> StringType = <code class="code"><span class="keyword">sig</span></code> <a href="BatPathGen.StringType.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info modtype top">
+This signature lists few basic operations provided by all string types.<br>
+</div>
 <hr width="100%">
 <br>
 The actual implementation may use any (coherent) scheme of indexing of strings. Below the term 'indexing unit' can stay either for byte or character (or whatever employed by the implementation).
       This determines meaning of all <code class="code">int</code> arguments and results (excluding result of <code class="code">compare</code>).<br>
+
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
-<div class="info">
+<div class="info ">
 Type for strings.<br>
 </div>
 
-<pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 Length - number of indexing units<br>
 </div>
+
 <pre><span id="TYPEtchar"><span class="keyword">type</span> <code class="type"></code>tchar</span> </pre>
-<div class="info">
+<div class="info ">
 Character type used by <code class="code">t</code>.<br>
 </div>
 
-<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -> int -> <a href="BatPathGen.StringType.html#TYPEtchar">tchar</a></code></pre><div class="info">
+
+<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -> int -> <a href="BatPathGen.StringType.html#TYPEtchar">tchar</a></code></pre><div class="info ">
 Usual get function.<br>
 </div>
-<pre><span id="VALlift_char"><span class="keyword">val</span> lift_char</span> : <code class="type">char -> <a href="BatPathGen.StringType.html#TYPEtchar">tchar</a></code></pre><div class="info">
+
+<pre><span id="VALlift_char"><span class="keyword">val</span> lift_char</span> : <code class="type">char -> <a href="BatPathGen.StringType.html#TYPEtchar">tchar</a></code></pre><div class="info ">
 Convert Latin-1 character to <code class="code">tchar</code>.<br>
 </div>
-<pre><span id="VALlift"><span class="keyword">val</span> lift</span> : <code class="type">string -> <a href="BatPathGen.StringType.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALlift"><span class="keyword">val</span> lift</span> : <code class="type">string -> <a href="BatPathGen.StringType.html#TYPEt">t</a></code></pre><div class="info ">
 Convert from UTF-8 string of primitive <code class="code">string</code> type.<br>
 </div>
-<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -> string</code></pre><div class="info">
+
+<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -> string</code></pre><div class="info ">
 Convert to primitive string with UTF-8 content.<br>
 </div>
-<pre><span id="VALconcat_with_separators"><span class="keyword">val</span> concat_with_separators</span> : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -><br>       <a href="BatPathGen.StringType.html#TYPEt">t</a> list -> <a href="BatPathGen.StringType.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALconcat_with_separators"><span class="keyword">val</span> concat_with_separators</span> : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -><br>       <a href="BatPathGen.StringType.html#TYPEt">t</a> list -> <a href="BatPathGen.StringType.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">concat_with_separators sep lst</code> catenates all <i>n</i> elements of <code class="code">lst</code> inserting <i>(n-1)</i> copies of <code class="code">sep</code> in between.<br>
 </div>
-<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -> <a href="BatPathGen.StringType.html#TYPEt">t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -> <a href="BatPathGen.StringType.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 Usual comparison function.<br>
 </div>
-<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(<a href="BatPathGen.StringType.html#TYPEtchar">tchar</a> -> unit) -> <a href="BatPathGen.StringType.html#TYPEt">t</a> -> unit</code></pre><pre><span id="VALiteri"><span class="keyword">val</span> iteri</span> : <code class="type">(int -> <a href="BatPathGen.StringType.html#TYPEtchar">tchar</a> -> unit) -><br>       <a href="BatPathGen.StringType.html#TYPEt">t</a> -> unit</code></pre><pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -> int -> int -> <a href="BatPathGen.StringType.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(<a href="BatPathGen.StringType.html#TYPEtchar">tchar</a> -> unit) -> <a href="BatPathGen.StringType.html#TYPEt">t</a> -> unit</code></pre>
+<pre><span id="VALiteri"><span class="keyword">val</span> iteri</span> : <code class="type">(int -> <a href="BatPathGen.StringType.html#TYPEtchar">tchar</a> -> unit) -><br>       <a href="BatPathGen.StringType.html#TYPEt">t</a> -> unit</code></pre>
+<pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -> int -> int -> <a href="BatPathGen.StringType.html#TYPEt">t</a></code></pre><div class="info ">
 As <code class="code"><span class="constructor">String</span>.sub</code>, but indexed in specific way.<br>
 </div>
-<pre><span id="VALrindex"><span class="keyword">val</span> rindex</span> : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -> char -> int</code></pre><pre><span class="keyword">module</span> <a href="BatPathGen.StringType.Parse.html">Parse</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatPathGen.StringType.Parse.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>
+
+<pre><span id="VALrindex"><span class="keyword">val</span> rindex</span> : <code class="type"><a href="BatPathGen.StringType.html#TYPEt">t</a> -> char -> int</code></pre>
+<pre><span class="keyword">module</span> <a href="BatPathGen.StringType.Parse.html">Parse</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatPathGen.StringType.Parse.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>

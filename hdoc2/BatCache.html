@@ -101,18 +101,20 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatCache</title>
 </head>
 <body>
-<div class="navbar"><a href="BatBuffer.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatChar.html">Next</a>
+<div class="navbar"><a class="pre" href="BatBuffer.html" title="BatBuffer">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatChar.html" title="BatChar">Next</a>
 </div>
-<center><h1>Module <a href="type_BatCache.html">BatCache</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> BatCache: <code class="code"><span class="keyword">sig</span></code> <a href="BatCache.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>The data structure for a manual cache with keys <code class="code"><span class="keywordsign">'</span>a</code> and values <code class="code"><span class="keywordsign">'</span>b</code>.
+<h1>Module <a href="type_BatCache.html">BatCache</a></h1>
+
+<pre><span class="keyword">module</span> BatCache: <code class="code"><span class="keyword">sig</span></code> <a href="BatCache.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+The data structure for a manual cache with keys <code class="code"><span class="keywordsign">'</span>a</code> and values <code class="code"><span class="keywordsign">'</span>b</code>.
 <p>
 
     This cache gives access to some internals of a memoized function
@@ -139,45 +141,50 @@
     Last, <code class="code">c.enum ()</code> will enumerate all the currently memorized
     bindings as pairs.  This allows inspection of what is currently
     cached.<br>
+</div>
 <hr width="100%">
-<br><code><span id="TYPEmanual_cache"><span class="keyword">type</span> <code class="type">('a, 'b)</code> manual_cache</span> = {</code><table class="typetable">
+
+<pre><code><span id="TYPEmanual_cache"><span class="keyword">type</span> <code class="type">('a, 'b)</code> manual_cache</span> = {</code></pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>get&nbsp;: <code class="type">'a -> 'b</code>;</code></td>
+<code><span id="TYPEELTmanual_cache.get">get</span>&nbsp;: <code class="type">'a -> 'b</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>del&nbsp;: <code class="type">'a -> unit</code>;</code></td>
+<code><span id="TYPEELTmanual_cache.del">del</span>&nbsp;: <code class="type">'a -> unit</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>enum&nbsp;: <code class="type">unit -> ('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code>;</code></td>
+<code><span id="TYPEELTmanual_cache.enum">enum</span>&nbsp;: <code class="type">unit -> ('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code>;</code></td>
 
 </tr></table>
 }
 
 
-<pre><span id="VALmake_ht"><span class="keyword">val</span> make_ht</span> : <code class="type">gen:('a -> 'b) -> init_size:int -> ('a, 'b) <a href="BatCache.html#TYPEmanual_cache">manual_cache</a></code></pre><div class="info">
+
+<pre><span id="VALmake_ht"><span class="keyword">val</span> make_ht</span> : <code class="type">gen:('a -> 'b) -> init_size:int -> ('a, 'b) <a href="BatCache.html#TYPEmanual_cache">manual_cache</a></code></pre><div class="info ">
 Make a manual cache backed by a hashtable.  The generating
     function is passed with <code class="code">~gen</code> and the initial size of the
     hashtable is <code class="code">~init_size</code>. The hashtable uses the polymorphic
     <code class="code">hash</code> and <code class="code">(=)</code>.<br>
 </div>
-<pre><span id="VALmake_map"><span class="keyword">val</span> make_map</span> : <code class="type">gen:('a -> 'b) -> ('a, 'b) <a href="BatCache.html#TYPEmanual_cache">manual_cache</a></code></pre><div class="info">
+
+<pre><span id="VALmake_map"><span class="keyword">val</span> make_map</span> : <code class="type">gen:('a -> 'b) -> ('a, 'b) <a href="BatCache.html#TYPEmanual_cache">manual_cache</a></code></pre><div class="info ">
 Make a manual cache for function <code class="code">~gen</code> backed by a Set.t.  This
     set uses the polymorphic <code class="code">(&lt;)</code> for comparison, so <code class="code"><span class="keywordsign">'</span>a</code> should be
     properly comparable by it.<br>
 </div>
+
 <pre><span id="TYPEauto_cache"><span class="keyword">type</span> <code class="type">('a, 'b)</code> auto_cache</span> = <code class="type">'a -> 'b</code> </pre>
-<div class="info">
+<div class="info ">
 Automatically managed caches
 <p>
 
@@ -190,5 +197,6 @@ Automatically managed caches
     Each auto-cache can have a different policy to decide which entry
     to discard.<br>
 </div>
+
 
 <pre><span id="VALlru_cache"><span class="keyword">val</span> lru_cache</span> : <code class="type">gen:('a -> 'b) -> cap:int -> ('a, 'b) <a href="BatCache.html#TYPEauto_cache">auto_cache</a></code></pre></body></html>

@@ -100,17 +100,19 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatList.Labels</title>
 </head>
 <body>
-<div class="navbar"><a href="BatList.Infix.html">Previous</a>
-&nbsp;<a href="BatList.html">Up</a>
+<div class="navbar"><a class="pre" href="BatList.Infix.html" title="BatList.Infix">Previous</a>
+&nbsp;<a class="up" href="BatList.html" title="BatList">Up</a>
 &nbsp;</div>
-<center><h1>Module <a href="type_BatList.Labels.html">BatList.Labels</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> Labels: <code class="code"><span class="keyword">sig</span></code> <a href="BatList.Labels.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Operations on <code class="code"><span class="constructor">List</span></code> with labels.
+<h1>Module <a href="type_BatList.Labels.html">BatList.Labels</a></h1>
+
+<pre><span class="keyword">module</span> Labels: <code class="code"><span class="keyword">sig</span></code> <a href="BatList.Labels.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+Operations on <code class="code"><span class="constructor">List</span></code> with labels.
 <p>
 
     This module overrides a number of functions of <code class="code"><span class="constructor">List</span></code> by
@@ -118,5 +120,39 @@
     there to improve readability and safety and to let you change the
     order of arguments to functions. In every case, the behavior of the
     function is identical to that of the corresponding function of <code class="code"><span class="constructor">List</span></code>.<br>
+</div>
 <hr width="100%">
-<pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> f:(int -> 'a) -> 'a list</code></pre><pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">f:('a -> unit) -> 'a list -> unit</code></pre><pre><span id="VALiteri"><span class="keyword">val</span> iteri</span> : <code class="type">f:(int -> 'a -> unit) -> 'a list -> unit</code></pre><pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">f:('a -> 'b) -> 'a list -> 'b list</code></pre><pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">f:(int -> 'a -> 'b) -> 'a list -> 'b list</code></pre><pre><span id="VALrev_map"><span class="keyword">val</span> rev_map</span> : <code class="type">f:('a -> 'b) -> 'a list -> 'b list</code></pre><pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">f:('a -> 'b -> 'a) -> init:'a -> 'b list -> 'a</code></pre><pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">f:('a -> 'b -> 'b) -> 'a list -> init:'b -> 'b</code></pre><pre><span id="VALiter2"><span class="keyword">val</span> iter2</span> : <code class="type">f:('a -> 'b -> unit) -> 'a list -> 'b list -> unit</code></pre><pre><span id="VALmap2"><span class="keyword">val</span> map2</span> : <code class="type">f:('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list</code></pre><pre><span id="VALrev_map2"><span class="keyword">val</span> rev_map2</span> : <code class="type">f:('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list</code></pre><pre><span id="VALfold_left2"><span class="keyword">val</span> fold_left2</span> : <code class="type">f:('a -> 'b -> 'c -> 'a) -> init:'a -> 'b list -> 'c list -> 'a</code></pre><pre><span id="VALfold_right2"><span class="keyword">val</span> fold_right2</span> : <code class="type">f:('a -> 'b -> 'c -> 'c) -> 'a list -> 'b list -> init:'c -> 'c</code></pre><pre><span id="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">f:('a -> bool) -> 'a list -> bool</code></pre><pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">f:('a -> bool) -> 'a list -> bool</code></pre><pre><span id="VALfor_all2"><span class="keyword">val</span> for_all2</span> : <code class="type">f:('a -> 'b -> bool) -> 'a list -> 'b list -> bool</code></pre><pre><span id="VALexists2"><span class="keyword">val</span> exists2</span> : <code class="type">f:('a -> 'b -> bool) -> 'a list -> 'b list -> bool</code></pre><pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a</code></pre><pre><span id="VALfind_exn"><span class="keyword">val</span> find_exn</span> : <code class="type">f:('a -> bool) -> exn -> 'a list -> 'a</code></pre><pre><span id="VALfindi"><span class="keyword">val</span> findi</span> : <code class="type">f:(int -> 'a -> bool) -> 'a list -> int * 'a</code></pre><pre><span id="VALrfind"><span class="keyword">val</span> rfind</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a</code></pre><pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a list</code></pre><pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">f:('a -> 'b option) -> 'a list -> 'b list</code></pre><pre><span id="VALfind_all"><span class="keyword">val</span> find_all</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a list</code></pre><pre><span id="VALpartition"><span class="keyword">val</span> partition</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a list * 'a list</code></pre><pre><span id="VALremove_if"><span class="keyword">val</span> remove_if</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a list</code></pre><pre><span id="VALtake_while"><span class="keyword">val</span> take_while</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a list</code></pre><pre><span id="VALdrop_while"><span class="keyword">val</span> drop_while</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a list</code></pre><pre><span id="VALstable_sort"><span class="keyword">val</span> stable_sort</span> : <code class="type">?cmp:('a -> 'a -> int) -> 'a list -> 'a list</code></pre><pre><span id="VALfast_sort"><span class="keyword">val</span> fast_sort</span> : <code class="type">?cmp:('a -> 'a -> int) -> 'a list -> 'a list</code></pre><pre><span id="VALmerge"><span class="keyword">val</span> merge</span> : <code class="type">?cmp:('a -> 'a -> int) -> 'a list -> 'a list -> 'a list</code></pre><pre><span class="keyword">module</span> <a href="BatList.Labels.LExceptionless.html">LExceptionless</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatList.Labels.LExceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>
+
+<pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> f:(int -> 'a) -> 'a list</code></pre>
+<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">f:('a -> unit) -> 'a list -> unit</code></pre>
+<pre><span id="VALiteri"><span class="keyword">val</span> iteri</span> : <code class="type">f:(int -> 'a -> unit) -> 'a list -> unit</code></pre>
+<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">f:('a -> 'b) -> 'a list -> 'b list</code></pre>
+<pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">f:(int -> 'a -> 'b) -> 'a list -> 'b list</code></pre>
+<pre><span id="VALrev_map"><span class="keyword">val</span> rev_map</span> : <code class="type">f:('a -> 'b) -> 'a list -> 'b list</code></pre>
+<pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">f:('a -> 'b -> 'a) -> init:'a -> 'b list -> 'a</code></pre>
+<pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">f:('a -> 'b -> 'b) -> 'a list -> init:'b -> 'b</code></pre>
+<pre><span id="VALiter2"><span class="keyword">val</span> iter2</span> : <code class="type">f:('a -> 'b -> unit) -> 'a list -> 'b list -> unit</code></pre>
+<pre><span id="VALmap2"><span class="keyword">val</span> map2</span> : <code class="type">f:('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list</code></pre>
+<pre><span id="VALrev_map2"><span class="keyword">val</span> rev_map2</span> : <code class="type">f:('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list</code></pre>
+<pre><span id="VALfold_left2"><span class="keyword">val</span> fold_left2</span> : <code class="type">f:('a -> 'b -> 'c -> 'a) -> init:'a -> 'b list -> 'c list -> 'a</code></pre>
+<pre><span id="VALfold_right2"><span class="keyword">val</span> fold_right2</span> : <code class="type">f:('a -> 'b -> 'c -> 'c) -> 'a list -> 'b list -> init:'c -> 'c</code></pre>
+<pre><span id="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">f:('a -> bool) -> 'a list -> bool</code></pre>
+<pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">f:('a -> bool) -> 'a list -> bool</code></pre>
+<pre><span id="VALfor_all2"><span class="keyword">val</span> for_all2</span> : <code class="type">f:('a -> 'b -> bool) -> 'a list -> 'b list -> bool</code></pre>
+<pre><span id="VALexists2"><span class="keyword">val</span> exists2</span> : <code class="type">f:('a -> 'b -> bool) -> 'a list -> 'b list -> bool</code></pre>
+<pre><span id="VALsubset"><span class="keyword">val</span> subset</span> : <code class="type">cmp:('a -> 'b -> int) -> 'a list -> 'b list -> bool</code></pre>
+<pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a</code></pre>
+<pre><span id="VALfind_exn"><span class="keyword">val</span> find_exn</span> : <code class="type">f:('a -> bool) -> exn -> 'a list -> 'a</code></pre>
+<pre><span id="VALfindi"><span class="keyword">val</span> findi</span> : <code class="type">f:(int -> 'a -> bool) -> 'a list -> int * 'a</code></pre>
+<pre><span id="VALrfind"><span class="keyword">val</span> rfind</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a</code></pre>
+<pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a list</code></pre>
+<pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">f:('a -> 'b option) -> 'a list -> 'b list</code></pre>
+<pre><span id="VALfind_all"><span class="keyword">val</span> find_all</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a list</code></pre>
+<pre><span id="VALpartition"><span class="keyword">val</span> partition</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a list * 'a list</code></pre>
+<pre><span id="VALremove_if"><span class="keyword">val</span> remove_if</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a list</code></pre>
+<pre><span id="VALtake_while"><span class="keyword">val</span> take_while</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a list</code></pre>
+<pre><span id="VALdrop_while"><span class="keyword">val</span> drop_while</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a list</code></pre>
+<pre><span id="VALstable_sort"><span class="keyword">val</span> stable_sort</span> : <code class="type">?cmp:('a -> 'a -> int) -> 'a list -> 'a list</code></pre>
+<pre><span id="VALfast_sort"><span class="keyword">val</span> fast_sort</span> : <code class="type">?cmp:('a -> 'a -> int) -> 'a list -> 'a list</code></pre>
+<pre><span id="VALmerge"><span class="keyword">val</span> merge</span> : <code class="type">?cmp:('a -> 'a -> int) -> 'a list -> 'a list -> 'a list</code></pre>
+<pre><span class="keyword">module</span> <a href="BatList.Labels.LExceptionless.html">LExceptionless</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatList.Labels.LExceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>

@@ -100,17 +100,28 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatSeq.Infix</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a href="BatSeq.html">Up</a>
-&nbsp;<a href="BatSeq.Exceptionless.html">Next</a>
+<div class="navbar">&nbsp;<a class="up" href="BatSeq.html" title="BatSeq">Up</a>
+&nbsp;<a class="post" href="BatSeq.Exceptionless.html" title="BatSeq.Exceptionless">Next</a>
 </div>
-<center><h1>Module <a href="type_BatSeq.Infix.html">BatSeq.Infix</a></h1></center>
-<br>
+<h1>Module <a href="type_BatSeq.Infix.html">BatSeq.Infix</a></h1>
+
 <pre><span class="keyword">module</span> Infix: <code class="code"><span class="keyword">sig</span></code> <a href="BatSeq.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 <br>
 Infix operators matching those provided by <a href="BatEnum.Infix.html"><code class="code"><span class="constructor">BatEnum</span>.<span class="constructor">Infix</span></code></a><br>
-<pre><span id="VAL(--)"><span class="keyword">val</span> (--)</span> : <code class="type">int -> int -> int <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre><pre><span id="VAL(--^)"><span class="keyword">val</span> (--^)</span> : <code class="type">int -> int -> int <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre><pre><span id="VAL(--.)"><span class="keyword">val</span> (--.)</span> : <code class="type">float * float -> float -> float <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre><pre><span id="VAL(---)"><span class="keyword">val</span> (---)</span> : <code class="type">int -> int -> int <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre><pre><span id="VAL(--~)"><span class="keyword">val</span> (--~)</span> : <code class="type">char -> char -> char <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre><pre><span id="VAL(//)"><span class="keyword">val</span> (//)</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> ('a -> bool) -> 'a <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre><pre><span id="VAL(/@)"><span class="keyword">val</span> (/@)</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> ('a -> 'b) -> 'b <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre><pre><span id="VAL(@/)"><span class="keyword">val</span> (@/)</span> : <code class="type">('a -> 'b) -> 'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> 'b <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre><pre><span id="VAL(//@)"><span class="keyword">val</span> (//@)</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> ('a -> 'b option) -> 'b <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre><pre><span id="VAL(@//)"><span class="keyword">val</span> (@//)</span> : <code class="type">('a -> 'b option) -> 'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> 'b <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre></body></html>
+
+<pre><span id="VAL(--)"><span class="keyword">val</span> (--)</span> : <code class="type">int -> int -> int <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre>
+<pre><span id="VAL(--^)"><span class="keyword">val</span> (--^)</span> : <code class="type">int -> int -> int <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre>
+<pre><span id="VAL(--.)"><span class="keyword">val</span> (--.)</span> : <code class="type">float * float -> float -> float <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre>
+<pre><span id="VAL(---)"><span class="keyword">val</span> (---)</span> : <code class="type">int -> int -> int <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre>
+<pre><span id="VAL(--~)"><span class="keyword">val</span> (--~)</span> : <code class="type">char -> char -> char <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre>
+<pre><span id="VAL(//)"><span class="keyword">val</span> (//)</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> ('a -> bool) -> 'a <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre>
+<pre><span id="VAL(/@)"><span class="keyword">val</span> (/@)</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> ('a -> 'b) -> 'b <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre>
+<pre><span id="VAL(@/)"><span class="keyword">val</span> (@/)</span> : <code class="type">('a -> 'b) -> 'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> 'b <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre>
+<pre><span id="VAL(//@)"><span class="keyword">val</span> (//@)</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> ('a -> 'b option) -> 'b <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre>
+<pre><span id="VAL(@//)"><span class="keyword">val</span> (@//)</span> : <code class="type">('a -> 'b option) -> 'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> 'b <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre></body></html>

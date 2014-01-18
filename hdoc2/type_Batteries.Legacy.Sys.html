@@ -96,6 +96,7 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : Batteries.Legacy.Sys</title>
@@ -116,7 +117,11 @@
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;readdir&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;array&nbsp;=&nbsp;<span class="string">"caml_sys_read_directory"</span><br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;interactive&nbsp;:&nbsp;bool&nbsp;ref<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;os_type&nbsp;:&nbsp;string<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unix&nbsp;:&nbsp;bool<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;win32&nbsp;:&nbsp;bool<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;cygwin&nbsp;:&nbsp;bool<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;word_size&nbsp;:&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;big_endian&nbsp;:&nbsp;bool<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;max_string_length&nbsp;:&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;max_array_length&nbsp;:&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;signal_behavior&nbsp;=<br>

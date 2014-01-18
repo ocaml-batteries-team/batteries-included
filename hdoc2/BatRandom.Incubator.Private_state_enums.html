@@ -99,21 +99,31 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatRandom.Incubator.Private_state_enums</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a href="BatRandom.Incubator.html">Up</a>
+<div class="navbar">&nbsp;<a class="up" href="BatRandom.Incubator.html" title="BatRandom.Incubator">Up</a>
 &nbsp;</div>
-<center><h1>Module <a href="type_BatRandom.Incubator.Private_state_enums.html">BatRandom.Incubator.Private_state_enums</a></h1></center>
-<br>
+<h1>Module <a href="type_BatRandom.Incubator.Private_state_enums.html">BatRandom.Incubator.Private_state_enums</a></h1>
+
 <pre><span class="keyword">module</span> Private_state_enums: <code class="code"><span class="keyword">sig</span></code> <a href="BatRandom.Incubator.Private_state_enums.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
-<pre><span class="keyword">module</span> <a href="BatRandom.Incubator.Private_state_enums.State.html">State</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatRandom.Incubator.Private_state_enums.State.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><pre><span id="VALenum_bits"><span class="keyword">val</span> enum_bits</span> : <code class="type">unit -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+
+<pre><span class="keyword">module</span> <a href="BatRandom.Incubator.Private_state_enums.State.html">State</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatRandom.Incubator.Private_state_enums.State.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span id="VALenum_bits"><span class="keyword">val</span> enum_bits</span> : <code class="type">unit -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 These enumerations are built on a copy of the global RNG
         state.  To keep successive constructions from using the same RNG
         state, when any of these functions is called, the global RNG state
         is perturbed by using its current internal state as seed to
         construct a new state.<br>
 </div>
-<pre><span id="VALenum_int"><span class="keyword">val</span> enum_int</span> : <code class="type">int -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_bool"><span class="keyword">val</span> enum_bool</span> : <code class="type">unit -> bool <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_float"><span class="keyword">val</span> enum_float</span> : <code class="type">float -> float <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_int32"><span class="keyword">val</span> enum_int32</span> : <code class="type">Int32.t -> Int32.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_int64"><span class="keyword">val</span> enum_int64</span> : <code class="type">Int64.t -> Int64.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_nativeint"><span class="keyword">val</span> enum_nativeint</span> : <code class="type">Nativeint.t -> Nativeint.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALenum_char"><span class="keyword">val</span> enum_char</span> : <code class="type">unit -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre></body></html>
+
+<pre><span id="VALenum_int"><span class="keyword">val</span> enum_int</span> : <code class="type">int -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
+<pre><span id="VALenum_bool"><span class="keyword">val</span> enum_bool</span> : <code class="type">unit -> bool <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
+<pre><span id="VALenum_float"><span class="keyword">val</span> enum_float</span> : <code class="type">float -> float <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
+<pre><span id="VALenum_int32"><span class="keyword">val</span> enum_int32</span> : <code class="type">Int32.t -> Int32.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
+<pre><span id="VALenum_int64"><span class="keyword">val</span> enum_int64</span> : <code class="type">Int64.t -> Int64.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
+<pre><span id="VALenum_nativeint"><span class="keyword">val</span> enum_nativeint</span> : <code class="type">Nativeint.t -> Nativeint.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
+<pre><span id="VALenum_char"><span class="keyword">val</span> enum_char</span> : <code class="type">unit -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre></body></html>

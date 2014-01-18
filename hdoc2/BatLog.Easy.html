@@ -101,23 +101,27 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatLog.Easy</title>
 </head>
 <body>
-<div class="navbar"><a href="BatLog.Make.html">Previous</a>
-&nbsp;<a href="BatLog.html">Up</a>
-&nbsp;<a href="BatLog.Make_lev.html">Next</a>
+<div class="navbar"><a class="pre" href="BatLog.Make.html" title="BatLog.Make">Previous</a>
+&nbsp;<a class="up" href="BatLog.html" title="BatLog">Up</a>
+&nbsp;<a class="post" href="BatLog.Make_lev.html" title="BatLog.Make_lev">Next</a>
 </div>
-<center><h1>Module <a href="type_BatLog.Easy.html">BatLog.Easy</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> Easy: <code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Easy.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>A simple-to-use logger with verbosity levels that outputs by
+<h1>Module <a href="type_BatLog.Easy.html">BatLog.Easy</a></h1>
+
+<pre><span class="keyword">module</span> Easy: <code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Easy.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+A simple-to-use logger with verbosity levels that outputs by
     default to stderr (changeable at runtime) with the date and time
     at the beginning of each log message.<br>
 <b>Since</b> 2.0<br>
+</div>
 <hr width="100%">
-<pre><span id="VALlevel"><span class="keyword">val</span> level</span> : <code class="type"><a href="BatLog.html#TYPEeasy_lev">BatLog.easy_lev</a> Pervasives.ref</code></pre><div class="info">
+
+<pre><span id="VALlevel"><span class="keyword">val</span> level</span> : <code class="type"><a href="BatLog.html#TYPEeasy_lev">BatLog.easy_lev</a> Pervasives.ref</code></pre><div class="info ">
 Set this ref to the lowest level of log you want logged.  For
       example, <code class="code"><span class="constructor">Easy</span>.level := <span class="keywordsign">`</span>always</code> disables all logging except
       that at the <code class="code"><span class="keywordsign">`</span>always</code> level.  Setting <code class="code"><span class="constructor">Easy</span>.level := <span class="keywordsign">`</span>info</code> will
@@ -127,11 +131,14 @@ Set this ref to the lowest level of log you want logged.  For
 Set this ref to the output you want logging messages to go
       to.  Defaults to <code class="code">stderr</code>.<br>
 </div>
-<pre><span id="VALoutput"><span class="keyword">val</span> output</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> Pervasives.ref</code></pre><pre><span id="VALlog"><span class="keyword">val</span> log</span> : <code class="type">?fp:string -> <a href="BatLog.html#TYPEeasy_lev">BatLog.easy_lev</a> -> string -> unit</code></pre><div class="info">
+
+<pre><span id="VALoutput"><span class="keyword">val</span> output</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> Pervasives.ref</code></pre>
+<pre><span id="VALlog"><span class="keyword">val</span> log</span> : <code class="type">?fp:string -> <a href="BatLog.html#TYPEeasy_lev">BatLog.easy_lev</a> -> string -> unit</code></pre><div class="info ">
 <code class="code">log lev msg</code> logs the message <code class="code">msg</code> if the current logging
       level is <code class="code">lev</code> or lower.<br>
 </div>
-<pre><span id="VALlogf"><span class="keyword">val</span> logf</span> : <code class="type">?fp:string -><br>       <a href="BatLog.html#TYPEeasy_lev">BatLog.easy_lev</a> -> ('a, unit <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit) Pervasives.format -> 'a</code></pre><div class="info">
+
+<pre><span id="VALlogf"><span class="keyword">val</span> logf</span> : <code class="type">?fp:string -><br>       <a href="BatLog.html#TYPEeasy_lev">BatLog.easy_lev</a> -> ('a, unit <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit) Pervasives.format -> 'a</code></pre><div class="info ">
 As <code class="code">log</code>, but instead of a string message, a printf format is
       allowed with whatever arguments are appropriate.<br>
 </div>

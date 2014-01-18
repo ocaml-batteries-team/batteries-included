@@ -100,18 +100,20 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatOption.Infix</title>
 </head>
 <body>
-<div class="navbar"><a href="BatOption.Labels.html">Previous</a>
-&nbsp;<a href="BatOption.html">Up</a>
+<div class="navbar"><a class="pre" href="BatOption.Labels.html" title="BatOption.Labels">Previous</a>
+&nbsp;<a class="up" href="BatOption.html" title="BatOption">Up</a>
 &nbsp;</div>
-<center><h1>Module <a href="type_BatOption.Infix.html">BatOption.Infix</a></h1></center>
-<br>
+<h1>Module <a href="type_BatOption.Infix.html">BatOption.Infix</a></h1>
+
 <pre><span class="keyword">module</span> Infix: <code class="code"><span class="keyword">sig</span></code> <a href="BatOption.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
-<pre><span id="VAL(|?)"><span class="keyword">val</span> (|?)</span> : <code class="type">'a option -> 'a -> 'a</code></pre><div class="info">
+
+<pre><span id="VAL(|?)"><span class="keyword">val</span> (|?)</span> : <code class="type">'a option -> 'a -> 'a</code></pre><div class="info ">
 Like <a href="BatOption.html#VALdefault"><code class="code"><span class="constructor">BatOption</span>.default</code></a>, with the arguments reversed.
         <code class="code"><span class="constructor">None</span> |? 10</code> returns <code class="code">10</code>, while <code class="code"><span class="constructor">Some</span> <span class="string">"foo"</span> |? <span class="string">"bar"</span></code> returns <code class="code"><span class="string">"foo"</span></code>.<br>
 </div>

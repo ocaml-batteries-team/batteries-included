@@ -101,6 +101,7 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Standard formatters" rel="Section" href="#6_Standardformatters">
@@ -108,56 +109,59 @@
 <title>Batteries user guide : BatOptParse.Formatter</title>
 </head>
 <body>
-<div class="navbar"><a href="BatOptParse.StdOpt.html">Previous</a>
-&nbsp;<a href="BatOptParse.html">Up</a>
-&nbsp;<a href="BatOptParse.OptParser.html">Next</a>
+<div class="navbar"><a class="pre" href="BatOptParse.StdOpt.html" title="BatOptParse.StdOpt">Previous</a>
+&nbsp;<a class="up" href="BatOptParse.html" title="BatOptParse">Up</a>
+&nbsp;<a class="post" href="BatOptParse.OptParser.html" title="BatOptParse.OptParser">Next</a>
 </div>
-<center><h1>Module <a href="type_BatOptParse.Formatter.html">BatOptParse.Formatter</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> Formatter: <code class="code"><span class="keyword">sig</span></code> <a href="BatOptParse.Formatter.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>This module contains the types and functions for implementing
+<h1>Module <a href="type_BatOptParse.Formatter.html">BatOptParse.Formatter</a></h1>
+
+<pre><span class="keyword">module</span> Formatter: <code class="code"><span class="keyword">sig</span></code> <a href="BatOptParse.Formatter.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+This module contains the types and functions for implementing
     custom usage message formatters.<br>
+</div>
 <hr width="100%">
-<br><code><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = {</code><table class="typetable">
+
+<pre><code><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = {</code></pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>indent&nbsp;: <code class="type">unit -> unit</code>;</code></td>
+<code><span id="TYPEELTt.indent">indent</span>&nbsp;: <code class="type">unit -> unit</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Increase the indentation level.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>dedent&nbsp;: <code class="type">unit -> unit</code>;</code></td>
+<code><span id="TYPEELTt.dedent">dedent</span>&nbsp;: <code class="type">unit -> unit</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Decrease the indentation level.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>format_usage&nbsp;: <code class="type">string -> string</code>;</code></td>
+<code><span id="TYPEELTt.format_usage">format_usage</span>&nbsp;: <code class="type">string -> string</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Format usage string into style of this formatter.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>format_heading&nbsp;: <code class="type">string -> string</code>;</code></td>
+<code><span id="TYPEELTt.format_heading">format_heading</span>&nbsp;: <code class="type">string -> string</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Format heading into style of this formatter.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>format_description&nbsp;: <code class="type">string -> string</code>;</code></td>
+<code><span id="TYPEELTt.format_description">format_description</span>&nbsp;: <code class="type">string -> string</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Format description into style of this formatter.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>format_option&nbsp;: <code class="type">char list * string list -> string list -> string option -> string</code>;</code></td>
+<code><span id="TYPEELTt.format_option">format_option</span>&nbsp;: <code class="type">char list * string list -> string list -> string option -> string</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Format option into style of this formatter (see explanation below).</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 }
@@ -171,8 +175,9 @@ This is the type of a formatter. The <code class="code">format_option</code> has
       metavars the option takes as arguments, and <code class="code">help</code> is the help
       string supplied by the user.<br>
 <br>
-<span id="6_Standardformatters"><h6>Standard formatters</h6></span><br>
-<pre><span id="VALindented_formatter"><span class="keyword">val</span> indented_formatter</span> : <code class="type">?level:int Pervasives.ref -><br>       ?indent:int Pervasives.ref -><br>       ?indent_increment:int -><br>       ?max_help_position:int -><br>       ?width:int -> ?short_first:bool -> unit -> <a href="BatOptParse.Formatter.html#TYPEt">t</a></code></pre><div class="info">
+<h6 id="6_Standardformatters">Standard formatters</h6><br>
+
+<pre><span id="VALindented_formatter"><span class="keyword">val</span> indented_formatter</span> : <code class="type">?level:int Pervasives.ref -><br>       ?indent:int Pervasives.ref -><br>       ?indent_increment:int -><br>       ?max_help_position:int -><br>       ?width:int -> ?short_first:bool -> unit -> <a href="BatOptParse.Formatter.html#TYPEt">t</a></code></pre><div class="info ">
 Create an "indented" formatter with the given options.<br>
 </div>
 <div class="param_info"><code class="code">level</code> : Reference to the current indentation level. Its
@@ -185,15 +190,17 @@ Create an "indented" formatter with the given options.<br>
       messages relating to each option.</div>
 <div class="param_info"><code class="code">width</code> : Total with of the usage messages printed.</div>
 <div class="param_info"><code class="code">short_first</code> : List all the short option names first?</div>
-<pre><span id="VALtitled_formatter"><span class="keyword">val</span> titled_formatter</span> : <code class="type">?level:int Pervasives.ref -><br>       ?indent:int Pervasives.ref -><br>       ?indent_increment:int -><br>       ?max_help_position:int -><br>       ?width:int -> ?short_first:bool -> unit -> <a href="BatOptParse.Formatter.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALtitled_formatter"><span class="keyword">val</span> titled_formatter</span> : <code class="type">?level:int Pervasives.ref -><br>       ?indent:int Pervasives.ref -><br>       ?indent_increment:int -><br>       ?max_help_position:int -><br>       ?width:int -> ?short_first:bool -> unit -> <a href="BatOptParse.Formatter.html#TYPEt">t</a></code></pre><div class="info ">
 Creates a titled formatter which is quite similar to the
       indented formatter. See
       <code class="code"><span class="constructor">OptParse</span>.<span class="constructor">Formatter</span>.indented_formatter</code> for a description of
       the options.<br>
 </div>
 <br>
-<span id="6_Lowlevelformatting"><h6>Low-level formatting</h6></span><br>
-<pre><span id="VALwrap"><span class="keyword">val</span> wrap</span> : <code class="type">?initial_indent:int -> ?subsequent_indent:int -> string -> int -> string list</code></pre><div class="info">
+<h6 id="6_Lowlevelformatting">Low-level formatting</h6><br>
+
+<pre><span id="VALwrap"><span class="keyword">val</span> wrap</span> : <code class="type">?initial_indent:int -> ?subsequent_indent:int -> string -> int -> string list</code></pre><div class="info ">
 <code class="code">wrap text width</code> reflows the given text paragraph into lines
       of width at most <code class="code">width</code> (lines may exceed this if the are
       single words that exceed this limit).<br>
@@ -201,7 +208,8 @@ Creates a titled formatter which is quite similar to the
 </div>
 <div class="param_info"><code class="code">initial_indent</code> : Indentation of the first line.</div>
 <div class="param_info"><code class="code">subsequent_indent</code> : Indentation of the following lines.</div>
-<pre><span id="VALfill"><span class="keyword">val</span> fill</span> : <code class="type">?initial_indent:int -> ?subsequent_indent:int -> string -> int -> string</code></pre><div class="info">
+
+<pre><span id="VALfill"><span class="keyword">val</span> fill</span> : <code class="type">?initial_indent:int -> ?subsequent_indent:int -> string -> int -> string</code></pre><div class="info ">
 See <code class="code"><span class="constructor">OptParse</span>.<span class="constructor">Formatter</span>.wrap</code>.<br>
 <b>Returns</b> a string containing the reformatted paragraph.<br>
 </div>

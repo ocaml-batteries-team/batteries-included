@@ -101,44 +101,52 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : Batteries.Digest</title>
 </head>
 <body>
-<div class="navbar"><a href="Batteries.Complex.html">Previous</a>
-&nbsp;<a href="Batteries.html">Up</a>
-&nbsp;<a href="Batteries.Format.html">Next</a>
+<div class="navbar"><a class="pre" href="Batteries.Complex.html" title="Batteries.Complex">Previous</a>
+&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
+&nbsp;<a class="post" href="Batteries.Format.html" title="Batteries.Format">Next</a>
 </div>
-<center><h1>Module <a href="type_Batteries.Digest.html">Batteries.Digest</a></h1></center>
-<br>
+<h1>Module <a href="type_Batteries.Digest.html">Batteries.Digest</a></h1>
+
 <pre><span class="keyword">module</span> Digest: <code class="type">BatDigest</code></pre><hr width="100%">
+
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">string</code> </pre>
-<div class="info">
+<div class="info ">
 The type of digests: 16-character strings.<br>
 </div>
 
-<pre><span id="VALstring"><span class="keyword">val</span> string</span> : <code class="type">string -> <a href="BatDigest.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALstring"><span class="keyword">val</span> string</span> : <code class="type">string -> <a href="BatDigest.html#TYPEt">t</a></code></pre><div class="info ">
 Return the digest of the given string.<br>
 </div>
-<pre><span id="VALsubstring"><span class="keyword">val</span> substring</span> : <code class="type">string -> int -> int -> <a href="BatDigest.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALsubstring"><span class="keyword">val</span> substring</span> : <code class="type">string -> int -> int -> <a href="BatDigest.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code"><span class="constructor">Digest</span>.substring s ofs len</code> returns the digest of the substring
     of <code class="code">s</code> starting at character number <code class="code">ofs</code> and containing <code class="code">len</code>
     characters.<br>
 </div>
-<pre><span id="VALfile"><span class="keyword">val</span> file</span> : <code class="type">string -> <a href="BatDigest.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALfile"><span class="keyword">val</span> file</span> : <code class="type">string -> <a href="BatDigest.html#TYPEt">t</a></code></pre><div class="info ">
 Return the digest of the file whose name is given.<br>
 </div>
-<pre><span id="VALto_hex"><span class="keyword">val</span> to_hex</span> : <code class="type"><a href="BatDigest.html#TYPEt">t</a> -> string</code></pre><div class="info">
+
+<pre><span id="VALto_hex"><span class="keyword">val</span> to_hex</span> : <code class="type"><a href="BatDigest.html#TYPEt">t</a> -> string</code></pre><div class="info ">
 Return the printable hexadecimal representation of the given digest.<br>
 </div>
-<pre><span id="VALfrom_hex"><span class="keyword">val</span> from_hex</span> : <code class="type">string -> <a href="BatDigest.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALfrom_hex"><span class="keyword">val</span> from_hex</span> : <code class="type">string -> <a href="BatDigest.html#TYPEt">t</a></code></pre><div class="info ">
 Convert a hexadecimal representation back into the corresponding digest.<br>
 <b>Since</b> 4.00.0<br>
 <b>Raises</b> <code>Invalid_argument</code> if the argument is not exactly 32 hexadecimal
     characters.<br>
 </div>
-<pre><span id="VALchannel"><span class="keyword">val</span> channel</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int -> Digest.t</code></pre><div class="info">
+
+<pre><span id="VALchannel"><span class="keyword">val</span> channel</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int -> Digest.t</code></pre><div class="info ">
 If <code class="code">len</code> is nonnegative, <code class="code"><span class="constructor">Digest</span>.channel ic len</code> reads <code class="code">len</code>
     characters from channel <code class="code">ic</code> and returns their digest, or<br>
 <b>Raises</b> <code>End_of_file</code> if end-of-file is reached before <code class="code">len</code> characters
@@ -151,16 +159,20 @@ If <code class="code">len</code> is nonnegative, <code class="code"><span class=
     if <code class="code">len</code> &lt; 0 and requires copying the whole input to a temporary
     file.<br>
 </div>
-<pre><span id="VALoutput"><span class="keyword">val</span> output</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> <a href="BatDigest.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+
+<pre><span id="VALoutput"><span class="keyword">val</span> output</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> <a href="BatDigest.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 Write a digest on the given output.<br>
 </div>
-<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> Digest.t -> unit</code></pre><div class="info">
+
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> Digest.t -> unit</code></pre><div class="info ">
 Write a digest on the given output in hexadecimal.<br>
 </div>
-<pre><span id="VALinput"><span class="keyword">val</span> input</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> Digest.t</code></pre><div class="info">
+
+<pre><span id="VALinput"><span class="keyword">val</span> input</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> Digest.t</code></pre><div class="info ">
 Read a digest from the given input.<br>
 </div>
-<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatDigest.html#TYPEt">t</a> -> <a href="BatDigest.html#TYPEt">t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatDigest.html#TYPEt">t</a> -> <a href="BatDigest.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 The comparison function for 16-character digest, with the same
       specification as <code class="code"><span class="constructor">Pervasives</span>.compare</code> and the implementation
       shared with <code class="code"><span class="constructor">String</span>.compare</code>. Along with the type <code class="code">t</code>, this

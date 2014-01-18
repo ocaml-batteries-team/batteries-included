@@ -101,6 +101,7 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
@@ -108,68 +109,83 @@
 <title>Batteries user guide : Batteries.Stack</title>
 </head>
 <body>
-<div class="navbar"><a href="Batteries.Set.html">Previous</a>
-&nbsp;<a href="Batteries.html">Up</a>
-&nbsp;<a href="Batteries.Stream.html">Next</a>
+<div class="navbar"><a class="pre" href="Batteries.Set.html" title="Batteries.Set">Previous</a>
+&nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
+&nbsp;<a class="post" href="Batteries.Stream.html" title="Batteries.Stream">Next</a>
 </div>
-<center><h1>Module <a href="type_Batteries.Stack.html">Batteries.Stack</a></h1></center>
-<br>
+<h1>Module <a href="type_Batteries.Stack.html">Batteries.Stack</a></h1>
+
 <pre><span class="keyword">module</span> Stack: <code class="type">BatStack</code></pre><hr width="100%">
+
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a Stack.t</code> </pre>
-<div class="info">
+<div class="info ">
 The type of stacks containing elements of type <code class="code"><span class="keywordsign">'</span>a</code>.<br>
 </div>
 
+
 <pre><span id="EXCEPTIONEmpty"><span class="keyword">exception</span> Empty</span></pre>
-<div class="info">
+<div class="info ">
 Raised when <code class="code"><span class="constructor">Stack</span>.pop</code> or <code class="code"><span class="constructor">Stack</span>.top</code> is applied to an empty stack.<br>
 </div>
-<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">unit -> 'a <a href="BatStack.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">unit -> 'a <a href="BatStack.html#TYPEt">t</a></code></pre><div class="info ">
 Return a new stack, initially empty.<br>
 </div>
-<pre><span id="VALpush"><span class="keyword">val</span> push</span> : <code class="type">'a -> 'a <a href="BatStack.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+
+<pre><span id="VALpush"><span class="keyword">val</span> push</span> : <code class="type">'a -> 'a <a href="BatStack.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 <code class="code">push x s</code> adds the element <code class="code">x</code> at the top of stack <code class="code">s</code>.<br>
 </div>
-<pre><span id="VALpop"><span class="keyword">val</span> pop</span> : <code class="type">'a <a href="BatStack.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+
+<pre><span id="VALpop"><span class="keyword">val</span> pop</span> : <code class="type">'a <a href="BatStack.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
 <code class="code">pop s</code> removes and returns the topmost element in stack <code class="code">s</code>,
     or<br>
 <b>Raises</b> <code>Empty</code> if the stack is empty.<br>
 </div>
-<pre><span id="VALtop"><span class="keyword">val</span> top</span> : <code class="type">'a <a href="BatStack.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+
+<pre><span id="VALtop"><span class="keyword">val</span> top</span> : <code class="type">'a <a href="BatStack.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
 <code class="code">top s</code> returns the topmost element in stack <code class="code">s</code>,
     or<br>
 <b>Raises</b> <code>Empty</code> if the stack is empty.<br>
 </div>
-<pre><span id="VALclear"><span class="keyword">val</span> clear</span> : <code class="type">'a <a href="BatStack.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+
+<pre><span id="VALclear"><span class="keyword">val</span> clear</span> : <code class="type">'a <a href="BatStack.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 Discard all elements from a stack.<br>
 </div>
-<pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">'a <a href="BatStack.html#TYPEt">t</a> -> 'a <a href="BatStack.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">'a <a href="BatStack.html#TYPEt">t</a> -> 'a <a href="BatStack.html#TYPEt">t</a></code></pre><div class="info ">
 Return a copy of the given stack.<br>
 </div>
-<pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">'a <a href="BatStack.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+
+<pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">'a <a href="BatStack.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
 Return <code class="code"><span class="keyword">true</span></code> if the given stack is empty, <code class="code"><span class="keyword">false</span></code> otherwise.<br>
 </div>
-<pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type">'a <a href="BatStack.html#TYPEt">t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type">'a <a href="BatStack.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 Return the number of elements in a stack.<br>
 </div>
-<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> 'a <a href="BatStack.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+
+<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> 'a <a href="BatStack.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 <code class="code">iter f s</code> applies <code class="code">f</code> in turn to all elements of <code class="code">s</code>,
     from the element at the top of the stack to the element at the
     bottom of the stack. The stack itself is unchanged.<br>
 </div>
+
 <pre><span class="keyword">include</span> <a href="BatEnum.Enumerable.html">BatEnum.Enumerable</a></pre>
-<pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a <a href="BatStack.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+
+<pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a <a href="BatStack.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 <code class="code">enum s</code> returns an enumeration of the elements of stack <code class="code">s</code>, from
     the most recently entered to the least recently entered.  This
     enumeration is made on a copy of the input stack, and reading from
     it will not affect <code class="code">s</code>.<br>
 </div>
-<pre><span id="VALenum_destruct"><span class="keyword">val</span> enum_destruct</span> : <code class="type">'a <a href="BatStack.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+
+<pre><span id="VALenum_destruct"><span class="keyword">val</span> enum_destruct</span> : <code class="type">'a <a href="BatStack.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 <code class="code">enum s</code> returns a destructive enumeration of the elements of
     stack <code class="code">s</code>, from the most recently entered to the least recently
     entered.  Reading the enumeration will progressively empty <code class="code">s</code>.<br>
 </div>
-<pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatStack.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatStack.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">of_enum e</code> returns a new stack containing all the elements of
     <code class="code">e</code>.  This is equivalent to calling <code class="code">push</code> with the first element
     of the enumeration, then with the second, etc.
@@ -179,7 +195,11 @@ Return the number of elements in a stack.<br>
     reverses the input order.<br>
 </div>
 <br>
-<span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
+<h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
 <br>
-<span id="7_Printing"><div class="h7">Printing</div></span><br>
-<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatStack.html#TYPEt">t</a> -> unit</code></pre><pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a> -> 'a <a href="BatStack.html#TYPEt">t</a> <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a></code></pre><pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">'a <a href="BatOrd.html#TYPEeq">BatOrd.eq</a> -> 'a <a href="BatStack.html#TYPEt">t</a> <a href="BatOrd.html#TYPEeq">BatOrd.eq</a></code></pre><pre><span class="keyword">module</span> <a href="BatStack.Exceptionless.html">Exceptionless</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatStack.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>
+<div class="h7" id="7_Printing">Printing</div><br>
+
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatStack.html#TYPEt">t</a> -> unit</code></pre>
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a> -> 'a <a href="BatStack.html#TYPEt">t</a> <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a></code></pre>
+<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">'a <a href="BatOrd.html#TYPEeq">BatOrd.eq</a> -> 'a <a href="BatStack.html#TYPEt">t</a> <a href="BatOrd.html#TYPEeq">BatOrd.eq</a></code></pre>
+<pre><span class="keyword">module</span> <a href="BatStack.Exceptionless.html">Exceptionless</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatStack.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>

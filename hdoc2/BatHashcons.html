@@ -101,60 +101,69 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatHashcons</title>
 </head>
 <body>
-<div class="navbar"><a href="BatGlobal.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatHashtbl.html">Next</a>
+<div class="navbar"><a class="pre" href="BatGlobal.html" title="BatGlobal">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatHashtbl.html" title="BatHashtbl">Next</a>
 </div>
-<center><h1>Module <a href="type_BatHashcons.html">BatHashcons</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> BatHashcons: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashcons.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Hash consing of data structures<br>
+<h1>Module <a href="type_BatHashcons.html">BatHashcons</a></h1>
+
+<pre><span class="keyword">module</span> BatHashcons: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashcons.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+Hash consing of data structures<br>
+</div>
 <hr width="100%">
-<br><code><span id="TYPEhobj"><span class="keyword">type</span> <code class="type">'a</code> hobj</span> = private {</code><table class="typetable">
+
+<pre><code><span id="TYPEhobj"><span class="keyword">type</span> <code class="type">'a</code> hobj</span> = private {</code></pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>obj&nbsp;: <code class="type">'a</code>;</code></td>
+<code><span id="TYPEELThobj.obj">obj</span>&nbsp;: <code class="type">'a</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>tag&nbsp;: <code class="type">int</code>;</code></td>
+<code><span id="TYPEELThobj.tag">tag</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Unique id for this object</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>hcode&nbsp;: <code class="type">int</code>;</code></td>
+<code><span id="TYPEELThobj.hcode">hcode</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Hash code for this object</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 }
 
-<div class="info">
+<div class="info ">
 The type <code class="code">t hobj</code> represents hashed objects of type <code class="code">t</code>. A hashed
     object contains a unique tag and a hash code.<br>
 </div>
 
+
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a <a href="BatHashcons.html#TYPEhobj">hobj</a></code> </pre>
-<div class="info">
+<div class="info ">
 A synonym for convenience<br>
 </div>
 
-<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">'a <a href="BatHashcons.html#TYPEhobj">hobj</a> -> 'a <a href="BatHashcons.html#TYPEhobj">hobj</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">'a <a href="BatHashcons.html#TYPEhobj">hobj</a> -> 'a <a href="BatHashcons.html#TYPEhobj">hobj</a> -> int</code></pre><div class="info ">
 Comparison on the tags<br>
 </div>
+
 <pre><span class="keyword">module type</span> <a href="BatHashcons.Table.html">Table</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatHashcons.Table.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
 Hashcons tables
 </div>
-<pre><span class="keyword">module</span> <a href="BatHashcons.MakeTable.html">MakeTable</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">HT</span></code><code class="code"> : </code><code class="type"><a href="BatHashtbl.HashedType.html">BatHashtbl.HashedType</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatHashcons.Table.html">Table</a></code><code class="type">  with type key = HT.t</code></div></pre><pre><span class="keyword">module</span> <a href="BatHashcons.H.html">H</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashcons.H.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+
+<pre><span class="keyword">module</span> <a href="BatHashcons.MakeTable.html">MakeTable</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">HT</span></code><code class="code"> : </code><code class="type"><a href="BatHashtbl.HashedType.html">BatHashtbl.HashedType</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatHashcons.Table.html">Table</a></code><code class="type">  with type key = HT.t</code></div></pre>
+<pre><span class="keyword">module</span> <a href="BatHashcons.H.html">H</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashcons.H.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
 Hashing utilities
 </div>
 </body></html>

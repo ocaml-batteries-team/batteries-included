@@ -101,20 +101,24 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatEnum.Exceptionless</title>
 </head>
 <body>
-<div class="navbar"><a href="BatEnum.Monad.html">Previous</a>
-&nbsp;<a href="BatEnum.html">Up</a>
-&nbsp;<a href="BatEnum.Labels.html">Next</a>
+<div class="navbar"><a class="pre" href="BatEnum.Monad.html" title="BatEnum.Monad">Previous</a>
+&nbsp;<a class="up" href="BatEnum.html" title="BatEnum">Up</a>
+&nbsp;<a class="post" href="BatEnum.Labels.html" title="BatEnum.Labels">Next</a>
 </div>
-<center><h1>Module <a href="type_BatEnum.Exceptionless.html">BatEnum.Exceptionless</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> Exceptionless: <code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Operations on <a href="BatEnum.html"><code class="code"><span class="constructor">BatEnum</span></code></a> without exceptions.<br>
+<h1>Module <a href="type_BatEnum.Exceptionless.html">BatEnum.Exceptionless</a></h1>
+
+<pre><span class="keyword">module</span> Exceptionless: <code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+Operations on <a href="BatEnum.html"><code class="code"><span class="constructor">BatEnum</span></code></a> without exceptions.<br>
+</div>
 <hr width="100%">
-<pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a option</code></pre><div class="info">
+
+<pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a option</code></pre><div class="info ">
 <code class="code">find f e</code> returns <code class="code"><span class="constructor">Some</span> x</code> where <code class="code">x</code> is the first element <code class="code">x</code> of <code class="code">e</code>
 		such that <code class="code">f x</code> returns <code class="code"><span class="keyword">true</span></code>, consuming the enumeration up to and
 		including the found element, or <code class="code"><span class="constructor">None</span></code> if no such element exists

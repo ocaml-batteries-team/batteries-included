@@ -101,6 +101,7 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Submodules grouping all infix operators" rel="Section" href="#6_Submodulesgroupingallinfixoperators">
@@ -108,13 +109,15 @@
 <title>Batteries user guide : BatComplex</title>
 </head>
 <body>
-<div class="navbar"><a href="BatCharParser.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatConcurrent.html">Next</a>
+<div class="navbar"><a class="pre" href="BatCharParser.html" title="BatCharParser">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatConcurrent.html" title="BatConcurrent">Next</a>
 </div>
-<center><h1>Module <a href="type_BatComplex.html">BatComplex</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> BatComplex: <code class="code"><span class="keyword">sig</span></code> <a href="BatComplex.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Additional and modified functions for complex numbers.<br>
+<h1>Module <a href="type_BatComplex.html">BatComplex</a></h1>
+
+<pre><span class="keyword">module</span> BatComplex: <code class="code"><span class="keyword">sig</span></code> <a href="BatComplex.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+Additional and modified functions for complex numbers.<br>
+</div>
 <hr width="100%">
 <br>
 Complex numbers.
@@ -124,102 +127,134 @@ Complex numbers.
     Complex numbers are represented by their real and imaginary parts
     (cartesian representation).  Each part is represented by a
     double-precision floating-point number (type <code class="code">float</code>).<br>
+
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">Complex.t</code> = {</pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>re&nbsp;: <code class="type">float</code>;</code></td>
+<code><span id="TYPEELTt.re">re</span>&nbsp;: <code class="type">float</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code>im&nbsp;: <code class="type">float</code>;</code></td>
+<code><span id="TYPEELTt.im">im</span>&nbsp;: <code class="type">float</code>;</code></td>
 
 </tr></table>
 }
 
 
-<pre><span id="VALzero"><span class="keyword">val</span> zero</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALzero"><span class="keyword">val</span> zero</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info ">
 The complex number <code class="code">0</code>.<br>
 </div>
-<pre><span id="VALone"><span class="keyword">val</span> one</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALone"><span class="keyword">val</span> one</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info ">
 The complex number <code class="code">1</code>.<br>
 </div>
-<pre><span id="VALi"><span class="keyword">val</span> i</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALi"><span class="keyword">val</span> i</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info ">
 The complex number <code class="code">i</code>.<br>
 </div>
-<pre><span id="VALneg"><span class="keyword">val</span> neg</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALneg"><span class="keyword">val</span> neg</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info ">
 Unary negation.<br>
 </div>
-<pre><span id="VALconj"><span class="keyword">val</span> conj</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALconj"><span class="keyword">val</span> conj</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info ">
 Conjugate: given the complex <code class="code">x + i.y</code>, returns <code class="code">x - i.y</code>.<br>
 </div>
-<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info ">
 Addition<br>
 </div>
-<pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info ">
 Subtraction<br>
 </div>
-<pre><span id="VALmul"><span class="keyword">val</span> mul</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALmul"><span class="keyword">val</span> mul</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info ">
 Multiplication<br>
 </div>
-<pre><span id="VALinv"><span class="keyword">val</span> inv</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALinv"><span class="keyword">val</span> inv</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info ">
 Multiplicative inverse (<code class="code">1/z</code>).<br>
 </div>
-<pre><span id="VALdiv"><span class="keyword">val</span> div</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALdiv"><span class="keyword">val</span> div</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info ">
 Division<br>
 </div>
-<pre><span id="VALsqrt"><span class="keyword">val</span> sqrt</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALsqrt"><span class="keyword">val</span> sqrt</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info ">
 Square root.  The result <code class="code">x + i.y</code> is such that <code class="code">x &gt; 0</code> or <code class="code">x =
     0</code> and <code class="code">y &gt;= 0</code>.  This function has a discontinuity along the
     negative real axis.<br>
 </div>
-<pre><span id="VALnorm2"><span class="keyword">val</span> norm2</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> float</code></pre><div class="info">
+
+<pre><span id="VALnorm2"><span class="keyword">val</span> norm2</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> float</code></pre><div class="info ">
 Norm squared: given <code class="code">x + i.y</code>, returns <code class="code">x^2 + y^2</code>.<br>
 </div>
-<pre><span id="VALnorm"><span class="keyword">val</span> norm</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> float</code></pre><div class="info">
+
+<pre><span id="VALnorm"><span class="keyword">val</span> norm</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> float</code></pre><div class="info ">
 Norm: given <code class="code">x + i.y</code>, returns <code class="code">sqrt(x^2 + y^2)</code>.<br>
 </div>
-<pre><span id="VALarg"><span class="keyword">val</span> arg</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> float</code></pre><div class="info">
+
+<pre><span id="VALarg"><span class="keyword">val</span> arg</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> float</code></pre><div class="info ">
 Argument.  The argument of a complex number is the angle
     in the complex plane between the positive real axis and a line
     passing through zero and the number.  This angle ranges from
     <code class="code">-pi</code> to <code class="code">pi</code>.  This function has a discontinuity along the
     negative real axis.<br>
 </div>
-<pre><span id="VALpolar"><span class="keyword">val</span> polar</span> : <code class="type">float -> float -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALpolar"><span class="keyword">val</span> polar</span> : <code class="type">float -> float -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">polar norm arg</code> returns the complex having norm <code class="code">norm</code>
     and argument <code class="code">arg</code>.<br>
 </div>
-<pre><span id="VALexp"><span class="keyword">val</span> exp</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALexp"><span class="keyword">val</span> exp</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info ">
 Exponentiation.  <code class="code">exp z</code> returns <code class="code">e</code> to the <code class="code">z</code> power.<br>
 </div>
-<pre><span id="VALlog"><span class="keyword">val</span> log</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALlog"><span class="keyword">val</span> log</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info ">
 Natural logarithm (in base <code class="code">e</code>).<br>
 </div>
-<pre><span id="VALpow"><span class="keyword">val</span> pow</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALpow"><span class="keyword">val</span> pow</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info ">
 Power function.  <code class="code">pow z1 z2</code> returns <code class="code">z1</code> to the <code class="code">z2</code> power.<br>
 </div>
-<pre><span id="VALoperations"><span class="keyword">val</span> operations</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> <a href="BatNumber.html#TYPEnumeric">BatNumber.numeric</a></code></pre><pre><span id="VALinv"><span class="keyword">val</span> inv</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALoperations"><span class="keyword">val</span> operations</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> <a href="BatNumber.html#TYPEnumeric">BatNumber.numeric</a></code></pre>
+<pre><span id="VALinv"><span class="keyword">val</span> inv</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">inv x</code> returns the value of <code class="code">1/x</code><br>
 </div>
-<pre><span id="VALsucc"><span class="keyword">val</span> succ</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALsucc"><span class="keyword">val</span> succ</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info ">
 Add <a href="BatComplex.html#VALone"><code class="code"><span class="constructor">BatComplex</span>.one</code></a> to this number.<br>
 </div>
-<pre><span id="VALpred"><span class="keyword">val</span> pred</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALpred"><span class="keyword">val</span> pred</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info ">
 Remove <a href="BatComplex.html#VALone"><code class="code"><span class="constructor">BatComplex</span>.one</code></a> from this number.<br>
 </div>
-<pre><span id="VALabs"><span class="keyword">val</span> abs</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALabs"><span class="keyword">val</span> abs</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">abs c</code> returns the module of this complex number,
     i.e. <code class="code">abs c = <span class="constructor">Float</span>.sqrt((re c) *. (re c) +. (im c) *. (im c) )</code><br>
 </div>
-<pre><span id="VALmodulo"><span class="keyword">val</span> modulo</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><pre><span id="VALpow"><span class="keyword">val</span> pow</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> int</code></pre><pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre><pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> bool</code></pre><pre><span id="VALof_int"><span class="keyword">val</span> of_int</span> : <code class="type">int -> <a href="BatComplex.html#TYPEt">t</a></code></pre><pre><span id="VALto_int"><span class="keyword">val</span> to_int</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALmodulo"><span class="keyword">val</span> modulo</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre>
+<pre><span id="VALpow"><span class="keyword">val</span> pow</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre>
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> int</code></pre>
+<pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre>
+<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> bool</code></pre>
+<pre><span id="VALof_int"><span class="keyword">val</span> of_int</span> : <code class="type">int -> <a href="BatComplex.html#TYPEt">t</a></code></pre>
+<pre><span id="VALto_int"><span class="keyword">val</span> to_int</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 <code class="code">to_int c</code> is the integer part of the real part of <code class="code">c</code><br>
 </div>
-<pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">of_string s</code> accepts strings with the following formats:
 <p>
 
@@ -240,17 +275,30 @@ Remove <a href="BatComplex.html#VALone"><code class="code"><span class="construc
 
     (&lt;int&gt;|&lt;float&gt;)<br>
 </div>
-<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> string</code></pre><pre><span id="VAL(+)"><span class="keyword">val</span> (+)</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><pre><span id="VAL(-)"><span class="keyword">val</span> (-)</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><pre><span id="VAL( * )"><span class="keyword">val</span> ( * )</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><pre><span id="VAL(/)"><span class="keyword">val</span> (/)</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><pre><span id="VAL( ** )"><span class="keyword">val</span> ( ** )</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre><pre><span id="VAL(--)"><span class="keyword">val</span> (--)</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VAL(---)"><span class="keyword">val</span> (---)</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><pre><span id="VALof_float"><span class="keyword">val</span> of_float</span> : <code class="type">float -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> string</code></pre>
+<pre><span id="VAL(+)"><span class="keyword">val</span> (+)</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre>
+<pre><span id="VAL(-)"><span class="keyword">val</span> (-)</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre>
+<pre><span id="VAL( * )"><span class="keyword">val</span> ( * )</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre>
+<pre><span id="VAL(/)"><span class="keyword">val</span> (/)</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre>
+<pre><span id="VAL( ** )"><span class="keyword">val</span> ( ** )</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a></code></pre>
+<pre><span id="VAL(--)"><span class="keyword">val</span> (--)</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
+<pre><span id="VAL(---)"><span class="keyword">val</span> (---)</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> -> <a href="BatComplex.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
+<pre><span id="VALof_float"><span class="keyword">val</span> of_float</span> : <code class="type">float -> <a href="BatComplex.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code"><span class="constructor">Complex</span>.of_float x</code> returns the complex number <code class="code">x+0i</code><br>
 </div>
-<pre><span id="VALto_float"><span class="keyword">val</span> to_float</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> float</code></pre><div class="info">
+
+<pre><span id="VALto_float"><span class="keyword">val</span> to_float</span> : <code class="type"><a href="BatComplex.html#TYPEt">t</a> -> float</code></pre><div class="info ">
 <code class="code"><span class="constructor">Complex</span>.to_float (a+bi)</code> returns the float <code class="code">a</code><br>
 </div>
 <br>
-<span id="6_Submodulesgroupingallinfixoperators"><h6>Submodules grouping all infix operators</h6></span><br>
-<pre><span class="keyword">module</span> <a href="BatComplex.Infix.html">Infix</a>: <code class="type"><a href="BatNumber.Infix.html">BatNumber.Infix</a></code><code class="type">  with type bat__infix_t = t</code></pre><pre><span class="keyword">module</span> <a href="BatComplex.Compare.html">Compare</a>: <code class="type"><a href="BatNumber.Compare.html">BatNumber.Compare</a></code><code class="type">  with type bat__compare_t = t</code></pre><br>
-<span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
-<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatComplex.html#TYPEt">t</a> -> unit</code></pre><div class="info">
-<span id="7_Printing"><div class="h7">Printing</div></span><br>
+<h6 id="6_Submodulesgroupingallinfixoperators">Submodules grouping all infix operators</h6><br>
+
+<pre><span class="keyword">module</span> <a href="BatComplex.Infix.html">Infix</a>: <code class="type"><a href="BatNumber.Infix.html">BatNumber.Infix</a></code><code class="type">  with type bat__infix_t = t</code></pre>
+<pre><span class="keyword">module</span> <a href="BatComplex.Compare.html">Compare</a>: <code class="type"><a href="BatNumber.Compare.html">BatNumber.Compare</a></code><code class="type">  with type bat__compare_t = t</code></pre><br>
+<h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
+
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatComplex.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
+<div class="h7" id="7_Printing">Printing</div><br>
 </div>
 </body></html>

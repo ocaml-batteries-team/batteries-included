@@ -101,33 +101,52 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatAvlTree</title>
 </head>
 <body>
-<div class="navbar"><a href="BatArray.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatBase64.html">Next</a>
+<div class="navbar"><a class="pre" href="BatArray.html" title="BatArray">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatBase64.html" title="BatBase64">Next</a>
 </div>
-<center><h1>Module <a href="type_BatAvlTree.html">BatAvlTree</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> BatAvlTree: <code class="code"><span class="keyword">sig</span></code> <a href="BatAvlTree.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Internals of ISet and IMap, usable as generic tree library<br>
+<h1>Module <a href="type_BatAvlTree.html">BatAvlTree</a></h1>
+
+<pre><span class="keyword">module</span> BatAvlTree: <code class="code"><span class="keyword">sig</span></code> <a href="BatAvlTree.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+Internals of ISet and IMap, usable as generic tree library<br>
+</div>
 <hr width="100%">
+
 <pre><span id="TYPEtree"><span class="keyword">type</span> <code class="type">+'a</code> tree</span> </pre>
 
-<pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a></code></pre><pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> bool</code></pre><pre><span id="VALmake_tree"><span class="keyword">val</span> make_tree</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a></code></pre><pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a></code></pre><div class="info">
+
+<pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a></code></pre>
+<pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> bool</code></pre>
+<pre><span id="VALmake_tree"><span class="keyword">val</span> make_tree</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a></code></pre>
+<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a></code></pre><div class="info ">
 <code class="code">create l v r</code> is similar to <code class="code">make_tree l v r</code> but performs no rebalancing;
     in other words, you should use this only when you <em>know</em> that <code class="code">l</code> and <code class="code">r</code>
     are already balanced.<br>
 </div>
-<pre><span id="VALheight"><span class="keyword">val</span> height</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> int</code></pre><pre><span id="VALleft_branch"><span class="keyword">val</span> left_branch</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a></code></pre><div class="info">
+
+<pre><span id="VALheight"><span class="keyword">val</span> height</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> int</code></pre>
+<pre><span id="VALleft_branch"><span class="keyword">val</span> left_branch</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a></code></pre><div class="info ">
 <b>Raises</b> <code>Not_found</code> if the tree is empty<br>
 </div>
-<pre><span id="VALright_branch"><span class="keyword">val</span> right_branch</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a></code></pre><div class="info">
+
+<pre><span id="VALright_branch"><span class="keyword">val</span> right_branch</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a></code></pre><div class="info ">
 <b>Raises</b> <code>Not_found</code> if the tree is empty<br>
 </div>
-<pre><span id="VALroot"><span class="keyword">val</span> root</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a</code></pre><div class="info">
+
+<pre><span id="VALroot"><span class="keyword">val</span> root</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a</code></pre><div class="info ">
 <b>Raises</b> <code>Not_found</code> if the tree is empty<br>
 </div>
-<pre><span id="VALsingleton_tree"><span class="keyword">val</span> singleton_tree</span> : <code class="type">'a -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a></code></pre><pre><span id="VALsplit_leftmost"><span class="keyword">val</span> split_leftmost</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a * 'a <a href="BatAvlTree.html#TYPEtree">tree</a></code></pre><pre><span id="VALsplit_rightmost"><span class="keyword">val</span> split_rightmost</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a * 'a <a href="BatAvlTree.html#TYPEtree">tree</a></code></pre><pre><span id="VALconcat"><span class="keyword">val</span> concat</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a></code></pre><pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> unit</code></pre><pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -> 'b -> 'b) -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'b -> 'b</code></pre><pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre></body></html>
+
+<pre><span id="VALsingleton_tree"><span class="keyword">val</span> singleton_tree</span> : <code class="type">'a -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a></code></pre>
+<pre><span id="VALsplit_leftmost"><span class="keyword">val</span> split_leftmost</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a * 'a <a href="BatAvlTree.html#TYPEtree">tree</a></code></pre>
+<pre><span id="VALsplit_rightmost"><span class="keyword">val</span> split_rightmost</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a * 'a <a href="BatAvlTree.html#TYPEtree">tree</a></code></pre>
+<pre><span id="VALconcat"><span class="keyword">val</span> concat</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a></code></pre>
+<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> unit</code></pre>
+<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -> 'b -> 'b) -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'b -> 'b</code></pre>
+<pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre></body></html>

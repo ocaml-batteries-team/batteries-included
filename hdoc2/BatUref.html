@@ -101,54 +101,65 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Printing" rel="Section" href="#6_Printing">
 <title>Batteries user guide : BatUref</title>
 </head>
 <body>
-<div class="navbar"><a href="BatUnix.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatVect.html">Next</a>
+<div class="navbar"><a class="pre" href="BatUnix.html" title="BatUnix">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatVect.html" title="BatVect">Next</a>
 </div>
-<center><h1>Module <a href="type_BatUref.html">BatUref</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> BatUref: <code class="code"><span class="keyword">sig</span></code> <a href="BatUref.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>Unifiable references using destructive union-find<br>
+<h1>Module <a href="type_BatUref.html">BatUref</a></h1>
+
+<pre><span class="keyword">module</span> BatUref: <code class="code"><span class="keyword">sig</span></code> <a href="BatUref.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+Unifiable references using destructive union-find<br>
+</div>
 <hr width="100%">
+
 <pre><span id="TYPEuref"><span class="keyword">type</span> <code class="type">'a</code> uref</span> </pre>
-<div class="info">
+<div class="info ">
 A <code class="code">t uref</code> is a reference to a cell that contains a
     value of type <code class="code">t</code>.<br>
 </div>
 
+
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a <a href="BatUref.html#TYPEuref">uref</a></code> </pre>
-<div class="info">
+<div class="info ">
 A synonym for convenience<br>
 </div>
 
-<pre><span id="VALuref"><span class="keyword">val</span> uref</span> : <code class="type">'a -> 'a <a href="BatUref.html#TYPEuref">uref</a></code></pre><div class="info">
+
+<pre><span id="VALuref"><span class="keyword">val</span> uref</span> : <code class="type">'a -> 'a <a href="BatUref.html#TYPEuref">uref</a></code></pre><div class="info ">
 <code class="code">uref x</code> allocates a new uref and places the value <code class="code">x</code> in it.<br>
 </div>
-<pre><span id="VALuget"><span class="keyword">val</span> uget</span> : <code class="type">'a <a href="BatUref.html#TYPEuref">uref</a> -> 'a</code></pre><div class="info">
+
+<pre><span id="VALuget"><span class="keyword">val</span> uget</span> : <code class="type">'a <a href="BatUref.html#TYPEuref">uref</a> -> 'a</code></pre><div class="info ">
 <code class="code">uget ur</code> returns the value stored in the uref <code class="code">ur</code>.<br>
 </div>
-<pre><span id="VALuset"><span class="keyword">val</span> uset</span> : <code class="type">'a <a href="BatUref.html#TYPEuref">uref</a> -> 'a -> unit</code></pre><div class="info">
+
+<pre><span id="VALuset"><span class="keyword">val</span> uset</span> : <code class="type">'a <a href="BatUref.html#TYPEuref">uref</a> -> 'a -> unit</code></pre><div class="info ">
 <code class="code">uset ur x</code> updates the contents of <code class="code">ur</code> with <code class="code">x</code>.<br>
 </div>
-<pre><span id="VALunite"><span class="keyword">val</span> unite</span> : <code class="type">?sel:('a -> 'a -> 'a) -> 'a <a href="BatUref.html#TYPEuref">uref</a> -> 'a <a href="BatUref.html#TYPEuref">uref</a> -> unit</code></pre><div class="info">
+
+<pre><span id="VALunite"><span class="keyword">val</span> unite</span> : <code class="type">?sel:('a -> 'a -> 'a) -> 'a <a href="BatUref.html#TYPEuref">uref</a> -> 'a <a href="BatUref.html#TYPEuref">uref</a> -> unit</code></pre><div class="info ">
 <code class="code">unite ~sel ur1 ur2</code> unites the urefs <code class="code">ur1</code> and <code class="code">ur2</code>, selecting
     the result of <code class="code">sel (uget ur1) (uget ur2)</code> for the contents of
     the resulting united uref. After this operation, <code class="code">uget ur1 ==
     uget ur2</code>. By default, <code class="code">sel</code> is <code class="code"><span class="keyword">fun</span> x _y <span class="keywordsign">-&gt;</span> x</code>.<br>
 </div>
-<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">'a <a href="BatUref.html#TYPEuref">uref</a> -> 'a <a href="BatUref.html#TYPEuref">uref</a> -> bool</code></pre><div class="info">
+
+<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">'a <a href="BatUref.html#TYPEuref">uref</a> -> 'a <a href="BatUref.html#TYPEuref">uref</a> -> bool</code></pre><div class="info ">
 <code class="code">equal ur1 ur2</code> returns <code class="code"><span class="keyword">true</span></code> iff <code class="code">ur1</code> and <code class="code">ur2</code> are equal
     urefs, either because they are physically the same or because
     they have been <a href="BatUref.html#VALunite"><code class="code"><span class="constructor">BatUref</span>.unite</code></a>d.<br>
 </div>
 <br>
-<span id="6_Printing"><h6>Printing</h6></span><br>
-<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">('a, 'b) <a href="BatIO.html#TYPEprinter">BatIO.printer</a> -> ('a <a href="BatUref.html#TYPEuref">uref</a>, 'b) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info">
+<h6 id="6_Printing">Printing</h6><br>
+
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">('a, 'b) <a href="BatIO.html#TYPEprinter">BatIO.printer</a> -> ('a <a href="BatUref.html#TYPEuref">uref</a>, 'b) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info ">
 Print the uref.<br>
 </div>
 </body></html>

@@ -101,18 +101,23 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatInt32</title>
+<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Submodules grouping all infix operators" rel="Section" href="#6_Submodulesgroupingallinfixoperators">
+<link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
+<link title="Printing" rel="Subsection" href="#7_Printing">
+<title>Batteries user guide : BatInt32</title>
 </head>
 <body>
-<div class="navbar"><a href="BatInt.html">Previous</a>
-&nbsp;<a href="index.html">Up</a>
-&nbsp;<a href="BatInt64.html">Next</a>
+<div class="navbar"><a class="pre" href="BatInt.html" title="BatInt">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="BatInt64.html" title="BatInt64">Next</a>
 </div>
-<center><h1>Module <a href="type_BatInt32.html">BatInt32</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> BatInt32: <code class="code"><span class="keyword">sig</span></code> <a href="BatInt32.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>32-bit integers.
+<h1>Module <a href="type_BatInt32.html">BatInt32</a></h1>
+
+<pre><span class="keyword">module</span> BatInt32: <code class="code"><span class="keyword">sig</span></code> <a href="BatInt32.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+32-bit integers.
 <p>
 
     This module provides operations on the type <code class="code">int32</code>
@@ -137,139 +142,177 @@
     module, go there for documentation on the rest of the functions
     and types.<br>
 <b>Author(s):</b> Xavier Leroy (base module), Gabriel Scherer, David Teller<br>
+</div>
 <hr width="100%">
+
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">int32</code> </pre>
 
-<pre><span id="VALzero"><span class="keyword">val</span> zero</span> : <code class="type">int32</code></pre><div class="info">
+
+<pre><span id="VALzero"><span class="keyword">val</span> zero</span> : <code class="type">int32</code></pre><div class="info ">
 The 32-bit integer 0.<br>
 </div>
-<pre><span id="VALone"><span class="keyword">val</span> one</span> : <code class="type">int32</code></pre><div class="info">
+
+<pre><span id="VALone"><span class="keyword">val</span> one</span> : <code class="type">int32</code></pre><div class="info ">
 The 32-bit integer 1.<br>
 </div>
-<pre><span id="VALminus_one"><span class="keyword">val</span> minus_one</span> : <code class="type">int32</code></pre><div class="info">
+
+<pre><span id="VALminus_one"><span class="keyword">val</span> minus_one</span> : <code class="type">int32</code></pre><div class="info ">
 The 32-bit integer -1.<br>
 </div>
-<pre><span id="VALneg"><span class="keyword">val</span> neg</span> : <code class="type">int32 -> int32</code></pre><div class="info">
+
+<pre><span id="VALneg"><span class="keyword">val</span> neg</span> : <code class="type">int32 -> int32</code></pre><div class="info ">
 Unary negation.<br>
 </div>
-<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">int32 -> int32 -> int32</code></pre><div class="info">
+
+<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">int32 -> int32 -> int32</code></pre><div class="info ">
 Addition.<br>
 </div>
-<pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type">int32 -> int32 -> int32</code></pre><div class="info">
+
+<pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type">int32 -> int32 -> int32</code></pre><div class="info ">
 Subtraction.<br>
 </div>
-<pre><span id="VALmul"><span class="keyword">val</span> mul</span> : <code class="type">int32 -> int32 -> int32</code></pre><div class="info">
+
+<pre><span id="VALmul"><span class="keyword">val</span> mul</span> : <code class="type">int32 -> int32 -> int32</code></pre><div class="info ">
 Multiplication.<br>
 </div>
-<pre><span id="VALdiv"><span class="keyword">val</span> div</span> : <code class="type">int32 -> int32 -> int32</code></pre><div class="info">
+
+<pre><span id="VALdiv"><span class="keyword">val</span> div</span> : <code class="type">int32 -> int32 -> int32</code></pre><div class="info ">
 Integer division.
     This division rounds the real quotient of
     its arguments towards zero, as specified for <code class="code"><span class="constructor">Pervasives</span>.(/)</code>.<br>
 <b>Raises</b> <code>Division_by_zero</code> if the second argument is zero.<br>
 </div>
-<pre><span id="VALrem"><span class="keyword">val</span> rem</span> : <code class="type">int32 -> int32 -> int32</code></pre><div class="info">
+
+<pre><span id="VALrem"><span class="keyword">val</span> rem</span> : <code class="type">int32 -> int32 -> int32</code></pre><div class="info ">
 Integer remainder.  If <code class="code">y</code> is not zero, the result
     of <code class="code"><span class="constructor">Int32</span>.rem x y</code> satisfies the following property:
     <code class="code">x = <span class="constructor">Int32</span>.add (<span class="constructor">Int32</span>.mul (<span class="constructor">Int32</span>.div x y) y) (<span class="constructor">Int32</span>.rem x y)</code>.<br>
 <b>Raises</b> <code>Division_by_zero</code> if the second argument is zero.<br>
 </div>
-<pre><span id="VALmodulo"><span class="keyword">val</span> modulo</span> : <code class="type">int32 -> int32 -> int32</code></pre><pre><span id="VALpow"><span class="keyword">val</span> pow</span> : <code class="type">int32 -> int32 -> int32</code></pre><pre><span id="VALmin_num"><span class="keyword">val</span> min_num</span> : <code class="type">int32</code></pre><pre><span id="VALmax_num"><span class="keyword">val</span> max_num</span> : <code class="type">int32</code></pre><pre><span id="VALsucc"><span class="keyword">val</span> succ</span> : <code class="type">int32 -> int32</code></pre><div class="info">
+
+<pre><span id="VALmodulo"><span class="keyword">val</span> modulo</span> : <code class="type">int32 -> int32 -> int32</code></pre>
+<pre><span id="VALpow"><span class="keyword">val</span> pow</span> : <code class="type">int32 -> int32 -> int32</code></pre>
+<pre><span id="VALmin_num"><span class="keyword">val</span> min_num</span> : <code class="type">int32</code></pre>
+<pre><span id="VALmax_num"><span class="keyword">val</span> max_num</span> : <code class="type">int32</code></pre>
+<pre><span id="VALsucc"><span class="keyword">val</span> succ</span> : <code class="type">int32 -> int32</code></pre><div class="info ">
 Successor.  <code class="code"><span class="constructor">Int32</span>.succ x</code> is <code class="code"><span class="constructor">Int32</span>.add x <span class="constructor">Int32</span>.one</code>.<br>
 </div>
-<pre><span id="VALpred"><span class="keyword">val</span> pred</span> : <code class="type">int32 -> int32</code></pre><div class="info">
+
+<pre><span id="VALpred"><span class="keyword">val</span> pred</span> : <code class="type">int32 -> int32</code></pre><div class="info ">
 Predecessor.  <code class="code"><span class="constructor">Int32</span>.pred x</code> is <code class="code"><span class="constructor">Int32</span>.sub x <span class="constructor">Int32</span>.one</code>.<br>
 </div>
-<pre><span id="VALabs"><span class="keyword">val</span> abs</span> : <code class="type">int32 -> int32</code></pre><div class="info">
+
+<pre><span id="VALabs"><span class="keyword">val</span> abs</span> : <code class="type">int32 -> int32</code></pre><div class="info ">
 Return the absolute value of its argument.<br>
 </div>
-<pre><span id="VALmax_int"><span class="keyword">val</span> max_int</span> : <code class="type">int32</code></pre><div class="info">
+
+<pre><span id="VALmax_int"><span class="keyword">val</span> max_int</span> : <code class="type">int32</code></pre><div class="info ">
 The greatest representable 32-bit integer, 2<sup class="superscript">31</sup> - 1.<br>
 </div>
-<pre><span id="VALmin_int"><span class="keyword">val</span> min_int</span> : <code class="type">int32</code></pre><div class="info">
+
+<pre><span id="VALmin_int"><span class="keyword">val</span> min_int</span> : <code class="type">int32</code></pre><div class="info ">
 The smallest representable 32-bit integer, -2<sup class="superscript">31</sup>.<br>
 </div>
-<pre><span id="VALlogand"><span class="keyword">val</span> logand</span> : <code class="type">int32 -> int32 -> int32</code></pre><div class="info">
+
+<pre><span id="VALlogand"><span class="keyword">val</span> logand</span> : <code class="type">int32 -> int32 -> int32</code></pre><div class="info ">
 Bitwise logical and.<br>
 </div>
-<pre><span id="VALlogor"><span class="keyword">val</span> logor</span> : <code class="type">int32 -> int32 -> int32</code></pre><div class="info">
+
+<pre><span id="VALlogor"><span class="keyword">val</span> logor</span> : <code class="type">int32 -> int32 -> int32</code></pre><div class="info ">
 Bitwise logical or.<br>
 </div>
-<pre><span id="VALlogxor"><span class="keyword">val</span> logxor</span> : <code class="type">int32 -> int32 -> int32</code></pre><div class="info">
+
+<pre><span id="VALlogxor"><span class="keyword">val</span> logxor</span> : <code class="type">int32 -> int32 -> int32</code></pre><div class="info ">
 Bitwise logical exclusive or.<br>
 </div>
-<pre><span id="VALlognot"><span class="keyword">val</span> lognot</span> : <code class="type">int32 -> int32</code></pre><div class="info">
+
+<pre><span id="VALlognot"><span class="keyword">val</span> lognot</span> : <code class="type">int32 -> int32</code></pre><div class="info ">
 Bitwise logical negation<br>
 </div>
-<pre><span id="VALshift_left"><span class="keyword">val</span> shift_left</span> : <code class="type">int32 -> int -> int32</code></pre><div class="info">
+
+<pre><span id="VALshift_left"><span class="keyword">val</span> shift_left</span> : <code class="type">int32 -> int -> int32</code></pre><div class="info ">
 <code class="code"><span class="constructor">Int32</span>.shift_left x y</code> shifts <code class="code">x</code> to the left by <code class="code">y</code> bits.
     The result is unspecified if <code class="code">y &lt; 0</code> or <code class="code">y &gt;= 32</code>.<br>
 </div>
-<pre><span id="VALshift_right"><span class="keyword">val</span> shift_right</span> : <code class="type">int32 -> int -> int32</code></pre><div class="info">
+
+<pre><span id="VALshift_right"><span class="keyword">val</span> shift_right</span> : <code class="type">int32 -> int -> int32</code></pre><div class="info ">
 <code class="code"><span class="constructor">Int32</span>.shift_right x y</code> shifts <code class="code">x</code> to the right by <code class="code">y</code> bits.
     This is an arithmetic shift: the sign bit of <code class="code">x</code> is replicated
     and inserted in the vacated bits.
     The result is unspecified if <code class="code">y &lt; 0</code> or <code class="code">y &gt;= 32</code>.<br>
 </div>
-<pre><span id="VALshift_right_logical"><span class="keyword">val</span> shift_right_logical</span> : <code class="type">int32 -> int -> int32</code></pre><div class="info">
+
+<pre><span id="VALshift_right_logical"><span class="keyword">val</span> shift_right_logical</span> : <code class="type">int32 -> int -> int32</code></pre><div class="info ">
 <code class="code"><span class="constructor">Int32</span>.shift_right_logical x y</code> shifts <code class="code">x</code> to the right by <code class="code">y</code> bits.
     This is a logical shift: zeroes are inserted in the vacated bits
     regardless of the sign of <code class="code">x</code>.
     The result is unspecified if <code class="code">y &lt; 0</code> or <code class="code">y &gt;= 32</code>.<br>
 </div>
-<pre><span id="VAL(--)"><span class="keyword">val</span> (--)</span> : <code class="type"><a href="BatInt32.html#TYPEt">t</a> -> <a href="BatInt32.html#TYPEt">t</a> -> <a href="BatInt32.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+
+<pre><span id="VAL(--)"><span class="keyword">val</span> (--)</span> : <code class="type"><a href="BatInt32.html#TYPEt">t</a> -> <a href="BatInt32.html#TYPEt">t</a> -> <a href="BatInt32.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 Enumerate an interval.
 <p>
 
     <code class="code">5l -- 10l</code> is the enumeration 5l,6l,7l,8l,9l,10l.
     <code class="code">10l -- 5l</code> is the empty enumeration<br>
 </div>
-<pre><span id="VAL(---)"><span class="keyword">val</span> (---)</span> : <code class="type"><a href="BatInt32.html#TYPEt">t</a> -> <a href="BatInt32.html#TYPEt">t</a> -> <a href="BatInt32.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+
+<pre><span id="VAL(---)"><span class="keyword">val</span> (---)</span> : <code class="type"><a href="BatInt32.html#TYPEt">t</a> -> <a href="BatInt32.html#TYPEt">t</a> -> <a href="BatInt32.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 Enumerate an interval.
 <p>
 
     <code class="code">5l -- 10l</code> is the enumeration 5l,6l,7l,8l,9l,10l.
     <code class="code">10l -- 5l</code> is the enumeration 10l,9l,8l,7l,6l,5l.<br>
 </div>
-<pre><span id="VALof_int"><span class="keyword">val</span> of_int</span> : <code class="type">int -> int32</code></pre><div class="info">
+
+<pre><span id="VALof_int"><span class="keyword">val</span> of_int</span> : <code class="type">int -> int32</code></pre><div class="info ">
 Convert the given integer (type <code class="code">int</code>) to a 32-bit integer
     (type <code class="code">int32</code>).<br>
 </div>
-<pre><span id="VALto_int"><span class="keyword">val</span> to_int</span> : <code class="type">int32 -> int</code></pre><div class="info">
+
+<pre><span id="VALto_int"><span class="keyword">val</span> to_int</span> : <code class="type">int32 -> int</code></pre><div class="info ">
 Convert the given 32-bit integer (type <code class="code">int32</code>) to an
     integer (type <code class="code">int</code>).  On 32-bit platforms, the 32-bit integer
     is taken modulo 2<sup class="superscript">31</sup>, i.e. the high-order bit is lost
     during the conversion.  On 64-bit platforms, the conversion
     is exact.<br>
 </div>
-<pre><span id="VALof_float"><span class="keyword">val</span> of_float</span> : <code class="type">float -> int32</code></pre><div class="info">
+
+<pre><span id="VALof_float"><span class="keyword">val</span> of_float</span> : <code class="type">float -> int32</code></pre><div class="info ">
 Convert the given floating-point number to a 32-bit integer,
     discarding the fractional part (truncate towards 0).
     The result of the conversion is undefined if, after truncation,
     the number is outside the range [<code class="code"><span class="constructor">Int32</span>.min_int</code>, <code class="code"><span class="constructor">Int32</span>.max_int</code>].<br>
 </div>
-<pre><span id="VALto_float"><span class="keyword">val</span> to_float</span> : <code class="type">int32 -> float</code></pre><div class="info">
+
+<pre><span id="VALto_float"><span class="keyword">val</span> to_float</span> : <code class="type">int32 -> float</code></pre><div class="info ">
 Convert the given 32-bit integer to a floating-point number.<br>
 </div>
-<pre><span id="VALof_int64"><span class="keyword">val</span> of_int64</span> : <code class="type">int64 -> int32</code></pre><div class="info">
+
+<pre><span id="VALof_int64"><span class="keyword">val</span> of_int64</span> : <code class="type">int64 -> int32</code></pre><div class="info ">
 Convert the given 64-bit integer (type <code class="code">int64</code>) to a
     32-bit integer (type <code class="code">int32</code>). The 64-bit integer
     is taken modulo 2<sup class="superscript">32</sup>, i.e. the top 32 bits are lost
     during the conversion.<br>
 </div>
-<pre><span id="VALto_int64"><span class="keyword">val</span> to_int64</span> : <code class="type">int32 -> int64</code></pre><div class="info">
+
+<pre><span id="VALto_int64"><span class="keyword">val</span> to_int64</span> : <code class="type">int32 -> int64</code></pre><div class="info ">
 Convert the given 32-bit integer (type <code class="code">int32</code>)
     to a 64-bit integer (type <code class="code">int64</code>).<br>
 </div>
-<pre><span id="VALof_nativeint"><span class="keyword">val</span> of_nativeint</span> : <code class="type">nativeint -> int32</code></pre><div class="info">
+
+<pre><span id="VALof_nativeint"><span class="keyword">val</span> of_nativeint</span> : <code class="type">nativeint -> int32</code></pre><div class="info ">
 Convert the given native integer (type <code class="code">nativeint</code>)
     to a 32-bit integer (type <code class="code">int32</code>). On 64-bits platform
     the top 32 bits are lost.<br>
 </div>
-<pre><span id="VALto_nativeint"><span class="keyword">val</span> to_nativeint</span> : <code class="type">int32 -> nativeint</code></pre><div class="info">
+
+<pre><span id="VALto_nativeint"><span class="keyword">val</span> to_nativeint</span> : <code class="type">int32 -> nativeint</code></pre><div class="info ">
 Convert the given 32-bit integer (type <code class="code">int32</code>) to a
     native integer.<br>
 </div>
-<pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -> int32</code></pre><div class="info">
+
+<pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -> int32</code></pre><div class="info ">
 Convert the given string to a 32-bit integer.
     The string is read in decimal (by default) or in hexadecimal,
     octal or binary if the string begins with <code class="code">0x</code>, <code class="code">0o</code> or <code class="code">0b</code>
@@ -278,44 +321,78 @@ Convert the given string to a 32-bit integer.
     a valid representation of an integer, or if the integer represented
     exceeds the range of integers representable in type <code class="code">int32</code>.<br>
 </div>
-<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">int32 -> string</code></pre><div class="info">
+
+<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">int32 -> string</code></pre><div class="info ">
 Return the string representation of its argument, in signed decimal.<br>
 </div>
-<pre><span id="VALbits_of_float"><span class="keyword">val</span> bits_of_float</span> : <code class="type">float -> int32</code></pre><div class="info">
+
+<pre><span id="VALbits_of_float"><span class="keyword">val</span> bits_of_float</span> : <code class="type">float -> int32</code></pre><div class="info ">
 Return the internal representation of the given float according
     to the IEEE 754 floating-point ``single format'' bit layout.
     Bit 31 of the result represents the sign of the float;
     bits 30 to 23 represent the (biased) exponent; bits 22 to 0
     represent the mantissa.<br>
 </div>
-<pre><span id="VALfloat_of_bits"><span class="keyword">val</span> float_of_bits</span> : <code class="type">int32 -> float</code></pre><div class="info">
+
+<pre><span id="VALfloat_of_bits"><span class="keyword">val</span> float_of_bits</span> : <code class="type">int32 -> float</code></pre><div class="info ">
 Return the floating-point number whose internal representation,
     according to the IEEE 754 floating-point ``single format'' bit layout,
     is the given <code class="code">int32</code>.<br>
 </div>
-<pre><span id="VALof_byte"><span class="keyword">val</span> of_byte</span> : <code class="type">char -> int32</code></pre><pre><span id="VALto_byte"><span class="keyword">val</span> to_byte</span> : <code class="type">int32 -> char</code></pre><pre><span id="VALpack"><span class="keyword">val</span> pack</span> : <code class="type">string -> int -> int32 -> unit</code></pre><div class="info">
+
+<pre><span id="VALof_byte"><span class="keyword">val</span> of_byte</span> : <code class="type">char -> int32</code></pre>
+<pre><span id="VALto_byte"><span class="keyword">val</span> to_byte</span> : <code class="type">int32 -> char</code></pre>
+<pre><span id="VALpack"><span class="keyword">val</span> pack</span> : <code class="type">string -> int -> int32 -> unit</code></pre><div class="info ">
 <code class="code">pack str off i</code> writes the little endian bit representation
     of <code class="code">i</code> into string <code class="code">str</code> at offset <code class="code">off</code><br>
 </div>
-<pre><span id="VALpack_big"><span class="keyword">val</span> pack_big</span> : <code class="type">string -> int -> int32 -> unit</code></pre><div class="info">
+
+<pre><span id="VALpack_big"><span class="keyword">val</span> pack_big</span> : <code class="type">string -> int -> int32 -> unit</code></pre><div class="info ">
 <code class="code">pack_big str off i</code> writes the big endian bit
     representation of <code class="code">i</code> into string <code class="code">str</code> at offset <code class="code">off</code><br>
 </div>
-<pre><span id="VALunpack"><span class="keyword">val</span> unpack</span> : <code class="type">string -> int -> int32</code></pre><div class="info">
+
+<pre><span id="VALunpack"><span class="keyword">val</span> unpack</span> : <code class="type">string -> int -> int32</code></pre><div class="info ">
 <code class="code">unpack str off</code> reads 4 bytes from string <code class="code">str</code> starting at
     offset <code class="code">off</code> as a little-endian int32<br>
 </div>
-<pre><span id="VALunpack_big"><span class="keyword">val</span> unpack_big</span> : <code class="type">string -> int -> int32</code></pre><div class="info">
+
+<pre><span id="VALunpack_big"><span class="keyword">val</span> unpack_big</span> : <code class="type">string -> int -> int32</code></pre><div class="info ">
 <code class="code">unpack str off</code> reads 4 bytes from string <code class="code">str</code> starting at
     offset <code class="code">off</code> as a big-endian int32<br>
 </div>
-<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatInt32.html#TYPEt">t</a> -> <a href="BatInt32.html#TYPEt">t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatInt32.html#TYPEt">t</a> -> <a href="BatInt32.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 The comparison function for 32-bit integers, with the same specification as
     <code class="code"><span class="constructor">Pervasives</span>.compare</code>.  Along with the type <code class="code">t</code>, this function <code class="code">compare</code>
     allows the module <code class="code"><span class="constructor">Int32</span></code> to be passed as argument to the functors
     <code class="code"><span class="constructor">Set</span>.<span class="constructor">Make</span></code> and <code class="code"><span class="constructor">Map</span>.<span class="constructor">Make</span></code>.<br>
 </div>
-<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="BatInt32.html#TYPEt">t</a> -> <a href="BatInt32.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+
+<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="BatInt32.html#TYPEt">t</a> -> <a href="BatInt32.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
 Equality function for 32-bit integers, useful for <code class="code"><span class="constructor">HashedType</span></code>.<br>
 </div>
-<pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type"><a href="BatInt32.html#TYPEt">t</a> -> <a href="BatInt32.html#TYPEt">t</a> -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre></body></html>
+
+<pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type"><a href="BatInt32.html#TYPEt">t</a> -> <a href="BatInt32.html#TYPEt">t</a> -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre>
+<pre><span id="VAL(+)"><span class="keyword">val</span> (+)</span> : <code class="type"><a href="BatInt32.html#TYPEt">t</a> -> <a href="BatInt32.html#TYPEt">t</a> -> <a href="BatInt32.html#TYPEt">t</a></code></pre>
+<pre><span id="VAL(-)"><span class="keyword">val</span> (-)</span> : <code class="type"><a href="BatInt32.html#TYPEt">t</a> -> <a href="BatInt32.html#TYPEt">t</a> -> <a href="BatInt32.html#TYPEt">t</a></code></pre>
+<pre><span id="VAL( * )"><span class="keyword">val</span> ( * )</span> : <code class="type"><a href="BatInt32.html#TYPEt">t</a> -> <a href="BatInt32.html#TYPEt">t</a> -> <a href="BatInt32.html#TYPEt">t</a></code></pre>
+<pre><span id="VAL(/)"><span class="keyword">val</span> (/)</span> : <code class="type"><a href="BatInt32.html#TYPEt">t</a> -> <a href="BatInt32.html#TYPEt">t</a> -> <a href="BatInt32.html#TYPEt">t</a></code></pre>
+<pre><span id="VAL( ** )"><span class="keyword">val</span> ( ** )</span> : <code class="type"><a href="BatInt32.html#TYPEt">t</a> -> <a href="BatInt32.html#TYPEt">t</a> -> <a href="BatInt32.html#TYPEt">t</a></code></pre>
+<pre><span id="VALoperations"><span class="keyword">val</span> operations</span> : <code class="type"><a href="BatInt32.html#TYPEt">t</a> <a href="BatNumber.html#TYPEnumeric">BatNumber.numeric</a></code></pre><br>
+<h6 id="6_Submodulesgroupingallinfixoperators">Submodules grouping all infix operators</h6><br>
+
+<pre><span class="keyword">module</span> <a href="BatInt32.Infix.html">Infix</a>: <code class="type"><a href="BatNumber.Infix.html">BatNumber.Infix</a></code><code class="type">  with type bat__infix_t = t</code></pre>
+<pre><span class="keyword">module</span> <a href="BatInt32.Compare.html">Compare</a>: <code class="type"><a href="BatNumber.Compare.html">BatNumber.Compare</a></code><code class="type">  with type bat__compare_t = t</code></pre><br>
+<h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
+<br>
+<div class="h7" id="7_Printing">Printing</div><br>
+
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatInt32.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
+prints as decimal string<br>
+</div>
+
+<pre><span id="VALprint_hex"><span class="keyword">val</span> print_hex</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatInt32.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
+prints as hex string<br>
+</div>
+</body></html>

@@ -101,6 +101,7 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Array creation" rel="Section" href="#6_Arraycreation">
@@ -114,158 +115,195 @@
 <title>Batteries user guide : Extlib.DynArray</title>
 </head>
 <body>
-<div class="navbar"><a href="Extlib.Dllist.html">Previous</a>
-&nbsp;<a href="Extlib.html">Up</a>
-&nbsp;<a href="Extlib.Enum.html">Next</a>
+<div class="navbar"><a class="pre" href="Extlib.Dllist.html" title="Extlib.Dllist">Previous</a>
+&nbsp;<a class="up" href="Extlib.html" title="Extlib">Up</a>
+&nbsp;<a class="post" href="Extlib.Enum.html" title="Extlib.Enum">Next</a>
 </div>
-<center><h1>Module <a href="type_Extlib.DynArray.html">Extlib.DynArray</a></h1></center>
-<br>
+<h1>Module <a href="type_Extlib.DynArray.html">Extlib.DynArray</a></h1>
+
 <pre><span class="keyword">module</span> DynArray: <code class="type">BatDynArray</code></pre><hr width="100%">
+
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
 
+
 <pre><span class="keyword">include</span> <a href="BatEnum.Enumerable.html">BatEnum.Enumerable</a></pre>
+
 <pre><span class="keyword">include</span> <a href="BatInterfaces.Mappable.html">BatInterfaces.Mappable</a></pre>
+
 <pre><span id="EXCEPTIONInvalid_arg"><span class="keyword">exception</span> Invalid_arg</span> <span class="keyword">of</span> <code class="type">int * string * string</code></pre>
-<div class="info">
+<div class="info ">
 When an operation on an array fails, <code class="code"><span class="constructor">Invalid_arg</span></code> is raised. The
 	integer is the value that made the operation fail, the first string
 	contains the function name that has been called and the second string
 	contains the parameter name that made the operation fail.<br>
 </div>
 <br>
-<span id="6_Arraycreation"><h6>Array creation</h6></span><br>
-<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">unit -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info">
+<h6 id="6_Arraycreation">Array creation</h6><br>
+
+<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">unit -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">create()</code> returns a new empty dynamic array.<br>
 </div>
-<pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">int -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">int -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">make count</code> returns an array with some memory already allocated so
 	up to <code class="code">count</code> elements can be stored into it without resizing.<br>
 </div>
-<pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> (int -> 'a) -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> (int -> 'a) -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">init n f</code> returns an array of <code class="code">n</code> elements filled with values
 	returned by <code class="code">f 0 , f 1, ... f (n-1)</code>.<br>
 </div>
 <br>
-<span id="6_Arraymanipulationfunctions"><h6>Array manipulation functions</h6></span><br>
-<pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> bool</code></pre><div class="info">
+<h6 id="6_Arraymanipulationfunctions">Array manipulation functions</h6><br>
+
+<pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
 Return true if the number of elements in the array is 0.<br>
 </div>
-<pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 Return the number of elements in the array.<br>
 </div>
-<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> 'a</code></pre><div class="info">
+
+<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> 'a</code></pre><div class="info ">
 <code class="code">get darr idx</code> gets the element in <code class="code">darr</code> at index <code class="code">idx</code>. If <code class="code">darr</code> has
 	<code class="code">len</code> elements in it, then the valid indexes range from <code class="code">0</code> to <code class="code">len-1</code>.<br>
 </div>
-<pre><span id="VALlast"><span class="keyword">val</span> last</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+
+<pre><span id="VALlast"><span class="keyword">val</span> last</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
 <code class="code">last darr</code> returns the last element of <code class="code">darr</code>.<br>
 </div>
-<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> 'a -> unit</code></pre><div class="info">
+
+<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> 'a -> unit</code></pre><div class="info ">
 <code class="code">set darr idx v</code> sets the element of <code class="code">darr</code> at index <code class="code">idx</code> to value
 	<code class="code">v</code>.  The previous value is overwritten.<br>
 </div>
-<pre><span id="VALinsert"><span class="keyword">val</span> insert</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> 'a -> unit</code></pre><div class="info">
+
+<pre><span id="VALinsert"><span class="keyword">val</span> insert</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> 'a -> unit</code></pre><div class="info ">
 <code class="code">insert darr idx v</code> inserts <code class="code">v</code> into <code class="code">darr</code> at index <code class="code">idx</code>.  All elements
 	of <code class="code">darr</code> with an index greater than or equal to <code class="code">idx</code> have their
 	index incremented (are moved up one place) to make room for the new
 	element.<br>
 </div>
-<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> 'a -> unit</code></pre><div class="info">
+
+<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> 'a -> unit</code></pre><div class="info ">
 <code class="code">add darr v</code> appends <code class="code">v</code> onto <code class="code">darr</code>.  <code class="code">v</code> becomes the new
 	last element of <code class="code">darr</code>.<br>
 </div>
-<pre><span id="VALappend"><span class="keyword">val</span> append</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+
+<pre><span id="VALappend"><span class="keyword">val</span> append</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 <code class="code">append src dst</code> adds all elements of <code class="code">src</code> to the end of <code class="code">dst</code>.<br>
 </div>
-<pre><span id="VALdelete"><span class="keyword">val</span> delete</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> unit</code></pre><div class="info">
+
+<pre><span id="VALdelete"><span class="keyword">val</span> delete</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> unit</code></pre><div class="info ">
 <code class="code">delete darr idx</code> deletes the element of <code class="code">darr</code> at <code class="code">idx</code>.  All elements
 	with an index greater than <code class="code">idx</code> have their index decremented (are
 	moved down one place) to fill in the hole.<br>
 </div>
-<pre><span id="VALdelete_last"><span class="keyword">val</span> delete_last</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+
+<pre><span id="VALdelete_last"><span class="keyword">val</span> delete_last</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 <code class="code">delete_last darr</code> deletes the last element of <code class="code">darr</code>. This is equivalent
 	of doing <code class="code">delete darr ((length darr) - 1)</code>.<br>
 </div>
-<pre><span id="VALdelete_range"><span class="keyword">val</span> delete_range</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> int -> unit</code></pre><div class="info">
+
+<pre><span id="VALdelete_range"><span class="keyword">val</span> delete_range</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> int -> unit</code></pre><div class="info ">
 <code class="code">delete_range darr p len</code> deletes <code class="code">len</code> elements starting at index <code class="code">p</code>.
 	All elements with an index greater than <code class="code">p+len</code> are moved to fill
 	in the hole.<br>
 </div>
-<pre><span id="VALclear"><span class="keyword">val</span> clear</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+
+<pre><span id="VALclear"><span class="keyword">val</span> clear</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 remove all elements from the array and resize it to 0.<br>
 </div>
-<pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> int -> unit</code></pre><div class="info">
+
+<pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> int -> unit</code></pre><div class="info ">
 <code class="code">blit src srcidx dst dstidx len</code> copies <code class="code">len</code> elements from <code class="code">src</code>
 	starting with index <code class="code">srcidx</code> to <code class="code">dst</code> starting at <code class="code">dstidx</code>.<br>
 </div>
-<pre><span id="VALcompact"><span class="keyword">val</span> compact</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+
+<pre><span id="VALcompact"><span class="keyword">val</span> compact</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 <code class="code">compact darr</code> ensures that the space allocated by the array is minimal.<br>
 </div>
 <br>
-<span id="6_Arraycopyandconversion"><h6>Array copy and conversion</h6></span><br>
-<pre><span id="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> 'a list</code></pre><div class="info">
+<h6 id="6_Arraycopyandconversion">Array copy and conversion</h6><br>
+
+<pre><span id="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> 'a list</code></pre><div class="info ">
 <code class="code">to_list darr</code> returns the elements of <code class="code">darr</code> in order as a list.<br>
 </div>
-<pre><span id="VALto_array"><span class="keyword">val</span> to_array</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> 'a array</code></pre><div class="info">
+
+<pre><span id="VALto_array"><span class="keyword">val</span> to_array</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> 'a array</code></pre><div class="info ">
 <code class="code">to_array darr</code> returns the elements of <code class="code">darr</code> in order as an array.<br>
 </div>
-<pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info">
+
+<pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 <code class="code">enum darr</code> returns the enumeration of <code class="code">darr</code> elements.<br>
 </div>
-<pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">'a list -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">'a list -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">of_list lst</code> returns a dynamic array with the elements of <code class="code">lst</code> in
 	it in order.<br>
 </div>
-<pre><span id="VALof_array"><span class="keyword">val</span> of_array</span> : <code class="type">'a array -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALof_array"><span class="keyword">val</span> of_array</span> : <code class="type">'a array -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">of_array arr</code> returns an array with the elements of <code class="code">arr</code> in it
 	in order.<br>
 </div>
-<pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">of_enum e</code> returns an array that holds, in order, the elements of <code class="code">e</code>.<br>
 </div>
-<pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">copy src</code> returns a fresh copy of <code class="code">src</code>, such that no modification of
 	<code class="code">src</code> affects the copy, or vice versa (all new memory is allocated for
 	the copy).<br>
 </div>
-<pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> int -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> int -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">sub darr start len</code> returns an array holding the subset of <code class="code">len</code>
 	elements from <code class="code">darr</code> starting with the element at index <code class="code">idx</code>.<br>
 </div>
 <br>
-<span id="6_Arrayfunctionalsupport"><h6>Array functional support</h6></span><br>
-<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+<h6 id="6_Arrayfunctionalsupport">Array functional support</h6><br>
+
+<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 <code class="code">iter f darr</code> calls the function <code class="code">f</code> on every element of <code class="code">darr</code>.  It
 	is equivalent to <code class="code"><span class="keyword">for</span> i = 0 <span class="keyword">to</span> length darr - 1 <span class="keyword">do</span> f (get darr i) <span class="keyword">done</span>;</code><br>
 </div>
-<pre><span id="VALiteri"><span class="keyword">val</span> iteri</span> : <code class="type">(int -> 'a -> unit) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+
+<pre><span id="VALiteri"><span class="keyword">val</span> iteri</span> : <code class="type">(int -> 'a -> unit) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 <code class="code">iter f darr</code> calls the function <code class="code">f</code> on every element of <code class="code">darr</code>.  It
 	is equivalent to <code class="code"><span class="keyword">for</span> i = 0 <span class="keyword">to</span> length darr - 1 <span class="keyword">do</span> f i (get darr i) <span class="keyword">done</span>;</code><br>
 </div>
-<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> 'b <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> 'b <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">map f darr</code> applies the function <code class="code">f</code> to every element of <code class="code">darr</code>
     and creates a dynamic array from the results - similar to <code class="code"><span class="constructor">List</span>.map</code> or
     <code class="code"><span class="constructor">Array</span>.map</code>.<br>
 </div>
-<pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">(int -> 'a -> 'b) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> 'b <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">(int -> 'a -> 'b) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> 'b <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">mapi f darr</code> applies the function <code class="code">f</code> to every element of <code class="code">darr</code>
     and creates a dynamic array from the results - similar to <code class="code"><span class="constructor">List</span>.mapi</code> or
     <code class="code"><span class="constructor">Array</span>.mapi</code>.<br>
 </div>
-<pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatDynArray.html#TYPEt">t</a> -> 'a</code></pre><div class="info">
+
+<pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatDynArray.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
 <code class="code">fold_left f x darr</code> computes <code class="code">f ( ... ( f ( f a0 x) a1) ) ... )
     aN</code>, where <code class="code">a0,a1..aN</code> are the indexed elements of <code class="code">darr</code>.<br>
 </div>
-<pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">('a -> 'b -> 'b) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> 'b -> 'b</code></pre><div class="info">
+
+<pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">('a -> 'b -> 'b) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> 'b -> 'b</code></pre><div class="info ">
 <code class="code">fold_right f darr x</code> computes <code class="code"> f a0 (f a1 ( ... ( f aN x )
     ... ) ) </code>, where <code class="code">a0,a1..aN</code> are the indexed elements of
     <code class="code">darr</code>.<br>
 </div>
-<pre><span id="VALindex_of"><span class="keyword">val</span> index_of</span> : <code class="type">('a -> bool) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALindex_of"><span class="keyword">val</span> index_of</span> : <code class="type">('a -> bool) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 <code class="code">index_of f darr</code> returns the index of the first element <code class="code">x</code> in darr such
     as <code class="code">f x</code> returns <code class="code"><span class="keyword">true</span></code> or raise <code class="code"><span class="constructor">Not_found</span></code> if not found.<br>
 </div>
-<pre><span id="VALkeep"><span class="keyword">val</span> keep</span> : <code class="type">('a -> bool) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> unit</code></pre><div class="info">
+
+<pre><span id="VALkeep"><span class="keyword">val</span> keep</span> : <code class="type">('a -> bool) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 <code class="code">keep p darr</code> removes in place all the element <code class="code">x</code> of <code class="code">darr</code>
     such that <code class="code">p x = <span class="keyword">false</span></code>
 <p>
@@ -274,7 +312,8 @@ remove all elements from the array and resize it to 0.<br>
     <a href="BatDynArray.html#VALfilter"><code class="code"><span class="constructor">BatDynArray</span>.filter</code></a>. As this caused incompatibilities with comprehension
     of dynamic arrays, the function name has been changed.<br>
 </div>
-<pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('a -> bool) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('a -> bool) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">filter p a</code> returns all the elements of the array <code class="code">a</code>
     that satisfy the predicate <code class="code">p</code>.  The order of the elements
     in the input array is preserved.
@@ -285,15 +324,17 @@ remove all elements from the array and resize it to 0.<br>
     was incompatible with comprehension of dynamic arrays, its name
     was changed to <a href="BatDynArray.html#VALkeep"><code class="code"><span class="constructor">BatDynArray</span>.keep</code></a>.<br>
 </div>
-<pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">('a -> 'b option) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> 'b <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info">
+
+<pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">('a -> 'b option) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> 'b <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">filter_map f e</code> returns an array consisting of all elements
     <code class="code">x</code> such that <code class="code">f y</code> returns <code class="code"><span class="constructor">Some</span> x</code> , where <code class="code">y</code> is an element
     of <code class="code">e</code>.<br>
 </div>
 <br>
-<span id="6_Arrayresizers"><h6>Array resizers</h6></span><br>
+<h6 id="6_Arrayresizers">Array resizers</h6><br>
+
 <pre><span id="TYPEresizer_t"><span class="keyword">type</span> <code class="type"></code>resizer_t</span> = <code class="type">currslots:int -> oldlength:int -> newlength:int -> int</code> </pre>
-<div class="info">
+<div class="info ">
 The type of a resizer function.
 <p>
 
@@ -317,18 +358,22 @@ The type of a resizer function.
 	function.<br>
 </div>
 
-<pre><span id="VALset_resizer"><span class="keyword">val</span> set_resizer</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> <a href="BatDynArray.html#TYPEresizer_t">resizer_t</a> -> unit</code></pre><div class="info">
+
+<pre><span id="VALset_resizer"><span class="keyword">val</span> set_resizer</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> <a href="BatDynArray.html#TYPEresizer_t">resizer_t</a> -> unit</code></pre><div class="info ">
 Change the resizer for this array.<br>
 </div>
-<pre><span id="VALget_resizer"><span class="keyword">val</span> get_resizer</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> <a href="BatDynArray.html#TYPEresizer_t">resizer_t</a></code></pre><div class="info">
+
+<pre><span id="VALget_resizer"><span class="keyword">val</span> get_resizer</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> <a href="BatDynArray.html#TYPEresizer_t">resizer_t</a></code></pre><div class="info ">
 Get the current resizer function for a given array<br>
 </div>
-<pre><span id="VALdefault_resizer"><span class="keyword">val</span> default_resizer</span> : <code class="type"><a href="BatDynArray.html#TYPEresizer_t">resizer_t</a></code></pre><div class="info">
+
+<pre><span id="VALdefault_resizer"><span class="keyword">val</span> default_resizer</span> : <code class="type"><a href="BatDynArray.html#TYPEresizer_t">resizer_t</a></code></pre><div class="info ">
 The default resizer function the library is using - in this version
 	of DynArray, this is the <code class="code">exponential_resizer</code> but should change in
 	next versions.<br>
 </div>
-<pre><span id="VALexponential_resizer"><span class="keyword">val</span> exponential_resizer</span> : <code class="type"><a href="BatDynArray.html#TYPEresizer_t">resizer_t</a></code></pre><div class="info">
+
+<pre><span id="VALexponential_resizer"><span class="keyword">val</span> exponential_resizer</span> : <code class="type"><a href="BatDynArray.html#TYPEresizer_t">resizer_t</a></code></pre><div class="info ">
 The exponential resizer- The default resizer except when the resizer
 	is being copied from some other darray.
 <p>
@@ -378,7 +423,8 @@ The exponential resizer- The default resizer except when the resizer
 	well (obviously deletes from anywhere else are O(n) work- you
 	have to move the n or so elements above the deleted element down).<br>
 </div>
-<pre><span id="VALstep_resizer"><span class="keyword">val</span> step_resizer</span> : <code class="type">int -> <a href="BatDynArray.html#TYPEresizer_t">resizer_t</a></code></pre><div class="info">
+
+<pre><span id="VALstep_resizer"><span class="keyword">val</span> step_resizer</span> : <code class="type">int -> <a href="BatDynArray.html#TYPEresizer_t">resizer_t</a></code></pre><div class="info ">
 The stepwise resizer- another example of a resizer function, this
 	time of a parameterized resizer.
 <p>
@@ -392,7 +438,8 @@ The stepwise resizer- another example of a resizer function, this
 	of len, and a null of null, you would do:
 	<code class="code">make</code> ~resizer:(<code class="code">step_resizer</code> 10) len null<br>
 </div>
-<pre><span id="VALconservative_exponential_resizer"><span class="keyword">val</span> conservative_exponential_resizer</span> : <code class="type"><a href="BatDynArray.html#TYPEresizer_t">resizer_t</a></code></pre><div class="info">
+
+<pre><span id="VALconservative_exponential_resizer"><span class="keyword">val</span> conservative_exponential_resizer</span> : <code class="type"><a href="BatDynArray.html#TYPEresizer_t">resizer_t</a></code></pre><div class="info ">
 <code class="code">conservative_exponential_resizer</code> is an example resizer function
 	which uses the oldlength parameter.  It only shrinks the array
 	on inserts- no deletes shrink the array, only inserts.  It does
@@ -400,9 +447,12 @@ The stepwise resizer- another example of a resizer function, this
 	than that, it acts like <code class="code">exponential_resizer</code>.<br>
 </div>
 <br>
-<span id="6_Unsafeoperations"><h6>Unsafe operations</h6></span> *<br>
-<pre><span id="VALunsafe_get"><span class="keyword">val</span> unsafe_get</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> 'a</code></pre><pre><span id="VALunsafe_set"><span class="keyword">val</span> unsafe_set</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> 'a -> unit</code></pre><br>
-<span id="6_Boilerplatecode"><h6>Boilerplate code</h6></span><br>
+<h6 id="6_Unsafeoperations">Unsafe operations</h6> *<br>
+
+<pre><span id="VALunsafe_get"><span class="keyword">val</span> unsafe_get</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> 'a</code></pre>
+<pre><span id="VALunsafe_set"><span class="keyword">val</span> unsafe_set</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> 'a -> unit</code></pre><br>
+<h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
 <br>
-<span id="7_Printing"><div class="h7">Printing</div></span><br>
+<div class="h7" id="7_Printing">Printing</div><br>
+
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatDynArray.html#TYPEt">t</a> -> unit</code></pre></body></html>

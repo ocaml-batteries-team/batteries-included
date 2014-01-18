@@ -100,24 +100,31 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatParserCo.Source</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a href="BatParserCo.html">Up</a>
-&nbsp;<a href="BatParserCo.Infix.html">Next</a>
+<div class="navbar">&nbsp;<a class="up" href="BatParserCo.html" title="BatParserCo">Up</a>
+&nbsp;<a class="post" href="BatParserCo.Infix.html" title="BatParserCo.Infix">Next</a>
 </div>
-<center><h1>Module <a href="type_BatParserCo.Source.html">BatParserCo.Source</a></h1></center>
-<br>
-<pre><span class="keyword">module</span> Source: <code class="code"><span class="keyword">sig</span></code> <a href="BatParserCo.Source.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>A source for parsing.  Unless you are parsing from exotic sources,
+<h1>Module <a href="type_BatParserCo.Source.html">BatParserCo.Source</a></h1>
+
+<pre><span class="keyword">module</span> Source: <code class="code"><span class="keyword">sig</span></code> <a href="BatParserCo.Source.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+A source for parsing.  Unless you are parsing from exotic sources,
     you will probably not need to use this module directly. Rather, use
     <code class="code"><span class="constructor">CharParser</span>.source_of_string</code> or <code class="code"><span class="constructor">CharParser</span>.source_of_enum</code>.<br>
+</div>
 <hr width="100%">
+
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b)</code> t</span> </pre>
-<div class="info">
+<div class="info ">
 A source of elements of type <code class="code"><span class="keywordsign">'</span>a</code>, with a user-defined state
       of type <code class="code"><span class="keywordsign">'</span>b</code><br>
 </div>
 
-<pre><span id="VALget_state"><span class="keyword">val</span> get_state</span> : <code class="type">('a, 'b) <a href="BatParserCo.Source.html#TYPEt">t</a> -> 'b <a href="BatParserCo.html#TYPEstate">BatParserCo.state</a></code></pre><pre><span id="VALset_full_state"><span class="keyword">val</span> set_full_state</span> : <code class="type">('a, 'b) <a href="BatParserCo.Source.html#TYPEt">t</a> -><br>       'c -> ('a -> 'c -> 'c) -> ('a, 'c) <a href="BatParserCo.Source.html#TYPEt">t</a></code></pre><pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'b -> ('a -> 'b -> 'b) -> ('a, 'b) <a href="BatParserCo.Source.html#TYPEt">t</a></code></pre></body></html>
+
+<pre><span id="VALget_state"><span class="keyword">val</span> get_state</span> : <code class="type">('a, 'b) <a href="BatParserCo.Source.html#TYPEt">t</a> -> 'b <a href="BatParserCo.html#TYPEstate">BatParserCo.state</a></code></pre>
+<pre><span id="VALset_full_state"><span class="keyword">val</span> set_full_state</span> : <code class="type">('a, 'b) <a href="BatParserCo.Source.html#TYPEt">t</a> -><br>       'c -> ('a -> 'c -> 'c) -> ('a, 'c) <a href="BatParserCo.Source.html#TYPEt">t</a></code></pre>
+<pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'b -> ('a -> 'b -> 'b) -> ('a, 'b) <a href="BatParserCo.Source.html#TYPEt">t</a></code></pre></body></html>

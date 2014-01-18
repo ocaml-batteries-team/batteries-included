@@ -101,21 +101,24 @@
 <link title="BatVect" rel="Chapter" href="BatVect.html">
 <link title="Batteries" rel="Chapter" href="Batteries.html">
 <link title="BatteriesConfig" rel="Chapter" href="BatteriesConfig.html">
+<link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatInterfaces.OrderedType</title>
 </head>
 <body>
-<div class="navbar"><a href="BatInterfaces.Mappable.html">Previous</a>
-&nbsp;<a href="BatInterfaces.html">Up</a>
-&nbsp;<a href="BatInterfaces.Monad.html">Next</a>
+<div class="navbar"><a class="pre" href="BatInterfaces.Mappable.html" title="BatInterfaces.Mappable">Previous</a>
+&nbsp;<a class="up" href="BatInterfaces.html" title="BatInterfaces">Up</a>
+&nbsp;<a class="post" href="BatInterfaces.Monad.html" title="BatInterfaces.Monad">Next</a>
 </div>
-<center><h1>Module type <a href="type_BatInterfaces.OrderedType.html">BatInterfaces.OrderedType</a></h1></center>
-<br>
+<h1>Module type <a href="type_BatInterfaces.OrderedType.html">BatInterfaces.OrderedType</a></h1>
+
 <pre><span class="keyword">module type</span> OrderedType = <code class="code"><span class="keyword">sig</span></code> <a href="BatInterfaces.OrderedType.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
+
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
 
-<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatInterfaces.OrderedType.html#TYPEt">t</a> -> <a href="BatInterfaces.OrderedType.html#TYPEt">t</a> -> int</code></pre><div class="info">
+
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatInterfaces.OrderedType.html#TYPEt">t</a> -> <a href="BatInterfaces.OrderedType.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 A total ordering function
         This is a two-argument function <code class="code">f</code> such that
         <code class="code">f e1 e2</code> is zero if the values <code class="code">e1</code> and <code class="code">e2</code> are equal,
