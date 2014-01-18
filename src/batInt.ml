@@ -209,12 +209,12 @@ module BaseSafeInt = struct
 
   let add a b =
     let c = Pervasives.( + ) a b in
-    if a < 0 && b < 0 && c >= 0 || a > 0 && b > 0 && c <= 0	then raise Overflow
+    if a < 0 && b < 0 && c >= 0 || a > 0 && b > 0 && c <= 0 then raise Overflow
     else c
 
   let sub a b =
     let c = Pervasives.( - ) a b in
-    if a < 0 && b > 0 && c >= 0 || a > 0 && b < 0 && c <= 0	then raise Overflow
+    if a < 0 && b > 0 && c >= 0 || a > 0 && b < 0 && c <= 0 then raise Overflow
     else c
 
   let neg x = if x <> min_int then ~- x else raise Overflow
@@ -235,7 +235,7 @@ module BaseSafeInt = struct
 
   let mul a b =
     match a asr shift_bits, b asr shift_bits with
-    |	0,0 -> a * b
+    |   0,0 -> a * b
     | 0,bh ->
       let al = a land mask in
       let cross = bh * al in

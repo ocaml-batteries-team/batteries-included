@@ -53,8 +53,8 @@ type open_in_flag =
   [ `create
   | `excl     (**Fail if the file exists and [`create] is set               *)
   | `text     (**Open in ascii mode -- if this flag is not specified or if the
-				 operating system does not perform conversions, the file is
-				 opened in binary mode.                                     *)
+                 operating system does not perform conversions, the file is
+                 opened in binary mode.                                     *)
   | `nonblock (**Open in non-blocking mode                                  *)
   | `mmap     (**Open in memory-mapped mode (experimental)*)                 ]
 
@@ -64,8 +64,8 @@ type open_out_flag =
   | `trunc    (**Empty the file if it already exists (on by default)        *)
   | `excl     (**Fail if the file exists and [`create] is set               *)
   | `text     (**Open in ascii mode -- if this flag is not specified or if the
-				 operating system does not perform conversions, the file is
-				 opened in binary mode.                                     *)
+                 operating system does not perform conversions, the file is
+                 opened in binary mode.                                     *)
   | `nonblock (**Open in non-blocking mode                                  *) ]
 
 
@@ -135,7 +135,7 @@ let open_in ?mode ?(perm=default_permission) name =
         for i = 0 to n - 1 do
           String.(*unsafe_*)set sout (!pos + i) (Array1.get array i)
         done;
-        (*		    String.unsafe_blit s (post pos ( (+) n ) ) sout p n;*)
+        (*          String.unsafe_blit s (post pos ( (+) n ) ) sout p n;*)
         pos := !pos + n;
         n
       )

@@ -94,12 +94,12 @@ sig
 
   val sym_diff: t -> t -> t
   (** [sym_diff s t] returns the set of all elements in [s] or [t]
-	but not both.  This is the same as [diff (union s t) (inter s
-	t)]. *)
+    but not both.  This is the same as [diff (union s t) (inter s
+    t)]. *)
 
   val compare: t -> t -> int
   (** Total ordering between sets. Can be used as the ordering function
-	for doing sets of sets. *)
+    for doing sets of sets. *)
 
   val equal: t -> t -> bool
   (** [equal s1 s2] tests whether the sets [s1] and [s2] are
@@ -123,8 +123,8 @@ sig
 
   val map: (elt -> elt) -> t -> t
   (** [map f x] creates a new set with elements [f a0],
-	  [f a1]... [f aN], where [a0],[a1]..[aN] are the
-	  values contained in [x]*)
+      [f a1]... [f aN], where [a0],[a1]..[aN] are the
+      values contained in [x]*)
 
   val filter: (elt -> bool) -> t -> t
   (** [filter p s] returns the set of all elements in [s]
@@ -132,14 +132,14 @@ sig
 
   val filter_map: (elt -> elt option) -> t -> t
   (** [filter_map f m] combines the features of [filter] and
-	  [map].  It calls calls [f a0], [f a1], [f aN] where [a0],[a1]..[aN]
-	  are the elements of [m] and returns the set of pairs [bi]
-	  such as [f ai = Some bi] (when [f] returns [None], the
-	  corresponding element of [m] is discarded). *)
+      [map].  It calls calls [f a0], [f a1], [f aN] where [a0],[a1]..[aN]
+      are the elements of [m] and returns the set of pairs [bi]
+      such as [f ai = Some bi] (when [f] returns [None], the
+      corresponding element of [m] is discarded). *)
 
   val fold: (elt -> 'a -> 'a) -> t -> 'a -> 'a
   (** [fold f s a] computes [(f xN ... (f x1 (f x0 a))...)],
-	  where [x0],[x1]..[xN] are the elements of [s], in increasing order. *)
+      where [x0],[x1]..[xN] are the elements of [s], in increasing order. *)
 
   val for_all: (elt -> bool) -> t -> bool
   (** [for_all p s] checks if all elements of the set
@@ -204,7 +204,7 @@ sig
   (** Return the smallest element of the given set
       (with respect to the [Ord.compare] ordering).
 
-	@raise Not_found if the set is empty. *)
+    @raise Not_found if the set is empty. *)
 
   val max_elt: t -> elt
   (** Same as {!Set.S.min_elt}, but returns the largest element of the
@@ -221,15 +221,15 @@ sig
 
   val enum: t -> elt BatEnum.t
   (** Return an enumeration of all elements of the given set.
-	  The returned enumeration is sorted in increasing order with respect
-	  to the ordering [Ord.compare], where [Ord] is the argument
-	  given to {!Set.Make}. *)
+      The returned enumeration is sorted in increasing order with respect
+      to the ordering [Ord.compare], where [Ord] is the argument
+      given to {!Set.Make}. *)
 
   val backwards: t -> elt BatEnum.t
   (** Return an enumeration of all elements of the given set.
-	  The returned enumeration is sorted in decreasing order with respect
-	  to the ordering [Ord.compare], where [Ord] is the argument
-	  given to {!Set.Make}. *)
+      The returned enumeration is sorted in decreasing order with respect
+      to the ordering [Ord.compare], where [Ord] is the argument
+      given to {!Set.Make}. *)
 
   val of_enum: elt BatEnum.t -> t
 
@@ -262,11 +262,11 @@ sig
 
   (** Operations on {!Set} with labels.
 
-	This module overrides a number of functions of {!Set} by
-	functions in which some arguments require labels. These labels are
-	there to improve readability and safety and to let you change the
-	order of arguments to functions. In every case, the behavior of the
-	function is identical to that of the corresponding function of {!Set}.
+    This module overrides a number of functions of {!Set} by
+    functions in which some arguments require labels. These labels are
+    there to improve readability and safety and to let you change the
+    order of arguments to functions. In every case, the behavior of the
+    function is identical to that of the corresponding function of {!Set}.
   *)
   module Labels : sig
     val iter : f:(elt -> unit) -> t -> unit

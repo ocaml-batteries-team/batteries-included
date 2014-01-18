@@ -498,7 +498,7 @@ let compare cmp a b =
       if result = 0 then aux (i + 1)
       else               result
     else
-    if length_a = length_b then	0
+    if length_a = length_b then 0
     else if length_a < length_b then -1
     else                              1
   in

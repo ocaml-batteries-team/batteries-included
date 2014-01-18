@@ -96,19 +96,19 @@ sig
 
   val modify: key -> ('a -> 'a) -> 'a t -> 'a t
   (** [modify k f m] replaces the previous binding for [k] with [f] applied to
-	  that value. If [k] is unbound in [m] or [Not_found] is raised during the
-	  search, [Not_found] is raised.
+      that value. If [k] is unbound in [m] or [Not_found] is raised during the
+      search, [Not_found] is raised.
 
-	  @since 1.2.0
-	  @raise Not_found if [k] is unbound in [m] (or [f] raises [Not_found]) *)
+      @since 1.2.0
+      @raise Not_found if [k] is unbound in [m] (or [f] raises [Not_found]) *)
 
   val modify_def: 'a -> key -> ('a -> 'a) -> 'a t -> 'a t
   (** [modify_def v0 k f m] replaces the previous binding for [k]
-	with [f] applied to that value. If [k] is unbound in [m] or
-	[Not_found] is raised during the search, [f v0] is
-	inserted (as if the value found were [v0]).
+    with [f] applied to that value. If [k] is unbound in [m] or
+    [Not_found] is raised during the search, [f v0] is
+    inserted (as if the value found were [v0]).
 
-	@since 1.3.0 *)
+    @since 1.3.0 *)
 
   val modify_opt: key -> ('a option -> 'a option) -> 'a t -> 'a t
   (** [modify_opt k f m] allows to modify the binding for [k] in [m]
@@ -161,23 +161,23 @@ sig
 
   val filterv: ('a -> bool) -> 'a t -> 'a t
   (**[filterv f m] returns a map where only the values [a] of [m]
-	 such that [f a = true] remain. The bindings are passed to [f]
-	 in increasing order with respect to the ordering over the
-	 type of the keys. *)
+     such that [f a = true] remain. The bindings are passed to [f]
+     in increasing order with respect to the ordering over the
+     type of the keys. *)
 
   val filter: (key -> 'a -> bool) -> 'a t -> 'a t
   (**[filter f m] returns a map where only the key, values pairs
-	 [key], [a] of [m] such that [f key a = true] remain. The
-	 bindings are passed to [f] in increasing order with respect
-	 to the ordering over the type of the keys. *)
+     [key], [a] of [m] such that [f key a = true] remain. The
+     bindings are passed to [f] in increasing order with respect
+     to the ordering over the type of the keys. *)
 
   val filter_map: (key -> 'a -> 'b option) -> 'a t -> 'b t
   (** [filter_map f m] combines the features of [filter] and
-	  [map].  It calls calls [f key0 a0], [f key1 a1], [f keyn an]
-	  where [a0,a1..an] are the elements of [m] and [key0..keyn] the
-	  respective corresponding keys. It returns the map of
-	  pairs [keyi],[bi] such as [f keyi ai = Some bi] (when [f] returns
-	  [None], the corresponding element of [m] is discarded). *)
+      [map].  It calls calls [f key0 a0], [f key1 a1], [f keyn an]
+      where [a0,a1..an] are the elements of [m] and [key0..keyn] the
+      respective corresponding keys. It returns the map of
+      pairs [keyi],[bi] such as [f keyi ai = Some bi] (when [f] returns
+      [None], the corresponding element of [m] is discarded). *)
 
   val compare: ('a -> 'a -> int) -> 'a t -> 'a t -> int
   (** Total ordering between maps.  The first argument is a total ordering
@@ -316,11 +316,11 @@ sig
 
   (** Operations on {!Map} with labels.
 
-	This module overrides a number of functions of {!Map} by
-	functions in which some arguments require labels. These labels are
-	there to improve readability and safety and to let you change the
-	order of arguments to functions. In every case, the behavior of the
-	function is identical to that of the corresponding function of {!Map}.
+    This module overrides a number of functions of {!Map} by
+    functions in which some arguments require labels. These labels are
+    there to improve readability and safety and to let you change the
+    order of arguments to functions. In every case, the behavior of the
+    function is identical to that of the corresponding function of {!Map}.
   *)
   module Labels : sig
     val add : key:key -> data:'a -> 'a t -> 'a t
@@ -494,11 +494,11 @@ val add_carry : 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t * 'b option
 
 val modify : 'a -> ('b -> 'b) -> ('a, 'b) t -> ('a, 'b) t
 (** [modify k f m] replaces the previous binding for [k] with [f]
-	applied to that value.  If [k] is unbound in [m] or [Not_found] is
-	raised during the search,  [Not_found] is raised.
+    applied to that value.  If [k] is unbound in [m] or [Not_found] is
+    raised during the search,  [Not_found] is raised.
 
-	@since 1.2.0
-	@raise Not_found if [k] is unbound in [m] (or [f] raises [Not_found]) *)
+    @since 1.2.0
+    @raise Not_found if [k] is unbound in [m] (or [f] raises [Not_found]) *)
 
 val modify_def: 'b -> 'a -> ('b -> 'b) -> ('a,'b) t -> ('a,'b) t
 (** [modify_def v0 k f m] replaces the previous binding for [k]

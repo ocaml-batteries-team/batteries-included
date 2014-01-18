@@ -635,9 +635,9 @@ let in_channel_of_input i =
   let rec aux ()  =
     let new_pos_in = pos_in  cin in
       if new_pos_in > !latest_pos_in then (*Something has been read, we can write a little bit more*)
-	let size = new_pos_in - !latest_pos_in in
-	let buf  = String.create size          in
-	  input i buf
+    let size = new_pos_in - !latest_pos_in in
+    let buf  = String.create size          in
+      input i buf
 
 (*    UnixLabels.select
       ~read:?

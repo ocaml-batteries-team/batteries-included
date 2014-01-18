@@ -43,7 +43,7 @@ external ( ! ) : 'a ref -> 'a = "%field0"
 
 external ( := ) : 'a ref -> 'a -> unit = "%setfield0"
 (** [r := a] stores the value of [a] in reference [r].
-	Equivalent to [fun r v -> r.contents <- v]. *)
+    Equivalent to [fun r v -> r.contents <- v]. *)
 
 external set : 'a ref -> 'a -> unit = "%setfield0"
 (** As [ := ] *)

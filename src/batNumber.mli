@@ -201,8 +201,8 @@ sig
 
   (** {6 Arithmetic operations}
 
-	Depending on the implementation, some of these operations
-	{i may} raise exceptions at run-time to represent over/under-flows.*)
+    Depending on the implementation, some of these operations
+    {i may} raise exceptions at run-time to represent over/under-flows.*)
   val neg : t -> t
   val succ : t -> t
   val pred : t -> t
@@ -224,8 +224,8 @@ sig
 
   val of_string : string -> t
   (** Convert the representation of a number to the corresponding
-	number. @raise Invalid_argument if the string does not represent
-	a valid number of type [t]*)
+    number. @raise Invalid_argument if the string does not represent
+    a valid number of type [t]*)
 
   val to_string : t -> string
 
@@ -236,14 +236,14 @@ end
 
 (** Automated definition of infix operators for a given numeric type,
     so that you can open it without poluting your namespace.
-	(apart from the type bat__infix_t) *)
+    (apart from the type bat__infix_t) *)
 
 module MakeInfix :
   functor (Base : NUMERIC_BASE) -> Infix with type bat__infix_t = Base.t
 
 (** Automated definition of infix comparison operators for a given numeric type,
     so that you can open it only when you mean it.
-	(apart from the type bat__compare_t) *)
+    (apart from the type bat__compare_t) *)
 
 module MakeCompare :
   functor (Base : NUMERIC_BASE) -> Compare with type bat__compare_t = Base.t

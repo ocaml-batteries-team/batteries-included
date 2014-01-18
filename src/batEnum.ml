@@ -77,7 +77,7 @@ let close e =
 let force t =(** Transform [t] into a list *)
   let rec clone enum count =
     let enum = ref !enum
-    and	count = ref !count in
+    and count = ref !count in
     {
       count = (fun () -> !count);
       next  = (fun () ->
@@ -204,7 +204,7 @@ let init n f = (*Experimental fix for init*)
 
 let get t =
   try   Some (t.next())
-  with	No_more_elements -> None
+  with  No_more_elements -> None
 
 let get_exn t = t.next ()
 
@@ -277,8 +277,8 @@ let take n e =
   let f () =
     if !remaining >= 0 then
       let result = e.next () in
-	decr remaining;
-	result
+    decr remaining;
+    result
     else raise No_more_elements
   in let e = make
        ~next: f
@@ -611,7 +611,7 @@ let suffix_action_without_raise (f:unit -> 'a) (t:'a t) =
       try  t.next ()
       with No_more_elements -> f() );
     clone = (fun () -> t.clone());  (* needs to be delayed because [t] may
-								       mutate and we want the newest clone
+                                       mutate and we want the newest clone
                                        function *)
     fast  = t.fast
   }
@@ -644,7 +644,7 @@ let switchn n f e =
     let my_queue  = queues.(i) in
     if Queue.is_empty my_queue then (*Need to fetch next*)
       let rec aux () =     (*Keep fetching until an appropriate
-							     item has been found*)
+                                 item has been found*)
         let next_item = e.next()    in
         let position  = f next_item in
         if  i = position then next_item
@@ -731,7 +731,7 @@ let drop_while p e =
       print_string "filtering\n";
       if p x then (aux ())
       else (push e x;
-	    raise No_more_elements)
+        raise No_more_elements)
   in
     append (from aux) e*)
 
@@ -1344,7 +1344,7 @@ struct
   let fold_monad f init enum =
     let (>>=) = Mon.bind and return = Mon.return in
     let rec fold m = match get enum with
-      |	None -> m
+      | None -> m
       | Some x -> m >>= fun acc -> fold (f acc x)
     in
     fold (return init)

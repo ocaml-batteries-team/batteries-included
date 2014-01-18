@@ -335,8 +335,8 @@ struct
           newline                          >>= fun _ ->
           return ())
     (*Note: we use [string] rather than [CharParser.string], as the line comment
-		  may be introduced by a word rather than a symbol (e.g. Basic's [REM]), hence
-		  may depend on case sensitivity.*)
+          may be introduced by a word rather than a symbol (e.g. Basic's [REM]), hence
+          may depend on case sensitivity.*)
 
     let multiline_comment =
       match comment_delimiters with
@@ -394,7 +394,7 @@ struct
     let ident_or_kwd = label "identifier or reserved"
         (label ""
            ( to_symbol identifier_content >>= fun s ->
-             (*	    Printf.eprintf "Got something %S\n" s;*)
+             (*     Printf.eprintf "Got something %S\n" s;*)
              return (adapt_case s)))
 
     let ident = label "identifier or operator"
@@ -404,9 +404,9 @@ struct
             else                  ((*Printf.eprintf "Got ident %S\n" s;*)return s)))
 
     (*      let kwd   = label "keyword"
-		(ident_or_kwd >>= fun s ->
-		  if is_reserved s then (Printf.eprintf "Got reserved %S\n" s; return s)
-		  else                  fail)*)
+        (ident_or_kwd >>= fun s ->
+          if is_reserved s then (Printf.eprintf "Got reserved %S\n" s; return s)
+          else                  fail)*)
     let kwd = label "keyword" (ident_or_kwd)
 
     let identifier s = label ("specific identifier \""^s^"\"") (label ""
@@ -424,14 +424,14 @@ struct
             let as_operator    p = p >>= fun s -> if List.mem s reserved_op_names then fail else return s*)
 
     (*      let any_reserved = label "reserved name"
-		( to_symbol (ident_start >:: zero_plus ident_letter)   >>= fun s ->
-		    if List.mem s reserved_names then return s
-		    else                               fail)
+        ( to_symbol (ident_start >:: zero_plus ident_letter)   >>= fun s ->
+            if List.mem s reserved_names then return s
+            else                               fail)
 
             let any_reserved_op = label "reserved operator"
-		( to_symbol (op_start >:: zero_plus op_letter)    >>= fun s ->
-		    if List.mem s reserved_op_names then return s
-		    else                                 fail)*)
+        ( to_symbol (op_start >:: zero_plus op_letter)    >>= fun s ->
+            if List.mem s reserved_op_names then return s
+            else                                 fail)*)
 
     let char_literal = label "Character literal"
         (BatCharParser.char '\'' >>= fun _ ->

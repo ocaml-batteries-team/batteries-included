@@ -183,11 +183,11 @@ sig
     (** {6 Low-level API} *)
     val char         : char -> (char, char , position) BatParserCo.t
     (** As {!CharParser.char}, but case-insensitive if specified
-		by {!case_sensitive}. *)
+        by {!case_sensitive}. *)
 
     val string       : string -> (char, string, position) BatParserCo.t
     (** As {!CharParser.string}, but case-insensitive if specified
-		by {!case_sensitive}. *)
+        by {!case_sensitive}. *)
 
     val line_comment : (char, unit , position) BatParserCo.t
     val multiline_comment : (char, unit , position) BatParserCo.t
