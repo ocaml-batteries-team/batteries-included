@@ -116,6 +116,13 @@ let add x t = let dup = copy t in set dup x; dup
 
 let remove x t = let dup = copy t in unset dup x; dup
 
+(*$T
+  let b = empty() in ignore(add 1 b); count b = 0
+  let b = empty() in count(add 1 b) = 1
+  let b = create_full 5 in ignore(remove 1 b); count b = 5
+  let b = create_full 5 in count(remove 1 b) = 4
+*)
+
 let put t =
   function
   | true -> set t
@@ -128,6 +135,10 @@ let create_full n =
     unset t i
   done;
   t
+
+(*$Q
+  Q.small_int (fun n -> count (create_full n) = n)
+*)
 
 let compare t1 t2 =
   let len1 = String.length !t1 in
@@ -156,10 +167,21 @@ let compare t1 t2 =
       done;
     !diff
 
+(*$T
+  compare (of_list [1;2]) (of_list [1]) > 0
+*)
+
 let equal t1 t2 =
   compare t1 t2 = 0
 
 let ord = BatOrd.ord compare
+
+(*$Q
+  (Q.pair (Q.list Q.small_int) (Q.list Q.small_int)) (fun (l1,l2) -> \
+    let of_list' l = of_list (List.map abs l) in \
+    let b1 = of_list' l1 and b2 = of_list' l2 in \
+    ord b1 b2 = BatOrd.rev_ord0 (ord b2 b1))
+*)
 
 (* Array that return the count of bits for a char *)
 let count_array =
@@ -272,6 +294,18 @@ let enum t =
       ~clone:(fun () -> make !cur !cnt)
   in
   make 0 (count t)
+
+(*$T
+  BitSet.of_list [5;3;2;1] |> BitSet.enum |> Enum.skip 1 |> Enum.count = 3
+  let e = BitSet.of_list [5;3;2;1] |> enum in \
+    Enum.junk e; Enum.iter (fun _ -> ()) (Enum.clone e); (Enum.count e = 3)
+*)
+
+(*$Q
+  (Q.list Q.small_int) (fun l -> \
+    let b = BitSet.of_list (List.map abs l) in \
+    b |> BitSet.enum |> BitSet.of_enum |> equal b)
+*)
 
 let of_enum ?(cap=128) e = let bs = create cap in BatEnum.iter (set bs) e; bs
 
