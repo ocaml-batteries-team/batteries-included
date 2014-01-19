@@ -592,6 +592,9 @@ val interleave : ?first:'a -> ?last:'a -> 'a -> 'a list -> 'a list
 (** [interleave ~first ~last sep [a0;a1;a2;...;an]] returns
     [first; a0; sep; a1; sep; a2; sep; ...; sep; an; last] *)
 
+val combinations : 'a list -> 'a list BatLazyList.t
+(** [combinations l] yields an list of all combinations of elements
+    of [l]. *)
 
 (** {6 BatEnum functions}
 

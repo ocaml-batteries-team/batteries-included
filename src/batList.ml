@@ -367,6 +367,18 @@ let interleave ?first ?last (sep:'a) (l:'a list) =
   | (h::t, None,   Some y)     -> rev_append (aux [h] t) [y]
   | (h::t, Some x, Some y)     -> x::rev_append (aux [h] t) [y]
 
+let combinations l =
+  let module LL = BatLazyList in
+  let rec gen l = match l with
+    | [] -> LL.cons [] LL.nil
+    | x::l' ->
+        lazy (
+          let tl = gen l' in
+          let node = LL.append tl (LL.map (fun l -> x::l) tl) in
+          Lazy.force node)
+  in gen l
+  
+
 (*$= interleave & ~printer:(IO.to_string (List.print Int.print))
   (interleave 0 [1;2;3]) [1;0;2;0;3]
   (interleave 0 [1]) [1]
