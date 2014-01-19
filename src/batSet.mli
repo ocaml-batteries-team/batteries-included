@@ -242,6 +242,18 @@ sig
     ('a BatInnerIO.output -> elt -> unit) ->
     'a BatInnerIO.output -> t -> unit
 
+  (** {7 Infix operators} *)
+
+  module Infix : sig
+    val (<--) : t -> elt -> t (** insertion *)
+    val (<) : t -> t -> bool  (** strict subset *)
+    val (>) : t -> t -> bool  (** strict superset *)
+    val (<=) : t -> t -> bool (** subset *)
+    val (>=) : t -> t -> bool (** superset *)
+    val (-) : t -> t -> t     (** difference *)
+    val (&&&) : t -> t -> t   (** intersection *)
+    val (|||) : t -> t -> t   (** union *)
+  end
 
   (** {6 Override modules}*)
 
@@ -528,6 +540,19 @@ val print :  ?first:string -> ?last:string -> ?sep:string ->
   ('a BatInnerIO.output -> 'c -> unit) ->
   'a BatInnerIO.output -> 'c t -> unit
 
+(** {7 Infix operators} *)
+
+module Infix : sig
+  val (<--) : 'a t -> 'a -> 'a t      (** insertion *)
+  val (<) : 'a t -> 'a t -> bool      (** strict subset *)
+  val (>) : 'a t -> 'a t -> bool      (** strict superset *)
+  val (<=) : 'a t -> 'a t -> bool     (** subset *)
+  val (>=) : 'a t -> 'a t -> bool     (** superset *)
+  val (-) : 'a t -> 'a t -> 'a t      (** difference *)
+  val (&&&) : 'a t -> 'a t -> 'a t    (** intersection *)
+  val (|||) : 'a t -> 'a t -> 'a t    (** union *)
+end
+
 
 (** {6 Incubator} *)
 module Incubator : sig
@@ -751,6 +776,19 @@ module PSet : sig
   val print :  ?first:string -> ?last:string -> ?sep:string ->
     ('a BatInnerIO.output -> 'c -> unit) ->
     'a BatInnerIO.output -> 'c t -> unit
+
+  (** {7 Infix operators} *)
+
+  module Infix : sig
+    val (<--) : 'a t -> 'a -> 'a t      (** insertion *)
+    val (<) : 'a t -> 'a t -> bool      (** strict subset *)
+    val (>) : 'a t -> 'a t -> bool      (** strict superset *)
+    val (<=) : 'a t -> 'a t -> bool     (** subset *)
+    val (>=) : 'a t -> 'a t -> bool     (** superset *)
+    val (-) : 'a t -> 'a t -> 'a t      (** difference *)
+    val (&&&) : 'a t -> 'a t -> 'a t    (** intersection *)
+    val (|||) : 'a t -> 'a t -> 'a t    (** union *)
+  end
 
   (** get the comparison function used for a polymorphic map *)
   val get_cmp : 'a t -> ('a -> 'a -> int)
