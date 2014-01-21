@@ -903,6 +903,7 @@ let clump clump_size add get e = (* convert a uchar enum into a ustring enum *)
     | None   -> raise No_more_elements
     | Some x ->
       add x;
+      junk e; (* don't get [x] twice *)
       (try
         for i = 2 to clump_size do
           add (e.next ())
