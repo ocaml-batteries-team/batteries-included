@@ -514,6 +514,10 @@ let find f t =
   with
     No_more_elements -> raise Not_found
 
+(*$T
+  find ((=) 5) (1 -- 10) = 5
+  try find ((=) 11) (1 -- 10) = 5; false with Not_found -> true
+*)
 
 let find_map f t =
   let rec loop () =
@@ -588,6 +592,13 @@ let rec append ta tb =
   );
   t
 
+(*$T
+  append (List.enum [1;2;3]) (List.enum [4;5]) |> List.of_enum = [1;2;3;4;5]
+  append (List.enum [1;2;3]) (List.enum [4;5]) |> \
+    mapi (Tuple2.curry identity) |> List.of_enum = [0,1;1,2;2,3;3,4;4,5]
+
+*)
+
 let prefix_action f t =
   let full_action e =
     e.count <- (fun () -> t.count());
@@ -631,7 +642,8 @@ let rec concat t =
   from2 next clone
 
 (*$T concat
-  let e = List.enum [ [| 1; 2; 3; 4|]; [| 5; 6 |] ] |> map Array.enum |> concat in drop 1 e; (count e) = (count (clone e))
+  let e = List.enum [ [| 1; 2; 3; 4|]; [| 5; 6 |] ] |> map Array.enum \
+    |> concat in drop 1 e; (count e) = (count (clone e))
 *)
 
 
@@ -660,6 +672,11 @@ let switchn n f e =
 let switch f e =
   let a = switchn 2 (fun x -> if f x then 0 else 1) e in
   (a.(0), a.(1))
+
+(*$T
+  List.enum [1;2;3;4] |> switch (fun x -> x mod 2 = 0) |> \
+    Tuple2.mapn List.of_enum = ([2;4], [1;3])
+*)
 
 let partition = switch
 
@@ -695,6 +712,11 @@ let repeat ?times x = match times with
   | Some n ->
     init n (fun _ -> x)
 
+(*$T
+  repeat ~times:5 0 |> List.of_enum = [0;0;0;0;0]
+  repeat 1 |> take 3 |> List.of_enum = [1;1;1]
+*)
+
 let cycle ?times x =
   let enum   =
     match times with
@@ -702,12 +724,20 @@ let cycle ?times x =
     | Some n -> init n (fun _ -> clone x)
   in concat enum
 
+(*$T
+  cycle ~times:5 (singleton 1) |> List.of_enum = [1;1;1;1;1]
+  cycle (List.enum [1;2]) |> take 5 |> List.of_enum = [1;2;1;2;1]
+*)
+
 let range ?until x =
   let cond =  match until with
     | None   -> ( fun _ -> true   )
     | Some n -> ( fun m -> m <= n )
   in seq x ( ( + ) 1 ) cond
 
+(*$T
+  range 1 ~until:5 |> List.of_enum = [1;2;3;4;5]
+*)
 
 let drop n e =
   for i = 1 to n do
@@ -777,6 +807,21 @@ let span f t =
   in
   (from head, from tail)
 
+(*$T span
+  List.enum [1;2;3;4;5] |> span (fun x-> x<4) |> Tuple2.mapn List.of_enum = \
+    ([1;2;3], [4;5])
+  *)
+
+(*$Q
+  (Q.list Q.small_int) (fun l -> \
+    let avg = List.fold_left (+) 0 l / (max 1 @@ List.length l) in \
+    let l' = List.sort Int.compare l in \
+    let f x = x < avg in \
+    Tuple2.mapn List.of_enum (span f @@ List.enum l' ) = \
+    (List.of_enum @@ take_while f @@ List.enum l', \
+     List.of_enum @@ drop_while f @@ List.enum l'))
+*)
+
 let while_do cont f e =
   let (head, tail) = span cont e in
   append (f head) tail
@@ -793,7 +838,16 @@ let uniq e =
     push result first;
     result
 
+(*$T
+  List.enum [1;1;2;3;3;2] |> uniq |> List.of_enum = [1;2;3;2]
+*)
+
 let dup t      = (t, t.clone())
+
+(*$Q
+  (Q.list Q.small_int) (fun l -> \
+    List.enum l |> dup |> Tuple2.mapn List.of_enum |> Tuple2.uncurry (=))
+*)
 
 let combine (x,y) =
   if x.fast && y.fast then (*Optimized case*)
@@ -806,6 +860,11 @@ let combine (x,y) =
       }
     in aux (x,y)
   else from (fun () -> (x.next(), y.next()))
+
+(*$T
+  combine (List.enum [1;2;3], List.enum ["a";"b"]) \
+    |> List.of_enum = [1, "a"; 2, "b"]
+*)
 
 let uncombine e =
   let advance    = ref `first
@@ -1085,9 +1144,10 @@ let arg_max f enum =
 (*$T arg_max
    List.enum ["cat"; "canary"; "dog"; "dodo"; "ant"; "cow"] \
       |> arg_max String.length = "canary"
-*) (*$T arg_min
-     -5 -- 5 |> arg_min (fun x -> x * x + 6 * x - 5) = -3
-   *)
+*)
+(*$T arg_min
+   -5 -- 5 |> arg_min (fun x -> x * x + 6 * x - 5) = -3
+ *)
 
 module Infix = struct
   let ( -- ) x y = range x ~until:y
@@ -1257,6 +1317,11 @@ let equal eq t u =
     | _ -> false
   in aux ()
 
+(*$Q
+  (Q.list Q.small_int) (fun l -> \
+    let e = List.enum l in equal Int.equal e (clone e))
+*)
+
 let rec to_object t =
   object
     method next = t.next ()
@@ -1270,6 +1335,10 @@ let rec of_object o =
     ~clone:(fun () -> of_object (o#clone))
 
 let flatten = concat
+
+(*$T
+  flatten (map singleton @@ List.enum [1;2;3]) |> List.of_enum = [1;2;3]
+*)
 
 let concat_map f e = concat (map f e)
 
