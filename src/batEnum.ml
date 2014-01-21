@@ -912,6 +912,15 @@ let clump clump_size add get e = (* convert a uchar enum into a ustring enum *)
   in
   from next
 
+(*$T clump
+  let l = RefList.empty() in \
+  Char.range 'a' ~until:'k' |> \
+  clump 4 (RefList.push l) \
+    (fun()-> String.implode \
+      (RefList.to_list l |> tap (fun _ -> RefList.clear l) |> List.rev)) \
+  |> List.of_enum = ["abcd"; "efgh"; "ijk"]
+*)
+
 (* mutable state used for {!cartesian_product}. Use a module to have a private namespace. *)
 module ProductState = struct
   type ('a, 'b) current_state =
@@ -1144,6 +1153,11 @@ let merge test a b =
       n
     in append_from (append_from (from aux) a) b
 
+(*$T
+  let a=List.enum [1;3;5] and b = List.enum[2;4] in \
+  let test = let r = ref false in (fun _ _ -> r:= not !r; !r) in \
+  merge test a b |> List.of_enum = [1;2;3;4;5]
+*)
 
 (*let mergen test a =
   ArrayLabels.fold_left ~init:[]
@@ -1361,6 +1375,18 @@ struct
   let return x = singleton x
   let bind m f = concat (map f m)
 end
+
+(*$T
+  equal (=) (Monad.return 1) (singleton 1)
+  equal (=) (Monad.bind (List.enum [1;2]) (fun x-> List.enum [x+1;x])) \
+    (List.enum [2;1;3;2])
+*)
+
+(*$Q
+  (Q.list Q.small_int) (fun l -> \
+    let id l = Monad.bind l Monad.return in  \
+    List.enum l |> id |> List.of_enum = l)
+*)
 
 module Incubator = struct
   open BatOrd
