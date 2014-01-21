@@ -309,6 +309,9 @@ val conservative_exponential_resizer : resizer_t
 	than that, it acts like [exponential_resizer].
 *)
 
+val create_with : resizer_t -> 'a t
+(** create a new dynamic array that uses the given resizer. *)
+
 (** {6 Unsafe operations} **)
 
 val unsafe_get : 'a t -> int -> 'a
@@ -323,4 +326,5 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.outp
 
 (**/**)
 val invariants : _ t -> unit
+val bool_invariants : _ t -> bool
   (**/**)

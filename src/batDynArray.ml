@@ -38,12 +38,15 @@ type 'a t = {
 }
 
 let dummy_for_gc = Obj.magic 0
-let invariants t =
-  assert (t.len >= 0);
-  assert (t.len <= ilen t.arr);
-  for i = t.len to ilen t.arr - 1 do
-    assert (iget t.arr i = dummy_for_gc)
-  done
+let bool_invariants t =
+  t.len >= 0 &&
+  t.len <= ilen t.arr &&
+  (* check that elements beyond t.len are free'd, no memory leak *)
+  let rec check i =
+    if i >= ilen t.arr - 1 then true
+    else iget t.arr i == dummy_for_gc && check (i+1)
+  in check t.len
+let invariants t = assert (bool_invariants t)
 
 type 'a mappable = 'a t
 type 'a enumerable = 'a t
@@ -122,12 +125,36 @@ let compact d =
     d.arr <- newarr;
   end
 
+let create_with resize=
+  { resize;
+    len=0;
+    arr=imake 0;
+  }
+
+(*$Q
+  (Q.list Q.small_int) (fun l -> \
+    let v = create_with exponential_resizer in List.iter (add v) l; \
+    bool_invariants v)
+  (Q.list Q.small_int) (fun l -> \
+    let v = create_with conservative_exponential_resizer in List.iter (add v) l; \
+    bool_invariants v)
+  (Q.list Q.small_int) (fun l -> \
+    let v = create_with (step_resizer 5) in List.iter (add v) l; \
+    bool_invariants v)
+  *)
+
 let create() =
   {
     resize = default_resizer;
     len = 0;
     arr = imake 0;
   }
+
+(*$Q
+  (Q.list Q.small_int) (fun l -> \
+    let v = create() in List.iter (add v) l; \
+    bool_invariants v)
+  *)
 
 let make initsize =
   if initsize < 0 then invalid_arg initsize "make" "size";
@@ -148,6 +175,10 @@ let init initlen f =
     len = initlen;
     arr = arr;
   }
+
+(*$T
+  init 5 identity |> to_list = [0;1;2;3;4]
+*)
 
 let set_resizer d resizer =
   d.resize <- resizer
@@ -170,6 +201,11 @@ let set d idx v =
   if idx < 0 || idx >= d.len then invalid_arg idx "set" "index";
   iset d.arr idx v
 
+(*$T
+  let v = of_list [1;2;3;4] in set v 1 42; get v 1 = 42
+  let v = of_list [1;2;3;4] in set v 1 42; last v = 4
+*)
+
 let insert d idx v =
   if idx < 0 || idx > d.len then invalid_arg idx "insert" "index";
   if d.len = ilen d.arr then changelen d (d.len + 1) else d.len <- d.len + 1;
@@ -179,6 +215,10 @@ let insert d idx v =
     done;
   end;
   iset d.arr idx v
+
+(*$T
+  let v = of_list [1;2;3;4] in insert v 2 10; to_list v = [1;2;10;3;4]
+*)
 
 let add d v =
   if d.len = ilen d.arr then changelen d (d.len + 1) else d.len <- d.len + 1;
@@ -211,6 +251,9 @@ let delete d idx =
   end;
   d.len <- d.len - 1
 
+(*$T
+  let v = of_list [1;2;3;4] in delete v 1; to_list v = [1;3;4]
+*)
 
 let delete_range d idx len =
   if len < 0 then invalid_arg len "delete_range" "length";
@@ -242,15 +285,30 @@ let delete_range d idx len =
   end;
   d.len <- d.len - len
 
+(*$T
+  let v = of_list [1;2;3;4] in delete_range v 1 2; to_list v = [1;4]
+  let v = of_list [1;2;3;4] in delete_range v 1 0; to_list v = [1;2;3;4]
+  let v = of_list [1;2;3;4] in try delete_range v 4 2; false \
+    with Invalid_arg _ -> true
+*)
+
 let clear d =
   d.len <- 0;
   d.arr <- imake 0
+
+(*$T
+  let v = of_list [1;2;3;4;5] in clear v; to_list v = []
+*)
 
 let delete_last d =
   if d.len <= 0 then invalid_arg 0 "delete_last" "<array len is 0>";
   (* erase for GC, in case changelen don't resize our array *)
   iset d.arr (d.len - 1) dummy_for_gc;
   changelen d (d.len - 1)
+
+(*$T
+  let v = of_list [1;2;3;4;5] in delete_last v; to_list v = [1;2;3;4]
+*)
 
 let blit src srcidx dst dstidx len =
   if len < 0 then invalid_arg len "blit" "len";
@@ -273,8 +331,18 @@ let blit src srcidx dst dstidx len =
       iset dst.arr (dstidx+i) (iget src.arr (srcidx+i));
     done
 
+(*$T
+  let v = of_list [1;2;3;4;5] and v2 = of_list [10;11] in \
+    blit v2 0 v 1 2; to_list v = [1;10;11;4;5]
+*)
+
 let append src dst =
   blit src 0 dst dst.len src.len
+
+(*$T
+  let v = of_list [1;2;3;4;5] and v2 = of_list [10;11] in \
+    append v2 v; to_list v = [1;2;3;4;5;10;11]
+*)
 
 let to_list d =
   let rec loop idx accum =
@@ -334,6 +402,11 @@ let copy src =
     arr = idup src.arr;
   }
 
+(*$T
+  let v = of_list [1;2;3] in let v2 = copy v in \
+    set v 0 42; get v2 0 = 1
+*)
+
 let sub src start len =
   if len < 0 then invalid_arg len "sub" "len";
   if start < 0 || start + len > src.len then invalid_arg start "sub" "start";
@@ -347,12 +420,21 @@ let sub src start len =
     arr = arr;
   }
 
+(*$T
+  let v = of_list [1;2;3] in let v2 = sub v 1 2 in to_list v2 = [2;3]
+*)
+
 let iter f d =
   let i = ref 0 in
   while !i < d.len do
     f (iget d.arr !i);
     incr i
   done
+
+(*$T
+  let v = of_list [1;2;3] and v2 = create() in \
+    iter (add v2) v; to_list v2 = [1;2;3]
+*)
 
 (* string_of_int and int_of_string seems useless but it
    is because if you only manipulate integers, you aren't
@@ -746,6 +828,12 @@ let of_enum e =
     BatEnum.iter (add d) e;
     d
 
+(*$Q
+  (Q.list Q.small_int) (fun l -> \
+    let v = of_list l in \
+    enum v |> of_enum |> to_list = l)
+*)
+
 let unsafe_get a n =
   iget a.arr n
 
@@ -754,3 +842,7 @@ let unsafe_set a n x =
 
 let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a out t =
   BatEnum.print ~first ~last ~sep print_a out (enum t)
+
+(*$T
+  Printf.sprintf2 "%a" (print Int.print) (of_list [1;2]) = "[|1; 2|]"
+*)
