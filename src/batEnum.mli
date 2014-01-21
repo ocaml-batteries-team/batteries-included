@@ -568,12 +568,13 @@ val uncombine : ('a * 'b) t -> 'a t * 'b t
 (** [uncombine] is the opposite of [combine] *)
 
 val merge : ('a -> 'a -> bool) -> 'a t -> 'a t -> 'a t
-(** [merge test (a, b)] merge the elements from [a] and [b] into a single
+(** [merge test a b] merge the elements from [a] and [b] into a single
     enumeration. At each step, [test] is applied to the first element of
     [a] and the first element of [b] to determine which should get first
-    into resulting enumeration. If [a] or [b] runs out of elements,
-    the process will append all elements of the other enumeration to
-    the result.
+    into resulting enumeration. If [test xa xb] returns [true], [xa] (the
+    first element of [a]) is used, otherwise [xb] is used.
+    If [a] or [b] runs out of elements, the process will append all elements of
+    the other enumeration to the result.
 *)
 
 val uniq : 'a t -> 'a t
