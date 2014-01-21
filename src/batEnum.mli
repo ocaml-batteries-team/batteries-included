@@ -523,7 +523,7 @@ val combination : ?repeat:bool -> int -> int -> int list t
 (** [combination n k] returns an enumeration over combination of [k] elements
     between [n] distincts elements.
     
-    If [repeat] is true, the combination may contains the same elements many
+    If [repeat] is true, the combination may contain the same elements many
     times.*)
 
 (** {6 Counting} *)
