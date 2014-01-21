@@ -1158,6 +1158,72 @@ let slazy f =
 
 let delay = slazy
 
+let combination ?(repeat=false) n k =
+  let binomial n p =
+    let binom n p =
+        if p < 0 || n < 0 || p > n then 0
+        else (
+          let a = ref 1 in
+          for i = 1 to p  do
+              a := !a * (n + 1 - i) / i
+          done;
+          !a
+        )
+    and comp = n - p
+    in if (comp < p) then
+      binom n comp
+    else
+      binom n p
+
+  and add_repetitions =
+    let rec conv range acc = function
+    | []    -> acc
+    | h::tl -> conv (range + 1) ((h - range) :: acc) tl
+    in conv 0 []
+  
+  in let order_to_comb n p repeat ord =
+    let rec get_comb n p ord acc =
+      if n <= 0 || p <= 0 || ord < 0 then acc
+      else (
+        let b = binomial (n -1) (p - 1)
+        in
+          if ord < b then
+              get_comb (n - 1) (p - 1) ord (n::acc)
+          else
+              get_comb (n - 1) p (ord - b) acc
+      )
+    in let result = get_comb n p ord []
+  
+    in if repeat then
+       add_repetitions result
+    else
+       result
+
+  and p = if repeat then n + k -1 else n
+  in let length = binomial p k 
+  in let rec make_comb index =
+    make
+      ~next:(fun () ->
+        if !index = length then
+          raise No_more_elements
+        else
+          let next = order_to_comb p k repeat !index 
+          in incr index; next
+      )
+      ~count:(fun () -> length - !index)
+      ~clone:(fun () -> make_comb (ref !index))
+  in make_comb (ref 0)
+  
+(*$T combination
+  (combination               3 3 |> count) = 1
+  (combination ~repeat:true  3 3 |> count) = 10
+  (combination ~repeat:true 29 3 |> count) = 4495 
+  (combination ~repeat:true  3 3 |> List.of_enum ) = \
+    [  [3; 3; 3]; [3; 3; 2]; [3; 3; 1]; [3; 2; 2]; [3; 2; 1]; [3; 1; 1]; \
+       [2; 2; 2]; [2; 2; 1]; [2; 1; 1]; \
+       [1; 1; 1]; ]
+*)
+
 let lsing f =
   init 1 (fun _ -> f ())
 
