@@ -69,6 +69,10 @@ let insert bh x =
 
 let add x bh = insert bh x
 
+(*$T
+  find_min (add 3 (add 2 (add 1 empty))) = 1
+*)
+
 let rec merge_data ts1 ts2 = match ts1, ts2 with
   | _, [] -> ts1
   | [], _ -> ts2
@@ -88,6 +92,10 @@ let merge bh1 bh2 =
     | m, None | None, m -> m
   in
   { size = size ; data = data ; mind = mind }
+
+(*$T
+  merge (of_list [3;2]) (of_list [4;1]) |> to_list = [1;2;3;4]
+*)
 
 let find_min bh = match bh.mind with
   | None -> invalid_arg "find_min"
@@ -178,6 +186,11 @@ let rec enum bh =
   BatEnum.make ~next ~count ~clone
 
 let of_enum e = BatEnum.fold insert empty e
+
+(*$Q
+  (Q.list Q.small_int) (fun l -> \
+    of_list l |> enum |> List.of_enum = List.sort Int.compare l)
+*)
 
 module type H = sig
   type elem

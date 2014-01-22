@@ -84,4 +84,9 @@ let from_hex s =
   done;
   result
 
+(*$Q
+  Q.string (fun s -> \
+    let h = string s in h |> to_hex |> from_hex = h)
+*)
+
 let compare = String.compare

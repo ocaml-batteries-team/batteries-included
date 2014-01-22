@@ -568,17 +568,22 @@ val uncombine : ('a * 'b) t -> 'a t * 'b t
 (** [uncombine] is the opposite of [combine] *)
 
 val merge : ('a -> 'a -> bool) -> 'a t -> 'a t -> 'a t
-(** [merge test (a, b)] merge the elements from [a] and [b] into a single
-    enumeration. At each step, [test] is applied to the first element of
-    [a] and the first element of [b] to determine which should get first
-    into resulting enumeration. If [a] or [b] runs out of elements,
-    the process will append all elements of the other enumeration to
-    the result.
+(** [merge test a b] merge the elements from [a] and [b] into a single
+    enumeration. At each step, [test] is applied to the first element [xa] of
+    [a] and the first element [xb] of [b] to determine which should get first
+    into resulting enumeration. If [test xa xb] returns [true], [xa] (the
+    first element of [a]) is used, otherwise [xb] is used.  If [a] or [b] runs
+    out of elements, the process will append all elements of the other
+    enumeration to the result.
+
+    For example, if [a] and [b] are enumerations of integers sorted
+    in increasing order, then [merge (<) a b] will also be sorted.
 *)
 
 val uniq : 'a t -> 'a t
 (** [uniq e] returns a duplicate of [e] with repeated values
-    omitted. (similar to unix's [uniq] command) *)
+    omitted. (similar to unix's [uniq] command) 
+    It uses physical equality to compare consecutive elements. *)
 
 val switch : ('a -> bool) -> 'a t -> 'a t * 'a t
 (** [switch test enum] splits [enum] into two enums, where the first enum have
