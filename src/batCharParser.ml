@@ -48,7 +48,7 @@ let parse p s =
   let chars  = BatEnum.concat (BatEnum.from (fun () -> match get lines with
     | None   -> raise BatEnum.No_more_elements
     | Some l -> latest := l;
-	String.enum l)) in
+    String.enum l)) in
   let source = source_of_enum chars in
     match run p source with
       | Std.Ok _ as result -> result

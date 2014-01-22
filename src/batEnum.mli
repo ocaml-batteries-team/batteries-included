@@ -633,7 +633,7 @@ val while_do : ('a -> bool) -> ('a t -> 'a t) -> 'a t -> 'a t
 
 (** Infix versions of some functions
 
-	This module groups together all infix operators so that
+    This module groups together all infix operators so that
     you can open it without opening the whole batEnum module.
 *)
 
@@ -791,12 +791,12 @@ val equal : ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
 module Exceptionless : sig
   val find : ('a -> bool) -> 'a t -> 'a option
     (** [find f e] returns [Some x] where [x] is the first element [x] of [e]
-		such that [f x] returns [true], consuming the enumeration up to and
-		including the found element, or [None] if no such element exists
-		in the enumeration, consuming the whole enumeration in the search.
+        such that [f x] returns [true], consuming the enumeration up to and
+        including the found element, or [None] if no such element exists
+        in the enumeration, consuming the whole enumeration in the search.
 
-		Since [find] consumes a prefix of the enumeration, it can be used several
-		times on the same enumeration to find the next element. *)
+        Since [find] consumes a prefix of the enumeration, it can be used several
+        times on the same enumeration to find the next element. *)
 end
 
 

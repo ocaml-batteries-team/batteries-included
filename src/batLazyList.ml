@@ -398,7 +398,7 @@ let of_array l =
 let of_enum e =
   let rec aux () =
     lazy (match BatEnum.get e with
-      |	Some x -> Cons (x, aux () )
+      | Some x -> Cons (x, aux () )
       | None   -> Nil )
   in
   aux ()
@@ -467,9 +467,9 @@ let range a b =
     if lo > hi then nil else lazy (Cons (lo, increasing (lo + 1) hi))
   in
   (*      and     decreasing lo hi = if lo > hi then
-		nil
+        nil
           else
-		lazy (Cons hi (decreasing lo (hi - 1)))*)
+        lazy (Cons hi (decreasing lo (hi - 1)))*)
   if b >= a then increasing a b else (*decreasing b a*) nil
 
 let split_at n l =
@@ -499,8 +499,8 @@ let mem_assq e l = BatOption.is_some (may_find (fun (a, _) -> a == e) l)
 (*  let rec aux rest = match next rest with
     | Cons (h, t) ->
         (match f h with
-	   | None   -> lazy (aux t)
-	   | Some x -> cons x (lazy (aux t)))
+       | None   -> lazy (aux t)
+       | Some x -> cons x (lazy (aux t)))
     | Nil -> Nil
     in lazy (aux l)*)
 
@@ -633,14 +633,14 @@ let uncombine l =
 (*let uncombine l =
   let rec aux l = match next l with
     | Cons ((h1, h2), t) -> lazy (let (t1, t2) = aux t in
-				    Cons (h1, t1), Cons(h2, t2))
+                    Cons (h1, t1), Cons(h2, t2))
     | Nil                -> lazy (Nil, Nil)
   in aux l*)
 
 (*let uncombine l =
   unfold l (fun l -> match peek l with
-	      | None -> None
-	      | Cons (h1, h2), t*)
+          | None -> None
+          | Cons (h1, h2), t*)
 
 
 let print ?(first="[^") ?(last="^]") ?(sep="; ") print_a out t =

@@ -177,7 +177,7 @@ module type NUMERIC_BASE = sig
 
   val of_string : string -> t
   (** Convert the representation of a number to the corresponding
-	number. @raise Invalid_argument if the string does not represent
+    number. @raise Invalid_argument if the string does not represent
       a valid number of type [t]*)
 
   val to_string : t -> string

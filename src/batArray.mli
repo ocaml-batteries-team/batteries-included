@@ -537,13 +537,13 @@ module Exceptionless : sig
 
   val find : ('a -> bool) -> 'a t -> 'a option
   (** [find p a] returns [Some x], where [x] is the first element of
-	array [a] that satisfies the predicate [p], or [None] if there
-	is no such element.*)
+    array [a] that satisfies the predicate [p], or [None] if there
+    is no such element.*)
 
   val findi : ('a -> bool) -> 'a t -> int option
     (** [findi p a] returns [Some n], where [n] is the index of the
-		first element of array [a] that satisfies the predicate [p],
-		or [None] if there is no such element.*)
+        first element of array [a] that satisfies the predicate [p],
+        or [None] if there is no such element.*)
 end
 
 (** Operations on {!Array} with labels.
@@ -626,29 +626,29 @@ sig
 
   external of_array  : 'a array -> ('a, _ ) t = "%identity"
   (** Adopt a regular array as a capability array, allowing
-	to decrease capabilities if necessary.
+    to decrease capabilities if necessary.
 
-	This operation involves no copying. In other words, in
-	[let cap = of_array a in ...], any modification in [a]
-	will also have effect on [cap] and reciprocally.*)
+    This operation involves no copying. In other words, in
+    [let cap = of_array a in ...], any modification in [a]
+    will also have effect on [cap] and reciprocally.*)
 
   external to_array  : ('a, [`Read | `Write]) t -> 'a array = "%identity"
   (** Return a capability array as an array.
 
-	This operation requires both read and write permissions
-	on the capability array and involves no copying. In other
-	words, in [let a = of_array cap in ...], any modification
-	in [a] will also have effect on [cap] and reciprocally.*)
+    This operation requires both read and write permissions
+    on the capability array and involves no copying. In other
+    words, in [let a = of_array cap in ...], any modification
+    in [a] will also have effect on [cap] and reciprocally.*)
 
   external read_only :  ('a, [>`Read])  t -> ('a, [`Read])  t = "%identity"
   (** Drop to read-only permissions.
 
-	This operation involves no copying.*)
+    This operation involves no copying.*)
 
   external write_only : ('a, [>`Write]) t -> ('a, [`Write]) t = "%identity"
   (** Drop to write-only permissions.
 
-	This operation involves no copying.*)
+    This operation involves no copying.*)
 
   val init : int -> (int -> 'a) -> ('a, _) t
   val make_matrix : int -> int -> 'a -> (('a, _)t, _) t

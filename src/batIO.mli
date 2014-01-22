@@ -106,7 +106,7 @@ type input = BatInnerIO.input
 
 type 'a output = 'a BatInnerIO.output
 (** The abstract output type, ['a] is the accumulator data, it is returned
-	when the [close_out] function is called. *)
+    when the [close_out] function is called. *)
 
 type ('a, 'b) printer = 'b output -> 'a -> unit
 (** The type of a printing function to print a ['a] to an output that
@@ -492,7 +492,7 @@ sig
 
   val read_i32 : input -> int
   (** Read a signed 32-bit integer. @raise Overflow if the
-	      read integer cannot be represented as an OCaml 31-bit integer. *)
+          read integer cannot be represented as an OCaml 31-bit integer. *)
 
   val read_real_i32 : input -> int32
   (** Read a signed 32-bit integer as an OCaml int32. *)
@@ -537,8 +537,8 @@ sig
   val i32s_of : input -> int BatEnum.t
   (** Read an enumeration of signed 32-bit integers.
 
-	    @raise Overflow if the read integer cannot be represented as an OCaml
-	    31-bit integer. *)
+        @raise Overflow if the read integer cannot be represented as an OCaml
+        31-bit integer. *)
 
   val real_i32s_of : input -> int32 BatEnum.t
   (** Read an enumeration of signed 32-bit integers as OCaml [int32]s. *)
@@ -643,16 +643,16 @@ val create_out :
   close:(unit -> 'a) ->
   'a output
 (**
-	Fully create an output by giving all the needed functions.
+    Fully create an output by giving all the needed functions.
 
-	@param write  Write one character to the output (see {!write}).
-	@param output Write a (sub)string to the output (see {!output}).
-	@param flush  Flush any buffers of this output  (see {!flush}).
-	@param close  Close this output. The output will be automatically
-	flushed.
+    @param write  Write one character to the output (see {!write}).
+    @param output Write a (sub)string to the output (see {!output}).
+    @param flush  Flush any buffers of this output  (see {!flush}).
+    @param close  Close this output. The output will be automatically
+    flushed.
 
-	{b Note} Do {e not} use this function for creating an output which
-	writes to one or more underlying outputs. Rather, use {!wrap_out}.
+    {b Note} Do {e not} use this function for creating an output which
+    writes to one or more underlying outputs. Rather, use {!wrap_out}.
 *)
 
 val wrap_out :

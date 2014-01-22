@@ -547,8 +547,8 @@ val map : ('a -> 'b) -> 'a t -> 'b t
 
 val mapi : (int -> 'a -> 'b) -> 'a t -> 'b t
 (** Same as {!map}, but the
-	function is applied to the index of the element as first argument,
-	and the element itself as second argument. *)
+    function is applied to the index of the element as first argument,
+    and the element itself as second argument. *)
 
 (* NOT PROVIDED?
    val id_map : ('a -> 'a) -> 'a t -> 'a t
@@ -598,8 +598,8 @@ val filter : ('a -> bool) -> 'a t -> 'a t
 
 val filter_map : ('a -> 'b option) -> 'a t -> 'b t
 (** [filter_map f e] returns a vect consisting of all elements
-	[x] such that [f y] returns [Some x] , where [y] is an element
-	of [e]. *)
+    [x] such that [f y] returns [Some x] , where [y] is an element
+    of [e]. *)
 
 val find_all : ('a -> bool) -> 'a t -> 'a t
 (** [find_all] is another name for {!Vect.filter}. *)

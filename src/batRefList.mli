@@ -199,24 +199,24 @@ module Index : sig
 
   val index_of : 'a t -> 'a -> int
   (** Return the index (position : 0 starting) of an element in
-	    a ref list, using ( = ) for testing element equality
-	    raise [Not_found] if no element was found *)
+        a ref list, using ( = ) for testing element equality
+        raise [Not_found] if no element was found *)
 
   val index : ('a -> bool) -> 'a t -> int
   (** Return the index (position : 0 starting) of an element in
-	    a ref list, using the specified comparator
-	    raise [Not_found] if no element was found *)
+        a ref list, using the specified comparator
+        raise [Not_found] if no element was found *)
 
   val at_index : 'a t -> int -> 'a
   (** Return the element of ref list at the specified index
-	    raise [Invalid_index] if the index is outside [0 ; length-1] *)
+        raise [Invalid_index] if the index is outside [0 ; length-1] *)
 
   val set : 'a t -> int -> 'a -> unit
   (** Change the element at the specified index
-	    raise [Invalid_index] if the index is outside [0 ; length-1] *)
+        raise [Invalid_index] if the index is outside [0 ; length-1] *)
 
   val remove_at : 'a t -> int -> unit
     (** Remove the element at the specified index
-		    raise [Invalid_index] if the index is outside [0 ; length-1] *)
+            raise [Invalid_index] if the index is outside [0 ; length-1] *)
 
 end

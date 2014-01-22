@@ -271,7 +271,7 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
 
 (** Operations on {!Hashtbl} without exceptions.
 
-	@documents Hashtbl.Exceptionless
+    @documents Hashtbl.Exceptionless
 *)
 module Exceptionless :
 sig
@@ -298,11 +298,11 @@ end
 
 (** Operations on {!Hashtbl} with labels.
 
-	This module overrides a number of functions of {!Hashtbl} by
-	functions in which some arguments require labels. These labels are
-	there to improve readability and safety and to let you change the
-	order of arguments to functions. In every case, the behavior of the
-	function is identical to that of the corresponding function of {!Hashtbl}.
+    This module overrides a number of functions of {!Hashtbl} by
+    functions in which some arguments require labels. These labels are
+    there to improve readability and safety and to let you change the
+    order of arguments to functions. In every case, the behavior of the
+    function is identical to that of the corresponding function of {!Hashtbl}.
 
     @documents Hashtbl.Labels
 *)
@@ -398,7 +398,7 @@ sig
 
   (** Operations on {!Hashtbl} without exceptions.
 
-	@documents Hashtbl.S.Exceptionless*)
+    @documents Hashtbl.S.Exceptionless*)
   module Exceptionless :
   sig
     val find : 'a t -> key -> 'a option
@@ -424,13 +424,13 @@ sig
 
   (** Operations on {!Hashtbl} with labels.
 
-	This module overrides a number of functions of {!Hashtbl} by
-	functions in which some arguments require labels. These labels are
-	there to improve readability and safety and to let you change the
-	order of arguments to functions. In every case, the behavior of the
-	function is identical to that of the corresponding function of {!Hashtbl}.
+    This module overrides a number of functions of {!Hashtbl} by
+    functions in which some arguments require labels. These labels are
+    there to improve readability and safety and to let you change the
+    order of arguments to functions. In every case, the behavior of the
+    function is identical to that of the corresponding function of {!Hashtbl}.
 
-	@documents Hashtbl.S.Labels
+    @documents Hashtbl.S.Labels
   *)
   module Labels :
   sig

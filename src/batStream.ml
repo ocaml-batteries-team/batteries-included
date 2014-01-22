@@ -267,22 +267,22 @@ let rec map f s =
 
 let dup (_s: 'a Stream.t) = failwith "Correct implementation needed"
 (*      let rec gen q_in q_out =
-		Printf.printf "0%!";
-		Stream.slazy (fun () ->
-		  Printf.printf "a%!";
-		  if Queue.is_empty q_in
-		  then (* take from stream, put onto other queue *)
-		    match Stream.peek s with
-		      | Some h ->
-			Printf.printf "b%!";
-			Stream.junk s;
-			Queue.add h q_out;
-			Stream.icons h (Stream.slazy (fun () -> gen q_in q_out))
-		      | _ -> Stream.sempty
-		  else ( (* take from queue *)
-		    Printf.printf "c%!";
-		    Stream.lcons (fun () -> Queue.take q_in)
-		      (Stream.slazy (fun () -> gen q_in q_out))))
+        Printf.printf "0%!";
+        Stream.slazy (fun () ->
+          Printf.printf "a%!";
+          if Queue.is_empty q_in
+          then (* take from stream, put onto other queue *)
+            match Stream.peek s with
+              | Some h ->
+            Printf.printf "b%!";
+            Stream.junk s;
+            Queue.add h q_out;
+            Stream.icons h (Stream.slazy (fun () -> gen q_in q_out))
+              | _ -> Stream.sempty
+          else ( (* take from queue *)
+            Printf.printf "c%!";
+            Stream.lcons (fun () -> Queue.take q_in)
+              (Stream.slazy (fun () -> gen q_in q_out))))
         in
         let q1 = Queue.create () in
         let q2 = Queue.create () in

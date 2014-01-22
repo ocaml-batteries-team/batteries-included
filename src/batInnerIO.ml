@@ -342,8 +342,8 @@ let input_string s =
 
 
 let default_buffer_size = 16 (*Arbitrary number. If you replace it, just
-						       don't put something too small, i.e. anything
-						       smaller than 10 is probably a bad idea.*)
+                               don't put something too small, i.e. anything
+                               smaller than 10 is probably a bad idea.*)
 
 let output_string() =
   let b = Buffer.create default_buffer_size in
@@ -389,12 +389,12 @@ let output_channel ?(cleanup=false) ch =
     ~output:(fun s p l -> Pervasives.output ch s p l; l)
     ~close: (if cleanup then fun () ->
         begin
-          (*		   Printf.eprintf "Cleaning up\n%!";*)
+          (*           Printf.eprintf "Cleaning up\n%!";*)
           Pervasives.close_out ch
         end
       else fun () ->
         begin
-          (*		   Printf.eprintf "Not cleaning up\n%!";*)
+          (*           Printf.eprintf "Not cleaning up\n%!";*)
           Pervasives.flush ch
         end)
     ~flush: (fun ()    -> Pervasives.flush ch)

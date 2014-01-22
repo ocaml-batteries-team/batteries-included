@@ -69,8 +69,8 @@ let default v = function
 *)
 
 let default_delayed l = function
-	| None -> l ()
-	| Some v -> v
+    | None -> l ()
+    | Some v -> v
 (*$T default_delayed
   default_delayed (fun () -> 3) None = 3
   default_delayed (fun () -> assert false) (Some 4) = 4
@@ -115,8 +115,8 @@ let map_default f v = function
 *)
 
 let map_default_delayed f l = function
-	| None -> l ()
-	| Some v -> f v
+    | None -> l ()
+    | Some v -> f v
 (*$T map_default_delayed
   map_default_delayed succ (fun () -> 2) None = 2
   map_default_delayed succ (fun () -> assert false) (Some 3) = 4

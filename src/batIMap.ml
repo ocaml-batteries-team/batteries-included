@@ -248,7 +248,7 @@ module Core = struct
           else if hi1 < hi2 then hi1, Enum.get e1, Some (hi1+1,hi2,rx2)
           else (* hi2 < hi1 *) hi2, Some (hi2+1,hi1,rx1), Enum.get e2
         in
-        (*	printf "#@%a\n" print_rng (lo1, hi); *)
+        (*  printf "#@%a\n" print_rng (lo1, hi); *)
         aux (f lo1 hi (Some rx1) (Some rx2) acc) (v1, v2)
     in
     aux acc (Enum.get e1, Enum.get e2)

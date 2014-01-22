@@ -116,8 +116,8 @@ type open_in_flag =
   [ `create
   | `excl     (**Fail if the file exists and [`create] is set               *)
   | `text     (**Open in ascii mode -- if this flag is not specified or if the
-				 operating system does not perform conversions, the file is
-				 opened in binary mode.                                     *)
+                 operating system does not perform conversions, the file is
+                 opened in binary mode.                                     *)
   | `nonblock (**Open in non-blocking mode                                  *)
   | `mmap     (**Open in memory-mapped mode (experimental)*)                 ]
 
@@ -143,8 +143,8 @@ type open_out_flag =
   | `trunc    (**Empty the file if it already exists; on by default         *)
   | `excl     (**Fail if the file exists and [`create] is set               *)
   | `text     (**Open in ascii mode -- if this flag is not specified or if the
-				 operating system does not perform conversions, the file is
-				 opened in binary mode.                                     *)
+                 operating system does not perform conversions, the file is
+                 opened in binary mode.                                     *)
   | `nonblock (**Open in non-blocking mode                                  *) ]
 (** Flags governing file output; they correspond to the relevant
     flags to the POSIX [open()] call.  The default flags are

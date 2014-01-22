@@ -29,13 +29,13 @@ module BaseBool = struct
 
   external ( && ) : bool -> bool -> bool = "%sequand"
   (** The boolean ``and''. Evaluation is sequential, left-to-right:
-	  in [e1 && e2], [e1] is evaluated first, and if it returns [false],
-	  [e2] is not evaluated at all. *)
+      in [e1 && e2], [e1] is evaluated first, and if it returns [false],
+      [e2] is not evaluated at all. *)
 
   external ( || ) : bool -> bool -> bool = "%sequor"
   (** The boolean ``or''. Evaluation is sequential, left-to-right:
-	  in [e1 || e2], [e1] is evaluated first, and if it returns [true],
-	  [e2] is not evaluated at all. *)
+      in [e1 || e2], [e1] is evaluated first, and if it returns [true],
+      [e2] is not evaluated at all. *)
   let zero, one = false, true
   let neg = not
 

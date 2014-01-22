@@ -38,8 +38,8 @@ struct
   let of_lexer l = assert false
   (**    LazyList.of_enum (BatEnum.from (fun () ->
 
-			 l.refill_buff l;
-		        (l.lex_buffer, (l.lex_start_p, l.lex_curr_p))))*)
+             l.refill_buff l;
+                (l.lex_buffer, (l.lex_start_p, l.lex_curr_p))))*)
 
   let get_state l = match peek l with
     | Some (_, s) -> State s

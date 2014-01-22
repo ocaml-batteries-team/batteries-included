@@ -326,7 +326,7 @@ let filter_range p n1 n2 a =
       else
         loop (n1 + 1) n2 a (if p n1 then Some n1 else None)
     | Some v1 as x ->
-      if n1 = n2 then	make_tree a (v1, n1) empty else
+      if n1 = n2 then   make_tree a (v1, n1) empty else
       if p n1 then
         loop (n1 + 1) n2 a x
       else
@@ -350,7 +350,7 @@ let partition_range p n1 n2 (a, b) =
         (a, make_tree b (n, n1) empty, (not v, n1)) in
     if n1 = n2 then
       let a, b, (v, n) = acc in
-      if v then	(make_tree a (n, n1) empty, b) else
+      if v then (make_tree a (n, n1) empty, b) else
         (a, make_tree b (n, n1) empty)
     else
       loop (n1 + 1) n2 acc in

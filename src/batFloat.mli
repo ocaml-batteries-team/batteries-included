@@ -313,7 +313,7 @@ external ldexp : float -> int -> float = "caml_ldexp_float"
 
 external modf : float -> float * float = "caml_modf_float"
 (** [modf f] returns the pair of the fractional and integral
-	  part of [f]. *)
+      part of [f]. *)
 
 (** Classes of floating point numbers*)
 type fpkind =
@@ -386,8 +386,8 @@ sig
   type t = float
   (**The type of floating-point numbers.
 
-	   Floating-point numbers are the default representation of
-	   real numbers by OCaml. *)
+       Floating-point numbers are the default representation of
+       real numbers by OCaml. *)
 
   (**
      {6 Usual operations}
@@ -403,13 +403,13 @@ sig
 
   val succ : float -> float
   (** Add [1.] to a floating number. Note that, as per IEEE 754,
-	  if [x] is a large enough float number, [succ x] might be
-	  equal to [x], due to rounding.*)
+      if [x] is a large enough float number, [succ x] might be
+      equal to [x], due to rounding.*)
 
   val pred : float -> float
   (** Substract [1.] from a floating number. Note that, as per
-	  IEEE 754, if [x] is a large enough float number, [pred x]
-	  might be equal to [x], due to rounding.*)
+      IEEE 754, if [x] is a large enough float number, [pred x]
+      might be equal to [x], due to rounding.*)
 
   val abs : float -> float
   (** The absolute value of a floating point number.*)
@@ -492,10 +492,10 @@ sig
 
   val floor : float -> float
   (** Round the given float to an integer value.
-	  [floor f] returns the greatest integer value less than or
-	  equal to [f].
-	  [ceil f] returns the least integer value greater than or
-	  equal to [f]. *)
+      [floor f] returns the greatest integer value less than or
+      equal to [f].
+      [ceil f] returns the least integer value greater than or
+      equal to [f]. *)
 
   val infinity : float
   (** Positive infinity. *)
@@ -505,11 +505,11 @@ sig
 
   val nan : float
   (** A special floating-point value denoting the result of an
-	  undefined operation such as [0.0 /. 0.0].  Stands for
-	  ``not a number''.  Any floating-point operation with [nan] as
-	  argument returns [nan] as result.  As for floating-point comparisons,
-	  [=], [<], [<=], [>] and [>=] return [false] and [<>] returns [true]
-	  if one or both of their arguments is [nan]. *)
+      undefined operation such as [0.0 /. 0.0].  Stands for
+      ``not a number''.  Any floating-point operation with [nan] as
+      argument returns [nan] as result.  As for floating-point comparisons,
+      [=], [<], [<=], [>] and [>=] return [false] and [<>] returns [true]
+      if one or both of their arguments is [nan]. *)
 
   val is_nan : float -> bool
   (** [is_nan f] returns [true] if [f] is [nan], [false] otherwise.*)
@@ -524,17 +524,17 @@ sig
 
   val frexp : float -> float * int
   (** [frexp f] returns the pair of the significant
-	  and the exponent of [f].  When [f] is zero, the
-	  significant [x] and the exponent [n] of [f] are equal to
-	  zero.  When [f] is non-zero, they are defined by
-	  [f = x *. 2 ** n] and [0.5 <= x < 1.0]. *)
+      and the exponent of [f].  When [f] is zero, the
+      significant [x] and the exponent [n] of [f] are equal to
+      zero.  When [f] is non-zero, they are defined by
+      [f = x *. 2 ** n] and [0.5 <= x < 1.0]. *)
 
   val ldexp : float -> int -> float
   (** [ldexp x n] returns [x *. 2 ** n]. *)
 
   val modf : float -> float * float
   (** [modf f] returns the pair of the fractional and integral
-	  part of [f]. *)
+      part of [f]. *)
 
   (** Classes of floating point numbers*)
   type fpkind = Pervasives.fpclass =
@@ -544,11 +544,11 @@ sig
     | FP_infinite         (** Number is positive or negative infinity *)
     | FP_nan              (** Not a number: result of an undefined operation *)
   (** The five classes of floating-point numbers, as determined by
-	      the {!classify} function. *)
+          the {!classify} function. *)
 
   external classify : float -> fpkind = "caml_classify_float"
   (** Return the class of the given floating-point number:
-	    normal, subnormal, zero, infinite, or not a number. *)
+        normal, subnormal, zero, infinite, or not a number. *)
 
 
   (** {6 Boilerplate code}*)

@@ -75,23 +75,23 @@ struct
   *)
   (*    let index_to_coor index ~dims ~coor =
         (*
-		[| a; b; c; d |]
-		0 -> 0 0 0 0
-		1 -> 0 0 0 1
-		2 -> 0 0 0 2
-		3 -> 0 0 0 3
-		d -> 0 0 1 0
-		d+1->0 0 1 1
-		d+2->0 0 1 2
-		2*d->0 0 1 0
-		c*d->0 1 0 0     ->  d' = index mod a * b * c * d
+        [| a; b; c; d |]
+        0 -> 0 0 0 0
+        1 -> 0 0 0 1
+        2 -> 0 0 0 2
+        3 -> 0 0 0 3
+        d -> 0 0 1 0
+        d+1->0 0 1 1
+        d+2->0 0 1 2
+        2*d->0 0 1 0
+        c*d->0 1 0 0     ->  d' = index mod a * b * c * d
                                c' = index mod a * b * c
         *)
 
         let product = ref 1 in
-		for i = 0 to Array.length dims - 1 do
-		  indices.(i) <-
-		done*)
+        for i = 0 to Array.length dims - 1 do
+          indices.(i) <-
+        done*)
 
   (**
      Determine the coordinates of the item following this one.

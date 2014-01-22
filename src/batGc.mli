@@ -52,7 +52,7 @@ type stat = Gc.stat =
 
     major_collections : int;
     (** Number of major collection cycles completed since the program
-		was started. *)
+        was started. *)
 
     heap_words : int;
     (** Total size of the major heap, in words. *)
@@ -148,11 +148,11 @@ type control = Gc.control =
 
     mutable allocation_policy : int;
     (** The policy used for allocating in the heap.  Possible
-		values are 0 and 1.  0 is the next-fit policy, which is
-		quite fast but can result in fragmentation.  1 is the
-		first-fit policy, which can be slower in some cases but
-		can be better for programs with fragmentation problems.
-		Default: 0. @since 3.11.0 *)
+        values are 0 and 1.  0 is the next-fit policy, which is
+        quite fast but can result in fragmentation.  1 is the
+        first-fit policy, which can be slower in some cases but
+        can be better for programs with fragmentation problems.
+        Default: 0. @since 3.11.0 *)
   }
 (** The GC parameters are given as a [control] record.  Note that
     these parameters can also be initialised by setting the
