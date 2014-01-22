@@ -302,11 +302,9 @@ module Make (Ord : OrderedType) : S with type elt = Ord.t
 
 
 module Make2(O1 : OrderedType) (O2 : OrderedType) : sig
-  module Set1 : S with type elt= O1.t
-  module Set2 : S with type elt= O2.t
   module Product : S with type elt = O1.t * O2.t
 
-  val cartesian_product : Set1.t -> Set2.t -> Product.t
+  val cartesian_product : Make(O1).t -> Make(O2).t -> Product.t
   (** cartesian product of the two sets *)
 end
 
