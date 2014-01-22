@@ -1025,6 +1025,8 @@ let cartesian_product e1 e2 =
 (*$Q cartesian_product
   Q.(pair (list small_int) (list small_int)) \
     (fun (l1,l2) -> \
+      let l1 = List.take 5 l1 in \
+      let l2 = List.take 4 l2 in \
       cartesian_product (List.enum l1) (List.enum l2) |> count = \
       List.length l1 * List.length l2)
   Q.(pair (list small_int) (list small_int)) \
