@@ -662,6 +662,16 @@ module Make2(O1 : OrderedType)(O2 : OrderedType) = struct
     Product.t_of_impl p
 end
 
+(*$T
+  let module S1 = Make(Int) in \
+  let module S2 = Make(String) in \
+  let module P = Make2(Int)(String) in \
+  P.cartesian_product \
+    (List.fold_right S1.add [1;2;3] S1.empty) \
+    (List.fold_right S2.add ["a";"b"] S2.empty) \
+    |> P.Product.to_list = [1, "a"; 1, "b"; 2, "a"; 2, "b"; 3, "a"; 3, "b"]
+*)
+
 module PSet = struct (*$< PSet *)
 
   type 'a t = {
