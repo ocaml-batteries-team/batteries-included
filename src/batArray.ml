@@ -484,8 +484,9 @@ let cartesian_product a b =
 *)
 
 (*$Q cartesian_product
-  (Q.pair (Q.array Q.small_int) (Q.array Q.small_int)) \
-    (fun (a,b) -> length (cartesian_product a b) = length a * length b)
+  (Q.pair (Q.list Q.small_int) (Q.list Q.small_int)) (fun(la,lb) -> \
+    let a = of_list (List.take 5 la) and b = of_list (List.take 4 lb) in \
+    length (cartesian_product a b) = length a * length b)
 *)
 
 let compare cmp a b =
