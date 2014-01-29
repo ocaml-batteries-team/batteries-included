@@ -5,6 +5,7 @@ BatInnerPervasives
   BatBool
   BatBounded
   BatBuffer
+  BatBufferIO
   BatChar
   BatComplex
   BatDeque
