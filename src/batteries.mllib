@@ -60,7 +60,6 @@ BatInnerPervasives
   BatMultiMap
   BatNumber
   BatOption
-  BatOptParse
   BatOrd
   BatParserCo
   BatPathGen

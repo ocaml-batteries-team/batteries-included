@@ -17,7 +17,6 @@ module ExtString = struct
 end
 module Global = BatGlobal
 module IO = BatIO
-module OptParse = BatOptParse
 module Option = BatOption
 module PMap = BatMap
 module RefList = BatRefList
