@@ -708,6 +708,15 @@ let init size f =
     loop r 1;
     inj r
 
+let init_until_exc f =
+  let rec loop dst =
+    loop (Acc.accum dst (f ()))
+  in
+  let acc = Acc.dummy () in
+  try
+    loop acc
+  with exn -> (acc.tl, exn)
+
 let make i x =
   if i < 0 then invalid_arg "List.make";
   let rec loop x acc = function
