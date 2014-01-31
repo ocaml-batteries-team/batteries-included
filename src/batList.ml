@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-
 (* ::VH:: GLUE with StdLib *)
 let merge = List.merge
 let fast_sort = List.fast_sort
@@ -47,27 +46,61 @@ let mem_assoc = List.mem_assoc
 let rev_map2 = List.rev_map2
 (* ::VH:: END GLUE *)
 
-(* Thanks to Jacques Garrigue for suggesting the following structure *)
-type 'a mut_list =  {
-  hd: 'a;
-  mutable tl: 'a list
-}
-
 type 'a t = 'a list
 type 'a enumerable = 'a t
 type 'a mappable = 'a t
 
-external inj : 'a mut_list -> 'a list = "%identity"
-
+(* an accumulator *)
 module Acc = struct
-  let dummy () =
-    { hd = Obj.magic (); tl = [] }
+
+  (* Thanks to Jacques Garrigue for suggesting the following structure *)
+  type 'a mut_list =  {
+    hd: 'a;
+    mutable tl: 'a list
+  }
+
+  external inj : 'a mut_list -> 'a list = "%identity"
+
   let create x =
     { hd = x; tl = [] }
+
   let accum acc x =
-    let cell = create x in
+    let cell = { hd = x; tl = [] } in
     acc.tl <- inj cell;
     cell
+
+  let append acc l =
+    { acc with tl = l }
+
+  let return acc =
+    inj acc
+end
+
+(* An accumulator with a dummy element at its head.
+   You can create one with Dacc.dummy() *)
+module Dacc = struct
+
+  type 'a mut_list =  {
+    hd: 'a;
+    mutable tl: 'a list
+  }
+
+  external inj : 'a mut_list -> 'a list = "%identity"
+
+  let dummy () =
+    { hd = Obj.magic (); tl = [] }
+
+  let accum acc x =
+    let cell = { hd = x; tl = [] } in
+    acc.tl <- inj cell;
+    cell
+
+  let append acc l =
+    { acc with tl = l }
+
+  let return acc =
+    (* since the first element is a dummy: never return it *)
+    acc.tl
 end
 
 let cons h t = h::t
