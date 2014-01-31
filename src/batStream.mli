@@ -219,6 +219,10 @@ val scan : ('a -> 'a -> 'a) -> 'a t -> 'a t
 val concat : 'a t t -> 'a t
 (** concatenate a stream of streams *)
 
+val concat_map : ('a -> 'b t) -> 'a t -> 'b t
+(** Composition of {!concat} and {!map}.
+    [concat_map f e] is the same as [concat (map f e)]. *)
+
 val take : int -> 'a t -> 'a t
 (** [take n stream] returns the prefix of [stream] of length [n], or [stream]
     itself if [n] is greater than the length of [stream] *)
