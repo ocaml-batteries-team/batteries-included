@@ -70,7 +70,7 @@ module Acc = struct
     cell
 
   let append acc l =
-    { acc with tl = l }
+    acc.tl <- l
 
   let return acc =
     inj acc
@@ -96,7 +96,7 @@ module Dacc = struct
     cell
 
   let append acc l =
-    { acc with tl = l }
+    acc.tl <- l
 
   let return acc =
     (* since the first element is a dummy: never return it *)
@@ -147,27 +147,27 @@ let append l1 l2 =
   | h :: t ->
     let rec loop dst = function
       | [] ->
-        dst.tl <- l2
+        Acc.append dst l2
       | h :: t ->
         loop (Acc.accum dst h) t
     in
     let r = Acc.create h in
     loop r t;
-    inj r
+    Acc.return r
 
 let flatten l =
   let rec inner dst = function
     | [] -> dst
     | h :: t ->
-      inner (Acc.accum dst h) t
+      inner (Dacc.accum dst h) t
   in
   let rec outer dst = function
     | [] -> ()
     | h :: t -> outer (inner dst h) t
   in
-  let r = Acc.dummy () in
+  let r = Dacc.dummy () in
   outer r l;
-  r.tl
+  Dacc.return r
 
 let concat = flatten
 
@@ -191,7 +191,7 @@ let map f = function
     in
     let r = Acc.create (f h) in
     loop r t;
-    inj r
+    Acc.return r
 (*$Q map
   (Q.pair (Q.fun1 Q.int Q.int) (Q.list Q.small_int)) \
   (fun (f,l) -> map f l = List.map f l)
@@ -211,13 +211,13 @@ let rec drop n = function
 let take n l =
   let rec loop n dst = function
     | h :: t when n > 0 ->
-      loop (n - 1) (Acc.accum dst h) t
+      loop (n - 1) (Dacc.accum dst h) t
     | _ ->
       ()
   in
-  let dummy = Acc.dummy () in
+  let dummy = Dacc.dummy () in
   loop n dummy l;
-  dummy.tl
+  Dacc.return dummy
 
 (*$= take & ~printer:(IO.to_string (List.print Int.print))
   (take 0 [1;2;3]) []
@@ -228,12 +228,12 @@ let take n l =
 
 let takedrop n l =
   let rec loop n dst = function
-    | h :: t when n > 0 -> loop (n - 1) (Acc.accum dst h) t
+    | h :: t when n > 0 -> loop (n - 1) (Dacc.accum dst h) t
     | rest -> rest
   in
-  let dummy = Acc.dummy () in
+  let dummy = Dacc.dummy () in
   let rest = loop n dummy l in
-  (dummy.tl, rest)
+  (Dacc.return dummy, rest)
 
 (*$T takedrop
   takedrop 0 [1; 2; 3] = ([],        [1; 2; 3])
@@ -247,7 +247,7 @@ let ntake n l =
   let took, left = takedrop n l in
   let acc = Acc.create took in
   let rec loop dst = function
-    | [] -> inj acc
+    | [] -> Acc.return acc
     | li -> let taken, rest = takedrop n li in
             loop (Acc.accum dst taken) rest
   in
@@ -266,10 +266,10 @@ let take_while p li =
     | [] -> ()
     | x :: xs ->
       if p x then
-        loop (Acc.accum dst x) xs in
-  let dummy = Acc.dummy () in
+        loop (Dacc.accum dst x) xs in
+  let dummy = Dacc.dummy () in
   loop dummy li;
-  dummy.tl
+  Dacc.return dummy
 
 (*$= take_while & ~printer:(IO.to_string (List.print Int.print))
   (take_while ((=) 3) [3;3;4;3;3]) [3;3]
@@ -294,12 +294,12 @@ let span p li =
     | [] -> []
     | x :: xs as l ->
       if p x then
-        loop (Acc.accum dst x) xs
+        loop (Dacc.accum dst x) xs
       else l
   in
-  let dummy = Acc.dummy () in
+  let dummy = Dacc.dummy () in
   let xs = loop dummy li in
-  (dummy.tl , xs)
+  (Dacc.return dummy, xs)
 
 (*$= span
   (span ((=) 3) [3;3;4;3;3])  ([3;3],[4;3;3])
@@ -326,14 +326,14 @@ let nsplit p = function
     let not_p x = not (p x) in
     let rec loop dst l =
       let ok, rest = span not_p l in
-      let r = Acc.accum dst ok in
+      let r = Dacc.accum dst ok in
       match rest with
         | [] -> ()
         | x :: xs -> loop r xs
     in
-    let dummy = Acc.dummy () in
+    let dummy = Dacc.dummy () in
     loop dummy li;
-    dummy.tl
+    Dacc.return dummy
 
 (*$T nsplit
   nsplit ((=) 0) []                    = []
@@ -365,11 +365,11 @@ let group_consecutive p l =
     | [] -> ()
     | x :: rest ->
       let xs, rest = span (p x) rest in
-      loop (Acc.accum dst (x :: xs)) rest
+      loop (Dacc.accum dst (x :: xs)) rest
   in
-  let dummy = Acc.dummy () in
+  let dummy = Dacc.dummy () in
   loop dummy l;
-  dummy.tl
+  Dacc.return dummy
 
 (*$= group_consecutive & ~printer:(IO.to_string (List.print (List.print Int.print)))
   (group_consecutive (=) [3; 3; 4; 3; 3]) [[3; 3]; [4]; [3; 3]]
@@ -422,11 +422,11 @@ let unique ?(eq = ( = )) l =
       match exists (eq h) t with
       | true -> loop dst t
       | false ->
-        loop (Acc.accum dst h) t
+        loop (Dacc.accum dst h) t
   in
-  let dummy = Acc.dummy () in
+  let dummy = Dacc.dummy () in
   loop dummy l;
-  dummy.tl
+  Dacc.return dummy
 
 (* FIXME BAD TESTS: RESULT IS SPECIFIC TO IMPLEMENTATION *)
 (*$= unique & ~printer:(IO.to_string (List.print Int.print))
@@ -458,15 +458,15 @@ let unique_hash (type et) ?(hash = Hashtbl.hash) ?(eq = (=)) (l : et list) =
     | h::t when not (HT.mem ht h) ->
       HT.add ht h (); (* put h in hash table *)
       loop
-        (Acc.accum dst h) (* and to output list *)
+        (Dacc.accum dst h) (* and to output list *)
         t
     | _::t -> (* if already in hashtable then don't add to output list *)
       loop dst t
     | [] -> ()
   in
-  let dummy = Acc.dummy () in
+  let dummy = Dacc.dummy () in
   loop dummy l;
-  dummy.tl
+  Dacc.return dummy
 
 (*$= unique_hash & ~printer:(IO.to_string (List.print Int.print))
   [1;2;3;4;5;6] (unique_hash [1;1;2;2;3;3;4;5;6;4;5;6])
@@ -481,11 +481,11 @@ let filter_map f l =
       match f h with
       | None -> loop dst t
       | Some x ->
-        loop (Acc.accum dst x) t
+        loop (Dacc.accum dst x) t
   in
-  let dummy = Acc.dummy () in
+  let dummy = Dacc.dummy () in
   loop dummy l;
-  dummy.tl
+  Dacc.return dummy
 
 let filteri_map f l =
   let rec loop i dst = function
@@ -494,11 +494,12 @@ let filteri_map f l =
       match f i h with
       | None -> loop (succ i) dst t
       | Some x ->
-        loop (succ i) (Acc.accum dst x) t
+        loop (succ i) (Dacc.accum dst x) t
   in
-  let dummy = Acc.dummy () in
+  let dummy = Dacc.dummy () in
   loop 0 dummy l;
-  dummy.tl
+  Dacc.return dummy
+
 (*$T filteri_map
   (let r = ref (-1) in filteri_map (fun i _ -> incr r; if i = !r then Some i else None) [5; 4; 8] = [0; 1; 2])
   filteri_map (fun _ x -> if x > 4 then Some (x, string_of_int x) else None) [5; 4; 8] = [(5, "5"); (8, "8")]
@@ -535,12 +536,12 @@ let map2 f l1 l2 =
     match src1, src2 with
     | [], [] -> ()
     | h1 :: t1, h2 :: t2 ->
-      loop (Acc.accum dst (f h1 h2)) t1 t2
+      loop (Dacc.accum dst (f h1 h2)) t1 t2
     | _ -> invalid_arg "map2: Different_list_size"
   in
-  let dummy = Acc.dummy () in
+  let dummy = Dacc.dummy () in
   loop dummy l1 l2;
-  dummy.tl
+  Dacc.return dummy
 
 let rec iter2 f l1 l2 =
   match l1, l2 with
@@ -596,26 +597,26 @@ let remove_assoc x lst =
     | [] -> ()
     | (a, _ as pair) :: t ->
       if a = x then
-        dst.tl <- t
+        Dacc.append dst t
       else
-        loop (Acc.accum dst pair) t
+        loop (Dacc.accum dst pair) t
   in
-  let dummy = Acc.dummy () in
+  let dummy = Dacc.dummy () in
   loop dummy lst;
-  dummy.tl
+  Dacc.return dummy
 
 let remove_assq x lst =
   let rec loop dst = function
     | [] -> ()
     | (a, _ as pair) :: t ->
       if a == x then
-        dst.tl <- t
+        Dacc.append dst t
       else
-        loop (Acc.accum dst pair) t
+        loop (Dacc.accum dst pair) t
   in
-  let dummy = Acc.dummy () in
+  let dummy = Dacc.dummy () in
   loop dummy lst;
-  dummy.tl
+  Dacc.return dummy
 
 let rfind p l = find p (rev l)
 
@@ -624,13 +625,13 @@ let find_all p l =
     | [] -> ()
     | h :: t ->
       if p h then
-        findnext (Acc.accum dst h) t
+        findnext (Dacc.accum dst h) t
       else
         findnext dst t
   in
-  let dummy = Acc.dummy () in
+  let dummy = Dacc.dummy () in
   findnext dummy l;
-  dummy.tl
+  Dacc.return dummy
 
 let rec findi p l =
   let rec loop n = function
@@ -688,27 +689,27 @@ let partition p lst =
     | [] -> ()
     | h :: t ->
       if p h then
-        loop (Acc.accum yesdst h) nodst t
+        loop (Dacc.accum yesdst h) nodst t
       else
-        loop yesdst (Acc.accum nodst h) t
+        loop yesdst (Dacc.accum nodst h) t
   in
-  let yesdummy = Acc.dummy ()
-  and nodummy = Acc.dummy ()
+  let yesdummy = Dacc.dummy ()
+  and nodummy = Dacc.dummy ()
   in
   loop yesdummy nodummy lst;
-  (yesdummy.tl, nodummy.tl)
+  (Dacc.return yesdummy, Dacc.return nodummy)
 
 let split lst =
   let rec loop adst bdst = function
     | [] -> ()
     | (a, b) :: t ->
-      loop (Acc.accum adst a) (Acc.accum bdst b) t
+      loop (Dacc.accum adst a) (Dacc.accum bdst b) t
   in
-  let adummy = Acc.dummy ()
-  and bdummy = Acc.dummy ()
+  let adummy = Dacc.dummy ()
+  and bdummy = Dacc.dummy ()
   in
   loop adummy bdummy lst;
-  adummy.tl, bdummy.tl
+  (Dacc.return adummy, Dacc.return bdummy)
 
 let combine l1 l2 =
   let list_sizes_differ = Invalid_argument "combine: Different_list_size" in
@@ -717,7 +718,7 @@ let combine l1 l2 =
     | x :: xs, y :: ys ->
       let acc = Acc.create (x, y) in
       let rec loop dst l1 l2 = match l1, l2 with
-        | [], [] -> inj acc
+        | [], [] -> Acc.return acc
         | h1 :: t1, h2 :: t2 -> loop (Acc.accum dst (h1, h2)) t1 t2
         | _, _ -> raise list_sizes_differ
       in loop acc xs ys
@@ -739,7 +740,7 @@ let init size f =
     in
     let r = Acc.create (f 0) in
     loop r 1;
-    inj r
+    Acc.return r
 
 let make i x =
   if i < 0 then invalid_arg "List.make";
@@ -787,7 +788,7 @@ let mapi f = function
     in
     let r = Acc.create (f 0 h) in
     loop r 1 t;
-    inj r
+    Acc.return r
 
 let iteri f l =
   let rec loop n = function
@@ -819,7 +820,7 @@ let split_nth index = function
             loop (n - 1) (Acc.accum dst h) t
       in
       let r = Acc.create h in
-      inj r, loop (index-1) r t
+      (Acc.return r, loop (index-1) r t)
 
 let split_at = split_nth
 
@@ -834,26 +835,26 @@ let remove l x =
     | [] -> ()
     | h :: t ->
       if x = h then
-        dst.tl <- t
+        Dacc.append dst t
       else
-        loop (Acc.accum dst h) t
+        loop (Dacc.accum dst h) t
   in
-  let dummy = Acc.dummy () in
+  let dummy = Dacc.dummy () in
   loop dummy l;
-  dummy.tl
+  Dacc.return dummy
 
 let remove_if f lst =
   let rec loop dst = function
     | [] -> ()
     | x :: l ->
       if f x then
-        dst.tl <- l
+        Dacc.append dst l
       else
-        loop (Acc.accum dst x) l
+        loop (Dacc.accum dst x) l
   in
-  let dummy = Acc.dummy () in
+  let dummy = Dacc.dummy () in
   loop dummy lst;
-  dummy.tl
+  Dacc.return dummy
 
 let remove_all l x =
   let rec loop dst = function
@@ -862,11 +863,11 @@ let remove_all l x =
       if x = h then
         loop dst t
       else
-        loop (Acc.accum dst h) t
+        loop (Dacc.accum dst h) t
   in
-  let dummy = Acc.dummy () in
+  let dummy = Dacc.dummy () in
   loop dummy l;
-  dummy.tl
+  Dacc.return dummy
 
 let transpose = function
   | [] -> []
@@ -880,7 +881,6 @@ let transpose = function
              x acc)
         heads xs);
     Obj.magic heads (* equivalent to List.map inj heads, but without creating a new list *)
-
 
 (*$T transpose
   transpose [ [1; 2; 3;]; [4; 5; 6;]; [7; 8; 9;] ] = [[1;4;7];[2;5;8];[3;6;9]]
@@ -910,11 +910,9 @@ let enum l =
   make (ref l) (ref (-1))
 
 let of_enum e =
-  let h = Acc.dummy () in
-  let _ = BatEnum.fold Acc.accum h e in
-  h.tl
-
-
+  let h = Dacc.dummy () in
+  let _ = BatEnum.fold Dacc.accum h e in
+  Dacc.return h
 
 let backwards l = enum (rev l) (*TODO: should we make it more efficient?*)
 (*let backwards l = (*This version only needs one pass but is actually less lazy*)
@@ -1143,11 +1141,11 @@ let min_max ?cmp:(cmp = Pervasives.compare) = function
 *)
 
 let unfold b f =
-  let acc = Acc.dummy () in
+  let acc = Dacc.dummy () in
   let rec loop dst v =
     match f v with
-    | None -> acc.tl
-    | Some (a, v) -> loop (Acc.accum dst a) v
+    | None -> Dacc.return acc
+    | Some (a, v) -> loop (Dacc.accum dst a) v
   in loop acc b
 
 (*$T unfold
