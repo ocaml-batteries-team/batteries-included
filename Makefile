@@ -13,7 +13,7 @@ export DOCROOT
 BROWSER_COMMAND ?= x-www-browser
 export BROWSER_COMMAND
 
-OCAMLBUILD ?= ocamlbuild
+OCAMLBUILD ?= ocamlbuild -use-ocamlfind
 OCAMLBUILDFLAGS ?= -no-links
 
 ifeq ($(uname_S),Darwin)
@@ -193,9 +193,9 @@ test-native: prefilter _build/testsuite/main.native _build/$(QTESTDIR)/all_tests
 full-test: $(TEST_TARGET)
 
 test-compat: prefilter src/batteries_compattest.ml
-	ocamlbuild src/batteries_compattest.byte -no-links
+	ocamlbuild -use-ocamlfind src/batteries_compattest.byte -no-links
 
-test: test-byte test-compat
+test: test-native test-compat
 
 ###############################################################################
 #	BENCHMARK SUITE
