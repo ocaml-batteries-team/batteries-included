@@ -153,6 +153,17 @@ val unfold: 'b -> ('b -> ('a * 'b) option) -> 'a list
     @since 2.1
 *)
 
+val unfold_exc : (unit -> 'a) -> 'a list * exn
+(** Creates a list containing the results of sequential calls
+    to [f()]. [f()] is called repeatedly until it throws an exception.
+    Both the results list, as well as the exception
+    thrown are returned in a [(results_list, exn)] pair.
+    Warning: if calls to [f()] never throw an exception, unfold_exc
+    is an infinite loop.
+
+    @since NEXT_RELEASE
+*)
+
 (**{6 Iterators}*)
 
 val iter : ('a -> unit) -> 'a list -> unit

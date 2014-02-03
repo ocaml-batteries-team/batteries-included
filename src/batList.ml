@@ -708,6 +708,26 @@ let init size f =
     loop r 1;
     inj r
 
+let unfold_exc f =
+  let rec loop dst =
+    loop (Acc.accum dst (f ()))
+  in
+  let acc = Acc.dummy () in
+  try
+    loop acc
+  with exn -> (acc.tl, exn)
+
+(*$T unfold_exc
+  let exc () = raise End_of_file in \
+  unfold_exc exc = ([], End_of_file)
+  let state = ref 0 in \
+  let just_zero () = \
+    if !state = 1 then raise End_of_file \
+    else let _ = incr state in 0 \
+  in \
+  unfold_exc just_zero = ([0], End_of_file)
+*)
+
 let make i x =
   if i < 0 then invalid_arg "List.make";
   let rec loop x acc = function
