@@ -139,15 +139,6 @@ val init : int -> (int -> 'a) -> 'a list
     the results of (f 0),(f 1).... (f (n-1)).
     @raise Invalid_argument if n < 0.*)
 
-val init_until_exc : (unit -> 'a) -> 'a list * exn
-(** Creates a list containing the results of sequential calls
-    to [f()]. [f()] is called repeatedly until it throws an exception.
-    Both the results list, as well as the exception
-    thrown are returned in a [(results_list, exn)] pair.
-    Warning: if calls to [f()] never throw an exception, init_until_exc
-    is an infinite loop.
-*)
-
 val unfold: 'b -> ('b -> ('a * 'b) option) -> 'a list
 (** [unfold init f] creates a list by repeatedly applying [f] to the
     second element of its own result, starting from the initial value
@@ -159,6 +150,17 @@ val unfold: 'b -> ('b -> ('a * 'b) option) -> 'a list
     will return [["0";"1";"2"]]
 
     @since 2.1
+*)
+
+val unfold_exc : (unit -> 'a) -> 'a list * exn
+(** Creates a list containing the results of sequential calls
+    to [f()]. [f()] is called repeatedly until it throws an exception.
+    Both the results list, as well as the exception
+    thrown are returned in a [(results_list, exn)] pair.
+    Warning: if calls to [f()] never throw an exception, unfold_exc
+    is an infinite loop.
+
+    @since NEXT_RELEASE
 *)
 
 (**{6 Iterators}*)
