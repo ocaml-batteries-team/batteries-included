@@ -122,6 +122,15 @@ let append l1 l2 =
     loop r t;
     inj r
 
+(*$T append
+  append []     []     = []
+  append []     [1]    = [1]
+  append [1]    []     = [1]
+  append [1]    [2]    = [1; 2]
+  append [1; 2] [3]    = [1; 2; 3]
+  append [1]    [2; 3] = [1; 2; 3]
+*)
+
 let flatten l =
   let rec inner dst = function
     | [] -> dst
