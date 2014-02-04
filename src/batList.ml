@@ -78,15 +78,15 @@ end = struct
     let dummy = { hd = Obj.magic (); tl = [] } in
     f dummy (fun consumer -> consumer dummy.tl)
 
-  let result f =
-    cont (fun dst return ->
-      let res = f dst in
-      return (fun li -> li, res))
-
   let run f =
-    cont (fun dst return ->
-      f dst;
-      return (fun li -> li))
+    let dummy = { hd = Obj.magic (); tl = [] } in
+    f dummy;
+    dummy.tl
+
+  let result f =
+    let dummy = { hd = Obj.magic (); tl = [] } in
+    let res = f dummy in
+    dummy.tl, res
 
   let accum acc x =
     let cell = { hd = x; tl = [] } in
