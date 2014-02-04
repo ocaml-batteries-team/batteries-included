@@ -516,7 +516,7 @@ let find f t =
 
 (*$T
   find ((=) 5) (1 -- 10) = 5
-  try find ((=) 11) (1 -- 10) = 5; false with Not_found -> true
+  try ignore(find ((=) 11) (1 -- 10) = 5); false with Not_found -> true
 *)
 
 let find_map f t =
