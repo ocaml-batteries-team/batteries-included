@@ -860,9 +860,9 @@ let transpose = function
   | [x] -> List.map (fun x -> [x]) x
   | x::xs ->
     let heads = List.map Acc.create x in
-    ignore ( List.fold_left
+    ignore ( fold_left
         (fun acc x ->
-           List.map2
+           map2
              (fun x xs -> Acc.accum xs x)
              x acc)
         heads xs);
