@@ -51,21 +51,60 @@ type 'a t = 'a list
 type 'a enumerable = 'a t
 type 'a mappable = 'a t
 
-module Acc : sig
+(* A signature that lets us write list-producing function in
+   tail-recursive, destination-passing style *)
+module type MUTABLE_ACCUMULATOR = sig
   type 'a mut_list
+
+  (* in [run], [result] and [cont],
+     the ('a mut_list) argument must not escape the callback *)
   val run : ('a mut_list -> unit) -> 'a list
   val result : ('a mut_list -> 'b) -> 'a list * 'b
+
+  (* adds an element and returns the tail of the list*)
   val accum : 'a mut_list -> 'a -> 'a mut_list
+
+  (* adds a full list but doesn't return anything;
+     the ['a mut_list] argument must not be used again after this *)
   val set_tail : 'a mut_list -> 'a list -> unit
 
   (* continuation-passing-style generalization of [run] and [result],
      useful if you need to create a fresh list accumulator in each
-     call of a recursive function, preserving tail-call
+     call of a recursive function, preserving tail-calls.
 
      The continuation argument of type [('a list -> 'b)] must be
      called exactly once by the user; no less, no more.  *)
   val cont : ('a mut_list -> (('a list -> 'b) -> 'b) -> 'c) -> 'c
-end = struct
+end
+
+(* a safe implementation of mutable accumulators *)
+module SafeAcc : MUTABLE_ACCUMULATOR = struct
+  type 'a mut_list = { mutable rev : 'a list;
+                       mutable tail : 'a list }
+  let accum li x = li.rev <- x::li.rev; li
+  let set_tail li tail =
+    if li.tail <> [] then invalid_arg "Acc.set_tail";
+    li.tail <- tail
+
+  let cont f =
+    let dummy = { rev = []; tail = [] } in
+    f dummy (fun consumer ->
+      let li = List.rev_append dummy.rev dummy.tail in
+      consumer li)
+
+  let result f =
+    cont (fun dst return ->
+      let res = f dst in
+      return (fun li -> li, res))
+
+  let run f =
+    cont (fun dst return ->
+      f dst;
+      return (fun li -> li))
+end
+
+(* a fast implementation of mutable accumulators *)
+module Acc : MUTABLE_ACCUMULATOR = struct
   (* Thanks to Jacques Garrigue for suggesting the following structure *)
   type 'a mut_list =  {
     hd: 'a;
@@ -78,6 +117,8 @@ end = struct
     let dummy = { hd = Obj.magic (); tl = [] } in
     f dummy (fun consumer -> consumer dummy.tl)
 
+  (* specialize [run] and [result] for efficiency, instead of
+     reusing [cont] as in SafeAcc *)
   let run f =
     let dummy = { hd = Obj.magic (); tl = [] } in
     f dummy;
@@ -95,7 +136,6 @@ end = struct
 
   let set_tail acc li =
     acc.tl <- li
-
 end
 
 let cons h t = h::t
