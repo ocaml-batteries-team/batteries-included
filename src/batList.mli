@@ -196,6 +196,10 @@ val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b list -> 'a
 (** [List.fold_left f a [b0; b1; ...; bn]] is
     [f (... (f (f a b0) b1) ...) bn]. *)
 
+val fold_lefti : (int -> 'a -> 'b -> 'a) -> 'a -> 'b list -> 'a
+(** [List.fold_lefti f a [b0; b1; ...; bn]] is
+    [f n (... (f 1 (f 0 a b0) b1) ...) bn]. *)
+
 val fold_right : ('a -> 'b -> 'b) -> 'a list -> 'b -> 'b
 (** [List.fold_right f [a0; a1; ...; an] b] is
     [f a0 (f a1 (... (f an b) ...))].  Tail-recursive. *)
