@@ -931,6 +931,29 @@ let of_backwards e =
     | None   -> acc
   in aux []
 
+let gen l =
+  let l = ref l in
+  fun () -> match !l with
+  | [] -> None
+  | x::l' -> l:=l'; Some x
+
+let of_gen g =
+  let rec iter_gen acc g = match g () with
+  | None -> ()
+  | Some x -> iter_gen (Acc.accum acc x) g
+  in
+  match g() with
+  | None -> []
+  | Some x ->
+      let acc = Acc.create x in
+      iter_gen acc g;
+      inj acc
+
+(*$Q gen & ~small:List.length
+  (Q.list Q.small_int) (fun l -> \
+      of_gen (gen l) = l)
+*)
+
 let assoc_inv e l =
   let rec aux = function
     | []                  -> raise Not_found

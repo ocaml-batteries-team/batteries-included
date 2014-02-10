@@ -633,7 +633,9 @@ val of_backwards : 'a BatEnum.t -> 'a list
     enumeration
     becomes the second-to-last element of the list... *)
 
+val gen : 'a list -> (unit -> 'a option)
 
+val of_gen : (unit -> 'a option) -> 'a list
 
 (** {6 List of pairs}*)
 

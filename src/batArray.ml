@@ -351,6 +351,29 @@ let of_enum e =
 let of_backwards e =
   of_list (BatList.of_backwards e)
 
+type 'a gen = unit -> 'a option
+
+let gen a =
+  let i = ref 0 in
+  fun () ->
+    let j = !i in
+    if j = length a then None else (incr i; Some a.(j))
+
+let rec __list_of_gen acc g = match g () with
+  | None -> acc
+  | Some x -> __list_of_gen (x::acc) g
+
+let of_gen g =
+  let l = __list_of_gen [] g in
+  let a = of_list l in (* XXX: optimize? *)
+  rev_in_place a;
+  a
+
+(*$Q gen
+  (Q.array Q.small_int) (fun a -> \
+    of_gen (gen a) = a)
+*)
+
 let range xs = BatEnum.(--^) 0 (Array.length xs)
 (*$Q range
   (Q.array Q.small_int) (fun a -> \

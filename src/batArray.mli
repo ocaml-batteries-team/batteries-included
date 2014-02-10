@@ -484,6 +484,12 @@ val of_backwards : 'a BatEnum.t -> 'a array
     the enumeration as the last element of the array and vice
     versa. *)
 
+type 'a gen = unit -> 'a option
+
+val gen : 'a array -> 'a gen
+
+val of_gen : 'a gen -> 'a array
+
 (** {6 Utilities} *)
 
 val range : 'a array -> int BatEnum.t
