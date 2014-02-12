@@ -204,6 +204,9 @@ val fold_right : ('a -> 'b -> 'b) -> 'a list -> 'b -> 'b
 (** [List.fold_right f [a0; a1; ...; an] b] is
     [f a0 (f a1 (... (f an b) ...))].  Tail-recursive. *)
 
+val fold_righti : (int -> 'b -> 'a -> 'a) -> 'b list -> 'a -> 'a
+(** As [fold_right], but with the index of the element as additional argument *)
+
 val reduce : ('a -> 'a -> 'a) -> 'a list -> 'a
 (** [List.reduce f h::t] is [fold_left f h t].
 
