@@ -788,15 +788,15 @@ let iteri f l =
 let fold_lefti f init l =
   let rec loop i acc = function
     | [] -> acc
-    | x :: xs -> loop (i + 1) (f i acc x) xs
+    | x :: xs -> loop (i + 1) (f acc i x) xs
   in
   loop 0 init l
 
 (*$T fold_lefti
-  fold_lefti (fun i acc x -> i + acc + x) 0 []     = 0
-  fold_lefti (fun i acc x -> i + acc + x) 0 [0]    = 0
-  fold_lefti (fun i acc x -> i + acc + x) 0 [1]    = 1
-  fold_lefti (fun i acc x -> i + acc + x) 0 [1; 2] = 4
+  fold_lefti (fun acc i x -> acc + i + x) 0 []     = 0
+  fold_lefti (fun acc i x -> acc + i + x) 0 [0]    = 0
+  fold_lefti (fun acc i x -> acc + i + x) 0 [1]    = 1
+  fold_lefti (fun acc i x -> acc + i + x) 0 [1; 2] = 4
 *)
 
 let first = hd
