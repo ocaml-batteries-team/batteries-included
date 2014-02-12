@@ -793,11 +793,22 @@ let fold_lefti f init l =
   loop 0 init l
 
 (*$T fold_lefti
-  fold_lefti (fun acc i x -> acc + i + x) 0 []     = 0
-  fold_lefti (fun acc i x -> acc + i + x) 0 [0]    = 0
-  fold_lefti (fun acc i x -> acc + i + x) 0 [1]    = 1
-  fold_lefti (fun acc i x -> acc + i + x) 0 [1; 2] = 4
+  fold_lefti (fun acc i x -> (i, x) :: acc) [] []       = []
+  fold_lefti (fun acc i x -> (i, x) :: acc) [] [0.]     = [(0, 0.)]
+  fold_lefti (fun acc i x -> (i, x) :: acc) [] [0.; 1.] = [(1, 1.); (0, 0.)]
 *)
+
+let fold_righti f l init =
+  let xis =
+    (* reverse the list and index its elements *)
+    fold_lefti (fun acc i x -> (i, x) :: acc) [] l
+  in
+  fold_left
+    (fun acc (i, x) -> f i x acc)
+    init
+    xis
+
+(* FBR: do the test and fix the previous one *)
 
 let first = hd
 
