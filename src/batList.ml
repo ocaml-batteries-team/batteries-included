@@ -808,7 +808,11 @@ let fold_righti f l init =
     init
     xis
 
-(* FBR: do the test and fix the previous one *)
+(*$T fold_righti
+  fold_righti (fun i x acc -> (i, x) :: acc) []       [] = []
+  fold_righti (fun i x acc -> (i, x) :: acc) [0.]     [] = [(0, 0.)]
+  fold_righti (fun i x acc -> (i, x) :: acc) [0.; 1.] [] = [(0, 0.); (1, 1.)]
+*)
 
 let first = hd
 
