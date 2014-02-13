@@ -60,24 +60,9 @@
     @author David Rajchenbach-Teller
 *)
 
-type 'a t
+type 'a t = 'a BatInnerTypes.enum
 
-(** A signature for data structures which may be converted to and from [enum].
-
-    If you create a new data structure, you should make it compatible
-    with [Enumerable].
-*)
-module type Enumerable = sig
-  type 'a enumerable (** The data structure, e.g. ['a List.t] *)
-
-  val enum : 'a enumerable -> 'a t
-  (** Return an enumeration of the elements of the data structure *)
-
-  val of_enum : 'a t -> 'a enumerable
-    (** Build a data structure from an enumeration *)
-end
-
-include Enumerable with type 'a enumerable = 'a t
+include BatInterfaces.Enumerable with type 'a enumerable = 'a t
 include BatInterfaces.Mappable with type 'a mappable = 'a t
 
 

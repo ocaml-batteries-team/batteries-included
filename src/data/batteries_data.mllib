@@ -1,0 +1,19 @@
+# OASIS_START
+# DO NOT EDIT (digest: a94c05ed27f0593a087981c593b885d8)
+BatISet
+BatIMap
+BatBitSet
+BatDllist
+BatDynArray
+BatMultiPMap
+BatMultiMap
+BatRefList
+BatUref
+BatVect
+BatCache
+BatFingerTree
+BatDeque
+BatSplay
+BatHashcons
+BatteriesData
+# OASIS_STOP

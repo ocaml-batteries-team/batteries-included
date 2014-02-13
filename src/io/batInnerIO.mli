@@ -36,8 +36,8 @@
    @author Edgar Friendly
 *)
 
-type input
-type 'a output
+type input = BatInnerTypes.input
+type 'a output = 'a BatInnerTypes.output
 
 exception No_more_input
 (** This exception is raised when reading on an input with the [read] or

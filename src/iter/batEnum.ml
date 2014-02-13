@@ -21,12 +21,7 @@
 
 (** {6 Representation} *)
 
-type 'a t = {
-  mutable count : unit -> int; (** Return the number of remaining elements in the enumeration. *)
-  mutable next  : unit -> 'a;  (** Return the next element of the enumeration or raise [No_more_elements].*)
-  mutable clone : unit -> 'a t;(** Return a copy of the enumeration. *)
-  mutable fast  : bool;        (** [true] if [count] can be done without reading all elements, [false] otherwise.*)
-}
+type 'a t = 'a BatInnerTypes.enum
 
 type 'a enumerable = 'a t
 type 'a mappable = 'a t

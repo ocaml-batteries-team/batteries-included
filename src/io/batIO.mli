@@ -108,11 +108,11 @@ type 'a output = 'a BatInnerIO.output
 (** The abstract output type, ['a] is the accumulator data, it is returned
     when the [close_out] function is called. *)
 
-type ('a, 'b) printer = 'b output -> 'a -> unit
+type ('a, 'b) printer = ('a, 'b) BatInnerTypes.printer
 (** The type of a printing function to print a ['a] to an output that
     produces ['b] as result. *)
 
-type 'a f_printer = Format.formatter -> 'a -> unit
+type 'a f_printer = 'a BatInnerTypes.f_printer
 
 exception No_more_input
 (** This exception is raised when reading on an input with the [read] or

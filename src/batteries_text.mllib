@@ -1,0 +1,16 @@
+# OASIS_START
+# DO NOT EDIT (digest: 3898819550326673d3b617ba7bee90c6)
+BatUChar
+BatUTF8
+BatText
+BatDigest
+BatBase64
+BatCharParser
+BatScanf
+BatParserCo
+BatSubstring
+BatLexing
+BatGenlex
+BatPathGen
+BatteriesText
+# OASIS_STOP

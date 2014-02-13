@@ -21,7 +21,7 @@
  *)
 
 
-type 'a weak_set = ('a, unit) BatInnerWeaktbl.t
+type 'a weak_set = 'a BatInnerTypes.weak_set
 let weak_create size     = BatInnerWeaktbl.create size
 let weak_add set element = BatInnerWeaktbl.add set element ()
 let weak_iter f s        = BatInnerWeaktbl.iter (fun x _ -> f x) s
