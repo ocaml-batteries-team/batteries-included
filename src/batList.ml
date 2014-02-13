@@ -788,15 +788,30 @@ let iteri f l =
 let fold_lefti f init l =
   let rec loop i acc = function
     | [] -> acc
-    | x :: xs -> loop (i + 1) (f i acc x) xs
+    | x :: xs -> loop (i + 1) (f acc i x) xs
   in
   loop 0 init l
 
 (*$T fold_lefti
-  fold_lefti (fun i acc x -> i + acc + x) 0 []     = 0
-  fold_lefti (fun i acc x -> i + acc + x) 0 [0]    = 0
-  fold_lefti (fun i acc x -> i + acc + x) 0 [1]    = 1
-  fold_lefti (fun i acc x -> i + acc + x) 0 [1; 2] = 4
+  fold_lefti (fun acc i x -> (i, x) :: acc) [] []       = []
+  fold_lefti (fun acc i x -> (i, x) :: acc) [] [0.]     = [(0, 0.)]
+  fold_lefti (fun acc i x -> (i, x) :: acc) [] [0.; 1.] = [(1, 1.); (0, 0.)]
+*)
+
+let fold_righti f l init =
+  let xis =
+    (* reverse the list and index its elements *)
+    fold_lefti (fun acc i x -> (i, x) :: acc) [] l
+  in
+  fold_left
+    (fun acc (i, x) -> f i x acc)
+    init
+    xis
+
+(*$T fold_righti
+  fold_righti (fun i x acc -> (i, x) :: acc) []       [] = []
+  fold_righti (fun i x acc -> (i, x) :: acc) [0.]     [] = [(0, 0.)]
+  fold_righti (fun i x acc -> (i, x) :: acc) [0.; 1.] [] = [(0, 0.); (1, 1.)]
 *)
 
 let first = hd
