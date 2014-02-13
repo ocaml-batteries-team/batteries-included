@@ -107,16 +107,16 @@ val of_digit : int -> char
     @raise Invalid_argument if the
     argument is outside the range 0--9*)
 
-val enum: unit -> char BatEnum.t
+val enum: unit -> char BatInnerTypes.enum
 (** Produce the enumeration of all characters *)
 
-val range: ?until:char -> char -> char BatEnum.t
+val range: ?until:char -> char -> char BatInnerTypes.enum
 (** [range from ?until] produces an enumeration of the
     characters from [from] to [until] included
     [until] defaults to ['\255']
 *)
 
-val ( -- ): char -> char -> char BatEnum.t
+val ( -- ): char -> char -> char BatInnerTypes.enum
 (** Produce the enumeration of a segment of characters.
 
     ['a' -- 'z'] is the enumeration of all characters
@@ -124,12 +124,12 @@ val ( -- ): char -> char -> char BatEnum.t
 
 (** {6 Infix submodule regrouping all infix operators} *)
 module Infix : sig
-  val ( -- ): char -> char -> char BatEnum.t
+  val ( -- ): char -> char -> char BatInnerTypes.enum
 end
 
 (** {6 Boilerplate code}*)
 
-val print: 'a BatInnerIO.output -> Char.t -> unit
+val print: 'a BatInnerTypes.output -> Char.t -> unit
 
 val compare: t -> t -> int
 (** The comparison function for characters, with the same specification as

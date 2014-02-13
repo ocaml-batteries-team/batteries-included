@@ -83,8 +83,8 @@ val ( ** ) : t -> t -> t
    val ( < ) : t -> t -> bool
    val ( = ) : t -> t -> bool
 *)
-val ( -- ): t -> t -> t BatEnum.t
-val ( --- ): t -> t -> t BatEnum.t
+val ( -- ): t -> t -> t BatInnerTypes.enum
+val ( --- ): t -> t -> t BatInnerTypes.enum
 val operations : t BatNumber.numeric
 
 (** {6 Submodules grouping all infix operators} *)
@@ -95,4 +95,4 @@ module Compare : BatNumber.Compare with type bat__compare_t = t
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)
-val print: 'a BatInnerIO.output -> t -> unit
+val print: 'a BatInnerTypes.output -> t -> unit

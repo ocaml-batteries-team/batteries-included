@@ -46,7 +46,7 @@
 
 type 'a t = 'a array (** The type of arrays. *)
 
-include BatEnum.Enumerable with type 'a enumerable = 'a t
+include BatInterfaces.Enumerable with type 'a enumerable = 'a t
 include BatInterfaces.Mappable with type 'a mappable = 'a t
 
 external length : 'a array -> int = "%array_length"
@@ -469,24 +469,24 @@ val rev_in_place : 'a array -> unit
 
 (** {6 Conversions} *)
 
-val enum : 'a array -> 'a BatEnum.t
+val enum : 'a array -> 'a BatInnerTypes.enum
 (** Returns an enumeration of the elements of an array.
     Behavior of the enumeration is undefined if the contents of the array changes afterwards.*)
 
-val of_enum : 'a BatEnum.t -> 'a array
+val of_enum : 'a BatInnerTypes.enum -> 'a array
 (** Build an array from an enumeration. *)
 
-val backwards : 'a array -> 'a BatEnum.t
+val backwards : 'a array -> 'a BatInnerTypes.enum
 (** Returns an enumeration of the elements of an array, from last to first. *)
 
-val of_backwards : 'a BatEnum.t -> 'a array
+val of_backwards : 'a BatInnerTypes.enum -> 'a array
 (** Build an array from an enumeration, with the first element of
     the enumeration as the last element of the array and vice
     versa. *)
 
 (** {6 Utilities} *)
 
-val range : 'a array -> int BatEnum.t
+val range : 'a array -> int BatInnerTypes.enum
 (** [range a] returns an enumeration of all valid indexes into the given
     array.  For example, [range [|2;4;6;8|] = 0--3].*)
 
@@ -498,7 +498,7 @@ val insert : 'a array -> 'a -> int -> 'a array
 (** {6 Boilerplate code}*)
 
 val print : ?first:string -> ?last:string -> ?sep:string ->
-  ('a, 'b) BatIO.printer -> ('a t, 'b) BatIO.printer
+  ('a, 'b) BatInnerTypes.printer -> ('a t, 'b) BatInnerTypes.printer
 (** Print the contents of an array, with [~first] preceeding the first
     item (default: "[|"), [~last] following the last item (default:
     "|]") and [~sep] separating items (default: "; ").  A printing
@@ -696,10 +696,10 @@ sig
 
   (** {6 Conversions} *)
 
-  val enum : ('a, [> `Read]) t -> 'a BatEnum.t
-  val of_enum : 'a BatEnum.t -> ('a, _) t
-  val backwards : ('a, [> `Read]) t -> 'a BatEnum.t
-  val of_backwards : 'a BatEnum.t -> ('a, _) t
+  val enum : ('a, [> `Read]) t -> 'a BatInnerTypes.enum
+  val of_enum : 'a BatInnerTypes.enum -> ('a, _) t
+  val backwards : ('a, [> `Read]) t -> 'a BatInnerTypes.enum
+  val of_backwards : 'a BatInnerTypes.enum -> ('a, _) t
   val to_list : ('a, [> `Read]) t -> 'a list
   val of_list : 'a list -> ('a, _) t
 
@@ -711,7 +711,8 @@ sig
 
   (** {6 Boilerplate code}*)
 
-  val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) ->  'a BatIO.output -> ('b, [>`Read]) t -> unit
+  val print : ?first:string -> ?last:string -> ?sep:string ->
+      ('a BatInnerTypes.output -> 'b -> unit) ->  'a BatInnerTypes.output -> ('b, [>`Read]) t -> unit
 
   val compare : 'a BatOrd.comp -> ('a, [> `Read]) t BatOrd.comp
   val ord : 'a BatOrd.ord -> ('a, [> `Read]) t BatOrd.ord

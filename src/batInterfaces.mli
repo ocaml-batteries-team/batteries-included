@@ -36,6 +36,21 @@ module type Mappable = sig
     (** [map f e] applies [f] to every element of [e] and returns the corresponding data structure *)
 end
 
+(** A signature for data structures which may be converted to and from [enum].
+
+    If you create a new data structure, you should make it compatible
+    with [Enumerable].
+*)
+module type Enumerable = sig
+  type 'a enumerable (** The data structure, e.g. ['a List.t] *)
+
+  val enum : 'a enumerable -> 'a BatInnerTypes.enum
+  (** Return an enumeration of the elements of the data structure *)
+
+  val of_enum : 'a BatInnerTypes.enum -> 'a enumerable
+    (** Build a data structure from an enumeration *)
+end
+
 module type OrderedType =
 sig
   type t

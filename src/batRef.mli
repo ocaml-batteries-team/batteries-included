@@ -114,7 +114,7 @@ val oget_exn : 'a option ref -> 'a
 
 (** {6 Boilerplate code}*)
 
-val print: ('b BatInnerIO.output -> 'a -> unit) -> 'b BatInnerIO.output -> 'a t -> unit
+val print: ('b BatInnerTypes.output -> 'a -> unit) -> 'b BatInnerTypes.output -> 'a t -> unit
 
 (** Given a printing function for the value in the ref, produce a
     printing function for the ref.

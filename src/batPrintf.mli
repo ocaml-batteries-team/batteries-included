@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open BatInnerIO
+open BatInnerTypes
 
 (** Formatted output functions (also known as unparsing).
 
@@ -224,7 +224,7 @@ val sprintf2: ('a, 'b output, unit, string) format4 -> 'a
     i.e. should have type ['b output -> unit].
 
     Warning: a partial application of this function can only be used once,
-    because the {!BatInnerIO.output} that it uses is closed afterwards.
+    because the {!BatInnerTypes.output} that it uses is closed afterwards.
     Example: [let f = sprintf2 "%a" Int.print in [f 1; f 2]] will fail. *)
 
 

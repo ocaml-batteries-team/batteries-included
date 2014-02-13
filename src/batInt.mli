@@ -169,13 +169,13 @@ val popcount_sparse : int -> int
 
 val operations : int BatNumber.numeric
 
-val ( -- ) : t -> t -> t BatEnum.t
+val ( -- ) : t -> t -> t BatInnerTypes.enum
 (** Enumerate an interval.
 
     [5 -- 10] is the enumeration 5,6,7,8,9,10.
     [10 -- 5] is the empty enumeration*)
 
-val ( --- ) : t -> t -> t BatEnum.t
+val ( --- ) : t -> t -> t BatInnerTypes.enum
 (** Enumerate an interval.
 
     [5 --- 10] is the enumeration 5,6,7,8,9,10.
@@ -194,13 +194,13 @@ module Compare : BatNumber.Compare with type bat__compare_t = t
 
 (** {7 Printing}*)
 
-val print: 'a BatInnerIO.output -> int -> unit
+val print: 'a BatInnerTypes.output -> int -> unit
 (** prints as decimal string *)
 
-val print_hex: 'a BatInnerIO.output -> int -> unit
+val print_hex: 'a BatInnerTypes.output -> int -> unit
 (** prints as hex string *)
 
-(*    val bprint: 'a BatInnerIO.output -> t -> unit
+(*    val bprint: 'a BatInnerTypes.output -> t -> unit
       (** prints as binary string *) *)
 
 (** {7 Compare} *)
@@ -366,7 +366,7 @@ module Safe_int : sig
 
   (** {6 Boilerplate code}*)
 
-  val print: 'a BatInnerIO.output -> t -> unit
+  val print: 'a BatInnerTypes.output -> t -> unit
 
   val compare : t -> t -> int
   (** The comparison function for integers, with the same specification as

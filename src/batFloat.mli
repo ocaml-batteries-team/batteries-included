@@ -109,8 +109,8 @@ val max : float -> float -> float
    val ( < ) : t -> t -> bool
    val ( = ) : t -> t -> bool
 *)
-val ( -- ): t -> t -> t BatEnum.t
-val ( --- ): t -> t -> t BatEnum.t
+val ( -- ): t -> t -> t BatInnerTypes.enum
+val ( --- ): t -> t -> t BatInnerTypes.enum
 val operations : t BatNumber.numeric
 
 (**
@@ -350,7 +350,7 @@ include (BatNumber.RefOps with type bat__refops_t = t)
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)
-val print: (t, _) BatIO.printer
+val print: (t, _) BatInnerTypes.printer
 
 (**Operations on floating-point numbers, with exceptions raised in
    case of error.
@@ -554,5 +554,5 @@ sig
   (** {6 Boilerplate code}*)
 
   (** {7 Printing}*)
-  val print: 'a BatInnerIO.output -> t -> unit
+  val print: 'a BatInnerTypes.output -> t -> unit
 end

@@ -201,7 +201,7 @@ external compact : unit -> unit = "caml_gc_compaction"
 (** Perform a full major collection and compact the heap.  Note that heap
     compaction is a lengthy operation. *)
 
-val print_stat : _ BatInnerIO.output -> unit
+val print_stat : _ BatInnerTypes.output -> unit
 (** Print the current values of the memory management counters (in
     human-readable form) into the channel argument. *)
 

@@ -123,11 +123,11 @@ val eq : ?eq:('a -> 'a -> bool) -> 'a option -> 'a option -> bool
     @since 1.4.0
 *)
 
-val enum: 'a option -> 'a BatEnum.t
+val enum: 'a option -> 'a BatInnerTypes.enum
 (** [enum (Some x)] returns the singleton [x], while [enum None] returns
     the empty enumeration. *)
 
-val of_enum: 'a BatEnum.t -> 'a option
+val of_enum: 'a BatInnerTypes.enum -> 'a option
 (** [of_enum e] consumes the first element of [e], if it exists, and
     returns [Some e]. If [e] is empty, return [None]. *)
 
@@ -159,7 +159,7 @@ val ord : 'a ord -> 'a option ord
 
 (** {7 Printing}*)
 
-val print : ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> 'b t -> unit
+val print : ('a BatInnerTypes.output -> 'b -> unit) -> 'a BatInnerTypes.output -> 'b t -> unit
 
 (** Operations on options, with labels.*)
 module Labels : sig

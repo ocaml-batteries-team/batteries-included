@@ -262,7 +262,7 @@ val compare: t -> t -> int
 
 (** {6 Conversions} *)
 
-val enum : string -> char BatEnum.t
+val enum : string -> char BatInnerTypes.enum
 (** Returns an enumeration of the characters of a string.
     The behaviour is unspecified if the string is mutated
     while it is enumerated.
@@ -272,12 +272,12 @@ val enum : string -> char BatEnum.t
       [String.enum "a b c" // ((<>) ' ') |> String.of_enum = "abc"]
 *)
 
-val of_enum : char BatEnum.t -> string
+val of_enum : char BatInnerTypes.enum -> string
 (** Creates a string from a character enumeration.
     Example: [['f'; 'o'; 'o'] |> List.enum |> String.of_enum = "foo"]
 *)
 
-val backwards : string -> char BatEnum.t
+val backwards : string -> char BatInnerTypes.enum
 (** Returns an enumeration of the characters of a string, from last to first.
 
     Examples:
@@ -285,7 +285,7 @@ val backwards : string -> char BatEnum.t
     [ let rev s = String.backwards s |> String.of_enum ]
 *)
 
-val of_backwards : char BatEnum.t -> string
+val of_backwards : char BatInnerTypes.enum -> string
 (** Build a string from an enumeration, starting with last character, ending with first.
 
     Examples:
@@ -462,7 +462,7 @@ val rfind_from: string -> int -> string -> int
     Example: [String.rfind_from "foobarbaz" 6 "ba" = 6]
 *)
 
-val find_all : string -> string -> int BatEnum.t
+val find_all : string -> string -> int BatInnerTypes.enum
 (** [find_all s x] enumerates positions of [s] at which [x] occurs.
     Example: [find_all "aabaabaa" "aba" |> List.of_enum] will return
     the list [[1; 4]].
@@ -758,19 +758,19 @@ val edit_distance : t -> t -> int
 
 (** {7 Printing}*)
 
-val print: 'a BatInnerIO.output -> string -> unit
+val print: 'a BatInnerTypes.output -> string -> unit
 (**Print a string.
 
    Example: [String.print stdout "foo\n"]
 *)
 
-val println: 'a BatInnerIO.output -> string -> unit
+val println: 'a BatInnerTypes.output -> string -> unit
 (**Print a string, end the line.
 
    Example: [String.println stdout "foo"]
 *)
 
-val print_quoted: 'a BatInnerIO.output -> string -> unit
+val print_quoted: 'a BatInnerTypes.output -> string -> unit
 (**Print a string, with quotes as added by the [quote] function.
 
    [String.print_quoted stdout "foo"] prints ["foo"] (with the quotes).
@@ -902,13 +902,13 @@ sig
   val init : int -> (int -> char) -> _ t
 
   (** {6 Conversions}*)
-  val enum : [> `Read] t -> char BatEnum.t
+  val enum : [> `Read] t -> char BatInnerTypes.enum
 
-  val of_enum : char BatEnum.t -> _ t
+  val of_enum : char BatInnerTypes.enum -> _ t
 
-  val backwards : [> `Read] t -> char BatEnum.t
+  val backwards : [> `Read] t -> char BatInnerTypes.enum
 
-  val of_backwards : char BatEnum.t -> _ t
+  val of_backwards : char BatInnerTypes.enum -> _ t
 
   val of_list : char list -> _ t
 
@@ -1044,11 +1044,11 @@ sig
 
   (** {7 Printing}*)
 
-  val print: 'a BatInnerIO.output -> [> `Read] t -> unit
+  val print: 'a BatInnerTypes.output -> [> `Read] t -> unit
 
-  val println: 'a BatInnerIO.output -> [> `Read] t -> unit
+  val println: 'a BatInnerTypes.output -> [> `Read] t -> unit
 
-  val print_quoted: 'a BatInnerIO.output -> [> `Read] t -> unit
+  val print_quoted: 'a BatInnerTypes.output -> [> `Read] t -> unit
 
   (**/**)
 
