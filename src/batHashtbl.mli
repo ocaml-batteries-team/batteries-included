@@ -34,6 +34,7 @@
     @author David Teller
 *)
 
+open BatInnerTypes
 open Hashtbl
 
 type ('a, 'b) t = ('a, 'b) Hashtbl.t
@@ -105,18 +106,18 @@ val clear : ('a, 'b) t -> unit
 
 (**{6 Enumerations}*)
 
-val keys : ('a,'b) t -> 'a BatEnum.t
+val keys : ('a,'b) t -> 'a enum
 (** Return an enumeration of all the keys of a hashtable.
     If the key is in the Hashtable multiple times, all occurrences
     will be returned.  *)
 
-val values : ('a,'b) t -> 'b BatEnum.t
+val values : ('a,'b) t -> 'b enum
 (** Return an enumeration of all the values of a hashtable. *)
 
-val enum : ('a, 'b) t -> ('a * 'b) BatEnum.t
+val enum : ('a, 'b) t -> ('a * 'b) enum
 (** Return an enumeration of (key,value) pairs of a hashtable. *)
 
-val of_enum : ('a * 'b) BatEnum.t -> ('a, 'b) t
+val of_enum : ('a * 'b) enum -> ('a, 'b) t
 (** Create a hashtable from a (key,value) enumeration. *)
 
 
@@ -257,9 +258,9 @@ external hash_param : int -> int -> 'a -> int = "caml_hash_univ_param" "noalloc"
 (** {7 Printing}*)
 
 val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
-  ('a BatInnerIO.output -> 'b -> unit) ->
-  ('a BatInnerIO.output -> 'c -> unit) ->
-  'a BatInnerIO.output -> ('b, 'c) t -> unit
+  ('a output -> 'b -> unit) ->
+  ('a output -> 'c -> unit) ->
+  'a output -> ('b, 'c) t -> unit
 
 (** {6 Override modules}*)
 
@@ -276,7 +277,7 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
 module Exceptionless :
 sig
   val find : ('a, 'b) t -> 'a -> 'b option
-  val modify : 'a -> ('b -> 'b) -> ('a, 'b) t -> (unit, exn) BatPervasives.result
+  val modify : 'a -> ('b -> 'b) -> ('a, 'b) t -> (unit, exn) BatInnerPervasives.result
 end
 
 (** Infix operators over a {!BatHashtbl} *)
@@ -379,14 +380,14 @@ sig
   val modify : key -> ('a -> 'a) -> 'a t -> unit
   val modify_def : 'a -> key -> ('a -> 'a) -> 'a t -> unit
   val modify_opt : key -> ('a option -> 'a option) -> 'a t -> unit
-  val keys : 'a t -> key BatEnum.t
-  val values : 'a t -> 'a BatEnum.t
-  val enum : 'a t -> (key * 'a) BatEnum.t
-  val of_enum : (key * 'a) BatEnum.t -> 'a t
+  val keys : 'a t -> key enum
+  val values : 'a t -> 'a enum
+  val enum : 'a t -> (key * 'a) enum
+  val of_enum : (key * 'a) enum -> 'a t
   val print :  ?first:string -> ?last:string -> ?sep:string ->
-    ('a BatInnerIO.output -> key -> unit) ->
-    ('a BatInnerIO.output -> 'b -> unit) ->
-    'a BatInnerIO.output -> 'b t -> unit
+    ('a output -> key -> unit) ->
+    ('a output -> 'b -> unit) ->
+    'a output -> 'b t -> unit
 
   (** {6 Override modules}*)
 
@@ -402,7 +403,7 @@ sig
   module Exceptionless :
   sig
     val find : 'a t -> key -> 'a option
-    val modify : key -> ('a -> 'a) -> 'a t -> (unit, exn) BatPervasives.result
+    val modify : key -> ('a -> 'a) -> 'a t -> (unit, exn) BatInnerPervasives.result
   end
 
   (** Infix operators over a {!BatHashtbl} *)
@@ -542,19 +543,19 @@ sig
 
   (**{6 Conversions}*)
 
-  val keys : ('a,'b, [>`Read]) t -> 'a BatEnum.t
-  val values : ('a, 'b, [>`Read]) t -> 'b BatEnum.t
-  val enum : ('a, 'b, [>`Read]) t -> ('a * 'b) BatEnum.t
-  val of_enum : ('a * 'b) BatEnum.t -> ('a, 'b, _) t
+  val keys : ('a,'b, [>`Read]) t -> 'a enum
+  val values : ('a, 'b, [>`Read]) t -> 'b enum
+  val enum : ('a, 'b, [>`Read]) t -> ('a * 'b) enum
+  val of_enum : ('a * 'b) enum -> ('a, 'b, _) t
 
   (** {6 Boilerplate code}*)
 
   (** {7 Printing}*)
 
   val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
-    ('a BatInnerIO.output -> 'b -> unit) ->
-    ('a BatInnerIO.output -> 'c -> unit) ->
-    'a BatInnerIO.output -> ('b, 'c, [>`Read]) t -> unit
+    ('a output -> 'b -> unit) ->
+    ('a output -> 'c -> unit) ->
+    'a output -> ('b, 'c, [>`Read]) t -> unit
 
   (** {6 Override modules}*)
 
@@ -562,7 +563,7 @@ sig
   module Exceptionless :
   sig
     val find : ('a, 'b, [>`Read]) t -> 'a -> 'b option
-    val modify : 'a -> ('b -> 'b) -> ('a, 'b, [>`Read]) t -> (unit, exn) BatPervasives.result
+    val modify : 'a -> ('b -> 'b) -> ('a, 'b, [>`Read]) t -> (unit, exn) BatInnerPervasives.result
   end
 
   (** Operations on {!BatHashtbl.Cap} with labels.*)

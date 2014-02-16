@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: b014e63323211072a2ef74bc59f44783) *)
+(* DO NOT EDIT (digest: 90bef56f3228f92f20cced08cb68054a) *)
 module OASISGettext = struct
 (* # 22 "src/oasis/OASISGettext.ml" *)
 
@@ -554,31 +554,17 @@ let package_default =
      MyOCamlbuildBase.lib_ocaml =
        [
           ("batteries", ["src"], []);
-          ("batteries_iter", ["src/iter"], []);
-          ("batteries_exceptionless", ["src"], []);
-          ("batteries_data", ["src/data"], []);
-          ("batteries_text", ["src/text"], []);
-          ("batteries_io", ["src/io"], []);
-          ("batteries_extlib", ["src"], []);
           ("batteries_num", ["src/num"], []);
           ("batteries_thread", ["src/thread"], [])
        ];
      lib_c = [];
      flags = [];
-     includes =
-       [
-          ("src/thread", ["src"; "src/io"]);
-          ("src/text", ["src"]);
-          ("src/num", ["src"]);
-          ("src/iter", ["src"]);
-          ("src/io", ["src"]);
-          ("src/data", ["src"])
-       ]
+     includes = [("src/thread", ["src"]); ("src/num", ["src"])]
   }
   ;;
 
 let dispatch_default = MyOCamlbuildBase.dispatch_default package_default;;
 
-# 583 "myocamlbuild.ml"
+# 569 "myocamlbuild.ml"
 (* OASIS_STOP *)
 Ocamlbuild_plugin.dispatch dispatch_default;;

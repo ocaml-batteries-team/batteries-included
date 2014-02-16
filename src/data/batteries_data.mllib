@@ -1,8 +1,7 @@
 # OASIS_START
-# DO NOT EDIT (digest: a94c05ed27f0593a087981c593b885d8)
+# DO NOT EDIT (digest: 36881fe9e20837b2f091011fa80145ef)
 BatISet
 BatIMap
-BatBitSet
 BatDllist
 BatDynArray
 BatMultiPMap

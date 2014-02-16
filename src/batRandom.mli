@@ -33,6 +33,8 @@
     @documents Random
 *)
 
+open BatInnerTypes
+
 (** {6 Basic functions} *)
 
 val init : int -> unit
@@ -89,37 +91,37 @@ val full_range_int : unit -> int
 
 (** {6 Enumerations of random values.} *)
 
-val enum_bits  : unit    -> int BatEnum.t
+val enum_bits  : unit    -> int enum
 
-val enum_int   : int     -> int BatEnum.t
+val enum_int   : int     -> int enum
 
-val enum_bool  : unit    -> bool BatEnum.t
+val enum_bool  : unit    -> bool enum
 
-val enum_float : float   -> float BatEnum.t
+val enum_float : float   -> float enum
 
-val enum_int32 : Int32.t -> Int32.t BatEnum.t
+val enum_int32 : Int32.t -> Int32.t enum
 
-val enum_int64 : Int64.t -> Int64.t BatEnum.t
+val enum_int64 : Int64.t -> Int64.t enum
 
-val enum_nativeint : Nativeint.t -> Nativeint.t BatEnum.t
+val enum_nativeint : Nativeint.t -> Nativeint.t enum
 
-val enum_char : unit -> char BatEnum.t
+val enum_char : unit -> char enum
 
-(*val enum_uchar : unit -> UChar.t BatEnum.t*)
+(*val enum_uchar : unit -> UChar.t enum*)
 
 (** {6 Working with data structures.} *)
 
-val choice : 'a BatEnum.t -> 'a
+val choice : 'a enum -> 'a
 (** [choice e] returns a randomly-chosen element of [e].
 
     This function only works on finite enumerations with
     less than 2{^30} elements.*)
 
-val multi_choice : int -> 'a BatEnum.t -> 'a BatEnum.t
+val multi_choice : int -> 'a enum -> 'a enum
 (** [multi_choice n e] returns an enumeration of [n]
     randomly-chosen elements of [e]. *)
 
-val shuffle: 'a BatEnum.t -> 'a array
+val shuffle: 'a enum -> 'a array
 (** [shuffle e] returns a new array, containing the
     same set of elements as [e], but in a random order.
 
@@ -161,15 +163,15 @@ module State : sig
   val bool       : t -> bool
   val char       : t -> char
   (*  val uchar      : t -> UChar.t*)
-  val enum_bits  : t -> unit    -> int BatEnum.t
-  val enum_int   : t -> int     -> int BatEnum.t
-  val enum_bool  : t -> unit    -> bool BatEnum.t
-  val enum_float : t -> float   -> float BatEnum.t
-  val enum_int32 : t -> Int32.t -> Int32.t BatEnum.t
-  val enum_int64 : t -> Int64.t -> Int64.t BatEnum.t
-  val enum_nativeint : t -> Nativeint.t -> Nativeint.t BatEnum.t
-  val enum_char  : t -> unit    -> char BatEnum.t
-      (*  val enum_uchar : t -> unit    -> UChar.t BatEnum.t*)
+  val enum_bits  : t -> unit    -> int enum
+  val enum_int   : t -> int     -> int enum
+  val enum_bool  : t -> unit    -> bool enum
+  val enum_float : t -> float   -> float enum
+  val enum_int32 : t -> Int32.t -> Int32.t enum
+  val enum_int64 : t -> Int64.t -> Int64.t enum
+  val enum_nativeint : t -> Nativeint.t -> Nativeint.t enum
+  val enum_char  : t -> unit    -> char enum
+      (*  val enum_uchar : t -> unit    -> UChar.t enum*)
       (** These functions are the same as the basic functions, except that they
           use (and update) the given PRNG state instead of the default one.
       *)
@@ -212,14 +214,14 @@ module Incubator : sig
           the input state is not modified.  This means that two enums
           constructed from the same state will produce the same value
           sequence. *)
-      val enum_bits  : t -> unit    -> int BatEnum.t
-      val enum_int   : t -> int     -> int BatEnum.t
-      val enum_bool  : t -> unit    -> bool BatEnum.t
-      val enum_float : t -> float   -> float BatEnum.t
-      val enum_int32 : t -> Int32.t -> Int32.t BatEnum.t
-      val enum_int64 : t -> Int64.t -> Int64.t BatEnum.t
-      val enum_nativeint : t -> Nativeint.t -> Nativeint.t BatEnum.t
-      val enum_char  : t -> unit    -> char BatEnum.t
+      val enum_bits  : t -> unit    -> int enum
+      val enum_int   : t -> int     -> int enum
+      val enum_bool  : t -> unit    -> bool enum
+      val enum_float : t -> float   -> float enum
+      val enum_int32 : t -> Int32.t -> Int32.t enum
+      val enum_int64 : t -> Int64.t -> Int64.t enum
+      val enum_nativeint : t -> Nativeint.t -> Nativeint.t enum
+      val enum_char  : t -> unit    -> char enum
 
       (** [perturb s] returns a new state based on the given state
           that is, in a sense, the hash of the input state.  This new
@@ -233,14 +235,14 @@ module Incubator : sig
         state, when any of these functions is called, the global RNG state
         is perturbed by using its current internal state as seed to
         construct a new state. *)
-    val enum_bits  : unit    -> int BatEnum.t
-    val enum_int   : int     -> int BatEnum.t
-    val enum_bool  : unit    -> bool BatEnum.t
-    val enum_float : float   -> float BatEnum.t
-    val enum_int32 : Int32.t -> Int32.t BatEnum.t
-    val enum_int64 : Int64.t -> Int64.t BatEnum.t
-    val enum_nativeint : Nativeint.t -> Nativeint.t BatEnum.t
-    val enum_char : unit -> char BatEnum.t
+    val enum_bits  : unit    -> int enum
+    val enum_int   : int     -> int enum
+    val enum_bool  : unit    -> bool enum
+    val enum_float : float   -> float enum
+    val enum_int32 : Int32.t -> Int32.t enum
+    val enum_int64 : Int64.t -> Int64.t enum
+    val enum_nativeint : Nativeint.t -> Nativeint.t enum
+    val enum_char : unit -> char enum
 
   end
 end

@@ -25,6 +25,8 @@
     [BatEnum.Enumerable with type 'a enumerable = 'a t]
 *)
 
+open BatInnerTypes
+
 type +'a t
 (** Heap of elements that are compared with [Pervasives.compare]. *)
 
@@ -67,18 +69,18 @@ val to_list : 'a t -> 'a list
 val elems : 'a t -> 'a list
 (** @deprecated Same as [to_list]. *)
 
-val of_enum : 'a BatEnum.t -> 'a t
+val of_enum : 'a enum -> 'a t
 (** Build a heap from an enumeration. Consumes the enumeration.
     O(n log n) *)
 
-val enum : 'a t -> 'a BatEnum.t
+val enum : 'a t -> 'a enum
 (** Enumerate the elements of the heap in heap order. O(log n) per
     {!BatEnum.get}. *)
 
 (** {6 Printing} *)
 
 val print :  ?first:string -> ?last:string -> ?sep:string
-  -> ('a, 'b) BatIO.printer -> ('a t, 'b) BatIO.printer
+  -> ('a, 'b) printer -> ('a t, 'b) printer
 (** Print the contents of the heap in heap order. O(n log n) *)
 
 
@@ -111,12 +113,12 @@ sig
   (** See {!BatHeap.to_list}. *)
   val elems     : t -> elem list
   (** @deprecated Same as [to_list]. *)
-  val of_enum   : elem BatEnum.t -> t
+  val of_enum   : elem enum -> t
   (** See {!BatHeap.of_enum}. *)
-  val enum      : t -> elem BatEnum.t
+  val enum      : t -> elem enum
   (** See {!BatHeap.enum}. *)
   val print     :  ?first:string -> ?last:string -> ?sep:string
-    -> (elem, 'a) BatIO.printer -> (t, 'a) BatIO.printer
+    -> (elem, 'a) printer -> (t, 'a) printer
       (** See {!BatHeap.print}. *)
 end
 

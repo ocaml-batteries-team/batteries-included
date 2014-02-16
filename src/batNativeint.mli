@@ -49,6 +49,8 @@
     @author David Teller
 *)
 
+open BatInnerTypes
+
 type t = nativeint
 (** An alias for the type of native integers. *)
 
@@ -142,13 +144,13 @@ external shift_right_logical :
     regardless of the sign of [x].
     The result is unspecified if [y < 0] or [y >= bitsize]. *)
 
-val ( -- ) : t -> t -> t BatEnum.t
+val ( -- ) : t -> t -> t enum
 (** Enumerate an interval.
 
     [5n -- 10n] is the enumeration 5n,6n,7n,8n,9n,10n.
     [10n -- 5n] is the empty enumeration*)
 
-val ( --- ) : t -> t -> t BatEnum.t
+val ( --- ) : t -> t -> t enum
 (** Enumerate an interval.
 
     [5n -- 10n] is the enumeration 5n,6n,7n,8n,9n,10n.
@@ -248,7 +250,7 @@ module Compare : BatNumber.Compare with type bat__compare_t = t
 
 (** {7 Printing}*)
 
-val print : (t,_) BatIO.printer
+val print : (t,_) printer
 
 (**/**)
 

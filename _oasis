@@ -31,6 +31,10 @@ Flag "thread"
   Description:  Build and install threading facilities
   Default:      true
 
+Flag "data"
+  Description:  Build and install additional data structures
+  Default:      true
+
 Flag "iter"
   Description:  Build and install iterators
   Default:      true
@@ -44,15 +48,16 @@ Flag "text"
   Default:      true
 
 Library "batteries"
-  Path:     src
-  Modules:  BatInnerPervasives, BatArray, BatBigarray, BatBool, BatBounded,
-            BatBuffer, BatChar, BatComplex, BatFloat, BatFormat, BatGc,
-            BatHashtbl, BatHeap, BatInt64, BatInt, BatList, BatMap, BatMarshal,
-            BatNativeint, BatOo, BatPervasives, BatPrintexc, BatPrintf,
-            BatQueue, BatRandom, BatSet, BatStack, BatString, BatSys, BatUnit,
-            BatGlobal, BatInterfaces, BatNumber, BatOption, BatOrd, BatRef,
-            BatResult, BatConcurrent, BatReturn, BatTuple, BatAvlTree,
-            BatInnerWeaktbl, BatteriesConfig, BatteriesPrint, Batteries
+  Path:             src
+  Modules:          BatInnerPervasives, BatArray, BatBigarray, BatBool,
+                    BatBounded, BatBuffer, BatChar, BatComplex, BatFloat,
+                    BatFormat, BatGc, BatHashtbl, BatHeap, BatInt64, BatInt,
+                    BatList, BatMap, BatMarshal, BatNativeint, BatOo,
+                    BatPrintexc, BatPrintf, BatBitSet, BatQueue, BatRandom,
+                    BatSet, BatStack, BatString, BatSys, BatUnit, BatGlobal,
+                    BatInterfaces, BatNumber, BatOption, BatOrd, BatRef,
+                    BatResult, BatConcurrent, BatReturn, BatTuple, BatAvlTree,
+                    BatInnerWeaktbl, BatteriesConfig, BatteriesPrint, Batteries
 
 Library "batteries_iter"
   Path:             src/iter
@@ -74,7 +79,7 @@ Library "batteries_exceptionless"
 
 Library "batteries_data"
   Path:             src/data
-  Modules:          BatISet, BatIMap, BatBitSet, BatDllist, BatDynArray,
+  Modules:          BatISet, BatIMap, BatDllist, BatDynArray,
                     BatMultiPMap, BatMultiMap, BatRefList, BatUref, BatVect, 
                     BatCache, BatFingerTree, BatDeque, BatSplay, BatHashcons,
                     BatteriesData
@@ -105,6 +110,18 @@ Library "batteries_io"
   FindlibParent:    batteries
   BuildDepends:     batteries,unix
   XMETARequires:    batteries,unix
+
+Library "batteries_all"
+  Path:             src/all
+  Modules:          BatPervasives
+  Build$:           flag(io) && flag(text) && flag(data) && flag(iter)
+  Install$:         flag(io) && flag(text) && flag(data) && flag(iter)
+  FindlibName:      all
+  FindlibParent:    batteries
+  BuildDepends:     batteries,batteries.data,batteries.io,
+                    batteries.text,batteries.iter,unix
+  XMETARequires:    batteries,batteries.data,batteries.io,
+                    batteries.text,batteries.iter,unix
 
 Library "batteries_extlib"
   Path:             src

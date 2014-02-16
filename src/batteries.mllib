@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 932eb042ee27f45e2b0799ddab60dd68)
+# DO NOT EDIT (digest: 88715a88595334034ffa60c66a33fadf)
 BatInnerPervasives
 BatArray
 BatBigarray
@@ -20,9 +20,9 @@ BatMap
 BatMarshal
 BatNativeint
 BatOo
-BatPervasives
 BatPrintexc
 BatPrintf
+BatBitSet
 BatQueue
 BatRandom
 BatSet

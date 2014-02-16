@@ -64,6 +64,9 @@
     @author David Rajchenbach-Teller
     @author Gabriel Scherer
 *)
+
+open BatInnerTypes
+
 module type S =
 sig
   type key
@@ -189,10 +192,10 @@ sig
       equal data.  [cmp] is the equality predicate used to compare
       the data associated with the keys. *)
 
-  val keys : _ t -> key BatEnum.t
+  val keys : _ t -> key enum
   (** Return an enumeration of all the keys of a map.*)
 
-  val values: 'a t -> 'a BatEnum.t
+  val values: 'a t -> 'a enum
   (** Return an enumeration of al the values of a map.*)
 
   val min_binding : 'a t -> (key * 'a)
@@ -244,19 +247,19 @@ sig
       Added for compatibility with stdlib 3.12
   *)
 
-  val enum  : 'a t -> (key * 'a) BatEnum.t
+  val enum  : 'a t -> (key * 'a) enum
   (** Return an enumeration of (key, value) pairs of a map.
       The returned enumeration is sorted in increasing order with respect
       to the ordering [Ord.compare], where [Ord] is the argument given to
       {!Map.Make}. *)
 
-  val backwards  : 'a t -> (key * 'a) BatEnum.t
+  val backwards  : 'a t -> (key * 'a) enum
   (** Return an enumeration of (key, value) pairs of a map.
       The returned enumeration is sorted in decreasing order with respect
       to the ordering [Ord.compare], where [Ord] is the argument given to
       {!Map.Make}. *)
 
-  val of_enum: (key * 'a) BatEnum.t -> 'a t
+  val of_enum: (key * 'a) enum -> 'a t
   (** Create a map from a (key, value) enumeration. *)
 
   val for_all: (key -> 'a -> bool) -> 'a t -> bool
@@ -281,9 +284,9 @@ sig
   (** {7 Printing}*)
 
   val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
-    ('a BatInnerIO.output -> key -> unit) ->
-    ('a BatInnerIO.output -> 'c -> unit) ->
-    'a BatInnerIO.output -> 'c t -> unit
+    ('a output -> key -> unit) ->
+    ('a output -> 'c -> unit) ->
+    'a output -> 'c t -> unit
 
   (** Output signature of the functor {!Map.Make}. *)
 
@@ -461,19 +464,19 @@ val min_binding : ('key, 'a) t -> ('key * 'a)
 val max_binding : ('key, 'a) t -> ('key * 'a)
 (** returns the binding with the largest key *)
 
-val enum : ('a, 'b) t -> ('a * 'b) BatEnum.t
+val enum : ('a, 'b) t -> ('a * 'b) enum
 (** creates an enumeration for this map, enumerating key,value pairs with the keys in increasing order. *)
 
-val backwards  : ('a,'b) t -> ('a * 'b) BatEnum.t
+val backwards  : ('a,'b) t -> ('a * 'b) enum
 (** creates an enumeration for this map, enumerating key,value pairs with the keys in decreasing order. *)
 
-val keys : ('a,'b) t -> 'a BatEnum.t
+val keys : ('a,'b) t -> 'a enum
 (** Return an enumeration of all the keys of a map.*)
 
-val values: ('a,'b) t -> 'b BatEnum.t
+val values: ('a,'b) t -> 'b enum
 (** Return an enumeration of al the values of a map.*)
 
-val of_enum : ('a * 'b) BatEnum.t -> ('a, 'b) t
+val of_enum : ('a * 'b) enum -> ('a, 'b) t
 (** Creates a map from an enumeration *)
 
 val for_all : ('a -> 'b -> bool) -> ('a, 'b) t -> bool
@@ -594,9 +597,9 @@ val bindings : ('key, 'a) t -> ('key * 'a) list
 (** {7 Printing}*)
 
 val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
-  ('a BatInnerIO.output -> 'b -> unit) ->
-  ('a BatInnerIO.output -> 'c -> unit) ->
-  'a BatInnerIO.output -> ('b, 'c) t -> unit
+  ('a output -> 'b -> unit) ->
+  ('a output -> 'c -> unit) ->
+  'a output -> ('b, 'c) t -> unit
 
 
 
@@ -731,19 +734,19 @@ module PMap : sig
   val max_binding : ('key, 'a) t -> ('key * 'a)
   (** returns the binding with the largest key *)
 
-  val enum : ('a, 'b) t -> ('a * 'b) BatEnum.t
+  val enum : ('a, 'b) t -> ('a * 'b) enum
   (** creates an enumeration for this map, enumerating key,value pairs with the keys in increasing order. *)
 
-  val backwards  : ('a,'b) t -> ('a * 'b) BatEnum.t
+  val backwards  : ('a,'b) t -> ('a * 'b) enum
   (** creates an enumeration for this map, enumerating key,value pairs with the keys in decreasing order. *)
 
-  val keys : ('a,'b) t -> 'a BatEnum.t
+  val keys : ('a,'b) t -> 'a enum
   (** Return an enumeration of all the keys of a map.*)
 
-  val values: ('a,'b) t -> 'b BatEnum.t
+  val values: ('a,'b) t -> 'b enum
   (** Return an enumeration of al the values of a map.*)
 
-  val of_enum : ?cmp:('a -> 'a -> int) -> ('a * 'b) BatEnum.t -> ('a, 'b) t
+  val of_enum : ?cmp:('a -> 'a -> int) -> ('a * 'b) enum -> ('a, 'b) t
   (** creates a map from an enumeration, using the specified function
       for key comparison or [compare] by default. *)
 
@@ -870,9 +873,9 @@ module PMap : sig
   (** {7 Printing}*)
 
   val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
-    ('a BatInnerIO.output -> 'b -> unit) ->
-    ('a BatInnerIO.output -> 'c -> unit) ->
-    'a BatInnerIO.output -> ('b, 'c) t -> unit
+    ('a output -> 'b -> unit) ->
+    ('a output -> 'c -> unit) ->
+    'a output -> ('b, 'c) t -> unit
 
   (** get the comparison function used for a polymorphic map *)
   val get_cmp : ('a, 'b) t -> ('a -> 'a -> int)

@@ -41,7 +41,7 @@ setup.data:
 #	Pre-Processing of Source Code
 ###############################################################################
 
-PREPROCESSED_FILES = src/batMarshal.mli src/io/batUnix.mli src/batPervasives.mli \
+PREPROCESSED_FILES = src/batMarshal.mli src/io/batUnix.mli src/all/batPervasives.mli \
 		     src/batInnerPervasives.ml src/batHashtbl.ml \
 		     src/batPrintexc.mli src/batSys.mli src/batBigarray.mli
 

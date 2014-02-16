@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 63ebb24942191eef5655ec4893d5db10)
+# DO NOT EDIT (digest: 209a22f87bed07ceb7b6a8ce2d8aff2d)
 version = "2.2"
 description = "Extended OCaml Standard Library"
 archive(byte) = "batteries.cma"
@@ -18,17 +18,6 @@ package "thread" (
  exists_if = "batteries_thread.cma"
 )
 
-package "text" (
- version = "2.2"
- description = "Extended OCaml Standard Library"
- requires = "batteries"
- archive(byte) = "batteries_text.cma"
- archive(byte, plugin) = "batteries_text.cma"
- archive(native) = "batteries_text.cmxa"
- archive(native, plugin) = "batteries_text.cmxs"
- exists_if = "batteries_text.cma"
-)
-
 package "num" (
  version = "2.2"
  description = "Extended OCaml Standard Library"
@@ -38,61 +27,6 @@ package "num" (
  archive(native) = "batteries_num.cmxa"
  archive(native, plugin) = "batteries_num.cmxs"
  exists_if = "batteries_num.cma"
-)
-
-package "iter" (
- version = "2.2"
- description = "Extended OCaml Standard Library"
- requires = "batteries"
- archive(byte) = "batteries_iter.cma"
- archive(byte, plugin) = "batteries_iter.cma"
- archive(native) = "batteries_iter.cmxa"
- archive(native, plugin) = "batteries_iter.cmxs"
- exists_if = "batteries_iter.cma"
-)
-
-package "io" (
- version = "2.2"
- description = "Extended OCaml Standard Library"
- requires = "batteries unix"
- archive(byte) = "batteries_io.cma"
- archive(byte, plugin) = "batteries_io.cma"
- archive(native) = "batteries_io.cmxa"
- archive(native, plugin) = "batteries_io.cmxs"
- exists_if = "batteries_io.cma"
-)
-
-package "extlib" (
- version = "2.2"
- description = "Extended OCaml Standard Library"
- requires = "batteries"
- archive(byte) = "batteries_extlib.cma"
- archive(byte, plugin) = "batteries_extlib.cma"
- archive(native) = "batteries_extlib.cmxa"
- archive(native, plugin) = "batteries_extlib.cmxs"
- exists_if = "batteries_extlib.cma"
-)
-
-package "exceptionless" (
- version = "2.2"
- description = "Extended OCaml Standard Library"
- requires = "batteries"
- archive(byte) = "batteries_exceptionless.cma"
- archive(byte, plugin) = "batteries_exceptionless.cma"
- archive(native) = "batteries_exceptionless.cmxa"
- archive(native, plugin) = "batteries_exceptionless.cmxs"
- exists_if = "batteries_exceptionless.cma"
-)
-
-package "data" (
- version = "2.2"
- description = "Extended OCaml Standard Library"
- requires = "batteries"
- archive(byte) = "batteries_data.cma"
- archive(byte, plugin) = "batteries_data.cma"
- archive(native) = "batteries_data.cmxa"
- archive(native, plugin) = "batteries_data.cmxs"
- exists_if = "batteries_data.cma"
 )
 # OASIS_STOP
 

@@ -48,6 +48,8 @@
     @author David Teller
 *)
 
+open BatInnerTypes
+
 type t = int64
 
 val zero : int64
@@ -126,13 +128,13 @@ external shift_right_logical : int64 -> int -> int64 = "%int64_lsr"
     regardless of the sign of [x].
     The result is unspecified if [y < 0] or [y >= 64]. *)
 
-val ( -- ) : t -> t -> t BatEnum.t
+val ( -- ) : t -> t -> t enum
 (** Enumerate an interval.
 
     [5L -- 10L] is the enumeration 5L,6L,7L,8L,9L,10L.
     [10L -- 5L] is the empty enumeration*)
 
-val ( --- ) : t -> t -> t BatEnum.t
+val ( --- ) : t -> t -> t enum
 (** Enumerate an interval.
 
     [5L -- 10L] is the enumeration 5L,6L,7L,8L,9L,10L.
@@ -257,8 +259,8 @@ val operations : t BatNumber.numeric
 
 (** {7 Printing}*)
 
-val print: 'a BatInnerIO.output -> t -> unit
+val print: 'a output -> t -> unit
 (** prints as decimal string *)
 
-val print_hex: 'a BatInnerIO.output -> t -> unit
+val print_hex: 'a output -> t -> unit
   (** prints as hex string *)

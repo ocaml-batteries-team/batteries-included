@@ -60,6 +60,8 @@
     @author David Rajchenbach-Teller
 *)
 
+open BatInnerTypes
+
 type 'a t = 'a BatInnerTypes.enum
 
 include BatInterfaces.Enumerable with type 'a enumerable = 'a t
@@ -727,12 +729,12 @@ end
 
 (** {6 Boilerplate code}*)
 
-val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> 'b t -> unit
+val print :  ?first:string -> ?last:string -> ?sep:string -> ('a output -> 'b -> unit) -> 'a output -> 'b t -> unit
 (** Print and consume the contents of an enumeration.*)
 
 val print_at_most :  ?first:string -> ?last:string -> ?sep:string ->
-                     limit:int -> ('a BatInnerIO.output -> 'b -> unit) ->
-                     'a BatInnerIO.output -> 'b t -> unit
+                     limit:int -> ('a output -> 'b -> unit) ->
+                     'a output -> 'b t -> unit
 (** [print_at_most pp limit out enum] consumes [enum] to print its elements
     into [out] (using [pp] to print individual elements).
     At most [limit] arguments are printed, if more elements are
