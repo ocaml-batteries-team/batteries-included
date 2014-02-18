@@ -45,6 +45,8 @@
     @author David Rajchenbach-Teller
 *)
 
+open BatInnerTypes
+
 (** {4 Functorized Sets} *)
 
 module type OrderedType = BatInterfaces.OrderedType
@@ -219,19 +221,19 @@ sig
   (** returns one element of the set and the set without that element.
       @raise Not_found if given an empty set *)
 
-  val enum: t -> elt BatEnum.t
+  val enum: t -> elt enum
   (** Return an enumeration of all elements of the given set.
       The returned enumeration is sorted in increasing order with respect
       to the ordering [Ord.compare], where [Ord] is the argument
       given to {!Set.Make}. *)
 
-  val backwards: t -> elt BatEnum.t
+  val backwards: t -> elt enum
   (** Return an enumeration of all elements of the given set.
       The returned enumeration is sorted in decreasing order with respect
       to the ordering [Ord.compare], where [Ord] is the argument
       given to {!Set.Make}. *)
 
-  val of_enum: elt BatEnum.t -> t
+  val of_enum: elt enum -> t
 
 
   (** {6 Boilerplate code}*)
@@ -239,8 +241,8 @@ sig
   (** {7 Printing}*)
 
   val print :  ?first:string -> ?last:string -> ?sep:string ->
-    ('a BatInnerIO.output -> elt -> unit) ->
-    'a BatInnerIO.output -> t -> unit
+    ('a output -> elt -> unit) ->
+    'a output -> t -> unit
 
 
   (** {6 Override modules}*)
@@ -323,7 +325,7 @@ module Make (Ord : OrderedType) : S with type elt = Ord.t
 type 'a t
 (** The type of sets. *)
 
-include BatEnum.Enumerable with type 'a enumerable = 'a t
+include BatInterfaces.Enumerable with type 'a enumerable = 'a t
 include BatInterfaces.Mappable with type 'a mappable = 'a t
 
 val empty: 'a t
@@ -501,14 +503,14 @@ val cartesian_product : 'a t -> 'b t -> ('a * 'b) t
 (** cartesian product of the two sets
     @since 2.2.0 *)
 
-val enum: 'a t -> 'a BatEnum.t
+val enum: 'a t -> 'a enum
 (** Return an enumeration of all elements of the given set.
     The returned enumeration is sorted in increasing order with respect
     to the ordering of this set.*)
 
-val of_enum: 'a BatEnum.t -> 'a t
+val of_enum: 'a enum -> 'a t
 
-val backwards: 'a t -> 'a BatEnum.t
+val backwards: 'a t -> 'a enum
 (** Return an enumeration of all elements of the given set.  The
     returned enumeration is sorted in decreasing order with respect to
     the ordering [Pervasives.compare]. *)
@@ -525,8 +527,8 @@ val of_list: 'a list -> 'a t
 (** {7 Printing}*)
 
 val print :  ?first:string -> ?last:string -> ?sep:string ->
-  ('a BatInnerIO.output -> 'c -> unit) ->
-  'a BatInnerIO.output -> 'c t -> unit
+  ('a output -> 'c -> unit) ->
+  'a output -> 'c t -> unit
 
 
 (** {6 Incubator} *)
@@ -565,7 +567,7 @@ module PSet : sig
   type 'a t
   (** The type of sets. *)
 
-  include BatEnum.Enumerable with type 'a enumerable = 'a t
+  include BatInterfaces.Enumerable with type 'a enumerable = 'a t
   include BatInterfaces.Mappable with type 'a mappable = 'a t
 
   val empty: 'a t
@@ -729,14 +731,14 @@ module PSet : sig
   (** returns one element of the set and the set without that element.
       @raise Not_found if given an empty set *)
 
-  val enum: 'a t -> 'a BatEnum.t
+  val enum: 'a t -> 'a enum
   (** Return an enumeration of all elements of the given set.
       The returned enumeration is sorted in increasing order with respect
       to the ordering of this set.*)
 
-  val of_enum: 'a BatEnum.t -> 'a t
+  val of_enum: 'a enum -> 'a t
 
-  val of_enum_cmp: cmp:('a -> 'a -> int) -> 'a BatEnum.t -> 'a t
+  val of_enum_cmp: cmp:('a -> 'a -> int) -> 'a enum -> 'a t
 
   (* of_list has no Set.Make counterpart *)
   val of_list: 'a list -> 'a t
@@ -749,8 +751,8 @@ module PSet : sig
   (** {7 Printing}*)
 
   val print :  ?first:string -> ?last:string -> ?sep:string ->
-    ('a BatInnerIO.output -> 'c -> unit) ->
-    'a BatInnerIO.output -> 'c t -> unit
+    ('a output -> 'c -> unit) ->
+    'a output -> 'c t -> unit
 
   (** get the comparison function used for a polymorphic map *)
   val get_cmp : 'a t -> ('a -> 'a -> int)

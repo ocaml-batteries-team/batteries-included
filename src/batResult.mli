@@ -1,12 +1,14 @@
 (**  Monadic results of computations that can raise exceptions *)
 
+open BatInnerTypes
+
 (** The type of a result.  A result is either [Ok x] carrying the
     normal return value [x] or is [Bad e] carrying some indication of an
     error.  The value associated with a bad result is usually an exception
     ([exn]) that can be raised.
     @since 1.0
 *)
-type ('a, 'b) t = ('a, 'b) BatPervasives.result = Ok of 'a | Bad of 'b
+type ('a, 'b) t = ('a, 'b) BatInnerPervasives.result = Ok of 'a | Bad of 'b
 
 (** Execute a function and catch any exception as a result.  This
     function encapsulates code that could throw an exception and returns
@@ -97,4 +99,4 @@ module Infix : sig
 end
 
 (** Print a result as Ok(x) or Bad(exn) *)
-val print : ('b BatInnerIO.output -> 'a -> unit) -> 'b BatInnerIO.output -> ('a, exn) t -> unit
+val print : ('b output -> 'a -> unit) -> 'b output -> ('a, exn) t -> unit

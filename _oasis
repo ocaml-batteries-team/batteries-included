@@ -59,79 +59,79 @@ Library "batteries"
                     BatResult, BatConcurrent, BatReturn, BatTuple, BatAvlTree,
                     BatInnerWeaktbl, BatteriesConfig, BatteriesPrint, Batteries
 
-Library "batteries_iter"
-  Path:             src/iter
-  Modules:          BatEnum, BatSeq, BatLazyList, BatStream, BatteriesIter
-  Build$:           flag(iter)
-  Install$:         flag(iter)
-  FindlibName:      iter
-  FindlibParent:    batteries
-  BuildDepends:     batteries
-  XMETARequires:    batteries
+#Library "batteries_iter"
+#  Path:             src/iter
+#  Modules:          BatEnum, BatSeq, BatLazyList, BatStream, BatteriesIter
+#  Build$:           flag(iter)
+#  Install$:         flag(iter)
+#  FindlibName:      iter
+#  FindlibParent:    batteries
+#  BuildDepends:     batteries
+#  XMETARequires:    batteries
 
-Library "batteries_exceptionless"
-  Path:             src
-  Modules:          BatteriesExceptionless
-  FindlibName:      exceptionless
-  FindlibParent:    batteries
-  BuildDepends:     batteries
-  XMETARequires:    batteries
+#Library "batteries_exceptionless"
+#  Path:             src
+#  Modules:          BatteriesExceptionless
+#  FindlibName:      exceptionless
+#  FindlibParent:    batteries
+#  BuildDepends:     batteries
+#  XMETARequires:    batteries
 
-Library "batteries_data"
-  Path:             src/data
-  Modules:          BatISet, BatIMap, BatDllist, BatDynArray,
-                    BatMultiPMap, BatMultiMap, BatRefList, BatUref, BatVect, 
-                    BatCache, BatFingerTree, BatDeque, BatSplay, BatHashcons,
-                    BatteriesData
-  FindlibName:      data
-  FindlibParent:    batteries
-  BuildDepends:     batteries
-  XMETARequires:    batteries
+#Library "batteries_data"
+#  Path:             src/data
+#  Modules:          BatISet, BatIMap, BatDllist, BatDynArray,
+#                    BatMultiPMap, BatMultiMap, BatRefList, BatUref, BatVect, 
+#                    BatCache, BatFingerTree, BatDeque, BatSplay, BatHashcons,
+#                    BatteriesData
+#  FindlibName:      data
+#  FindlibParent:    batteries
+#  BuildDepends:     batteries
+#  XMETARequires:    batteries
 
-Library "batteries_text"
-  Path:             src/text
-  Modules:          BatUChar, BatUTF8, BatText, BatDigest, BatBase64,
-                    BatCharParser, BatScanf, BatParserCo, BatSubstring, 
-                    BatLexing, BatGenlex, BatPathGen, BatteriesText
-  Build$:           flag(text)
-  Install$:         flag(text)
-  FindlibName:      text
-  FindlibParent:    batteries
-  BuildDepends:     batteries
-  XMETARequires:    batteries
+#Library "batteries_text"
+#  Path:             src/text
+#  Modules:          BatUChar, BatUTF8, BatText, BatDigest, BatBase64,
+#                    BatCharParser, BatScanf, BatParserCo, BatSubstring, 
+#                    BatLexing, BatGenlex, BatPathGen, BatteriesText
+#  Build$:           flag(text)
+#  Install$:         flag(text)
+#  FindlibName:      text
+#  FindlibParent:    batteries
+#  BuildDepends:     batteries
+#  XMETARequires:    batteries
 
-Library "batteries_io"
-  Path:             src/io
-  Modules:          BatIO, BatInnerIO, BatUnix, BatLogger, BatLog, BatFile,
-                    BatOptParse, BatteriesIO
-  Build$:           flag(io)
-  Install$:         flag(io)
-  FindlibName:      io
-  FindlibParent:    batteries
-  BuildDepends:     batteries,unix
-  XMETARequires:    batteries,unix
+#Library "batteries_io"
+#  Path:             src/io
+#  Modules:          BatIO, BatInnerIO, BatUnix, BatLogger, BatLog, BatFile,
+#                    BatOptParse, BatteriesIO
+#  Build$:           flag(io)
+#  Install$:         flag(io)
+#  FindlibName:      io
+#  FindlibParent:    batteries
+#  BuildDepends:     batteries,unix
+#  XMETARequires:    batteries,unix
 
-Library "batteries_all"
-  Path:             src/all
-  Modules:          BatPervasives
-  Build$:           flag(io) && flag(text) && flag(data) && flag(iter)
-  Install$:         flag(io) && flag(text) && flag(data) && flag(iter)
-  FindlibName:      all
-  FindlibParent:    batteries
-  BuildDepends:     batteries,batteries.data,batteries.io,
-                    batteries.text,batteries.iter,unix
-  XMETARequires:    batteries,batteries.data,batteries.io,
-                    batteries.text,batteries.iter,unix
+#Library "batteries_all"
+#  Path:             src/all
+#  Modules:          BatPervasives
+#  Build$:           flag(io) && flag(text) && flag(data) && flag(iter)
+#  Install$:         flag(io) && flag(text) && flag(data) && flag(iter)
+#  FindlibName:      all
+#  FindlibParent:    batteries
+#  BuildDepends:     batteries,batteries.data,batteries.io,
+#                    batteries.text,batteries.iter,unix
+#  XMETARequires:    batteries,batteries.data,batteries.io,
+#                    batteries.text,batteries.iter,unix
 
-Library "batteries_extlib"
-  Path:             src
-  Modules:          Extlib
-  Build$:           flag(extlib)
-  Install$:         flag(extlib)
-  FindlibName:      extlib
-  FindlibParent:    batteries
-  BuildDepends:     batteries
-  XMETARequires:    batteries
+#Library "batteries_extlib"
+#  Path:             src
+#  Modules:          Extlib
+#  Build$:           flag(extlib)
+#  Install$:         flag(extlib)
+#  FindlibName:      extlib
+#  FindlibParent:    batteries
+#  BuildDepends:     batteries
+#  XMETARequires:    batteries
 
 Library "batteries_num"
   Path:             src/num

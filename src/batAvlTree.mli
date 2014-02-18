@@ -4,6 +4,8 @@
 
 (** Internals of ISet and IMap, usable as generic tree library *)
 
+open BatInnerTypes
+
 type +'a tree
 
 val empty : 'a tree
@@ -39,4 +41,4 @@ val iter : ('a -> unit) -> 'a tree -> unit
 
 val fold : ('a -> 'b -> 'b) -> 'a tree -> 'b -> 'b
 
-val enum : 'a tree -> 'a BatEnum.t
+val enum : 'a tree -> 'a enum

@@ -46,6 +46,8 @@
     @author Gabriel Scherer
     @author David Teller
 *)
+open BatInnerTypes
+
 type t = int32
 
 val zero : int32
@@ -131,13 +133,13 @@ external shift_right_logical : int32 -> int -> int32 = "%int32_lsr"
     regardless of the sign of [x].
     The result is unspecified if [y < 0] or [y >= 32]. *)
 
-val ( -- ) : t -> t -> t BatEnum.t
+val ( -- ) : t -> t -> t enum
 (** Enumerate an interval.
 
     [5l -- 10l] is the enumeration 5l,6l,7l,8l,9l,10l.
     [10l -- 5l] is the empty enumeration*)
 
-val ( --- ) : t -> t -> t BatEnum.t
+val ( --- ) : t -> t -> t enum
 (** Enumerate an interval.
 
     [5l -- 10l] is the enumeration 5l,6l,7l,8l,9l,10l.
@@ -275,8 +277,8 @@ module Compare : BatNumber.Compare with type bat__compare_t = t
 
 (** {7 Printing}*)
 
-val print: 'a BatInnerIO.output -> t -> unit
+val print: 'a output -> t -> unit
 (** prints as decimal string *)
 
-val print_hex: 'a BatInnerIO.output -> t -> unit
+val print_hex: 'a output -> t -> unit
   (** prints as hex string *)

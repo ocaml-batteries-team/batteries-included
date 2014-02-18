@@ -62,7 +62,7 @@
 
 open BatInnerTypes
 
-type 'a t = 'a BatInnerTypes.enum
+type 'a t
 
 include BatInterfaces.Enumerable with type 'a enumerable = 'a t
 include BatInterfaces.Mappable with type 'a mappable = 'a t

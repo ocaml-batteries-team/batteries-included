@@ -52,7 +52,7 @@
 
     Enumeration. Every [n]-tuple can be converted to an enum with [n]
     elements using its [enum] function, and can be constructed from an
-    enum using [of_enum]. Tuples satisfy {!BatEnum.Enumerable}.
+    enum using [of_enum]. Tuples satisfy {!BatInterfaces.Enumerable}.
 
     Printing. Function [print] prints a tuple given a method for
     printing each of its elements. The simpler [printn] function can
@@ -62,6 +62,8 @@
     optionally be customized by specifying methods for comparing each
     element. {!Pervasives.compare} is used by default.
 *)
+
+open BatInnerTypes
 
 (** Pairs. Some of the functions here are also exposed in
     {!Pervasives}, as documented below.
@@ -100,22 +102,22 @@ module Tuple2 : sig
   val curry : ('a * 'b -> 'c) -> 'a -> 'b -> 'c
   val uncurry : ('a -> 'b -> 'c) -> 'a * 'b -> 'c
 
-  val enum : ('a * 'a) -> 'a BatEnum.t
-  val of_enum : 'a BatEnum.t -> ('a * 'a)
+  val enum : ('a * 'a) -> 'a enum
+  val of_enum : 'a enum -> ('a * 'a)
   (** @raise Failure if enum does not contain at least 2
       elements. *)
 
   val print : ?first:string -> ?sep:string -> ?last:string
-    -> ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit)
-    -> 'o BatIO.output -> ('a * 'b) -> unit
+    -> ('o output -> 'a -> unit) -> ('o output -> 'b -> unit)
+    -> 'o output -> ('a * 'b) -> unit
 
   val printn : ?first:string -> ?sep:string -> ?last:string
-    -> ('o BatIO.output -> 'a -> unit)
-    -> 'o BatIO.output -> ('a * 'a) -> unit
+    -> ('o output -> 'a -> unit)
+    -> 'o output -> ('a * 'a) -> unit
 
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ('a * 'b) -> ('a * 'b) -> int
 
-  include BatEnum.Enumerable with type 'a enumerable = 'a * 'a
+  include BatInterfaces.Enumerable with type 'a enumerable = 'a * 'a
 
   open BatOrd
   val eq : 'a eq -> 'b eq -> ('a * 'b) eq
@@ -158,22 +160,22 @@ module Tuple3 : sig
   val curry : ('a * 'b * 'c -> 'd) -> 'a -> 'b -> 'c -> 'd
   val uncurry : ('a -> 'b -> 'c -> 'd) -> 'a * 'b * 'c -> 'd
 
-  val enum : ('a * 'a * 'a) -> 'a BatEnum.t
-  val of_enum : 'a BatEnum.t -> ('a * 'a * 'a)
+  val enum : ('a * 'a * 'a) -> 'a enum
+  val of_enum : 'a enum -> ('a * 'a * 'a)
   (** @raise Failure if enum does not contain at least 3
       elements. *)
 
   val print : ?first:string -> ?sep:string -> ?last:string
-    -> ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> ('o BatIO.output -> 'c -> unit)
-    -> 'o BatIO.output -> ('a * 'b * 'c) -> unit
+    -> ('o output -> 'a -> unit) -> ('o output -> 'b -> unit) -> ('o output -> 'c -> unit)
+    -> 'o output -> ('a * 'b * 'c) -> unit
 
   val printn : ?first:string -> ?sep:string -> ?last:string
-    -> ('o BatIO.output -> 'a -> unit)
-    -> 'o BatIO.output -> ('a * 'a * 'a) -> unit
+    -> ('o output -> 'a -> unit)
+    -> 'o output -> ('a * 'a * 'a) -> unit
 
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ?cmp3:('c -> 'c -> int) -> ('a * 'b * 'c) -> ('a * 'b * 'c) -> int
 
-  include BatEnum.Enumerable with type 'a enumerable = 'a * 'a * 'a
+  include BatInterfaces.Enumerable with type 'a enumerable = 'a * 'a * 'a
 
   open BatOrd
   val eq : 'a eq -> 'b eq -> 'c eq -> ('a * 'b * 'c) eq
@@ -228,22 +230,22 @@ module Tuple4 : sig
   val curry : ('a * 'b * 'c * 'd -> 'e) -> 'a -> 'b -> 'c -> 'd -> 'e
   val uncurry : ('a -> 'b -> 'c -> 'd -> 'e) -> 'a * 'b * 'c * 'd -> 'e
 
-  val enum : ('a * 'a * 'a * 'a) -> 'a BatEnum.t
-  val of_enum : 'a BatEnum.t -> ('a * 'a * 'a * 'a)
+  val enum : ('a * 'a * 'a * 'a) -> 'a enum
+  val of_enum : 'a enum -> ('a * 'a * 'a * 'a)
   (** @raise Failure if enum does not contain at least 4
       elements. *)
 
   val print : ?first:string -> ?sep:string -> ?last:string
-    -> ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> ('o BatIO.output -> 'c -> unit) -> ('o BatIO.output -> 'd -> unit)
-    -> 'o BatIO.output -> ('a * 'b * 'c * 'd) -> unit
+    -> ('o output -> 'a -> unit) -> ('o output -> 'b -> unit) -> ('o output -> 'c -> unit) -> ('o output -> 'd -> unit)
+    -> 'o output -> ('a * 'b * 'c * 'd) -> unit
 
   val printn : ?first:string -> ?sep:string -> ?last:string
-    -> ('o BatIO.output -> 'a -> unit)
-    -> 'o BatIO.output -> ('a * 'a * 'a * 'a) -> unit
+    -> ('o output -> 'a -> unit)
+    -> 'o output -> ('a * 'a * 'a * 'a) -> unit
 
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ?cmp3:('c -> 'c -> int) -> ?cmp4:('d -> 'd -> int) -> ('a * 'b * 'c * 'd) -> ('a * 'b * 'c * 'd) -> int
 
-  include BatEnum.Enumerable with type 'a enumerable = 'a * 'a * 'a * 'a
+  include BatInterfaces.Enumerable with type 'a enumerable = 'a * 'a * 'a * 'a
 
   open BatOrd
   val eq : 'a eq -> 'b eq -> 'c eq -> 'd eq -> ('a * 'b * 'c * 'd) eq
@@ -317,22 +319,22 @@ module Tuple5 : sig
   val curry : ('a * 'b * 'c * 'd * 'e -> 'f) -> 'a -> 'b -> 'c -> 'd -> 'e -> 'f
   val uncurry : ('a -> 'b -> 'c -> 'd -> 'e -> 'f) -> 'a * 'b * 'c * 'd * 'e -> 'f
 
-  val enum : ('a * 'a * 'a * 'a * 'a) -> 'a BatEnum.t
-  val of_enum : 'a BatEnum.t -> ('a * 'a * 'a * 'a * 'a)
+  val enum : ('a * 'a * 'a * 'a * 'a) -> 'a enum
+  val of_enum : 'a enum -> ('a * 'a * 'a * 'a * 'a)
   (** @raise Failure if enum does not contain at least 5
       elements. *)
 
   val print : ?first:string -> ?sep:string -> ?last:string
-    -> ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> ('o BatIO.output -> 'c -> unit) -> ('o BatIO.output -> 'd -> unit) -> ('o BatIO.output -> 'e -> unit)
-    -> 'o BatIO.output -> ('a * 'b * 'c * 'd * 'e) -> unit
+    -> ('o output -> 'a -> unit) -> ('o output -> 'b -> unit) -> ('o output -> 'c -> unit) -> ('o output -> 'd -> unit) -> ('o output -> 'e -> unit)
+    -> 'o output -> ('a * 'b * 'c * 'd * 'e) -> unit
 
   val printn : ?first:string -> ?sep:string -> ?last:string
-    -> ('o BatIO.output -> 'a -> unit)
-    -> 'o BatIO.output -> ('a * 'a * 'a * 'a * 'a) -> unit
+    -> ('o output -> 'a -> unit)
+    -> 'o output -> ('a * 'a * 'a * 'a * 'a) -> unit
 
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ?cmp3:('c -> 'c -> int) -> ?cmp4:('d -> 'd -> int) -> ?cmp5:('e -> 'e -> int) -> ('a * 'b * 'c * 'd * 'e) -> ('a * 'b * 'c * 'd * 'e) -> int
 
-  include BatEnum.Enumerable with type 'a enumerable = 'a * 'a * 'a * 'a * 'a
+  include BatInterfaces.Enumerable with type 'a enumerable = 'a * 'a * 'a * 'a * 'a
 
   open BatOrd
   val eq : 'a eq -> 'b eq -> 'c eq -> 'd eq -> 'e eq

@@ -50,15 +50,15 @@ type ('a,'b) manual_cache = {
 }
 
 
-val make_ht : gen:('a -> 'b) -> init_size:int -> ('a,'b) manual_cache
+val make_ht : enum:('a -> 'b) -> init_size:int -> ('a,'b) manual_cache
 (** Make a manual cache backed by a hashtable.  The generating
-    function is passed with [~gen] and the initial size of the
+    function is passed with [~enum] and the initial size of the
     hashtable is [~init_size]. The hashtable uses the polymorphic
     [hash] and [(=)].*)
 
 
-val make_map : gen:('a -> 'b) -> ('a,'b) manual_cache
-(** Make a manual cache for function [~gen] backed by a Set.t.  This
+val make_map : enum:('a -> 'b) -> ('a,'b) manual_cache
+(** Make a manual cache for function [~enum] backed by a Set.t.  This
     set uses the polymorphic [(<)] for comparison, so ['a] should be
     properly comparable by it. *)
 
@@ -76,15 +76,15 @@ val make_map : gen:('a -> 'b) -> ('a,'b) manual_cache
 type ('a, 'b) auto_cache = 'a -> 'b
 
 
-val lru_cache : gen:('a -> 'b) -> cap:int -> ('a, 'b) auto_cache
+val lru_cache : enum:('a -> 'b) -> cap:int -> ('a, 'b) auto_cache
   (* Make a simple LRU (least-recently-used) automatic cache for
-     function [~gen] and with capacity [~cap].  When a new entry is
+     function [~enum] and with capacity [~cap].  When a new entry is
      added to the cache, if its capacity was [cap], then the least
      recently used entry in the cache will be removed to make room for
      it. *)
 
 
   (* TODO
-     val rec_cache : gen:(('a -> 'b) -> 'a -> 'b) -> ('a, 'b) manual_cache
+     val rec_cache : enum:(('a -> 'b) -> 'a -> 'b) -> ('a, 'b) manual_cache
      val other_fancy_caching_strategy : (as lru_cache, probably)
   *)

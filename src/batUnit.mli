@@ -24,6 +24,8 @@
    @author David Teller
 *)
 
+open BatInnerTypes
+
 type t = unit
 (**The unit type, i.e. a type with only one element, [()].*)
 
@@ -53,4 +55,4 @@ val equal : t -> t -> bool
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)
-val print: 'a BatInnerIO.output -> unit -> unit
+val print: 'a output -> unit -> unit
