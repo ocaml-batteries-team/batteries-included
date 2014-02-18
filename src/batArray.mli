@@ -46,7 +46,7 @@
 
 type 'a t = 'a array (** The type of arrays. *)
 
-include BatEnum.Enumerable with type 'a enumerable = 'a t
+include BatGen.Enumerable with type 'a enumerable = 'a t
 include BatInterfaces.Mappable with type 'a mappable = 'a t
 
 external length : 'a array -> int = "%array_length"
@@ -469,30 +469,24 @@ val rev_in_place : 'a array -> unit
 
 (** {6 Conversions} *)
 
-val enum : 'a array -> 'a BatEnum.t
+val gen : 'a array -> 'a BatGen.t
 (** Returns an enumeration of the elements of an array.
     Behavior of the enumeration is undefined if the contents of the array changes afterwards.*)
 
-val of_enum : 'a BatEnum.t -> 'a array
+val of_gen : 'a BatGen.t -> 'a array
 (** Build an array from an enumeration. *)
 
-val backwards : 'a array -> 'a BatEnum.t
+val backwards : 'a array -> 'a BatGen.t
 (** Returns an enumeration of the elements of an array, from last to first. *)
 
-val of_backwards : 'a BatEnum.t -> 'a array
+val of_backwards : 'a BatGen.t -> 'a array
 (** Build an array from an enumeration, with the first element of
     the enumeration as the last element of the array and vice
     versa. *)
 
-type 'a gen = unit -> 'a option
-
-val gen : 'a array -> 'a gen
-
-val of_gen : 'a gen -> 'a array
-
 (** {6 Utilities} *)
 
-val range : 'a array -> int BatEnum.t
+val range : 'a array -> int BatGen.t
 (** [range a] returns an enumeration of all valid indexes into the given
     array.  For example, [range [|2;4;6;8|] = 0--3].*)
 
@@ -702,10 +696,10 @@ sig
 
   (** {6 Conversions} *)
 
-  val enum : ('a, [> `Read]) t -> 'a BatEnum.t
-  val of_enum : 'a BatEnum.t -> ('a, _) t
-  val backwards : ('a, [> `Read]) t -> 'a BatEnum.t
-  val of_backwards : 'a BatEnum.t -> ('a, _) t
+  val gen : ('a, [> `Read]) t -> 'a BatGen.t
+  val of_gen : 'a BatGen.t -> ('a, _) t
+  val backwards : ('a, [> `Read]) t -> 'a BatGen.t
+  val of_backwards : 'a BatGen.t -> ('a, _) t
   val to_list : ('a, [> `Read]) t -> 'a list
   val of_list : 'a list -> ('a, _) t
 

@@ -151,18 +151,19 @@ let eq ?(eq=(=)) x y = match x,y with
    eq None None = true
 *)
 
-let enum = function
-  | None   -> BatEnum.from (fun () -> raise BatEnum.No_more_elements)
-  | Some e -> BatEnum.singleton e
-(*$T enum
-   BatList.of_enum (enum None) = []
-   BatList.of_enum (enum (Some 3)) = [3]
+let gen = function
+  | None   -> BatGen.empty
+  | Some e -> BatGen.singleton e
+(*$T gen
+   BatList.of_enum (gen None) = []
+   BatList.of_enum (gen (Some 3)) = [3]
 *)
 
-let of_enum = BatEnum.get
+let of_gen g = g()
+
 (*$T of_enum
-   of_enum (BatList.enum []) = None
-   let e = BatList.enum [1; 2; 3] in of_enum e = Some 1 && BatList.of_enum e = [2; 3]
+   of_enum (BatList.gen []) = None
+   let e = BatList.gen [1; 2; 3] in of_enum e = Some 1 && BatList.of_enum e = [2; 3]
 *)
 
 open BatOrd

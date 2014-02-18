@@ -98,10 +98,10 @@ let npop rl n =
   in
   pop_aux !rl n
 
-let copy_enum ~dst ~src = dst := BatList.of_enum src
+let copy_gen ~dst ~src = dst := BatList.of_gen src
 
-let enum   rl = BatList.enum !rl
-let of_enum e = ref (BatList.of_enum e)
+let gen   rl = BatList.gen !rl
+let of_gen e = ref (BatList.of_gen e)
 
 let backwards     rl = BatList.backwards !rl
 let of_backwards  e  = ref (BatList.of_backwards e)

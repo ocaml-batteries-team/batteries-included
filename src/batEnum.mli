@@ -271,7 +271,8 @@ val group : ('a -> 'b) -> 'a t -> 'a t t
 
     [Enum.group (fun x -> x mod 3) [1;2;4;1] = [[1];[2];[4;1]]]
 
-    [Enum.group (fun s -> s.[0]) ["cat"; "canary"; "dog"; "dodo"; "ant"; "cow"] = [["cat"; "canary"];["dog";"dodo"];["ant"];["cow"]]]
+    [Enum.group (fun s -> s.[0]) ["cat"; "canary"; "dog"; "dodo"; "ant"; "cow"] =
+      [["cat"; "canary"];["dog";"dodo"];["ant"];["cow"]]]
 
     Warning: The result of this operation cannot be directly cloned
     safely; instead, reify to a non-lazy structure and read from that
@@ -715,7 +716,7 @@ module WithMonad : functor (Mon : BatInterfaces.Monad) -> sig
 
   val sequence : 'a m t -> 'a t m
 (** [sequence e] evaluates each monadic elements (of type ['a m]) contained in the enumeration [e] to get a monadic enumeration of ['a] elements,
-    of type ['a BatEnum.t m]. *)
+    of type ['a BatGen.t m]. *)
 
 val fold_monad : ('a -> 'b -> 'a m) -> 'a -> 'b t -> 'a m
   (** [fold_monad f init e] does a folding of the enumeration [e] applying step by step the function [f] that gives back results in the [Mon] monad,
@@ -729,7 +730,7 @@ end
 *)
 module Monad : sig
   type 'a m = 'a t
-  (** The type of the BatEnum monad's elements, thus [BatEnum.t]. *)
+  (** The type of the BatEnum monad's elements, thus [BatGen.t]. *)
 
   val return : 'a -> 'a m
   (** This function puts a single value in the BatEnum monad, that is to say it creates an enumeration containing a single element. *)

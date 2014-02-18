@@ -41,28 +41,28 @@ let print out t =
   (Q.string) (fun s -> let b = create 5 in add_string b "foo"; add_string b s; add_string b "bar"; BatIO.to_string print b = "foo" ^ s ^ "bar")
 *)
 
-let enum t =
+let gen t =
   let buf = buffer_of_t t in
-  BatEnum.take buf.position (BatString.enum buf.buffer)
+  let i = ref 0 in
+  fun () ->
+    if !i = buf.length then None
+    else Some buf.buffer.[buf.position + BatRef.post_incr i]
 
-(*$Q enum
-  (Q.string) (fun s -> let b = create 10 in add_string b s; BatEnum.equal Char.equal (enum b) (BatString.enum s))
+(*$Q gen
+  (Q.string) (fun s -> let b = create 10 in add_string b s; \
+    BatGen.equal Char.equal (gen b) (BatString.gen s))
 *)
 
-let of_enum e =
-  let buf =
-    if BatEnum.fast_count e
-    then create (BatEnum.count e)
-    else create 128
-  in
-  add_string buf (BatString.of_enum e);
+let of_gen g =
+  let s = BatString.of_gen g in
+  let buf = create (String.length s) in
+  add_string buf s;
   buf
 
-(*$Q of_enum
-  (Q.string) (fun s -> let b = of_enum (BatString.enum s) in contents b = s)
-  (Q.string) (fun s -> let e = BatString.enum s in \
-                       let e = BatEnum.from (fun () -> BatEnum.get_exn e) in \
-                       contents (of_enum e) = s)
+(*$Q of_gen
+  (Q.string) (fun s -> let b = of_gen (BatString.gen s) in contents b = s)
+  (Q.string) (fun s -> let e = BatString.gen s in \
+                       contents (of_gen e) = s)
 *)
 
 let add_input t inp n =

@@ -23,15 +23,18 @@
 
 
 open Pervasives
-open BatEnum
 
 let input_lines ch =
-  BatEnum.from (fun () ->
-    try input_line ch with End_of_file -> raise BatEnum.No_more_elements)
+  let stop = ref false in
+  fun () ->
+    if !stop then None else
+    try Some (input_line ch) with End_of_file -> (stop:= true; None)
 
 let input_chars ch =
-  BatEnum.from (fun () ->
-    try input_char ch with End_of_file -> raise BatEnum.No_more_elements)
+  let stop = ref false in
+  fun () ->
+    if !stop then None else
+    try Some (input_char ch) with End_of_file -> (stop:= true; None)
 
 type 'a _mut_list = {
   hd : 'a;
@@ -181,9 +184,8 @@ let invisible_args = ref 1
    usually because program-name is put in argv.(0) *)
 
 let args () =
-  let e = BatArray.enum Sys.argv in
-  BatEnum.drop !invisible_args e;
-  e
+  let g = BatArray.gen Sys.argv in
+  BatGen.drop !invisible_args g
 
 let exe = Array.get Sys.argv 0
 
@@ -246,26 +248,41 @@ let prerr_all inp     = BatIO.copy inp BatIO.stderr
 
 include BatList.Infix
 
-(**{6 Importing BatEnum}*)
+(**{6 Importing BatGen}*)
 
-let foreach e f       = iter f e
-let exists            = exists
-let for_all           = for_all
-let fold              = fold
-let reduce            = reduce
-let find              = find
-let peek              = peek
-let push              = push
-let junk              = junk
-let map               = map
-let filter            = filter
-let filter_map        = filter_map
-let concat            = concat
-let print             = print
-let get               = get
-let iter              = iter
-let scanl             = scanl
-include Infix
+let foreach e f       = BatGen.iter f e
+let exists            = BatGen.exists
+let for_all           = BatGen.for_all
+let fold              = BatGen.fold
+let reduce            = BatGen.reduce
+(* let peek              = BatGen.peek *)
+(* let push              = BatGen.push *)
+let junk              = BatGen.junk
+let map               = BatGen.map
+let filter            = BatGen.filter
+let filter_map        = BatGen.filter_map
+let concat            = BatGen.flatten
+let print             = BatGen.print
+let get               = BatGen.get
+let iter              = BatGen.iter
+let scanl             = BatGen.scan
+let find p g          = BatGen.find p g
+
+let (--) = BatGen.(--)
+let (--^) a b = a -- (b-1)
+
+let (--.) (a,step) b =
+  let a = ref a in
+  fun () ->
+    let x = !a in
+    if x > b then None
+    else (a:= x +. step; Some !a)
+
+let (---) = BatInt.(---)
+
+let (--~) = BatChar.Infix.(--)
+
+let (//) g p = BatGen.filter p g
 
 (** {6 Operators}*)
 

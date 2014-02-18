@@ -24,47 +24,48 @@ include Stack
 
 type 'a enumerable = 'a Stack.t
 
-let of_enum e =
+let of_gen e =
   let s = create () in
-  BatEnum.iter (fun x -> push x s) e;
+  BatGen.iter (fun x -> push x s) e;
   s
 
-(*$T of_enum
-  let s = create () in push 3 s; push 5 s; [3;5] |> List.enum |> of_enum = s
-  let s = create () in of_enum (BatEnum.empty ()) = s
+(*$T of_gen
+  let s = create () in push 3 s; push 5 s; [3;5] |> List.gen |> of_gen = s
+  let s = create () in of_gen (BatGen.empty ()) = s
 *)
 
 (* Consumes input stack *)
-let enum_destruct s =
-  let get () = try pop s with Stack.Empty -> raise BatEnum.No_more_elements in
-  BatEnum.from get
+let gen_destruct s =
+  fun () ->
+    try Some (pop s)
+    with Stack.Empty -> None
 
-(*$T enum_destruct
-  let s = of_enum (List.enum [2;4;6;8]) in \
-   enum_destruct s |> List.of_enum = [8;6;4;2] && is_empty s
+(*$T gen_destruct
+  let s = of_gen (List.gen [2;4;6;8]) in \
+   gen_destruct s |> List.of_gen = [8;6;4;2] && is_empty s
 *)
 
 (* consumes a copy *)
-let enum s = enum_destruct (copy s)
+let gen s = gen_destruct (copy s)
 
 let print ?(first="") ?(last="") ?(sep="") print_a out t =
-  BatEnum.print ~first ~last ~sep print_a out (enum t)
+  BatGen.print ~first ~last ~sep print_a out (gen t)
 
 (*$T print
-  IO.to_string (print Int.print) (of_enum (List.enum [2;4;6;8])) = "8642"
+  IO.to_string (print Int.print) (of_gen (List.gen [2;4;6;8])) = "8642"
 *)
 
-let compare cmp a b = BatEnum.compare cmp (enum a) (enum b)
-let equal eq a b = BatEnum.equal eq (enum a) (enum b)
+let compare cmp a b = BatGen.compare ~cmp (gen a) (gen b)
+let equal eq a b = BatGen.eq ~eq (gen a) (gen b)
 
 (*$T equal
-  not (equal Int.equal (create()) (of_enum (List.enum [2])))
+  not (equal Int.equal (create()) (of_gen (List.gen [2])))
   equal Int.equal (create()) (create())
-  equal Int.equal (of_enum (List.enum [2])) (of_enum (List.enum [2]))
+  equal Int.equal (of_gen (List.gen [2])) (of_gen (List.gen [2]))
 *)
 
 (*$T compare
-  0 <> (compare Int.compare (create()) (of_enum (List.enum [2])))
+  0 <> (compare Int.compare (create()) (of_gen (List.gen [2])))
 *)
 
 module Exceptionless = struct

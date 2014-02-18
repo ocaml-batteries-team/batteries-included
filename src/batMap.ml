@@ -280,41 +280,33 @@ module Concrete = struct
     | Empty -> t
     | Node (l, k, v, r, _) -> rev_cons_iter r (C (k, v, l, t))
 
-  let rec enum_next l () = match !l with
-      E -> raise BatEnum.No_more_elements
-    | C (k, v, m, t) -> l := cons_iter m t; (k, v)
+  let rec gen_next l () = match !l with
+      E -> None
+    | C (k, v, m, t) -> l := cons_iter m t; Some(k, v)
 
-  let rec enum_backwards_next l () = match !l with
-      E -> raise BatEnum.No_more_elements
-    | C (k, v, m, t) -> l := rev_cons_iter m t; (k, v)
+  let rec gen_backwards_next l () = match !l with
+      E -> None
+    | C (k, v, m, t) -> l := rev_cons_iter m t; Some(k, v)
 
-  let rec enum_count l () =
-    let rec aux n = function
-      | E -> n
-      | C (_, _, m, t) -> aux (n + 1 + cardinal m) t
-    in aux 0 !l
-
-  let enum t =
-    let rec make l =
-      let l = ref l in
-      let clone() = make !l in
-      BatEnum.make ~next:(enum_next l) ~count:(enum_count l) ~clone
-    in make (cons_iter t E)
+  let gen t =
+    let l = ref (cons_iter t E) in
+    gen_next l
 
   let backwards t =
-    let rec make l =
-      let l = ref l in
-      let clone() = make !l in
-      BatEnum.make ~next:(enum_backwards_next l) ~count:(enum_count l) ~clone
-    in make (rev_cons_iter t E)
+    let l = ref (rev_cons_iter t E) in
+    gen_backwards_next l
 
-  let keys    t = BatEnum.map fst (enum t)
-  let values  t = BatEnum.map snd (enum t)
+  let keys    t = BatGen.map fst (gen t)
+  let values  t = BatGen.map snd (gen t)
 
-  let of_enum cmp e = BatEnum.fold (fun m (k, v) -> add k v cmp m) empty e
+  let of_gen cmp e =
+    BatGen.fold (fun m (k, v) -> add k v cmp m) empty e
 
-  let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") ?(kvsep=": ") print_k print_v out t =
-    BatEnum.print ~first ~last ~sep (fun out (k,v) -> BatPrintf.fprintf out "%a%s%a" print_k k kvsep print_v v) out (enum t)
+  let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") ?(kvsep=": ")
+  print_k print_v out t =
+    BatGen.print ~first ~last ~sep
+      (fun out (k,v) -> BatPrintf.fprintf out "%a%s%a" print_k k kvsep print_v v)
+      out (gen t)
 
   (*We rely on [fold] rather than on ['a implementation] to
     make future changes of implementation in the base
@@ -637,9 +629,12 @@ module Concrete = struct
         m1 empty
 
   let compare ckey cval m1 m2 =
-    BatEnum.compare (fun (k1,v1) (k2,v2) -> BatOrd.bin_comp ckey k1 k2 cval v1 v2) (enum m1) (enum m2)
+    BatGen.compare
+      ~cmp:(fun (k1,v1) (k2,v2) -> BatOrd.bin_comp ckey k1 k2 cval v1 v2)
+      (gen m1) (gen m2)
   let equal ckey eq_val m1 m2 =
-    BatEnum.equal (fun (k1,v1) (k2,v2) -> ckey k1 k2 = 0 && eq_val v1 v2) (enum m1) (enum m2)
+    BatGen.eq ~eq:(fun (k1,v1) (k2,v2) -> ckey k1 k2 = 0 && eq_val v1 v2)
+      (gen m1) (gen m2)
 end
 
 module type OrderedType = BatInterfaces.OrderedType
@@ -669,8 +664,8 @@ sig
   val filter_map: (key -> 'a -> 'b option) -> 'a t -> 'b t
   val compare: ('a -> 'a -> int) -> 'a t -> 'a t -> int
   val equal: ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
-  val keys : _ t -> key BatEnum.t
-  val values: 'a t -> 'a BatEnum.t
+  val keys : _ t -> key BatGen.t
+  val values: 'a t -> 'a BatGen.t
   val min_binding : 'a t -> (key * 'a)
   val max_binding : 'a t -> (key * 'a)
   val choose : 'a t -> (key * 'a)
@@ -678,9 +673,9 @@ sig
   val partition : (key -> 'a -> bool) -> 'a t -> 'a t * 'a t
   val singleton : key -> 'a -> 'a t
   val bindings : 'a t -> (key * 'a) list
-  val enum  : 'a t -> (key * 'a) BatEnum.t
-  val backwards  : 'a t -> (key * 'a) BatEnum.t
-  val of_enum: (key * 'a) BatEnum.t -> 'a t
+  val gen  : 'a t -> (key * 'a) BatGen.t
+  val backwards  : 'a t -> (key * 'a) BatGen.t
+  val of_gen: (key * 'a) BatGen.t -> 'a t
   val for_all: (key -> 'a -> bool) -> 'a t -> bool
   val exists: (key -> 'a -> bool) -> 'a t -> bool
   val merge:
@@ -740,12 +735,12 @@ struct
   type 'a iter = E | C of key * 'a * 'a implementation * 'a iter
 
   let cardinal t = Concrete.cardinal (impl_of_t t)
-  let enum t = Concrete.enum (impl_of_t t)
+  let gen t = Concrete.gen (impl_of_t t)
   let backwards t = Concrete.backwards (impl_of_t t)
   let keys t = Concrete.keys (impl_of_t t)
   let values t = Concrete.values (impl_of_t t)
 
-  let of_enum e = t_of_impl (Concrete.of_enum Ord.compare e)
+  let of_gen e = t_of_impl (Concrete.of_gen Ord.compare e)
 
   (* In Ocaml 3.11.2, the implementation of stdlib's Map.S.map(i) are
      slightly incorrect in that they don't apply their function
@@ -887,21 +882,21 @@ let foldi = Concrete.foldi
   foldi (fun x _y acc -> x :: acc) m [] |> List.rev = List.sort_unique Int.compare xs)
 *)
 
-let enum = Concrete.enum
+let gen = Concrete.gen
 
 (*$Q keys
   (Q.list Q.small_int) (fun xs -> \
   List.fold_left (fun acc x -> add x true acc) \
-    empty xs |> keys |> List.of_enum \
+    empty xs |> keys |> List.of_gen \
   = List.sort_unique Int.compare xs)
 *)
 
 let backwards = Concrete.backwards
 
-let keys    t = BatEnum.map fst (enum t)
-let values  t = BatEnum.map snd (enum t)
+let keys    t = BatGen.map fst (gen t)
+let values  t = BatGen.map snd (gen t)
 
-let of_enum e = Concrete.of_enum Pervasives.compare e
+let of_gen e = Concrete.of_gen Pervasives.compare e
 
 let print = Concrete.print
 
@@ -1063,22 +1058,22 @@ module PMap = struct (*$< PMap *)
     foldi (fun x _y acc -> x :: acc) m [] |> List.rev = List.sort_unique Int.compare xs)
   *)
 
-  let enum t = Concrete.enum t.map
+  let gen t = Concrete.gen t.map
 
   (*$Q keys
     (Q.list Q.small_int) (fun xs -> \
     List.fold_left (fun acc x -> add x true acc) \
-    (create Int.compare) xs |> keys |> List.of_enum \
+    (create Int.compare) xs |> keys |> List.of_gen \
     = List.sort_unique Int.compare xs)
   *)
 
   let backwards t = Concrete.backwards t.map
 
-  let keys    t = BatEnum.map fst (enum t)
-  let values  t = BatEnum.map snd (enum t)
+  let keys    t = BatGen.map fst (gen t)
+  let values  t = BatGen.map snd (gen t)
 
-  let of_enum ?(cmp = Pervasives.compare) e =
-    { cmp = cmp; map = Concrete.of_enum cmp e }
+  let of_gen ?(cmp = Pervasives.compare) e =
+    { cmp = cmp; map = Concrete.of_gen cmp e }
 
   let print ?first ?last ?sep ?kvsep print_k print_v out t =
     Concrete.print ?first ?last ?sep ?kvsep print_k print_v out t.map

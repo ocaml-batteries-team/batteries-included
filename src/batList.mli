@@ -60,7 +60,7 @@
 type 'a t = 'a list
 (**The type of lists*)
 
-include BatEnum.Enumerable with type 'a enumerable = 'a t
+include BatGen.Enumerable with type 'a enumerable = 'a t
 include BatInterfaces.Mappable with type 'a mappable = 'a t
 
 
@@ -613,21 +613,21 @@ val interleave : ?first:'a -> ?last:'a -> 'a -> 'a list -> 'a list
     Abstraction layer.*)
 
 
-val enum : 'a list -> 'a BatEnum.t
+val gen : 'a list -> 'a BatGen.t
 (** Returns an enumeration of the elements of a list. This enumeration may
     be used to visit elements of the list in forward order (i.e. from the
     first element to the last one)*)
 
-val of_enum : 'a BatEnum.t -> 'a list
+val of_gen : 'a BatGen.t -> 'a list
 (** Build a list from an enumeration. In the result, elements appear in the
     same order as they did in the source enumeration. *)
 
-val backwards : 'a list -> 'a BatEnum.t
+val backwards : 'a list -> 'a BatGen.t
 (** Returns an enumeration of the elements of a list. This enumeration may
     be used to visit elements of the list in backwards order (i.e. from the
     last element to the first one)*)
 
-val of_backwards : 'a BatEnum.t -> 'a list
+val of_backwards : 'a BatGen.t -> 'a list
 (** Build a list from an enumeration. The first element of the enumeration
     becomes the last element of the list, the second element of the
     enumeration

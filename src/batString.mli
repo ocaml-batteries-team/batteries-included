@@ -262,7 +262,7 @@ val compare: t -> t -> int
 
 (** {6 Conversions} *)
 
-val enum : string -> char BatEnum.t
+val gen : string -> char BatGen.t
 (** Returns an enumeration of the characters of a string.
     The behaviour is unspecified if the string is mutated
     while it is enumerated.
@@ -272,12 +272,12 @@ val enum : string -> char BatEnum.t
       [String.enum "a b c" // ((<>) ' ') |> String.of_enum = "abc"]
 *)
 
-val of_enum : char BatEnum.t -> string
+val of_gen : char BatGen.t -> string
 (** Creates a string from a character enumeration.
     Example: [['f'; 'o'; 'o'] |> List.enum |> String.of_enum = "foo"]
 *)
 
-val backwards : string -> char BatEnum.t
+val backwards : string -> char BatGen.t
 (** Returns an enumeration of the characters of a string, from last to first.
 
     Examples:
@@ -285,7 +285,7 @@ val backwards : string -> char BatEnum.t
     [ let rev s = String.backwards s |> String.of_enum ]
 *)
 
-val of_backwards : char BatEnum.t -> string
+val of_backwards : char BatGen.t -> string
 (** Build a string from an enumeration, starting with last character, ending with first.
 
     Examples:
@@ -462,7 +462,7 @@ val rfind_from: string -> int -> string -> int
     Example: [String.rfind_from "foobarbaz" 6 "ba" = 6]
 *)
 
-val find_all : string -> string -> int BatEnum.t
+val find_all : string -> string -> int BatGen.t
 (** [find_all s x] enumerates positions of [s] at which [x] occurs.
     Example: [find_all "aabaabaa" "aba" |> List.of_enum] will return
     the list [[1; 4]].
@@ -902,13 +902,13 @@ sig
   val init : int -> (int -> char) -> _ t
 
   (** {6 Conversions}*)
-  val enum : [> `Read] t -> char BatEnum.t
+  val gen : [> `Read] t -> char BatGen.t
 
-  val of_enum : char BatEnum.t -> _ t
+  val of_gen : char BatGen.t -> _ t
 
-  val backwards : [> `Read] t -> char BatEnum.t
+  val backwards : [> `Read] t -> char BatGen.t
 
-  val of_backwards : char BatEnum.t -> _ t
+  val of_backwards : char BatGen.t -> _ t
 
   val of_list : char list -> _ t
 

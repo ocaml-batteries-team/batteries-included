@@ -107,16 +107,16 @@ val of_digit : int -> char
     @raise Invalid_argument if the
     argument is outside the range 0--9*)
 
-val enum: unit -> char BatEnum.t
+val gen: unit -> char BatGen.t
 (** Produce the enumeration of all characters *)
 
-val range: ?until:char -> char -> char BatEnum.t
+val range: ?until:char -> char -> char BatGen.t
 (** [range from ?until] produces an enumeration of the
     characters from [from] to [until] included
     [until] defaults to ['\255']
 *)
 
-val ( -- ): char -> char -> char BatEnum.t
+val ( -- ): char -> char -> char BatGen.t
 (** Produce the enumeration of a segment of characters.
 
     ['a' -- 'z'] is the enumeration of all characters
@@ -124,7 +124,7 @@ val ( -- ): char -> char -> char BatEnum.t
 
 (** {6 Infix submodule regrouping all infix operators} *)
 module Infix : sig
-  val ( -- ): char -> char -> char BatEnum.t
+  val ( -- ): char -> char -> char BatGen.t
 end
 
 (** {6 Boilerplate code}*)

@@ -53,35 +53,35 @@ module BaseComplex = struct
     let fail s =
       failwith (Printf.sprintf "BatComplex.of_string %S: %s" x s) in
     let open Genlex in
-    let enum =
-      BatGenlex.to_enum_filter
+    let tokens =
+      BatGenlex.to_stream_filter
         ( BatGenlex.of_list ["."; "i"; "+"; "-"; "*"] )
-        ( BatString.enum x ) in
+        ( Stream.of_string x ) in
 
     let rec parse_re () =
-      match BatEnum.peek enum with
+      match Stream.peek tokens with
       | None -> fail "the string is empty"
-      | Some (Int i) -> BatEnum.junk enum; parse_separation (float_of_int i)
-      | Some (Float f) -> BatEnum.junk enum; parse_separation f
-      | Some (Kwd "-") -> BatEnum.junk enum; parse_i_im ~multiplier:(-1.) 0.
-      | Some (Kwd "+") -> BatEnum.junk enum; parse_i_im ~multiplier:1. 0.
+      | Some (Int i) -> Stream.junk tokens; parse_separation (float_of_int i)
+      | Some (Float f) -> Stream.junk tokens; parse_separation f
+      | Some (Kwd "-") -> Stream.junk tokens; parse_i_im ~multiplier:(-1.) 0.
+      | Some (Kwd "+") -> Stream.junk tokens; parse_i_im ~multiplier:1. 0.
       | Some _token -> parse_i_im ~multiplier:1. 0.
 
     and parse_separation re =
-      match BatEnum.get enum with
+      match (try Some (Stream.next tokens) with _ -> None) with
       | None -> {re; im = 0.}
       | Some (Kwd "-") -> parse_i_im ~multiplier:(-1.) re
       | Some (Kwd "+") -> parse_i_im ~multiplier:1. re
       | Some _ -> fail "unexpected token after real part"
 
     and parse_i_im ~multiplier re =
-      match BatEnum.get enum with
+      match (try Some (Stream.next tokens) with _ -> None) with
       | Some (Kwd "i") -> (
-          match BatEnum.peek enum with
+          match Stream.peek tokens with
           | None -> {re; im = multiplier}
           | Some (Kwd ".")
           | Some (Kwd "*") ->
-            BatEnum.junk enum;
+            Stream.junk tokens;
             parse_im ~multiplier re
           | Some _token ->
             parse_im ~multiplier re
@@ -89,15 +89,15 @@ module BaseComplex = struct
       | _ -> fail "expected \"i\" before the imaginary part"
 
     and parse_im ~multiplier re =
-      match BatEnum.peek enum with
+      match Stream.peek tokens with
       | Some (Int i) ->
-        BatEnum.junk enum; parse_end {re; im = multiplier *. float_of_int i}
+        Stream.junk tokens; parse_end {re; im = multiplier *. float_of_int i}
       | Some (Float f) ->
-        BatEnum.junk enum; parse_end {re; im = multiplier *. f}
+        Stream.junk tokens; parse_end {re; im = multiplier *. f}
       | _ -> fail "expected a number for the imaginary part"
 
     and parse_end c =
-      match BatEnum.peek enum with
+      match Stream.peek tokens with
       | None -> c
       | Some _ -> fail "unexpected trailing tokens" in
 

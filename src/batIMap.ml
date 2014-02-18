@@ -217,41 +217,39 @@ module Core = struct
       make_tree s (k1, k2) empty
     | None -> empty
 
-  module Enum = BatEnum
-
   (* Fold across two maps *)
   let fold2_range f m1 m2 acc =
-    let e1 = enum m1 and e2 = enum m2 in
+    let e1 = gen m1 and e2 = gen m2 in
     let rec aux acc = function
         None,None -> acc
       | Some (lo,hi,rx), None ->
-        aux (f lo hi (Some rx) None acc) (Enum.get e1, None)
+        aux (f lo hi (Some rx) None acc) (BatGen.get e1, None)
       | None, Some (lo,hi,rx) ->
-        aux (f lo hi None (Some rx) acc) (None, Enum.get e2)
+        aux (f lo hi None (Some rx) acc) (None, BatGen.get e2)
       | Some (lo1,hi1,rx1), Some (lo2,hi2,rx2) when lo1 < lo2 ->
         let hi, v1 =
           if hi1 > lo2 then lo2-1, Some (lo2,hi1,rx1)
           else if hi1 = lo2 then hi1, Some (lo2,lo2,rx1)
-          else hi1, Enum.get e1
+          else hi1, BatGen.get e1
         and v2 = Some (lo2,hi2,rx2) in
         aux (f lo1 hi (Some rx1) None acc) (v1, v2)
       | Some (lo1,hi1,rx1), Some (lo2,hi2,rx2) when lo2 < lo1 ->
         let hi, v2 =
           if hi2 > lo1 then lo1-1, Some (lo1,hi2,rx2)
           else if hi2 = lo1 then hi2, Some (lo1,lo1,rx2)
-          else hi2, Enum.get e2
+          else hi2, BatGen.get e2
         and v1 = Some (lo1,hi1,rx1) in
         aux (f lo2 hi None (Some rx2) acc) (v1,v2)
       | Some (lo1,hi1,rx1), Some (_lo2,hi2,rx2) (* lo1 = lo2 *) ->
         let hi, v1, v2 =
-          if hi1 = hi2 then hi1, Enum.get e1, Enum.get e2
-          else if hi1 < hi2 then hi1, Enum.get e1, Some (hi1+1,hi2,rx2)
-          else (* hi2 < hi1 *) hi2, Some (hi2+1,hi1,rx1), Enum.get e2
+          if hi1 = hi2 then hi1, BatGen.get e1, BatGen.get e2
+          else if hi1 < hi2 then hi1, BatGen.get e1, Some (hi1+1,hi2,rx2)
+          else (* hi2 < hi1 *) hi2, Some (hi2+1,hi1,rx1), BatGen.get e2
         in
         (*  printf "#@%a\n" print_rng (lo1, hi); *)
         aux (f lo1 hi (Some rx1) (Some rx2) acc) (v1, v2)
     in
-    aux acc (Enum.get e1, Enum.get e2)
+    aux acc (BatGen.get e1, BatGen.get e2)
 
   let union ~eq f m1 m2 =
     let insert lo hi v1 v2 m = match v1, v2 with
@@ -268,34 +266,34 @@ module Core = struct
 
 
   let forall2_range f m1 m2 =
-    let e1 = enum m1 and e2 = enum m2 in
+    let e1 = gen m1 and e2 = gen m2 in
     let rec aux = function
         None,None -> true
       | Some (lo,hi,rx), None ->
-        (f lo hi (Some rx) None) && aux (Enum.get e1, None)
+        (f lo hi (Some rx) None) && aux (BatGen.get e1, None)
       | None, Some (lo,hi,rx) ->
-        (f lo hi None (Some rx)) && aux (None, Enum.get e2)
+        (f lo hi None (Some rx)) && aux (None, BatGen.get e2)
       | Some (lo1,hi1,rx1), Some (lo2,hi2,rx2) when lo1 < lo2 ->
         let hi, v1 =
           if hi1 > lo2 then lo2-1, Some (lo2,hi1,rx1)
-          else hi1, Enum.get e1
+          else hi1, BatGen.get e1
         and v2 = Some (lo2,hi2,rx2) in
         (f lo1 hi (Some rx1) None) && aux (v1, v2)
       | Some (lo1,hi1,rx1), Some (lo2,hi2,rx2) when lo2 < lo1 ->
         let hi, v2 =
           if hi2 > lo1 then lo1-1, Some (lo1,hi2,rx2)
-          else hi2, Enum.get e2
+          else hi2, BatGen.get e2
         and v1 = Some (lo1,hi1,rx1) in
         (f lo2 hi None (Some rx2)) && aux (v1,v2)
       | Some (lo1,hi1,rx1), Some (_,hi2,rx2) (* lo1 = lo2 *) ->
         let hi, v1, v2 =
-          if hi1 = hi2 then hi1, Enum.get e1, Enum.get e2
-          else if hi1 < hi2 then hi1, Enum.get e1, Some (hi1+1,hi2,rx2)
-          else (* hi2 < hi1 *) hi2, Some (hi2+1,hi1,rx1), Enum.get e2
+          if hi1 = hi2 then hi1, BatGen.get e1, BatGen.get e2
+          else if hi1 < hi2 then hi1, BatGen.get e1, Some (hi1+1,hi2,rx2)
+          else (* hi2 < hi1 *) hi2, Some (hi2+1,hi1,rx1), BatGen.get e2
         in
         (f lo1 hi (Some rx1) (Some rx2)) && aux (v1, v2)
     in
-    aux (Enum.get e1, Enum.get e2)
+    aux (BatGen.get e1, BatGen.get e2)
 end
 
 type 'a t = {m: 'a Core.t; eq: 'a -> 'a -> bool}
@@ -317,11 +315,11 @@ let is_empty {m} = Core.is_empty m
 let add x y {m;eq} = {m=Core.add ~eq x y m; eq}
 
 (*$= add as a & ~cmp:(List.eq (Tuple3.eq Int.equal Int.equal Int.equal)) ~printer:(List.print (Tuple3.print Int.print Int.print Int.print) |> IO.to_string)
-  [(0,2,0)] (empty ~eq:(=) |> a 0 0 |> a 2 0 |> a 1 0 |> enum |> List.of_enum)
+  [(0,2,0)] (empty ~eq:(=) |> a 0 0 |> a 2 0 |> a 1 0 |> enum |> List.of_gen)
 *)
 (*$= add as a & ~cmp:(List.eq (Tuple3.eq Int.equal Int.equal String.equal)) ~printer:(List.print (Tuple3.print Int.print Int.print String.print) |> IO.to_string)
   [(0,2,"foo")] \
-  (empty ~eq:(=) |> a 0 "foo" |> a 2 "foo" |> a 1 "foo" |> enum |> List.of_enum)
+  (empty ~eq:(=) |> a 0 "foo" |> a 2 "foo" |> a 1 "foo" |> enum |> List.of_gen)
 *)
 
 
@@ -380,7 +378,7 @@ let fold_range f {m} x0 = Core.fold_range f m x0
 let set_to_map ?(eq=(=)) s x = {m = Core.set_to_map s x; eq}
 let domain {m} = Core.domain m
 let map_to_set f {m} = Core.map_to_set f m
-let enum {m} = Core.enum m
+let gen {m} = Core.gen m
 let fold2_range f {m=m1} {m=m2} x0 = Core.fold2_range f m1 m2 x0
 let union f {m=m1;eq} {m=m2} = {m=Core.union ~eq f m1 m2; eq}
 let merge ?(eq=(=)) f {m=m1} {m=m2} = {m=Core.merge ~eq f m1 m2; eq}
@@ -391,8 +389,8 @@ let get_dec_eq {eq} = eq
   get_dec_eq (empty Int.equal) == Int.equal
 *)
 
-let of_enum ~eq e =
-  BatEnum.fold (fun t (n1, n2, v) -> add_range n1 n2 v t) (empty ~eq) e
+let of_gen ~eq e =
+  BatGen.fold (fun t (n1, n2, v) -> add_range n1 n2 v t) (empty ~eq) e
 
 module Infix = struct
   let (-->) {m} k = Core.find k m

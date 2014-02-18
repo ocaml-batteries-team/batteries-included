@@ -276,113 +276,70 @@ let partition p xs =
   )
 *)
 
-let enum xs =
-  let rec make start xs =
-    let n = length xs in
-    (* inside the loop, as [make] may later be called with another array *)
-    BatEnum.make
-      ~next:(fun () ->
-        if !start < n then
-          xs.(BatRef.post_incr start)
-        else
-          raise BatEnum.No_more_elements)
-      ~count:(fun () ->
-        n - !start)
-      ~clone:(fun () ->
-        make (BatRef.copy start) xs)
-  in
-  make (ref 0) xs
-(*$Q enum
+let gen xs =
+  let r = ref 0 in
+  fun () ->
+    if !r = length xs then None
+    else Some (unsafe_get xs (BatRef.post_incr r))
+(*$Q gen
   (Q.array Q.small_int) (fun a -> \
-    let e = enum a in \
+    let e = gen a in \
     for i = 0 to Array.length a / 2 - 1 do\
-      assert (a.(i) = BatEnum.get_exn e)\
+      assert (Some a.(i) = e ())\
     done; \
-    let e' = BatEnum.clone e in \
-    assert (BatEnum.count e = BatEnum.count e'); \
-    for i = Array.length a / 2 to Array.length a - 1 do \
-      assert (a.(i) = BatEnum.get_exn e && a.(i) = BatEnum.get_exn e') \
-    done; \
-    BatEnum.is_empty e && BatEnum.is_empty e' \
+    e() = None
   )
 *)
 
 
 let backwards xs =
-  let rec make start xs =
-    BatEnum.make
-      ~next:(fun () ->
-        if !start > 0 then
-          xs.(BatRef.pre_decr start)
-        else
-          raise BatEnum.No_more_elements)
-      ~count:(fun () ->
-        !start)
-      ~clone:(fun () ->
-        make (BatRef.copy start) xs)
-  in
-  make (ref (length xs)) xs
+  let r = ref (length xs-1) in
+  fun () ->
+    if !r = ~-1
+    then None
+    else Some (unsafe_get xs (BatRef.post_decr r))
 (*$Q backwards
   (Q.array Q.small_int) (fun a -> \
     let e = backwards a in \
     let n = Array.length a in \
     for i = 0 to Array.length a / 2 - 1 do\
-      assert (a.(n - 1 - i) = BatEnum.get_exn e)\
+      assert (Some a.(n - 1 - i) = e ())\
     done; \
-    let e' = BatEnum.clone e in \
-    assert (BatEnum.count e = BatEnum.count e'); \
-    for i = Array.length a / 2 to Array.length a - 1 do \
-      assert (a.(n - 1 - i) = BatEnum.get_exn e && \
-              a.(n - 1 - i) = BatEnum.get_exn e') \
-    done; \
-    BatEnum.is_empty e && BatEnum.is_empty e' \
+    e() = None
   )
 *)
 
-let of_enum e =
-  let n = BatEnum.count e in
-  (* This assumes, reasonably, that init traverses the array in order. *)
-  Array.init n
-    (fun _i ->
-      match BatEnum.get e with
-      | Some x -> x
-      | None -> assert false (*BISECT-VISIT*))
-
-let of_backwards e =
-  of_list (BatList.of_backwards e)
-
-type 'a gen = unit -> 'a option
-
-let gen a =
-  let i = ref 0 in
-  fun () ->
-    let j = !i in
-    if j = length a then None else (incr i; Some a.(j))
-
-let rec __list_of_gen acc g = match g () with
-  | None -> acc
-  | Some x -> __list_of_gen (x::acc) g
-
-let of_gen g =
-  let l = __list_of_gen [] g in
-  let a = of_list l in (* XXX: optimize? *)
+let of_gen e =
+  let l = BatGen.to_rev_list e in
+  let a = of_list l in
   rev_in_place a;
   a
 
-(*$Q gen
-  (Q.array Q.small_int) (fun a -> \
-    of_gen (gen a) = a)
-*)
+let of_backwards e =
+  of_list (BatGen.to_rev_list e)
 
-let range xs = BatEnum.(--^) 0 (Array.length xs)
+
+let range xs =
+  let i = ref 0 in
+  fun () ->
+    if !i = Array.length xs then None
+    else Some (BatRef.post_incr i)
 (*$Q range
   (Q.array Q.small_int) (fun a -> \
-    BatEnum.equal (=) (range a) \
-     (enum (Array.init (Array.length a) (fun i -> i))))
+    Gen.equal ~eq:(=) (range a)
+     (gen (Array.init (Array.length a) (fun i -> i))))
 *)
 
 let filter_map p xs =
-  of_enum (BatEnum.filter_map p (enum xs))
+  let l = fold_left
+    (fun acc x -> match p x with
+      | None -> acc
+      | Some y -> y::acc)
+    [] xs
+  in
+  let a = of_list l in
+  rev_in_place a;
+  a
 (*$Q filter_map
   (Q.pair (Q.array Q.small_int) (Q.fun1 Q.small_int (Q.option Q.int))) \
   (fun (a, f) -> \
@@ -841,8 +798,8 @@ struct
   let copy         = copy
   let fill         = fill
   let blit         = blit
-  let enum         = enum
-  let of_enum      = of_enum
+  let gen          = gen
+  let of_gen       = of_gen
   let backwards    = backwards
   let of_backwards = of_backwards
   let to_list      = to_list

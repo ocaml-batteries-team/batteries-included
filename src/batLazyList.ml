@@ -344,23 +344,21 @@ let to_stream l =
 *)
 let to_array l = Array.of_list (to_list l)
 
-let enum l =
-  let rec aux l =
-    let reference = ref l in
-    BatEnum.make ~next:(fun () -> match next !reference with
-      | Cons(x,t) -> reference := t; x
-      | Nil       -> raise BatEnum.No_more_elements )
-      ~count:(fun () -> length !reference)
-      ~clone:(fun () -> aux !reference)
-  in aux l
+let gen l =
+  let r = ref l in
+  fun () ->
+    match !r with
+    | (lazy Nil) -> None
+    | (lazy (Cons (x, l'))) -> r:= l'; Some x
 
 (**
    Lazy conversion from lists
 
-   Albeit slower than eager conversion, this is the default mechanism for converting from regular
-   lists to lazy lists.  This for two reasons :
-   * if you're using lazy lists, total speed probably isn't as much an issue as start-up speed
-   * this will let you convert regular infinite lists to lazy lists.
+   Albeit slower than eager conversion, this is the default mechanism for
+   converting from regular lists to lazy lists.  This for two reasons :
+   if you're using lazy lists, total speed probably isn't as much an issue as
+   start-up speed this will let you convert regular infinite lists to lazy
+   lists.
 *)
 let of_list l =
   let rec aux = function
@@ -393,11 +391,11 @@ let of_array l =
   ArrayLabels.fold_right ~init: nil ~f: (fun x acc -> Lazy.lazy_from_val (Cons (x, acc))) l
 
 (**
-   Lazy conversion from enum
+   Lazy conversion from gen
 *)
-let of_enum e =
+let of_gen g =
   let rec aux () =
-    lazy (match BatEnum.get e with
+    lazy (match g() with
       | Some x -> Cons (x, aux () )
       | None   -> Nil )
   in
@@ -628,8 +626,8 @@ let combine l1 l2 =
   in aux l1 l2
 
 let uncombine l =
-  let (l1, l2) = BatEnum.uncombine (enum l) in
-  (of_enum l1, of_enum l2)
+  let (l1, l2) = BatGen.unzip (gen l) in
+  (of_gen l1, of_gen l2)
 (*let uncombine l =
   let rec aux l = match next l with
     | Cons ((h1, h2), t) -> lazy (let (t1, t2) = aux t in
@@ -644,7 +642,7 @@ let uncombine l =
 
 
 let print ?(first="[^") ?(last="^]") ?(sep="; ") print_a out t =
-  BatEnum.print ~first ~last ~sep print_a out (enum t)
+  BatGen.print ~first ~last ~sep print_a out (gen t)
 
 module Infix = struct
   let ( ^:^ ), ( ^@^ ) = ( ^:^ ), ( ^@^ )

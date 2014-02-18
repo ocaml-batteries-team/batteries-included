@@ -183,18 +183,18 @@ val remove : int -> int -> 'a t -> 'a t
 
 (** {6 Conversion}*)
 
-val enum : 'a t -> 'a BatEnum.t
+val gen : 'a t -> 'a BatGen.t
 (** Returns an enumeration of the elements of the vector.
     Behavior of the enumeration is undefined if the contents of the vector changes afterwards.*)
 
-val of_enum : 'a BatEnum.t -> 'a t
+val of_gen : 'a BatGen.t -> 'a t
 (** Build a vector from an enumeration.*)
 
-val backwards : 'a t -> 'a BatEnum.t
+val backwards : 'a t -> 'a BatGen.t
 (** Returns an enumeration of the elements of a vector, from last to first.
     Behavior of the enumeration is undefined if the contents of the vector changes afterwards.*)
 
-val of_backwards : 'a BatEnum.t -> 'a t
+val of_backwards : 'a BatGen.t -> 'a t
 (** Build a vector from an enumeration, from last to first.*)
 
 (** {6 Iteration and higher-order functions } *)
@@ -347,10 +347,10 @@ sig
   val iter : ('a -> unit) -> 'a t -> unit
   val map : ('a -> 'b) -> 'a t -> 'b t
   val fold_right : ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
-  val enum : 'a t -> 'a BatEnum.t
-  val backwards : 'a t -> 'a BatEnum.t
-  val of_enum : 'a BatEnum.t -> 'a t
-  val of_backwards : 'a BatEnum.t -> 'a t
+  val gen : 'a t -> 'a BatGen.t
+  val backwards : 'a t -> 'a BatGen.t
+  val of_gen : 'a BatGen.t -> 'a t
+  val of_backwards : 'a BatGen.t -> 'a t
 end
 
 module Make :
@@ -488,18 +488,18 @@ val remove : int -> int -> 'a t -> 'a t
 
 (** {6 Conversion}*)
 
-val enum : 'a t -> 'a BatEnum.t
+val gen : 'a t -> 'a BatGen.t
 (** Returns an enumeration of the elements of the vector.
     Behavior of the enumeration is undefined if the contents of the vector changes afterwards.*)
 
-val of_enum : 'a BatEnum.t -> 'a t
+val of_gen : 'a BatGen.t -> 'a t
 (** Build a vector from an enumeration.*)
 
-val backwards : 'a t -> 'a BatEnum.t
+val backwards : 'a t -> 'a BatGen.t
 (** Returns an enumeration of the elements of a vector, from last to first.
     Behavior of the enumeration is undefined if the contents of the vector changes afterwards.*)
 
-val of_backwards : 'a BatEnum.t -> 'a t
+val of_backwards : 'a BatGen.t -> 'a t
 (** Build a vector from an enumeration, from last to first.*)
 
 (** {6 Iteration and higher-order functions } *)

@@ -73,16 +73,22 @@ let of_digit i =
   try ignore (of_digit (46)); false with Invalid_argument _ -> true
 *)
 
-let enum () =
-  BatEnum.map unsafe_chr (BatEnum.( -- ) 0 255)
-(*$T enum
-  let e = enum () in for i = 0 to 255 do assert (Char.chr i = BatEnum.get_exn e) done; BatEnum.is_empty e
+let gen () =
+  let i = ref 0 in
+  fun () -> if !i = 256 then None else Some (unsafe_chr (BatRef.post_incr i))
+(*$T gen
+  let e = gen () in for i = 0 to 255 do \
+    assert (Char.chr i = e()) done; e() = None
 *)
 
 let ( -- ) from last =
-  BatEnum.map unsafe_chr (BatEnum.( -- ) (unsafe_int from) (unsafe_int last))
+  let last = code last in
+  let i = ref (code from) in
+  fun () ->
+    if !i > last then None else Some(unsafe_chr(BatRef.post_incr i))
 (*$T (--)
-  let e = Char.chr 12 -- Char.chr 52 in for i = 12 to 52 do assert (Char.chr i = BatEnum.get_exn e) done; BatEnum.is_empty e
+  let e = Char.chr 12 -- Char.chr 52 in \
+  for i = 12 to 52 do assert (Some (Char.chr i) = e ()) done; e() = None
 *)
 
 (*BISECT-IGNORE-BEGIN*)

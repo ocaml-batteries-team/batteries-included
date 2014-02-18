@@ -179,38 +179,25 @@ let rfind str sub = rfind_from str (String.length str - 1) sub
 
 let find_all str sub =
   (* enumerator *)
-  let rec next r () =
+  let r = ref 0 in
+  fun () ->
     try
       let i = find_from str !r sub in
       r := i+1;
-      i
-    with Not_found -> raise BatEnum.No_more_elements
-  in
-  let count r () =
-    let n = ref 0 in
-    let r' = BatRef.copy r in
-    begin try while true do ignore (next r' ()); incr n; done;
-    with BatEnum.No_more_elements -> ();
-    end;
-    !n
-  in
-  let rec clone r () = make (BatRef.copy r)
-  and make r = BatEnum.make ~next:(next r) ~count:(count r) ~clone:(clone r)
-  in
-  let r = ref 0 in
-  make r
+      Some i
+    with Not_found -> None
 
 (*$T find_all
   find_all "aaabbaabaaa" "aa" |> List.of_enum = [0;1;5;8;9]
   find_all "abcde" "bd" |> List.of_enum = []
   find_all "baaaaaaaaaaaaaaaaaaaab" "baa" |> List.of_enum = [0]
-  find_all "aaabbaabaaa" "aa" |> Enum.skip 1 |> Enum.clone \
+  find_all "aaabbaabaaa" "aa" |> Gen.skip 1 |> Gen.clone \
     |> List.of_enum = [1;5;8;9]
-  find_all "aaabbaabaaa" "aa" |> Enum.skip 1 |> Enum.count = 4
+  find_all "aaabbaabaaa" "aa" |> Gen.skip 1 |> Gen.count = 4
   find_all "" "foo" |> BatEnum.is_empty
   let e = find_all "aaabbaabaaa" "aa" in \
-    Enum.drop 2 e; let e' = Enum.clone e in \
-    (List.of_enum e = [5;8;9]) && (Enum.skip 1 e' |> List.of_enum = [8;9])
+    Gen.drop 2 e; let e' = Gen.clone e in \
+    (List.of_enum e = [5;8;9]) && (Gen.skip 1 e' |> List.of_enum = [8;9])
  *)
 
 let exists str sub =
@@ -443,42 +430,25 @@ let to_float s = float_of_string s
    try ignore (to_float ""); false with Failure _ -> true
 *)
 
-let enum s =
+let gen s =
   let l = length s in
-  let rec make i =
-    BatEnum.make
-      ~next:(fun () ->
-        if !i = l then
-          raise BatEnum.No_more_elements
-        else
-          unsafe_get s (BatRef.post_incr i)
-      )
-      ~count:(fun () -> l - !i)
-      ~clone:(fun () -> make (BatRef.copy i))
-  in
-  make (ref 0)
-(*$T enum
-   "" |> enum |> List.of_enum = []
-   "foo" |> enum |> List.of_enum = ['f'; 'o'; 'o']
-   let e = enum "abcdef" in \
+  let i = ref 0 in
+  fun () ->
+    if !i = l then None else Some (unsafe_get s (BatRef.post_incr i))
+(*$T gen
+   "" |> gen |> List.of_enum = []
+   "foo" |> gen |> List.of_enum = ['f'; 'o'; 'o']
+   let e = gen "abcdef" in \
    for _i = 0 to 2 do BatEnum.junk e done; \
    let e2 = BatEnum.clone e in \
    implode (BatList.of_enum e) = "def" && implode (BatList.of_enum e2) = "def"
 *)
 
 let backwards s =
-  let rec make i =
-    BatEnum.make
-      ~next:(fun () ->
-        if !i <= 0 then
-          raise BatEnum.No_more_elements
-        else
-          unsafe_get s (BatRef.pre_decr i)
-      )
-      ~count:(fun () -> !i)
-      ~clone:(fun () -> make (BatRef.copy i))
-  in
-  make (ref (length s))
+  let i = ref (length s) in
+  fun () ->
+    if !i <= 0 then None
+    else Some (unsafe_get s (BatRef.pre_decr i))
 (*$T backwards
    "" |> backwards |> of_enum = ""
    "foo" |> backwards |> of_enum = "oof"
@@ -488,28 +458,26 @@ let backwards s =
    implode (BatList.of_enum e) = "cba" && implode (BatList.of_enum e2) = "cba"
 *)
 
-let of_enum e =
-  (* TODO: use a buffer when not fast_count *)
-  let l = BatEnum.count e in
-  let s = create l in
-  let i = ref 0 in
-  BatEnum.iter (fun c -> unsafe_set s (BatRef.post_incr i) c) e;
+let of_gen e =
+  let l = BatGen.to_rev_list e in
+  let n = List.length l in
+  let s = String.create n in
+  List.iteri (fun i c -> unsafe_set s (n-i-1) c) l;
   s
-(*$T of_enum
-    Enum.init 3 (fun i -> char_of_int (i + int_of_char '0')) |> of_enum = "012"
-    Enum.init 0 (fun _i -> ' ') |> of_enum = ""
+(*$T of_gen
+    Gen.init 3 (fun i -> char_of_int (i + int_of_char '0')) |> of_gen = "012"
+    Gen.init 0 (fun _i -> ' ') |> of_enum = ""
 *)
 
 let of_backwards e =
-  (* TODO: use a buffer when not fast_count *)
-  let l = BatEnum.count e in
-  let s = create l in
-  let i = ref (l - 1) in
-  BatEnum.iter (fun c -> unsafe_set s (BatRef.post_decr i) c) e;
+  let l = BatGen.to_rev_list e in
+  let n = List.length l in
+  let s = String.create n in
+  List.iteri (fun i c -> unsafe_set s i c) l;
   s
 (*$T of_backwards
-   "" |> enum |> of_backwards = ""
-   "foo" |> enum |> of_backwards = "oof"
+   "" |> gen |> of_backwards = ""
+   "foo" |> gen |> of_backwards = "oof"
    "foo" |> backwards |> of_backwards = "foo"
 *)
 
@@ -818,11 +786,11 @@ struct
 end
 
 let numeric_compare s1 s2 =
-  let e1 = BatEnum.group BatChar.is_digit (enum s1) in
-  let e2 = BatEnum.group BatChar.is_digit (enum s2) in
-  BatEnum.compare (fun g1 g2 ->
-    let s1 = of_enum g1 in
-    let s2 = of_enum g2 in
+  let e1 = BatGen.group_by BatChar.is_digit (gen s1) in
+  let e2 = BatGen.group_by BatChar.is_digit (gen s2) in
+  BatGen.compare ~cmp:(fun g1 g2 ->
+    let s1 = of_gen g1 in
+    let s2 = of_gen g2 in
     if BatChar.is_digit s1.[0] && BatChar.is_digit s2.[0] then
       let n1 = Big_int.big_int_of_string s1 in
       let n2 = Big_int.big_int_of_string s2 in
@@ -986,8 +954,8 @@ struct
   let make          = make
   let is_empty      = is_empty
   let init          = init
-  let enum          = enum
-  let of_enum       = of_enum
+  let gen           = gen
+  let of_gen        = of_gen
   let backwards     = backwards
   let of_backwards  = of_backwards
 

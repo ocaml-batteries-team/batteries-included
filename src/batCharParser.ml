@@ -32,12 +32,14 @@ let start_position =
     line   = 1 }
 
 let advance c p =
-  if BatChar.is_newline c then ((*Printf.eprintf "[Have reached line %i]\n%!" (p.line + 1);*) { offset = 1; line = p.line + 1})
-  else                      { (p) with offset = p.offset + 1}
+  if BatChar.is_newline c then
+    ((*Printf.eprintf "[Have reached line %i]\n%!" (p.line + 1);*)
+      { offset = 1; line = p.line + 1})
+  else { (p) with offset = p.offset + 1}
 
-let source_of_enum   s = Source.of_enum s start_position advance
+let source_of_gen   s = Source.of_gen s start_position advance
 
-let source_of_string s = source_of_enum (BatString.enum s)
+let source_of_string s = source_of_gen (BatString.gen s)
 
 let parse p s =
   run p (source_of_string s)
@@ -48,8 +50,8 @@ let parse p s =
   let chars  = BatEnum.concat (BatEnum.from (fun () -> match get lines with
     | None   -> raise BatEnum.No_more_elements
     | Some l -> latest := l;
-    String.enum l)) in
-  let source = source_of_enum chars in
+    String.gen l)) in
+  let source = source_of_gen chars in
     match run p source with
       | Std.Ok _ as result -> result
       | Std.Error report   -> Std.Error (report, ?(*Furthest position*), ?(*List of labels at that point*), !latest)*)

@@ -45,7 +45,7 @@
 
 type 'a t = 'a Stream.t
 
-include BatEnum.Enumerable with type 'a enumerable = 'a t
+include BatGen.Enumerable with type 'a enumerable = 'a t
 include BatInterfaces.Mappable with type 'a mappable = 'a t
 
 (** The type of streams holding values of type ['a]. *)
@@ -156,13 +156,13 @@ val npeek : int -> 'a t -> 'a list
 
 (** {6 Conversion functions} *)
 
-val enum : 'a t -> 'a BatEnum.t
+val gen : 'a t -> 'a BatGen.t
 (** Convert a stream to an enumeration.
     Reading the resulting enumeration will consume elements from the stream.
     This is the preferred manner of converting from a stream to any other
     data structure.*)
 
-val of_enum : 'a BatEnum.t -> 'a t
+val of_gen : 'a BatGen.t -> 'a t
 (** Convert an enumeration to a stream.
     Reading the resulting stream will consume elements from the enumeration.
     This is the preferred manner of creating a stream.*)

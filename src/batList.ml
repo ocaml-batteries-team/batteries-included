@@ -889,35 +889,18 @@ let transpose = function
   transpose [ [1] ] = [ [1] ]
 *)
 
-let enum l =
-  let rec make lr count =
-    BatEnum.make
-      ~next:(fun () ->
-        match !lr with
-        | [] -> raise BatEnum.No_more_elements
-        | h :: t ->
-          decr count;
-          lr := t;
-          h
-      )
-      ~count:(fun () ->
-        if !count < 0 then count := length !lr;
-        !count
-      )
-      ~clone:(fun () ->
-        make (ref !lr) (ref !count)
-      )
-  in
-  make (ref l) (ref (-1))
+let gen l =
+  let l = ref l in
+  fun () -> match !l with
+    | [] -> None
+    | x::l' -> l:=l'; Some x
 
-let of_enum e =
+let of_gen g =
   let h = Acc.dummy () in
-  let _ = BatEnum.fold Acc.accum h e in
+  let _ = BatGen.fold Acc.accum h g in
   h.tl
 
-
-
-let backwards l = enum (rev l) (*TODO: should we make it more efficient?*)
+let backwards l = gen (rev l) (*TODO: should we make it more efficient?*)
 (*let backwards l = (*This version only needs one pass but is actually less lazy*)
   let rec aux acc = function
     | []   -> acc
@@ -926,28 +909,10 @@ let backwards l = enum (rev l) (*TODO: should we make it more efficient?*)
 
 
 let of_backwards e =
-  let rec aux acc = match BatEnum.get e with
+  let rec aux acc = match e() with
     | Some h -> aux (h::acc)
     | None   -> acc
   in aux []
-
-let gen l =
-  let l = ref l in
-  fun () -> match !l with
-  | [] -> None
-  | x::l' -> l:=l'; Some x
-
-let of_gen g =
-  let rec iter_gen acc g = match g () with
-  | None -> ()
-  | Some x -> iter_gen (Acc.accum acc x) g
-  in
-  match g() with
-  | None -> []
-  | Some x ->
-      let acc = Acc.create x in
-      iter_gen acc g;
-      inj acc
 
 (*$Q gen & ~small:List.length
   (Q.list Q.small_int) (fun l -> \

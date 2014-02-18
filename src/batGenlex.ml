@@ -25,15 +25,15 @@ exception EarlyEndOfStream
 type enum =
   {
     mutable position : int;
-    content  : char BatEnum.t
+    content  : char BatStream.t;
   }
 
 let junk e =
   e.position <- e.position + 1;
-  BatEnum.junk e.content
+  BatStream.junk e.content
 
 let peek e =
-  BatEnum.peek e.content
+  BatStream.peek e.content
 
 type t = (string, token) Hashtbl.t
 
@@ -42,7 +42,7 @@ let of_list x =
   List.iter (fun s -> Hashtbl.add kwd_table s (Kwd s)) x;
   kwd_table
 
-let to_enum_filter kwd_table =
+let to_stream_filter kwd_table =
   let initial_buffer = String.create 32 in
 
   let buffer = ref initial_buffer       in
@@ -216,14 +216,22 @@ let to_enum_filter kwd_table =
     | Some _   -> junk enum; comment enum
     | _        -> raise EarlyEndOfStream
   in
-  fun input -> BatEnum.from_while (fun _count -> next_token {position = 0; content = input})
+  fun input ->
+    BatStream.from
+      (fun _count -> next_token {position=0; content=input})
 
-
-let to_stream_filter (kwd_table:t) (x:char Stream.t) : token Stream.t =
-  (BatStream.of_enum (to_enum_filter kwd_table (BatStream.enum x)))
+let to_enum_filter kwd_table x: token BatEnum.t =
+  let str = to_stream_filter kwd_table
+    (BatStream.from (fun _count -> BatEnum.get x))
+  in
+  BatEnum.from
+    (fun () ->
+      try Stream.next str
+      with Stream.Error _ | Stream.Failure -> raise BatEnum.No_more_elements)
 
 let to_lazy_list_filter kwd_table x =
-  (BatLazyList.of_enum (to_enum_filter kwd_table (BatLazyList.enum x)))
+  let x = BatLazyList.to_stream x in
+  (BatLazyList.of_stream (to_stream_filter kwd_table x))
 
 
 

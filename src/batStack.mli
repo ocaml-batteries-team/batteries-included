@@ -66,25 +66,25 @@ val iter : ('a -> unit) -> 'a t -> unit
     bottom of the stack. The stack itself is unchanged. *)
 
 
-include BatEnum.Enumerable with type 'a enumerable = 'a t
+include BatGen.Enumerable with type 'a enumerable = 'a t
 
-val enum : 'a t -> 'a BatEnum.t
-(** [enum s] returns an enumeration of the elements of stack [s], from
+val gen : 'a t -> 'a BatGen.t
+(** [gen s] returns an generation of the elements of stack [s], from
     the most recently entered to the least recently entered.  This
-    enumeration is made on a copy of the input stack, and reading from
+    generation is made on a copy of the input stack, and reading from
     it will not affect [s].  *)
 
-val enum_destruct : 'a t -> 'a BatEnum.t
-(** [enum s] returns a destructive enumeration of the elements of
+val gen_destruct : 'a t -> 'a BatGen.t
+(** [gen s] returns a destructive generation of the elements of
     stack [s], from the most recently entered to the least recently
-    entered.  Reading the enumeration will progressively empty [s].*)
+    entered.  Reading the generation will progressively empty [s].*)
 
-val of_enum : 'a BatEnum.t -> 'a t
-(** [of_enum e] returns a new stack containing all the elements of
+val of_gen : 'a BatGen.t -> 'a t
+(** [of_gen e] returns a new stack containing all the elements of
     [e].  This is equivalent to calling [push] with the first element
-    of the enumeration, then with the second, etc.
+    of the generation, then with the second, etc.
 
-    Note: if [s] is a stack, [s <> of_enum (enum s)], as [of_enum]
+    Note: if [s] is a stack, [s <> of_gen (gen s)], as [of_gen]
     reverses the input order.  *)
 
 (** {6 Boilerplate code}*)

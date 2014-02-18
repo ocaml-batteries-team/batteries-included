@@ -155,7 +155,7 @@ let lines_of file = BatIO.lines_of (open_in file)
 
 let write_lines file lines =
   let mode = [`trunc; `create] in
-  with_file_out ~mode file (fun oc -> BatEnum.iter (BatIO.write_line oc) lines)
+  with_file_out ~mode file (fun oc -> BatGen.iter (BatIO.write_line oc) lines)
 
 (**
    {6 Temporary files}

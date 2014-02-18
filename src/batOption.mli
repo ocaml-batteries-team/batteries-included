@@ -123,11 +123,11 @@ val eq : ?eq:('a -> 'a -> bool) -> 'a option -> 'a option -> bool
     @since 1.4.0
 *)
 
-val enum: 'a option -> 'a BatEnum.t
-(** [enum (Some x)] returns the singleton [x], while [enum None] returns
+val gen: 'a option -> 'a BatGen.t
+(** [gen (Some x)] returns the singleton [x], while [gen None] returns
     the empty enumeration. *)
 
-val of_enum: 'a BatEnum.t -> 'a option
+val of_gen: 'a BatGen.t -> 'a option
 (** [of_enum e] consumes the first element of [e], if it exists, and
     returns [Some e]. If [e] is empty, return [None]. *)
 

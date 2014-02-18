@@ -51,8 +51,8 @@ val copy : dst:'a t -> src:'a t -> unit
 val copy_list : dst:'a t -> src:'a list -> unit
 (** Makes a copy of a list - O(1) *)
 
-val copy_enum : dst:'a t -> src:'a BatEnum.t -> unit
-(** Makes a copy of a enum.
+val copy_gen: dst:'a t -> src:'a BatGen.t -> unit
+(** Makes a copy of a gen.
 
     @param dst A reflist, whose contents will be forgotten. *)
 
@@ -62,16 +62,16 @@ val of_list : 'a list -> 'a t
 val to_list : 'a t -> 'a list
 (** Returns the current elements as a list - O(1) *)
 
-val of_enum : 'a BatEnum.t -> 'a t
+val of_gen : 'a BatGen.t -> 'a t
 (** Creates a ref list from an enumeration *)
 
-val enum : 'a t -> 'a BatEnum.t
+val gen : 'a t -> 'a BatGen.t
 (** Returns an enumeration of current elements in the ref list *)
 
-val of_backwards : 'a BatEnum.t -> 'a t
+val of_backwards : 'a BatGen.t -> 'a t
 (** Creates a ref list from an enumeration, going from last to first *)
 
-val backwards : 'a t -> 'a BatEnum.t
+val backwards : 'a t -> 'a BatGen.t
 (** Returns an enumeration of current elements in the ref list, going from last to first *)
 
 val add : 'a t -> 'a -> unit

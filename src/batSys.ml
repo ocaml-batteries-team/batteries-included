@@ -23,4 +23,4 @@ let big_endian = false  (* overridden by real big_endian value in 4.00 and above
 
 include Sys
 
-let files_of d = BatArray.enum (readdir d)
+let files_of d = BatArray.gen (readdir d)

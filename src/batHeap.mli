@@ -67,11 +67,11 @@ val to_list : 'a t -> 'a list
 val elems : 'a t -> 'a list
 (** @deprecated Same as [to_list]. *)
 
-val of_enum : 'a BatEnum.t -> 'a t
+val of_gen : 'a BatGen.t -> 'a t
 (** Build a heap from an enumeration. Consumes the enumeration.
     O(n log n) *)
 
-val enum : 'a t -> 'a BatEnum.t
+val gen : 'a t -> 'a BatGen.t
 (** Enumerate the elements of the heap in heap order. O(log n) per
     {!BatEnum.get}. *)
 
@@ -111,9 +111,9 @@ sig
   (** See {!BatHeap.to_list}. *)
   val elems     : t -> elem list
   (** @deprecated Same as [to_list]. *)
-  val of_enum   : elem BatEnum.t -> t
+  val of_gen   : elem BatGen.t -> t
   (** See {!BatHeap.of_enum}. *)
-  val enum      : t -> elem BatEnum.t
+  val gen      : t -> elem BatGen.t
   (** See {!BatHeap.enum}. *)
   val print     :  ?first:string -> ?last:string -> ?sep:string
     -> (elem, 'a) BatIO.printer -> (t, 'a) BatIO.printer

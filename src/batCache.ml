@@ -23,7 +23,7 @@ open BatInnerPervasives
 type ('a,'b) manual_cache = {
   get : 'a -> 'b;
   del : 'a -> unit;
-  enum: unit -> ('a * 'b) BatEnum.t
+  gen: unit -> ('a * 'b) BatGen.t
 }
 
 let make_ht ~gen ~init_size =
@@ -32,7 +32,7 @@ let make_ht ~gen ~init_size =
      try BatHashtbl.find ht k
      with Not_found -> gen k |> tap (BatHashtbl.add ht k));
    del = (fun k -> BatHashtbl.remove ht k);
-   enum = (fun () -> BatHashtbl.enum ht) }
+   gen = (fun () -> BatHashtbl.gen ht) }
 
 (* For tests, use side effects to count number of times the function
    is run *)
@@ -46,7 +46,7 @@ let make_map ~gen =
      try BatMap.find k !m
      with Not_found -> gen k |> tap (fun v -> m := BatMap.add k v !m));
    del = (fun k -> m := BatMap.remove k !m);
-   enum = (fun () -> BatMap.enum !m) }
+   gen = (fun () -> BatMap.gen !m) }
 
 (*$T make_map
   let runs = ref 0 in let c = make_map ~gen:(fun x -> incr runs; x) in let s = c.get 3 + c.get 4 + c.get 3 in s = 10 && !runs = 2

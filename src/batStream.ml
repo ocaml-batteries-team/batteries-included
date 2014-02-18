@@ -536,16 +536,19 @@ let farm par size path exp_gen s =
 
 (*    let ( ||| ) exp1 exp2 = exp1 |- exp2 *)
 
-let enum x =
-  BatEnum.from
-    (fun () ->
-      try next x with | End_of_flow -> raise BatEnum.No_more_elements)
+let gen x =
+  let stop = ref false in
+  fun () ->
+    if !stop then None
+    else
+      try Some (next x)
+      with | End_of_flow -> stop:= true; None
 
-let rec of_enum e =
+let rec of_gen e =
   Stream.slazy
     (fun _ ->
-      match BatEnum.get e with
-      | Some h -> Stream.icons h (Stream.slazy (fun _ -> of_enum e))
+      match e() with
+      | Some h -> Stream.icons h (Stream.slazy (fun _ -> of_gen e))
       | None -> Stream.sempty)
 
 module StreamLabels =

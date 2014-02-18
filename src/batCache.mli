@@ -39,14 +39,14 @@
     of the cache by removing unneeded entries.  If the user prefers an
     automatically managed cache, this module provides [!auto_cache].
 
-    Last, [c.enum ()] will enumerate all the currently memorized
+    Last, [c.gen ()] will enumerate all the currently memorized
     bindings as pairs.  This allows inspection of what is currently
     cached.
 *)
 type ('a,'b) manual_cache = {
   get : 'a -> 'b;
   del : 'a -> unit;
-  enum: unit -> ('a * 'b) BatEnum.t
+  gen: unit -> ('a * 'b) BatGen.t
 }
 
 

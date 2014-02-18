@@ -53,8 +53,8 @@ sig
   val ( * ) : bat__infix_t -> bat__infix_t -> bat__infix_t
   val ( / ) : bat__infix_t -> bat__infix_t -> bat__infix_t
   val ( ** ) : bat__infix_t -> bat__infix_t -> bat__infix_t
-  val ( -- ): bat__infix_t -> bat__infix_t -> bat__infix_t BatEnum.t
-  val ( --- ): bat__infix_t -> bat__infix_t -> bat__infix_t BatEnum.t
+  val ( -- ): bat__infix_t -> bat__infix_t -> bat__infix_t BatGen.t
+  val ( --- ): bat__infix_t -> bat__infix_t -> bat__infix_t BatGen.t
 end
 
 module type Compare =
@@ -133,8 +133,8 @@ sig
   val to_int: discrete -> int
   val succ  : discrete -> discrete
   val pred  : discrete -> discrete
-  val ( -- ): discrete -> discrete -> discrete BatEnum.t
-  val ( --- ): discrete -> discrete -> discrete BatEnum.t
+  val ( -- ): discrete -> discrete -> discrete BatGen.t
+  val ( --- ): discrete -> discrete -> discrete BatGen.t
 end
 
 (**
@@ -193,10 +193,10 @@ module MakeInfix (Base : NUMERIC_BASE) :
 
   type bat__infix_t = Base.t
   let ( + ), ( - ), ( * ), ( / ), ( ** ) = Base.add, Base.sub, Base.mul, Base.div, Base.pow
-  let ( -- )  x y = BatEnum.seq x Base.succ ( (>=) y )
+  let ( -- )  x y = BatGen.seq x Base.succ ( (>=) y )
   let ( --- ) x y =
     if y >= x then x -- y
-    else BatEnum.seq x Base.pred ((<=) y)
+    else BatGen.seq x Base.pred ((<=) y)
 end
 
 (**

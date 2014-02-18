@@ -276,43 +276,34 @@ module Concrete = struct
       Empty -> t
     | Node (l, e, r, _) -> rev_cons_iter r (C (e, l, t))
 
-  let enum_next l () = match !l with
-      E -> raise BatEnum.No_more_elements
-    | C (e, s, t) -> l := cons_iter s t; e
+  let gen_next l () = match !l with
+      E -> None
+    | C (e, s, t) -> l := cons_iter s t; Some e
 
-  let enum_backwards_next l () = match !l with
-      E -> raise BatEnum.No_more_elements
-    | C (e, s, t) -> l := rev_cons_iter s t; e
+  let gen_backwards_next l () = match !l with
+      E -> None
+    | C (e, s, t) -> l := rev_cons_iter s t; Some e
 
-  let enum_count l () =
-    let rec aux n = function
-        E -> n
-      | C (e, s, t) -> aux (n + 1 + cardinal s) t
-    in aux 0 !l
-
-  let enum t =
-    let rec make l =
-      let l = ref l in
-      let clone() = make !l in
-      BatEnum.make ~next:(enum_next l) ~count:(enum_count l) ~clone
-    in make (cons_iter t E)
+  let gen t =
+    let l = ref (cons_iter t E) in
+    gen_next l
 
   let backwards t =
-    let rec make l =
-      let l = ref l in
-      let clone() = make !l in
-      BatEnum.make ~next:(enum_backwards_next l) ~count:(enum_count l) ~clone
-    in make (rev_cons_iter t E)
+    let l = ref (rev_cons_iter t E) in
+    gen_backwards_next l
 
-  let of_enum cmp e =
-    BatEnum.fold (fun acc elem -> add cmp elem acc) empty e
+  let of_gen cmp e =
+    BatGen.fold (fun acc elem -> add cmp elem acc) empty e
 
   let print ?(first="{") ?(last="}") ?(sep=",") print_elt out t =
-    BatEnum.print ~first ~last ~sep (fun out e -> BatPrintf.fprintf out "%a" print_elt e) out (enum t)
+    BatGen.print ~first ~last ~sep
+      (fun out e -> BatPrintf.fprintf out "%a" print_elt e) out (gen t)
 
   let filter cmp f e = fold (fun x acc -> if f x then add cmp x acc else acc) e empty
 
-  let filter_map cmp f e = fold (fun x acc -> match f x with Some v -> add cmp v acc | _ -> acc) e empty
+  let filter_map cmp f e =
+      fold (fun x acc -> match f x with Some v -> add cmp v acc | _ -> acc)
+        e empty
 
   let choose = min_elt (* I'd rather this chose the root, but okay *)
 
@@ -478,9 +469,9 @@ sig
   val max_elt: t -> elt
   val choose: t -> elt
   val pop: t -> elt * t
-  val enum: t -> elt BatEnum.t
-  val backwards: t -> elt BatEnum.t
-  val of_enum: elt BatEnum.t -> t
+  val gen: t -> elt BatGen.t
+  val backwards: t -> elt BatGen.t
+  val of_gen: elt BatGen.t -> t
   val print :  ?first:string -> ?last:string -> ?sep:string ->
     ('a BatInnerIO.output -> elt -> unit) ->
     'a BatInnerIO.output -> t -> unit
@@ -517,8 +508,8 @@ struct
   external t_of_impl : implementation -> t = "%identity"
 
   let cardinal t = Concrete.cardinal (impl_of_t t)
-  let enum t = Concrete.enum (impl_of_t t)
-  let of_enum e = t_of_impl (Concrete.of_enum Ord.compare e)
+  let gen t = Concrete.gen (impl_of_t t)
+  let of_gen e = t_of_impl (Concrete.of_gen Ord.compare e)
   let backwards t = Concrete.backwards (impl_of_t t)
 
   let remove e t = t_of_impl (Concrete.remove Ord.compare e (impl_of_t t))
@@ -660,9 +651,9 @@ module PSet = struct (*$< PSet *)
   let choose s = Concrete.choose s.set
   let min_elt s = Concrete.min_elt s.set
   let max_elt s = Concrete.max_elt s.set
-  let enum s = Concrete.enum s.set
-  let of_enum e = { cmp = compare; set = Concrete.of_enum compare e }
-  let of_enum_cmp ~cmp t = { cmp = cmp; set = Concrete.of_enum cmp t }
+  let gen s = Concrete.gen s.set
+  let of_gen e = { cmp = compare; set = Concrete.of_gen compare e }
+  let of_gen_cmp ~cmp t = { cmp = cmp; set = Concrete.of_gen cmp t }
   let of_list l = List.fold_left (fun a x -> add x a) empty l
   let print ?first ?last ?sep print_elt out s =
     Concrete.print ?first ?last ?sep print_elt out s.set
@@ -770,9 +761,9 @@ let min_elt s = Concrete.min_elt s
 
 let max_elt s = Concrete.max_elt s
 
-let enum s = Concrete.enum s
+let gen s = Concrete.gen s
 
-let of_enum e = Concrete.of_enum Pervasives.compare e
+let of_gen e = Concrete.of_gen Pervasives.compare e
 
 let backwards s = Concrete.backwards s
 
@@ -780,7 +771,7 @@ let of_list l = List.fold_left (fun a x -> add x a) empty l
 
 (*$Q of_list
   (Q.list Q.small_int) (fun l -> let xs = List.map (fun i -> i mod 5, i) l in \
-    let s1 = of_list xs |> enum |> List.of_enum in \
+    let s1 = of_list xs |> gen |> List.of_gen in \
     let s2 = List.sort_unique Pervasives.compare xs in \
     s1 = s2 \
   )
@@ -834,9 +825,9 @@ let disjoint s1 s2 = Concrete.disjoint Pervasives.compare s1 s2
 module Incubator = struct (*$< Incubator *)
   let op_map f s = Concrete.op_map f s
     (*$T op_map
-      of_enum (1--3) |> op_map ((+) 2) |> mem 5
-      of_enum (1--3) |> op_map ((+) 2) |> mem 4
-      of_enum (1--3) |> op_map ((+) 2) |> mem 3
+      of_gen (1--3) |> op_map ((+) 2) |> mem 5
+      of_gen (1--3) |> op_map ((+) 2) |> mem 4
+      of_gen (1--3) |> op_map ((+) 2) |> mem 3
     *)
 
 

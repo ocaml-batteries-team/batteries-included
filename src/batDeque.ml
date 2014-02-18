@@ -250,19 +250,15 @@ let find ?(backwards=false) test q =
   else
     spin 0 q.front q.rear
 
-let rec enum q =
+let gen q =
   let cur = ref q in
-  let next () = match front !cur with
-    | None -> raise BatEnum.No_more_elements
+  fun () -> match front !cur with
+    | None -> None
     | Some (x, q) ->
-      cur := q ; x
-  in
-  let count () = size !cur in
-  let clone () = enum !cur in
-  BatEnum.make ~next ~count ~clone
+      cur := q ; Some x
 
-let of_enum e =
-  BatEnum.fold snoc empty e
+let of_gen g =
+  BatGen.fold snoc empty g
 
 (*$Q enum
    (Q.list Q.int) (fun l -> List.of_enum (enum (List.fold_left snoc empty l)) = l)

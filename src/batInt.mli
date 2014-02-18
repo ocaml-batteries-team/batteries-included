@@ -169,13 +169,13 @@ val popcount_sparse : int -> int
 
 val operations : int BatNumber.numeric
 
-val ( -- ) : t -> t -> t BatEnum.t
+val ( -- ) : t -> t -> t BatGen.t
 (** Enumerate an interval.
 
     [5 -- 10] is the enumeration 5,6,7,8,9,10.
     [10 -- 5] is the empty enumeration*)
 
-val ( --- ) : t -> t -> t BatEnum.t
+val ( --- ) : t -> t -> t BatGen.t
 (** Enumerate an interval.
 
     [5 --- 10] is the enumeration 5,6,7,8,9,10.

@@ -46,12 +46,12 @@ module Tuple2 = struct
   let curry f x y = f (x,y)
   let uncurry f (x,y) = f x y
 
-  let enum (x,y) = BatList.enum [x;y] (* Make efficient? *)
+  let gen (x,y) = BatList.gen [x;y] (* Make efficient? *)
 
-  let of_enum e = match BatEnum.get e with
-      None -> failwith "Tuple2.of_enum: not enough elements"
-    | Some x -> match BatEnum.get e with
-        None -> failwith "Tuple2.of_enum: not enough elements"
+  let of_gen e = match BatGen.get e with
+      None -> failwith "Tuple2.of_gen: not enough elements"
+    | Some x -> match BatGen.get e with
+        None -> failwith "Tuple2.of_gen: not enough elements"
       | Some y -> (x,y)
 
   let print ?(first="(") ?(sep=",") ?(last=")") print_a print_b out (a,b) =
@@ -128,14 +128,14 @@ module Tuple3 = struct
   let curry f a b c = f (a,b,c)
   let uncurry f (a,b,c) = f a b c
 
-  let enum (a,b,c) = BatList.enum [a;b;c] (* Make efficient? *)
+  let gen (a,b,c) = BatList.gen [a;b;c] (* Make efficient? *)
 
-  let of_enum e = match BatEnum.get e with
-      None -> failwith "Tuple3.of_enum: not enough elements"
-    | Some a -> match BatEnum.get e with
-        None -> failwith "Tuple3.of_enum: not enough elements"
-      | Some b -> match BatEnum.get e with
-          None -> failwith "Tuple3.of_enum: not enough elements"
+  let of_gen e = match BatGen.get e with
+      None -> failwith "Tuple3.of_gen: not enough elements"
+    | Some a -> match BatGen.get e with
+        None -> failwith "Tuple3.of_gen: not enough elements"
+      | Some b -> match BatGen.get e with
+          None -> failwith "Tuple3.of_gen: not enough elements"
         | Some c -> (a,b,c)
 
   let print ?(first="(") ?(sep=",") ?(last=")") print_a print_b print_c out (a,b,c) =
@@ -230,16 +230,16 @@ module Tuple4 = struct
   let curry f a b c d = f (a,b,c,d)
   let uncurry f (a,b,c,d) = f a b c d
 
-  let enum (a,b,c,d) = BatList.enum [a;b;c;d] (* Make efficient? *)
+  let gen (a,b,c,d) = BatList.gen [a;b;c;d] (* Make efficient? *)
 
-  let of_enum e = match BatEnum.get e with
-      None -> failwith "Tuple4.of_enum: not enough elements"
-    | Some a -> match BatEnum.get e with
-        None -> failwith "Tuple4.of_enum: not enough elements"
-      | Some b -> match BatEnum.get e with
-          None -> failwith "Tuple4.of_enum: not enough elements"
-        | Some c -> match BatEnum.get e with
-            None -> failwith "Tuple4.of_enum: not enough elements"
+  let of_gen e = match BatGen.get e with
+      None -> failwith "Tuple4.of_gen: not enough elements"
+    | Some a -> match BatGen.get e with
+        None -> failwith "Tuple4.of_gen: not enough elements"
+      | Some b -> match BatGen.get e with
+          None -> failwith "Tuple4.of_gen: not enough elements"
+        | Some c -> match BatGen.get e with
+            None -> failwith "Tuple4.of_gen: not enough elements"
           | Some d -> (a,b,c,d)
 
   let print ?(first="(") ?(sep=",") ?(last=")") print_a print_b print_c print_d out (a,b,c,d) =
@@ -362,18 +362,18 @@ module Tuple5 = struct
   let curry f a b c d e = f (a,b,c,d,e)
   let uncurry f (a,b,c,d,e) = f a b c d e
 
-  let enum (a,b,c,d,e) = BatList.enum [a;b;c;d;e] (* Make efficient? *)
+  let gen (a,b,c,d,e) = BatList.gen [a;b;c;d;e] (* Make efficient? *)
 
-  let of_enum e = match BatEnum.get e with
-      None -> failwith "Tuple5.of_enum: not enough elements"
-    | Some a -> match BatEnum.get e with
-        None -> failwith "Tuple5.of_enum: not enough elements"
-      | Some b -> match BatEnum.get e with
-          None -> failwith "Tuple5.of_enum: not enough elements"
-        | Some c -> match BatEnum.get e with
-            None -> failwith "Tuple5.of_enum: not enough elements"
-          | Some d -> match BatEnum.get e with
-              None -> failwith "Tuple5.of_enum: not enough elements"
+  let of_gen e = match BatGen.get e with
+      None -> failwith "Tuple5.of_gen: not enough elements"
+    | Some a -> match BatGen.get e with
+        None -> failwith "Tuple5.of_gen: not enough elements"
+      | Some b -> match BatGen.get e with
+          None -> failwith "Tuple5.of_gen: not enough elements"
+        | Some c -> match BatGen.get e with
+            None -> failwith "Tuple5.of_gen: not enough elements"
+          | Some d -> match BatGen.get e with
+              None -> failwith "Tuple5.of_gen: not enough elements"
             | Some e -> (a,b,c,d,e)
 
   let print ?(first="(") ?(sep=",") ?(last=")") print_a print_b print_c print_d print_e out (a,b,c,d,e) =

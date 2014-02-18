@@ -503,7 +503,7 @@ let rec range_iter f start len = function
     let n = start + len in
     if start >= 0 && len >= 0 && n <= lens then
       for i = start to n - 1 do
-        f (UTF8.look s (UTF8.nth s i)) (*TODO: use enum to iterate efficiently*)
+        f (UTF8.look s (UTF8.nth s i)) (*TODO: use gen to iterate efficiently*)
       done
     else raise Out_of_bounds
   | Concat(l,cl,r,cr,_) ->
@@ -527,7 +527,7 @@ let rec range_iteri f ?(base = 0) start len = function
     if start >= 0 && len >= 0 && n <= lens then
       for i = start to n - 1 do
         f (base+i) (UTF8.look s (UTF8.nth s i))
-        (*TODO: use enum to iterate efficiently*)
+        (*TODO: use gen to iterate efficiently*)
       done
     else raise Out_of_bounds
   | Concat(l,cl,r,cr,_) ->
@@ -593,55 +593,27 @@ let index r u =
   in
   loop 0
 
-let enum r =
-  let next iter () = match Iter.next iter with
-    | None -> raise BatEnum.No_more_elements
-    | Some x -> x
-  and count iter () =
-    let n = ref 0 in
-    let iter' = Iter.copy iter in
-    begin try
-      while true do match Iter.next iter' with None -> raise Exit | Some _ -> incr n
-    done with Exit -> ()
-    end;
-    !n
-  in
-  let rec make iter =
-    BatEnum.make ~next:(next iter) ~clone:(clone iter) ~count:(count iter)
-  and clone iter () = make (Iter.copy iter)
-  in
-  make (Iter.make r)
+let gen r =
+  let iter = Iter.make r in
+  fun () -> Iter.next iter
 
 let backwards r =
-  let next iter () = match Iter.prev iter with
-    | None -> raise BatEnum.No_more_elements
-    | Some x -> x
-  and count iter () =
-    let n = ref 0 in
-    let iter' = Iter.copy iter in
-    begin try
-      while true do match Iter.prev iter' with None -> raise Exit | Some _ -> incr n
-    done with Exit -> ()
-    end;
-    !n
-  in
-  let rec make iter =
-    BatEnum.make ~next:(next iter) ~clone:(clone iter) ~count:(count iter)
-  and clone iter () = make (Iter.copy iter)
-  in
-  make (Iter.make r)
+  let iter = Iter.make r in
+  fun () -> Iter.prev iter
 
-let of_enum e =
-  let size = BatEnum.count e in
+let of_gen e =
+  let l = BatGen.to_list e in
+  let size = List.length l in
+  let l = ref l in
   init size
-    (fun i ->
-       try BatEnum.get_exn e
-       with BatEnum.No_more_elements -> assert false)
+    (fun i -> match !l with
+      | [] -> assert false
+      | x::l' -> l:= l'; x)
 
-(*$Q enum; of_enum
+(*$Q gen; of_gen
   (Q.array Q.small_int) (fun a -> \
     let s = BatUTF8.init (Array.length a) (fun i -> BatUChar.chr (Array.get a i)) in \
-    s = (of_string s |> enum |> of_enum |> to_string))
+    s = (of_string s |> gen |> of_gen |> to_string))
 *)
 
 module Return = BatReturn
@@ -968,10 +940,10 @@ let read_char i =
     UTF8.get s 0
 
 
-(*val uchars_of : input -> UChar.t BatEnum.t*)
+(*val uchars_of : input -> UChar.t BatGen.t*)
 (** offer the characters of an UTF-8 encoded input as an enumeration*)
 
-let chars_of i = make_enum read_char i
+let chars_of i = BatIO.make_gen read_char i
 
 (*val read_rope: input -> int -> Rope.t*)
 (** read up to n uchars from a UTF-8 encoded input*)
@@ -994,7 +966,7 @@ let read_line i =
   of_string line
 
 (** offer the lines of a UTF-8 encoded input as an enumeration*)
-let lines_of i = BatIO.make_enum read_line i
+let lines_of i = BatIO.make_gen read_line i
 
 (** {7 Writing unicode}
 
@@ -1011,14 +983,14 @@ let write_text = print
 (*val write_uline: _ output -> Rope.t -> unit*)
 let write_line o r = write_text o r; write o '\n'
 
-(*val write_ulines : _ output -> Rope.t BatEnum.t -> unit*)
-let write_lines o re = BatEnum.iter (write_line o) re
+(*val write_ulines : _ output -> Rope.t BatGen.t -> unit*)
+let write_lines o re = BatGen.iter (write_line o) re
 
-(*val write_ropes : _ output -> Rope.t BatEnum.t -> unit*)
-let write_texts o re = BatEnum.iter (write_text o) re
+(*val write_ropes : _ output -> Rope.t BatGen.t -> unit*)
+let write_texts o re = BatGen.iter (write_text o) re
 
-(*val write_uchars : _ output -> UChar.t BatEnum.t -> unit*)
-let write_chars o uce = BatEnum.iter (write_char o) uce
+(*val write_uchars : _ output -> UChar.t BatGen.t -> unit*)
+let write_chars o uce = BatGen.iter (write_char o) uce
 
 let sprintf fmt =
   BatPrintf.ksprintf of_string fmt

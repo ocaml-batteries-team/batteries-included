@@ -136,10 +136,10 @@ val max_elt : t -> int
 val choose : t -> int
 (** Returns some element in the set *)
 
-val enum : t -> (int * int) BatEnum.t
+val gen : t -> (int * int) BatGen.t
 (** Enumerates all contiguous ranges in the set *)
 
-val of_enum : (int*int) BatEnum.t -> t
+val of_gen : (int*int) BatGen.t -> t
 val of_list : (int*int) list -> t
 (** Build a ISet.t out of a list or enum of ranges *)
 

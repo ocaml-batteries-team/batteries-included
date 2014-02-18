@@ -17,7 +17,7 @@ let rec mem (n:int) s =
   let t = empty |> add_range 1 10 |> add_range 10 20 in \
   mem 1 t && mem 5 t && mem 20 t && not (mem 21 t) && not (mem 0 t)
 
-  let t = Enum.append (1--9) (20 --- 15) |> Enum.map (fun i -> i,i) |> of_enum in \
+  let t = Enum.append (1--9) (20 --- 15) |> Enum.map (fun i -> i,i) |> of_gen in \
   mem 1 t && mem 5 t && mem 15 t && not (mem 10 t) && not (mem 14 t)
 
 *)
@@ -415,14 +415,14 @@ let max_elt s =
 let choose s = fst (root s)
 
 let of_list l = List.fold_left (fun s (lo,hi) -> add_range lo hi s) empty l
-let of_enum e = BatEnum.fold (fun s (lo,hi) -> add_range lo hi s) empty e
+let of_gen e = BatGen.fold (fun s (lo,hi) -> add_range lo hi s) empty e
 
 let print oc t =
   let print_range oc (lo,hi) =
     if lo=hi then BatInt.print oc lo
     else BatTuple.Tuple2.printn BatInt.print oc (lo,hi)
   in
-  BatEnum.print print_range oc (enum t)
+  BatGen.print print_range oc (gen t)
 
   (*$= print & ~printer:(fun x -> x)
     "(1,3) (5,6)" (IO.to_string print (of_list [1,3;5,6]))

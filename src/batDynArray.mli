@@ -36,7 +36,7 @@
 
 type 'a t
 
-include BatEnum.Enumerable with type 'a enumerable = 'a t
+include BatGen.Enumerable with type 'a enumerable = 'a t
 include BatInterfaces.Mappable with type 'a mappable = 'a t
 
 exception Invalid_arg of int * string * string
@@ -123,8 +123,8 @@ val to_list : 'a t -> 'a list
 val to_array : 'a t -> 'a array
 (** [to_array darr] returns the elements of [darr] in order as an array. *)
 
-val enum : 'a t -> 'a BatEnum.t
-(** [enum darr] returns the enumeration of [darr] elements. *)
+val gen : 'a t -> 'a BatGen.t
+(** [gen darr] returns the enumeration of [darr] elements. *)
 
 val of_list : 'a list -> 'a t
 (** [of_list lst] returns a dynamic array with the elements of [lst] in
@@ -134,7 +134,7 @@ val of_array : 'a array -> 'a t
 (** [of_array arr] returns an array with the elements of [arr] in it
     in order. *)
 
-val of_enum : 'a BatEnum.t -> 'a t
+val of_gen : 'a BatGen.t -> 'a t
 (** [of_enum e] returns an array that holds, in order, the elements of [e]. *)
 
 val copy : 'a t -> 'a t

@@ -156,12 +156,12 @@ struct
       change coor
     done
 
-  let enum e =
+  let gen e =
     let dims   = dims e
     and offset = ofs e in
     let coor   = A.create (num_dims e) ~init:offset
     and status = ref `ongoing in
-    BatEnum.from (fun () ->
+    fun () ->
       match !status with
       | `ongoing ->
         begin
@@ -169,14 +169,12 @@ struct
             let result = get e coor               in
             let update = inplace_next ~ofs:offset ~dims ~coor in
             if not update then status := `dry;
-            result
+            Some result
           with _ ->
             status := `dry;
-            raise BatEnum.No_more_elements
+            None
         end
-      | `dry ->
-        raise BatEnum.No_more_elements
-    )
+      | `dry -> None
 
   let map f b_kind a =
     let d = dims a in
@@ -218,25 +216,31 @@ module Array1 = struct
     | 0x100 -> 1 (* and transitively with caml_ba_layout in bigarray.h  *)
     | _ -> failwith "Unknown layout" (* note four copies of this function *)
 
-  let enum t =
+  let gen t =
     let offset = ofs t in
-    BatEnum.init (dim t) (fun i -> t.{offset + i})
+    let i = ref 0 in
+    fun () ->
+      if !i = dim t then None
+      else Some t.{offset + BatRef.post_incr i}
 
-  let of_enum kind layout enum =
-    let b_dim = BatEnum.count enum in
+  let of_gen kind layout g =
+    let l = ref (BatGen.to_rev_list g) in
+    let b_dim = List.length !l in
     let b = create kind layout b_dim in
-    for i = ofs b to ofs b + b_dim - 1 do
-      b.{i} <- BatEnum.get_exn enum
+    for i = ofs b + b_dim -1 downto ofs b do
+      match !l with
+      | x::l' ->  b.{i} <- x; l:= l'
+      | [] -> assert false
     done;
     b
 
   (*$Q
-    Q.string (fun s -> s = String.of_enum (Array1.enum \
-      (Array1.of_enum char c_layout (String.enum s))))
-    Q.string (fun s -> s = String.of_enum (Array1.enum \
-      (Array1.of_enum char fortran_layout (String.enum s))))
-    (Q.list Q.int) (fun li -> li = List.of_enum (Array1.enum \
-      (Array1.of_enum int c_layout (List.enum li))))
+    Q.string (fun s -> s = String.of_gen (Array1.gen \
+      (Array1.of_gen char c_layout (String.gen s))))
+    Q.string (fun s -> s = String.of_gen (Array1.gen \
+      (Array1.of_gen char fortran_layout (String.gen s))))
+    (Q.list Q.int) (fun li -> li = List.of_gen (Array1.gen \
+      (Array1.of_gen int c_layout (List.gen li))))
   *)
 
   let map f b_kind a =
@@ -273,7 +277,8 @@ module Array2 = struct
     | 0 -> 0     (* keep these magic constants in sync with bigarray.ml *)
     | 0x100 -> 1 (* and transitively with caml_ba_layout in bigarray.h  *)
     | _ -> failwith "Unknown layout" (* note four copies of this function *)
-  let enum t = Genarray.enum (genarray_of_array2 t)
+
+  let gen t = Genarray.gen (genarray_of_array2 t)
 
   let map f b_kind a =
     let b_dim1 = dim1 a in
@@ -325,7 +330,7 @@ module Array3 = struct
     | 0 -> 0     (* keep these magic constants in sync with bigarray.ml *)
     | 0x100 -> 1 (* and transitively with caml_ba_layout in bigarray.h  *)
     | _ -> failwith "Unknown layout" (* note four copies of this function *)
-  let enum t = Genarray.enum (genarray_of_array3 t)
+  let gen t = Genarray.gen (genarray_of_array3 t)
 
   let map f b_kind a =
     let b_dim1 = dim1 a in

@@ -349,55 +349,37 @@ let rec rev_cons_iter s t =
 
 let enum_next l () =
   match !l with
-  | E -> raise BatEnum.No_more_elements
+  | E -> None
   | C (s, p, r, t) ->
     if p + 1 = STRING.length s then
       l := cons_iter r t
     else
       l := C (s, p + 1, r, t);
-    STRING.unsafe_get s p
+    Some (STRING.unsafe_get s p)
 
 let enum_backwards_next l () =
   match !l with
-  | E -> raise BatEnum.No_more_elements
+  | E -> None
   | C (s, p, r, t) ->
     if p = 0 then
       l := rev_cons_iter r t
     else
       l := C (s, p - 1, r, t);
-    STRING.unsafe_get s p
+    Some (STRING.unsafe_get s p)
 
-let enum_count l () =
-  let rec aux n = function
-    | E -> n
-    | C (s, p, m, t) -> aux (n + (STRING.length s - p) + length m) t
-  in aux 0 !l
-
-let rev_enum_count l () =
-  let rec aux n = function
-    | E -> n
-    | C (s, p, m, t) -> aux (n + (p + 1) + length m) t
-  in aux 0 !l
-
-let enum t =
-  let rec make l =
-    let l = ref l in
-    let clone () = make !l in
-    BatEnum.make ~next:(enum_next l) ~count:(enum_count l) ~clone
-  in make (cons_iter t E)
+let gen t =
+  let r = ref (cons_iter t E) in
+  enum_next r
 
 let backwards t =
-  let rec make l =
-    let l = ref l in
-    let clone () = make !l in
-    BatEnum.make ~next:(enum_backwards_next l) ~count:(rev_enum_count l) ~clone
-  in make (rev_cons_iter t E)
+  let r = ref (rev_cons_iter t E) in
+  enum_backwards_next r
 
-let of_enum e =
-  BatEnum.fold (fun acc x -> append_char x acc) empty e
+let of_gen e =
+  BatGen.fold (fun acc x -> append_char x acc) empty e
 
 let of_backwards e =
-  BatEnum.fold (fun acc x -> prepend_char x acc) empty e
+  BatGen.fold (fun acc x -> prepend_char x acc) empty e
 
 let iteri f r =
   let rec aux f i = function
@@ -584,13 +566,13 @@ let init n f =
 *)
 
 let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a out t =
-  BatEnum.print ~first ~last ~sep print_a out (enum t)
+  BatGen.print ~first ~last ~sep print_a out (gen t)
 
-let compare cmp_val v1 v2 = BatEnum.compare cmp_val (enum v1) (enum v2)
-let equal eq_val v1 v2 = BatEnum.equal eq_val (enum v1) (enum v2)
+let compare cmp_val v1 v2 = BatGen.compare ~cmp:cmp_val (gen v1) (gen v2)
+let equal eq_val v1 v2 = BatGen.eq ~eq:eq_val (gen v1) (gen v2)
 let ord ord_val v1 v2 =
   let cmp_val = BatOrd.comp ord_val in
-  BatOrd.ord0 (BatEnum.compare cmp_val (enum v1) (enum v2))
+  BatOrd.ord0 (BatGen.compare ~cmp:cmp_val (gen v1) (gen v2))
 
 (* Functorial interface *)
 
@@ -611,10 +593,10 @@ sig
   val iter : ('a -> unit) -> 'a t -> unit
   val map : ('a -> 'b) -> 'a t -> 'b t
   val fold_right : ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
-  val enum : 'a t -> 'a BatEnum.t
-  val backwards : 'a t -> 'a BatEnum.t
-  val of_enum : 'a BatEnum.t -> 'a t
-  val of_backwards : 'a BatEnum.t -> 'a t
+  val gen : 'a t -> 'a BatGen.t
+  val backwards : 'a t -> 'a BatGen.t
+  val of_gen : 'a BatGen.t -> 'a t
+  val of_backwards : 'a BatGen.t -> 'a t
 end
 
 module Make(RANDOMACCESS : RANDOMACCESS)
@@ -930,55 +912,37 @@ struct
 
   let enum_next l () =
     match !l with
-    | E -> raise BatEnum.No_more_elements
+    | E -> None
     | C (s, p, r, t) ->
       if p + 1 = STRING.length s then
         l := cons_iter r t
       else
         l := C (s, p + 1, r, t);
-      STRING.unsafe_get s p
+      Some (STRING.unsafe_get s p)
 
   let enum_backwards_next l () =
     match !l with
-    | E -> raise BatEnum.No_more_elements
+    | E -> None
     | C (s, p, r, t) ->
       if p = 0 then
         l := rev_cons_iter r t
       else
         l := C (s, p - 1, r, t);
-      STRING.unsafe_get s p
+      Some (STRING.unsafe_get s p)
 
-  let enum_count l () =
-    let rec aux n = function
-      | E -> n
-      | C (s, p, m, t) -> aux (n + (STRING.length s - p) + length m) t
-    in aux 0 !l
-
-  let rev_enum_count l () =
-    let rec aux n = function
-      | E -> n
-      | C (s, p, m, t) -> aux (n + (p + 1) + length m) t
-    in aux 0 !l
-
-  let enum t =
-    let rec make l =
-      let l = ref l in
-      let clone () = make !l in
-      BatEnum.make ~next:(enum_next l) ~count:(enum_count l) ~clone
-    in make (cons_iter t E)
+  let gen t =
+    let r = ref (cons_iter t E) in
+    enum_next r
 
   let backwards t =
-    let rec make l =
-      let l = ref l in
-      let clone () = make !l in
-      BatEnum.make ~next:(enum_backwards_next l) ~count:(rev_enum_count l) ~clone
-    in make (rev_cons_iter t E)
+    let r = ref (rev_cons_iter t E) in
+    enum_backwards_next r
 
-  let of_enum e =
-    BatEnum.fold (fun acc x -> append_char x acc) empty e
+  let of_gen e =
+    BatGen.fold (fun acc x -> append_char x acc) empty e
 
   let of_backwards e =
-    BatEnum.fold (fun acc x -> prepend_char x acc) empty e
+    BatGen.fold (fun acc x -> prepend_char x acc) empty e
 
   let iteri f r =
     let rec aux f i = function
@@ -1050,8 +1014,8 @@ struct
     rangeiter (fun e -> acc := f !acc e) 1 (length v - 1) v;
     !acc
 
-  let of_array a = of_string (STRING.of_enum (BatArray.enum a))
-  let to_array t = BatArray.of_enum (enum t)
+  let of_array a = of_string (STRING.of_gen(BatArray.gen a))
+  let to_array t = BatArray.of_gen (gen t)
   let of_container = of_string
   let to_container = to_string
   let append = append_char
@@ -1160,9 +1124,10 @@ struct
         aux (off + len) (arr::acc) in
     let base = aux 0 [] in
     (* And then concatenate them *)
-    List.fold_left (fun (acc:'a t) (array:'a array) -> concat (of_array array) acc) (empty:'a t) (base:'a array list)
+    List.fold_left
+      (fun (acc:'a t) (array:'a array) -> concat (of_array array) acc)
+      (empty:'a t) (base:'a array list)
 
   let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a out t =
-    BatEnum.print ~first ~last ~sep print_a out (enum t)
-
+    BatGen.print ~first ~last ~sep print_a out (gen t)
 end

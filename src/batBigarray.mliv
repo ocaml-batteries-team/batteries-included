@@ -458,9 +458,9 @@ sig
       the coordinates as the first argument, and the element itself
       as the second argument. *)
 
-  val enum : ('a, 'b, 'c) t -> 'a BatEnum.t
-  (** [enum e] returns an enumeration on the elements of [e].
-    The order of enumeration is unspecified.*)
+  val gen : ('a, 'b, 'c) t -> 'a BatGen.t
+  (** [gen e] returns an generation on the elements of [e].
+    The order of generation is unspecified.*)
 
   val map :
     ('a -> 'b) ->
@@ -549,16 +549,16 @@ module Array1 : sig
   (** Memory mapping of a file as a one-dimensional big array.
       See {!Bigarray.Genarray.map_file} for more details. *)
 
-  val enum : ('a, 'b, 'c) t -> 'a BatEnum.t
-  (** [Array1.enum e] returns an enumeration on the elements of [e].
+  val gen : ('a, 'b, 'c) t -> 'a BatGen.t
+  (** [Array1.gen e] returns an generation on the elements of [e].
       Contrarily to the multi-dimensional case, order of elements is
       specified: elements are in sequential order, from smaller to
       larger indices. *)
 
-  val of_enum : ('a, 'b) kind -> 'c layout -> 'a BatEnum.t -> ('a, 'b, 'c) t
-  (** [Array1.of_enum kind layout enum] returns a new one-dimensional
+  val of_gen : ('a, 'b) kind -> 'c layout -> 'a BatGen.t -> ('a, 'b, 'c) t
+  (** [Array1.of_gen kind layout gen] returns a new one-dimensional
       big array of kind [kind] and layout [layout], with elements taken
-      from the enumeration [enum] in order.
+      from the generation [gen] in order.
 
       @since 2.1
   *)
@@ -703,9 +703,9 @@ sig
       See {!Bigarray.Genarray.map_file} for more details. *)
 
 
-  val enum : ('a, 'b, 'c) t -> 'a BatEnum.t
-  (** [enum e] returns an enumeration on the elements of [e].
-    The order of enumeration is unspecified.*)
+  val gen : ('a, 'b, 'c) t -> 'a BatGen.t
+  (** [gen e] returns an generation on the elements of [e].
+    The order of generation is unspecified.*)
 
   val map :
     ('a -> 'b) ->
@@ -869,9 +869,9 @@ sig
   (** Memory mapping of a file as a three-dimensional big array.
       See {!Bigarray.Genarray.map_file} for more details. *)
 
-  val enum : ('a, 'b, 'c) t -> 'a BatEnum.t
-  (** [enum e] returns an enumeration on the elements of [e].
-    The order of enumeration is unspecified.*)
+  val gen : ('a, 'b, 'c) t -> 'a BatGen.t
+  (** [gen e] returns an generation on the elements of [e].
+    The order of generation is unspecified.*)
 
   val map :
     ('a -> 'b) ->

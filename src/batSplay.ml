@@ -19,7 +19,7 @@
  *)
 
 module List = struct include List include BatList end
-module Enum = BatEnum
+module Gen = BatGen
 
 type 'a bst = Empty | Node of 'a bst * 'a * 'a bst
 
@@ -358,11 +358,11 @@ struct
     in
     fun (Map tr) -> visit tr (fun t1 t2 -> Map t1, Map t2)
 
-  type 'a enumeration =
+  type 'a generation =
     | End
-    | More of key * 'a * (key * 'a) bst * 'a enumeration
+    | More of key * 'a * (key * 'a) bst * 'a generation
 
-  let count_enum =
+  let count_gen =
     let rec count k = function
       | End -> k
       | More (_, _, tr, en) ->
@@ -370,15 +370,15 @@ struct
     in
     fun en -> count 0 en
 
-  let rec cons_enum m e = match m with
+  let rec cons_gen m e = match m with
     | Empty -> e
     | Node (l, (k, v), r) ->
-      cons_enum l (More (k, v, r, e))
+      cons_gen l (More (k, v, r, e))
 
-  let rec rev_cons_enum m e = match m with
+  let rec rev_cons_gen m e = match m with
     | Empty -> e
     | Node (l, (k, v), r) ->
-      rev_cons_enum r (More (k, v, l, e))
+      rev_cons_gen r (More (k, v, l, e))
 
   let compare cmp (Map tr1) (Map tr2) =
     let rec aux e1 e2 = match (e1, e2) with
@@ -390,8 +390,8 @@ struct
         if c <> 0 then c else
           let c = cmp d1 d2 in
           if c <> 0 then c else
-            aux (cons_enum r1 e1) (cons_enum r2 e2)
-    in aux (cons_enum tr1 End) (cons_enum tr2 End)
+            aux (cons_gen r1 e1) (cons_gen r2 e2)
+    in aux (cons_gen tr1 End) (cons_gen tr2 End)
 
   let equal cmp (Map tr1) (Map tr2) =
     let rec aux e1 e2 =
@@ -401,38 +401,34 @@ struct
       | (_, End) -> false
       | (More (v1, d1, r1, e1), More (v2, d2, r2, e2)) ->
         Ord.compare v1 v2 = 0 && cmp d1 d2 &&
-        aux (cons_enum r1 e1) (cons_enum r2 e2)
-    in aux (cons_enum tr1 End) (cons_enum tr2 End)
+        aux (cons_gen r1 e1) (cons_gen r2 e2)
+    in aux (cons_gen tr1 End) (cons_gen tr2 End)
 
-  let rec enum_bst cfn en =
+  let rec gen_bst cfn en =
     let cur = ref en in
-    let next () = match !cur with
-      | End -> raise Enum.No_more_elements
+    fun () -> match !cur with
+      | End -> None
       | More (k, v, r, e) ->
         cur := cfn r e ;
-        (k, v)
-    in
-    let count () = count_enum !cur in
-    let clone () = enum_bst cfn !cur in
-    Enum.make ~next ~count ~clone
+        Some (k, v)
 
-  let enum (Map tr) = enum_bst cons_enum (cons_enum tr End)
-  let backwards (Map tr) = enum_bst rev_cons_enum (rev_cons_enum tr End)
+  let gen (Map tr) = gen_bst cons_gen (cons_gen tr End)
+  let backwards (Map tr) = gen_bst rev_cons_gen (rev_cons_gen tr End)
 
-  let keys m = Enum.map fst (enum m)
-  let values m = Enum.map snd (enum m)
+  let keys m = Gen.map fst (gen m)
+  let values m = Gen.map snd (gen m)
 
-  let of_enum e = Enum.fold begin
+  let of_gen e = Gen.fold begin
       fun acc (k, v) -> add k v acc
     end empty e
 
-  let to_list m = List.of_enum (enum m)
-  let of_list l = of_enum (List.enum l)
+  let to_list m = List.of_gen (gen m)
+  let of_list l = of_gen (List.gen l)
 
   let custom_print ~first ~last ~sep kvpr out m =
-    Enum.print ~first ~last ~sep
+    Gen.print ~first ~last ~sep
       (fun out (k, v) -> kvpr out k v)
-      out (enum m)
+      out (gen m)
 
   let print ?(first="{\n") ?(last="}\n") ?(sep=",\n") ?(kvsep=": ") kpr vpr out m =
     custom_print ~first ~last ~sep
@@ -465,7 +461,7 @@ struct
     let ( <-- ) m (k, v) = add k v m
   end
 
-  let bindings m = List.of_enum (enum m)
+  let bindings m = List.of_gen (gen m)
 
   let exist_bool b f m =
     try
@@ -492,9 +488,9 @@ struct
   let merge f m1 m2 =
     (* The implementation is a bit long, but has the important
        property of applying `f` in increasing key order. *)
-    (* we will iterate on both enumerations in increasing order simultaneously *)
-    let e1 = enum m1 in
-    let e2 = enum m2 in
+    (* we will iterate on both generations in increasing order simultaneously *)
+    let e1 = gen m1 in
+    let e2 = gen m2 in
     (* we will push the results in increasing order from left to
        right; the result will be very unbalanced, but this will be
        corrected by the rebalancing at the first lookup in the splay
@@ -517,37 +513,32 @@ struct
          both_known (k1, v1) (k2, v2)
     *)
     let rec none_known acc =
-      match Enum.peek e1, Enum.peek e2 with
+      match e1 (), e2 () with
       | None, None -> acc
       | None, Some kv2 ->
-        Enum.junk e2;
         only_e2 acc kv2
       | Some kv1, None ->
-        Enum.junk e1;
         only_e1 acc kv1
       | Some kv1, Some kv2 ->
-        Enum.junk e1; Enum.junk e2;
         both_known acc kv1 kv2
     and only_e1 acc kv1 =
-      Enum.fold push1 (push1 acc kv1) e1
+      Gen.fold push1 (push1 acc kv1) e1
     and only_e2 acc kv2 =
-      Enum.fold push2 (push2 acc kv2) e2
+      Gen.fold push2 (push2 acc kv2) e2
     and both_known acc ((k1, v1) as kv1) ((k2, v2) as kv2) =
       let cmp = Ord.compare k1 k2 in
       if cmp < 0 then begin
         let acc = push1 acc kv1 in
-        match Enum.peek e1 with
+        match e1 () with
         | None -> only_e2 acc kv2
         | Some kv1' ->
-          Enum.junk e1;
           both_known acc kv1' kv2
       end
       else if cmp > 0 then begin
         let acc = push2 acc kv2 in
-        match Enum.peek e2 with
+        match e2 () with
         | None -> only_e1 acc kv1
         | Some kv2' ->
-          Enum.junk e2;
           both_known acc kv1 kv2'
       end
       else begin

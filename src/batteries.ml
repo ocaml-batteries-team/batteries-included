@@ -60,6 +60,7 @@ module Digest = BatDigest
 (* Filename *)
 module Format = BatFormat
 module Gc = BatGc
+module Gen = BatGen
 module Genlex = BatGenlex
 module Hashtbl = BatHashtbl
 module Int32 = BatInt32

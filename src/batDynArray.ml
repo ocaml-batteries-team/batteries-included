@@ -793,45 +793,25 @@ let fold_right f a x =
   ) d ())
 *)
 
-let enum d =
-  let rec make start =
-    let idxref = ref start in
-    let next () =
-      if !idxref >= d.len then
-        raise BatEnum.No_more_elements
-      else
-        let retval = iget d.arr !idxref in
-        incr idxref;
-        retval
-    and count () =
-      if !idxref >= d.len then 0
-      else d.len - !idxref
-    and clone () =
-      make !idxref
-    in
-    BatEnum.make ~next:next ~count:count ~clone:clone
-  in
-  make 0
+let gen d =
+  let idxref = ref 0 in
+  fun ()->
+    if !idxref >= d.len then None
+    else begin
+      let retval = iget d.arr !idxref in
+      incr idxref;
+      Some retval
+    end
 
-let of_enum e =
-  if BatEnum.fast_count e then begin
-    let c = BatEnum.count e in
-    let arr = imake c in
-    BatEnum.iteri (fun i x -> iset arr i x) e;
-    {
-      resize = default_resizer;
-      len = c;
-      arr = arr;
-    }
-  end else
-    let d = make 0 in
-    BatEnum.iter (add d) e;
-    d
+let of_gen g =
+  let d = make 0 in
+  BatGen.iter (add d) g;
+  d
 
 (*$Q
   (Q.list Q.small_int) (fun l -> \
     let v = of_list l in \
-    enum v |> of_enum |> to_list = l)
+    gen v |> of_enum |> to_list = l)
 *)
 
 let unsafe_get a n =
@@ -841,7 +821,7 @@ let unsafe_set a n x =
   iset a.arr n x
 
 let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a out t =
-  BatEnum.print ~first ~last ~sep print_a out (enum t)
+  BatGen.print ~first ~last ~sep print_a out (gen t)
 
 (*$T
   Printf.sprintf2 "%a" (print Int.print) (of_list [1;2]) = "[|1; 2|]"
