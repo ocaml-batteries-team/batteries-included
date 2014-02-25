@@ -64,9 +64,21 @@ val input_all : Pervasives.in_channel -> string
 val dump : 'a -> string
 (** Attempt to convert a value to a string.
 
-    Since types are lost at compile time, the representation might not
-    match your type. For example, None will be printed 0 since they
-    share the same runtime representation.
+    Works well for a lot of cases such as non-empty lists, algebraic
+    datatype, and records.
+
+    However, since types are lost at compile-time, the representation
+    might not match your type. (0, 1) will be printed as expected, but
+    (1, 0) and [1] have the same representation and will get printed
+    in the same way. The result of [dump] is unspecified and may
+    change in future versions, so you should only use it for debugging
+    and never have program behavior depend on the output.
+
+    Here is a list of some of the surprising corner cases of the
+    current implementation:
+
+      - (3, 0) is printed [3], (0.5, 0) is printed [0.5], etc.
+      - None, false and [] are printed 0
 
     [dump] may fail for ill-formed values, such as obtained from
     a faulty C binding or crazy uses of [Obj.set_tag].

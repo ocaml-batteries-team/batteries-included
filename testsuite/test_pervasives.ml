@@ -52,6 +52,10 @@ let test_dump () =
 
   test "(1, (2., 3.), [\"foo\"])" {a = 1; b = (2., 3.); c = "foo", None};
 
+  (* tuples *)
+  test "(1, 2)" (1,2);
+  test "[0]" (0,0);
+
   (* lazy *)
   (* lazy immediate values are not lazyfied!
      test "0" (lazy 0); *)
