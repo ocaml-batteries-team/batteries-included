@@ -377,10 +377,30 @@ let combinations l =
           let node = LL.append tl (LL.map (fun l -> x::l) tl) in
           Lazy.force node)
   in gen l
-  
+
 (*$T
   combinations [1;2;3] |> LazyList.to_list|> List.sort Pervasives.compare = \
     [[]; [1]; [1;2]; [1;2;3]; [1;3]; [2]; [2;3]; [3]]
+*)
+
+let permutations l =
+  (* do a choice in [l]. [right] contain elements not to choose from. *)
+  let rec p1 l right = match l with
+  | [] -> BatLazyList.cons [] BatLazyList.nil
+  | [x] -> p2 x right
+  | x::l' ->
+      (* choose [x], or don't (in which case put it in [right]) *)
+      BatLazyList.append
+        (p2 x (l' @ right))
+        (p1 l' (x::right))
+  (* all permutations of [l], prefixed with [x] *)
+  and p2 x l =
+    BatLazyList.map (fun l -> x :: l) (p1 l [])
+  in p1 l []
+
+(*$T permutations
+  permutations [1;2;3] |> LazyList.to_list |> List.sort Pervasives.compare = \
+    [[1;2;3]; [1;3;2]; [2;1;3]; [2;3;1]; [3;1;2]; [3;2;1]]
 *)
 
 (*$= interleave & ~printer:(IO.to_string (List.print Int.print))

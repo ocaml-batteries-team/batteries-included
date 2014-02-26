@@ -593,8 +593,14 @@ val interleave : ?first:'a -> ?last:'a -> 'a -> 'a list -> 'a list
     [first; a0; sep; a1; sep; a2; sep; ...; sep; an; last] *)
 
 val combinations : 'a list -> 'a list BatLazyList.t
-(** [combinations l] yields an list of all combinations of elements
-    of [l]. *)
+(** [combinations l] yields a list of all combinations of elements
+    of [l]. Each combination selects a "subset" of the elements of
+    [l] (duplicates are considered as distinct elements). *)
+
+val permutations : 'a list -> 'a list BatLazyList.t
+(** [permutations l] yields a lazy list of all permutations of the
+    list [l]. Every permutation has the same elements as [l], but in
+    a different order. There are [factorial (length l)] permutations. *)
 
 (** {6 BatEnum functions}
 
