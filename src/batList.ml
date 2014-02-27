@@ -385,18 +385,18 @@ let combinations l =
 
 let permutations l =
   (* do a choice in [l]. [right] contain elements not to choose from. *)
-  let rec p1 l right = match l with
+  let rec choose_first among right = match among with
   | [] -> BatLazyList.cons [] BatLazyList.nil
-  | [x] -> p2 x right
-  | x::l' ->
+  | [x] -> perms_starting_with x right
+  | x::among' ->
       (* choose [x], or don't (in which case put it in [right]) *)
       BatLazyList.append
-        (p2 x (l' @ right))
-        (p1 l' (x::right))
+        (perms_starting_with x (among' @ right))
+        (choose_first among' (x::right))
   (* all permutations of [l], prefixed with [x] *)
-  and p2 x l =
-    BatLazyList.map (fun l -> x :: l) (p1 l [])
-  in p1 l []
+  and perms_starting_with x l =
+    BatLazyList.map (fun l -> x :: l) (choose_first l [])
+  in choose_first l []
 
 (*$T permutations
   permutations [1;2;3] |> LazyList.to_list |> List.sort Pervasives.compare = \
