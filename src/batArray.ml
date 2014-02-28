@@ -284,7 +284,7 @@ let gen xs =
 (*$Q
   (Q.array Q.small_int) (fun a -> \
     let e = gen a in \
-    for i = 0 to Array.length a / 2 - 1 do\
+    for i = 0 to Array.length a - 1 do\
       assert (Some a.(i) = e ())\
     done; \
     e() = None)
@@ -301,7 +301,7 @@ let backwards xs =
   (Q.array Q.small_int) (fun a -> \
     let e = backwards a in \
     let n = Array.length a in \
-    for i = 0 to Array.length a / 2 - 1 do\
+    for i = 0 to Array.length a - 1 do\
       assert (Some a.(n - 1 - i) = e ())\
     done; \
     e() = None)

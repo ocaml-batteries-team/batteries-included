@@ -422,7 +422,7 @@ let print oc t =
     if lo=hi then BatInt.print oc lo
     else BatTuple.Tuple2.printn BatInt.print oc (lo,hi)
   in
-  BatGen.print print_range oc (gen t)
+  BatGen.print ~sep:" " print_range oc (gen t)
 
   (*$= print & ~printer:(fun x -> x)
     "(1,3) (5,6)" (IO.to_string print (of_list [1,3;5,6]))

@@ -337,13 +337,13 @@ let __of_list l =
 
 let print ?(first="") ?(last="") ?(sep=", ") f oc g =
   let rec pp i = match g () with
-    | None -> BatInnerIO.write_string oc last
+    | None -> BatInnerIO.nwrite oc last
     | Some x ->
-      if i > 0 then BatInnerIO.write_string oc sep;
+      if i > 0 then BatInnerIO.nwrite oc sep;
       f oc x;
       pp (i+1)
    in
-   BatInnerIO.write_string oc first; pp 0
+   BatInnerIO.nwrite oc first; pp 0
 
 (* unfold: f returns an option *)
 let from_loop init f =
@@ -468,7 +468,7 @@ let seq start f cond =
     else (let x = !cur in cur := f !cur; Some x)
 
 (*$T seq
-  seq 0 ((+) 1) (fun x -> x>= 5) |> to_list = [0;1;2;3;4]
+  seq 0 ((+) 1) (fun x -> x< 5) |> to_list = [0;1;2;3;4]
 *)
 
 let rec iter f gen =
@@ -1368,16 +1368,16 @@ let group_by f gen =
       | None, [] -> None
       | None, l ->
         cur := [];  (* stop *)
-        Some (__of_list l)
+        Some (__of_list (List.rev l))
       | Some x, y::_ when f x = f y ->
         cur := x::!cur;
         next ()  (* same group *)
       | Some x, l ->
         cur := [x];
-        Some (__of_list l)
+        Some (__of_list (List.rev l))
     in next
 (*$T
-  group_by (fun x -> x mod 2=0) \
+  group_by (fun x -> x mod 2) \
     (of_list [0;0;0;1;0;2;2;3;4;6;5;5;5;5;10]) |> map to_list |> to_list = \
     [[0;0;0];[1];[0;2;2];[3];[4;6];[5;5;5;5];[10]]
 *)

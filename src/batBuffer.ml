@@ -38,15 +38,17 @@ let print out t =
   BatString.print out (contents t)
 
 (*$Q print
-  (Q.string) (fun s -> let b = create 5 in add_string b "foo"; add_string b s; add_string b "bar"; BatIO.to_string print b = "foo" ^ s ^ "bar")
+  (Q.string) (fun s -> let b = create 5 in \
+    add_string b "foo"; add_string b s; add_string b "bar"; \
+    BatIO.to_string print b = "foo" ^ s ^ "bar")
 *)
 
 let gen t =
   let buf = buffer_of_t t in
   let i = ref 0 in
   fun () ->
-    if !i = buf.length then None
-    else Some buf.buffer.[buf.position + BatRef.post_incr i]
+    if !i = buf.position then None
+    else Some buf.buffer.[BatRef.post_incr i]
 
 (*$Q gen
   (Q.string) (fun s -> let b = create 10 in add_string b s; \

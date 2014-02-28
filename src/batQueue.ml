@@ -31,7 +31,7 @@ let of_gen e =
 (*$Q of_gen
   (Q.list Q.int) (fun l -> \
     let e = BatList.gen l in \
-    BatGen.eq ~eq:(=) (gen (of_gen e)) e \
+    BatGen.eq ~eq:(=) (gen (of_gen e)) (BatList.gen l) \
   )
 *)
 

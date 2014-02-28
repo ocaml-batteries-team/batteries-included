@@ -197,7 +197,7 @@ let find_all str sub =
   find_all "" "foo" |> BatGen.is_empty
   let e = find_all "aaabbaabaaa" "aa" in \
   let e = Gen.drop 2 e in let e' = Gen.persistent e in \
-  (List.of_gen e = [5;8;9]) && (Gen.drop 1 (e' ()) |> List.of_gen = [8;9])
+  (List.of_gen (e' ()) = [5;8;9]) && (Gen.drop 1 (e' ()) |> List.of_gen = [8;9])
  *)
 
 let exists str sub =
@@ -441,7 +441,7 @@ let gen s =
    let e = gen "abcdef" in \
    for _i = 0 to 2 do BatGen.junk e done; \
    let e2 = BatGen.persistent e in \
-   implode (BatList.of_gen e) = "def" && implode (BatList.of_gen (e2 ())) = "def"
+   implode (BatList.of_gen (e2 ())) = "def" && implode (BatList.of_gen (e2 ())) = "def"
 *)
 
 let backwards s =
@@ -455,7 +455,7 @@ let backwards s =
    let e = backwards "abcdef" in \
    for _i = 0 to 2 do BatGen.junk e done; \
    let e2 = BatGen.persistent e in \
-   implode (BatList.of_gen e) = "cba" && implode (BatList.of_gen (e2 ())) = "cba"
+   implode (BatList.of_gen e) = "" && implode (BatList.of_gen (e2 ())) = "cba"
 *)
 
 let of_gen e =
