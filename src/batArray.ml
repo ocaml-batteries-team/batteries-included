@@ -281,14 +281,13 @@ let gen xs =
   fun () ->
     if !r = length xs then None
     else Some (unsafe_get xs (BatRef.post_incr r))
-(*$Q gen
+(*$Q
   (Q.array Q.small_int) (fun a -> \
     let e = gen a in \
     for i = 0 to Array.length a / 2 - 1 do\
       assert (Some a.(i) = e ())\
     done; \
-    e() = None
-  )
+    e() = None)
 *)
 
 
@@ -305,8 +304,7 @@ let backwards xs =
     for i = 0 to Array.length a / 2 - 1 do\
       assert (Some a.(n - 1 - i) = e ())\
     done; \
-    e() = None
-  )
+    e() = None)
 *)
 
 let of_gen e =
@@ -326,7 +324,7 @@ let range xs =
     else Some (BatRef.post_incr i)
 (*$Q range
   (Q.array Q.small_int) (fun a -> \
-    Gen.equal ~eq:(=) (range a)
+    Gen.eq ~eq:(=) (range a) \
      (gen (Array.init (Array.length a) (fun i -> i))))
 *)
 

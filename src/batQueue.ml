@@ -31,7 +31,7 @@ let of_gen e =
 (*$Q of_gen
   (Q.list Q.int) (fun l -> \
     let e = BatList.gen l in \
-    BatGen.equal (=) (gen (of_gen (BatGen.clone e))) e \
+    BatGen.eq ~eq:(=) (gen (of_gen e)) e \
   )
 *)
 
@@ -42,7 +42,7 @@ let gen q =
   for i = 0 to 10 do Queue.push i q; done; \
   let e = gen q in \
   let i = ref (-1) in \
-  BatGen.count e = 11 && BatGen.for_all (fun elt -> incr i; !i = elt) e
+  BatGen.length e = 11 && BatGen.for_all (fun elt -> incr i; !i = elt) e
 *)
 
 let print ?(first="") ?(last="") ?(sep="") print_a out t =

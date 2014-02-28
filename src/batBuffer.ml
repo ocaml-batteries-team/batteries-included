@@ -50,7 +50,7 @@ let gen t =
 
 (*$Q gen
   (Q.string) (fun s -> let b = create 10 in add_string b s; \
-    BatGen.equal Char.equal (gen b) (BatString.gen s))
+    BatGen.eq ~eq:Char.equal (gen b) (BatString.gen s))
 *)
 
 let of_gen g =

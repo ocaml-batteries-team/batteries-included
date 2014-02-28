@@ -1332,7 +1332,7 @@ let product gena genb =
 (* Group equal consecutive elements together. *)
 let group ?(eq=(=)) gen =
   match gen() with
-  | None -> fun () -> None
+  | None -> empty
   | Some x ->
     let cur = ref [x] in
     let rec next () =
@@ -1358,7 +1358,7 @@ let group ?(eq=(=)) gen =
 
 let group_by f gen =
   match gen() with
-  | None -> fun () -> None
+  | None -> empty
   | Some x ->
     let cur = ref [x] in
     let rec next () =
@@ -1378,7 +1378,7 @@ let group_by f gen =
     in next
 (*$T
   group_by (fun x -> x mod 2=0) \
-    (of_list [0;0;0;1;0;2;2;3;4;6;5;5;5;5;10]) |> to_list = \
+    (of_list [0;0;0;1;0;2;2;3;4;6;5;5;5;5;10]) |> map to_list |> to_list = \
     [[0;0;0];[1];[0;2;2];[3];[4;6];[5;5;5;5];[10]]
 *)
 

@@ -285,7 +285,7 @@ let gen t =
     | None -> None
 
 (*$T
-  BitSet.of_list [5;3;2;1] |> BitSet.gen |> Gen.junk |> Gen.length = 3
+  BitSet.of_list [5;3;2;1] |> BitSet.gen |> Gen.drop 1 |> Gen.length = 3
 *)
 
 (*$Q

@@ -220,15 +220,6 @@ let to_stream_filter kwd_table =
     BatStream.from
       (fun _count -> next_token {position=0; content=input})
 
-let to_enum_filter kwd_table x: token BatEnum.t =
-  let str = to_stream_filter kwd_table
-    (BatStream.from (fun _count -> BatEnum.get x))
-  in
-  BatEnum.from
-    (fun () ->
-      try Stream.next str
-      with Stream.Error _ | Stream.Failure -> raise BatEnum.No_more_elements)
-
 let to_lazy_list_filter kwd_table x =
   let x = BatLazyList.to_stream x in
   (BatLazyList.of_stream (to_stream_filter kwd_table x))

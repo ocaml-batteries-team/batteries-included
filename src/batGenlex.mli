@@ -92,9 +92,6 @@ val of_list            : string list ->  t
 val to_stream_filter   :  t -> char Stream.t   ->  token Stream.t
 (** Apply the lexer to a stream.*)
 
-val to_enum_filter     :  t -> char BatEnum.t     ->  token BatEnum.t
-(** Apply the lexer to an enum.*)
-
 val to_lazy_list_filter:  t -> char BatLazyList.t ->  token BatLazyList.t
 (** Apply the lexer to a lazy list.*)
 

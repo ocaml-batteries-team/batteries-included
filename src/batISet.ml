@@ -17,7 +17,7 @@ let rec mem (n:int) s =
   let t = empty |> add_range 1 10 |> add_range 10 20 in \
   mem 1 t && mem 5 t && mem 20 t && not (mem 21 t) && not (mem 0 t)
 
-  let t = Enum.append (1--9) (20 --- 15) |> Enum.map (fun i -> i,i) |> of_gen in \
+  let t = Gen.append (1--9) (20 --- 15) |> Gen.map (fun i -> i,i) |> of_gen in \
   mem 1 t && mem 5 t && mem 15 t && not (mem 10 t) && not (mem 14 t)
 
 *)

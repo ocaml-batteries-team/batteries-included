@@ -78,7 +78,7 @@ let gen () =
   fun () -> if !i = 256 then None else Some (unsafe_chr (BatRef.post_incr i))
 (*$T gen
   let e = gen () in for i = 0 to 255 do \
-    assert (Char.chr i = e()) done; e() = None
+    assert (Some (Char.chr i) = e()) done; e() = None
 *)
 
 let ( -- ) from last =

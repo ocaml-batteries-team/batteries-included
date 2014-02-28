@@ -155,15 +155,15 @@ let gen = function
   | None   -> BatGen.empty
   | Some e -> BatGen.singleton e
 (*$T gen
-   BatList.of_enum (gen None) = []
-   BatList.of_enum (gen (Some 3)) = [3]
+   BatList.of_gen (gen None) = []
+   BatList.of_gen (gen (Some 3)) = [3]
 *)
 
 let of_gen g = g()
 
-(*$T of_enum
-   of_enum (BatList.gen []) = None
-   let e = BatList.gen [1; 2; 3] in of_enum e = Some 1 && BatList.of_enum e = [2; 3]
+(*$T of_gen
+   of_gen (BatList.gen []) = None
+   let e = BatList.gen [1; 2; 3] in of_gen e = Some 1 && BatList.of_gen e = [2; 3]
 *)
 
 open BatOrd

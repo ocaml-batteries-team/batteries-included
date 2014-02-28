@@ -188,16 +188,16 @@ let find_all str sub =
     with Not_found -> None
 
 (*$T find_all
-  find_all "aaabbaabaaa" "aa" |> List.of_enum = [0;1;5;8;9]
-  find_all "abcde" "bd" |> List.of_enum = []
-  find_all "baaaaaaaaaaaaaaaaaaaab" "baa" |> List.of_enum = [0]
-  find_all "aaabbaabaaa" "aa" |> Gen.skip 1 |> Gen.clone \
-    |> List.of_enum = [1;5;8;9]
-  find_all "aaabbaabaaa" "aa" |> Gen.skip 1 |> Gen.count = 4
-  find_all "" "foo" |> BatEnum.is_empty
+  find_all "aaabbaabaaa" "aa" |> List.of_gen = [0;1;5;8;9]
+  find_all "abcde" "bd" |> List.of_gen = []
+  find_all "baaaaaaaaaaaaaaaaaaaab" "baa" |> List.of_gen = [0]
+  find_all "aaabbaabaaa" "aa" |> Gen.drop 1 \
+    |> List.of_gen = [1;5;8;9]
+  find_all "aaabbaabaaa" "aa" |> Gen.drop 1 |> Gen.length = 4
+  find_all "" "foo" |> BatGen.is_empty
   let e = find_all "aaabbaabaaa" "aa" in \
-    Gen.drop 2 e; let e' = Gen.clone e in \
-    (List.of_enum e = [5;8;9]) && (Gen.skip 1 e' |> List.of_enum = [8;9])
+    ignore (Gen.drop 2 e); let e' = Gen.persistent e in \
+    (List.of_gen e = [5;8;9]) && (Gen.drop 1 (e' ()) |> List.of_gen = [8;9])
  *)
 
 let exists str sub =
@@ -436,12 +436,12 @@ let gen s =
   fun () ->
     if !i = l then None else Some (unsafe_get s (BatRef.post_incr i))
 (*$T gen
-   "" |> gen |> List.of_enum = []
-   "foo" |> gen |> List.of_enum = ['f'; 'o'; 'o']
+   "" |> gen |> List.of_gen = []
+   "foo" |> gen |> List.of_gen = ['f'; 'o'; 'o']
    let e = gen "abcdef" in \
-   for _i = 0 to 2 do BatEnum.junk e done; \
-   let e2 = BatEnum.clone e in \
-   implode (BatList.of_enum e) = "def" && implode (BatList.of_enum e2) = "def"
+   for _i = 0 to 2 do BatGen.junk e done; \
+   let e2 = BatGen.persistent e in \
+   implode (BatList.of_gen e) = "def" && implode (BatList.of_gen (e2 ())) = "def"
 *)
 
 let backwards s =
@@ -450,12 +450,12 @@ let backwards s =
     if !i <= 0 then None
     else Some (unsafe_get s (BatRef.pre_decr i))
 (*$T backwards
-   "" |> backwards |> of_enum = ""
-   "foo" |> backwards |> of_enum = "oof"
+   "" |> backwards |> of_gen = ""
+   "foo" |> backwards |> of_gen = "oof"
    let e = backwards "abcdef" in \
-   for _i = 0 to 2 do BatEnum.junk e done; \
-   let e2 = BatEnum.clone e in \
-   implode (BatList.of_enum e) = "cba" && implode (BatList.of_enum e2) = "cba"
+   for _i = 0 to 2 do BatGen.junk e done; \
+   let e2 = BatGen.persistent e in \
+   implode (BatList.of_gen e) = "cba" && implode (BatList.of_gen (e2 ())) = "cba"
 *)
 
 let of_gen e =
@@ -465,8 +465,8 @@ let of_gen e =
   List.iteri (fun i c -> unsafe_set s (n-i-1) c) l;
   s
 (*$T of_gen
-    Gen.init 3 (fun i -> char_of_int (i + int_of_char '0')) |> of_gen = "012"
-    Gen.init 0 (fun _i -> ' ') |> of_enum = ""
+    Gen.init ~limit:3 (fun i -> char_of_int (i + int_of_char '0')) |> of_gen = "012"
+    Gen.init ~limit:0 (fun _i -> ' ') |> of_gen = ""
 *)
 
 let of_backwards e =

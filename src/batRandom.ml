@@ -98,14 +98,14 @@ let multi_choice n e =
     BatArray.gen (Array.map fst chosen)
 
 (*$T multi_choice
-  BatGen.is_empty (multi_choice 0 (BatGen.empty ()))
-  BatGen.count (multi_choice 3 (BatList.gen [1;2;3;4;5])) = 3
+  BatGen.is_empty (multi_choice 0 BatGen.empty)
+  BatGen.length (multi_choice 3 (BatList.gen [1;2;3;4;5])) = 3
   let l = [1;2;3;4;5] in let e = multi_choice 2 (BatList.gen l) in \
     let a = BatOption.get (BatGen.get e) in a < BatOption.get (BatGen.get e)
-  let x = BatGen.repeat ~times:99 [0;1] /@ (fun l -> \
-    multi_choice 1 (BatList.gen l)) /@ \
-    BatGen.get_exn |> \
-    reduce (+) in x > 0 && x < 99
+  let x = BatGen.repeat [0;1] |> BatGen.take 99 |> BatGen.map (fun l -> \
+    multi_choice 1 (BatList.gen l)) \
+      |> BatGen.map BatGen.get_exn \
+      |> reduce (+) in x > 0 && x < 99
 *)
 (* Note: this last test check that the first nor the last item is always chosen *)
 

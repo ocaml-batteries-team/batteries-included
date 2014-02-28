@@ -2,7 +2,6 @@ module Base64 = BatBase64
 module BitSet = BatBitSet
 module Dllist = BatDllist
 module DynArray = BatDynArray
-module Enum = BatEnum
 module ExtArray = struct
   module Array = struct include Array include BatArray end
 end

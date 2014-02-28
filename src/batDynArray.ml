@@ -811,7 +811,7 @@ let of_gen g =
 (*$Q
   (Q.list Q.small_int) (fun l -> \
     let v = of_list l in \
-    gen v |> of_enum |> to_list = l)
+    gen v |> of_gen |> to_list = l)
 *)
 
 let unsafe_get a n =

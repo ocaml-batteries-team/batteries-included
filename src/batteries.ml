@@ -104,7 +104,6 @@ module BitSet = BatBitSet
 module Bit_set = BatBitSet
 module Dllist = BatDllist
 module DynArray = BatDynArray
-module Enum = BatEnum
 module File = BatFile
 module Global = BatGlobal
 module IO = BatIO

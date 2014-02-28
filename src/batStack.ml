@@ -31,7 +31,7 @@ let of_gen e =
 
 (*$T of_gen
   let s = create () in push 3 s; push 5 s; [3;5] |> List.gen |> of_gen = s
-  let s = create () in of_gen (BatGen.empty ()) = s
+  let s = create () in of_gen BatGen.empty = s
 *)
 
 (* Consumes input stack *)

@@ -260,10 +260,11 @@ let gen q =
 let of_gen g =
   BatGen.fold snoc empty g
 
-(*$Q enum
-   (Q.list Q.int) (fun l -> List.of_enum (enum (List.fold_left snoc empty l)) = l)
-*)(*$Q of_enum
-    (Q.list Q.int) (fun l -> to_list (of_enum (List.enum l)) = l)
+(*$Q gen
+   (Q.list Q.int) (fun l -> List.of_gen (gen (List.fold_left snoc empty l)) = l)
+*)
+(*$Q of_gen
+    (Q.list Q.int) (fun l -> to_list (of_gen (List.gen l)) = l)
   *)
 
 let print ?(first="[") ?(last="]") ?(sep="; ") elepr out dq =
