@@ -196,8 +196,8 @@ let find_all str sub =
   find_all "aaabbaabaaa" "aa" |> Gen.drop 1 |> Gen.length = 4
   find_all "" "foo" |> BatGen.is_empty
   let e = find_all "aaabbaabaaa" "aa" in \
-    ignore (Gen.drop 2 e); let e' = Gen.persistent e in \
-    (List.of_gen e = [5;8;9]) && (Gen.drop 1 (e' ()) |> List.of_gen = [8;9])
+  let e = Gen.drop 2 e in let e' = Gen.persistent e in \
+  (List.of_gen e = [5;8;9]) && (Gen.drop 1 (e' ()) |> List.of_gen = [8;9])
  *)
 
 let exists str sub =

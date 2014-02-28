@@ -846,11 +846,12 @@ struct
     | Node3 (_, a, b, c) ->
       enum_a c (fun () -> enum_a b (fun () -> enum_a a k))
 
-  let enum_base a k = a, k
+  let enum_base x k = x, k
 
   type 'a iter = unit -> 'a ret
-  and 'a ret = ('a * 'a iter) option
+  and 'a ret = ('a * 'a iter)
   type ('input, 'output) iter_into = 'input -> 'output iter -> 'output ret
+  exception ExitGenNow
 
   let rec enum_aux : 'v 'a 'm. ('a, 'v) iter_into -> (('a, 'm) fg, 'v) iter_into =
     fun enum_a t k ->
@@ -863,6 +864,8 @@ struct
             enum_digit enum_a sf k
           )
         )
+
+  let enum_cps t = enum_aux enum_base t (fun () -> raise ExitGenNow)
 
   let rec enum_aux_backwards
     : 'v 'a 'm. ('a, 'v) iter_into -> (('a, 'm) fg, 'v) iter_into =
@@ -877,20 +880,31 @@ struct
           )
         )
 
+  let enum_cps_backwards t = enum_aux_backwards enum_base t (fun () -> raise ExitGenNow)
+
   (*---------------------------------*)
   (*           conversion            *)
   (*---------------------------------*)
+  let __unfold_exn f state =
+    let state = ref state in
+    let stop = ref false in
+    fun () ->
+      if !stop then None
+      else try
+        let x, state' = f !state in
+        state := state';
+        Some x
+      with ExitGenNow -> stop:= true; None
+
   let gen t =
-    BatGen.unfold
-      (fun k -> enum_aux
-        (fun x k' -> Some (x, k')) t k)
-      (fun () -> None)
+    __unfold_exn
+      (fun k -> k())
+      (fun () -> enum_cps t)
 
   let backwards t =
-    BatGen.unfold
-      (fun k -> enum_aux_backwards
-        (fun x k' -> Some (x, k')) t k)
-      (fun () -> None)
+    __unfold_exn
+      (fun k -> k())
+      (fun () -> enum_cps_backwards t)
 
   let of_gen ~monoid ~measure g =
     BatGen.fold (fun t elt -> snoc ~monoid ~measure t elt) empty g

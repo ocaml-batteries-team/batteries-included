@@ -351,7 +351,7 @@ let from_loop init f =
   let data = ref init in
   fun () ->
     if !stop then None else match f !data with
-    | None -> stop:=true; None
+    | None -> stop:=true; data:=Obj.magic 0; None  (* free data*)
     | Some (x, data') -> data:= data'; Some x
 
 (** {2 Transient generators} *)
