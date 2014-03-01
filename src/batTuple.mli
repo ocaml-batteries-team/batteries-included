@@ -50,9 +50,9 @@
     allow converting between functions that take [n] arguments to ones
     that take a single [n]-tuple argument.
 
-    Enumeration. Every [n]-tuple can be converted to an enum with [n]
-    elements using its [enum] function, and can be constructed from an
-    enum using [of_enum]. Tuples satisfy {!BatEnum.Enumerable}.
+    Enumeration. Every [n]-tuple can be converted to an gen with [n]
+    elements using its [gen] function, and can be constructed from an
+    gen using [of_enum]. Tuples satisfy {!BatGen.Enumerable}.
 
     Printing. Function [print] prints a tuple given a method for
     printing each of its elements. The simpler [printn] function can
@@ -100,9 +100,9 @@ module Tuple2 : sig
   val curry : ('a * 'b -> 'c) -> 'a -> 'b -> 'c
   val uncurry : ('a -> 'b -> 'c) -> 'a * 'b -> 'c
 
-  val enum : ('a * 'a) -> 'a BatEnum.t
-  val of_enum : 'a BatEnum.t -> ('a * 'a)
-  (** @raise Failure if enum does not contain at least 2
+  val gen : ('a * 'a) -> 'a BatGen.t
+  val of_gen : 'a BatGen.t -> ('a * 'a)
+  (** @raise Failure if gen does not contain at least 2
       elements. *)
 
   val print : ?first:string -> ?sep:string -> ?last:string
@@ -115,7 +115,7 @@ module Tuple2 : sig
 
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ('a * 'b) -> ('a * 'b) -> int
 
-  include BatEnum.Enumerable with type 'a enumerable = 'a * 'a
+  include BatGen.Enumerable with type 'a enumerable = 'a * 'a
 
   open BatOrd
   val eq : 'a eq -> 'b eq -> ('a * 'b) eq
@@ -158,9 +158,9 @@ module Tuple3 : sig
   val curry : ('a * 'b * 'c -> 'd) -> 'a -> 'b -> 'c -> 'd
   val uncurry : ('a -> 'b -> 'c -> 'd) -> 'a * 'b * 'c -> 'd
 
-  val enum : ('a * 'a * 'a) -> 'a BatEnum.t
-  val of_enum : 'a BatEnum.t -> ('a * 'a * 'a)
-  (** @raise Failure if enum does not contain at least 3
+  val gen : ('a * 'a * 'a) -> 'a BatGen.t
+  val of_gen : 'a BatGen.t -> ('a * 'a * 'a)
+  (** @raise Failure if gen does not contain at least 3
       elements. *)
 
   val print : ?first:string -> ?sep:string -> ?last:string
@@ -173,7 +173,7 @@ module Tuple3 : sig
 
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ?cmp3:('c -> 'c -> int) -> ('a * 'b * 'c) -> ('a * 'b * 'c) -> int
 
-  include BatEnum.Enumerable with type 'a enumerable = 'a * 'a * 'a
+  include BatGen.Enumerable with type 'a enumerable = 'a * 'a * 'a
 
   open BatOrd
   val eq : 'a eq -> 'b eq -> 'c eq -> ('a * 'b * 'c) eq
@@ -228,9 +228,9 @@ module Tuple4 : sig
   val curry : ('a * 'b * 'c * 'd -> 'e) -> 'a -> 'b -> 'c -> 'd -> 'e
   val uncurry : ('a -> 'b -> 'c -> 'd -> 'e) -> 'a * 'b * 'c * 'd -> 'e
 
-  val enum : ('a * 'a * 'a * 'a) -> 'a BatEnum.t
-  val of_enum : 'a BatEnum.t -> ('a * 'a * 'a * 'a)
-  (** @raise Failure if enum does not contain at least 4
+  val gen : ('a * 'a * 'a * 'a) -> 'a BatGen.t
+  val of_gen : 'a BatGen.t -> ('a * 'a * 'a * 'a)
+  (** @raise Failure if gen does not contain at least 4
       elements. *)
 
   val print : ?first:string -> ?sep:string -> ?last:string
@@ -243,7 +243,7 @@ module Tuple4 : sig
 
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ?cmp3:('c -> 'c -> int) -> ?cmp4:('d -> 'd -> int) -> ('a * 'b * 'c * 'd) -> ('a * 'b * 'c * 'd) -> int
 
-  include BatEnum.Enumerable with type 'a enumerable = 'a * 'a * 'a * 'a
+  include BatGen.Enumerable with type 'a enumerable = 'a * 'a * 'a * 'a
 
   open BatOrd
   val eq : 'a eq -> 'b eq -> 'c eq -> 'd eq -> ('a * 'b * 'c * 'd) eq
@@ -317,14 +317,17 @@ module Tuple5 : sig
   val curry : ('a * 'b * 'c * 'd * 'e -> 'f) -> 'a -> 'b -> 'c -> 'd -> 'e -> 'f
   val uncurry : ('a -> 'b -> 'c -> 'd -> 'e -> 'f) -> 'a * 'b * 'c * 'd * 'e -> 'f
 
-  val enum : ('a * 'a * 'a * 'a * 'a) -> 'a BatEnum.t
-  val of_enum : 'a BatEnum.t -> ('a * 'a * 'a * 'a * 'a)
-  (** @raise Failure if enum does not contain at least 5
+  val gen : ('a * 'a * 'a * 'a * 'a) -> 'a BatGen.t
+  val of_gen : 'a BatGen.t -> ('a * 'a * 'a * 'a * 'a)
+  (** @raise Failure if gen does not contain at least 5
       elements. *)
 
-  val print : ?first:string -> ?sep:string -> ?last:string
-    -> ('o BatIO.output -> 'a -> unit) -> ('o BatIO.output -> 'b -> unit) -> ('o BatIO.output -> 'c -> unit) -> ('o BatIO.output -> 'd -> unit) -> ('o BatIO.output -> 'e -> unit)
-    -> 'o BatIO.output -> ('a * 'b * 'c * 'd * 'e) -> unit
+  val print : ?first:string -> ?sep:string -> ?last:string ->
+    ('o BatIO.output -> 'a -> unit) ->
+    ('o BatIO.output -> 'b -> unit) -> ('o
+    BatIO.output -> 'c -> unit) -> ('o BatIO.output -> 'd -> unit) ->
+    ('o BatIO.output -> 'e -> unit) -> 'o BatIO.output ->
+    ('a * 'b * 'c * 'd * 'e) -> unit
 
   val printn : ?first:string -> ?sep:string -> ?last:string
     -> ('o BatIO.output -> 'a -> unit)
@@ -332,7 +335,7 @@ module Tuple5 : sig
 
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ?cmp3:('c -> 'c -> int) -> ?cmp4:('d -> 'd -> int) -> ?cmp5:('e -> 'e -> int) -> ('a * 'b * 'c * 'd * 'e) -> ('a * 'b * 'c * 'd * 'e) -> int
 
-  include BatEnum.Enumerable with type 'a enumerable = 'a * 'a * 'a * 'a * 'a
+  include BatGen.Enumerable with type 'a enumerable = 'a * 'a * 'a * 'a * 'a
 
   open BatOrd
   val eq : 'a eq -> 'b eq -> 'c eq -> 'd eq -> 'e eq

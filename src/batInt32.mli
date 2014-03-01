@@ -131,13 +131,13 @@ external shift_right_logical : int32 -> int -> int32 = "%int32_lsr"
     regardless of the sign of [x].
     The result is unspecified if [y < 0] or [y >= 32]. *)
 
-val ( -- ) : t -> t -> t BatEnum.t
+val ( -- ) : t -> t -> t BatGen.t
 (** Enumerate an interval.
 
     [5l -- 10l] is the enumeration 5l,6l,7l,8l,9l,10l.
     [10l -- 5l] is the empty enumeration*)
 
-val ( --- ) : t -> t -> t BatEnum.t
+val ( --- ) : t -> t -> t BatGen.t
 (** Enumerate an interval.
 
     [5l -- 10l] is the enumeration 5l,6l,7l,8l,9l,10l.

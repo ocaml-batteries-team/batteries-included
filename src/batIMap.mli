@@ -111,10 +111,10 @@ val map_to_set : ('a -> bool) -> 'a t -> BatISet.t
 (** [map_to_set p t] returns the set of keys of [t] where [p]
     evaluates as true *)
 
-val enum : 'a t -> (int * int * 'a) BatEnum.t
-(** [enum t] returns an enumeration of the bindings in [t] *)
+val gen : 'a t -> (int * int * 'a) BatGen.t
+(** [gen t] returns an enumeration of the bindings in [t] *)
 
-val of_enum : eq:('a -> 'a -> bool) -> (int * int * 'a) BatEnum.t -> 'a t
+val of_gen : eq:('a -> 'a -> bool) -> (int * int * 'a) BatGen.t -> 'a t
 (** [of_enum e] returns the set of given ranges *)
 
 val fold2_range : (int -> int -> 'a option -> 'b option -> 'c -> 'c) -> 'a t -> 'b t -> 'c -> 'c

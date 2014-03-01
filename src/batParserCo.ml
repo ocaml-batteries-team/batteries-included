@@ -29,14 +29,14 @@ struct
         lazy( Cons ((h, acc'), (aux t acc')))
     in aux l init
 
-  let of_enum l =
-    of_lazy_list (of_enum l)
+  let of_gen l =
+    of_lazy_list (of_gen l)
 
   open Lexing
 
   (**TODO: Handle EOF !*)
   let of_lexer l = assert false
-  (**    LazyList.of_enum (BatEnum.from (fun () ->
+  (**    LazyList.of_enum (BatGen.from (fun () ->
 
              l.refill_buff l;
                 (l.lex_buffer, (l.lex_start_p, l.lex_curr_p))))*)

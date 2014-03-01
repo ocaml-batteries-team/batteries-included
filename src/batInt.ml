@@ -22,15 +22,14 @@
 
 open BatNumber
 
-let enum () =
+let gen () =
   let current_value   = ref min_int in
   let already_through = ref false   in
-  let f  () =
+  fun () ->
     if  !current_value = max_int then
-      if !already_through then raise BatEnum.No_more_elements
-      else ( already_through := true; max_int )
-    else BatRef.post_incr current_value
-  in BatEnum.from f
+      if !already_through then None
+      else ( already_through := true; Some max_int )
+    else Some (BatRef.post_incr current_value)
 
 module BaseInt = struct
 
@@ -100,7 +99,7 @@ module BaseInt = struct
     with Failure "int_of_string" -> raise (Invalid_argument "int_of_string")
   let to_string = string_of_int
 
-  let enum = enum
+  let gen = gen
 
   let minus_one = ( - 1)
 
@@ -123,10 +122,10 @@ module BaseInt = struct
   let print out t = BatInnerIO.nwrite out (string_of_int t)
   let print_hex out t = BatPrintf.fprintf out "%X" t
 
-  let ( -- )  x y = BatEnum.seq x (add one) ((>=) y)
+  let ( -- )  x y = BatGen.(--) x y
   let ( --- ) x y =
     if x <= y then x -- y
-    else BatEnum.seq x pred ((<=) y)
+    else BatGen.seq x (fun x -> x-1) (fun x -> x>=y)
 
 end
 

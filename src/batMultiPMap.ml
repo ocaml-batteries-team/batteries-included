@@ -74,7 +74,7 @@ let map  (f:('b S.t -> 'c S.t)) (cmp:('b -> 'b -> int) -> ('c -> 'c -> int)) (t:
     keys    = t.keys;
     data    = cmp t.data}
 
-let mapi  (f:('a -> 'b S.t -> 'c S.t)) (cmp:('b -> 'b -> int) -> ('c -> 'c -> int)) (t:('a, 'b) t) =
+let mapi (f:('a -> 'b S.t -> 'c S.t)) (cmp:('b -> 'b -> int) -> ('c -> 'c -> int)) (t:('a, 'b) t) =
   { content = M.mapi f t.content;
     keys    = t.keys;
     data    = cmp t.data}
@@ -93,15 +93,19 @@ let modify_def dft k f t =
 let modify_opt k f t =
   {t with content = M.modify_opt k f t.content}
 
-let enum t =
-  BatEnum.concat (BatEnum.map (fun (k,e) -> BatEnum.map (fun x -> (k,x)) (S.enum e)) (M.enum t.content))
+let gen t =
+  BatGen.flat_map
+    (fun (k,e) -> BatGen.map (fun x -> (k,x)) (S.gen e))
+    (M.gen t.content)
 
-let of_enum ?(keys=compare) ?(data=compare) e =
+let of_gen ?(keys=compare) ?(data=compare) e =
   let base = create keys data in
-  BatEnum.fold (fun acc (k,d) -> add k d acc) base e
+  BatGen.fold (fun acc (k,d) -> add k d acc) base e
 
 let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") ?(kvsep=": ") print_k print_v out t =
-  BatEnum.print ~first ~last ~sep (fun out (k, v) -> BatPrintf.fprintf out "%a%s%a" print_k k kvsep print_v v) out (enum t)
+  BatGen.print ~first ~last ~sep
+    (fun out (k, v) -> BatPrintf.fprintf out "%a%s%a" print_k k kvsep print_v v)
+    out (gen t)
 
 module Infix =
 struct

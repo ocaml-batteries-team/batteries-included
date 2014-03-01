@@ -219,19 +219,19 @@ sig
   (** returns one element of the set and the set without that element.
       @raise Not_found if given an empty set *)
 
-  val enum: t -> elt BatEnum.t
+  val gen: t -> elt BatGen.t
   (** Return an enumeration of all elements of the given set.
       The returned enumeration is sorted in increasing order with respect
       to the ordering [Ord.compare], where [Ord] is the argument
       given to {!Set.Make}. *)
 
-  val backwards: t -> elt BatEnum.t
+  val backwards: t -> elt BatGen.t
   (** Return an enumeration of all elements of the given set.
       The returned enumeration is sorted in decreasing order with respect
       to the ordering [Ord.compare], where [Ord] is the argument
       given to {!Set.Make}. *)
 
-  val of_enum: elt BatEnum.t -> t
+  val of_gen: elt BatGen.t -> t
 
 
   (** {6 Boilerplate code}*)
@@ -323,7 +323,7 @@ module Make (Ord : OrderedType) : S with type elt = Ord.t
 type 'a t
 (** The type of sets. *)
 
-include BatEnum.Enumerable with type 'a enumerable = 'a t
+include BatGen.Enumerable with type 'a enumerable = 'a t
 include BatInterfaces.Mappable with type 'a mappable = 'a t
 
 val empty: 'a t
@@ -501,14 +501,14 @@ val cartesian_product : 'a t -> 'b t -> ('a * 'b) t
 (** cartesian product of the two sets
     @since 2.2.0 *)
 
-val enum: 'a t -> 'a BatEnum.t
+val gen: 'a t -> 'a BatGen.t
 (** Return an enumeration of all elements of the given set.
     The returned enumeration is sorted in increasing order with respect
     to the ordering of this set.*)
 
-val of_enum: 'a BatEnum.t -> 'a t
+val of_gen: 'a BatGen.t -> 'a t
 
-val backwards: 'a t -> 'a BatEnum.t
+val backwards: 'a t -> 'a BatGen.t
 (** Return an enumeration of all elements of the given set.  The
     returned enumeration is sorted in decreasing order with respect to
     the ordering [Pervasives.compare]. *)
@@ -565,7 +565,7 @@ module PSet : sig
   type 'a t
   (** The type of sets. *)
 
-  include BatEnum.Enumerable with type 'a enumerable = 'a t
+  include BatGen.Enumerable with type 'a enumerable = 'a t
   include BatInterfaces.Mappable with type 'a mappable = 'a t
 
   val empty: 'a t
@@ -729,14 +729,14 @@ module PSet : sig
   (** returns one element of the set and the set without that element.
       @raise Not_found if given an empty set *)
 
-  val enum: 'a t -> 'a BatEnum.t
+  val gen: 'a t -> 'a BatGen.t
   (** Return an enumeration of all elements of the given set.
       The returned enumeration is sorted in increasing order with respect
       to the ordering of this set.*)
 
-  val of_enum: 'a BatEnum.t -> 'a t
+  val of_gen: 'a BatGen.t -> 'a t
 
-  val of_enum_cmp: cmp:('a -> 'a -> int) -> 'a BatEnum.t -> 'a t
+  val of_gen_cmp: cmp:('a -> 'a -> int) -> 'a BatGen.t -> 'a t
 
   (* of_list has no Set.Make counterpart *)
   val of_list: 'a list -> 'a t

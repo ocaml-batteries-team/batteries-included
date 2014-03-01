@@ -174,22 +174,18 @@ let print ?(first="[") ?(last="]") ?(sep="; ") elepr out bh =
   spin bh ;
   BatInnerIO.nwrite out last
 
-let rec enum bh =
+let gen bh =
   let cur = ref bh in
-  let next () =
+  fun () ->
     let bh = !cur in
-    if size bh = 0 then raise BatEnum.No_more_elements ;
-    cur := (del_min bh) ; find_min bh
-  in
-  let count () = size !cur in
-  let clone () = enum !cur in
-  BatEnum.make ~next ~count ~clone
+    if size bh = 0 then None
+    else (cur := (del_min bh) ; Some (find_min bh))
 
-let of_enum e = BatEnum.fold insert empty e
+let of_gen e = BatGen.fold insert empty e
 
 (*$Q
   (Q.list Q.small_int) (fun l -> \
-    of_list l |> enum |> List.of_enum = List.sort Int.compare l)
+    of_list l |> gen |> List.of_gen = List.sort Int.compare l)
 *)
 
 module type H = sig
@@ -205,8 +201,8 @@ module type H = sig
   val of_list   : elem list -> t
   val to_list   : t -> elem list
   val elems     : t -> elem list
-  val of_enum   : elem BatEnum.t -> t
-  val enum      : t -> elem BatEnum.t
+  val of_gen   : elem BatGen.t -> t
+  val gen      : t -> elem BatGen.t
   val print     :  ?first:string -> ?last:string -> ?sep:string
     -> ('a BatInnerIO.output -> elem -> unit)
     -> 'a BatInnerIO.output -> t -> unit
@@ -327,18 +323,14 @@ module Make (Ord : BatInterfaces.OrderedType) = struct
 
   let of_list l = List.fold_left insert empty l
 
-  let rec enum bh =
+  let gen bh =
     let cur = ref bh in
-    let next () =
+    fun () ->
       let bh = !cur in
-      if size bh = 0 then raise BatEnum.No_more_elements ;
-      cur := (del_min bh) ; find_min bh
-    in
-    let count () = size !cur in
-    let clone () = enum !cur in
-    BatEnum.make ~next ~count ~clone
+      if size bh = 0 then None
+      else (cur := (del_min bh) ; Some (find_min bh))
 
-  let of_enum e = BatEnum.fold insert empty e
+  let of_gen e = BatGen.fold insert empty e
 
   let print ?(first="[") ?(last="]") ?(sep="; ") elepr out bh =
     let rec spin bh =

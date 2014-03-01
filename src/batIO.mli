@@ -319,12 +319,12 @@ val output_string : unit -> string output
 (** Create an output that will write into a string in an efficient way.
     When closed, the output returns all the data written into it. *)
 
-val input_enum : char BatEnum.t -> input
-(** Create an input that will read from an [enum]. *)
+val input_gen : char BatGen.t -> input
+(** Create an input that will read from a [gen]. *)
 
-val output_enum : unit -> char BatEnum.t output
-(** Create an output that will write into an [enum]. The
-    final enum is returned when the output is closed. *)
+val output_gen : unit -> char BatGen.t output
+(** Create an output that will write into a [gen]. The
+    final gen is returned when the output is closed. *)
 
 val combine : ('a output * 'b output) -> ('a * 'b) output
 (** [combine (a,b)] creates a new [output] [c] such that
@@ -528,28 +528,28 @@ sig
   val write_float  : (float, _) printer
   (** Write an IEEE single precision floating point value. *)
 
-  val ui16s_of : input -> int BatEnum.t
+  val ui16s_of : input -> int BatGen.t
   (** Read an enumeration of unsigned 16-bit words. *)
 
-  val i16s_of : input -> int BatEnum.t
-  (** Read an enumartion of signed 16-bit words. *)
+  val i16s_of : input -> int BatGen.t
+  (** Read an enumeration of signed 16-bit words. *)
 
-  val i32s_of : input -> int BatEnum.t
+  val i32s_of : input -> int BatGen.t
   (** Read an enumeration of signed 32-bit integers.
 
         @raise Overflow if the read integer cannot be represented as an OCaml
         31-bit integer. *)
 
-  val real_i32s_of : input -> int32 BatEnum.t
+  val real_i32s_of : input -> int32 BatGen.t
   (** Read an enumeration of signed 32-bit integers as OCaml [int32]s. *)
 
-  val i64s_of : input -> int64 BatEnum.t
+  val i64s_of : input -> int64 BatGen.t
   (** Read an enumeration of signed 64-bit integers as OCaml [int64]s. *)
 
-  val doubles_of : input -> float BatEnum.t
+  val doubles_of : input -> float BatGen.t
   (** Read an enumeration of IEEE double precision floating point values. *)
 
-  val floats_of : input -> float BatEnum.t
+  val floats_of : input -> float BatGen.t
       (** Read an enumeration of IEEE single precision floating point values. *)
 
 end
@@ -805,53 +805,53 @@ val from_out_chars : #out_chars -> unit output
 
 (** {6 Enumeration API}*)
 
-val bytes_of : input -> int BatEnum.t
+val bytes_of : input -> int BatGen.t
 (** Read an enumeration of unsigned 8-bit integers. *)
 
-val signed_bytes_of : input -> int BatEnum.t
+val signed_bytes_of : input -> int BatGen.t
 (** Read an enumeration of signed 8-bit integers. *)
 
-val ui16s_of : input -> int BatEnum.t
+val ui16s_of : input -> int BatGen.t
 (** Read an enumeration of unsigned 16-bit words. *)
 
-val i16s_of : input -> int BatEnum.t
+val i16s_of : input -> int BatGen.t
 (** Read an enumartion of signed 16-bit words. *)
 
-val i32s_of : input -> int BatEnum.t
+val i32s_of : input -> int BatGen.t
 (** Read an enumeration of signed 32-bit integers. @raise Overflow if the
     read integer cannot be represented as an OCaml 31-bit integer. *)
 
-val real_i32s_of : input -> int32 BatEnum.t
+val real_i32s_of : input -> int32 BatGen.t
 (** Read an enumeration of signed 32-bit integers as OCaml [int32]s. *)
 
-val i64s_of : input -> int64 BatEnum.t
+val i64s_of : input -> int64 BatGen.t
 (** Read an enumeration of signed 64-bit integers as OCaml [int64]s. *)
 
-val doubles_of : input -> float BatEnum.t
+val doubles_of : input -> float BatGen.t
 (** Read an enumeration of IEEE double precision floating point values. *)
 
-val floats_of : input -> float BatEnum.t
+val floats_of : input -> float BatGen.t
 (** Read an enumeration of IEEE single precision floating point values. *)
 
-val strings_of : input -> string BatEnum.t
+val strings_of : input -> string BatGen.t
 (** Read an enumeration of null-terminated strings. *)
 
-val lines_of : input -> string BatEnum.t
+val lines_of : input -> string BatGen.t
 (** Read an enumeration of LF or CRLF terminated strings. *)
-val lines_of2 : input -> string BatEnum.t
+val lines_of2 : input -> string BatGen.t
 
-val chunks_of : int -> input -> string BatEnum.t
+val chunks_of : int -> input -> string BatGen.t
 (** Read an input as an enumeration of strings of given length.  If the input isn't a multiple of that length, the final string will be smaller than the rest. *)
 
-val chars_of : input -> char BatEnum.t
+val chars_of : input -> char BatGen.t
 (** Read an enumeration of Latin-1 characters.
 
     {b Note} Usually faster than calling [read] several times.*)
 
-val bits_of : in_bits -> int BatEnum.t
+val bits_of : in_bits -> int BatGen.t
 (** Read an enumeration of bits *)
 
-val write_bitss : nbits:int -> out_bits -> int BatEnum.t -> unit
+val write_bitss : nbits:int -> out_bits -> int BatGen.t -> unit
 (** Write an enumeration of bits*)
 
 val default_buffer_size : int
@@ -920,7 +920,7 @@ val to_f_printer: ('a, _) printer -> 'a f_printer
 val comb : ('a output * 'a output) -> 'a output
 (** Old name of [combine]*)
 
-val make_enum : (input -> 'a) -> input -> 'a BatEnum.t
+val make_gen : (input -> 'a) -> input -> 'a BatGen.t
 
 (**
    {6 Debugging facilities}
@@ -953,14 +953,14 @@ module Incubator : sig
       *)
   end
 
-  module Enum : sig
+  module Gen : sig
     val pp :
       ?flush:bool ->
       ?first:string ->
       ?last:string ->
       ?sep:string ->
       ?indent:int ->
-      (Format.formatter -> 'a -> 'b) -> Format.formatter -> 'a BatEnum.t -> unit
+      (Format.formatter -> 'a -> 'b) -> Format.formatter -> 'a BatGen.t -> unit
       (** Print the contents of an enum, with [first] preceeding the first item
           (default: [""]), [last] following the last item (default: [""])
           and [sep] separating items (default: [" "]). A printing function must

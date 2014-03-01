@@ -47,12 +47,12 @@ open BatIO
     @author Zheng Li
 *)
 
-val input_lines : Pervasives.in_channel -> string BatEnum.t
-(** Returns an enumeration over lines of an input channel, as read by the
+val input_lines : Pervasives.in_channel -> string BatGen.t
+(** Returns an generator over lines of an input channel, as read by the
     [input_line] function. *)
 
-val input_chars : Pervasives.in_channel -> char BatEnum.t
-(** Returns an enumeration over characters of an input channel. *)
+val input_chars : Pervasives.in_channel -> char BatGen.t
+(** Returns an generator over characters of an input channel. *)
 
 val input_list : Pervasives.in_channel -> string list
 (** Returns the list of lines read from an input channel. *)
@@ -394,8 +394,8 @@ val undefined : ?message:string -> 'a -> 'b
       "Undefined". Optional argument [message] permits the
       customization of the error message.*)
 
-##V3## val ( @@ ) : ('a -> 'b) -> 'a -> 'b
-##V4## external ( @@ ) : ('a -> 'b) -> 'a -> 'b = "%apply"
+ val ( @@ ) : ('a -> 'b) -> 'a -> 'b
+ external ( @@ ) : ('a -> 'b) -> 'a -> 'b = "%apply"
 
 (** Function application. [f @@ x] is equivalent to [f x].
     However, it binds less tightly (between [::] and [=],[<],[>],etc)
@@ -410,8 +410,8 @@ val ( % ) : ('a -> 'b) -> ('c -> 'a) -> 'c -> 'b
       Examples: the following are equivalent:
       [f (g (h x))], [f @@ g @@ h x], [f % g % h @@ x]. *)
 
-##V3## val ( |> ) : 'a -> ('a -> 'b) -> 'b
-##V4## external (|>) : 'a -> ('a -> 'b) -> 'b = "%revapply"
+ val ( |> ) : 'a -> ('a -> 'b) -> 'b
+ external (|>) : 'a -> ('a -> 'b) -> 'b = "%revapply"
 (** The "pipe": function application. [x |> f] is equivalent to [f x].
 
     This operator is commonly used to write a function composition by
@@ -518,8 +518,8 @@ val verify_arg : bool -> string -> unit
 
     @since 2.0 *)
 
-val args : unit -> string BatEnum.t
-(** An enumeration of the arguments passed to this program through the command line.
+val args : unit -> string BatGen.t
+(** An generator of the arguments passed to this program through the command line.
 
     [args ()] is given by the elements of [Sys.argv], minus the first element.*)
 
@@ -541,7 +541,7 @@ val exe  : string
 
 
 (**
-   {6 Enumerations}
+   {6 Generations}
 
    In OCaml Batteries Included, all data structures are enumerable,
    which means that they support a number of standard operations,
@@ -554,7 +554,7 @@ val exe  : string
    purpose, you may write either [foreach (String.enum s) f] or [open
    String in foreach (enum s) f]. Either possibility states that you
    are enumerating through a character string [s]. Should you prefer
-   your enumeration to proceed from the end of the string to the
+   your generator to proceed from the end of the string to the
    beginning, you may replace {! String.enum} with {!
    String.backwards}. Therefore, either [foreach (String.backwards s)
    f] or [open String in foreach (backwards s) f] will apply [f]
@@ -566,25 +566,25 @@ val exe  : string
    {!List.backwards} instead of {!String.backwards} to visit them
    in the opposite order, or {!Hashtbl.enum} for hash tables, etc.
 
-   More operations on enumerations are defined in module {!BatEnum},
+   More operations on generators are defined in module {!BatGen},
    including the necessary constructors to make your own structures
    enumerable.
 
    The various kinds of loops are detailed further in this documentation.
 *)
 
-val foreach: 'a BatEnum.t -> ('a -> unit) ->  unit
-(** Imperative loop on an enumeration.
+val foreach: 'a BatGen.t -> ('a -> unit) ->  unit
+(** Imperative loop on an generator.
 
     [foreach e f] applies function [f] to each successive element of [e].
     For instance, [foreach (1 -- 10) print_int] invokes function [print_int]
     on [1], [2], ..., [10], printing [12345678910].
 
     {b Note} This function is one of the many loops available on
-    enumerations.  Other commonly used loops are {!iter} (same usage
+    generators.  Other commonly used loops are {!iter} (same usage
     scenario as [foreach], but with different notations), {!map}
-    (convert an enumeration to another enumeration) or {!fold}
-    (flatten an enumeration by applying an operation to each
+    (convert an generator to another generator) or {!fold}
+    (flatten an generator by applying an operation to each
     element).
 
 *)
@@ -603,67 +603,67 @@ val foreach: 'a BatEnum.t -> ('a -> unit) ->  unit
    into another function which will act on a whole data structure.
 
    For instance, if [f] is a function operating on one value, you may
-   lift this function to operate on all values of an enumeration (and
+   lift this function to operate on all values of an generator (and
    consequently on all values of any data structure of OCaml Batteries
    Included) by applying {!iter}, {!map} or {!fold} to this function.
 *)
 
 
-val iter : ('a -> unit) -> 'a BatEnum.t -> unit
-(** Imperative loop on an enumeration. This loop is typically used
+val iter : ('a -> unit) -> 'a BatGen.t -> unit
+(** Imperative loop on an generator. This loop is typically used
     to lift a function with an effect but no meaningful result and
-    get it to work on enumerations.
+    get it to work on generators.
 
     If [f] is a function [iter f] is a function which behaves as [f]
-    but acts upon enumerations rather than individual elements. As
+    but acts upon generators rather than individual elements. As
     indicated in the type of [iter], [f] must produce values of type
     [unit] (i.e. [f] has no meaningful result) the resulting function
     produces no meaningful result either.
 
     In other words, [iter f] is a function which, when applied upon
-    an enumeration [e], calls [f] with each element of [e] in turn.
+    an generator [e], calls [f] with each element of [e] in turn.
 
     For instance, [iter f (1 -- 10)] invokes function [f] on [1],
     [2], ..., [10] and produces value [()].
 *)
 
-val map : ('a -> 'b) -> 'a BatEnum.t -> 'b BatEnum.t
-(** Transformation loop on an enumeration, used to build an enumeration
-    from another enumeration. This loop is typically used to transform
-    an enumeration into another enumeration with the same number of
+val map : ('a -> 'b) -> 'a BatGen.t -> 'b BatGen.t
+(** Transformation loop on an generator, used to build an generator
+    from another generator. This loop is typically used to transform
+    an generator into another generator with the same number of
     elements, in the same order.
 
     If [f] is a function, [map f e] is a function which behaves as
-    [f] but acts upon enumerations rather than individual elements --
-    and builds a new enumeration from the results of each application.
+    [f] but acts upon generators rather than individual elements --
+    and builds a new generator from the results of each application.
 
     In other words, [map f] is a function which, when applied
-    upon an enumeration containing elements [e0], [e1], ...,
-    produces enumeration [f e0], [f e1], ...
+    upon an generator containing elements [e0], [e1], ...,
+    produces generator [f e0], [f e1], ...
 
     For instance, if [odd] is the function which returns [true]
     when applied to an odd number or [false] when applied to
-    an even number, [map odd (1 -- 10)] produces enumeration
+    an even number, [map odd (1 -- 10)] produces generator
     [true], [false], [true], ..., [false].
 
     Similarly, if [square] is the function [fun x -> x * x],
-    [map square (1 -- 10)] produces the enumeration of the
+    [map square (1 -- 10)] produces the generator of the
     square numbers of all numbers between [1] and [10].
 *)
 
 
-val filter_map : ('a -> 'b option) -> 'a BatEnum.t -> 'b BatEnum.t
+val filter_map : ('a -> 'b option) -> 'a BatGen.t -> 'b BatGen.t
 (** Similar to a map, except that you can skip over some items of the
-    incoming enumeration by returning None instead of Some value.
+    incoming generator by returning None instead of Some value.
     Think of it as a {!filter} combined with a {!map}.
 *)
 
 
-val reduce : ('a -> 'a -> 'a) -> 'a BatEnum.t -> 'a
-(** Transformation loop on an enumeration, used to build a single value
-    from an enumeration.
+val reduce : ('a -> 'a -> 'a) -> 'a BatGen.t -> 'a
+(** Transformation loop on an generator, used to build a single value
+    from an generator.
 
-    If [f] is a function and [e] is an enumeration, [reduce f e] applies
+    If [f] is a function and [e] is an generator, [reduce f e] applies
     function [f] to the first two elements of [e], then to the result of this
     expression and to the third element of [e], then to the result of this
     new expression and to the fourth element of [e]...
@@ -676,14 +676,14 @@ val reduce : ('a -> 'a -> 'a) -> 'a BatEnum.t -> 'a
 
     For instance, if [add] is the function [fun x y -> x + y],
     [reduce add] is the function which computes the sum of the
-    elements of an enumeration -- and doesn't work on empty
-    enumerations. Therefore, [reduce add (1 -- 10)]
+    elements of an generator -- and doesn't work on empty
+    generators. Therefore, [reduce add (1 -- 10)]
     produces result [55].
 *)
 
-val fold : ('b -> 'a -> 'b) -> 'b -> 'a BatEnum.t -> 'b
-(** Transformation loop on an enumeration, used to build a single value
-    from an enumeration. This is the most powerful general-purpose
+val fold : ('b -> 'a -> 'b) -> 'b -> 'a BatGen.t -> 'b
+(** Transformation loop on an generator, used to build a single value
+    from an generator. This is the most powerful general-purpose
     loop and also the most complex.
 
     If [f] is a function, [fold f v e] applies [f v] to the first
@@ -698,15 +698,15 @@ val fold : ('b -> 'a -> 'b) -> 'b -> 'a BatEnum.t -> 'b
 
     For instance, if [add] is the function [fun x y -> x + y],
     [fold add 0] is the function which computes the sum of the
-    elements of an enumeration. Therefore, [fold add 0 (1 -- 10)]
+    elements of an generator. Therefore, [fold add 0 (1 -- 10)]
     produces result [55].
 *)
 
-val scanl : ('b -> 'a -> 'b) -> 'b -> 'a BatEnum.t -> 'b BatEnum.t
-(** Functional loop on an enumeration, used to build an enumeration
-    from both an enumeration and an initial value. This function may
+val scanl : ('b -> 'a -> 'b) -> 'b -> 'a BatGen.t -> 'b BatGen.t
+(** Functional loop on an generator, used to build an generator
+    from both an generator and an initial value. This function may
     be seen as a variant of {!fold} which returns not only the final
-    result of {!fold} but the enumeration of all the intermediate
+    result of {!fold} but the generator of all the intermediate
     results of {!fold}.
 
     If [f] is a function, [scanl f v e] is applies [f v] to the first
@@ -717,13 +717,14 @@ val scanl : ('b -> 'a -> 'b) -> 'b -> 'a BatEnum.t -> 'b BatEnum.t
 
     For instance, if [add] is the function [fun x y -> x + y],
     [scanl add 0] is the function which computes the sum of the
-    elements of an enumeration. Therefore, [scanl add 0 (1 -- 10)]
-    produces result the enumeration with elements [0, 1, 3, 6, 10,
+    elements of an generator. Therefore, [scanl add 0 (1 -- 10)]
+    produces result the generator with elements [0, 1, 3, 6, 10,
     15, 21, 28, 36, 45, 55].  *)
 
-val ( /@ ) : 'a BatEnum.t -> ('a -> 'b) -> 'b BatEnum.t
+(* XXX: this should really go away... very hard to read.
+val ( /@ ) : 'a BatGen.t -> ('a -> 'b) -> 'b BatGen.t
 
-val ( @/ ) : ('a -> 'b) -> 'a BatEnum.t -> 'b BatEnum.t
+val ( @/ ) : ('a -> 'b) -> 'a BatGen.t -> 'b BatGen.t
 (**
    Mapping operators.
 
@@ -732,99 +733,106 @@ val ( @/ ) : ('a -> 'b) -> 'a BatEnum.t -> 'b BatEnum.t
    several transformations in a row.
 *)
 
-val ( //@ ) : 'a BatEnum.t -> ('a -> 'b option) -> 'b BatEnum.t
+val ( //@ ) : 'a BatGen.t -> ('a -> 'b option) -> 'b BatGen.t
 
-val ( @// ) : ('a -> 'b option) -> 'a BatEnum.t -> 'b BatEnum.t
+val ( @// ) : ('a -> 'b option) -> 'a BatGen.t -> 'b BatGen.t
 (**
    Map combined with filter. Same as {!filter_map}.
 *)
-
-(**
-   {7 Other operations on enumerations}
 *)
 
-val exists: ('a -> bool) -> 'a BatEnum.t -> bool
+(**
+   {7 Other operations on generators}
+*)
+
+val exists: ('a -> bool) -> 'a BatGen.t -> bool
 (** [exists f e] returns [true] if there is some [x] in [e] such
     that [f x]*)
 
-val for_all: ('a -> bool) -> 'a BatEnum.t -> bool
+val for_all: ('a -> bool) -> 'a BatGen.t -> bool
 (** [exists f e] returns [true] if for every [x] in [e], [f x] is true*)
 
 
 
-val find : ('a -> bool) -> 'a BatEnum.t -> 'a
+val find : ('a -> bool) -> 'a BatGen.t -> 'a option
 (** [find f e] returns the first element [x] of [e] such that [f x] returns
-    [true], consuming the enumeration up to and including the
+    [true], consuming the generator up to and including the
     found element, or, raises [Not_found] if no such element exists
-    in the enumeration, consuming the whole enumeration in the search.
+    in the generator, consuming the whole generator in the search.
 
-    Since [find] consumes a prefix of the enumeration, it can be used several
-    times on the same enumeration to find the next element.
+    Since [find] consumes a prefix of the generator, it can be used several
+    times on the same generator to find the next element.
 
-    @raise Not_found if no element in the whole enumeration satisfies the predicate *)
+    @raise Not_found if no element in the whole generator satisfies the predicate *)
 
-val peek : 'a BatEnum.t -> 'a option
+(* XXX: not available
+val peek : 'a BatGen.t -> 'a option
 (** [peek e] returns [None] if [e] is empty or [Some x] where [x] is
     the next element of [e]. The element is not removed from the
-    enumeration. *)
+    generator. *)
+*)
 
-val get : 'a BatEnum.t -> 'a option
+val get : 'a BatGen.t -> 'a option
 (** [get e] returns [None] if [e] is empty or [Some x] where [x] is
     the next element of [e], in which case the element is removed
-    from the enumeration. *)
+    from the generator. *)
 
-val push : 'a BatEnum.t -> 'a -> unit
+(* XXX not available
+val push : 'a BatGen.t -> 'a -> unit
 (** [push e x] will add [x] at the beginning of [e]. *)
+*)
 
-val junk : 'a BatEnum.t -> unit
-(** [junk e] removes the first element from the enumeration, if any. *)
+val junk : 'a BatGen.t -> unit
+(** [junk e] removes the first element from the generator, if any. *)
 
-val filter : ('a -> bool) -> 'a BatEnum.t -> 'a BatEnum.t
-(** [filter f e] returns an enumeration over all elements [x] of [e] such
+val filter : ('a -> bool) -> 'a BatGen.t -> 'a BatGen.t
+(** [filter f e] returns an generator over all elements [x] of [e] such
     as [f x] returns [true]. *)
 
-val ( // ) : 'a BatEnum.t -> ('a -> bool) -> 'a BatEnum.t
+val ( // ) : 'a BatGen.t -> ('a -> bool) -> 'a BatGen.t
 (** Filtering (pronounce this operator name "such that").
 
-    For instance, [(1 -- 37) // odd] is the enumeration of all odd
+    For instance, [(1 -- 37) // odd] is the generator of all odd
     numbers between 1 and 37.*)
 
-val concat : 'a BatEnum.t BatEnum.t -> 'a BatEnum.t
-(** [concat e] returns an enumeration over all elements of all enumerations
+val concat : 'a BatGen.t BatGen.t -> 'a BatGen.t
+(** [concat e] returns an generator over all elements of all generators
     of [e]. *)
 
 
-val ( -- ) : int -> int -> int BatEnum.t
-(** Enumerate numbers.
+val ( -- ) : int -> int -> int BatGen.t
+(** Generate numbers.
 
-    [5 -- 10] is the enumeration 5,6,7,8,9,10.
-    [10 -- 5] is the empty enumeration*)
+    [5 -- 10] is the generator 5,6,7,8,9,10.
+    [10 -- 5] is the empty generator*)
 
-val ( --^ ) : int -> int -> int BatEnum.t
-(** Enumerate numbers, without the right endpoint
+val ( --^ ) : int -> int -> int BatGen.t
+(** Generate numbers, without the right endpoint
 
-    [5 -- 10] is the enumeration 5,6,7,8,9.
+    [5 -- 10] is the generator 5,6,7,8,9.
 *)
 
-val ( --. ) : (float * float) -> float -> float BatEnum.t
-(** [(a, step) --. b)] creates a float enumeration from [a] to [b] with an
+val ( --. ) : (float * float) -> float -> float BatGen.t
+(** [(a, step) --. b)] creates a float generator from [a] to [b] with an
     increment of [step] between elements.
 
-    [(5.0, 1.0) --. 10.0] is the enumeration 5.0,6.0,7.0,8.0,9.0,10.0.
-    [(10.0, -1.0) --. 5.0] is the enumeration 10.0,9.0,8.0,7.0,6.0,5.0.
-    [(10.0, 1.0) --. 1.0] is the empty enumeration. *)
+    [(5.0, 1.0) --. 10.0] is the generator 5.0,6.0,7.0,8.0,9.0,10.0.
+    [(10.0, -1.0) --. 5.0] is the generator 10.0,9.0,8.0,7.0,6.0,5.0.
+    [(10.0, 1.0) --. 1.0] is the empty generator. *)
 
-val ( --- ) : int -> int -> int BatEnum.t
-(** As [--], but accepts enumerations in reverse order.
+val ( --- ) : int -> int -> int BatGen.t
+(** As [--], but accepts generators in reverse order.
 
-    [5 --- 10] is the enumeration 5,6,7,8,9,10.
-    [10 --- 5] is the enumeration 10,9,8,7,6,5.*)
+    [5 --- 10] is the generator 5,6,7,8,9,10.
+    [10 --- 5] is the generator 10,9,8,7,6,5.*)
 
-val ( --~ ) : char -> char -> char BatEnum.t
+val ( --~ ) : char -> char -> char BatGen.t
 (** As ( -- ), but for characters.*)
 
-val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> 'b BatEnum.t -> unit
-(** Print and consume the contents of an enumeration.*)
+val print :  ?first:string -> ?last:string -> ?sep:string ->
+    ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output ->
+      'b BatGen.t -> unit
+(** Print and consume the contents of an generator.*)
 
 (**
    {6 Results}

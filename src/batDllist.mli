@@ -40,7 +40,7 @@ type 'a t = 'a node_t (*For uniformity*)
 *)
 
 include BatInterfaces.Mappable with type 'a mappable = 'a t
-include BatEnum.Enumerable with type 'a enumerable = 'a t
+include BatGen.Enumerable with type 'a enumerable = 'a t
 
 exception Empty
 
@@ -216,41 +216,42 @@ val of_list : 'a list -> 'a node_t
 
 (** {6 enums } *)
 
-(** Create an enum of the list.
-    Note that modifying the list while the enum exists will have undefined
+(** Create an gen of the list.
+    Note that modifying the list while the gen exists will have undefined
     effects.  This is an O(1) operation.
 *)
-val enum : 'a node_t -> 'a BatEnum.t
+val gen : 'a node_t -> 'a BatGen.t
 
-(** Create a reverse enum of the list.
+(** Create a reverse gen of the list.
     The enumeration starts with the current element of the list:
-    [rev_enum (of_list [1;2;3;4])] will generate the enumeration [[1;4;3;2]].
+    [rev_gen (of_list [1;2;3;4])] will generate the enumeration [[1;4;3;2]].
 
     If you want it to start with the last one, see [backwards].
 
-    Note that modifying the list while the enum exists will have undefined
+    Note that modifying the list while the gen exists will have undefined
     effects.  This is an O(1) operation.
 *)
-val rev_enum : 'a node_t -> 'a BatEnum.t
+val rev_gen : 'a node_t -> 'a BatGen.t
 
-val backwards : 'a node_t -> 'a BatEnum.t
+val backwards : 'a node_t -> 'a BatGen.t
 (** [backwards t] is similar to [rev_enum t] except that the enumeration
     starts at the node before the current one:
 
     [backwards (of_list [1;2;3;4])] will generate the enumeration [[4;3;2;1]].
 *)
 
-(** Create a dllist from an enum.
-    This consumes the enum, and allocates a whole new dllist.
-    @raise Empty if given enum is empty.  This is an O(N) operation.
+(** Create a dllist from an gen.
+    This consumes the gen, and allocates a whole new dllist.
+    @raise Empty if given gen is empty.  This is an O(N) operation.
 *)
-val of_enum : 'a BatEnum.t -> 'a node_t
+val of_gen : 'a BatGen.t -> 'a node_t
 
 (** {6 Boilerplate code}*)
 
 (** {7 Printing}*)
 
-val print : ?first:string -> ?last:string -> ?sep:string ->('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
+val print : ?first:string -> ?last:string -> ?sep:string -> 
+  ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
 
 (**/**)
 val invariants : _ t -> unit

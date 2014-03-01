@@ -35,18 +35,14 @@ let length s =
   in
   aux 0 s
 
-let rec enum_of_ref r =
-  BatEnum.make
-    ~next:(fun _ -> match !r () with
-      | Nil ->
-        raise BatEnum.No_more_elements
-      | Cons(e, s) ->
-        r := s;
-        e)
-    ~count:(fun _ -> length !r)
-    ~clone:(fun _ -> enum_of_ref (ref !r))
-
-let enum s = enum_of_ref (ref s)
+let gen s =
+  let r = ref s in
+  let stop = ref false in
+  fun () ->
+    if !stop then None
+    else match !r() with
+    | Nil -> stop:= true; None
+    | Cons (e, s') -> r:=s'; Some e
 
 let hd s = match s () with
   | Nil -> raise (Invalid_argument "Seq.hd")
@@ -335,7 +331,7 @@ let print ?(first="[") ?(last="]") ?(sep="; ") print_a out s = match s () with
       BatInnerIO.nwrite out last
 
 module Infix = struct
-  (** Infix operators matching those provided by {!BatEnum.Infix} *)
+  (** Infix operators matching those provided by {!BatGen.Infix} *)
 
   let ( -- ) a b =
     if b < a then

@@ -134,13 +134,13 @@ val output_buffer : t -> string BatInnerIO.output
 
 (** {6 Boilerplate code}*)
 
-val enum : t -> char BatEnum.t
+val gen : t -> char BatGen.t
 (** Returns an enumeration of the characters of a buffer.
 
     Contents of the enumeration is unspecified if the buffer is modified after
     the enumeration is returned.*)
 
-val of_enum : char BatEnum.t -> t
+val of_gen : char BatGen.t -> t
 (** Creates a buffer from a character enumeration. *)
 
 val print: 'a BatInnerIO.output -> t -> unit

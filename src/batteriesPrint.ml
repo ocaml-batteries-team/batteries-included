@@ -55,20 +55,19 @@ let rope_pset = BatIO.to_f_printer (BatSet.print BatText.print)
 let char_pset = BatIO.to_f_printer (BatSet.print BatChar.print)
 
 let (|>) x f = f x
-let enum_print_limit = ref 20
-let enum_print p oc e =
-  let e = BatEnum.clone e in
-  for _i = 1 to !enum_print_limit-1 do
-    match BatEnum.get e with
+let gen_print_limit = ref 20
+let gen_print p oc e =
+  for _i = 1 to !gen_print_limit - 1 do
+    match BatGen.get e with
     | None -> ()
     | Some x -> p oc x; BatIO.write oc ' '
   done;
-  if not (BatEnum.is_empty e) then BatIO.nwrite oc "..."
+  if not (BatGen.is_empty e) then BatIO.nwrite oc "..."
 
-let int_enum = BatIO.to_f_printer (enum_print BatInt.print)
-let string_enum = BatIO.to_f_printer (enum_print BatString.print)
-let rope_enum = BatIO.to_f_printer (enum_print BatText.print)
-let char_enum = BatIO.to_f_printer (enum_print BatChar.print)
+let int_enum = BatIO.to_f_printer (gen_print BatInt.print)
+let string_enum = BatIO.to_f_printer (gen_print BatString.print)
+let rope_enum = BatIO.to_f_printer (gen_print BatText.print)
+let char_enum = BatIO.to_f_printer (gen_print BatChar.print)
 
 (*let iset = BatIO.to_f_printer BatISet.print *)
 

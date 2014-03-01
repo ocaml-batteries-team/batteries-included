@@ -250,57 +250,55 @@ sig
 
   (** {7 Conversions to other structures} *)
 
-  val enum : ('a, 'm) fg -> 'a BatEnum.t
-  (** [enum t] builds an enumeration of the elements of [t] going from
+  val gen : ('a, 'm) fg -> 'a BatGen.t
+  (** [gen t] builds an enumeration of the elements of [t] going from
       left to right.
 
       O(1).
-
-      Forcing the whole enumeration takes O(n).
   *)
 
-  val backwards : ('a, 'm) fg -> 'a BatEnum.t
-  (** [backwards t] builds an enumeration of the elements of [t] going from
+  val backwards : ('a, 'm) fg -> 'a BatGen.t
+  (** [backwards t] builds a generator of the elements of [t] going from
       right to left.
-      Same complexity as {!enum}.
+      Same complexity as {!gen}.
   *)
 
   val to_list : ('a, 'm) fg -> 'a list
-  (** [to_list t] is equivalent to [BatList.of_enum (enum t)].
+  (** [to_list t] is equivalent to [BatList.of_gen (gen t)].
 
       O(n).
   *)
 
   val to_list_backwards : ('a, 'm) fg -> 'a list
-  (** [to_list_backwards t] is equivalent to [BatList.of_enum (backwards t)].
+  (** [to_list_backwards t] is equivalent to [BatList.of_gen (backwards t)].
 
       O(n).
   *)
 
   (** {7 Conversions from other structures} *)
 
-  val of_enum : ('a BatEnum.t -> ('a, 'm) fg, 'a, 'm) wrap
-  (** [of_enum e] build the sequence containing the elements of [e]
+  val of_gen : ('a BatGen.t -> ('a, 'm) fg, 'a, 'm) wrap
+  (** [of_gen e] build the sequence containing the elements of [e]
       in the same order.
 
       Its complexity is the complexity of forcing the enumeration.
   *)
 
-  val of_backwards : ('a BatEnum.t -> ('a, 'm) fg, 'a, 'm) wrap
-  (** [of_backward e] is equivalent to [reverse (of_enum e)].
+  val of_backwards : ('a BatGen.t -> ('a, 'm) fg, 'a, 'm) wrap
+  (** [of_backward e] is equivalent to [reverse (of_gen e)].
 
       O(n).
   *)
 
   val of_list : ('a list -> ('a, 'm) fg, 'a, 'm) wrap
-  (** [of_list l] is equivalent to [of_enum (BatList.enum l)].
+  (** [of_list l] is equivalent to [of_gen (BatList.gen l)].
 
       O(n).
   *)
 
   val of_list_backwards : ('a list -> ('a, 'm) fg, 'a, 'm) wrap
   (** [of_list_backwards l] is equivalent to
-      [of_enum_backwards (BatList.enum l)].
+      [of_backwards (BatList.gen l)].
 
       O(n).
   *)

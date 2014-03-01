@@ -87,17 +87,17 @@ val transfer : 'a t -> 'a t -> unit
     in constant time. *)
 
 
-type 'a enumerable = 'a t
+type 'a generable = 'a t
 
-val enum : 'a t -> 'a BatEnum.t
-(** [enum q] returns a destructive enumeration of the elements of queue
+val gen : 'a t -> 'a BatGen.t
+(** [gen q] returns a destructive generation of the elements of queue
     [q], from the least recently entered to the most recently entered.
-    Reading the enumeration will progressively empty [q].*)
+    Reading the generation will progressively empty [q].*)
 
-val of_enum : 'a BatEnum.t -> 'a t
-(** [of_enum e] returns a new queue containing all the elements of [e].
+val of_gen : 'a BatGen.t -> 'a t
+(** [of_gen e] returns a new queue containing all the elements of [e].
     This is equivalent to calling [push] with the first element of the
-    enumeration, then with the second, etc.*)
+    generation, then with the second, etc.*)
 
 (** {6 Boilerplate code}*)
 

@@ -142,13 +142,13 @@ external shift_right_logical :
     regardless of the sign of [x].
     The result is unspecified if [y < 0] or [y >= bitsize]. *)
 
-val ( -- ) : t -> t -> t BatEnum.t
+val ( -- ) : t -> t -> t BatGen.t
 (** Enumerate an interval.
 
     [5n -- 10n] is the enumeration 5n,6n,7n,8n,9n,10n.
     [10n -- 5n] is the empty enumeration*)
 
-val ( --- ) : t -> t -> t BatEnum.t
+val ( --- ) : t -> t -> t BatGen.t
 (** Enumerate an interval.
 
     [5n -- 10n] is the enumeration 5n,6n,7n,8n,9n,10n.

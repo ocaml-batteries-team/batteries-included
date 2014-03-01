@@ -30,7 +30,7 @@
     O(1).
 
     Note that if you want a ``consumable sequence'', you should prefer
-    using enumerations (from module {!BatEnum}).
+    using enumerations (from module {!BatGen}).
 
     @author Jeremie Dimino
 *)
@@ -44,8 +44,8 @@ and 'a node =
 
 include BatInterfaces.Mappable with type 'a mappable = 'a t
 
-val enum : 'a t -> 'a BatEnum.t
-(** [enum s] returns the enumeration of all element of [s].
+val gen : 'a t -> 'a BatGen.t
+(** [gen s] returns the enumeration of all element of [s].
 
     Since enumerations are consumable and sequence are not, it is
     not possible to have the inverse operations, i.e. [of_enum] *)
@@ -268,11 +268,13 @@ val combine : 'a t -> 'b t -> ('a * 'b) t
 
 (** {6 Printing} *)
 
-val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
+val print : ?first:string -> ?last:string -> ?sep:string ->
+            ('a BatInnerIO.output -> 'b -> unit) -> 
+            'a BatInnerIO.output -> 'b t -> unit
 (**Print the contents of a sequence*)
 
 module Infix : sig
-  (** Infix operators matching those provided by {!BatEnum.Infix} *)
+  (** Infix operators matching those provided by {!BatGen.Infix} *)
 
   val ( -- ) : int -> int -> int t
   val ( --^ ) : int -> int -> int t

@@ -51,12 +51,12 @@ sig
   val iter_right : ('a -> unit) -> ('a, 'm) fg -> unit
   val compare : ('a -> 'a -> int) -> ('a, 'm) fg -> ('a, 'm) fg -> int
   val equal : ('a -> 'a -> bool) -> ('a, 'm) fg -> ('a, 'm) fg -> bool
-  val enum : ('a, 'm) fg -> 'a BatEnum.t
-  val backwards : ('a, 'm) fg -> 'a BatEnum.t
+  val gen : ('a, 'm) fg -> 'a BatGen.t
+  val backwards : ('a, 'm) fg -> 'a BatGen.t
   val to_list : ('a, 'm) fg -> 'a list
   val to_list_backwards : ('a, 'm) fg -> 'a list
-  val of_enum : ('a BatEnum.t -> ('a, 'm) fg, 'a, 'm) wrap
-  val of_backwards : ('a BatEnum.t -> ('a, 'm) fg, 'a, 'm) wrap
+  val of_gen : ('a BatGen.t -> ('a, 'm) fg, 'a, 'm) wrap
+  val of_backwards : ('a BatGen.t -> ('a, 'm) fg, 'a, 'm) wrap
   val of_list : ('a list -> ('a, 'm) fg, 'a, 'm) wrap
   val of_list_backwards : ('a list -> ('a, 'm) fg, 'a, 'm) wrap
   val map : (('a -> 'b) -> ('a, 'm) fg -> ('b, 'm) fg, 'b, 'm) wrap
@@ -846,11 +846,12 @@ struct
     | Node3 (_, a, b, c) ->
       enum_a c (fun () -> enum_a b (fun () -> enum_a a k))
 
-  let enum_base a k = a, k
+  let enum_base x k = x, k
 
   type 'a iter = unit -> 'a ret
-  and 'a ret = 'a * 'a iter
+  and 'a ret = ('a * 'a iter)
   type ('input, 'output) iter_into = 'input -> 'output iter -> 'output ret
+  exception ExitGenNow
 
   let rec enum_aux : 'v 'a 'm. ('a, 'v) iter_into -> (('a, 'm) fg, 'v) iter_into =
     fun enum_a t k ->
@@ -863,9 +864,11 @@ struct
             enum_digit enum_a sf k
           )
         )
-  let enum_cps t = enum_aux enum_base t (fun () -> raise BatEnum.No_more_elements)
 
-  let rec enum_aux_backwards : 'v 'a 'm. ('a, 'v) iter_into -> (('a, 'm) fg, 'v) iter_into =
+  let enum_cps t = enum_aux enum_base t (fun () -> raise ExitGenNow)
+
+  let rec enum_aux_backwards
+    : 'v 'a 'm. ('a, 'v) iter_into -> (('a, 'm) fg, 'v) iter_into =
     fun enum_a t k ->
       match t with
       | Nil -> k ()
@@ -876,29 +879,42 @@ struct
             enum_digit_backwards enum_a pr k
           )
         )
-  let enum_cps_backwards t = enum_aux_backwards enum_base t (fun () -> raise BatEnum.No_more_elements)
+
+  let enum_cps_backwards t = enum_aux_backwards enum_base t (fun () -> raise ExitGenNow)
 
   (*---------------------------------*)
   (*           conversion            *)
   (*---------------------------------*)
-  let enum t =
-    BatEnum.from_loop
-      (fun () -> enum_cps t)
-      (fun k -> k ())
-  let backwards t =
-    BatEnum.from_loop
-      (fun () -> enum_cps_backwards t)
-      (fun k -> k ())
+  let __unfold_exn f state =
+    let state = ref state in
+    let stop = ref false in
+    fun () ->
+      if !stop then None
+      else try
+        let x, state' = f !state in
+        state := state';
+        Some x
+      with ExitGenNow -> stop:= true; None
 
-  let of_enum ~monoid ~measure enum =
-    BatEnum.fold (fun t elt -> snoc ~monoid ~measure t elt) empty enum
-  let of_backwards ~monoid ~measure enum =
-    BatEnum.fold (fun t elt -> cons ~monoid ~measure t elt) empty enum
+  let gen t =
+    __unfold_exn
+      (fun k -> k())
+      (fun () -> enum_cps t)
+
+  let backwards t =
+    __unfold_exn
+      (fun k -> k())
+      (fun () -> enum_cps_backwards t)
+
+  let of_gen ~monoid ~measure g =
+    BatGen.fold (fun t elt -> snoc ~monoid ~measure t elt) empty g
+  let of_backwards ~monoid ~measure g =
+    BatGen.fold (fun t elt -> cons ~monoid ~measure t elt) empty g
 
   let to_list t =
     BatList.of_backwards (backwards t)
   let to_list_backwards t =
-    BatList.of_backwards (enum t)
+    BatList.of_backwards (gen t)
   let of_list ~monoid ~measure l =
     List.fold_left (fun t elt -> snoc ~monoid ~measure t elt) empty l
   let of_list_backwards ~monoid ~measure l =
@@ -926,12 +942,12 @@ struct
   let size t = fold_left (fun acc _ -> acc + 1) 0 t
 
   let print ?first ?last ?sep f oc x =
-    BatEnum.print ?first ?last ?sep f oc (enum x)
+    BatGen.print ?first ?last ?sep f oc (gen x)
 
   let compare cmp t1 t2 =
-    BatEnum.compare cmp (enum t1) (enum t2)
+    BatGen.compare ~cmp (gen t1) (gen t2)
   let equal eq t1 t2 =
-    BatEnum.equal eq (enum t1) (enum t2)
+    BatGen.eq ~eq (gen t1) (gen t2)
 
   (* this function does as of_list, but, by using concatenation,
    * it generates trees with some Node2 (which are never generated
@@ -1033,15 +1049,15 @@ let fold_right = Generic.fold_right
   count1 = count2 && Buffer.contents b1 = Buffer.contents b2)
 *)
 
-let enum = Generic.enum
-(*$Q enum
+let gen = Generic.gen
+(*$Q gen
   (Q.list Q.int) (fun l -> \
-    BatList.of_enum (enum (verify_measure (of_list_for_test l))) = l)
+    BatList.of_gen (gen (verify_measure (of_list_for_test l))) = l)
 *)
 let backwards = Generic.backwards
 (*$Q backwards
   (Q.list Q.int) (fun l -> \
-    BatList.of_enum (backwards (verify_measure (of_list_for_test l))) = List.rev l)
+    BatList.of_gen (backwards (verify_measure (of_list_for_test l))) = List.rev l)
 *)
 let to_list = Generic.to_list
 (*$Q to_list
@@ -1050,9 +1066,9 @@ let to_list = Generic.to_list
   (Q.list Q.int) (fun l -> \
     to_list (verify_measure (of_list_backwards l)) = List.rev l)
   (Q.list Q.int) (fun l -> \
-    to_list (verify_measure (of_enum (BatList.enum l))) = l)
+    to_list (verify_measure (of_gen (BatList.gen l))) = l)
   (Q.list Q.int) (fun l -> \
-    to_list (verify_measure (of_backwards (BatList.enum l))) = List.rev l)
+    to_list (verify_measure (of_backwards (BatList.gen l))) = List.rev l)
 *)
 let to_list_backwards = Generic.to_list_backwards
 (*$Q to_list_backwards
@@ -1221,7 +1237,7 @@ let update t i f =
   try ignore (update (snoc (snoc (snoc empty 1) 2) 3) 3 (fun x -> x + 1)); false with Invalid_argument _ -> true
 *)
 
-let of_enum e = Generic.of_enum ~monoid:nat_plus_monoid ~measure:size_measurer e
+let of_gen e = Generic.of_gen ~monoid:nat_plus_monoid ~measure:size_measurer e
 let of_list l = Generic.of_list ~monoid:nat_plus_monoid ~measure:size_measurer l
 let of_backwards e = Generic.of_backwards ~monoid:nat_plus_monoid ~measure:size_measurer e
 let of_list_backwards l = Generic.of_list_backwards ~monoid:nat_plus_monoid ~measure:size_measurer l

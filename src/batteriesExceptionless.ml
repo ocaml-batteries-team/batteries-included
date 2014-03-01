@@ -9,7 +9,6 @@ include (Batteries :
           and module Queue := Batteries.Queue
           and module Stack := Batteries.Stack
           and module String := Batteries.String
-          and module Enum := Batteries.Enum
           and module LazyList := Batteries.LazyList
           and module Seq := Batteries.Seq
           and module Splay := Batteries.Splay
@@ -80,18 +79,6 @@ module String = struct
   end
 end
 
-(* Extlib modules not replacing stdlib *)
-module Enum = struct
-  include (BatEnum :
-             module type of Batteries.Enum
-           with module Labels := Batteries.Enum.Labels
-          )
-  include BatEnum.Exceptionless
-  module Labels = struct
-    include BatEnum.Labels
-    include BatEnum.Labels.LExceptionless
-  end
-end
 module LazyList = struct
   include (BatLazyList :
              module type of Batteries.LazyList

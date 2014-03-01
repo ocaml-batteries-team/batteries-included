@@ -26,7 +26,7 @@ type +'a dq
 type 'a t = 'a dq
 (** A synonym for convenience *)
 
-include BatEnum.Enumerable with type 'a enumerable = 'a t
+include BatGen.Enumerable with type 'a enumerable = 'a t
 include BatInterfaces.Mappable with type 'a mappable = 'a t
 
 val size : 'a dq -> int
@@ -129,11 +129,11 @@ val to_list : 'a dq -> 'a list
 (** [to_list dq] is a list representation of the elements of [dq].
     O(n) *)
 
-val of_enum : 'a BatEnum.t -> 'a dq
+val of_gen : 'a BatGen.t -> 'a dq
 (** [of_enum e] is a deque representation of the elements of [e].
     Consumes the enumeration [e]. O(n) *)
 
-val enum : 'a dq -> 'a BatEnum.t
+val gen : 'a dq -> 'a BatGen.t
 (** [enum dq] is an enumeration of the elements of [dq] from the
     front to the rear.
     This function is O(1), but generating each element of the enumeration

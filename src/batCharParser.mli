@@ -49,7 +49,7 @@ val advance : char -> position -> position
 val source_of_string : string      -> (char, position) Source.t
 (** Create a source from a latin-1 character string.*)
 
-val source_of_enum   : char BatEnum.t -> (char, position) Source.t
+val source_of_gen   : char BatGen.t -> (char, position) Source.t
 (** Create a source from a latin-1 character.*)
 
 val parse : (char, 'a, position) t -> string -> ('a, position report) BatPervasives.result

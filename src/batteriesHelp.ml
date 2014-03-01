@@ -135,7 +135,7 @@ let local_name s =
 *)
 let load_index ~name ~index ~prefix ~suggestions ~completions =
   try
-    BatEnum.iter
+    BatGen.iter
       (fun line ->
         Scanf.sscanf line " %S : %S "
           (fun item url ->
@@ -174,7 +174,7 @@ let get_table =
       try
         let suggestions = Hashtbl.create 256
         and completions = Hashtbl.create 256 in
-        BatEnum.iter
+        BatGen.iter
           (fun line ->
             try
               Scanf.sscanf line "%s %s "

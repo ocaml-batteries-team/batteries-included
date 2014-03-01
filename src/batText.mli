@@ -232,15 +232,15 @@ val filter : (BatUChar.t -> bool) -> t -> t
 (** [filter f s] returns a copy of rope [s] in which only
     characters [c] such that [f c = true] remain.*)
 
-val enum : t -> BatUChar.t BatEnum.t
+val gen : t -> BatUChar.t BatGen.t
 (** enumerate the rope's characters
     @since 2.2.0 *)
 
-val backwards : t -> BatUChar.t BatEnum.t
+val backwards : t -> BatUChar.t BatGen.t
 (** enumerates the rope's characters, in reverse order
     @since 2.2.0 *)
 
-val of_enum : BatUChar.t BatEnum.t -> t
+val of_gen : BatUChar.t BatGen.t -> t
 (** converts the enumeration into a rope
     @since 2.2.0 *)
 
@@ -468,10 +468,10 @@ val write_text : (t, _) printer
 val write_line: (t, _) printer
 (** Write one line onto a UTF-8 encoded output, followed by a \n.*)
 
-val lines_of : input -> t BatEnum.t
+val lines_of : input -> t BatGen.t
 (** offer the lines of a UTF-8 encoded input as an enumeration*)
 
-val chars_of : input -> BatUChar.t BatEnum.t
+val chars_of : input -> BatUChar.t BatGen.t
 (** offer the characters of an UTF-8 encoded input as an enumeration*)
 
 
@@ -480,7 +480,7 @@ val output_text : unit BatIO.output -> t -> unit
 (** Write the text on the given output channel. *)
 
 (**/**)
-val write_lines : (t BatEnum.t, 'a) printer
-val write_texts : (t BatEnum.t, 'a) printer
-val write_chars : (BatUChar.t BatEnum.t, 'a) printer
+val write_lines : (t BatGen.t, 'a) printer
+val write_texts : (t BatGen.t, 'a) printer
+val write_chars : (BatUChar.t BatGen.t, 'a) printer
   (**/**)

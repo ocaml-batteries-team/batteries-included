@@ -237,6 +237,6 @@ val ocaml_version : string;;
     [[+additional-info]] parts may be absent. *)
 
 
-val files_of: string -> string BatEnum.t
+val files_of: string -> string BatGen.t
     (**As {!readdir} but the results are presented as an enumeration
        of names.*)

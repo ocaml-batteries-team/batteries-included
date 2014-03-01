@@ -51,15 +51,18 @@ let modify_def = BatMap.modify_def
 let modify_opt = BatMap.modify_opt
 
 let (|>) x f = f x
-let enum t = BatMap.enum t |> BatEnum.map (fun (k,s) -> BatSet.enum s |> BatEnum.map (fun x -> (k,x))) |> BatEnum.concat
+let gen t =
+  BatGen.flat_map
+    (fun (k,s) -> BatGen.map (fun x -> k,x) (BatSet.gen s))
+    (BatMap.gen t)
 
-let of_enum e = BatEnum.fold (fun acc (k,d) -> add k d acc) empty e
+let of_gen e = BatGen.fold (fun acc (k,d) -> add k d acc) empty e
 
 let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") ?(kvsep=": ") print_k print_v out t =
   let print_one out (k,v) =
     BatPrintf.fprintf out "%a%s%a" print_k k kvsep print_v v
   in
-  BatEnum.print ~first ~last ~sep print_one out (enum t)
+  BatGen.print ~first ~last ~sep print_one out (gen t)
 
 module Infix =
 struct

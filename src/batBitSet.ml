@@ -275,39 +275,27 @@ let rec next_set_bit t x =
         None
       end
 
-let enum t =
-  let rec make n cnt =
-    let cur = ref n in
-    let cnt = ref cnt in
-    let rec next () =
-      match next_set_bit t !cur with
-        Some elem ->
-        decr cnt;
-        cur := (elem+1);
-        elem
-      | None ->
-        raise BatEnum.No_more_elements
-    in
-    BatEnum.make
-      ~next
-      ~count:(fun () -> !cnt)
-      ~clone:(fun () -> make !cur !cnt)
-  in
-  make 0 (count t)
+let gen t =
+  let cur = ref 0 in
+  fun () ->
+    match next_set_bit t !cur with
+    | (Some elem) as res ->
+      cur := (elem+1);
+      res
+    | None -> None
 
 (*$T
-  BitSet.of_list [5;3;2;1] |> BitSet.enum |> Enum.skip 1 |> Enum.count = 3
-  let e = BitSet.of_list [5;3;2;1] |> enum in \
-    Enum.junk e; Enum.iter (fun _ -> ()) (Enum.clone e); (Enum.count e = 3)
+  BitSet.of_list [5;3;2;1] |> BitSet.gen |> Gen.drop 1 |> Gen.length = 3
 *)
 
 (*$Q
   (Q.list Q.small_int) (fun l -> \
     let b = BitSet.of_list (List.map abs l) in \
-    b |> BitSet.enum |> BitSet.of_enum |> equal b)
+    b |> BitSet.gen |> BitSet.of_gen |> equal b)
 *)
 
-let of_enum ?(cap=128) e = let bs = create cap in BatEnum.iter (set bs) e; bs
+let of_gen ?(cap=128) e =
+  let bs = create cap in BatGen.iter (set bs) e; bs
 
 let of_list ?(cap=128) lst = let bs = create cap in List.iter (set bs) lst; bs
 

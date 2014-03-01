@@ -123,8 +123,28 @@ let rec fold f t init =
     let x = f v x in
     fold f r x
 
-(* FIXME: this is nlog n because of the left nesting of appends *)
-let rec enum = function
-  | Empty -> BatEnum.empty ()
-  | Node (l, v, r, _) ->
-    BatEnum.append (enum l) (BatEnum.delay (fun () -> BatEnum.append (BatEnum.singleton v) (enum r)))
+type 'a gen_state =
+  | Yield of 'a
+  | Explore of 'a tree
+
+(* traversal, in prefix order, of the tree. A stack is used
+  to keep track of exploration between calls to the generator *)
+let gen t =
+  let s = ref [Explore t] in
+  let rec next() =
+    match !s with
+    | [] -> None
+    | Explore Empty::s' ->
+        s := s'; next()
+    | Explore (Node (Empty, x, Empty, _)) :: s' ->
+        s := s'; Some x  (* optim: leaf *)
+    | Explore (Node (Empty, x, r, _)) :: s' ->
+        s := (Explore r :: s'); Some x  (* optim: do not explore left *)
+    | Explore (Node (l, x, r, _)) :: s' ->
+        (* explore left, then yield x, then explore right *)
+        s := (Explore l :: Yield x :: Explore r :: s');
+        next()
+    | Yield x :: s' ->
+        s := s'; Some x
+  in
+  next

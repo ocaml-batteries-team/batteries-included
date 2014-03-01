@@ -297,10 +297,9 @@ let of_list lst =
   try ignore (of_list []); false with Empty -> true
 *)
 
-let enum node =
+let gen node =
   let next e () =
-    if not e.valid then
-      raise BatEnum.No_more_elements
+    if not e.valid then None
     else
       begin
         let rval = e.curr.data in
@@ -308,31 +307,14 @@ let enum node =
 
         if (e.curr == node) then
           e.valid <- false;
-        rval
+        Some rval
       end
-  and count e () =
-    if not e.valid then
-      0
-    else
-      let rec loop cnt n =
-        if n == node then
-          cnt
-        else
-          loop (cnt + 1) (n.next)
-      in
-      loop 1 (e.curr.next)
   in
-  let rec clone e () =
-    let e' = { curr = e.curr; valid = e.valid } in
-    BatEnum.make ~next:(next e') ~count:(count e') ~clone:(clone e')
-  in
-  let e = { curr = node; valid = true } in
-  BatEnum.make ~next:(next e) ~count:(count e) ~clone:(clone e)
+  next {curr=node; valid=true}
 
-let rev_enum node =
+let rev_gen node =
   let prev e () =
-    if not e.valid then
-      raise BatEnum.No_more_elements
+    if not e.valid then None
     else
       begin
         let rval = e.curr.data in
@@ -340,44 +322,28 @@ let rev_enum node =
 
         if (e.curr == node) then
           e.valid <- false;
-        rval
+        Some rval
       end
-  and count e () =
-    if not e.valid then
-      0
-    else
-      let rec loop cnt n =
-        if n == node then
-          cnt
-        else
-          loop (cnt + 1) (n.prev)
-      in
-      loop 1 (e.curr.prev)
   in
-  let rec clone e () =
-    let e' = { curr = e.curr; valid = e.valid } in
-    BatEnum.make ~next:(prev e') ~count:(count e') ~clone:(clone e')
-  in
-  let e = { curr = node; valid = true } in
-  BatEnum.make ~next:(prev e) ~count:(count e) ~clone:(clone e)
+  prev {curr=node; valid=true; }
 
 let backwards t =
-  rev_enum (prev t)
+  rev_gen (prev t)
 
-let of_enum enm =
-  match BatEnum.get enm with
+let of_gen g =
+  match g () with
   | None -> raise Empty
   | Some(d) ->
     let first = create d in
     let f n d = append n d in
-    ignore(BatEnum.fold f first enm);
+    ignore(BatGen.fold f first g);
     first
 
 let print ?(first="[") ?(last="]") ?(sep="; ") print_a out t =
-  BatEnum.print ~first ~last ~sep print_a out (enum t)
+  BatGen.print ~first ~last ~sep print_a out (gen t)
 
 let filter f node = (*TODO : make faster*)
-  of_enum (BatEnum.filter f (enum node))
+  of_gen (BatGen.filter f (gen node))
 
 let filter_map f node = (*TODO : make faster*)
-  of_enum (BatEnum.filter_map f (enum node))
+  of_gen (BatGen.filter_map f (gen node))

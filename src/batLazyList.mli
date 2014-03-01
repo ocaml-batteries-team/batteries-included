@@ -70,7 +70,7 @@ type 'a t = ('a node_t) Lazy.t
 and 'a node_t = | Nil | Cons of 'a * 'a t
                 (**The type of an item in the list.*)
 
-include BatEnum.Enumerable with type 'a enumerable = 'a t
+include BatGen.Enumerable with type 'a enumerable = 'a t
 include BatInterfaces.Mappable with type 'a mappable = 'a t
 
 (** {6 Access } *)
@@ -453,7 +453,7 @@ val to_stream : 'a t -> 'a Stream.t
 val to_array : 'a t -> 'a array
 (** Eager conversion to array.*)
 
-val enum  : 'a t -> 'a BatEnum.t
+val gen  : 'a t -> 'a BatGen.t
 (**Lazy conversion to enumeration*)
 
 val of_list : 'a list -> 'a t
@@ -468,7 +468,7 @@ val of_list : 'a list -> 'a t
 val of_stream : 'a Stream.t -> 'a t
 (**Lazy conversion from stream.*)
 
-val of_enum : 'a BatEnum.t -> 'a t
+val of_gen : 'a BatGen.t -> 'a t
 (**Lazy conversion from enum.*)
 
 val eager_of_list : 'a list -> 'a t

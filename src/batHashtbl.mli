@@ -105,18 +105,18 @@ val clear : ('a, 'b) t -> unit
 
 (**{6 Enumerations}*)
 
-val keys : ('a,'b) t -> 'a BatEnum.t
+val keys : ('a,'b) t -> 'a BatGen.t
 (** Return an enumeration of all the keys of a hashtable.
     If the key is in the Hashtable multiple times, all occurrences
     will be returned.  *)
 
-val values : ('a,'b) t -> 'b BatEnum.t
+val values : ('a,'b) t -> 'b BatGen.t
 (** Return an enumeration of all the values of a hashtable. *)
 
-val enum : ('a, 'b) t -> ('a * 'b) BatEnum.t
+val gen : ('a, 'b) t -> ('a * 'b) BatGen.t
 (** Return an enumeration of (key,value) pairs of a hashtable. *)
 
-val of_enum : ('a * 'b) BatEnum.t -> ('a, 'b) t
+val of_gen : ('a * 'b) BatGen.t -> ('a, 'b) t
 (** Create a hashtable from a (key,value) enumeration. *)
 
 
@@ -155,8 +155,8 @@ val mem : ('a, 'b) t -> 'a -> bool
    {!BatEnum}.
 
    Whenever you wish to traverse or transfor a hashtable, you have the
-   choice between using the more general functions of {!BatEnum}, with
-   {!keys}, {!values}, {!enum} and {!of_enum}, or the more optimized
+   choice between using the more general functions of {!BatGen}, with
+   {!keys}, {!values}, {!gen} and {!of_gen}, or the more optimized
    functions of this section.
 
    If you are new to OCaml or unsure about data structure, using the
@@ -379,10 +379,10 @@ sig
   val modify : key -> ('a -> 'a) -> 'a t -> unit
   val modify_def : 'a -> key -> ('a -> 'a) -> 'a t -> unit
   val modify_opt : key -> ('a option -> 'a option) -> 'a t -> unit
-  val keys : 'a t -> key BatEnum.t
-  val values : 'a t -> 'a BatEnum.t
-  val enum : 'a t -> (key * 'a) BatEnum.t
-  val of_enum : (key * 'a) BatEnum.t -> 'a t
+  val keys : 'a t -> key BatGen.t
+  val values : 'a t -> 'a BatGen.t
+  val gen : 'a t -> (key * 'a) BatGen.t
+  val of_gen : (key * 'a) BatGen.t -> 'a t
   val print :  ?first:string -> ?last:string -> ?sep:string ->
     ('a BatInnerIO.output -> key -> unit) ->
     ('a BatInnerIO.output -> 'b -> unit) ->
@@ -542,10 +542,10 @@ sig
 
   (**{6 Conversions}*)
 
-  val keys : ('a,'b, [>`Read]) t -> 'a BatEnum.t
-  val values : ('a, 'b, [>`Read]) t -> 'b BatEnum.t
-  val enum : ('a, 'b, [>`Read]) t -> ('a * 'b) BatEnum.t
-  val of_enum : ('a * 'b) BatEnum.t -> ('a, 'b, _) t
+  val keys : ('a,'b, [>`Read]) t -> 'a BatGen.t
+  val values : ('a, 'b, [>`Read]) t -> 'b BatGen.t
+  val gen : ('a, 'b, [>`Read]) t -> ('a * 'b) BatGen.t
+  val of_gen : ('a * 'b) BatGen.t -> ('a, 'b, _) t
 
   (** {6 Boilerplate code}*)
 

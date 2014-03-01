@@ -189,10 +189,10 @@ sig
       equal data.  [cmp] is the equality predicate used to compare
       the data associated with the keys. *)
 
-  val keys : _ t -> key BatEnum.t
+  val keys : _ t -> key BatGen.t
   (** Return an enumeration of all the keys of a map.*)
 
-  val values: 'a t -> 'a BatEnum.t
+  val values: 'a t -> 'a BatGen.t
   (** Return an enumeration of al the values of a map.*)
 
   val min_binding : 'a t -> (key * 'a)
@@ -244,19 +244,19 @@ sig
       Added for compatibility with stdlib 3.12
   *)
 
-  val enum  : 'a t -> (key * 'a) BatEnum.t
+  val gen  : 'a t -> (key * 'a) BatGen.t
   (** Return an enumeration of (key, value) pairs of a map.
       The returned enumeration is sorted in increasing order with respect
       to the ordering [Ord.compare], where [Ord] is the argument given to
       {!Map.Make}. *)
 
-  val backwards  : 'a t -> (key * 'a) BatEnum.t
+  val backwards  : 'a t -> (key * 'a) BatGen.t
   (** Return an enumeration of (key, value) pairs of a map.
       The returned enumeration is sorted in decreasing order with respect
       to the ordering [Ord.compare], where [Ord] is the argument given to
       {!Map.Make}. *)
 
-  val of_enum: (key * 'a) BatEnum.t -> 'a t
+  val of_gen: (key * 'a) BatGen.t -> 'a t
   (** Create a map from a (key, value) enumeration. *)
 
   val for_all: (key -> 'a -> bool) -> 'a t -> bool
@@ -461,19 +461,19 @@ val min_binding : ('key, 'a) t -> ('key * 'a)
 val max_binding : ('key, 'a) t -> ('key * 'a)
 (** returns the binding with the largest key *)
 
-val enum : ('a, 'b) t -> ('a * 'b) BatEnum.t
+val gen : ('a, 'b) t -> ('a * 'b) BatGen.t
 (** creates an enumeration for this map, enumerating key,value pairs with the keys in increasing order. *)
 
-val backwards  : ('a,'b) t -> ('a * 'b) BatEnum.t
+val backwards  : ('a,'b) t -> ('a * 'b) BatGen.t
 (** creates an enumeration for this map, enumerating key,value pairs with the keys in decreasing order. *)
 
-val keys : ('a,'b) t -> 'a BatEnum.t
+val keys : ('a,'b) t -> 'a BatGen.t
 (** Return an enumeration of all the keys of a map.*)
 
-val values: ('a,'b) t -> 'b BatEnum.t
+val values: ('a,'b) t -> 'b BatGen.t
 (** Return an enumeration of al the values of a map.*)
 
-val of_enum : ('a * 'b) BatEnum.t -> ('a, 'b) t
+val of_gen : ('a * 'b) BatGen.t -> ('a, 'b) t
 (** Creates a map from an enumeration *)
 
 val for_all : ('a -> 'b -> bool) -> ('a, 'b) t -> bool
@@ -731,19 +731,19 @@ module PMap : sig
   val max_binding : ('key, 'a) t -> ('key * 'a)
   (** returns the binding with the largest key *)
 
-  val enum : ('a, 'b) t -> ('a * 'b) BatEnum.t
+  val gen : ('a, 'b) t -> ('a * 'b) BatGen.t
   (** creates an enumeration for this map, enumerating key,value pairs with the keys in increasing order. *)
 
-  val backwards  : ('a,'b) t -> ('a * 'b) BatEnum.t
+  val backwards  : ('a,'b) t -> ('a * 'b) BatGen.t
   (** creates an enumeration for this map, enumerating key,value pairs with the keys in decreasing order. *)
 
-  val keys : ('a,'b) t -> 'a BatEnum.t
+  val keys : ('a,'b) t -> 'a BatGen.t
   (** Return an enumeration of all the keys of a map.*)
 
-  val values: ('a,'b) t -> 'b BatEnum.t
+  val values: ('a,'b) t -> 'b BatGen.t
   (** Return an enumeration of al the values of a map.*)
 
-  val of_enum : ?cmp:('a -> 'a -> int) -> ('a * 'b) BatEnum.t -> ('a, 'b) t
+  val of_gen : ?cmp:('a -> 'a -> int) -> ('a * 'b) BatGen.t -> ('a, 'b) t
   (** creates a map from an enumeration, using the specified function
       for key comparison or [compare] by default. *)
 

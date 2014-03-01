@@ -22,36 +22,38 @@
 
 include Queue
 
-type 'a enumerable = 'a t
+type 'a generable = 'a t
 
-let of_enum e =
+let of_gen e =
   let q = create () in
-  BatEnum.iter (fun x -> push x q) e;
+  BatGen.iter (fun x -> push x q) e;
   q
-(*$Q of_enum
+(*$Q of_gen
   (Q.list Q.int) (fun l -> \
-    let e = BatList.enum l in \
-    BatEnum.equal (=) (enum (of_enum (BatEnum.clone e))) e \
+    let e = BatList.gen l in \
+    BatGen.eq ~eq:(=) (gen (of_gen e)) (BatList.gen l) \
   )
 *)
 
-let enum q = BatEnum.from (fun () -> try pop q with Empty -> raise BatEnum.No_more_elements)
-(*$T enum
+let gen q =
+  fun () -> try Some (pop q) with Empty -> None
+(*$T gen
   let q = Queue.create () in \
   for i = 0 to 10 do Queue.push i q; done; \
-  let e = enum q in \
+  let e = gen q in \
   let i = ref (-1) in \
-  BatEnum.count e = 11 && BatEnum.for_all (fun elt -> incr i; !i = elt) e
+  BatGen.length e = 11 && BatGen.for_all (fun elt -> incr i; !i = elt) e
 *)
 
 let print ?(first="") ?(last="") ?(sep="") print_a out t =
-  BatEnum.print ~first ~last ~sep print_a out (enum (copy t))
+  BatGen.print ~first ~last ~sep print_a out (gen (copy t))
 (*$T print
-  BatIO.to_string (print ~sep:"," ~first:"[" ~last:"]" BatInt.print) (of_enum (BatArray.enum [|2;4;66|])) = "[2,4,66]"
+  BatIO.to_string (print ~sep:"," ~first:"[" ~last:"]" BatInt.print) \
+    (of_gen (BatArray.gen [|2;4;66|])) = "[2,4,66]"
 *)
 
-let compare cmp a b = BatEnum.compare cmp (enum a) (enum b)
-let equal eq a b = BatEnum.equal eq (enum a) (enum b)
+let compare cmp a b = BatGen.compare ~cmp (gen a) (gen b)
+let equal eq a b = BatGen.eq ~eq (gen a) (gen b)
 
 module Exceptionless = struct
   let peek q = try Some (peek q) with Empty -> None

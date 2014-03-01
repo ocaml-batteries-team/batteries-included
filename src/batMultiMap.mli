@@ -115,10 +115,10 @@ val modify_opt:
 
     @since 2.1 *)
 
-val enum : ('a, 'b) t -> ('a * 'b) BatEnum.t
+val gen : ('a, 'b) t -> ('a * 'b) BatGen.t
 (** creates an enumeration for this map. *)
 
-val of_enum : ('a * 'b) BatEnum.t -> ('a, 'b) t
+val of_gen : ('a * 'b) BatGen.t -> ('a, 'b) t
 (** creates a map from an enumeration, using the specified function
     for key comparison or [compare] by default. *)
 

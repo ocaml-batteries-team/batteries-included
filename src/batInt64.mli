@@ -126,13 +126,13 @@ external shift_right_logical : int64 -> int -> int64 = "%int64_lsr"
     regardless of the sign of [x].
     The result is unspecified if [y < 0] or [y >= 64]. *)
 
-val ( -- ) : t -> t -> t BatEnum.t
+val ( -- ) : t -> t -> t BatGen.t
 (** Enumerate an interval.
 
     [5L -- 10L] is the enumeration 5L,6L,7L,8L,9L,10L.
     [10L -- 5L] is the empty enumeration*)
 
-val ( --- ) : t -> t -> t BatEnum.t
+val ( --- ) : t -> t -> t BatGen.t
 (** Enumerate an interval.
 
     [5L -- 10L] is the enumeration 5L,6L,7L,8L,9L,10L.

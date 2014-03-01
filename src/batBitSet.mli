@@ -164,11 +164,11 @@ val print: 'a BatInnerIO.output -> t -> unit
    of 8 bits with zeros.  Thus, the bitset containing only 1 and 3 is
    printed as ["01010000"].  *)
 
-val enum : t -> int BatEnum.t
-(** [enum s] returns an enumeration of bits which are set
+val gen : t -> int BatGen.t
+(** [gen s] returns an enumeration of bits which are set
     in the bitset [s]. *)
 
-val of_enum : ?cap:int -> int BatEnum.t -> t
+val of_gen : ?cap:int -> int BatGen.t -> t
 (** [of_enum ~cap e] builds a bitset of capacity [cap] an enumeration
     of ints [e].
 

@@ -76,34 +76,22 @@ let progress_out out f =
     ~underlying:[out]
 
 (**
-   {6 Support for enumerations}
+   {6 Support for generators}
 *)
 
 (*Function inlined here to avoid circular dependencies between [BatIO]
   and [ExtString].*)
-let string_enum s =
+let string_gen s =
   let l = String.length s in
-  let rec make i =
-    BatEnum.make
-      ~next:(fun () ->
-        if !i = l then
-          raise BatEnum.No_more_elements
-        else
-          let p = !i in
-          incr i;
-          String.unsafe_get s p
-      )
-      ~count:(fun () -> l - !i)
-      ~clone:(fun () -> make (ref !i))
-  in
-  make (ref 0)
+  let i = ref 0 in
+  fun () ->
+    if !i = l then None else Some (String.unsafe_get s (BatRef.post_incr i))
 
-
-let input_enum e =
+let input_gen e =
   let pos = ref 0 in
   create_in
     ~read:(fun () ->
-      match BatEnum.get e with
+      match e() with
       | None -> raise No_more_input
       | Some c ->
         incr pos;
@@ -114,7 +102,7 @@ let input_enum e =
         if l = 0 then
           0
         else
-          match BatEnum.get e with
+          match e() with
           | None -> l
           | Some c ->
             String.unsafe_set s p c;
@@ -126,7 +114,7 @@ let input_enum e =
     )
     ~close:default_close
 
-let output_enum() =
+let output_gen() =
   let b = Buffer.create default_buffer_size in
   create_out
     ~write:(fun x ->
@@ -138,28 +126,31 @@ let output_enum() =
     )
     ~close:(fun () ->
       let s = Buffer.contents b in
-      string_enum s
+      string_gen s
     )
     ~flush:default_close
 
 
-(** [apply_enum f x] applies [f] to [x] and converts exceptions
-    [No_more_input] and [Input_closed] to [BatEnum.No_more_elements]*)
-let apply_enum do_close f x =
-  try f x
+(** [apply_gen f x] applies [f] to [x] and converts exceptions
+    [No_more_input] and [Input_closed] to [None]*)
+let apply_gen ~close do_close f x =
+  try Some (f x)
   with
-  | No_more_input -> raise BatEnum.No_more_elements
-  | Input_closed  -> do_close := false; raise BatEnum.No_more_elements
+  | No_more_input ->
+      if !do_close
+      then begin (* close channel *)
+        do_close:= false;
+        BatInnerIO.close_in close
+      end;
+      None
+  | Input_closed  -> do_close := false; None
 
-(** [close_at_end input e] returns an enumeration which behaves as [e]
-    and has the secondary effect of closing [input] once everything has
-    been read.*)
-let close_at_end do_close (input:input) e =
-  BatEnum.suffix_action (fun () -> if !do_close then close_in input) e
-
-let make_enum f input =
+let make_gen_with ~close f input =
   let do_close = ref true in
-  close_at_end do_close input (BatEnum.from (fun () -> apply_enum do_close f input))
+  fun () -> apply_gen ~close do_close f input
+
+let make_gen f input =
+  make_gen_with ~close:input f input
 
 
 let combine (a,b) =
@@ -177,8 +168,8 @@ let combine (a,b) =
     ~underlying:[cast_output a; cast_output b]
 
 
-let write_enum f out enum =
-  BatEnum.iter (f out) enum
+let write_gen f out g =
+  BatGen.iter (f out) g
 (*;
   flush out*)
 
@@ -278,13 +269,13 @@ module BigEndian = struct
   let write_float ch f =
     write_real_i32 ch (Int32.bits_of_float f)
 
-  let ui16s_of input     = make_enum read_ui16 input
-  let i16s_of input      = make_enum read_i16 input
-  let i32s_of input      = make_enum read_i32 input
-  let real_i32s_of input = make_enum read_real_i32 input
-  let i64s_of input      = make_enum read_i64 input
-  let doubles_of input   = make_enum read_double input
-  let floats_of input    = make_enum read_float input
+  let ui16s_of input     = make_gen read_ui16 input
+  let i16s_of input      = make_gen read_i16 input
+  let i32s_of input      = make_gen read_i32 input
+  let real_i32s_of input = make_gen read_real_i32 input
+  let i64s_of input      = make_gen read_i64 input
+  let doubles_of input   = make_gen read_double input
+  let floats_of input    = make_gen read_float input
 
 end
 
@@ -463,18 +454,18 @@ let from_out_chars ch =
    {6 Enumerations}
 *)
 
-let bytes_of        input = make_enum read_byte        input
-let signed_bytes_of input = make_enum read_signed_byte input
-let ui16s_of        input = make_enum read_ui16        input
-let i16s_of         input = make_enum read_i16         input
-let i32s_of         input = make_enum read_i32         input
-let real_i32s_of    input = make_enum read_real_i32    input
-let i64s_of         input = make_enum read_i64         input
-let doubles_of      input = make_enum read_double      input
-let floats_of       input = make_enum read_float       input
-let strings_of      input = make_enum read_string      input
-let lines_of        input = make_enum read_line        input
-let chunks_of n     input = make_enum (fun ic -> nread ic n) input
+let bytes_of        input = make_gen read_byte        input
+let signed_bytes_of input = make_gen read_signed_byte input
+let ui16s_of        input = make_gen read_ui16        input
+let i16s_of         input = make_gen read_i16         input
+let i32s_of         input = make_gen read_i32         input
+let real_i32s_of    input = make_gen read_real_i32    input
+let i64s_of         input = make_gen read_i64         input
+let doubles_of      input = make_gen read_double      input
+let floats_of       input = make_gen read_float       input
+let strings_of      input = make_gen read_string      input
+let lines_of        input = make_gen read_line        input
+let chunks_of n     input = make_gen (fun ic -> nread ic n) input
 
 (** The number of chars to read at once *)
 let buffer_size = 1024 (*Arbitrary size.*)
@@ -482,13 +473,27 @@ let buffer_size = 1024 (*Arbitrary size.*)
 (* make a bunch of char enums by reading buffer_size at a time and
    concat them all into into one big char enum *)
 let chars_of input =
-  let do_close = ref true in
-  close_at_end do_close input (BatEnum.concat (BatEnum.from (fun () ->
-        apply_enum do_close (fun source -> string_enum (nread source buffer_size)) input)))
+  let buf = ref "" in
+  let i = ref 0 in
+  let stop = ref false in
+  (* get next buffer *)
+  let rec next_buf() =
+    try
+      buf := nread input buffer_size;
+      i := 0;
+      next ()
+    with No_more_input ->
+      BatInnerIO.close_in input; stop := true; None
+  and next () =
+    if !stop then None
+    else if !i >= String.length !buf
+      then next_buf()
+      else Some ((!buf).[BatRef.post_incr i])
+  in
+  next
 
 let bits_of input =
-  let do_close = ref true in
-  close_at_end do_close input.ch (BatEnum.from (fun () -> apply_enum do_close read_bits input 1))
+  make_gen_with ~close:input.ch (fun i -> read_bits i 1) input
 
 (** Buffered lines_of, for performance.  Ideas taken from ocaml stdlib *)
 let lines_of2 ic =
@@ -528,16 +533,16 @@ let lines_of2 ic =
     let rec get_pieces accu len =
       let n = find_eol () in
       if n = 0 then match accu with  (* EOF *)
-        | [] -> close_in ic; raise BatEnum.No_more_elements
-        | _ -> join_strings (String.create len) len accu
+        | [] -> close_in ic; None
+        | _ -> Some (join_strings (String.create len) len accu)
       else if n > 0 then (* newline found *)
         let res = String.create (n-1) in
         input_buf res 0 (n-1);
         input_buf " " 0 1; (* throw away EOL *)
         match accu with
-        | [] -> res
+        | [] -> Some res
         | _ -> let len = len + n-1 in
-          join_strings (String.create len) len (res :: accu)
+          Some (join_strings (String.create len) len (res :: accu))
       else (* n < 0 ; no newline found *)
         let piece = String.create (-n) in
         input_buf piece 0 (-n);
@@ -547,10 +552,10 @@ let lines_of2 ic =
   in
   (* prime the buffer *)
   end_pos := input ic buf 0 buffer_size;
-  BatEnum.from get_line
+  get_line
 
 
-let write_bitss ~nbits output enum = write_enum (write_bits ~nbits) output enum
+let write_bitss ~nbits output g = write_gen (write_bits ~nbits) output g
 
 (**
    {6 Utilities}
@@ -622,7 +627,7 @@ let copy ?(buffer=4096) inp out =
 
 (*let fast_chunks_of n inp  =
   let buffer = String.create n in
-    make_enum (fun inp -> input inp buffer 0 n) input*)
+    make_gen (fun inp -> input inp buffer 0 n) input*)
 
 
 
@@ -750,14 +755,15 @@ module Incubator = struct
       if flush then pp_print_flush f ()
   end
 
-  module Enum = struct
-    let pp ?(flush = false) ?(first = "") ?(last = "") ?(sep = " ") ?(indent = String.length first) pp f e =
+  module Gen = struct
+    let pp ?(flush = false) ?(first = "") ?(last = "") ?(sep = " ")
+    ?(indent = String.length first) pp f e =
       let open Format in
       pp_open_box f indent;
       pp_print_cut f ();
       pp_print_string f first;
       pp_print_cut f ();
-      match BatEnum.get e with
+      match e () with
       | None ->
         pp_print_string f last;
         pp_close_box f ();
@@ -766,7 +772,7 @@ module Incubator = struct
         pp_open_box f indent;
         pp f x;
         let rec aux () =
-          match BatEnum.get e with
+          match e () with
           | None ->
             pp_close_box f ();
             pp_print_cut f ();

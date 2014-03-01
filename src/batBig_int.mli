@@ -121,8 +121,8 @@ val operations : t BatNumber.numeric
 
 (** {6 Generators} *)
 
-val ( -- ) : big_int -> big_int -> big_int BatEnum.t
-val ( --- ): big_int -> big_int -> big_int BatEnum.t
+val ( -- ) : big_int -> big_int -> big_int BatGen.t
+val ( --- ): big_int -> big_int -> big_int BatGen.t
 
 (** {6 Comparisons and tests} *)
 
