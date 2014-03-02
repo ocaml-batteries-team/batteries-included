@@ -1,7 +1,45 @@
+# OASIS_START
+# DO NOT EDIT (digest: d09563c1d2f0b4f2f381b435b9899f3d)
+# Ignore VCS directories, you can use the same kind of rule outside
+# OASIS_START/STOP if you want to exclude directories that contains
+# useless stuff for the build process
+<**/.svn>: -traverse
+<**/.svn>: not_hygienic
+".bzr": -traverse
+".bzr": not_hygienic
+".hg": -traverse
+".hg": not_hygienic
+".git": -traverse
+".git": not_hygienic
+"_darcs": -traverse
+"_darcs": not_hygienic
+# Library batteries
+"src/batteries.cmxs": use_batteries
+# Library batteries_bigarray
+"src/bigarray/batteries_bigarray.cmxs": use_batteries_bigarray
+<src/bigarray/*.ml{,i}>: use_batteries
+# Library batteries_unix
+"src/unix/batteries_unix.cmxs": use_batteries_unix
+<src/unix/*.ml{,i}>: use_batteries_bigarray
+<src/unix/*.ml{,i}>: use_batteries
+# Library batteries_num
+"src/num/batteries_num.cmxs": use_batteries_num
+<src/num/*.ml{,i}>: use_batteries
+<src/num/*.ml{,i}>: package(num)
+# Library batteries_thread
+"src/thread/batteries_thread.cmxs": use_batteries_thread
+<src/thread/*.ml{,i}>: use_batteries
+<src/thread/*.ml{,i}>: package(threads)
+# Library batteries_full
+"src/full/batteries_full.cmxs": use_batteries_full
+<src/full/*.ml{,i}>: use_batteries_unix
+<src/full/*.ml{,i}>: use_batteries_bigarray
+<src/full/*.ml{,i}>: use_batteries
+<src/full/*.ml{,i}>: package(num)
+<src/full/*.ml{,i}>: package(str)
+# OASIS_STOP
 <**/*.ml> : annot
 <**/*.ml> and not <libs/**.ml>: warn_Ae-29
-"build": include
-"src": include
 "libs": include
 "testsuite": include
 "qtest": include

@@ -36,6 +36,9 @@ val argv : string array
     The following elements are the command-line arguments
     given to the program. *)
 
+val args : unit -> string BatGen.t
+(** command line arguments, the first one excepted *)
+
 val executable_name : string
 (** The name of the file containing the executable currently running. *)
 

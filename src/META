@@ -1,0 +1,65 @@
+# OASIS_START
+# DO NOT EDIT (digest: e9a854e4c01df528c0d722b4e7941aa1)
+version = "light-alpha"
+description = "Extended OCaml Standard Library"
+archive(byte) = "batteries.cma"
+archive(byte, plugin) = "batteries.cma"
+archive(native) = "batteries.cmxa"
+archive(native, plugin) = "batteries.cmxs"
+exists_if = "batteries.cma"
+package "unix" (
+ version = "light-alpha"
+ description = "Extended OCaml Standard Library"
+ requires = "batteries batteries.bigarray"
+ archive(byte) = "batteries_unix.cma"
+ archive(byte, plugin) = "batteries_unix.cma"
+ archive(native) = "batteries_unix.cmxa"
+ archive(native, plugin) = "batteries_unix.cmxs"
+ exists_if = "batteries_unix.cma"
+)
+
+package "thread" (
+ version = "light-alpha"
+ description = "Extended OCaml Standard Library"
+ requires = "batteries threads"
+ archive(byte) = "batteries_thread.cma"
+ archive(byte, plugin) = "batteries_thread.cma"
+ archive(native) = "batteries_thread.cmxa"
+ archive(native, plugin) = "batteries_thread.cmxs"
+ exists_if = "batteries_thread.cma"
+)
+
+package "num" (
+ version = "light-alpha"
+ description = "Extended OCaml Standard Library"
+ requires = "batteries num"
+ archive(byte) = "batteries_num.cma"
+ archive(byte, plugin) = "batteries_num.cma"
+ archive(native) = "batteries_num.cmxa"
+ archive(native, plugin) = "batteries_num.cmxs"
+ exists_if = "batteries_num.cma"
+)
+
+package "full" (
+ version = "light-alpha"
+ description = "Extended OCaml Standard Library"
+ requires = "batteries batteries.bigarray batteries.unix num str"
+ archive(byte) = "batteries_full.cma"
+ archive(byte, plugin) = "batteries_full.cma"
+ archive(native) = "batteries_full.cmxa"
+ archive(native, plugin) = "batteries_full.cmxs"
+ exists_if = "batteries_full.cma"
+)
+
+package "bigarray" (
+ version = "light-alpha"
+ description = "Extended OCaml Standard Library"
+ requires = "batteries"
+ archive(byte) = "batteries_bigarray.cma"
+ archive(byte, plugin) = "batteries_bigarray.cma"
+ archive(native) = "batteries_bigarray.cmxa"
+ archive(native, plugin) = "batteries_bigarray.cmxs"
+ exists_if = "batteries_bigarray.cma"
+)
+# OASIS_STOP
+

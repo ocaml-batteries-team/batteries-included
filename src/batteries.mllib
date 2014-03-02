@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 585d788bc5eac0eea067868d0cda995b)
+# DO NOT EDIT (digest: faddec3671c5968bf4d693b60c90d124)
 BatArray
 BatBool
 BatBounded
@@ -11,6 +11,7 @@ BatFormat
 BatGc
 BatHashtbl
 BatHeap
+BatInt32
 BatInt64
 BatInt
 BatList
