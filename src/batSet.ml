@@ -486,13 +486,13 @@ sig
     'a BatInnerIO.output -> t -> unit
   module Infix : sig
     val (<--) : t -> elt -> t (** insertion *)
-    val (<) : t -> t -> bool  (** strict subset *)
-    val (>) : t -> t -> bool  (** strict superset *)
-    val (<=) : t -> t -> bool (** subset *)
-    val (>=) : t -> t -> bool (** superset *)
-    val (-) : t -> t -> t     (** difference *)
-    val (&&&) : t -> t -> t   (** intersection *)
-    val (|||) : t -> t -> t   (** union *)
+    val (<.) : t -> t -> bool  (** strict subset *)
+    val (>.) : t -> t -> bool  (** strict superset *)
+    val (<=.) : t -> t -> bool (** subset *)
+    val (>=.) : t -> t -> bool (** superset *)
+    val (-.) : t -> t -> t     (** difference *)
+    val (&&.) : t -> t -> t   (** intersection *)
+    val (||.) : t -> t -> t   (** union *)
   end
   (** Operations on {!Set} without exceptions.*)
   module Exceptionless : sig
@@ -611,13 +611,13 @@ struct
 
   module Infix = struct
     let (<--) s x = add x s
-    let (<) a b = not (equal a b) && subset a b
-    let (>) a b = not (equal a b) && subset b a
-    let (<=) = subset
-    let (>=) a b = subset b a
-    let (-) = diff
-    let (&&&) = inter
-    let (|||) = union
+    let (<.) a b = not (equal a b) && subset a b
+    let (>.) a b = not (equal a b) && subset b a
+    let (<=.) = subset
+    let (>=.) a b = subset b a
+    let (-.) = diff
+    let (&&.) = inter
+    let (||.) = union
   end
 
   module Exceptionless =
@@ -720,13 +720,13 @@ module PSet = struct (*$< PSet *)
 
   module Infix = struct
     let (<--) s x = add x s
-    let (<) a b = not (equal a b) && subset a b
-    let (>) a b = not (equal a b) && subset b a
-    let (<=) = subset
-    let (>=) a b = subset b a
-    let (-) = diff
-    let (&&&) = intersect
-    let (|||) = union
+    let (<.) a b = not (equal a b) && subset a b
+    let (>.) a b = not (equal a b) && subset b a
+    let (<=.) = subset
+    let (>=.) a b = subset b a
+    let (-.) = diff
+    let (&&.) = intersect
+    let (||.) = union
   end
 end (*$>*)
 
@@ -864,13 +864,13 @@ let disjoint s1 s2 = Concrete.disjoint Pervasives.compare s1 s2
 
 module Infix = struct
   let (<--) s x = add x s
-  let (<) a b = not (equal a b) && subset a b
-  let (>) a b = not (equal a b) && subset b a
-  let (<=) = subset
-  let (>=) a b = subset b a
-  let (-) = diff
-  let (&&&) = intersect
-  let (|||) = union
+  let (<.) a b = not (equal a b) && subset a b
+  let (>.) a b = not (equal a b) && subset b a
+  let (<=.) = subset
+  let (>=.) a b = subset b a
+  let (-.) = diff
+  let (&&.) = intersect
+  let (||.) = union
 end
 
 module Incubator = struct (*$< Incubator *)
