@@ -522,11 +522,6 @@ val invisible_args : int ref
 (**/**)
 
 
-val exe  : string
-(** The name of the current executable.
-
-    [exe] is given by the first argument of [Sys.argv]*)
-
 
 (**
    {6 Generations}
@@ -838,7 +833,7 @@ val print :  ?first:string -> ?last:string -> ?sep:string ->
 
     For more functions related to this type, see the {!BatResult} module.
 *)
-type ('a, 'b) result = ('a, 'b) BatInnerPervasives.result =
+type ('a, 'b) result = ('a, 'b) BatResult.t =
   | Ok  of 'a
   | Bad of 'b
   (** The result of a computation - either an [Ok] with the normal

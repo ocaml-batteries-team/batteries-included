@@ -22,7 +22,7 @@ open BatIO
 open ListLabels
 open Unix
 
-let finally = BatInnerPervasives.finally
+let finally = BatFun.finally
 
 (* Permissions *)
 type permission = int

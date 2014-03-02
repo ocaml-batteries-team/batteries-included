@@ -1,4 +1,3 @@
-open BatInnerPervasives
 open BatParserCo
 open BatCharParser
 
@@ -316,7 +315,7 @@ struct
       else                   case_string
 
     let adapt_case =
-      if case_sensitive then identity
+      if case_sensitive then BatFun.identity
       else String.lowercase
 
     let string_compare =

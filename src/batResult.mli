@@ -1,12 +1,37 @@
 (**  Monadic results of computations that can raise exceptions *)
 
-(** The type of a result.  A result is either [Ok x] carrying the
-    normal return value [x] or is [Bad e] carrying some indication of an
-    error.  The value associated with a bad result is usually an exception
-    ([exn]) that can be raised.
+(** This type represents the outcome of a function which has the
+    possibility of failure.  Normal results of type ['a] are marked
+    with [Ok], while failure values of type ['b] are marked with
+    [Bad].
+
+    This is intended to be a safer alternative to functions raising
+    exceptions to signal failure.  It is safer in that the possibility
+    of failure has to be handled before the result of that computation
+    can be used.
+
     @since 1.0
 *)
-type ('a, 'b) t = ('a, 'b) BatPervasives.result = Ok of 'a | Bad of 'b
+
+type ('a, 'b) t =
+  | Ok  of 'a
+  | Bad of 'b
+  (** The result of a computation - either an [Ok] with the normal
+      result or a [Bad] with some value (often an exception) containing
+      failure information*)
+
+val ignore_ok : ('a, exn) t -> unit
+(** [ignore_ok (f x)] ignores the result of [f x] if it's ok, but
+    throws the exception contained if [Bad] is returned. *)
+
+val ok : ('a, exn) t -> 'a
+(** [f x |> ok] unwraps the [Ok] result of [f x] and returns it, or
+    throws the exception contained if [Bad] is returned. *)
+
+val wrap : ('a -> 'b) -> 'a -> ('b, exn) t
+(** [wrap f x] wraps a function that would normally throw an exception
+    on failure such that it now returns a result with either the [Ok]
+    return value or the [Bad] exception. *)
 
 (** Execute a function and catch any exception as a result.  This
     function encapsulates code that could throw an exception and returns

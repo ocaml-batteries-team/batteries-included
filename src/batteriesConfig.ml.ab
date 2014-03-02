@@ -18,9 +18,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-let version = "@VERSION@";;
-let documentation_root = "@DOCROOT@";;
-let (browser: (_, _, _) format) = "@BROWSER_COMMAND@ %s";;
+let version = "$(pkg_version)";;
+let documentation_root = "$(docdir)";;
+let (browser: (_, _, _) format) = "x-www-browser %s";;
+  (* FIXME: how to parametrize it in oasis? *)
 
 (**The default function to open a www browser.*)
 let default_browse s =

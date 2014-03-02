@@ -37,6 +37,7 @@ let input inp =
 let output = BatIO.nwrite
 let print oc t = BatIO.nwrite oc (to_hex t)
 
+(* FIXME
 let channel inp len = (*TODO: Make efficient*)
   if len >= 0 then
     let buf = String.create len in
@@ -46,6 +47,7 @@ let channel inp len = (*TODO: Make efficient*)
 (*$T
   let digest = Digest.string "azerty" in \
   channel (BatIO.input_string ("azertyuiop")) 6 = digest
+*)
 *)
 
 (*1. Compute the digest of this file using Legacy.Digest*)

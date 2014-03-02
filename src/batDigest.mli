@@ -55,6 +55,7 @@ val from_hex : string -> t
     characters.
     @since 4.00.0 *)
 
+(* FIXME.... if it's possible in an efficient way
 val channel : input -> int -> Digest.t
 (** If [len] is nonnegative, [Digest.channel ic len] reads [len]
     characters from channel [ic] and returns their digest, or
@@ -66,6 +67,7 @@ val channel : input -> int -> Digest.t
     {b Note} This version of [channel] is currently very inefficient
     if [len] < 0 and requires copying the whole input to a temporary
     file.
+*)
 *)
 
 val output : 'a output -> t -> unit

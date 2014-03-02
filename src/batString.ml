@@ -785,6 +785,20 @@ struct
   let compare = icompare
 end
 
+(* compare s1 and s2 when both are composed uniquely of digits *)
+let __numeric_compare s1 s2 =
+  let i = ref 0 and j = ref 0 in
+  while !i < length s1 && s1.[!i] = '0' do incr i; done;
+  while !j < length s2 && s2.[!j] = '0' do incr j; done;
+  while !i < length s1 && !j < length s2 && s1.[!i] = s2.[!j] do
+    incr i; incr j;
+  done;
+  match !i = length s1, !j = length s2 with
+  | true, true -> 0
+  | false, true -> 1
+  | true, false -> -1
+  | false, false -> Char.compare s1.[!i] s2.[!j]
+
 let numeric_compare s1 s2 =
   let e1 = BatGen.group_by BatChar.is_digit (gen s1) in
   let e2 = BatGen.group_by BatChar.is_digit (gen s2) in
@@ -792,9 +806,7 @@ let numeric_compare s1 s2 =
     let s1 = of_gen g1 in
     let s2 = of_gen g2 in
     if BatChar.is_digit s1.[0] && BatChar.is_digit s2.[0] then
-      let n1 = Big_int.big_int_of_string s1 in
-      let n2 = Big_int.big_int_of_string s2 in
-      Big_int.compare_big_int n1 n2
+      __numeric_compare s1 s2
     else
       String.compare s1 s2
   ) e1 e2

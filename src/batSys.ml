@@ -24,3 +24,11 @@ let big_endian = false  (* overridden by real big_endian value in 4.00 and above
 include Sys
 
 let files_of d = BatArray.gen (readdir d)
+
+let invisible_args = ref 1
+(* the number or arguments to ignore at the beginning of Sys.argv,
+   usually because program-name is put in argv.(0) *)
+
+let args () =
+  let g = BatArray.gen Sys.argv in
+  BatGen.drop !invisible_args g

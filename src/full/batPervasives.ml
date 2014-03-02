@@ -179,13 +179,7 @@ let print_any oc v = BatIO.nwrite oc (dump v)
 
 include BatInnerPervasives
 
-let invisible_args = ref 1
-(* the number or arguments to ignore at the beginning of Sys.argv,
-   usually because program-name is put in argv.(0) *)
-
-let args () =
-  let g = BatArray.gen Sys.argv in
-  BatGen.drop !invisible_args g
+let args = BatSys.args
 
 let exe = Array.get Sys.argv 0
 

@@ -639,7 +639,8 @@ let in_channel_of_input i =
   let latest_pos_in  = ref 0     in
   let rec aux ()  =
     let new_pos_in = pos_in  cin in
-      if new_pos_in > !latest_pos_in then (*Something has been read, we can write a little bit more*)
+      if new_pos_in > !latest_pos_in then
+        (*Something has been read, we can write a little bit more*)
     let size = new_pos_in - !latest_pos_in in
     let buf  = String.create size          in
       input i buf
@@ -682,32 +683,6 @@ let synchronize_out ?(lock = !lock_factory ()) out =
 (**
    {6 Things that require temporary files}
 *)
-
-(**
-   [to_input_channel inp] converts [inp] to an [in_channel].
-
-   In the simplest case, [inp] maps to a file descriptor, which makes
-   it possible to just reopen the same file descriptor as an
-   [in_channel]. There is no flushing with which to screw up and
-   this shouldn't interfere with [pos_in] et al. because [inp]
-   maps {e directly} to a file descriptor, not through higher-level
-   abstract streams.
-
-   Otherwise, read everything, write it to a temporary file and
-   read it back as an [in_channel].
-   Yes, this is prohibitively expensive.
-*)
-let to_input_channel inp =
-  try Unix.in_channel_of_descr (BatUnix.descr_of_input inp) (*Simple case*)
-  with Invalid_argument "Unix.descr_of_in_channel" ->            (*Bad, bad case*)
-    (* FIXME: this 'pipe' is never deleted *)
-    let (name, cout) =
-      Filename.open_temp_file ~mode:[Open_binary] "ocaml" "pipe" in
-    let out          = output_channel cout                    in
-    copy inp out;
-    close_out out;
-    Pervasives.open_in_bin name
-
 
 
 

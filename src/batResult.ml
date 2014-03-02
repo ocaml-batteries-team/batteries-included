@@ -1,7 +1,20 @@
 
-type ('a, 'b) t = ('a, 'b) BatPervasives.result =
+type ('a, 'b) t =
   | Ok  of 'a
   | Bad of 'b
+
+(* Ideas taken from Nicholas Pouillard's my_std.ml in ocamlbuild/ *)
+let ignore_ok = function
+    Ok _ -> ()
+  | Bad ex -> raise ex
+
+let ok = function
+    Ok v -> v
+  | Bad ex -> raise ex
+
+let wrap f x = try Ok (f x) with ex -> Bad ex
+
+let forever f x = ignore (while true do f x done)
 
 let catch f x = try Ok (f x) with e -> Bad e
 let catch2 f x y = try Ok (f x y) with e -> Bad e

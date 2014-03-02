@@ -18,8 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open BatInnerPervasives
-
 type ('a,'b) manual_cache = {
   get : 'a -> 'b;
   del : 'a -> unit;
@@ -30,7 +28,7 @@ let make_ht ~gen ~init_size =
   let ht = BatHashtbl.create init_size in
   {get = (fun k ->
      try BatHashtbl.find ht k
-     with Not_found -> gen k |> tap (BatHashtbl.add ht k));
+     with Not_found -> gen k |> BatFun.tap (BatHashtbl.add ht k));
    del = (fun k -> BatHashtbl.remove ht k);
    gen = (fun () -> BatHashtbl.gen ht) }
 
@@ -44,7 +42,7 @@ let make_map ~gen =
   let m = ref BatMap.empty in
   {get = (fun k ->
      try BatMap.find k !m
-     with Not_found -> gen k |> tap (fun v -> m := BatMap.add k v !m));
+     with Not_found -> gen k |> BatFun.tap (fun v -> m := BatMap.add k v !m));
    del = (fun k -> m := BatMap.remove k !m);
    gen = (fun () -> BatMap.gen !m) }
 
@@ -64,7 +62,7 @@ let lru_cache ~gen ~cap =
       if k = k0 then v (* special case head of list *)
       else
         let n =
-          try BatDllist.find (fun (k1,_v1) -> k1 = k) dll |> tap BatDllist.remove
+          try BatDllist.find (fun (k1,_v1) -> k1 = k) dll |> BatFun.tap BatDllist.remove
           with Not_found -> incr len; BatDllist.create (k, gen k)
         in
         (* Put n at the head of the list *)
