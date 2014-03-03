@@ -373,18 +373,18 @@ module Monad = struct
   let return x = [x]
 
   let bind l f =
-    let rec bind l f acc = match l with
+    let rec loop l f acc = match l with
       | [] -> ()
       | x::l' ->
           let xs = f x in
           let acc = _append xs acc in
-          bind l' f acc
+          loop l' f acc
     and _append l acc = match l with
       | [] -> acc
       | x::l' -> _append l' (Acc.accum acc x)
     in
     let acc = Acc.dummy() in
-    bind l f acc;
+    loop l f acc;
     acc.tl
 
   (*$T
