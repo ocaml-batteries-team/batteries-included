@@ -381,6 +381,8 @@ let combinations l =
 (*$T
   combinations [1;2;3] |> LazyList.to_list|> List.sort Pervasives.compare = \
     [[]; [1]; [1;2]; [1;2;3]; [1;3]; [2]; [2;3]; [3]]
+  combinations [] |> LazyList.to_list = [[]]
+  combinations [1] |> LazyList.to_list |> List.sort Pervasives.compare = [[]; [1]]
 *)
 
 let permutations l =
@@ -401,6 +403,8 @@ let permutations l =
 (*$T permutations
   permutations [1;2;3] |> LazyList.to_list |> List.sort Pervasives.compare = \
     [[1;2;3]; [1;3;2]; [2;1;3]; [2;3;1]; [3;1;2]; [3;2;1]]
+  permutations [] |> LazyList.to_list = [[]]
+  permutations [1] |> LazyList.to_list = [[1]]
 *)
 
 (*$= interleave & ~printer:(IO.to_string (List.print Int.print))
