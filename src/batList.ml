@@ -122,6 +122,15 @@ let append l1 l2 =
     loop r t;
     inj r
 
+(*$T append
+  append []     []     = []
+  append []     [1]    = [1]
+  append [1]    []     = [1]
+  append [1]    [2]    = [1; 2]
+  append [1; 2] [3]    = [1; 2; 3]
+  append [1]    [2; 3] = [1; 2; 3]
+*)
+
 let flatten l =
   let rec inner dst = function
     | [] -> dst
@@ -584,6 +593,31 @@ let remove_assq x lst =
   loop dummy lst;
   dummy.tl
 
+let remove_at i lst =
+  let rec loop dst i = function
+    | [] -> invalid_arg "BatList.remove_at"
+    | x :: xs ->
+      if i = 0 then
+        dst.tl <- xs
+      else
+        loop (Acc.accum dst x) (i - 1) xs
+  in
+  if i < 0 then
+    invalid_arg "BatList.remove_at"
+  else
+    let dummy = Acc.dummy () in
+    loop dummy i lst;
+    dummy.tl
+
+(*$T remove_at
+  try ignore (remove_at 0 []) ; false with Invalid_argument _ -> true
+  try ignore (remove_at 1 [0]); false with Invalid_argument _ -> true
+  remove_at 0 [0]       = []
+  remove_at 0 [0; 1; 2] = [1; 2]
+  remove_at 1 [0; 1; 2] = [0; 2]
+  remove_at 2 [0; 1; 2] = [0; 1]
+*)
+
 let rfind p l = find p (rev l)
 
 let find_all p l =
@@ -788,15 +822,30 @@ let iteri f l =
 let fold_lefti f init l =
   let rec loop i acc = function
     | [] -> acc
-    | x :: xs -> loop (i + 1) (f i acc x) xs
+    | x :: xs -> loop (i + 1) (f acc i x) xs
   in
   loop 0 init l
 
 (*$T fold_lefti
-  fold_lefti (fun i acc x -> i + acc + x) 0 []     = 0
-  fold_lefti (fun i acc x -> i + acc + x) 0 [0]    = 0
-  fold_lefti (fun i acc x -> i + acc + x) 0 [1]    = 1
-  fold_lefti (fun i acc x -> i + acc + x) 0 [1; 2] = 4
+  fold_lefti (fun acc i x -> (i, x) :: acc) [] []       = []
+  fold_lefti (fun acc i x -> (i, x) :: acc) [] [0.]     = [(0, 0.)]
+  fold_lefti (fun acc i x -> (i, x) :: acc) [] [0.; 1.] = [(1, 1.); (0, 0.)]
+*)
+
+let fold_righti f l init =
+  let xis =
+    (* reverse the list and index its elements *)
+    fold_lefti (fun acc i x -> (i, x) :: acc) [] l
+  in
+  fold_left
+    (fun acc (i, x) -> f i x acc)
+    init
+    xis
+
+(*$T fold_righti
+  fold_righti (fun i x acc -> (i, x) :: acc) []       [] = []
+  fold_righti (fun i x acc -> (i, x) :: acc) [0.]     [] = [(0, 0.)]
+  fold_righti (fun i x acc -> (i, x) :: acc) [0.; 1.] [] = [(0, 0.); (1, 1.)]
 *)
 
 let first = hd

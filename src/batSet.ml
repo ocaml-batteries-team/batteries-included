@@ -295,6 +295,8 @@ module Concrete = struct
   let of_gen cmp e =
     BatGen.fold (fun acc elem -> add cmp elem acc) empty e
 
+  let of_list cmp l = List.fold_left (fun a x -> add cmp x a) empty l
+
   let print ?(first="{") ?(last="}") ?(sep=",") print_elt out t =
     BatGen.print ~first ~last ~sep
       (fun out e -> BatPrintf.fprintf out "%a" print_elt e) out (gen t)
@@ -472,6 +474,7 @@ sig
   val gen: t -> elt BatGen.t
   val backwards: t -> elt BatGen.t
   val of_gen: elt BatGen.t -> t
+  val of_list: elt list -> t
   val print :  ?first:string -> ?last:string -> ?sep:string ->
     ('a BatInnerIO.output -> elt -> unit) ->
     'a BatInnerIO.output -> t -> unit
@@ -588,6 +591,8 @@ struct
 
   let compare_subset s1 s2 = compare_subset (impl_of_t s1) s2
 
+  let of_list l = t_of_impl (Concrete.of_list Ord.compare l)
+
   let print ?first ?last ?sep print_elt out t =
     Concrete.print ?first ?last ?sep print_elt out (impl_of_t t)
 
@@ -654,7 +659,7 @@ module PSet = struct (*$< PSet *)
   let gen s = Concrete.gen s.set
   let of_gen e = { cmp = compare; set = Concrete.of_gen compare e }
   let of_gen_cmp ~cmp t = { cmp = cmp; set = Concrete.of_gen cmp t }
-  let of_list l = List.fold_left (fun a x -> add x a) empty l
+  let of_list l = { cmp = compare; set = Concrete.of_list compare l }
   let print ?first ?last ?sep print_elt out s =
     Concrete.print ?first ?last ?sep print_elt out s.set
   let for_all f s = Concrete.for_all f s.set
@@ -767,7 +772,7 @@ let of_gen e = Concrete.of_gen Pervasives.compare e
 
 let backwards s = Concrete.backwards s
 
-let of_list l = List.fold_left (fun a x -> add x a) empty l
+let of_list l = Concrete.of_list Pervasives.compare l
 
 (*$Q of_list
   (Q.list Q.small_int) (fun l -> let xs = List.map (fun i -> i mod 5, i) l in \

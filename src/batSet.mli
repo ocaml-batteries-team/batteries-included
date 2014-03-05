@@ -233,6 +233,12 @@ sig
 
   val of_gen: elt BatGen.t -> t
 
+  val of_list: elt list -> t
+  (** builds a set from the given list.
+
+      @since NEXT_RELEASE
+  *)
+
 
   (** {6 Boilerplate code}*)
 
@@ -514,7 +520,6 @@ val backwards: 'a t -> 'a BatGen.t
     the ordering [Pervasives.compare]. *)
 
 
-(* of_list has no Set.Make counterpart *)
 val of_list: 'a list -> 'a t
 (** builds a set from the given list, using the default comparison
     function *)
@@ -738,7 +743,6 @@ module PSet : sig
 
   val of_gen_cmp: cmp:('a -> 'a -> int) -> 'a BatGen.t -> 'a t
 
-  (* of_list has no Set.Make counterpart *)
   val of_list: 'a list -> 'a t
   (** builds a set from the given list, using the default comparison
       function *)

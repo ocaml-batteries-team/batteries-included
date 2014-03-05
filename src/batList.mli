@@ -196,13 +196,16 @@ val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b list -> 'a
 (** [List.fold_left f a [b0; b1; ...; bn]] is
     [f (... (f (f a b0) b1) ...) bn]. *)
 
-val fold_lefti : (int -> 'a -> 'b -> 'a) -> 'a -> 'b list -> 'a
+val fold_lefti : ('a -> int -> 'b -> 'a) -> 'a -> 'b list -> 'a
 (** [List.fold_lefti f a [b0; b1; ...; bn]] is
-    [f n (... (f 1 (f 0 a b0) b1) ...) bn]. *)
+    [f (... (f (f a 0 b0) 1 b1) ...) n bn]. *)
 
 val fold_right : ('a -> 'b -> 'b) -> 'a list -> 'b -> 'b
 (** [List.fold_right f [a0; a1; ...; an] b] is
     [f a0 (f a1 (... (f an b) ...))].  Tail-recursive. *)
+
+val fold_righti : (int -> 'b -> 'a -> 'a) -> 'b list -> 'a -> 'a
+(** As [fold_right], but with the index of the element as additional argument *)
 
 val reduce : ('a -> 'a -> 'a) -> 'a list -> 'a
 (** [List.reduce f h::t] is [fold_left f h t].
@@ -526,6 +529,14 @@ val remove_if : ('a -> bool) -> 'a list -> 'a list
 (** [remove_if cmp l] is similar to [remove], but with [cmp] used
     instead of ( = ). *)
 
+val remove_at : int -> 'a list -> 'a list
+(** [remove_at i l] returns the list [l] without the element at index [i].
+    @raise Invalid_argument if [i] is outside of [l] size bounds.
+
+    @since NEXT_RELEASE
+
+*)
+
 val remove_all : 'a list -> 'a -> 'a list
 (** [remove_all l x] is similar to [remove] but removes all elements that
     are equal to [x] and not only the first one. *)
@@ -541,7 +552,7 @@ val ntake : int -> 'a list -> 'a list list
     Each list in the result has size n, except the last
     one which may have fewer elements in case [l] was too short.
     Example: [ntake 2 [1; 2; 3; 4; 5] = [[1; 2]; [3; 4]; [5]]]
-    
+
     @since 2.2.0 *)
 
 val drop : int -> 'a list -> 'a list

@@ -24,6 +24,7 @@ You will need the following libraries:
 
 * [OCaml][] >= 3.12.1
 * [Findlib][] >= 1.2.5
+* [qtest][] >= 2.0.1
 * GNU make
 * [OUnit][] to build and run the tests (optional)
 * [ocaml-benchmark][] to build and run the performance tests (optional)
