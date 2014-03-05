@@ -529,6 +529,14 @@ val remove_if : ('a -> bool) -> 'a list -> 'a list
 (** [remove_if cmp l] is similar to [remove], but with [cmp] used
     instead of ( = ). *)
 
+val remove_at : int -> 'a list -> 'a list
+(** [remove_at i l] returns the list [l] without the element at index [i].
+    @raise Invalid_argument if [i] is outside of [l] size bounds.
+
+    @since NEXT_RELEASE
+
+*)
+
 val remove_all : 'a list -> 'a -> 'a list
 (** [remove_all l x] is similar to [remove] but removes all elements that
     are equal to [x] and not only the first one. *)
@@ -544,7 +552,7 @@ val ntake : int -> 'a list -> 'a list list
     Each list in the result has size n, except the last
     one which may have fewer elements in case [l] was too short.
     Example: [ntake 2 [1; 2; 3; 4; 5] = [[1; 2]; [3; 4]; [5]]]
-    
+
     @since 2.2.0 *)
 
 val drop : int -> 'a list -> 'a list
