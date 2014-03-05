@@ -593,6 +593,31 @@ let remove_assq x lst =
   loop dummy lst;
   dummy.tl
 
+let remove_at i lst =
+  let rec loop dst i = function
+    | [] -> invalid_arg "BatList.remove_at"
+    | x :: xs ->
+      if i = 0 then
+        dst.tl <- xs
+      else
+        loop (Acc.accum dst x) (i - 1) xs
+  in
+  if i < 0 then
+    invalid_arg "BatList.remove_at"
+  else
+    let dummy = Acc.dummy () in
+    loop dummy i lst;
+    dummy.tl
+
+(*$T remove_at
+  try ignore (remove_at 0 []) ; false with Invalid_argument _ -> true
+  try ignore (remove_at 1 [0]); false with Invalid_argument _ -> true
+  remove_at 0 [0]       = []
+  remove_at 0 [0; 1; 2] = [1; 2]
+  remove_at 1 [0; 1; 2] = [0; 2]
+  remove_at 2 [0; 1; 2] = [0; 1]
+*)
+
 let rfind p l = find p (rev l)
 
 let find_all p l =
