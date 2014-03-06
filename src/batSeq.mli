@@ -218,12 +218,11 @@ val filter : ('a -> bool) -> 'a t -> 'a t
 
     {b Note} filter is lazy in that it returns a lazy sequence, but
     each element in the result is eagerly searched in the input
-    sequence. Therefore, the access to a given element in the result
-    will diverge if it is preceded, in the input sequence, by
-    infinitely many false elements (elements on which the predicate
-    [p] returns [false]).
+    sequence. Therefore, this will diverge on an infinite sequence
+    containing finitely many true elements (elements on which the predicate
+    [p] returns [true]).
 
-    Other functions that may drop an unbound number of elements
+    Other functions that may drop an unbounded number of elements
     ([filter_map], [take_while], etc.) have the same behavior.
 *)
 
