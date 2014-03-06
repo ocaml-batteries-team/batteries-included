@@ -159,11 +159,15 @@ val reduce : ('a -> 'a -> 'a) -> 'a t -> 'a
 
 val max : 'a t -> 'a
 (** [max s] returns the largest value in [s] as judged by
-    [Pervasives.compare] *)
+    [Pervasives.compare]
+
+    @raise Invalid_argument on empty sequences. *)
 
 val min : 'a t -> 'a
 (** [min s] returns the smallest value in [s] as judged by
-    [Pervasives.compare] *)
+    [Pervasives.compare]
+
+    @raise Invalid_argument on empty sequences. *)
 
 val equal : ?eq:('a -> 'a -> bool) -> 'a t -> 'a t -> bool
   (** [equal ~eq s1 s2] compares elements of [s1] and [s2] pairwise
