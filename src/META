@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: e9a854e4c01df528c0d722b4e7941aa1)
+# DO NOT EDIT (digest: 0ef87160ae15054925607d66ed64fa3c)
 version = "light-alpha"
 description = "Extended OCaml Standard Library"
 archive(byte) = "batteries.cma"
@@ -7,6 +7,17 @@ archive(byte, plugin) = "batteries.cma"
 archive(native) = "batteries.cmxa"
 archive(native, plugin) = "batteries.cmxs"
 exists_if = "batteries.cma"
+package "yojson" (
+ version = "light-alpha"
+ description = "Extended OCaml Standard Library"
+ requires = "batteries yojson"
+ archive(byte) = "batteries_yojson.cma"
+ archive(byte, plugin) = "batteries_yojson.cma"
+ archive(native) = "batteries_yojson.cmxa"
+ archive(native, plugin) = "batteries_yojson.cmxs"
+ exists_if = "batteries_yojson.cma"
+)
+
 package "unix" (
  version = "light-alpha"
  description = "Extended OCaml Standard Library"
@@ -27,6 +38,17 @@ package "thread" (
  archive(native) = "batteries_thread.cmxa"
  archive(native, plugin) = "batteries_thread.cmxs"
  exists_if = "batteries_thread.cma"
+)
+
+package "sexp" (
+ version = "light-alpha"
+ description = "Extended OCaml Standard Library"
+ requires = "batteries sexplib"
+ archive(byte) = "batteries_sexp.cma"
+ archive(byte, plugin) = "batteries_sexp.cma"
+ archive(native) = "batteries_sexp.cmxa"
+ archive(native, plugin) = "batteries_sexp.cmxs"
+ exists_if = "batteries_sexp.cma"
 )
 
 package "num" (
@@ -60,6 +82,17 @@ package "bigarray" (
  archive(native) = "batteries_bigarray.cmxa"
  archive(native, plugin) = "batteries_bigarray.cmxs"
  exists_if = "batteries_bigarray.cma"
+)
+
+package "bencode" (
+ version = "light-alpha"
+ description = "Extended OCaml Standard Library"
+ requires = "batteries bencode"
+ archive(byte) = "batteries_bencode.cma"
+ archive(byte, plugin) = "batteries_bencode.cma"
+ archive(native) = "batteries_bencode.cmxa"
+ archive(native, plugin) = "batteries_bencode.cmxs"
+ exists_if = "batteries_bencode.cma"
 )
 # OASIS_STOP
 

@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: d09563c1d2f0b4f2f381b435b9899f3d)
+# DO NOT EDIT (digest: 1b68b63abd0693743fea56051bd11791)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -37,6 +37,18 @@
 <src/full/*.ml{,i}>: use_batteries
 <src/full/*.ml{,i}>: package(num)
 <src/full/*.ml{,i}>: package(str)
+# Library batteries_sexp
+"src/sexp/batteries_sexp.cmxs": use_batteries_sexp
+<src/sexp/*.ml{,i}>: use_batteries
+<src/sexp/*.ml{,i}>: package(sexplib)
+# Library batteries_yojson
+"src/yojson/batteries_yojson.cmxs": use_batteries_yojson
+<src/yojson/*.ml{,i}>: use_batteries
+<src/yojson/*.ml{,i}>: package(yojson)
+# Library batteries_bencode
+"src/bencode/batteries_bencode.cmxs": use_batteries_bencode
+<src/bencode/*.ml{,i}>: use_batteries
+<src/bencode/*.ml{,i}>: package(bencode)
 # OASIS_STOP
 <**/*.ml> : annot
 <**/*.ml> and not <libs/**.ml>: warn_Ae-29

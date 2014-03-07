@@ -32,3 +32,5 @@ src/batMarshal.mli
 src/batPrintexc.mli
 src/batSys.mli
 src/batBigarray.mli
+.session
+.ocamlinit

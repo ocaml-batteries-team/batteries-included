@@ -1,2 +1,14 @@
 S src
+S src/conv
+S src/full
+S src/bigarray
+S src/num
+S src/thread
+S src/unix
 B _build/src
+B _build/src/conv
+B _build/src/full
+B _build/src/bigarray
+B _build/src/num
+B _build/src/thread
+B _build/src/unix

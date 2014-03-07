@@ -34,6 +34,17 @@ Flag "unix"
 Flag "bigarray"
   Description:  Build and install Bigarray interface
   Default:      true
+Flag "sexp"
+  Description:  Build and install the interface to Sexplib (requires Sexplib)
+  Default:      false
+
+Flag "yojson"
+  Description:  Build and install the interface to Yojson (requires Yojson)
+  Default:      false
+
+Flag "bencode"
+  Description:  Build and install the interface to Bencode (requires Bencode)
+  Default:      false
 
 Library "batteries"
   Path:             src
@@ -51,7 +62,8 @@ Library "batteries"
                     BatDeque, BatSplay, BatHashcons, BatUChar, BatUTF8,
                     BatText, BatDigest, BatBase64, BatCharParser, BatScanf,
                     BatParserCo, BatSubstring, BatLexing, BatGenlex,
-                    BatPathGen, BatIO, BatInnerIO, BatOptParse, BatGen, BatFun
+                    BatPathGen, BatIO, BatInnerIO, BatOptParse, BatGen, BatFun,
+                    BatConv
 
 Library "batteries_bigarray"
   Path:             src/bigarray/
@@ -106,6 +118,36 @@ Library "batteries_full"
   FindlibParent:    batteries
   BuildDepends:     batteries,batteries.bigarray,batteries.unix,num,str
   XMETARequires:    batteries,batteries.bigarray,batteries.unix,num,str
+
+Library "batteries_sexp"
+  Path:             src/sexp
+  Modules:          BatSexp
+  Build$:           flag(sexp)
+  Install$:         flag(sexp)
+  FindlibName:      sexp
+  FindlibParent:    batteries
+  BuildDepends:     batteries,sexplib
+  XMETARequires:    batteries,sexplib
+
+Library "batteries_yojson"
+  Path:             src/yojson
+  Modules:          BatYojson
+  Build$:           flag(yojson)
+  Install$:         flag(yojson)
+  FindlibName:      yojson
+  FindlibParent:    batteries
+  BuildDepends:     batteries,yojson
+  XMETARequires:    batteries,yojson
+
+Library "batteries_bencode"
+  Path:             src/bencode
+  Modules:          BatBencode
+  Build$:           flag(bencode)
+  Install$:         flag(bencode)
+  FindlibName:      bencode
+  FindlibParent:    batteries
+  BuildDepends:     batteries,bencode
+  XMETARequires:    batteries,bencode
 
 Document manual
   Type:         custom (0.2)

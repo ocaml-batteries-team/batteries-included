@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: faddec3671c5968bf4d693b60c90d124)
+# DO NOT EDIT (digest: 8a7c296e73db78f1839d516835632c61)
 BatArray
 BatBool
 BatBounded
@@ -75,4 +75,5 @@ BatInnerIO
 BatOptParse
 BatGen
 BatFun
+BatConv
 # OASIS_STOP
