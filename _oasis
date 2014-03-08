@@ -13,7 +13,7 @@ BuildTools:         ocamlbuild
 Plugins:            META (0.3), DevFiles (0.3)
 Synopsis:           Extended OCaml Standard Library
 FilesAB:            src/batteriesConfig.ml.ab
-PrebuildCommand:    $make prefilter
+PrebuildCommand:    make prefilter
  
 #XCustomBuild: $make all
 #XCustomInstall: $make install
