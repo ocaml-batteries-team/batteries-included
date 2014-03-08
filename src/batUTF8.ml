@@ -241,6 +241,66 @@ let fold f a s =
 
 let escaped = String.escaped
 
+let enum us =
+  let rec make idx pos total_count =
+    BatEnum.make
+      ~next:(fun () ->
+        if !idx >= String.length us then
+          raise BatEnum.No_more_elements
+        else begin
+          let uc = look us !idx in
+          incr pos;
+          idx := next us !idx;
+          uc
+        end
+      )
+      ~count:(fun () ->
+        if !total_count < 0 then total_count := length us;
+        !total_count - !pos
+      )
+      ~clone:(fun () ->
+        make (ref !idx) (ref !pos) (ref !total_count)
+      )
+  in
+  make (ref 0) (ref 0) (ref (-1))
+(*$T enum
+   "" |> enum |> List.of_enum = []
+   "foo" |> enum |> List.of_enum |> List.map UChar.char_of = ['f'; 'o'; 'o']
+   "Straße" |> enum |> List.of_enum |> List.map UChar.code = [83; 116; 114; 97; 223; 101]
+   "" |> enum |> Enum.count = 0
+   "Straße" |> enum |> Enum.count = 6
+   let e = enum "αβγδεζ" in \
+   for _i = 0 to 2 do BatEnum.junk e done; \
+   let e2 = Enum.clone e in \
+   implode (List.of_enum e) = "δεζ" && implode (List.of_enum e2) = "δεζ"
+*)
+
+let of_enum e =
+  (* Need 2 iterations, one for determining the required length of the buffer
+     and one to fill the buffer. Hence the clone. *)
+  let parts = BatEnum.map of_char e in
+  let parts_clone = BatEnum.clone parts in
+  let chars_needed = BatEnum.fold (fun n uc -> n + String.length uc) 0 parts in
+  let buf = Buf.create chars_needed in
+  BatEnum.iter (Buf.add_string buf) parts_clone;
+  Buf.contents buf
+(*$T of_enum
+    Enum.init 3 (fun i -> UChar.chr (i + 945)) |> of_enum = "αβγ"
+    Enum.init 0 (fun _i -> UChar.of_char ' ') |> of_enum = ""
+*)
+
+let explode us = enum us |> BatList.of_enum
+(*$T explode
+   explode "αβγ" |> List.map UChar.code = [945; 946; 947]
+   explode "" = []
+*)
+
+let implode l = BatList.enum l |> of_enum
+                (*$T implode
+                   List.map UChar.chr [945; 946; 947] |> implode = "αβγ"
+                   implode [] = ""
+                *)
+
 module ByteIndex : sig
   type t = string
   type b_idx(* = private int*)

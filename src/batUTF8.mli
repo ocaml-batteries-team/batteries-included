@@ -125,6 +125,38 @@ val iter : (BatUChar.t -> unit) -> t -> unit
     a negative integer if [s1] < [s2]. *)
 val compare : t -> t -> int
 
+val enum : t -> BatUChar.t BatEnum.t
+(** Returns an enumeration of the characters of a string.
+    The behaviour is unspecified if the string is mutated
+    while it is enumerated.
+
+    Examples:
+      ["αβγ" |> UTF8.enum |> List.of_enum |> List.map UChar.code =
+          [945, 946, 947]]
+      [UTF8.enum "α β γ" // ((<>) ' ') |> UTF8.of_enum = "αβγ"]
+*)
+
+val of_enum : BatUChar.t BatEnum.t -> t
+(** Creates a string from a character enumeration.
+    Examples:
+      [[] |> List.enum |> UTF8.of_enum = ""]
+      [[UChar.945; UChar.946; UChar.967] |> List.enum |> UTF8.of_enum =
+          "αβγ"]
+*)
+
+val explode : t -> BatUChar.t list
+(** [explode s] returns the list of characters in the string [s].
+
+    Example: [UTF8.explode "αβγ" |> List.map UChar.code] = [945, 946, 947]]
+*)
+
+val implode : BatUChar.t list -> t
+(** [implode cs] returns a string resulting from concatenating
+    the characters in the list [cs].
+
+    Example: [String.implode (List.map UChar.chr [945; 946; 947]) = "αβγ"]
+*)
+
 (** Buffer module for UTF-8 strings *)
 module Buf : sig
   (** Buffers for UTF-8 strings. *)
