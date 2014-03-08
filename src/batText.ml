@@ -919,6 +919,9 @@ let of_latin1 s = of_ustring (UTF8.of_latin1 s)
 
 let print out t = bulk_iter (BatIO.nwrite out) t
 
+let source = BatConv.Source.map to_string BatConv.Source.string_
+let sink = BatConv.Sink.map of_string BatConv.Sink.string_
+
 open BatIO
 (** {6 Unicode}*)
 

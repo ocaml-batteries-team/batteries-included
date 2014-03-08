@@ -249,6 +249,11 @@ sig
     'a BatInnerIO.output -> t -> unit
 
 
+  (** {7 Serialization} *)
+
+  val source : elt BatConv.Source.t -> t BatConv.Source.t
+  val sink : elt BatConv.Sink.t -> t BatConv.Sink.t
+
   (** {6 Override modules}*)
 
   (**
@@ -533,6 +538,11 @@ val print :  ?first:string -> ?last:string -> ?sep:string ->
   ('a BatInnerIO.output -> 'c -> unit) ->
   'a BatInnerIO.output -> 'c t -> unit
 
+
+(** {7 Serialization} *)
+
+val source : 'a BatConv.Source.t -> 'a t BatConv.Source.t
+val sink : 'a BatConv.Sink.t -> 'a t BatConv.Sink.t
 
 (** {6 Incubator} *)
 module Incubator : sig

@@ -308,6 +308,14 @@ module Concrete = struct
       (fun out (k,v) -> BatPrintf.fprintf out "%a%s%a" print_k k kvsep print_v v)
       out (gen t)
 
+  let source srckey srcval=
+    let map2gen = gen in
+    BatConv.Source.(map map2gen (gen (pair srckey srcval)))
+
+  let sink cmp sinkkey sinkval =
+    BatConv.Sink.(map (fun g -> of_gen cmp (g ())) (gen (pair sinkkey sinkval)))
+
+
   (*We rely on [fold] rather than on ['a implementation] to
     make future changes of implementation in the base
     library's version of [Map] easier to track, even if the
@@ -686,6 +694,8 @@ sig
     ('a BatInnerIO.output -> key -> unit) ->
     ('a BatInnerIO.output -> 'c -> unit) ->
     'a BatInnerIO.output -> 'c t -> unit
+  val source : key BatConv.Source.t -> 'a BatConv.Source.t -> 'a t BatConv.Source.t
+  val sink : key BatConv.Sink.t -> 'a BatConv.Sink.t -> 'a t BatConv.Sink.t
   module Exceptionless : sig
     val find: key -> 'a t -> 'a option
   end
@@ -757,6 +767,11 @@ struct
 
   let print ?first ?last ?sep ?kvsep print_k print_v out t =
     Concrete.print ?first ?last ?sep ?kvsep print_k print_v out (impl_of_t t)
+
+  let source srckey srcval =
+    BatConv.Source.map impl_of_t (Concrete.source srckey srcval)
+  let sink sinkkey sinkval =
+    BatConv.Sink.map t_of_impl (Concrete.sink Ord.compare sinkkey sinkval)
 
   let filterv f t =
     t_of_impl (Concrete.filterv f (impl_of_t t) Ord.compare)
@@ -1077,6 +1092,9 @@ module PMap = struct (*$< PMap *)
 
   let print ?first ?last ?sep ?kvsep print_k print_v out t =
     Concrete.print ?first ?last ?sep ?kvsep print_k print_v out t.map
+
+  let source srckey srcval = Concrete.source srckey srcval
+  let sink sinkkey sinkval = Concrete.sink Pervasives.compare sinkkey sinkval
 
   let filterv  f t = { t with map = Concrete.filterv f t.map t.cmp }
   let filter f t = { t with map = Concrete.filter f t.map t.cmp }

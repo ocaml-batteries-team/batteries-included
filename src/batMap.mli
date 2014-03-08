@@ -285,6 +285,11 @@ sig
     ('a BatInnerIO.output -> 'c -> unit) ->
     'a BatInnerIO.output -> 'c t -> unit
 
+  (** {7 Serialization} *)
+
+  val source : key BatConv.Source.t -> 'a BatConv.Source.t -> 'a t BatConv.Source.t
+  val sink : key BatConv.Sink.t -> 'a BatConv.Sink.t -> 'a t BatConv.Sink.t
+
   (** Output signature of the functor {!Map.Make}. *)
 
   (** {6 Override modules}*)

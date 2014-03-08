@@ -122,6 +122,9 @@ module BaseInt = struct
   let print out t = BatInnerIO.nwrite out (string_of_int t)
   let print_hex out t = BatPrintf.fprintf out "%X" t
 
+  let source = BatConv.Source.int_
+  let sink = BatConv.Sink.int_
+
   let ( -- )  x y = BatGen.(--) x y
   let ( --- ) x y =
     if x <= y then x -- y

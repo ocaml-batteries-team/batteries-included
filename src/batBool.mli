@@ -96,3 +96,6 @@ module Compare : BatNumber.Compare with type bat__compare_t = t
 
 (** {7 Printing}*)
 val print: 'a BatInnerIO.output -> t -> unit
+
+val source : t BatConv.Source.t
+val sink : t BatConv.Sink.t

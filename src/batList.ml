@@ -1347,3 +1347,6 @@ module Comp (T : Comp) = struct
   type t = T.t list
   let compare = compare T.compare
 end
+
+let source source_e = BatConv.Source.list_ source_e
+let sink sink_e = BatConv.Sink.list_ sink_e

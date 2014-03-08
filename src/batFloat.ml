@@ -214,6 +214,8 @@ let invsqrt2 = 0.70710678118654752440
 
 let print out t = BatInnerIO.nwrite out (to_string t)
 
+let source = BatConv.Source.float_
+let sink = BatConv.Sink.float_
 
 let round_to_string ?(digits=0) x =
   if Pervasives.(<) digits 0 then invalid_arg "Float.round_to_string";

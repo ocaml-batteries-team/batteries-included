@@ -772,7 +772,10 @@ module Eq (T : Eq) : Eq with type t = T.t list
 module Ord (T : Ord) : Ord with type t = T.t list
 module Comp (T : Comp) : Comp with type t = T.t list
 
+(** {7 Serialization} *)
 
+val source : 'a BatConv.Source.t -> 'a list BatConv.Source.t
+val sink : 'a BatConv.Sink.t -> 'a list BatConv.Sink.t
 
 (** {6 Obsolete functions} *)
 

@@ -20,6 +20,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+type 'a source = 'a BatConv.Source.t
+type 'a sink = 'a BatConv.Sink.t
+
 module Tuple2 = struct
   type ('a,'b) t = 'a * 'b
 
@@ -63,6 +66,9 @@ module Tuple2 = struct
 
   let printn ?(first="(") ?(sep=",") ?(last=")") printer out pair =
     print ~first ~sep ~last printer printer out pair
+
+  let source = BatConv.Source.pair
+  let sink = BatConv.Sink.pair
 
   let compare ?(cmp1=Pervasives.compare) ?(cmp2=Pervasives.compare) (a,b) (c,d) =
     let comp = cmp1 a c in
@@ -149,6 +155,9 @@ module Tuple3 = struct
 
   let printn ?(first="(") ?(sep=",") ?(last=")") printer out pair =
     print ~first ~sep ~last printer printer printer out pair
+
+  let source = BatConv.Source.triple
+  let sink = BatConv.Sink.triple
 
   let compare ?(cmp1=Pervasives.compare) ?(cmp2=Pervasives.compare) ?(cmp3=Pervasives.compare) (a1,a2,a3) (b1,b2,b3) =
     let c1 = cmp1 a1 b1 in
@@ -255,6 +264,9 @@ module Tuple4 = struct
 
   let printn ?(first="(") ?(sep=",") ?(last=")") printer out pair =
     print ~first ~sep ~last printer printer printer printer out pair
+
+  let source = BatConv.Source.quad
+  let sink = BatConv.Sink.quad
 
   let compare ?(cmp1=Pervasives.compare) ?(cmp2=Pervasives.compare) ?(cmp3=Pervasives.compare) ?(cmp4=Pervasives.compare) (a1,a2,a3,a4) (b1,b2,b3,b4) =
     let c1 = cmp1 a1 b1 in
@@ -391,6 +403,17 @@ module Tuple5 = struct
 
   let printn ?(first="(") ?(sep=",") ?(last=")") printer out pair =
     print ~first ~sep ~last printer printer printer printer printer out pair
+
+  let source sa sb sc sd se = BatConv.Source.(tuple (fun (a,b,c,d,e) ->
+    hcons sa a (hcons sb b (hcons sc c (hcons sd d (hcons se e hnil))))))
+
+  let sink sa sb sc sd se = BatConv.Sink.(tuple (
+      sa |+| fun a ->
+      sb |+| fun b ->
+      sc |+| fun c ->
+      sd |+| fun d ->
+      se |+| fun e ->
+      yield (a,b,c,d,e)))
 
   let compare ?(cmp1=Pervasives.compare) ?(cmp2=Pervasives.compare) ?(cmp3=Pervasives.compare) ?(cmp4=Pervasives.compare) ?(cmp5=Pervasives.compare) (a1,a2,a3,a4,a5) (b1,b2,b3,b4,b5) =
     let c1 = cmp1 a1 b1 in

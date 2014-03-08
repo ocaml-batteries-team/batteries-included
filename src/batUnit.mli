@@ -54,3 +54,6 @@ val equal : t -> t -> bool
 
 (** {7 Printing}*)
 val print: 'a BatInnerIO.output -> unit -> unit
+
+val source : t BatConv.Source.t
+val sink : t BatConv.Sink.t

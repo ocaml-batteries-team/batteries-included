@@ -301,6 +301,9 @@ module Concrete = struct
     BatGen.print ~first ~last ~sep
       (fun out e -> BatPrintf.fprintf out "%a" print_elt e) out (gen t)
 
+  let source source_e = BatConv.Source.(map elements (list_ source_e))
+  let sink cmp sink_e = BatConv.Sink.(map (of_list cmp) (list_ sink_e))
+
   let filter cmp f e = fold (fun x acc -> if f x then add cmp x acc else acc) e empty
 
   let filter_map cmp f e =
@@ -478,6 +481,8 @@ sig
   val print :  ?first:string -> ?last:string -> ?sep:string ->
     ('a BatInnerIO.output -> elt -> unit) ->
     'a BatInnerIO.output -> t -> unit
+  val source : elt BatConv.Source.t -> t BatConv.Source.t
+  val sink : elt BatConv.Sink.t -> t BatConv.Sink.t
   (** Operations on {!Set} without exceptions.*)
   module Exceptionless : sig
     val min_elt: t -> elt option
@@ -595,6 +600,9 @@ struct
 
   let print ?first ?last ?sep print_elt out t =
     Concrete.print ?first ?last ?sep print_elt out (impl_of_t t)
+
+  let source source_e = BatConv.Source.map impl_of_t (Concrete.source source_e)
+  let sink sink_e = BatConv.Sink.map t_of_impl (Concrete.sink Ord.compare sink_e)
 
   module Exceptionless =
   struct
@@ -785,6 +793,9 @@ let of_list l = Concrete.of_list Pervasives.compare l
 let print ?first ?last ?sep print_elt out s =
   Concrete.print ?first ?last ?sep print_elt out s
 
+let source source_e = Concrete.source source_e
+let sink sink_e = Concrete.sink Pervasives.compare sink_e
+
 let for_all f s = Concrete.for_all f s
 let partition f s = Concrete.partition Pervasives.compare f s
 let pop s = Concrete.pop s
@@ -834,6 +845,5 @@ module Incubator = struct (*$< Incubator *)
       of_gen (1--3) |> op_map ((+) 2) |> mem 4
       of_gen (1--3) |> op_map ((+) 2) |> mem 3
     *)
-
 
 end (*$>*)

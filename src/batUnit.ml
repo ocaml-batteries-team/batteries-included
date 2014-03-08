@@ -32,4 +32,7 @@ let ord () () = BatOrd.Eq
 let equal () () = true
 let print out () = BatInnerIO.nwrite out unit_string
 
+let source = BatConv.Source.unit_
+let sink = BatConv.Sink.unit_
+
   (*BISECT-IGNORE-END*)

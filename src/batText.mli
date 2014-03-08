@@ -479,6 +479,9 @@ val chars_of : input -> BatUChar.t BatGen.t
 val output_text : unit BatIO.output -> t -> unit
 (** Write the text on the given output channel. *)
 
+val source : t BatConv.Source.t
+val sink : t BatConv.Sink.t
+
 (**/**)
 val write_lines : (t BatGen.t, 'a) printer
 val write_texts : (t BatGen.t, 'a) printer

@@ -183,6 +183,9 @@ let print print_a out = function
   | None   -> BatInnerIO.nwrite out "None"
   | Some x -> BatPrintf.fprintf out "Some %a" print_a x
 
+let source = BatConv.Source.opt
+let sink = BatConv.Sink.opt
+
 let maybe_printer a_printer paren out = function
   | None -> ()
   | Some x -> a_printer paren out x

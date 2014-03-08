@@ -83,6 +83,7 @@ module Source = struct
   let map f src =
     { convert=(fun sink x -> src.convert sink (f x)); }
   let array_ src = map Array.to_list (list_ src)
+  let gen src = map BatGen.to_list (list_ src)
 
   let field name get src' cont =
     RecordField (name,get,src',cont)
@@ -211,6 +212,8 @@ module Sink = struct
   let map f sink = Map (sink, f)
   let array_ sink =
     map Array.of_list (list_ sink)
+  let gen sink =
+    map BatGen.Restart.of_list (list_ sink)
 
   let field name sink cont = RecordField (name, sink, cont)
   let yield_record r = RecordStop r

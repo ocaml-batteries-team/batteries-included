@@ -352,6 +352,9 @@ include (BatNumber.RefOps with type bat__refops_t = t)
 (** {7 Printing}*)
 val print: (t, _) BatIO.printer
 
+val source : t BatConv.Source.t
+val sink : t BatConv.Sink.t
+
 (**Operations on floating-point numbers, with exceptions raised in
    case of error.
 

@@ -63,11 +63,16 @@
     element. {!Pervasives.compare} is used by default.
 *)
 
+(** shortcuts *)
+type 'a source = 'a BatConv.Source.t
+type 'a sink = 'a BatConv.Sink.t
+
 (** Pairs. Some of the functions here are also exposed in
     {!Pervasives}, as documented below.
 
     @author Edgar Friendly
     @author Ashish Agarwal
+    @author Simon Cruanes
 *)
 module Tuple2 : sig
 
@@ -112,6 +117,9 @@ module Tuple2 : sig
   val printn : ?first:string -> ?sep:string -> ?last:string
     -> ('o BatIO.output -> 'a -> unit)
     -> 'o BatIO.output -> ('a * 'a) -> unit
+
+  val source: 'a source -> 'b source -> ('a * 'b) source
+  val sink : 'a sink -> 'b sink -> ('a * 'b) sink
 
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ('a * 'b) -> ('a * 'b) -> int
 
@@ -170,6 +178,9 @@ module Tuple3 : sig
   val printn : ?first:string -> ?sep:string -> ?last:string
     -> ('o BatIO.output -> 'a -> unit)
     -> 'o BatIO.output -> ('a * 'a * 'a) -> unit
+
+  val source: 'a source -> 'b source -> 'c source -> ('a * 'b * 'c) source
+  val sink : 'a sink -> 'b sink -> 'c sink -> ('a * 'b * 'c) sink
 
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ?cmp3:('c -> 'c -> int) -> ('a * 'b * 'c) -> ('a * 'b * 'c) -> int
 
@@ -242,6 +253,10 @@ module Tuple4 : sig
     -> 'o BatIO.output -> ('a * 'a * 'a * 'a) -> unit
 
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ?cmp3:('c -> 'c -> int) -> ?cmp4:('d -> 'd -> int) -> ('a * 'b * 'c * 'd) -> ('a * 'b * 'c * 'd) -> int
+
+  val source: 'a source -> 'b source -> 'c source -> 'd source ->
+              ('a * 'b * 'c * 'd) source
+  val sink : 'a sink -> 'b sink -> 'c sink -> 'd sink -> ('a * 'b * 'c * 'd) sink
 
   include BatGen.Enumerable with type 'a enumerable = 'a * 'a * 'a * 'a
 
@@ -332,6 +347,11 @@ module Tuple5 : sig
   val printn : ?first:string -> ?sep:string -> ?last:string
     -> ('o BatIO.output -> 'a -> unit)
     -> 'o BatIO.output -> ('a * 'a * 'a * 'a * 'a) -> unit
+
+  val source: 'a source -> 'b source -> 'c source -> 'd source -> 'e source ->
+              ('a * 'b * 'c * 'd * 'e) source
+  val sink : 'a sink -> 'b sink -> 'c sink -> 'd sink -> 'e sink ->
+            ('a * 'b * 'c * 'd * 'e) sink
 
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ?cmp3:('c -> 'c -> int) -> ?cmp4:('d -> 'd -> int) -> ?cmp5:('e -> 'e -> int) -> ('a * 'b * 'c * 'd * 'e) -> ('a * 'b * 'c * 'd * 'e) -> int
 

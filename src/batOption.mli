@@ -161,6 +161,9 @@ val ord : 'a ord -> 'a option ord
 
 val print : ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> 'b t -> unit
 
+val source : 'a BatConv.Source.t -> 'a t BatConv.Source.t
+val sink : 'a BatConv.Sink.t -> 'a t BatConv.Sink.t
+
 (** Operations on options, with labels.*)
 module Labels : sig
   val may : f:('a -> unit) -> 'a option -> unit

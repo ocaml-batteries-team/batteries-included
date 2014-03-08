@@ -904,3 +904,6 @@ struct
   end
 end
 (*BISECT-IGNORE-END*)
+
+let source source_e = BatConv.Source.(map to_list (list_ source_e))
+let sink sink_e = BatConv.Sink.(map of_list (list_ sink_e))

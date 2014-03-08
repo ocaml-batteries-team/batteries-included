@@ -781,6 +781,9 @@ val print_quoted: 'a BatInnerIO.output -> string -> unit
    character, but ['\'] then ['n']).
 *)
 
+val source : t BatConv.Source.t
+val sink : t BatConv.Sink.t
+
 (** Exceptionless counterparts for error-raising operations *)
 module Exceptionless :
 sig

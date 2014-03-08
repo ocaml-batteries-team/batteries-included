@@ -70,6 +70,7 @@ module Source : sig
 
   val map : ('a -> 'b) -> 'b t -> 'a t
   val array_ : 'a t -> 'a array t
+  val gen : 'a t -> 'a BatGen.t t
 
   val field : string -> ('r -> 'a) -> 'a t -> 'r record_src -> 'r record_src
   val record_stop : 'r record_src
@@ -111,6 +112,7 @@ module Sink : sig
 
   val map : ('a -> 'b) -> 'a t -> 'b t
   val array_ : 'a t -> 'a array t
+  val gen : 'a t -> 'a BatGen.Restart.t t
 
   val field : string -> 'a t -> ('a -> 'r record_sink) -> 'r record_sink
   val yield_record : 'r -> 'r record_sink

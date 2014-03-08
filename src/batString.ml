@@ -900,6 +900,9 @@ let quote s = Printf.sprintf "%S" s
 
 let print_quoted out s = BatInnerIO.nwrite out (quote s)
 
+let source = BatConv.Source.string_
+let sink = BatConv.Sink.string_
+
 module Exceptionless =
 struct
   let find_from str ofs sub =

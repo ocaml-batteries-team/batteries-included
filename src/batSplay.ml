@@ -435,6 +435,13 @@ struct
       (fun out k v -> BatPrintf.fprintf out "%a%s%a" kpr k kvsep vpr v)
       out m
 
+  let source srckey srcval=
+    let map2gen = gen in
+    BatConv.Source.(map map2gen (gen (pair srckey srcval)))
+
+  let sink sinkkey sinkval =
+    BatConv.Sink.(map (fun g -> of_gen (g ())) (gen (pair sinkkey sinkval)))
+
   let print_as_list kpr vpr out m =
     print ~first:"[" ~last:"]" ~sep:"; " ~kvsep:", " kpr vpr out m
 

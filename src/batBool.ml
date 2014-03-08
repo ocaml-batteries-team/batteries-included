@@ -133,3 +133,6 @@ let print out t = BatInnerIO.nwrite out (to_string t)
     BatIO.to_string print true = "true"
     BatIO.to_string print false = "false"
   *)
+
+let source = BatConv.Source.bool_
+let sink = BatConv.Sink.bool_

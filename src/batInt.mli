@@ -200,6 +200,9 @@ val print: 'a BatInnerIO.output -> int -> unit
 val print_hex: 'a BatInnerIO.output -> int -> unit
 (** prints as hex string *)
 
+val source : int BatConv.Source.t
+val sink : int BatConv.Sink.t
+
 (*    val bprint: 'a BatInnerIO.output -> t -> unit
       (** prints as binary string *) *)
 
@@ -367,6 +370,9 @@ module Safe_int : sig
   (** {6 Boilerplate code}*)
 
   val print: 'a BatInnerIO.output -> t -> unit
+
+  val source : int BatConv.Source.t
+  val sink : int BatConv.Sink.t
 
   val compare : t -> t -> int
   (** The comparison function for integers, with the same specification as

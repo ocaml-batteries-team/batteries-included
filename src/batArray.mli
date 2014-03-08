@@ -778,6 +778,10 @@ module Incubator : sig
   end
 end
 
+(** {7 Serialization} *)
+
+val source : 'a BatConv.Source.t -> 'a t BatConv.Source.t
+val sink : 'a BatConv.Sink.t -> 'a t BatConv.Sink.t
 
 (**/**)
 (** {6 Undocumented functions} *)
