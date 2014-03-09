@@ -83,6 +83,35 @@ let rec make_tree l v r =
     if rh > lh + 1 then bal (make_tree l v rl) rv rr else
       create l v r
 
+(* Generate pseudo-random trees in an imbalanced fashion using function [f].
+
+   The trees generated are determined solely by the input list. *)
+(*${*)
+let rec of_list_for_test f = function
+  | []     -> empty
+  | h :: t ->
+    let len = BatList.length t in
+    let (l, r) = BatList.split_at (abs (h mod (len+1))) t in
+    f (of_list_for_test f l) h (of_list_for_test f r)
+(*$}*)
+
+(* This tests three aspects of [make_tree] and the rebalancing algorithm:
+
+   - The height value in a node is accurate.
+   - The height of two subnodes differs at most by one (main AVL tree invariant).
+   - All elements put into a tree stay in a tree even if it is rebalanced.
+*)
+(*$Q make_tree & ~small:List.length
+  (Q.list Q.small_int) (fun l -> \
+    let t = of_list_for_test make_tree l in \
+    check_height_cache t && check_height_balance t \
+  )
+  (Q.list Q.small_int) (fun l -> \
+    let t = of_list_for_test make_tree l in \
+    (enum t |> List.of_enum |> List.sort compare) = List.sort compare l \
+  )
+*)
+
 (* Utilities *)
 let rec split_leftmost = function
   | Empty -> raise Not_found
@@ -128,3 +157,33 @@ let rec enum = function
   | Empty -> BatEnum.empty ()
   | Node (l, v, r, _) ->
     BatEnum.append (enum l) (BatEnum.delay (fun () -> BatEnum.append (BatEnum.singleton v) (enum r)))
+
+(* Helpers for testing *)
+
+(* Check that the height value in a node is correct. *)
+let check_height_cache t =
+  let rec go = function
+    | Empty -> Some 0
+    | Node (l, _, r, h) ->
+      let open BatOption.Monad in
+      bind (go l) (fun lh ->
+        bind (go r) (fun rh ->
+          if max lh rh + 1 = h then Some h else None
+        )
+      )
+  in BatOption.is_some (go t)
+
+(* Check that the difference of the height of the left and right subnode is 0
+   or 1 based on the height value in the nodes. *)
+let check_height_balance t =
+  let balanced l r = match (l, r) with
+    | (Node (_, _, _, hl), Node (_, _, _, hr)) -> abs (hl - hr) < 2
+    | _ -> true in
+  let rec go = function
+    | Empty -> true
+    | Node (l, _, r, _) -> go l && go r && balanced l r in
+  go t
+
+(* Sanity checks *)
+let check t = check_height_cache t && check_height_balance t
+
