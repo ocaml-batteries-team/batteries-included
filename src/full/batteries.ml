@@ -88,6 +88,8 @@ module Sys = BatSys
 
 module Bigarray = BatBigarray
 
+module IO     = BatIO
+module Gen    = BatGen
 module Global = BatGlobal
 module Option = BatOption
 (* REMOVED, Extlib only module OptParse = BatOptParse *)

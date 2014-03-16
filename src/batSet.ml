@@ -640,7 +640,7 @@ module PSet = struct (*$< PSet *)
   let get_cmp {cmp} = cmp
 
   (*$T get_cmp
-    get_cmp (create Int.compare) == Int.compare
+    get_cmp (create BatInt.compare) == BatInt.compare
   *)
 
 
@@ -784,8 +784,8 @@ let of_list l = Concrete.of_list Pervasives.compare l
 
 (*$Q of_list
   (Q.list Q.small_int) (fun l -> let xs = List.map (fun i -> i mod 5, i) l in \
-    let s1 = of_list xs |> gen |> List.of_gen in \
-    let s2 = List.sort_unique Pervasives.compare xs in \
+    let s1 = of_list xs |> gen |> BatList.of_gen in \
+    let s2 = BatList.sort_unique Pervasives.compare xs in \
     s1 = s2 \
   )
 *)
@@ -841,9 +841,9 @@ let disjoint s1 s2 = Concrete.disjoint Pervasives.compare s1 s2
 module Incubator = struct (*$< Incubator *)
   let op_map f s = Concrete.op_map f s
     (*$T op_map
-      of_gen (1--3) |> op_map ((+) 2) |> mem 5
-      of_gen (1--3) |> op_map ((+) 2) |> mem 4
-      of_gen (1--3) |> op_map ((+) 2) |> mem 3
+      of_gen BatGen.(1--3) |> op_map ((+) 2) |> mem 5
+      of_gen BatGen.(1--3) |> op_map ((+) 2) |> mem 4
+      of_gen BatGen.(1--3) |> op_map ((+) 2) |> mem 3
     *)
 
 end (*$>*)

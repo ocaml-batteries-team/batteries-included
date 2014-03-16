@@ -788,16 +788,20 @@ end
 (* compare s1 and s2 when both are composed uniquely of digits *)
 let __numeric_compare s1 s2 =
   let i = ref 0 and j = ref 0 in
+  (* drop prefixing '0' *)
   while !i < length s1 && s1.[!i] = '0' do incr i; done;
   while !j < length s2 && s2.[!j] = '0' do incr j; done;
-  while !i < length s1 && !j < length s2 && s1.[!i] = s2.[!j] do
-    incr i; incr j;
-  done;
-  match !i = length s1, !j = length s2 with
-  | true, true -> 0
-  | false, true -> 1
-  | true, false -> -1
-  | false, false -> Char.compare s1.[!i] s2.[!j]
+  match (length s1 - !i) - (length s2 - !j) with
+    | 0 ->
+        (* same length, compare starting with highest digit *)
+        while !i < length s1 && s1.[!i] = s2.[!j] do
+          incr i; incr j;
+        done;
+        if !i = length s1 then 0
+        else Char.compare s1.[!i] s2.[!j]
+    | n -> n
+      (* in this case, "n" is negative if s2 has more digits
+         and positive if s1 has more digits. *)
 
 let numeric_compare s1 s2 =
   let e1 = BatGen.group_by BatChar.is_digit (gen s1) in
@@ -826,7 +830,9 @@ let numeric_compare s1 s2 =
 *)
 
 (*$Q numeric_compare
-  (Q.triple Q.printable_string Q.pos_int Q.pos_int) (fun (s,m,n) -> numeric_compare (s ^ string_of_int m) (s ^ string_of_int n) = BatInt.compare m n)
+  (Q.triple Q.printable_string Q.pos_int Q.pos_int) \
+    (fun (s,m,n) -> numeric_compare (s ^ string_of_int m) (s ^ string_of_int n) \
+    = BatInt.compare m n)
 *)
 
 module NumString =

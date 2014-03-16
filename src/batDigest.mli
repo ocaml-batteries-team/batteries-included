@@ -55,7 +55,7 @@ val from_hex : string -> t
     characters.
     @since 4.00.0 *)
 
-(* FIXME.... if it's possible in an efficient way
+(* FIXME.... if it's possible in an efficient way without having IO depend on Unix
 val channel : input -> int -> Digest.t
 (** If [len] is nonnegative, [Digest.channel ic len] reads [len]
     characters from channel [ic] and returns their digest, or

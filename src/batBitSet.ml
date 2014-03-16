@@ -285,13 +285,13 @@ let gen t =
     | None -> None
 
 (*$T
-  BitSet.of_list [5;3;2;1] |> BitSet.gen |> Gen.drop 1 |> Gen.length = 3
+  BatBitSet.of_list [5;3;2;1] |> BatBitSet.gen |> Gen.drop 1 |> Gen.length = 3
 *)
 
 (*$Q
   (Q.list Q.small_int) (fun l -> \
-    let b = BitSet.of_list (List.map abs l) in \
-    b |> BitSet.gen |> BitSet.of_gen |> equal b)
+    let b = BatBitSet.of_list (List.map abs l) in \
+    b |> BatBitSet.gen |> BatBitSet.of_gen |> equal b)
 *)
 
 let of_gen ?(cap=128) e =

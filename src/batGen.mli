@@ -228,6 +228,9 @@ module type S = sig
   val zip : 'a t -> 'b t -> ('a * 'b) t
     (** Zip together the common part of the enums *)
 
+  val combine : ('a t * 'b t) -> ('a * 'b) t
+    (** Uncurried version of {! zip} *)
+
   (** {2 Complex combinators} *)
 
   val merge : 'a gen t -> 'a t

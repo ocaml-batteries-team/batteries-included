@@ -902,15 +902,15 @@ let replace ~str ~sub ~by =
 
 let explode r = List.rev (fold (fun a u -> u :: a) [] r)
 (*$T explode
-   explode (of_string "foo") = List.map UChar.of_char ['f'; 'o'; 'o']
-   explode (of_string "ếẶ") = List.map UChar.chr [0x1ebf; 0x1eb6]
+   explode (of_string "foo") = List.map BatUChar.of_char ['f'; 'o'; 'o']
+   explode (of_string "ếẶ") = List.map BatUChar.chr [0x1ebf; 0x1eb6]
    explode (of_string "") = []
 *)
 
 let implode l = of_list l
 (*$T implode
-   implode (List.map UChar.of_char ['f'; 'o'; 'o']) = of_string "foo"
-   implode (List.map UChar.chr [0x1ebf; 0x1eb6]) = of_string "ếẶ"
+   implode (List.map BatUChar.of_char ['f'; 'o'; 'o']) = of_string "foo"
+   implode (List.map BatUChar.chr [0x1ebf; 0x1eb6]) = of_string "ếẶ"
    implode [] = of_string ""
 *)
 

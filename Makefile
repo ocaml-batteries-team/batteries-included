@@ -70,8 +70,10 @@ OCAMLBUILDFLAGS ?= -no-links
 
 ### List of source files that it's okay to try to test
 
-DONTTEST=src/batteriesHelp.ml
-TESTABLE ?= $(filter-out $(DONTTEST), $(wildcard src/**/*.ml))
+DONTTEST=src/batteriesHelp.ml src/yojson/batYojson.ml \
+	 src/sexp/batSexp.ml src/bencode/batBencode.ml
+TESTABLE ?= $(wildcard src/bat[^t]*.ml) \
+	    $(filter-out $(DONTTEST), $(wildcard src/**/*.ml))
 TESTDEPS = prefilter $(TESTABLE)
 
 ### Test suite: "offline" unit tests
@@ -91,12 +93,23 @@ QTESTDIR ?= qtest
 
 # extract all qtest unit tests into a single ml file
 $(QTESTDIR)/all_tests.ml: $(TESTABLE)
-	qtest -o $@ --shuffle --preamble-file qtest/qtest_preamble.ml extract $(TESTABLE)
+	@echo "TESTABLE: " $(TESTABLE)
+	qtest -o $@ --preamble-file qtest/qtest_preamble.ml \
+	    extract $(TESTABLE)
+
+	#qtest -o $@ --shuffle --preamble-file qtest/qtest_preamble.ml \
+
+QTEST_INCLUDES = -I src -I src/full \
+		 -I src/thread -I src/num -I src/unix -I src/bigarray
+QTEST_OPTIONS = -cflags -warn-error,+26,-thread -lflags -thread -use-ocamlfind \
+		$(QTEST_INCLUDES) -pkg oUnit,QTest2Lib,num,threads,str,bigarray
 
 _build/$(QTESTDIR)/all_tests.byte: $(QTESTDIR)/all_tests.ml
-	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 -use-ocamlfind -pkg oUnit,QTest2Lib $(QTESTDIR)/all_tests.byte
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(QTEST_OPTIONS) \
+	    $(QTESTDIR)/all_tests.byte
 _build/$(QTESTDIR)/all_tests.native: $(QTESTDIR)/all_tests.ml
-	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 -use-ocamlfind -pkg oUnit,QTest2Lib $(QTESTDIR)/all_tests.native
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(QTEST_OPTIONS) \
+	    $(QTESTDIR)/all_tests.native
 
 EXT=native
 

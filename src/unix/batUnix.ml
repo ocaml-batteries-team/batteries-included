@@ -107,17 +107,17 @@ let open_process ?autoclose ?(cleanup=true) s =
   let (cin, cout) = open_process s in
   (wrap_in ?autoclose cin, wrap_out ~cleanup cout)
 
-(*$T open_process
-  let s = "hello world" in let r,w = open_process "cat" in \
-  Printf.fprintf w "%s\n" s; IO.close_out w; \
-  IO.read_line r = s
+(*$T
+  let s = "hello world" in let r,w = BatUnix.open_process "cat" in \
+  BatPrintf.fprintf w "%s\n" s; BatIO.close_out w; \
+  BatIO.read_line r = s
 
   try \
-    let r,w = open_process "cat" in \
-      Printf.fprintf w "hello world\n"; \
-      IO.close_out w; \
-      while true do ignore (input_char r) done; false \
-  with e -> e=IO.No_more_input || e=End_of_file
+    let r,w = BatUnix.open_process "cat" in \
+      BatPrintf.fprintf w "hello world\n"; \
+      BatIO.close_out w; \
+      while true do ignore (BatPervasives.input_char r) done; false \
+  with e -> e=BatIO.No_more_input || e=End_of_file
 *)
 
 

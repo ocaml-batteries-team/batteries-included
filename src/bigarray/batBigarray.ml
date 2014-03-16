@@ -235,12 +235,12 @@ module Array1 = struct
     b
 
   (*$Q
-    Q.string (fun s -> s = String.of_gen (Array1.gen \
-      (Array1.of_gen char c_layout (String.gen s))))
-    Q.string (fun s -> s = String.of_gen (Array1.gen \
-      (Array1.of_gen char fortran_layout (String.gen s))))
-    (Q.list Q.int) (fun li -> li = List.of_gen (Array1.gen \
-      (Array1.of_gen int c_layout (List.gen li))))
+    Q.string (fun s -> s = BatString.of_gen (Array1.gen \
+      (Array1.of_gen char c_layout (BatString.gen s))))
+    Q.string (fun s -> s = BatString.of_gen (Array1.gen \
+      (Array1.of_gen char fortran_layout (BatString.gen s))))
+    (Q.list Q.int) (fun li -> li = BatList.of_gen (Array1.gen \
+      (Array1.of_gen int c_layout (BatList.gen li))))
   *)
 
   let map f b_kind a =

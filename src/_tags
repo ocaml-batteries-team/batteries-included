@@ -1,7 +1,7 @@
 true: debug
-<{batMutex,batRMutex}.{ml,mli}>: threads
-<batteriesThread.*>: threads
+<thread/{batMutex,batRMutex}.*>: threads
+<thread/batteriesThread.*>: threads
 <batFingerTree.ml>: rectypes
-<{batMap,batVect,batFile,batPervasives,batParserCo,batSet,batLogger,batPathGen,batSplay}.ml>: warn_z
-<{batPervasives,batIMap,batLog}.ml>: warn_-9
+<{batMap,batVect,unix/batFile,batPervasives,batParserCo,batSet,unix/batLogger,batPathGen,batSplay}.ml>: warn_z
+<{full/batPervasives,batIMap,unix/batLog}.ml>: warn_-9
 <batteriesHelp.*>: compiler-libs

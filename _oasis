@@ -152,11 +152,11 @@ Library "batteries_bencode"
 Document manual
   Type:         custom (0.2)
   Title:        Ocaml Batteries Documentation
-  XCustom:      $make doc
+  XCustom:      make doc
 
 Test main
   Type:         custom (0.2)
-  Command:      $make qtest   # FIXME
+  Command:      make qtest   # FIXME
 
 SourceRepository master
   Type:         git

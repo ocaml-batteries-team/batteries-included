@@ -208,6 +208,9 @@ module type S = sig
   val zip : 'a t -> 'b t -> ('a * 'b) t
     (** Zip together the common part of the enums *)
 
+  val combine : ('a t * 'b t) -> ('a * 'b) t
+    (** Uncurried version of {! zip} *)
+
   (** {2 Complex combinators} *)
 
   val merge : 'a gen t -> 'a t
@@ -969,6 +972,8 @@ let zip_with f a b =
 
 let zip a b = zip_with (fun x y -> x,y) a b
 
+let combine (a, b) = zip a b
+
 (*$Q
   (Q.list Q.small_int) (fun l -> \
     zip_with (fun x y->x,y) (of_list l) (of_list l) \
@@ -1631,6 +1636,8 @@ module Restart = struct
   let zip_with f e1 e2 () = zip_with f (e1 ()) (e2 ())
 
   let zip e1 e2 () = zip (e1 ()) (e2 ())
+
+  let combine (a, b) () = combine (a (), b ())
 
   let zip_index e () = zip_index (e ())
 

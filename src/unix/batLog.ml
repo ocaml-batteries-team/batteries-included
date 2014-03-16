@@ -134,10 +134,10 @@ let make_logger out prefix flags =
 
 (*$= make_logger & ~printer:identity
   "abcLog1\nabc34\n" \
-  (let oc = IO.output_string () in    \
+  (let oc = BatIO.output_string () in    \
   let l = make_logger oc "abc" [] in \
   l#log "Log1"; l#logf "%d" 34;  \
-  IO.close_out oc)
+  BatIO.close_out oc)
 *)
 
 module type Level_sig = sig
