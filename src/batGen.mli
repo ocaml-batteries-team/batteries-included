@@ -276,7 +276,7 @@ module type S = sig
   val group : ?eq:('a -> 'a -> bool) -> 'a t -> 'a list t
     (** Group equal consecutive elements together. *)
 
-  val group_by : ('a -> 'b) -> 'a t -> 'a gen t
+  val group_by : ('a -> 'b) -> 'a t -> 'a list t
     (** group together consecutive elements that have the same
         image by the given function *)
 

@@ -256,7 +256,7 @@ module type S = sig
   val group : ?eq:('a -> 'a -> bool) -> 'a t -> 'a list t
     (** Group equal consecutive elements together. *)
 
-  val group_by : ('a -> 'b) -> 'a t -> 'a gen t
+  val group_by : ('a -> 'b) -> 'a t -> 'a list t
     (** group together consecutive elements that have the same
         image by the given function *)
 
@@ -1373,17 +1373,17 @@ let group_by f gen =
       | None, [] -> None
       | None, l ->
         cur := [];  (* stop *)
-        Some (__of_list (List.rev l))
+        Some (List.rev l)
       | Some x, y::_ when f x = f y ->
         cur := x::!cur;
         next ()  (* same group *)
       | Some x, l ->
         cur := [x];
-        Some (__of_list (List.rev l))
+        Some (List.rev l)
     in next
 (*$T
   group_by (fun x -> x mod 2) \
-    (of_list [0;0;0;1;0;2;2;3;4;6;5;5;5;5;10]) |> map to_list |> to_list = \
+    (of_list [0;0;0;1;0;2;2;3;4;6;5;5;5;5;10]) |> to_list = \
     [[0;0;0];[1];[0;2;2];[3];[4;6];[5;5;5;5];[10]]
 *)
 
