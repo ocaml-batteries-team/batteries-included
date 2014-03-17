@@ -117,7 +117,8 @@ val choice : 'a BatGen.t -> 'a
 
 val multi_choice : int -> 'a BatGen.t -> 'a BatGen.t
 (** [multi_choice n e] returns a generation of [n]
-    randomly-chosen elements of [e]. *)
+    randomly-chosen elements of [e].
+    @raise Failure if the generator contains less than [n] elements. *)
 
 val shuffle: 'a BatGen.t -> 'a array
 (** [shuffle e] returns a new array, containing the

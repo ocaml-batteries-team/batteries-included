@@ -785,34 +785,35 @@ struct
   let compare = icompare
 end
 
-(* compare s1 and s2 when both are composed uniquely of digits *)
-let __numeric_compare s1 s2 =
-  let i = ref 0 and j = ref 0 in
-  (* drop prefixing '0' *)
-  while !i < length s1 && s1.[!i] = '0' do incr i; done;
-  while !j < length s2 && s2.[!j] = '0' do incr j; done;
-  match (length s1 - !i) - (length s2 - !j) with
-    | 0 ->
-        (* same length, compare starting with highest digit *)
-        while !i < length s1 && s1.[!i] = s2.[!j] do
-          incr i; incr j;
-        done;
-        if !i = length s1 then 0
-        else Char.compare s1.[!i] s2.[!j]
-    | n -> n
-      (* in this case, "n" is negative if s2 has more digits
-         and positive if s1 has more digits. *)
-
 let numeric_compare s1 s2 =
+  (* lexicographic comparison *)
+  let rec __lexico_compare l1 l2 = match l1, l2 with
+    | [], [] -> 0
+    | _, [] -> 1
+    | [], _ -> -1
+    | c1::l1', c2::l2' ->
+        let res = Char.compare c1 c2 in
+        if res <> 0 then res else __lexico_compare l1' l2'
+  (* remove leading 0 *)
+  and __remove0 = function
+    | '0'::l' -> __remove0 l'
+    | l -> l
+  in
+  (* compare l1 and l2 when both are composed uniquely of digits *)
+  let __numeric_compare l1 l2 =
+    let len1 = List.length l1
+    and len2 = List.length l2 in
+    if len1 = len2
+      then __lexico_compare l1 l2
+    else if len1 > len2 then 1 else -1
+  in
   let e1 = BatGen.group_by BatChar.is_digit (gen s1) in
   let e2 = BatGen.group_by BatChar.is_digit (gen s2) in
-  BatGen.compare ~cmp:(fun g1 g2 ->
-    let s1 = of_gen g1 in
-    let s2 = of_gen g2 in
-    if BatChar.is_digit s1.[0] && BatChar.is_digit s2.[0] then
-      __numeric_compare s1 s2
-    else
-      String.compare s1 s2
+  BatGen.compare ~cmp:(fun l1 l2 ->
+    match l1, l2 with
+    | c1::_, c2::_ when BatChar.is_digit c1 && BatChar.is_digit c2 ->
+        __numeric_compare (__remove0 l1) (__remove0 l2)
+    | _ -> __lexico_compare l1 l2
   ) e1 e2
 
 (*$T numeric_compare
@@ -820,7 +821,7 @@ let numeric_compare s1 s2 =
    numeric_compare "xx3" "xx21" = -1
    numeric_compare "xx02" "xx2" = 0
    numeric_compare "xx20" "xx5" = 1
-   numeric_compare "abc" "def" = compare "abc" "def"
+   BatOrd.(ord0 (numeric_compare "abc" "def") = ord0 (compare "abc" "def"))
    numeric_compare "x50y" "x51y" = -1
    numeric_compare "a23d" "a234" < 0
    numeric_compare "a234" "a23d" > 0
@@ -831,8 +832,9 @@ let numeric_compare s1 s2 =
 
 (*$Q numeric_compare
   (Q.triple Q.printable_string Q.pos_int Q.pos_int) \
-    (fun (s,m,n) -> numeric_compare (s ^ string_of_int m) (s ^ string_of_int n) \
-    = BatInt.compare m n)
+    (fun (s,m,n) -> \
+      let c1 = numeric_compare (s ^ string_of_int m) (s ^ string_of_int n) in\
+      let c2 = BatInt.compare m n in BatOrd.(ord0 c1 = ord0 c2))
 *)
 
 module NumString =

@@ -83,13 +83,15 @@ let choice g =
 
    TODO: a more efficient algorithm when given gen length is known *)
 let multi_choice n e =
-  if BatGen.is_empty e then
-    BatGen.empty
-  else
-    let next e = BatOption.get (BatGen.get e) in
-    (* Note: this assumes that Array.init will call the function for i
-       = 0 to n-1 in that order *)
-    let chosen = Array.init n (fun i -> next e, i) in
+  match BatGen.next e with
+  | None -> BatGen.empty
+  | Some x ->
+    let chosen = Array.make n (x,0) in
+    for i = 1 to n-1 do
+      match BatGen.next e with
+      | None -> failwith "Random.multi_choice"
+      | Some x -> chosen.(i) <- x, i
+    done;
     BatGen.iteri (fun i x ->
       let i = i + n + 1 in (* we've already chosen the n first items *)
       let r = Random.int i in
@@ -105,7 +107,7 @@ let multi_choice n e =
   let x = BatGen.repeat [0;1] |> BatGen.take 99 |> BatGen.map (fun l -> \
     multi_choice 1 (BatList.gen l)) \
       |> BatGen.map BatGen.get_exn \
-      |> reduce (+) in x > 0 && x < 99
+      |> reduce (+) in x >= 0 && x <= 99
 *)
 (* Note: this last test check that the first nor the last item is always chosen *)
 
