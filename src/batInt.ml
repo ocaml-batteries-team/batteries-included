@@ -201,17 +201,18 @@ let popcount_sparse x =
   (Q.int) (fun x -> popcount x = popcount_sparse x)
 *)
 
-let copysign = function
+let copysign n o = match n with
   | 0 -> 0
-  | n when n > 0 -> 1
-  | _ -> -1
+  | n when n > 0 -> o
+  | _ -> - o
 
 (*$T copysign
-  copysign 2 = 1
-  copysign 3 = 1
-  copysign max_int = 1
-  copysign (-22) = -1
-  copysign 0 = 0
+  copysign 2 1 = 1
+  copysign 3 1 = 1
+  copysign 3 5 = 5
+  copysign max_int min_int = min_int
+  copysign (-22) 12 = -12
+  copysign 0 42 = 0
 *)
 
 module BaseSafeInt = struct
