@@ -169,7 +169,7 @@ val gen : t -> int BatGen.t
     in the bitset [s]. *)
 
 val of_gen : ?cap:int -> int BatGen.t -> t
-(** [of_enum ~cap e] builds a bitset of capacity [cap] an enumeration
+(** [of_gen ~cap e] builds a bitset of capacity [cap] an enumeration
     of ints [e].
 
     Note: Performance of this function may be poor if enumeration is
@@ -177,7 +177,7 @@ val of_gen : ?cap:int -> int BatGen.t -> t
 *)
 
 val of_list : ?cap:int -> int list -> t
-(** As [of_enum], but from a list *)
+(** As [of_gen], but from a list *)
 
 val compare : t -> t -> int
 (** [compare s1 s2] compares two bitsets using a lexicographic

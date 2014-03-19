@@ -135,7 +135,7 @@ val of_array : 'a array -> 'a t
     in order. *)
 
 val of_gen : 'a BatGen.t -> 'a t
-(** [of_enum e] returns an array that holds, in order, the elements of [e]. *)
+(** [of_gen e] returns an array that holds, in order, the elements of [e]. *)
 
 val copy : 'a t -> 'a t
 (** [copy src] returns a fresh copy of [src], such that no modification of
@@ -327,4 +327,4 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.outp
 (**/**)
 val invariants : _ t -> unit
 val bool_invariants : _ t -> bool
-  (**/**)
+(**/**)

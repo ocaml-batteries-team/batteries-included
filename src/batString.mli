@@ -268,30 +268,30 @@ val gen : string -> char BatGen.t
     while it is enumerated.
 
     Examples:
-      ["foo" |> String.enum |> List.of_enum = ['f'; 'o'; 'o']]
-      [String.enum "a b c" // ((<>) ' ') |> String.of_enum = "abc"]
+      ["foo" |> String.gen |> List.of_gen = ['f'; 'o'; 'o']]
+      [String.gen "a b c" // ((<>) ' ') |> String.of_gen = "abc"]
 *)
 
 val of_gen : char BatGen.t -> string
 (** Creates a string from a character enumeration.
-    Example: [['f'; 'o'; 'o'] |> List.enum |> String.of_enum = "foo"]
+    Example: [['f'; 'o'; 'o'] |> List.gen |> String.of_gen = "foo"]
 *)
 
 val backwards : string -> char BatGen.t
 (** Returns an enumeration of the characters of a string, from last to first.
 
     Examples:
-    [ "foo" |> String.backwards |> String.of_enum = "oof" ]
-    [ let rev s = String.backwards s |> String.of_enum ]
+    [ "foo" |> String.backwards |> String.of_gen = "oof" ]
+    [ let rev s = String.backwards s |> String.of_gen ]
 *)
 
 val of_backwards : char BatGen.t -> string
 (** Build a string from an enumeration, starting with last character, ending with first.
 
     Examples:
-    [ "foo" |> String.enum |> String.of_backwards = "oof" ]
+    [ "foo" |> String.gen |> String.of_backwards = "oof" ]
     [ "foo" |> String.backwards |> String.of_backwards = "foo" ]
-    [ let rev s = String.enum s |> String.of_backwards ]
+    [ let rev s = String.gen s |> String.of_backwards ]
 *)
 
 
@@ -464,7 +464,7 @@ val rfind_from: string -> int -> string -> int
 
 val find_all : string -> string -> int BatGen.t
 (** [find_all s x] enumerates positions of [s] at which [x] occurs.
-    Example: [find_all "aabaabaa" "aba" |> List.of_enum] will return
+    Example: [find_all "aabaabaa" "aba" |> List.of_gen] will return
     the list [[1; 4]].
     @since 2.2.0 *)
 

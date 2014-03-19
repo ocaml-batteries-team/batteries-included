@@ -541,25 +541,25 @@ val invisible_args : int ref
    In OCaml Batteries Included, all data structures are enumerable,
    which means that they support a number of standard operations,
    transformations, etc. The general manner of {i enumerating} the
-   contents of a data structure is to invoke the [enum] function of
+   contents of a data structure is to invoke the [gen] function of
    your data structure.
 
    For instance, you may use the {!foreach} loop to apply a function
    [f] to all the consecutive elements of a string [s]. For this
-   purpose, you may write either [foreach (String.enum s) f] or [open
-   String in foreach (enum s) f]. Either possibility states that you
+   purpose, you may write either [foreach (String.gen s) f] or [open
+   String in foreach (gen s) f]. Either possibility states that you
    are enumerating through a character string [s]. Should you prefer
    your generator to proceed from the end of the string to the
-   beginning, you may replace {! String.enum} with {!
+   beginning, you may replace {! String.gen} with {!
    String.backwards}. Therefore, either [foreach (String.backwards s)
    f] or [open String in foreach (backwards s) f] will apply [f]
    to all the consecutive elements of string [s], from the last to
    the first.
 
-   Similarly, you may use {!List.enum} instead of {!String.enum} to
+   Similarly, you may use {!List.gen} instead of {!String.gen} to
    visit the elements of a list in the usual order, or
    {!List.backwards} instead of {!String.backwards} to visit them
-   in the opposite order, or {!Hashtbl.enum} for hash tables, etc.
+   in the opposite order, or {!Hashtbl.gen} for hash tables, etc.
 
    More operations on generators are defined in module {!BatGen},
    including the necessary constructors to make your own structures

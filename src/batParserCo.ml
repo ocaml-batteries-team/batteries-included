@@ -36,7 +36,7 @@ struct
 
   (**TODO: Handle EOF !*)
   let of_lexer l = assert false
-  (**    LazyList.of_enum (BatGen.from (fun () ->
+  (**    LazyList.of_gen (BatGen.from (fun () ->
 
              l.refill_buff l;
                 (l.lex_buffer, (l.lex_start_p, l.lex_curr_p))))*)
