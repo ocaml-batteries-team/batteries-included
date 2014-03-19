@@ -619,7 +619,7 @@ val interleave : ?first:'a -> ?last:'a -> 'a -> 'a list -> 'a list
     [first; a0; sep; a1; sep; a2; sep; ...; sep; an; last] *)
 
 
-(** {6 BatEnum functions}
+(** {6 BatGen functions}
 
     Abstraction layer.*)
 

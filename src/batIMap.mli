@@ -115,7 +115,7 @@ val gen : 'a t -> (int * int * 'a) BatGen.t
 (** [gen t] returns an enumeration of the bindings in [t] *)
 
 val of_gen : eq:('a -> 'a -> bool) -> (int * int * 'a) BatGen.t -> 'a t
-(** [of_enum e] returns the set of given ranges *)
+(** [of_gen e] returns the set of given ranges *)
 
 val fold2_range : (int -> int -> 'a option -> 'b option -> 'c -> 'c) -> 'a t -> 'b t -> 'c -> 'c
 

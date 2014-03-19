@@ -470,8 +470,8 @@ let chunks_of n     input = make_gen (fun ic -> nread ic n) input
 (** The number of chars to read at once *)
 let buffer_size = 1024 (*Arbitrary size.*)
 
-(* make a bunch of char enums by reading buffer_size at a time and
-   concat them all into into one big char enum *)
+(* make a bunch of char gens by reading buffer_size at a time and
+   concat them all into into one big char gen *)
 let chars_of input =
   let buf = ref "" in
   let i = ref 0 in

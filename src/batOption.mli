@@ -128,7 +128,7 @@ val gen: 'a option -> 'a BatGen.t
     the empty enumeration. *)
 
 val of_gen: 'a BatGen.t -> 'a option
-(** [of_enum e] consumes the first element of [e], if it exists, and
+(** [of_gen e] consumes the first element of [e], if it exists, and
     returns [Some e]. If [e] is empty, return [None]. *)
 
 (** {6 The Option Monad} *)

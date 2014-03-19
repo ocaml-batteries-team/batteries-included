@@ -214,7 +214,7 @@ val to_list : 'a node_t -> 'a list
 val of_list : 'a list -> 'a node_t
 
 
-(** {6 enums } *)
+(** {6 gens } *)
 
 (** Create an gen of the list.
     Note that modifying the list while the gen exists will have undefined
@@ -234,7 +234,7 @@ val gen : 'a node_t -> 'a BatGen.t
 val rev_gen : 'a node_t -> 'a BatGen.t
 
 val backwards : 'a node_t -> 'a BatGen.t
-(** [backwards t] is similar to [rev_enum t] except that the enumeration
+(** [backwards t] is similar to [rev_gen t] except that the enumeration
     starts at the node before the current one:
 
     [backwards (of_list [1;2;3;4])] will generate the enumeration [[4;3;2;1]].
@@ -250,9 +250,9 @@ val of_gen : 'a BatGen.t -> 'a node_t
 
 (** {7 Printing}*)
 
-val print : ?first:string -> ?last:string -> ?sep:string -> 
+val print : ?first:string -> ?last:string -> ?sep:string ->
   ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
 
 (**/**)
 val invariants : _ t -> unit
-  (**/**)
+(**/**)

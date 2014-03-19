@@ -141,6 +141,6 @@ val gen : t -> (int * int) BatGen.t
 
 val of_gen : (int*int) BatGen.t -> t
 val of_list : (int*int) list -> t
-(** Build a ISet.t out of a list or enum of ranges *)
+(** Build a ISet.t out of a list or gen of ranges *)
 
 val print : _ BatIO.output -> t -> unit

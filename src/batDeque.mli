@@ -61,7 +61,7 @@ val eq : ?eq:('a -> 'a -> bool) -> 'a dq -> 'a dq -> bool
   (** [eq dq1 dq2] is true if [dq1] and [dq2] have the same sequence
       of elements. A custom function can be optionally provided with
       the [eq] parameter (default is {!Pervasives.(=)}).
-      
+
       @since 2.2.0 *)
 
 val rev : 'a dq -> 'a dq
@@ -130,11 +130,11 @@ val to_list : 'a dq -> 'a list
     O(n) *)
 
 val of_gen : 'a BatGen.t -> 'a dq
-(** [of_enum e] is a deque representation of the elements of [e].
+(** [of_gen e] is a deque representation of the elements of [e].
     Consumes the enumeration [e]. O(n) *)
 
 val gen : 'a dq -> 'a BatGen.t
-(** [enum dq] is an enumeration of the elements of [dq] from the
+(** [gen dq] is an enumeration of the elements of [dq] from the
     front to the rear.
     This function is O(1), but generating each element of the enumeration
     is amortized O(1), and O(n) worst case.
@@ -148,4 +148,4 @@ val print : ?first:string -> ?last:string -> ?sep:string
 
 (**/**)
 val invariants : _ t -> unit
-  (**/**)
+(**/**)

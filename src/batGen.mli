@@ -96,7 +96,7 @@ module type S = sig
   (** {2 Basic combinators} *)
 
   val is_empty : _ t -> bool
-    (** Check whether the enum is empty. *)
+    (** Check whether the gen is empty. *)
 
   val fold : ('b -> 'a -> 'b) -> 'b -> 'a t -> 'b
     (** Fold on the generator, tail-recursively *)
@@ -108,32 +108,32 @@ module type S = sig
     (** Like {!fold}, but keeping successive values of the accumulator *)
 
   val iter : ('a -> unit) -> 'a t -> unit
-    (** Iterate on the enum *)
+    (** Iterate on the gen *)
 
   val iteri : (int -> 'a -> unit) -> 'a t -> unit
-    (** Iterate on elements with their index in the enum, from 0 *)
+    (** Iterate on elements with their index in the gen, from 0 *)
 
   val length : _ t -> int
-    (** Length of an enum (linear time) *)
+    (** Length of an gen (linear time) *)
 
   val map : ('a -> 'b) -> 'a t -> 'b t
     (** Lazy map. No iteration is performed now, the function will be called
         when the result is traversed. *)
 
   val append : 'a t -> 'a t -> 'a t
-    (** Append the two enums; the result contains the elements of the first,
-        then the elements of the second enum. *)
+    (** Append the two gens; the result contains the elements of the first,
+        then the elements of the second gen. *)
 
   val flatten : 'a gen t -> 'a t
     (** Flatten the enumeration of generators *)
 
   val flat_map : ('a -> 'b gen) -> 'a t -> 'b t
-    (** Monadic bind; each element is transformed to a sub-enum
+    (** Monadic bind; each element is transformed to a sub-gen
         which is then iterated on, before the next element is processed,
         and so on. *)
 
   val mem : ?eq:('a -> 'a -> bool) -> 'a -> 'a t -> bool
-    (** Is the given element, member of the enum? *)
+    (** Is the given element, member of the gen? *)
 
   val take : int -> 'a t -> 'a t
     (** Take at most n elements *)
@@ -163,7 +163,7 @@ module type S = sig
     (** Maps some elements to 'b, drop the other ones *)
 
   val zip_index : 'a t -> (int * 'a) t
-    (** Zip elements with their index in the enum *)
+    (** Zip elements with their index in the gen *)
 
   val unzip : ('a * 'b) t -> 'a t * 'b t
     (** Unzip into two sequences, splitting each pair *)
@@ -223,10 +223,10 @@ module type S = sig
         Ignores elements of an iterator if the other runs dry. *)
 
   val zip_with : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
-    (** Combine common part of the enums (stops when one is exhausted) *)
+    (** Combine common part of the gens (stops when one is exhausted) *)
 
   val zip : 'a t -> 'b t -> ('a * 'b) t
-    (** Zip together the common part of the enums *)
+    (** Zip together the common part of the gens *)
 
   val combine : ('a t * 'b t) -> ('a * 'b) t
     (** Uncurried version of {! zip} *)
@@ -234,7 +234,7 @@ module type S = sig
   (** {2 Complex combinators} *)
 
   val merge : 'a gen t -> 'a t
-    (** Pick elements fairly in each sub-generator. The merge of enums
+    (** Pick elements fairly in each sub-generator. The merge of gens
         [e1, e2, ... ] picks elements in [e1], [e2],
         in [e3], [e1], [e2] .... Once a generator is empty, it is skipped;
         when they are all empty, and none remains in the input,
@@ -252,13 +252,13 @@ module type S = sig
     (** Sorted merge of multiple sorted sequences *)
 
   val tee : ?n:int -> 'a t -> 'a gen list
-    (** Duplicate the enum into [n] generators (default 2). The generators
-        share the same underlying instance of the enum, so the optimal case is
+    (** Duplicate the gen into [n] generators (default 2). The generators
+        share the same underlying instance of the gen, so the optimal case is
         when they are consumed evenly *)
 
   val round_robin : ?n:int -> 'a t -> 'a gen list
-    (** Split the enum into [n] generators in a fair way. Elements with
-        [index = k mod n] with go to the k-th enum. [n] default value
+    (** Split the gen into [n] generators in a fair way. Elements with
+        [index = k mod n] with go to the k-th gen. [n] default value
         is 2. *)
 
   val interleave : 'a t -> 'a t -> 'a t
@@ -267,7 +267,7 @@ module type S = sig
         other generator. *)
 
   val intersperse : 'a -> 'a t -> 'a t
-    (** Put the separator element between all elements of the given enum *)
+    (** Put the separator element between all elements of the given gen *)
 
   val product : 'a t -> 'b t -> ('a * 'b) t
     (** Cartesian product, in no predictable order. Works even if some of the
@@ -285,10 +285,10 @@ module type S = sig
         like [fun e -> map List.hd (group e)]. *)
 
   val sort : ?cmp:('a -> 'a -> int) -> 'a t -> 'a t
-    (** Sort according to the given comparison function. The enum must be finite. *)
+    (** Sort according to the given comparison function. The gen must be finite. *)
 
   val sort_uniq : ?cmp:('a -> 'a -> int) -> 'a t -> 'a t
-    (** Sort and remove duplicates. The enum must be finite. *)
+    (** Sort and remove duplicates. The gen must be finite. *)
 
   val chunks : int -> 'a t -> 'a array t
     (** [chunks n e] returns a generator of arrays of length [n], composed
@@ -297,14 +297,14 @@ module type S = sig
 
   (* TODO later
   val permutations : 'a t -> 'a gen t
-    (** Permutations of the enum. Each permutation becomes unavailable once
+    (** Permutations of the gen. Each permutation becomes unavailable once
         the next one is produced. *)
 
   val combinations : int -> 'a t -> 'a t t
     (** Combinations of given length. *)
 
   val powerSet : 'a t -> 'a t t
-    (** All subsets of the enum (in no particular order) *)
+    (** All subsets of the gen (in no particular order) *)
   *)
 
   (** {2 Basic conversion functions} *)
@@ -319,7 +319,7 @@ module type S = sig
     (** Tail call conversion to list, in reverse order (more efficient) *)
 
   val to_array : 'a t -> 'a array
-    (** Convert the enum to an array (not very efficient) *)
+    (** Convert the gen to an array (not very efficient) *)
 
   val of_array : ?start:int -> ?len:int -> 'a array -> 'a t
     (** Iterate on (a slice of) the given array *)
@@ -382,7 +382,7 @@ module Restart : sig
   include S with type 'a t := 'a restartable
 
   val cycle : 'a t -> 'a t
-    (** Cycle through the enum, endlessly. The enum must not be empty. *)
+    (** Cycle through the gen, endlessly. The gen must not be empty. *)
 
   val lift : ('a gen -> 'b) -> 'a t -> 'b
 
