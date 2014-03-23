@@ -245,6 +245,21 @@ let print ?(first="{\n") ?(last="\n}") ?(sep=",\n") ?(kvsep=": ") print_k print_
     (fun out (k,v) -> BatPrintf.fprintf out "%a%s%a" print_k k kvsep print_v v)
     out (gen t)
 
+let source skey selem =
+  BatConv.Source.(map
+    (fun h -> fold (fun k v acc -> (k,v)::acc) h [])
+    (list_ (pair skey selem))
+  )
+
+let sink skey selem =
+  BatConv.Sink.(map
+    (fun l ->
+      let h = create 13 in
+      List.iter (fun (k,v) -> add h k v) l;
+      h)
+    (list_ (pair skey selem))
+  )
+
 let filteri (f:'key -> 'a -> bool) (t:('key, 'a) t) =
   let result = create 16 in
   iter (fun k a -> if f k a then add result k a) t;

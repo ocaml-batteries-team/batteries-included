@@ -261,6 +261,12 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
   ('a BatInnerIO.output -> 'c -> unit) ->
   'a BatInnerIO.output -> ('b, 'c) t -> unit
 
+val source : 'a BatConv.Source.t -> 'b BatConv.Source.t ->
+             ('a,'b) t BatConv.Source.t
+
+val sink : 'a BatConv.Sink.t -> 'b BatConv.Sink.t ->
+             ('a,'b) t BatConv.Sink.t
+
 (** {6 Override modules}*)
 
 (**
