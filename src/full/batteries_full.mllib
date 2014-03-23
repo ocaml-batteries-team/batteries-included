@@ -1,6 +1,7 @@
 # OASIS_START
-# DO NOT EDIT (digest: 9065db91a353d8c42c82ba75a3487656)
+# DO NOT EDIT (digest: 520ee189e4fa70a0b42c8dca7eea016a)
 BatPervasives
 BatInnerPervasives
 Batteries
+BatteriesExceptionless
 # OASIS_STOP

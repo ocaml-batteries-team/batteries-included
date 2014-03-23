@@ -34,6 +34,7 @@ Flag "unix"
 Flag "bigarray"
   Description:  Build and install Bigarray interface
   Default:      true
+
 Flag "sexp"
   Description:  Build and install the interface to Sexplib (requires Sexplib)
   Default:      false
@@ -81,14 +82,6 @@ Library "batteries_unix"
   BuildDepends:     batteries,batteries.bigarray
   XMETARequires:    batteries,batteries.bigarray
 
-#Library "batteries_exceptionless"
-#  Path:             src
-#  Modules:          BatteriesExceptionless
-#  FindlibName:      exceptionless
-#  FindlibParent:    batteries
-#  BuildDepends:     batteries
-#  XMETARequires:    batteries
-
 Library "batteries_num"
   Path:             src/num
   Modules:          BatNum, BatBig_int
@@ -111,7 +104,8 @@ Library "batteries_thread"
 
 Library "batteries_full"
   Path:             src/full
-  Modules:          BatPervasives, BatInnerPervasives, Batteries
+  Modules:          BatPervasives, BatInnerPervasives, Batteries,
+                    BatteriesExceptionless
   Build$:           flag(unix)
   Install$:         flag(unix)
   FindlibName:      full
