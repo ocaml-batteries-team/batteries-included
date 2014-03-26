@@ -120,6 +120,26 @@ qtest-clean:
 qtest: prefilter qtest-clean
 	@_build/$(QTESTDIR)/all_tests.$(EXT)
 
+### run all unit tests
+##############################################
+
+test-byte: prefilter _build/testsuite/main.byte _build/$(QTESTDIR)/all_tests.byte
+	@_build/testsuite/main.byte
+	@echo "" # newline after "OK"
+	@_build/$(QTESTDIR)/all_tests.byte
+
+test-native: prefilter _build/testsuite/main.native _build/$(QTESTDIR)/all_tests.native
+	@_build/testsuite/main.native
+	@echo "" # newline after "OK"
+	@_build/$(QTESTDIR)/all_tests.native
+
+TEST_TARGET ?= test-native
+
+full-test: $(TEST_TARGET)
+
+test-compat: prefilter src/batteries_compattest.ml
+	ocamlbuild src/batteries_compattest.byte -no-links
+
 ###############################################################################
 #	BENCHMARK SUITE
 ###############################################################################
