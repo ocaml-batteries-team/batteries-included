@@ -81,10 +81,13 @@ let is_empty = function
   not (is_empty [1])
 *)
 
+let at_negative_index_msg = "Negative index not allowed"
+let at_after_end_msg = "Index past end of list"
+
 let nth l index =
-  if index < 0 then invalid_arg "Negative index not allowed";
+  if index < 0 then invalid_arg at_negative_index_msg;
   let rec loop n = function
-    | [] -> invalid_arg "Index past end of list";
+    | [] -> invalid_arg at_after_end_msg;
     | h :: t ->
       if n = 0 then h else loop (n - 1) t
   in
@@ -856,15 +859,15 @@ let rec last = function
   | _ :: t -> last t
 
 let split_nth index = function
-  | [] -> if index = 0 then [],[] else invalid_arg "Index past end of list"
+  | [] -> if index = 0 then [],[] else invalid_arg at_after_end_msg
   | (h :: t as l) ->
     if index = 0 then [],l
-    else if index < 0 then invalid_arg "Negative index not allowed"
+    else if index < 0 then invalid_arg at_negative_index_msg
     else
       let rec loop n dst l =
         if n = 0 then l else
           match l with
-          | [] -> invalid_arg "Index past end of list"
+          | [] -> invalid_arg at_after_end_msg
           | h :: t ->
             loop (n - 1) (Acc.accum dst h) t
       in
