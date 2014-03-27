@@ -519,6 +519,14 @@ val modify_at : int -> ('a -> 'a) -> 'a list -> 'a list
     @raise Invalid_argument if the index is outside of [l] bounds
     @since NEXT_RELEASE *)
 
+val modify_opt_at : int -> ('a -> 'a option) -> 'a list -> 'a list
+(** [modify_at_opt n f l] returns the same list as [l] but with
+    nth-value [a] removed if [f a] is [None], and replaced by [v] if
+    it is [Some v].
+
+    @raise Invalid_argument if the index is outside of [l] bounds
+    @since NEXT_RELEASE *)
+
 val split_at : int -> 'a list -> 'a list * 'a list
 (** [split_at n l] returns two lists [l1] and [l2], [l1] containing the
     first [n] elements of [l] and [l2] the others. @raise Invalid_argument if
