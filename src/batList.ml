@@ -1050,6 +1050,31 @@ let modify_def dfl a f l =
   (modify_def 0 5 succ [ 1,0 ; 8,2 ]) [ 1,0 ; 8,2 ; 5,1 ]
 *)
 
+let modify_at n f l =
+  if n < 0 then invalid_arg at_negative_index_msg;
+  let rec loop acc n = function
+    | [] -> invalid_arg at_after_end_msg
+    | h :: t ->
+      if n = 0
+      then rev_append acc (f h :: t)
+      else loop (h :: acc) (n - 1) t
+  in
+  loop [] n l
+
+(*$T modify_at
+  modify_at 2 ((+) 1) [1;2;3;4] = [1;2;4;4]
+  try ignore (modify_at 0 ((+) 1) []); false \
+  with Invalid_argument _ -> true
+  try ignore (modify_at 2 ((+) 1) []); false \
+  with Invalid_argument _ -> true
+  try ignore (modify_at (-1) ((+) 1) [1;2;3]); false \
+  with Invalid_argument _ -> true
+  try ignore (modify_at 5 ((+) 1) [1;2;3]); false \
+  with Invalid_argument _ -> true
+  try ignore (modify_at 3 ((+) 1) [1;2;3]); false \
+  with Invalid_argument _ -> true
+*)
+
 let sort_unique cmp lst =
   let sorted = List.sort cmp lst in
   let fold first rest = List.fold_left

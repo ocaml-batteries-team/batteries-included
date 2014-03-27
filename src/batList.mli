@@ -93,7 +93,7 @@ val length : 'a list -> int
 
 val at : 'a list -> int -> 'a
 (** [at l n] returns the n-th element of the list [l] or
-    @raise Invalid_argument is the index is outside of [l] bounds.  O(l) *)
+    @raise Invalid_argument if the index is outside of [l] bounds.  O(l) *)
 
 val rev : 'a list -> 'a list
 (** List reversal. *)
@@ -511,6 +511,13 @@ val modify_opt : 'a -> ('b option -> 'b option) -> ('a * 'b) list -> ('a * 'b) l
     @since 2.1 *)
 
 (** {6 List transformations}*)
+
+val modify_at : int -> ('a -> 'a) -> 'a list -> 'a list
+(** [modify_at n f l] returns the same list as [l]
+    but with nth-value [a] replaced with [f a].
+
+    @raise Invalid_argument if the index is outside of [l] bounds
+    @since NEXT_RELEASE *)
 
 val split_at : int -> 'a list -> 'a list * 'a list
 (** [split_at n l] returns two lists [l1] and [l2], [l1] containing the
