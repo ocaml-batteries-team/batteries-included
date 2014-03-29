@@ -81,10 +81,13 @@ let is_empty = function
   not (is_empty [1])
 *)
 
+let at_negative_index_msg = "Negative index not allowed"
+let at_after_end_msg = "Index past end of list"
+
 let nth l index =
-  if index < 0 then invalid_arg "Negative index not allowed";
+  if index < 0 then invalid_arg at_negative_index_msg;
   let rec loop n = function
-    | [] -> invalid_arg "Index past end of list";
+    | [] -> invalid_arg at_after_end_msg;
     | h :: t ->
       if n = 0 then h else loop (n - 1) t
   in
@@ -856,15 +859,15 @@ let rec last = function
   | _ :: t -> last t
 
 let split_nth index = function
-  | [] -> if index = 0 then [],[] else invalid_arg "Index past end of list"
+  | [] -> if index = 0 then [],[] else invalid_arg at_after_end_msg
   | (h :: t as l) ->
     if index = 0 then [],l
-    else if index < 0 then invalid_arg "Negative index not allowed"
+    else if index < 0 then invalid_arg at_negative_index_msg
     else
       let rec loop n dst l =
         if n = 0 then l else
           match l with
-          | [] -> invalid_arg "Index past end of list"
+          | [] -> invalid_arg at_after_end_msg
           | h :: t ->
             loop (n - 1) (Acc.accum dst h) t
       in
@@ -1045,6 +1048,50 @@ let modify_def dfl a f l =
 (*$= modify_def & ~printer:(IO.to_string (List.print (fun fmt (a,b) -> Printf.fprintf fmt "%d,%d" a b)))
   (modify_def 0 5 succ [ 1,0 ; 5,1 ; 8,2 ]) [ 1,0 ; 5,2 ; 8,2 ]
   (modify_def 0 5 succ [ 1,0 ; 8,2 ]) [ 1,0 ; 8,2 ; 5,1 ]
+*)
+
+let modify_opt_at n f l =
+  if n < 0 then invalid_arg at_negative_index_msg;
+  let rec loop acc n = function
+    | [] -> invalid_arg at_after_end_msg
+    | h :: t ->
+      if n <> 0 then loop (h :: acc) (n - 1) t
+      else match f h with
+        | None -> rev_append acc t
+        | Some v -> rev_append acc (v :: t)
+  in
+  loop [] n l
+
+(*$T modify_opt_at
+  modify_opt_at 2 (fun n -> Some (n*n)) [1;2;3;4;5] = [1;2;9;4;5]
+  modify_opt_at 2 (fun _ -> None) [1;2;3;4;5] = [1;2;4;5]
+  try ignore (modify_opt_at 0 (fun _ -> None) []); false \
+  with Invalid_argument _ -> true
+  try ignore (modify_opt_at 2 (fun _ -> None) []); false \
+  with Invalid_argument _ -> true
+  try ignore (modify_opt_at (-1) (fun _ -> None) [1;2;3]); false \
+  with Invalid_argument _ -> true
+  try ignore (modify_opt_at 5 (fun _ -> None) [1;2;3]); false \
+  with Invalid_argument _ -> true
+  try ignore (modify_opt_at 3 (fun _ -> None) [1;2;3]); false \
+  with Invalid_argument _ -> true
+*)
+
+let modify_at n f l =
+  modify_opt_at n (fun x -> Some (f x)) l
+
+(*$T modify_at
+  modify_at 2 ((+) 1) [1;2;3;4] = [1;2;4;4]
+  try ignore (modify_at 0 ((+) 1) []); false \
+  with Invalid_argument _ -> true
+  try ignore (modify_at 2 ((+) 1) []); false \
+  with Invalid_argument _ -> true
+  try ignore (modify_at (-1) ((+) 1) [1;2;3]); false \
+  with Invalid_argument _ -> true
+  try ignore (modify_at 5 ((+) 1) [1;2;3]); false \
+  with Invalid_argument _ -> true
+  try ignore (modify_at 3 ((+) 1) [1;2;3]); false \
+  with Invalid_argument _ -> true
 *)
 
 let sort_unique cmp lst =
