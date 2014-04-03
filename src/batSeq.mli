@@ -48,7 +48,7 @@ val gen : 'a t -> 'a BatGen.t
 (** [gen s] returns the enumeration of all element of [s].
 
     Since enumerations are consumable and sequence are not, it is
-    not possible to have the inverse operations, i.e. [of_enum] *)
+    not possible to have the inverse operations, i.e. [of_gen] *)
 
 (** {6 Base operations} *)
 
