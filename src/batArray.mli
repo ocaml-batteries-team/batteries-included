@@ -339,8 +339,8 @@ val decorate_stable_sort : ('a -> 'b) -> 'a array -> 'a array
     x < f y] then [x] is earlier in the result than [y].  This
     function is useful when [f] is expensive, as it only computes [f
     x] once for each element in the array.  See
-    [:[http://en.wikipedia.org/wiki/Schwartzian_transform]Schwartzian
-    Transform].
+    {{:http://en.wikipedia.org/wiki/Schwartzian_transform}Schwartzian
+    Transform}.
 
     It is unnecessary to have an additional comparison function as
     argument, as the builtin [Pervasives.compare] is used to compare
@@ -500,8 +500,8 @@ val insert : 'a array -> 'a -> int -> 'a array
 val print : ?first:string -> ?last:string -> ?sep:string ->
   ('a, 'b) BatIO.printer -> ('a t, 'b) BatIO.printer
 (** Print the contents of an array, with [~first] preceeding the first
-    item (default: "[|"), [~last] following the last item (default:
-    "|]") and [~sep] separating items (default: "; ").  A printing
+    item (default: "\[|"), [~last] following the last item (default:
+    "|\]") and [~sep] separating items (default: "; ").  A printing
     function must be provided to print the items in the array.
 
     Example: IO.to_string (Array.print Int.print) [|2;4;66|] = "[|2; 4; 66|]"
