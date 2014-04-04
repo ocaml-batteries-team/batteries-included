@@ -231,6 +231,14 @@ sig
       to the ordering [Ord.compare], where [Ord] is the argument
       given to {!Set.Make}. *)
 
+  val enum_from : elt -> t -> elt BatEnum.t
+  (** [enum_from e t] enumerates the elements of the set above or
+      equal to [e], in increasing order *)
+
+  val backwards_from : elt -> t -> elt BatEnum.t
+  (** [backwards_from e t] enumerates the elements of the set below or equal to [e], in
+      decreasing order *)
+
   val of_enum: elt BatEnum.t -> t
 
   val of_list: elt list -> t
@@ -510,7 +518,11 @@ val cartesian_product : 'a t -> 'b t -> ('a * 'b) t
 val enum: 'a t -> 'a BatEnum.t
 (** Return an enumeration of all elements of the given set.
     The returned enumeration is sorted in increasing order with respect
-    to the ordering of this set.*)
+    to [Pervasives.compare].*)
+
+val enum_from : 'a -> 'a t -> 'a BatEnum.t
+(** [enum_from e t] enumerates the elements of the set above or equal to [e], in
+    increasing order with respect to [Pervasives.compare] *)
 
 val of_enum: 'a BatEnum.t -> 'a t
 
@@ -519,6 +531,10 @@ val backwards: 'a t -> 'a BatEnum.t
     returned enumeration is sorted in decreasing order with respect to
     the ordering [Pervasives.compare]. *)
 
+val backwards_from : 'a -> 'a t -> 'a BatEnum.t
+(** [backwards_from e t] enumerates the elements of the set below or
+    equal to [e], in decreasing order with respect to
+    [Pervasives.compare] *)
 
 val of_list: 'a list -> 'a t
 (** builds a set from the given list, using the default comparison
@@ -738,6 +754,19 @@ module PSet : sig
   (** Return an enumeration of all elements of the given set.
       The returned enumeration is sorted in increasing order with respect
       to the ordering of this set.*)
+
+  val enum_from : 'a -> 'a t -> 'a BatEnum.t
+  (** [enum_from e t] enumerates the elements of the set [t] above or equal to [e], in
+      increasing order with respect to the ordering of [t]*)
+
+  val backwards: 'a t -> 'a BatEnum.t
+  (** Return an enumeration of all elements of the given set.
+      The returned enumeration is sorted in decreasing order with respect
+      to the ordering of this set.*)
+
+  val backwards_from : 'a -> 'a t -> 'a BatEnum.t
+  (** [enum_from e t] enumerates the elements of the set [t] below or equal to [e], in
+      decreasing order with respect to the ordering of [t]*)
 
   val of_enum: 'a BatEnum.t -> 'a t
 

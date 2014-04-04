@@ -272,6 +272,31 @@ module Concrete = struct
       Empty -> t
     | Node (l, e, r, _) -> cons_iter l (C (e, r, t))
 
+  (* see batMap.ml:iter_from for comments *)
+  let iter_from x cmp set =
+    let rec loop m t = match m with
+      | Empty -> t
+      | Node (l, e, r, _) ->
+        let c = cmp x e in
+        if c > 0 then loop r t
+        else
+          let t = C (e, r, t) in
+          if c = 0 then t
+          else loop l t
+    in loop set E
+
+  let rev_iter_from x cmp set =
+    let rec loop m t = match m with
+      | Empty -> t
+      | Node (l, e, r, _) ->
+        let c = cmp x e in
+        if c < 0 then loop l t
+        else
+          let t = C (e, l, t) in
+          if c = 0 then t
+          else loop r t
+    in loop set E
+
   let rec rev_cons_iter s t = match s with
       Empty -> t
     | Node (l, e, r, _) -> rev_cons_iter r (C (e, l, t))
@@ -290,19 +315,21 @@ module Concrete = struct
       | C (e, s, t) -> aux (n + 1 + cardinal s) t
     in aux 0 !l
 
-  let enum t =
-    let rec make l =
-      let l = ref l in
-      let clone() = make !l in
-      BatEnum.make ~next:(enum_next l) ~count:(enum_count l) ~clone
-    in make (cons_iter t E)
+  let rec enum_of_iter l =
+    let l = ref l in
+    let clone() = enum_of_iter !l in
+    BatEnum.make ~next:(enum_next l) ~count:(enum_count l) ~clone
 
-  let backwards t =
-    let rec make l =
-      let l = ref l in
-      let clone() = make !l in
-      BatEnum.make ~next:(enum_backwards_next l) ~count:(enum_count l) ~clone
-    in make (rev_cons_iter t E)
+  let rec enum_of_rev_iter l =
+    let l = ref l in
+    let clone() = enum_of_rev_iter !l in
+    BatEnum.make ~next:(enum_backwards_next l) ~count:(enum_count l) ~clone
+
+  let enum t = enum_of_iter (cons_iter t E)
+  let enum_from e cmp t = enum_of_iter (iter_from e cmp t)
+
+  let backwards t = enum_of_rev_iter (rev_cons_iter t E)
+  let backwards_from e cmp t = enum_of_rev_iter (rev_iter_from e cmp t)
 
   let of_enum cmp e =
     BatEnum.fold (fun acc elem -> add cmp elem acc) empty e
@@ -482,6 +509,8 @@ sig
   val pop: t -> elt * t
   val enum: t -> elt BatEnum.t
   val backwards: t -> elt BatEnum.t
+  val enum_from: elt -> t -> elt BatEnum.t
+  val backwards_from: elt -> t -> elt BatEnum.t
   val of_enum: elt BatEnum.t -> t
   val of_list: elt list -> t
   val print :  ?first:string -> ?last:string -> ?sep:string ->
@@ -523,6 +552,9 @@ struct
   let enum t = Concrete.enum (impl_of_t t)
   let of_enum e = t_of_impl (Concrete.of_enum Ord.compare e)
   let backwards t = Concrete.backwards (impl_of_t t)
+
+  let enum_from e t = Concrete.enum_from e Ord.compare (impl_of_t t)
+  let backwards_from e t = Concrete.backwards_from e Ord.compare (impl_of_t t)
 
   let remove e t = t_of_impl (Concrete.remove Ord.compare e (impl_of_t t))
   let add e t = t_of_impl (Concrete.add Ord.compare e (impl_of_t t))
@@ -666,6 +698,9 @@ module PSet = struct (*$< PSet *)
   let min_elt s = Concrete.min_elt s.set
   let max_elt s = Concrete.max_elt s.set
   let enum s = Concrete.enum s.set
+  let backwards s = Concrete.backwards s.set
+  let enum_from e s = Concrete.enum_from e compare s.set
+  let backwards_from e s = Concrete.backwards_from e compare s.set
   let of_enum e = { cmp = compare; set = Concrete.of_enum compare e }
   let of_enum_cmp ~cmp t = { cmp = cmp; set = Concrete.of_enum cmp t }
   let of_list l = { cmp = compare; set = Concrete.of_list compare l }
@@ -783,12 +818,46 @@ let backwards s = Concrete.backwards s
 
 let of_list l = Concrete.of_list Pervasives.compare l
 
+let enum_from e s = Concrete.enum_from e Pervasives.compare s
+
+let backwards_from e s = Concrete.backwards_from e Pervasives.compare s
+
 (*$Q of_list
   (Q.list Q.small_int) (fun l -> let xs = List.map (fun i -> i mod 5, i) l in \
     let s1 = of_list xs |> enum |> List.of_enum in \
     let s2 = List.sort_unique Pervasives.compare xs in \
     s1 = s2 \
   )
+*)
+
+(*$= enum_from & ~printer:dump
+  (empty |> enum_from 1 |> List.of_enum) []
+  (singleton 1 |> enum_from 1 |> List.of_enum)  [1]
+  (singleton 1 |> enum_from 2 |> List.of_enum)  []
+  (singleton 1 |> enum_from 0 |> List.of_enum)  [1]
+  ([1;4;2;5] |> List.enum |> of_enum |> enum_from 0 |> List.of_enum) \
+    [1;2;4;5]
+  ([1;4;2;5] |> List.enum |> of_enum |> enum_from 3 |> List.of_enum) \
+    [4;5]
+  ([1;4;2;5] |> List.enum |> of_enum |> enum_from 4 |> List.of_enum) \
+    [4;5]
+  ([1;4;2;5] |> List.enum |> of_enum |> enum_from 5 |> List.of_enum) \
+    [5]
+  ([1;4;2;5] |> List.enum |> of_enum |> enum_from 6 |> List.of_enum) \
+    []
+*)
+
+(*$= backwards_from & ~printer:dump
+  (empty |> backwards_from 1 |> List.of_enum) []
+  (singleton 1 |> backwards_from 1 |> List.of_enum) [1]
+  (singleton 1 |> backwards_from 2 |> List.of_enum) [1]
+  (singleton 1 |> backwards_from 0 |> List.of_enum) []
+  ([1;4;2;5] |> List.enum |> of_enum |> backwards_from 4 |> List.of_enum) \
+    [4;2;1]
+  ([1;4;2;5] |> List.enum |> of_enum |> backwards_from 3 |> List.of_enum) \
+    [2;1]
+  ([1;4;2;5] |> List.enum |> of_enum |> backwards_from 2 |> List.of_enum) \
+    [2;1]
 *)
 
 let print ?first ?last ?sep print_elt out s =
