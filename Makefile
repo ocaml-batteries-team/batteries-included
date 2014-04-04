@@ -170,6 +170,13 @@ _build/$(QTESTDIR)/all_tests.native: $(QTESTDIR)/all_tests.ml
 # $ make qtest TESTABLE=foo.ml
 # will only test the module Foo.
 
+qtest-byte-clean:
+	@${RM} $(QTESTDIR)/all_tests.ml
+	@${MAKE} _build/$(QTESTDIR)/all_tests.byte
+
+qtest-byte: prefilter qtest-byte-clean
+	@_build/$(QTESTDIR)/all_tests.byte
+
 qtest-clean:
 	@${RM} $(QTESTDIR)/all_tests.ml
 	@${MAKE} _build/$(QTESTDIR)/all_tests.$(EXT)
