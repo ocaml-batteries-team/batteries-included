@@ -380,6 +380,31 @@ struct
     | Node (l, (k, v), r) ->
       rev_cons_enum r (More (k, v, l, e))
 
+  (* see batMap.ml:iter_from for comments *)
+  let iter_from x map =
+    let rec loop m e = match m with
+      | Empty -> e
+      | Node (l, (k, v), r) ->
+        let c = Ord.compare x k in
+        if c > 0 then loop r e
+        else
+          let e = More (k, v, r, e) in
+          if c = 0 then e
+          else loop l e
+    in loop map End
+
+  let rev_iter_from x map =
+    let rec loop m e = match m with
+      | Empty -> e
+      | Node (l, (k, v), r) ->
+        let c = Ord.compare x k in
+        if c < 0 then loop l e
+        else
+          let e = More (k, v, l, e) in
+          if c = 0 then e
+          else loop l e
+    in loop map End
+
   let compare cmp (Map tr1) (Map tr2) =
     let rec aux e1 e2 = match (e1, e2) with
       | (End, End) -> 0
@@ -418,6 +443,9 @@ struct
 
   let enum (Map tr) = enum_bst cons_enum (cons_enum tr End)
   let backwards (Map tr) = enum_bst rev_cons_enum (rev_cons_enum tr End)
+
+  let enum_from k (Map tr) = enum_bst cons_enum (iter_from k tr)
+  let backwards_from k (Map tr) = enum_bst rev_cons_enum (rev_iter_from k tr)
 
   let keys m = Enum.map fst (enum m)
   let values m = Enum.map snd (enum m)

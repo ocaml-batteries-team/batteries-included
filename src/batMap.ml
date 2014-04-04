@@ -255,8 +255,6 @@ module Concrete = struct
       else
         let (lr, pres, rr) = split key cmp r in (join l x d lr, pres, rr)
 
-  type ('key,'a) iter = E | C of 'key * 'a * ('key,'a) map * ('key,'a) iter
-
   let cardinal map =
     let rec loop acc = function
       | Empty -> acc
@@ -272,6 +270,12 @@ module Concrete = struct
   let bindings s =
     bindings_aux [] s
 
+  (* [C(k, v, s, t)] represents the iterator that will first produce
+     [(k,v)], then all the bindings in the subtree [s], then continue with
+     the bindings of the iterator [t] *)
+  type ('key,'a) iter = E | C of 'key * 'a * ('key,'a) map * ('key,'a) iter
+
+  (* add the tree [s] to the front of the iterator [t] *)
   let rec cons_iter s t = match s with
     | Empty -> t
     | Node (l, k, v, r, _) -> cons_iter l (C (k, v, r, t))
@@ -279,6 +283,35 @@ module Concrete = struct
   let rec rev_cons_iter s t = match s with
     | Empty -> t
     | Node (l, k, v, r, _) -> rev_cons_iter r (C (k, v, l, t))
+
+  let iter_from x cmp map =
+    (* iterates on all the bindings of [s] with key at least [x],
+       then continue with iterator [t] *)
+    let rec loop s t = match s with
+      | Empty -> t
+      | Node (l, k, v, r, _) ->
+        let c = cmp x k in
+        (* if (x > k), look in the right subtree *)
+        if c > 0 then loop r t
+        else
+          let t = C (k, v, r, t) in
+          (* if (x = k), start from the current element *)
+          if c = 0 then t
+          (* if (x < k), prepend values from the left subtree *)
+          else loop l t
+    in loop map E
+
+  let rev_iter_from x cmp map =
+    let rec loop s t = match s with
+      | Empty -> t
+      | Node (l, k, v, r, _) ->
+        let c = cmp x k in
+        if c < 0 then loop l t
+        else
+          let t = C (k, v, l, t) in
+          if c = 0 then t
+          else loop r t
+    in loop map E
 
   let rec enum_next l () = match !l with
       E -> raise BatEnum.No_more_elements
@@ -294,19 +327,21 @@ module Concrete = struct
       | C (_, _, m, t) -> aux (n + 1 + cardinal m) t
     in aux 0 !l
 
-  let enum t =
-    let rec make l =
-      let l = ref l in
-      let clone() = make !l in
-      BatEnum.make ~next:(enum_next l) ~count:(enum_count l) ~clone
-    in make (cons_iter t E)
+  let rec enum_of_iter l =
+    let l = ref l in
+    let clone() = enum_of_iter !l in
+    BatEnum.make ~next:(enum_next l) ~count:(enum_count l) ~clone
 
-  let backwards t =
-    let rec make l =
-      let l = ref l in
-      let clone() = make !l in
-      BatEnum.make ~next:(enum_backwards_next l) ~count:(enum_count l) ~clone
-    in make (rev_cons_iter t E)
+  let rec enum_of_rev_iter l =
+    let l = ref l in
+    let clone() = enum_of_rev_iter !l in
+    BatEnum.make ~next:(enum_backwards_next l) ~count:(enum_count l) ~clone
+
+  let enum t = enum_of_iter (cons_iter t E)
+  let enum_from k cmp t = enum_of_iter (iter_from k cmp t)
+
+  let backwards t = enum_of_rev_iter (rev_cons_iter t E)
+  let backwards_from k cmp t = enum_of_rev_iter (rev_iter_from k cmp t)
 
   let keys    t = BatEnum.map fst (enum t)
   let values  t = BatEnum.map snd (enum t)
@@ -678,8 +713,10 @@ sig
   val partition : (key -> 'a -> bool) -> 'a t -> 'a t * 'a t
   val singleton : key -> 'a -> 'a t
   val bindings : 'a t -> (key * 'a) list
-  val enum  : 'a t -> (key * 'a) BatEnum.t
-  val backwards  : 'a t -> (key * 'a) BatEnum.t
+  val enum : 'a t -> (key * 'a) BatEnum.t
+  val enum_from : key -> 'a t -> (key * 'a) BatEnum.t
+  val backwards : 'a t -> (key * 'a) BatEnum.t
+  val backwards_from : key -> 'a t -> (key * 'a) BatEnum.t
   val of_enum: (key * 'a) BatEnum.t -> 'a t
   val for_all: (key -> 'a -> bool) -> 'a t -> bool
   val exists: (key -> 'a -> bool) -> 'a t -> bool
@@ -744,6 +781,9 @@ struct
   let backwards t = Concrete.backwards (impl_of_t t)
   let keys t = Concrete.keys (impl_of_t t)
   let values t = Concrete.values (impl_of_t t)
+
+  let enum_from k t = Concrete.enum_from k Ord.compare (impl_of_t t)
+  let backwards_from k t = Concrete.backwards_from k Ord.compare (impl_of_t t)
 
   let of_enum e = t_of_impl (Concrete.of_enum Ord.compare e)
 
@@ -888,6 +928,57 @@ let foldi = Concrete.foldi
 *)
 
 let enum = Concrete.enum
+let backwards = Concrete.backwards
+
+(*$T enum
+  empty |> enum |> Enum.is_empty
+  (singleton 1 1 |> enum |> List.of_enum) = [(1,1)]
+  ([(1,1);(4,4);(2,2);(5,5)] |> List.enum |> of_enum |> enum |> List.of_enum) \
+  = [(1,1);(2,2);(4,4);(5,5)]
+*)
+
+(*$T backwards
+  empty |> backwards |> Enum.is_empty
+  (singleton 1 1 |> backwards |> List.of_enum) = [(1,1)]
+  ([(1,1);(4,4);(2,2);(5,5)] |> List.enum |> of_enum |> backwards |> List.of_enum) \
+  = List.rev [(1,1);(2,2);(4,4);(5,5)]
+*)
+
+let enum_from k t = Concrete.enum_from k Pervasives.compare t
+let backwards_from k t = Concrete.backwards_from k Pervasives.compare t
+
+(*$= enum_from & ~printer:dump
+  (empty |> enum_from 1 |> List.of_enum) []
+  (singleton 1 1 |> enum_from 1 |> List.of_enum)  [(1,1)]
+  (singleton 1 1 |> enum_from 2 |> List.of_enum)  []
+  (singleton 1 1 |> enum_from 0 |> List.of_enum)  [(1,1)]
+  ([(1,1);(4,4);(2,2);(5,5)] |> List.enum |> of_enum |> enum_from 0 |> List.of_enum) \
+    [(1,1);(2,2);(4,4);(5,5)]
+  ([(1,1);(4,4);(2,2);(5,5)] |> List.enum |> of_enum |> enum_from 3 |> List.of_enum) \
+    [(4,4);(5,5)]
+  ([(1,1);(4,4);(2,2);(5,5)] |> List.enum |> of_enum |> enum_from 4 |> List.of_enum) \
+    [(4,4);(5,5)]
+  ([(1,1);(4,4);(2,2);(5,5)] |> List.enum |> of_enum |> enum_from 5 |> List.of_enum) \
+    [(5,5)]
+  ([(1,1);(4,4);(2,2);(5,5)] |> List.enum |> of_enum |> enum_from 6 |> List.of_enum) \
+    []
+*)
+
+(*$= backwards_from & ~printer:dump
+  (empty |> backwards_from 1 |> List.of_enum) []
+  (singleton 1 1 |> backwards_from 1 |> List.of_enum) [(1,1)]
+  (singleton 1 1 |> backwards_from 2 |> List.of_enum) [(1,1)]
+  (singleton 1 1 |> backwards_from 0 |> List.of_enum) []
+  ([(1,1);(4,4);(2,2);(5,5)] |> List.enum |> of_enum |> backwards_from 4 |> List.of_enum) \
+    [(4,4);(2,2);(1,1)]
+  ([(1,1);(4,4);(2,2);(5,5)] |> List.enum |> of_enum |> backwards_from 3 |> List.of_enum) \
+    [(2,2);(1,1)]
+  ([(1,1);(4,4);(2,2);(5,5)] |> List.enum |> of_enum |> backwards_from 2 |> List.of_enum) \
+    [(2,2);(1,1)]
+*)
+
+let keys    t = BatEnum.map fst (enum t)
+let values  t = BatEnum.map snd (enum t)
 
 (*$Q keys
   (Q.list Q.small_int) (fun xs -> \
@@ -895,11 +986,6 @@ let enum = Concrete.enum
     empty xs |> keys |> List.of_enum \
   = List.sort_unique Int.compare xs)
 *)
-
-let backwards = Concrete.backwards
-
-let keys    t = BatEnum.map fst (enum t)
-let values  t = BatEnum.map snd (enum t)
 
 let of_enum e = Concrete.of_enum Pervasives.compare e
 
@@ -1071,6 +1157,9 @@ module PMap = struct (*$< PMap *)
     (create Int.compare) xs |> keys |> List.of_enum \
     = List.sort_unique Int.compare xs)
   *)
+
+  let enum_from k t = Concrete.enum_from k t.cmp t.map
+  let backwards_from k t = Concrete.backwards_from k t.cmp t.map
 
   let backwards t = Concrete.backwards t.map
 

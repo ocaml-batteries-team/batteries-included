@@ -250,11 +250,19 @@ sig
       to the ordering [Ord.compare], where [Ord] is the argument given to
       {!Map.Make}. *)
 
+  val enum_from : key -> 'a t -> (key * 'a) BatEnum.t
+  (** [enum_from k t] return an enumeration as [enum], but starting from
+      the first key equal or greater than [k] *)
+
   val backwards  : 'a t -> (key * 'a) BatEnum.t
   (** Return an enumeration of (key, value) pairs of a map.
       The returned enumeration is sorted in decreasing order with respect
-      to the ordering [Ord.compare], where [Ord] is the argument given to
+      to the ordering {!Ord.compare}, where [Ord] is the argument given to
       {!Map.Make}. *)
+
+  val backwards_from : key -> 'a t -> (key * 'a) BatEnum.t
+  (** [backwards_from k t] return an enumeration as [backward], but
+      starting from the last key smaller or equal to [k] *)
 
   val of_enum: (key * 'a) BatEnum.t -> 'a t
   (** Create a map from a (key, value) enumeration. *)
@@ -464,8 +472,16 @@ val max_binding : ('key, 'a) t -> ('key * 'a)
 val enum : ('a, 'b) t -> ('a * 'b) BatEnum.t
 (** creates an enumeration for this map, enumerating key,value pairs with the keys in increasing order. *)
 
+val enum_from : 'a -> ('a, 'b) t -> ('a * 'b) BatEnum.t
+(** [enum_from k t] return an enumeration as [enum], but starting from
+    the first key equal or greater than [k] *)
+
 val backwards  : ('a,'b) t -> ('a * 'b) BatEnum.t
 (** creates an enumeration for this map, enumerating key,value pairs with the keys in decreasing order. *)
+
+val backwards_from : 'a -> ('a, 'b) t -> ('a * 'b) BatEnum.t
+(** [enum_from k t] return an enumeration as [enum], but starting from
+    the first key equal or greater than [k] *)
 
 val keys : ('a,'b) t -> 'a BatEnum.t
 (** Return an enumeration of all the keys of a map.*)

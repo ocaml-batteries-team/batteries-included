@@ -111,6 +111,8 @@ module TestMap
     val bindings : 'a m -> (key * 'a) list
     val enum : 'a m -> (key * 'a) BatEnum.t
     val backwards : 'a m -> (key * 'a) BatEnum.t
+    val enum_from : key -> 'a m -> (key * 'a) BatEnum.t
+    val backwards_from : key -> 'a m -> (key * 'a) BatEnum.t
     val of_enum : (key * 'a) BatEnum.t -> 'a m
     val bindings : 'a m -> (key * 'a) list
 
@@ -433,6 +435,23 @@ module TestMap
         M.bindings %> BatList.enum, "enum bindings";
       ]
 
+  let test_froms () =
+    (* test enum_from, backwards_from *)
+    let test_from f name comp compname elem t =
+      eq ~msg:(Printf.sprintf "of_enum (%s %d t) = filter (_ %s %d) t"
+                 name elem compname elem)
+        BatInt.compare BatInt.print
+        (M.of_enum (f elem t)) (M.filter (fun k _v -> comp k elem) t) in
+    List.iter (fun (f,name,comp,compname) ->
+      List.iter (fun elem ->
+        test_from f name comp compname elem
+          (il [(0,1); (1,2); (3,4); (4,5)])
+      ) [(-1);0;1;2;3;4;5]
+    ) [
+      M.enum_from, "enum_from", (>=), ">=";
+      M.backwards_from, "backwards_from", (<=), "<="
+    ]
+
   let reindex (f : M.key -> 'a -> 'b) : 'a -> 'b =
     let count = ref (-1) in
     fun x -> incr count; f !count x
@@ -576,6 +595,7 @@ module TestMap
     "test_for_all_exists" >:: test_for_all_exists;
     "test_print" >:: test_print;
     "test_enums" >:: test_enums;
+    "test_froms" >:: test_froms;
     "test_iterators" >:: test_iterators;
     "test_pop" >:: test_pop;
     "test_extract" >:: test_extract;
