@@ -161,6 +161,13 @@ val mid : int -> int -> int
     the number.  Maybe has problems with negative numbers *)
 val popcount : int -> int
 
+val copysign : int -> int -> int
+(** [copysign n o] multiplies [o] by the "sign" of [n], i.e. it returns either:
+    - [0] if [n=0]
+    - [o] if [n>0]
+    - [-o] if [n<0]
+*)
+
 (**/**)
 
 val popcount_sparse : int -> int
