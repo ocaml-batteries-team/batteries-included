@@ -1340,7 +1340,14 @@ let flatten = concat
   flatten (map singleton @@ List.enum [1;2;3]) |> List.of_enum = [1;2;3]
 *)
 
-let concat_map f e = concat (map f e)
+let rec concat_map f t =
+  let tn = ref (empty ()) in
+  let rec next () =
+    try (!tn).next ()
+    with No_more_elements -> tn := f (t.next()); next()
+  in
+  let clone () = append ((!tn).clone()) (concat_map f (t.clone())) in
+  from2 next clone
 
 (*$T concat_map
   (1 -- 10 |> concat_map (fun x -> List.enum [x;-x]) |> sum) = 0

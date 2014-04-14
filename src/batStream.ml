@@ -151,6 +151,16 @@ let rec concat ss =
          Stream.iapp p (Stream.slazy (fun _ -> concat ss)))
       | _ -> Stream.sempty)
 
+let rec concat_map f l =
+  Stream.slazy
+    (fun () ->
+       match Stream.peek l with
+         | Some p ->
+             let p' = f p in
+             Stream.junk l;
+             Stream.iapp p' (Stream.slazy (fun () -> concat_map f l))
+         | None -> Stream.sempty)
+
 let rec filter f s =
   Stream.slazy
     (fun _ ->
