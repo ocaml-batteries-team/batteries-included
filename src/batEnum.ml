@@ -849,11 +849,18 @@ let dup t      = (t, t.clone())
     List.enum l |> dup |> Tuple2.mapn List.of_enum |> Tuple2.uncurry (=))
 *)
 
+let min_count x y =
+  let count x = try Some (x.count ()) with Infinite_enum -> None in
+  match count x, count y with
+    | None, None -> raise Infinite_enum
+    | Some c, None | None, Some c -> c
+    | Some c1, Some c2 -> min c1 c2
+
 let combine (x,y) =
   if x.fast && y.fast then (*Optimized case*)
     let rec aux (x,y) =
       {
-        count = (fun () -> min (x.count ()) (y.count ())) ;
+        count = (fun () -> min_count x y)                 ;
         next  = (fun () -> (x.next(), y.next()))          ;
         clone = (fun () -> aux (x.clone(), y.clone()))    ;
         fast  = true
@@ -864,6 +871,10 @@ let combine (x,y) =
 (*$T
   combine (List.enum [1;2;3], List.enum ["a";"b"]) \
     |> List.of_enum = [1, "a"; 2, "b"]
+  combine (List.enum [1;2;3], repeat "a") \
+    |> List.of_enum = [1,"a"; 2,"a"; 3,"a"]
+  combine (List.enum [1;2;3], repeat "a") \
+    |> Enum.count = 3
 *)
 
 let uncombine e =
