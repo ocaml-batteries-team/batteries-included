@@ -184,24 +184,15 @@ let length h = (h_conv h).size
 let is_empty h = length h = 0
 
 let modify_opt key f h =
-  let hc = h_conv h in
-  let rec loop = function
-    | Empty ->
-      (match f None with
-       | None    -> Empty
-       | Some v' -> hc.size <- succ hc.size;
-         Cons(key,v',Empty))
-    | Cons(k,v,next) ->
-      if k = key then (
-        match f (Some v) with
-        | Some v' -> Cons(k,v',next)
-        | None    -> hc.size <- pred hc.size;
-          next
-      ) else
-        Cons(k,v,loop next)
-  in
-  let pos = (hash key) mod (Array.length hc.data) in
-  Array.unsafe_set hc.data pos (loop (Array.unsafe_get hc.data pos))
+  match find_option h key with
+  | Some _ as v ->
+     (match f v with
+      | Some v' -> replace h key v'
+      | None -> remove h key)
+  | None ->
+     (match f None with
+      | Some v -> add h key v
+      | None -> ())
 
 (*$T modify_opt
   let h = create 3 in \
@@ -237,19 +228,9 @@ let modify key f h =
 *)
 
 let modify_def v0 key f h =
-  let hc = h_conv h in
-  let rec loop = function
-    | Empty ->
-      hc.size <- succ hc.size;
-      Cons(key,f v0,Empty)
-    | Cons(k,v,next) ->
-      if k = key then (
-        Cons(k,f v,next)
-      ) else
-        Cons(k,v,loop next)
-  in
-  let pos = (hash key) mod (Array.length hc.data) in
-  Array.unsafe_set hc.data pos (loop (Array.unsafe_get hc.data pos))
+  match find_option h key with
+  | None -> add h key (f v0)
+  | Some v -> replace h key (f v)
 
 (*$T modify_def
   let h = create 3 in \
@@ -610,24 +591,15 @@ struct
     result
 
   let modify_opt key f h =
-    let hc = h_conv (to_hash h) in
-    let rec loop = function
-      | Empty ->
-        (match f None with
-         | None    -> Empty
-         | Some v' -> hc.size <- succ hc.size;
-           Cons(key,v',Empty))
-      | Cons(k,v,next) ->
-        if H.equal k key then (
-          match f (Some v) with
-          | Some v' -> Cons(k,v',next)
-          | None    -> hc.size <- pred hc.size;
-            next
-        ) else
-          Cons(k,v,loop next)
-    in
-    let pos = (H.hash key) mod (Array.length hc.data) in
-    Array.unsafe_set hc.data pos (loop (Array.unsafe_get hc.data pos))
+    match find_option h key with
+    | Some _ as v ->
+       (match f v with
+        | Some v' -> replace h key v'
+        | None -> remove h key)
+    | None ->
+       (match f None with
+        | Some v -> add h key v
+        | None -> ())
 
   let modify key f h =
     let hc = h_conv (to_hash h) in
@@ -643,19 +615,9 @@ struct
     Array.unsafe_set hc.data pos (loop (Array.unsafe_get hc.data pos))
 
   let modify_def v0 key f h =
-    let hc = h_conv (to_hash h) in
-    let rec loop = function
-      | Empty ->
-        hc.size <- succ hc.size;
-        Cons(key,f v0,Empty)
-      | Cons(k,v,next) ->
-        if H.equal k key then (
-          Cons(k,f v,next)
-        ) else
-          Cons(k,v,loop next)
-    in
-    let pos = (H.hash key) mod (Array.length hc.data) in
-    Array.unsafe_set hc.data pos (loop (Array.unsafe_get hc.data pos))
+    match find_option h key with
+    | None -> add h key (f v0)
+    | Some v -> replace h key (f v)
 
   module Labels =
   struct
