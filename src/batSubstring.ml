@@ -251,10 +251,23 @@ let fields p (str, off, len) =
 
 let fold_left f init (str, off, len) =
   let rec loop i result =
-    if i = len then result
+    if (i-off) = len then result
     else loop (i + 1) (f result str.[i])
   in
   loop off init
+(*$T
+   fold_left (fun a c -> c::a) [] (substring "foobar" 1 3)=['b';'o';'o']
+*)
+
+let fold_lefti f init (str, off, len) = 
+  let rec loop i result = 
+    if (i-off) = len then result
+    else loop (i + 1) (f result (i-off) str.[i]) 
+  in loop off init
+(*
+   fold_lefti (fun a i _ -> a+i) 0 (substring "foobar" 1 3) = 3
+   fold_lefti (fun a i _ -> a+i) 1 (empty ()) = 1
+*)
 
 let fold_right f (str, off, len) init =
   let rec loop i result =
@@ -262,6 +275,22 @@ let fold_right f (str, off, len) init =
     else loop (i - 1) (f str.[i-1] result)
   in
   loop (off+len) init
+(*$T
+   fold_right (fun c a -> c::a) (substring "foobar" 0 3) []=['f';'o';'o']
+*)
+
+let fold_righti f (str, off, len) init = 
+  let rec loop i result = 
+    if i = off then result 
+    else 
+      let i' = i - 1 in 
+      loop (i - 1) (f (i' - off) str.[i'] result)
+  in loop (off+len) init
+
+(*$T
+   fold_righti (fun i _ a -> a+i) (substring "foobar" 1 4) 0 = 6
+   fold_righti (fun i _ a -> a+i) (empty ()) 12 = 12
+*)
 
 let iter f (str, off, len) =
   for i = off to off+len-1 do
