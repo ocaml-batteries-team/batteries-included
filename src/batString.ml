@@ -564,6 +564,17 @@ let fold_left f init str =
    fold_left max 'a' "apples" = 's'
 *)
 
+let fold_lefti f init str = 
+  let n = String.length str in 
+  let rec loop i result = 
+    if i = n then result
+    else loop (i + 1) (f result i str.[i])
+  in loop 0 init
+(*$T fold_lefti
+   fold_lefti (fun a i c->(i,c)::a) [] "foo"=[(2,'o');(1,'o');(0,'f')]
+   fold_lefti (fun a i _->i+a) 0 "" = 0
+*)
+
 
 let fold_right f str init =
   let n = String.length str in
@@ -577,6 +588,19 @@ let fold_right f str init =
 (*$T fold_right
    fold_right List.cons "foo" [] = ['f';'o';'o']
    fold_right (fun c a -> if c = ' ' then a+1 else a) "a b c" 0 = 2
+*)
+
+let fold_righti f str init = 
+  let n = String.length str in 
+  let rec loop i result = 
+    if i = 0 then result
+    else 
+      let i' = i - 1 in 
+      loop i' (f i' str.[i'] result)
+  in loop n init
+(*$T fold_righti
+   fold_righti (fun i c a->(i,c)::a) "foo" []=[(0,'f');(1,'o');(2,'o')]
+   fold_righti (fun i _ a -> a + i) "" 0 = 0
 *)
 
 let iteri f str =

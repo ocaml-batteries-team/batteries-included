@@ -370,6 +370,9 @@ val fold_left : ('a -> char -> 'a) -> 'a -> string -> 'a
     [String.fold_left max 'a' "apples" = 's']
 *)
 
+val fold_lefti : ('a -> int -> char -> 'a) -> 'a -> string -> 'a
+(** As [fold_left], but with the index of the element as additional argument *)
+
 val fold_right : (char -> 'a -> 'a) -> string -> 'a -> 'a
 (** [fold_right f s b] is
     [f s.[0] (f s.[1] (... (f s.[n-1] b) ...))]
@@ -377,6 +380,9 @@ val fold_right : (char -> 'a -> 'a) -> string -> 'a -> 'a
     Examples: [String.fold_right List.cons "foo" [] = ['f';'o';'o']]
     [String.fold_right (fun c a -> if c = ' ' then a+1 else a) "a b c" 0 = 2]
 *)
+
+val fold_righti : (int -> char -> 'a -> 'a) -> string -> 'a -> 'a
+(** As [fold_right], but with the index of the element as additional argument *)
 
 val filter : (char -> bool) -> string -> string
 (** [filter f s] returns a copy of string [s] in which only
