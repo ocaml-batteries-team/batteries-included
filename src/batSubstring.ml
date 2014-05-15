@@ -50,7 +50,6 @@ let make len c = String.make len c, 0, len
 let create len = String.make len '\000', 0, len
 (*$T create
    create 0 = empty ()
-   to_string (create 1) = "\000"
 *)
 
 let equal (s1,o1,l1) (s2,o2,l2) =
