@@ -828,19 +828,30 @@ let while_do cont f e =
 
 let break test e = span (fun x -> not (test x)) e
 
-let uniq e =
+let uniq_by cmp e =
   match peek e with
     None -> empty ()
   | Some first ->
     let prev = ref first in
-    let not_last x = (BatRef.post prev (fun _ -> x)) <> x in
+    let not_last x = not (cmp (BatRef.post prev (fun _ -> x)) x) in
     let result = filter not_last e in
     push result first;
     result
 
+let uniq e =
+  uniq_by (=) e
+
+let uniqq e =
+  uniq_by (==) e
+
+
 (*$T
   List.enum [1;1;2;3;3;2] |> uniq |> List.of_enum = [1;2;3;2]
+  List.enum [1;1;2;3;3;2] |> uniqq |> List.of_enum = [1;2;3;2]
   List.enum ["a";"a";"b";"c";"c";"b"] |> uniq |> List.of_enum = ["a";"b";"c";"b"]
+  List.enum ["a";"A";"b";"c";"C";"b"] \
+    |> uniq_by (fun a b -> String.lowercase a = String.lowercase b) \
+    |> List.of_enum = ["a";"b";"c";"b"]
 *)
 
 let dup t      = (t, t.clone())
@@ -1408,6 +1419,7 @@ module Labels = struct
   let seq ~init ~f ~cnd  = seq init f cnd
   let unfold ~init ~f = unfold init f
   let compare ?(cmp=Pervasives.compare) t u = compare cmp t u
+  let uniq ?(cmp=(=)) x = uniq_by cmp x
   module LExceptionless = struct
     include Exceptionless
     let find ~f e = find f e

@@ -585,6 +585,14 @@ val uniq : 'a t -> 'a t
     omitted (similar to unix's [uniq] command).
     It uses structural equality to compare consecutive elements. *)
 
+val uniqq : 'a t -> 'a t
+(** [uniqq e] behaves as [uniq e] except it uses physical equality
+    to compare consecutive elements. *)
+
+val uniq_by : ('a -> 'a -> bool) -> 'a t -> 'a t
+(** [uniqq cmp e] behaves as [uniq e] except it allows to specify a
+    comparison function. *)
+
 val switch : ('a -> bool) -> 'a t -> 'a t * 'a t
 (** [switch test enum] splits [enum] into two enums, where the first enum have
     all the elements satisfying [test], the second enum is opposite. The
@@ -834,6 +842,7 @@ module Labels : sig
   val init:       int -> f:(int -> 'a) -> 'a t
   val switch:     f:('a -> bool) -> 'a t -> 'a t * 'a t
   val compare:    ?cmp:('a -> 'a -> int) -> 'a t -> 'a t -> int
+  val uniq:       ?cmp:('a -> 'a -> bool) -> 'a t -> 'a t
 
   module LExceptionless : sig
     val find : f:('a -> bool) -> 'a t -> 'a option
