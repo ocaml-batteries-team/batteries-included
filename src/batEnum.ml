@@ -833,13 +833,14 @@ let uniq e =
     None -> empty ()
   | Some first ->
     let prev = ref first in
-    let not_last x = (BatRef.post prev (fun _ -> x)) != x in
+    let not_last x = (BatRef.post prev (fun _ -> x)) <> x in
     let result = filter not_last e in
     push result first;
     result
 
 (*$T
   List.enum [1;1;2;3;3;2] |> uniq |> List.of_enum = [1;2;3;2]
+  List.enum ["a";"a";"b";"c";"c";"b"] |> uniq |> List.of_enum = ["a";"b";"c";"b"]
 *)
 
 let dup t      = (t, t.clone())

@@ -582,8 +582,8 @@ val merge : ('a -> 'a -> bool) -> 'a t -> 'a t -> 'a t
 
 val uniq : 'a t -> 'a t
 (** [uniq e] returns a duplicate of [e] with repeated values
-    omitted. (similar to unix's [uniq] command)
-    It uses physical equality to compare consecutive elements. *)
+    omitted (similar to unix's [uniq] command).
+    It uses structural equality to compare consecutive elements. *)
 
 val switch : ('a -> bool) -> 'a t -> 'a t * 'a t
 (** [switch test enum] splits [enum] into two enums, where the first enum have
