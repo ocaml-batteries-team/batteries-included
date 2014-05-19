@@ -587,11 +587,15 @@ val uniq : 'a t -> 'a t
 
 val uniqq : 'a t -> 'a t
 (** [uniqq e] behaves as [uniq e] except it uses physical equality
-    to compare consecutive elements. *)
+    to compare consecutive elements.
+
+    @since 2.4.0 *)
 
 val uniq_by : ('a -> 'a -> bool) -> 'a t -> 'a t
 (** [uniqq cmp e] behaves as [uniq e] except it allows to specify a
-    comparison function. *)
+    comparison function.
+
+    @since 2.4.0 *)
 
 val switch : ('a -> bool) -> 'a t -> 'a t * 'a t
 (** [switch test enum] splits [enum] into two enums, where the first enum have
