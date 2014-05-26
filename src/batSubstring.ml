@@ -189,6 +189,12 @@ let slice (str,off,len) off2 len2_opt =
    is_empty (slice (substring "foobar" 0 3) 3 None) = true
 *)
 
+let sub s pos len = slice s pos (Some (len - pos))
+(*T sub
+  to_string (sub (of_string "testing") 1 4) = (String.sub "testing" 1 4)
+  to_string (sub (substring "foobar" 1 4) 0 2) = "oo"
+*)
+
 let concat ssl =
   let len = List.fold_left (fun acc (_,_,l) ->acc+l) 0 ssl in
   let item = String.create len in

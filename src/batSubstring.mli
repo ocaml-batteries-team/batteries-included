@@ -109,6 +109,13 @@ val slice : t -> int -> int option -> t
     where [sus] = [(s, i, n)].  @raise Invalid_argument if [i' < 0]
     or [n' < 0] or [i'+n' >= n].
 *)
+
+val sub : t -> int -> int -> t
+(** [sub sus i' n'] returns the substring [(s, i+i', i+i'+n')],
+    where [sus] = [(s, i, n)].  @raise Invalid_argument if [i' < 0]
+    or [n' < 0] or [i+i'+n' >= n].
+*)
+
 val concat : t list -> string
 (** [concat suss] returns a string consisting of the concatenation of
     the substrings.  Equivalent to [String.concat (List.map to_string
