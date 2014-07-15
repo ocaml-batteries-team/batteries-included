@@ -67,7 +67,8 @@ endif
 
 PREPROCESSED_FILES = src/batMarshal.mli src/batUnix.mli src/batPervasives.mli \
 		     src/batInnerPervasives.ml src/batHashtbl.ml \
-		     src/batPrintexc.mli src/batSys.mli src/batBigarray.mli
+		     src/batPrintexc.mli src/batPrintf.ml src/batPrintf.mli \
+			 src/batSys.mli src/batBigarray.mli
 
 .PHONY: all clean doc install uninstall reinstall test qtest qtest-clean camfail camfailunk coverage man
 
