@@ -868,8 +868,8 @@ let min_count x y =
     | Some c, None | None, Some c -> c
     | Some c1, Some c2 -> min c1 c2
 
-let combine (x,y) =
-  if x.fast && y.fast then (*Optimized case*)
+let combine x y =
+  if x.fast && y.fast then (* Optimized case *)
     let rec aux (x,y) =
       {
         count = (fun () -> min_count x y)                 ;
@@ -881,11 +881,11 @@ let combine (x,y) =
   else from (fun () -> (x.next(), y.next()))
 
 (*$T
-  combine (List.enum [1;2;3], List.enum ["a";"b"]) \
+  combine (List.enum [1;2;3]) ( List.enum ["a";"b"]) \
     |> List.of_enum = [1, "a"; 2, "b"]
-  combine (List.enum [1;2;3], repeat "a") \
+  combine (List.enum [1;2;3]) ( repeat "a") \
     |> List.of_enum = [1,"a"; 2,"a"; 3,"a"]
-  combine (List.enum [1;2;3], repeat "a") \
+  combine (List.enum [1;2;3]) ( repeat "a") \
     |> Enum.count = 3
 *)
 
