@@ -10,7 +10,14 @@ Changelog
 - BatArray: add split : 'a BatOrd.ord -> 'a array -> 'a -> int * int
   search for the range equal to a given element in a sorted array
   #443, #470
-  (Simon Cruanes, Gabriel Scherer, request by Francois Berenger)
+  (Simon Cruanes, Gabriel Scherer, request by François Berenger)
+- BatEnum: BatEnum.combine is now curried, just like List.combine,
+  its signature changes from:
+    val combine: 'a t * 'b t -> ('a * 'b) t
+  to
+    val combine: 'a t -> 'b t -> ('a * 'b) t
+  #578
+  (François Berenger)
 
 ## NEXT_RELEASE (minor release)
 
