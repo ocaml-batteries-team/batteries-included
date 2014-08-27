@@ -56,14 +56,10 @@ module Sformat = struct
   let add_int_index i idx = index_of_int (i + int_of_index idx);;
   let succ_index = add_int_index 1;;
 
-  external length : ('a, 'b, 'c, 'd, 'e, 'f) format6 -> int
-    = "%string_length";;
-  external get : ('a, 'b, 'c, 'd, 'e, 'f) format6 -> int -> char
-    = "%string_safe_get";;
-  external unsafe_get : ('a, 'b, 'c, 'd, 'e, 'f) format6 -> int -> char
-    = "%string_unsafe_get";;
-  external unsafe_to_string : ('a, 'b, 'c, 'd, 'e, 'f) format6 -> string
-    = "%identity";;
+  let length fmt = String.length (string_of_format fmt)
+  let get fmt i = String.get (string_of_format fmt) i
+  let unsafe_get fmt i = String.unsafe_get (string_of_format fmt) i
+  let unsafe_to_string = string_of_format
   let sub fmt idx len =
     String.sub (unsafe_to_string fmt) (int_of_index idx) len;;
   let to_string fmt = sub fmt (unsafe_index_of_int 0) (length fmt);;
