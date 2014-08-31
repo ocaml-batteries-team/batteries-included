@@ -1,6 +1,47 @@
 Changelog
 ---------
 
+## v2.3.0
+
+- improved test coverage
+  (Simon Cruanes and Xavier Van de Woestyne)
+- Enum: bugfix in clamp
+  (Simon Cruanes)
+- Stream: add concat_map
+  (Gabriel Radanne)
+- List: fix a stack-overflow bug in transpose
+  (Gabriel Scherer)
+- List: add unfold_exc : (unit -> a) -> 'a list * exn
+  (François Berenger)
+- List: add fold_righti and fold_lefti
+  (François Berenger)
+- Substring : fix fold_left, add fold_lefti, fold_righti
+  (Xavier Van de Woestyne)
+- String : add fold_lefti and fold_righti
+  (Xavier Van de Woestyne)
+- Set.Make: add of_list
+  (Jacques-Pascal Deplaix)
+- AvlTree: add (check : 'a tree -> bool) to check well-formedness
+  (Simon Cruanes)
+- Hashtbl: make modify_opt/def resize the table to preserve amortized costs
+  (Mads Hartmann, report by user 'jj-issuu')
+- Enum: fix combine's count in presence of infinite enums
+  (Gabriel Scherer, report by user 'mwnx')
+- Makefile: add a qtest-byte target
+  (Gabriel Scherer)
+- List: add modify_opt_at: int -> ('a -> 'a option) -> 'a list -> 'a list
+  (Gabriel Scherer)
+- List: add modify_at: int -> ('a -> 'a) -> 'a list -> 'a list
+  (Gabriel Scherer)
+- List: add remove_at: int -> 'a list -> 'a list
+  (François Berenger)
+- Int: add copysign
+  (Simon Cruanes)
+- Printf: CamlinternalPr for OCaml versions >= 4.02
+  (Ralf Vogler)
+- ensure compatibility with 4.02 (BatPrintf assumed (string = fmt))
+  (Gabriel Scherer)
+
 ## v2.2.0
 
 - cartesian product in batSet
