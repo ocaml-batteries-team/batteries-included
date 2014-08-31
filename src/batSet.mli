@@ -236,7 +236,7 @@ sig
   val of_list: elt list -> t
   (** builds a set from the given list.
 
-      @since NEXT_RELEASE
+      @since 2.3.0
   *)
 
 

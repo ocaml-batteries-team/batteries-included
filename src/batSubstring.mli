@@ -284,7 +284,10 @@ val fold_left : ('a -> char -> 'a) -> 'a -> t -> 'a
     [List.fold_left f e (explode sus)].  *)
 
 val fold_lefti : ('a -> int -> char -> 'a) -> 'a -> t -> 'a
-(** As [fold_left], but with the index of the element as additional argument *)
+(** As [fold_left], but with the index of the element as additional argument
+
+    @since 2.3.0
+*)
 
 val fold_right : (char -> 'a -> 'a) -> t -> 'a -> 'a
 (** [foldr f e sus] folds [f] over [sus] from right to left.  That is,
@@ -294,7 +297,10 @@ val fold_right : (char -> 'a -> 'a) -> t -> 'a -> 'a
 *)
 
 val fold_righti : (int -> char -> 'a -> 'a) -> t -> 'a -> 'a
-(** As [fold_right], but with the index of the element as additional argument *)
+(** As [fold_right], but with the index of the element as additional argument
+
+    @since 2.3.0
+*)
 
 val iter : (char -> unit) -> t -> unit
 (** [iter f sus] applies [f] to all characters of [sus], from left to

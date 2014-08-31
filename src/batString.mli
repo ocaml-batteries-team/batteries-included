@@ -371,7 +371,10 @@ val fold_left : ('a -> char -> 'a) -> 'a -> string -> 'a
 *)
 
 val fold_lefti : ('a -> int -> char -> 'a) -> 'a -> string -> 'a
-(** As [fold_left], but with the index of the element as additional argument *)
+(** As [fold_left], but with the index of the element as additional argument
+
+    @since 2.3.0
+*)
 
 val fold_right : (char -> 'a -> 'a) -> string -> 'a -> 'a
 (** [fold_right f s b] is
@@ -382,7 +385,10 @@ val fold_right : (char -> 'a -> 'a) -> string -> 'a -> 'a
 *)
 
 val fold_righti : (int -> char -> 'a -> 'a) -> string -> 'a -> 'a
-(** As [fold_right], but with the index of the element as additional argument *)
+(** As [fold_right], but with the index of the element as additional argument
+
+    @since 2.3.0
+*)
 
 val filter : (char -> bool) -> string -> string
 (** [filter f s] returns a copy of string [s] in which only
@@ -935,8 +941,10 @@ sig
   val map : (char -> char) -> [>`Read] t -> _ t
 
   val fold_left : ('a -> char -> 'a) -> 'a -> [> `Read] t -> 'a
+  val fold_lefti : ('a -> int -> char -> 'a) -> 'a -> [> `Read] t -> 'a
 
   val fold_right : (char -> 'a -> 'a) -> [> `Read] t -> 'a -> 'a
+  val fold_righti : (int -> char -> 'a -> 'a) -> [> `Read] t -> 'a -> 'a
 
   val filter : (char -> bool) -> [> `Read] t -> _ t
 

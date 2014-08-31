@@ -116,7 +116,7 @@ let extract s o = function
 let all = of_string
 
 let base s = s
-(*$T base 
+(*$T base
   base (substring "foobar" 1 3) = ("foobar", 1, 3)
 *)
 
@@ -206,7 +206,7 @@ let concat ssl =
 *)
 
 let explode (str,off,len) =
-  let rec exp i l = 
+  let rec exp i l =
     if i < off then l else exp (i - 1) (str.[i] :: l) in
   exp (off+len-1) []
 (*$T explode
@@ -242,7 +242,7 @@ let compare (str1, off1, len1) (str2, off2, len2) =
   loop 0
 (*$T compare
   compare (empty ()) (empty ()) = 0
-  compare (empty ()) (substring "foobar" 1 3) = -1 
+  compare (empty ()) (substring "foobar" 1 3) = -1
   compare (substring "foobar" 1 3) (empty ()) = 1
   compare (substring "foobar" 1 3) (substring "barfoo" 1 3) = 1
 *)
@@ -385,13 +385,13 @@ let span (str1, off1, _len1) (str2, off2, len2) =
    (try (span (substring "foo" 0 3) (substring "bar" 0 3)) with Invalid_argument  "Substring.span: must be substrings of same parent" -> empty ()) = empty ()
    (try (span (substring "foobar" 4 2) (substring "foobar" 0 3)) with Invalid_argument "Substring.span: first substring must not be to the right of the second" -> empty ()) = empty ()
    span (substring "foobar" 0 3) (substring "foobar" 3 3) = (substring "foobar" 0 6)
-   span (substring "foobar" 3 3) (substring "foobar" 0 3) = (substring "foobar" 3 0) 
+   span (substring "foobar" 3 3) (substring "foobar" 0 3) = (substring "foobar" 3 0)
 *)
 
 let translate f (str,off,len) =
   BatString.init len (fun i -> f str.[off+i])
 (*$T translate
-  translate (function 'o' -> 'a' | x -> x)(substring "foobar" 1 3) = "aab" 
+  translate (function 'o' -> 'a' | x -> x)(substring "foobar" 1 3) = "aab"
   translate (fun x -> x) (empty ()) = ""
 *)
 
@@ -433,13 +433,13 @@ let fold_left f init (str, off, len) =
   loop off init
 (*$T fold_left
    fold_left (fun a c -> c::a) [] (substring "foobar" 1 3)=['b';'o';'o']
-   fold_left (fun a _ -> a+1) 0 (empty ()) = 0 
+   fold_left (fun a _ -> a+1) 0 (empty ()) = 0
 *)
 
-let fold_lefti f init (str, off, len) = 
-  let rec loop i result = 
+let fold_lefti f init (str, off, len) =
+  let rec loop i result =
     if (i-off) = len then result
-    else loop (i + 1) (f result (i-off) str.[i]) 
+    else loop (i + 1) (f result (i-off) str.[i])
   in loop off init
 (*$T fold_lefti
    fold_lefti (fun a i _ -> a+i) 0 (substring "foobar" 1 3) = 3
@@ -457,11 +457,11 @@ let fold_right f (str, off, len) init =
    fold_right (fun c a -> c::a) (empty ()) [] = []
 *)
 
-let fold_righti f (str, off, len) init = 
-  let rec loop i result = 
-    if i = off then result 
-    else 
-      let i' = i - 1 in 
+let fold_righti f (str, off, len) init =
+  let rec loop i result =
+    if i = off then result
+    else
+      let i' = i - 1 in
       loop (i - 1) (f (i' - off) str.[i'] result)
   in loop (off+len) init
 
@@ -538,7 +538,7 @@ let rec enum (str, off, len) =
     ~clone:(fun () -> enum (str, !i, len - !i))
 (*$T enum
    Enum.compare Char.compare (enum (of_string "foo")) (String.enum "foo") = 0
-   Enum.compare Char.compare (enum (of_string "foo")) (String.enum "fob") <> 0 
+   Enum.compare Char.compare (enum (of_string "foo")) (String.enum "fob") <> 0
    Enum.compare Char.compare (enum (empty ())) (String.enum "") = 0
    Enum.compare Char.compare (enum (empty ())) (String.enum "P") <> 0
 *)

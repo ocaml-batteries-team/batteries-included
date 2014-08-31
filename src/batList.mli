@@ -161,7 +161,7 @@ val unfold_exc : (unit -> 'a) -> 'a list * exn
     Warning: if calls to [f()] never throw an exception, unfold_exc
     is an infinite loop.
 
-    @since NEXT_RELEASE
+    @since 2.3.0
 *)
 
 (**{6 Iterators}*)
@@ -197,15 +197,22 @@ val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b list -> 'a
     [f (... (f (f a b0) b1) ...) bn]. *)
 
 val fold_lefti : ('a -> int -> 'b -> 'a) -> 'a -> 'b list -> 'a
-(** [List.fold_lefti f a [b0; b1; ...; bn]] is
-    [f (... (f (f a 0 b0) 1 b1) ...) n bn]. *)
+(** As [fold_left], but with the index of the element, from [0] to
+    [length li - 1], as additional argument.
+
+    @since 2.3.0
+*)
 
 val fold_right : ('a -> 'b -> 'b) -> 'a list -> 'b -> 'b
 (** [List.fold_right f [a0; a1; ...; an] b] is
     [f a0 (f a1 (... (f an b) ...))].  Tail-recursive. *)
 
 val fold_righti : (int -> 'b -> 'a -> 'a) -> 'b list -> 'a -> 'a
-(** As [fold_right], but with the index of the element as additional argument *)
+(** As [fold_right], but with the index of the element, from [0] to
+    [length li - 1], as additional argument.
+
+    @since 2.3.0
+*)
 
 val reduce : ('a -> 'a -> 'a) -> 'a list -> 'a
 (** [List.reduce f h::t] is [fold_left f h t].
@@ -517,7 +524,7 @@ val modify_at : int -> ('a -> 'a) -> 'a list -> 'a list
     but with nth-value [a] replaced with [f a].
 
     @raise Invalid_argument if the index is outside of [l] bounds
-    @since NEXT_RELEASE *)
+    @since 2.3.0 *)
 
 val modify_opt_at : int -> ('a -> 'a option) -> 'a list -> 'a list
 (** [modify_at_opt n f l] returns the same list as [l] but with
@@ -525,7 +532,7 @@ val modify_opt_at : int -> ('a -> 'a option) -> 'a list -> 'a list
     it is [Some v].
 
     @raise Invalid_argument if the index is outside of [l] bounds
-    @since NEXT_RELEASE *)
+    @since 2.3.0 *)
 
 val split_at : int -> 'a list -> 'a list * 'a list
 (** [split_at n l] returns two lists [l1] and [l2], [l1] containing the
@@ -548,7 +555,7 @@ val remove_at : int -> 'a list -> 'a list
 (** [remove_at i l] returns the list [l] without the element at index [i].
     @raise Invalid_argument if [i] is outside of [l] size bounds.
 
-    @since NEXT_RELEASE
+    @since 2.3.0
 
 *)
 

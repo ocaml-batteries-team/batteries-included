@@ -564,9 +564,9 @@ let fold_left f init str =
    fold_left max 'a' "apples" = 's'
 *)
 
-let fold_lefti f init str = 
-  let n = String.length str in 
-  let rec loop i result = 
+let fold_lefti f init str =
+  let n = String.length str in
+  let rec loop i result =
     if i = n then result
     else loop (i + 1) (f result i str.[i])
   in loop 0 init
@@ -590,12 +590,12 @@ let fold_right f str init =
    fold_right (fun c a -> if c = ' ' then a+1 else a) "a b c" 0 = 2
 *)
 
-let fold_righti f str init = 
-  let n = String.length str in 
-  let rec loop i result = 
+let fold_righti f str init =
+  let n = String.length str in
+  let rec loop i result =
     if i = 0 then result
-    else 
-      let i' = i - 1 in 
+    else
+      let i' = i - 1 in
       loop i' (f i' str.[i'] result)
   in loop n init
 (*$T fold_righti
@@ -1023,6 +1023,8 @@ struct
   let map           = map
   let fold_left     = fold_left
   let fold_right    = fold_right
+  let fold_lefti    = fold_lefti
+  let fold_righti   = fold_righti
   let iter          = iter
   let index         = index
   let rindex        = rindex

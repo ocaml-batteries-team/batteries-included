@@ -582,7 +582,7 @@ val merge : ('a -> 'a -> bool) -> 'a t -> 'a t -> 'a t
 
 val uniq : 'a t -> 'a t
 (** [uniq e] returns a duplicate of [e] with repeated values
-    omitted. (similar to unix's [uniq] command) 
+    omitted. (similar to unix's [uniq] command)
     It uses physical equality to compare consecutive elements. *)
 
 val switch : ('a -> bool) -> 'a t -> 'a t * 'a t

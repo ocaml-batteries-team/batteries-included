@@ -44,11 +44,12 @@ val enum : 'a tree -> 'a BatEnum.t
 (* Sanity checks *)
 
 val check : 'a tree -> bool
-(* Check that the tree is balanced according to the AVL tree rules.
+(** Check that the tree is balanced according to the AVL tree rules.
+    An AVL tree is balanced when for every node the height of the
+    subnodes differs by at most 1.
 
-   An AVL tree is balanced when for every node the height of the subnodes
-   differs by at most 1.
- *)
+    @since 2.3.0
+*)
 
 (**/**)
 (* Helpers for testing *)

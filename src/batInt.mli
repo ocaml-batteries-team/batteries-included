@@ -166,6 +166,8 @@ val copysign : int -> int -> int
     - [0] if [n=0]
     - [o] if [n>0]
     - [-o] if [n<0]
+
+    @since 2.3.0
 *)
 
 (**/**)

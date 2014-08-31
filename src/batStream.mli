@@ -221,7 +221,10 @@ val concat : 'a t t -> 'a t
 
 val concat_map : ('a -> 'b t) -> 'a t -> 'b t
 (** Composition of {!concat} and {!map}.
-    [concat_map f e] is the same as [concat (map f e)]. *)
+    [concat_map f e] is the same as [concat (map f e)].
+
+    @since 2.3.0
+*)
 
 val take : int -> 'a t -> 'a t
 (** [take n stream] returns the prefix of [stream] of length [n], or [stream]

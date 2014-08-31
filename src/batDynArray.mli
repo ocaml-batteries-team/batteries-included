@@ -310,7 +310,10 @@ val conservative_exponential_resizer : resizer_t
 *)
 
 val create_with : resizer_t -> 'a t
-(** create a new dynamic array that uses the given resizer. *)
+(** create a new dynamic array that uses the given resizer.
+
+    @since 2.3.0
+*)
 
 (** {6 Unsafe operations} **)
 
