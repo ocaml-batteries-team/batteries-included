@@ -57,14 +57,21 @@ let char = Bigarray.char
 let c_layout = Bigarray.c_layout
 let fortran_layout = Bigarray.fortran_layout
 
+##V<4.2##let ofs_of_layout (layout : _ Bigarray.layout) =
+##V<4.2##  match (Obj.magic layout : int) with
+##V<4.2##  | 0 -> 0 (* keep these magic constants in sync with bigarray.ml *)
+##V<4.2##  | 0x100 -> 1 (* and transitively with caml_ba_layout in bigarray.h  *)
+##V<4.2##  | _ -> failwith "Unknown layout"
+
+##V>=4.2##let ofs_of_layout : type a . a Bigarray.layout -> int = function
+##V>=4.2##  | Bigarray.C_layout -> 0
+##V>=4.2##  | Bigarray.Fortran_layout -> 1
+
 module Genarray =
 struct
   include Bigarray.Genarray
 
-  let ofs e = match Obj.magic (layout e) with
-    | 0 -> 0     (* keep these magic constants in sync with bigarray.ml *)
-    | 0x100 -> 1 (* and transitively with caml_ba_layout in bigarray.h  *)
-    | _ -> failwith "Unknown layout" (* note four copies of this function *)
+  let ofs e = ofs_of_layout (layout e)
 
   (**
      Emulate multi-dimensional coordinates.
@@ -213,10 +220,8 @@ let array1_of_genarray = Bigarray.array1_of_genarray
 
 module Array1 = struct
   include Bigarray.Array1
-  let ofs e = match Obj.magic (layout e) with
-    | 0 -> 0     (* keep these magic constants in sync with bigarray.ml *)
-    | 0x100 -> 1 (* and transitively with caml_ba_layout in bigarray.h  *)
-    | _ -> failwith "Unknown layout" (* note four copies of this function *)
+
+  let ofs e = ofs_of_layout (layout e)
 
   let enum t =
     let offset = ofs t in
@@ -269,10 +274,9 @@ module Array1 = struct
 end
 module Array2 = struct
   include Bigarray.Array2
-  let ofs e = match Obj.magic (layout e) with
-    | 0 -> 0     (* keep these magic constants in sync with bigarray.ml *)
-    | 0x100 -> 1 (* and transitively with caml_ba_layout in bigarray.h  *)
-    | _ -> failwith "Unknown layout" (* note four copies of this function *)
+
+  let ofs e = ofs_of_layout (layout e)
+
   let enum t = Genarray.enum (genarray_of_array2 t)
 
   let map f b_kind a =
@@ -321,10 +325,9 @@ module Array2 = struct
 end
 module Array3 = struct
   include Bigarray.Array3
-  let ofs e = match Obj.magic (layout e) with
-    | 0 -> 0     (* keep these magic constants in sync with bigarray.ml *)
-    | 0x100 -> 1 (* and transitively with caml_ba_layout in bigarray.h  *)
-    | _ -> failwith "Unknown layout" (* note four copies of this function *)
+
+  let ofs e = ofs_of_layout (layout e)
+
   let enum t = Genarray.enum (genarray_of_array3 t)
 
   let map f b_kind a =
