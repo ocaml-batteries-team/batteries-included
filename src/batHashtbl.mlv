@@ -48,8 +48,8 @@ type ('a, 'b) h_bucketlist =
 type ('a, 'b) h_t = {
   mutable size: int;
   mutable data: ('a, 'b) h_bucketlist array;
-##V4##  mutable seed: int;
-##V4##  initial_size: int;
+##V>=4##  mutable seed: int;
+##V>=4##  initial_size: int;
 }
 
 external h_conv : ('a, 'b) t -> ('a, 'b) h_t = "%identity"

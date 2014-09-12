@@ -499,8 +499,8 @@ module Array1 : sig
       determine the array element kind and the array layout
       as described for [Genarray.create]. *)
 
-##V3##  val dim: ('a, 'b, 'c) t -> int
-##V4.1##  external dim: ('a, 'b, 'c) t -> int = "%caml_ba_dim_1"
+##V=3##  val dim: ('a, 'b, 'c) t -> int
+##V>=4.1##  external dim: ('a, 'b, 'c) t -> int = "%caml_ba_dim_1"
   (** Return the size (dimension) of the given one-dimensional
       big array. *)
 
@@ -627,12 +627,12 @@ sig
       determine the array element kind and the array layout
       as described for {!Bigarray.Genarray.create}. *)
 
-##V3##  val dim1: ('a, 'b, 'c) t -> int
-##V4.1##  external dim1: ('a, 'b, 'c) t -> int = "%caml_ba_dim_1"
+##V=3##  val dim1: ('a, 'b, 'c) t -> int
+##V>=4.1##  external dim1: ('a, 'b, 'c) t -> int = "%caml_ba_dim_1"
   (** Return the first dimension of the given two-dimensional big array. *)
 
-##V3##  val dim2: ('a, 'b, 'c) t -> int
-##V4.1##  external dim2: ('a, 'b, 'c) t -> int = "%caml_ba_dim_2"
+##V=3##  val dim2: ('a, 'b, 'c) t -> int
+##V>=4.1##  external dim2: ('a, 'b, 'c) t -> int = "%caml_ba_dim_2"
   (** Return the second dimension of the given two-dimensional big array. *)
 
   external kind: ('a, 'b, 'c) t -> ('a, 'b) kind = "caml_ba_kind"
@@ -768,16 +768,16 @@ sig
       [kind] and [layout] determine the array element kind and
       the array layout as described for {!Bigarray.Genarray.create}. *)
 
-##V3##  val dim1: ('a, 'b, 'c) t -> int
-##V4.1##  external dim1: ('a, 'b, 'c) t -> int = "%caml_ba_dim_1"
+##V=3##  val dim1: ('a, 'b, 'c) t -> int
+##V>=4.1##  external dim1: ('a, 'b, 'c) t -> int = "%caml_ba_dim_1"
   (** Return the first dimension of the given three-dimensional big array. *)
 
-##V3##  val dim2: ('a, 'b, 'c) t -> int
-##V4.1##  external dim2: ('a, 'b, 'c) t -> int = "%caml_ba_dim_2"
+##V=3##  val dim2: ('a, 'b, 'c) t -> int
+##V>=4.1##  external dim2: ('a, 'b, 'c) t -> int = "%caml_ba_dim_2"
   (** Return the second dimension of the given three-dimensional big array. *)
 
-##V3##  val dim3: ('a, 'b, 'c) t -> int
-##V4.1##  external dim3: ('a, 'b, 'c) t -> int = "%caml_ba_dim_3"
+##V=3##  val dim3: ('a, 'b, 'c) t -> int
+##V>=4.1##  external dim3: ('a, 'b, 'c) t -> int = "%caml_ba_dim_3"
   (** Return the third dimension of the given three-dimensional big array. *)
 
   external kind: ('a, 'b, 'c) t -> ('a, 'b) kind = "caml_ba_kind"

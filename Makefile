@@ -88,11 +88,14 @@ all: prefilter
 	@echo "Build mode:" $(MODE)
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(TARGETS)
 
+clean-prefilter:
+	@${RM} $(PREPROCESSED_FILES)
+
 clean:
 	@${RM} src/batteriesConfig.ml src/batUnix.mli batteries.odocl bench.log
 	@${RM} -r man/
 	@$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -clean
-	@${RM} $(PREPROCESSED_FILES)
+	$(MAKE) clean-prefilter
 	@echo " Cleaned up working copy" # Note: ocamlbuild eats the first char!
 
 batteries.odocl: src/batteries.mllib src/batteriesThread.mllib

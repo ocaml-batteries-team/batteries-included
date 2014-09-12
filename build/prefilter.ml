@@ -11,7 +11,8 @@ let process_line line =
   if Str.string_match filter_cookie_re line 0 then begin
     let cmp = match Str.matched_group 1 line with
     | "<" -> (<) | ">" -> (>) | "=" -> (=)
-    | "<=" -> (<=) | ">=" -> (>=) | _ -> (>=)
+    | "<=" -> (<=) | ">=" -> (>=)
+    | _ -> failwith "The ##V8## form is now disabled, use ##V>=8## instead"
     in
     let ver_string = Str.matched_group 2 line in
     assert (Str.string_match version_re ver_string 0) ;
