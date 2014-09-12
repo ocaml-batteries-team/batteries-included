@@ -78,6 +78,7 @@ PREPROCESSED_FILES = \
  src/batPervasives.mli \
  src/batPrintexc.mli \
  src/batPrintf.ml src/batPrintf.mli \
+ src/batStream.ml \
  src/batSys.mli \
  src/batUnix.mli
 
