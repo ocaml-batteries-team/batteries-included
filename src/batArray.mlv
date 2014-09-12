@@ -26,6 +26,9 @@ type 'a mappable = 'a t
 
 include Array
 
+(* added in legacy Array in 4.02 *)
+##V<4.2##let make_float n = make n 0.
+
 let singleton x = [|x|]
 (*$Q singleton
   Q.int (fun x -> let s = singleton x in s.(0) = x && length s = 1)
@@ -786,6 +789,10 @@ struct
   external set        : ('a, [> `Write]) t -> int -> 'a -> unit = "%array_safe_set"
   external make       : int -> 'a -> ('a, _) t                  = "caml_make_vect"
   external create     : int -> 'a -> ('a, _) t                  = "caml_make_vect"
+
+
+##V>=4.2##  external make_float: int -> (float, _) t = "caml_make_float_vect"
+##V<4.2##  let make_float n = make n 0.
 
   let init         = init
   let make_matrix  = make_matrix
