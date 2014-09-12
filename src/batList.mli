@@ -727,13 +727,18 @@ val merge : ('a -> 'a -> int) -> 'a list -> 'a list -> 'a list
     Not tail-recursive (sum of the lengths of the arguments).
 *)
 
-val sort_unique : ('a -> 'a -> int) -> 'a list -> 'a list
-(** [sort_unique cmp l] returns the list [l] sorted and without any duplicate
-    element. [cmp] is a usual comparison function providing total order.
+val sort_uniq : ('a -> 'a -> int) -> 'a list -> 'a list
+(** [sort_uniq cmp l] returns the list [l] sorted and without any
+    duplicate element. [cmp] is a usual comparison function providing
+    total order.
 
     This function takes O(n log n) time.
+
+    @since 2.3.0
 *)
 
+val sort_unique : ('a -> 'a -> int) -> 'a list -> 'a list
+(** synonym for [sort_uniq] *)
 
 
 (** {6 Utilities}*)

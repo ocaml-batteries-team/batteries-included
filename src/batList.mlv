@@ -1112,6 +1112,9 @@ let sort_unique cmp lst =
       List.rev rev_result
     end
 
+##V<4.2##let sort_uniq = sort_unique
+##V>=4.2##let sort_uniq = List.sort_uniq
+
 let group cmp lst =
   let sorted = List.sort cmp lst in
   let fold first rest = List.fold_left
