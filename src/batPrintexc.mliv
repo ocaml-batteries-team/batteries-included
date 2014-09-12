@@ -117,7 +117,7 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V=4.1##    with at most [n] entries.  (Note: this function is not related to
 ##V=4.1##    exceptions at all, despite being part of the [Printexc] module.)
 ##V=4.1##
-##V=4.1##    @since 4.01.0
+##V=4.1##    @since 2.2.0 and OCaml 4.01.0
 ##V=4.1##*)
 
 ##V>=4.2##(** {6 Raw backtraces} *)
@@ -135,7 +135,7 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##    should use the array returned by the [backtrace_slots] function of
 ##V>=4.2##    the next section.
 ##V>=4.2##
-##V>=4.2##    @since 4.01.0
+##V>=4.2##    @since 2.2.0 and OCaml 4.01.0
 ##V>=4.2##*)
 ##V>=4.2##
 ##V>=4.2##val get_raw_backtrace: unit -> raw_backtrace
@@ -143,21 +143,21 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##    backtrace that [Printexc.print_backtrace] would print, but in
 ##V>=4.2##    a raw format.
 ##V>=4.2##
-##V>=4.2##    @since 4.01.0
+##V>=4.2##    @since 2.2.0 and OCaml 4.01.0
 ##V>=4.2##*)
 ##V>=4.2##
 ##V>=4.2##val print_raw_backtrace: out_channel -> raw_backtrace -> unit
 ##V>=4.2##(** Print a raw backtrace in the same format
 ##V>=4.2##    [Printexc.print_backtrace] uses.
 ##V>=4.2##
-##V>=4.2##    @since 4.01.0
+##V>=4.2##    @since 2.2.0 and OCaml 4.01.0
 ##V>=4.2##*)
 ##V>=4.2##
 ##V>=4.2##val raw_backtrace_to_string: raw_backtrace -> string
 ##V>=4.2##(** Return a string from a raw backtrace, in the same format
 ##V>=4.2##    [Printexc.get_backtrace] uses.
 ##V>=4.2##
-##V>=4.2##    @since 4.01.0
+##V>=4.2##    @since 2.2.0 and OCaml 4.01.0
 ##V>=4.2##*)
 ##V>=4.2##
 ##V>=4.2##(** {6 Current call stack} *)
@@ -168,7 +168,7 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##    with at most [n] entries.  (Note: this function is not related to
 ##V>=4.2##    exceptions at all, despite being part of the [Printexc] module.)
 ##V>=4.2##
-##V>=4.2##    @since 4.01.0
+##V>=4.2##    @since 2.2.0 and OCaml 4.01.0
 ##V>=4.2##*)
 ##V>=4.2##
 ##V>=4.2##(** {6 Uncaught exceptions} *)
@@ -184,7 +184,7 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##
 ##V>=4.2##    If [fn] raises an exception, it is ignored.
 ##V>=4.2##
-##V>=4.2##    @since 4.02.0
+##V>=4.2##    @since 2.3.0 and OCaml 4.02.0
 ##V>=4.2##*)
 ##V>=4.2##
 ##V>=4.2##
@@ -198,7 +198,7 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##(** The abstract type [backtrace_slot] represents a single slot of
 ##V>=4.2##    a backtrace.
 ##V>=4.2##
-##V>=4.2##    @since 4.02
+##V>=4.2##    @since 2.3.0 and OCaml 4.02
 ##V>=4.2##*)
 ##V>=4.2##
 ##V>=4.2##val backtrace_slots : raw_backtrace -> backtrace_slot array option
@@ -214,6 +214,8 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##    debug information ([-g])
 ##V>=4.2##    - the program is a bytecode program that has not been linked with
 ##V>=4.2##    debug information enabled ([ocamlc -g])
+##V>=4.2##
+##V>=4.2##   @since 2.3.0 and OCaml 4.02.0
 ##V>=4.2##*)
 ##V>=4.2##
 ##V>=4.2##type location = Printexc.location = {
@@ -226,7 +228,7 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##    and [end_char] are positions relative to the beginning of the
 ##V>=4.2##    line.
 ##V>=4.2##
-##V>=4.2##    @since 4.02
+##V>=4.2##    @since 2.3.0 and OCaml 4.02
 ##V>=4.2##*)
 ##V>=4.2##
 ##V>=4.2##module Slot : sig
@@ -237,7 +239,7 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##      point in the code, and [false] when it comes from a simple
 ##V>=4.2##      function call.
 ##V>=4.2##
-##V>=4.2##      @since 4.02
+##V>=4.2##      @since 2.3.0 and OCaml 4.02
 ##V>=4.2##  *)
 ##V>=4.2##
 ##V>=4.2##  val location : t -> location option
@@ -249,7 +251,7 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##      - the slot corresponds to a part of the program that has not been
 ##V>=4.2##      compiled with debug information ([-g])
 ##V>=4.2##
-##V>=4.2##      @since 4.02
+##V>=4.2##      @since 2.3.0 and OCaml 4.02
 ##V>=4.2##  *)
 ##V>=4.2##
 ##V>=4.2##  val format : int -> t -> string option
@@ -261,7 +263,7 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##      Whole-backtrace printing functions also skip some uninformative
 ##V>=4.2##      slots; in that case, [format pos slot] returns [None].
 ##V>=4.2##
-##V>=4.2##      @since 4.02
+##V>=4.2##      @since 2.3.0 and OCaml 4.02
 ##V>=4.2##  *)
 ##V>=4.2##end
 ##V>=4.2##
@@ -286,21 +288,21 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##(** [raw_backtrace_length bckt] returns the number of slots in the
 ##V>=4.2##    backtrace [bckt].
 ##V>=4.2##
-##V>=4.2##    @since 4.02
+##V>=4.2##    @since 2.3.0 and OCaml 4.02
 ##V>=4.2##*)
 ##V>=4.2##
 ##V>=4.2##val get_raw_backtrace_slot : raw_backtrace -> int -> raw_backtrace_slot
 ##V>=4.2##(** [get_slot bckt pos] returns the slot in position [pos] in the
 ##V>=4.2##    backtrace [bckt].
 ##V>=4.2##
-##V>=4.2##    @since 4.02
+##V>=4.2##    @since 2.3.0 and OCaml 4.02
 ##V>=4.2##*)
 ##V>=4.2##
 ##V>=4.2##val convert_raw_backtrace_slot : raw_backtrace_slot -> backtrace_slot
 ##V>=4.2##(** Extracts the user-friendly [backtrace_slot] from a low-level
 ##V>=4.2##    [raw_backtrace_slot].
 ##V>=4.2##
-##V>=4.2##    @since 4.02
+##V>=4.2##    @since 2.3.0 and OCaml 4.02
 ##V>=4.2##*)
 
 
@@ -311,12 +313,12 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##    the constructor used to create the exception value [exn]
 ##V>=4.2##    (in the current runtime).
 ##V>=4.2##
-##V>=4.2##    @since 4.02.0
+##V>=4.2##    @since 2.3.0 and OCaml 4.02.0
 ##V>=4.2##*)
 ##V>=4.2##
 ##V>=4.2##val exn_slot_name: exn -> string
 ##V>=4.2##(** [Printexc.exn_slot_id exn] returns the internal name of the constructor
 ##V>=4.2##    used to create the exception value [exn].
 ##V>=4.2##
-##V>=4.2##    @since 4.02.0
+##V>=4.2##    @since 2.3.0 and OCaml 4.02.0
 ##V>=4.2##*)

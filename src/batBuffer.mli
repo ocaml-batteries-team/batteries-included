@@ -57,7 +57,10 @@ val contents : t -> string
 
 val to_bytes : t -> Bytes.t
 (** Return a copy of the current contents of the buffer.
-    The buffer itself is unchanged. *)
+    The buffer itself is unchanged.
+
+    @since 2.3.0
+*)
 
 val sub : t -> int -> int -> string
 (** [Buffer.sub b off len] returns (a copy of) the substring of the
@@ -100,7 +103,10 @@ val add_string : t -> string -> unit
 (** [add_string b s] appends the string [s] at the end of the buffer [b]. *)
 
 val add_bytes : t -> Bytes.t -> unit
-(** [add_string b s] appends the string [s] at the end of the buffer [b]. *)
+(** [add_string b s] appends the string [s] at the end of the buffer [b].
+
+    @since 2.3.0
+*)
 
 val add_substring : t -> string -> int -> int -> unit
 (** [add_substring b s ofs len] takes [len] characters from offset
@@ -108,7 +114,10 @@ val add_substring : t -> string -> int -> int -> unit
 
 val add_subbytes : t -> Bytes.t -> int -> int -> unit
 (** [add_substring b s ofs len] takes [len] characters from offset
-    [ofs] in byte sequence [s] and appends them at the end of the buffer [b]. *)
+    [ofs] in byte sequence [s] and appends them at the end of the buffer [b].
+
+    @since 2.3.0
+*)
 
 val add_substitute : t -> (string -> string) -> string -> unit
 (** [add_substitute b f s] appends the string pattern [s] at the end

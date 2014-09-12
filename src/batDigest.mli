@@ -39,7 +39,10 @@ val string : string -> t
 (** Return the digest of the given string. *)
 
 val bytes : Bytes.t -> t
-(** Return the digest of the given byte sequence. *)
+(** Return the digest of the given byte sequence.
+
+    @since 2.3.0
+*)
 
 val substring : string -> int -> int -> t
 (** [Digest.substring s ofs len] returns the digest of the substring
@@ -48,7 +51,10 @@ val substring : string -> int -> int -> t
 
 val subbytes : Bytes.t -> int -> int -> t
 (** [Digest.subbytes s ofs len] returns the digest of the subsequence
-   of [s] starting at index [ofs] and containing [len] bytes. *)
+    of [s] starting at index [ofs] and containing [len] bytes.
+
+    @since 2.3.0
+*)
 
 val file : string -> t
 (** Return the digest of the file whose name is given. *)

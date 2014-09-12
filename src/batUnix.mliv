@@ -299,11 +299,17 @@ val single_write : file_descr -> Bytes.t -> int -> int -> int
 
 val write_substring : file_descr -> string -> int -> int -> int
 (** Same as [write], but take the data from a string instead of a byte
-    sequence. *)
+    sequence.
+
+    @since 2.3.0
+*)
 
 val single_write_substring : file_descr -> string -> int -> int -> int
 (** Same as [single_write], but take the data from a string instead of
-    a byte sequence. *)
+    a byte sequence.
+
+    @since 2.3.0
+*)
 
 (** {6 Interfacing with the standard input/output library} *)
 
@@ -1153,7 +1159,10 @@ val send : file_descr -> Bytes.t -> int -> int -> msg_flag list -> int
 
 val send_substring : file_descr -> string -> int -> int -> msg_flag list -> int
 (** Same as [send], but take the data from a string instead of a byte
-    sequence. *)
+    sequence.
+
+    @since 2.3.0
+*)
 
 val sendto :
   file_descr -> Bytes.t -> int -> int -> msg_flag list -> sockaddr -> int
@@ -1162,7 +1171,10 @@ val sendto :
 val sendto_substring :
   file_descr -> string -> int -> int -> msg_flag list -> sockaddr -> int
 (** Same as [sendto], but take the data from a string instead of a
-    byte sequence. *)
+    byte sequence.
+
+    @since 2.3.0
+*)
 
 
 

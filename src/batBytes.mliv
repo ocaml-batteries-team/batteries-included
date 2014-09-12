@@ -37,7 +37,7 @@
 
    Bytes are represented by the OCaml type [char].
 
-   @since 4.02.0
+   @since Batteries 2.3.0 and OCaml 4.02.0
  *)
 
 ##V<4.2##type t = string

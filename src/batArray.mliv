@@ -87,7 +87,7 @@ external make : int -> 'a -> 'a array = "caml_make_vect"
 (** [Array.make_float n] returns a fresh float array of length [n],
     with uninitialized data.
 
-    @since v2.3.0 and OCaml 4.2.0
+    @since 2.3.0 and OCaml 4.2.0
  *)
 
 external create : int -> 'a -> 'a array = "caml_make_vect"
