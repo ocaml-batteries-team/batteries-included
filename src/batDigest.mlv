@@ -90,3 +90,6 @@ let from_hex s =
 *)
 
 let compare = String.compare
+
+##V<4.2##let bytes = string
+##V<4.2##let subbytes = substring

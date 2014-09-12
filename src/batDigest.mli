@@ -38,10 +38,17 @@ type t = string
 val string : string -> t
 (** Return the digest of the given string. *)
 
+val bytes : Bytes.t -> t
+(** Return the digest of the given byte sequence. *)
+
 val substring : string -> int -> int -> t
 (** [Digest.substring s ofs len] returns the digest of the substring
     of [s] starting at character number [ofs] and containing [len]
     characters. *)
+
+val subbytes : Bytes.t -> int -> int -> t
+(** [Digest.subbytes s ofs len] returns the digest of the subsequence
+   of [s] starting at index [ofs] and containing [len] bytes. *)
 
 val file : string -> t
 (** Return the digest of the file whose name is given. *)
