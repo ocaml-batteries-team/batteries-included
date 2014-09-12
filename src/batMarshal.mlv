@@ -41,3 +41,7 @@ let to_channel out v flags =
   BatInnerIO.nwrite out (to_string v flags)
 
 let from_channel = input
+
+##V<4.2##let from_bytes = from_string
+##V<4.2##external to_bytes :
+##V<4.2##  'a -> extern_flags list -> Bytes.t = "caml_output_value_to_string"
