@@ -10,6 +10,7 @@ module Stdlib_verifications = struct
        val add_channel : t -> BatInnerIO.input -> int -> unit
        val output_buffer : t -> string BatInnerIO.output
      end)
+  module Bytes = (Bytes : module type of Legacy.Bytes)
   module Char_t = (Char: module type of Legacy.Char)
   module Complex_t = (Complex : module type of Legacy.Complex)
   module Digest =

@@ -6,6 +6,7 @@ module Legacy = struct
   module Array = Array
   module ArrayLabels = ArrayLabels
   module Buffer = Buffer
+  module Bytes = Bytes
   module Callback = Callback
   module Char = Char
   module Complex = Complex
@@ -53,6 +54,15 @@ end
 module Array = BatArray
 (* ArrayLabels *)
 module Buffer = BatBuffer
+module Bytes = BatBytes
+
+(* this type is a compiler builtin in OCaml V>=4.2,
+   and declared by BatBytes as equal to 'string' below;
+   this alias declaration makes the unqualified 'bytes' usable
+   by users V<=4.2, otherwise they can only use (Bat)Bytes.t
+*)
+type bytes = Bytes.t
+
 (* Callback *)
 module Char = BatChar
 module Complex = BatComplex
