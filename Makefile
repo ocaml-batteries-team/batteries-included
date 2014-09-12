@@ -74,7 +74,7 @@ PREPROCESSED_FILES = \
  src/batHashtbl.ml \
  src/batInnerPervasives.ml \
  src/batList.ml \
- src/batMarshal.mli \
+ src/batMarshal.ml src/batMarshal.mli \
  src/batPervasives.mli \
  src/batPrintexc.mli \
  src/batPrintf.ml src/batPrintf.mli \
