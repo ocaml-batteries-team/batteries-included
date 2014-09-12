@@ -526,6 +526,21 @@ let map f s =
    map (String.of_char %> failwith) "" = ""
 *)
 
+let mapi f s =
+  let len = length s in
+  let sc = create len in
+  for i = 0 to len - 1 do
+    unsafe_set sc i (f i (unsafe_get s i))
+  done;
+  sc
+(*$T mapi
+   mapi (fun _ -> Char.uppercase) "Five" = "FIVE"
+   mapi (fun _ -> Char.uppercase) "" = ""
+   mapi (fun _ -> String.of_char %> failwith) "" = ""
+   mapi (fun i _c -> "0123456789".[9-i]) "0123456789" = "9876543210"
+   ignore (let last = ref (-1) in mapi (fun i _c -> assert (i > !last); last := i; '0') "012345"); true
+*)
+
 let filter_map f s =
   let len = length s in
   let sc = Buffer.create len in
@@ -1021,6 +1036,7 @@ struct
   let to_int        = to_int
   let to_float      = to_float
   let map           = map
+  let mapi          = mapi
   let fold_left     = fold_left
   let fold_right    = fold_right
   let fold_lefti    = fold_lefti
