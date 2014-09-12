@@ -14,7 +14,7 @@ BROWSER_COMMAND ?= x-www-browser
 export BROWSER_COMMAND
 
 OCAMLBUILD ?= ocamlbuild
-OCAMLBUILDFLAGS ?= -no-links
+OCAMLBUILDFLAGS ?= -no-links -use-ocamlfind
 
 ifeq ($(uname_S),Darwin)
   BATTERIES_NATIVE ?= yes
@@ -85,7 +85,7 @@ all: prefilter
 clean:
 	@${RM} src/batteriesConfig.ml src/batUnix.mli batteries.odocl bench.log
 	@${RM} -r man/
-	@$(OCAMLBUILD) -clean
+	@$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -clean
 	@${RM} $(PREPROCESSED_FILES)
 	@echo " Cleaned up working copy" # Note: ocamlbuild eats the first char!
 
@@ -93,7 +93,7 @@ batteries.odocl: src/batteries.mllib src/batteriesThread.mllib
 	cat $^ > $@
 
 doc: prefilter batteries.odocl
-	$(OCAMLBUILD) batteries.docdir/index.html
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) batteries.docdir/index.html
 
 man: all batteries.odocl
 	-mkdir man
@@ -167,9 +167,9 @@ $(QTESTDIR)/all_tests.ml: $(TESTABLE)
 	qtest -o $@ --shuffle --preamble-file qtest/qtest_preamble.ml extract $(TESTABLE)
 
 _build/$(QTESTDIR)/all_tests.byte: $(QTESTDIR)/all_tests.ml
-	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 -use-ocamlfind -pkg oUnit,QTest2Lib $(QTESTDIR)/all_tests.byte
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 -pkg oUnit,QTest2Lib $(QTESTDIR)/all_tests.byte
 _build/$(QTESTDIR)/all_tests.native: $(QTESTDIR)/all_tests.ml
-	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 -use-ocamlfind -pkg oUnit,QTest2Lib $(QTESTDIR)/all_tests.native
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 -pkg oUnit,QTest2Lib $(QTESTDIR)/all_tests.native
 
 
 ### qtest: quick run of inline unit tests
@@ -207,7 +207,7 @@ test-native: prefilter _build/testsuite/main.native _build/$(QTESTDIR)/all_tests
 full-test: $(TEST_TARGET)
 
 test-compat: prefilter src/batteries_compattest.ml
-	ocamlbuild src/batteries_compattest.byte -no-links
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) src/batteries_compattest.byte
 
 test: test-byte test-compat
 
@@ -250,6 +250,6 @@ upload-docs:
 ###############################################################################
 
 coverage/index.html: $(TESTDEPS) $(QTESTDIR)/all_tests.ml
-	$(OCAMLBUILD) -use-ocamlfind coverage/index.html
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) coverage/index.html
 
 coverage: coverage/index.html
