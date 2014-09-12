@@ -7,3 +7,4 @@
 "qtest": include
 "benchsuite": include
 ".git": -traverse
+"examples": -traverse
