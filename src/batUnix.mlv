@@ -21,8 +21,13 @@
 
 
 include Unix
-open BatInnerIO
 
+##V<4.2##let write_substring = write
+##V<4.2##let single_write_substring = single_write
+##V<4.2##let send_substring = send
+##V<4.2##let sendto_substring = sendto
+
+open BatInnerIO
 
 (**
    {6 Thread-safety internals}
