@@ -80,7 +80,7 @@ PREPROCESSED_FILES = \
  src/batPrintf.ml src/batPrintf.mli \
  src/batStream.ml \
  src/batSys.mli \
- src/batUnix.mli
+ src/batUnix.ml src/batUnix.mli
 
 .PHONY: all clean doc install uninstall reinstall test qtest qtest-clean camfail camfailunk coverage man
 
