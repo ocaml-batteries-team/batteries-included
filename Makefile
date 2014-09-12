@@ -77,7 +77,8 @@ PREPROCESSED_FILES = \
  src/batBigarray.ml src/batBigarray.mli \
  src/batArray.mli src/batArray.ml \
  src/batList.ml \
- src/batBytes.ml src/batBytes.mli
+ src/batBytes.ml src/batBytes.mli \
+ src/batBuffer.ml
 
 .PHONY: all clean doc install uninstall reinstall test qtest qtest-clean camfail camfailunk coverage man
 

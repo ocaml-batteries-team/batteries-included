@@ -84,3 +84,7 @@ let output_buffer buf =
 *)
 
 let add_channel = add_input
+
+##V<4.2##let add_bytes = add_string
+##V<4.2##let add_subbytes = add_substring
+##V<4.2##let to_bytes = contents
