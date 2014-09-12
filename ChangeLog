@@ -37,17 +37,19 @@ Changelog
   (François Berenger)
 - Int: add copysign
   (Simon Cruanes)
-- Printf: remove CamlinternalPr for OCaml versions >= 4.02
-  (Ralf Vogler)
-- ensure compatibility with 4.02 (BatPrintf assumed (string = fmt))
-  (Gabriel Scherer)
-- compat 4.02:
-	String.mapi (String.init was already in Batteries)
-	List.sort_uniq (List.sort_unique existed before)
-	Array.make_float (less efficient implementation provided for <4.02 versions)
-	a BatBytes module relying on ocamlfind's compatibility module
-	bytes-related functions in Buffer,Digest,Marshal,Printexc,Stream,Unix
-  (Gabriel Scherer)
+- compatibility with 4.02:
+  + Printf: remove CamlinternalPr for OCaml versions >= 4.02
+    (Ralf Vogler)
+  + Printf: legacy code assumed (string = fmt)
+    (Gabriel Scherer)
+  + new 4.02 functions:
+      String.mapi (String.init was already in Batteries)
+      List.sort_uniq (List.sort_unique existed before)
+      Array.make_float (less efficient implementation provided for <4.02 versions)
+      a BatBytes module relying on ocamlfind's compatibility module
+      bytes-related functions in Buffer,Digest,Marshal,Printexc,Stream,Unix
+      new Printexc callstack interface (not available for <4.02 versions)
+    (Gabriel Scherer)
 
 ## v2.2.0
 
