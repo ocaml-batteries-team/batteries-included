@@ -558,6 +558,8 @@ let rec of_enum e =
       | Some h -> Stream.icons h (Stream.slazy (fun _ -> of_enum e))
       | None -> Stream.sempty)
 
+##V<4.2##let of_bytes = of_string
+
 module StreamLabels =
 struct
   let iter ~f x = iter f x
