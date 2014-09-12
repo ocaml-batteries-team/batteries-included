@@ -90,32 +90,233 @@ val print : _ BatInnerIO.output -> exn -> unit
   (** Print an exception.  The stdlib [print] function is now named [!pass].*)
 
 
-##V4.1##(** {6 Raw backtraces} *)
-##V4.1##
-##V4.1##type raw_backtrace = Printexc.raw_backtrace
-##V4.1##
-##V4.1##(** The abstract type [backtrace] stores exception backtraces in
-##V4.1##    a low-level format, instead of directly exposing them as string as
-##V4.1##    the [get_backtrace()] function does.
-##V4.1##
-##V4.1##    This allows to pay the performance overhead of representation
-##V4.1##    conversion and formatting only at printing time, which is useful
-##V4.1##    if you want to record more backtrace than you actually print.
-##V4.1##*)
-##V4.1##
-##V4.1##val get_raw_backtrace: unit -> raw_backtrace
-##V4.1##val print_raw_backtrace: out_channel -> raw_backtrace -> unit
-##V4.1##val raw_backtrace_to_string: raw_backtrace -> string
-##V4.1##
-##V4.1##
-##V4.1##(** {6 Current call stack} *)
-##V4.1##
-##V4.1##val get_callstack: int -> raw_backtrace
-##V4.1##
-##V4.1##(** [Printexc.get_callstack n] returns a description of the top of the
-##V4.1##    call stack on the current program point (for the current thread),
-##V4.1##    with at most [n] entries.  (Note: this function is not related to
-##V4.1##    exceptions at all, despite being part of the [Printexc] module.)
-##V4.1##
-##V4.1##    @since 4.01.0
-##V4.1##*)
+##V=4.1##(** {6 Raw backtraces} *)
+##V=4.1##
+##V=4.1##type raw_backtrace = Printexc.raw_backtrace
+##V=4.1##
+##V=4.1##(** The abstract type [backtrace] stores exception backtraces in
+##V=4.1##    a low-level format, instead of directly exposing them as string as
+##V=4.1##    the [get_backtrace()] function does.
+##V=4.1##
+##V=4.1##    This allows to pay the performance overhead of representation
+##V=4.1##    conversion and formatting only at printing time, which is useful
+##V=4.1##    if you want to record more backtrace than you actually print.
+##V=4.1##*)
+##V=4.1##
+##V=4.1##val get_raw_backtrace: unit -> raw_backtrace
+##V=4.1##val print_raw_backtrace: out_channel -> raw_backtrace -> unit
+##V=4.1##val raw_backtrace_to_string: raw_backtrace -> string
+##V=4.1##
+##V=4.1##
+##V=4.1##(** {6 Current call stack} *)
+##V=4.1##
+##V=4.1##val get_callstack: int -> raw_backtrace
+##V=4.1##
+##V=4.1##(** [Printexc.get_callstack n] returns a description of the top of the
+##V=4.1##    call stack on the current program point (for the current thread),
+##V=4.1##    with at most [n] entries.  (Note: this function is not related to
+##V=4.1##    exceptions at all, despite being part of the [Printexc] module.)
+##V=4.1##
+##V=4.1##    @since 4.01.0
+##V=4.1##*)
+
+##V>=4.2##(** {6 Raw backtraces} *)
+##V>=4.2##
+##V>=4.2##type raw_backtrace = Printexc.raw_backtrace
+##V>=4.2##(** The abstract type [raw_backtrace] stores a backtrace in
+##V>=4.2##    a low-level format, instead of directly exposing them as string as
+##V>=4.2##    the [get_backtrace()] function does.
+##V>=4.2##
+##V>=4.2##    This allows delaying the formatting of backtraces to when they are
+##V>=4.2##    actually printed, which may be useful if you record more
+##V>=4.2##    backtraces than you print.
+##V>=4.2##
+##V>=4.2##    Raw backtraces cannot be marshalled. If you need marshalling, you
+##V>=4.2##    should use the array returned by the [backtrace_slots] function of
+##V>=4.2##    the next section.
+##V>=4.2##
+##V>=4.2##    @since 4.01.0
+##V>=4.2##*)
+##V>=4.2##
+##V>=4.2##val get_raw_backtrace: unit -> raw_backtrace
+##V>=4.2##(** [Printexc.get_raw_backtrace ()] returns the same exception
+##V>=4.2##    backtrace that [Printexc.print_backtrace] would print, but in
+##V>=4.2##    a raw format.
+##V>=4.2##
+##V>=4.2##    @since 4.01.0
+##V>=4.2##*)
+##V>=4.2##
+##V>=4.2##val print_raw_backtrace: out_channel -> raw_backtrace -> unit
+##V>=4.2##(** Print a raw backtrace in the same format
+##V>=4.2##    [Printexc.print_backtrace] uses.
+##V>=4.2##
+##V>=4.2##    @since 4.01.0
+##V>=4.2##*)
+##V>=4.2##
+##V>=4.2##val raw_backtrace_to_string: raw_backtrace -> string
+##V>=4.2##(** Return a string from a raw backtrace, in the same format
+##V>=4.2##    [Printexc.get_backtrace] uses.
+##V>=4.2##
+##V>=4.2##    @since 4.01.0
+##V>=4.2##*)
+##V>=4.2##
+##V>=4.2##(** {6 Current call stack} *)
+##V>=4.2##
+##V>=4.2##val get_callstack: int -> raw_backtrace
+##V>=4.2##(** [Printexc.get_callstack n] returns a description of the top of the
+##V>=4.2##    call stack on the current program point (for the current thread),
+##V>=4.2##    with at most [n] entries.  (Note: this function is not related to
+##V>=4.2##    exceptions at all, despite being part of the [Printexc] module.)
+##V>=4.2##
+##V>=4.2##    @since 4.01.0
+##V>=4.2##*)
+##V>=4.2##
+##V>=4.2##(** {6 Uncaught exceptions} *)
+##V>=4.2##
+##V>=4.2##val set_uncaught_exception_handler: (exn -> raw_backtrace -> unit) -> unit
+##V>=4.2##(** [Printexc.set_uncaught_exception_handler fn] registers [fn] as the handler
+##V>=4.2##    for uncaught exceptions. The default handler prints the exception and
+##V>=4.2##    backtrace on standard error output.
+##V>=4.2##
+##V>=4.2##    Note that when [fn] is called all the functions registered with
+##V>=4.2##    {!Pervasives.at_exit} have already been called. Because of this you must
+##V>=4.2##    make sure any output channel [fn] writes on is flushed.
+##V>=4.2##
+##V>=4.2##    If [fn] raises an exception, it is ignored.
+##V>=4.2##
+##V>=4.2##    @since 4.02.0
+##V>=4.2##*)
+##V>=4.2##
+##V>=4.2##
+##V>=4.2##(** {6 Manipulation of backtrace information}
+##V>=4.2##
+##V>=4.2##    Those function allow to traverse the slots of a raw backtrace,
+##V>=4.2##    extract information from them in a programmer-friendly format.
+##V>=4.2##*)
+##V>=4.2##
+##V>=4.2##type backtrace_slot = Printexc.backtrace_slot
+##V>=4.2##(** The abstract type [backtrace_slot] represents a single slot of
+##V>=4.2##    a backtrace.
+##V>=4.2##
+##V>=4.2##    @since 4.02
+##V>=4.2##*)
+##V>=4.2##
+##V>=4.2##val backtrace_slots : raw_backtrace -> backtrace_slot array option
+##V>=4.2##(** Returns the slots of a raw backtrace, or [None] if none of them
+##V>=4.2##    contain useful information.
+##V>=4.2##
+##V>=4.2##    In the return array, the slot at index [0] corresponds to the most
+##V>=4.2##    recent function call, raise, or primitive [get_backtrace] call in
+##V>=4.2##    the trace.
+##V>=4.2##
+##V>=4.2##    Some possible reasons for returning [None] are as follow:
+##V>=4.2##    - none of the slots in the trace come from modules compiled with
+##V>=4.2##    debug information ([-g])
+##V>=4.2##    - the program is a bytecode program that has not been linked with
+##V>=4.2##    debug information enabled ([ocamlc -g])
+##V>=4.2##*)
+##V>=4.2##
+##V>=4.2##type location = Printexc.location = {
+##V>=4.2##  filename : string;
+##V>=4.2##  line_number : int;
+##V>=4.2##  start_char : int;
+##V>=4.2##  end_char : int;
+##V>=4.2##}
+##V>=4.2##(** The type of location information found in backtraces. [start_char]
+##V>=4.2##    and [end_char] are positions relative to the beginning of the
+##V>=4.2##    line.
+##V>=4.2##
+##V>=4.2##    @since 4.02
+##V>=4.2##*)
+##V>=4.2##
+##V>=4.2##module Slot : sig
+##V>=4.2##  type t = backtrace_slot
+##V>=4.2##
+##V>=4.2##  val is_raise : t -> bool
+##V>=4.2##  (** [is_raise slot] is [true] when [slot] refers to a raising
+##V>=4.2##      point in the code, and [false] when it comes from a simple
+##V>=4.2##      function call.
+##V>=4.2##
+##V>=4.2##      @since 4.02
+##V>=4.2##  *)
+##V>=4.2##
+##V>=4.2##  val location : t -> location option
+##V>=4.2##  (** [location slot] returns the location information of the slot,
+##V>=4.2##      if available, and [None] otherwise.
+##V>=4.2##
+##V>=4.2##      Some possible reasons for failing to return a location are as follow:
+##V>=4.2##      - the slot corresponds to a compiler-inserted raise
+##V>=4.2##      - the slot corresponds to a part of the program that has not been
+##V>=4.2##      compiled with debug information ([-g])
+##V>=4.2##
+##V>=4.2##      @since 4.02
+##V>=4.2##  *)
+##V>=4.2##
+##V>=4.2##  val format : int -> t -> string option
+##V>=4.2##  (** [format pos slot] returns the string representation of [slot] as
+##V>=4.2##      [raw_backtrace_to_string] would format it, assuming it is the
+##V>=4.2##      [pos]-th element of the backtrace: the [0]-th element is
+##V>=4.2##      pretty-printed differently than the others.
+##V>=4.2##
+##V>=4.2##      Whole-backtrace printing functions also skip some uninformative
+##V>=4.2##      slots; in that case, [format pos slot] returns [None].
+##V>=4.2##
+##V>=4.2##      @since 4.02
+##V>=4.2##  *)
+##V>=4.2##end
+##V>=4.2##
+##V>=4.2##
+##V>=4.2##(** {6 Raw backtrace slots} *)
+##V>=4.2##
+##V>=4.2##type raw_backtrace_slot = Printexc.raw_backtrace_slot
+##V>=4.2##(** This type allows direct access to raw backtrace slots, without any
+##V>=4.2##    conversion in an OCaml-usable data-structure. Being
+##V>=4.2##    process-specific, they must absolutely not be marshalled, and are
+##V>=4.2##    unsafe to use for this reason (marshalling them may not fail, but
+##V>=4.2##    un-marshalling and using the result will result in
+##V>=4.2##    undefined behavior).
+##V>=4.2##
+##V>=4.2##    Elements of this type can still be compared and hashed: when two
+##V>=4.2##    elements are equal, then they represent the same source location
+##V>=4.2##    (the converse is not necessarily true in presence of inlining,
+##V>=4.2##    for example).
+##V>=4.2##*)
+##V>=4.2##
+##V>=4.2##val raw_backtrace_length : raw_backtrace -> int
+##V>=4.2##(** [raw_backtrace_length bckt] returns the number of slots in the
+##V>=4.2##    backtrace [bckt].
+##V>=4.2##
+##V>=4.2##    @since 4.02
+##V>=4.2##*)
+##V>=4.2##
+##V>=4.2##val get_raw_backtrace_slot : raw_backtrace -> int -> raw_backtrace_slot
+##V>=4.2##(** [get_slot bckt pos] returns the slot in position [pos] in the
+##V>=4.2##    backtrace [bckt].
+##V>=4.2##
+##V>=4.2##    @since 4.02
+##V>=4.2##*)
+##V>=4.2##
+##V>=4.2##val convert_raw_backtrace_slot : raw_backtrace_slot -> backtrace_slot
+##V>=4.2##(** Extracts the user-friendly [backtrace_slot] from a low-level
+##V>=4.2##    [raw_backtrace_slot].
+##V>=4.2##
+##V>=4.2##    @since 4.02
+##V>=4.2##*)
+
+
+##V>=4.2##(** {6 Exception slots} *)
+##V>=4.2##
+##V>=4.2##val exn_slot_id: exn -> int
+##V>=4.2##(** [Printexc.exn_slot_id] returns an integer which uniquely identifies
+##V>=4.2##    the constructor used to create the exception value [exn]
+##V>=4.2##    (in the current runtime).
+##V>=4.2##
+##V>=4.2##    @since 4.02.0
+##V>=4.2##*)
+##V>=4.2##
+##V>=4.2##val exn_slot_name: exn -> string
+##V>=4.2##(** [Printexc.exn_slot_id exn] returns the internal name of the constructor
+##V>=4.2##    used to create the exception value [exn].
+##V>=4.2##
+##V>=4.2##    @since 4.02.0
+##V>=4.2##*)
