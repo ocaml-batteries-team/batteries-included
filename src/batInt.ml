@@ -239,30 +239,19 @@ module BaseSafeInt = struct
 
   let abs x = if x <> min_int then abs x else raise Overflow
 
-  (*This function used to assume that in case of overflow the result would be
-    different when computing in 31 bits (resp 63 bits) and in 32 bits (resp 64
-    bits). This trick turned out to be *wrong* on 64-bit machines, where
-    [Nativeint.mul 2432902008176640000n 21n] and [2432902008176640000 * 21]
-    yield the same result, [-4249290049419214848]. *)
-  let shift_bits, mask =
-    if Sys.word_size = 32 then 16,0xFFFF else 32, (1 lsl 32) - 1
-
-  let mul a b =
-    match a asr shift_bits, b asr shift_bits with
-    |   0,0 -> a * b
-    | 0,bh ->
-      let al = a land mask in
-      let cross = bh * al in
-      if cross > mask then raise Overflow;
-      let bl = b land mask in
-      add (cross lsl shift_bits) (al*bl)
-    | ah, 0 ->
-      let bl = b land mask in
-      let cross = ah * bl in
-      if cross > mask then raise Overflow;
-      let al = a land mask in
-      add (cross lsl shift_bits) (al+bl)
-    | _,_ -> raise Overflow
+  let mul (a: int) (b: int) : int =
+    let open Pervasives in
+    match (a > 0, b > 0) with
+      | (true, true) when a > (max_int / b) ->
+          raise BatNumber.Overflow
+      | (true, false) when b < (min_int / a) ->
+          raise BatNumber.Overflow
+      | (false, true) when a < (min_int / b) ->
+          raise BatNumber.Overflow
+      | (false, false) when a <> 0 && (b < (max_int / a)) ->
+          raise BatNumber.Overflow
+      | _ ->
+          a * b
 
   let pow a b =
     if b < 0
