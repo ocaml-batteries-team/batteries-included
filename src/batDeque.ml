@@ -176,6 +176,26 @@ let prepend_list l q =
     front = BatList.append l q.front ;
     flen = q.flen + n }
 
+let rotate_forward q =
+  match front q with
+    | Some (h, d) -> snoc d h
+    | None        -> q
+
+(*$T rotate_forward
+  to_list (rotate_forward empty) = []
+  to_list (rotate_forward (of_list [1; 2; 3])) = [2; 3; 1]
+*)
+
+let rotate_backward q =
+  match rear q with
+    | Some (t, d) -> cons d t
+    | None        -> q
+
+(*$T rotate_backward
+  to_list (rotate_backward empty) = []
+  to_list (rotate_backward (of_list [1; 2; 3])) = [3; 1; 2]
+*)
+
 let at ?(backwards=false) q n =
   let size_front = q.flen in
   let size_rear = q.rlen in

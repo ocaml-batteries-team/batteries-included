@@ -61,7 +61,7 @@ val eq : ?eq:('a -> 'a -> bool) -> 'a dq -> 'a dq -> bool
   (** [eq dq1 dq2] is true if [dq1] and [dq2] have the same sequence
       of elements. A custom function can be optionally provided with
       the [eq] parameter (default is {!Pervasives.(=)}).
-      
+
       @since 2.2.0 *)
 
 val rev : 'a dq -> 'a dq
@@ -118,6 +118,20 @@ val append_list  : 'a dq -> 'a list -> 'a dq
 val prepend_list : 'a list -> 'a dq -> 'a dq
 (** [prepent_list l dq] is equivalent to [append (of_list l) dq],
     but more efficient. O(min(m, n)) *)
+
+val rotate_forward : 'a dq -> 'a dq
+(** A cyclic shift of deque elements from rear to front by one position.
+    As a result, the front element becomes the rear element.
+    Time: O(1) amortized, O(n) worst-case.
+
+    @since NEXT_RELEASE *)
+
+val rotate_backward : 'a dq -> 'a dq
+(** A cyclic shift of deque elements from front to rear by one position.
+    As a result, the rear element becomes the front element.
+    Time: O(1) amortized, O(n) worst-case.
+
+    @since NEXT_RELEASE *)
 
 (** {6 Transformation} *)
 
