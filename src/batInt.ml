@@ -280,6 +280,14 @@ end
   Result.(catch (List.reduce Safe_int.mul) \
     [1 lsl 18 * 21; 3*3*3*3*3*3*3*3; 5*5*5*5*7*7*11*13*17*19] \
       |> is_exn Number.Overflow)
+  Safe_int.mul 0 min_int = 0
+  Safe_int.mul min_int 0 = 0
+  Safe_int.mul 1 min_int = min_int
+  Safe_int.mul min_int 1 = min_int
+  Safe_int.mul (-1) max_int = -max_int
+  Safe_int.mul max_int (-1) = -max_int
+  Result.(catch (Safe_int.mul min_int) (-1) |> is_exn Number.Overflow)
+  Result.(catch (Safe_int.mul (-1)) min_int |> is_exn Number.Overflow)
   Result.(catch (Safe_int.Infix.(+) max_int) 1 |> is_exn Number.Overflow)
 *)
 
