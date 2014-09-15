@@ -241,7 +241,8 @@ module BaseSafeInt = struct
 
   let mul (a: int) (b: int) : int =
     let open Pervasives in
-    match (a > 0, b > 0) with
+    if Sys.word_size <> 64 || a <> a land 0x7fff_ffff || b <> b land 0x7fff_ffff
+    then begin match (a > 0, b > 0) with
       | (true, true) when a > (max_int / b) ->
           raise BatNumber.Overflow
       | (true, false) when b < (min_int / a) ->
@@ -250,8 +251,9 @@ module BaseSafeInt = struct
           raise BatNumber.Overflow
       | (false, false) when a <> 0 && (b < (max_int / a)) ->
           raise BatNumber.Overflow
-      | _ ->
-          a * b
+      | _ -> ()
+    end;
+    a * b
 
   let pow a b =
     if b < 0
