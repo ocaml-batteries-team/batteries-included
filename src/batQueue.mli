@@ -75,6 +75,11 @@ val iter : ('a -> unit) -> 'a t -> unit
     from the least recently entered to the most recently entered.
     The queue itself is unchanged. *)
 
+val filter : ('a -> bool) -> 'a t -> unit
+(** [filter p q] removes all the elements of the queue [q] that
+    don't satisfy the predicate [p].  The order of the elements
+    in the queue is preserved.  *)
+
 val fold : ('b -> 'a -> 'b) -> 'b -> 'a t -> 'b
 (** [fold f accu q] is equivalent to [List.fold_left f accu l],
     where [l] is the list of [q]'s elements. The queue remains

@@ -22,6 +22,48 @@
 
 include Queue
 
+type 'a cell = {
+  content: 'a;
+  mutable next: 'a cell
+}
+
+type 'a queue = {
+  mutable length: int;
+  mutable tail: 'a cell
+}
+
+let filter f q =
+  let ({length; tail} as queue) = Obj.magic q in
+  if tail <> Obj.magic None then
+    let rec filter'
+        ({ next = { content; next} as current } as prev)
+      =
+      if f content
+      then
+        (if current != tail then filter' current)
+      else begin
+        queue.length <- queue.length - 1;
+        if prev == current
+        then
+          queue.tail <- Obj.magic None
+        else begin
+          prev.next <- next;
+          if current == tail
+          then
+            queue.tail <- prev
+          else
+            filter' prev
+        end
+      end
+    in
+    filter' tail
+(*$T filter
+  let q = Queue.create () in \
+  for i = 1 to 5 do Queue.push i q; done; \
+  filter (fun a -> List.mem a [1;3;5]) q; \
+  BatList.of_enum (enum q) = [2;5]
+*)
+
 type 'a enumerable = 'a t
 
 let of_enum e =
