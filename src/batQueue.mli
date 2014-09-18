@@ -44,6 +44,12 @@ val add : 'a -> 'a t -> unit
 val push : 'a -> 'a t -> unit
 (** [push] is a synonym for [add]. *)
 
+val add_front : 'a -> 'a t -> unit
+(** [add_front x q] adds the element [x] at the front of the queue [q]. *)
+
+val push_front : 'a -> 'a t -> unit
+(** [push_front] is a synonym for [add_front]. *)
+
 val take : 'a t -> 'a
 (** [take q] removes and returns the first element in queue [q],
     or raises [Empty] if the queue is empty. *)
@@ -74,6 +80,12 @@ val iter : ('a -> unit) -> 'a t -> unit
 (** [iter f q] applies [f] in turn to all elements of [q],
     from the least recently entered to the most recently entered.
     The queue itself is unchanged. *)
+
+val map : ('a -> 'b) -> 'a t -> 'b t
+(** [map f q] applies function [f] to each element of the queue
+   and returns a new queue [q'] with the results returned by [f].
+   Order is preserved and [q] is not consumed. So that if
+   [take q] returns [x] [take q'] will return [f x]. *)
 
 val filter : ('a -> bool) -> 'a t -> unit
 (** [filter p q] removes all the elements of the queue [q] that

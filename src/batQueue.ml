@@ -49,6 +49,19 @@ module Concrete = struct
   external of_abstr : 'a Queue.t -> 'a t = "%identity"
   external to_abstr : 'a t -> 'a Queue.t = "%identity"
 
+  let push_front x ({length; tail} as queue) =
+    tail.next <- {content = x; next = tail.next};
+    queue.length <- length + 1
+
+  let map f {tail} =
+    let q = Queue.create () in
+    let rec map' ({ content; next } as current) =
+      Queue.add (f content) q;
+      if current != tail then map' next
+    in
+    map' tail.next;
+    of_abstr q
+
   let filter f ({tail} as queue) =
     if not (Queue.is_empty (to_abstr queue)) then
       let rec filter'
@@ -92,6 +105,24 @@ end
 include Queue
 
 type 'a enumerable = 'a t
+
+let push_front x q = Concrete.(push_front x (of_abstr q))
+let add_front = push_front
+(*$T push_front
+  let q = Queue.create () in \
+  for i = 1 to 5 do Queue.push i q; done; \
+  push_front 0 q; \
+  length q = 6 && \
+  BatList.of_enum (enum q) = [0;1;2;3;4;5]
+*)
+
+let map f q = Concrete.(to_abstr (map f (of_abstr q)))
+(*$T map
+  let q = Queue.create () in \
+  for i = 1 to 5 do Queue.push i q; done; \
+  let q = map ((+) 10) q in \
+  BatList.of_enum (enum q) = [11;12;13;14;15]
+*)
 
 let filter f q = Concrete.(filter f (of_abstr q))
 (*$T filter
