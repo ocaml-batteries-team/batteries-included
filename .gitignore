@@ -30,5 +30,7 @@ src/batInnerPervasives.ml
 src/batHashtbl.ml
 src/batMarshal.mli
 src/batPrintexc.mli
+src/batPrintf.ml
+src/batPrintf.mli
 src/batSys.mli
 src/batBigarray.mli
