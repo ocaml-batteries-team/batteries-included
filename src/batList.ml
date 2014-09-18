@@ -379,6 +379,46 @@ let interleave ?first ?last (sep:'a) (l:'a list) =
   | (h::t, None,   Some y)     -> rev_append (aux [h] t) [y]
   | (h::t, Some x, Some y)     -> x::rev_append (aux [h] t) [y]
 
+let combinations l =
+  let module LL = BatLazyList in
+  let rec gen l = match l with
+    | [] -> LL.cons [] LL.nil
+    | x::l' ->
+        lazy (
+          let tl = gen l' in
+          let node = LL.append tl (LL.map (fun l -> x::l) tl) in
+          Lazy.force node)
+  in gen l
+
+(*$T
+  combinations [1;2;3] |> LazyList.to_list|> List.sort Pervasives.compare = \
+    [[]; [1]; [1;2]; [1;2;3]; [1;3]; [2]; [2;3]; [3]]
+  combinations [] |> LazyList.to_list = [[]]
+  combinations [1] |> LazyList.to_list |> List.sort Pervasives.compare = [[]; [1]]
+*)
+
+let permutations l =
+  (* do a choice in [l]. [right] contain elements not to choose from. *)
+  let rec choose_first among right = match among with
+  | [] -> BatLazyList.cons [] BatLazyList.nil
+  | [x] -> perms_starting_with x right
+  | x::among' ->
+      (* choose [x], or don't (in which case put it in [right]) *)
+      BatLazyList.append
+        (perms_starting_with x (among' @ right))
+        (choose_first among' (x::right))
+  (* all permutations of [l], prefixed with [x] *)
+  and perms_starting_with x l =
+    BatLazyList.map (fun l -> x :: l) (choose_first l [])
+  in choose_first l []
+
+(*$T permutations
+  permutations [1;2;3] |> LazyList.to_list |> List.sort Pervasives.compare = \
+    [[1;2;3]; [1;3;2]; [2;1;3]; [2;3;1]; [3;1;2]; [3;2;1]]
+  permutations [] |> LazyList.to_list = [[]]
+  permutations [1] |> LazyList.to_list = [[1]]
+*)
+
 (*$= interleave & ~printer:(IO.to_string (List.print Int.print))
   (interleave 0 [1;2;3]) [1;0;2;0;3]
   (interleave 0 [1]) [1]
