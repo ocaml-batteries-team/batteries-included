@@ -239,9 +239,18 @@ module BaseSafeInt = struct
 
   let abs x = if x <> min_int then abs x else raise Overflow
 
+  (* Performance hack: if both operands of the multiplication operator can be
+     represented using the specified amount of bits (not counting the sign
+     bit), then it is safe to assume that overflow does not happen. *)
+  let mul_shift_bits =
+    match Sys.word_size with
+      | 64 -> 31                (* 64 = sign bit + 31*2 + tag bit *)
+      | 32 -> 15                (* 32 = sign bit + 15*2 + tag bit *)
+      | _  -> 0
+
   let mul (a: int) (b: int) : int =
     let open Pervasives in
-    if Sys.word_size <> 64 || a <> a land 0x7fff_ffff || b <> b land 0x7fff_ffff
+    if ((abs a) lor (abs b)) asr mul_shift_bits <> 0
     then begin match (a > 0, b > 0) with
       | (true, true) when a > (max_int / b) ->
           raise BatNumber.Overflow
