@@ -114,7 +114,7 @@ let filter f q = Concrete.(filter f (of_abstr q))
 (*$T filter
   let q1 = Queue.create () in \
   for i = 1 to 5 do Queue.push i q1; done; \
-  let q2,q3 = Queue.copy q1, Queue.copy q1 in
+  let q2,q3 = Queue.copy q1, Queue.copy q1 in \
   filter (fun a -> List.mem a [2;4]) q1; \
   filter (fun a -> List.mem a [3]) q2; \
   filter (fun a -> List.mem a []) q3; \
