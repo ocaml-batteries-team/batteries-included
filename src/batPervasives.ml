@@ -227,14 +227,16 @@ let open_in_bin name  = BatIO.input_channel ~cleanup:true (open_in_bin name)
 let open_in_gen mode perm filename =
   BatIO.input_channel ~cleanup:true (open_in_gen mode perm filename)
 
-let input_char        = BatIO.read
-let input_line ic     = try BatIO.read_line ic with BatIO.No_more_input -> raise End_of_file
-let input             = BatIO.input
+let wrap_inner_io f a = try f a with BatIO.No_more_input -> raise End_of_file
+let input_char        = wrap_inner_io BatIO.read
+let input_line        = wrap_inner_io BatIO.read_line
+let input             = wrap_inner_io BatIO.input
 let really_input inp buf pos len =
-  ignore (BatIO.really_input inp buf pos len)
-let input_byte        = BatIO.read_byte
-let input_binary_int  = BatIO.read_i32
-let input_binary_float inp= BatInt64.float_of_bits (BatIO.read_i64 inp)
+  wrap_inner_io ignore (BatIO.really_input inp buf pos len)
+let input_byte        = wrap_inner_io BatIO.read_byte
+let input_binary_int  = wrap_inner_io BatIO.read_i32
+let input_binary_float inp =
+  wrap_inner_io BatInt64.float_of_bits (BatIO.read_i64 inp)
 let close_in          = BatIO.close_in
 let close_in_noerr inp=
   try BatIO.close_in inp
