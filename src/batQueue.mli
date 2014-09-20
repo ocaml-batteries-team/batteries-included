@@ -44,12 +44,6 @@ val add : 'a -> 'a t -> unit
 val push : 'a -> 'a t -> unit
 (** [push] is a synonym for [add]. *)
 
-val add_front : 'a -> 'a t -> unit
-(** [add_front x q] adds the element [x] at the front of the queue [q]. *)
-
-val push_front : 'a -> 'a t -> unit
-(** [push_front] is a synonym for [add_front]. *)
-
 val take : 'a t -> 'a
 (** [take q] removes and returns the first element in queue [q],
     or raises [Empty] if the queue is empty. *)
