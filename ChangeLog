@@ -37,6 +37,15 @@ Changelog
   (François Berenger)
 - Int: add copysign
   (Simon Cruanes)
+- Deque: add rotate_forward, rotate_backward : 'a dq -> 'a dq
+  (Max Mouratov)
+- Int: fix overflow checking in Safe_int.mul
+  (Max Mouratov, Christopher Zimmermann)
+- add a local OPAM description, allows to use
+    opam pin add batteries git@github.com:ocaml-batteries-team/batteries-included.git
+  (Vincent Bernardoff)
+- Queue: add map : ('a -> 'b) -> 'a t -> 'b t
+  (Christopher Zimmermann)
 - compatibility with 4.02:
   + Printf: remove CamlinternalPr for OCaml versions >= 4.02
     (Ralf Vogler)

@@ -79,7 +79,10 @@ val map : ('a -> 'b) -> 'a t -> 'b t
 (** [map f q] applies function [f] to each element of the queue
    and returns a new queue [q'] with the results returned by [f].
    Order is preserved and [q] is not consumed. So that if
-   [take q] returns [x] [take q'] will return [f x]. *)
+   [take q] returns [x] [take q'] will return [f x].
+
+   @since 2.3.0
+*)
 
 (*
 val filter : ('a -> bool) -> 'a t -> unit

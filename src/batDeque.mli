@@ -124,14 +124,14 @@ val rotate_forward : 'a dq -> 'a dq
     As a result, the front element becomes the rear element.
     Time: O(1) amortized, O(n) worst-case.
 
-    @since NEXT_RELEASE *)
+    @since 2.3.0 *)
 
 val rotate_backward : 'a dq -> 'a dq
 (** A cyclic shift of deque elements from front to rear by one position.
     As a result, the rear element becomes the front element.
     Time: O(1) amortized, O(n) worst-case.
 
-    @since NEXT_RELEASE *)
+    @since 2.3.0 *)
 
 (** {6 Transformation} *)
 
