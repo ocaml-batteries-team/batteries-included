@@ -81,10 +81,12 @@ val map : ('a -> 'b) -> 'a t -> 'b t
    Order is preserved and [q] is not consumed. So that if
    [take q] returns [x] [take q'] will return [f x]. *)
 
+(*
 val filter : ('a -> bool) -> 'a t -> unit
 (** [filter p q] removes all the elements of the queue [q] that
     don't satisfy the predicate [p].  The order of the elements
     in the queue is preserved.  *)
+ *)
 
 val fold : ('b -> 'a -> 'b) -> 'b -> 'a t -> 'b
 (** [fold f accu q] is equivalent to [List.fold_left f accu l],

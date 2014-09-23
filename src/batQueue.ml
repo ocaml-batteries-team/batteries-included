@@ -110,8 +110,9 @@ let map f q = Concrete.(to_abstr (map f (of_abstr q)))
   BatList.of_enum (enum q) = [11;12;13;14;15]
 *)
 
+(*
 let filter f q = Concrete.(filter f (of_abstr q))
-(*$T filter
+(* filter
   let q1 = Queue.create () in \
   for i = 1 to 5 do Queue.push i q1; done; \
   let q2,q3 = Queue.copy q1, Queue.copy q1 in \
@@ -124,6 +125,7 @@ let filter f q = Concrete.(filter f (of_abstr q))
   BatList.of_enum (enum q1) = [2;4] && \
   BatList.of_enum (enum q2) = [3] && \
   BatList.of_enum (enum q3) = []
+*)
 *)
 
 let of_enum e =
