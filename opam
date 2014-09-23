@@ -9,4 +9,6 @@ build: [
   [make "install"]
 ]
 remove: [["ocamlfind" "remove" "batteries"]]
-depends: ["ocamlfind"]
+depends: [
+  "ocamlfind" {>= "1.5.3"}
+]
