@@ -23,6 +23,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -158,21 +159,30 @@ Marshaling of data structures.
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
 <code><span id="TYPEELTextern_flags.No_sharing"><span class="constructor">No_sharing</span></span></code></td>
-<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Don't preserve sharing</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+Don't preserve sharing<br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
 <code><span id="TYPEELTextern_flags.Closures"><span class="constructor">Closures</span></span></code></td>
-<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Send function closures</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+Send function closures<br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
 <code><span id="TYPEELTextern_flags.Compat_32"><span class="constructor">Compat_32</span></span></code></td>
-<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Ensure 32-bit compatibility</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+Ensure 32-bit compatibility<br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 
 <div class="info ">
@@ -204,21 +214,27 @@ The flags to the <code class="code"><span class="constructor">Marshal</span>.to_
     un-marshaling time, using an MD5 digest of the code transmitted
     along with the code position.)</div>
 
-<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">'a -> <a href="BatMarshal.html#TYPEextern_flags">extern_flags</a> list -> string</code></pre><div class="info ">
-<code class="code"><span class="constructor">Marshal</span>.to_string v flags</code> returns a string containing
-    the representation of <code class="code">v</code> as a sequence of bytes.
-    The <code class="code">flags</code> argument has the same meaning as for
-    <code class="code"><span class="constructor">Marshal</span>.to_channel</code>.<br>
+<pre><span id="VALto_bytes"><span class="keyword">val</span> to_bytes</span> : <code class="type">'a -> <a href="BatMarshal.html#TYPEextern_flags">extern_flags</a> list -> Bytes.t</code></pre><div class="info ">
+<code class="code"><span class="constructor">Marshal</span>.to_bytes v flags</code> returns a byte sequence containing
+   the representation of <code class="code">v</code>.
+   The <code class="code">flags</code> argument has the same meaning as for
+   <code class="code"><span class="constructor">Marshal</span>.output</code>.<br>
+<b>Since</b> 2.3.0<br>
 </div>
 
-<pre><span id="VALto_buffer"><span class="keyword">val</span> to_buffer</span> : <code class="type">string -> int -> int -> 'a -> <a href="BatMarshal.html#TYPEextern_flags">extern_flags</a> list -> int</code></pre><div class="info ">
+<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">'a -> <a href="BatMarshal.html#TYPEextern_flags">extern_flags</a> list -> string</code></pre><div class="info ">
+Same as <code class="code">to_bytes</code> but return the result as a string instead of
+    a byte sequence.<br>
+</div>
+
+<pre><span id="VALto_buffer"><span class="keyword">val</span> to_buffer</span> : <code class="type">Bytes.t -> int -> int -> 'a -> <a href="BatMarshal.html#TYPEextern_flags">extern_flags</a> list -> int</code></pre><div class="info ">
 <code class="code"><span class="constructor">Marshal</span>.to_buffer buff ofs len v flags</code> marshals the value <code class="code">v</code>,
-    storing its byte representation in the string <code class="code">buff</code>,
-    starting at character number <code class="code">ofs</code>, and writing at most
-    <code class="code">len</code> characters.  It returns the number of characters
-    actually written to the string. If the byte representation
-    of <code class="code">v</code> does not fit in <code class="code">len</code> characters, the exception <code class="code"><span class="constructor">Failure</span></code>
-    is raised.<br>
+   storing its byte representation in the sequence <code class="code">buff</code>,
+   starting at index <code class="code">ofs</code>, and writing at most
+   <code class="code">len</code> bytes.  It returns the number of bytes
+   actually written to the sequence. If the byte representation
+   of <code class="code">v</code> does not fit in <code class="code">len</code> characters, the exception <code class="code"><span class="constructor">Failure</span></code>
+   is raised.<br>
 </div>
 
 <pre><span id="VALinput"><span class="keyword">val</span> input</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> 'a</code></pre><div class="info ">
@@ -228,42 +244,49 @@ The flags to the <code class="code"><span class="constructor">Marshal</span>.to_
     returns the corresponding value.<br>
 </div>
 
+<pre><span id="VALfrom_bytes"><span class="keyword">val</span> from_bytes</span> : <code class="type">Bytes.t -> int -> 'a</code></pre><div class="info ">
+<code class="code"><span class="constructor">Marshal</span>.from_bytes buff ofs</code> unmarshals a structured value
+   like <code class="code"><span class="constructor">Marshal</span>.from_channel</code> does, except that the byte
+   representation is not read from a channel, but taken from
+   the byte sequence <code class="code">buff</code>, starting at position <code class="code">ofs</code>.
+   The byte sequence is not mutated.<br>
+<b>Since</b> 2.3.0<br>
+</div>
+
 <pre><span id="VALfrom_string"><span class="keyword">val</span> from_string</span> : <code class="type">string -> int -> 'a</code></pre><div class="info ">
-<code class="code"><span class="constructor">Marshal</span>.from_string buff ofs</code> unmarshals a structured value
-    like <code class="code"><span class="constructor">Marshal</span>.from_channel</code> does, except that the byte
-    representation is not read from a channel, but taken from
-    the string <code class="code">buff</code>, starting at position <code class="code">ofs</code>.<br>
+Same as <code class="code">from_bytes</code> but take a string as argument instead of a
+    byte sequence.<br>
 </div>
 
 <pre><span id="VALheader_size"><span class="keyword">val</span> header_size</span> : <code class="type">int</code></pre><div class="info ">
 The bytes representing a marshaled value are composed of
-    a fixed-size header and a variable-sized data part,
-    whose size can be determined from the header.
-    <code class="code"><span class="constructor">Marshal</span>.header_size</code> is the size, in characters, of the header.
-    <code class="code"><span class="constructor">Marshal</span>.data_size</code><code class="code"> buff ofs</code> is the size, in characters,
-    of the data part, assuming a valid header is stored in
-    <code class="code">buff</code> starting at position <code class="code">ofs</code>.
-    Finally, <code class="code"><span class="constructor">Marshal</span>.total_size</code><code class="code"> buff ofs</code> is the total size,
-    in characters, of the marshaled value.
-    Both <code class="code"><span class="constructor">Marshal</span>.data_size</code> and <code class="code"><span class="constructor">Marshal</span>.total_size</code> raise <code class="code"><span class="constructor">Failure</span></code>
-    if <code class="code">buff</code>, <code class="code">ofs</code> does not contain a valid header.
+   a fixed-size header and a variable-sized data part,
+   whose size can be determined from the header.
+   <code class="code"><span class="constructor">Marshal</span>.header_size</code> is the size, in bytes, of the header.
+   <code class="code"><span class="constructor">Marshal</span>.data_size</code><code class="code"> buff ofs</code> is the size, in bytes,
+   of the data part, assuming a valid header is stored in
+   <code class="code">buff</code> starting at position <code class="code">ofs</code>.
+   Finally, <code class="code"><span class="constructor">Marshal</span>.total_size</code> <code class="code">buff ofs</code> is the total size,
+   in bytes, of the marshaled value.
+   Both <code class="code"><span class="constructor">Marshal</span>.data_size</code> and <code class="code"><span class="constructor">Marshal</span>.total_size</code> raise <code class="code"><span class="constructor">Failure</span></code>
+   if <code class="code">buff</code>, <code class="code">ofs</code> does not contain a valid header.
 <p>
 
-    To read the byte representation of a marshaled value into
-    a string buffer, the program needs to read first
-    <code class="code"><span class="constructor">Marshal</span>.header_size</code> characters into the buffer,
-    then determine the length of the remainder of the
-    representation using <code class="code"><span class="constructor">Marshal</span>.data_size</code>,
-    make sure the buffer is large enough to hold the remaining
-    data, then read it, and finally call <code class="code"><span class="constructor">Marshal</span>.from_string</code>
-    to unmarshal the value.<br>
+   To read the byte representation of a marshaled value into
+   a byte sequence, the program needs to read first
+   <code class="code"><span class="constructor">Marshal</span>.header_size</code> bytes into the sequence,
+   then determine the length of the remainder of the
+   representation using <code class="code"><span class="constructor">Marshal</span>.data_size</code>,
+   make sure the sequence is large enough to hold the remaining
+   data, then read it, and finally call <code class="code"><span class="constructor">Marshal</span>.from_bytes</code>
+   to unmarshal the value.<br>
 </div>
 
-<pre><span id="VALdata_size"><span class="keyword">val</span> data_size</span> : <code class="type">string -> int -> int</code></pre><div class="info ">
+<pre><span id="VALdata_size"><span class="keyword">val</span> data_size</span> : <code class="type">Bytes.t -> int -> int</code></pre><div class="info ">
 See <code class="code"><span class="constructor">Marshal</span>.header_size</code>.<br>
 </div>
 
-<pre><span id="VALtotal_size"><span class="keyword">val</span> total_size</span> : <code class="type">string -> int -> int</code></pre><div class="info ">
+<pre><span id="VALtotal_size"><span class="keyword">val</span> total_size</span> : <code class="type">Bytes.t -> int -> int</code></pre><div class="info ">
 See <code class="code"><span class="constructor">Marshal</span>.header_size</code>.<br>
 </div>
 <br>

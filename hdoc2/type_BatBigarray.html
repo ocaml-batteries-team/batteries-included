@@ -18,6 +18,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -103,19 +104,33 @@
 </head>
 <body>
 <code class="code"><span class="keyword">sig</span><br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;float32_elt&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.float32_elt<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;float64_elt&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.float64_elt<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;complex32_elt&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.complex32_elt<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;complex64_elt&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.complex64_elt<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;int8_signed_elt&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.int8_signed_elt<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;int8_unsigned_elt&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.int8_unsigned_elt<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;int16_signed_elt&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.int16_signed_elt<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;int16_unsigned_elt&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.int16_unsigned_elt<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;int_elt&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.int_elt<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;int32_elt&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.int32_elt<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;int64_elt&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.int64_elt<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;nativeint_elt&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.nativeint_elt<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;kind&nbsp;=&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="constructor">Bigarray</span>.kind<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;float32_elt&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.float32_elt&nbsp;=&nbsp;<span class="constructor">Float32_elt</span><br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;float64_elt&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.float64_elt&nbsp;=&nbsp;<span class="constructor">Float64_elt</span><br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;complex32_elt&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.complex32_elt&nbsp;=&nbsp;<span class="constructor">Complex32_elt</span><br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;complex64_elt&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.complex64_elt&nbsp;=&nbsp;<span class="constructor">Complex64_elt</span><br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;int8_signed_elt&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.int8_signed_elt&nbsp;=&nbsp;<span class="constructor">Int8_signed_elt</span><br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;int8_unsigned_elt&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.int8_unsigned_elt&nbsp;=&nbsp;<span class="constructor">Int8_unsigned_elt</span><br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;int16_signed_elt&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.int16_signed_elt&nbsp;=&nbsp;<span class="constructor">Int16_signed_elt</span><br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;int16_unsigned_elt&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.int16_unsigned_elt&nbsp;=&nbsp;<span class="constructor">Int16_unsigned_elt</span><br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;int_elt&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.int_elt&nbsp;=&nbsp;<span class="constructor">Int_elt</span><br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;int32_elt&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.int32_elt&nbsp;=&nbsp;<span class="constructor">Int32_elt</span><br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;int64_elt&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.int64_elt&nbsp;=&nbsp;<span class="constructor">Int64_elt</span><br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;nativeint_elt&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.nativeint_elt&nbsp;=&nbsp;<span class="constructor">Nativeint_elt</span><br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;kind&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="constructor">Bigarray</span>.kind&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Float32</span>&nbsp;:&nbsp;(float,&nbsp;<span class="constructor">BatBigarray</span>.float32_elt)&nbsp;<span class="constructor">BatBigarray</span>.kind<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Float64</span>&nbsp;:&nbsp;(float,&nbsp;<span class="constructor">BatBigarray</span>.float64_elt)&nbsp;<span class="constructor">BatBigarray</span>.kind<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int8_signed</span>&nbsp;:&nbsp;(int,&nbsp;<span class="constructor">BatBigarray</span>.int8_signed_elt)&nbsp;<span class="constructor">BatBigarray</span>.kind<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int8_unsigned</span>&nbsp;:&nbsp;(int,&nbsp;<span class="constructor">BatBigarray</span>.int8_unsigned_elt)&nbsp;<span class="constructor">BatBigarray</span>.kind<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int16_signed</span>&nbsp;:&nbsp;(int,&nbsp;<span class="constructor">BatBigarray</span>.int16_signed_elt)&nbsp;<span class="constructor">BatBigarray</span>.kind<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int16_unsigned</span>&nbsp;:&nbsp;(int,&nbsp;<span class="constructor">BatBigarray</span>.int16_unsigned_elt)&nbsp;<span class="constructor">BatBigarray</span>.kind<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int32</span>&nbsp;:&nbsp;(int32,&nbsp;<span class="constructor">BatBigarray</span>.int32_elt)&nbsp;<span class="constructor">BatBigarray</span>.kind<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int64</span>&nbsp;:&nbsp;(int64,&nbsp;<span class="constructor">BatBigarray</span>.int64_elt)&nbsp;<span class="constructor">BatBigarray</span>.kind<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int</span>&nbsp;:&nbsp;(int,&nbsp;<span class="constructor">BatBigarray</span>.int_elt)&nbsp;<span class="constructor">BatBigarray</span>.kind<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Nativeint</span>&nbsp;:&nbsp;(nativeint,&nbsp;<span class="constructor">BatBigarray</span>.nativeint_elt)&nbsp;<span class="constructor">BatBigarray</span>.kind<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Complex32</span>&nbsp;:&nbsp;(<span class="constructor">Complex</span>.t,&nbsp;<span class="constructor">BatBigarray</span>.complex32_elt)&nbsp;<span class="constructor">BatBigarray</span>.kind<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Complex64</span>&nbsp;:&nbsp;(<span class="constructor">Complex</span>.t,&nbsp;<span class="constructor">BatBigarray</span>.complex64_elt)&nbsp;<span class="constructor">BatBigarray</span>.kind<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Char</span>&nbsp;:&nbsp;(char,&nbsp;<span class="constructor">BatBigarray</span>.int8_unsigned_elt)&nbsp;<span class="constructor">BatBigarray</span>.kind<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;float32&nbsp;:&nbsp;(float,&nbsp;<span class="constructor">BatBigarray</span>.float32_elt)&nbsp;<span class="constructor">BatBigarray</span>.kind<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;float64&nbsp;:&nbsp;(float,&nbsp;<span class="constructor">BatBigarray</span>.float64_elt)&nbsp;<span class="constructor">BatBigarray</span>.kind<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;complex32&nbsp;:&nbsp;(<span class="constructor">Complex</span>.t,&nbsp;<span class="constructor">BatBigarray</span>.complex32_elt)&nbsp;<span class="constructor">BatBigarray</span>.kind<br>
@@ -129,9 +144,12 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;int64&nbsp;:&nbsp;(int64,&nbsp;<span class="constructor">BatBigarray</span>.int64_elt)&nbsp;<span class="constructor">BatBigarray</span>.kind<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;nativeint&nbsp;:&nbsp;(nativeint,&nbsp;<span class="constructor">BatBigarray</span>.nativeint_elt)&nbsp;<span class="constructor">BatBigarray</span>.kind<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;char&nbsp;:&nbsp;(char,&nbsp;<span class="constructor">BatBigarray</span>.int8_unsigned_elt)&nbsp;<span class="constructor">BatBigarray</span>.kind<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;c_layout&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.c_layout<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;fortran_layout&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.fortran_layout<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;layout&nbsp;=&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Bigarray</span>.layout<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;c_layout&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.c_layout&nbsp;=&nbsp;<span class="constructor">C_layout_typ</span><br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;fortran_layout&nbsp;=&nbsp;<span class="constructor">Bigarray</span>.fortran_layout&nbsp;=&nbsp;<span class="constructor">Fortran_layout_typ</span><br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;layout&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Bigarray</span>.layout&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">C_layout</span>&nbsp;:&nbsp;<span class="constructor">BatBigarray</span>.c_layout&nbsp;<span class="constructor">BatBigarray</span>.layout<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Fortran_layout</span>&nbsp;:&nbsp;<span class="constructor">BatBigarray</span>.fortran_layout&nbsp;<span class="constructor">BatBigarray</span>.layout<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;c_layout&nbsp;:&nbsp;<span class="constructor">BatBigarray</span>.c_layout&nbsp;<span class="constructor">BatBigarray</span>.layout<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;fortran_layout&nbsp;:&nbsp;<span class="constructor">BatBigarray</span>.fortran_layout&nbsp;<span class="constructor">BatBigarray</span>.layout<br>
 &nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Genarray</span>&nbsp;:<br>

@@ -23,6 +23,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -121,7 +122,7 @@
 </div>
 <h1>Module <a href="type_Batteries.Array.html">Batteries.Array</a></h1>
 
-<pre><span class="keyword">module</span> Array: <code class="type">BatArray</code></pre><hr width="100%">
+<pre><span class="keyword">module</span> Array: <code class="type"><a href="BatArray.html">BatArray</a></code></pre><hr width="100%">
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a array</code> </pre>
 <div class="info ">
@@ -163,6 +164,12 @@ Return the length (number of elements) of the given array.<br>
 <b>Raises</b> <code>Invalid_argument</code> if <code class="code">n &lt; 0</code> or <code class="code">n &gt; <span class="constructor">Sys</span>.max_array_length</code>.
     If the value of <code class="code">x</code> is a floating-point number, then the maximum
     size is only <code class="code"><span class="constructor">Sys</span>.max_array_length / 2</code>.<br>
+</div>
+
+<pre><span id="VALmake_float"><span class="keyword">val</span> make_float</span> : <code class="type">int -> float array</code></pre><div class="info ">
+<code class="code"><span class="constructor">Array</span>.make_float n</code> returns a fresh float array of length <code class="code">n</code>,
+    with uninitialized data.<br>
+<b>Since</b> 2.3.0 and OCaml 4.2.0<br>
 </div>
 
 <pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -> 'a -> 'a array</code></pre><div class="info ">
@@ -446,8 +453,8 @@ Same as <code class="code"><span class="constructor">Array</span>.sort</code> or
     x &lt; f y</code> then <code class="code">x</code> is earlier in the result than <code class="code">y</code>.  This
     function is useful when <code class="code">f</code> is expensive, as it only computes <code class="code">f
     x</code> once for each element in the array.  See
-    <code class="code">:[http://en.wikipedia.org/wiki/<span class="constructor">Schwartzian_transform</span>]<span class="constructor">Schwartzian</span>
-    <span class="constructor">Transform</span></code>.
+    <a href="http://en.wikipedia.org/wiki/Schwartzian_transform">Schwartzian
+    Transform</a>.
 <p>
 
     It is unnecessary to have an additional comparison function as
@@ -627,8 +634,8 @@ Build an array from an enumeration, with the first element of
 
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -> ('a, 'b) <a href="BatIO.html#TYPEprinter">BatIO.printer</a> -> ('a <a href="BatArray.html#TYPEt">t</a>, 'b) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info ">
 Print the contents of an array, with <code class="code">~first</code> preceeding the first
-    item (default: "<code class="code"><span class="keywordsign">|</span><span class="string">"), [~last] following the last item (default:
-    "</span><span class="keywordsign">|</span></code>") and <code class="code">~sep</code> separating items (default: "; ").  A printing
+    item (default: "[|"), <code class="code">~last</code> following the last item (default:
+    "|]") and <code class="code">~sep</code> separating items (default: "; ").  A printing
     function must be provided to print the items in the array.
 <p>
 

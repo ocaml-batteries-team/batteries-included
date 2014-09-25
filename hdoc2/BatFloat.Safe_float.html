@@ -22,6 +22,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -150,8 +151,8 @@ Operations on floating-point numbers, with exceptions raised in
 The type of floating-point numbers.
 <p>
 
-	   Floating-point numbers are the default representation of
-	   real numbers by OCaml.<br>
+       Floating-point numbers are the default representation of
+       real numbers by OCaml.<br>
 </div>
 
 <br>
@@ -168,14 +169,14 @@ Floating number one. This is the same thing as <code class="code">1.</code><br>
 <pre><span id="VALneg"><span class="keyword">val</span> neg</span> : <code class="type">float -> float</code></pre>
 <pre><span id="VALsucc"><span class="keyword">val</span> succ</span> : <code class="type">float -> float</code></pre><div class="info ">
 Add <code class="code">1.</code> to a floating number. Note that, as per IEEE 754,
-	  if <code class="code">x</code> is a large enough float number, <code class="code">succ x</code> might be
-	  equal to <code class="code">x</code>, due to rounding.<br>
+      if <code class="code">x</code> is a large enough float number, <code class="code">succ x</code> might be
+      equal to <code class="code">x</code>, due to rounding.<br>
 </div>
 
 <pre><span id="VALpred"><span class="keyword">val</span> pred</span> : <code class="type">float -> float</code></pre><div class="info ">
 Substract <code class="code">1.</code> from a floating number. Note that, as per
-	  IEEE 754, if <code class="code">x</code> is a large enough float number, <code class="code">pred x</code>
-	  might be equal to <code class="code">x</code>, due to rounding.<br>
+      IEEE 754, if <code class="code">x</code> is a large enough float number, <code class="code">pred x</code>
+      might be equal to <code class="code">x</code>, due to rounding.<br>
 </div>
 
 <pre><span id="VALabs"><span class="keyword">val</span> abs</span> : <code class="type">float -> float</code></pre><div class="info ">
@@ -263,10 +264,10 @@ See <a href="BatFloat.Safe_float.html#VALfloor"><code class="code"><span class="
 
 <pre><span id="VALfloor"><span class="keyword">val</span> floor</span> : <code class="type">float -> float</code></pre><div class="info ">
 Round the given float to an integer value.
-	  <code class="code">floor f</code> returns the greatest integer value less than or
-	  equal to <code class="code">f</code>.
-	  <code class="code">ceil f</code> returns the least integer value greater than or
-	  equal to <code class="code">f</code>.<br>
+      <code class="code">floor f</code> returns the greatest integer value less than or
+      equal to <code class="code">f</code>.
+      <code class="code">ceil f</code> returns the least integer value greater than or
+      equal to <code class="code">f</code>.<br>
 </div>
 
 <pre><span id="VALinfinity"><span class="keyword">val</span> infinity</span> : <code class="type">float</code></pre><div class="info ">
@@ -279,11 +280,11 @@ Negative infinity.<br>
 
 <pre><span id="VALnan"><span class="keyword">val</span> nan</span> : <code class="type">float</code></pre><div class="info ">
 A special floating-point value denoting the result of an
-	  undefined operation such as <code class="code">0.0 /. 0.0</code>.  Stands for
-	  ``not a number''.  Any floating-point operation with <code class="code">nan</code> as
-	  argument returns <code class="code">nan</code> as result.  As for floating-point comparisons,
-	  <code class="code">=</code>, <code class="code">&lt;</code>, <code class="code">&lt;=</code>, <code class="code">&gt;</code> and <code class="code">&gt;=</code> return <code class="code"><span class="keyword">false</span></code> and <code class="code">&lt;&gt;</code> returns <code class="code"><span class="keyword">true</span></code>
-	  if one or both of their arguments is <code class="code">nan</code>.<br>
+      undefined operation such as <code class="code">0.0 /. 0.0</code>.  Stands for
+      ``not a number''.  Any floating-point operation with <code class="code">nan</code> as
+      argument returns <code class="code">nan</code> as result.  As for floating-point comparisons,
+      <code class="code">=</code>, <code class="code">&lt;</code>, <code class="code">&lt;=</code>, <code class="code">&gt;</code> and <code class="code">&gt;=</code> return <code class="code"><span class="keyword">false</span></code> and <code class="code">&lt;&gt;</code> returns <code class="code"><span class="keyword">true</span></code>
+      if one or both of their arguments is <code class="code">nan</code>.<br>
 </div>
 
 <pre><span id="VALis_nan"><span class="keyword">val</span> is_nan</span> : <code class="type">float -> bool</code></pre><div class="info ">
@@ -302,10 +303,10 @@ The constant pi (3.14159...)<br>
 
 <pre><span id="VALfrexp"><span class="keyword">val</span> frexp</span> : <code class="type">float -> float * int</code></pre><div class="info ">
 <code class="code">frexp f</code> returns the pair of the significant
-	  and the exponent of <code class="code">f</code>.  When <code class="code">f</code> is zero, the
-	  significant <code class="code">x</code> and the exponent <code class="code">n</code> of <code class="code">f</code> are equal to
-	  zero.  When <code class="code">f</code> is non-zero, they are defined by
-	  <code class="code">f = x *. 2 ** n</code> and <code class="code">0.5 &lt;= x &lt; 1.0</code>.<br>
+      and the exponent of <code class="code">f</code>.  When <code class="code">f</code> is zero, the
+      significant <code class="code">x</code> and the exponent <code class="code">n</code> of <code class="code">f</code> are equal to
+      zero.  When <code class="code">f</code> is non-zero, they are defined by
+      <code class="code">f = x *. 2 ** n</code> and <code class="code">0.5 &lt;= x &lt; 1.0</code>.<br>
 </div>
 
 <pre><span id="VALldexp"><span class="keyword">val</span> ldexp</span> : <code class="type">float -> int -> float</code></pre><div class="info ">
@@ -314,7 +315,7 @@ The constant pi (3.14159...)<br>
 
 <pre><span id="VALmodf"><span class="keyword">val</span> modf</span> : <code class="type">float -> float * float</code></pre><div class="info ">
 <code class="code">modf f</code> returns the pair of the fractional and integral
-	  part of <code class="code">f</code>.<br>
+      part of <code class="code">f</code>.<br>
 </div>
 
 <pre><span id="TYPEfpkind"><span class="keyword">type</span> <code class="type"></code>fpkind</span> = <code class="type">Pervasives.fpclass</code> = </pre><table class="typetable">
@@ -323,48 +324,63 @@ The constant pi (3.14159...)<br>
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
 <code><span id="TYPEELTfpkind.FP_normal"><span class="constructor">FP_normal</span></span></code></td>
-<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Normal number, none of the below</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+Normal number, none of the below<br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
 <code><span id="TYPEELTfpkind.FP_subnormal"><span class="constructor">FP_subnormal</span></span></code></td>
-<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Number very close to 0.0, has reduced precision</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+Number very close to 0.0, has reduced precision<br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
 <code><span id="TYPEELTfpkind.FP_zero"><span class="constructor">FP_zero</span></span></code></td>
-<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Number is 0.0 or -0.0</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+Number is 0.0 or -0.0<br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
 <code><span id="TYPEELTfpkind.FP_infinite"><span class="constructor">FP_infinite</span></span></code></td>
-<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Number is positive or negative infinity</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+Number is positive or negative infinity<br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
 <code><span id="TYPEELTfpkind.FP_nan"><span class="constructor">FP_nan</span></span></code></td>
-<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >Not a number: result of an undefined operation</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+Not a number: result of an undefined operation<br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 
 <div class="info ">
 Classes of floating point numbers
 <p>
 The five classes of floating-point numbers, as determined by
-	      the <a href="BatFloat.Safe_float.html#VALclassify"><code class="code"><span class="constructor">BatFloat</span>.<span class="constructor">Safe_float</span>.classify</code></a> function.<br>
+          the <a href="BatFloat.Safe_float.html#VALclassify"><code class="code"><span class="constructor">BatFloat</span>.<span class="constructor">Safe_float</span>.classify</code></a> function.<br>
 </div>
 
 
 <pre><span id="VALclassify"><span class="keyword">val</span> classify</span> : <code class="type">float -> <a href="BatFloat.Safe_float.html#TYPEfpkind">fpkind</a></code></pre><div class="info ">
 Return the class of the given floating-point number:
-	    normal, subnormal, zero, infinite, or not a number.<br>
+        normal, subnormal, zero, infinite, or not a number.<br>
 </div>
 <br>
 <h6 id="6_Boilerplatecode">Boilerplate code</h6><br>

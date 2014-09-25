@@ -23,6 +23,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -145,14 +146,17 @@ An algebraic datatype for ordering.
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
 <code><span id="TYPEELTorder.Gt"><span class="constructor">Gt</span></span></code></td>
-<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >An algebraic datatype for ordering.
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+An algebraic datatype for ordering.
 <p>
 
     Traditional OCaml code, under the influence of C comparison
     functions, has used int-returning comparisons (&lt; 0, 0 or &gt;
     0). Using an algebraic datatype instead is actually nicer, both
     for comparison producers (no arbitrary choice of a positive and
-    negative value) and consumers (nice pattern-matching elimination).</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+    negative value) and consumers (nice pattern-matching elimination).<br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 
 

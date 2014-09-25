@@ -23,6 +23,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -744,17 +745,23 @@ For users worried about the speed of <code class="code">count</code> you can cal
 </div>
 
 <pre><span id="VALmerge"><span class="keyword">val</span> merge</span> : <code class="type">('a -> 'a -> bool) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">merge test (a, b)</code> merge the elements from <code class="code">a</code> and <code class="code">b</code> into a single
-    enumeration. At each step, <code class="code">test</code> is applied to the first element of
-    <code class="code">a</code> and the first element of <code class="code">b</code> to determine which should get first
-    into resulting enumeration. If <code class="code">a</code> or <code class="code">b</code> runs out of elements,
-    the process will append all elements of the other enumeration to
-    the result.<br>
+<code class="code">merge test a b</code> merge the elements from <code class="code">a</code> and <code class="code">b</code> into a single
+    enumeration. At each step, <code class="code">test</code> is applied to the first element <code class="code">xa</code> of
+    <code class="code">a</code> and the first element <code class="code">xb</code> of <code class="code">b</code> to determine which should get first
+    into resulting enumeration. If <code class="code">test xa xb</code> returns <code class="code"><span class="keyword">true</span></code>, <code class="code">xa</code> (the
+    first element of <code class="code">a</code>) is used, otherwise <code class="code">xb</code> is used.  If <code class="code">a</code> or <code class="code">b</code> runs
+    out of elements, the process will append all elements of the other
+    enumeration to the result.
+<p>
+
+    For example, if <code class="code">a</code> and <code class="code">b</code> are enumerations of integers sorted
+    in increasing order, then <code class="code">merge (&lt;) a b</code> will also be sorted.<br>
 </div>
 
 <pre><span id="VALuniq"><span class="keyword">val</span> uniq</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">uniq e</code> returns a duplicate of <code class="code">e</code> with repeated values
-    omitted. (similar to unix's <code class="code">uniq</code> command)<br>
+    omitted. (similar to unix's <code class="code">uniq</code> command)
+    It uses physical equality to compare consecutive elements.<br>
 </div>
 
 <pre><span id="VALswitch"><span class="keyword">val</span> switch</span> : <code class="type">('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> * 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
@@ -801,7 +808,7 @@ as <code class="code">switch</code><br>
 Infix versions of some functions
 <p>
 
-	This module groups together all infix operators so that
+    This module groups together all infix operators so that
     you can open it without opening the whole batEnum module.<br>
 
 <pre><span class="keyword">module</span> <a href="BatEnum.Infix.html">Infix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>

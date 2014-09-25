@@ -23,6 +23,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -282,6 +283,13 @@ Same as <code class="code"><span class="constructor">String</span>.iter</code>, 
 <b>Since</b> 4.00.0<br>
 </div>
 
+<pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">(int -> char -> char) -> string -> string</code></pre><div class="info ">
+<code class="code"><span class="constructor">String</span>.mapi f s</code> calls <code class="code">f</code> with each character of <code class="code">s</code> and its
+    index (in increasing index order) and stores the results in a new
+    string that is returned.<br>
+<b>Since</b> 4.02.0<br>
+</div>
+
 <pre><span id="VALtrim"><span class="keyword">val</span> trim</span> : <code class="type">string -> string</code></pre><div class="info ">
 Return a copy of the argument, without leading and trailing
     whitespace.  The characters regarded as whitespace are: <code class="code"><span class="string">' '</span></code>,
@@ -507,6 +515,11 @@ Returns the float represented by the given string
     <code class="code"><span class="constructor">String</span>.fold_left max <span class="string">'a'</span> <span class="string">"apples"</span> = <span class="string">'s'</span></code><br>
 </div>
 
+<pre><span id="VALfold_lefti"><span class="keyword">val</span> fold_lefti</span> : <code class="type">('a -> int -> char -> 'a) -> 'a -> string -> 'a</code></pre><div class="info ">
+As <code class="code">fold_left</code>, but with the index of the element as additional argument<br>
+<b>Since</b> 2.3.0<br>
+</div>
+
 <pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">(char -> 'a -> 'a) -> string -> 'a -> 'a</code></pre><div class="info ">
 <code class="code">fold_right f s b</code> is
     <code class="code">f s.[0] (f s.[1] (... (f s.[n-1] b) ...))</code>
@@ -514,6 +527,11 @@ Returns the float represented by the given string
 
     Examples: <code class="code"><span class="constructor">String</span>.fold_right <span class="constructor">List</span>.cons <span class="string">"foo"</span> [] = [<span class="string">'f'</span>;<span class="string">'o'</span>;<span class="string">'o'</span>]</code>
     <code class="code"><span class="constructor">String</span>.fold_right (<span class="keyword">fun</span> c a <span class="keywordsign">-&gt;</span> <span class="keyword">if</span> c = <span class="string">' '</span> <span class="keyword">then</span> a+1 <span class="keyword">else</span> a) <span class="string">"a b c"</span> 0 = 2</code><br>
+</div>
+
+<pre><span id="VALfold_righti"><span class="keyword">val</span> fold_righti</span> : <code class="type">(int -> char -> 'a -> 'a) -> string -> 'a -> 'a</code></pre><div class="info ">
+As <code class="code">fold_right</code>, but with the index of the element as additional argument<br>
+<b>Since</b> 2.3.0<br>
 </div>
 
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">(char -> bool) -> string -> string</code></pre><div class="info ">

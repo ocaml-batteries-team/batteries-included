@@ -18,6 +18,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -150,6 +151,7 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;exponential_resizer&nbsp;:&nbsp;<span class="constructor">BatDynArray</span>.resizer_t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;step_resizer&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatDynArray</span>.resizer_t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;conservative_exponential_resizer&nbsp;:&nbsp;<span class="constructor">BatDynArray</span>.resizer_t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;create_with&nbsp;:&nbsp;<span class="constructor">BatDynArray</span>.resizer_t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatDynArray</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unsafe_get&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatDynArray</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unsafe_set&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatDynArray</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;print&nbsp;:<br>
@@ -159,4 +161,5 @@
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b&nbsp;<span class="constructor">BatDynArray</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;invariants&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatDynArray</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;bool_invariants&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatDynArray</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
 <span class="keyword">end</span></code></body></html>

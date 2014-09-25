@@ -23,6 +23,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -139,7 +140,6 @@ The type of one-dimensional big arrays whose elements have
       as described for <code class="code"><span class="constructor">Genarray</span>.create</code>.<br>
 </div>
 
-<pre><span id="VALdim"><span class="keyword">val</span> dim</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> int</code></pre>
 <pre><span id="VALdim"><span class="keyword">val</span> dim</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 Return the size (dimension) of the given one-dimensional
       big array.<br>
@@ -217,8 +217,8 @@ Memory mapping of a file as a one-dimensional big array.
 
 <pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">(int -> 'a -> 'b) -><br>       ('b, 'c) Bigarray.kind -><br>       ('a, 'd, 'e) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> ('b, 'c, 'e) <a href="BatBigarray.Array1.html#TYPEt">t</a></code></pre><div class="info ">
 Same as <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Array1</span>.map</code>, but the
-	function is applied to the index of the element as the first argument,
-	and the element itself as the second argument.<br>
+    function is applied to the index of the element as the first argument,
+    and the element itself as the second argument.<br>
 </div>
 
 <pre><span id="VALmodify"><span class="keyword">val</span> modify</span> : <code class="type">('a -> 'a) -> ('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
@@ -234,7 +234,7 @@ Same as <code class="code"><span class="constructor">Bigarray</span>.<span class
 
 <pre><span id="VALto_array"><span class="keyword">val</span> to_array</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">t</a> -> 'a array</code></pre><div class="info ">
 Build a one-dimensional array initialized from the
-	given big array.<br>
+    given big array.<br>
 </div>
 <br>
 <h6 id="6_Unsafeoperations">Unsafe operations</h6>

@@ -23,6 +23,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -146,7 +147,7 @@ Return a fresh reference containing the given value.<br>
 
 <pre><span id="VAL(:=)"><span class="keyword">val</span> (:=)</span> : <code class="type">'a Pervasives.ref -> 'a -> unit</code></pre><div class="info ">
 <code class="code">r := a</code> stores the value of <code class="code">a</code> in reference <code class="code">r</code>.
-	Equivalent to <code class="code"><span class="keyword">fun</span> r v <span class="keywordsign">-&gt;</span> r.contents &lt;- v</code>.<br>
+    Equivalent to <code class="code"><span class="keyword">fun</span> r v <span class="keywordsign">-&gt;</span> r.contents &lt;- v</code>.<br>
 </div>
 
 <pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">'a Pervasives.ref -> 'a -> unit</code></pre><div class="info ">

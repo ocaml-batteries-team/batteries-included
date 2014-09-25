@@ -21,6 +21,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -156,17 +157,17 @@ Return the number of bindings of a map.<br>
 
 <pre><span id="VALmodify"><span class="keyword">val</span> modify</span> : <code class="type"><a href="BatMap.S.html#TYPEkey">key</a> -> ('a -> 'a) -> 'a <a href="BatMap.S.html#TYPEt">t</a> -> 'a <a href="BatMap.S.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">modify k f m</code> replaces the previous binding for <code class="code">k</code> with <code class="code">f</code> applied to
-	  that value. If <code class="code">k</code> is unbound in <code class="code">m</code> or <code class="code"><span class="constructor">Not_found</span></code> is raised during the
-	  search, <code class="code"><span class="constructor">Not_found</span></code> is raised.<br>
+      that value. If <code class="code">k</code> is unbound in <code class="code">m</code> or <code class="code"><span class="constructor">Not_found</span></code> is raised during the
+      search, <code class="code"><span class="constructor">Not_found</span></code> is raised.<br>
 <b>Since</b> 1.2.0<br>
 <b>Raises</b> <code>Not_found</code> if <code class="code">k</code> is unbound in <code class="code">m</code> (or <code class="code">f</code> raises <code class="code"><span class="constructor">Not_found</span></code>)<br>
 </div>
 
 <pre><span id="VALmodify_def"><span class="keyword">val</span> modify_def</span> : <code class="type">'a -> <a href="BatMap.S.html#TYPEkey">key</a> -> ('a -> 'a) -> 'a <a href="BatMap.S.html#TYPEt">t</a> -> 'a <a href="BatMap.S.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">modify_def v0 k f m</code> replaces the previous binding for <code class="code">k</code>
-	with <code class="code">f</code> applied to that value. If <code class="code">k</code> is unbound in <code class="code">m</code> or
-	<code class="code"><span class="constructor">Not_found</span></code> is raised during the search, <code class="code">f v0</code> is
-	inserted (as if the value found were <code class="code">v0</code>).<br>
+    with <code class="code">f</code> applied to that value. If <code class="code">k</code> is unbound in <code class="code">m</code> or
+    <code class="code"><span class="constructor">Not_found</span></code> is raised during the search, <code class="code">f v0</code> is
+    inserted (as if the value found were <code class="code">v0</code>).<br>
 <b>Since</b> 1.3.0<br>
 </div>
 
@@ -224,25 +225,25 @@ Same as <code class="code"><span class="constructor">Map</span>.<span class="con
 
 <pre><span id="VALfilterv"><span class="keyword">val</span> filterv</span> : <code class="type">('a -> bool) -> 'a <a href="BatMap.S.html#TYPEt">t</a> -> 'a <a href="BatMap.S.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">filterv f m</code> returns a map where only the values <code class="code">a</code> of <code class="code">m</code>
-	 such that <code class="code">f a = <span class="keyword">true</span></code> remain. The bindings are passed to <code class="code">f</code>
-	 in increasing order with respect to the ordering over the
-	 type of the keys.<br>
+     such that <code class="code">f a = <span class="keyword">true</span></code> remain. The bindings are passed to <code class="code">f</code>
+     in increasing order with respect to the ordering over the
+     type of the keys.<br>
 </div>
 
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">(<a href="BatMap.S.html#TYPEkey">key</a> -> 'a -> bool) -> 'a <a href="BatMap.S.html#TYPEt">t</a> -> 'a <a href="BatMap.S.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">filter f m</code> returns a map where only the key, values pairs
-	 <code class="code">key</code>, <code class="code">a</code> of <code class="code">m</code> such that <code class="code">f key a = <span class="keyword">true</span></code> remain. The
-	 bindings are passed to <code class="code">f</code> in increasing order with respect
-	 to the ordering over the type of the keys.<br>
+     <code class="code">key</code>, <code class="code">a</code> of <code class="code">m</code> such that <code class="code">f key a = <span class="keyword">true</span></code> remain. The
+     bindings are passed to <code class="code">f</code> in increasing order with respect
+     to the ordering over the type of the keys.<br>
 </div>
 
 <pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">(<a href="BatMap.S.html#TYPEkey">key</a> -> 'a -> 'b option) -> 'a <a href="BatMap.S.html#TYPEt">t</a> -> 'b <a href="BatMap.S.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">filter_map f m</code> combines the features of <code class="code">filter</code> and
-	  <code class="code">map</code>.  It calls calls <code class="code">f key0 a0</code>, <code class="code">f key1 a1</code>, <code class="code">f keyn an</code>
-	  where <code class="code">a0,a1..an</code> are the elements of <code class="code">m</code> and <code class="code">key0..keyn</code> the
-	  respective corresponding keys. It returns the map of
-	  pairs <code class="code">keyi</code>,<code class="code">bi</code> such as <code class="code">f keyi ai = <span class="constructor">Some</span> bi</code> (when <code class="code">f</code> returns
-	  <code class="code"><span class="constructor">None</span></code>, the corresponding element of <code class="code">m</code> is discarded).<br>
+      <code class="code">map</code>.  It calls calls <code class="code">f key0 a0</code>, <code class="code">f key1 a1</code>, <code class="code">f keyn an</code>
+      where <code class="code">a0,a1..an</code> are the elements of <code class="code">m</code> and <code class="code">key0..keyn</code> the
+      respective corresponding keys. It returns the map of
+      pairs <code class="code">keyi</code>,<code class="code">bi</code> such as <code class="code">f keyi ai = <span class="constructor">Some</span> bi</code> (when <code class="code">f</code> returns
+      <code class="code"><span class="constructor">None</span></code>, the corresponding element of <code class="code">m</code> is discarded).<br>
 </div>
 
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">('a -> 'a -> int) -> 'a <a href="BatMap.S.html#TYPEt">t</a> -> 'a <a href="BatMap.S.html#TYPEt">t</a> -> int</code></pre><div class="info ">

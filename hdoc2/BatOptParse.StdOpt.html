@@ -23,6 +23,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -179,12 +180,12 @@ See <code class="code"><span class="constructor">OptParse</span>.<span class="co
 
 <pre><span id="VALany_option"><span class="keyword">val</span> any_option</span> : <code class="type">?default:'a option -><br>       ?metavar:string -> (string -> 'a) -> 'a <a href="BatOptParse.Opt.html#TYPEt">BatOptParse.Opt.t</a></code></pre><div class="info ">
 <code class="code">any_option ?default ?metavar coerce</code> returns an option which takes
-	a single argument from the command line and calls <code class="code">coerce</code> to coerce
-	it to the proper type.
+    a single argument from the command line and calls <code class="code">coerce</code> to coerce
+    it to the proper type.
 <p>
 
-	<code class="code">default</code> is the default value of the option.  If <code class="code"><span class="constructor">None</span></code>, the
-	option has no default value.<br>
+    <code class="code">default</code> is the default value of the option.  If <code class="code"><span class="constructor">None</span></code>, the
+    option has no default value.<br>
 </div>
 <br>
 <h6 id="6_Callbackoptions">Callback options</h6><br>

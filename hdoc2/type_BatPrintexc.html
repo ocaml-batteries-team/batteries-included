@@ -18,6 +18,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -118,4 +119,31 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Pervasives</span>.out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatPrintexc</span>.raw_backtrace&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;raw_backtrace_to_string&nbsp;:&nbsp;<span class="constructor">BatPrintexc</span>.raw_backtrace&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_callstack&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatPrintexc</span>.raw_backtrace<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;set_uncaught_exception_handler&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(exn&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatPrintexc</span>.raw_backtrace&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;backtrace_slot&nbsp;=&nbsp;<span class="constructor">Printexc</span>.backtrace_slot<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;backtrace_slots&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatPrintexc</span>.raw_backtrace&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatPrintexc</span>.backtrace_slot&nbsp;array&nbsp;option<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;location&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Printexc</span>.location&nbsp;=&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;filename&nbsp;:&nbsp;string;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;line_number&nbsp;:&nbsp;int;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;start_char&nbsp;:&nbsp;int;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end_char&nbsp;:&nbsp;int;<br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Slot</span>&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">sig</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;t&nbsp;=&nbsp;<span class="constructor">BatPrintexc</span>.backtrace_slot<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;is_raise&nbsp;:&nbsp;<span class="constructor">BatPrintexc</span>.<span class="constructor">Slot</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;location&nbsp;:&nbsp;<span class="constructor">BatPrintexc</span>.<span class="constructor">Slot</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatPrintexc</span>.location&nbsp;option<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;format&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatPrintexc</span>.<span class="constructor">Slot</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;option<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">end</span><br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;raw_backtrace_slot&nbsp;=&nbsp;<span class="constructor">Printexc</span>.raw_backtrace_slot<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;raw_backtrace_length&nbsp;:&nbsp;<span class="constructor">BatPrintexc</span>.raw_backtrace&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_raw_backtrace_slot&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatPrintexc</span>.raw_backtrace&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatPrintexc</span>.raw_backtrace_slot<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;convert_raw_backtrace_slot&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatPrintexc</span>.raw_backtrace_slot&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatPrintexc</span>.backtrace_slot<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;exn_slot_id&nbsp;:&nbsp;exn&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;exn_slot_name&nbsp;:&nbsp;exn&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 <span class="keyword">end</span></code></body></html>

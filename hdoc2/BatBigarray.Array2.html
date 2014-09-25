@@ -23,6 +23,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -136,12 +137,10 @@ The type of two-dimensional big arrays whose elements have
       as described for <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Genarray</span>.create</code>.<br>
 </div>
 
-<pre><span id="VALdim1"><span class="keyword">val</span> dim1</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a> -> int</code></pre>
 <pre><span id="VALdim1"><span class="keyword">val</span> dim1</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 Return the first dimension of the given two-dimensional big array.<br>
 </div>
 
-<pre><span id="VALdim2"><span class="keyword">val</span> dim2</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a> -> int</code></pre>
 <pre><span id="VALdim2"><span class="keyword">val</span> dim2</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 Return the second dimension of the given two-dimensional big array.<br>
 </div>
@@ -221,7 +220,7 @@ Memory mapping of a file as a two-dimensional big array.
 
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 <code class="code">enum e</code> returns an enumeration on the elements of <code class="code">e</code>.
-	The order of enumeration is unspecified.<br>
+    The order of enumeration is unspecified.<br>
 </div>
 
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -><br>       ('b, 'c) Bigarray.kind -><br>       ('a, 'd, 'e) <a href="BatBigarray.Array2.html#TYPEt">t</a> -> ('b, 'c, 'e) <a href="BatBigarray.Array2.html#TYPEt">t</a></code></pre><div class="info ">

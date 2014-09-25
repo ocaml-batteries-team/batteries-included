@@ -18,6 +18,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -102,14 +103,4 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : Extlib.Base64</title>
 </head>
 <body>
-<code class="code"><span class="keyword">sig</span><br>
-&nbsp;&nbsp;<span class="keyword">exception</span>&nbsp;<span class="constructor">Invalid_char</span><br>
-&nbsp;&nbsp;<span class="keyword">exception</span>&nbsp;<span class="constructor">Invalid_table</span><br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;encoding_table&nbsp;=&nbsp;char&nbsp;array<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;decoding_table&nbsp;=&nbsp;int&nbsp;array<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;str_encode&nbsp;:&nbsp;?tbl:encoding_table&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;str_decode&nbsp;:&nbsp;?tbl:decoding_table&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;encode&nbsp;:&nbsp;?tbl:encoding_table&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatIO</span>.output<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;decode&nbsp;:&nbsp;?tbl:decoding_table&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatIO</span>.input<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;make_decoding_table&nbsp;:&nbsp;encoding_table&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;decoding_table<br>
-<span class="keyword">end</span></code></body></html>
+<code class="code">(<span class="keyword">module</span>&nbsp;<span class="constructor">BatBase64</span>)</code></body></html>

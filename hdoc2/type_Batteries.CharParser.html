@@ -18,6 +18,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -102,29 +103,4 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : Batteries.CharParser</title>
 </head>
 <body>
-<code class="code"><span class="keyword">sig</span><br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;position&nbsp;=&nbsp;<span class="constructor">BatCharParser</span>.position&nbsp;=&nbsp;{&nbsp;offset&nbsp;:&nbsp;int;&nbsp;line&nbsp;:&nbsp;int;&nbsp;}<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;advance&nbsp;:&nbsp;char&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;position&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;position<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;source_of_string&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(char,&nbsp;position)&nbsp;<span class="constructor">BatParserCo</span>.<span class="constructor">Source</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;source_of_enum&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;char&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(char,&nbsp;position)&nbsp;<span class="constructor">BatParserCo</span>.<span class="constructor">Source</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;parse&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(char,&nbsp;<span class="keywordsign">'</span>a,&nbsp;position)&nbsp;<span class="constructor">BatParserCo</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;position&nbsp;<span class="constructor">BatParserCo</span>.report)&nbsp;<span class="constructor">BatPervasives</span>.result<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;char&nbsp;:&nbsp;char&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(char,&nbsp;char,&nbsp;position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;none_of&nbsp;:&nbsp;char&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(char,&nbsp;char,&nbsp;position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;not_char&nbsp;:&nbsp;char&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(char,&nbsp;char,&nbsp;position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;string&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(char,&nbsp;string,&nbsp;position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;case_char&nbsp;:&nbsp;char&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(char,&nbsp;char,&nbsp;position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;case_string&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(char,&nbsp;string,&nbsp;position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;newline&nbsp;:&nbsp;(char,&nbsp;char,&nbsp;position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;whitespace&nbsp;:&nbsp;(char,&nbsp;char,&nbsp;position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;uppercase&nbsp;:&nbsp;(char,&nbsp;char,&nbsp;position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lowercase&nbsp;:&nbsp;(char,&nbsp;char,&nbsp;position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;letter&nbsp;:&nbsp;(char,&nbsp;char,&nbsp;position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;uppercase_latin1&nbsp;:&nbsp;(char,&nbsp;char,&nbsp;position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lowercase_latin1&nbsp;:&nbsp;(char,&nbsp;char,&nbsp;position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;latin1&nbsp;:&nbsp;(char,&nbsp;char,&nbsp;position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;digit&nbsp;:&nbsp;(char,&nbsp;char,&nbsp;position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;hex&nbsp;:&nbsp;(char,&nbsp;char,&nbsp;position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-<span class="keyword">end</span></code></body></html>
+<code class="code">(<span class="keyword">module</span>&nbsp;<span class="constructor">BatCharParser</span>)</code></body></html>

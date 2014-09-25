@@ -21,6 +21,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -370,8 +371,8 @@ As <code class="code">fold</code>, but with the position of each value passed to
 
 <pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">(int -> 'a -> 'b) -> 'a <a href="BatVect.Make.html#TYPEt">t</a> -> 'b <a href="BatVect.Make.html#TYPEt">t</a></code></pre><div class="info ">
 Same as <code class="code">map</code>, but the
-	function is applied to the index of the element as first argument,
-	and the element itself as second argument.<br>
+    function is applied to the index of the element as first argument,
+    and the element itself as second argument.<br>
 </div>
 <br>
 <h6 id="6_Predicates">Predicates</h6><br>
@@ -418,8 +419,8 @@ Same as <code class="code"><span class="constructor">Vect</span>.mem</code> but 
 
 <pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">('a -> 'b option) -> 'a <a href="BatVect.Make.html#TYPEt">t</a> -> 'b <a href="BatVect.Make.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">filter_map f e</code> returns a vect consisting of all elements
-	<code class="code">x</code> such that <code class="code">f y</code> returns <code class="code"><span class="constructor">Some</span> x</code> , where <code class="code">y</code> is an element
-	of <code class="code">e</code>.<br>
+    <code class="code">x</code> such that <code class="code">f y</code> returns <code class="code"><span class="constructor">Some</span> x</code> , where <code class="code">y</code> is an element
+    of <code class="code">e</code>.<br>
 </div>
 
 <pre><span id="VALfind_all"><span class="keyword">val</span> find_all</span> : <code class="type">('a -> bool) -> 'a <a href="BatVect.Make.html#TYPEt">t</a> -> 'a <a href="BatVect.Make.html#TYPEt">t</a></code></pre><div class="info ">

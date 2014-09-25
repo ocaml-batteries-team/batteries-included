@@ -23,6 +23,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -143,7 +144,7 @@ A sequence represent a collection of elements, for which you never
     Note that if you want a ``consumable sequence'', you should prefer
     using enumerations (from module <a href="BatEnum.html"><code class="code"><span class="constructor">BatEnum</span></code></a>).<br>
 
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">unit -> 'a <a href="BatSeq.html#TYPEnode">node</a></code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">unit -> 'a node</code> </pre>
 <div class="info ">
 A sequence is a computation which returns a list-like node<br>
 </div>
@@ -309,11 +310,13 @@ Convenience function to build a seq from a list.<br>
 <pre><span id="VALmax"><span class="keyword">val</span> max</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
 <code class="code">max s</code> returns the largest value in <code class="code">s</code> as judged by
     <code class="code"><span class="constructor">Pervasives</span>.compare</code><br>
+<b>Raises</b> <code>Invalid_argument</code> on empty sequences.<br>
 </div>
 
 <pre><span id="VALmin"><span class="keyword">val</span> min</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
 <code class="code">min s</code> returns the smallest value in <code class="code">s</code> as judged by
     <code class="code"><span class="constructor">Pervasives</span>.compare</code><br>
+<b>Raises</b> <code>Invalid_argument</code> on empty sequences.<br>
 </div>
 
 <pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">?eq:('a -> 'a -> bool) -> 'a <a href="BatSeq.html#TYPEt">t</a> -> 'a <a href="BatSeq.html#TYPEt">t</a> -> bool</code></pre><div class="info ">

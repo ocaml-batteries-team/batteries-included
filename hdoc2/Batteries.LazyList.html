@@ -23,6 +23,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -131,7 +132,7 @@
 </div>
 <h1>Module <a href="type_Batteries.LazyList.html">Batteries.LazyList</a></h1>
 
-<pre><span class="keyword">module</span> LazyList: <code class="type">BatLazyList</code></pre><hr width="100%">
+<pre><span class="keyword">module</span> LazyList: <code class="type"><a href="BatLazyList.html">BatLazyList</a></code></pre><hr width="100%">
 <br>
 <h6 id="6_Exceptions">Exceptions</h6><br>
 
@@ -164,7 +165,7 @@ See <a href="BatLazyList.html#VALfrom"><code class="code"><span class="construct
    <b>Note</b> The types are kept concrete so as to allow pattern-matching.
    However, it is generally easier to manipulate <a href="BatLazyList.html#VALnil"><code class="code"><span class="constructor">BatLazyList</span>.nil</code></a> and <a href="BatLazyList.html#VALcons"><code class="code"><span class="constructor">BatLazyList</span>.cons</code></a>.<br>
 
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a <a href="BatLazyList.html#TYPEnode_t">node_t</a> Lazy.t</code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a node_t Lazy.t</code> </pre>
 <div class="info ">
 The type of a lazy list.<br>
 </div>
@@ -183,7 +184,10 @@ The type of a lazy list.<br>
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
 <code><span id="TYPEELTnode_t.Cons"><span class="constructor">Cons</span></span> <span class="keyword">of</span> <code class="type">'a * 'a <a href="BatLazyList.html#TYPEt">t</a></code></code></td>
-<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >The type of an item in the list.</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+The type of an item in the list.<br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 
 

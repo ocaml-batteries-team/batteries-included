@@ -23,6 +23,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -121,7 +122,7 @@
 </div>
 <h1>Module <a href="type_Batteries.Bigarray.html">Batteries.Bigarray</a></h1>
 
-<pre><span class="keyword">module</span> Bigarray: <code class="type">BatBigarray</code></pre><hr width="100%">
+<pre><span class="keyword">module</span> Bigarray: <code class="type"><a href="BatBigarray.html">BatBigarray</a></code></pre><hr width="100%">
 <br>
 Large, multi-dimensional, numerical arrays.
 <p>
@@ -175,44 +176,229 @@ Big arrays can contain elements of the following kinds:<ul>
     Each element kind is represented at the type level by one
     of the abstract types defined below.<br>
 
-<pre><span id="TYPEfloat32_elt"><span class="keyword">type</span> <code class="type"></code>float32_elt</span> = <code class="type">Bigarray.float32_elt</code> </pre>
+<pre><span id="TYPEfloat32_elt"><span class="keyword">type</span> <code class="type"></code>float32_elt</span> = <code class="type">Bigarray.float32_elt</code> = </pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTfloat32_elt.Float32_elt"><span class="constructor">Float32_elt</span></span></code></td>
+
+</tr></table>
 
 
-<pre><span id="TYPEfloat64_elt"><span class="keyword">type</span> <code class="type"></code>float64_elt</span> = <code class="type">Bigarray.float64_elt</code> </pre>
+
+<pre><span id="TYPEfloat64_elt"><span class="keyword">type</span> <code class="type"></code>float64_elt</span> = <code class="type">Bigarray.float64_elt</code> = </pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTfloat64_elt.Float64_elt"><span class="constructor">Float64_elt</span></span></code></td>
+
+</tr></table>
 
 
-<pre><span id="TYPEcomplex32_elt"><span class="keyword">type</span> <code class="type"></code>complex32_elt</span> = <code class="type">Bigarray.complex32_elt</code> </pre>
+
+<pre><span id="TYPEcomplex32_elt"><span class="keyword">type</span> <code class="type"></code>complex32_elt</span> = <code class="type">Bigarray.complex32_elt</code> = </pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTcomplex32_elt.Complex32_elt"><span class="constructor">Complex32_elt</span></span></code></td>
+
+</tr></table>
 
 
-<pre><span id="TYPEcomplex64_elt"><span class="keyword">type</span> <code class="type"></code>complex64_elt</span> = <code class="type">Bigarray.complex64_elt</code> </pre>
+
+<pre><span id="TYPEcomplex64_elt"><span class="keyword">type</span> <code class="type"></code>complex64_elt</span> = <code class="type">Bigarray.complex64_elt</code> = </pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTcomplex64_elt.Complex64_elt"><span class="constructor">Complex64_elt</span></span></code></td>
+
+</tr></table>
 
 
-<pre><span id="TYPEint8_signed_elt"><span class="keyword">type</span> <code class="type"></code>int8_signed_elt</span> = <code class="type">Bigarray.int8_signed_elt</code> </pre>
+
+<pre><span id="TYPEint8_signed_elt"><span class="keyword">type</span> <code class="type"></code>int8_signed_elt</span> = <code class="type">Bigarray.int8_signed_elt</code> = </pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTint8_signed_elt.Int8_signed_elt"><span class="constructor">Int8_signed_elt</span></span></code></td>
+
+</tr></table>
 
 
-<pre><span id="TYPEint8_unsigned_elt"><span class="keyword">type</span> <code class="type"></code>int8_unsigned_elt</span> = <code class="type">Bigarray.int8_unsigned_elt</code> </pre>
+
+<pre><span id="TYPEint8_unsigned_elt"><span class="keyword">type</span> <code class="type"></code>int8_unsigned_elt</span> = <code class="type">Bigarray.int8_unsigned_elt</code> = </pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTint8_unsigned_elt.Int8_unsigned_elt"><span class="constructor">Int8_unsigned_elt</span></span></code></td>
+
+</tr></table>
 
 
-<pre><span id="TYPEint16_signed_elt"><span class="keyword">type</span> <code class="type"></code>int16_signed_elt</span> = <code class="type">Bigarray.int16_signed_elt</code> </pre>
+
+<pre><span id="TYPEint16_signed_elt"><span class="keyword">type</span> <code class="type"></code>int16_signed_elt</span> = <code class="type">Bigarray.int16_signed_elt</code> = </pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTint16_signed_elt.Int16_signed_elt"><span class="constructor">Int16_signed_elt</span></span></code></td>
+
+</tr></table>
 
 
-<pre><span id="TYPEint16_unsigned_elt"><span class="keyword">type</span> <code class="type"></code>int16_unsigned_elt</span> = <code class="type">Bigarray.int16_unsigned_elt</code> </pre>
+
+<pre><span id="TYPEint16_unsigned_elt"><span class="keyword">type</span> <code class="type"></code>int16_unsigned_elt</span> = <code class="type">Bigarray.int16_unsigned_elt</code> = </pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTint16_unsigned_elt.Int16_unsigned_elt"><span class="constructor">Int16_unsigned_elt</span></span></code></td>
+
+</tr></table>
 
 
-<pre><span id="TYPEint_elt"><span class="keyword">type</span> <code class="type"></code>int_elt</span> = <code class="type">Bigarray.int_elt</code> </pre>
+
+<pre><span id="TYPEint_elt"><span class="keyword">type</span> <code class="type"></code>int_elt</span> = <code class="type">Bigarray.int_elt</code> = </pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTint_elt.Int_elt"><span class="constructor">Int_elt</span></span></code></td>
+
+</tr></table>
 
 
-<pre><span id="TYPEint32_elt"><span class="keyword">type</span> <code class="type"></code>int32_elt</span> = <code class="type">Bigarray.int32_elt</code> </pre>
+
+<pre><span id="TYPEint32_elt"><span class="keyword">type</span> <code class="type"></code>int32_elt</span> = <code class="type">Bigarray.int32_elt</code> = </pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTint32_elt.Int32_elt"><span class="constructor">Int32_elt</span></span></code></td>
+
+</tr></table>
 
 
-<pre><span id="TYPEint64_elt"><span class="keyword">type</span> <code class="type"></code>int64_elt</span> = <code class="type">Bigarray.int64_elt</code> </pre>
+
+<pre><span id="TYPEint64_elt"><span class="keyword">type</span> <code class="type"></code>int64_elt</span> = <code class="type">Bigarray.int64_elt</code> = </pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTint64_elt.Int64_elt"><span class="constructor">Int64_elt</span></span></code></td>
+
+</tr></table>
 
 
-<pre><span id="TYPEnativeint_elt"><span class="keyword">type</span> <code class="type"></code>nativeint_elt</span> = <code class="type">Bigarray.nativeint_elt</code> </pre>
+
+<pre><span id="TYPEnativeint_elt"><span class="keyword">type</span> <code class="type"></code>nativeint_elt</span> = <code class="type">Bigarray.nativeint_elt</code> = </pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTnativeint_elt.Nativeint_elt"><span class="constructor">Nativeint_elt</span></span></code></td>
+
+</tr></table>
 
 
-<pre><span id="TYPEkind"><span class="keyword">type</span> <code class="type">('a, 'b)</code> kind</span> = <code class="type">('a, 'b) Bigarray.kind</code> </pre>
-<div class="info ">
+
+<pre><span id="TYPEkind"><span class="keyword">type</span> <code class="type">('a, 'b)</code> kind</span> = <code class="type">('a, 'b) Bigarray.kind</code> = </pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTkind.Float32"><span class="constructor">Float32</span></span> <span class="keyword">:</span> <code class="type">(float, <a href="BatBigarray.html#TYPEfloat32_elt">float32_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTkind.Float64"><span class="constructor">Float64</span></span> <span class="keyword">:</span> <code class="type">(float, <a href="BatBigarray.html#TYPEfloat64_elt">float64_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTkind.Int8_signed"><span class="constructor">Int8_signed</span></span> <span class="keyword">:</span> <code class="type">(int, <a href="BatBigarray.html#TYPEint8_signed_elt">int8_signed_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTkind.Int8_unsigned"><span class="constructor">Int8_unsigned</span></span> <span class="keyword">:</span> <code class="type">(int, <a href="BatBigarray.html#TYPEint8_unsigned_elt">int8_unsigned_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTkind.Int16_signed"><span class="constructor">Int16_signed</span></span> <span class="keyword">:</span> <code class="type">(int, <a href="BatBigarray.html#TYPEint16_signed_elt">int16_signed_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTkind.Int16_unsigned"><span class="constructor">Int16_unsigned</span></span> <span class="keyword">:</span> <code class="type">(int, <a href="BatBigarray.html#TYPEint16_unsigned_elt">int16_unsigned_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTkind.Int32"><span class="constructor">Int32</span></span> <span class="keyword">:</span> <code class="type">(int32, <a href="BatBigarray.html#TYPEint32_elt">int32_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTkind.Int64"><span class="constructor">Int64</span></span> <span class="keyword">:</span> <code class="type">(int64, <a href="BatBigarray.html#TYPEint64_elt">int64_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTkind.Int"><span class="constructor">Int</span></span> <span class="keyword">:</span> <code class="type">(int, <a href="BatBigarray.html#TYPEint_elt">int_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTkind.Nativeint"><span class="constructor">Nativeint</span></span> <span class="keyword">:</span> <code class="type">(nativeint, <a href="BatBigarray.html#TYPEnativeint_elt">nativeint_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTkind.Complex32"><span class="constructor">Complex32</span></span> <span class="keyword">:</span> <code class="type">(Complex.t, <a href="BatBigarray.html#TYPEcomplex32_elt">complex32_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTkind.Complex64"><span class="constructor">Complex64</span></span> <span class="keyword">:</span> <code class="type">(Complex.t, <a href="BatBigarray.html#TYPEcomplex64_elt">complex64_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTkind.Char"><span class="constructor">Char</span></span> <span class="keyword">:</span> <code class="type">(char, <a href="BatBigarray.html#TYPEint8_unsigned_elt">int8_unsigned_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
 To each element kind is associated an OCaml type, which is
     the type of OCaml values that can be stored in the big array
     or read back from it.  This type is not necessarily the same
@@ -223,13 +409,30 @@ To each element kind is associated an OCaml type, which is
     64-bit double precision floats.
 <p>
 
-    The abstract type <code class="code">(<span class="keywordsign">'</span>a, <span class="keywordsign">'</span>b) kind</code> captures this association
-    of an OCaml type <code class="code"><span class="keywordsign">'</span>a</code> for values read or written in the big array,
-    and of an element kind <code class="code"><span class="keywordsign">'</span>b</code> which represents the actual contents
-    of the big array.  The following predefined values of type
-    <code class="code">kind</code> list all possible associations of OCaml types with
-    element kinds:<br>
+   The GADT type <code class="code">(<span class="keywordsign">'</span>a, <span class="keywordsign">'</span>b) kind</code> captures this association
+   of an OCaml type <code class="code"><span class="keywordsign">'</span>a</code> for values read or written in the big array,
+   and of an element kind <code class="code"><span class="keywordsign">'</span>b</code> which represents the actual contents
+   of the big array. Its constructors list all possible associations
+   of OCaml types with element kinds, and are re-exported below for
+   backward-compatibility reasons.
+<p>
+
+   Using a generalized algebraic datatype (GADT) here allows to write
+   well-typed polymorphic functions whose return type depend on the
+   argument type, such as:
+<pre class="codepre"><code class="code">&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;zero&nbsp;:&nbsp;<span class="keyword">type</span>&nbsp;a&nbsp;b.&nbsp;(a,&nbsp;b)&nbsp;kind&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;a&nbsp;=&nbsp;<span class="keyword">function</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Float32</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0.0&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Complex32</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.zero<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Float64</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0.0&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Complex64</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.zero<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int8_signed</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int8_unsigned</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int16_signed</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int16_unsigned</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int32</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0l&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int64</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0<span class="constructor">L</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Nativeint</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0n<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Char</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">'\000'</span><br>
+</code></pre><br>
 </div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr></table>
+
 
 
 <pre><span id="VALfloat32"><span class="keyword">val</span> float32</span> : <code class="type">(float, <a href="BatBigarray.html#TYPEfloat32_elt">float32_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info ">
@@ -299,14 +502,27 @@ As shown by the types of the values above,
 <br>
 <h6 id="6_Arraylayouts">Array layouts</h6><br>
 
-<pre><span id="TYPEc_layout"><span class="keyword">type</span> <code class="type"></code>c_layout</span> = <code class="type">Bigarray.c_layout</code> </pre>
-<div class="info ">
+<pre><span id="TYPEc_layout"><span class="keyword">type</span> <code class="type"></code>c_layout</span> = <code class="type">Bigarray.c_layout</code> = </pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTc_layout.C_layout_typ"><span class="constructor">C_layout_typ</span></span></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
 See <code class="code"><span class="constructor">Bigarray</span>.fortran_layout</code>.<br>
 </div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr></table>
 
 
-<pre><span id="TYPEfortran_layout"><span class="keyword">type</span> <code class="type"></code>fortran_layout</span> = <code class="type">Bigarray.fortran_layout</code> </pre>
-<div class="info ">
+
+<pre><span id="TYPEfortran_layout"><span class="keyword">type</span> <code class="type"></code>fortran_layout</span> = <code class="type">Bigarray.fortran_layout</code> = </pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTfortran_layout.Fortran_layout_typ"><span class="constructor">Fortran_layout_typ</span></span></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
 To facilitate interoperability with existing C and Fortran code,
     this library supports two different memory layouts for big arrays,
     one compatible with the C conventions,
@@ -332,14 +548,32 @@ To facilitate interoperability with existing C and Fortran code,
     Each layout style is identified at the type level by the
     abstract types <code class="code"><span class="constructor">Bigarray</span>.c_layout</code> and <code class="code">fortran_layout</code> respectively.<br>
 </div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr></table>
 
 
-<pre><span id="TYPElayout"><span class="keyword">type</span> <code class="type">'a</code> layout</span> = <code class="type">'a Bigarray.layout</code> </pre>
-<div class="info ">
+
+<pre><span id="TYPElayout"><span class="keyword">type</span> <code class="type">'a</code> layout</span> = <code class="type">'a Bigarray.layout</code> = </pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTlayout.C_layout"><span class="constructor">C_layout</span></span> <span class="keyword">:</span> <code class="type"><a href="BatBigarray.html#TYPEc_layout">c_layout</a> <a href="BatBigarray.html#TYPElayout">layout</a></code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTlayout.Fortran_layout"><span class="constructor">Fortran_layout</span></span> <span class="keyword">:</span> <code class="type"><a href="BatBigarray.html#TYPEfortran_layout">fortran_layout</a> <a href="BatBigarray.html#TYPElayout">layout</a></code></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
 The type <code class="code"><span class="keywordsign">'</span>a layout</code> represents one of the two supported
     memory layouts: C-style if <code class="code"><span class="keywordsign">'</span>a</code> is <code class="code"><span class="constructor">Bigarray</span>.c_layout</code>, Fortran-style
     if <code class="code"><span class="keywordsign">'</span>a</code> is <code class="code"><span class="constructor">Bigarray</span>.fortran_layout</code>.<br>
 </div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr></table>
+
 
 <br>
 <div class="h7" id="7_Supportedlayouts">Supported layouts</div>

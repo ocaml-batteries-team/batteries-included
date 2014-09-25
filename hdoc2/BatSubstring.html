@@ -23,6 +23,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -428,11 +429,21 @@ Equivalent to <a href="BatSubstring.html#VALsize"><code class="code"><span class
     <code class="code"><span class="constructor">List</span>.fold_left f e (explode sus)</code>.<br>
 </div>
 
+<pre><span id="VALfold_lefti"><span class="keyword">val</span> fold_lefti</span> : <code class="type">('a -> int -> char -> 'a) -> 'a -> <a href="BatSubstring.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
+As <code class="code">fold_left</code>, but with the index of the element as additional argument<br>
+<b>Since</b> 2.3.0<br>
+</div>
+
 <pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">(char -> 'a -> 'a) -> <a href="BatSubstring.html#TYPEt">t</a> -> 'a -> 'a</code></pre><div class="info ">
 <code class="code">foldr f e sus</code> folds <code class="code">f</code> over <code class="code">sus</code> from right to left.  That is,
     evaluates <code class="code">f s.[i] (f s.[i+1] (f ... (f s.[i+n-1] e) ...))</code>
     tail-recursively, where <code class="code">sus = (s, i, n)</code>.  Equivalent to
     <code class="code"><span class="constructor">List</span>.fold_right f e (explode sus)</code>.<br>
+</div>
+
+<pre><span id="VALfold_righti"><span class="keyword">val</span> fold_righti</span> : <code class="type">(int -> char -> 'a -> 'a) -> <a href="BatSubstring.html#TYPEt">t</a> -> 'a -> 'a</code></pre><div class="info ">
+As <code class="code">fold_right</code>, but with the index of the element as additional argument<br>
+<b>Since</b> 2.3.0<br>
 </div>
 
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(char -> unit) -> <a href="BatSubstring.html#TYPEt">t</a> -> unit</code></pre><div class="info ">

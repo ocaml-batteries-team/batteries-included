@@ -23,6 +23,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -177,7 +178,7 @@ Returns an object with methods <code class="code">fatal</code>, <code class="cod
     and flags.  These methods work like the corresponding functions in
     the BatLog module.<br>
 
-<pre><span id="VALmake_logger"><span class="keyword">val</span> make_logger</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -><br>       string -><br>       [< `Custom of unit -> string | `Date | `Filepos | `Time ] list -><br>       < fatal : ?fp:string -> string -> 'b;<br>         fatalf : ?fp:string -><br>                  ('c, 'a <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit, unit, unit, 'd) format6 -> 'c;<br>         log : ?fp:string -> string -> unit;<br>         logf : ?fp:string -> ('e, 'a <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit) Pervasives.format -> 'e ></code></pre>
+<pre><span id="VALmake_logger"><span class="keyword">val</span> make_logger</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -><br>       string -><br>       [< `Custom of unit -> string | `Date | `Filepos | `Time ] list -><br>       < fatal : ?fp:string -> string -> 'b;<br>         fatalf : ?fp:string -><br>                  ('c, 'a <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit, unit, unit, 'd) Pervasives.format6 -><br>                  'c;<br>         log : ?fp:string -> string -> unit;<br>         logf : ?fp:string -> ('e, 'a <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit) Pervasives.format -> 'e ></code></pre>
 <pre><span id="TYPEeasy_lev"><span class="keyword">type</span> <code class="type"></code>easy_lev</span> = <code class="type">[ `always | `debug | `error | `fatal | `info | `trace | `warn ]</code> </pre>
 <div class="info ">
 The different verbosity levels supported in the <code class="code"><span class="constructor">Easy</span></code> logger<br>

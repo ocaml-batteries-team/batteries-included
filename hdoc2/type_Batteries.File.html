@@ -18,6 +18,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -102,56 +103,4 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : Batteries.File</title>
 </head>
 <body>
-<code class="code"><span class="keyword">sig</span><br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lines_of&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="constructor">BatEnum</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;write_lines&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;size_of&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;size_of_big&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Int64</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;permission&nbsp;=&nbsp;<span class="constructor">BatFile</span>.permission<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;default_permission&nbsp;:&nbsp;permission<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;user_read&nbsp;:&nbsp;permission<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;user_write&nbsp;:&nbsp;permission<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;user_exec&nbsp;:&nbsp;permission<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;group_read&nbsp;:&nbsp;permission<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;group_write&nbsp;:&nbsp;permission<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;group_exec&nbsp;:&nbsp;permission<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;other_read&nbsp;:&nbsp;permission<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;other_write&nbsp;:&nbsp;permission<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;other_exec&nbsp;:&nbsp;permission<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;perm&nbsp;:&nbsp;permission&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;permission<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unix_perm&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;permission<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;set_permissions&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;permission&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;chmod&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;permission&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;open_in_flag&nbsp;=&nbsp;[&nbsp;<span class="keywordsign">`</span>create&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keywordsign">`</span>excl&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keywordsign">`</span>mmap&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keywordsign">`</span>nonblock&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keywordsign">`</span>text&nbsp;]<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_in&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?mode:open_in_flag&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?perm:permission&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatInnerIO</span>.input<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;with_file_in&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?mode:open_in_flag&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;?perm:permission&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="constructor">BatInnerIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;open_out_flag&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;<span class="keywordsign">`</span>append&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keywordsign">`</span>create&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keywordsign">`</span>excl&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keywordsign">`</span>nonblock&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keywordsign">`</span>text&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keywordsign">`</span>trunc&nbsp;]<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_out&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?mode:open_out_flag&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;?perm:permission&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="constructor">BatInnerIO</span>.output<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;with_file_out&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?mode:open_out_flag&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;?perm:permission&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(unit&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;open_temporary_out_flag&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;<span class="keywordsign">`</span>append<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keywordsign">`</span>create<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keywordsign">`</span>delete_on_exit<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keywordsign">`</span>excl<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keywordsign">`</span>nonblock<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keywordsign">`</span>text<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keywordsign">`</span>trunc&nbsp;]<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_temporary_out&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?mode:open_temporary_out_flag&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;?prefix:string&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;?suffix:string&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;?temp_dir:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;*&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;with_temporary_out&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?mode:open_temporary_out_flag&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;?prefix:string&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;?suffix:string&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;?temp_dir:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(unit&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a<br>
-<span class="keyword">end</span></code></body></html>
+<code class="code">(<span class="keyword">module</span>&nbsp;<span class="constructor">BatFile</span>)</code></body></html>

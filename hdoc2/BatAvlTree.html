@@ -23,6 +23,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -149,4 +150,11 @@ Internals of ISet and IMap, usable as generic tree library<br>
 <pre><span id="VALconcat"><span class="keyword">val</span> concat</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a></code></pre>
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> unit</code></pre>
 <pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -> 'b -> 'b) -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'b -> 'b</code></pre>
-<pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre></body></html>
+<pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
+<pre><span id="VALcheck"><span class="keyword">val</span> check</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> bool</code></pre><div class="info ">
+Check that the tree is balanced according to the AVL tree rules.
+    An AVL tree is balanced when for every node the height of the
+    subnodes differs by at most 1.<br>
+<b>Since</b> 2.3.0<br>
+</div>
+</body></html>

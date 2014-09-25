@@ -5,7 +5,7 @@
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatBounded.html">
-<link rel="next" href="BatCache.html">
+<link rel="next" href="BatBytes.html">
 <link rel="Up" href="index.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
@@ -23,6 +23,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -110,7 +111,7 @@
 <body>
 <div class="navbar"><a class="pre" href="BatBounded.html" title="BatBounded">Previous</a>
 &nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="BatCache.html" title="BatCache">Next</a>
+&nbsp;<a class="post" href="BatBytes.html" title="BatBytes">Next</a>
 </div>
 <h1>Module <a href="type_BatBuffer.html">BatBuffer</a></h1>
 
@@ -150,6 +151,12 @@ The abstract type of buffers.<br>
 <pre><span id="VALcontents"><span class="keyword">val</span> contents</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> string</code></pre><div class="info ">
 Return a copy of the current contents of the buffer.
     The buffer itself is unchanged.<br>
+</div>
+
+<pre><span id="VALto_bytes"><span class="keyword">val</span> to_bytes</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Bytes.t</code></pre><div class="info ">
+Return a copy of the current contents of the buffer.
+    The buffer itself is unchanged.<br>
+<b>Since</b> 2.3.0<br>
 </div>
 
 <pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int -> int -> string</code></pre><div class="info ">
@@ -199,9 +206,20 @@ Empty the buffer and deallocate the internal string holding the
 <code class="code">add_string b s</code> appends the string <code class="code">s</code> at the end of the buffer <code class="code">b</code>.<br>
 </div>
 
+<pre><span id="VALadd_bytes"><span class="keyword">val</span> add_bytes</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Bytes.t -> unit</code></pre><div class="info ">
+<code class="code">add_string b s</code> appends the string <code class="code">s</code> at the end of the buffer <code class="code">b</code>.<br>
+<b>Since</b> 2.3.0<br>
+</div>
+
 <pre><span id="VALadd_substring"><span class="keyword">val</span> add_substring</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> string -> int -> int -> unit</code></pre><div class="info ">
 <code class="code">add_substring b s ofs len</code> takes <code class="code">len</code> characters from offset
     <code class="code">ofs</code> in string <code class="code">s</code> and appends them at the end of the buffer <code class="code">b</code>.<br>
+</div>
+
+<pre><span id="VALadd_subbytes"><span class="keyword">val</span> add_subbytes</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Bytes.t -> int -> int -> unit</code></pre><div class="info ">
+<code class="code">add_substring b s ofs len</code> takes <code class="code">len</code> characters from offset
+    <code class="code">ofs</code> in byte sequence <code class="code">s</code> and appends them at the end of the buffer <code class="code">b</code>.<br>
+<b>Since</b> 2.3.0<br>
 </div>
 
 <pre><span id="VALadd_substitute"><span class="keyword">val</span> add_substitute</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> (string -> string) -> string -> unit</code></pre><div class="info ">

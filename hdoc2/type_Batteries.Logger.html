@@ -18,6 +18,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -102,38 +103,4 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : Batteries.Logger</title>
 </head>
 <body>
-<code class="code"><span class="keyword">sig</span><br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;log&nbsp;=&nbsp;<span class="constructor">BatLogger</span>.log<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;level&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatLogger</span>.level&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">NONE</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">FATAL</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">ERROR</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">WARN</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">NOTICE</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">INFO</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">DEBUG</span><br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;make_log&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;log<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;log_name&nbsp;:&nbsp;log&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;log_enable&nbsp;:&nbsp;log&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;level&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;log_level&nbsp;:&nbsp;log&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;level<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;log_enabled&nbsp;:&nbsp;log&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;level&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;event&nbsp;=&nbsp;string&nbsp;*&nbsp;(string&nbsp;*&nbsp;string)&nbsp;list<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;log&nbsp;:&nbsp;log&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;level&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;event)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;with_log&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;log&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;level&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;event)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?result:(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;formatter&nbsp;=&nbsp;log&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;level&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;event&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;register_formatter&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;formatter&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unregister_formatter&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;make_std_formatter&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;formatter<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;stderr_formatter&nbsp;:&nbsp;formatter<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;null_formatter&nbsp;:&nbsp;formatter<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;make_dbg_formatter&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;formatter<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;dbg_formatter&nbsp;:&nbsp;formatter<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;init&nbsp;:&nbsp;(string&nbsp;*&nbsp;level)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;formatter&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;init_from_string&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;formatter&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;level_of_name&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;level<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;name_of_level&nbsp;:&nbsp;level&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;format_timestamp&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-<span class="keyword">end</span></code></body></html>
+<code class="code">(<span class="keyword">module</span>&nbsp;<span class="constructor">BatLogger</span>)</code></body></html>

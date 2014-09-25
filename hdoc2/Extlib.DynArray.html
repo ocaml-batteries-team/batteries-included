@@ -23,6 +23,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -121,7 +122,7 @@
 </div>
 <h1>Module <a href="type_Extlib.DynArray.html">Extlib.DynArray</a></h1>
 
-<pre><span class="keyword">module</span> DynArray: <code class="type">BatDynArray</code></pre><hr width="100%">
+<pre><span class="keyword">module</span> DynArray: <code class="type"><a href="BatDynArray.html">BatDynArray</a></code></pre><hr width="100%">
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
 
@@ -133,9 +134,9 @@
 <pre><span id="EXCEPTIONInvalid_arg"><span class="keyword">exception</span> Invalid_arg</span> <span class="keyword">of</span> <code class="type">int * string * string</code></pre>
 <div class="info ">
 When an operation on an array fails, <code class="code"><span class="constructor">Invalid_arg</span></code> is raised. The
-	integer is the value that made the operation fail, the first string
-	contains the function name that has been called and the second string
-	contains the parameter name that made the operation fail.<br>
+    integer is the value that made the operation fail, the first string
+    contains the function name that has been called and the second string
+    contains the parameter name that made the operation fail.<br>
 </div>
 <br>
 <h6 id="6_Arraycreation">Array creation</h6><br>
@@ -146,12 +147,12 @@ When an operation on an array fails, <code class="code"><span class="constructor
 
 <pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">int -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">make count</code> returns an array with some memory already allocated so
-	up to <code class="code">count</code> elements can be stored into it without resizing.<br>
+    up to <code class="code">count</code> elements can be stored into it without resizing.<br>
 </div>
 
 <pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> (int -> 'a) -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">init n f</code> returns an array of <code class="code">n</code> elements filled with values
-	returned by <code class="code">f 0 , f 1, ... f (n-1)</code>.<br>
+    returned by <code class="code">f 0 , f 1, ... f (n-1)</code>.<br>
 </div>
 <br>
 <h6 id="6_Arraymanipulationfunctions">Array manipulation functions</h6><br>
@@ -166,7 +167,7 @@ Return the number of elements in the array.<br>
 
 <pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> 'a</code></pre><div class="info ">
 <code class="code">get darr idx</code> gets the element in <code class="code">darr</code> at index <code class="code">idx</code>. If <code class="code">darr</code> has
-	<code class="code">len</code> elements in it, then the valid indexes range from <code class="code">0</code> to <code class="code">len-1</code>.<br>
+    <code class="code">len</code> elements in it, then the valid indexes range from <code class="code">0</code> to <code class="code">len-1</code>.<br>
 </div>
 
 <pre><span id="VALlast"><span class="keyword">val</span> last</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
@@ -175,19 +176,19 @@ Return the number of elements in the array.<br>
 
 <pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> 'a -> unit</code></pre><div class="info ">
 <code class="code">set darr idx v</code> sets the element of <code class="code">darr</code> at index <code class="code">idx</code> to value
-	<code class="code">v</code>.  The previous value is overwritten.<br>
+    <code class="code">v</code>.  The previous value is overwritten.<br>
 </div>
 
 <pre><span id="VALinsert"><span class="keyword">val</span> insert</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> 'a -> unit</code></pre><div class="info ">
 <code class="code">insert darr idx v</code> inserts <code class="code">v</code> into <code class="code">darr</code> at index <code class="code">idx</code>.  All elements
-	of <code class="code">darr</code> with an index greater than or equal to <code class="code">idx</code> have their
-	index incremented (are moved up one place) to make room for the new
-	element.<br>
+    of <code class="code">darr</code> with an index greater than or equal to <code class="code">idx</code> have their
+    index incremented (are moved up one place) to make room for the new
+    element.<br>
 </div>
 
 <pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> 'a -> unit</code></pre><div class="info ">
 <code class="code">add darr v</code> appends <code class="code">v</code> onto <code class="code">darr</code>.  <code class="code">v</code> becomes the new
-	last element of <code class="code">darr</code>.<br>
+    last element of <code class="code">darr</code>.<br>
 </div>
 
 <pre><span id="VALappend"><span class="keyword">val</span> append</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
@@ -196,19 +197,19 @@ Return the number of elements in the array.<br>
 
 <pre><span id="VALdelete"><span class="keyword">val</span> delete</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> unit</code></pre><div class="info ">
 <code class="code">delete darr idx</code> deletes the element of <code class="code">darr</code> at <code class="code">idx</code>.  All elements
-	with an index greater than <code class="code">idx</code> have their index decremented (are
-	moved down one place) to fill in the hole.<br>
+    with an index greater than <code class="code">idx</code> have their index decremented (are
+    moved down one place) to fill in the hole.<br>
 </div>
 
 <pre><span id="VALdelete_last"><span class="keyword">val</span> delete_last</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 <code class="code">delete_last darr</code> deletes the last element of <code class="code">darr</code>. This is equivalent
-	of doing <code class="code">delete darr ((length darr) - 1)</code>.<br>
+    of doing <code class="code">delete darr ((length darr) - 1)</code>.<br>
 </div>
 
 <pre><span id="VALdelete_range"><span class="keyword">val</span> delete_range</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> int -> unit</code></pre><div class="info ">
 <code class="code">delete_range darr p len</code> deletes <code class="code">len</code> elements starting at index <code class="code">p</code>.
-	All elements with an index greater than <code class="code">p+len</code> are moved to fill
-	in the hole.<br>
+    All elements with an index greater than <code class="code">p+len</code> are moved to fill
+    in the hole.<br>
 </div>
 
 <pre><span id="VALclear"><span class="keyword">val</span> clear</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
@@ -217,7 +218,7 @@ remove all elements from the array and resize it to 0.<br>
 
 <pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> int -> unit</code></pre><div class="info ">
 <code class="code">blit src srcidx dst dstidx len</code> copies <code class="code">len</code> elements from <code class="code">src</code>
-	starting with index <code class="code">srcidx</code> to <code class="code">dst</code> starting at <code class="code">dstidx</code>.<br>
+    starting with index <code class="code">srcidx</code> to <code class="code">dst</code> starting at <code class="code">dstidx</code>.<br>
 </div>
 
 <pre><span id="VALcompact"><span class="keyword">val</span> compact</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
@@ -240,12 +241,12 @@ remove all elements from the array and resize it to 0.<br>
 
 <pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">'a list -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">of_list lst</code> returns a dynamic array with the elements of <code class="code">lst</code> in
-	it in order.<br>
+    it in order.<br>
 </div>
 
 <pre><span id="VALof_array"><span class="keyword">val</span> of_array</span> : <code class="type">'a array -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">of_array arr</code> returns an array with the elements of <code class="code">arr</code> in it
-	in order.<br>
+    in order.<br>
 </div>
 
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info ">
@@ -254,25 +255,25 @@ remove all elements from the array and resize it to 0.<br>
 
 <pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">copy src</code> returns a fresh copy of <code class="code">src</code>, such that no modification of
-	<code class="code">src</code> affects the copy, or vice versa (all new memory is allocated for
-	the copy).<br>
+    <code class="code">src</code> affects the copy, or vice versa (all new memory is allocated for
+    the copy).<br>
 </div>
 
 <pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type">'a <a href="BatDynArray.html#TYPEt">t</a> -> int -> int -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">sub darr start len</code> returns an array holding the subset of <code class="code">len</code>
-	elements from <code class="code">darr</code> starting with the element at index <code class="code">idx</code>.<br>
+    elements from <code class="code">darr</code> starting with the element at index <code class="code">idx</code>.<br>
 </div>
 <br>
 <h6 id="6_Arrayfunctionalsupport">Array functional support</h6><br>
 
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 <code class="code">iter f darr</code> calls the function <code class="code">f</code> on every element of <code class="code">darr</code>.  It
-	is equivalent to <code class="code"><span class="keyword">for</span> i = 0 <span class="keyword">to</span> length darr - 1 <span class="keyword">do</span> f (get darr i) <span class="keyword">done</span>;</code><br>
+    is equivalent to <code class="code"><span class="keyword">for</span> i = 0 <span class="keyword">to</span> length darr - 1 <span class="keyword">do</span> f (get darr i) <span class="keyword">done</span>;</code><br>
 </div>
 
 <pre><span id="VALiteri"><span class="keyword">val</span> iteri</span> : <code class="type">(int -> 'a -> unit) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 <code class="code">iter f darr</code> calls the function <code class="code">f</code> on every element of <code class="code">darr</code>.  It
-	is equivalent to <code class="code"><span class="keyword">for</span> i = 0 <span class="keyword">to</span> length darr - 1 <span class="keyword">do</span> f i (get darr i) <span class="keyword">done</span>;</code><br>
+    is equivalent to <code class="code"><span class="keyword">for</span> i = 0 <span class="keyword">to</span> length darr - 1 <span class="keyword">do</span> f i (get darr i) <span class="keyword">done</span>;</code><br>
 </div>
 
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> 'b <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info ">
@@ -338,24 +339,24 @@ remove all elements from the array and resize it to 0.<br>
 The type of a resizer function.
 <p>
 
-	Resizer functions are called whenever elements are added to
-	or removed from the dynamic array to determine what the current number of
-	storage spaces in the array should be.  The three named arguments
-	passed to a resizer are the current number of storage spaces in
-	the array, the length of the array before the elements are
-	added or removed, and the length the array will be after the
-	elements are added or removed.  If elements are being added, newlength
-	will be larger than oldlength, if elements are being removed,
-	newlength will be smaller than oldlength. If the resizer function
-	returns exactly oldlength, the size of the array is only changed when
-	adding an element while there is not enough space for it.
+    Resizer functions are called whenever elements are added to
+    or removed from the dynamic array to determine what the current number of
+    storage spaces in the array should be.  The three named arguments
+    passed to a resizer are the current number of storage spaces in
+    the array, the length of the array before the elements are
+    added or removed, and the length the array will be after the
+    elements are added or removed.  If elements are being added, newlength
+    will be larger than oldlength, if elements are being removed,
+    newlength will be smaller than oldlength. If the resizer function
+    returns exactly oldlength, the size of the array is only changed when
+    adding an element while there is not enough space for it.
 <p>
 
-	By default, all dynamic arrays are created with the <code class="code">default_resizer</code>.
-	When a dynamic array is created from another dynamic array (using <code class="code">copy</code>,
-	<code class="code">map</code> , etc. ) the resizer of the copy will be the same as the original
-	dynamic array resizer. To change the resizer, use the <code class="code">set_resizer</code>
-	function.<br>
+    By default, all dynamic arrays are created with the <code class="code">default_resizer</code>.
+    When a dynamic array is created from another dynamic array (using <code class="code">copy</code>,
+    <code class="code">map</code> , etc. ) the resizer of the copy will be the same as the original
+    dynamic array resizer. To change the resizer, use the <code class="code">set_resizer</code>
+    function.<br>
 </div>
 
 
@@ -369,82 +370,87 @@ Get the current resizer function for a given array<br>
 
 <pre><span id="VALdefault_resizer"><span class="keyword">val</span> default_resizer</span> : <code class="type"><a href="BatDynArray.html#TYPEresizer_t">resizer_t</a></code></pre><div class="info ">
 The default resizer function the library is using - in this version
-	of DynArray, this is the <code class="code">exponential_resizer</code> but should change in
-	next versions.<br>
+    of DynArray, this is the <code class="code">exponential_resizer</code> but should change in
+    next versions.<br>
 </div>
 
 <pre><span id="VALexponential_resizer"><span class="keyword">val</span> exponential_resizer</span> : <code class="type"><a href="BatDynArray.html#TYPEresizer_t">resizer_t</a></code></pre><div class="info ">
 The exponential resizer- The default resizer except when the resizer
-	is being copied from some other darray.
+    is being copied from some other darray.
 <p>
 
-	<code class="code">exponential_resizer</code> works by doubling or halving the number of
-	slots until they "fit".  If the number of slots is less than the
-	new length, the number of slots is doubled until it is greater
-	than the new length (or Sys.max_array_size is reached).
+    <code class="code">exponential_resizer</code> works by doubling or halving the number of
+    slots until they "fit".  If the number of slots is less than the
+    new length, the number of slots is doubled until it is greater
+    than the new length (or Sys.max_array_size is reached).
 <p>
 
-	If the number of slots is more than four times the new length,
-	the number of slots is halved until it is less than four times the
-	new length.
+    If the number of slots is more than four times the new length,
+    the number of slots is halved until it is less than four times the
+    new length.
 <p>
 
-	Allowing darrays to fall below 25% utilization before shrinking them
-	prevents "thrashing".  Consider the case where the caller is constantly
-	adding a few elements, and then removing a few elements, causing
-	the length to constantly cross above and below a power of two.
-	Shrinking the array when it falls below 50% would causing the
-	underlying array to be constantly allocated and deallocated.
-	A few elements would be added, causing the array to be reallocated
-	and have a usage of just above 50%.  Then a few elements would be
-	remove, and the array would fall below 50% utilization and be
-	reallocated yet again.  The bulk of the array, untouched, would be
-	copied and copied again.  By setting the threshold at 25% instead,
-	such "thrashing" only occurs with wild swings- adding and removing
-	huge numbers of elements (more than half of the elements in the array).
+    Allowing darrays to fall below 25% utilization before shrinking them
+    prevents "thrashing".  Consider the case where the caller is constantly
+    adding a few elements, and then removing a few elements, causing
+    the length to constantly cross above and below a power of two.
+    Shrinking the array when it falls below 50% would causing the
+    underlying array to be constantly allocated and deallocated.
+    A few elements would be added, causing the array to be reallocated
+    and have a usage of just above 50%.  Then a few elements would be
+    remove, and the array would fall below 50% utilization and be
+    reallocated yet again.  The bulk of the array, untouched, would be
+    copied and copied again.  By setting the threshold at 25% instead,
+    such "thrashing" only occurs with wild swings- adding and removing
+    huge numbers of elements (more than half of the elements in the array).
 <p>
 
-	<code class="code">exponential_resizer</code> is a good performing resizer for most
-	applications.  A list allocates 2 words for every element, while an
-	array (with large numbers of elements) allocates only 1 word per
-	element (ignoring unboxed floats).  On insert, <code class="code">exponential_resizer</code>
-	keeps the amount of wasted "extra" array elements below 50%, meaning
-	that less than 2 words per element are used.  Even on removals
-	where the amount of wasted space is allowed to rise to 75%, that
-	only means that darray is using 4 words per element.  This is
-	generally not a significant overhead.
+    <code class="code">exponential_resizer</code> is a good performing resizer for most
+    applications.  A list allocates 2 words for every element, while an
+    array (with large numbers of elements) allocates only 1 word per
+    element (ignoring unboxed floats).  On insert, <code class="code">exponential_resizer</code>
+    keeps the amount of wasted "extra" array elements below 50%, meaning
+    that less than 2 words per element are used.  Even on removals
+    where the amount of wasted space is allowed to rise to 75%, that
+    only means that darray is using 4 words per element.  This is
+    generally not a significant overhead.
 <p>
 
-	Furthermore, <code class="code">exponential_resizer</code> minimizes the number of copies
-	needed- appending n elements into an empty darray with initial size
-	0 requires between n and 2n elements of the array be copied- O(n)
-	work, or O(1) work per element (on average).  A similar argument
-	can be made that deletes from the end of the array are O(1) as
-	well (obviously deletes from anywhere else are O(n) work- you
-	have to move the n or so elements above the deleted element down).<br>
+    Furthermore, <code class="code">exponential_resizer</code> minimizes the number of copies
+    needed- appending n elements into an empty darray with initial size
+    0 requires between n and 2n elements of the array be copied- O(n)
+    work, or O(1) work per element (on average).  A similar argument
+    can be made that deletes from the end of the array are O(1) as
+    well (obviously deletes from anywhere else are O(n) work- you
+    have to move the n or so elements above the deleted element down).<br>
 </div>
 
 <pre><span id="VALstep_resizer"><span class="keyword">val</span> step_resizer</span> : <code class="type">int -> <a href="BatDynArray.html#TYPEresizer_t">resizer_t</a></code></pre><div class="info ">
 The stepwise resizer- another example of a resizer function, this
-	time of a parameterized resizer.
+    time of a parameterized resizer.
 <p>
 
-	The resizer returned by <code class="code">step_resizer step</code> returns the smallest
-	multiple of <code class="code">step</code> larger than <code class="code">newlength</code> if <code class="code">currslots</code> is less
-	then <code class="code">newlength</code>-<code class="code">step</code> or greater than <code class="code">newlength</code>.
+    The resizer returned by <code class="code">step_resizer step</code> returns the smallest
+    multiple of <code class="code">step</code> larger than <code class="code">newlength</code> if <code class="code">currslots</code> is less
+    then <code class="code">newlength</code>-<code class="code">step</code> or greater than <code class="code">newlength</code>.
 <p>
 
-	For example, to make an darray with a step of 10, a length
-	of len, and a null of null, you would do:
-	<code class="code">make</code> ~resizer:(<code class="code">step_resizer</code> 10) len null<br>
+    For example, to make an darray with a step of 10, a length
+    of len, and a null of null, you would do:
+    <code class="code">make</code> ~resizer:(<code class="code">step_resizer</code> 10) len null<br>
 </div>
 
 <pre><span id="VALconservative_exponential_resizer"><span class="keyword">val</span> conservative_exponential_resizer</span> : <code class="type"><a href="BatDynArray.html#TYPEresizer_t">resizer_t</a></code></pre><div class="info ">
 <code class="code">conservative_exponential_resizer</code> is an example resizer function
-	which uses the oldlength parameter.  It only shrinks the array
-	on inserts- no deletes shrink the array, only inserts.  It does
-	this by comparing the oldlength and newlength parameters.  Other
-	than that, it acts like <code class="code">exponential_resizer</code>.<br>
+    which uses the oldlength parameter.  It only shrinks the array
+    on inserts- no deletes shrink the array, only inserts.  It does
+    this by comparing the oldlength and newlength parameters.  Other
+    than that, it acts like <code class="code">exponential_resizer</code>.<br>
+</div>
+
+<pre><span id="VALcreate_with"><span class="keyword">val</span> create_with</span> : <code class="type"><a href="BatDynArray.html#TYPEresizer_t">resizer_t</a> -> 'a <a href="BatDynArray.html#TYPEt">t</a></code></pre><div class="info ">
+create a new dynamic array that uses the given resizer.<br>
+<b>Since</b> 2.3.0<br>
 </div>
 <br>
 <h6 id="6_Unsafeoperations">Unsafe operations</h6> *<br>

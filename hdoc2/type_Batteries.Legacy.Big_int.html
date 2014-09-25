@@ -18,6 +18,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -102,62 +103,4 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : Batteries.Legacy.Big_int</title>
 </head>
 <body>
-<code class="code"><span class="keyword">sig</span><br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;big_int&nbsp;=&nbsp;<span class="constructor">Big_int</span>.big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;zero_big_int&nbsp;:&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unit_big_int&nbsp;:&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;minus_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;abs_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;add_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;succ_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;add_int_big_int&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sub_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;pred_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;mult_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;mult_int_big_int&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;square_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sqrt_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;quomod_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int&nbsp;*&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;div_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;mod_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;gcd_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;power_int_positive_int&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;power_big_int_positive_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;power_int_positive_big_int&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;power_big_int_positive_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sign_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;compare_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;eq_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;le_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;ge_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lt_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;gt_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;max_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;min_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;num_digits_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;string_of_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;big_int_of_string&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;big_int_of_int&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;is_int_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;int_of_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;big_int_of_int32&nbsp;:&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;big_int_of_nativeint&nbsp;:&nbsp;nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;big_int_of_int64&nbsp;:&nbsp;int64&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;int32_of_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;nativeint_of_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;nativeint<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;int64_of_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int64<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;float_of_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;and_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;or_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;xor_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;shift_left_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;shift_right_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;shift_right_towards_zero_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;extract_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;nat_of_big_int&nbsp;:&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Nat</span>.nat<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;big_int_of_nat&nbsp;:&nbsp;<span class="constructor">Nat</span>.nat&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;base_power_big_int&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sys_big_int_of_string&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;round_futur_last_digit&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;approx_big_int&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
-<span class="keyword">end</span></code></body></html>
+<code class="code">(<span class="keyword">module</span>&nbsp;<span class="constructor">Big_int</span>)</code></body></html>

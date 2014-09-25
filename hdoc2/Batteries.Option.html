@@ -23,6 +23,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -116,7 +117,7 @@
 </div>
 <h1>Module <a href="type_Batteries.Option.html">Batteries.Option</a></h1>
 
-<pre><span class="keyword">module</span> Option: <code class="type">BatOption</code></pre><hr width="100%">
+<pre><span class="keyword">module</span> Option: <code class="type"><a href="BatOption.html">BatOption</a></code></pre><hr width="100%">
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a option</code> </pre>
 
@@ -169,7 +170,7 @@ Like <a href="BatOption.html#VALdefault"><code class="code"><span class="constru
 
 <pre><span id="VALmap_default"><span class="keyword">val</span> map_default</span> : <code class="type">('a -> 'b) -> 'b -> 'a option -> 'b</code></pre><div class="info ">
 <code class="code">map_default f x (<span class="constructor">Some</span> v)</code> returns <code class="code">f v</code> and <code class="code">map_default f x <span class="constructor">None</span></code>
-	returns <code class="code">x</code>.<br>
+    returns <code class="code">x</code>.<br>
 </div>
 
 <pre><span id="VALmap_default_delayed"><span class="keyword">val</span> map_default_delayed</span> : <code class="type">('a -> 'b) -> (unit -> 'b) -> 'a option -> 'b</code></pre><div class="info ">

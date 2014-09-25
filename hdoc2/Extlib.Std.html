@@ -23,6 +23,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -125,7 +126,7 @@
 </div>
 <h1>Module <a href="type_Extlib.Std.html">Extlib.Std</a></h1>
 
-<pre><span class="keyword">module</span> Std: <code class="type">BatPervasives</code></pre><hr width="100%">
+<pre><span class="keyword">module</span> Std: <code class="type"><a href="BatPervasives.html">BatPervasives</a></code></pre><hr width="100%">
 <br>
 The initially opened module.
 <p>
@@ -161,10 +162,25 @@ Return the whole contents of an input channel as a single
 Attempt to convert a value to a string.
 <p>
 
-    Since types are lost at compile time, the representation might not
-    match your type. For example, None will be printed 0 since they
-    share the same runtime representation.
+    Works well for a lot of cases such as non-empty lists, algebraic
+    datatype, and records.
 <p>
+
+    However, since types are lost at compile-time, the representation
+    might not match your type. (0, 1) will be printed as expected, but
+    (1, 0) and <code class="code">1</code> have the same representation and will get printed
+    in the same way. The result of <code class="code">dump</code> is unspecified and may
+    change in future versions, so you should only use it for debugging
+    and never have program behavior depend on the output.
+<p>
+
+    Here is a list of some of the surprising corner cases of the
+    current implementation:
+<p>
+<ul>
+<li>(3, 0) is printed <code class="code">3</code>, (0.5, 0) is printed <code class="code">0.5</code>, etc.</li>
+<li>None, false and [] are printed 0</li>
+</ul>
 
     <code class="code">dump</code> may fail for ill-formed values, such as obtained from
     a faulty C binding or crazy uses of <code class="code"><span class="constructor">Obj</span>.set_tag</code>.<br>
@@ -515,7 +531,6 @@ The undefined function.
       customization of the error message.<br>
 </div>
 
-<pre><span id="VAL(@@)"><span class="keyword">val</span> (@@)</span> : <code class="type">('a -> 'b) -> 'a -> 'b</code></pre>
 <pre><span id="VAL(@@)"><span class="keyword">val</span> (@@)</span> : <code class="type">('a -> 'b) -> 'a -> 'b</code></pre><br>
 Function application. <code class="code">f @@ x</code> is equivalent to <code class="code">f x</code>.
     However, it binds less tightly (between <code class="code">::</code> and <code class="code">=</code>,<code class="code">&lt;</code>,<code class="code">&gt;</code>,etc)
@@ -532,7 +547,6 @@ Function composition: the mathematical <code class="code">o</code> operator.
       <code class="code">f (g (h x))</code>, <code class="code">f @@ g @@ h x</code>, <code class="code">f % g % h @@ x</code>.<br>
 </div>
 
-<pre><span id="VAL(|>)"><span class="keyword">val</span> (|&gt;)</span> : <code class="type">'a -> ('a -> 'b) -> 'b</code></pre>
 <pre><span id="VAL(|>)"><span class="keyword">val</span> (|&gt;)</span> : <code class="type">'a -> ('a -> 'b) -> 'b</code></pre><div class="info ">
 The "pipe": function application. <code class="code">x |&gt; f</code> is equivalent to <code class="code">f x</code>.
 <p>
@@ -1004,9 +1018,12 @@ Print and consume the contents of an enumeration.<br>
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
 <code><span id="TYPEELTresult.Bad"><span class="constructor">Bad</span></span> <span class="keyword">of</span> <code class="type">'b</code></code></td>
-<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >The result of a computation - either an <code class="code"><span class="constructor">Ok</span></code> with the normal
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+The result of a computation - either an <code class="code"><span class="constructor">Ok</span></code> with the normal
       result or a <code class="code"><span class="constructor">Bad</span></code> with some value (often an exception) containing
-      failure information</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+      failure information<br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 
 <div class="info ">

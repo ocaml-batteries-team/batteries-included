@@ -23,6 +23,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -131,7 +132,7 @@
 </div>
 <h1>Module <a href="type_Batteries.List.html">Batteries.List</a></h1>
 
-<pre><span class="keyword">module</span> List: <code class="type">BatList</code></pre><hr width="100%">
+<pre><span class="keyword">module</span> List: <code class="type"><a href="BatList.html">BatList</a></code></pre><hr width="100%">
 <br>
 List operations.<br>
 
@@ -183,7 +184,7 @@ Return the length (number of elements) of the given list.<br>
 
 <pre><span id="VALat"><span class="keyword">val</span> at</span> : <code class="type">'a list -> int -> 'a</code></pre><div class="info ">
 <code class="code">at l n</code> returns the n-th element of the list <code class="code">l</code> or<br>
-<b>Raises</b> <code>Invalid_argument</code> is the index is outside of <code class="code">l</code> bounds.  O(l)<br>
+<b>Raises</b> <code>Invalid_argument</code> if the index is outside of <code class="code">l</code> bounds.  O(l)<br>
 </div>
 
 <pre><span id="VALrev"><span class="keyword">val</span> rev</span> : <code class="type">'a list -> 'a list</code></pre><div class="info ">
@@ -249,6 +250,16 @@ Similar to <code class="code"><span class="constructor">Array</span>.init</code>
     will return <code class="code">[<span class="string">"0"</span>;<span class="string">"1"</span>;<span class="string">"2"</span>]</code><br>
 <b>Since</b> 2.1<br>
 </div>
+
+<pre><span id="VALunfold_exc"><span class="keyword">val</span> unfold_exc</span> : <code class="type">(unit -> 'a) -> 'a list * exn</code></pre><div class="info ">
+Creates a list containing the results of sequential calls
+    to <code class="code">f()</code>. <code class="code">f()</code> is called repeatedly until it throws an exception.
+    Both the results list, as well as the exception
+    thrown are returned in a <code class="code">(results_list, exn)</code> pair.
+    Warning: if calls to <code class="code">f()</code> never throw an exception, unfold_exc
+    is an infinite loop.<br>
+<b>Since</b> 2.3.0<br>
+</div>
 <br>
 <h6 id="6_Iterators">Iterators</h6><br>
 
@@ -285,9 +296,21 @@ Similar to <code class="code"><span class="constructor">Array</span>.init</code>
     <code class="code">f (... (f (f a b0) b1) ...) bn</code>.<br>
 </div>
 
+<pre><span id="VALfold_lefti"><span class="keyword">val</span> fold_lefti</span> : <code class="type">('a -> int -> 'b -> 'a) -> 'a -> 'b list -> 'a</code></pre><div class="info ">
+As <code class="code">fold_left</code>, but with the index of the element, from <code class="code">0</code> to
+    <code class="code">length li - 1</code>, as additional argument.<br>
+<b>Since</b> 2.3.0<br>
+</div>
+
 <pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">('a -> 'b -> 'b) -> 'a list -> 'b -> 'b</code></pre><div class="info ">
 <code class="code"><span class="constructor">List</span>.fold_right f [a0; a1; ...; an] b</code> is
     <code class="code">f a0 (f a1 (... (f an b) ...))</code>.  Tail-recursive.<br>
+</div>
+
+<pre><span id="VALfold_righti"><span class="keyword">val</span> fold_righti</span> : <code class="type">(int -> 'b -> 'a -> 'a) -> 'b list -> 'a -> 'a</code></pre><div class="info ">
+As <code class="code">fold_right</code>, but with the index of the element, from <code class="code">0</code> to
+    <code class="code">length li - 1</code>, as additional argument.<br>
+<b>Since</b> 2.3.0<br>
 </div>
 
 <pre><span id="VALreduce"><span class="keyword">val</span> reduce</span> : <code class="type">('a -> 'a -> 'a) -> 'a list -> 'a</code></pre><div class="info ">
@@ -624,6 +647,21 @@ Same as <code class="code"><span class="constructor">List</span>.mem_assoc</code
 <br>
 <h6 id="6_Listtransformations">List transformations</h6><br>
 
+<pre><span id="VALmodify_at"><span class="keyword">val</span> modify_at</span> : <code class="type">int -> ('a -> 'a) -> 'a list -> 'a list</code></pre><div class="info ">
+<code class="code">modify_at n f l</code> returns the same list as <code class="code">l</code>
+    but with nth-value <code class="code">a</code> replaced with <code class="code">f a</code>.<br>
+<b>Since</b> 2.3.0<br>
+<b>Raises</b> <code>Invalid_argument</code> if the index is outside of <code class="code">l</code> bounds<br>
+</div>
+
+<pre><span id="VALmodify_opt_at"><span class="keyword">val</span> modify_opt_at</span> : <code class="type">int -> ('a -> 'a option) -> 'a list -> 'a list</code></pre><div class="info ">
+<code class="code">modify_at_opt n f l</code> returns the same list as <code class="code">l</code> but with
+    nth-value <code class="code">a</code> removed if <code class="code">f a</code> is <code class="code"><span class="constructor">None</span></code>, and replaced by <code class="code">v</code> if
+    it is <code class="code"><span class="constructor">Some</span> v</code>.<br>
+<b>Since</b> 2.3.0<br>
+<b>Raises</b> <code>Invalid_argument</code> if the index is outside of <code class="code">l</code> bounds<br>
+</div>
+
 <pre><span id="VALsplit_at"><span class="keyword">val</span> split_at</span> : <code class="type">int -> 'a list -> 'a list * 'a list</code></pre><div class="info ">
 <code class="code">split_at n l</code> returns two lists <code class="code">l1</code> and <code class="code">l2</code>, <code class="code">l1</code> containing the
     first <code class="code">n</code> elements of <code class="code">l</code> and <code class="code">l2</code> the others.<br>
@@ -644,6 +682,12 @@ Obsolete. As <code class="code">split_at</code>.<br>
 <pre><span id="VALremove_if"><span class="keyword">val</span> remove_if</span> : <code class="type">('a -> bool) -> 'a list -> 'a list</code></pre><div class="info ">
 <code class="code">remove_if cmp l</code> is similar to <code class="code">remove</code>, but with <code class="code">cmp</code> used
     instead of ( = ).<br>
+</div>
+
+<pre><span id="VALremove_at"><span class="keyword">val</span> remove_at</span> : <code class="type">int -> 'a list -> 'a list</code></pre><div class="info ">
+<code class="code">remove_at i l</code> returns the list <code class="code">l</code> without the element at index <code class="code">i</code>.<br>
+<b>Since</b> 2.3.0<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">i</code> is outside of <code class="code">l</code> size bounds.<br>
 </div>
 
 <pre><span id="VALremove_all"><span class="keyword">val</span> remove_all</span> : <code class="type">'a list -> 'a -> 'a list</code></pre><div class="info ">
@@ -824,12 +868,18 @@ Merge two lists:
     Not tail-recursive (sum of the lengths of the arguments).<br>
 </div>
 
-<pre><span id="VALsort_unique"><span class="keyword">val</span> sort_unique</span> : <code class="type">('a -> 'a -> int) -> 'a list -> 'a list</code></pre><div class="info ">
-<code class="code">sort_unique cmp l</code> returns the list <code class="code">l</code> sorted and without any duplicate
-    element. <code class="code">cmp</code> is a usual comparison function providing total order.
+<pre><span id="VALsort_uniq"><span class="keyword">val</span> sort_uniq</span> : <code class="type">('a -> 'a -> int) -> 'a list -> 'a list</code></pre><div class="info ">
+<code class="code">sort_uniq cmp l</code> returns the list <code class="code">l</code> sorted and without any
+    duplicate element. <code class="code">cmp</code> is a usual comparison function providing
+    total order.
 <p>
 
     This function takes O(n log n) time.<br>
+<b>Since</b> 2.3.0<br>
+</div>
+
+<pre><span id="VALsort_unique"><span class="keyword">val</span> sort_unique</span> : <code class="type">('a -> 'a -> int) -> 'a list -> 'a list</code></pre><div class="info ">
+synonym for <code class="code">sort_uniq</code><br>
 </div>
 <br>
 <h6 id="6_Utilities">Utilities</h6><br>

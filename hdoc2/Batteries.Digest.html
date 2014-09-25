@@ -23,6 +23,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -113,7 +114,7 @@
 </div>
 <h1>Module <a href="type_Batteries.Digest.html">Batteries.Digest</a></h1>
 
-<pre><span class="keyword">module</span> Digest: <code class="type">BatDigest</code></pre><hr width="100%">
+<pre><span class="keyword">module</span> Digest: <code class="type"><a href="BatDigest.html">BatDigest</a></code></pre><hr width="100%">
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">string</code> </pre>
 <div class="info ">
@@ -125,10 +126,21 @@ The type of digests: 16-character strings.<br>
 Return the digest of the given string.<br>
 </div>
 
+<pre><span id="VALbytes"><span class="keyword">val</span> bytes</span> : <code class="type">Bytes.t -> <a href="BatDigest.html#TYPEt">t</a></code></pre><div class="info ">
+Return the digest of the given byte sequence.<br>
+<b>Since</b> 2.3.0<br>
+</div>
+
 <pre><span id="VALsubstring"><span class="keyword">val</span> substring</span> : <code class="type">string -> int -> int -> <a href="BatDigest.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code"><span class="constructor">Digest</span>.substring s ofs len</code> returns the digest of the substring
     of <code class="code">s</code> starting at character number <code class="code">ofs</code> and containing <code class="code">len</code>
     characters.<br>
+</div>
+
+<pre><span id="VALsubbytes"><span class="keyword">val</span> subbytes</span> : <code class="type">Bytes.t -> int -> int -> <a href="BatDigest.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code"><span class="constructor">Digest</span>.subbytes s ofs len</code> returns the digest of the subsequence
+    of <code class="code">s</code> starting at index <code class="code">ofs</code> and containing <code class="code">len</code> bytes.<br>
+<b>Since</b> 2.3.0<br>
 </div>
 
 <pre><span id="VALfile"><span class="keyword">val</span> file</span> : <code class="type">string -> <a href="BatDigest.html#TYPEt">t</a></code></pre><div class="info ">

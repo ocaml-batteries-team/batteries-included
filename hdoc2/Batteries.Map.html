@@ -23,6 +23,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -115,7 +116,7 @@
 </div>
 <h1>Module <a href="type_Batteries.Map.html">Batteries.Map</a></h1>
 
-<pre><span class="keyword">module</span> Map: <code class="type">BatMap</code></pre><hr width="100%">
+<pre><span class="keyword">module</span> Map: <code class="type"><a href="BatMap.html">BatMap</a></code></pre><hr width="100%">
 
 <pre><span class="keyword">module type</span> <a href="BatMap.S.html">S</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatMap.S.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
 <pre><span class="keyword">module</span> <a href="BatMap.Make.html">Make</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">Ord</span></code><code class="code"> : </code><code class="type"><a href="BatInterfaces.OrderedType.html">BatInterfaces.OrderedType</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatMap.S.html">S</a></code><code class="type">  with type key = Ord.t</code></div></pre><div class="info">
@@ -298,8 +299,8 @@ Tests whether some key value pair satisfies some predicate function<br>
 
 <pre><span id="VALmodify"><span class="keyword">val</span> modify</span> : <code class="type">'a -> ('b -> 'b) -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">modify k f m</code> replaces the previous binding for <code class="code">k</code> with <code class="code">f</code>
-	applied to that value.  If <code class="code">k</code> is unbound in <code class="code">m</code> or <code class="code"><span class="constructor">Not_found</span></code> is
-	raised during the search,  <code class="code"><span class="constructor">Not_found</span></code> is raised.<br>
+    applied to that value.  If <code class="code">k</code> is unbound in <code class="code">m</code> or <code class="code"><span class="constructor">Not_found</span></code> is
+    raised during the search,  <code class="code"><span class="constructor">Not_found</span></code> is raised.<br>
 <b>Since</b> 1.2.0<br>
 <b>Raises</b> <code>Not_found</code> if <code class="code">k</code> is unbound in <code class="code">m</code> (or <code class="code">f</code> raises <code class="code"><span class="constructor">Not_found</span></code>)<br>
 </div>

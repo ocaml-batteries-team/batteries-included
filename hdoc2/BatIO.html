@@ -23,6 +23,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -211,7 +212,7 @@ The abstract input type.<br>
 <pre><span id="TYPEoutput"><span class="keyword">type</span> <code class="type">'a</code> output</span> = <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a></code> </pre>
 <div class="info ">
 The abstract output type, <code class="code"><span class="keywordsign">'</span>a</code> is the accumulator data, it is returned
-	when the <code class="code">close_out</code> function is called.<br>
+    when the <code class="code">close_out</code> function is called.<br>
 </div>
 
 
@@ -721,11 +722,11 @@ Fully create an output by giving all the needed functions.<br>
 <div class="param_info"><code class="code">output</code> : Write a (sub)string to the output (see <a href="BatIO.html#VALoutput"><code class="code"><span class="constructor">BatIO</span>.output</code></a>).</div>
 <div class="param_info"><code class="code">flush</code> : Flush any buffers of this output  (see <a href="BatIO.html#VALflush"><code class="code"><span class="constructor">BatIO</span>.flush</code></a>).</div>
 <div class="param_info"><code class="code">close</code> : Close this output. The output will be automatically
-	flushed.
+    flushed.
 <p>
 
-	<b>Note</b> Do <em>not</em> use this function for creating an output which
-	writes to one or more underlying outputs. Rather, use <a href="BatIO.html#VALwrap_out"><code class="code"><span class="constructor">BatIO</span>.wrap_out</code></a>.</div>
+    <b>Note</b> Do <em>not</em> use this function for creating an output which
+    writes to one or more underlying outputs. Rather, use <a href="BatIO.html#VALwrap_out"><code class="code"><span class="constructor">BatIO</span>.wrap_out</code></a>.</div>
 
 <pre><span id="VALwrap_out"><span class="keyword">val</span> wrap_out</span> : <code class="type">write:(char -> unit) -><br>       output:(string -> int -> int -> int) -><br>       flush:(unit -> unit) -><br>       close:(unit -> 'a) -> underlying:'b <a href="BatIO.html#TYPEoutput">output</a> list -> 'a <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info ">
 Fully create an output that writes to one or more underlying outputs.

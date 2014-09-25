@@ -18,6 +18,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -102,40 +103,4 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : Batteries.Legacy.Arg</title>
 </head>
 <body>
-<code class="code"><span class="keyword">sig</span><br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;spec&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Arg</span>.spec&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Unit</span>&nbsp;<span class="keyword">of</span>&nbsp;(unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Bool</span>&nbsp;<span class="keyword">of</span>&nbsp;(bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Set</span>&nbsp;<span class="keyword">of</span>&nbsp;bool&nbsp;ref<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Clear</span>&nbsp;<span class="keyword">of</span>&nbsp;bool&nbsp;ref<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">String</span>&nbsp;<span class="keyword">of</span>&nbsp;(string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Set_string</span>&nbsp;<span class="keyword">of</span>&nbsp;string&nbsp;ref<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int</span>&nbsp;<span class="keyword">of</span>&nbsp;(int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Set_int</span>&nbsp;<span class="keyword">of</span>&nbsp;int&nbsp;ref<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Float</span>&nbsp;<span class="keyword">of</span>&nbsp;(float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Set_float</span>&nbsp;<span class="keyword">of</span>&nbsp;float&nbsp;ref<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Tuple</span>&nbsp;<span class="keyword">of</span>&nbsp;spec&nbsp;list<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Symbol</span>&nbsp;<span class="keyword">of</span>&nbsp;string&nbsp;list&nbsp;*&nbsp;(string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Rest</span>&nbsp;<span class="keyword">of</span>&nbsp;(string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;key&nbsp;=&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;doc&nbsp;=&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;usage_msg&nbsp;=&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;anon_fun&nbsp;=&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;parse&nbsp;:&nbsp;(key&nbsp;*&nbsp;spec&nbsp;*&nbsp;doc)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;anon_fun&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;usage_msg&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;parse_dynamic&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(string&nbsp;*&nbsp;spec&nbsp;*&nbsp;string)&nbsp;list&nbsp;ref&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;anon_fun&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;parse_argv&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?current:int&nbsp;ref&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;array&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(key&nbsp;*&nbsp;spec&nbsp;*&nbsp;doc)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;anon_fun&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;usage_msg&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;parse_argv_dynamic&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?current:int&nbsp;ref&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;array&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;(string&nbsp;*&nbsp;spec&nbsp;*&nbsp;string)&nbsp;list&nbsp;ref&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;anon_fun&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">exception</span>&nbsp;<span class="constructor">Help</span>&nbsp;<span class="keyword">of</span>&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">exception</span>&nbsp;<span class="constructor">Bad</span>&nbsp;<span class="keyword">of</span>&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;usage&nbsp;:&nbsp;(key&nbsp;*&nbsp;spec&nbsp;*&nbsp;doc)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;usage_msg&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;usage_string&nbsp;:&nbsp;(key&nbsp;*&nbsp;spec&nbsp;*&nbsp;doc)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;usage_msg&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;align&nbsp;:&nbsp;(key&nbsp;*&nbsp;spec&nbsp;*&nbsp;doc)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(key&nbsp;*&nbsp;spec&nbsp;*&nbsp;doc)&nbsp;list<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;current&nbsp;:&nbsp;int&nbsp;ref<br>
-<span class="keyword">end</span></code></body></html>
+<code class="code">(<span class="keyword">module</span>&nbsp;<span class="constructor">Arg</span>)</code></body></html>

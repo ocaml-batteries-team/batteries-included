@@ -23,6 +23,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -264,13 +265,16 @@ Maximum length of a normal array.  The maximum length of a float
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
 <code><span id="TYPEELTsignal_behavior.Signal_handle"><span class="constructor">Signal_handle</span></span> <span class="keyword">of</span> <code class="type">(int -> unit)</code></code></td>
-<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >What to do when receiving a signal:<ul>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+What to do when receiving a signal:<ul>
 <li><code class="code"><span class="constructor">Signal_default</span></code>: take the default behavior
        (usually: abort the program)</li>
 <li><code class="code"><span class="constructor">Signal_ignore</span></code>: ignore the signal</li>
 <li><code class="code"><span class="constructor">Signal_handle</span> f</code>: call function <code class="code">f</code>, giving it the signal
       number as argument.</li>
 </ul>
+<br>
+</div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 

@@ -23,6 +23,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -118,7 +119,7 @@
 </div>
 <h1>Module <a href="type_Batteries.Deque.html">Batteries.Deque</a></h1>
 
-<pre><span class="keyword">module</span> Deque: <code class="type">BatDeque</code></pre><hr width="100%">
+<pre><span class="keyword">module</span> Deque: <code class="type"><a href="BatDeque.html">BatDeque</a></code></pre><hr width="100%">
 
 <pre><span id="TYPEdq"><span class="keyword">type</span> <code class="type">+'a</code> dq</span> </pre>
 <div class="info ">
@@ -243,6 +244,20 @@ The empty deque.<br>
 <pre><span id="VALprepend_list"><span class="keyword">val</span> prepend_list</span> : <code class="type">'a list -> 'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info ">
 <code class="code">prepent_list l dq</code> is equivalent to <code class="code">append (of_list l) dq</code>,
     but more efficient. O(min(m, n))<br>
+</div>
+
+<pre><span id="VALrotate_forward"><span class="keyword">val</span> rotate_forward</span> : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info ">
+A cyclic shift of deque elements from rear to front by one position.
+    As a result, the front element becomes the rear element.
+    Time: O(1) amortized, O(n) worst-case.<br>
+<b>Since</b> 2.3.0<br>
+</div>
+
+<pre><span id="VALrotate_backward"><span class="keyword">val</span> rotate_backward</span> : <code class="type">'a <a href="BatDeque.html#TYPEdq">dq</a> -> 'a <a href="BatDeque.html#TYPEdq">dq</a></code></pre><div class="info ">
+A cyclic shift of deque elements from front to rear by one position.
+    As a result, the rear element becomes the front element.
+    Time: O(1) amortized, O(n) worst-case.<br>
+<b>Since</b> 2.3.0<br>
 </div>
 <br>
 <h6 id="6_Transformation">Transformation</h6><br>

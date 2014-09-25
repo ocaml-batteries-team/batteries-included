@@ -19,6 +19,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -130,6 +131,12 @@ Automatically managed caches
 </div>
 </td></tr>
 <tr><td align="left"><br>B</td></tr>
+<tr><td><a href="BatPrintexc.html#TYPEbacktrace_slot">backtrace_slot</a> [<a href="BatPrintexc.html">BatPrintexc</a>]</td>
+<td><div class="info">
+The abstract type <code class="code">backtrace_slot</code> represents a single slot of
+    a backtrace.
+</div>
+</td></tr>
 <tr><td><a href="BatBounded.BoundedType.html#TYPEbase_t">base_t</a> [<a href="BatBounded.BoundedType.html">BatBounded.BoundedType</a>]</td>
 <td><div class="info">
 The base/raw type
@@ -168,12 +175,11 @@ The type of a bounding function with limits specified by <code class="code">boun
 Buffers for UTF-8 strings.
 </div>
 </td></tr>
+<tr><td><a href="Batteries.html#TYPEbytes">bytes</a> [<a href="Batteries.html">Batteries</a>]</td>
+<td></td></tr>
 <tr><td align="left"><br>C</td></tr>
 <tr><td><a href="BatBigarray.html#TYPEc_layout">c_layout</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
-<td><div class="info">
-See <code class="code"><span class="constructor">Bigarray</span>.fortran_layout</code>.
-</div>
-</td></tr>
+<td></td></tr>
 <tr><td><a href="BatOrd.html#TYPEchoice">choice</a> [<a href="BatOrd.html">BatOrd</a>]</td>
 <td><div class="info">
 choice functions, see <code class="code">min</code> and <code class="code">max</code>.
@@ -334,13 +340,7 @@ The tag handling functions specific to a formatter:
 </div>
 </td></tr>
 <tr><td><a href="BatBigarray.html#TYPEfortran_layout">fortran_layout</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
-<td><div class="info">
-To facilitate interoperability with existing C and Fortran code,
-    this library supports two different memory layouts for big arrays,
-    one compatible with the C conventions,
-    the other compatible with the Fortran conventions.
-</div>
-</td></tr>
+<td></td></tr>
 <tr><td><a href="BatFloat.Safe_float.html#TYPEfpkind">fpkind</a> [<a href="BatFloat.Safe_float.html">BatFloat.Safe_float</a>]</td>
 <td><div class="info">
 Classes of floating point numbers
@@ -447,22 +447,12 @@ type of objects in the table
 </div>
 </td></tr>
 <tr><td><a href="BatBigarray.html#TYPEkind">kind</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
-<td><div class="info">
-To each element kind is associated an OCaml type, which is
-    the type of OCaml values that can be stored in the big array
-    or read back from it.
-</div>
-</td></tr>
+<td></td></tr>
 <tr><td align="left"><br>L</td></tr>
 <tr><td><a href="BatOo.Internal.html#TYPElabel">label</a> [<a href="BatOo.Internal.html">BatOo.Internal</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatBigarray.html#TYPElayout">layout</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
-<td><div class="info">
-The type <code class="code"><span class="keywordsign">'</span>a layout</code> represents one of the two supported
-    memory layouts: C-style if <code class="code"><span class="keywordsign">'</span>a</code> is <code class="code"><span class="constructor">Bigarray</span>.c_layout</code>, Fortran-style
-    if <code class="code"><span class="keywordsign">'</span>a</code> is <code class="code"><span class="constructor">Bigarray</span>.fortran_layout</code>.
-</div>
-</td></tr>
+<td></td></tr>
 <tr><td><a href="BatLogger.html#TYPElevel">level</a> [<a href="BatLogger.html">BatLogger</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatLexing.html#TYPElexbuf">lexbuf</a> [<a href="BatLexing.html">BatLexing</a>]</td>
@@ -472,6 +462,11 @@ The type of lexer buffers.
 </td></tr>
 <tr><td><a href="BatGenlex.html#TYPElexer_error">lexer_error</a> [<a href="BatGenlex.html">BatGenlex</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatPrintexc.html#TYPElocation">location</a> [<a href="BatPrintexc.html">BatPrintexc</a>]</td>
+<td><div class="info">
+The type of location information found in backtraces.
+</div>
+</td></tr>
 <tr><td><a href="BatConcurrent.html#TYPElock">lock</a> [<a href="BatConcurrent.html">BatConcurrent</a>]</td>
 <td><div class="info">
 The light-weight type of a lock, i.e.
@@ -580,7 +575,7 @@ The type of ordering functions returning an <code class="code">order</code> vari
 <tr><td><a href="BatIO.html#TYPEoutput">output</a> [<a href="BatIO.html">BatIO</a>]</td>
 <td><div class="info">
 The abstract output type, <code class="code"><span class="keywordsign">'</span>a</code> is the accumulator data, it is returned
-	when the <code class="code">close_out</code> function is called.
+    when the <code class="code">close_out</code> function is called.
 </div>
 </td></tr>
 <tr><td align="left"><br>P</td></tr>
@@ -632,7 +627,18 @@ Structure of entries in the <code class="code">protocols</code> database.
 </td></tr>
 <tr><td align="left"><br>R</td></tr>
 <tr><td><a href="BatPrintexc.html#TYPEraw_backtrace">raw_backtrace</a> [<a href="BatPrintexc.html">BatPrintexc</a>]</td>
-<td></td></tr>
+<td><div class="info">
+The abstract type <code class="code">raw_backtrace</code> stores a backtrace in
+    a low-level format, instead of directly exposing them as string as
+    the <code class="code">get_backtrace()</code> function does.
+</div>
+</td></tr>
+<tr><td><a href="BatPrintexc.html#TYPEraw_backtrace_slot">raw_backtrace_slot</a> [<a href="BatPrintexc.html">BatPrintexc</a>]</td>
+<td><div class="info">
+This type allows direct access to raw backtrace slots, without any
+    conversion in an OCaml-usable data-structure.
+</div>
+</td></tr>
 <tr><td><a href="BatParserCo.html#TYPEreport">report</a> [<a href="BatParserCo.html">BatParserCo</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatDynArray.html#TYPEresizer_t">resizer_t</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
@@ -872,6 +878,8 @@ The type of queues containing elements of type <code class="code"><span class="k
 The format to use for displaying the various arguments passed to the function.
 </div>
 </td></tr>
+<tr><td><a href="BatPrintexc.Slot.html#TYPEt">t</a> [<a href="BatPrintexc.Slot.html">BatPrintexc.Slot</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatPathGen.StringType.html#TYPEt">t</a> [<a href="BatPathGen.StringType.html">BatPathGen.StringType</a>]</td>
 <td><div class="info">
 Type for strings.
@@ -1080,6 +1088,11 @@ The type of a lock.
 An alias for the type of characters.
 </div>
 </td></tr>
+<tr><td><a href="BatBytes.html#TYPEt">t</a> [<a href="BatBytes.html">BatBytes</a>]</td>
+<td><div class="info">
+An alias for the type of byte sequences.
+</div>
+</td></tr>
 <tr><td><a href="BatBuffer.html#TYPEt">t</a> [<a href="BatBuffer.html">BatBuffer</a>]</td>
 <td><div class="info">
 The abstract type of buffers.
@@ -1124,7 +1137,7 @@ The type of one-dimensional big arrays whose elements have
 <tr><td><a href="BatBigarray.Genarray.html#TYPEt">t</a> [<a href="BatBigarray.Genarray.html">BatBigarray.Genarray</a>]</td>
 <td><div class="info">
 The type <code class="code"><span class="constructor">Genarray</span>.t</code> is the type of big arrays with variable
-	  numbers of dimensions.
+      numbers of dimensions.
 </div>
 </td></tr>
 <tr><td><a href="BatBig_int.html#TYPEt">t</a> [<a href="BatBig_int.html">BatBig_int</a>]</td>

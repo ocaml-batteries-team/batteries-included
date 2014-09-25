@@ -23,6 +23,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -291,6 +292,16 @@ Midpoint function; <code class="code">mid a b</code> returns <code class="code">
 <pre><span id="VALpopcount"><span class="keyword">val</span> popcount</span> : <code class="type">int -> int</code></pre><div class="info ">
 Returns the number of 1 bits set in the binary representation of
     the number.  Maybe has problems with negative numbers<br>
+</div>
+
+<pre><span id="VALcopysign"><span class="keyword">val</span> copysign</span> : <code class="type">int -> int -> int</code></pre><div class="info ">
+<code class="code">copysign n o</code> multiplies <code class="code">o</code> by the "sign" of <code class="code">n</code>, i.e. it returns either:<ul>
+<li><code class="code">0</code> if <code class="code">n=0</code></li>
+<li><code class="code">o</code> if <code class="code">n&gt;0</code></li>
+<li><code class="code">-o</code> if <code class="code">n&lt;0</code></li>
+</ul>
+<br>
+<b>Since</b> 2.3.0<br>
 </div>
 
 <pre><span id="VALoperations"><span class="keyword">val</span> operations</span> : <code class="type">int <a href="BatNumber.html#TYPEnumeric">BatNumber.numeric</a></code></pre>

@@ -18,6 +18,7 @@
 <link title="BatBool" rel="Chapter" href="BatBool.html">
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
+<link title="BatBytes" rel="Chapter" href="BatBytes.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -102,59 +103,4 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : Batteries.Legacy.Lexing</title>
 </head>
 <body>
-<code class="code"><span class="keyword">sig</span><br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;position&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Lexing</span>.position&nbsp;=&nbsp;{<br>
-&nbsp;&nbsp;&nbsp;&nbsp;pos_fname&nbsp;:&nbsp;string;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;pos_lnum&nbsp;:&nbsp;int;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;pos_bol&nbsp;:&nbsp;int;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;pos_cnum&nbsp;:&nbsp;int;<br>
-&nbsp;&nbsp;}<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;dummy_pos&nbsp;:&nbsp;position<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;lexbuf&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Lexing</span>.lexbuf&nbsp;=&nbsp;{<br>
-&nbsp;&nbsp;&nbsp;&nbsp;refill_buff&nbsp;:&nbsp;lexbuf&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mutable</span>&nbsp;lex_buffer&nbsp;:&nbsp;string;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mutable</span>&nbsp;lex_buffer_len&nbsp;:&nbsp;int;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mutable</span>&nbsp;lex_abs_pos&nbsp;:&nbsp;int;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mutable</span>&nbsp;lex_start_pos&nbsp;:&nbsp;int;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mutable</span>&nbsp;lex_curr_pos&nbsp;:&nbsp;int;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mutable</span>&nbsp;lex_last_pos&nbsp;:&nbsp;int;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mutable</span>&nbsp;lex_last_action&nbsp;:&nbsp;int;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mutable</span>&nbsp;lex_eof_reached&nbsp;:&nbsp;bool;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mutable</span>&nbsp;lex_mem&nbsp;:&nbsp;int&nbsp;array;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mutable</span>&nbsp;lex_start_p&nbsp;:&nbsp;position;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mutable</span>&nbsp;lex_curr_p&nbsp;:&nbsp;position;<br>
-&nbsp;&nbsp;}<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;from_channel&nbsp;:&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;lexbuf<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;from_string&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;lexbuf<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;from_function&nbsp;:&nbsp;(string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;lexbuf<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lexeme&nbsp;:&nbsp;lexbuf&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lexeme_char&nbsp;:&nbsp;lexbuf&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lexeme_start&nbsp;:&nbsp;lexbuf&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lexeme_end&nbsp;:&nbsp;lexbuf&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lexeme_start_p&nbsp;:&nbsp;lexbuf&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;position<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lexeme_end_p&nbsp;:&nbsp;lexbuf&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;position<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;new_line&nbsp;:&nbsp;lexbuf&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;flush_input&nbsp;:&nbsp;lexbuf&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sub_lexeme&nbsp;:&nbsp;lexbuf&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sub_lexeme_opt&nbsp;:&nbsp;lexbuf&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;option<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sub_lexeme_char&nbsp;:&nbsp;lexbuf&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sub_lexeme_char_opt&nbsp;:&nbsp;lexbuf&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char&nbsp;option<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;lex_tables&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Lexing</span>.lex_tables&nbsp;=&nbsp;{<br>
-&nbsp;&nbsp;&nbsp;&nbsp;lex_base&nbsp;:&nbsp;string;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;lex_backtrk&nbsp;:&nbsp;string;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;lex_default&nbsp;:&nbsp;string;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;lex_trans&nbsp;:&nbsp;string;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;lex_check&nbsp;:&nbsp;string;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;lex_base_code&nbsp;:&nbsp;string;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;lex_backtrk_code&nbsp;:&nbsp;string;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;lex_default_code&nbsp;:&nbsp;string;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;lex_trans_code&nbsp;:&nbsp;string;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;lex_check_code&nbsp;:&nbsp;string;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;lex_code&nbsp;:&nbsp;string;<br>
-&nbsp;&nbsp;}<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;engine&nbsp;:&nbsp;lex_tables&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;lexbuf&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;new_engine&nbsp;:&nbsp;lex_tables&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;lexbuf&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
-<span class="keyword">end</span></code></body></html>
+<code class="code">(<span class="keyword">module</span>&nbsp;<span class="constructor">Lexing</span>)</code></body></html>
