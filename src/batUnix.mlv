@@ -27,6 +27,22 @@ include Unix
 ##V<4.2##let send_substring = send
 ##V<4.2##let sendto_substring = sendto
 
+let get_command_output cmd =
+  (* I want to use Legacy.Unix.open_process_in and Legacy.input_line
+     so I put this code before the open of BatInnerIO:
+     Legacy.input_line is faster than batteries' wrapped version *)
+  let cmd_out: in_channel = open_process_in cmd in
+  let outputs, exn = BatList.unfold_exc (fun () -> input_line cmd_out) in
+  let status = close_process_in cmd_out in
+  if exn <> End_of_file then raise exn;
+  (status, outputs)
+
+(*$T get_command_output
+  get_command_output "echo"      = (WEXITED 0, [""])
+  get_command_output "echo toto" = (WEXITED 0, ["toto"])
+  get_command_output "seq 1 3"   = (WEXITED 0, ["1"; "2"; "3"])
+*)
+
 open BatInnerIO
 
 (**
