@@ -49,13 +49,13 @@ module Concrete = struct
   external of_abstr : 'a Queue.t -> 'a t = "%identity"
   external to_abstr : 'a t -> 'a Queue.t = "%identity"
 
-  let map f {tail} =
+  let map f {tail;length} =
     let q = Queue.create () in
     let rec map' ({ content; next } as current) =
       Queue.add (f content) q;
       if current != tail then map' next
     in
-    map' tail.next;
+    if length > 0 then map' tail.next;
     of_abstr q
 
   let filter f ({tail} as queue) =
@@ -104,6 +104,8 @@ type 'a enumerable = 'a t
 
 let map f q = Concrete.(to_abstr (map f (of_abstr q)))
 (*$T map
+  create () |> map (fun x -> x) |> is_empty
+
   let q = Queue.create () in \
   for i = 1 to 5 do Queue.push i q; done; \
   let q = map ((+) 10) q in \
