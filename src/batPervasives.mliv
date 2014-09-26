@@ -394,7 +394,7 @@ val undefined : ?message:string -> 'a -> 'b
       "Undefined". Optional argument [message] permits the
       customization of the error message.*)
 
-##V=3## val ( @@ ) : ('a -> 'b) -> 'a -> 'b
+##V<4## val ( @@ ) : ('a -> 'b) -> 'a -> 'b
 ##V>=4## external ( @@ ) : ('a -> 'b) -> 'a -> 'b = "%apply"
 
 (** Function application. [f @@ x] is equivalent to [f x].
@@ -410,7 +410,7 @@ val ( % ) : ('a -> 'b) -> ('c -> 'a) -> 'c -> 'b
       Examples: the following are equivalent:
       [f (g (h x))], [f @@ g @@ h x], [f % g % h @@ x]. *)
 
-##V=3## val ( |> ) : 'a -> ('a -> 'b) -> 'b
+##V<4## val ( |> ) : 'a -> ('a -> 'b) -> 'b
 ##V>=4## external (|>) : 'a -> ('a -> 'b) -> 'b = "%revapply"
 (** The "pipe": function application. [x |> f] is equivalent to [f x].
 
