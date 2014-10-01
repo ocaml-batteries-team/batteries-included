@@ -51,36 +51,14 @@ module Concrete = struct
 
   let map f {tail;length} =
     let q = Queue.create () in
-    let rec loop ({ content; next } as current) =
+    let rec map' ({ content; next } as current) =
       Queue.add (f content) q;
-      if current != tail then loop next
+      if current != tail then map' next
     in
-    if length > 0 then loop tail.next;
-    q
+    if length > 0 then map' tail.next;
+    of_abstr q
 
-  let filter f {tail;length} =
-    let q = Queue.create () in
-    let rec loop ({ content; next } as current) =
-      if f content then Queue.add content q;
-      if current != tail then loop next
-    in
-    if length > 0 then loop tail.next;
-    q
-
-  let filter_map f {tail;length} =
-    let q = Queue.create () in
-    let rec loop ({ content; next } as current) =
-      begin match f content with
-      | None -> ()
-      | Some elem ->
-	 Queue.add elem q;
-      end;
-      if current != tail then loop next
-    in
-    if length > 0 then loop tail.next;
-    q
-
-  let filter_inplace f ({tail} as queue) =
+  let filter f ({tail} as queue) =
     if not (Queue.is_empty (to_abstr queue)) then
       let rec filter'
           ({ next = { content; next} as current } as prev)
@@ -118,22 +96,15 @@ module Concrete = struct
         end
       in
       filter' tail
-
 end
 
 include Queue
 
 type 'a enumerable = 'a t
 
-let map f q = Concrete.(map f (of_abstr q))
+let map f q = Concrete.(to_abstr (map f (of_abstr q)))
 (*$T map
   create () |> map (fun x -> x) |> is_empty
-
-  create () |> tap (add 1) |> map (fun x -> x+1) \
-  |> enum |> BatList.of_enum |> (=) [2]
-
-  create () |> tap (add 1) |> tap (add 2) |> map (fun x -> x+1) \
-  |> enum |> BatList.of_enum |> (=) [2;3]
 
   let q = Queue.create () in \
   for i = 1 to 5 do Queue.push i q; done; \
@@ -141,48 +112,22 @@ let map f q = Concrete.(map f (of_abstr q))
   BatList.of_enum (enum q) = [11;12;13;14;15]
 *)
 
+(*
 let filter f q = Concrete.(filter f (of_abstr q))
-(*$T filter
-  create () |> filter (fun n -> n>3) |> is_empty
-  create () |> tap (add 1) |> filter (fun n -> n>3) |> is_empty
-  create () |> tap (add 1) |> tap (add 2) |> filter (fun n -> n>3) |> is_empty
-  create () |> tap (add 1) |> tap (add 2) |> filter (fun n -> n>1) |> enum |> BatList.of_enum |> (=) [2]
-  create () |> tap (add 1) |> tap (add 2) |> filter (fun n -> n>0) |> enum |> BatList.of_enum |> (=) [1;2]
- *)
-
-let filter_map f q = Concrete.(filter_map f (of_abstr q))
-(*$T filter_map
-  create () |> filter_map (fun n -> None) |> is_empty
-
-  create () |> tap (add 1) \
-  |> filter_map (fun n -> if n>3 then Some (n+1) else None) |> is_empty
-
-  create () |> tap (add 1) |> tap (add 2) \
-  |> filter_map (fun n -> if n>3 then Some (n+1) else None) |> is_empty
-
-  create () |> tap (add 1) |> tap (add 2) \
-  |> filter_map (fun n -> if n>1 then Some (n+1) else None) |> enum \
-  |> BatList.of_enum |> (=) [3]
-
-  create () |> tap (add 1) |> tap (add 2) \
-  |> filter_map (fun n -> if n>0 then Some (n+1) else None) |> enum \
-  |> BatList.of_enum |> (=) [2;3]
- *)
-
-let filter_inplace f q = Concrete.(filter_inplace f (of_abstr q))
-(*$T filter_inplace
+(* filter
   let q1 = Queue.create () in \
   for i = 1 to 5 do Queue.push i q1; done; \
   let q2,q3 = Queue.copy q1, Queue.copy q1 in \
-  filter_inplace (fun a -> List.mem a [2;4]) q1; \
-  filter_inplace (fun a -> List.mem a [3]) q2; \
-  filter_inplace (fun a -> List.mem a []) q3; \
+  filter (fun a -> List.mem a [2;4]) q1; \
+  filter (fun a -> List.mem a [3]) q2; \
+  filter (fun a -> List.mem a []) q3; \
   length q1 = 2 && \
   length q2 = 1 && \
   length q3 = 0 && \
   BatList.of_enum (enum q1) = [2;4] && \
   BatList.of_enum (enum q2) = [3] && \
   BatList.of_enum (enum q3) = []
+*)
 *)
 
 let of_enum e =
