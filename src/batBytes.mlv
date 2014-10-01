@@ -11,3 +11,32 @@ include Bytes
    mapi (fun i _c -> "0123456789".[9-i]) (of_string "0123456789") |> to_string = "9876543210"
    ignore (let last = ref (-1) in mapi (fun i _c -> assert (i > !last); last := i; '0') (of_string "012345")); true
 *)
+
+(* String.trim is @since 4.00 *)
+##V<4.0##let trim b = Bytes.of_string (BatString.trim b)
+
+(*$T trim
+   " \t foo\n  " |> of_string |> trim |> to_string |> (=) "foo"
+   " foo bar " |> of_string |> trim |> to_string |> (=) "foo bar"
+   "  \t " |> of_string |> trim |> to_string |> (=) ""
+   "" |> of_string |> trim |> to_string |> (=) ""
+*)
+
+(* String.map is @since 4.00 *)
+##V<4.0##let map f s =
+##V<4.0##  let len = length s in
+##V<4.0##  let sc = create len in
+##V<4.0##  for i = 0 to len - 1 do
+##V<4.0##    unsafe_set sc i (f (unsafe_get s i))
+##V<4.0##  done;
+##V<4.0##  sc
+
+(*$T map
+   "Five" |> of_string |> map Char.uppercase |> to_string |> (=) "FIVE"
+   "" |> of_string |> map Char.uppercase |> to_string |> (=) ""
+   "" |> of_string |> map (String.of_char %> failwith) |> to_string |> (=) ""
+*)
+
+(* String.iteri is @since 4.00 *)
+##V<4.0##let iteri f s =
+##V<4.0##  for i = 0 to (Bytes.length s) - 1 do f i (Bytes.unsafe_get s i) done
