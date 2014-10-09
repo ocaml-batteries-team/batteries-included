@@ -239,6 +239,21 @@ let fold f a s =
       loop a' (next s i) in
   loop a 0
 
+let enum s =
+  let sl = String.length s in
+  let i = (ref (first s)) in
+  BatEnum.from (fun () ->
+      if !i = sl then
+        raise BatEnum.No_more_elements
+      else
+        begin
+          let c = look s !i in
+          i := next s !i;
+          c
+        end
+    )
+
+
 let escaped = String.escaped
 
 module ByteIndex : sig

@@ -178,6 +178,8 @@ val iteri : (BatUChar.t -> int -> unit) -> t -> unit
 
 val fold : ('a -> BatUChar.t -> 'a) -> 'a -> t -> 'a
 
+val enum : t -> BatUChar.t BatEnum.t
+
 val map : (BatUChar.t -> BatUChar.t) -> t -> t
 
 val filter_map : (BatUChar.t -> BatUChar.t option) -> t -> t
