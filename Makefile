@@ -135,7 +135,11 @@ reinstall:
 #	Pre-Processing of Source Code
 ###############################################################################
 
-prefilter: $(PREPROCESSED_FILES)
+PREFILTER_BIN = _build/build/prefilter.byte
+$(PREFILTER_BIN):
+	ocamlbuild -lib str build/prefilter.byte
+
+prefilter: $(PREFILTER_BIN) $(PREPROCESSED_FILES)
 
 # Ocaml 4.00 can benefit strongly from some pre-processing to expose
 # slightly different interfaces
@@ -143,11 +147,11 @@ prefilter: $(PREPROCESSED_FILES)
 
 # Look for lines starting with ##Vx##, and delete just the tag or the
 # whole line depending whether the x matches the ocaml major version
-.mliv.mli:
-	ocaml str.cma build/prefilter.ml < $^ > $@
+.mliv.mli: $(PREFILTER_BIN)
+	$(PREFILTER_BIN) $^ > $@
 
-.mlv.ml:
-	ocaml str.cma build/prefilter.ml < $^ > $@
+.mlv.ml: $(PREFILTER_BIN)
+	$(PREFILTER_BIN) $^ > $@
 
 ###############################################################################
 #	BUILDING AND RUNNING UNIT TESTS
