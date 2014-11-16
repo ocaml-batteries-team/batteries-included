@@ -138,6 +138,7 @@ module ParserCo = BatParserCo
 module Result = BatResult
 module Return = BatReturn
 module Seq = BatSeq
+module Substring = BatSubstring
 module Tuple = BatTuple
 module Tuple2 = BatTuple.Tuple2
 module Tuple3 = BatTuple.Tuple3
@@ -165,7 +166,6 @@ module Unit = BatUnit
 (* Modules in-progress, API stability not guaranteed *)
 module Incubator = struct
   module Log = BatLog
-  module Substring = BatSubstring
   module Bounded = BatBounded
   module PathGen = BatPathGen
 end
