@@ -56,26 +56,38 @@ type ('a, 'b) auto_cache = 'a -> 'b
 
 let lru_cache ~gen ~cap =
   let entries = ref None in
+  let auxentries = BatHashtbl.create cap in
   let len = ref 0 in
+  let entry_gen k v =
+    incr len;
+    let n = BatDllist.create (k, v) in BatHashtbl.add auxentries k n; n
+  in
+  let entry_find k dll =
+    try let n = BatHashtbl.find auxentries k in BatDllist.remove n; n
+    with Not_found -> entry_gen k (gen k)
+  in
+  let entry_remove n =
+    let lru = BatDllist.prev n in
+    let k = BatDllist.get lru |> fst in
+    BatHashtbl.remove auxentries k; BatDllist.remove lru; decr len
+  in
   let get k =
     match !entries with (* remove match by replacing get after first run? *)
     | Some dll -> (* not at head of list *)
       let (k0,v) = BatDllist.get dll in
       if k = k0 then v (* special case head of list *)
-      else
-        let n =
-          try BatDllist.find (fun (k1,_v1) -> k1 = k) dll |> tap BatDllist.remove
-          with Not_found -> incr len; BatDllist.create (k, gen k)
-        in
+      else begin
+        let n = entry_find k dll in
         (* Put n at the head of the list *)
         BatDllist.splice n dll; entries := Some n;
         (* Remove the tail if over capacity *)
-        if !len > cap then (BatDllist.remove (BatDllist.prev n); decr len);
+        if !len > cap then entry_remove n;
         (*          BatDllist.print (BatTuple.Tuple2.print BatPervasives.print_any BatPervasives.print_any) BatIO.stdout n; *)
         (* return the value *)
         BatDllist.get n |> snd
+      end
     | None -> (* no list - generate it *)
-      let v = gen k in entries := Some (BatDllist.create (k, v)); incr len; v
+      let v = gen k in entries := Some (entry_gen k v); v
   in
   get
 
