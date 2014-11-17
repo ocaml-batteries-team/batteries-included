@@ -487,6 +487,16 @@ sig
   val print :  ?first:string -> ?last:string -> ?sep:string ->
     ('a BatInnerIO.output -> elt -> unit) ->
     'a BatInnerIO.output -> t -> unit
+  module Infix : sig
+    val (<--) : t -> elt -> t (** insertion *)
+    val (<.) : t -> t -> bool  (** strict subset *)
+    val (>.) : t -> t -> bool  (** strict superset *)
+    val (<=.) : t -> t -> bool (** subset *)
+    val (>=.) : t -> t -> bool (** superset *)
+    val (-.) : t -> t -> t     (** difference *)
+    val (&&.) : t -> t -> t   (** intersection *)
+    val (||.) : t -> t -> t   (** union *)
+  end
   (** Operations on {!Set} without exceptions.*)
   module Exceptionless : sig
     val min_elt: t -> elt option
@@ -505,7 +515,6 @@ sig
     val filter_map: f:(elt -> elt option) -> t -> t
     val partition : f:(elt -> bool) -> t -> t * t
   end
-
 end
 (** Output signature of the functor {!Set.Make}. *)
 
@@ -605,6 +614,17 @@ struct
   let print ?first ?last ?sep print_elt out t =
     Concrete.print ?first ?last ?sep print_elt out (impl_of_t t)
 
+  module Infix = struct
+    let (<--) s x = add x s
+    let (<.) a b = not (equal a b) && subset a b
+    let (>.) a b = not (equal a b) && subset b a
+    let (<=.) = subset
+    let (>=.) a b = subset b a
+    let (-.) = diff
+    let (&&.) = inter
+    let (||.) = union
+  end
+
   module Exceptionless =
   struct
     let min_elt t = try Some (min_elt t) with Not_found -> None
@@ -702,6 +722,17 @@ module PSet = struct (*$< PSet *)
   let equal s1 s2 = Concrete.equal s1.cmp s1.set s2.set
   let subset s1 s2 = Concrete.subset s1.cmp s1.set s2.set
   let disjoint s1 s2 = Concrete.disjoint s1.cmp s1.set s2.set
+
+  module Infix = struct
+    let (<--) s x = add x s
+    let (<.) a b = not (equal a b) && subset a b
+    let (>.) a b = not (equal a b) && subset b a
+    let (<=.) = subset
+    let (>=.) a b = subset b a
+    let (-.) = diff
+    let (&&.) = intersect
+    let (||.) = union
+  end
 end (*$>*)
 
 type 'a t = 'a Concrete.set
@@ -835,6 +866,17 @@ let disjoint s1 s2 = Concrete.disjoint Pervasives.compare s1 s2
           (map BatTuple.Tuple2.swap (cartesian_product s2 s1))
  *)
 
+
+module Infix = struct
+  let (<--) s x = add x s
+  let (<.) a b = not (equal a b) && subset a b
+  let (>.) a b = not (equal a b) && subset b a
+  let (<=.) = subset
+  let (>=.) a b = subset b a
+  let (-.) = diff
+  let (&&.) = intersect
+  let (||.) = union
+end
 
 module Incubator = struct (*$< Incubator *)
   let op_map f s = Concrete.op_map f s
