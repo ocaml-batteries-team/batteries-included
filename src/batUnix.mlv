@@ -27,6 +27,38 @@ include Unix
 ##V<4.2##let send_substring = send
 ##V<4.2##let sendto_substring = sendto
 
+let run_and_read cmd =
+  (* This code is before the open of BatInnerIO
+     to avoid using batteries' wrapped IOs *)
+  let string_of_file fn =
+    let buff_size = 1024 in
+    let buff = Buffer.create buff_size in
+    let ic = open_in fn in
+    let line_buff = String.create buff_size in
+    begin
+      let was_read = ref (input ic line_buff 0 buff_size) in
+      while !was_read <> 0 do
+        Buffer.add_substring buff line_buff 0 !was_read;
+        was_read := input ic line_buff 0 buff_size;
+      done;
+      close_in ic;
+    end;
+    Buffer.contents buff
+  in
+  let tmp_fn = Filename.temp_file "" "" in
+  let cmd_to_run = cmd ^ " > " ^ tmp_fn in
+  let status = Unix.system cmd_to_run in
+  let output = string_of_file tmp_fn in
+  Unix.unlink tmp_fn;
+  (status, output)
+
+(*$T run_and_read
+  run_and_read "echo"            = (WEXITED 0, "\n")
+  run_and_read "echo toto"       = (WEXITED 0, "toto\n")
+  run_and_read "seq 1 3"         = (WEXITED 0, "1\n2\n3\n")
+  run_and_read "printf 'abc'"    = (WEXITED 0, "abc")
+*)
+
 open BatInnerIO
 
 (**

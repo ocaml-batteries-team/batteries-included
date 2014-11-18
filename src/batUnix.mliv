@@ -216,6 +216,13 @@ val system : string -> process_status
     etc. The result [WEXITED 127] indicates that the shell couldn't
     be executed. *)
 
+val run_and_read : string -> process_status * string
+(** [(stat, output) = run_and_read cmd] run the command [cmd]
+    (via Unix.system) then return its exit status [stat] and
+    output string [output] as read from its standard output (which
+    was redirected to a temporary file).
+    @since NEXT_RELEASE *)
+
 val getpid : unit -> int
 (** Return the pid of the process. *)
 
