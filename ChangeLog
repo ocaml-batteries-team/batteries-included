@@ -1,6 +1,15 @@
 Changelog
 ---------
 
+## v2.4.0
+
+- Enum: uniq is modified to use structural comparison internally, instead
+    of previously used physical comparison, which was most likely a bug.
+    The old behavior is provided by the new Enum.uniqq function.
+    Enum.uniq_by was added for additional convenience.
+  (Max Mouratov)
+
+
 ## v2.3.0
 
 - improved test coverage
@@ -59,6 +68,7 @@ Changelog
       bytes-related functions in Buffer,Digest,Marshal,Printexc,Stream,Unix
       new Printexc callstack interface (not available for <4.02 versions)
     (Gabriel Scherer)
+
 
 ## v2.2.0
 

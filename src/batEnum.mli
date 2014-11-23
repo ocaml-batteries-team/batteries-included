@@ -582,8 +582,20 @@ val merge : ('a -> 'a -> bool) -> 'a t -> 'a t -> 'a t
 
 val uniq : 'a t -> 'a t
 (** [uniq e] returns a duplicate of [e] with repeated values
-    omitted. (similar to unix's [uniq] command)
-    It uses physical equality to compare consecutive elements. *)
+    omitted (similar to unix's [uniq] command).
+    It uses structural equality to compare consecutive elements. *)
+
+val uniqq : 'a t -> 'a t
+(** [uniqq e] behaves as [uniq e] except it uses physical equality
+    to compare consecutive elements.
+
+    @since 2.4.0 *)
+
+val uniq_by : ('a -> 'a -> bool) -> 'a t -> 'a t
+(** [uniqq cmp e] behaves as [uniq e] except it allows to specify a
+    comparison function.
+
+    @since 2.4.0 *)
 
 val switch : ('a -> bool) -> 'a t -> 'a t * 'a t
 (** [switch test enum] splits [enum] into two enums, where the first enum have
@@ -834,6 +846,7 @@ module Labels : sig
   val init:       int -> f:(int -> 'a) -> 'a t
   val switch:     f:('a -> bool) -> 'a t -> 'a t * 'a t
   val compare:    ?cmp:('a -> 'a -> int) -> 'a t -> 'a t -> int
+  val uniq:       ?cmp:('a -> 'a -> bool) -> 'a t -> 'a t
 
   module LExceptionless : sig
     val find : f:('a -> bool) -> 'a t -> 'a option
