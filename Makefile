@@ -107,6 +107,15 @@ clean:
 batteries.odocl: src/batteries.mllib src/batteriesThread.mllib
 	cat $^ > $@
 
+batteriesLight.odocl: src/batteriesLight.mllib
+	cat $^ > $@
+
+batteriesLight.dot: batteriesLight.odocl
+	ocamlbuild batteriesLight.docdir/batteriesLight.dot
+	grep -v rotate _build/batteriesLight.docdir/batteriesLight.dot > $@
+
+.PHONY: batteriesLight.dot
+
 doc: prefilter batteries.odocl
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) batteries.docdir/index.html
 
