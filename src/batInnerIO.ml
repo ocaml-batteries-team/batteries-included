@@ -20,54 +20,84 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+module UID : sig
+  type t = private int
 
-type 'a weak_set = ('a, unit) BatInnerWeaktbl.t
-let weak_create size     = BatInnerWeaktbl.create size
-let weak_add set element = BatInnerWeaktbl.add set element ()
-let weak_iter f s        = BatInnerWeaktbl.iter (fun x _ -> f x) s
+  val placeholder : t
+  val uid : unit -> t
 
-type input = {
+  val equal : t -> t -> bool
+  val compare : t -> t -> int
+  val hash : t -> int
+end = struct
+  type t = int
+  let placeholder = (-1)
+  let counter = ref (-1)
+  let uid () =
+    incr counter; !counter
+
+  let equal (a : int) b = (a = b)
+  let compare (a : int) b = Pervasives.compare a b
+  let hash (a : int) = Hashtbl.hash a
+end
+
+type 'upstream _input = {
   mutable in_read  : unit -> char;
   mutable in_input : string -> int -> int -> int;
   mutable in_close : unit -> unit;
-  in_id: int;(**A unique identifier.*)
-  in_upstream: input weak_set
+  in_id: UID.t;(**A unique identifier.*)
+  in_upstream: 'upstream;
 }
 
-type 'a output = {
+type ('a, 'upstream) _output = {
   mutable out_write : char -> unit;
   mutable out_output: string -> int -> int -> int;
   mutable out_close : unit -> 'a;
   mutable out_flush : unit -> unit;
-  out_id:    int;(**A unique identifier.*)
-  out_upstream:unit output weak_set
-    (** The set of outputs which have been created to write to this output.*)
+  out_id: UID.t;(**A unique identifier.*)
+  out_upstream: 'upstream;
+  (** The set of outputs which have been created to write to this output.*)
 }
 
+module rec Input
+  : sig
+    type t = InputWeakSet.t _input
+    val equal : t -> t -> bool
+    val compare : t -> t -> int
+    val hash : t -> int
+  end
+  = struct
+    type t = InputWeakSet.t _input
+    let equal inp1 inp2 = Pervasives.(=) inp1.in_id inp2.in_id
+    let compare inp1 inp2 = Pervasives.compare inp1.in_id inp2.in_id
+    let hash inp = Hashtbl.hash inp.in_id
+  end
+and InputWeakSet : (Weak.S with type data = Input.t) = Weak.Make(Input)
 
-module Input =
-struct
-  type t = input
-  let compare x y = x.in_id - y.in_id
-  let hash    x   = x.in_id
-  let equal   x y = x.in_id = y.in_id
-end
+module rec Output
+  : sig
+    type 'a output = ('a, OutputWeakSet.t) _output
+    type t = unit output
+    val equal : 'a output -> 'b output -> bool
+    val compare : 'a output -> 'b output -> int
+    val hash : 'a output -> int
+    end
+  = struct
+    type 'a output = ('a, OutputWeakSet.t) _output
+    type t = unit output
+    let equal out1 out2 = Pervasives.(=) out1.out_id out2.out_id
+    let compare out1 out2 = Pervasives.compare out1.out_id out2.out_id
+    let hash out = Hashtbl.hash out.out_id
+  end
 
-module Output =
-struct
-  type t = unit output
-  let compare x y = x.out_id - y.out_id
-  let hash    x   = x.out_id
-  let equal   x y = x.out_id = y.out_id
-end
-
-
+and OutputWeakSet : (Weak.S with type data = Output.t) = Weak.Make(Output)
 
 (**All the currently opened outputs -- used to permit [flush_all] and [close_all].*)
-(*module Inputs = Weaktbl.Make(Input)*)
-module Outputs= Weak.Make(Output)
 
+type input = InputWeakSet.t _input
+type 'a output = ('a, OutputWeakSet.t) _output
 
+let uid () = UID.uid ()
 
 (** {6 Primitive operations}*)
 
@@ -76,12 +106,12 @@ external cast_output : 'a output -> unit output = "%identity"
 let lock = ref BatConcurrent.nolock
 
 
-let outputs = Outputs.create 32
+let outputs = OutputWeakSet.create 32
 let outputs_add out =
-  BatConcurrent.sync !lock (Outputs.add outputs) out
+  BatConcurrent.sync !lock (OutputWeakSet.add outputs) out
 
 let outputs_remove out =
-  BatConcurrent.sync !lock (Outputs.remove outputs) out
+  BatConcurrent.sync !lock (OutputWeakSet.remove outputs) out
 
 
 exception No_more_input
@@ -100,8 +130,6 @@ let post r op =
   r := op !r;
   result
 
-let uid = ref 0
-let uid () = post_incr uid
 
 let on_close_out out f =
   BatConcurrent.sync !lock (fun () ->
@@ -128,10 +156,11 @@ let wrap_in ~read ~input ~close ~underlying =
       in_input    = input;
       in_close    = close;
       in_id       = uid ();
-      in_upstream = weak_create 2
+      in_upstream = InputWeakSet.create 2
     }
   in
-  BatConcurrent.sync !lock (List.iter (fun x -> weak_add x.in_upstream result)) underlying;
+  let add_upstream x = InputWeakSet.add x.in_upstream result in
+  BatConcurrent.sync !lock (List.iter add_upstream) underlying;
   Gc.finalise close_in result;
   result
 
@@ -153,7 +182,7 @@ let create_in ~read ~input ~close =
 let rec close_unit (o:unit output) : unit =
   let forbidden _ = raise Output_closed in
   o.out_flush ();
-  weak_iter close_unit o.out_upstream;
+  OutputWeakSet.iter close_unit o.out_upstream;
   let r = o.out_close() in
   o.out_write  <- forbidden;
   o.out_output <- forbidden;
@@ -181,11 +210,12 @@ let wrap_out ~write ~output ~flush ~close ~underlying  =
         close ());
       out_flush  = flush;
       out_id     = uid ();
-      out_upstream = weak_create 2
+      out_upstream = OutputWeakSet.create 2
     }
   in
   let o = cast_output out in
-  BatConcurrent.sync !lock (List.iter (fun x -> weak_add x.out_upstream o)) underlying;
+  let add_upstream x = OutputWeakSet.add x.out_upstream o in
+  BatConcurrent.sync !lock (List.iter add_upstream) underlying;
   outputs_add (cast_output out);
   Gc.finalise ignore_close_out out;
   out
@@ -288,11 +318,11 @@ let output o s p l =
 let flush o = o.out_flush()
 
 let flush_all () =
-  BatConcurrent.sync !lock ( Outputs.iter (fun o -> try flush o with _ -> ())) outputs
+  BatConcurrent.sync !lock ( OutputWeakSet.iter (fun o -> try flush o with _ -> ())) outputs
 
 let close_all () =
   let outs =
-    BatConcurrent.sync !lock (Outputs.fold (fun o os -> o :: os) outputs) []
+    BatConcurrent.sync !lock (OutputWeakSet.fold (fun o os -> o :: os) outputs) []
   in
   List.iter (fun o -> try close_out o with _ -> ()) outs
 
@@ -360,8 +390,8 @@ let placeholder_in =
   { in_read  = (fun () -> ' ');
     in_input = (fun _ _ _ -> 0);
     in_close = noop;
-    in_id    = (-1);
-    in_upstream= weak_create 0 }
+    in_id    = UID.placeholder;
+    in_upstream= InputWeakSet.create 0 }
 let input_channel ?(autoclose=true) ?(cleanup=false) ch =
   let me = ref placeholder_in (*placeholder*)
   in let result =
@@ -623,5 +653,5 @@ let stdnull= create_out
 let get_output out = out.out_output
 let get_flush  out = out.out_flush
 
-let get_output_id out = out.out_id
-let get_input_id  inp = inp.in_id
+let get_output_id out = (out.out_id :> int)
+let get_input_id  inp = (inp.in_id :> int)
