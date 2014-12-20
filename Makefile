@@ -37,6 +37,7 @@ OPT_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa \
 # What to build
 TARGETS  = src/batteries.cma
 TARGETS += src/batteriesHelp.cmo
+TARGETS += src/batteriesLight.cma
 TARGETS += src/batteriesThread.cma
 TARGETS += META
 BENCH_TARGETS  = benchsuite/bench_int.native
@@ -71,6 +72,7 @@ PREPROCESSED_FILES = \
  src/batBuffer.ml \
  src/batBytes.ml src/batBytes.mli \
  src/batDigest.ml \
+ src/batFun.ml src/batFun.mli \
  src/batHashtbl.ml \
  src/batInnerPervasives.ml \
  src/batList.ml \
@@ -87,6 +89,10 @@ PREPROCESSED_FILES = \
 all: prefilter
 	@echo "Build mode:" $(MODE)
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(TARGETS)
+
+light: prefilter
+	@echo "Build mode:" $(MODE)
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) src/batteriesLight.cma src/batteriesLight.cmxa
 
 clean-prefilter:
 	@${RM} $(PREPROCESSED_FILES)
