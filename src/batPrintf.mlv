@@ -485,7 +485,7 @@ let ksprintf2 k fmt =
   let out = output_string () in
   mkprintf (fun out -> k (close_out out)) out fmt
 let kbprintf2 k buf fmt =
-  let out = BatBuffer.output_buffer buf in
+  let out = BatFullBuffer.output_buffer buf in
   mkprintf (fun _out -> k buf) out fmt
 let sprintf2 fmt = ksprintf2 (identity) fmt
 let bprintf2 buf fmt = kbprintf2 ignore buf fmt

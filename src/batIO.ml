@@ -569,10 +569,6 @@ let get_input_id  inp = (inp.in_id :> int)
 external noop :          unit -> unit = "%ignore"
 external default_close : unit -> unit = "%ignore"
 
-type ('a, 'b) printer = 'b output -> 'a -> unit
-
-type 'a f_printer = Format.formatter -> 'a -> unit
-
 let pos_in i =
   let p = ref 0 in
   (wrap_in
@@ -1219,6 +1215,91 @@ let synchronize_out ?(lock = !lock_factory ()) out =
     ~close: noop
     ~underlying:[out]
 
+let to_string print_x x =
+  let out = output_string () in
+  print_x out x;
+  close_out out
+
+let to_f_printer printer =
+  fun fmt t -> Format.pp_print_string fmt (to_string printer t)
+
+module InnerUnix = struct
+  (**
+     {6 Thread-safety internals}
+  *)
+  let lock = ref BatConcurrent.nolock
+
+  (**
+     {6 Tracking additional information on inputs/outputs}
+
+     {b Note} Having [input]/[output] as objects would have made this
+     easier. Here, we need to maintain an external weak hashtable to
+     track low-level information on our [input]s/[output]s.
+  *)
+
+  module Wrapped_in  = BatInnerWeaktbl.Make(BatInnerIO.Input)
+  module Wrapped_out = BatInnerWeaktbl.Make(BatInnerIO.Output)
+
+  let wrapped_in : Pervasives.in_channel Wrapped_in.t = Wrapped_in.create 16
+  let wrapped_out : Pervasives.out_channel Wrapped_out.t = Wrapped_out.create 16
+
+  let input_add k v =
+    BatConcurrent.sync !lock (Wrapped_in.add wrapped_in k) v
+
+  let input_get k =
+    try Some (BatConcurrent.sync !lock (Wrapped_in.find wrapped_in) k)
+    with Not_found -> None
+
+  let output_add k v =
+    BatConcurrent.sync !lock (Wrapped_out.add wrapped_out k) v
+
+  let output_get k =
+    try Some (BatConcurrent.sync !lock (Wrapped_out.find wrapped_out) k)
+    with Not_found -> None
+
+  let wrap_in ?autoclose ?cleanup cin =
+    let input = input_channel ?autoclose ?cleanup cin in
+    BatConcurrent.sync !lock (Wrapped_in.add wrapped_in input) cin;
+    input
+
+  let wrap_out ?cleanup cout =
+    let output = cast_output (output_channel ?cleanup cout) in
+    BatConcurrent.sync !lock (Wrapped_out.add wrapped_out output) cout;
+    output
+
+
+  let () =
+    input_add stdin Pervasives.stdin;
+    output_add stdout Pervasives.stdout;
+    output_add stderr Pervasives.stderr
+
+  (**
+     {6 File descriptors}
+  *)
+
+  let input_of_descr ?autoclose ?cleanup fd =
+    wrap_in ?autoclose ?cleanup (Unix.in_channel_of_descr fd)
+
+  let descr_of_input cin =
+    match input_get cin with
+    | None -> raise (Invalid_argument "Unix.descr_of_in_channel")
+    | Some in_chan -> Unix.descr_of_in_channel in_chan
+
+
+  let output_of_descr ?cleanup fd =
+    wrap_out ?cleanup (Unix.out_channel_of_descr fd)
+
+  let descr_of_output cout =
+    match output_get (cast_output cout) with
+    | None -> raise (Invalid_argument "Unix.descr_of_out_channel")
+    | Some out_chan -> Unix.descr_of_out_channel out_chan
+
+  let in_channel_of_descr fd = input_of_descr ~autoclose:false ~cleanup:true fd
+  let descr_of_in_channel = descr_of_input
+  let out_channel_of_descr fd = output_of_descr  ~cleanup:true fd
+  let descr_of_out_channel = descr_of_output
+end
+
 (**
    {6 Things that require temporary files}
 *)
@@ -1237,8 +1318,9 @@ let synchronize_out ?(lock = !lock_factory ()) out =
    read it back as an [in_channel].
    Yes, this is prohibitively expensive.
 *)
+
 let to_input_channel inp =
-  try Unix.in_channel_of_descr (BatUnix.descr_of_input inp) (*Simple case*)
+  try Unix.in_channel_of_descr (InnerUnix.descr_of_input inp) (*Simple case*)
   with Invalid_argument "Unix.descr_of_in_channel" ->            (*Bad, bad case*)
     (* FIXME: this 'pipe' is never deleted *)
     let (name, cout) =
@@ -1247,26 +1329,6 @@ let to_input_channel inp =
     copy inp out;
     close_out out;
     Pervasives.open_in_bin name
-
-
-
-
-(*(**
-   Copy everything to a temporary file
- *)
-  let out_channel_of_output out =
-  let (name, cout) = Filename.open_temp_file "ocaml" "tmp" in
-    create_out
-
-    cout*)
-
-let to_string print_x x =
-  let out = output_string () in
-  print_x out x;
-  close_out out
-
-let to_f_printer printer =
-  fun fmt t -> Format.pp_print_string fmt (to_string printer t)
 
 module Incubator = struct
   module Array = struct

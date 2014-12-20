@@ -34,7 +34,7 @@ let run_and_read cmd =
     let buff_size = 1024 in
     let buff = Buffer.create buff_size in
     let ic = open_in fn in
-    let line_buff = String.create buff_size in
+    let line_buff = Bytes.create buff_size in
     begin
       let was_read = ref (input ic line_buff 0 buff_size) in
       while !was_read <> 0 do
@@ -59,76 +59,7 @@ let run_and_read cmd =
   run_and_read "printf 'abc'"    = (WEXITED 0, "abc")
 *)
 
-open BatIO
-
-(**
-   {6 Thread-safety internals}
-*)
-let lock = ref BatConcurrent.nolock
-
-(**
-   {6 Tracking additional information on inputs/outputs}
-
-   {b Note} Having [input]/[output] as objects would have made this
-   easier. Here, we need to maintain an external weak hashtable to
-   track low-level information on our [input]s/[output]s.
-*)
-
-module Wrapped_in  = BatInnerWeaktbl.Make(BatInnerIO.Input) (*input  -> in_channel *)
-module Wrapped_out = BatInnerWeaktbl.Make(BatInnerIO.Output)(*output -> out_channel*)
-let wrapped_in     = Wrapped_in.create 16
-let wrapped_out    = Wrapped_out.create 16
-
-let input_add k v =
-  BatConcurrent.sync !lock (Wrapped_in.add wrapped_in k) v
-
-let input_get k =
-  BatConcurrent.sync !lock (Wrapped_in.find wrapped_in) k
-
-let output_add k v =
-  BatConcurrent.sync !lock (Wrapped_out.add wrapped_out k) v
-
-let output_get k =
-  BatConcurrent.sync !lock (Wrapped_out.find wrapped_out) k
-
-let wrap_in ?autoclose ?cleanup cin =
-  let input = input_channel ?autoclose ?cleanup cin in
-  BatConcurrent.sync !lock (Wrapped_in.add wrapped_in input) cin;
-  input
-
-let wrap_out ?cleanup cout =
-  let output = cast_output (output_channel ?cleanup cout) in
-  BatConcurrent.sync !lock (Wrapped_out.add wrapped_out output) cout;
-  output
-
-let _ =
-  input_add stdin Pervasives.stdin;
-  output_add stdout Pervasives.stdout;
-  output_add stderr Pervasives.stderr
-
-(**
-   {6 File descriptors}
-*)
-
-let input_of_descr ?autoclose ?cleanup fd =
-  wrap_in ?autoclose ?cleanup (in_channel_of_descr fd)
-
-let descr_of_input cin =
-  try  descr_of_in_channel (input_get cin)
-  with Not_found -> raise (Invalid_argument "Unix.descr_of_in_channel")
-
-let output_of_descr ?cleanup fd =
-  wrap_out ?cleanup (out_channel_of_descr fd)
-
-let descr_of_output cout =
-  try  descr_of_out_channel (output_get (cast_output cout))
-  with Not_found -> raise (Invalid_argument "Unix.descr_of_out_channel")
-
-let in_channel_of_descr fd = input_of_descr ~autoclose:false ~cleanup:true fd
-let descr_of_in_channel = descr_of_input
-let out_channel_of_descr fd = output_of_descr  ~cleanup:true fd
-let descr_of_out_channel = descr_of_output
-
+include BatIO.InnerUnix
 
 (**
    {6 Processes}
@@ -167,37 +98,40 @@ let open_process_full ?autoclose ?(cleanup=true) s args =
    Same thing for [close_process_out].*)
 
 let close_process_in cin =
-  try close_process_in (input_get cin)
-  with Not_found -> raise (Unix_error(EBADF, "close_process_in", ""))
+  match input_get cin with
+  | Some in_chan -> close_process_in in_chan
+  | None -> raise (Unix_error(EBADF, "close_process_in", ""))
 
 let close_process_out cout =
-  try close_process_out (output_get cout)
-  with Not_found -> raise (Unix_error(EBADF, "close_process_out", ""))
+  match output_get cout with
+  | Some out_chan -> close_process_out out_chan
+  | None -> raise (Unix_error(EBADF, "close_process_out", ""))
 
 let close_process (cin, cout) =
-  try
-    let pin = input_get cin
-    and pout= output_get cout in
-    close_process (pin, pout)
-  with Not_found -> raise (Unix_error(EBADF, "close_process", ""))
+  match input_get cin, output_get cout with
+  | Some pin, Some pout -> close_process (pin, pout)
+  | _, _ -> raise (Unix_error(EBADF, "close_process", ""))
 
 let close_process_full (cin, cout, cin2) =
-  try close_process_full (input_get cin, output_get cout, input_get cin2)
-  with Not_found -> raise (Unix_error(EBADF, "close_process_full", ""))
+  match input_get cin, output_get cout, input_get cin2 with
+  | Some pin, Some pout, Some pin2 ->
+     close_process_full (pin, pout, pin2)
+  | _, _, _ -> raise (Unix_error(EBADF, "close_process_full", ""))
 
 (**
    {6 Network}
 *)
 
 let shutdown_connection cin =
-  try shutdown_connection (input_get cin)
-  with Not_found -> raise (Invalid_argument "Unix.descr_of_in_channel")
+  match input_get cin with
+  | Some pin -> shutdown_connection pin
+  | None -> raise (Invalid_argument "Unix.descr_of_in_channel")
 
 let open_connection ?autoclose addr =
   let (cin, cout) = open_connection addr in
   let (cin',cout')= (wrap_in ?autoclose ~cleanup:true cin, wrap_out ~cleanup:true cout) in
   let close ()    = shutdown_connection cin' in
-  (inherit_in  cin' ~close, inherit_out cout' ~close)
+  (BatIO.inherit_in  cin' ~close, BatIO.inherit_out cout' ~close)
 
 let establish_server ?autoclose ?cleanup f addr =
   let f' cin cout = f (wrap_in ?autoclose ?cleanup cin) (wrap_out cout) in

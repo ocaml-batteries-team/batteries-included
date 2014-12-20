@@ -97,6 +97,9 @@ and OutputWeakSet : (Weak.S with type data = Output.t) = Weak.Make(Output)
 type input = InputWeakSet.t _input
 type 'a output = ('a, OutputWeakSet.t) _output
 
+type ('a, 'b) printer = 'b output -> 'a -> unit
+type 'a f_printer = Format.formatter -> 'a -> unit
+
 let nwrite o s =
   let p = ref 0 in
   let l = ref (String.length s) in

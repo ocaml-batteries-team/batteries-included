@@ -1005,3 +1005,33 @@ module Incubator : sig
       *)
   end
 end
+
+(**/**)
+
+module InnerUnix : sig
+  (** See the BatUnix documentation where these functions are re-exported *)
+
+
+  val lock : BatConcurrent.lock ref
+
+  val input_get: BatInnerIO.input -> Pervasives.in_channel option
+  val output_get: unit BatInnerIO.output -> Pervasives.out_channel option
+
+  val wrap_in: ?autoclose:bool -> ?cleanup:bool ->
+	       Pervasives.in_channel -> BatInnerIO.input
+  val wrap_out: ?cleanup:bool ->
+		Pervasives.out_channel -> unit BatInnerIO.output
+
+  val in_channel_of_descr: Unix.file_descr -> BatInnerIO.input
+  val out_channel_of_descr: Unix.file_descr -> unit BatInnerIO.output
+  val descr_of_in_channel: BatInnerIO.input -> Unix.file_descr
+  val descr_of_out_channel: unit BatInnerIO.output -> Unix.file_descr
+
+  val input_of_descr: ?autoclose:bool -> ?cleanup:bool -> Unix.file_descr -> BatInnerIO.input
+  val output_of_descr: ?cleanup:bool -> Unix.file_descr -> unit BatInnerIO.output
+  val descr_of_input: BatInnerIO.input -> Unix.file_descr
+  val descr_of_output: unit BatInnerIO.output -> Unix.file_descr
+
+end
+
+(**/**)

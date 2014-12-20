@@ -139,19 +139,6 @@ val add_buffer : t -> t -> unit
 (** [add_buffer b1 b2] appends the current contents of buffer [b2]
     at the end of buffer [b1].  [b2] is not modified. *)
 
-val add_input : t -> BatInnerIO.input -> int -> unit
-(** [add_input b ic n] reads exactly [n] character from the input [ic]
-    and stores them at the end of buffer [b].  @raise End_of_file if
-    the channel contains fewer than [n] characters. *)
-
-val add_channel : t -> BatInnerIO.input -> int -> unit
-(** @obsolete replaced by {!add_input}*)
-
-val output_buffer : t -> string BatInnerIO.output
-(** [output_buffer b] creates an output channel that writes to that
-    buffer, and when closed, returns the contents of the buffer. *)
-
-
 (** {6 Boilerplate code}*)
 
 val enum : t -> char BatEnum.t
