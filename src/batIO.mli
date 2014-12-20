@@ -912,9 +912,20 @@ val lock_factory: (unit -> BatConcurrent.lock) ref
    if you're using a version of Batteries compiled in threaded mode,
    this uses {!BatMutex}.  *)
 
+(** {6 Low Level Access} *)
+val on_close_out : 'a output -> ('a output -> unit) -> unit
+(**
+   Register a function to be triggered just before an output is closed.
+*)
+
+val get_output : _ output -> (string -> int -> int -> int)
+val get_flush  : _ output -> (unit -> unit)
+
 val to_string : ('a, string) printer -> 'a -> string
 
-val to_f_printer: ('a, _) printer -> 'a f_printer
+val to_f_printer: ('a, string) printer -> 'a f_printer
+(* TODO: we require a string printer here because of a possible bug
+   in BatPrintf.sprintf2 (mkprintf) *)
 
 (**/**)
 val comb : ('a output * 'a output) -> 'a output

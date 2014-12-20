@@ -305,7 +305,7 @@ let filter_map_inplace f h =
 module Exceptionless =
 struct
   let find = find_option
-  let modify k f = BatPervasives.wrap (modify k f)
+  let modify k f = BatResult.wrap (modify k f)
 end
 
 module Infix =
@@ -642,7 +642,7 @@ struct
   module Exceptionless =
   struct
     let find = find_option
-    let modify k f = BatPervasives.wrap (modify k f)
+    let modify k f = BatResult.wrap (modify k f)
   end
 
   module Infix =
@@ -719,6 +719,6 @@ struct
   module Exceptionless =
   struct
     let find = find_option
-    let modify k f = BatPervasives.wrap (modify k f)
+    let modify k f = BatResult.wrap (modify k f)
   end
 end

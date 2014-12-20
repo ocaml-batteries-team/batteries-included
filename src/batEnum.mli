@@ -60,7 +60,8 @@
     @author David Rajchenbach-Teller
 *)
 
-type 'a t
+type 'a t = 'a BatInnerEnum.t
+(** Abstract type *)
 
 (** A signature for data structures which may be converted to and from [enum].
 

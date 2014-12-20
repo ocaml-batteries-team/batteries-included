@@ -24,14 +24,14 @@ struct
   include Scanf.Scanning
 
   let from_input inp =
-    from_function (fun () -> try BatInnerIO.read inp with BatInnerIO.No_more_input -> raise End_of_file)
+    from_function (fun () -> try BatIO.read inp with BatIO.No_more_input -> raise End_of_file)
   (*$T
     bscanf (Scanning.from_input (BatIO.input_string "12  bc" )) "%d %s" (fun d s -> d = 12 && s = "bc")
   *)
 
   let from_channel = from_input
 
-  let stdib = from_input (BatInnerIO.stdin)
+  let stdib = from_input (BatIO.stdin)
 end
 
 type ('a, 'b, 'c, 'd) scanner =

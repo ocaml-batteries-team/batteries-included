@@ -21,7 +21,7 @@
 
 (** {6 Representation} *)
 
-type 'a t = {
+type 'a t = 'a BatInnerEnum.t = {
   mutable count : unit -> int; (** Return the number of remaining elements in the enumeration. *)
   mutable next  : unit -> 'a;  (** Return the next element of the enumeration or raise [No_more_elements].*)
   mutable clone : unit -> 'a t;(** Return a copy of the enumeration. *)
@@ -35,15 +35,9 @@ external enum : 'a t -> 'a t = "%identity"
 external of_enum : 'a t -> 'a t = "%identity"
 
 (* raised by 'next' functions, should NOT go outside the API *)
-exception No_more_elements
+exception No_more_elements = BatInnerEnum.No_more_elements
 
-let make ~next ~count ~clone =
-  {
-    count = count;
-    next  = next;
-    clone = clone;
-    fast  = true;
-  }
+let make = BatInnerEnum.make
 
 (** {6 Internal utilities}*)
 let _dummy () = assert false (*BISECT-VISIT*)

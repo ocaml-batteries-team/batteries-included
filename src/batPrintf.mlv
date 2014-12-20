@@ -30,7 +30,7 @@
    caused by the legacy definition of a function {!printf} in module {!BatIO}).
 *)
 
-open BatInnerIO
+open BatIO
 
 external format_float: string -> float -> string
   = "caml_format_float"

@@ -59,7 +59,7 @@ let run_and_read cmd =
   run_and_read "printf 'abc'"    = (WEXITED 0, "abc")
 *)
 
-open BatInnerIO
+open BatIO
 
 (**
    {6 Thread-safety internals}
@@ -74,8 +74,8 @@ let lock = ref BatConcurrent.nolock
    track low-level information on our [input]s/[output]s.
 *)
 
-module Wrapped_in  = BatInnerWeaktbl.Make(Input) (*input  -> in_channel *)
-module Wrapped_out = BatInnerWeaktbl.Make(Output)(*output -> out_channel*)
+module Wrapped_in  = BatInnerWeaktbl.Make(BatInnerIO.Input) (*input  -> in_channel *)
+module Wrapped_out = BatInnerWeaktbl.Make(BatInnerIO.Output)(*output -> out_channel*)
 let wrapped_in     = Wrapped_in.create 16
 let wrapped_out    = Wrapped_out.create 16
 
@@ -92,12 +92,12 @@ let output_get k =
   BatConcurrent.sync !lock (Wrapped_out.find wrapped_out) k
 
 let wrap_in ?autoclose ?cleanup cin =
-  let input = BatInnerIO.input_channel ?autoclose ?cleanup cin in
+  let input = input_channel ?autoclose ?cleanup cin in
   BatConcurrent.sync !lock (Wrapped_in.add wrapped_in input) cin;
   input
 
 let wrap_out ?cleanup cout =
-  let output = cast_output (BatInnerIO.output_channel ?cleanup cout) in
+  let output = cast_output (output_channel ?cleanup cout) in
   BatConcurrent.sync !lock (Wrapped_out.add wrapped_out output) cout;
   output
 

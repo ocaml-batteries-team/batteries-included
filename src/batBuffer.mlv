@@ -65,19 +65,21 @@ let of_enum e =
                        contents (of_enum e) = s)
 *)
 
+module IO = BatIO
+
 let add_input t inp n =
-  add_string t (BatInnerIO.really_nread inp n)
+  add_string t (IO.really_nread inp n)
 
 (*$Q add_input
   (Q.string) (fun s -> let b = create 10 in add_input b (BatIO.input_string s) (String.length s); contents b = s)
 *)
 
 let output_buffer buf =
-  BatInnerIO.create_out
+  IO.create_out
     ~write: (add_char buf)
     ~output:(fun s p l -> add_substring buf s p l; l)
     ~close: (fun () -> contents buf)
-    ~flush: BatInnerIO.noop
+    ~flush: ignore
 
 (*$Q output_buffer
   (Q.string) (fun s -> let b = create 10 in let oc = output_buffer b in IO.nwrite oc s; IO.close_out oc = s)

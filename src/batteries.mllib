@@ -9,6 +9,7 @@
   BatDeque
   BatDigest
   BatEnum
+  BatInnerEnum
   BatFingerTree
   BatFloat
   BatFormat

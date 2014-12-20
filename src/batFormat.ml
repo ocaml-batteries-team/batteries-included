@@ -26,8 +26,8 @@ include Format
 (* internal functions *)
 
 let output_of out = fun s i o -> ignore (really_output out s i o)
-let flush_of out = BatInnerIO.get_flush out
-let newline_of out = fun () -> BatInnerIO.write out '\n'
+let flush_of out = BatIO.get_flush out
+let newline_of out = fun () -> BatIO.write out '\n'
 let spaces_of out =
   (* Default function to output spaces.
      Copied from base format.ml*)
@@ -48,7 +48,7 @@ let formatter_of_output out =
   and flush  = flush_of  out
   in
   let f = make_formatter output flush in
-  BatInnerIO.on_close_out out (fun _ -> pp_print_flush f ()); (*Note: we can't just use [flush] as [f] contains a cache.*)
+  BatIO.on_close_out out (fun _ -> pp_print_flush f ()); (*Note: we can't just use [flush] as [f] contains a cache.*)
   pp_set_all_formatter_output_functions f
     ~out:output
     ~flush
@@ -57,7 +57,7 @@ let formatter_of_output out =
   f
 
 let set_formatter_output out =
-  BatInnerIO.on_close_out out (fun _ -> pp_print_flush Format.std_formatter ());
+  BatIO.on_close_out out (fun _ -> pp_print_flush Format.std_formatter ());
   set_all_formatter_output_functions
     ~out:(output_of out)
     ~flush:(flush_of out)
@@ -65,7 +65,7 @@ let set_formatter_output out =
     ~spaces:(spaces_of out)
 
 let pp_set_formatter_output f out =
-  BatInnerIO.on_close_out out (fun _ -> pp_print_flush f ());
+  BatIO.on_close_out out (fun _ -> pp_print_flush f ());
   pp_set_all_formatter_output_functions f
     ~out:(output_of out)
     ~flush:(flush_of out)
