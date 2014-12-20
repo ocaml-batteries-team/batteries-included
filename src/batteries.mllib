@@ -15,6 +15,7 @@ BatInnerPervasives
   BatFloat
   BatFormat
   BatGc
+  BatGen
   BatGenlex
   BatHashcons
   BatHashtbl
