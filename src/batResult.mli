@@ -6,7 +6,29 @@
     ([exn]) that can be raised.
     @since 1.0
 *)
-type ('a, 'b) t = ('a, 'b) BatPervasives.result = Ok of 'a | Bad of 'b
+
+type ('a, 'b) t =
+  | Ok  of 'a
+  | Bad of 'b
+  (** The result of a computation - either an [Ok] with the normal
+      result or a [Bad] with some value (often an exception) containing
+      failure information*)
+
+val ignore_ok : ('a, exn) t -> unit
+(** [ignore_ok (f x)] ignores the result of [f x] if it's ok, but
+    throws the exception contained if [Bad] is returned.
+    @since NEXT_RELEASE *)
+
+val ok : ('a, exn) t -> 'a
+(** [f x |> ok] unwraps the [Ok] result of [f x] and returns it, or
+    throws the exception contained if [Bad] is returned.
+    @since NEXT_RELEASE *)
+
+val wrap : ('a -> 'b) -> 'a -> ('b, exn) t
+(** [wrap f x] wraps a function that would normally throw an exception
+    on failure such that it now returns a result with either the [Ok]
+    return value or the [Bad] exception.
+    @since NEXT_RELEASE *)
 
 (** Execute a function and catch any exception as a result.  This
     function encapsulates code that could throw an exception and returns
