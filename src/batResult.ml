@@ -14,8 +14,6 @@ let ok = function
 
 let wrap f x = try Ok (f x) with ex -> Bad ex
 
-let forever f x = ignore (while true do f x done)
-
 let catch f x = try Ok (f x) with e -> Bad e
 let catch2 f x y = try Ok (f x y) with e -> Bad e
 let catch3 f x y z = try Ok (f x y z) with e -> Bad e
