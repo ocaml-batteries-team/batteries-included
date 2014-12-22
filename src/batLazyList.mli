@@ -134,7 +134,7 @@ val make : int -> 'a -> 'a t
 val range : int -> int -> int t
 (**Compute lazily a range of integers a .. b as a lazy list.
 
-   The range is empty if a <= b.*)
+   The range is empty if b <= a.*)
 
 
 (**
