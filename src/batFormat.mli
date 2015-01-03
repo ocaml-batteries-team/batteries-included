@@ -576,11 +576,26 @@ val pp_set_formatter_tag_functions :
 val pp_get_formatter_tag_functions :
   formatter -> unit -> formatter_tag_functions
 ;;
-(** These functions are the basic ones: usual functions
-    operating on the standard formatter are defined via partial
-    evaluation of these primitives. For instance,
-    [print_string] is equal to [pp_print_string std_formatter]. *)
 
+val pp_print_list:
+  ?pp_sep:(formatter -> unit -> unit) ->
+  (formatter -> 'a -> unit) -> (formatter -> 'a list -> unit)
+(** [pp_print_list ?pp_sep pp_v ppf l] prints the list [l]. [pp_v] is
+    used on the elements of [l] and each element is separated by
+    a call to [pp_sep] (defaults to {!pp_print_cut}). Does nothing on
+    empty lists.
+
+    @since 4.02.0
+*)
+
+val pp_print_text : formatter -> string -> unit
+(** [pp_print_text ppf s] prints [s] with spaces and newlines
+    respectively printed with {!pp_print_space} and
+    {!pp_force_newline}.
+
+    @since 4.02.0
+*)
+  
 (** {6 [printf] like functions for pretty-printing.} *)
 
 val fprintf : formatter -> ('a, formatter, unit) format -> 'a;;
