@@ -576,6 +576,10 @@ val pp_set_formatter_tag_functions :
 val pp_get_formatter_tag_functions :
   formatter -> unit -> formatter_tag_functions
 ;;
+(** These functions are the basic ones: usual functions
+    operating on the standard formatter are defined via partial
+    evaluation of these primitives. For instance,
+    [print_string] is equal to [pp_print_string std_formatter]. *)
 
 val pp_print_list:
   ?pp_sep:(formatter -> unit -> unit) ->
