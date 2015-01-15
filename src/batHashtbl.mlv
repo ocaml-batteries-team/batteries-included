@@ -225,7 +225,7 @@ let modify key f h =
     | Empty -> raise Not_found
     | Cons(k,v,next) ->
       if k = key then (
-        Cons(k,f v,next)
+        Cons(key,f v,next)
       ) else
         Cons(k,v,loop next)
   in
@@ -638,7 +638,7 @@ struct
       | Empty -> raise Not_found
       | Cons(k,v,next) ->
         if H.equal k key then (
-          Cons(k,f v,next)
+          Cons(key,f v,next)
         ) else
           Cons(k,v,loop next)
     in
