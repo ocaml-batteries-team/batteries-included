@@ -188,7 +188,11 @@ let modify_opt key f h =
   let hc = h_conv h in
 
   let rec loop = function
-    | Empty -> raise Hashtbl_key_not_found
+    | Empty ->
+      (* Inserting an element might require a resize of the hash table.
+         We rely on Hashtbl.add function to grow the hashtbl if needed
+         instead of duplicating logic from the OCaml standard library. *)
+      raise Hashtbl_key_not_found
     | Cons(k,v,next) ->
       if k = key then
         match f (Some v) with
@@ -206,7 +210,10 @@ let modify_opt key f h =
   | Hashtbl_key_not_found ->
     begin match f None with
       | None -> ()
-      | Some v -> add h key v
+      | Some v ->
+        (* Add the element to make sure the hashtbl is grown correctly if
+           needed. *)
+        add h key v
     end
 
 (*$T modify_opt
@@ -611,16 +618,20 @@ struct
     let hc = h_conv (to_hash h) in
 
     let rec loop = function
-    | Empty -> raise Hashtbl_key_not_found
-    | Cons(k,v,next) ->
-      if H.equal k key then
-        match f (Some v) with
-        | Some v -> Cons(key,v,next)
-        | None ->
-          hc.size <- pred hc.size;
-          next
-      else
-        Cons(k,v,loop next)
+      | Empty ->
+        (* Inserting a element might require a resize of the hashtbl.
+           We rely on Hashtbl.add function to grow the hashtbl if needed
+           instead of duplicating logic from the OCaml standard library. *)
+        raise Hashtbl_key_not_found
+      | Cons(k,v,next) ->
+        if H.equal k key then
+          match f (Some v) with
+            | Some v -> Cons(key,v,next)
+            | None ->
+              hc.size <- pred hc.size;
+              next
+        else
+          Cons(k,v,loop next)
     in
     try
       let pos = (H.hash key) mod (Array.length hc.data) in
@@ -629,7 +640,10 @@ struct
     | Hashtbl_key_not_found ->
       begin match f None with
         | None -> ()
-        | Some v -> add h key v
+        | Some v ->
+          (* Add the element to make sure the hashtbl is grown correctly if
+             needed. *)
+          add h key v
       end
 
   let modify key f h =
