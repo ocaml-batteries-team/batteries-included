@@ -172,4 +172,7 @@ module Infix : sig
   val ( |? ) : 'a option -> 'a -> 'a
     (** Like {!default}, with the arguments reversed.
         [None |? 10] returns [10], while [Some "foo" |? "bar"] returns ["foo"]. *)
+
+  val ( >>= ): 'a option -> ('a -> 'b option) -> 'b option
+  (** as [Monad.bind] *)
 end

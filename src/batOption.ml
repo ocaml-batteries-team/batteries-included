@@ -211,6 +211,8 @@ end
 module Infix =
 struct
   let ( |? ) x def = default def x
+
+  let (>>=) = Monad.bind
 end
 
 include Infix
