@@ -193,6 +193,8 @@ struct
   let bind m f = match m with
     | None -> None
     | Some x -> f x
+
+  let (>>=) = bind
 end
 
 let bind = Monad.bind
@@ -211,6 +213,8 @@ end
 module Infix =
 struct
   let ( |? ) x def = default def x
+
+  let (>>=) = Monad.bind
 end
 
 include Infix
