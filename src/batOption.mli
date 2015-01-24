@@ -148,9 +148,6 @@ module Monad : sig
     (** [bind m f] combines the calculation result [m] with the function [f].
         E.g, in the Option monad :
         [bind (Some 1) (fun x -> if x = 1 then Some 4 else None)] returns Some 4. *)
-
-  val ( >>= ): 'a m -> ('a -> 'b m) -> 'b m
-  (** as [bind] *)
 end
 
 (** {6 Boilerplate code}*)

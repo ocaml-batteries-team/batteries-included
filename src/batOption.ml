@@ -193,8 +193,6 @@ struct
   let bind m f = match m with
     | None -> None
     | Some x -> f x
-
-  let (>>=) = bind
 end
 
 let bind = Monad.bind
