@@ -361,7 +361,7 @@ let takewhile = take_while
 let dropwhile = drop_while
 
 let interleave ?first ?last (sep:'a) (l:'a list) =
-  let may_prepend lst = function
+  let may_prepend maybe_x lst = match maybe_x with
     | None -> lst
     | Some x -> x :: lst
   in
@@ -373,7 +373,7 @@ let interleave ?first ?last (sep:'a) (l:'a list) =
       | _ -> loop (x :: sep :: acc) xs
   in
   let res = loop [] l in
-  may_prepend (rev (may_prepend res last)) first
+  may_prepend first (rev (may_prepend last res))
 
 (*$= interleave & ~printer:(IO.to_string (List.print Int.print))
   (interleave 0 [1;2;3]) [1;0;2;0;3]
