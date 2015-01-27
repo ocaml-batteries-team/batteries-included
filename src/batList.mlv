@@ -361,23 +361,19 @@ let takewhile = take_while
 let dropwhile = drop_while
 
 let interleave ?first ?last (sep:'a) (l:'a list) =
-  let rec aux acc = function
-    | []   -> acc
-    | h::t -> aux (h::sep::acc) t
+  let may_prepend maybe_x lst = match maybe_x with
+    | None -> lst
+    | Some x -> x :: lst
   in
-  match (l,first, last) with
-  | ([],   None,   None)       -> []
-  | ([],   None,   Some x)     -> [x]
-  | ([],   Some x, None)       -> [x]
-  | ([],   Some x, Some y)     -> [x;y]
-  | ([h],  None,   None)       -> [h]
-  | ([h],  None,   Some x)     -> [h;x]
-  | ([h],  Some x, None)       -> [x;h]
-  | ([h],  Some x, Some y)     -> [x;h;y]
-  | (h::t, None  , None )      -> rev (aux [h] t)
-  | (h::t, Some x, None )      -> x::(rev (aux [h] t))
-  | (h::t, None,   Some y)     -> rev_append (aux [h] t) [y]
-  | (h::t, Some x, Some y)     -> x::rev_append (aux [h] t) [y]
+  let rec loop acc = function
+    | [] -> acc
+    | x :: xs ->
+      match acc with
+      | [] -> loop [x] xs
+      | _ -> loop (x :: sep :: acc) xs
+  in
+  let res = loop [] l in
+  may_prepend first (rev (may_prepend last res))
 
 (*$= interleave & ~printer:(IO.to_string (List.print Int.print))
   (interleave 0 [1;2;3]) [1;0;2;0;3]
