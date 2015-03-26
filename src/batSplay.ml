@@ -93,72 +93,30 @@ let rec cfind ?(cx=[]) ~sel = function
     else if sx < 0 then cfind ~cx:(Left (x, r) :: cx) ~sel l
     else cfind ~cx:(Right (l, x) :: cx) ~sel r
 
-module Map (Ord : BatInterfaces.OrderedType) =
-struct
+(* A splay tree is a binary tree that is dynamically balanced: when
+   a key is accessed, the tree is rebalanced (by an internal mutation) so
+   that the next accesses to the same or neighbouring keys are very fast.
 
-  type key = Ord.t
+   Despite the use of a mutation for rebalancing, the structure is
+   observably pure/persistent, as the mutation does not change the set
+   of elements.
+ *)
 
-  type 'a t = Map of (key * 'a) bst
+module StrongRef : sig
+  type +'a t
+  val ref : 'a -> 'a t
+  val get : 'a t -> 'a
+  val set : 'a t -> 'a -> unit
+end = struct
+  (* Didactic implementation note : why that ugly Obj.magic below?
+     What does StrongRef bring compared to the usual ('a ref) type?
 
-  let empty = Map Empty
-
-  let is_empty (Map tr) = tr = Empty
-
-  (*  let kcmp (j, _) (k, _) = Ord.compare j k*)
-  let ksel j (k, _) = Ord.compare j k
-
-  let singleton' k v = Node (Empty, (k, v), Empty)
-  let singleton k v = Map (singleton' k v)
-
-  let add k v (Map tr) = Map begin
-      csplay begin
-        match cfind ~sel:(ksel k) tr with
-        | C (cx, Node (l, (k, _), r)) -> C (cx, Node (l, (k, v), r))
-        | C (cx, Empty) -> C (cx, singleton' k v)
-      end
-    end
-
-  let modify k fn (Map tr) = Map begin
-      csplay begin
-        match cfind ~sel:(ksel k) tr with
-        | C (cx, Node (l, (k, v), r)) -> C (cx, Node (l, (k, fn v), r))
-        | C (cx, Empty) -> raise Not_found
-      end
-    end
-
-  let modify_def def k fn (Map tr) = Map begin
-      csplay begin
-        match cfind ~sel:(ksel k) tr with
-        | C (cx, Node (l, (k, v), r)) -> C (cx, Node (l, (k, fn v), r))
-        | C (cx, Empty) -> C (cx, singleton' k (fn def))
-      end
-    end
-
-  let modify_opt k fn (Map tr) = Map begin
-      try
-        match cfind ~sel:(ksel k) tr with
-        | C (cx, Node (l, (k, v), r)) -> begin
-            match fn (Some v) with
-            | Some v' -> csplay (C (cx, Node (l, (k, v'), r)))
-            | None    -> bst_append l r
-          end
-        | C (cx, Empty) ->
-          match fn None with
-          | Some v -> csplay (C (cx, singleton' k v))
-          | None   -> raise Exit
-      with Exit -> tr
-    end
-
-  (* Didactic implementation note : why that ugly Obj module here? Why not
-     use a reference or mutable record field instead?
-
-     This is due to the covariance of the Map interface
-     (type (+'a) t). OCaml checks the internal definition to verify
-     that the internal datatype is consistent with the variance
-     annotation. Using a reference in the implementation of BatSplay
-     would make the compiler reject the implementation, because
-     reference types must be invariant.
-
+     We want splay tree to respect the Map interface, which whose map
+     type is covariant (type (+'a) t). OCaml checks the internal
+     definition to verify that the internal datatype is consistent
+     with the variance annotation. Using a reference in the
+     implementation of BatSplay would make the compiler reject the
+     implementation, because reference types must be invariant.
 
      Following is an explanation of covariance and reference
      invariance, feel free to skip it if you already know.
@@ -215,48 +173,127 @@ struct
          module (the interface claims its covariant, while it's
          invariant).
 
-     In our case however, the mutation that actually happen (that are
+     Said otherwise, covariance of a type (+'a t) allows situations
+     where a single value may have several distinct types
+     simultaneously:
+       - the empty list [] is both an (int list) and a (float list)
+         (distinct types here come from instantiations of the polymorphic
+          'a list, generalized by the (relaxed) value restrict)
+       - if a is a subtype of b, then all (a list) (even non-empty)
+         are simultaneously of type (b list)
+
+     Mutating such values is unsound in the general case, if the
+     result of the mutation is a value that is not valid for some of
+     those simultaneous types (adding a float in a ('a list ref) makes
+     it invalid as an (int list ref)).
+
+     In our case however, the mutations that actually happen (that are
      confined in the internal implementation of BatSplay) are soundly
-     compatible with subtyping. Indeed, rebalancing never adds any
-     element to the splay tree, it only reorders the element that were
-     already there. There is therefore no risk of unsoudness due to
-     forced covariance. However, we must be careful to ensure that all
-     rebalancings keep the set of elements of the splay tree
-     unchanged.
+     compatible with subtyping or polymorphic instantiation. Indeed,
+     rebalancing never adds any element to the splay tree, it only
+     reorders the element that were already there. In particular,
+     sharing values between two different types (either through
+     subtyping (cast) or polymorphic instantiation
+     (relaxed value restriction)) is correct even if mutations happens
+     on those shared value.. However, we must be careful to ensure
+     that all rebalancings keep the set of elements of the splay tree
+     unchanged (dropping elements would be ok-ish, but adding new
+     elements would be unsound).
 
-     We use the dirty Obj magic to use the (Map of (key * 'a) bst)
-     constructor as a reference that the type checked would accept as
-     invariant. Note that the mutations are therefore confined to the
-     "top" of the structure, the balanced tree itself is purely
-     functional, and that we must be careful to preserve the physical
-     identity of maps if we want to do mutations. For example,
-
-       rebalance ((fun m -> m) some_map)
-
-     will mutate some_map, but
-
-       rebelance ((fun (Map tr) -> Map tr) some_map)
-
-     won't, as the boxing/unboxing of (tr) made a shallow copy of the
-     Map constructor. This explains the (Map tr as m) pattern,
-
-       let find k (Map tr as m) = ...
-
-     which ensures that we retain the physical identity of the map, to
-     be able to rebalance it in the implementation. On the contrary,
-
-       let remove k (Map tr) = ...
-
-     will not perform a rebalancing, and the rebalancing the result
-     will not affect the initial parameter.
+     We use the dirty Obj magic to create a type of "strong
+     references" that are mutable yet covariant. Note that the
+     mutations are confined to the "top" of the structure, the
+     balanced tree itself is purely functional. Note that we must be
+     careful (in the internal implementation) to allocate a new strong
+     reference (with StrongRef.ref) each time we want to build a tree
+     with a different set of elements than the one we started with.
 
      PS : No list reference were harmed during the implementation of
      this module.
-  *)
-  let rebalance m tr =
-    Obj.set_field (Obj.repr m) 0 (Obj.repr tr)
+   *)
 
-  let find k (Map tr as m) =
+  type 'a t = { ref : 'a }
+  type 'a mut = { mutable mut_ref : 'a }
+
+  let ref (x : 'a) = (Obj.magic { mut_ref = x } : 'a t)
+  let get r = r.ref
+  let set (r : 'a t) v = (Obj.magic r : 'a mut).mut_ref <- v
+end
+
+module Map (Ord : BatInterfaces.OrderedType) =
+struct
+  type key = Ord.t
+
+  type 'a map = (key * 'a) bst
+  type 'a t = 'a map StrongRef.t
+
+  let sget = StrongRef.get
+  let sref = StrongRef.ref
+
+  let empty = sref Empty
+
+  let is_empty m =
+    let tr = sget m in
+    tr = Empty
+
+  (*  let kcmp (j, _) (k, _) = Ord.compare j k*)
+  let ksel j (k, _) = Ord.compare j k
+
+  let singleton' k v = Node (Empty, (k, v), Empty)
+  let singleton k v = sref (singleton' k v)
+
+  let add k v tr =
+    let tr = sget tr in
+    sref begin
+      csplay begin
+        match cfind ~sel:(ksel k) tr with
+        | C (cx, Node (l, (k, _), r)) -> C (cx, Node (l, (k, v), r))
+        | C (cx, Empty) -> C (cx, singleton' k v)
+      end
+    end
+
+  let modify k fn tr =
+    let tr = sget tr in
+    sref begin
+      csplay begin
+        match cfind ~sel:(ksel k) tr with
+        | C (cx, Node (l, (k, v), r)) -> C (cx, Node (l, (k, fn v), r))
+        | C (cx, Empty) -> raise Not_found
+      end
+    end
+
+  let modify_def def k fn tr =
+    let tr = sget tr in
+    sref begin
+      csplay begin
+        match cfind ~sel:(ksel k) tr with
+        | C (cx, Node (l, (k, v), r)) -> C (cx, Node (l, (k, fn v), r))
+        | C (cx, Empty) -> C (cx, singleton' k (fn def))
+      end
+    end
+
+  let modify_opt k fn tr =
+    let tr = sget tr in
+    sref begin
+      try
+        match cfind ~sel:(ksel k) tr with
+        | C (cx, Node (l, (k, v), r)) -> begin
+            match fn (Some v) with
+            | Some v' -> csplay (C (cx, Node (l, (k, v'), r)))
+            | None    -> bst_append l r
+          end
+        | C (cx, Empty) ->
+          match fn None with
+          | Some v -> csplay (C (cx, singleton' k v))
+          | None   -> raise Exit
+      with Exit -> tr
+    end
+
+  let rebalance m tr =
+    StrongRef.set m tr
+
+  let find k m =
+    let tr = sget m in
     let tr = csplay (cfind ~sel:(ksel k) tr) in
     match tr with
     | Node (_, (_, v), _) ->
@@ -266,18 +303,20 @@ struct
 
   let cchange fn (C (cx, t)) = C (cx, fn t)
 
-  let remove k (Map tr) =
+  let remove k tr =
+    let tr = sget tr in
     let replace = function
       | Empty -> Empty
       | Node (l, _, r) -> bst_append l r
     in
     let tr = top (cchange replace (cfind ~sel:(ksel k) tr)) in
-    Map tr
+    sref tr
 
   let mem k m =
     try ignore (find k m) ; true with Not_found -> false
 
-  let iter fn (Map tr) =
+  let iter fn tr =
+    let tr = sget tr in
     let rec visit = function
       | Empty -> ()
       | Node (l, (k, v), r) ->
@@ -287,7 +326,8 @@ struct
     in
     visit tr
 
-  let fold fn (Map tr) acc =
+  let fold fn tr acc =
+    let tr = sget tr in
     let rec visit acc = function
       | Empty -> acc
       | Node (l, (k, v), r) ->
@@ -297,11 +337,12 @@ struct
     in
     visit acc tr
 
-  let choose (Map tr) = match tr with
+  let choose tr = match sget tr with
     | Empty -> raise Not_found
     | Node (_, kv, _) -> kv
 
-  let min_binding (Map tr) =
+  let min_binding tr =
+    let tr = sget tr in
     let rec bfind = function
       | Node (Empty, kv, _) -> kv
       | Node (l, _, _) -> bfind l
@@ -309,7 +350,8 @@ struct
     in
     bfind tr
 
-  let max_binding (Map tr) =
+  let max_binding tr =
+    let tr = sget tr in
     let rec bfind = function
       | Node (_, kv, Empty) -> kv
       | Node (_, _, r) -> bfind r
@@ -331,7 +373,7 @@ struct
           end
         end
     in
-    fun (Map tr) -> visit tr (fun tr -> Map tr)
+    fun m -> visit (sget m) sref
 
   let filterv f t =
     filter_map (fun _ v -> if f v then Some v else None) t
@@ -356,7 +398,8 @@ struct
           end
         end
     in
-    fun (Map tr) -> visit tr (fun t1 t2 -> Map t1, Map t2)
+    fun m ->
+      visit (sget m) (fun t1 t2 -> sref t1, sref t2)
 
   type 'a enumeration =
     | End
@@ -380,7 +423,8 @@ struct
     | Node (l, (k, v), r) ->
       rev_cons_enum r (More (k, v, l, e))
 
-  let compare cmp (Map tr1) (Map tr2) =
+  let compare cmp tr1 tr2 =
+    let tr1, tr2 = sget tr1, sget tr2 in
     let rec aux e1 e2 = match (e1, e2) with
       | (End, End) -> 0
       | (End, _)  -> -1
@@ -393,7 +437,8 @@ struct
             aux (cons_enum r1 e1) (cons_enum r2 e2)
     in aux (cons_enum tr1 End) (cons_enum tr2 End)
 
-  let equal cmp (Map tr1) (Map tr2) =
+  let equal cmp tr1 tr2 =
+    let tr1, tr2 = sget tr1, sget tr2 in
     let rec aux e1 e2 =
       match (e1, e2) with
         (End, End) -> true
@@ -416,8 +461,8 @@ struct
     let clone () = enum_bst cfn !cur in
     Enum.make ~next ~count ~clone
 
-  let enum (Map tr) = enum_bst cons_enum (cons_enum tr End)
-  let backwards (Map tr) = enum_bst rev_cons_enum (rev_cons_enum tr End)
+  let enum tr = enum_bst cons_enum (cons_enum (sget tr) End)
+  let backwards tr = enum_bst rev_cons_enum (rev_cons_enum (sget tr) End)
 
   let keys m = Enum.map fst (enum m)
   let values m = Enum.map snd (enum m)
@@ -477,17 +522,18 @@ struct
 
   let cardinal m = fold (fun _k _v -> succ) m 0
 
-  let split k (Map tr as m) =
+  let split k m =
+    let tr = sget m in
     let C (cx, center) = cfind ~sel:(ksel k) tr in
     match center with
     | Empty ->
       let l, r = csplay' cx Empty Empty in
-      (Map l, None, Map r)
+      (sref l, None, sref r)
     | Node (l, x, r) ->
       let l', r' = csplay' cx l r in
       (* we rebalance as in 'find' *)
       rebalance m (Node (l', x, r'));
-      (Map l', Some (snd x), Map r')
+      (sref l', Some (snd x), sref r')
 
   let merge f m1 m2 =
     (* The implementation is a bit long, but has the important
@@ -555,13 +601,14 @@ struct
         none_known acc
       end
     in
-    Map (none_known Empty)
+    sref (none_known Empty)
 
-  let pop = function
-    | Map Empty -> raise Not_found
-    | Map (Node (l, kv, r)) -> kv, Map (bst_append l r)
+  let pop m = match sget m with
+    | Empty -> raise Not_found
+    | Node (l, kv, r) -> kv, sref (bst_append l r)
 
-  let extract k (Map tr) =
+  let extract k tr =
+    let tr = sget tr in
     (* the reference here is a tad ugly but allows to reuse `cfind`
        without fuss *)
     let maybe_v = ref None in
@@ -575,5 +622,5 @@ struct
     (* like in the `remove` case, we don't bother rebalancing *)
     match !maybe_v with
     | None -> raise Not_found
-    | Some v -> v, Map tr
+    | Some v -> v, sref tr
 end
