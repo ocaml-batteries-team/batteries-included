@@ -55,6 +55,15 @@ type ('a, 'b) h_t = {
 external h_conv : ('a, 'b) t -> ('a, 'b) h_t = "%identity"
 external h_make : ('a, 'b) h_t -> ('a, 'b) t = "%identity"
 
+##V>=4## let key_index h key =
+##V>=4##   if Obj.size (Obj.repr h) >= 3
+##V>=4##   then Hashtbl.seeded_hash (h_conv h).seed key
+##V>=4##        land (Array.length (h_conv h).data - 1)
+##V>=4##   else (Hashtbl.hash key land max_int) mod (Array.length (h_conv h).data)
+
+##V<4## let key_index h key = (Hashtbl.hash key land max_int)
+##V<4##                       mod (Array.length (h_conv h).data)
+
 (* NOT EXPOSED
    let resize hashfun tbl =
    let odata = tbl.data in
@@ -153,7 +162,7 @@ let remove_all h key =
       ) else
         Cons(k,v,loop next)
   in
-  let pos = (hash key) mod (Array.length hc.data) in
+  let pos = key_index h key in
   Array.unsafe_set hc.data pos (loop (Array.unsafe_get hc.data pos))
 
 let find_default h key defval =
@@ -162,7 +171,7 @@ let find_default h key defval =
     | Cons (k,v,next) ->
       if k = key then v else loop next
   in
-  let pos = (hash key) mod (Array.length (h_conv h).data) in
+  let pos = key_index h key in
   loop (Array.unsafe_get (h_conv h).data pos)
 
 let find_option h key =
@@ -171,7 +180,7 @@ let find_option h key =
     | Cons (k,v,next) ->
       if k = key then Some v else loop next
   in
-  let pos = (hash key) mod (Array.length (h_conv h).data) in
+  let pos = key_index h key in
   loop (Array.unsafe_get (h_conv h).data pos)
 
 let of_enum e =
@@ -204,7 +213,7 @@ let modify_opt key f h =
         Cons(k,v,loop next)
   in
   try
-    let pos = (hash key) mod (Array.length hc.data) in
+    let pos = key_index h key in
     Array.unsafe_set hc.data pos (loop (Array.unsafe_get hc.data pos))
   with
   | Hashtbl_key_not_found ->
@@ -236,7 +245,7 @@ let modify key f h =
       ) else
         Cons(k,v,loop next)
   in
-  let pos = (hash key) mod (Array.length hc.data) in
+  let pos = key_index h key in
   Array.unsafe_set hc.data pos (loop (Array.unsafe_get hc.data pos))
 
 (*$T modify
@@ -545,6 +554,9 @@ struct
             H.equal k key || mem_in_bucket rest in
           mem_in_bucket h.data.((safehash key) mod (Array.length h.data))*)
 
+  let key_index h key =
+    (H.hash key) land (Array.length (h_conv (to_hash h)).data - 1)
+
   let iter = iter
   let fold = fold
   let length = length
@@ -561,6 +573,7 @@ struct
   let filter_inplace f h = filter_inplace f (to_hash h)
   let filter_map_inplace f h = filter_map_inplace f (to_hash h)
 
+
   let find_option h key =
     let hc = h_conv (to_hash h) in
     let rec loop = function
@@ -568,7 +581,7 @@ struct
       | Cons (k,v,next) ->
         if H.equal k key then Some v else loop next
     in
-    let pos = (H.hash key) mod (Array.length hc.data) in
+    let pos = key_index h key in
     loop (Array.unsafe_get hc.data pos)
 
   let find_default h key defval =
@@ -578,7 +591,7 @@ struct
       | Cons (k,v,next) ->
         if H.equal k key then v else loop next
     in
-    let pos = (H.hash key) mod (Array.length hc.data) in
+    let pos = key_index h key in
     loop (Array.unsafe_get hc.data pos)
 
   let remove_all h key =
@@ -592,7 +605,7 @@ struct
         end else
           Cons(k,v,loop next)
     in
-    let pos = (H.hash key) mod (Array.length hc.data) in
+    let pos = key_index h key in
     Array.unsafe_set hc.data pos (loop (Array.unsafe_get hc.data pos))
 
   let is_empty h = length h = 0
@@ -634,7 +647,7 @@ struct
           Cons(k,v,loop next)
     in
     try
-      let pos = (H.hash key) mod (Array.length hc.data) in
+      let pos = key_index h key in
       Array.unsafe_set hc.data pos (loop (Array.unsafe_get hc.data pos))
     with
     | Hashtbl_key_not_found ->
@@ -656,7 +669,7 @@ struct
         ) else
           Cons(k,v,loop next)
     in
-    let pos = (H.hash key) mod (Array.length hc.data) in
+    let pos = key_index h key in
     Array.unsafe_set hc.data pos (loop (Array.unsafe_get hc.data pos))
 
   let modify_def v0 key f h =
