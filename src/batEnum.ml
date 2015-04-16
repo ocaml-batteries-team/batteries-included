@@ -1253,6 +1253,49 @@ let merge test a b =
     if *)
 
 
+let interleave enums =
+  let enums_len = Array.length enums in
+  if not (enums_len > 0) then empty () else begin
+    let available = Array.make enums_len true
+    and next_idx = Array.init enums_len ((+) 1) in
+    next_idx.((Array.length next_idx) - 1) <- 0 ;
+    let rec next_elem idx =
+      match get enums.(idx) with
+       | Some x -> x , next_idx.(idx)
+       | None -> begin
+           available.(idx) <- false ;
+           let rec loop k =
+             let l = next_idx.(k) in
+             if l = idx then raise No_more_elements else
+             if available.(l) then (next_idx.(idx) <- l ; next_elem l) else loop l
+           in loop idx
+         end
+    in
+    from_loop 0 next_elem
+  end
+
+(*$T interleave
+  let e1 = List.enum [ 8 ; 2 ; 5 ; 2 ] and e2 = List.enum [ -5 ; -7 ; -6 ; 2 ; 1 ; -9 ; 2 ] in \
+  let e = interleave [| e1 ; e2 |] in \
+  List.of_enum e = [ 8 ; -5 ; 2 ; -7 ; 5 ; -6 ; 2 ; 2 ; 1 ; -9 ; 2 ]
+*)
+
+(*$R interleave
+  let e1 = Enum.empty ()
+  and e2 = List.enum [ 8 ; 2 ; 5 ; 2 ]
+  and e3 = List.enum [ -5 ; -7 ; -6 ; 2 ; 1 ; -9 ; 2 ] in
+  let e = interleave [| e1; e2 ; e3 |] in
+  assert_equal (List.of_enum e) [ 8 ; -5 ; 2 ; -7 ; 5 ; -6 ; 2 ; 2 ; 1 ; -9 ; 2 ]
+*)
+
+(*$R interleave
+  let e1 = Enum.empty ()
+  and e2 = Enum.empty ()
+  and e3 = Enum.empty () in
+  let e = interleave [| e1; e2 ; e3 |] in
+  assert_equal (List.of_enum e) [ ]
+*)
+
 let slazy f =
   let constructor = lazy (f ()) in
   make ~next: (fun () -> (Lazy.force constructor).next ())
