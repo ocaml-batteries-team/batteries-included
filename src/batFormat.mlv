@@ -80,6 +80,40 @@ let pp_set_formatter_out_channel = pp_set_formatter_output
 let std_formatter = formatter_of_output BatIO.stdout
 let err_formatter = formatter_of_output BatIO.stderr
 
+(* Backward compatibility *)
+
+##V<4.02##(* To format a list *)
+##V<4.02##let rec pp_print_list ?(pp_sep = pp_print_cut) pp_v ppf = function
+##V<4.02##  | [] -> ()
+##V<4.02##  | [v] -> pp_v ppf v
+##V<4.02##  | v :: vs ->
+##V<4.02##    pp_v ppf v;
+##V<4.02##    pp_sep ppf ();
+##V<4.02##    pp_print_list ~pp_sep pp_v ppf vs
+##V<4.02##
+##V<4.02##(* To format free-flowing text *)
+##V<4.02##let pp_print_text ppf s =
+##V<4.02##  let len = String.length s in
+##V<4.02##  let left = ref 0 in
+##V<4.02##  let right = ref 0 in
+##V<4.02##  let flush () =
+##V<4.02##    pp_print_string ppf (String.sub s !left (!right - !left));
+##V<4.02##    incr right; left := !right;
+##V<4.02##  in
+##V<4.02##  while (!right <> len) do
+##V<4.02##    match s.[!right] with
+##V<4.02##      | '\n' ->
+##V<4.02##        flush ();
+##V<4.02##        pp_force_newline ppf ()
+##V<4.02##      | ' ' ->
+##V<4.02##        flush (); pp_print_space ppf ()
+##V<4.02##      (* there is no specific support for '\t'
+##V<4.02##         as it is unclear what a right semantics would be *)
+##V<4.02##      | _ -> incr right
+##V<4.02##  done;
+##V<4.02##  if !left <> len then flush ()
+
+
 (**{6 Initialization}*)
 
 let () =

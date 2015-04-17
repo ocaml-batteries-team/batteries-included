@@ -71,6 +71,7 @@ PREPROCESSED_FILES = \
  src/batBuffer.ml \
  src/batBytes.ml src/batBytes.mli \
  src/batDigest.ml \
+ src/batFormat.ml \
  src/batHashtbl.ml \
  src/batInnerPervasives.ml \
  src/batList.ml \
