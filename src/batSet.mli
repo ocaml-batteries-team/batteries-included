@@ -322,6 +322,14 @@ module Make (Ord : OrderedType) : S with type elt = Ord.t
     @documents Set.Make
 *)
 
+
+module Make2(O1 : OrderedType) (O2 : OrderedType) : sig
+  module Product : S with type elt = O1.t * O2.t
+
+  val cartesian_product : Make(O1).t -> Make(O2).t -> Product.t
+  (** cartesian product of the two sets *)
+end
+
 (** {6 Polymorphic sets}
 
     The definitions below describe the polymorphic set interface.
