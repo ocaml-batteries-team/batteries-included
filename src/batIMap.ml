@@ -84,8 +84,8 @@ module Core = struct
         | None   -> raise Exit
       else
         let (n1, n2, v) = root m in
-        if n < n1 then aux (left_branch m) else
-        if n > n2 then aux (right_branch m) else
+        if n < n1 then make_tree (aux (left_branch m)) (n1, n2, v) (right_branch m) else
+        if n > n2 then make_tree (left_branch m) (n1, n2, v) (aux (right_branch m))  else
           match f (Some v) with
           | None    ->
             concat (left_branch m) (right_branch m)
