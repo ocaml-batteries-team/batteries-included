@@ -416,25 +416,57 @@ module Traverse(M : BatInterfaces.Monad) = struct
 
   let (>>=) = M.bind
 
-  let rec sequence l = match l with
-    | [] -> M.return []
+  let sequence l =
+    let rec loop acc = function
+    | [] -> M.return (List.rev acc)
     | xs::l' ->
       xs >>= fun x ->
-      sequence l' >>= fun l' ->
-      M.return (x :: l')
+      loop (x :: acc) l'
+    in loop [] l
 
-  let rec map_m f l = match l with
-    | [] -> M.return []
+  (*$T
+     let module TL = Traverse(Monad) in TL.sequence [[1; 2]; [3; 4]] = [[1; 3]; [1; 4]; [2; 3]; [2; 4]]
+     let module TL = Traverse(Monad) in TL.sequence [[1; 2]; []; [3; 4]] = []
+     let module TL = Traverse(Monad) in TL.sequence [] = [[]]
+   *)
+
+  let map_m f l =
+    let rec loop acc = function
+    | [] -> M.return (List.rev acc)
     | x::l' ->
-      map_m f l' >>= fun l' ->
       f x >>= fun x ->
-      M.return (x::l')
+      loop (x :: acc) l'
+    in loop [] l
+
+  (*$T
+     let module TL = Traverse(Monad) in TL.map_m (fun x -> [x; x+1]) [3] = [[3]; [4]]
+     let module TL = Traverse(Monad) in TL.map_m (fun x -> [x; x+1]) [1; 3] = [[1; 3]; [1; 4]; [2; 3]; [2; 4]]
+     let module TL = Traverse(Monad) in TL.map_m (fun x -> []) [1; 3] = []
+     let module TL = Traverse(Monad) in TL.map_m (fun x -> [1]) [] = [[]]
+   *)
+
+  (* There is no easy way to make map_m (or sequence, fold_m etc.) tail-recursive,
+     because most monadic binds call their function argument in non-tail position.
+     For example, the following test would fail with a stack overflow:
+
+       let long = init 1_000_000 (fun x -> x) in
+       let module TL = Traverse(Monad) in
+       TL.map_m (fun x -> [x]) long = [long]
+   *)
 
   let rec fold_m f acc l = match l with
     | [] -> M.return acc
     | x::l' ->
       f acc x >>= fun acc' ->
       fold_m f acc' l'
+
+  (*$T
+     let module TL = Traverse(Monad) in TL.fold_m (fun xs x -> [x::xs; x+1::xs]) [] [3] = [[3]; [4]]
+     let module TL = Traverse(Monad) in TL.fold_m (fun xs x -> [x::xs; x+1::xs]) [] [1; 3] = [[3; 1]; [4; 1]; [3; 2]; [4; 2]]
+     let module TL = Traverse(Monad) in TL.fold_m (fun xs x -> []) [1;2] [3;4] = []
+     let module TL = Traverse(Monad) in TL.fold_m (fun xs x -> [x::xs; x+1::xs]) [] [] = [[]]
+   *)
+
 end
 
 (*$= interleave & ~printer:(IO.to_string (List.print Int.print))
