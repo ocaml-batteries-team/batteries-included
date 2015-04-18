@@ -121,6 +121,10 @@ val of_list : 'a list -> 'a t
 (** Convenience function to build a seq from a list.
     @since 2.2.0 *)
 
+val to_list : 'a t -> 'a list
+(** Convenience function to build a list from a sequence.
+    @since NEXT_RELEASE *)
+
 (** {6 Iterators} *)
 
 val iter : ('a -> unit) -> 'a t -> unit

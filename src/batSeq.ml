@@ -136,6 +136,16 @@ let of_list l =
   in
   aux l
 
+let to_list seq =
+  let rec loop acc seq = match seq () with
+      | Nil -> List.rev acc
+      | Cons (x, seq) -> loop (x :: acc) seq
+  in loop [] seq
+
+(*$Q to_list
+  (Q.list Q.small_int) (fun li -> li |> of_list |> to_list = li)
+ *)
+
 let rec iter f s = match s () with
   | Nil -> ()
   | Cons(e, s) -> f e; iter f s
