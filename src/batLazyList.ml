@@ -331,6 +331,14 @@ module Monad = struct
   let bind x f = concat_map f x
 end
 
+(*$T
+    (Monad.bind nil (fun x -> of_list [x; x*2])) |> to_list = []
+    (Monad.bind (of_list [1;2;3]) (fun x -> of_list [x; x*2])) |> to_list = [1;2;2;4;3;6]
+    (Monad.bind nil (fun _ -> nil)) |> to_list = []
+    (Monad.bind (of_list [1;2;3]) (function 2 -> nil | x -> of_list [x; x*2])) |> to_list = [1;2;3;6]
+   *)
+
+
 module Traverse(M : BatInterfaces.Monad) = struct
   type 'a t = 'a mappable
   type 'a m = 'a M.m
@@ -344,13 +352,33 @@ module Traverse(M : BatInterfaces.Monad) = struct
       map_m f l' >>= fun l' ->
       M.return (cons x l')
 
+  (*$T
+     let module TL = Traverse(List.Monad) in TL.map_m (fun x -> [x; x+1]) (of_list [3]) |> List.map to_list = [[3]; [4]]
+     let module TL = Traverse(List.Monad) in TL.map_m (fun x -> [x; x+1]) (of_list [1; 3]) |> List.map to_list = [[1; 3]; [1; 4]; [2; 3]; [2; 4]]
+     let module TL = Traverse(List.Monad) in TL.map_m (fun x -> []) (of_list [1; 3]) |> List.map to_list = []
+     let module TL = Traverse(List.Monad) in TL.map_m (fun x -> [1]) nil |> List.map to_list = [[]]
+   *)
+
   let sequence l = map_m (fun x -> x) l
+
+  (*$T
+     let module TL = Traverse(List.Monad) in TL.sequence (of_list [[1; 2]; [3; 4]]) |> List.map to_list = [[1; 3]; [1; 4]; [2; 3]; [2; 4]]
+     let module TL = Traverse(List.Monad) in TL.sequence (of_list [[1; 2]; []; [3; 4]]) |> List.map to_list = []
+     let module TL = Traverse(List.Monad) in TL.sequence (of_list []) |> List.map to_list = [[]]
+   *)
 
   let rec fold_m f acc l = match l with
     | lazy Nil -> M.return acc
     | lazy (Cons (x, l')) ->
       f acc x >>= fun acc ->
       fold_m f acc l'
+
+  (*$T
+     let module TL = Traverse(List.Monad) in TL.fold_m (fun xs x -> [x::xs; x+1::xs]) [] (of_list [3]) = [[3]; [4]]
+     let module TL = Traverse(List.Monad) in TL.fold_m (fun xs x -> [x::xs; x+1::xs]) [] (of_list [1; 3]) = [[3; 1]; [4; 1]; [3; 2]; [4; 2]]
+     let module TL = Traverse(List.Monad) in TL.fold_m (fun xs x -> []) [1;2] (of_list [3;4]) = []
+     let module TL = Traverse(List.Monad) in TL.fold_m (fun xs x -> [x::xs; x+1::xs]) [] nil = [[]]
+   *)
 end
 
 (**
