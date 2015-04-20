@@ -725,10 +725,9 @@ module WithMonad : functor (Mon : BatInterfaces.Monad) -> sig
   include BatInterfaces.Traversable with type 'a t = 'a t and type 'a m = 'a Mon.m
 
   val fold_monad : ('a -> 'b -> 'a m) -> 'a -> 'b t -> 'a m
-  (** [fold_monad f init e] does a folding of the enumeration [e] applying step
-      by step the function [f] that gives back results in the [Mon] monad,
-      with the [init] initial element. The result is a value in the [Mon] monad.
-      Synonym to {!foldM} (see {!BatInterfaces.Traversable}) *)
+  (** [fold_monad] is a synonym for the [fold_m] function of the
+      {!BatInterfaces.Traversable} interface, kept for backward
+      compatibility. *)
 end
 
 (** The BatEnum Monad

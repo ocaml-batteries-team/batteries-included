@@ -111,6 +111,10 @@ let force t =(** Transform [t] into a list *)
   t.count <- tc.count;
   t.fast <- true
 
+let get t =
+  try   Some (t.next())
+  with  No_more_elements -> None
+
 (* Inlined from {!LazyList}.
 
    This lazy list permits cloning enumerations constructed with {!from}
@@ -136,6 +140,14 @@ module MicroLazyList = struct
       e.fast  <- false;
       e
     in aux l
+
+  let of_enum e =
+    let rec aux () =
+      lazy (match get e with
+        | Some x -> Cons (x, aux ())
+        | None   -> Nil)
+    in
+    aux ()
 
   let from f =
     let rec aux () =
@@ -200,11 +212,6 @@ let init n f = (*Experimental fix for init*)
   e.fast  <- true;
   e.count <- (fun () -> !count);
   e
-
-
-let get t =
-  try   Some (t.next())
-  with  No_more_elements -> None
 
 let get_exn t = t.next ()
 
@@ -1439,35 +1446,48 @@ struct
 
   let (>>=) = Mon.bind
 
-  let fold_monad f init enum =
-    let rec fold m = match get enum with
-      | None -> m
-      | Some x -> m >>= fun acc -> fold (f acc x)
-    in
-    fold (Mon.return init)
-
-  (* Comment for old sequence function:
-     "We use a list as an accumulator for the result enum
-     computed under the monad. A previous version of this code used
-     a Queue instead, which was problematic for backtracking
-     monads. Due to the destructive nature of Enums, the current
-     version will still be problematic but at least the result will
-     be consistent." *)
-
   let map_m f enum =
-    let of_acc acc = MicroList.enum (List.rev acc)
-    in
-    let rec loop acc = match get enum with
-      | None -> Mon.return (of_acc acc)
-      | Some elem ->
-          f elem >>= fun x ->
-          loop (x :: acc)
-    in
-    loop []
+    let module LL = MicroLazyList in
+    let xs = LL.of_enum enum in
+    let rec loop acc xs = match Lazy.force xs with
+      | LL.Nil -> Mon.return (MicroList.enum (List.rev acc))
+      | LL.Cons (x, xs) ->
+         f x >>= fun x ->
+         loop (x :: acc) xs
+    in loop [] xs
+
+  (*$T
+     let module TL = WithMonad(List.Monad) in TL.map_m (fun x -> [x; x+1]) (List.enum [3]) |> List.map List.of_enum = [[3]; [4]]
+     let module TL = WithMonad(List.Monad) in TL.map_m (fun x -> [x; x+1]) (List.enum [1; 3]) |> List.map List.of_enum = [[1; 3]; [1; 4]; [2; 3]; [2; 4]]
+     let module TL = WithMonad(List.Monad) in TL.map_m (fun x -> []) (List.enum [1; 3]) |> List.map List.of_enum = []
+     let module TL = WithMonad(List.Monad) in TL.map_m (fun x -> [1]) (empty ()) |> List.map List.of_enum = [[]]
+   *)
 
   let sequence e = map_m (fun x -> x) e
 
-  let fold_m = fold_monad
+  (*$T
+     let module TL = WithMonad(List.Monad) in TL.sequence (List.enum [[1; 2]; [3; 4]]) |> List.map List.of_enum = [[1; 3]; [1; 4]; [2; 3]; [2; 4]]
+     let module TL = WithMonad(List.Monad) in TL.sequence (List.enum [[1; 2]; []; [3; 4]]) |> List.map List.of_enum = []
+     let module TL = WithMonad(List.Monad) in TL.sequence (List.enum []) |> List.map List.of_enum = [[]]
+   *)
+
+  let fold_m f init enum =
+    let module LL = MicroLazyList in
+    let xs = LL.of_enum enum in
+    let rec fold m xs = match Lazy.force xs with
+      | LL.Nil -> m
+      | LL.Cons (x, xs) -> m >>= fun acc -> fold (f acc x) xs
+    in
+    fold (Mon.return init) xs
+
+  (*$T
+     let module TL = WithMonad(List.Monad) in TL.fold_m (fun xs x -> [x::xs; x+1::xs]) [] (List.enum [3]) = [[3]; [4]]
+     let module TL = WithMonad(List.Monad) in TL.fold_m (fun xs x -> [x::xs; x+1::xs]) [] (List.enum [1; 3]) = [[3; 1]; [4; 1]; [3; 2]; [4; 2]]
+     let module TL = WithMonad(List.Monad) in TL.fold_m (fun xs x -> []) [1;2] (List.enum [3;4]) = []
+     let module TL = WithMonad(List.Monad) in TL.fold_m (fun xs x -> [x::xs; x+1::xs]) [] (empty ()) = [[]]
+   *)
+
+  let fold_monad = fold_m
 end
 
 module Monad =
