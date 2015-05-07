@@ -142,6 +142,29 @@ module Concrete = struct
       Empty -> ()
     | Node(l, v, r, _) -> iter f l; f v; iter f r
 
+  let get_root = function
+    | Empty -> raise Not_found
+    | Node(l, v, r, _) -> v
+
+  exception Found_index
+
+  let at_exn i s =
+    if i < 0 then invalid_arg "Negative index not allowed";
+    let j = ref 0 in
+    try let res = ref (get_root s) in
+      try
+        iter (fun node ->
+            if !j <> i then incr j
+            else
+              begin
+                res := node;
+                raise Found_index
+              end
+          ) s;
+        invalid_arg "Index past end of set"
+      with Found_index -> !res
+    with Not_found -> invalid_arg "Empty set"
+
   let rec fold f s accu =
     match s with
       Empty -> accu
@@ -462,6 +485,7 @@ sig
   val disjoint: t -> t -> bool
   val compare_subset: t -> t -> int
   val iter: (elt -> unit) -> t -> unit
+  val at_exn: int -> t -> elt
   val map: (elt -> elt) -> t -> t
   val filter: (elt -> bool) -> t -> t
   val filter_map: (elt -> elt option) -> t -> t
@@ -537,6 +561,7 @@ struct
   let add e t = t_of_impl (Concrete.add Ord.compare e (impl_of_t t))
 
   let iter f t = Concrete.iter f (impl_of_t t)
+  let at_exn i t = Concrete.at_exn i (impl_of_t t)
   let map f t = t_of_impl (Concrete.map Ord.compare f (impl_of_t t))
   let fold f t acc = Concrete.fold f (impl_of_t t) acc
   let filter f t = t_of_impl (Concrete.filter Ord.compare f (impl_of_t t))
@@ -698,6 +723,7 @@ module PSet = struct (*$< PSet *)
   let add x s  = { s with set = Concrete.add s.cmp x s.set }
   let remove x s = { s with set = Concrete.remove s.cmp x s.set }
   let iter f s = Concrete.iter f s.set
+  let at_exn i s = Concrete.at_exn i s.set
   let fold f s acc = Concrete.fold f s.set acc
   let map f s =
     { cmp = Pervasives.compare; set = Concrete.map Pervasives.compare f s.set }
@@ -792,6 +818,8 @@ let add x s  = Concrete.add Pervasives.compare x s
 let remove x s = Concrete.remove Pervasives.compare x s
 
 let iter f s = Concrete.iter f s
+
+let at_exn i s = Concrete.at_exn i s
 
 let fold f s acc = Concrete.fold f s acc
 

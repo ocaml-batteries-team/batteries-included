@@ -121,6 +121,9 @@ sig
       The elements of [s] are presented to [f] in increasing order
       with respect to the ordering over the type of the elements. *)
 
+  val at_exn: int -> t -> elt
+  (** FBR: TODO *)
+
   val map: (elt -> elt) -> t -> t
   (** [map f x] creates a new set with elements [f a0],
       [f a1]... [f aN], where [a0],[a1]..[aN] are the
@@ -420,6 +423,9 @@ val iter: ('a -> unit) -> 'a t -> unit
     The elements of [s] are presented to [f] in increasing order
     with respect to the ordering over the type of the elements. *)
 
+val at_exn: int -> 'a t -> 'a
+(** FBR: TODO *)
+
 val map: ('a -> 'b) -> 'a t -> 'b t
 (** [map f x] creates a new set with elements [f a0],
     [f a1]... [f aN], where [a0], [a1], ..., [aN] are the
@@ -667,6 +673,9 @@ module PSet : sig
   (** [iter f s] applies [f] in turn to all elements of [s].
       The elements of [s] are presented to [f] in increasing order
       with respect to the ordering over the type of the elements. *)
+
+  val at_exn: int -> 'a t -> 'a
+  (** FBR: TODO *)
 
   (* under-specified; either give a 'b comparison,
      or keep ('a -> 'a) (preferred choice) *)
