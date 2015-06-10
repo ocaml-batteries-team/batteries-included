@@ -122,7 +122,10 @@ sig
       with respect to the ordering over the type of the elements. *)
 
   val at_exn: int -> t -> elt
-  (** FBR: TODO *)
+  (** [at_exn i s] returns element at rank [i] in [s].
+      @raise Not_found if [s = empty].
+      @raise Invalid_argument error_message if [i < 0 || i >= cardinal s]
+      @since NEXT_RELEASE *)
 
   val map: (elt -> elt) -> t -> t
   (** [map f x] creates a new set with elements [f a0],
@@ -424,7 +427,10 @@ val iter: ('a -> unit) -> 'a t -> unit
     with respect to the ordering over the type of the elements. *)
 
 val at_exn: int -> 'a t -> 'a
-(** FBR: TODO *)
+  (** [at_exn i s] returns element at rank [i] in [s].
+      @raise Not_found if [s = empty].
+      @raise Invalid_argument error_message if [i < 0 || i >= cardinal s]
+      @since NEXT_RELEASE *)
 
 val map: ('a -> 'b) -> 'a t -> 'b t
 (** [map f x] creates a new set with elements [f a0],
@@ -675,7 +681,10 @@ module PSet : sig
       with respect to the ordering over the type of the elements. *)
 
   val at_exn: int -> 'a t -> 'a
-  (** FBR: TODO *)
+  (** [at_exn i s] returns element at rank [i] in [s].
+      @raise Not_found if [s = empty].
+      @raise Invalid_argument error_message if [i < 0 || i >= cardinal s]
+      @since NEXT_RELEASE *)
 
   (* under-specified; either give a 'b comparison,
      or keep ('a -> 'a) (preferred choice) *)

@@ -146,29 +146,28 @@ module Concrete = struct
     | Empty -> raise Not_found
     | Node(l, v, r, _) -> v
 
-  exception Found_index
-
-  let at_exn i s =
-    if i < 0 then invalid_arg "Negative index not allowed";
-    let j = ref 0 in
-    try let res = ref (get_root s) in
-      try
-        iter (fun node ->
-            if !j <> i then incr j
-            else
-              begin
-                res := node;
-                raise Found_index
-              end
-          ) s;
-        invalid_arg "Index past end of set"
-      with Found_index -> !res
-    with Not_found -> invalid_arg "Empty set"
-
   let rec fold f s accu =
     match s with
       Empty -> accu
     | Node(l, v, r, _) -> fold f r (f v (fold f l accu))
+
+  exception Found
+
+  let at_exn i s =
+    if i < 0 then invalid_arg "Set.at_exn: negative index not allowed";
+    let res = ref (get_root s) in (* raises Not_found if empty *)
+    try
+      let (_: int) =
+        fold (fun node j ->
+            if j <> i then j + 1
+            else begin
+              res := node;
+              raise Found
+            end
+          ) s 0
+      in
+      invalid_arg "Set.at_exn i s: i >= (Set.cardinal s)"
+    with Found -> !res
 
   let map cmp f s =
     fold (fun v acc -> add cmp (f v) acc) s empty
@@ -820,6 +819,16 @@ let remove x s = Concrete.remove Pervasives.compare x s
 let iter f s = Concrete.iter f s
 
 let at_exn i s = Concrete.at_exn i s
+
+(*$T
+  at_exn 0 (of_list [1;2]) == 1
+  at_exn 1 (of_list [1;2]) == 2
+  try ignore (at_exn 0 empty); false with Not_found -> true
+  try ignore (at_exn (-1) (singleton 1)); false \
+  with Invalid_argument _msg -> true
+  try ignore (at_exn 1 (singleton 1)); false \
+  with Invalid_argument _msg -> true
+*)
 
 let fold f s acc = Concrete.fold f s acc
 
