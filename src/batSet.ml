@@ -85,6 +85,20 @@ module Concrete = struct
     | Node(Empty, v, r, _) -> v
     | Node(l, v, r, _) -> min_elt l
 
+  let get_root = function
+    | Empty -> raise Not_found
+    | Node(_l, v, _r, _) -> v
+
+  let pop_min s =
+    let mini = ref (get_root s) in
+    let rec loop = function
+        Empty -> raise Not_found
+      | Node(Empty, v, r, _) -> mini := v; r
+      | Node(l, v, r, _) -> bal (loop l) v r
+    in
+    let others = loop s in
+    (!mini, others)
+
   let rec max_elt = function
       Empty -> raise Not_found
     | Node(l, v, Empty, _) -> v
@@ -95,7 +109,7 @@ module Concrete = struct
       Empty -> invalid_arg "Set.remove_min_elt"
     | Node(Empty, v, r, _) -> r
     | Node(l, v, r, _) -> bal (remove_min_elt l) v r
-
+    
   (* Merge two trees l and r into one.
      All elements of l must precede the elements of r.
      Assume | height l - height r | <= 2. *)
@@ -477,6 +491,7 @@ sig
   val elements: t -> elt list
   val to_list: t -> elt list
   val min_elt: t -> elt
+  val pop_min: t -> elt * t
   val max_elt: t -> elt
   val choose: t -> elt
   val pop: t -> elt * t
@@ -550,6 +565,10 @@ struct
     (t_of_impl l, t_of_impl r)
 
   let min_elt t = Concrete.min_elt (impl_of_t t)
+  let pop_min t =
+    let mini, others = Concrete.pop_min (impl_of_t t) in
+    (mini, t_of_impl others)
+
   let max_elt t = Concrete.max_elt (impl_of_t t)
   let choose t = Concrete.choose (impl_of_t t)
   let pop t =
@@ -710,6 +729,10 @@ module PSet = struct (*$< PSet *)
   let to_list = elements
   let choose s = Concrete.choose s.set
   let min_elt s = Concrete.min_elt s.set
+  let pop_min s =
+    let mini, others = Concrete.pop_min s.set in
+    (mini, { s with set = others })
+
   let max_elt s = Concrete.max_elt s.set
   let enum s = Concrete.enum s.set
   let of_enum e = { cmp = compare; set = Concrete.of_enum compare e }
@@ -776,7 +799,7 @@ let mem x s = Concrete.mem Pervasives.compare x s
 
 let find x s = Concrete.find Pervasives.compare x s
 
-(*$T
+(*$T find
   (find 1 (of_list [1;2;3;4;5;6;7;8])) == 1
   (find 8 (of_list [1;2;3;4;5;6;7;8])) == 8
   (find 1 (singleton 1)) == 1
@@ -828,6 +851,15 @@ let min_elt s = Concrete.min_elt s
     done; \
     for_all (fun (x,_) -> x <> 0) !s \
   )
+*)
+
+let pop_min s = Concrete.pop_min s
+
+(*$T pop_min
+  try ignore (pop_min empty); false with Not_found -> true
+  pop_min (of_list [1;2]) = (1, singleton 2)
+  pop_min (singleton 2) = (2, empty)
+  pop_min (of_list [4;5;6;7]) = (4, of_list [5;6;7])
 *)
 
 let max_elt s = Concrete.max_elt s
