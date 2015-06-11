@@ -200,6 +200,10 @@ sig
   (** Alias for [elements].
       @since 2.2.0 *)
 
+  val to_array: t -> elt array
+  (** Same as [to_list] but with an array instead of a list.
+      @since NEXT_RELEASE *)
+
   val min_elt: t -> elt
   (** Return the smallest element of the given set
       (with respect to the [Ord.compare] ordering).
@@ -507,6 +511,10 @@ val to_list: 'a t -> 'a list
 (** Alias for [elements].
     @since 2.2.0 *)
 
+val to_array: 'a t -> 'a array
+(** Same as [to_list] but with an array instead of a list.
+    @since NEXT_RELEASE *)
+
 val min_elt : 'a t -> 'a
 (** returns the smallest element of the set.
     @raise Invalid_argument if given an empty set. *)
@@ -749,6 +757,10 @@ module PSet : sig
 
   val to_list: 'a t -> 'a list
   (** Alias for [elements]. *)
+
+  val to_array: 'a t -> 'a array
+  (** Same as [to_list] but with an array instead of a list.
+      @since NEXT_RELEASE *)
 
   val min_elt : 'a t -> 'a
   (** returns the smallest element of the set.

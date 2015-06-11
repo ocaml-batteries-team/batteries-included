@@ -268,6 +268,11 @@ module Concrete = struct
   let elements s = elements_aux [] s
   let to_list = elements
 
+  let to_array s =
+    let acc = BatDynArray.create () in
+    iter (BatDynArray.add acc) s;
+    BatDynArray.to_array acc
+
   let rec cons_iter s t = match s with
       Empty -> t
     | Node (l, e, r, _) -> cons_iter l (C (e, r, t))
@@ -476,6 +481,7 @@ sig
   val cardinal: t -> int
   val elements: t -> elt list
   val to_list: t -> elt list
+  val to_array: t -> elt array
   val min_elt: t -> elt
   val max_elt: t -> elt
   val choose: t -> elt
@@ -575,6 +581,7 @@ struct
   let singleton e = t_of_impl (Concrete.singleton e)
   let elements t = Concrete.elements (impl_of_t t)
   let to_list = elements
+  let to_array t = Concrete.to_array (impl_of_t t)
 
   let union s1 s2 =
     t_of_impl (Concrete.union Ord.compare (impl_of_t s1) (impl_of_t s2))
@@ -708,6 +715,7 @@ module PSet = struct (*$< PSet *)
   let cardinal s = fold (fun _ acc -> acc + 1) s 0
   let elements s = Concrete.elements s.set
   let to_list = elements
+  let to_array s = Concrete.to_array s.set
   let choose s = Concrete.choose s.set
   let min_elt s = Concrete.min_elt s.set
   let max_elt s = Concrete.max_elt s.set
@@ -811,6 +819,7 @@ let cardinal s = fold (fun _ acc -> acc + 1) s 0
 
 let elements s = Concrete.elements s
 let to_list = elements
+let to_array s = Concrete.to_array s
 
 let choose s = Concrete.choose s
 
@@ -892,6 +901,17 @@ let disjoint s1 s2 = Concrete.disjoint Pervasives.compare s1 s2
           (map BatTuple.Tuple2.swap (cartesian_product s2 s1))
  *)
 
+(*$T to_list
+  to_list empty = []
+  to_list (singleton 1) = [1]
+  to_list (of_list [1;2;3]) = [1;2;3]
+*)
+
+(*$T to_array
+  to_array empty = [||]
+  to_array (singleton 1) = [|1|]
+  to_array (of_list [1;2;3]) = [|1;2;3|]
+*)
 
 module Infix = struct
   let (<--) s x = add x s
