@@ -314,6 +314,8 @@ module Concrete = struct
 
   let of_list cmp l = List.fold_left (fun a x -> add cmp x a) empty l
 
+  let of_array cmp l = Array.fold_left (fun a x -> add cmp x a) empty l
+
   let print ?(first="{") ?(last="}") ?(sep=",") print_elt out t =
     BatEnum.print ~first ~last ~sep (fun out e -> BatPrintf.fprintf out "%a" print_elt e) out (enum t)
 
@@ -490,6 +492,7 @@ sig
   val backwards: t -> elt BatEnum.t
   val of_enum: elt BatEnum.t -> t
   val of_list: elt list -> t
+  val of_array: elt array -> t
   val print :  ?first:string -> ?last:string -> ?sep:string ->
     ('a BatInnerIO.output -> elt -> unit) ->
     'a BatInnerIO.output -> t -> unit
@@ -617,6 +620,7 @@ struct
   let compare_subset s1 s2 = compare_subset (impl_of_t s1) s2
 
   let of_list l = t_of_impl (Concrete.of_list Ord.compare l)
+  let of_array a = t_of_impl (Concrete.of_array Ord.compare a)
 
   let print ?first ?last ?sep print_elt out t =
     Concrete.print ?first ?last ?sep print_elt out (impl_of_t t)
@@ -723,6 +727,7 @@ module PSet = struct (*$< PSet *)
   let of_enum e = { cmp = compare; set = Concrete.of_enum compare e }
   let of_enum_cmp ~cmp t = { cmp = cmp; set = Concrete.of_enum cmp t }
   let of_list l = { cmp = compare; set = Concrete.of_list compare l }
+  let of_array a = { cmp = compare; set = Concrete.of_array compare a }
   let print ?first ?last ?sep print_elt out s =
     Concrete.print ?first ?last ?sep print_elt out s.set
   let for_all f s = Concrete.for_all f s.set
@@ -857,6 +862,8 @@ let of_list l = Concrete.of_list Pervasives.compare l
   )
 *)
 
+let of_array a = Concrete.of_array Pervasives.compare a
+
 let print ?first ?last ?sep print_elt out s =
   Concrete.print ?first ?last ?sep print_elt out s
 
@@ -911,6 +918,12 @@ let disjoint s1 s2 = Concrete.disjoint Pervasives.compare s1 s2
   to_array empty = [||]
   to_array (singleton 1) = [|1|]
   to_array (of_list [1;2;3]) = [|1;2;3|]
+*)
+
+(*$T of_array
+  of_array [||] = empty
+  of_array [|1|] = singleton 1
+  of_array [|1;2;3|] = of_list [1;2;3]
 *)
 
 module Infix = struct

@@ -243,6 +243,12 @@ sig
       @since 2.3.0
   *)
 
+  val of_array: elt array -> t
+  (** builds a set from the given array.
+
+      @since NEXT_RELEASE
+  *)
+
 
   (** {6 Boilerplate code}*)
 
@@ -552,6 +558,10 @@ val of_list: 'a list -> 'a t
 (** builds a set from the given list, using the default comparison
     function *)
 
+val of_array: 'a array -> 'a t
+(** builds a set from the given array, using the default comparison
+    function *)
+
 (** {6 Boilerplate code}*)
 
 
@@ -789,6 +799,10 @@ module PSet : sig
 
   val of_list: 'a list -> 'a t
   (** builds a set from the given list, using the default comparison
+      function *)
+
+  val of_array: 'a array -> 'a t
+  (** builds a set from the given array, using the default comparison
       function *)
 
   (** {6 Boilerplate code}*)
