@@ -123,6 +123,8 @@ sig
 
   val at_exn: int -> t -> elt
   (** [at_exn i s] returns element at rank [i] in [s].
+      The minimum element [m] of [s] has rank 0.
+      The element ordered just after [m] has rank 1, etc.
       @raise Not_found if [s = empty].
       @raise Invalid_argument error_message if [i < 0 || i >= cardinal s]
       @since NEXT_RELEASE *)

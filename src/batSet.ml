@@ -823,6 +823,7 @@ let at_exn i s = Concrete.at_exn i s
 (*$T
   at_exn 0 (of_list [1;2]) == 1
   at_exn 1 (of_list [1;2]) == 2
+  at_exn 2 (of_list [1;2;3;4;5]) == 3
   try ignore (at_exn 0 empty); false with Not_found -> true
   try ignore (at_exn (-1) (singleton 1)); false \
   with Invalid_argument _msg -> true
