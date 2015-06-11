@@ -83,6 +83,12 @@ sig
   (** [remove x s] returns a set containing all elements of [s],
       except [x]. If [x] was not in [s], [s] is returned unchanged. *)
 
+  val update: elt -> elt -> t -> t
+  (** [update x y s] returns a set containing all elements of [s],
+      except that [x] was replaced by [y].
+      @raise Invalid_argument if [x] does not compare equal to [y].
+      @raise Not_found if [x] is not in [s]. *)
+
   val union: t -> t -> t
   (** Set union. *)
 
@@ -379,6 +385,11 @@ val remove: 'a -> 'a t -> 'a t
 (** [remove x s] returns a set containing all elements of [s],
     except [x]. If [x] was not in [s], [s] is returned unchanged. *)
 
+val update: 'a -> 'a -> 'a t -> 'a t
+(** [update x y s] returns a set containing all elements of [s],
+    except that [x] was replaced by [y].
+    @raise Not_found if [x] was not in [s]. *)
+
 val union: 'a t -> 'a t -> 'a t
 (** [union s t] returns the union of [s] and [t] - the set containing
     all elements in either [s] and [t].  The returned set uses [t]'s
@@ -627,6 +638,11 @@ module PSet : sig
   val remove: 'a -> 'a t -> 'a t
   (** [remove x s] returns a set containing all elements of [s],
       except [x]. If [x] was not in [s], [s] is returned unchanged. *)
+
+  val update: 'a -> 'a -> 'a t -> 'a t
+  (** [update x y s] returns a set containing all elements of [s],
+      except that [x] was replaced by [y].
+      @raise Not_found if [x] was not in [s]. *)
 
   val union: 'a t -> 'a t -> 'a t
   (** [union s t] returns the union of [s] and [t] - the set containing
