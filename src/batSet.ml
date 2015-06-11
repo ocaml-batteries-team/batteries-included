@@ -99,6 +99,16 @@ module Concrete = struct
     let others = loop s in
     (!mini, others)
 
+  let pop_max s =
+    let maxi = ref (get_root s) in
+    let rec loop = function
+        Empty -> raise Not_found
+      | Node(l, v, Empty, _) -> maxi := v; l
+      | Node(l, v, r, _) -> bal l v (loop r)
+    in
+    let others = loop s in
+    (!maxi, others)
+
   let rec max_elt = function
       Empty -> raise Not_found
     | Node(l, v, Empty, _) -> v
@@ -492,6 +502,7 @@ sig
   val to_list: t -> elt list
   val min_elt: t -> elt
   val pop_min: t -> elt * t
+  val pop_max: t -> elt * t
   val max_elt: t -> elt
   val choose: t -> elt
   val pop: t -> elt * t
@@ -568,6 +579,9 @@ struct
   let pop_min t =
     let mini, others = Concrete.pop_min (impl_of_t t) in
     (mini, t_of_impl others)
+  let pop_max t =
+    let maxi, others = Concrete.pop_max (impl_of_t t) in
+    (maxi, t_of_impl others)
 
   let max_elt t = Concrete.max_elt (impl_of_t t)
   let choose t = Concrete.choose (impl_of_t t)
@@ -732,6 +746,9 @@ module PSet = struct (*$< PSet *)
   let pop_min s =
     let mini, others = Concrete.pop_min s.set in
     (mini, { s with set = others })
+  let pop_max s =
+    let maxi, others = Concrete.pop_max s.set in
+    (maxi, { s with set = others })
 
   let max_elt s = Concrete.max_elt s.set
   let enum s = Concrete.enum s.set
@@ -860,6 +877,16 @@ let pop_min s = Concrete.pop_min s
   pop_min (of_list [1;2]) = (1, singleton 2)
   pop_min (singleton 2) = (2, empty)
   pop_min (of_list [4;5;6;7]) = (4, of_list [5;6;7])
+*)
+
+let pop_max s = Concrete.pop_max s
+
+(*$T pop_max
+  try ignore (pop_max empty); false with Not_found -> true
+  pop_max (of_list [1;2]) = (2, singleton 1)
+  pop_max (singleton 2) = (2, empty)
+  let maxi, others = pop_max (of_list [4;5;6;7]) in \
+  maxi = 7 && diff others (of_list [4;5;6]) = empty
 *)
 
 let max_elt s = Concrete.max_elt s
