@@ -200,6 +200,10 @@ sig
   (** Alias for [elements].
       @since 2.2.0 *)
 
+  val to_array: t -> elt array
+  (** Same as [to_list] but with an array instead of a list.
+      @since NEXT_RELEASE *)
+
   val min_elt: t -> elt
   (** Return the smallest element of the given set
       (with respect to the [Ord.compare] ordering).
@@ -237,6 +241,12 @@ sig
   (** builds a set from the given list.
 
       @since 2.3.0
+  *)
+
+  val of_array: elt array -> t
+  (** builds a set from the given array.
+
+      @since NEXT_RELEASE
   *)
 
 
@@ -507,6 +517,10 @@ val to_list: 'a t -> 'a list
 (** Alias for [elements].
     @since 2.2.0 *)
 
+val to_array: 'a t -> 'a array
+(** Same as [to_list] but with an array instead of a list.
+    @since NEXT_RELEASE *)
+
 val min_elt : 'a t -> 'a
 (** returns the smallest element of the set.
     @raise Invalid_argument if given an empty set. *)
@@ -542,6 +556,10 @@ val backwards: 'a t -> 'a BatEnum.t
 
 val of_list: 'a list -> 'a t
 (** builds a set from the given list, using the default comparison
+    function *)
+
+val of_array: 'a array -> 'a t
+(** builds a set from the given array, using the default comparison
     function *)
 
 (** {6 Boilerplate code}*)
@@ -750,6 +768,10 @@ module PSet : sig
   val to_list: 'a t -> 'a list
   (** Alias for [elements]. *)
 
+  val to_array: 'a t -> 'a array
+  (** Same as [to_list] but with an array instead of a list.
+      @since NEXT_RELEASE *)
+
   val min_elt : 'a t -> 'a
   (** returns the smallest element of the set.
       @raise Invalid_argument if given an empty set. *)
@@ -777,6 +799,10 @@ module PSet : sig
 
   val of_list: 'a list -> 'a t
   (** builds a set from the given list, using the default comparison
+      function *)
+
+  val of_array: 'a array -> 'a t
+  (** builds a set from the given array, using the default comparison
       function *)
 
   (** {6 Boilerplate code}*)

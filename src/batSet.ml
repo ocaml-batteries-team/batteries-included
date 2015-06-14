@@ -268,6 +268,11 @@ module Concrete = struct
   let elements s = elements_aux [] s
   let to_list = elements
 
+  let to_array s =
+    let acc = BatDynArray.create () in
+    iter (BatDynArray.add acc) s;
+    BatDynArray.to_array acc
+
   let rec cons_iter s t = match s with
       Empty -> t
     | Node (l, e, r, _) -> cons_iter l (C (e, r, t))
@@ -308,6 +313,8 @@ module Concrete = struct
     BatEnum.fold (fun acc elem -> add cmp elem acc) empty e
 
   let of_list cmp l = List.fold_left (fun a x -> add cmp x a) empty l
+
+  let of_array cmp l = Array.fold_left (fun a x -> add cmp x a) empty l
 
   let print ?(first="{") ?(last="}") ?(sep=",") print_elt out t =
     BatEnum.print ~first ~last ~sep (fun out e -> BatPrintf.fprintf out "%a" print_elt e) out (enum t)
@@ -476,6 +483,7 @@ sig
   val cardinal: t -> int
   val elements: t -> elt list
   val to_list: t -> elt list
+  val to_array: t -> elt array
   val min_elt: t -> elt
   val max_elt: t -> elt
   val choose: t -> elt
@@ -484,6 +492,7 @@ sig
   val backwards: t -> elt BatEnum.t
   val of_enum: elt BatEnum.t -> t
   val of_list: elt list -> t
+  val of_array: elt array -> t
   val print :  ?first:string -> ?last:string -> ?sep:string ->
     ('a BatInnerIO.output -> elt -> unit) ->
     'a BatInnerIO.output -> t -> unit
@@ -575,6 +584,7 @@ struct
   let singleton e = t_of_impl (Concrete.singleton e)
   let elements t = Concrete.elements (impl_of_t t)
   let to_list = elements
+  let to_array t = Concrete.to_array (impl_of_t t)
 
   let union s1 s2 =
     t_of_impl (Concrete.union Ord.compare (impl_of_t s1) (impl_of_t s2))
@@ -610,6 +620,7 @@ struct
   let compare_subset s1 s2 = compare_subset (impl_of_t s1) s2
 
   let of_list l = t_of_impl (Concrete.of_list Ord.compare l)
+  let of_array a = t_of_impl (Concrete.of_array Ord.compare a)
 
   let print ?first ?last ?sep print_elt out t =
     Concrete.print ?first ?last ?sep print_elt out (impl_of_t t)
@@ -708,6 +719,7 @@ module PSet = struct (*$< PSet *)
   let cardinal s = fold (fun _ acc -> acc + 1) s 0
   let elements s = Concrete.elements s.set
   let to_list = elements
+  let to_array s = Concrete.to_array s.set
   let choose s = Concrete.choose s.set
   let min_elt s = Concrete.min_elt s.set
   let max_elt s = Concrete.max_elt s.set
@@ -715,6 +727,7 @@ module PSet = struct (*$< PSet *)
   let of_enum e = { cmp = compare; set = Concrete.of_enum compare e }
   let of_enum_cmp ~cmp t = { cmp = cmp; set = Concrete.of_enum cmp t }
   let of_list l = { cmp = compare; set = Concrete.of_list compare l }
+  let of_array a = { cmp = compare; set = Concrete.of_array compare a }
   let print ?first ?last ?sep print_elt out s =
     Concrete.print ?first ?last ?sep print_elt out s.set
   let for_all f s = Concrete.for_all f s.set
@@ -811,6 +824,7 @@ let cardinal s = fold (fun _ acc -> acc + 1) s 0
 
 let elements s = Concrete.elements s
 let to_list = elements
+let to_array s = Concrete.to_array s
 
 let choose s = Concrete.choose s
 
@@ -847,6 +861,8 @@ let of_list l = Concrete.of_list Pervasives.compare l
     s1 = s2 \
   )
 *)
+
+let of_array a = Concrete.of_array Pervasives.compare a
 
 let print ?first ?last ?sep print_elt out s =
   Concrete.print ?first ?last ?sep print_elt out s
@@ -892,6 +908,23 @@ let disjoint s1 s2 = Concrete.disjoint Pervasives.compare s1 s2
           (map BatTuple.Tuple2.swap (cartesian_product s2 s1))
  *)
 
+(*$T to_list
+  to_list empty = []
+  to_list (singleton 1) = [1]
+  to_list (of_list [1;2;3]) = [1;2;3]
+*)
+
+(*$T to_array
+  to_array empty = [||]
+  to_array (singleton 1) = [|1|]
+  to_array (of_list [1;2;3]) = [|1;2;3|]
+*)
+
+(*$T of_array
+  of_array [||] = empty
+  of_array [|1|] = singleton 1
+  of_array [|1;2;3|] = of_list [1;2;3]
+*)
 
 module Infix = struct
   let (<--) s x = add x s
