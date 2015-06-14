@@ -93,7 +93,23 @@ let _ = dispatch begin function
 
   | After_rules ->
 
-      (* Rules to create libraries from .mllib instead of .cmo.
+     (* use the home-made prefilter preprocessor, which
+        looks for lines starting with ##Vx##, and delete just the tag or the
+        whole line depending whether the x matches the ocaml major version
+      *)
+     let prefilter_rule ext =
+       let src = "%." ^ ext ^ "v" in
+       let tgt = "%." ^ ext in
+       rule (Printf.sprintf "prefilter: %s --> %s" src tgt)
+        ~prod:tgt
+        ~deps:[src; "build/prefilter.byte"]
+        (fun env _build ->
+         Cmd (S [P "build/prefilter.byte"; P (env src); Sh ">"; Px (env tgt)]))
+     in
+     prefilter_rule "ml";
+     prefilter_rule "mli";
+
+     (* Rules to create libraries from .mllib instead of .cmo.
          We need this because src/batteries.mllib is hidden by src/batteries.ml *)
       rule ".mllib --> .cma"
         ~insert:`top
