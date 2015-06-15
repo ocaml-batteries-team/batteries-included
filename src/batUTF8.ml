@@ -252,6 +252,17 @@ let enum s =
           c
         end
     )
+(*$T enum
+   "" |> of_latin1 |> enum |> BatList.of_enum = []
+   "foo" |> of_latin1 |> enum |> BatList.of_enum = List.map BatUChar.of_char ['f'; 'o'; 'o']
+   let e = of_latin1 "abcdef" |> enum in \
+   for _i = 0 to 2 do BatEnum.junk e done; \
+   let e2 = BatEnum.clone e in \
+   let to_string en = BatList.of_enum en |> List.map BatUChar.char_of |> BatString.implode in \
+   to_string e = "def" && to_string e2 = "def"
+   init 3 (fun i -> BatUChar.of_int (1211+i)) |> enum |> BatList.of_enum = List.map BatUChar.of_int [1211;1212;1213]
+*)
+(* The last test checks that we can make a round-trip of non-ASCII strings like "һҼҽ" *)
 
 
 let escaped = String.escaped
