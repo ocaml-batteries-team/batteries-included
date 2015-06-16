@@ -65,44 +65,22 @@ else
 endif
 endif
 
-PREPROCESSED_FILES = \
- src/batArray.mli src/batArray.ml \
- src/batBigarray.ml src/batBigarray.mli \
- src/batBuffer.ml \
- src/batBytes.ml src/batBytes.mli \
- src/batDigest.ml \
- src/batFormat.ml \
- src/batHashtbl.ml \
- src/batInnerPervasives.ml \
- src/batList.ml \
- src/batMarshal.ml src/batMarshal.mli \
- src/batPervasives.mli \
- src/batPrintexc.mli \
- src/batPrintf.ml src/batPrintf.mli \
- src/batStream.ml \
- src/batSys.mli \
- src/batUnix.ml src/batUnix.mli
-
 .PHONY: all clean doc install uninstall reinstall test qtest qtest-clean camfail camfailunk coverage man
 
-all: prefilter
+all:
 	@echo "Build mode:" $(MODE)
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(TARGETS)
-
-clean-prefilter:
-	@${RM} $(PREPROCESSED_FILES)
 
 clean:
 	@${RM} src/batteriesConfig.ml src/batUnix.mli batteries.odocl bench.log
 	@${RM} -r man/
 	@$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -clean
-	$(MAKE) clean-prefilter
 	@echo " Cleaned up working copy" # Note: ocamlbuild eats the first char!
 
 batteries.odocl: src/batteries.mllib src/batteriesThread.mllib
 	cat $^ > $@
 
-doc: prefilter batteries.odocl
+doc: batteries.odocl
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) batteries.docdir/index.html
 
 man: all batteries.odocl
@@ -133,26 +111,20 @@ reinstall:
 	$(MAKE) install
 
 ###############################################################################
-#	Pre-Processing of Source Code
+#      Pre-Processing of Source Code
 ###############################################################################
 
-PREFILTER_BIN = _build/build/prefilter.byte
-$(PREFILTER_BIN):
-	ocamlbuild -lib str build/prefilter.byte
+# the prefilter logic has moved to myocamlbuild.ml
+# we keep the two void rules below for backward-compatibility for now
+# (devs may have scripts calling them)
+#
+# For the record, and the ease of porting the build system to
+# something else, the "prefilter" step preprocessed each file whose
+# extension ends with a 'v', for example '.mliv', using the command
+#     build/prefilter.byte foo.mliv > foo.mli
 
-prefilter: $(PREFILTER_BIN) $(PREPROCESSED_FILES)
-
-# Ocaml 4.00 can benefit strongly from some pre-processing to expose
-# slightly different interfaces
-.SUFFIXES: .mli .mliv .ml .mlv
-
-# Look for lines starting with ##Vx##, and delete just the tag or the
-# whole line depending whether the x matches the ocaml major version
-.mliv.mli: $(PREFILTER_BIN)
-	$(PREFILTER_BIN) $^ > $@
-
-.mlv.ml: $(PREFILTER_BIN)
-	$(PREFILTER_BIN) $^ > $@
+prefilter:
+clean-prefilter:
 
 ###############################################################################
 #	BUILDING AND RUNNING UNIT TESTS
@@ -162,7 +134,7 @@ prefilter: $(PREFILTER_BIN) $(PREPROCESSED_FILES)
 
 DONTTEST=src/batteriesHelp.ml
 TESTABLE ?= $(filter-out $(DONTTEST), $(wildcard src/*.ml))
-TESTDEPS = prefilter $(TESTABLE)
+TESTDEPS = $(TESTABLE)
 
 ### Test suite: "offline" unit tests
 ##############################################
@@ -195,32 +167,32 @@ qtest-byte-clean:
 	@${RM} $(QTESTDIR)/all_tests.ml
 	@${MAKE} _build/$(QTESTDIR)/all_tests.byte
 
-qtest-byte: prefilter qtest-byte-clean
+qtest-byte: qtest-byte-clean
 	@_build/$(QTESTDIR)/all_tests.byte
 
 qtest-clean:
 	@${RM} $(QTESTDIR)/all_tests.ml
 	@${MAKE} _build/$(QTESTDIR)/all_tests.$(EXT)
 
-qtest: prefilter qtest-clean
+qtest: qtest-clean
 	@_build/$(QTESTDIR)/all_tests.$(EXT)
 
 ### run all unit tests
 ##############################################
 
-test-byte: prefilter _build/testsuite/main.byte _build/$(QTESTDIR)/all_tests.byte
+test-byte: _build/testsuite/main.byte _build/$(QTESTDIR)/all_tests.byte
 	@_build/testsuite/main.byte
 	@echo "" # newline after "OK"
 	@_build/$(QTESTDIR)/all_tests.byte
 
-test-native: prefilter _build/testsuite/main.native _build/$(QTESTDIR)/all_tests.native
+test-native: _build/testsuite/main.native _build/$(QTESTDIR)/all_tests.native
 	@_build/testsuite/main.native
 	@echo "" # newline after "OK"
 	@_build/$(QTESTDIR)/all_tests.native
 
 full-test: $(TEST_TARGET)
 
-test-compat: prefilter src/batteries_compattest.ml
+test-compat: src/batteries_compattest.ml
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) src/batteries_compattest.byte
 
 test: test-byte test-compat
