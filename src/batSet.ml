@@ -126,6 +126,23 @@ module Concrete = struct
       if c = 0 then merge l r else
       if c < 0 then bal (remove cmp x l) v r else bal l v (remove cmp x r)
 
+  let update cmp x y s =
+    if cmp x y <> 0 then
+      add cmp y (remove cmp x s)
+    else
+      let rec loop = function
+        | Empty -> raise Not_found
+        | Node(l, v, r, h) ->
+          let c = cmp x v in
+          if c = 0 then
+            Node(l, y, r, h)
+          else if c < 0 then
+            Node(loop l, v, r, h)
+          else
+            Node(l, v, loop r, h)
+      in
+      loop s
+
   let rec mem cmp x = function
       Empty -> false
     | Node(l, v, r, _) ->
@@ -459,6 +476,7 @@ sig
   val find: elt -> t -> elt
   val add: elt -> t -> t
   val remove: elt -> t -> t
+  val update: elt -> elt -> t -> t
   val union: t -> t -> t
   val inter: t -> t -> t
   val diff: t -> t -> t
@@ -543,6 +561,8 @@ struct
   let backwards t = Concrete.backwards (impl_of_t t)
 
   let remove e t = t_of_impl (Concrete.remove Ord.compare e (impl_of_t t))
+  let update e1 e2 t =
+    t_of_impl (Concrete.update Ord.compare e1 e2 (impl_of_t t))
   let add e t = t_of_impl (Concrete.add Ord.compare e (impl_of_t t))
 
   let iter f t = Concrete.iter f (impl_of_t t)
@@ -708,6 +728,7 @@ module PSet = struct (*$< PSet *)
   let find x s = Concrete.find s.cmp x s.set
   let add x s  = { s with set = Concrete.add s.cmp x s.set }
   let remove x s = { s with set = Concrete.remove s.cmp x s.set }
+  let update x y s = { s with set = Concrete.update s.cmp x y s.set }
   let iter f s = Concrete.iter f s.set
   let fold f s acc = Concrete.fold f s.set acc
   let map f s =
@@ -789,7 +810,7 @@ let mem x s = Concrete.mem Pervasives.compare x s
 
 let find x s = Concrete.find Pervasives.compare x s
 
-(*$T
+(*$T find
   (find 1 (of_list [1;2;3;4;5;6;7;8])) == 1
   (find 8 (of_list [1;2;3;4;5;6;7;8])) == 8
   (find 1 (singleton 1)) == 1
@@ -803,6 +824,8 @@ let find x s = Concrete.find Pervasives.compare x s
 let add x s  = Concrete.add Pervasives.compare x s
 
 let remove x s = Concrete.remove Pervasives.compare x s
+
+let update x y s = Concrete.update Pervasives.compare x y s
 
 let iter f s = Concrete.iter f s
 
@@ -906,7 +929,7 @@ let disjoint s1 s2 = Concrete.disjoint Pervasives.compare s1 s2
   let s1, s2 = of_list ["a"; "b"; "c"], of_list [1;2;3] in \
     equal (cartesian_product s1 s2) \
           (map BatTuple.Tuple2.swap (cartesian_product s2 s1))
- *)
+*)
 
 (*$T to_list
   to_list empty = []
@@ -924,6 +947,24 @@ let disjoint s1 s2 = Concrete.disjoint Pervasives.compare s1 s2
   of_array [||] = empty
   of_array [|1|] = singleton 1
   of_array [|1;2;3|] = of_list [1;2;3]
+*)
+
+(*$inject
+  module TestSet =
+    Set.Make
+      (struct
+        type t = int * int
+        let compare (x, _) (y, _) = BatInt.compare x y
+      end) ;;
+  let ts = TestSet.of_list [(1,0);(2,0);(3,0)] ;;
+*)
+(*$T
+  try ignore(TestSet.update (1, 0) (1, 1) TestSet.empty); false \
+  with Not_found -> true
+  TestSet.update (1,0) (1,1)  ts = TestSet.of_list [(1,1);(2,0);(3,0)]
+  TestSet.update (2,0) (2,1)  ts = TestSet.of_list [(1,0);(2,1);(3,0)]
+  TestSet.update (3,0) (3,1)  ts = TestSet.of_list [(1,0);(2,0);(3,1)]
+  TestSet.update (3,0) (-1,0) ts = TestSet.of_list [(1,0);(2,0);(-1,0)]
 *)
 
 module Infix = struct

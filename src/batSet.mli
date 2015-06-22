@@ -83,6 +83,13 @@ sig
   (** [remove x s] returns a set containing all elements of [s],
       except [x]. If [x] was not in [s], [s] is returned unchanged. *)
 
+  val update: elt -> elt -> t -> t
+  (** [update x y s] replace [x] by [y] in [s].
+      [update] is faster when [x] compares equal to [y] according
+      to the comparison function used by your set.
+      @raise Not_found if [x] is not in [s].
+      @since NEXT_RELEASE *)
+
   val union: t -> t -> t
   (** Set union. *)
 
@@ -389,6 +396,13 @@ val remove: 'a -> 'a t -> 'a t
 (** [remove x s] returns a set containing all elements of [s],
     except [x]. If [x] was not in [s], [s] is returned unchanged. *)
 
+val update: 'a -> 'a -> 'a t -> 'a t
+(** [update x y s] replace [x] by [y] in [s].
+    [update] is faster when [x] compares equal to [y] according
+    to the comparison function used by your set.
+    @raise Not_found if [x] is not in [s].
+    @since NEXT_RELEASE *)
+
 val union: 'a t -> 'a t -> 'a t
 (** [union s t] returns the union of [s] and [t] - the set containing
     all elements in either [s] and [t].  The returned set uses [t]'s
@@ -645,6 +659,13 @@ module PSet : sig
   val remove: 'a -> 'a t -> 'a t
   (** [remove x s] returns a set containing all elements of [s],
       except [x]. If [x] was not in [s], [s] is returned unchanged. *)
+
+  val update: 'a -> 'a -> 'a t -> 'a t
+  (** [update x y s] replace [x] by [y] in [s].
+      [update] is faster when [x] compares equal to [y] according
+      to the comparison function used by your set.
+      @raise Not_found if [x] is not in [s].
+      @since NEXT_RELEASE *)
 
   val union: 'a t -> 'a t -> 'a t
   (** [union s t] returns the union of [s] and [t] - the set containing
