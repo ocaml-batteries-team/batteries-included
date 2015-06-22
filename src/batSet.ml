@@ -126,20 +126,22 @@ module Concrete = struct
       if c = 0 then merge l r else
       if c < 0 then bal (remove cmp x l) v r else bal l v (remove cmp x r)
 
-  let update cmp x y =
-    if cmp x y <> 0 then invalid_arg "Set.update";
-    let rec loop = function
-      | Empty -> raise Not_found
-      | Node(l, v, r, h) ->
-        let c = cmp x v in
-        if c = 0 then
-          Node(l, y, r, h)
-        else if c < 0 then
-          Node(loop l, v, r, h)
-        else
-          Node(l, v, loop r, h)
-    in
-    loop
+  let update cmp x y s =
+    if cmp x y <> 0 then
+      add cmp y (remove cmp x s)
+    else
+      let rec loop = function
+        | Empty -> raise Not_found
+        | Node(l, v, r, h) ->
+          let c = cmp x v in
+          if c = 0 then
+            Node(l, y, r, h)
+          else if c < 0 then
+            Node(loop l, v, r, h)
+          else
+            Node(l, v, loop r, h)
+      in
+      loop s
 
   let rec mem cmp x = function
       Empty -> false
@@ -810,7 +812,7 @@ let add x s  = Concrete.add Pervasives.compare x s
 
 let remove x s = Concrete.remove Pervasives.compare x s
 
-let udpate x y s = Concrete.update Pervasives.compare x y s
+let update x y s = Concrete.update Pervasives.compare x y s
 
 let iter f s = Concrete.iter f s
 
@@ -913,21 +915,22 @@ let disjoint s1 s2 = Concrete.disjoint Pervasives.compare s1 s2
           (map BatTuple.Tuple2.swap (cartesian_product s2 s1))
 *)
 
-(*$T update
-  module TestSet = Set.Make( \
-    struct \
-      type t = int * int \
-      let compare (x, _) (y, _) = Int.compare x y \
-    end) \
-  let open TestSet in \
-  try ignore(update (1, 0) (1, 1) empty); false \
-  with Not_found -> true; \
-  try ignore(update (1, 0) (2, 1) empty); false \
-  with Invalid_argument _ -> true; \
-  let ts = of_list [(1,0);(2,0);(3,0)] in \
-  (update (1,0) (1,1) ts = of_list [(1,1);(2,0);(3,0)]) && \
-  (update (2,0) (2,1) ts = of_list [(1,0);(2,1);(3,0)]) && \
-  (update (3,0) (3,1) ts = of_list [(1,0);(2,0);(3,1)])
+(*$inject
+  module TestSet =
+    Set.Make
+      (struct
+        type t = int * int
+        let compare (x, _) (y, _) = BatInt.compare x y
+      end) ;;
+  let ts = TestSet.of_list [(1,0);(2,0);(3,0)] ;;
+*)
+(*$T
+  try ignore(TestSet.update (1, 0) (1, 1) TestSet.empty); false \
+  with Not_found -> true
+  TestSet.update (1,0) (1,1)  ts = TestSet.of_list [(1,1);(2,0);(3,0)]
+  TestSet.update (2,0) (2,1)  ts = TestSet.of_list [(1,0);(2,1);(3,0)]
+  TestSet.update (3,0) (3,1)  ts = TestSet.of_list [(1,0);(2,0);(3,1)]
+  TestSet.update (3,0) (-1,0) ts = TestSet.of_list [(1,0);(2,0);(-1,0)]
 *)
 
 module Infix = struct
