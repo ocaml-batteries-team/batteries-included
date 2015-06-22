@@ -121,6 +121,14 @@ sig
       The elements of [s] are presented to [f] in increasing order
       with respect to the ordering over the type of the elements. *)
 
+  val at_exn: int -> t -> elt
+  (** [at_exn i s] returns element at rank [i] in [s].
+      The minimum element [m] of [s] has rank 0.
+      The element ordered just after [m] has rank 1, etc.
+      @raise Not_found if [s = empty].
+      @raise Invalid_argument error_message if [i < 0 || i >= cardinal s]
+      @since NEXT_RELEASE *)
+
   val map: (elt -> elt) -> t -> t
   (** [map f x] creates a new set with elements [f a0],
       [f a1]... [f aN], where [a0],[a1]..[aN] are the
@@ -450,6 +458,12 @@ val iter: ('a -> unit) -> 'a t -> unit
     The elements of [s] are presented to [f] in increasing order
     with respect to the ordering over the type of the elements. *)
 
+val at_exn: int -> 'a t -> 'a
+  (** [at_exn i s] returns element at rank [i] in [s].
+      @raise Not_found if [s = empty].
+      @raise Invalid_argument error_message if [i < 0 || i >= cardinal s]
+      @since NEXT_RELEASE *)
+
 val map: ('a -> 'b) -> 'a t -> 'b t
 (** [map f x] creates a new set with elements [f a0],
     [f a1]... [f aN], where [a0], [a1], ..., [aN] are the
@@ -725,6 +739,12 @@ module PSet : sig
   (** [iter f s] applies [f] in turn to all elements of [s].
       The elements of [s] are presented to [f] in increasing order
       with respect to the ordering over the type of the elements. *)
+
+  val at_exn: int -> 'a t -> 'a
+  (** [at_exn i s] returns element at rank [i] in [s].
+      @raise Not_found if [s = empty].
+      @raise Invalid_argument error_message if [i < 0 || i >= cardinal s]
+      @since NEXT_RELEASE *)
 
   (* under-specified; either give a 'b comparison,
      or keep ('a -> 'a) (preferred choice) *)
