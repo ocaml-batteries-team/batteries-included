@@ -122,7 +122,9 @@ sig
       with respect to the ordering over the type of the elements. *)
 
   val at_rank_exn: int -> t -> elt
-  (** [at_rank_exn i s] returns element at rank [i] in [s].
+  (** [at_rank_exn i s] returns element at rank [i] in [s], that is
+      the [i]-th element in increasing order
+      (the [0]-th element being the smallest element of [s]).
       @raise Not_found if [s = empty].
       @raise Invalid_argument error_message if [i < 0 || i >= cardinal s]
       @since NEXT_RELEASE *)
@@ -457,7 +459,9 @@ val iter: ('a -> unit) -> 'a t -> unit
     with respect to the ordering over the type of the elements. *)
 
 val at_rank_exn: int -> 'a t -> 'a
-(** [at_rank_exn i s] returns element at rank [i] in [s].
+(** [at_rank_exn i s] returns element at rank [i] in [s], that is
+    the [i]-th element in increasing order
+    (the [0]-th element being the smallest element of [s]).
     @raise Not_found if [s = empty].
     @raise Invalid_argument error_message if [i < 0 || i >= cardinal s]
     @since NEXT_RELEASE *)
@@ -739,7 +743,9 @@ module PSet : sig
       with respect to the ordering over the type of the elements. *)
 
   val at_rank_exn: int -> 'a t -> 'a
-  (** [at_rank_exn i s] returns element at rank [i] in [s].
+  (** [at_rank_exn i s] returns element at rank [i] in [s], that is
+      the [i]-th element in increasing order
+      (the [0]-th element being the smallest element of [s]).
       @raise Not_found if [s = empty].
       @raise Invalid_argument error_message if [i < 0 || i >= cardinal s]
       @since NEXT_RELEASE *)
