@@ -210,6 +210,26 @@ sig
 
     @raise Not_found if the set is empty. *)
 
+  val pop_min: t -> elt * t
+  (** Returns the smallest element of the given set
+      along with the rest of the set.
+      Semantically equivalent and faster than
+
+      [let mini = min_elt s in (mini, remove mini s)]
+
+      @raise Not_found if the set is empty.
+      @since NEXT_RELEASE *)
+
+  val pop_max: t -> elt * t
+  (** Returns the biggest element of the given set
+      along with the rest of the set.
+      Semantically equivalent and faster than
+
+      [let maxi = max_elt s in (maxi, remove maxi s)]
+
+      @raise Not_found if the set is empty.
+      @since NEXT_RELEASE *)
+
   val max_elt: t -> elt
   (** Same as {!Set.S.min_elt}, but returns the largest element of the
       given set. *)
@@ -525,6 +545,26 @@ val min_elt : 'a t -> 'a
 (** returns the smallest element of the set.
     @raise Invalid_argument if given an empty set. *)
 
+val pop_min: 'a t -> 'a * 'a t
+(** Returns the smallest element of the given set
+    along with the rest of the set.
+    Semantically equivalent and faster than
+
+    [let mini = min_elt s in (mini, remove mini s)]
+
+    @raise Not_found if the set is empty.
+    @since NEXT_RELEASE *)
+
+val pop_max: 'a t -> 'a * 'a t
+(** Returns the biggest element of the given set
+    along with the rest of the set.
+    Semantically equivalent and faster than
+
+    [let maxi = max_elt s in (maxi, remove maxi s)]
+
+    @raise Not_found if the set is empty.
+    @since NEXT_RELEASE *)
+
 val max_elt : 'a t -> 'a
 (** returns the largest element of the set.
     @raise Invalid_argument if given an empty set.*)
@@ -775,6 +815,26 @@ module PSet : sig
   val min_elt : 'a t -> 'a
   (** returns the smallest element of the set.
       @raise Invalid_argument if given an empty set. *)
+
+  val pop_min: 'a t -> 'a * 'a t
+  (** Returns the smallest element of the given set
+      along with the rest of the set.
+      Semantically equivalent and faster than
+
+      [let mini = min_elt s in (mini, remove mini s)]
+
+      @raise Not_found if the set is empty.
+      @since NEXT_RELEASE *)
+
+  val pop_max: 'a t -> 'a * 'a t
+  (** Returns the biggest element of the given set
+      along with the rest of the set.
+      Semantically equivalent and faster than
+
+      [let maxi = max_elt s in (maxi, remove maxi s)]
+
+      @raise Not_found if the set is empty.
+      @since NEXT_RELEASE *)
 
   val max_elt : 'a t -> 'a
   (** returns the largest element of the set.
