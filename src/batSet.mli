@@ -121,8 +121,8 @@ sig
       The elements of [s] are presented to [f] in increasing order
       with respect to the ordering over the type of the elements. *)
 
-  val at_exn: int -> t -> elt
-  (** [at_exn i s] returns element at rank [i] in [s].
+  val at_rank_exn: int -> t -> elt
+  (** [at_rank_exn i s] returns element at rank [i] in [s].
       @raise Not_found if [s = empty].
       @raise Invalid_argument error_message if [i < 0 || i >= cardinal s]
       @since NEXT_RELEASE *)
@@ -426,8 +426,8 @@ val iter: ('a -> unit) -> 'a t -> unit
     The elements of [s] are presented to [f] in increasing order
     with respect to the ordering over the type of the elements. *)
 
-val at_exn: int -> 'a t -> 'a
-  (** [at_exn i s] returns element at rank [i] in [s].
+val at_rank_exn: int -> 'a t -> 'a
+  (** [at_rank_exn i s] returns element at rank [i] in [s].
       @raise Not_found if [s = empty].
       @raise Invalid_argument error_message if [i < 0 || i >= cardinal s]
       @since NEXT_RELEASE *)
@@ -680,8 +680,8 @@ module PSet : sig
       The elements of [s] are presented to [f] in increasing order
       with respect to the ordering over the type of the elements. *)
 
-  val at_exn: int -> 'a t -> 'a
-  (** [at_exn i s] returns element at rank [i] in [s].
+  val at_rank_exn: int -> 'a t -> 'a
+  (** [at_rank_exn i s] returns element at rank [i] in [s].
       @raise Not_found if [s = empty].
       @raise Invalid_argument error_message if [i < 0 || i >= cardinal s]
       @since NEXT_RELEASE *)
