@@ -150,6 +150,23 @@ module Concrete = struct
       if c = 0 then merge l r else
       if c < 0 then bal (remove cmp x l) v r else bal l v (remove cmp x r)
 
+  let update cmp x y s =
+    if cmp x y <> 0 then
+      add cmp y (remove cmp x s)
+    else
+      let rec loop = function
+        | Empty -> raise Not_found
+        | Node(l, v, r, h) ->
+          let c = cmp x v in
+          if c = 0 then
+            Node(l, y, r, h)
+          else if c < 0 then
+            Node(loop l, v, r, h)
+          else
+            Node(l, v, loop r, h)
+      in
+      loop s
+
   let rec mem cmp x = function
       Empty -> false
     | Node(l, v, r, _) ->
@@ -166,10 +183,32 @@ module Concrete = struct
       Empty -> ()
     | Node(l, v, r, _) -> iter f l; f v; iter f r
 
+  let get_root = function
+    | Empty -> raise Not_found
+    | Node(l, v, r, _) -> v
+
   let rec fold f s accu =
     match s with
       Empty -> accu
     | Node(l, v, r, _) -> fold f r (f v (fold f l accu))
+
+  exception Found
+
+  let at_rank_exn i s =
+    if i < 0 then invalid_arg "Set.at_rank_exn: negative index not allowed";
+    let res = ref (get_root s) in (* raises Not_found if empty *)
+    try
+      let (_: int) =
+        fold (fun node j ->
+            if j <> i then j + 1
+            else begin
+              res := node;
+              raise Found
+            end
+          ) s 0
+      in
+      invalid_arg "Set.at_rank_exn i s: i >= (Set.cardinal s)"
+    with Found -> !res
 
   let map cmp f s =
     fold (fun v acc -> add cmp (f v) acc) s empty
@@ -483,6 +522,7 @@ sig
   val find: elt -> t -> elt
   val add: elt -> t -> t
   val remove: elt -> t -> t
+  val update: elt -> elt -> t -> t
   val union: t -> t -> t
   val inter: t -> t -> t
   val diff: t -> t -> t
@@ -493,6 +533,7 @@ sig
   val disjoint: t -> t -> bool
   val compare_subset: t -> t -> int
   val iter: (elt -> unit) -> t -> unit
+  val at_rank_exn: int -> t -> elt
   val map: (elt -> elt) -> t -> t
   val filter: (elt -> bool) -> t -> t
   val filter_map: (elt -> elt option) -> t -> t
@@ -569,9 +610,12 @@ struct
   let backwards t = Concrete.backwards (impl_of_t t)
 
   let remove e t = t_of_impl (Concrete.remove Ord.compare e (impl_of_t t))
+  let update e1 e2 t =
+    t_of_impl (Concrete.update Ord.compare e1 e2 (impl_of_t t))
   let add e t = t_of_impl (Concrete.add Ord.compare e (impl_of_t t))
 
   let iter f t = Concrete.iter f (impl_of_t t)
+  let at_rank_exn i t = Concrete.at_rank_exn i (impl_of_t t)
   let map f t = t_of_impl (Concrete.map Ord.compare f (impl_of_t t))
   let fold f t acc = Concrete.fold f (impl_of_t t) acc
   let filter f t = t_of_impl (Concrete.filter Ord.compare f (impl_of_t t))
@@ -741,7 +785,9 @@ module PSet = struct (*$< PSet *)
   let find x s = Concrete.find s.cmp x s.set
   let add x s  = { s with set = Concrete.add s.cmp x s.set }
   let remove x s = { s with set = Concrete.remove s.cmp x s.set }
+  let update x y s = { s with set = Concrete.update s.cmp x y s.set }
   let iter f s = Concrete.iter f s.set
+  let at_rank_exn i s = Concrete.at_rank_exn i s.set
   let fold f s acc = Concrete.fold f s.set acc
   let map f s =
     { cmp = Pervasives.compare; set = Concrete.map Pervasives.compare f s.set }
@@ -844,7 +890,21 @@ let add x s  = Concrete.add Pervasives.compare x s
 
 let remove x s = Concrete.remove Pervasives.compare x s
 
+let update x y s = Concrete.update Pervasives.compare x y s
+
 let iter f s = Concrete.iter f s
+
+let at_rank_exn i s = Concrete.at_rank_exn i s
+
+(*$T
+  at_rank_exn 0 (of_list [1;2]) == 1
+  at_rank_exn 1 (of_list [1;2]) == 2
+  try ignore (at_rank_exn 0 empty); false with Not_found -> true
+  try ignore (at_rank_exn (-1) (singleton 1)); false \
+  with Invalid_argument _msg -> true
+  try ignore (at_rank_exn 1 (singleton 1)); false \
+  with Invalid_argument _msg -> true
+*)
 
 let fold f s acc = Concrete.fold f s acc
 
@@ -965,7 +1025,7 @@ let disjoint s1 s2 = Concrete.disjoint Pervasives.compare s1 s2
   let s1, s2 = of_list ["a"; "b"; "c"], of_list [1;2;3] in \
     equal (cartesian_product s1 s2) \
           (map BatTuple.Tuple2.swap (cartesian_product s2 s1))
- *)
+*)
 
 (*$T to_list
   to_list empty = []
@@ -983,6 +1043,24 @@ let disjoint s1 s2 = Concrete.disjoint Pervasives.compare s1 s2
   of_array [||] = empty
   of_array [|1|] = singleton 1
   of_array [|1;2;3|] = of_list [1;2;3]
+*)
+
+(*$inject
+  module TestSet =
+    Set.Make
+      (struct
+        type t = int * int
+        let compare (x, _) (y, _) = BatInt.compare x y
+      end) ;;
+  let ts = TestSet.of_list [(1,0);(2,0);(3,0)] ;;
+*)
+(*$T
+  try ignore(TestSet.update (1, 0) (1, 1) TestSet.empty); false \
+  with Not_found -> true
+  TestSet.update (1,0) (1,1)  ts = TestSet.of_list [(1,1);(2,0);(3,0)]
+  TestSet.update (2,0) (2,1)  ts = TestSet.of_list [(1,0);(2,1);(3,0)]
+  TestSet.update (3,0) (3,1)  ts = TestSet.of_list [(1,0);(2,0);(3,1)]
+  TestSet.update (3,0) (-1,0) ts = TestSet.of_list [(1,0);(2,0);(-1,0)]
 *)
 
 module Infix = struct

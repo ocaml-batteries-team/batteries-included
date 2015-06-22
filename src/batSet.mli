@@ -83,6 +83,13 @@ sig
   (** [remove x s] returns a set containing all elements of [s],
       except [x]. If [x] was not in [s], [s] is returned unchanged. *)
 
+  val update: elt -> elt -> t -> t
+  (** [update x y s] replace [x] by [y] in [s].
+      [update] is faster when [x] compares equal to [y] according
+      to the comparison function used by your set.
+      @raise Not_found if [x] is not in [s].
+      @since NEXT_RELEASE *)
+
   val union: t -> t -> t
   (** Set union. *)
 
@@ -120,6 +127,12 @@ sig
   (** [iter f s] applies [f] in turn to all elements of [s].
       The elements of [s] are presented to [f] in increasing order
       with respect to the ordering over the type of the elements. *)
+
+  val at_rank_exn: int -> t -> elt
+  (** [at_rank_exn i s] returns element at rank [i] in [s].
+      @raise Not_found if [s = empty].
+      @raise Invalid_argument error_message if [i < 0 || i >= cardinal s]
+      @since NEXT_RELEASE *)
 
   val map: (elt -> elt) -> t -> t
   (** [map f x] creates a new set with elements [f a0],
@@ -409,6 +422,13 @@ val remove: 'a -> 'a t -> 'a t
 (** [remove x s] returns a set containing all elements of [s],
     except [x]. If [x] was not in [s], [s] is returned unchanged. *)
 
+val update: 'a -> 'a -> 'a t -> 'a t
+(** [update x y s] replace [x] by [y] in [s].
+    [update] is faster when [x] compares equal to [y] according
+    to the comparison function used by your set.
+    @raise Not_found if [x] is not in [s].
+    @since NEXT_RELEASE *)
+
 val union: 'a t -> 'a t -> 'a t
 (** [union s t] returns the union of [s] and [t] - the set containing
     all elements in either [s] and [t].  The returned set uses [t]'s
@@ -449,6 +469,12 @@ val iter: ('a -> unit) -> 'a t -> unit
 (** [iter f s] applies [f] in turn to all elements of [s].
     The elements of [s] are presented to [f] in increasing order
     with respect to the ordering over the type of the elements. *)
+
+val at_rank_exn: int -> 'a t -> 'a
+  (** [at_rank_exn i s] returns element at rank [i] in [s].
+      @raise Not_found if [s = empty].
+      @raise Invalid_argument error_message if [i < 0 || i >= cardinal s]
+      @since NEXT_RELEASE *)
 
 val map: ('a -> 'b) -> 'a t -> 'b t
 (** [map f x] creates a new set with elements [f a0],
@@ -686,6 +712,13 @@ module PSet : sig
   (** [remove x s] returns a set containing all elements of [s],
       except [x]. If [x] was not in [s], [s] is returned unchanged. *)
 
+  val update: 'a -> 'a -> 'a t -> 'a t
+  (** [update x y s] replace [x] by [y] in [s].
+      [update] is faster when [x] compares equal to [y] according
+      to the comparison function used by your set.
+      @raise Not_found if [x] is not in [s].
+      @since NEXT_RELEASE *)
+
   val union: 'a t -> 'a t -> 'a t
   (** [union s t] returns the union of [s] and [t] - the set containing
       all elements in either [s] and [t].  The returned set uses [t]'s
@@ -725,6 +758,12 @@ module PSet : sig
   (** [iter f s] applies [f] in turn to all elements of [s].
       The elements of [s] are presented to [f] in increasing order
       with respect to the ordering over the type of the elements. *)
+
+  val at_rank_exn: int -> 'a t -> 'a
+  (** [at_rank_exn i s] returns element at rank [i] in [s].
+      @raise Not_found if [s = empty].
+      @raise Invalid_argument error_message if [i < 0 || i >= cardinal s]
+      @since NEXT_RELEASE *)
 
   (* under-specified; either give a 'b comparison,
      or keep ('a -> 'a) (preferred choice) *)
