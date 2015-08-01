@@ -580,6 +580,14 @@ val merge : ('a -> 'a -> bool) -> 'a t -> 'a t -> 'a t
     in increasing order, then [merge (<) a b] will also be sorted.
 *)
 
+val interleave : 'a t array -> 'a t
+(** [interleave enums] creates a new enumeration from an array of enumerations.
+    The new enumeration first yields the first elements of the enumerations in
+    the supplied order, then second elements, etc.  Thus, a sequence
+    [ [| [x11 ; x12 ; ...] ; [x21 ; x22, ...] , ... [xN1 ; xN2 ; ...] |] ] becomes
+    [[ x11 ; x12 ; ... ; xN1 ; x21 ; x22 ; ... ; xN2 ; x31 ; ... ]].
+*)
+
 val uniq : 'a t -> 'a t
 (** [uniq e] returns a duplicate of [e] with repeated values
     omitted (similar to unix's [uniq] command).
