@@ -1,5 +1,6 @@
 <**/*.ml> : annot
-<**/*.ml> and not <libs/**.ml>: warn_Ae-29
+<**/*.ml> and not <libs/**.ml>: warn_-29
+<src/batArray.mlv>: warn_-3
 true: package(bytes)
 "build": include
 "src": include
