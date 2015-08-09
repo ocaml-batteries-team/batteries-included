@@ -33,6 +33,7 @@ let all_tests =
     Test_random.tests;
     Test_bounded.tests;
     Test_modifiable.tests;
+    Test_hashtbl.tests;
   ]
 
 let () =
