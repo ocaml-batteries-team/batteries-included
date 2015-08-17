@@ -252,6 +252,16 @@ struct
       end
     end
 
+  let update k v tr =
+    let tr = sget tr in
+    sref begin
+      csplay begin
+        match cfind ~sel:(ksel k) tr with
+        | C (cx, Node (l, (k, _), r)) -> C (cx, Node (l, (k, v), r))
+        | C (cx, Empty) -> raise Not_found
+      end
+    end
+
   let modify k fn tr =
     let tr = sget tr in
     sref begin

@@ -86,6 +86,11 @@ sig
       [m], plus a binding of [x] to [y]. If [x] was already bound
       in [m], its previous binding disappears. *)
 
+  val update: key -> 'a -> 'a t -> 'a t
+  (** [update k v m] replace the previous binding of [k] in [m] to be [v].
+      @raise Not_found if [k] is not bound in [m].
+      @since NEXT_RELEASE *)
+
   val find: key -> 'a t -> 'a
   (** [find x m] returns the current binding of [x] in [m],
       or raises [Not_found] if no such binding exists. *)
@@ -374,6 +379,11 @@ val add : 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
     [m], plus a binding of [x] to [y]. If [x] was already bound
     in [m], its previous binding disappears. *)
 
+val update: 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
+(** [update k v m] replace the previous binding of [k] in [m] to be [v].
+    @raise Not_found if [k] is not bound in [m].
+    @since NEXT_RELEASE *)
+
 val find : 'a -> ('a, 'b) t -> 'b
 (** [find x m] returns the current binding of [x] in [m],
     or raises [Not_found] if no such binding exists. *)
@@ -646,6 +656,11 @@ module PMap : sig
       [m], plus a binding of [x] to [y]. If [x] was already bound
       in [m], its previous binding disappears. *)
 
+  val update : 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
+  (** [update k v m] replace the previous binding of [k] in [m] to be [v].
+      @raise Not_found if [k] is not bound in [m].
+      @since NEXT_RELEASE *)
+
   val find : 'a -> ('a, 'b) t -> 'b
   (** [find x m] returns the current binding of [x] in [m],
       or raises [Not_found] if no such binding exists. *)
@@ -878,3 +893,4 @@ module PMap : sig
   val get_cmp : ('a, 'b) t -> ('a -> 'a -> int)
 
 end (* PMap module *)
+
