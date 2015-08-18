@@ -112,7 +112,7 @@ module Concrete = struct
   let pop_min_binding s =
     let mini = ref (get_root s) in
     let rec loop = function
-        Empty -> raise Not_found
+      | Empty -> assert(false)
       | Node(Empty, k, v, r, _) -> mini := (k, v); r
       | Node(l, k, v, r, _) -> bal (loop l) k v r
     in
@@ -123,6 +123,16 @@ module Concrete = struct
     | Node (_, k, v, Empty, _) -> k, v
     | Node (_, _, _, r, _) -> max_binding r
     | Empty -> invalid_arg "PMap.max_binding: empty tree"
+
+  let pop_max_binding s =
+    let maxi = ref (get_root s) in
+    let rec loop = function
+      | Empty -> assert(false)
+      | Node (l, k, v, Empty, _) -> maxi := (k, v); l
+      | Node (l, k, v, r, _) -> bal l k v (loop r)
+    in
+    let others = loop s in
+    (!maxi, others)
 
   let rec remove_min_binding = function
     | Node (Empty, _, _, r, _) -> r
@@ -688,6 +698,7 @@ sig
   val min_binding : 'a t -> (key * 'a)
   val pop_min_binding: 'a t -> (key * 'a) * 'a t
   val max_binding : 'a t -> (key * 'a)
+  val pop_max_binding: 'a t -> (key * 'a) * 'a t
   val choose : 'a t -> (key * 'a)
   val split : key -> 'a t -> ('a t * 'a option * 'a t)
   val partition : (key -> 'a -> bool) -> 'a t -> 'a t * 'a t
@@ -793,6 +804,9 @@ struct
     let mini, rest = Concrete.pop_min_binding (impl_of_t t) in
     (mini, t_of_impl rest)
   let max_binding t = Concrete.max_binding (impl_of_t t)
+  let pop_max_binding t =
+    let maxi, rest = Concrete.pop_max_binding (impl_of_t t) in
+    (maxi, t_of_impl rest)
 
   let choose t = Concrete.choose (impl_of_t t)
 
@@ -878,7 +892,16 @@ let find x m = Concrete.find x Pervasives.compare m
 
 (*$T pop_min_binding
   (empty |> add 1 true |> pop_min_binding) = ((1, true), empty)
+  (empty |> add 1 true |> add 2 false |> pop_min_binding) = \
+  ((1, true), add 2 false empty)
   try ignore (pop_min_binding empty); false with Not_found -> true
+*)
+
+(*$T pop_max_binding
+  (empty |> add 1 true |> pop_max_binding) = ((1, true), empty)
+  (empty |> add 1 true |> add 2 false |> pop_max_binding) = \
+  ((2, false), add 1 true empty)
+  try ignore (pop_max_binding empty); false with Not_found -> true
 *)
 
 (*$Q find ; add
@@ -936,6 +959,7 @@ let choose = Concrete.choose
 let max_binding = Concrete.max_binding
 let min_binding = Concrete.min_binding
 let pop_min_binding = Concrete.pop_min_binding
+let pop_max_binding = Concrete.pop_max_binding
 
 let singleton k v = Concrete.singleton k v
 
@@ -1118,6 +1142,9 @@ module PMap = struct (*$< PMap *)
   let pop_min_binding m = 
     let mini, rest = Concrete.pop_min_binding m.map in
     (mini, { m with map = rest })
+  let pop_max_binding m = 
+    let maxi, rest = Concrete.pop_max_binding m.map in
+    (maxi, { m with map = rest })
 
   let singleton ?(cmp = Pervasives.compare) k v =
     { cmp = cmp; map = Concrete.singleton k v }
