@@ -198,6 +198,9 @@ sig
   val min_binding : 'a t -> (key * 'a)
   (** return the ([key,value]) pair with the smallest key *)
 
+  val pop_min_binding : 'a t -> (key * 'a) * 'a t
+  (** return the ([key,value]) pair with the smallest key along with the rest of the map *)
+
   val max_binding : 'a t -> (key * 'a)
   (** return the [(key,value)] pair with the largest key *)
 
@@ -457,6 +460,9 @@ val split : 'key -> ('key, 'a) t -> (('key, 'a) t * 'a option * ('key, 'a) t)
 
 val min_binding : ('key, 'a) t -> ('key * 'a)
 (** returns the binding with the smallest key *)
+
+val pop_min_binding : ('key, 'a) t -> ('key * 'a) * ('key, 'a) t
+(** returns the binding with the smallest key along with the rest of the map *)
 
 val max_binding : ('key, 'a) t -> ('key * 'a)
 (** returns the binding with the largest key *)
@@ -727,6 +733,9 @@ module PMap : sig
 
   val min_binding : ('key, 'a) t -> ('key * 'a)
   (** returns the binding with the smallest key *)
+
+  val pop_min_binding : ('key, 'a) t -> ('key * 'a) * ('key, 'a) t
+  (** return the binding with the smallest key along with the rest of the map *)
 
   val max_binding : ('key, 'a) t -> ('key * 'a)
   (** returns the binding with the largest key *)

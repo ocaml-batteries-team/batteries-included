@@ -350,6 +350,15 @@ struct
     in
     bfind tr
 
+  let pop_min_binding tr =
+    let mini = ref (choose tr) in
+    let rec bfind = function
+      | Node (Empty, kv, r) -> mini := kv; r
+      | Node (l, kv, r) -> Node (bfind l, kv, r)
+      | Empty -> raise Not_found
+    in
+    (!mini, sref (bfind (sget tr)))
+
   let max_binding tr =
     let tr = sget tr in
     let rec bfind = function

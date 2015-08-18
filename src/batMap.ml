@@ -105,6 +105,20 @@ module Concrete = struct
     | Node (l, _, _, _, _) -> min_binding l
     | Empty -> raise Not_found
 
+  let get_root = function
+    | Empty -> raise Not_found
+    | Node (_, k, v, _, _) -> k, v
+
+  let pop_min_binding s =
+    let mini = ref (get_root s) in
+    let rec loop = function
+        Empty -> raise Not_found
+      | Node(Empty, k, v, r, _) -> mini := (k, v); r
+      | Node(l, k, v, r, _) -> bal (loop l) k v r
+    in
+    let others = loop s in
+    (!mini, others)
+
   let rec max_binding = function
     | Node (_, k, v, Empty, _) -> k, v
     | Node (_, _, _, r, _) -> max_binding r
@@ -672,6 +686,7 @@ sig
   val keys : _ t -> key BatEnum.t
   val values: 'a t -> 'a BatEnum.t
   val min_binding : 'a t -> (key * 'a)
+  val pop_min_binding: 'a t -> (key * 'a) * 'a t
   val max_binding : 'a t -> (key * 'a)
   val choose : 'a t -> (key * 'a)
   val split : key -> 'a t -> ('a t * 'a option * 'a t)
@@ -774,6 +789,9 @@ struct
   let for_all f t = Concrete.for_all f (impl_of_t t)
 
   let min_binding t = Concrete.min_binding (impl_of_t t)
+  let pop_min_binding t =
+    let mini, rest = Concrete.pop_min_binding (impl_of_t t) in
+    (mini, t_of_impl rest)
   let max_binding t = Concrete.max_binding (impl_of_t t)
 
   let choose t = Concrete.choose (impl_of_t t)
@@ -858,6 +876,11 @@ let find x m = Concrete.find x Pervasives.compare m
   empty |> add 2 'y' |> add 1 'x' |> find 2 = 'y'
 *)
 
+(*$T pop_min_binding
+  (empty |> add 1 true |> pop_min_binding) = ((1, true), empty)
+  try ignore (pop_min_binding empty); false with Not_found -> true
+*)
+
 (*$Q find ; add
   (Q.list Q.small_int) (fun xs -> \
   let of_list xs y m0 = List.fold_left (fun acc x -> add x y acc) m0 xs in \
@@ -912,6 +935,7 @@ let filter_map f t = Concrete.filter_map f t Pervasives.compare
 let choose = Concrete.choose
 let max_binding = Concrete.max_binding
 let min_binding = Concrete.min_binding
+let pop_min_binding = Concrete.pop_min_binding
 
 let singleton k v = Concrete.singleton k v
 
@@ -1091,6 +1115,9 @@ module PMap = struct (*$< PMap *)
 
   let max_binding t = Concrete.max_binding t.map
   let min_binding t = Concrete.min_binding t.map
+  let pop_min_binding m = 
+    let mini, rest = Concrete.pop_min_binding m.map in
+    (mini, { m with map = rest })
 
   let singleton ?(cmp = Pervasives.compare) k v =
     { cmp = cmp; map = Concrete.singleton k v }
