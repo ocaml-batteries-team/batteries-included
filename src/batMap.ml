@@ -105,6 +105,10 @@ module Concrete = struct
     | Node (l, _, _, _, _) -> min_binding l
     | Empty -> raise Not_found
 
+  let get_root = function
+    | Empty -> raise Not_found
+    | Node (_, k, v, _, _) -> k, v
+
   let rec max_binding = function
     | Node (_, k, v, Empty, _) -> k, v
     | Node (_, _, _, r, _) -> max_binding r
@@ -209,6 +213,32 @@ module Concrete = struct
       | Node (l, k, v, r, _) ->
         loop (f k v (loop acc l)) r in
     loop acc map
+
+  exception Found
+
+  let at_rank_exn i m =
+    if i < 0 then invalid_arg "Map.at_rank_exn: i < 0";
+    let res = ref (get_root m) in (* raises Not_found if empty *)
+    try
+      let (_: int) =
+        foldi (fun k v j ->
+            if j <> i then j + 1
+            else begin
+              res := (k, v);
+              raise Found
+            end
+          ) m 0
+      in
+      invalid_arg "Map.at_rank_exn: i >= (Map.cardinal s)"
+    with Found -> !res
+
+  (*$T at_rank_exn
+    (empty |> add 1 true |> at_rank_exn 0) = (1, true)
+    (empty |> add 1 true |> add 2 false |> at_rank_exn 1) = (2, false)
+    try ignore(at_rank_exn (-1) empty); false with Invalid_argument _ -> true
+    try ignore(at_rank_exn 0 empty); false with Not_found -> true
+    try ignore(add 1 true empty |> at_rank_exn 1); false with Invalid_argument _ -> true
+  *)
 
   let singleton x d = Node(Empty, x, d, Empty, 1)
 
