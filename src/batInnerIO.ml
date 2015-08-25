@@ -207,7 +207,7 @@ let nread i n =
   if n = 0 then
     ""
   else
-    let s = String.create n in
+    let s = Bytes.create n in
     let l = ref n in
     let p = ref 0 in
     try
@@ -261,7 +261,7 @@ let really_nread i n =
   if n < 0 then invalid_arg "BatIO.really_nread";
   if n = 0 then ""
   else
-    let s = String.create n
+    let s = Bytes.create n
     in
     ignore(really_input i s 0 n);
     s
@@ -311,7 +311,7 @@ let read_all i =
   with
     No_more_input
   | Input_closed ->
-    let buf = String.create !pos in
+    let buf = Bytes.create !pos in
     List.iter (fun (s,p) ->
       String.unsafe_blit s 0 buf p (String.length s)
     ) !str;

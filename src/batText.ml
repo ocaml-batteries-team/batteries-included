@@ -43,7 +43,7 @@ let splice s1 off len s2 =
   let off  = if off < 0 then len1 + off - 1 else off  in
   let len  = int_min (len1 - off) len                 in
   let out_len = len1 - len + len2                     in
-  let s = String.create out_len in
+  let s = Bytes.create out_len in
   String.blit s1 0 s 0 off; (* s1 before splice point *)
   String.blit s2 0 s off len2; (* s2 at splice point *)
   String.blit s1 (off+len) s (off+len2) (len1 - (off+len)); (* s1 after off+len *)
@@ -962,8 +962,8 @@ let read_char i =
   let len = UTF8.length0 (Char.code n0) in
   if len = 1 then UChar.of_char n0
   else
-    let s = String.create len in
-    String.set s 0 n0;
+    let s = Bytes.create len in
+    Bytes.set s 0 n0;
     ignore(really_input i s 1 ( len - 1));
     UTF8.get s 0
 

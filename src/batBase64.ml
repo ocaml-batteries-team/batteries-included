@@ -98,7 +98,7 @@ let decode ?(tbl=inv_chars) ch =
     let i = ref 0 in
     try
       while !i < l do
-        String.unsafe_set s (p + !i) (fetch());
+        Bytes.unsafe_set s (p + !i) (fetch());
         incr i;
       done;
       l

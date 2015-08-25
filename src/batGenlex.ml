@@ -43,7 +43,7 @@ let of_list x =
   kwd_table
 
 let to_enum_filter kwd_table =
-  let initial_buffer = String.create 32 in
+  let initial_buffer = Bytes.create 32 in
 
   let buffer = ref initial_buffer       in
   let bufpos = ref 0                    in
@@ -53,10 +53,10 @@ let to_enum_filter kwd_table =
   let store c =
     if !bufpos >= String.length !buffer then
       begin
-        let newbuffer = String.create (2 * !bufpos) in
+        let newbuffer = Bytes.create (2 * !bufpos) in
         String.blit !buffer 0 newbuffer 0 !bufpos; buffer := newbuffer
       end;
-    String.set !buffer !bufpos c;
+    Bytes.set !buffer !bufpos c;
     incr bufpos in
 
   let get_string () =

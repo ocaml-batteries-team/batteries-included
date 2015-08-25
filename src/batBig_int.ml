@@ -20,8 +20,8 @@
  *)
 
 let big_int_base_default_symbols =
-  let s = String.create (10 + 26*2) in
-  let set off c k = s.[k] <- char_of_int (k - off + (int_of_char c)) in
+  let s = Bytes.create (10 + 26*2) in
+  let set off c k = Bytes.set s k (char_of_int (k - off + (int_of_char c))) in
   for k = 0 to String.length s - 1 do
     if k < 10 then set  0 '0' k else if k < 36 then set 10 'a' k else set 36 'A' k
   done; s
@@ -53,9 +53,9 @@ let to_string_in_custom_base
     +
       (if isnegative then 1 else 0) (* the pesky '-' sign *)
   in
-  let buff = String.create basebdigits in (* we know the buffer is large enough *)
+  let buff = Bytes.create basebdigits in (* we know the buffer is large enough *)
   let curr = ref (basebdigits - 1) and count = ref 0 in
-  let addchar c = buff.[!curr] <- c ; incr count; decr curr in
+  let addchar c = Bytes.set buff !curr c ; incr count; decr curr in
   (* switch base to big int representation and n to mutable, and loop *)
   let b = big_int_of_int b and n = ref (abs_big_int n) in
   while compare_big_int !n b >= 0 do
