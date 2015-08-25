@@ -137,20 +137,6 @@ module Concrete = struct
       | Empty -> Node (Empty, x, d, Empty, 1) in
     loop map
 
-  let update x d cmp map =
-    let rec loop = function
-      | Node (l, k, v, r, h) ->
-        let c = cmp x k in
-        if c = 0 then Node (l, x, d, r, h)
-        else if c < 0 then
-          let nl = loop l in
-          bal nl k v r
-        else
-          let nr = loop r in
-          bal l k v nr
-      | Empty -> raise Not_found in
-    loop map
-
   let find x cmp map =
     let rec loop = function
       | Node (l, k, v, r, _) ->
@@ -173,6 +159,23 @@ module Concrete = struct
         if c < 0 then bal (loop l) k v r else bal l k v (loop r)
       | Empty -> Empty in
     loop map
+
+  let update k1 k2 v2 cmp map =
+    if cmp k1 k2 <> 0 then
+      add k2 v2 cmp (remove k1 cmp map)
+    else
+      let rec loop = function
+        | Empty -> raise Not_found
+        | Node(l, k, v, r, h) ->
+          let c = cmp k k1 in
+          if c = 0 then
+            Node(l, k2, v2, r, h)
+          else if c < 0 then
+            Node(loop l, k, v, r, h)
+          else
+            Node(l, k, v, loop r, h)
+      in
+      loop map
 
   let mem x cmp map =
     let rec loop = function
@@ -666,7 +669,7 @@ sig
   val is_empty: 'a t -> bool
   val cardinal: 'a t -> int
   val add: key -> 'a -> 'a t -> 'a t
-  val update: key -> 'a -> 'a t -> 'a t
+  val update: key -> key -> 'a -> 'a t -> 'a t
   val find: key -> 'a t -> 'a
   val remove: key -> 'a t -> 'a t
   val modify: key -> ('a -> 'a) -> 'a t -> 'a t
@@ -759,7 +762,7 @@ struct
   let backwards t = Concrete.backwards (impl_of_t t)
   let keys t = Concrete.keys (impl_of_t t)
   let values t = Concrete.values (impl_of_t t)
-  let update k v t = t_of_impl (Concrete.update k v Ord.compare (impl_of_t t))
+  let update k1 k2 v2 t = t_of_impl (Concrete.update k1 k2 v2 Ord.compare (impl_of_t t))
 
   let of_enum e = t_of_impl (Concrete.of_enum Ord.compare e)
 
@@ -863,7 +866,7 @@ let is_empty x = x = Concrete.Empty
 
 let add x d m = Concrete.add x d Pervasives.compare m
 
-let update x d m = Concrete.update x d Pervasives.compare m
+let update k1 k2 v2 m = Concrete.update k1 k2 v2 Pervasives.compare m
 
 let find x m = Concrete.find x Pervasives.compare m
 
@@ -874,11 +877,6 @@ let find x m = Concrete.find x Pervasives.compare m
   empty |> add 1 true |> add 2 false |> find 2 |> not
   empty |> add 2 'y' |> add 1 'x' |> find 1 = 'x'
   empty |> add 2 'y' |> add 1 'x' |> find 2 = 'y'
-*)
-
-(*$T update
-  (add 1 true empty |> update 1 false |> find 1) = false
-  try ignore (update 1 false empty); false with Not_found -> true
 *)
 
 (*$Q find ; add
@@ -1034,8 +1032,8 @@ module PMap = struct (*$< PMap *)
   let add x d m =
     { m with map = Concrete.add x d m.cmp m.map }
 
-  let update x d m =
-    { m with map = Concrete.update x d m.cmp m.map }
+  let update k1 k2 v2 m =
+    { m with map = Concrete.update k1 k2 v2 m.cmp m.map }
 
   let find x m =
     Concrete.find x m.cmp m.map
@@ -1050,8 +1048,9 @@ module PMap = struct (*$< PMap *)
   *)
 
   (*$T update
-    (add 1 true empty |> update 1 false |> find 1) = false
-    try ignore (update 1 false empty); false with Not_found -> true
+    add 1 false empty |> update 1 1 true |> find 1
+    add 1 false empty |> update 1 2 true |> find 2
+    try ignore (update 1 1 false empty); false with Not_found -> true
   *)
 
   (*$Q find ; add

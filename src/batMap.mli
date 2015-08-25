@@ -86,9 +86,10 @@ sig
       [m], plus a binding of [x] to [y]. If [x] was already bound
       in [m], its previous binding disappears. *)
 
-  val update: key -> 'a -> 'a t -> 'a t
-  (** [update k v m] replace the previous binding of [k] in [m] to be [v].
-      @raise Not_found if [k] is not bound in [m].
+  val update: key -> key -> 'a -> 'a t -> 'a t
+  (** [update k1 k2 v2 m] replace the previous binding of [k1] in [m] by
+      [k2] associated to [v2].
+      @raise Not_found if [k1] is not bound in [m].
       @since NEXT_RELEASE *)
 
   val find: key -> 'a t -> 'a
@@ -379,9 +380,10 @@ val add : 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
     [m], plus a binding of [x] to [y]. If [x] was already bound
     in [m], its previous binding disappears. *)
 
-val update: 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
-(** [update k v m] replace the previous binding of [k] in [m] to be [v].
-    @raise Not_found if [k] is not bound in [m].
+val update: 'a -> 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
+(** [update k1 k2 v2 m] replace the previous binding of [k1] in [m] by
+    [k2] associated to [v2].
+    @raise Not_found if [k1] is not bound in [m].
     @since NEXT_RELEASE *)
 
 val find : 'a -> ('a, 'b) t -> 'b
@@ -656,9 +658,10 @@ module PMap : sig
       [m], plus a binding of [x] to [y]. If [x] was already bound
       in [m], its previous binding disappears. *)
 
-  val update : 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
-  (** [update k v m] replace the previous binding of [k] in [m] to be [v].
-      @raise Not_found if [k] is not bound in [m].
+  val update : 'a -> 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
+  (** [update k1 k2 v2 m] replace the previous binding of [k1] in [m] by
+      [k2] associated to [v2].
+      @raise Not_found if [k1] is not bound in [m].
       @since NEXT_RELEASE *)
 
   val find : 'a -> ('a, 'b) t -> 'b

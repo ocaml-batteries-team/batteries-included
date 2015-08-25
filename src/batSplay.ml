@@ -252,16 +252,6 @@ struct
       end
     end
 
-  let update k v tr =
-    let tr = sget tr in
-    sref begin
-      csplay begin
-        match cfind ~sel:(ksel k) tr with
-        | C (cx, Node (l, (k, _), r)) -> C (cx, Node (l, (k, v), r))
-        | C (cx, Empty) -> raise Not_found
-      end
-    end
-
   let modify k fn tr =
     let tr = sget tr in
     sref begin
@@ -321,6 +311,19 @@ struct
     in
     let tr = top (cchange replace (cfind ~sel:(ksel k) tr)) in
     sref tr
+
+  let update k1 k2 v2 tr =
+    if Ord.compare k1 k2 <> 0 then
+      add k2 v2 (remove k1 tr)
+    else
+      let tr = sget tr in
+      sref begin
+        csplay begin
+          match cfind ~sel:(ksel k1) tr with
+          | C (cx, Node (l, _kv, r)) -> C (cx, Node (l, (k2, v2), r))
+          | C (cx, Empty) -> raise Not_found
+        end
+      end
 
   let mem k m =
     try ignore (find k m) ; true with Not_found -> false
