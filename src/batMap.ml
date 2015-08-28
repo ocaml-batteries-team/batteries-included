@@ -910,6 +910,7 @@ let map = Concrete.map
 let mapi = Concrete.mapi
 let fold = Concrete.fold
 let foldi = Concrete.foldi
+let at_rank_exn = Concrete.at_rank_exn
 
 (*$Q foldi
   (Q.list Q.small_int) (fun xs -> \
@@ -1092,6 +1093,9 @@ module PMap = struct (*$< PMap *)
     let m = List.fold_left (fun acc x -> add x true acc) (create Int.compare) xs in \
     foldi (fun x _y acc -> x :: acc) m [] |> List.rev = List.sort_unique Int.compare xs)
   *)
+
+  let at_rank_exn i m =
+    Concrete.at_rank_exn i m.map
 
   let enum t = Concrete.enum t.map
 
