@@ -415,6 +415,16 @@ val foldi : ('a -> 'b -> 'c -> 'c) -> ('a , 'b) t -> 'c -> 'c
 (** Same as [fold], but the function receives as arguments both the
     key and the associated value for each binding of the map. *)
 
+val at_rank_exn: int -> ('key, 'a) t -> ('key * 'a)
+(** [at_rank_exn i m] returns the [(key,value)] pair
+    whose key is at rank [i] in [m],
+    that is the [i]-th element in increasing order of the keys
+    (the [0]-th element being the smallest key in [m] with its
+    associated value).
+    @raise Not_found if [m = empty].
+    @raise Invalid_argument error_message if [i < 0 || i >= cardinal m]
+    @since NEXT_RELEASE *)
+
 val filterv: ('a -> bool) -> ('key, 'a) t -> ('key, 'a) t
 (**[filterv f m] returns a map where only the values [a] of [m]
    such that [f a = true] remain. The bindings are passed to [f]
@@ -686,6 +696,16 @@ module PMap : sig
   val foldi : ('a -> 'b -> 'c -> 'c) -> ('a , 'b) t -> 'c -> 'c
   (** Same as [fold], but the function receives as arguments both the
       key and the associated value for each binding of the map. *)
+
+  val at_rank_exn: int -> ('a, 'b) t -> ('a * 'b)
+  (** [at_rank_exn i m] returns the [(key,value)] pair
+      whose key is at rank [i] in [m],
+      that is the [i]-th element in increasing order of the keys
+      (the [0]-th element being the smallest key in [m] with its
+      associated value).
+      @raise Not_found if [m = empty].
+      @raise Invalid_argument error_message if [i < 0 || i >= cardinal m]
+      @since NEXT_RELEASE *)
 
   val filterv: ('a -> bool) -> ('key, 'a) t -> ('key, 'a) t
   (**[filterv f m] returns a map where only the values [a] of [m]
