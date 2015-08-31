@@ -195,7 +195,7 @@ module Concrete = struct
   exception Found
 
   let at_rank_exn i s =
-    if i < 0 then invalid_arg "Set.at_rank_exn: i < 0";
+    if i < 0 then invalid_arg "Set.at_rank_exn: negative index not allowed";
     let res = ref (get_root s) in (* raises Not_found if empty *)
     try
       let (_: int) =
@@ -207,7 +207,7 @@ module Concrete = struct
             end
           ) s 0
       in
-      invalid_arg "Set.at_rank_exn: i >= (Set.cardinal s)"
+      invalid_arg "Set.at_rank_exn i s: i >= (Set.cardinal s)"
     with Found -> !res
 
   let map cmp f s =
