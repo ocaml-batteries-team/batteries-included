@@ -89,6 +89,8 @@ sig
   val update: key -> key -> 'a -> 'a t -> 'a t
   (** [update k1 k2 v2 m] replace the previous binding of [k1] in [m] by
       [k2] associated to [v2].
+      This is equivalent to [add k2 v2 (remove k1) m], but more efficient
+      in the case where [k1] and [k2] have the same key ordering.
       @raise Not_found if [k1] is not bound in [m].
       @since NEXT_RELEASE *)
 
@@ -383,6 +385,8 @@ val add : 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
 val update: 'a -> 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
 (** [update k1 k2 v2 m] replace the previous binding of [k1] in [m] by
     [k2] associated to [v2].
+    This is equivalent to [add k2 v2 (remove k1) m], but more efficient
+    in the case where [k1] and [k2] have the same key ordering.
     @raise Not_found if [k1] is not bound in [m].
     @since NEXT_RELEASE *)
 
@@ -661,6 +665,8 @@ module PMap : sig
   val update : 'a -> 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
   (** [update k1 k2 v2 m] replace the previous binding of [k1] in [m] by
       [k2] associated to [v2].
+      This is equivalent to [add k2 v2 (remove k1) m], but more efficient
+      in the case where [k1] and [k2] have the same key ordering.
       @raise Not_found if [k1] is not bound in [m].
       @since NEXT_RELEASE *)
 
