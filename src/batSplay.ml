@@ -350,6 +350,15 @@ struct
     in
     bfind tr
 
+  let pop_min_binding tr =
+    let mini = ref (choose tr) in
+    let rec bfind = function
+      | Node (Empty, kv, r) -> mini := kv; r
+      | Node (l, kv, r) -> Node (bfind l, kv, r)
+      | Empty -> assert(false)
+    in
+    (!mini, sref (bfind (sget tr)))
+
   let max_binding tr =
     let tr = sget tr in
     let rec bfind = function
@@ -358,6 +367,15 @@ struct
       | Empty -> raise Not_found
     in
     bfind tr
+
+  let pop_max_binding tr =
+    let maxi = ref (choose tr) in
+    let rec bfind = function
+      | Node (l, kv, Empty) -> maxi := kv; l
+      | Node (l, kv, r) -> Node (l, kv, bfind r)
+      | Empty -> assert(false)
+    in
+    (!maxi, sref (bfind (sget tr)))
 
   let filter_map (f : key -> 'a -> 'b option) : 'a t -> 'b t =
     let rec visit t cont = match t with

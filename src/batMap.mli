@@ -198,8 +198,16 @@ sig
   val min_binding : 'a t -> (key * 'a)
   (** return the ([key,value]) pair with the smallest key *)
 
+  val pop_min_binding : 'a t -> (key * 'a) * 'a t
+  (** return the ([key,value]) pair with the smallest key
+      along with the rest of the map *)
+
   val max_binding : 'a t -> (key * 'a)
   (** return the [(key,value)] pair with the largest key *)
+
+  val pop_max_binding : 'a t -> (key * 'a) * 'a t
+  (** return the ([key,value]) pair with the largest key
+      along with the rest of the map *)
 
   (* The following documentations comments are from stdlib's map.mli:
        - choose
@@ -468,8 +476,14 @@ val split : 'key -> ('key, 'a) t -> (('key, 'a) t * 'a option * ('key, 'a) t)
 val min_binding : ('key, 'a) t -> ('key * 'a)
 (** returns the binding with the smallest key *)
 
+val pop_min_binding : ('key, 'a) t -> ('key * 'a) * ('key, 'a) t
+(** returns the binding with the smallest key along with the rest of the map *)
+
 val max_binding : ('key, 'a) t -> ('key * 'a)
 (** returns the binding with the largest key *)
+
+val pop_max_binding : ('key, 'a) t -> ('key * 'a) * ('key, 'a) t
+(** returns the binding with the largest key along with the rest of the map *)
 
 val enum : ('a, 'b) t -> ('a * 'b) BatEnum.t
 (** creates an enumeration for this map, enumerating key,value pairs with the keys in increasing order. *)
@@ -748,8 +762,14 @@ module PMap : sig
   val min_binding : ('key, 'a) t -> ('key * 'a)
   (** returns the binding with the smallest key *)
 
+  val pop_min_binding : ('key, 'a) t -> ('key * 'a) * ('key, 'a) t
+  (** return the binding with the smallest key along with the rest of the map *)
+
   val max_binding : ('key, 'a) t -> ('key * 'a)
   (** returns the binding with the largest key *)
+
+  val pop_max_binding : ('key, 'a) t -> ('key * 'a) * ('key, 'a) t
+  (** return the binding with the largest key along with the rest of the map *)
 
   val enum : ('a, 'b) t -> ('a * 'b) BatEnum.t
   (** creates an enumeration for this map, enumerating key,value pairs with the keys in increasing order. *)
