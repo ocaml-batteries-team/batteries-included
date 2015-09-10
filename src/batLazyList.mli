@@ -421,7 +421,7 @@ val remove_all : 'a -> 'a t -> 'a t
 
 val remove_all_such : ('a -> bool) -> 'a t -> 'a t
 (** [remove_all_such f l] is similar to [remove] but removes all elements
-    wich satisfay the predicate [f] and not only the first one. *)
+    that satisfy the predicate [f] and not only the first one. *)
 
 val take : int -> 'a t -> 'a t
 (** [take n l] returns up to the [n] first elements from list [l], if
