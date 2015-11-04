@@ -88,7 +88,7 @@ sig
       [update] is faster when [x] compares equal to [y] according
       to the comparison function used by your set.
       @raise Not_found if [x] is not in [s].
-      @since NEXT_RELEASE *)
+      @since 2.3.2 *)
 
   val union: t -> t -> t
   (** Set union. *)
@@ -134,7 +134,7 @@ sig
       (the [0]-th element being the smallest element of [s]).
       @raise Not_found if [s = empty].
       @raise Invalid_argument error_message if [i < 0 || i >= cardinal s]
-      @since NEXT_RELEASE *)
+      @since 2.3.2 *)
 
   val map: (elt -> elt) -> t -> t
   (** [map f x] creates a new set with elements [f a0],
@@ -217,7 +217,7 @@ sig
 
   val to_array: t -> elt array
   (** Same as [to_list] but with an array instead of a list.
-      @since NEXT_RELEASE *)
+      @since 2.3.2 *)
 
   val min_elt: t -> elt
   (** Return the smallest element of the given set
@@ -233,7 +233,7 @@ sig
       [let mini = min_elt s in (mini, remove mini s)]
 
       @raise Not_found if the set is empty.
-      @since NEXT_RELEASE *)
+      @since 2.3.2 *)
 
   val pop_max: t -> elt * t
   (** Returns the biggest element of the given set
@@ -243,7 +243,7 @@ sig
       [let maxi = max_elt s in (maxi, remove maxi s)]
 
       @raise Not_found if the set is empty.
-      @since NEXT_RELEASE *)
+      @since 2.3.2 *)
 
   val max_elt: t -> elt
   (** Same as {!Set.S.min_elt}, but returns the largest element of the
@@ -281,7 +281,7 @@ sig
   val of_array: elt array -> t
   (** builds a set from the given array.
 
-      @since NEXT_RELEASE
+      @since 2.3.2
   *)
 
 
@@ -429,7 +429,7 @@ val update: 'a -> 'a -> 'a t -> 'a t
     [update] is faster when [x] compares equal to [y] according
     to the comparison function used by your set.
     @raise Not_found if [x] is not in [s].
-    @since NEXT_RELEASE *)
+    @since 2.3.2 *)
 
 val union: 'a t -> 'a t -> 'a t
 (** [union s t] returns the union of [s] and [t] - the set containing
@@ -478,7 +478,7 @@ val at_rank_exn: int -> 'a t -> 'a
     (the [0]-th element being the smallest element of [s]).
     @raise Not_found if [s = empty].
     @raise Invalid_argument error_message if [i < 0 || i >= cardinal s]
-    @since NEXT_RELEASE *)
+    @since 2.3.2 *)
 
 val map: ('a -> 'b) -> 'a t -> 'b t
 (** [map f x] creates a new set with elements [f a0],
@@ -569,7 +569,7 @@ val to_list: 'a t -> 'a list
 
 val to_array: 'a t -> 'a array
 (** Same as [to_list] but with an array instead of a list.
-    @since NEXT_RELEASE *)
+    @since 2.3.2 *)
 
 val min_elt : 'a t -> 'a
 (** returns the smallest element of the set.
@@ -583,7 +583,7 @@ val pop_min: 'a t -> 'a * 'a t
     [let mini = min_elt s in (mini, remove mini s)]
 
     @raise Not_found if the set is empty.
-    @since NEXT_RELEASE *)
+    @since 2.3.2 *)
 
 val pop_max: 'a t -> 'a * 'a t
 (** Returns the biggest element of the given set
@@ -593,7 +593,7 @@ val pop_max: 'a t -> 'a * 'a t
     [let maxi = max_elt s in (maxi, remove maxi s)]
 
     @raise Not_found if the set is empty.
-    @since NEXT_RELEASE *)
+    @since 2.3.2 *)
 
 val max_elt : 'a t -> 'a
 (** returns the largest element of the set.
@@ -721,7 +721,7 @@ module PSet : sig
       [update] is faster when [x] compares equal to [y] according
       to the comparison function used by your set.
       @raise Not_found if [x] is not in [s].
-      @since NEXT_RELEASE *)
+      @since 2.3.2 *)
 
   val union: 'a t -> 'a t -> 'a t
   (** [union s t] returns the union of [s] and [t] - the set containing
@@ -769,7 +769,7 @@ module PSet : sig
       (the [0]-th element being the smallest element of [s]).
       @raise Not_found if [s = empty].
       @raise Invalid_argument error_message if [i < 0 || i >= cardinal s]
-      @since NEXT_RELEASE *)
+      @since 2.3.2 *)
 
   (* under-specified; either give a 'b comparison,
      or keep ('a -> 'a) (preferred choice) *)
@@ -855,7 +855,7 @@ module PSet : sig
 
   val to_array: 'a t -> 'a array
   (** Same as [to_list] but with an array instead of a list.
-      @since NEXT_RELEASE *)
+      @since 2.3.2 *)
 
   val min_elt : 'a t -> 'a
   (** returns the smallest element of the set.
@@ -869,7 +869,7 @@ module PSet : sig
       [let mini = min_elt s in (mini, remove mini s)]
 
       @raise Not_found if the set is empty.
-      @since NEXT_RELEASE *)
+      @since 2.3.2 *)
 
   val pop_max: 'a t -> 'a * 'a t
   (** Returns the biggest element of the given set
@@ -879,7 +879,7 @@ module PSet : sig
       [let maxi = max_elt s in (maxi, remove maxi s)]
 
       @raise Not_found if the set is empty.
-      @since NEXT_RELEASE *)
+      @since 2.3.2 *)
 
   val max_elt : 'a t -> 'a
   (** returns the largest element of the set.

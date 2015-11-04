@@ -88,7 +88,7 @@ val filter : ('a -> bool) -> 'a t -> 'a t
 (** [filter p q] returns a new queue that contain the elements of [q]
     that satisfy the predicate [p], in the same order.
 
-    @since NEXT_RELEASE
+    @since 2.3.2
 *)
 
 val filter_map : ('a -> 'b option) -> 'a t -> 'b t
@@ -96,7 +96,7 @@ val filter_map : ('a -> 'b option) -> 'a t -> 'b t
     and returns the queue of the elements [bi] such that [f ai = Some bi],
     in the corresponding order.
 
-    @since NEXT_RELEASE
+    @since 2.3.2
 *)
 
 val filter_inplace : ('a -> bool) -> 'a t -> unit
@@ -104,7 +104,7 @@ val filter_inplace : ('a -> bool) -> 'a t -> unit
     don't satisfy the predicate [p].  The order of the elements
     in the queue is preserved.
 
-    @since NEXT_RELEASE
+    @since 2.3.2
 *)
 
 val fold : ('b -> 'a -> 'b) -> 'b -> 'a t -> 'b
