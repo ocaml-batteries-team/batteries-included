@@ -447,7 +447,7 @@ val at_rank_exn: int -> ('key, 'a) t -> ('key * 'a)
     associated value).
     @raise Not_found if [m = empty].
     @raise Invalid_argument error_message if [i < 0 || i >= cardinal m]
-    @since NEXT_RELEASE *)
+    @since 2.3.2 *)
 
 val filterv: ('a -> bool) -> ('key, 'a) t -> ('key, 'a) t
 (**[filterv f m] returns a map where only the values [a] of [m]
@@ -743,7 +743,7 @@ module PMap : sig
       associated value).
       @raise Not_found if [m = empty].
       @raise Invalid_argument error_message if [i < 0 || i >= cardinal m]
-      @since NEXT_RELEASE *)
+      @since 2.3.2 *)
 
   val filterv: ('a -> bool) -> ('key, 'a) t -> ('key, 'a) t
   (**[filterv f m] returns a map where only the values [a] of [m]
