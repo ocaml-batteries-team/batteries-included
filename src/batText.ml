@@ -903,6 +903,7 @@ let nsplit str sep =
     List.map of_string ["OCaml, the c"; "lest FP language."]
   nsplit (of_string "OCaml, the coolest FP language.") (of_char '!') = \
     List.map of_string ["OCaml, the coolest FP language."]
+  nsplit (of_string "1,2,3") (of_string ",") = List.map of_string ["1";"2";"3"]
 *)
 
 let join = concat
