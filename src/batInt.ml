@@ -161,8 +161,8 @@ let mid a b =
 (*$Q mid
   (Q.pair Q.int Q.int) (fun (a,b) -> \
     let m = mid a b in \
-    a <= b ==> (a <= m && m <= b && abs ((m-a) - (b-m)) <= 1) && \
-    b < a ==> (b <= m && m <= a && abs ((m-b) - (a-m)) <= 1))
+    (a <= b && a <= m && m <= b && abs ((m-a) - (b-m)) <= 1) || \
+    (b <  a && b <= m && m <= a && abs ((m-b) - (a-m)) <= 1))
   (Q.int) (fun a -> mid a a = a)
 *)
 
