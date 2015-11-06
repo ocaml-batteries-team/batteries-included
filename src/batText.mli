@@ -429,7 +429,13 @@ val nsplit : t -> t -> t list
     which are separated by [sep].
     [nsplit "" _] returns the empty list.
     If the separator is not found, it returns a list of
-    the rope [s]. *)
+    the rope [s].
+    If two occurences of the separator are consecutive (with nothing
+    in between), the empty rope is added in the sequence. For example,
+    [nsplit "a//b/" "/"] is ["a"; ""; "b"; ""].
+
+    @raise Invalid_argument if the separator is empty
+ *)
 
 val compare : t -> t -> int
 (** The comparison function for ropes, with the same specification as

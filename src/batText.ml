@@ -878,31 +878,50 @@ let rsplit (r:t) sep =
     avoid a call to [List.rev].  *)
 let nsplit str sep =
   if is_empty str then []
-  else let seplen = length sep in
-    let rec aux acc ofs = match
-      try Some(rfind_from str ofs sep)
-      with Not_found -> None
-    with
-    | Some idx ->
-      (* at this point, [idx] to [idx + seplen - 1] contains the
-            separator, which is useless to us on the other hand,
-            [idx + seplen] to [ofs] contains what's just after the
-            separator, which is what we want*)
-      let end_of_occurrence = idx + seplen in
-      if end_of_occurrence >= ofs then
-        aux acc (idx - 1) (*We may be at the end of the string*)
+  else if is_empty sep then invalid_arg "nsplit: empty sep not allowed"
+  else
+    (* str is not empty *)
+    let seplen = length sep in
+    let rec aux acc ofs =
+      if ofs >= 0 then (
+        match
+          try Some (rfind_from str ofs sep)
+          with Not_found -> None
+        with
+        | Some idx -> (* sep found *)
+          let end_of_sep = idx + seplen - 1 in
+          if end_of_sep = ofs (* sep at end of str *)
+          then aux (empty::acc) (idx - 1)
+          else
+            let token = sub str (end_of_sep + 1) (ofs - end_of_sep) in
+            aux (token::acc) (idx - 1)
+        | None -> (* sep NOT found *)
+          (sub str 0 (ofs + 1))::acc
+      )
       else
-        aux ( sub str end_of_occurrence ( ofs - end_of_occurrence + 1) :: acc ) (idx - 1)
-    | None -> (sub str 0 (ofs + 1))::acc
+        (* Negative ofs: the last sep started at the beginning of str *)
+        empty::acc
     in
     aux [] (length str - 1 )
+
 (*$T nsplit
-  nsplit (of_string "OCaml, the coolest FP language.") (of_char ' ') = \
-    List.map of_string ["OCaml,"; "the"; "coolest"; "FP"; "language."]
-  nsplit (of_string "OCaml, the coolest FP language.") (of_char 'o') = \
-    List.map of_string ["OCaml, the c"; "lest FP language."]
-  nsplit (of_string "OCaml, the coolest FP language.") (of_char '!') = \
-    List.map of_string ["OCaml, the coolest FP language."]
+  nsplit (of_string "OCaml, the coolest FP language.") (of_char 'o') \
+    |> List.map to_string = ["OCaml, the c"; ""; "lest FP language."]
+  nsplit (of_string "OCaml, the coolest FP language.") (of_char '!') \
+    |> List.map to_string = ["OCaml, the coolest FP language."]
+  nsplit (of_string "1,2,3") (of_string ",") \
+    |> List.map to_string = ["1"; "2"; "3"]
+  nsplit (of_string "a;b;c") (of_string ";") \
+    |> List.map to_string = ["a"; "b"; "c"]
+  nsplit (of_string "") (of_string "x") = []
+  try ignore (nsplit (of_string "abc") (of_string "")); false \
+    with Invalid_argument _ -> true
+  nsplit (of_string "a/b/c") (of_string "/") |> List.map to_string \
+    = ["a"; "b"; "c"]
+  nsplit (of_string "/a/b/c//") (of_string "/") |> List.map to_string \
+    = [""; "a"; "b"; "c"; ""; ""]
+  nsplit (of_string "FOOaFOObFOOcFOOFOO") (of_string "FOO") |> List.map to_string \
+    = [""; "a"; "b"; "c"; ""; ""]
 *)
 
 let join = concat
