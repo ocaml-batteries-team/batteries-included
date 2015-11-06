@@ -133,7 +133,7 @@ let open_in ?mode ?(perm=default_permission) name =
         if !pos >= len then raise No_more_input;
         let n = (if !pos + l > len then len - !pos else l) in
         for i = 0 to n - 1 do
-          String.(*unsafe_*)set sout (!pos + i) (Array1.get array i)
+          Bytes.(*unsafe_*)set sout (!pos + i) (Array1.get array i)
         done;
         (*          String.unsafe_blit s (post pos ( (+) n ) ) sout p n;*)
         pos := !pos + n;

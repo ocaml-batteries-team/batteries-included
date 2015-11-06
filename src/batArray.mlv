@@ -796,7 +796,7 @@ struct
 
   let init         = init
   let make_matrix  = make_matrix
-  let create_matrix= create_matrix
+  let create_matrix= make_matrix
   let iter         = iter
   let map          = map
   let filter       = filter
@@ -900,7 +900,7 @@ end
 module Labels =
 struct
   let init i ~f = init i f
-  let create len ~init = create len init
+  let create len ~init = make len init
   let make = create
   let make_matrix ~dimx ~dimy x = make_matrix dimx dimy x
   let create_matrix = make_matrix

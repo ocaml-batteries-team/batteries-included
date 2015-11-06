@@ -134,7 +134,7 @@ let extract_format_int conv fmt start stop widths =
   let sfmt = extract_format fmt start stop widths in
   match conv with
   | 'n' | 'N' ->
-    sfmt.[String.length sfmt - 1] <- 'u';
+    Bytes.set sfmt (String.length sfmt - 1) 'u';
     sfmt
   | _ -> sfmt;;
 

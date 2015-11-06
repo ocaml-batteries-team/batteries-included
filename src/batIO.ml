@@ -117,7 +117,7 @@ let input_enum e =
           match BatEnum.get e with
           | None -> l
           | Some c ->
-            String.unsafe_set s p c;
+            Bytes.unsafe_set s p c;
             loop (p + 1) (l - 1)
       in
       let k = loop p l in
@@ -397,7 +397,7 @@ class out_chars ch =
   end
 
 let from_in_channel ch =
-  let cbuf = String.create 1 in
+  let cbuf = Bytes.create 1 in
   let read() =
     try
       if ch#input cbuf 0 1 = 0 then raise Sys_blocked_io;
@@ -414,9 +414,9 @@ let from_in_channel ch =
     ~close:ch#close_in
 
 let from_out_channel ch =
-  let cbuf = String.create 1 in
+  let cbuf = Bytes.create 1 in
   let write c =
-    String.unsafe_set cbuf 0 c;
+    Bytes.unsafe_set cbuf 0 c;
     if ch#output cbuf 0 1 = 0 then raise Sys_blocked_io;
   in
   let output s p l =
@@ -433,7 +433,7 @@ let from_in_chars ch =
     let i = ref 0 in
     try
       while !i < l do
-        String.unsafe_set s (p + !i) (ch#get());
+        Bytes.unsafe_set s (p + !i) (ch#get());
         incr i
       done;
       l
@@ -449,7 +449,7 @@ let from_in_chars ch =
 let from_out_chars ch =
   let output s p l =
     for i = p to p + l - 1 do
-      ch#put (String.unsafe_get s i)
+      ch#put (Bytes.unsafe_get s i)
     done;
     l
   in
@@ -492,7 +492,7 @@ let bits_of input =
 
 (** Buffered lines_of, for performance.  Ideas taken from ocaml stdlib *)
 let lines_of2 ic =
-  let buf = String.create buffer_size in
+  let buf = Bytes.create buffer_size in
   let read_pos = ref 0 in (* next byte to read *)
   let end_pos = ref 0 in (* place to write new data *)
   let find_eol () =
@@ -529,17 +529,17 @@ let lines_of2 ic =
       let n = find_eol () in
       if n = 0 then match accu with  (* EOF *)
         | [] -> close_in ic; raise BatEnum.No_more_elements
-        | _ -> join_strings (String.create len) len accu
+        | _ -> join_strings (Bytes.create len) len accu
       else if n > 0 then (* newline found *)
-        let res = String.create (n-1) in
+        let res = Bytes.create (n-1) in
         input_buf res 0 (n-1);
         input_buf " " 0 1; (* throw away EOL *)
         match accu with
         | [] -> res
         | _ -> let len = len + n-1 in
-          join_strings (String.create len) len (res :: accu)
+          join_strings (Bytes.create len) len (res :: accu)
       else (* n < 0 ; no newline found *)
-        let piece = String.create (-n) in
+        let piece = Bytes.create (-n) in
         input_buf piece 0 (-n);
         get_pieces (piece::accu) (len-n)
     in
@@ -611,7 +611,7 @@ let comb (a,b) =
 
 let copy ?(buffer=4096) inp out =
   let n   = buffer          in
-  let buf = String.create n in
+  let buf = Bytes.create n in
   try
     while true do
       let len = input inp buf 0 n in
