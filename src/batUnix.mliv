@@ -221,7 +221,7 @@ val run_and_read : string -> process_status * string
     (via Unix.system) then return its exit status [stat] and
     output string [output] as read from its standard output (which
     was redirected to a temporary file).
-    @since NEXT_RELEASE *)
+    @since 2.4 *)
 
 val getpid : unit -> int
 (** Return the pid of the process. *)
