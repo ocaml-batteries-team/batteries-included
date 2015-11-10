@@ -38,11 +38,16 @@ type 'a mappable = 'a t
 
 (** {6 Access} *)
 
-let nil    = Lazy.lazy_from_val Nil
+let lazy_from_val v =
+  let res = lazy v in
+  let _ = Lazy.force res in
+  res
+
+let nil    = lazy_from_val Nil
 
 let next l = Lazy.force l
 
-let cons h t = Lazy.lazy_from_val (Cons(h, t))
+let cons h t = lazy_from_val (Cons(h, t))
 
 let ( ^:^ ) = cons
 
@@ -268,11 +273,11 @@ let at list n =
 
 let nth = at
 
-let rev list = fold_left (fun acc x -> Lazy.lazy_from_val (Cons (x, acc))) nil list
+let rev list = fold_left (fun acc x -> lazy_from_val (Cons (x, acc))) nil list
 
 (**Revert a list, convert it to a lazy list.
    Used as an optimisation.*)
-let rev_of_list (list:'a list) = List.fold_left (fun acc x -> Lazy.lazy_from_val (Cons (x, acc))) nil list
+let rev_of_list (list:'a list) = List.fold_left (fun acc x -> lazy_from_val (Cons (x, acc))) nil list
 
 let eager_append (l1 : 'a t) (l2 : 'a t) =
   let rec aux list =
@@ -284,7 +289,7 @@ let eager_append (l1 : 'a t) (l2 : 'a t) =
 let rev_append (l1 : 'a t) (l2 : 'a t) =
   let rec aux list acc =
     match next list with
-    | Cons (x, t) -> aux t (Lazy.lazy_from_val (Cons (x, acc)))
+    | Cons (x, t) -> aux t (lazy_from_val (Cons (x, acc)))
     | Nil -> acc
   in aux l1 l2
 
@@ -384,13 +389,13 @@ let of_stream s =
    Eager conversion from lists
 *)
 let eager_of_list l =
-  ListLabels.fold_right ~init: nil ~f: (fun x acc -> Lazy.lazy_from_val (Cons (x, acc))) l
+  ListLabels.fold_right ~init: nil ~f: (fun x acc -> lazy_from_val (Cons (x, acc))) l
 
 (**
    Eager conversion from array
 *)
 let of_array l =
-  ArrayLabels.fold_right ~init: nil ~f: (fun x acc -> Lazy.lazy_from_val (Cons (x, acc))) l
+  ArrayLabels.fold_right ~init: nil ~f: (fun x acc -> lazy_from_val (Cons (x, acc))) l
 
 (**
    Lazy conversion from enum
