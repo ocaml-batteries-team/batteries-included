@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
  *)
 
-type t = string ref
+type t = Bytes.t ref
 
 let print_array =
   let buf = Buffer.create 8 in
@@ -39,27 +39,27 @@ let print_array =
 let print out t =
   for i = 0 to (String.length !t) - 1 do
     BatInnerIO.nwrite out
-      (Array.unsafe_get print_array (Char.code (String.unsafe_get !t i)))
+      (Array.unsafe_get print_array (Char.code (Bytes.unsafe_get !t i)))
   done
 
-let capacity t = (String.length !t) * 8
+let capacity t = (Bytes.length !t) * 8
 
 let empty () = ref ""
 
 let create_ sfun c n = (* n is in bits *)
   if n < 0 then invalid_arg ("BitSet."^sfun^": negative size");
   let size = n / 8 + (if n mod 8 = 0 then 0 else 1) in
-  ref (String.make size c)
+  ref (Bytes.make size c)
 
 let create =
   create_ "create" '\000'
 
-let copy t = ref (String.copy !t)
+let copy t = ref (Bytes.copy !t)
 
 let extend t n = (* len in bits *)
   if n > capacity t then
     let t' = create n in
-    String.blit !t 0 !t' 0 (String.length !t);
+    Bytes.blit !t 0 !t' 0 (Bytes.length !t);
     t := !t'
 
 type bit_op =
@@ -71,9 +71,9 @@ let rec apply_bit_op sfun op t x =
   let pos = x / 8 in
   if pos < 0 then
     invalid_arg ("BitSet."^sfun^": negative index")
-  else if pos < String.length !t then
+  else if pos < Bytes.length !t then
     let delta = x mod 8 in
-    let c = Char.code (String.unsafe_get !t pos) in
+    let c = Char.code (Bytes.unsafe_get !t pos) in
     let mask = 1 lsl delta in
     let v = (c land mask) <> 0 in
     let bset c = Bytes.unsafe_set !t pos (Char.unsafe_chr c) in
@@ -105,9 +105,9 @@ let mem t x =
   let pos = x / 8 in
   if pos < 0 then
     invalid_arg ("BitSet.mem: negative index")
-  else if pos < String.length !t then
+  else if pos < Bytes.length !t then
     let delta = x mod 8 in
-    let c = Char.code (String.unsafe_get !t pos) in
+    let c = Char.code (Bytes.unsafe_get !t pos) in
     (c land (1 lsl delta)) <> 0
   else
     false
@@ -141,28 +141,28 @@ let create_full n =
 *)
 
 let compare t1 t2 =
-  let len1 = String.length !t1 in
-  let len2 = String.length !t2 in
+  let len1 = Bytes.length !t1 in
+  let len2 = Bytes.length !t2 in
   if len1 = len2 then
-    String.compare !t1 !t2
+    Bytes.compare !t1 !t2
   else
     let diff = ref 0 in
     let idx = ref 0 in
     let clen = min len1 len2 in
     while !diff = 0 && !idx < clen do
       diff := Char.compare
-          (String.unsafe_get !t1 !idx)
-          (String.unsafe_get !t2 !idx);
+          (Bytes.unsafe_get !t1 !idx)
+          (Bytes.unsafe_get !t2 !idx);
       incr idx
     done;
     if len1 < len2 then
       while !diff = 0 && !idx < len2 do
-        diff := Char.compare '\000' (String.unsafe_get !t2 !idx);
+        diff := Char.compare '\000' (Bytes.unsafe_get !t2 !idx);
         incr idx
       done
     else
       while !diff = 0 && !idx < len1 do
-        diff := Char.compare (String.unsafe_get !t1 !idx) '\000';
+        diff := Char.compare (Bytes.unsafe_get !t1 !idx) '\000';
         incr idx
       done;
     !diff
@@ -195,9 +195,9 @@ let count_array =
 
 let count t =
   let c = ref 0 in
-  for i = 0 to (String.length !t) - 1 do
+  for i = 0 to (Bytes.length !t) - 1 do
     c := !c +
-        Array.unsafe_get count_array (Char.code (String.unsafe_get !t i))
+        Array.unsafe_get count_array (Char.code (Bytes.unsafe_get !t i))
   done;
   !c
 
@@ -256,10 +256,10 @@ let rec next_set_bit t x =
     invalid_arg "BitSet.next_set_bit"
   else
     let pos = x / 8 in
-    if pos < String.length !t then
+    if pos < Bytes.length !t then
       begin
         let delta = x mod 8 in
-        let c = Char.code (String.unsafe_get !t pos) in
+        let c = Char.code (Bytes.unsafe_get !t pos) in
         let delta_next =
           Array.unsafe_get
             (Array.unsafe_get next_set_bit_array c)
@@ -319,12 +319,12 @@ type set_op =
 
 let apply_set_op op t1 t2 =
   let idx  = ref 0 in
-  let len1 = String.length !t1 in
-  let len2 = String.length !t2 in
+  let len1 = Bytes.length !t1 in
+  let len2 = Bytes.length !t2 in
   let clen = min len1 len2 in
   while !idx < clen do
-    let c1 = Char.code (String.unsafe_get !t1 !idx) in
-    let c2 = Char.code (String.unsafe_get !t2 !idx) in
+    let c1 = Char.code (Bytes.unsafe_get !t1 !idx) in
+    let c2 = Char.code (Bytes.unsafe_get !t2 !idx) in
     let cr =
       match op with
       | Inter   -> c1 land c2
@@ -338,12 +338,12 @@ let apply_set_op op t1 t2 =
   if op = Unite && len1 < len2 then
     begin
       extend t1 (len2 * 8);
-      String.blit !t2 len1 !t1 len1 (len2 - len1)
+      Bytes.blit !t2 len1 !t1 len1 (len2 - len1)
     end
   else if op = DiffSym && len1 < len2 then
     begin
-      let tmp = String.copy !t2 in
-      String.blit !t1 0 tmp 0 len1;
+      let tmp = Bytes.copy !t2 in
+      Bytes.blit !t1 0 tmp 0 len1;
       t1 := tmp
     end
 
