@@ -72,7 +72,8 @@ all:
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(TARGETS)
 
 clean:
-	@${RM} src/batteriesConfig.ml src/batUnix.mli batteries.odocl bench.log
+	@${RM} src/batteriesConfig.ml src/batUnix.mli batteries.odocl \
+	  bench.log $(QTESTDIR)/all_tests.ml
 	@${RM} -r man/
 	@$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -clean
 	@echo " Cleaned up working copy" # Note: ocamlbuild eats the first char!
