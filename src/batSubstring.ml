@@ -79,7 +79,7 @@ let of_chan chan =
 let of_input inp =
   let tempsize = 16384 in
   let buf = Buffer.create tempsize
-  and tmp = String.create tempsize in
+  and tmp = Bytes.create tempsize in
   let n = ref 0 in
   while n := BatIO.input inp tmp 0 tempsize; !n > 0 do
     Buffer.add_substring buf tmp 0 !n;
@@ -191,7 +191,7 @@ let slice (str,off,len) off2 len2_opt =
 
 let concat ssl =
   let len = List.fold_left (fun acc (_,_,l) ->acc+l) 0 ssl in
-  let item = String.create len in
+  let item = Bytes.create len in
   let write =
     let pos = ref 0 in
     fun (s,o,len) -> String.unsafe_blit s o item !pos len; pos := !pos + len
