@@ -26,7 +26,7 @@ open BatIO
 (*Imported from [Digest.input] -- the functions used take advantage of
   [BatIO.input] rather than [in_channel]*)
 let input inp =
-  let digest = String.create 16 in
+  let digest = Bytes.create 16 in
   let _ = really_input inp digest 0 16 in
   digest
 (*$T
@@ -39,7 +39,7 @@ let print oc t = BatIO.nwrite oc (to_hex t)
 
 let channel inp len = (*TODO: Make efficient*)
   if len >= 0 then
-    let buf = String.create len in
+    let buf = Bytes.create len in
     let _  = BatIO.really_input inp buf 0 len in
     Digest.string buf
   else Digest.channel (BatIO.to_input_channel inp) len
@@ -78,9 +78,9 @@ let from_hex s =
     | _ -> raise (Invalid_argument "Digest.from_hex")
   in
   let byte i = digit s.[i] lsl 4 + digit s.[i+1] in
-  let result = String.create 16 in
+  let result = Bytes.create 16 in
   for i = 0 to 15 do
-    result.[i] <- Char.chr (byte (2 * i));
+    Bytes.set result i (Char.chr (byte (2 * i)));
   done;
   result
 

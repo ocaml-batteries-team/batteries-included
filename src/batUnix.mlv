@@ -34,7 +34,7 @@ let run_and_read cmd =
     let buff_size = 1024 in
     let buff = Buffer.create buff_size in
     let ic = open_in fn in
-    let line_buff = String.create buff_size in
+    let line_buff = Bytes.create buff_size in
     begin
       let was_read = ref (input ic line_buff 0 buff_size) in
       while !was_read <> 0 do

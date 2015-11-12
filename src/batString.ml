@@ -32,9 +32,9 @@ let ord = BatOrd.ord String.compare
 
 
 let init len f =
-  let s = create len in
+  let s = Bytes.create len in
   for i = 0 to len - 1 do
-    unsafe_set s i (f i)
+    Bytes.unsafe_set s i (f i)
   done;
   s
 
@@ -364,7 +364,7 @@ let join = concat
 
 let unsafe_slice i j s =
   if i >= j || i = length s then
-    create 0
+    Bytes.create 0
   else
     sub s i (j-i)
 
@@ -491,9 +491,9 @@ let backwards s =
 let of_enum e =
   (* TODO: use a buffer when not fast_count *)
   let l = BatEnum.count e in
-  let s = create l in
+  let s = Bytes.create l in
   let i = ref 0 in
-  BatEnum.iter (fun c -> unsafe_set s (BatRef.post_incr i) c) e;
+  BatEnum.iter (fun c -> Bytes.unsafe_set s (BatRef.post_incr i) c) e;
   s
 (*$T of_enum
     Enum.init 3 (fun i -> char_of_int (i + int_of_char '0')) |> of_enum = "012"
@@ -503,9 +503,9 @@ let of_enum e =
 let of_backwards e =
   (* TODO: use a buffer when not fast_count *)
   let l = BatEnum.count e in
-  let s = create l in
+  let s = Bytes.create l in
   let i = ref (l - 1) in
-  BatEnum.iter (fun c -> unsafe_set s (BatRef.post_decr i) c) e;
+  BatEnum.iter (fun c -> Bytes.unsafe_set s (BatRef.post_decr i) c) e;
   s
 (*$T of_backwards
    "" |> enum |> of_backwards = ""
@@ -515,9 +515,9 @@ let of_backwards e =
 
 let map f s =
   let len = length s in
-  let sc = create len in
+  let sc = Bytes.create len in
   for i = 0 to len - 1 do
-    unsafe_set sc i (f (unsafe_get s i))
+    Bytes.unsafe_set sc i (f (unsafe_get s i))
   done;
   sc
 (*$T map
@@ -528,9 +528,9 @@ let map f s =
 
 let mapi f s =
   let len = length s in
-  let sc = create len in
+  let sc = Bytes.create len in
   for i = 0 to len - 1 do
-    unsafe_set sc i (f i (unsafe_get s i))
+    Bytes.unsafe_set sc i (f i (unsafe_get s i))
   done;
   sc
 (*$T mapi
@@ -653,10 +653,10 @@ let to_list = explode
 *)
 
 let implode l =
-  let res = String.create (List.length l) in
+  let res = Bytes.create (List.length l) in
   let rec imp i = function
     | [] -> res
-    | c :: l -> res.[i] <- c; imp (i + 1) l in
+    | c :: l -> Bytes.set res i c; imp (i + 1) l in
   imp 0 l
 (*$T implode
    implode ['b';'a';'r'] = "bar"
@@ -682,7 +682,7 @@ let replace_chars f s =
       loop (i+1) (s :: acc)
   in
   let strs = loop 0 [] in
-  let sbuf = create !tlen in
+  let sbuf = Bytes.create !tlen in
   let pos = ref !tlen in
   let rec loop2 = function
     | [] -> ()
@@ -706,7 +706,7 @@ let replace ~str ~sub ~by =
      let strlen = length str in
      let sublen = length sub in
      let bylen  = length by in
-     let newstr = create (strlen - sublen + bylen) in
+     let newstr = Bytes.create (strlen - sublen + bylen) in
      blit str 0 newstr 0 subpos ;
      blit by 0 newstr subpos bylen ;
      blit str (subpos + sublen) newstr (subpos + bylen) (strlen - subpos - sublen) ;
@@ -730,7 +730,7 @@ let nreplace ~str ~sub ~by =
     | -1 -> idxes, newlen
     | i' -> loop_subst (i'::idxes) (newlen+dlen) i' in
   let idxes, newlen = loop_subst [] strlen strlen in
-  let newstr = create newlen in
+  let newstr = Bytes.create newlen in
   let rec loop_copy i j idxes =
     match idxes with
     | [] ->
@@ -758,7 +758,7 @@ let rev_in_place s =
   let len = String.length s in
   if len > 0 then for k = 0 to (len - 1)/2 do
       let old = s.[k] and mirror = len - 1 - k in
-      s.[k] <- s.[mirror]; s.[mirror] <- old;
+      Bytes.set s k s.[mirror]; Bytes.set s mirror old;
     done
 (*$= rev_in_place as f & ~printer:identity
   (let s="" in f s; s)          ""
@@ -781,9 +781,9 @@ let repeat s n =
 
 let rev s =
   let len = String.length s in
-  let reversed = String.create len in
+  let reversed = Bytes.create len in
   for i = 0 to len - 1 do
-    String.unsafe_set reversed (len - i - 1) (String.unsafe_get s i)
+    Bytes.unsafe_set reversed (len - i - 1) (String.unsafe_get s i)
   done;
   reversed
 
@@ -821,7 +821,7 @@ let splice s1 off len s2 =
   let off = wrap off ~hi:len1 in
   let len = clip ~lo:0 ~hi:(len1 - off) len in
   let out_len = len1 - len + len2 in
-  let s = create out_len in
+  let s = Bytes.create out_len in
   blit s1 0 s 0 off; (* s1 before splice point *)
   blit s2 0 s off len2; (* s2 at splice point *)
   blit s1 (off+len) s (off+len2) (len1 - (off+len)); (* s1 after off+len *)
@@ -1065,7 +1065,7 @@ struct
   let uncapitalize  = uncapitalize
   let copy          = copy
   let sub           = sub
-  let fill          = fill
+  let fill          = Bytes.fill
   let blit          = blit
   let concat        = concat
   let escaped       = escaped

@@ -76,7 +76,7 @@ let rec apply_bit_op sfun op t x =
     let c = Char.code (String.unsafe_get !t pos) in
     let mask = 1 lsl delta in
     let v = (c land mask) <> 0 in
-    let bset c = String.unsafe_set !t pos (Char.unsafe_chr c) in
+    let bset c = Bytes.unsafe_set !t pos (Char.unsafe_chr c) in
     match op with
     | Set ->
       if not v then
@@ -207,7 +207,7 @@ let count t =
 let next_set_bit_array =
   let eighth_bit = 1 lsl 7 in
   let mk c =
-    let arr = Array.create 8 ~-1 in
+    let arr = Array.make 8 ~-1 in
     let rec mk' last_set_bit i v =
       if i >= 0 then
         let last_set_bit =
@@ -332,7 +332,7 @@ let apply_set_op op t1 t2 =
       | Unite   -> c1 lor c2
       | DiffSym -> c1 lxor c2
     in
-    String.unsafe_set !t1 !idx (Char.unsafe_chr cr);
+    Bytes.unsafe_set !t1 !idx (Char.unsafe_chr cr);
     incr idx
   done;
   if op = Unite && len1 < len2 then

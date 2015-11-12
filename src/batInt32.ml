@@ -39,13 +39,13 @@ let of_byte b = Char.code b |> Int32.of_int
 let pack str pos item =
   if String.length str < pos + 4 then invalid_arg "Int32.pack: pos too close to end of string";
   if pos < 0 then invalid_arg "Int32.pack: pos negative";
-  str.[pos] <- to_byte item;
+  Bytes.set str pos (to_byte item);
   let item = Int32.shift_right item 8 in
-  str.[pos+1] <- to_byte item;
+  Bytes.set str (pos + 1) (to_byte item);
   let item = Int32.shift_right item 8 in
-  str.[pos+2] <- to_byte item;
+  Bytes.set str (pos + 2) (to_byte item);
   let item = Int32.shift_right item 8 in
-  str.[pos+3] <- to_byte item (* optimize out last logand? *)
+  Bytes.set str (pos + 3) (to_byte item) (* optimize out last logand? *)
 
 (*$T pack
   let str = "    " in pack str 0 0l; (str = "\000\000\000\000")
@@ -58,13 +58,13 @@ let pack str pos item =
 let pack_big str pos item =
   if String.length str < pos + 4 then invalid_arg "Int32.pack_big: pos too close to end of string";
   if pos < 0 then invalid_arg "Int32.pack_big: pos negative";
-  str.[pos+3] <- to_byte item;
+  Bytes.set str (pos + 3) (to_byte item);
   let item = Int32.shift_right item 8 in
-  str.[pos+2] <- to_byte item;
+  Bytes.set str (pos + 2) (to_byte item);
   let item = Int32.shift_right item 8 in
-  str.[pos+1] <- to_byte item;
+  Bytes.set str (pos + 1) (to_byte item);
   let item = Int32.shift_right item 8 in
-  str.[pos] <- to_byte item (* optimize out last logand? *)
+  Bytes.set str pos (to_byte item) (* optimize out last logand? *)
 
 (*$T pack_big
   let str = "    " in pack_big str 0 0l; (str = "\000\000\000\000")
