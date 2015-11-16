@@ -171,6 +171,13 @@ qtest-byte-clean:
 qtest-byte: qtest-byte-clean
 	@_build/$(QTESTDIR)/all_tests.byte
 
+qtest-native-clean:
+	@${RM} $(QTESTDIR)/all_tests.ml
+	@${MAKE} _build/$(QTESTDIR)/all_tests.native
+
+qtest-native: prefilter qtest-native-clean
+	@_build/$(QTESTDIR)/all_tests.native
+
 qtest-clean:
 	@${RM} $(QTESTDIR)/all_tests.ml
 	@${MAKE} _build/$(QTESTDIR)/all_tests.$(EXT)
@@ -181,15 +188,17 @@ qtest: qtest-clean
 ### run all unit tests
 ##############################################
 
-test-byte: _build/testsuite/main.byte _build/$(QTESTDIR)/all_tests.byte
+testsuite-only-byte: _build/testsuite/main.byte
 	@_build/testsuite/main.byte
 	@echo "" # newline after "OK"
-	@_build/$(QTESTDIR)/all_tests.byte
 
-test-native: _build/testsuite/main.native _build/$(QTESTDIR)/all_tests.native
+testsuite-only-native: _build/testsuite/main.native
 	@_build/testsuite/main.native
 	@echo "" # newline after "OK"
-	@_build/$(QTESTDIR)/all_tests.native
+
+test-byte: qtest-byte testsuite-only-byte
+
+test-native: qtest-native testsuite-only-native
 
 full-test: $(TEST_TARGET)
 
