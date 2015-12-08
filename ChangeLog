@@ -3,12 +3,106 @@ Changelog
 
 ## v2.4.0
 
-- Enum: uniq is modified to use structural comparison internally, instead
-    of previously used physical comparison, which was most likely a bug.
-    The old behavior is provided by the new Enum.uniqq function.
-    Enum.uniq_by was added for additional convenience.
+- ignore deprecation warnings
+  (Gabriel Scherer)
+- BatBitSet: use Bytes instead of String
+  (Gabriel Scherer)
+- rm qtest-generated file all_tests.ml upon 'make clean'
+  (Francois Berenger)
+- corrected many warnings
+  (Francois Berenger)
+- regression tests for issue #609
+  (Gabriel Scherer)
+- Makefile: create testsuite-only-{byte,native} targets
+  (Gabriel Scherer)
+- BatHashtbl: fix hash computation bug introduced by 4.01
+  (Gabriel Scherer)
+- BatText: synchronize nsplit to match BatString.nsplit
+  (Gabriel Scherer)
+- BatInt: repared quick check test for mid
+  (Francois Berenger)
+- updated NEXT_RELEASE tags
+  (Francois Berenger)
+- BatLazyList: fix remove_all_such documentation
+  (Xavier Van de Woestyne)
+- BatMap: better ocamldoc for update
+  (Francois Berenger)
+- BatMap: add pop_min_binding and pop_max_binding
+  (Francois Berenger)
+- BatMap: fix at_rank_exn compilation
+  (Gabriel Scherer)
+- BatMap: modified update to behave as Set.update
+  (Francois Berenger)
+- BatMap: add at_rank_exn
+  (Francois Berenger)
+- BatSet: shorter exception strings in at_rank_exn
+  (Francois Berenger)
+- BatMap: add update
+  (Francois Berenger)
+- BatEnum: add interleave utility function
+  (Aleksey Z. Arens)
+- fix _tags warnings settings
+  (Gabriel Scherer)
+- BatFormat: expose asprintf for V>=4.01
+  (Ralf Vogler)
+- BatSet: more generic version of update
+  (Francois Berenger)
+- BatSet: updated ocamldoc
+  (Francois Berenger)
+- BatSet: add at_rank_exn
+  (Francois Berenger)
+- BatUTF8: add qtests for enum
+  (Kevin Brubeck Unhammer)
+- BatUTF8: add enum
+  (Kevin Brubeck Unhammer)
+- Move prefiltering logic from Makefile to ocamlbuild
+  (Gabriel Scherer)
+- BatSet: add of_array
+  (Francois Berenger)
+- BatSet: add to_array and test for to_list
+  (Francois Berenger)
+- BatSet: add pop_max
+  (Francois Berenger)
+- BatSet: add pop_min
+  (Francois Berenger)
+- BatFormat: add new pp_* functions for old OCaml versions
+  (Gabriel Scherer)
+- BatSplay: hardened against read-only data compiler optimization
+  (Gabriel Scherer)
+- BatList: simplified interleave
+  (Francois Berenger)
+- BatOption: add Infix.(>>=)
+  (Herry Herry)
+- BatHashtbl: rearrange comment
+  (Anders Fugmann)
+- BatHashtbl: add comments to modify_opt plus indentation changes
+  (Anders Fugmann)
+- BatHashtbl: modify now have the same semantic than replace
+  (Anders Fugmann)
+- BatHashtbl: more efficient modify_opt and modify_def
+  (Anders Fugmann)
+- BatFormat: add comment
+  (Christoph Höger)
+- BatFormat: add pp_print_list and pp_print_text
+  (Christoph Höger)
+- LazyList: fix description of range
+  (Quentin Stievenart)
+- ChangeLog update
   (Max Mouratov)
-
+- add "@since 2.4.0" tag
+  (Max Mouratov)
+- BatEnum: add uniq_by and uniqq
+  (Max Mouratov)
+- BatEnum: fix uniq to use structural comparison
+  (Max Mouratov)
+- BatUnix: add run_and_read
+  (Francois Berenger)
+- BatCache: use hashmap to speed up lru_cache
+  (Sang Kil Cha)
+- add lexer location directives in prefilter.ml
+  (Gabriel Scherer)
+- BatQueue: add filter, filter_inplace and filter_map
+  (Gabriel Scherer)
 
 ## v2.3.0
 
