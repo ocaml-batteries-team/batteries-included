@@ -3,8 +3,8 @@ Make a release
 
 From various emails and interviews with VIP:
 
-- 'make test' on a 64 bits machines
-- 'make test' on a 32 bits machines
+- 'make test' on a 64 bits machine
+- 'make test' on a 32 bits machine
 - inspect commits to find @since tags to add/substitute (especially @since NEXT_RELEASE)
 - check whether new functions should go in Incubator
 - build changelog (from `git log`, see `howto/changelog`)
