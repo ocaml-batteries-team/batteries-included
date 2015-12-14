@@ -92,7 +92,7 @@ sig
       This is equivalent to [add k2 v2 (remove k1) m], but more efficient
       in the case where [k1] and [k2] have the same key ordering.
       @raise Not_found if [k1] is not bound in [m].
-      @since NEXT_RELEASE *)
+      @since 2.4.0 *)
 
   val find: key -> 'a t -> 'a
   (** [find x m] returns the current binding of [x] in [m],
@@ -396,7 +396,7 @@ val update: 'a -> 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
     This is equivalent to [add k2 v2 (remove k1) m], but more efficient
     in the case where [k1] and [k2] have the same key ordering.
     @raise Not_found if [k1] is not bound in [m].
-    @since NEXT_RELEASE *)
+    @since 2.4.0 *)
 
 val find : 'a -> ('a, 'b) t -> 'b
 (** [find x m] returns the current binding of [x] in [m],
@@ -692,7 +692,7 @@ module PMap : sig
       This is equivalent to [add k2 v2 (remove k1) m], but more efficient
       in the case where [k1] and [k2] have the same key ordering.
       @raise Not_found if [k1] is not bound in [m].
-      @since NEXT_RELEASE *)
+      @since 2.4.0 *)
 
   val find : 'a -> ('a, 'b) t -> 'b
   (** [find x m] returns the current binding of [x] in [m],
