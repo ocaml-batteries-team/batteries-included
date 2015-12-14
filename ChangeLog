@@ -3,12 +3,64 @@ Changelog
 
 ## v2.4.0
 
-- Enum: uniq is modified to use structural comparison internally, instead
-    of previously used physical comparison, which was most likely a bug.
-    The old behavior is provided by the new Enum.uniqq function.
-    Enum.uniq_by was added for additional convenience.
+- BatBitSet: use Bytes instead of String
+  (Gabriel Scherer)
+- BatHashtbl: fix hash computation bug introduced by 4.01 (issue #609)
+  (Gabriel Scherer)
+- BatText: synchronize nsplit to match BatString.nsplit
+  (Gabriel Scherer)
+- BatLazyList: fix remove_all_such documentation
+  (Xavier Van de Woestyne)
+- BatMap: add pop_min_binding: 'a t -> (key * 'a) * 'a t
+	  and pop_max_binding: 'a t -> (key * 'a) * 'a t
+  (Francois Berenger)
+- BatMap: add at_rank_exn: int -> ('key, 'a) t -> ('key * 'a)
+	  and update: key -> key -> 'a -> 'a t -> 'a t
+  (Francois Berenger)
+- BatEnum: add interleave: 'a t array -> 'a t
+  (Aleksey Z. Arens)
+- BatFormat: expose asprintf for V>=4.01
+  (Ralf Vogler)
+- BatSet: add at_rank_exn: int -> t -> elt
+	  and update: elt -> elt -> t -> t
+  (Francois Berenger)
+- BatUTF8: add enum: t -> BatUChar.t BatEnum.t
+  (Kevin Brubeck Unhammer)
+- BatSet: add to_array: t -> elt array
+	  and of_array: elt array -> t
+	  and test for to_list
+  (Francois Berenger)
+- BatSet: add pop_max: 'a t -> 'a * 'a t
+	  and pop_min: 'a t -> 'a * 'a t
+  (Francois Berenger)
+- BatSplay: hardened against read-only-data compiler optimization
+  (Gabriel Scherer)
+- BatList: simplified interleave implementation
+  (Francois Berenger)
+- BatOption: add Infix.(>>=): 'a option -> ('a -> 'b option) -> 'b option
+  (Herry Herry)
+- BatHashtbl: modify now have same semantics than replace for the key
+  (Anders Fugmann)
+- BatHashtbl: more efficient modify_opt and modify_def
+  (Anders Fugmann)
+- BatFormat: add pp_print_list: ?pp_sep:(formatter -> unit -> unit) ->
+	                        (formatter -> 'a -> unit) ->
+	                        (formatter -> 'a list -> unit)
+	     and pp_print_text: formatter -> string -> unit
+  (Christoph Höger)
+- BatEnum: add uniq_by: ('a -> 'a -> bool) -> 'a t -> 'a t
+	   and uniqq: 'a t -> 'a t
   (Max Mouratov)
-
+- BatEnum: fix uniq to use structural comparison
+  (Max Mouratov)
+- BatUnix: add run_and_read: string -> process_status * string
+  (Francois Berenger)
+- BatCache: use hashmap to speed up lru_cache
+  (Sang Kil Cha)
+- BatQueue: add filter: ('a -> bool) -> 'a t -> 'a t
+	    and filter_inplace: ('a -> bool) -> 'a t -> unit
+	    and filter_map: ('a -> 'b option) -> 'a t -> 'b t
+  (Gabriel Scherer)
 
 ## v2.3.0
 
