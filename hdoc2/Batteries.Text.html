@@ -10,8 +10,6 @@
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
-<link title="Index of class methods" rel=Appendix href="index_methods.html">
-<link title="Index of classes" rel=Appendix href="index_classes.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
@@ -540,7 +538,11 @@ Returns the same rope but without the last character.
     which are separated by <code class="code">sep</code>.
     <code class="code">nsplit <span class="string">""</span> _</code> returns the empty list.
     If the separator is not found, it returns a list of
-    the rope <code class="code">s</code>.<br>
+    the rope <code class="code">s</code>.
+    If two occurences of the separator are consecutive (with nothing
+    in between), the empty rope is added in the sequence. For example,
+    <code class="code">nsplit <span class="string">"a//b/"</span> <span class="string">"/"</span></code> is <code class="code"><span class="string">"a"</span>; <span class="string">""</span>; <span class="string">"b"</span>; <span class="string">""</span></code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> if the separator is empty<br>
 </div>
 
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> int</code></pre><div class="info ">

@@ -10,8 +10,6 @@
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
-<link title="Index of class methods" rel=Appendix href="index_methods.html">
-<link title="Index of classes" rel=Appendix href="index_classes.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
@@ -105,7 +103,8 @@
 <link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatNumber</title>
+<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Utilities" rel="Section" href="#6_Utilities">
+<title>Batteries user guide : BatNumber</title>
 </head>
 <body>
 <div class="navbar"><a class="pre" href="BatNum.html" title="BatNum">Previous</a>
@@ -312,4 +311,30 @@ The full set of operations of a type of numbers
 </div>
 
 <pre><span class="keyword">module type</span> <a href="BatNumber.Bounded.html">Bounded</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatNumber.Bounded.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
-<pre><span class="keyword">module type</span> <a href="BatNumber.Discrete.html">Discrete</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatNumber.Discrete.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>
+<pre><span class="keyword">module type</span> <a href="BatNumber.Discrete.html">Discrete</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatNumber.Discrete.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><br>
+<h6 id="6_Utilities">Utilities</h6><br>
+
+<pre><span class="keyword">module type</span> <a href="BatNumber.NUMERIC_BASE.html">NUMERIC_BASE</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatNumber.NUMERIC_BASE.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+The smallest set of operations supported by every set of numbers
+</div>
+<br>
+Automated definition of infix operators for a given numeric type,
+    so that you can open it without poluting your namespace.
+    (apart from the type bat__infix_t)<br>
+
+<pre><span class="keyword">module</span> <a href="BatNumber.MakeInfix.html">MakeInfix</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">Base</span></code><code class="code"> : </code><code class="type"><a href="BatNumber.NUMERIC_BASE.html">NUMERIC_BASE</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatNumber.Infix.html">Infix</a></code><code class="type">  with type bat__infix_t = Base.t</code></div></pre><br>
+Automated definition of infix comparison operators for a given numeric type,
+    so that you can open it only when you mean it.
+    (apart from the type bat__compare_t)<br>
+
+<pre><span class="keyword">module</span> <a href="BatNumber.MakeCompare.html">MakeCompare</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">Base</span></code><code class="code"> : </code><code class="type"><a href="BatNumber.NUMERIC_BASE.html">NUMERIC_BASE</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatNumber.Compare.html">Compare</a></code><code class="type">  with type bat__compare_t = Base.t</code></div></pre>
+<pre><span class="keyword">module</span> <a href="BatNumber.MakeRefOps.html">MakeRefOps</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">Base</span></code><code class="code"> : </code><code class="type"><a href="BatNumber.NUMERIC_BASE.html">NUMERIC_BASE</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatNumber.RefOps.html">RefOps</a></code><code class="type">  with type bat__refops_t = Base.t</code></div></pre><div class="info">
+Automated definition of reference operators for a given numeric
+    type
+</div>
+<br>
+Automated definition of operators for a given numeric type.
+    You will only need this if you develop your own numeric modules.<br>
+
+<pre><span class="keyword">module</span> <a href="BatNumber.MakeNumeric.html">MakeNumeric</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">Base</span></code><code class="code"> : </code><code class="type"><a href="BatNumber.NUMERIC_BASE.html">NUMERIC_BASE</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatNumber.Numeric.html">Numeric</a></code><code class="type">  with type t = Base.t</code></div></pre>
+<pre><span id="VALgeneric_pow"><span class="keyword">val</span> generic_pow</span> : <code class="type">zero:'a -><br>       one:'a -><br>       div_two:('a -> 'a) -><br>       mod_two:('a -> 'a) -> mul:('a -> 'a -> 'a) -> 'a -> 'a -> 'a</code></pre></body></html>

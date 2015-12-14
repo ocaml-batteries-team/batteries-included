@@ -9,8 +9,6 @@
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
-<link title="Index of class methods" rel=Appendix href="index_methods.html">
-<link title="Index of classes" rel=Appendix href="index_classes.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
@@ -112,6 +110,8 @@
 <link title="Utilities" rel="Section" href="#6_Utilities">
 <link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
 <link title="Override modules" rel="Section" href="#6_Overridemodules">
+<link title="Override modules" rel="Section" href="#6_Overridemodules">
+<link title="Undocumented functions" rel="Section" href="#6_Undocumentedfunctions">
 <title>Batteries user guide : BatArray</title>
 </head>
 <body>
@@ -685,6 +685,8 @@ Hoist a equality test for elements to arrays.  Arrays are only
 <br>
 <h6 id="6_Overridemodules">Override modules</h6><br>
 <br>
+<h6 id="6_Overridemodules">Override modules</h6><br>
+<br>
 The following modules replace functions defined in <code class="code"><span class="constructor">Array</span></code> with
     functions behaving slightly differently but having the same
     name. This is by design: the functions are meant to override the
@@ -702,4 +704,9 @@ Operations on <code class="code"><span class="constructor">Array</span></code> w
 Capabilities for arrays.
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatArray.Incubator.html">Incubator</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatArray.Incubator.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>
+<pre><span class="keyword">module</span> <a href="BatArray.Incubator.html">Incubator</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatArray.Incubator.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><br>
+<h6 id="6_Undocumentedfunctions">Undocumented functions</h6><br>
+
+<pre><span id="VALis_sorted_by"><span class="keyword">val</span> is_sorted_by</span> : <code class="type">('a -> 'b) -> 'a array -> bool</code></pre>
+<pre><span id="VALunsafe_get"><span class="keyword">val</span> unsafe_get</span> : <code class="type">'a array -> int -> 'a</code></pre>
+<pre><span id="VALunsafe_set"><span class="keyword">val</span> unsafe_set</span> : <code class="type">'a array -> int -> 'a -> unit</code></pre></body></html>

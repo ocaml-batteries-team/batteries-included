@@ -5,8 +5,6 @@
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
-<link title="Index of class methods" rel=Appendix href="index_methods.html">
-<link title="Index of classes" rel=Appendix href="index_classes.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
@@ -195,6 +193,7 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;wait&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;*&nbsp;<span class="constructor">BatUnix</span>.process_status<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;waitpid&nbsp;:&nbsp;<span class="constructor">BatUnix</span>.wait_flag&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;*&nbsp;<span class="constructor">BatUnix</span>.process_status<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;system&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatUnix</span>.process_status<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;run_and_read&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatUnix</span>.process_status&nbsp;*&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;getpid&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;getppid&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;nice&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>

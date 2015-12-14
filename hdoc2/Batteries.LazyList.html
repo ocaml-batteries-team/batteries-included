@@ -10,8 +10,6 @@
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
-<link title="Index of class methods" rel=Appendix href="index_methods.html">
-<link title="Index of classes" rel=Appendix href="index_classes.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
@@ -121,6 +119,8 @@
 <link title="Sorting" rel="Section" href="#6_Sorting">
 <link title="Operations on two lists" rel="Section" href="#6_Operationsontwolists">
 <link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
+<link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
+<link title="Override modules" rel="Section" href="#6_Overridemodules">
 <link title="Override modules" rel="Section" href="#6_Overridemodules">
 <link title="Printing" rel="Subsection" href="#7_Printing">
 <title>Batteries user guide : Batteries.LazyList</title>
@@ -165,7 +165,7 @@ See <a href="BatLazyList.html#VALfrom"><code class="code"><span class="construct
    <b>Note</b> The types are kept concrete so as to allow pattern-matching.
    However, it is generally easier to manipulate <a href="BatLazyList.html#VALnil"><code class="code"><span class="constructor">BatLazyList</span>.nil</code></a> and <a href="BatLazyList.html#VALcons"><code class="code"><span class="constructor">BatLazyList</span>.cons</code></a>.<br>
 
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a node_t Lazy.t</code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a <a href="BatLazyList.html#TYPEnode_t">node_t</a> Lazy.t</code> </pre>
 <div class="info ">
 The type of a lazy list.<br>
 </div>
@@ -267,7 +267,7 @@ Similar to <code class="code"><span class="constructor">String</span>.make</code
 Compute lazily a range of integers a .. b as a lazy list.
 <p>
 
-   The range is empty if a &lt;= b.<br>
+   The range is empty if b &lt;= a.<br>
 </div>
 <br>
 <h6 id="6_Higherorderfunctions">Higher-order functions</h6><br>
@@ -605,8 +605,8 @@ as <code class="code">unique</code> except only uses an equality function.  Use 
 </div>
 
 <pre><span id="VALremove_all_such"><span class="keyword">val</span> remove_all_such</span> : <code class="type">('a -> bool) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">remove_all l x</code> is similar to <code class="code">remove</code> but removes all elements that
-    are equal to <code class="code">x</code> and not only the first one.<br>
+<code class="code">remove_all_such f l</code> is similar to <code class="code">remove</code> but removes all elements
+    that satisfy the predicate <code class="code">f</code> and not only the first one.<br>
 </div>
 
 <pre><span id="VALtake"><span class="keyword">val</span> take</span> : <code class="type">int -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info ">
@@ -795,9 +795,13 @@ Infix submodule regrouping all infix operators
 <br>
 <h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
 <br>
+<h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
+<br>
 <div class="h7" id="7_Printing">Printing</div><br>
 
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatLazyList.html#TYPEt">t</a> -> unit</code></pre><br>
+<h6 id="6_Overridemodules">Override modules</h6><br>
+<br>
 <h6 id="6_Overridemodules">Override modules</h6><br>
 <br>
 The following modules replace functions defined in <code class="code"><span class="constructor">LazyList</span></code> with functions

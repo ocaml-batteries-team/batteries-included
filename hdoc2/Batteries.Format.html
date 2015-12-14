@@ -10,8 +10,6 @@
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
-<link title="Index of class methods" rel=Appendix href="index_methods.html">
-<link title="Index of classes" rel=Appendix href="index_classes.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
@@ -117,6 +115,7 @@
 <link title="Semantics Tags" rel="Section" href="#tags">
 <link title="Redirecting the standard formatter output" rel="Section" href="#6_Redirectingthestandardformatteroutput">
 <link title="Changing the meaning of standard formatter pretty printing" rel="Section" href="#meaning">
+<link title="Changing the meaning of standard formatter pretty printing" rel="Section" href="#meaning">
 <link title="Changing the meaning of printing semantics tags" rel="Section" href="#tags">
 <link title="Multiple formatted output" rel="Section" href="#6_Multipleformattedoutput">
 <link title="Basic functions to use with formatters" rel="Section" href="#6_Basicfunctionstousewithformatters">
@@ -134,6 +133,74 @@
 <h1>Module <a href="type_Batteries.Format.html">Batteries.Format</a></h1>
 
 <pre><span class="keyword">module</span> Format: <code class="type"><a href="BatFormat.html">BatFormat</a></code></pre><hr width="100%">
+<br>
+Pretty printing.
+<p>
+
+    This module implements a pretty-printing facility to format text
+    within ``pretty-printing boxes''. The pretty-printer breaks lines
+    at specified break hints, and indents lines according to the box
+    structure.
+<p>
+
+    For a gentle introduction to the basics of pretty-printing using
+    <code class="code"><span class="constructor">Format</span></code>, read
+    <a href="http://caml.inria.fr/resources/doc/guides/format.html">http://caml.inria.fr/resources/doc/guides/format.html</a>.
+<p>
+
+    You may consider this module as providing an extension to the
+    <code class="code">printf</code> facility to provide automatic line breaking. The addition of
+    pretty-printing annotations to your regular <code class="code">printf</code> formats gives you
+    fancy indentation and line breaks.
+    Pretty-printing annotations are described below in the documentation of
+    the function <code class="code"><span class="constructor">Format</span>.fprintf</code>.
+<p>
+
+    You may also use the explicit box management and printing functions
+    provided by this module. This style is more basic but more verbose
+    than the <code class="code">fprintf</code> concise formats.
+<p>
+
+    For instance, the sequence
+    <code class="code">open_box 0; print_string <span class="string">"x ="</span>; print_space ();
+    print_int 1; close_box (); print_newline ()</code>
+    that prints <code class="code">x = 1</code> within a pretty-printing box, can be
+    abbreviated as <code class="code">printf <span class="string">"@[%s@ %i@]@."</span> <span class="string">"x ="</span> 1</code>, or even shorter
+    <code class="code">printf <span class="string">"@[x =@ %i@]@."</span> 1</code>.
+<p>
+
+    Rule of thumb for casual users of this library:<ul>
+<li>use simple boxes (as obtained by <code class="code">open_box 0</code>);</li>
+<li>use simple break hints (as obtained by <code class="code">print_cut ()</code> that outputs a
+    simple break hint, or by <code class="code">print_space ()</code> that outputs a space
+    indicating a break hint);</li>
+<li>once a box is opened, display its material with basic printing
+    functions (e. g. <code class="code">print_int</code> and <code class="code">print_string</code>);</li>
+<li>when the material for a box has been printed, call <code class="code">close_box ()</code> to
+    close the box;</li>
+<li>at the end of your routine, flush the pretty-printer to display all the
+    remaining material, e.g. evaluate <code class="code">print_newline ()</code>.</li>
+</ul>
+
+    The behaviour of pretty-printing commands is unspecified
+    if there is no opened pretty-printing box. Each box opened via
+    one of the <code class="code">open_</code> functions below must be closed using <code class="code">close_box</code>
+    for proper formatting. Otherwise, some of the material printed in the
+    boxes may not be output, or may be formatted incorrectly.
+<p>
+
+    In case of interactive use, the system closes all opened boxes and
+    flushes all pending text (as with the <code class="code">print_newline</code> function)
+    after each phrase. Each phrase is therefore executed in the initial
+    state of the pretty-printer.
+<p>
+
+    Warning: the material output by the following functions is delayed
+    in the pretty-printer queue in order to compute the proper line
+    breaking. Hence, you should not mix calls to the printing functions
+    of the basic I/O system with calls to the functions of this module:
+    this could result in some strange output seemingly unrelated with
+    the evaluation order of printing commands.<br>
 <br>
 Pretty printing.
 <p>
@@ -542,6 +609,8 @@ Return the current output functions of the pretty-printer.<br>
 <br>
 <h6 id="meaning">Changing the meaning of standard formatter pretty printing</h6><br>
 <br>
+<h6 id="meaning">Changing the meaning of standard formatter pretty printing</h6><br>
+<br>
 The <code class="code"><span class="constructor">Format</span></code> module is versatile enough to let you completely redefine
     the meaning of pretty printing: you may provide your own functions to define
     how to handle indentation, line breaking, and even printing of all the
@@ -758,6 +827,21 @@ These functions are the basic ones: usual functions
     evaluation of these primitives. For instance,
     <code class="code">print_string</code> is equal to <code class="code">pp_print_string std_formatter</code>.<br>
 </div>
+
+<pre><span id="VALpp_print_list"><span class="keyword">val</span> pp_print_list</span> : <code class="type">?pp_sep:(<a href="BatFormat.html#TYPEformatter">formatter</a> -> unit -> unit) -><br>       (<a href="BatFormat.html#TYPEformatter">formatter</a> -> 'a -> unit) -> <a href="BatFormat.html#TYPEformatter">formatter</a> -> 'a list -> unit</code></pre><div class="info ">
+<code class="code">pp_print_list ?pp_sep pp_v ppf l</code> prints the list <code class="code">l</code>. <code class="code">pp_v</code> is
+    used on the elements of <code class="code">l</code> and each element is separated by
+    a call to <code class="code">pp_sep</code> (defaults to <a href="BatFormat.html#VALpp_print_cut"><code class="code"><span class="constructor">BatFormat</span>.pp_print_cut</code></a>). Does nothing on
+    empty lists.<br>
+<b>Since</b> 4.02.0<br>
+</div>
+
+<pre><span id="VALpp_print_text"><span class="keyword">val</span> pp_print_text</span> : <code class="type"><a href="BatFormat.html#TYPEformatter">formatter</a> -> string -> unit</code></pre><div class="info ">
+<code class="code">pp_print_text ppf s</code> prints <code class="code">s</code> with spaces and newlines
+    respectively printed with <a href="BatFormat.html#VALpp_print_space"><code class="code"><span class="constructor">BatFormat</span>.pp_print_space</code></a> and
+    <a href="BatFormat.html#VALpp_force_newline"><code class="code"><span class="constructor">BatFormat</span>.pp_force_newline</code></a>.<br>
+<b>Since</b> 4.02.0<br>
+</div>
 <br>
 <h6 id="6_printflikefunctionsforprettyprinting"><code class="code">printf</code> like functions for pretty-printing.</h6><br>
 
@@ -851,6 +935,13 @@ Same as <code class="code">printf</code> above, but instead of printing on a for
     Alternatively, you can use <code class="code"><span class="constructor">Format</span>.fprintf</code> with a formatter writing to a
     buffer of your own: flushing the formatter and the buffer at the end of
     pretty-printing returns the desired string.<br>
+</div>
+
+<pre><span id="VALasprintf"><span class="keyword">val</span> asprintf</span> : <code class="type">('a, <a href="BatFormat.html#TYPEformatter">formatter</a>, unit, string) Pervasives.format4 -> 'a</code></pre><div class="info ">
+Same as <code class="code">printf</code> above, but instead of printing on a formatter, returns a
+    string containing the result of formatting the arguments. The type of
+    asprintf is general enough to interact nicely with <code class="code">%a</code> conversions.<br>
+<b>Since</b> 4.01.0<br>
 </div>
 
 <pre><span id="VALifprintf"><span class="keyword">val</span> ifprintf</span> : <code class="type"><a href="BatFormat.html#TYPEformatter">formatter</a> -><br>       ('a, <a href="BatFormat.html#TYPEformatter">formatter</a>, unit) Pervasives.format -> 'a</code></pre><div class="info ">

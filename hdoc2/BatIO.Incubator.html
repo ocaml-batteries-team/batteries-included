@@ -4,12 +4,10 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <link rel="Start" href="index.html">
-<link rel="Up" href="BatVect.html">
+<link rel="Up" href="BatIO.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
-<link title="Index of class methods" rel=Appendix href="index_methods.html">
-<link title="Index of classes" rel=Appendix href="index_classes.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
@@ -103,33 +101,18 @@
 <link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatVect.RANDOMACCESS</title>
+<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Format-based pretty-printing" rel="Section" href="#6_Formatbasedprettyprinting">
+<title>Batteries user guide : BatIO.Incubator</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a class="up" href="BatVect.html" title="BatVect">Up</a>
+<div class="navbar">&nbsp;<a class="up" href="BatIO.html" title="BatIO">Up</a>
 &nbsp;</div>
-<h1>Module type <a href="type_BatVect.RANDOMACCESS.html">BatVect.RANDOMACCESS</a></h1>
+<h1>Module <a href="type_BatIO.Incubator.html">BatIO.Incubator</a></h1>
 
-<pre><span class="keyword">module type</span> RANDOMACCESS = <code class="code"><span class="keyword">sig</span></code> <a href="BatVect.RANDOMACCESS.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
+<pre><span class="keyword">module</span> Incubator: <code class="code"><span class="keyword">sig</span></code> <a href="BatIO.Incubator.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
+<br>
+<h6 id="6_Formatbasedprettyprinting">Format-based pretty-printing</h6><br>
 
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
-
-
-<pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">'a <a href="BatVect.RANDOMACCESS.html#TYPEt">t</a></code></pre>
-<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a <a href="BatVect.RANDOMACCESS.html#TYPEt">t</a> -> int -> 'a</code></pre>
-<pre><span id="VALunsafe_get"><span class="keyword">val</span> unsafe_get</span> : <code class="type">'a <a href="BatVect.RANDOMACCESS.html#TYPEt">t</a> -> int -> 'a</code></pre>
-<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">'a <a href="BatVect.RANDOMACCESS.html#TYPEt">t</a> -> int -> 'a -> unit</code></pre>
-<pre><span id="VALunsafe_set"><span class="keyword">val</span> unsafe_set</span> : <code class="type">'a <a href="BatVect.RANDOMACCESS.html#TYPEt">t</a> -> int -> 'a -> unit</code></pre>
-<pre><span id="VALappend"><span class="keyword">val</span> append</span> : <code class="type">'a <a href="BatVect.RANDOMACCESS.html#TYPEt">t</a> -><br>       'a <a href="BatVect.RANDOMACCESS.html#TYPEt">t</a> -> 'a <a href="BatVect.RANDOMACCESS.html#TYPEt">t</a></code></pre>
-<pre><span id="VALconcat"><span class="keyword">val</span> concat</span> : <code class="type">'a <a href="BatVect.RANDOMACCESS.html#TYPEt">t</a> list -> 'a <a href="BatVect.RANDOMACCESS.html#TYPEt">t</a></code></pre>
-<pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type">'a <a href="BatVect.RANDOMACCESS.html#TYPEt">t</a> -> int</code></pre>
-<pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">'a <a href="BatVect.RANDOMACCESS.html#TYPEt">t</a> -> 'a <a href="BatVect.RANDOMACCESS.html#TYPEt">t</a></code></pre>
-<pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type">'a <a href="BatVect.RANDOMACCESS.html#TYPEt">t</a> -> int -> int -> 'a <a href="BatVect.RANDOMACCESS.html#TYPEt">t</a></code></pre>
-<pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">int -> 'a -> 'a <a href="BatVect.RANDOMACCESS.html#TYPEt">t</a></code></pre>
-<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> 'a <a href="BatVect.RANDOMACCESS.html#TYPEt">t</a> -> unit</code></pre>
-<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> 'a <a href="BatVect.RANDOMACCESS.html#TYPEt">t</a> -> 'b <a href="BatVect.RANDOMACCESS.html#TYPEt">t</a></code></pre>
-<pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">('a -> 'b -> 'b) -> 'a <a href="BatVect.RANDOMACCESS.html#TYPEt">t</a> -> 'b -> 'b</code></pre>
-<pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a <a href="BatVect.RANDOMACCESS.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
-<pre><span id="VALbackwards"><span class="keyword">val</span> backwards</span> : <code class="type">'a <a href="BatVect.RANDOMACCESS.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
-<pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatVect.RANDOMACCESS.html#TYPEt">t</a></code></pre>
-<pre><span id="VALof_backwards"><span class="keyword">val</span> of_backwards</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatVect.RANDOMACCESS.html#TYPEt">t</a></code></pre></body></html>
+<pre><span class="keyword">module</span> <a href="BatIO.Incubator.Array.html">Array</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatIO.Incubator.Array.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span class="keyword">module</span> <a href="BatIO.Incubator.Enum.html">Enum</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatIO.Incubator.Enum.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span class="keyword">module</span> <a href="BatIO.Incubator.List.html">List</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatIO.Incubator.List.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>

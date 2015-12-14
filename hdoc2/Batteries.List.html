@@ -10,8 +10,6 @@
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
-<link title="Index of class methods" rel=Appendix href="index_methods.html">
-<link title="Index of classes" rel=Appendix href="index_classes.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
@@ -118,7 +116,9 @@
 <link title="Sorting" rel="Section" href="#6_Sorting">
 <link title="Utilities" rel="Section" href="#6_Utilities">
 <link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
+<link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
 <link title="Obsolete functions" rel="Section" href="#6_Obsoletefunctions">
+<link title="Override modules" rel="Section" href="#6_Overridemodules">
 <link title="Override modules" rel="Section" href="#6_Overridemodules">
 <link title="Unary predicate, One list" rel="Subsection" href="#7_UnarypredicateOnelist">
 <link title="Binary predicate, Two lists" rel="Subsection" href="#7_BinarypredicateTwolists">
@@ -922,6 +922,8 @@ Transposes a list of lists, turning rows of the input into columns
 <br>
 <h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
 <br>
+<h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
+<br>
 <div class="h7" id="7_Printing">Printing</div><br>
 
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b list -> unit</code></pre><div class="info ">
@@ -950,6 +952,8 @@ obsolete, as <a href="BatList.html#VALtake_while"><code class="code"><span class
 <pre><span id="VALdropwhile"><span class="keyword">val</span> dropwhile</span> : <code class="type">('a -> bool) -> 'a list -> 'a list</code></pre><div class="info ">
 obsolete, as <a href="BatList.html#VALdrop_while"><code class="code"><span class="constructor">BatList</span>.drop_while</code></a><br>
 </div>
+<br>
+<h6 id="6_Overridemodules">Override modules</h6><br>
 <br>
 <h6 id="6_Overridemodules">Override modules</h6><br>
 <br>

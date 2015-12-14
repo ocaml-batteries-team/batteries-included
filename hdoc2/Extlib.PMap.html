@@ -10,8 +10,6 @@
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
-<link title="Index of class methods" rel=Appendix href="index_methods.html">
-<link title="Index of classes" rel=Appendix href="index_classes.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
@@ -107,6 +105,7 @@
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Polymorphic maps" rel="Section" href="#4_Polymorphicmaps">
 <link title="Boilerplate code" rel="Subsection" href="#6_Boilerplatecode">
+<link title="Boilerplate code" rel="Subsection" href="#6_Boilerplatecode">
 <title>Batteries user guide : Extlib.PMap</title>
 </head>
 <body>
@@ -162,6 +161,15 @@ Return the number of bindings of a map.<br>
     in <code class="code">m</code>, its previous binding disappears.<br>
 </div>
 
+<pre><span id="VALupdate"><span class="keyword">val</span> update</span> : <code class="type">'a -> 'a -> 'b -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">update k1 k2 v2 m</code> replace the previous binding of <code class="code">k1</code> in <code class="code">m</code> by
+    <code class="code">k2</code> associated to <code class="code">v2</code>.
+    This is equivalent to <code class="code">add k2 v2 (remove k1) m</code>, but more efficient
+    in the case where <code class="code">k1</code> and <code class="code">k2</code> have the same key ordering.<br>
+<b>Since</b> 2.4.0<br>
+<b>Raises</b> <code>Not_found</code> if <code class="code">k1</code> is not bound in <code class="code">m</code>.<br>
+</div>
+
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">'a -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> 'b</code></pre><div class="info ">
 <code class="code">find x m</code> returns the current binding of <code class="code">x</code> in <code class="code">m</code>,
     or raises <code class="code"><span class="constructor">Not_found</span></code> if no such binding exists.<br>
@@ -211,6 +219,18 @@ Same as <code class="code">fold</code>, but the function receives as arguments b
     key and the associated value for each binding of the map.<br>
 </div>
 
+<pre><span id="VALat_rank_exn"><span class="keyword">val</span> at_rank_exn</span> : <code class="type">int -> ('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> 'key * 'a</code></pre><div class="info ">
+<code class="code">at_rank_exn i m</code> returns the <code class="code">(key,value)</code> pair
+    whose key is at rank <code class="code">i</code> in <code class="code">m</code>,
+    that is the <code class="code">i</code>-th element in increasing order of the keys
+    (the <code class="code">0</code>-th element being the smallest key in <code class="code">m</code> with its
+    associated value).<br>
+<b>Since</b> 2.4<br>
+<b>Raises</b><ul><li><code>Not_found</code> if <code class="code">m = empty</code>.</li>
+<li><code>Invalid_argument</code> error_message if <code class="code">i &lt; 0 <span class="keywordsign">||</span> i &gt;= cardinal m</code></li>
+</ul>
+</div>
+
 <pre><span id="VALfilterv"><span class="keyword">val</span> filterv</span> : <code class="type">('a -> bool) -> ('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('key, 'a) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">filterv f m</code> returns a map where only the values <code class="code">a</code> of <code class="code">m</code>
    such that <code class="code">f a = <span class="keyword">true</span></code> remain. The bindings are passed to <code class="code">f</code>
@@ -254,8 +274,16 @@ Return one binding of the given map, or raise <code class="code"><span class="co
 returns the binding with the smallest key<br>
 </div>
 
+<pre><span id="VALpop_min_binding"><span class="keyword">val</span> pop_min_binding</span> : <code class="type">('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('key * 'a) * ('key, 'a) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info ">
+returns the binding with the smallest key along with the rest of the map<br>
+</div>
+
 <pre><span id="VALmax_binding"><span class="keyword">val</span> max_binding</span> : <code class="type">('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> 'key * 'a</code></pre><div class="info ">
 returns the binding with the largest key<br>
+</div>
+
+<pre><span id="VALpop_max_binding"><span class="keyword">val</span> pop_max_binding</span> : <code class="type">('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('key * 'a) * ('key, 'a) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info ">
+returns the binding with the largest key along with the rest of the map<br>
 </div>
 
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
@@ -384,6 +412,8 @@ Return the list of all bindings of the given map.
 
     Added for compatibility with stdlib 3.12<br>
 </div>
+<br>
+<h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
 <br>
 <h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
 <br>
