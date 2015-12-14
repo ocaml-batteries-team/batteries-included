@@ -6,7 +6,7 @@ Changelog
 - BatBitSet: use Bytes instead of String
   (Gabriel Scherer)
 - BatHashtbl: fix hash computation bug introduced by 4.01 (issue #609)
-  (Gabriel Scherer)
+  (Gabriel Scherer, report by Martin Neuhäußer)
 - BatText: synchronize nsplit to match BatString.nsplit
   (Gabriel Scherer)
 - BatLazyList: fix remove_all_such documentation
