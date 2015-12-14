@@ -3,8 +3,6 @@ Changelog
 
 ## v2.4.0
 
-- preparation for upcoming '-safe-string compat' OCaml warning
-  (Gabriel Scherer and Francois Berenger)
 - BatBitSet: use Bytes instead of String
   (Gabriel Scherer)
 - BatHashtbl: fix hash computation bug introduced by 4.01 (issue #609)
