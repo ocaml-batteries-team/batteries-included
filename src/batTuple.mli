@@ -26,6 +26,9 @@
     Modules are provided for tuples with 2, 3, 4, and 5
     elements. Each provides the following categories of functions.
 
+    Creation. Functions [make] take [n] arguments and build
+    a [n]-tuple.
+
     Projection. Functions [first], [second], [third], [fourth], and [fifth]
     extract a single element. Also, multiple elements can be
     extracted. For example, {!Tuple3.get13} returns the first and
@@ -72,6 +75,8 @@
 module Tuple2 : sig
 
   type ('a,'b) t = 'a * 'b
+
+  val make : 'a -> 'b -> 'a * 'b
 
   external first : 'a * 'b -> 'a = "%field0"
   (** Equivalent to {!Pervasives.fst}. *)
@@ -134,6 +139,8 @@ module Tuple3 : sig
 
   type ('a,'b,'c) t = 'a * 'b * 'c
 
+  val make : 'a -> 'b -> 'c -> 'a * 'b * 'c
+
   val first : 'a * 'b * 'c -> 'a
   val second : 'a * 'b * 'c -> 'b
   val third : 'a * 'b * 'c -> 'c
@@ -194,6 +201,8 @@ end
 module Tuple4 : sig
 
   type ('a,'b,'c,'d) t = 'a * 'b * 'c * 'd
+
+  val make : 'a -> 'b -> 'c -> 'd -> 'a * 'b * 'c * 'd
 
   val first : 'a * 'b * 'c * 'd -> 'a
   val second : 'a * 'b * 'c * 'd -> 'b
@@ -264,6 +273,8 @@ end
 module Tuple5 : sig
 
   type ('a,'b,'c,'d,'e) t = 'a * 'b * 'c * 'd * 'e
+
+  val make : 'a -> 'b -> 'c -> 'd -> 'e -> 'a * 'b * 'c * 'd * 'e
 
   val first : 'a * 'b * 'c * 'd * 'e -> 'a
   val second : 'a * 'b * 'c * 'd * 'e -> 'b

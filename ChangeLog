@@ -1,6 +1,11 @@
 Changelog
 ---------
 
+## NEXT_RELEASE
+
+- BatTuple: add Tuple{N}.make : 'a1 -> ... -> 'an -> 'a1 * ... * 'an
+  (Thibault Suzanne)
+
 ## v2.4.0
 
 - BatBitSet: use Bytes instead of String

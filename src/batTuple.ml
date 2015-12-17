@@ -25,6 +25,8 @@ module Tuple2 = struct
 
   type 'a enumerable = 'a * 'a
 
+  let make a b = (a, b)
+
   external first : 'a * 'b -> 'a = "%field0"
   external second : 'a * 'b -> 'b = "%field1"
 
@@ -102,6 +104,8 @@ module Tuple3 = struct
   type ('a,'b,'c) t = 'a * 'b * 'c
 
   type 'a enumerable = 'a * 'a * 'a
+
+  let make a b c = (a, b, c)
 
   let first (a,_,_) = a
   let second (_,b,_) = b
@@ -193,6 +197,8 @@ module Tuple4 = struct
   type ('a,'b,'c,'d) t = 'a * 'b * 'c * 'd
 
   type 'a enumerable = 'a * 'a * 'a * 'a
+
+  let make a b c d = (a, b, c, d)
 
   let first (a,_,_,_) = a
   let second (_,b,_,_) = b
@@ -304,6 +310,8 @@ module Tuple5 = struct
   type ('a,'b,'c,'d,'e) t = 'a * 'b * 'c * 'd * 'e
 
   type 'a enumerable = 'a * 'a * 'a * 'a * 'a
+
+  let make a b c d e = (a, b, c, d, e)
 
   let first (a,_,_,_,_) = a
   let second (_,b,_,_,_) = b
