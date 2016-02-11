@@ -18,6 +18,11 @@ Changelog
     val combine: 'a t -> 'b t -> ('a * 'b) t
   #578
   (François Berenger)
+- PSet: add a ?cmp argument to every function that creates a PSet:
+    of_enum, of_list, of_array
+  are changed. The default value is Pervasives.compare.
+  #679
+  (Cedric Cellier)
 
 ## NEXT_RELEASE (minor release)
 

@@ -903,17 +903,16 @@ module PSet : sig
       The returned enumeration is sorted in increasing order with respect
       to the ordering of this set.*)
 
-  val of_enum: 'a BatEnum.t -> 'a t
+  val of_enum: ?cmp:('a -> 'a -> int) -> 'a BatEnum.t -> 'a t
 
   val of_enum_cmp: cmp:('a -> 'a -> int) -> 'a BatEnum.t -> 'a t
 
-  val of_list: 'a list -> 'a t
+  val of_list: ?cmp:('a -> 'a -> int) -> 'a list -> 'a t
   (** builds a set from the given list, using the default comparison
       function *)
 
-  val of_array: 'a array -> 'a t
-  (** builds a set from the given array, using the default comparison
-      function *)
+  val of_array: ?cmp:('a -> 'a -> int) -> 'a array -> 'a t
+  (** builds a set from the given array and comparison function *)
 
   (** {6 Boilerplate code}*)
 
