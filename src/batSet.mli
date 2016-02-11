@@ -708,6 +708,11 @@ module PSet : sig
   val mem: 'a -> 'a t -> bool
   (** [mem x s] tests whether [x] belongs to the set [s]. *)
 
+  val find : 'a -> 'a t -> 'a
+  (** [find x s] returns the element in s that tests equal to [x] under its comparison function.
+      @raise Not_found if no element is equal
+  *)
+
   val add: 'a -> 'a t -> 'a t
   (** [add x s] returns a set containing all elements of [s],
       plus [x]. If [x] was already in [s], [s] is returned unchanged. *)
