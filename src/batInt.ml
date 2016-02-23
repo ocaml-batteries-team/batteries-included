@@ -119,6 +119,14 @@ module BaseInt = struct
   let ( = )  (a:int) b = a = b
 
   let ( ** ) a b = pow a b
+  (*$T ( ** )
+    0 ** 0 = 1
+    0 ** 1 = 0
+    (-1) ** 3 = (-1)
+    (-1) ** 4 = 1
+    15 ** 3 = 3375
+    7 ** 4 = 2401
+  *)
 
   let print out t = BatInnerIO.nwrite out (string_of_int t)
   let print_hex out t = BatPrintf.fprintf out "%X" t
@@ -286,6 +294,12 @@ end
 
 (*$T &
   Result.(catch (Safe_int.add max_int) max_int |> is_exn Number.Overflow)
+  Result.(catch (Safe_int.add min_int) min_int |> is_exn Number.Overflow)
+  Safe_int.add 0 0 = 0
+  Safe_int.add max_int min_int = (-1)
+  Result.(catch (Safe_int.sub min_int) max_int |> is_exn Number.Overflow)
+  Result.(catch (Safe_int.sub max_int) min_int |> is_exn Number.Overflow)
+  Safe_int.sub 0 0 = 0
   Safe_int.neg max_int = -max_int
   Result.(catch Safe_int.neg min_int |> is_exn Number.Overflow)
   Result.(catch (List.reduce Safe_int.mul) \
@@ -300,6 +314,20 @@ end
   Result.(catch (Safe_int.mul min_int) (-1) |> is_exn Number.Overflow)
   Result.(catch (Safe_int.mul (-1)) min_int |> is_exn Number.Overflow)
   Result.(catch (Safe_int.Infix.(+) max_int) 1 |> is_exn Number.Overflow)
+  Safe_int.succ 1 = 2
+  Safe_int.succ (-1) = 0
+  Safe_int.succ (-2) = (-1)
+  Safe_int.succ 0 = 1
+  Result.(catch Safe_int.succ max_int |> is_exn Number.Overflow)
+  Safe_int.pred 1 = 0
+  Safe_int.pred 0 = (-1)
+  Safe_int.pred (-1) = (-2)
+  Result.(catch Safe_int.pred min_int |> is_exn Number.Overflow)
+  Safe_int.abs 0 = 0
+  Safe_int.abs (-5) = 5
+  Safe_int.abs 5 = 5
+  Safe_int.abs max_int = max_int
+  Result.(catch Safe_int.abs min_int |> is_exn Number.Overflow)
 *)
 
 (*$Q &
