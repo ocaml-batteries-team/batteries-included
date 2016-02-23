@@ -296,6 +296,7 @@ end
   Result.(catch (Safe_int.add max_int) max_int |> is_exn Number.Overflow)
   Result.(catch (Safe_int.add min_int) min_int |> is_exn Number.Overflow)
   Safe_int.add 0 0 = 0
+  Safe_int.add max_int min_int = (-1)
   Result.(catch (Safe_int.sub min_int) max_int |> is_exn Number.Overflow)
   Result.(catch (Safe_int.sub max_int) min_int |> is_exn Number.Overflow)
   Safe_int.sub 0 0 = 0
