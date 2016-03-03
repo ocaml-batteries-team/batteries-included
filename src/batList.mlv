@@ -292,7 +292,7 @@ let nsplit p = function
   | [] -> []
   (* note that returning [] on empty inputs is an arbitrary choice
      that is made for consistence with the behavior of
-     BatString.nsplit. Note having this hardcoded case would have
+     BatString.nsplit. Not having this hardcoded case would have
      `nsplit p []` return `[[]]`, which is also a semantically valid
      return value (in fact the two are equivalent, but `[[]]` would be
      a more natural choice as it allows to enforce the simply
