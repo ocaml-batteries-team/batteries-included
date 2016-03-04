@@ -170,6 +170,22 @@ let print out t = BatInnerIO.nwrite out (to_string t)
     compare {re = 3.; im = -4.} {re = 3.; im = 3.} = -1
   *)
 
+  (*$T min
+    min {re = 2.; im = 3.} {re = 2.; im = 3.} = {re = 2.; im = 3.}
+    min {re = 2.; im = 3.} {re = 3.; im = 2.} = {re = 2.; im = 3.}
+    min {re = 3.; im = 3.} {re = 2.; im = 3.} = {re = 2.; im = 3.}
+    min {re = 3.; im = 4.} {re = 3.; im = 3.} = {re = 3.; im = 3.}
+    min {re = 3.; im = -4.} {re = 3.; im = 3.} = {re = 3.; im = -4.}
+  *)
+
+  (*$T max
+    max {re = 2.; im = 3.} {re = 2.; im = 3.} = {re = 2.; im = 3.}
+    max {re = 2.; im = 3.} {re = 3.; im = 2.} = {re = 3.; im = 2.}
+    max {re = 3.; im = 3.} {re = 2.; im = 3.} = {re = 3.; im = 3.}
+    max {re = 3.; im = 4.} {re = 3.; im = 3.} = {re = 3.; im = 4.}
+    max {re = 3.; im = -4.} {re = 3.; im = 3.} = {re = 3.; im = 3.}
+  *)
+                                    
   (*$T equal
     equal {re = 2.; im = 3.} {re = 2.; im = 3.}
     not (equal {re = 2.; im = 3.} {re = 3.; im = 2.})

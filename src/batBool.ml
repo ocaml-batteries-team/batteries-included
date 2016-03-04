@@ -61,6 +61,17 @@ module BaseBool = struct
 
   let min = ( && )
   let max = ( || )            
+(*$T min
+   min true false = false
+   min false true = false
+   min true true = true
+   min false false = false
+*) (*$T max
+     max true false = true
+     max false true = true
+     max false false = false
+     max true true = true
+   *)
                   
   let equal = (=)
 

@@ -36,8 +36,8 @@ module BaseFloat = struct
   let pow = ( ** )
 
   let compare = compare
-  let min = min
-  let max = max
+  let min (x:float) y = if x < y then x else y
+  let max (x:float) y = if x < y then y else x
               
   let of_int = float_of_int
   let to_int = int_of_float
@@ -142,9 +142,6 @@ module Infix = struct
 end
 
 include (BatNumber.MakeNumeric(BaseFloat) : BatNumber.Numeric with type t = float and module Infix := Infix)
-
-let min (x:float) y = if x < y then x else y
-let max (x:float) y = if x < y then y else x
 
 (* Fix definitions for performance *)
 external of_float : float -> float = "%identity"

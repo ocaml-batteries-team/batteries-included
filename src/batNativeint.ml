@@ -28,6 +28,14 @@ module BaseNativeint = struct
   let pow = BatNumber.generic_pow ~zero ~one ~div_two:(fun n -> shift_right n 1) ~mod_two:(logand one) ~mul
   let min x y = if compare x y < 0 then x else y
   let max x y = if compare x y > 0 then x else y
+  (*$T min
+     min min_int max_int = min_int
+     min max_int min_int = min_int
+   *)
+  (*$T max
+     max min_int max_int = max_int
+     max max_int min_int = max_int
+   *)
 end
 
 include BatNumber.MakeNumeric(BaseNativeint)
