@@ -36,8 +36,8 @@ module BaseFloat = struct
   let pow = ( ** )
 
   let compare = compare
-  let min (x:float) y = if x < y then x else y
-  let max (x:float) y = if x < y then y else x
+  let min (x:float) y = if x <= y then x else y
+  let max (x:float) y = if x >= y then x else y
               
   let of_int = float_of_int
   let to_int = int_of_float

@@ -43,12 +43,6 @@ module BaseComplex = struct
     match compare t1.re t2.re with
     | 0 -> compare t1.im t2.im
     | c -> c
-
-  let min t1 t2 =
-    if compare t1 t2 < 0 then t1 else t2
-
-  let max t1 t2 =
-    if compare t1 t2 > 0 then t1 else t2
     
   let ord = BatOrd.ord compare
 
@@ -113,12 +107,20 @@ end
 
 (* need to fix problem with Functor return type being `type t =
    Complex.t` and needing `type t = Complex.t = {re: float; im:float}` *)
-module CN = BatNumber.MakeNumeric(BaseComplex)
+module BaseComplex' = struct
+  include BaseComplex
+  let min t1 t2 =
+    if compare t1 t2 <= 0 then t1 else t2
+
+  let max t1 t2 =
+    if compare t1 t2 >= 0 then t1 else t2
+end
+module CN = BatNumber.MakeNumeric(BaseComplex')
 include BaseComplex
 let operations = CN.operations
-module Infix = BatNumber.MakeInfix(BaseComplex)
+module Infix = BatNumber.MakeInfix(BaseComplex')
 include Infix
-module Compare = BatNumber.MakeCompare(BaseComplex)
+module Compare = BatNumber.MakeCompare(BaseComplex')
 
 let inv    = Complex.inv
 let i      = Complex.i

@@ -91,8 +91,8 @@ module BaseInt = struct
     else if y > x then -1
     else 0
 
-  let min (x : int) y = if x < y then x else y
-  let max (x : int) y = if x > y then x else y
+  let min a b = if a <= b then a else b
+  let max a b = if a >= b then a else b
 (*$T min
    min 3 4 = 3
    min 4 4 = 4
