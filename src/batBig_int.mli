@@ -127,6 +127,8 @@ val ( --- ): big_int -> big_int -> big_int BatEnum.t
 (** {6 Comparisons and tests} *)
 
 val compare : big_int -> big_int -> int
+val min : big_int -> big_int -> big_int
+val max : big_int -> big_int -> big_int
 val ord : big_int -> big_int -> BatOrd.order
 val equal : big_int -> big_int -> bool
 

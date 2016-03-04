@@ -114,6 +114,8 @@ val abs : t -> t
 val modulo : t -> t -> t
 val pow : t -> t -> t
 val compare : t -> t -> int
+val min : t -> t -> t
+val max : t -> t -> t
 val ord : t -> t -> BatOrd.order
 val equal : t -> t -> bool
 

@@ -58,6 +58,8 @@ val modulo : num -> num -> num
 val pow    : num -> num -> num
 
 val compare   : num -> num -> int
+val min       : num -> num -> num
+val max       : num -> num -> num
 val ord       : num -> num -> BatOrd.order
 val equal     : num -> num -> bool
 val of_int    : int -> num

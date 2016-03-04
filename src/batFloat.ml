@@ -36,7 +36,9 @@ module BaseFloat = struct
   let pow = ( ** )
 
   let compare = compare
-
+  let min = min
+  let max = max
+              
   let of_int = float_of_int
   let to_int = int_of_float
 

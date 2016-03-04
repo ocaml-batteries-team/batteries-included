@@ -91,6 +91,9 @@ module BaseInt = struct
     else if y > x then -1
     else 0
 
+  let min (x : int) y = if x < y then x else y
+  let max (x : int) y = if x > y then x else y
+           
   external of_int : int -> int = "%identity"
   external to_int : int -> int = "%identity"
 

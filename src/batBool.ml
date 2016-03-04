@@ -59,6 +59,9 @@ module BaseBool = struct
 
   let compare = compare
 
+  let min = ( && )
+  let max = ( || )            
+                  
   let equal = (=)
 
   let ord = BatOrd.ord compare

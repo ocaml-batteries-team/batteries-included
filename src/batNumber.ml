@@ -34,6 +34,8 @@ type 'a numeric =
     modulo : 'a -> 'a -> 'a;
     pow : 'a -> 'a -> 'a;
     compare : 'a -> 'a -> int;
+    min : 'a -> 'a -> 'a;
+    max : 'a -> 'a -> 'a;
     of_int : int -> 'a;
     to_int : 'a -> int;
     of_string : string -> 'a;
@@ -96,6 +98,8 @@ sig
   val modulo : t -> t -> t
   val pow : t -> t -> t
   val compare : t -> t -> int
+  val min : t -> t -> t
+  val max : t -> t -> t
   val equal : t -> t -> bool
   val ord : t BatOrd.ord
 
@@ -167,7 +171,9 @@ module type NUMERIC_BASE = sig
   val pow    : t -> t -> t
 
   val compare : t -> t -> int
-
+  val min : t -> t -> t
+  val max : t -> t -> t
+                        
   (** {6 Conversions} *)
   val of_int : int -> t
   (** Convert this number to the closest integer.*)
@@ -247,6 +253,8 @@ module MakeNumeric (Base : NUMERIC_BASE) : Numeric with type t = Base.t = struct
       modulo    = Base.modulo;
       pow       = Base.pow;
       compare   = Base.compare;
+      min       = Base.min;
+      max       = Base.max;
       of_int    = Base.of_int;
       to_int    = Base.to_int;
       of_float  = Base.of_float;

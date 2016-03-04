@@ -231,6 +231,12 @@ val compare : t -> t -> int
     allows the module [Int32] to be passed as argument to the functors
     {!Set.Make} and {!Map.Make}. *)
 
+val min : t -> t -> t
+(** Return the smaller of the two arguments. *)
+
+val max: t -> t -> t
+(** Return the greater of the two arguments. *)
+
 val equal : t -> t -> bool
 (** Equality function for 32-bit integers, useful for {!HashedType}. *)
 

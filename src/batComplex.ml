@@ -44,6 +44,12 @@ module BaseComplex = struct
     | 0 -> compare t1.im t2.im
     | c -> c
 
+  let min t1 t2 =
+    if compare t1 t2 < 0 then t1 else t2
+
+  let max t1 t2 =
+    if compare t1 t2 > 0 then t1 else t2
+    
   let ord = BatOrd.ord compare
 
   let equal t1 t2 =

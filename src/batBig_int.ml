@@ -129,6 +129,8 @@ module BaseBig_int = struct
   let of_int    = big_int_of_int
 
   let compare   = compare_big_int
+  let min       = min_big_int
+  let max       = max_big_int
   let ord       = BatOrd.ord compare
   let equal a b = compare a b = 0
 

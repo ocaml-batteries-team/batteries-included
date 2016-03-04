@@ -74,6 +74,8 @@ type 'a numeric =
     modulo : 'a -> 'a -> 'a;
     pow : 'a -> 'a -> 'a;
     compare : 'a -> 'a -> int;
+    min : 'a -> 'a -> 'a;
+    max : 'a -> 'a -> 'a;
     of_int : int -> 'a;
     to_int : 'a -> int;
     of_string : string -> 'a;
@@ -140,6 +142,8 @@ sig
   val pow : t -> t -> t
 
   val compare : t -> t -> int
+  val min : t -> t -> t
+  val max : t -> t -> t
   val equal : t -> t -> bool
   val ord : t BatOrd.ord (* t -> t -> [Eq|Gt|Lt] *)
 
@@ -214,7 +218,9 @@ sig
   val modulo : t -> t -> t
   val pow : t -> t -> t
   val compare : t -> t -> int
-
+  val min : t -> t -> t
+  val max : t -> t -> t
+            
   (** {6 Conversions} *)
   val of_int : int -> t
   (** Convert this number to the closest integer.*)

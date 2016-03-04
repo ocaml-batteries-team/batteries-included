@@ -119,6 +119,8 @@ module BaseInt32 = struct
 
   let modulo = rem
   let pow = generic_pow ~zero ~one ~div_two:(fun n -> shift_right n 1) ~mod_two:(logand one) ~mul:mul
+  let min x y = if compare x y < 0 then x else y
+  let max x y = if compare x y > 0 then x else y
 end
 
 include BatNumber.MakeNumeric(BaseInt32)
