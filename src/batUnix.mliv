@@ -766,7 +766,8 @@ val create_process_env :
 (** {6 Symbolic links} *)
 
 
-val symlink : string -> string -> unit
+##V>=4.3##val symlink : ?to_dir:bool -> string -> string -> unit
+##V<4.3##val symlink : string -> string -> unit
 (** [symlink source dest] creates the file [dest] as a symbolic link
     to the file [source]. *)
 

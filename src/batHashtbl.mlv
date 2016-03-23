@@ -413,7 +413,7 @@ sig
   module Exceptionless :
   sig
     val find : 'a t -> key -> 'a option
-    val modify : key -> ('a -> 'a) -> 'a t -> (unit, exn) BatPervasives.result
+    val modify : key -> ('a -> 'a) -> 'a t -> (unit, exn) result
   end
 
   (** Infix operators over a {!BatHashtbl} *)
@@ -571,7 +571,7 @@ struct
   let map_inplace (f:key -> 'a -> 'b) h = map_inplace f (to_hash h)
   let filteri_inplace f h = filteri_inplace f (to_hash h)
   let filter_inplace f h = filter_inplace f (to_hash h)
-  let filter_map_inplace f h = filter_map_inplace f (to_hash h)
+  let filter_map_inplace f h = filter_map_inplace f h
 
 
   let find_option h key =

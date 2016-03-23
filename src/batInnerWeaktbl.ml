@@ -120,6 +120,7 @@ module Make (H: Hashtbl.HashedType) : Hashtbl.S with type key = H.t = struct
     W.iter (fun cls -> W.add tbl' (Stack.copy cls)) tbl; tbl'
   let stats _ = assert false
   let reset _ = assert false
+  let filter_map_inplace _ = assert false
 end
 
 module StdHash = Make

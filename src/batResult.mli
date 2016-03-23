@@ -1,12 +1,12 @@
 (**  Monadic results of computations that can raise exceptions *)
 
 (** The type of a result.  A result is either [Ok x] carrying the
-    normal return value [x] or is [Bad e] carrying some indication of an
+    normal return value [x] or is [Error e] carrying some indication of an
     error.  The value associated with a bad result is usually an exception
     ([exn]) that can be raised.
     @since 1.0
 *)
-type ('a, 'b) t = ('a, 'b) BatPervasives.result = Ok of 'a | Bad of 'b
+type ('a, 'b) t = ('a, 'b) result = Ok of 'a | Error of 'b
 
 (** Execute a function and catch any exception as a result.  This
     function encapsulates code that could throw an exception and returns
@@ -26,19 +26,19 @@ val catch2: ('a -> 'b -> 'c) -> 'a -> 'b -> ('c, exn) t
 val catch3: ('a -> 'b -> 'c -> 'd) -> 'a -> 'b -> 'c -> ('d, exn) t
 
 
-(** [get (Ok x)] returns [x], and [get (Bad e)] raises [e].  This
+(** [get (Ok x)] returns [x], and [get (Error e)] raises [e].  This
     function is, in a way, the opposite of the [catch] function
     @since 2.0
 *)
 val get : ('a, exn) t -> 'a
 
-(** [default d r] evaluates to [d] if [r] is [Bad] else [x] when [r] is
+(** [default d r] evaluates to [d] if [r] is [Error] else [x] when [r] is
     [Ok x]
     @since 2.0
 *)
 val default: 'a -> ('a, _) t -> 'a
 
-(** [map_default d f r] evaluates to [d] if [r] is [Bad] else [f x]
+(** [map_default d f r] evaluates to [d] if [r] is [Error] else [f x]
     when [r] is [Ok x]
     @since 2.0
 *)
@@ -49,12 +49,12 @@ val map_default : 'b -> ('a -> 'b) -> ('a, _) t -> 'b
 *)
 val is_ok : ('a, 'b) t -> bool
 
-(** [is_bad (Bad _)] is [true], otherwise [false]
+(** [is_bad (Error _)] is [true], otherwise [false]
     @since 2.0
 *)
 val is_bad : ('a, 'b) t -> bool
 
-(** [is_exn e1 r] is [true] iff [r] is [Bad e2] with [e1=e2] *)
+(** [is_exn e1 r] is [true] iff [r] is [Error e2] with [e1=e2] *)
 val is_exn : exn -> ('a, exn) t -> bool
 
 (** Convert an [option] to a [result]
@@ -96,5 +96,5 @@ module Infix : sig
   val ( >>= ): ('a, 'b) t -> ('a -> ('c, 'b) t) -> ('c, 'b) t
 end
 
-(** Print a result as Ok(x) or Bad(exn) *)
+(** Print a result as Ok(x) or Error(exn) *)
 val print : ('b BatInnerIO.output -> 'a -> unit) -> 'b BatInnerIO.output -> ('a, exn) t -> unit

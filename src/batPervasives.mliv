@@ -842,20 +842,14 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.outp
 
     For more functions related to this type, see the {!BatResult} module.
 *)
-type ('a, 'b) result = ('a, 'b) BatInnerPervasives.result =
-  | Ok  of 'a
-  | Bad of 'b
-  (** The result of a computation - either an [Ok] with the normal
-      result or a [Bad] with some value (often an exception) containing
-      failure information*)
 
 val ignore_ok : ('a, exn) result -> unit
 (** [ignore_ok (f x)] ignores the result of [f x] if it's ok, but
-    throws the exception contained if [Bad] is returned. *)
+    throws the exception contained if [Error] is returned. *)
 
 val ok : ('a, exn) result -> 'a
 (** [f x |> ok] unwraps the [Ok] result of [f x] and returns it, or
-    throws the exception contained if [Bad] is returned. *)
+    throws the exception contained if [Error] is returned. *)
 
 val wrap : ('a -> 'b) -> 'a -> ('b, exn) result
 (** [wrap f x] wraps a function that would normally throw an exception

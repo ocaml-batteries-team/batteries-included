@@ -276,7 +276,7 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
 module Exceptionless :
 sig
   val find : ('a, 'b) t -> 'a -> 'b option
-  val modify : 'a -> ('b -> 'b) -> ('a, 'b) t -> (unit, exn) BatPervasives.result
+  val modify : 'a -> ('b -> 'b) -> ('a, 'b) t -> (unit, exn) result
 end
 
 (** Infix operators over a {!BatHashtbl} *)
@@ -402,7 +402,7 @@ sig
   module Exceptionless :
   sig
     val find : 'a t -> key -> 'a option
-    val modify : key -> ('a -> 'a) -> 'a t -> (unit, exn) BatPervasives.result
+    val modify : key -> ('a -> 'a) -> 'a t -> (unit, exn) result
   end
 
   (** Infix operators over a {!BatHashtbl} *)
@@ -562,7 +562,7 @@ sig
   module Exceptionless :
   sig
     val find : ('a, 'b, [>`Read]) t -> 'a -> 'b option
-    val modify : 'a -> ('b -> 'b) -> ('a, 'b, [>`Read]) t -> (unit, exn) BatPervasives.result
+    val modify : 'a -> ('b -> 'b) -> ('a, 'b, [>`Read]) t -> (unit, exn) result
   end
 
   (** Operations on {!BatHashtbl.Cap} with labels.*)
