@@ -154,9 +154,9 @@ $(QTESTDIR)/all_tests.ml: $(TESTABLE)
 	qtest -o $@ --shuffle --preamble-file qtest/qtest_preamble.ml extract $(TESTABLE)
 
 _build/$(QTESTDIR)/all_tests.byte: $(QTESTDIR)/all_tests.ml
-	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 -pkg oUnit,QTest2Lib $(QTESTDIR)/all_tests.byte
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 -pkg oUnit,qcheck $(QTESTDIR)/all_tests.byte
 _build/$(QTESTDIR)/all_tests.native: $(QTESTDIR)/all_tests.ml
-	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 -pkg oUnit,QTest2Lib $(QTESTDIR)/all_tests.native
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 -pkg oUnit,qcheck $(QTESTDIR)/all_tests.native
 
 
 ### qtest: quick run of inline unit tests
