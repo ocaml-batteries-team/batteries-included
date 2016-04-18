@@ -189,13 +189,13 @@ val really_nread : input -> int -> string
     Example: [let read_md5 ch = really_nread ch 32]
 *)
 
-val input : input -> string -> int -> int -> int
-(** [input i s p l] reads up to [l] characters from the given input,
-    storing them in string [s], starting at character number [p]. It
+val input : input -> Bytes.t -> int -> int -> int
+(** [input i s p len] reads up to [len] characters from the given input,
+    storing them in byte sequence [s], starting at character number [p]. It
     returns the actual number of characters read (which may be 0) or
     raise [No_more_input] if no character can be read. It will raise
-    [Invalid_argument] if [p] and [l] do not designate a valid
-    substring of [s].
+    [Invalid_argument] if [p] and [len] do not designate a valid
+    subsequence of [s].
 
     Example: [let map_ch f ?(block_size=100) =
     let b = String.create block_size in
@@ -205,16 +205,15 @@ val input : input -> string -> int -> int -> int
     done with No_more_input -> ()]
 *)
 
-val really_input : input -> string -> int -> int -> int
-(** [really_input i s p l] reads exactly [l] characters from the
-    given input, storing them in the string [s], starting at
+val really_input : input -> Bytes.t -> int -> int -> int
+(** [really_input ic s p len] reads exactly [len] characters from the
+    input [ic], storing them in the string [s], starting at
     position [p]. For consistency with {!BatIO.input} it returns
-    [l]. @raise No_more_input if at [l] characters are not
-    available. @raise Invalid_argument if [p] and [l] do not
+    [len]. @raise No_more_input if at [len] characters are not
+    available. @raise Invalid_argument if [p] and [len] do not
     designate a valid substring of [s].
 
     Example: [let _ = really_input stdin b 0 3]
-
 *)
 
 val close_in : input -> unit
@@ -235,27 +234,37 @@ val nwrite : (string, _) printer
     Example: [nwrite stdout "Enter your name: ";]
 *)
 
-val output : 'a output -> string -> int -> int -> int
-(** [output o s p l] writes up to [l] characters from string [s], starting at
-    offset [p]. It returns the number of characters written. It will raise
-    [Invalid_argument] if [p] and [l] do not designate a valid substring of [s].
+val output : 'a output -> Bytes.t -> int -> int -> int
+(** [output o s p len] writes up to [len] characters from byte
+    sequence [s], starting at offset [p]. It returns the number of
+    characters written. It will raise [Invalid_argument] if [p] and
+    [len] do not designate a valid subsequence of [s].
 
-    Example: [let str = "Foo Bar Baz" in let written = output stdout str 2 4;]
+    Example: [let written = output stdout (Bytes.to_string "Foo Bar Baz") 2 4]
 
-    This writes "o Ba" to stdout.
-*)
+    This writes "o Ba" to stdout, and returns 4.
+ *)
 
-val really_output : 'a output -> string -> int -> int -> int
-(** [really_output o s p l] writes exactly [l] characters from string [s] onto
-    the the output, starting with the character at offset [p]. For consistency with
-    {!BatIO.output} it returns [l]. @raise Invalid_argument if [p] and [l] do not
-    designate a valid substring of [s].
+val output_substring : 'a output -> string -> int -> int -> int
+(** like [output] above, but outputs from a substring instead of
+    a subsequence of bytes *)
+
+val really_output : 'a output -> Bytes.t -> int -> int -> int
+(** [really_output o s p len] writes exactly [len] characters from
+    byte sequence [s] onto the the output, starting with the character
+    at offset [p]. For consistency with {!BatIO.output} it returns
+    [len]. @raise Invalid_argument if [p] and [len] do not designate
+    a valid subsequence of [s].
 
     This function is useful for networking situations where the output
     buffer might fill resulting in not the entire substring being
     readied for transmission.  Uses [output] internally, and will
     raise [Sys_blocked_io] in the case that any call returns 0.
-*)
+ *)
+
+val really_output_substring : 'a output -> string -> int -> int -> int
+(** like [really_output] above, but outputs from a substring instead
+    of a subsequence of bytes *)
 
 val flush : 'a output -> unit
 (** Flush an output.
@@ -593,7 +602,7 @@ val drop_bits : in_bits -> unit
 
 val create_in :
   read:(unit -> char) ->
-  input:(string -> int -> int -> int) ->
+  input:(Bytes.t -> int -> int -> int) ->
   close:(unit -> unit) -> input
 (** Fully create an input by giving all the needed functions.
 
@@ -604,7 +613,7 @@ val create_in :
 
 val wrap_in :
   read:(unit -> char) ->
-  input:(string -> int -> int -> int) ->
+  input:(Bytes.t -> int -> int -> int) ->
   close:(unit -> unit) ->
   underlying:(input list) ->
   input
@@ -622,7 +631,7 @@ val wrap_in :
 
 val inherit_in:
   ?read:(unit -> char) ->
-  ?input:(string -> int -> int -> int) ->
+  ?input:(Bytes.t -> int -> int -> int) ->
   ?close:(unit -> unit) ->
   input -> input
 (** Simplified and optimized version of {!wrap_in} which may be used
@@ -638,7 +647,7 @@ val inherit_in:
 
 val create_out :
   write:(char -> unit) ->
-  output:(string -> int -> int -> int) ->
+  output:(Bytes.t -> int -> int -> int) ->
   flush:(unit -> unit) ->
   close:(unit -> 'a) ->
   'a output
@@ -657,7 +666,7 @@ val create_out :
 
 val wrap_out :
   write:(char -> unit)         ->
-  output:(string -> int -> int -> int) ->
+  output:(Bytes.t -> int -> int -> int) ->
   flush:(unit -> unit)         ->
   close:(unit -> 'a)           ->
   underlying:('b output list)  ->
@@ -708,7 +717,7 @@ val wrap_out :
 
 val inherit_out:
   ?write:(char -> unit) ->
-  ?output:(string -> int -> int -> int) ->
+  ?output:(Bytes.t -> int -> int -> int) ->
   ?flush:(unit -> unit) ->
   ?close:(unit -> unit) ->
   'a output -> unit output
@@ -774,13 +783,13 @@ val to_input_channel : input -> in_channel
 
 class in_channel : input ->
   object
-    method input : string -> int -> int -> int
+    method input : Bytes.t -> int -> int -> int
     method close_in : unit -> unit
   end
 
 class out_channel : 'a output ->
   object
-    method output : string -> int -> int -> int
+    method output : Bytes.t -> int -> int -> int
     method flush : unit -> unit
     method close_out : unit -> unit
   end
