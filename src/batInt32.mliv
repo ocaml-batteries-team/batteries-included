@@ -217,20 +217,20 @@ external float_of_bits : int32 -> float = "caml_int32_float_of_bits"
 val of_byte : char -> int32
 val to_byte : int32 -> char
 
-val pack : string -> int -> int32 -> unit
-(** [pack str off i] writes the little endian bit representation
-    of [i] into string [str] at offset [off] *)
+val pack : Bytes.t -> int -> int32 -> unit
+(** [pack s off i] writes the little endian bit representation
+    of [i] into byte sequence [s] at offset [off] *)
 
-val pack_big : string -> int -> int32 -> unit
-(** [pack_big str off i] writes the big endian bit
-    representation of [i] into string [str] at offset [off] *)
+val pack_big : Bytes.t -> int -> int32 -> unit
+(** [pack_big s off i] writes the big endian bit
+    representation of [i] into byte sequence [s] at offset [off] *)
 
-val unpack : string -> int -> int32
-(** [unpack str off] reads 4 bytes from string [str] starting at
+val unpack : Bytes.t -> int -> int32
+(** [unpack s off] reads 4 bytes from byte sequence [str] starting at
     offset [off] as a little-endian int32 *)
 
-val unpack_big : string -> int -> int32
-(** [unpack str off] reads 4 bytes from string [str] starting at
+val unpack_big : Bytes.t -> int -> int32
+(** [unpack s off] reads 4 bytes from byte sequence [str] starting at
     offset [off] as a big-endian int32 *)
 
 val compare : t -> t -> int
