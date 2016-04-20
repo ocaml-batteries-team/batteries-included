@@ -36,7 +36,7 @@ let init len f =
   for i = 0 to len - 1 do
     Bytes.unsafe_set s i (f i)
   done;
-  s
+  Bytes.unsafe_to_string s
 
 (*$T init
    init 5 (fun i -> BatChar.chr (i + int_of_char '0')) = "01234";
@@ -376,7 +376,7 @@ let join = concat
 
 let unsafe_slice i j s =
   if i >= j || i = length s then
-    Bytes.create 0
+    ""
   else
     sub s i (j-i)
 
@@ -524,7 +524,7 @@ let of_enum e =
   let s = Bytes.create l in
   let i = ref 0 in
   BatEnum.iter (fun c -> Bytes.unsafe_set s (BatRef.post_incr i) c) e;
-  s
+  Bytes.unsafe_to_string s
 (*$T of_enum
     Enum.init 3 (fun i -> char_of_int (i + int_of_char '0')) |> of_enum = "012"
     Enum.init 0 (fun _i -> ' ') |> of_enum = ""
@@ -536,7 +536,8 @@ let of_backwards e =
   let s = Bytes.create l in
   let i = ref (l - 1) in
   BatEnum.iter (fun c -> Bytes.unsafe_set s (BatRef.post_decr i) c) e;
-  s
+  Bytes.unsafe_to_string s
+
 (*$T of_backwards
    "" |> enum |> of_backwards = ""
    "foo" |> enum |> of_backwards = "oof"
@@ -549,7 +550,7 @@ let map f s =
   for i = 0 to len - 1 do
     Bytes.unsafe_set sc i (f (unsafe_get s i))
   done;
-  sc
+  Bytes.unsafe_to_string sc
 (*$T map
    map Char.uppercase "Five" = "FIVE"
    map Char.uppercase "" = ""
@@ -562,7 +563,7 @@ let mapi f s =
   for i = 0 to len - 1 do
     Bytes.unsafe_set sc i (f i (unsafe_get s i))
   done;
-  sc
+  Bytes.unsafe_to_string sc
 (*$T mapi
    mapi (fun _ -> Char.uppercase) "Five" = "FIVE"
    mapi (fun _ -> Char.uppercase) "" = ""
@@ -685,9 +686,10 @@ let to_list = explode
 let implode l =
   let res = Bytes.create (List.length l) in
   let rec imp i = function
-    | [] -> res
+    | [] -> ()
     | c :: l -> Bytes.set res i c; imp (i + 1) l in
-  imp 0 l
+  imp 0 l;
+  Bytes.unsafe_to_string res
 (*$T implode
    implode ['b';'a';'r'] = "bar"
    implode [] = ""
@@ -719,11 +721,11 @@ let replace_chars f s =
     | s :: acc ->
       let len = length s in
       pos := !pos - len;
-      blit s 0 sbuf !pos len;
+      Bytes.blit_string s 0 sbuf !pos len;
       loop2 acc
   in
   loop2 strs;
-  sbuf
+  Bytes.unsafe_to_string sbuf
 (*$T replace_chars
    replace_chars (function ' ' -> "(space)" | c -> of_char c) "foo bar" = "foo(space)bar"
    replace_chars (fun _ -> "") "foo" = ""
@@ -740,7 +742,7 @@ let replace ~str ~sub ~by =
      blit str 0 newstr 0 subpos ;
      blit by 0 newstr subpos bylen ;
      blit str (subpos + sublen) newstr (subpos + bylen) (strlen - subpos - sublen) ;
-     (true, newstr)
+     (true, Bytes.unsafe_to_string newstr)
    with Not_found ->  (* find failed *)
      (false, str)
 (*$T replace
@@ -765,14 +767,14 @@ let nreplace ~str ~sub ~by =
     match idxes with
     | [] ->
       (* still need the last chunk *)
-      unsafe_blit str i newstr j (strlen-i)
+      Bytes.blit_string str i newstr j (strlen-i)
     | i'::rest ->
       let di = i' - i in
-      unsafe_blit str i newstr j di ;
-      unsafe_blit by 0 newstr (j + di) bylen ;
+      Bytes.blit_string str i newstr j di ;
+      Bytes.blit_string by 0 newstr (j + di) bylen ;
       loop_copy (i + di + sublen) (j + di + bylen) rest in
   loop_copy 0 0 idxes ;
-  newstr
+  Bytes.unsafe_to_string newstr
 (*$T nreplace
    nreplace ~str:"bar foo aaa bar" ~sub:"aa" ~by:"foo" = "bar foo afoo bar"
    nreplace ~str:"bar foo bar" ~sub:"bar" ~by:"foo" = "foo foo foo"
@@ -780,21 +782,21 @@ let nreplace ~str ~sub ~by =
    nreplace ~str:"" ~sub:"aa" ~by:"bb" = ""
    nreplace ~str:"foo bar baz" ~sub:"foo bar baz" ~by:"" = ""
    nreplace ~str:"abc" ~sub:"abc" ~by:"def" = "def"
-   let s1 = "foo" in let s2 = nreplace ~str:s1 ~sub:"X" ~by:"X" in set s2 0 'F' ; s1.[0] = 'f'
 *)
 
 
 let rev_in_place s =
-  let len = String.length s in
+  let len = Bytes.length s in
   if len > 0 then for k = 0 to (len - 1)/2 do
-      let old = s.[k] and mirror = len - 1 - k in
-      Bytes.set s k s.[mirror]; Bytes.set s mirror old;
+      let old = Bytes.get s k and mirror = len - 1 - k in
+      Bytes.set s k (Bytes.get s mirror);
+      Bytes.set s mirror old;
     done
 (*$= rev_in_place as f & ~printer:identity
-  (let s="" in f s; s)          ""
-  (let s="1" in f s; s)         "1"
-  (let s="12" in f s; s)        "21"
-  (let s="Example!" in f s; s)  "!elpmaxE"
+  (let s=Bytes.of_string "" in f s; Bytes.to_string s) ""
+  (let s=Bytes.of_string "1" in f s; Bytes.to_string s) "1"
+  (let s=Bytes.of_string "12" in f s; Bytes.to_string s) "21"
+  (let s=Bytes.of_string "Example!" in f s; Bytes.to_string s) "!elpmaxE"
 *)
 
 let in_place_mirror = rev_in_place
@@ -815,7 +817,7 @@ let rev s =
   for i = 0 to len - 1 do
     Bytes.unsafe_set reversed (len - i - 1) (String.unsafe_get s i)
   done;
-  reversed
+  Bytes.unsafe_to_string reversed
 
 (*$T rev
    rev "" = ""
@@ -852,10 +854,11 @@ let splice s1 off len s2 =
   let len = clip ~lo:0 ~hi:(len1 - off) len in
   let out_len = len1 - len + len2 in
   let s = Bytes.create out_len in
-  blit s1 0 s 0 off; (* s1 before splice point *)
-  blit s2 0 s off len2; (* s2 at splice point *)
-  blit s1 (off+len) s (off+len2) (len1 - (off+len)); (* s1 after off+len *)
-  s
+  Bytes.blit_string s1 0 s 0 off; (* s1 before splice point *)
+  Bytes.blit_string s2 0 s off len2; (* s2 at splice point *)
+  Bytes.blit_string (* s1 after off+len *)
+    s1 (off+len) s (off+len2) (len1 - (off+len));
+  Bytes.unsafe_to_string s
 (*$T splice
    splice "foo bar baz" 3 5 "XXX" = "fooXXXbaz"
    splice "foo bar baz" 5 0 "XXX" = "foo bXXXar baz"
@@ -1133,7 +1136,7 @@ struct
   let uncapitalize  = uncapitalize
   let copy          = copy
   let sub           = sub
-  let fill          = Bytes.fill
+  let fill          = fill
   let blit          = blit
   let concat        = concat
   let escaped       = escaped
