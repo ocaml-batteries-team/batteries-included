@@ -3,12 +3,18 @@ name: "batteries"
 maintainer: "thelema314@gmail.com"
 homepage: "http://batteries.forge.ocamlcore.org/"
 license: "LGPL-2.1+ with OCaml linking exception"
+dev-repo: "https://github.com/ocaml-batteries-team/batteries-included"
+bug-reports: "https://github.com/ocaml-batteries-team/batteries-included/issues"
+
 build: [
   ["ocaml" "setup.ml" "-configure" "--prefix" prefix]
   [make "all"]
+]
+install: [
   [make "install"]
 ]
 remove: [["ocamlfind" "remove" "batteries"]]
+
 depends: [
   "ocamlfind" {>= "1.5.3"}
 ]
