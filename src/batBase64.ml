@@ -67,7 +67,7 @@ let encode ?(tbl=chars) ch =
   in
   let output s p l =
     for i = p to p + l - 1 do
-      write (String.unsafe_get s i)
+      write (Bytes.unsafe_get s i)
     done;
     l
   in
