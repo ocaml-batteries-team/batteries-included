@@ -955,7 +955,15 @@ end (* String.Exceptionless *)
     with the added twist that strings can be made read-only or write-only.
     Read-only strings may then be safely shared and distributed.
 
-    There is no loss of performance involved. *)
+    @since NEXT_RELEASE the interface and implementation of the Cap
+    module changed to accomodate the -safe-string transition. OCaml
+    now uses two distinct types for mutable and immutable string,
+    which is a good design but is not as expressive as the present Cap
+    interface, and actually makes implementing Cap harder than it
+    previously was. We are aware that current state is not optimal for
+    heavy Cap users; if you are one of them, please get in touch (on
+    the Batteries issue tracker for example) so that we can discuss
+    code refactoring and improvements for this sub-module.  *)
 module Cap:
 sig
 
@@ -986,11 +994,66 @@ sig
 
   (** {6 Constructors}*)
 
-  external of_string : string -> _ t                = "%identity"
-  (**Adopt a regular string.*)
+  external of_string : Bytes.t -> _ t = "%identity"
+    [@@ocaml.deprecated "Use Cap.of_bytes instead"]
+  (**Adopt a regular byte sequence.
 
-  external to_string : [`Read | `Write] t -> string = "%identity"
-  (** Return a capability string as a regular string.*)
+     One could give a perfectly safe semantics to
+     an [of_string : string -> _ t] function, but this
+     requires making a copy of the string. Previous
+     versions of this interface advertised the absence
+     of performance overhead, so it's better to warn
+     the user and let them decide (through the use of
+     either Bytes.of_string or Bytes.unsafe_of_string)
+     whether they can safely avoid a copy or need to
+     insert one.
+   *)
+
+  val of_bytes : Bytes.t -> _ t
+  (** Adopt a regular byte sequence.
+
+      Note that adopting a byte sequence, even at the restrictive
+      [`Read] type, does not make a copy. Having a [`Read] string
+      prevents you (and anyone you pass it to) from writing it, but
+      your parent may have knowledge of the string at a more permissive
+      type and perform writes on it.
+
+      If you want to use a [`Read] string and assume it will not get
+      written to, you should either properly "adopt" it by ensuring
+      unique ownership (this cannot be guaranteed by the type system),
+      or make a copy of it at adoption time: [Cap.of_bytes
+      (Bytes.copy buf)].
+
+      @since NEXT_RELEASE
+  *)
+
+  external to_string : [`Read | `Write] t -> Bytes.t = "%identity"
+    [@@ocaml.deprecated "Use Cap.to_bytes instead"]
+  (** Return a capability string as a regular byte sequence.
+
+      We cannot return a [string] here, and it would be incorrect to
+      do so even if we required [[< `Read] t] as input. Indeed, one
+      can start from a writeable byte sequence, and then use the
+      [read_only] function below to cast it into a [[`Read]
+      t]. Capabilities are used to enforce local protocol (only reads,
+      only writes, both reads and writes...), they don't guarantee
+      that other users of the same (shared) value all follow the same
+      protocol. To safely reason about mutability one needs stronger
+      ownership guarantees.
+
+      If you want to obtain an immutable [string] out of a capability
+      string, you should first convert it to a mutable byte sequence
+      and then copy it into an immutable string. If you have extra
+      knowledge about the ownership of the value, you may use unsafe
+      conversion functions to avoid the copy, see the documentation of
+      unsafe conversion functions.
+   *)
+
+  external to_bytes : [`Read | `Write] t -> Bytes.t = "%identity"
+  (** Return a capability string as a regular byte sequence.
+
+      @since NEXT_RELEASE
+  *)
 
   external read_only : [> `Read] t -> [`Read] t     = "%identity"
   (** Drop capabilities to read only.*)
@@ -1080,7 +1143,7 @@ sig
 
   val rchop : ?n:int -> [> `Read] t -> _ t
 
-  val chop : ?l:int -> ?r:int -> [> `Read] t -> string
+  val chop : ?l:int -> ?r:int -> [> `Read] t -> _ t
 
   val trim : [> `Read] t -> _ t
 
@@ -1127,11 +1190,11 @@ sig
   (** {6 Splitting around}*)
   val split : [> `Read] t -> by:[> `Read] t -> _ t * _ t
 
-  val rsplit : [> `Read] t -> by:string -> string * string
+  val rsplit : [> `Read] t -> by:[> `Read] t -> _ t * _ t
 
   val nsplit : [> `Read] t -> by:[> `Read] t -> _ t list
 
-  val splice: [ `Read | `Write] t  -> int -> int -> [> `Read] t -> string
+  val splice: [ `Read | `Write] t  -> int -> int -> [> `Read] t -> _ t
 
   val join : [> `Read] t -> [> `Read] t list -> _ t
 
@@ -1190,10 +1253,8 @@ sig
 
     val rfind_from: [> `Read] t -> int -> [> `Read] t -> int option
 
-    (* val split : string -> string -> (string * string) option TODO *)
     val split : [> `Read] t -> by:[> `Read] t -> (_ t * _ t) option
 
-    (*   val rsplit : string -> string -> (string * string) option TODO *)
     val rsplit : [> `Read] t -> by:[> `Read] t -> (_ t * _ t) option
 
   end (* String.Cap.Exceptionless *)

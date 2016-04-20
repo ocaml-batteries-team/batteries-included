@@ -71,13 +71,13 @@ end
 module String = struct
   include (BatString :
              module type of BatString
-           with module Cap := BatString.Cap
+           (* with module Cap := BatString.Cap *)
           )
   include BatString.Exceptionless
-  module Cap = struct
-    include BatString.Cap
-    include BatString.Cap.Exceptionless
-  end
+  (* module Cap = struct *)
+  (*   include BatString.Cap *)
+  (*   include BatString.Cap.Exceptionless *)
+  (* end *)
 end
 
 (* Extlib modules not replacing stdlib *)
