@@ -85,7 +85,7 @@ let of_input inp =
   and tmp = Bytes.create tempsize in
   let n = ref 0 in
   while n := BatIO.input inp tmp 0 tempsize; !n > 0 do
-    Buffer.add_substring buf tmp 0 !n;
+    Buffer.add_subbytes buf tmp 0 !n;
   done;
   Buffer.contents buf, 0, Buffer.length buf
 
@@ -197,10 +197,10 @@ let concat ssl =
   let item = Bytes.create len in
   let write =
     let pos = ref 0 in
-    fun (s,o,len) -> String.unsafe_blit s o item !pos len; pos := !pos + len
+    fun (s,o,len) -> Bytes.blit_string s o item !pos len; pos := !pos + len
   in
   List.iter write ssl;
-  item
+  Bytes.unsafe_to_string item
 (*$T concat
    concat [empty ()] = ""
    concat [substring "foobar" 1 3; empty ()] = "oob"
