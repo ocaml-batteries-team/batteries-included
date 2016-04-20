@@ -44,10 +44,11 @@ let splice s1 off len s2 =
   let len  = int_min (len1 - off) len                 in
   let out_len = len1 - len + len2                     in
   let s = Bytes.create out_len in
-  String.blit s1 0 s 0 off; (* s1 before splice point *)
-  String.blit s2 0 s off len2; (* s2 at splice point *)
-  String.blit s1 (off+len) s (off+len2) (len1 - (off+len)); (* s1 after off+len *)
-  s
+  Bytes.blit_string s1 0 s 0 off; (* s1 before splice point *)
+  Bytes.blit_string s2 0 s off len2; (* s2 at splice point *)
+  Bytes.blit_string (* s1 after off+len *)
+    s1 (off+len) s (off+len2) (len1 - (off+len));
+  Bytes.unsafe_to_string s
 
 type t =
     Empty                             (**An empty rope*)
@@ -1022,7 +1023,9 @@ let read_char i =
   else
     let s = Bytes.create len in
     Bytes.set s 0 n0;
-    ignore(really_input i s 1 ( len - 1));
+    let n = really_input i s 1 (len - 1) in
+    assert (n = len - 1);
+    let s = Bytes.unsafe_to_string s in
     UTF8.get s 0
 
 
