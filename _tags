@@ -10,3 +10,5 @@ true: package(bytes), warn_-3, bin_annot
 ".git": -traverse
 "examples": -traverse
 <src/batOpaqueInnerSys.*>: opaque
+true: safe_string
+
