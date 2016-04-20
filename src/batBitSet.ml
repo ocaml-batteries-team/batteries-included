@@ -37,14 +37,15 @@ let print_array =
   Array.init 256 print_bchar
 
 let print out t =
-  for i = 0 to (String.length !t) - 1 do
+  let buf = !t in
+  for i = 0 to (Bytes.length buf) - 1 do
     BatInnerIO.nwrite out
-      (Array.unsafe_get print_array (Char.code (Bytes.unsafe_get !t i)))
+      (Array.unsafe_get print_array (Char.code (Bytes.unsafe_get buf i)))
   done
 
 let capacity t = (Bytes.length !t) * 8
 
-let empty () = ref ""
+let empty () = ref (Bytes.create 0)
 
 let create_ sfun c n = (* n is in bits *)
   if n < 0 then invalid_arg ("BitSet."^sfun^": negative size");
