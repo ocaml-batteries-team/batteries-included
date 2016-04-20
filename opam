@@ -17,4 +17,5 @@ remove: [["ocamlfind" "remove" "batteries"]]
 
 depends: [
   "ocamlfind" {>= "1.5.3"}
+  "qtest" {test & >= "2.2"}
 ]
