@@ -235,7 +235,7 @@ sig
 end
 
 (** Automated definition of infix operators for a given numeric type,
-    so that you can open it without poluting your namespace.
+    so that you can open it without polluting your namespace.
     (apart from the type bat__infix_t) *)
 
 module MakeInfix :
