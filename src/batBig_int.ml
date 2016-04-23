@@ -157,3 +157,18 @@ let print out t = BatIO.nwrite out (to_string t)
     BatIO.to_string print (power_int_positive_int 10 31) = "10000000000000000000000000000000"
     BatIO.to_string print (power_int_positive_int (-10) 31) = "-10000000000000000000000000000000"
   *)
+
+(* Tests for infix operators. Those are a little trickier than usual
+ * for big_ints because the generic comparison functions do not work
+ * for big_ints and therefore we have to take care the proper ones are
+ * used. Cf issue #674. Same reason prevent qcheck to compare big_ints
+ * so we convert to int: *)
+  (*$< Infix *)
+  (*$= (--) & ~printer:(IO.to_string (List.print Int.print))
+    ((of_int 1 -- of_int 3) /@ to_int |> List.of_enum) [1; 2; 3]
+  *)
+  (*$= (---) & ~printer:(IO.to_string (List.print Int.print))
+    ((of_int 1 --- of_int 3) /@ to_int |> List.of_enum) [1; 2; 3]
+    ((of_int 3 --- of_int 1) /@ to_int |> List.of_enum) [3; 2; 1]
+  *)
+  (*$>*)
