@@ -193,10 +193,11 @@ module MakeInfix (Base : NUMERIC_BASE) :
 
   type bat__infix_t = Base.t
   let ( + ), ( - ), ( * ), ( / ), ( ** ) = Base.add, Base.sub, Base.mul, Base.div, Base.pow
-  let ( -- )  x y = BatEnum.seq x Base.succ ( (>=) y )
+  let ( -- )  x y =
+    BatEnum.seq x Base.succ (fun x -> Base.compare x y <= 0)
   let ( --- ) x y =
-    if y >= x then x -- y
-    else BatEnum.seq x Base.pred ((<=) y)
+    if Base.compare x y <= 0 then x -- y
+    else BatEnum.seq x Base.pred (fun x -> Base.compare x y >= 0)
 end
 
 (**
