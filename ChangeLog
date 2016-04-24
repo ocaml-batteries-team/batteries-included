@@ -5,6 +5,8 @@ Changelog
 
 - BatTuple: add Tuple{N}.make : 'a1 -> ... -> 'an -> 'a1 * ... * 'an
   (Thibault Suzanne)
+- BatBig_int: fix sequence operators (--), (---) to avoid polymorphic comparison
+  (Pieter Goetschalckx and Cedric Cellier)
 
 ## v2.4.0
 
