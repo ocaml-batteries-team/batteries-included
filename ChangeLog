@@ -6,6 +6,9 @@ Changelog
 - BatTuple: add Tuple{N}.make : 'a1 -> ... -> 'an -> 'a1 * ... * 'an
   (Thibault Suzanne)
 
+- PSet: add a cmp argument to every functions that create a PSet
+  (Cedric Cellier)
+
 ## v2.4.0
 
 - BatBitSet: use Bytes instead of String
