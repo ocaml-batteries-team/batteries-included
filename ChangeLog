@@ -1,7 +1,13 @@
 Changelog
 ---------
 
-## NEXT_RELEASE
+## NEXT_RELEASE (major release)
+
+- BatIO: make the ?cleanup parameter of BatIO.input_channel true by default:
+  closing the returned input will close the underlying input channel
+  (Simon Cruanes, report by Michael Ekstrand)
+
+## NEXT_RELEASE (minor release)
 
 ## v2.5.3
 
