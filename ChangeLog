@@ -6,6 +6,9 @@ Changelog
 - BatIO: make the ?cleanup parameter of BatIO.input_channel true by default:
   closing the returned input will close the underlying input channel
   (Simon Cruanes, report by Michael Ekstrand)
+- BatArray: add split : 'a BatOrd.ord -> 'a array -> 'a -> int * int
+  search for the range equal to a given element in a sorted array
+  (Simon Cruanes, Gabriel Scherer, request by Francois Berenger)
 
 ## v2.5.0
 
