@@ -5,9 +5,11 @@ Changelog
 
 - BatIO: make the ?cleanup parameter of BatIO.input_channel true by default:
   closing the returned input will close the underlying input channel
+  #109, #489
   (Simon Cruanes, report by Michael Ekstrand)
 - BatArray: add split : 'a BatOrd.ord -> 'a array -> 'a -> int * int
   search for the range equal to a given element in a sorted array
+  #443, #470
   (Simon Cruanes, Gabriel Scherer, request by Francois Berenger)
 
 ## v2.5.0
@@ -28,11 +30,14 @@ If it says
 then it is only available under OCaml 4.03.0.
 
 - BatTuple: add Tuple{N}.make : 'a1 -> ... -> 'an -> 'a1 * ... * 'an
+  #657
   (Thibault Suzanne)
 - BatBig_int: fix sequence operators (--), (---) to avoid polymorphic comparison
+  #674, #675, #676
   (Pieter Goetschalckx and Cedric Cellier)
 - Extend all Batteries module to cover OCaml 4.03 features
-  (Gabriel Scherer)
+  #670
+  (Gabriel Scherer, KC Sivaramakrishnan)
 
 ## v2.4.0
 
