@@ -120,6 +120,18 @@ module Make (H: Hashtbl.HashedType) : Hashtbl.S with type key = H.t = struct
     W.iter (fun cls -> W.add tbl' (Stack.copy cls)) tbl; tbl'
   let stats _ = assert false
   let reset _ = assert false
+
+  let filter_map_inplace f tbl =
+    let delta = ref [] in
+    iter (fun k v ->
+      match f k v with
+        | Some v' when v' == v -> ()
+        | other -> delta := (k, other) :: !delta) tbl;
+    let handle_delta = function
+      | (k, None) -> remove tbl k
+      | (k, Some v) -> remove tbl k; add tbl k v
+    in
+    List.iter handle_delta !delta
 end
 
 module StdHash = Make
