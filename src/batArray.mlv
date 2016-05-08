@@ -26,8 +26,14 @@ type 'a mappable = 'a t
 
 include Array
 
-(* added in legacy Array in 4.02 *)
-##V<4.2##let make_float n = make n 0.
+##V<4.2##let create_float n = make n 0.
+##V<4.2##let make_float = create_float
+
+##V=4.2##external make_float: int -> float array = "caml_make_float_vect"
+##V=4.2##external create_float: int -> float array = "caml_make_float_vect"
+
+##V>=4.3##external create_float: int -> float array = "caml_make_float_vect"
+##V>=4.3##let make_float = create_float
 
 let singleton x = [|x|]
 (*$Q singleton
