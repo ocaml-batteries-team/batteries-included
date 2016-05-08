@@ -171,5 +171,8 @@ module Incubator = struct
 end
 
 (* Pervasives last *)
-include Pervasives
+##V<4.3##include Pervasives
+##V>=4.3##include (Pervasives :
+##V>=4.3##  module type of Pervasives
+##V>=4.3##  with type ('a, 'b) result := ('a, 'b) Pervasives.result)
 include BatPervasives
