@@ -113,8 +113,8 @@ let browse pages =
   try
     List.iter (fun page ->
       debug "Showing %s\n" page.url;
-      if BatteriesConfig.browse page.url <> 0 then failwith "Browser") pages
-  with Failure "Browser" ->
+      if BatteriesConfig.browse page.url <> 0 then raise Exit) pages
+  with Exit ->
     Printf.eprintf "Sorry, I had a problem communicating with your browser and I couldn't open the manual.\n%!"
 
 

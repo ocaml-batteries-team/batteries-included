@@ -382,49 +382,49 @@ module Exceptionless = struct
 
   let hd s =
     try Some (hd s)
-    with Invalid_argument "Seq.hd" -> None
+    with Invalid_argument _ -> None
 
   let tl s =
     try Some (tl s)
-    with Invalid_argument "Seq.tl" -> None
+    with Invalid_argument _ -> None
 
   let first s =
     try Some (first s)
-    with Invalid_argument "Seq.first" -> None
+    with Invalid_argument _ -> None
 
   let last s =
     try Some (last s)
-    with Invalid_argument "Seq.last" -> None
+    with Invalid_argument _ -> None
 
   let at s n =
     try Some (at s n)
-    with Invalid_argument "Seq.at" -> None
+    with Invalid_argument _ -> None
 
   (*
   let make n e =
     try Some (make n e)
-    with Invalid_argument "Seq.make" -> None
+    with Invalid_argument _ -> None
 
   let init n e =
     try Some (init n e)
-    with Invalid_argument "Seq.init" -> None
+    with Invalid_argument _ -> None
   *)
 
   let reduce f s =
     try Some (reduce f s)
-    with Invalid_argument "Seq.reduce" -> None
+    with Invalid_argument _ -> None
 
   let max s =
     try Some (max s)
-    with Invalid_argument "Seq.max" -> None
+    with Invalid_argument _ -> None
 
   let min s =
     try Some (min s)
-    with Invalid_argument "Seq.min" -> None
+    with Invalid_argument _ -> None
 
   let combine s1 s2 =
     try Some (combine s1 s2)
-    with Invalid_argument "Seq.combine" -> None
+    with Invalid_argument _ -> None
 
   (*$T combine
     equal (combine (of_list [1;2]) (of_list ["a";"b"])) (of_list [1,"a"; 2,"b"])

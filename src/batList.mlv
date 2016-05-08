@@ -1299,11 +1299,11 @@ module Exceptionless = struct
 
   let hd l =
     try Some (hd l)
-    with Failure "hd" -> None
+    with Failure _ -> None
 
   let tl l =
     try Some (tl l)
-    with Failure "tl" -> None
+    with Failure _ -> None
 
   let rec last = function
     | [] -> None

@@ -97,7 +97,7 @@ module BaseInt = struct
 
   let of_string x =
     try int_of_string x
-    with Failure "int_of_string" -> raise (Invalid_argument "int_of_string")
+    with Failure err -> raise (Invalid_argument err)
   let to_string = string_of_int
 
   let enum = enum
