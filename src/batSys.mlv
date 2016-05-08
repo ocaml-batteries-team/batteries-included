@@ -24,3 +24,14 @@ let big_endian = false  (* overridden by real big_endian value in 4.00 and above
 include Sys
 
 let files_of d = BatArray.enum (readdir d)
+
+##V<4.3##let sigbus = -22
+##V<4.3##let sigpoll = -23
+##V<4.3##let sigsys = -24
+##V<4.3##let sigtrap = -25
+##V<4.3##let sigurg = -26
+##V<4.3##let sigxcpu = -27
+##V<4.3##let sigxfsz = -28
+
+##V>=4.3##external opaque_identity : 'a -> 'a = "%opaque"
+##V<4.3##let opaque_identity = BatOpaqueInnerSys.opaque_identity

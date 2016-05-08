@@ -9,3 +9,4 @@ true: package(bytes), warn_-3
 "benchsuite": include
 ".git": -traverse
 "examples": -traverse
+<src/batOpaqueInnerSys.*>: opaque
