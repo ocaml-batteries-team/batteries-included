@@ -764,11 +764,57 @@ val create_process_env :
 
 
 (** {6 Symbolic links} *)
+##V<4.3##val symlink : string -> string -> unit
+##V<4.3##(** [symlink source dest] creates the file [dest] as a symbolic link
+##V<4.3##    to the file [source]. *)
+##V>=4.3##val symlink : ?to_dir:bool -> string -> string -> unit
+##V>=4.3##(** [symlink ?to_dir source dest] creates the file [dest] as
+##V>=4.3##   a symbolic link to the file [source]. On Windows, [~to_dir]
+##V>=4.3##   indicates if the symbolic link points to a directory or a file;
+##V>=4.3##   if omitted, [symlink] examines [source] using [stat] and picks
+##V>=4.3##   appropriately, if [source] does not exist then [false] is
+##V>=4.3##   assumed (for this reason, it is recommended that the [~to_dir]
+##V>=4.3##   parameter be specified in new code). On Unix, [~to_dir]
+##V>=4.3##   ignored.
+##V>=4.3##
+##V>=4.3##   Windows symbolic links are available in Windows Vista
+##V>=4.3##   onwards. There are some important differences between Windows
+##V>=4.3##   symlinks and their POSIX counterparts.
+##V>=4.3##
+##V>=4.3##   Windows symbolic links come in two flavours: directory and
+##V>=4.3##   regular, which designate whether the symbolic link points to
+##V>=4.3##   a directory or a file. The type must be correct - a directory
+##V>=4.3##   symlink which actually points to a file cannot be selected with
+##V>=4.3##   chdir and a file symlink which actually points to a directory
+##V>=4.3##   cannot be read or written (note that Cygwin's emulation layer
+##V>=4.3##   ignores this distinction).
+##V>=4.3##
+##V>=4.3##   When symbolic links are created to existing targets, this
+##V>=4.3##   distinction doesn't matter and [symlink] will automatically
+##V>=4.3##   create the correct kind of symbolic link. The distinction
+##V>=4.3##   matters when a symbolic link is created to a non-existent
+##V>=4.3##   target.
+##V>=4.3##
+##V>=4.3##   The other caveat is that by default symbolic links are
+##V>=4.3##   a privileged operation. Administrators will always need to be
+##V>=4.3##   running elevated (or with UAC disabled) and by default normal
+##V>=4.3##   user accounts need to be granted the
+##V>=4.3##   SeCreateSymbolicLinkPrivilege via Local Security Policy
+##V>=4.3##   (secpol.msc) or via Active Directory.
+##V>=4.3##
+##V>=4.3##   {!has_symlink} can be used to check that a process is able to
+##V>=4.3##   create symbolic links.
+##V>=4.3##
+##V>=4.3##   @since 4.03 the optional argument ?to_dir was added in 4.03
+##V>=4.3##*)
 
-
-val symlink : string -> string -> unit
-(** [symlink source dest] creates the file [dest] as a symbolic link
-    to the file [source]. *)
+##V>=4.3##val has_symlink : unit -> bool
+##V>=4.3##(** Returns [true] if the user is able to create symbolic links. On Windows,
+##V>=4.3##   this indicates that the user not only has the SeCreateSymbolicLinkPrivilege
+##V>=4.3##   but is also running elevated, if necessary. On other platforms, this is
+##V>=4.3##   simply indicates that the symlink system call is available.
+##V>=4.3##
+##V>=4.3##   @since NEXT_RELEASE and OCaml 4.03 *)
 
 val readlink : string -> string
 (** Read the contents of a link. *)
