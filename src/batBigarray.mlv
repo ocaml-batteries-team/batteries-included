@@ -69,6 +69,29 @@ type ('a, 'b) kind = ('a,'b) Bigarray.kind
 ##V>=4.2##           | Complex64 : (Complex.t, complex64_elt) kind
 ##V>=4.2##           | Char : (char, int8_unsigned_elt) kind
 
+(* this type is local to Batteries,
+   it is meant to make it easier to port code
+   written against (>= 4.2) GADT style
+   into older versions: we know that a kind value
+   (on < 4.2) can be directly converted to one of those by
+   just the identity *)
+##V<4.2##type untyped_kind =
+##V<4.2##           | Float32
+##V<4.2##           | Float64
+##V<4.2##           | Int8_signed
+##V<4.2##           | Int8_unsigned
+##V<4.2##           | Int16_signed
+##V<4.2##           | Int16_unsigned
+##V<4.2##           | Int32
+##V<4.2##           | Int64
+##V<4.2##           | Int
+##V<4.2##           | Nativeint
+##V<4.2##           | Complex32
+##V<4.2##           | Complex64
+##V<4.2##           | Char
+
+##V<4.2##external untyped_kind_of_kind : (_, _) kind -> untyped_kind = "%identity"
+
 type c_layout = Bigarray.c_layout
 ##V>=4.2## = C_layout_typ
 type fortran_layout = Bigarray.fortran_layout
@@ -92,13 +115,34 @@ let int64 = Bigarray.int64
 let nativeint = Bigarray.nativeint
 let char = Bigarray.char
 
+(* kind_size_in_bytes was introduced upstream in 4.03 *)
+##V>=4.3##let kind_size_in_bytes = Bigarray.kind_size_in_bytes
+
+##V=4.2##let kind_size_in_bytes : type a b. (a, b) kind -> int = function
+##V<4.2##let kind_size_in_bytes (kind : (_, _) kind) : int =
+##V<4.2##  match untyped_kind_of_kind kind with
+##V<=4.2##(* the clauses below are shared before 4.02 and at 4.02 *)
+##V<=4.2##  | Float32 -> 4
+##V<=4.2##  | Float64 -> 8
+##V<=4.2##  | Int8_signed -> 1
+##V<=4.2##  | Int8_unsigned -> 1
+##V<=4.2##  | Int16_signed -> 2
+##V<=4.2##  | Int16_unsigned -> 2
+##V<=4.2##  | Int32 -> 4
+##V<=4.2##  | Int64 -> 8
+##V<=4.2##  | Int -> Sys.word_size / 8
+##V<=4.2##  | Nativeint -> Sys.word_size / 8
+##V<=4.2##  | Complex32 -> 8
+##V<=4.2##  | Complex64 -> 16
+##V<=4.2##  | Char -> 1
+
 let c_layout = Bigarray.c_layout
 let fortran_layout = Bigarray.fortran_layout
 
 ##V<4.2##let ofs_of_layout (layout : _ Bigarray.layout) =
 ##V<4.2##  match (Obj.magic layout : int) with
-##V<4.2##  | 0 -> 0 (* keep these magic constants in sync with bigarray.ml *)
-##V<4.2##  | 0x100 -> 1 (* and transitively with caml_ba_layout in bigarray.h  *)
+##V<4.2##  | 0 -> 0
+##V<4.2##  | 0x100 -> 1 (* constants to be found in caml_ba_layout in bigarray.h  *)
 ##V<4.2##  | _ -> failwith "Unknown layout"
 
 ##V>=4.2##let ofs_of_layout : type a . a Bigarray.layout -> int = function
@@ -110,6 +154,9 @@ struct
   include Bigarray.Genarray
 
   let ofs e = ofs_of_layout (layout e)
+
+##V<4.3##  let size_in_bytes arr =
+##V<4.3##    (kind_size_in_bytes (kind arr)) * (Array.fold_left ( * ) 1 (dims arr))
 
   (**
      Emulate multi-dimensional coordinates.
@@ -261,6 +308,9 @@ module Array1 = struct
 
   let ofs e = ofs_of_layout (layout e)
 
+##V<4.3##  let size_in_bytes arr =
+##V<4.3##    (kind_size_in_bytes (kind arr)) * (dim arr)
+
   let enum t =
     let offset = ofs t in
     BatEnum.init (dim t) (fun i -> t.{offset + i})
@@ -315,6 +365,9 @@ module Array2 = struct
 
   let ofs e = ofs_of_layout (layout e)
 
+##V<4.3##  let size_in_bytes arr =
+##V<4.3##    (kind_size_in_bytes (kind arr)) * (dim1 arr) * (dim2 arr)
+
   let enum t = Genarray.enum (genarray_of_array2 t)
 
   let map f b_kind a =
@@ -365,6 +418,9 @@ module Array3 = struct
   include Bigarray.Array3
 
   let ofs e = ofs_of_layout (layout e)
+
+##V<4.3##  let size_in_bytes arr =
+##V<4.3##    (kind_size_in_bytes (kind arr)) * (dim1 arr) * (dim2 arr) * (dim3 arr)
 
   let enum t = Genarray.enum (genarray_of_array3 t)
 
