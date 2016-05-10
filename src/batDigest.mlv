@@ -93,3 +93,12 @@ let compare = String.compare
 
 ##V<4.2##let bytes = string
 ##V<4.2##let subbytes = substring
+
+##V<4.3##let equal d1 d2 = (compare d1 d2 = 0)
+(*$T
+  equal (string "foo") (string "foo")
+  equal (string "") (string "")
+  not <| equal (string "foo") (string "bar")
+  not <| equal (string "foo") (string "foo\0")
+  not <| equal (string "foo") (string "")
+ *)

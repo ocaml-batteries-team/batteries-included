@@ -96,4 +96,8 @@ val compare : t -> t -> int
       shared with {!String.compare}. Along with the type [t], this
       function [compare] allows the module [Digest] to be passed as
       argument to the functors {!Set.Make} and {!Map.Make}.
-      @since 4.00.0 *)
+      @since Batteries 2.0 *)
+
+val equal : t -> t -> bool
+(** The equal function for digests.
+    @since NEXT_RELEASE *)
