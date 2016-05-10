@@ -96,8 +96,8 @@ let print print_a out r = print_a out !r
 let toggle r = r := not !r
 
 (*$T toggle
-  let r = ref true in toggle r; !r = false;
-  let r = ref false in toggle r; !r = true;
+  let r = ref true in toggle r; !r = false
+  let r = ref false in toggle r; !r = true
 *)
 
 let oset r x = r := Some x

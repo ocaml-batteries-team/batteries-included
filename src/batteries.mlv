@@ -174,5 +174,18 @@ end
 ##V<4.3##include Pervasives
 ##V>=4.3##include (Pervasives :
 ##V>=4.3##  module type of Pervasives
-##V>=4.3##  with type ('a, 'b) result := ('a, 'b) Pervasives.result)
+##V>=4.3##  with type ('a, 'b) result := ('a, 'b) Pervasives.result
+##V>=4.3##  and  type 'a ref = 'a Pervasives.ref
+##V>=4.3##  and  type fpclass = Pervasives.fpclass
+##V>=4.3##  and  type in_channel = Pervasives.in_channel
+##V>=4.3##  and  type out_channel = Pervasives.out_channel
+##V>=4.3##  and  type open_flag = Pervasives.open_flag
+##V>=4.3##  and  type ('a, 'b, 'c, 'd, 'e, 'f) format6 =
+##V>=4.3##    ('a, 'b, 'c, 'd, 'e, 'f) Pervasives.format6
+##V>=4.3##  and  type ('a, 'b, 'c, 'd) format4 =
+##V>=4.3##    ('a, 'b, 'c, 'd) Pervasives.format4
+##V>=4.3##  and  type ('a, 'b, 'c) format =
+##V>=4.3##    ('a, 'b, 'c) Pervasives.format
+##V>=4.3##)
+
 include BatPervasives
