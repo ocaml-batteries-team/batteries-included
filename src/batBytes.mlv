@@ -40,3 +40,37 @@ include Bytes
 (* String.iteri is @since 4.00 *)
 ##V<4.0##let iteri f s =
 ##V<4.0##  for i = 0 to (Bytes.length s) - 1 do f i (Bytes.unsafe_get s i) done
+
+##V<4.3##let equal b1 (b2 : Bytes.t) = (compare b1 b2 = 0)
+
+##V<4.3##let uppercase_ascii s = map BatChar.uppercase_ascii s
+##V<4.3##let lowercase_ascii s = map BatChar.lowercase_ascii s
+
+(*$T uppercase_ascii
+  equal ("five" |> of_string |> capitalize_ascii |> to_string) "FIVE"
+  equal ("école" |> of_string |> captialize_ascii |> to_string) "éCOLE"
+ *)
+
+(*$T lowercase_ascii
+  equal ("FIVE" |> of_string |> capitalize_ascii |> to_string) "five"
+  equal ("ÉCOLE" |> of_string |> captialize_ascii |> to_string) "École"
+ *)
+
+##V<4.3##let map_first_char f s =
+##V<4.3##  let r = copy s in
+##V<4.3##  if length s > 0 then
+##V<4.3##    unsafe_set r 0 (f(unsafe_get s 0));
+##V<4.3##  r
+
+##V<4.3##let capitalize_ascii s = map_first_char BatChar.uppercase_ascii s
+##V<4.3##let uncapitalize_ascii s = map_first_char BatChar.lowercase_ascii s
+
+(*$T capitalize_ascii
+  equal ("five" |> of_string |> capitalize_ascii |> to_string) "Five"
+  equal ("école" |> of_string |> captialize_ascii |> to_string) "école"
+ *)
+
+(*$T uncapitalize_ascii
+  equal ("Five" |> of_string |> capitalize_ascii |> to_string) "Five"
+  equal ("école" |> of_string |> captialize_ascii |> to_string) "école"
+ *)

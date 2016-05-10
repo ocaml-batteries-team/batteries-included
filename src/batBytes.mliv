@@ -250,11 +250,35 @@ val uncapitalize : t -> t
 (** Return a copy of the argument, with the first byte set to
     lowercase. *)
 
+val uppercase_ascii : t -> t
+(** Return a copy of the argument, with all lowercase letters
+   translated to uppercase, using the US-ASCII character set.
+   @since NEXT_RELEASE *)
+
+val lowercase_ascii : t -> t
+(** Return a copy of the argument, with all uppercase letters
+   translated to lowercase, using the US-ASCII character set.
+   @since NEXT_RELEASE *)
+
+val capitalize_ascii : t -> t
+(** Return a copy of the argument, with the first character set to uppercase,
+   using the US-ASCII character set.
+   @since NEXT_RELEASE *)
+
+val uncapitalize_ascii : t -> t
+(** Return a copy of the argument, with the first character set to lowercase,
+   using the US-ASCII character set.
+   @since NEXT_RELEASE *)
+
 val compare: t -> t -> int
 (** The comparison function for byte sequences, with the same
     specification as {!Pervasives.compare}.  Along with the type [t],
     this function [compare] allows the module [Bytes] to be passed as
     argument to the functors {!Set.Make} and {!Map.Make}. *)
+
+val equal: t -> t -> bool
+(** The equality function for byte sequences.
+    @since NEXT_RELEASE *)
 
 
 (** {4 Unsafe conversions (for advanced users)}
