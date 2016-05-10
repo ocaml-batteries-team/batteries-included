@@ -257,6 +257,26 @@ val capitalize : string -> string
 val uncapitalize : string -> string
 (** Return a copy of the argument, with the first character set to lowercase. *)
 
+val uppercase_ascii : string -> string
+(** Return a copy of the argument, with all lowercase letters
+   translated to uppercase, using the US-ASCII character set.
+   @since NEXT_RELEASE *)
+
+val lowercase_ascii : string -> string
+(** Return a copy of the argument, with all uppercase letters
+   translated to lowercase, using the US-ASCII character set.
+   @since NEXT_RELEASE *)
+
+val capitalize_ascii : string -> string
+(** Return a copy of the argument, with the first character set to uppercase,
+   using the US-ASCII character set.
+   @since NEXT_RELEASE *)
+
+val uncapitalize_ascii : string -> string
+(** Return a copy of the argument, with the first character set to lowercase,
+   using the US-ASCII character set.
+   @since NEXT_RELEASE *)
+
 type t = string
 (** An alias for the type of strings. *)
 

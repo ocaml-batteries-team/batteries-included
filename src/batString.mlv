@@ -39,7 +39,7 @@ let init len f =
   s
 
 (*$T init
-   init 5 (fun i -> Char.chr (i + int_of_char '0')) = "01234";
+   init 5 (fun i -> BatChar.chr (i + int_of_char '0')) = "01234";
 *)
 
 let starts_with str p =
@@ -887,6 +887,38 @@ let numeric_compare s1 s2 =
 (*$Q numeric_compare
   (Q.triple Q.printable_string Q.pos_int Q.pos_int) (fun (s,m,n) -> numeric_compare (s ^ string_of_int m) (s ^ string_of_int n) = BatInt.compare m n)
 *)
+
+##V<4.3##let uppercase_ascii s = map BatChar.uppercase_ascii s
+##V<4.3##let lowercase_ascii s = map BatChar.lowercase_ascii s
+
+(*$T uppercase_ascii
+  equal ("five" |> of_string |> capitalize_ascii |> to_string) "FIVE"
+  equal ("école" |> of_string |> captialize_ascii |> to_string) "éCOLE"
+ *)
+
+(*$T lowercase_ascii
+  equal ("FIVE" |> of_string |> capitalize_ascii |> to_string) "five"
+  equal ("ÉCOLE" |> of_string |> captialize_ascii |> to_string) "École"
+ *)
+
+##V<4.3##let map_first_char f s =
+##V<4.3##  let r = copy s in
+##V<4.3##  if length s > 0 then
+##V<4.3##    unsafe_set r 0 (f(unsafe_get s 0));
+##V<4.3##  r
+
+##V<4.3##let capitalize_ascii s = map_first_char BatChar.uppercase_ascii s
+##V<4.3##let uncapitalize_ascii s = map_first_char BatChar.lowercase_ascii s
+
+(*$T capitalize_ascii
+  equal ("five" |> capitalize_ascii) "Five"
+  equal ("école" |> captialize_ascii) "école"
+ *)
+
+(*$T uncapitalize_ascii
+  equal ("Five" |> capitalize_ascii) "Five"
+  equal ("école" |> captialize_ascii) "école"
+ *)
 
 module NumString =
 struct
