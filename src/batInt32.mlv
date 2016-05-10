@@ -142,7 +142,9 @@ external shift_right_logical : int32 -> int -> int32 = "%int32_lsr"
 external of_int : int -> int32 = "%int32_of_int"
 external to_int : int32 -> int = "%int32_to_int"
 external of_float : float -> int32 = "caml_int32_of_float"
+##V>=4.3## "caml_int32_of_float_unboxed" [@@unboxed] [@@noalloc]
 external to_float : int32 -> float = "caml_int32_to_float"
+##V>=4.3## "caml_int32_to_float_unboxed" [@@unboxed] [@@noalloc]
 external of_string : string -> int32 = "caml_int32_of_string"
 external of_int64 : int64 -> int32 = "%int64_to_int32"
 external to_int64 : int32 -> int64 = "%int64_of_int32"
@@ -150,7 +152,9 @@ external of_nativeint : nativeint -> int32 = "%int32_of_nativeint"
 external to_nativeint : int32 -> nativeint = "%int32_to_nativeint"
 
 external bits_of_float : float -> int32 = "caml_int32_bits_of_float"
+##V>=4.3## "caml_int32_bits_of_float_unboxed" [@@unboxed] [@@noalloc]
 external float_of_bits : int32 -> float = "caml_int32_float_of_bits"
+##V>=4.3## "caml_int32_float_of_bits_unboxed" [@@unboxed] [@@noalloc]
 external format : string -> int32 -> string = "caml_int32_format"
 
 
