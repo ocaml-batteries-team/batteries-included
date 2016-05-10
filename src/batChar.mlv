@@ -22,6 +22,24 @@
 (*BISECT-IGNORE-BEGIN*)
 include Char
 
+##V<4.3##let lowercase_ascii = function
+##V<4.3##  | ('A'..'Z') as c -> unsafe_chr (code c - code 'A' + code 'a')
+##V<4.3##  | c -> c
+##V<4.3##
+##V<4.3##let uppercase_ascii = function
+##V<4.3##  | ('a'..'z') as c -> unsafe_chr (code c - code 'a' + code 'A')
+##V<4.3##  | c -> c
+
+(*$T lowercase_ascii
+  lowercase_ascii 'A' = 'a'
+  lowercase_ascii 'À' = 'À'
+ *)
+
+(*$T uppercase_ascii
+  uppercase_ascii 'a' = 'A'
+  uppercase_ascii 'à' = 'à'
+ *)
+
 let is_whitespace = function
   | ' ' | '\010' | '\013' | '\009' | '\026' | '\012' -> true
   | _ -> false
