@@ -3,6 +3,21 @@ Changelog
 
 ## v2.5.0
 
+Batteries 2.5.0 is a minor release whose main change is that it is
+compatible with the newly released OCaml 4.03.
+
+Note that Batteries 2.5.0 is compatible with older OCaml releases as
+well, and provides back-ported versions of most standard library
+functions made available in 4.03 only. For example,
+BatString.uppercase_ascii is usable under all OCaml versions.
+
+If the documentation of a Batteries function says
+  @since 2.5.0
+then it is available under all supported OCaml version (3.12.1 and up).
+If it says
+  @since 2.5.0 and OCaml 4.03.0
+then it is only available under OCaml 4.03.0.
+
 - BatTuple: add Tuple{N}.make : 'a1 -> ... -> 'an -> 'a1 * ... * 'an
   (Thibault Suzanne)
 - BatBig_int: fix sequence operators (--), (---) to avoid polymorphic comparison
