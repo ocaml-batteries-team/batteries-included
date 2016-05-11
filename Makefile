@@ -27,6 +27,12 @@ endif
 # Directory where to build the qtest suite
 QTESTDIR ?= qtest
 
+ifeq ($(shell ocamlfind query -p-format qcheck),qcheck)
+	QTESTPKG = qcheck
+else
+	QTESTPKG = QTest2Lib
+endif
+
 INSTALL_FILES = _build/META _build/src/*.cma \
 	battop.ml _build/src/*.cmi _build/src/*.mli \
 	_build/src/batteriesHelp.cmo _build/src/batteriesConfig.cmo _build/src/batteriesPrint.cmo \
@@ -155,9 +161,11 @@ $(QTESTDIR)/all_tests.ml: $(TESTABLE)
 	qtest -o $@ --shuffle --preamble-file qtest/qtest_preamble.ml extract $(TESTABLE)
 
 _build/$(QTESTDIR)/all_tests.byte: $(QTESTDIR)/all_tests.ml
-	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 -pkg oUnit,qcheck $(QTESTDIR)/all_tests.byte
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26\
+		-pkg oUnit,$(QTESTPKG) $(QTESTDIR)/all_tests.byte
 _build/$(QTESTDIR)/all_tests.native: $(QTESTDIR)/all_tests.ml
-	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26 -pkg oUnit,qcheck $(QTESTDIR)/all_tests.native
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26\
+		-pkg oUnit,$(QTESTPKG) $(QTESTDIR)/all_tests.native
 
 
 ### qtest: quick run of inline unit tests

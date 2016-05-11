@@ -1,3 +1,2 @@
 true: threads, debug
-<all_tests.*>: package(oUnit), package(qcheck)
 
