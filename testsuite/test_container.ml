@@ -562,7 +562,7 @@ module BatArray = struct
 end
 
 module TestContainer(C : Container) : sig end = struct
-  let n = 500
+  let n = 100
   let a = Array.init n (fun i -> i)
   let rev_a = Array.init n (fun i -> n - 1 - i)
   let c = C.of_enum (BatArray.enum a)
@@ -807,8 +807,8 @@ module TestContainer(C : Container) : sig end = struct
     repeat_twice (fun () ->
       assert (C.for_all (fun elt -> elt < n) c);
       let i = ref (-1) in
-      assert (not (C.for_all (fun elt -> incr i; elt < 200) c));
-      assert (!i = 200);
+      assert (not (C.for_all (fun elt -> incr i; elt < n/2) c));
+      assert (!i = n/2);
       try ignore (C.for_all (fun _ -> assert false) (Lazy.force empty))
       with BatDllist.Empty -> ()
     )
@@ -817,8 +817,8 @@ module TestContainer(C : Container) : sig end = struct
     repeat_twice (fun () ->
       assert (not (C.exists (fun elt -> not (elt < n)) c));
       let i = ref (-1) in
-      assert (C.exists (fun elt -> incr i; not (elt < 200)) c);
-      assert (!i = 200);
+      assert (C.exists (fun elt -> incr i; not (elt < n/2)) c);
+      assert (!i = n/2);
       try ignore (C.exists (fun _ -> assert false) (Lazy.force empty))
       with BatDllist.Empty -> ()
     )
@@ -1154,7 +1154,7 @@ module TestContainer(C : Container) : sig end = struct
     repeat_twice (fun () ->
       let a = Array.init n (fun i -> (i, i)) in
       let c = C.of_enum (BatArray.enum a) in
-      assert (C.mem c (200, 200));
+      assert (C.mem c (n/2, n/2));
 
       assert (not (C.mem c (0,1)));
       (try assert (not (C.mem (Lazy.force empty) 0))
@@ -1165,8 +1165,8 @@ module TestContainer(C : Container) : sig end = struct
     repeat_twice (fun () ->
       let a = Array.init n (fun i -> ref i) in
       let c = C.of_enum (BatArray.enum a) in
-      assert (C.memq c a.(200));
-      assert (not (C.memq c (ref 200)));
+      assert (C.memq c a.(n/2));
+      assert (not (C.memq c (ref (n/2))));
 
       (try assert (not (C.memq (Lazy.force empty) 0))
        with BatDllist.Empty -> ());
@@ -1175,9 +1175,9 @@ module TestContainer(C : Container) : sig end = struct
   let () =
     repeat_twice (fun () ->
       let i = ref (-1) in
-      let elt = C.find (fun elt -> incr i; assert (!i = elt); elt = 200) c in
-      assert (elt = 200);
-      assert (!i = 200);
+      let elt = C.find (fun elt -> incr i; assert (!i = elt); elt = n/2) c in
+      assert (elt = n/2);
+      assert (!i = n/2);
       assert (try ignore (C.find (fun _ -> false) c); false with Assert_failure _ as e -> raise e | _ -> true);
       assert (try ignore (C.find (fun _ -> assert false) (Lazy.force empty)); false with Assert_failure _ as e -> raise e | _ -> true);
     )
@@ -1185,9 +1185,9 @@ module TestContainer(C : Container) : sig end = struct
   let () =
     repeat_twice (fun () ->
       let i = ref (-1) in
-      let index = C.find_index (fun elt -> incr i; assert (!i = elt); elt = 200) c in
-      assert (index = 200);
-      assert (!i = 200);
+      let index = C.find_index (fun elt -> incr i; assert (!i = elt); elt = n/2) c in
+      assert (index = n/2);
+      assert (!i = n/2);
       assert (try ignore (C.find_index (fun _ -> false) c); false with Assert_failure _ as e -> raise e | _ -> true);
       assert (try ignore (C.find_index (fun _ -> assert false) (Lazy.force empty)); false with Assert_failure _ as e -> raise e | _ -> true);
     )
@@ -1195,9 +1195,9 @@ module TestContainer(C : Container) : sig end = struct
   let () =
     repeat_twice (fun () ->
       let i = ref n in
-      let elt = C.find_right (fun elt -> decr i; assert (!i = elt); elt = 200) c in
-      assert (elt = 200);
-      assert (!i = 200);
+      let elt = C.find_right (fun elt -> decr i; assert (!i = elt); elt = n/2) c in
+      assert (elt = n/2);
+      assert (!i = n/2);
       assert (try ignore (C.find_right (fun _ -> false) c); false with Assert_failure _ as e -> raise e | _ -> true);
       assert (try ignore (C.find_right (fun _ -> assert false) (Lazy.force empty)); false with Assert_failure _ as e -> raise e | _ -> true);
     )
