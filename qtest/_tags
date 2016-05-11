@@ -1,2 +1,14 @@
 true: threads, debug
 
+
+# Warning 52 warnings against patterns of the form
+#
+#   try .. with Invalid_argument "foo" -> ...
+#
+# because they are fragile. But we want to have them in tests, for the
+# Invalid_argument payloads corresponding to exceptions *we* raise, as
+# the fact that those fragile tests break then tells us that fragile
+# user code would also break (and we want to be alerted when that is
+# a risk).
+true: warn(-52)
+
