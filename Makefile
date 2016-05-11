@@ -133,7 +133,8 @@ clean-prefilter:
 
 ### List of source files that it's okay to try to test
 
-DONTTEST=src/batteriesHelp.ml
+DONTTEST=src/batteriesHelp.ml \
+	 src/batConcreteQueue_402.ml src/batConcreteQueue_403.ml
 TESTABLE ?= $(filter-out $(DONTTEST), $(wildcard src/*.ml))
 TESTDEPS = $(TESTABLE)
 
