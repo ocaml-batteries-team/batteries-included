@@ -118,7 +118,7 @@ val word_size : int
 ##V>=4.3##    OCaml compiler on a 32 bits (resp. 64 bits) platform.  It may
 ##V>=4.3##    differ for other compilers, e.g. it is 32 bits when compiling to
 ##V>=4.3##    JavaScript.
-##V>=4.3##    @since NEXT_RELEASE and OCaml 4.03.0 *)
+##V>=4.3##    @since 2.5.0 and OCaml 4.03.0 *)
 
 val big_endian : bool
 (** Whether the machine currently executing the OCaml program is big-endian.
@@ -136,12 +136,12 @@ val max_array_length : int
 ##V>=4.3##(** Return the name of the runtime variant the program is running on.
 ##V>=4.3##    This is normally the argument given to [-runtime-variant] at compile
 ##V>=4.3##    time, but for byte-code it can be changed after compilation.
-##V>=4.3##    @since NEXT_RELEASE and OCaml 4.03.0 *)
+##V>=4.3##    @since 2.5.0 and OCaml 4.03.0 *)
 ##V>=4.3##
 ##V>=4.3##external runtime_parameters : unit -> string = "caml_runtime_parameters"
 ##V>=4.3##(** Return the value of the runtime parameters, in the same format
 ##V>=4.3##    as the contents of the [OCAMLRUNPARAM] environment variable.
-##V>=4.3##    @since NEXT_RELEASE and OCaml 4.03.0 *)
+##V>=4.3##    @since 2.5.0 and OCaml 4.03.0 *)
 
 
 (** {6 Signal handling} *)
@@ -237,31 +237,31 @@ val sigprof : int
 
 val sigbus : int
 (** Bus error
-    @since NEXT_RELEASE *)
+    @since 2.5.0 *)
 
 val sigpoll : int
 (** Pollable event
-    @since NEXT_RELEASE *)
+    @since 2.5.0 *)
 
 val sigsys : int
 (** Bad argument to routine
-    @since NEXT_RELEASE *)
+    @since 2.5.0 *)
 
 val sigtrap : int
 (** Trace/breakpoint trap
-    @since NEXT_RELEASE *)
+    @since 2.5.0 *)
 
 val sigurg : int
 (** Urgent condition on socket
-    @since NEXT_RELEASE *)
+    @since 2.5.0 *)
 
 val sigxcpu : int
 (** Timeout in cpu time
-    @since NEXT_RELEASE *)
+    @since 2.5.0 *)
 
 val sigxfsz : int
 (** File size limit exceeded
-    @since NEXT_RELEASE *)
+    @since 2.5.0 *)
 
 
 exception Break
@@ -294,11 +294,11 @@ val files_of: string -> string BatEnum.t
 ##V>=4.3##    on stderr.  Currently, the only supported warning is triggered
 ##V>=4.3##    when a channel created by [open_*] functions is finalized without
 ##V>=4.3##    being closed.  Runtime warnings are enabled by default.
-##V>=4.3##    @since NEXT_RELEASE and OCaml 4.03 *)
+##V>=4.3##    @since 2.5.0 and OCaml 4.03 *)
 
 ##V>=4.3##val runtime_warnings_enabled: unit -> bool
 ##V>=4.3##(** Return whether runtime warnings are currently enabled.
-##V>=4.3##    @since NEXT_RELEASE and OCaml 4.03 *)
+##V>=4.3##    @since 2.5.0 and OCaml 4.03 *)
 
 (** {6 Optimization} *)
 
@@ -322,5 +322,5 @@ val files_of: string -> string BatEnum.t
     way for Batteries to emulate it correctly under older OCaml
     versions.
 
-    @since NEXT_RELEASE and OCaml 4.02
+    @since 2.5.0 and OCaml 4.02
  *)

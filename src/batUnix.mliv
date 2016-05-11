@@ -814,7 +814,7 @@ val create_process_env :
 ##V>=4.3##   but is also running elevated, if necessary. On other platforms, this is
 ##V>=4.3##   simply indicates that the symlink system call is available.
 ##V>=4.3##
-##V>=4.3##   @since NEXT_RELEASE and OCaml 4.03 *)
+##V>=4.3##   @since 2.5.0 and OCaml 4.03 *)
 
 val readlink : string -> string
 (** Read the contents of a link. *)
@@ -971,7 +971,7 @@ val sleep : int -> unit
 ##V>=4.3##val sleepf : float -> unit
 ##V>=4.3##(** Stop execution for the given number of seconds.  Like [sleep],
 ##V>=4.3##    but fractions of seconds are supported.
-##V>=4.3##    @since NEXT_RELEASE and OCaml 4.03 *)
+##V>=4.3##    @since 2.5.0 and OCaml 4.03 *)
 
 val times : unit -> process_times
 (** Return the execution times of the process. *)

@@ -51,12 +51,12 @@ val uppercase : char -> char
 val lowercase_ascii : char -> char
 (** Convert the given character to its equivalent lowercase character,
    using the US-ASCII character set.
-   @since NEXT_RELEASE *)
+   @since 2.5.0 *)
 
 val uppercase_ascii : char -> char
 (** Convert the given character to its equivalent uppercase character,
    using the US-ASCII character set.
-   @since NEXT_RELEASE *)
+   @since 2.5.0 *)
 
 type t = char
 (** An alias for the type of characters. *)

@@ -165,7 +165,7 @@ val num_digits_big_int : big_int -> int
 ##V>=4.3##            value of the given big integer.  [num_bits_big_int a]
 ##V>=4.3##            returns 0 if [a] is 0; otherwise it returns a positive
 ##V>=4.3##            integer [n] such that [2^(n-1) <= |a| < 2^n].
-##V>=4.3##            @since NEXT_RELEASE and 4.03 *)
+##V>=4.3##            @since 2.5.0 and OCaml 4.03 *)
 
 
 (** {6 Conversions to and from strings} *)

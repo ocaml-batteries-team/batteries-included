@@ -1,12 +1,14 @@
 Changelog
 ---------
 
-## NEXT_RELEASE
+## v2.5.0
 
 - BatTuple: add Tuple{N}.make : 'a1 -> ... -> 'an -> 'a1 * ... * 'an
   (Thibault Suzanne)
 - BatBig_int: fix sequence operators (--), (---) to avoid polymorphic comparison
   (Pieter Goetschalckx and Cedric Cellier)
+- Extend all Batteries module to cover OCaml 4.03 features
+  (Gabriel Scherer)
 
 ## v2.4.0
 

@@ -100,4 +100,4 @@ val compare : t -> t -> int
 
 val equal : t -> t -> bool
 (** The equal function for digests.
-    @since NEXT_RELEASE *)
+    @since 2.5.0 *)

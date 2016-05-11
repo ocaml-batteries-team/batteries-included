@@ -158,7 +158,7 @@ type control = Gc.control =
 ##V>=4.3##    (** The size of the window used by the major GC for smoothing
 ##V>=4.3##        out variations in its workload. This is an integer between
 ##V>=4.3##        1 and 50.
-##V>=4.3##        Default: 1. @since NEXT_RELEASE and OCaml 4.03.0 *)
+##V>=4.3##        Default: 1. @since 2.5.0 and OCaml 4.03.0 *)
 ##V>=4.3##
   }
 (** The GC parameters are given as a [control] record.  Note that
@@ -219,25 +219,25 @@ val allocated_bytes : unit -> float
 
 ##V>=4.3##external get_minor_free : unit -> int = "caml_get_minor_free" [@@noalloc]
 (** Return the current size of the free space inside the minor heap.
-    @since NEXT_RELEASE and OCaml 4.03.0 *)
+    @since 2.5.0 and OCaml 4.03.0 *)
 
 ##V>=4.3##external get_bucket : int -> int = "caml_get_major_bucket" [@@noalloc]
 (** [get_bucket n] returns the current size of the [n]-th future bucket
     of the GC smoothing system. The unit is one millionth of a full GC.
     Raise [Invalid_argument] if [n] is negative, return 0 if n is larger
     than the smoothing window.
-    @since NEXT_RELEASE and OCaml 4.03.0 *)
+    @since 2.5.0 and OCaml 4.03.0 *)
 
 ##V>=4.3##external get_credit : unit -> int = "caml_get_major_credit" [@@noalloc]
 (** [get_credit ()] returns the current size of the "work done in advance"
     counter of the GC smoothing system. The unit is one millionth of a
     full GC.
-    @since NEXT_RELEASE and OCaml 4.03.0 *)
+    @since 2.5.0 and OCaml 4.03.0 *)
 
 ##V>=4.3##external huge_fallback_count : unit -> int = "caml_gc_huge_fallback_count"
 (** Return the number of times we tried to map huge pages and had to fall
     back to small pages. This is always 0 if [OCAMLRUNPARAM] contains [H=1].
-    @since NEXT_RELEASE and OCaml 4.03.0 *)
+    @since 2.5.0 and OCaml 4.03.0 *)
 
 val finalise : ('a -> unit) -> 'a -> unit
 (** [finalise f v] registers [f] as a finalisation function for [v].
