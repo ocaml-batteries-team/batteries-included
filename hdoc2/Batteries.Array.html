@@ -485,25 +485,6 @@ As <code class="code"><span class="constructor">Array</span>.decorate_stable_sor
 </ul>
 <br>
 </div>
-
-<pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">BatOrd.ord</a> -> 'a array -> 'a -> int * int</code></pre><div class="info ">
-<code class="code">split cmp arr x</code> assumes that <code class="code">arr</code> is <b>sorted</b> w.r.t
-    <code class="code">cmp</code>. It splits an array <code class="code">arr</code> of length <code class="code">len</code> into three parts,
-    by returning a couple (i,j) such as:<ul>
-<li>all elements with indices 0..i-1 (<code class="code">sub arr 0 i</code>) are lower than <code class="code">x</code></li>
-<li>all elements with indices i..j-1 (<code class="code">sub arr i (j-i)</code>) are equal to <code class="code">x</code></li>
-<li>all elements with indices j..len-1 (<code class="code">sub arr j (len-j)</code>) are bigger than <code class="code">x</code></li>
-</ul>
-
-    In particular, it returns:<ul>
-<li>(0, 0) if all elements of <code class="code">arr</code> are bigger than <code class="code">x</code></li>
-<li>(len, len) if all elements are lower than <code class="code">x</code></li>
-<li>(0, len) if all elements are equal to <code class="code">x</code></li>
-</ul>
-
-    Complexity: logarithmic in the size of the array<br>
-<b>Raises</b> <code>Invalid_argument</code> if the array is found not to be sorted<br>
-</div>
 <br>
 <h6 id="6_Operationsontwoarrays">Operations on two arrays</h6><br>
 

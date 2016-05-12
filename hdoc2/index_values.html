@@ -2789,7 +2789,7 @@ Transform a pair of lists into a list of pairs:
 </td></tr>
 <tr><td><a href="BatEnum.html#VALcombine">combine</a> [<a href="BatEnum.html">BatEnum</a>]</td>
 <td><div class="info">
-<code class="code">combine</code> transform two streams into a stream of pairs of corresponding
+<code class="code">combine</code> transform a pair of stream into a stream of pairs of corresponding
     elements.
 </div>
 </td></tr>
@@ -12928,7 +12928,8 @@ Write a string to an output.
 </td></tr>
 <tr><td><a href="BatSet.PSet.html#VALof_array">of_array</a> [<a href="BatSet.PSet.html">BatSet.PSet</a>]</td>
 <td><div class="info">
-builds a set from the given array and comparison function
+builds a set from the given array, using the default comparison
+      function
 </div>
 </td></tr>
 <tr><td><a href="BatSet.S.html#VALof_array">of_array</a> [<a href="BatSet.S.html">BatSet.S</a>]</td>
@@ -17906,12 +17907,6 @@ Transform a list of pairs into a pair of lists:
 <code class="code">split p t</code>, when <code class="code">p</code> is monotonic, returns <code class="code">(t1, t2)</code> where
         <code class="code">t1</code> is the longest prefix of <code class="code">t</code> whose measure does not satifies
         <code class="code">p</code>, and <code class="code">t2</code> is the rest of <code class="code">t</code>.
-</div>
-</td></tr>
-<tr><td><a href="BatArray.html#VALsplit">split</a> [<a href="BatArray.html">BatArray</a>]</td>
-<td><div class="info">
-<code class="code">split cmp arr x</code> assumes that <code class="code">arr</code> is <b>sorted</b> w.r.t
-    <code class="code">cmp</code>.
 </div>
 </td></tr>
 <tr><td><a href="BatSubstring.html#VALsplit_at">split_at</a> [<a href="BatSubstring.html">BatSubstring</a>]</td>

@@ -388,15 +388,16 @@ Return an enumeration of all elements of the given set.
       to the ordering of this set.<br>
 </div>
 
-<pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">?cmp:('a -> 'a -> int) -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatSet.PSet.html#TYPEt">t</a></code></pre>
+<pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatSet.PSet.html#TYPEt">t</a></code></pre>
 <pre><span id="VALof_enum_cmp"><span class="keyword">val</span> of_enum_cmp</span> : <code class="type">cmp:('a -> 'a -> int) -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatSet.PSet.html#TYPEt">t</a></code></pre>
-<pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">?cmp:('a -> 'a -> int) -> 'a list -> 'a <a href="BatSet.PSet.html#TYPEt">t</a></code></pre><div class="info ">
+<pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">'a list -> 'a <a href="BatSet.PSet.html#TYPEt">t</a></code></pre><div class="info ">
 builds a set from the given list, using the default comparison
       function<br>
 </div>
 
-<pre><span id="VALof_array"><span class="keyword">val</span> of_array</span> : <code class="type">?cmp:('a -> 'a -> int) -> 'a array -> 'a <a href="BatSet.PSet.html#TYPEt">t</a></code></pre><div class="info ">
-builds a set from the given array and comparison function<br>
+<pre><span id="VALof_array"><span class="keyword">val</span> of_array</span> : <code class="type">'a array -> 'a <a href="BatSet.PSet.html#TYPEt">t</a></code></pre><div class="info ">
+builds a set from the given array, using the default comparison
+      function<br>
 </div>
 <br>
 <h6 id="6_Boilerplatecode">Boilerplate code</h6><br>

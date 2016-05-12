@@ -734,12 +734,10 @@ For users worried about the speed of <code class="code">count</code> you can cal
     return two streams can be used independently.<br>
 </div>
 
-<pre><span id="VALcombine"><span class="keyword">val</span> combine</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a> -> ('a * 'b) <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">combine</code> transform two streams into a stream of pairs of corresponding
-    elements. If one stream is shorter, excess elements of the longer stream are
-    ignored.
-    Curried<br>
-<b>Since</b> 3.0<br>
+<pre><span id="VALcombine"><span class="keyword">val</span> combine</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> * 'b <a href="BatEnum.html#TYPEt">t</a> -> ('a * 'b) <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">combine</code> transform a pair of stream into a stream of pairs of corresponding
+    elements. If one stream is short, excess elements of the longer stream are
+    ignored.<br>
 </div>
 
 <pre><span id="VALuncombine"><span class="keyword">val</span> uncombine</span> : <code class="type">('a * 'b) <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> * 'b <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
