@@ -10,6 +10,8 @@
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
@@ -149,6 +151,12 @@ Return the kind of the given big array.<br>
 
 <pre><span id="VALlayout"><span class="keyword">val</span> layout</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a> -> 'c <a href="BatBigarray.html#TYPElayout">BatBigarray.layout</a></code></pre><div class="info ">
 Return the layout of the given big array.<br>
+</div>
+
+<pre><span id="VALsize_in_bytes"><span class="keyword">val</span> size_in_bytes</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a> -> int</code></pre><div class="info ">
+<code class="code">size_in_bytes a</code> is the number of elements in <code class="code">a</code> multiplied
+    by <code class="code">a</code>'s <a href="BatBigarray.html#VALkind_size_in_bytes"><code class="code"><span class="constructor">BatBigarray</span>.kind_size_in_bytes</code></a>.<br>
+<b>Since</b> 2.5.0<br>
 </div>
 
 <pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a> -> int -> int -> 'a</code></pre><div class="info ">

@@ -5,6 +5,8 @@
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
@@ -101,31 +103,31 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatGenlex.Languages.Make</title>
 </head>
 <body>
-<code class="code"><span class="keyword">functor</span>&nbsp;(<span class="constructor">M</span>&nbsp;:&nbsp;<span class="constructor">Definition</span>)&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;<span class="keyword">sig</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;feed&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(char,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.<span class="constructor">Source</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">BatGenlex</span>.token,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.<span class="constructor">Source</span>.t<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;start&nbsp;:&nbsp;(char,&nbsp;unit,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;ident&nbsp;:&nbsp;(char,&nbsp;string,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;kwd&nbsp;:&nbsp;(char,&nbsp;string,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;identifier&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(char,&nbsp;unit,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;keyword&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(char,&nbsp;unit,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;char_literal&nbsp;:&nbsp;(char,&nbsp;char,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;string_literal&nbsp;:&nbsp;(char,&nbsp;string,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;integer&nbsp;:&nbsp;(char,&nbsp;int,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;float&nbsp;:&nbsp;(char,&nbsp;float,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;number&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(char,&nbsp;[&nbsp;<span class="keywordsign">`</span><span class="constructor">Float</span>&nbsp;<span class="keyword">of</span>&nbsp;float&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keywordsign">`</span><span class="constructor">Integer</span>&nbsp;<span class="keyword">of</span>&nbsp;int&nbsp;],&nbsp;<span class="constructor">BatCharParser</span>.position)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;char&nbsp;:&nbsp;char&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(char,&nbsp;char,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;string&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(char,&nbsp;string,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;line_comment&nbsp;:&nbsp;(char,&nbsp;unit,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;multiline_comment&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(char,&nbsp;unit,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;comment&nbsp;:&nbsp;(char,&nbsp;unit,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;whitespaces&nbsp;:&nbsp;(char,&nbsp;unit,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t<br>
+<code class="code"><span class="keyword">functor</span>&nbsp;(<span class="constructor">M</span>&nbsp;:&nbsp;<span class="constructor">Definition</span>)&nbsp;<span class="keywordsign">-&gt;</span>
+&nbsp;&nbsp;<span class="keyword">sig</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;feed&nbsp;:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(char,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.<span class="constructor">Source</span>.t&nbsp;<span class="keywordsign">-&gt;</span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">BatGenlex</span>.token,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.<span class="constructor">Source</span>.t
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;start&nbsp;:&nbsp;(char,&nbsp;unit,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;ident&nbsp;:&nbsp;(char,&nbsp;string,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;kwd&nbsp;:&nbsp;(char,&nbsp;string,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;identifier&nbsp;:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(char,&nbsp;unit,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;keyword&nbsp;:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(char,&nbsp;unit,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;char_literal&nbsp;:&nbsp;(char,&nbsp;char,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;string_literal&nbsp;:&nbsp;(char,&nbsp;string,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;integer&nbsp;:&nbsp;(char,&nbsp;int,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;float&nbsp;:&nbsp;(char,&nbsp;float,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;number&nbsp;:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(char,&nbsp;[&nbsp;<span class="keywordsign">`</span><span class="constructor">Float</span>&nbsp;<span class="keyword">of</span>&nbsp;float&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keywordsign">`</span><span class="constructor">Integer</span>&nbsp;<span class="keyword">of</span>&nbsp;int&nbsp;],&nbsp;<span class="constructor">BatCharParser</span>.position)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatParserCo</span>.t
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;char&nbsp;:&nbsp;char&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(char,&nbsp;char,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;string&nbsp;:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(char,&nbsp;string,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;line_comment&nbsp;:&nbsp;(char,&nbsp;unit,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;multiline_comment&nbsp;:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(char,&nbsp;unit,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;comment&nbsp;:&nbsp;(char,&nbsp;unit,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;whitespaces&nbsp;:&nbsp;(char,&nbsp;unit,&nbsp;<span class="constructor">BatCharParser</span>.position)&nbsp;<span class="constructor">BatParserCo</span>.t
 &nbsp;&nbsp;<span class="keyword">end</span></code></body></html>

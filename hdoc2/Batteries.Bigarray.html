@@ -10,6 +10,8 @@
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
@@ -104,7 +106,6 @@
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Element kinds" rel="Section" href="#6_Elementkinds">
-<link title="Element kinds" rel="Section" href="#6_Elementkinds">
 <link title="Array layouts" rel="Section" href="#6_Arraylayouts">
 <link title="One-dimensional arrays" rel="Section" href="#6_Onedimensionalarrays">
 <link title="Two-dimensional arrays" rel="Section" href="#6_Twodimensionalarrays">
@@ -122,60 +123,6 @@
 <h1>Module <a href="type_Batteries.Bigarray.html">Batteries.Bigarray</a></h1>
 
 <pre><span class="keyword">module</span> Bigarray: <code class="type"><a href="BatBigarray.html">BatBigarray</a></code></pre><hr width="100%">
-<br>
-Large, multi-dimensional, numerical arrays.
-<p>
-
-    This module implements multi-dimensional arrays of integers and
-    floating-point numbers, thereafter referred to as ``big arrays''.
-    The implementation allows efficient sharing of large numerical
-    arrays between OCaml code and C or Fortran numerical libraries.
-<p>
-
-    Concerning the naming conventions, users of this module are encouraged
-    to do <code class="code"><span class="keyword">open</span> <span class="constructor">Bigarray</span></code> in their source, then refer to array types and
-    operations via short dot notation, e.g. <code class="code"><span class="constructor">Array1</span>.t</code> or <code class="code"><span class="constructor">Array2</span>.sub</code>.
-<p>
-
-    Big arrays support all the OCaml ad-hoc polymorphic operations:<ul>
-<li>comparisons (<code class="code">=</code>, <code class="code">&lt;&gt;</code>, <code class="code">&lt;=</code>, etc, as well as <code class="code"><span class="constructor">Pervasives</span>.compare</code>);</li>
-<li>hashing (module <code class="code"><span class="constructor">Hash</span></code>);</li>
-<li>and structured input-output (<code class="code"><span class="constructor">Pervasives</span>.output_value</code>
-     and <code class="code"><span class="constructor">Pervasives</span>.input_value</code>, as well as the functions from the
-     <code class="code"><span class="constructor">Marshal</span></code> module).</li>
-</ul>
-
-    This module replaces Stdlib's
-    <a href="http://caml.inria.fr/pub/docs/manual-ocaml/libref/Bigarray.html">Bigarray</a>
-    module.<br>
-<br>
-Large, multi-dimensional, numerical arrays.
-<p>
-
-    This module implements multi-dimensional arrays of integers and
-    floating-point numbers, thereafter referred to as ``big arrays''.
-    The implementation allows efficient sharing of large numerical
-    arrays between OCaml code and C or Fortran numerical libraries.
-<p>
-
-    Concerning the naming conventions, users of this module are encouraged
-    to do <code class="code"><span class="keyword">open</span> <span class="constructor">Bigarray</span></code> in their source, then refer to array types and
-    operations via short dot notation, e.g. <code class="code"><span class="constructor">Array1</span>.t</code> or <code class="code"><span class="constructor">Array2</span>.sub</code>.
-<p>
-
-    Big arrays support all the OCaml ad-hoc polymorphic operations:<ul>
-<li>comparisons (<code class="code">=</code>, <code class="code">&lt;&gt;</code>, <code class="code">&lt;=</code>, etc, as well as <code class="code"><span class="constructor">Pervasives</span>.compare</code>);</li>
-<li>hashing (module <code class="code"><span class="constructor">Hash</span></code>);</li>
-<li>and structured input-output (<code class="code"><span class="constructor">Pervasives</span>.output_value</code>
-     and <code class="code"><span class="constructor">Pervasives</span>.input_value</code>, as well as the functions from the
-     <code class="code"><span class="constructor">Marshal</span></code> module).</li>
-</ul>
-
-    This module replaces Stdlib's
-    <a href="http://caml.inria.fr/pub/docs/manual-ocaml/libref/Bigarray.html">Bigarray</a>
-    module.<br>
-<br>
-<h6 id="6_Elementkinds">Element kinds</h6><br>
 <br>
 Large, multi-dimensional, numerical arrays.
 <p>
@@ -473,14 +420,14 @@ To each element kind is associated an OCaml type, which is
    Using a generalized algebraic datatype (GADT) here allows to write
    well-typed polymorphic functions whose return type depend on the
    argument type, such as:
-<pre class="codepre"><code class="code">&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;zero&nbsp;:&nbsp;<span class="keyword">type</span>&nbsp;a&nbsp;b.&nbsp;(a,&nbsp;b)&nbsp;kind&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;a&nbsp;=&nbsp;<span class="keyword">function</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Float32</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0.0&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Complex32</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.zero<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Float64</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0.0&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Complex64</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.zero<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int8_signed</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int8_unsigned</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int16_signed</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int16_unsigned</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int32</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0l&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int64</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0<span class="constructor">L</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Nativeint</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0n<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Char</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">'\000'</span><br>
+<pre class="codepre"><code class="code">&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;zero&nbsp;:&nbsp;<span class="keyword">type</span>&nbsp;a&nbsp;b.&nbsp;(a,&nbsp;b)&nbsp;kind&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;a&nbsp;=&nbsp;<span class="keyword">function</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Float32</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0.0&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Complex32</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.zero
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Float64</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0.0&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Complex64</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.zero
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int8_signed</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int8_unsigned</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int16_signed</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int16_unsigned</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int32</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0l&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int64</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0<span class="constructor">L</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Nativeint</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0n
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Char</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">'\000'</span>
 </code></pre>
 # 160 "src/batBigarray.mliv"<br>
 </div>
@@ -552,6 +499,12 @@ As shown by the types of the values above,
     kind <code class="code">int8_unsigned_elt</code> can also be accessed as arrays of
     characters instead of arrays of small integers, by using
     the kind value <code class="code">char</code> instead of <code class="code">int8_unsigned</code>.<br>
+</div>
+
+<pre><span id="VALkind_size_in_bytes"><span class="keyword">val</span> kind_size_in_bytes</span> : <code class="type">('a, 'b) <a href="BatBigarray.html#TYPEkind">kind</a> -> int</code></pre><div class="info ">
+<code class="code">kind_size_in_bytes k</code> is the number of bytes used to store
+   an element of type <code class="code">k</code>.<br>
+<b>Since</b> 2.5.0<br>
 </div>
 <br>
 <h6 id="6_Arraylayouts">Array layouts</h6><br>

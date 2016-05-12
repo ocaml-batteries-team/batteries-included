@@ -10,6 +10,8 @@
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
@@ -104,16 +106,11 @@
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><link title="General overview" rel="Section" href="#6_Generaloverview">
-<link title="General overview" rel="Section" href="#6_Generaloverview">
 <link title="Formats" rel="Section" href="#6_Formats">
 <link title="Common functions" rel="Section" href="#6_Commonfunctions">
 <link title="General functions" rel="Section" href="#6_Generalfunctions">
 <link title="Functions with continuations" rel="Section" href="#6_Functionswithcontinuations">
 <link title="About formats" rel="Section" href="#6_Aboutformats">
-<link title="About formats" rel="Section" href="#6_Aboutformats">
-<link title="Format4" rel="Subsection" href="#7_Format4">
-<link title="Format" rel="Subsection" href="#7_Format">
-<link title="Important" rel="Subsection" href="#7_Important">
 <link title="Format4" rel="Subsection" href="#7_Format4">
 <link title="Format" rel="Subsection" href="#7_Format">
 <link title="Important" rel="Subsection" href="#7_Important">
@@ -130,8 +127,6 @@
 <br>
 Formatted output functions (also known as unparsing).<br>
 <br>
-Formatted output functions (also known as unparsing).<br>
-<br>
 <h6 id="6_Generaloverview">General overview</h6>
 <p>
 
@@ -169,60 +164,7 @@ Formatted output functions (also known as unparsing).<br>
    when passed string <code class="code"><span class="string">"foobar"</span></code> prints <code class="code"><span class="string">"(foobar)"</span></code> and ends the
    line. Similarly, <code class="code">printf <span class="string">"Here's the result: %s.\n\tComputation
    took %i seconds.\n"</span> <span class="string">"foobar"</span> 5</code> prints
-   <pre class="codepre"><code class="code"><span class="constructor">Here's</span>&nbsp;the&nbsp;result:&nbsp;foobar<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Computation</span>&nbsp;took&nbsp;5&nbsp;seconds.</code></pre>
-<p>
-
-   Note that <code class="code">\n</code> (the newline character) and <code class="code">\t</code> (the tabulation)
-   are not specific to this module but rather part of the conventions
-   on characters strings in OCaml.
-<p>
-
-   Other directives and functions make this module extremely useful
-   for printing, pretty-printing and translation of messages to
-   the user's language. For more information, see the documentation
-   of <code class="code">format</code> and the various functions.<br>
-<br>
-Formatted output functions (also known as unparsing).<br>
-<br>
-<h6 id="6_Generaloverview">General overview</h6>
-<p>
-
-   The functions of this module produce output according to a
-   <code class="code"><span class="constructor">Pervasives</span>.format</code>, as described below. Some functions write to
-   the standard output (i.e. the screen), some to error channels,
-   some to strings or to buffers, or some to abstract outputs.
-<p>
-
-   <b>Note</b> The types used in this module are confusing at first.
-   If you are a beginner, you should probably ignore them in a
-   first time and concentrate on formats.
-<p>
-
-   For a first explanation, we will concentrate on function <a href="BatPrintf.html#VALprintf"><code class="code"><span class="constructor">BatPrintf</span>.printf</code></a>.
-   As all the functions in this module, the behavior of <a href="BatPrintf.html#VALprintf"><code class="code"><span class="constructor">BatPrintf</span>.printf</code></a> is
-   dictated by a <code class="code">format</code>. This format is a string, composed of
-   regular text and directives, and which dictates how to interpret
-   the other arguments passed to the function. Every directive starts
-   with character <code class="code">%</code>.  The most common directive is <code class="code">%s</code>, which
-   serves to display a string, something quite useful for
-   pretty-printing or translation.  Anther common directive is <code class="code">%i</code>,
-   which serves to display an integer.
-<p>
-
-   For instance, <code class="code"><span class="string">"foobar"</span></code> is a format with no directive. Calling
-   <code class="code">printf <span class="string">"foobar"</span></code> prints <code class="code"><span class="string">"foobar"</span></code> on the screen and returns
-   <code class="code">()</code>. On the other hand, <code class="code"><span class="string">"%s"</span></code> is a format with one directive for
-   printing strings. <code class="code">printf <span class="string">"%s"</span></code> does nothing yet but returns a
-   function with type <code class="code">string <span class="keywordsign">-&gt;</span> unit</code>. In turn, <code class="code">printf <span class="string">"%s"</span>
-   <span class="string">"foobar"</span></code> prints <code class="code"><span class="string">"foobar"</span></code> on the screen and returns <code class="code">()</code>. The
-   main interest of this module is that directives may be combined
-   together and with text, to allow more complex printing. For instance
-   <code class="code">printf <span class="string">"(%s)\n"</span></code> is a function with type <code class="code">string <span class="keywordsign">-&gt;</span> unit</code> which,
-   when passed string <code class="code"><span class="string">"foobar"</span></code> prints <code class="code"><span class="string">"(foobar)"</span></code> and ends the
-   line. Similarly, <code class="code">printf <span class="string">"Here's the result: %s.\n\tComputation
-   took %i seconds.\n"</span> <span class="string">"foobar"</span> 5</code> prints
-   <pre class="codepre"><code class="code"><span class="constructor">Here's</span>&nbsp;the&nbsp;result:&nbsp;foobar<br>
+   <pre class="codepre"><code class="code"><span class="constructor">Here's</span>&nbsp;the&nbsp;result:&nbsp;foobar
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Computation</span>&nbsp;took&nbsp;5&nbsp;seconds.</code></pre>
 <p>
 
@@ -470,55 +412,6 @@ Same as <code class="code">bprintf2</code>, but instead of returning immediately
 <pre><span id="VALkprintf"><span class="keyword">val</span> kprintf</span> : <code class="type">(string -> 'a) -> ('b, unit, string, 'a) Pervasives.format4 -> 'b</code></pre><div class="info ">
 <span class="warning">Deprecated.</span>This is a deprecated synonym for <code class="code">ksprintf</code>.<br>
 </div>
-<br>
-<h6 id="6_Aboutformats">About formats</h6>
-<p>
-
-   You only need to read this if you intend to create your new printf-like functions,
-   which happens generally by toying with <code class="code">mkprintf</code>.
-<p>
-
-   <div class="h7" id="7_Format4">Format4</div>
-<p>
-
-   <code class="code">(<span class="keywordsign">'</span>a, <span class="keywordsign">'</span>b, <span class="keywordsign">'</span>c, <span class="keywordsign">'</span>d) format4</code> is the type of arguments for
-   <code class="code">printf</code>-style functions such that<ul>
-<li><code class="code"><span class="keywordsign">'</span>a</code> is the type of arguments, with a return type of <code class="code"><span class="keywordsign">'</span>d</code>
-   <ul>
-<li>if your format looks like <code class="code"><span class="string">"%s"</span></code>, <code class="code"><span class="keywordsign">'</span>a</code> is <code class="code">string <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>d</code></li>
-<li>if your format looks like <code class="code"><span class="string">"%s%s"</span></code>, <code class="code"><span class="keywordsign">'</span>a</code> is <code class="code">string <span class="keywordsign">-&gt;</span> string <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>d</code></li>
-<li>...</li>
-</ul>
-</li>
-<li><code class="code"><span class="keywordsign">'</span>b</code> is the type of the first argument given to unparsers
-   (i.e. functions introduced with <code class="code">%a</code> or <code class="code">%t</code>)
-   <ul>
-<li>if your unparsers take a <code class="code">unit</code> argument, <code class="code"><span class="keywordsign">'</span>b</code> should be
-   <code class="code">unit</code></li>
-<li>if your unparsers take a <code class="code">string output</code>, <code class="code"><span class="keywordsign">'</span>b</code> should be
-   <code class="code">string output</code></li>
-<li>...</li>
-</ul>
-</li>
-<li><code class="code"><span class="keywordsign">'</span>c</code> is the <b>final</b> return type of unparsers
-   <ul>
-<li>if you have an unparser introduced with <code class="code">%t</code> and its result
-   has type <code class="code">unit</code>, <code class="code"><span class="keywordsign">'</span>c</code> should be <code class="code">unit</code></li>
-<li>if you have an unparser introduced with <code class="code">%a</code> and its type is
-   <code class="code">string output <span class="keywordsign">-&gt;</span> string <span class="keywordsign">-&gt;</span> unit</code>, <code class="code"><span class="keywordsign">'</span>c</code> should be <code class="code">unit</code></li>
-<li>...</li>
-</ul>
-</li>
-<li><code class="code"><span class="keywordsign">'</span>d</code> is the final return value of the function once all
-   arguments have been printed</li>
-</ul>
-
-   <div class="h7" id="7_Format">Format</div>
-   <code class="code">(<span class="keywordsign">'</span>a, <span class="keywordsign">'</span>b, <span class="keywordsign">'</span>c) format</code> or <code class="code">(<span class="keywordsign">'</span>a, <span class="keywordsign">'</span>b, <span class="keywordsign">'</span>c) t</code> is just a shortcut for <code class="code">(<span class="keywordsign">'</span>a, <span class="keywordsign">'</span>b, <span class="keywordsign">'</span>c, <span class="keywordsign">'</span>c) format4</code>.
-<p>
-
-   <div class="h7" id="7_Important">Important</div>
-   Note that <code class="code"><span class="constructor">Obj</span>.magic</code> is involved behind this, so be careful.<br>
 <br>
 <h6 id="6_Aboutformats">About formats</h6>
 <p>

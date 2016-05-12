@@ -10,6 +10,8 @@
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
@@ -416,6 +418,20 @@ The policy used for allocating in the heap.  Possible
 <b>Since</b> 3.11.0<br>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTcontrol.window_size">window_size</span>&nbsp;: <code class="type">int</code>;</code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+The size of the window used by the major GC for smoothing
+        out variations in its workload. This is an integer between
+        1 and 50.
+        Default: 1.<br>
+<b>Since</b> 2.5.0 and OCaml 4.03.0<br>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 }
 
@@ -488,6 +504,32 @@ Print the current values of the memory management counters (in
 Return the total number of bytes allocated since the program was
     started.  It is returned as a <code class="code">float</code> to avoid overflow problems
     with <code class="code">int</code> on 32-bit machines.<br>
+</div>
+
+<pre><span id="VALget_minor_free"><span class="keyword">val</span> get_minor_free</span> : <code class="type">unit -> int</code></pre><div class="info ">
+Return the current size of the free space inside the minor heap.<br>
+<b>Since</b> 2.5.0 and OCaml 4.03.0<br>
+</div>
+
+<pre><span id="VALget_bucket"><span class="keyword">val</span> get_bucket</span> : <code class="type">int -> int</code></pre><div class="info ">
+<code class="code">get_bucket n</code> returns the current size of the <code class="code">n</code>-th future bucket
+    of the GC smoothing system. The unit is one millionth of a full GC.
+    Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">n</code> is negative, return 0 if n is larger
+    than the smoothing window.<br>
+<b>Since</b> 2.5.0 and OCaml 4.03.0<br>
+</div>
+
+<pre><span id="VALget_credit"><span class="keyword">val</span> get_credit</span> : <code class="type">unit -> int</code></pre><div class="info ">
+<code class="code">get_credit ()</code> returns the current size of the "work done in advance"
+    counter of the GC smoothing system. The unit is one millionth of a
+    full GC.<br>
+<b>Since</b> 2.5.0 and OCaml 4.03.0<br>
+</div>
+
+<pre><span id="VALhuge_fallback_count"><span class="keyword">val</span> huge_fallback_count</span> : <code class="type">unit -> int</code></pre><div class="info ">
+Return the number of times we tried to map huge pages and had to fall
+    back to small pages. This is always 0 if <code class="code"><span class="constructor">OCAMLRUNPARAM</span></code> contains <code class="code"><span class="constructor">H</span>=1</code>.<br>
+<b>Since</b> 2.5.0 and OCaml 4.03.0<br>
 </div>
 
 <pre><span id="VALfinalise"><span class="keyword">val</span> finalise</span> : <code class="type">('a -> unit) -> 'a -> unit</code></pre><div class="info ">

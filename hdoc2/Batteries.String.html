@@ -10,6 +10,8 @@
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
@@ -110,7 +112,6 @@
 <link title="In-Place Transformations" rel="Section" href="#6_InPlaceTransformations">
 <link title="Splitting around" rel="Section" href="#6_Splittingaround">
 <link title="Comparisons" rel="Section" href="#6_Comparisons">
-<link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
 <link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
 <link title="Printing" rel="Subsection" href="#7_Printing">
 <title>Batteries user guide : Batteries.String</title>
@@ -323,6 +324,30 @@ Return a copy of the argument, with the first character set to uppercase.<br>
 Return a copy of the argument, with the first character set to lowercase.<br>
 </div>
 
+<pre><span id="VALuppercase_ascii"><span class="keyword">val</span> uppercase_ascii</span> : <code class="type">string -> string</code></pre><div class="info ">
+Return a copy of the argument, with all lowercase letters
+   translated to uppercase, using the US-ASCII character set.<br>
+<b>Since</b> 2.5.0<br>
+</div>
+
+<pre><span id="VALlowercase_ascii"><span class="keyword">val</span> lowercase_ascii</span> : <code class="type">string -> string</code></pre><div class="info ">
+Return a copy of the argument, with all uppercase letters
+   translated to lowercase, using the US-ASCII character set.<br>
+<b>Since</b> 2.5.0<br>
+</div>
+
+<pre><span id="VALcapitalize_ascii"><span class="keyword">val</span> capitalize_ascii</span> : <code class="type">string -> string</code></pre><div class="info ">
+Return a copy of the argument, with the first character set to uppercase,
+   using the US-ASCII character set.<br>
+<b>Since</b> 2.5.0<br>
+</div>
+
+<pre><span id="VALuncapitalize_ascii"><span class="keyword">val</span> uncapitalize_ascii</span> : <code class="type">string -> string</code></pre><div class="info ">
+Return a copy of the argument, with the first character set to lowercase,
+   using the US-ASCII character set.<br>
+<b>Since</b> 2.5.0<br>
+</div>
+
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">string</code> </pre>
 <div class="info ">
 An alias for the type of strings.<br>
@@ -501,16 +526,16 @@ As <code class="code">fold_right</code>, but with the index of the element as ad
 <code class="code"><span class="constructor">String</span>.iteri f s</code> is equivalent to
     <code class="code">f 0 s.[0]; f 1 s.[1]; ...; f len s.[len]</code> where <code class="code">len</code> is length of string <code class="code">s</code>.
     Example:
-    <pre class="codepre"><code class="code">&nbsp;<span class="keyword">let</span>&nbsp;letter_positions&nbsp;word&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;positions&nbsp;=&nbsp;<span class="constructor">Array</span>.make&nbsp;256&nbsp;[]&nbsp;<span class="keyword">in</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;count_letter&nbsp;pos&nbsp;c&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;positions.(int_of_char&nbsp;c)&nbsp;&lt;-&nbsp;pos&nbsp;::&nbsp;positions.(int_of_char&nbsp;c)&nbsp;<span class="keyword">in</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">String</span>.iteri&nbsp;count_letter&nbsp;word;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Array</span>.mapi&nbsp;(<span class="keyword">fun</span>&nbsp;c&nbsp;pos&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(char_of_int&nbsp;c,&nbsp;<span class="constructor">List</span>.rev&nbsp;pos))&nbsp;positions<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&gt;&nbsp;<span class="constructor">Array</span>.to_list<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&gt;&nbsp;<span class="constructor">List</span>.filter&nbsp;(<span class="keyword">fun</span>&nbsp;(c,pos)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;pos&nbsp;&lt;&gt;&nbsp;[])<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">in</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;letter_positions&nbsp;<span class="string">"hello"</span>&nbsp;=&nbsp;[<span class="string">'e'</span>,[1];&nbsp;<span class="string">'h'</span>,[0];&nbsp;<span class="string">'l'</span>,[2;3];&nbsp;<span class="string">'o'</span>,[4]&nbsp;]<br>
+    <pre class="codepre"><code class="code">&nbsp;<span class="keyword">let</span>&nbsp;letter_positions&nbsp;word&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;positions&nbsp;=&nbsp;<span class="constructor">Array</span>.make&nbsp;256&nbsp;[]&nbsp;<span class="keyword">in</span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;count_letter&nbsp;pos&nbsp;c&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;positions.(int_of_char&nbsp;c)&nbsp;&lt;-&nbsp;pos&nbsp;::&nbsp;positions.(int_of_char&nbsp;c)&nbsp;<span class="keyword">in</span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">String</span>.iteri&nbsp;count_letter&nbsp;word;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Array</span>.mapi&nbsp;(<span class="keyword">fun</span>&nbsp;c&nbsp;pos&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(char_of_int&nbsp;c,&nbsp;<span class="constructor">List</span>.rev&nbsp;pos))&nbsp;positions
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&gt;&nbsp;<span class="constructor">Array</span>.to_list
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&gt;&nbsp;<span class="constructor">List</span>.filter&nbsp;(<span class="keyword">fun</span>&nbsp;(c,pos)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;pos&nbsp;&lt;&gt;&nbsp;[])
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">in</span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;letter_positions&nbsp;<span class="string">"hello"</span>&nbsp;=&nbsp;[<span class="string">'e'</span>,[1];&nbsp;<span class="string">'h'</span>,[0];&nbsp;<span class="string">'l'</span>,[2;3];&nbsp;<span class="string">'o'</span>,[4]&nbsp;]
 &nbsp;&nbsp;&nbsp;&nbsp;</code></pre><br>
 </div>
 <br>
@@ -888,8 +913,6 @@ Edition distance (also known as "Levenshtein distance").
     See <a href="http://en.wikipedia.org/wiki/Levenshtein_distance"> wikipedia</a><br>
 <b>Since</b> 2.2.0<br>
 </div>
-<br>
-<h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
 <br>
 <h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
 <br>

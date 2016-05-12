@@ -5,6 +5,8 @@
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
@@ -101,59 +103,73 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatSys</title>
 </head>
 <body>
-<code class="code"><span class="keyword">sig</span><br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;argv&nbsp;:&nbsp;string&nbsp;array<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;executable_name&nbsp;:&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;file_exists&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool&nbsp;=&nbsp;<span class="string">"caml_sys_file_exists"</span><br>
-&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;is_directory&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool&nbsp;=&nbsp;<span class="string">"caml_sys_is_directory"</span><br>
-&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;remove&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;=&nbsp;<span class="string">"caml_sys_remove"</span><br>
-&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;rename&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;=&nbsp;<span class="string">"caml_sys_rename"</span><br>
-&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;getenv&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;=&nbsp;<span class="string">"caml_sys_getenv"</span><br>
-&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;command&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;=&nbsp;<span class="string">"caml_sys_system_command"</span><br>
-&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;time&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;=&nbsp;<span class="string">"caml_sys_time"</span><br>
-&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;chdir&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;=&nbsp;<span class="string">"caml_sys_chdir"</span><br>
-&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;getcwd&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;=&nbsp;<span class="string">"caml_sys_getcwd"</span><br>
-&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;readdir&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;array&nbsp;=&nbsp;<span class="string">"caml_sys_read_directory"</span><br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;interactive&nbsp;:&nbsp;bool&nbsp;<span class="constructor">Pervasives</span>.ref<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;os_type&nbsp;:&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unix&nbsp;:&nbsp;bool<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;win32&nbsp;:&nbsp;bool<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;cygwin&nbsp;:&nbsp;bool<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;word_size&nbsp;:&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;big_endian&nbsp;:&nbsp;bool<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;max_string_length&nbsp;:&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;max_array_length&nbsp;:&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;signal_behavior&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Sys</span>.signal_behavior&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Signal_default</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Signal_ignore</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Signal_handle</span>&nbsp;<span class="keyword">of</span>&nbsp;(int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)<br>
-&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;signal&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatSys</span>.signal_behavior&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatSys</span>.signal_behavior<br>
-&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;<span class="string">"caml_install_signal_handler"</span><br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;set_signal&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatSys</span>.signal_behavior&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigabrt&nbsp;:&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigalrm&nbsp;:&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigfpe&nbsp;:&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sighup&nbsp;:&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigill&nbsp;:&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigint&nbsp;:&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigkill&nbsp;:&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigpipe&nbsp;:&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigquit&nbsp;:&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigsegv&nbsp;:&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigterm&nbsp;:&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigusr1&nbsp;:&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigusr2&nbsp;:&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigchld&nbsp;:&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigcont&nbsp;:&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigstop&nbsp;:&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigtstp&nbsp;:&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigttin&nbsp;:&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigttou&nbsp;:&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigvtalrm&nbsp;:&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigprof&nbsp;:&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">exception</span>&nbsp;<span class="constructor">Break</span><br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;catch_break&nbsp;:&nbsp;bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;ocaml_version&nbsp;:&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;files_of&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="constructor">BatEnum</span>.t<br>
+<code class="code"><span class="keyword">sig</span>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;argv&nbsp;:&nbsp;string&nbsp;array
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;executable_name&nbsp;:&nbsp;string
+&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;file_exists&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool&nbsp;=&nbsp;<span class="string">"caml_sys_file_exists"</span>
+&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;is_directory&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool&nbsp;=&nbsp;<span class="string">"caml_sys_is_directory"</span>
+&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;remove&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;=&nbsp;<span class="string">"caml_sys_remove"</span>
+&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;rename&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;=&nbsp;<span class="string">"caml_sys_rename"</span>
+&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;getenv&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;=&nbsp;<span class="string">"caml_sys_getenv"</span>
+&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;command&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;=&nbsp;<span class="string">"caml_sys_system_command"</span>
+&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;time&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(float&nbsp;[@unboxed])&nbsp;=&nbsp;<span class="string">"caml_sys_time"</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"caml_sys_time_unboxed"</span>&nbsp;[@@noalloc]
+&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;chdir&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;=&nbsp;<span class="string">"caml_sys_chdir"</span>
+&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;getcwd&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;=&nbsp;<span class="string">"caml_sys_getcwd"</span>
+&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;readdir&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;array&nbsp;=&nbsp;<span class="string">"caml_sys_read_directory"</span>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;interactive&nbsp;:&nbsp;bool&nbsp;<span class="constructor">Pervasives</span>.ref
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;os_type&nbsp;:&nbsp;string
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unix&nbsp;:&nbsp;bool
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;win32&nbsp;:&nbsp;bool
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;cygwin&nbsp;:&nbsp;bool
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;word_size&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;int_size&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;big_endian&nbsp;:&nbsp;bool
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;max_string_length&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;max_array_length&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;runtime_variant&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;=&nbsp;<span class="string">"caml_runtime_variant"</span>
+&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;runtime_parameters&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;=&nbsp;<span class="string">"caml_runtime_parameters"</span>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;signal_behavior&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Sys</span>.signal_behavior&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Signal_default</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Signal_ignore</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Signal_handle</span>&nbsp;<span class="keyword">of</span>&nbsp;(int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)
+&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;signal&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatSys</span>.signal_behavior&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatSys</span>.signal_behavior
+&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;<span class="string">"caml_install_signal_handler"</span>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;set_signal&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatSys</span>.signal_behavior&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigabrt&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigalrm&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigfpe&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sighup&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigill&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigint&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigkill&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigpipe&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigquit&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigsegv&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigterm&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigusr1&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigusr2&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigchld&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigcont&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigstop&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigtstp&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigttin&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigttou&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigvtalrm&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigprof&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigbus&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigpoll&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigsys&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigtrap&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigurg&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigxcpu&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sigxfsz&nbsp;:&nbsp;int
+&nbsp;&nbsp;<span class="keyword">exception</span>&nbsp;<span class="constructor">Break</span>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;catch_break&nbsp;:&nbsp;bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;ocaml_version&nbsp;:&nbsp;string
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;files_of&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="constructor">BatEnum</span>.t
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;enable_runtime_warnings&nbsp;:&nbsp;bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;runtime_warnings_enabled&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool
+&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;opaque_identity&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;=&nbsp;<span class="string">"%opaque"</span>
 <span class="keyword">end</span></code></body></html>

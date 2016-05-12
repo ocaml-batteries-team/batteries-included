@@ -10,6 +10,8 @@
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
@@ -414,11 +416,40 @@ Return a copy of the argument, with the first byte set to
     lowercase.<br>
 </div>
 
+<pre><span id="VALuppercase_ascii"><span class="keyword">val</span> uppercase_ascii</span> : <code class="type"><a href="BatBytes.html#TYPEt">t</a> -> <a href="BatBytes.html#TYPEt">t</a></code></pre><div class="info ">
+Return a copy of the argument, with all lowercase letters
+   translated to uppercase, using the US-ASCII character set.<br>
+<b>Since</b> 2.5.0<br>
+</div>
+
+<pre><span id="VALlowercase_ascii"><span class="keyword">val</span> lowercase_ascii</span> : <code class="type"><a href="BatBytes.html#TYPEt">t</a> -> <a href="BatBytes.html#TYPEt">t</a></code></pre><div class="info ">
+Return a copy of the argument, with all uppercase letters
+   translated to lowercase, using the US-ASCII character set.<br>
+<b>Since</b> 2.5.0<br>
+</div>
+
+<pre><span id="VALcapitalize_ascii"><span class="keyword">val</span> capitalize_ascii</span> : <code class="type"><a href="BatBytes.html#TYPEt">t</a> -> <a href="BatBytes.html#TYPEt">t</a></code></pre><div class="info ">
+Return a copy of the argument, with the first character set to uppercase,
+   using the US-ASCII character set.<br>
+<b>Since</b> 2.5.0<br>
+</div>
+
+<pre><span id="VALuncapitalize_ascii"><span class="keyword">val</span> uncapitalize_ascii</span> : <code class="type"><a href="BatBytes.html#TYPEt">t</a> -> <a href="BatBytes.html#TYPEt">t</a></code></pre><div class="info ">
+Return a copy of the argument, with the first character set to lowercase,
+   using the US-ASCII character set.<br>
+<b>Since</b> 2.5.0<br>
+</div>
+
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatBytes.html#TYPEt">t</a> -> <a href="BatBytes.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 The comparison function for byte sequences, with the same
     specification as <code class="code"><span class="constructor">Pervasives</span>.compare</code>.  Along with the type <code class="code">t</code>,
     this function <code class="code">compare</code> allows the module <code class="code"><span class="constructor">Bytes</span></code> to be passed as
     argument to the functors <code class="code"><span class="constructor">Set</span>.<span class="constructor">Make</span></code> and <code class="code"><span class="constructor">Map</span>.<span class="constructor">Make</span></code>.<br>
+</div>
+
+<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="BatBytes.html#TYPEt">t</a> -> <a href="BatBytes.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
+The equality function for byte sequences.<br>
+<b>Since</b> 2.5.0<br>
 </div>
 <br>
 <h4 id="4_Unsafeconversionsforadvancedusers">Unsafe conversions (for advanced users)</h4>
@@ -465,10 +496,10 @@ Unsafely convert a byte sequence into a string.
    that is never changed after initialization is performed.
 <p>
 
-   <pre class="codepre"><code class="code"><span class="keyword">let</span>&nbsp;string_init&nbsp;len&nbsp;f&nbsp;:&nbsp;string&nbsp;=<br>
-&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;s&nbsp;=&nbsp;<span class="constructor">Bytes</span>.create&nbsp;len&nbsp;<span class="keyword">in</span><br>
-&nbsp;&nbsp;<span class="keyword">for</span>&nbsp;i&nbsp;=&nbsp;0&nbsp;<span class="keyword">to</span>&nbsp;len&nbsp;-&nbsp;1&nbsp;<span class="keyword">do</span>&nbsp;<span class="constructor">Bytes</span>.set&nbsp;s&nbsp;i&nbsp;(f&nbsp;i)&nbsp;<span class="keyword">done</span>;<br>
-&nbsp;&nbsp;<span class="constructor">Bytes</span>.unsafe_to_string&nbsp;s<br>
+   <pre class="codepre"><code class="code"><span class="keyword">let</span>&nbsp;string_init&nbsp;len&nbsp;f&nbsp;:&nbsp;string&nbsp;=
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;s&nbsp;=&nbsp;<span class="constructor">Bytes</span>.create&nbsp;len&nbsp;<span class="keyword">in</span>
+&nbsp;&nbsp;<span class="keyword">for</span>&nbsp;i&nbsp;=&nbsp;0&nbsp;<span class="keyword">to</span>&nbsp;len&nbsp;-&nbsp;1&nbsp;<span class="keyword">do</span>&nbsp;<span class="constructor">Bytes</span>.set&nbsp;s&nbsp;i&nbsp;(f&nbsp;i)&nbsp;<span class="keyword">done</span>;
+&nbsp;&nbsp;<span class="constructor">Bytes</span>.unsafe_to_string&nbsp;s
 &nbsp;&nbsp;&nbsp;</code></pre>
 <p>
 
@@ -496,8 +527,8 @@ Unsafely convert a byte sequence into a string.
    that we can mutate the sequence again after the call ended.
 <p>
 
-   <pre class="codepre"><code class="code"><span class="keyword">let</span>&nbsp;bytes_length&nbsp;(s&nbsp;:&nbsp;bytes)&nbsp;=<br>
-&nbsp;&nbsp;<span class="constructor">String</span>.length&nbsp;(<span class="constructor">Bytes</span>.unsafe_to_string&nbsp;s)<br>
+   <pre class="codepre"><code class="code"><span class="keyword">let</span>&nbsp;bytes_length&nbsp;(s&nbsp;:&nbsp;bytes)&nbsp;=
+&nbsp;&nbsp;<span class="constructor">String</span>.length&nbsp;(<span class="constructor">Bytes</span>.unsafe_to_string&nbsp;s)
 &nbsp;&nbsp;&nbsp;</code></pre>
 <p>
 
@@ -538,8 +569,8 @@ Unsafely convert a shared string to a byte sequence that should
     compiler, so you never uniquely own them.
 <p>
 
-    <pre class="codepre"><code class="code"><span class="keyword">let</span>&nbsp;incorrect&nbsp;=&nbsp;<span class="constructor">Bytes</span>.unsafe_of_string&nbsp;<span class="string">"hello"</span><br>
-<span class="keyword">let</span>&nbsp;s&nbsp;=&nbsp;<span class="constructor">Bytes</span>.of_string&nbsp;<span class="string">"hello"</span><br>
+    <pre class="codepre"><code class="code"><span class="keyword">let</span>&nbsp;incorrect&nbsp;=&nbsp;<span class="constructor">Bytes</span>.unsafe_of_string&nbsp;<span class="string">"hello"</span>
+<span class="keyword">let</span>&nbsp;s&nbsp;=&nbsp;<span class="constructor">Bytes</span>.of_string&nbsp;<span class="string">"hello"</span>
 &nbsp;&nbsp;&nbsp;&nbsp;</code></pre>
 <p>
 

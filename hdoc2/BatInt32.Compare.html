@@ -4,12 +4,13 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <link rel="Start" href="index.html">
-<link rel="previous" href="BatIO.Incubator.Array.html">
-<link rel="next" href="BatIO.Incubator.List.html">
-<link rel="Up" href="BatIO.Incubator.html">
+<link rel="previous" href="BatInt32.Infix.html">
+<link rel="Up" href="BatInt32.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
@@ -103,28 +104,22 @@
 <link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatIO.Incubator.Enum</title>
+<link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatInt32.Compare</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatIO.Incubator.Array.html" title="BatIO.Incubator.Array">Previous</a>
-&nbsp;<a class="up" href="BatIO.Incubator.html" title="BatIO.Incubator">Up</a>
-&nbsp;<a class="post" href="BatIO.Incubator.List.html" title="BatIO.Incubator.List">Next</a>
-</div>
-<h1>Module <a href="type_BatIO.Incubator.Enum.html">BatIO.Incubator.Enum</a></h1>
+<div class="navbar"><a class="pre" href="BatInt32.Infix.html" title="BatInt32.Infix">Previous</a>
+&nbsp;<a class="up" href="BatInt32.html" title="BatInt32">Up</a>
+&nbsp;</div>
+<h1>Module <a href="type_BatInt32.Compare.html">BatInt32.Compare</a></h1>
 
-<pre><span class="keyword">module</span> Enum: <code class="code"><span class="keyword">sig</span></code> <a href="BatIO.Incubator.Enum.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
+<pre><span class="keyword">module</span> Compare: <code class="type"><a href="BatNumber.Compare.html">BatNumber.Compare</a></code><code class="type">  with type bat__compare_t = t</code></pre><hr width="100%">
 
-<pre><span id="VALpp"><span class="keyword">val</span> pp</span> : <code class="type">?flush:bool -><br>       ?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ?indent:int -><br>       (Format.formatter -> 'a -> 'b) -> Format.formatter -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info ">
-Print the contents of an enum, with <code class="code">first</code> preceeding the first item
-          (default: <code class="code"><span class="string">""</span></code>), <code class="code">last</code> following the last item (default: <code class="code"><span class="string">""</span></code>)
-          and <code class="code">sep</code> separating items (default: <code class="code"><span class="string">" "</span></code>). A printing function must
-          be provided to print the items in the enum. The <code class="code">flush</code> parameter
-          (default: <code class="code"><span class="keyword">false</span></code>) should be set to <code class="code"><span class="keyword">true</span></code> for the outer-most printing
-          call.  Setting inner calls to <code class="code"><span class="keyword">true</span></code> - for example, for nested values -
-          prevent indentation from working properly.
-<p>
+<pre><span id="TYPEbat__compare_t"><span class="keyword">type</span> <code class="type"></code>bat__compare_t</span> </pre>
 
-          Example:
-            <code class="code">pp ~flush:<span class="keyword">true</span> <span class="constructor">Format</span>.pp_print_int <span class="constructor">Format</span>.std_formatter (1 -- 3)</code><br>
-</div>
-</body></html>
+
+<pre><span id="VAL(<>)"><span class="keyword">val</span> (&lt;&gt;)</span> : <code class="type"><a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> -> <a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> -> bool</code></pre>
+<pre><span id="VAL(>=)"><span class="keyword">val</span> (&gt;=)</span> : <code class="type"><a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> -> <a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> -> bool</code></pre>
+<pre><span id="VAL(<=)"><span class="keyword">val</span> (&lt;=)</span> : <code class="type"><a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> -> <a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> -> bool</code></pre>
+<pre><span id="VAL(>)"><span class="keyword">val</span> (&gt;)</span> : <code class="type"><a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> -> <a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> -> bool</code></pre>
+<pre><span id="VAL(<)"><span class="keyword">val</span> (&lt;)</span> : <code class="type"><a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> -> <a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> -> bool</code></pre>
+<pre><span id="VAL(=)"><span class="keyword">val</span> (=)</span> : <code class="type"><a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> -> <a href="BatNumber.Compare.html#TYPEbat__compare_t">bat__compare_t</a> -> bool</code></pre></body></html>

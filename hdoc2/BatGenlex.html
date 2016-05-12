@@ -10,6 +10,8 @@
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
@@ -131,13 +133,13 @@ A generic lexical analyzer.
     to, for instance, <code class="code">int</code>, and would have rules such as:
 <p>
 
-    <pre class="codepre"><code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;parse_expr&nbsp;=&nbsp;<span class="keyword">parser</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&lt;&nbsp;<span class="keywordsign">'</span><span class="constructor">Int</span>&nbsp;n&nbsp;&gt;]&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;n<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;[&lt;&nbsp;<span class="keywordsign">'</span><span class="constructor">Kwd</span>&nbsp;<span class="string">"("</span>;&nbsp;n&nbsp;=&nbsp;parse_expr;&nbsp;<span class="keywordsign">'</span><span class="constructor">Kwd</span>&nbsp;<span class="string">")"</span>&nbsp;&gt;]&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;n<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;[&lt;&nbsp;n1&nbsp;=&nbsp;parse_expr;&nbsp;n2&nbsp;=&nbsp;parse_remainder&nbsp;n1&nbsp;&gt;]&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;n2<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">and</span>&nbsp;parse_remainder&nbsp;n1&nbsp;=&nbsp;<span class="keyword">parser</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&lt;&nbsp;<span class="keywordsign">'</span><span class="constructor">Kwd</span>&nbsp;<span class="string">"+"</span>;&nbsp;n2&nbsp;=&nbsp;parse_expr&nbsp;&gt;]&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;n1+n2<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;...<br>
+    <pre class="codepre"><code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;parse_expr&nbsp;=&nbsp;<span class="keyword">parser</span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&lt;&nbsp;<span class="keywordsign">'</span><span class="constructor">Int</span>&nbsp;n&nbsp;&gt;]&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;n
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;[&lt;&nbsp;<span class="keywordsign">'</span><span class="constructor">Kwd</span>&nbsp;<span class="string">"("</span>;&nbsp;n&nbsp;=&nbsp;parse_expr;&nbsp;<span class="keywordsign">'</span><span class="constructor">Kwd</span>&nbsp;<span class="string">")"</span>&nbsp;&gt;]&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;n
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;[&lt;&nbsp;n1&nbsp;=&nbsp;parse_expr;&nbsp;n2&nbsp;=&nbsp;parse_remainder&nbsp;n1&nbsp;&gt;]&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;n2
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">and</span>&nbsp;parse_remainder&nbsp;n1&nbsp;=&nbsp;<span class="keyword">parser</span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&lt;&nbsp;<span class="keywordsign">'</span><span class="constructor">Kwd</span>&nbsp;<span class="string">"+"</span>;&nbsp;n2&nbsp;=&nbsp;parse_expr&nbsp;&gt;]&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;n1+n2
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;...
 &nbsp;&nbsp;&nbsp;&nbsp;</code></pre><br>
 <b>Author(s):</b> Jacques Garrigue, David Teller<br>
 </div>

@@ -10,6 +10,8 @@
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
@@ -104,6 +106,7 @@
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Signal handling" rel="Section" href="#6_Signalhandling">
+<link title="Optimization" rel="Section" href="#6_Optimization">
 <link title="Signal numbers for the standard POSIX signals." rel="Subsection" href="#7_SignalnumbersforthestandardPOSIXsignals">
 <title>Batteries user guide : BatSys</title>
 </head>
@@ -226,6 +229,14 @@ Size of one word on the machine currently executing the OCaml
     program, in bits: 32 or 64.<br>
 </div>
 
+<pre><span id="VALint_size"><span class="keyword">val</span> int_size</span> : <code class="type">int</code></pre><div class="info ">
+Size of an int.  It is 31 bits (resp. 63 bits) when using the
+    OCaml compiler on a 32 bits (resp. 64 bits) platform.  It may
+    differ for other compilers, e.g. it is 32 bits when compiling to
+    JavaScript.<br>
+<b>Since</b> 2.5.0 and OCaml 4.03.0<br>
+</div>
+
 <pre><span id="VALbig_endian"><span class="keyword">val</span> big_endian</span> : <code class="type">bool</code></pre><div class="info ">
 Whether the machine currently executing the OCaml program is big-endian.<br>
 <b>Since</b> 4.00.0<br>
@@ -239,6 +250,19 @@ Maximum length of a string.<br>
 Maximum length of a normal array.  The maximum length of a float
     array is <code class="code">max_array_length/2</code> on 32-bit machines and
     <code class="code">max_array_length</code> on 64-bit machines.<br>
+</div>
+
+<pre><span id="VALruntime_variant"><span class="keyword">val</span> runtime_variant</span> : <code class="type">unit -> string</code></pre><div class="info ">
+Return the name of the runtime variant the program is running on.
+    This is normally the argument given to <code class="code">-runtime-variant</code> at compile
+    time, but for byte-code it can be changed after compilation.<br>
+<b>Since</b> 2.5.0 and OCaml 4.03.0<br>
+</div>
+
+<pre><span id="VALruntime_parameters"><span class="keyword">val</span> runtime_parameters</span> : <code class="type">unit -> string</code></pre><div class="info ">
+Return the value of the runtime parameters, in the same format
+    as the contents of the <code class="code"><span class="constructor">OCAMLRUNPARAM</span></code> environment variable.<br>
+<b>Since</b> 2.5.0 and OCaml 4.03.0<br>
 </div>
 <br>
 <h6 id="6_Signalhandling">Signal handling</h6><br>
@@ -376,6 +400,41 @@ Timeout in virtual time<br>
 Profiling interrupt<br>
 </div>
 
+<pre><span id="VALsigbus"><span class="keyword">val</span> sigbus</span> : <code class="type">int</code></pre><div class="info ">
+Bus error<br>
+<b>Since</b> 2.5.0<br>
+</div>
+
+<pre><span id="VALsigpoll"><span class="keyword">val</span> sigpoll</span> : <code class="type">int</code></pre><div class="info ">
+Pollable event<br>
+<b>Since</b> 2.5.0<br>
+</div>
+
+<pre><span id="VALsigsys"><span class="keyword">val</span> sigsys</span> : <code class="type">int</code></pre><div class="info ">
+Bad argument to routine<br>
+<b>Since</b> 2.5.0<br>
+</div>
+
+<pre><span id="VALsigtrap"><span class="keyword">val</span> sigtrap</span> : <code class="type">int</code></pre><div class="info ">
+Trace/breakpoint trap<br>
+<b>Since</b> 2.5.0<br>
+</div>
+
+<pre><span id="VALsigurg"><span class="keyword">val</span> sigurg</span> : <code class="type">int</code></pre><div class="info ">
+Urgent condition on socket<br>
+<b>Since</b> 2.5.0<br>
+</div>
+
+<pre><span id="VALsigxcpu"><span class="keyword">val</span> sigxcpu</span> : <code class="type">int</code></pre><div class="info ">
+Timeout in cpu time<br>
+<b>Since</b> 2.5.0<br>
+</div>
+
+<pre><span id="VALsigxfsz"><span class="keyword">val</span> sigxfsz</span> : <code class="type">int</code></pre><div class="info ">
+File size limit exceeded<br>
+<b>Since</b> 2.5.0<br>
+</div>
+
 <pre><span id="EXCEPTIONBreak"><span class="keyword">exception</span> Break</span></pre>
 <div class="info ">
 Exception raised on interactive interrupt if <code class="code"><span class="constructor">Sys</span>.catch_break</code>
@@ -401,5 +460,43 @@ Exception raised on interactive interrupt if <code class="code"><span class="con
 <pre><span id="VALfiles_of"><span class="keyword">val</span> files_of</span> : <code class="type">string -> string <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 As <a href="BatSys.html#VALreaddir"><code class="code"><span class="constructor">BatSys</span>.readdir</code></a> but the results are presented as an enumeration
        of names.<br>
+</div>
+
+<pre><span id="VALenable_runtime_warnings"><span class="keyword">val</span> enable_runtime_warnings</span> : <code class="type">bool -> unit</code></pre><div class="info ">
+Control whether the OCaml runtime system can emit warnings
+    on stderr.  Currently, the only supported warning is triggered
+    when a channel created by <code class="code">open_*</code> functions is finalized without
+    being closed.  Runtime warnings are enabled by default.<br>
+<b>Since</b> 2.5.0 and OCaml 4.03<br>
+</div>
+
+<pre><span id="VALruntime_warnings_enabled"><span class="keyword">val</span> runtime_warnings_enabled</span> : <code class="type">unit -> bool</code></pre><div class="info ">
+Return whether runtime warnings are currently enabled.<br>
+<b>Since</b> 2.5.0 and OCaml 4.03<br>
+</div>
+<br>
+<h6 id="6_Optimization">Optimization</h6><br>
+
+<pre><span id="VALopaque_identity"><span class="keyword">val</span> opaque_identity</span> : <code class="type">'a -> 'a</code></pre><div class="info ">
+For the purposes of optimization, <code class="code">opaque_identity</code> behaves like an
+    unknown (and thus possibly side-effecting) function.
+<p>
+
+    At runtime, <code class="code">opaque_identity</code> disappears altogether.
+<p>
+
+    A typical use of this function is to prevent pure computations from being
+    optimized away in benchmarking loops.  For example:
+    <pre class="codepre"><code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span>&nbsp;_round&nbsp;=&nbsp;1&nbsp;<span class="keyword">to</span>&nbsp;100_000&nbsp;<span class="keyword">do</span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ignore&nbsp;(<span class="constructor">Sys</span>.opaque_identity&nbsp;(my_pure_computation&nbsp;()))
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">done</span>
+&nbsp;&nbsp;&nbsp;&nbsp;</code></pre>
+<p>
+
+    The compiler primitive was added to OCaml 4.03, but we emulate it
+    under 4.02 using the -opaque compilation flag. There is no easy
+    way for Batteries to emulate it correctly under older OCaml
+    versions.<br>
+<b>Since</b> 2.5.0 and OCaml 4.02<br>
 </div>
 </body></html>

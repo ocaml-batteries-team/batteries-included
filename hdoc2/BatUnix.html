@@ -10,6 +10,8 @@
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
@@ -118,7 +120,6 @@
 <link title="Directories" rel="Section" href="#6_Directories">
 <link title="Pipes and redirections" rel="Section" href="#6_Pipesandredirections">
 <link title="High-level process and redirection management" rel="Section" href="#6_Highlevelprocessandredirectionmanagement">
-<link title="Symbolic links" rel="Section" href="#6_Symboliclinks">
 <link title="Polling" rel="Section" href="#6_Polling">
 <link title="Locking" rel="Section" href="#6_Locking">
 <link title="Signals" rel="Section" href="#6_Signals">
@@ -129,7 +130,6 @@
 <link title="Socket options" rel="Section" href="#6_Socketoptions">
 <link title="High-level network connection functions" rel="Section" href="#6_Highlevelnetworkconnectionfunctions">
 <link title="Host and protocol databases" rel="Section" href="#6_Hostandprotocoldatabases">
-<link title="Terminal interface" rel="Section" href="#6_Terminalinterface">
 <link title="Terminal interface" rel="Section" href="#6_Terminalinterface">
 <link title="Small tools" rel="Section" href="#6_Smalltools">
 <link title="Thread-safety internals" rel="Section" href="#6_Threadsafetyinternals">
@@ -157,17 +157,6 @@ Low-level interface to the operating system (both Unix and Windows).
 <b>Author(s):</b> Xavier Leroy (Base module), David Teller<br>
 </div>
 <hr width="100%">
-<br>
-Low-level interface to the operating system (both Unix and Windows).
-<p>
-
-    This module only provides low-level functions and types. Unless you
-    know that you need low-level access to the operating system, you
-    probably don't. For higher-level functions, see modules <a href="BatIO.html"><code class="code"><span class="constructor">BatIO</span></code></a>,
-    <a href="BatFile.html"><code class="code"><span class="constructor">BatFile</span></code></a>.
-<p>
-
-    <b>Note</b> This module is thread-safe.<br>
 <br>
 Low-level interface to the operating system (both Unix and Windows).
 <p>
@@ -1945,12 +1934,60 @@ Close i/o opened by <code class="code"><span class="constructor">Unix</span>.ope
     works as <code class="code"><span class="constructor">Unix</span>.create_process</code>, except that the extra argument
     <code class="code">env</code> specifies the environment passed to the program.<br>
 </div>
-<br>
-<h6 id="6_Symboliclinks">Symbolic links</h6><br>
 
-<pre><span id="VALsymlink"><span class="keyword">val</span> symlink</span> : <code class="type">string -> string -> unit</code></pre><div class="info ">
-<code class="code">symlink source dest</code> creates the file <code class="code">dest</code> as a symbolic link
-    to the file <code class="code">source</code>.<br>
+<pre><span id="VALsymlink"><span class="keyword">val</span> symlink</span> : <code class="type">?to_dir:bool -> string -> string -> unit</code></pre><div class="info ">
+<h6 id="6_Symboliclinks">Symbolic links</h6>
+<p>
+<code class="code">symlink ?to_dir source dest</code> creates the file <code class="code">dest</code> as
+   a symbolic link to the file <code class="code">source</code>. On Windows, <code class="code">~to_dir</code>
+   indicates if the symbolic link points to a directory or a file;
+   if omitted, <code class="code">symlink</code> examines <code class="code">source</code> using <code class="code">stat</code> and picks
+   appropriately, if <code class="code">source</code> does not exist then <code class="code"><span class="keyword">false</span></code> is
+   assumed (for this reason, it is recommended that the <code class="code">~to_dir</code>
+   parameter be specified in new code). On Unix, <code class="code">~to_dir</code>
+   ignored.
+<p>
+
+   Windows symbolic links are available in Windows Vista
+   onwards. There are some important differences between Windows
+   symlinks and their POSIX counterparts.
+<p>
+
+   Windows symbolic links come in two flavours: directory and
+   regular, which designate whether the symbolic link points to
+   a directory or a file. The type must be correct - a directory
+   symlink which actually points to a file cannot be selected with
+   chdir and a file symlink which actually points to a directory
+   cannot be read or written (note that Cygwin's emulation layer
+   ignores this distinction).
+<p>
+
+   When symbolic links are created to existing targets, this
+   distinction doesn't matter and <code class="code">symlink</code> will automatically
+   create the correct kind of symbolic link. The distinction
+   matters when a symbolic link is created to a non-existent
+   target.
+<p>
+
+   The other caveat is that by default symbolic links are
+   a privileged operation. Administrators will always need to be
+   running elevated (or with UAC disabled) and by default normal
+   user accounts need to be granted the
+   SeCreateSymbolicLinkPrivilege via Local Security Policy
+   (secpol.msc) or via Active Directory.
+<p>
+
+   <a href="BatUnix.html#VALhas_symlink"><code class="code"><span class="constructor">BatUnix</span>.has_symlink</code></a> can be used to check that a process is able to
+   create symbolic links.<br>
+<b>Since</b> 4.03 the optional argument ?to_dir was added in 4.03<br>
+</div>
+
+<pre><span id="VALhas_symlink"><span class="keyword">val</span> has_symlink</span> : <code class="type">unit -> bool</code></pre><div class="info ">
+Returns <code class="code"><span class="keyword">true</span></code> if the user is able to create symbolic links. On Windows,
+   this indicates that the user not only has the SeCreateSymbolicLinkPrivilege
+   but is also running elevated, if necessary. On other platforms, this is
+   simply indicates that the symlink system call is available.<br>
+<b>Since</b> 2.5.0 and OCaml 4.03<br>
 </div>
 
 <pre><span id="VALreadlink"><span class="keyword">val</span> readlink</span> : <code class="type">string -> string</code></pre><div class="info ">
@@ -2312,6 +2349,12 @@ Schedule a <code class="code"><span class="constructor">SIGALRM</span></code> si
 
 <pre><span id="VALsleep"><span class="keyword">val</span> sleep</span> : <code class="type">int -> unit</code></pre><div class="info ">
 Stop execution for the given number of seconds.<br>
+</div>
+
+<pre><span id="VALsleepf"><span class="keyword">val</span> sleepf</span> : <code class="type">float -> unit</code></pre><div class="info ">
+Stop execution for the given number of seconds.  Like <code class="code">sleep</code>,
+    but fractions of seconds are supported.<br>
+<b>Since</b> 2.5.0 and OCaml 4.03<br>
 </div>
 
 <pre><span id="VALtimes"><span class="keyword">val</span> times</span> : <code class="type">unit -> <a href="BatUnix.html#TYPEprocess_times">process_times</a></code></pre><div class="info ">
@@ -3555,8 +3598,6 @@ Options to <code class="code"><span class="constructor">Unix</span>.getnameinfo<
     empty list of options that governs how these names are obtained.<br>
 <b>Raises</b> <code>Not_found</code> if an error occurs.<br>
 </div>
-<br>
-<h6 id="6_Terminalinterface">Terminal interface</h6><br>
 <br>
 <h6 id="6_Terminalinterface">Terminal interface</h6><br>
 <br>

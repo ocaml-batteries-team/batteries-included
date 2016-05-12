@@ -10,6 +10,8 @@
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
@@ -111,12 +113,9 @@
 <link title="Utilities " rel="Section" href="#6_Utilities">
 <link title="Trampolining" rel="Section" href="#6_Trampolining">
 <link title="Infix operators" rel="Section" href="#6_Infixoperators">
-<link title="Infix operators" rel="Section" href="#6_Infixoperators">
 <link title="Monad related modules" rel="Section" href="#6_Monadrelatedmodules">
 <link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
 <link title="Override modules" rel="Section" href="#6_Overridemodules">
-<link title="Override modules" rel="Section" href="#6_Overridemodules">
-<link title="For system use only, not for the casual user" rel="Section" href="#6_Forsystemuseonlynotforthecasualuser">
 <title>Batteries user guide : Batteries.Enum</title>
 </head>
 <body>
@@ -690,10 +689,12 @@ For users worried about the speed of <code class="code">count</code> you can cal
     return two streams can be used independently.<br>
 </div>
 
-<pre><span id="VALcombine"><span class="keyword">val</span> combine</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> * 'b <a href="BatEnum.html#TYPEt">t</a> -> ('a * 'b) <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">combine</code> transform a pair of stream into a stream of pairs of corresponding
-    elements. If one stream is short, excess elements of the longer stream are
-    ignored.<br>
+<pre><span id="VALcombine"><span class="keyword">val</span> combine</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a> -> ('a * 'b) <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">combine</code> transform two streams into a stream of pairs of corresponding
+    elements. If one stream is shorter, excess elements of the longer stream are
+    ignored.
+    Curried<br>
+<b>Since</b> 3.0<br>
 </div>
 
 <pre><span id="VALuncombine"><span class="keyword">val</span> uncombine</span> : <code class="type">('a * 'b) <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> * 'b <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
@@ -781,8 +782,6 @@ as <code class="code">switch</code><br>
 <br>
 <h6 id="6_Infixoperators">Infix operators</h6><br>
 <br>
-<h6 id="6_Infixoperators">Infix operators</h6><br>
-<br>
 Infix versions of some functions
 <p>
 
@@ -846,8 +845,6 @@ Same as <code class="code">compare</code> but returning a <a href="BatOrd.html#T
 <br>
 <h6 id="6_Overridemodules">Override modules</h6><br>
 <br>
-<h6 id="6_Overridemodules">Override modules</h6><br>
-<br>
 The following modules replace functions defined in <a href="BatEnum.html"><code class="code"><span class="constructor">BatEnum</span></code></a> with functions
    behaving slightly differently but having the same name. This is by design:
    the functions meant to override the corresponding functions of <a href="BatEnum.html"><code class="code"><span class="constructor">BatEnum</span></code></a>.<br>
@@ -859,16 +856,4 @@ Operations on <a href="BatEnum.html"><code class="code"><span class="constructor
 <pre><span class="keyword">module</span> <a href="BatEnum.Labels.html">Labels</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.Labels.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
 Operations on <a href="BatEnum.html"><code class="code"><span class="constructor">BatEnum</span></code></a> with labels.
 </div>
-<br>
-<h6 id="6_Forsystemuseonlynotforthecasualuser">For system use only, not for the casual user</h6>
-<p>
-
-    For compatibility with <code class="code"><span class="constructor">Stream</span></code><br>
-
-<pre><span id="VALiapp"><span class="keyword">val</span> iapp</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre>
-<pre><span id="VALicons"><span class="keyword">val</span> icons</span> : <code class="type">'a -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre>
-<pre><span id="VALising"><span class="keyword">val</span> ising</span> : <code class="type">'a -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre>
-<pre><span id="VALlapp"><span class="keyword">val</span> lapp</span> : <code class="type">(unit -> 'a <a href="BatEnum.html#TYPEt">t</a>) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre>
-<pre><span id="VALlcons"><span class="keyword">val</span> lcons</span> : <code class="type">(unit -> 'a) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre>
-<pre><span id="VALlsing"><span class="keyword">val</span> lsing</span> : <code class="type">(unit -> 'a) -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre>
-<pre><span id="VALslazy"><span class="keyword">val</span> slazy</span> : <code class="type">(unit -> 'a <a href="BatEnum.html#TYPEt">t</a>) -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre></body></html>
+</body></html>

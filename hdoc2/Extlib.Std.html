@@ -10,6 +10,8 @@
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
@@ -568,7 +570,7 @@ The "pipe": function application. <code class="code">x |&gt; f</code> is equival
 
 <pre><span id="VAL(%>)"><span class="keyword">val</span> (%&gt;)</span> : <code class="type">('a -> 'b) -> ('b -> 'c) -> 'a -> 'c</code></pre><div class="info ">
 Piping function composition. <code class="code">f %&gt; g</code> is <code class="code"><span class="keyword">fun</span> x <span class="keywordsign">-&gt;</span> g (f x)</code>.
-    Whereas <code class="code">f % g</code> applies <code class="code">g</code> first and <code class="code">f</code> second, <code class="code">f @&gt; g</code>
+    Whereas <code class="code">f % g</code> applies <code class="code">g</code> first and <code class="code">f</code> second, <code class="code">f %&gt; g</code>
     applies <code class="code">f</code>, then <code class="code">g</code>.
     Note that it plays well with pipes, so for instance
     <code class="code">x |&gt; f %&gt; g %&gt; h |&gt; i %&gt; j</code> yields the expected result...

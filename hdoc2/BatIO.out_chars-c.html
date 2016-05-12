@@ -4,11 +4,13 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <link rel="Start" href="index.html">
-<link rel="next" href="BatIO.Incubator.Enum.html">
-<link rel="Up" href="BatIO.Incubator.html">
+<link rel="previous" href="BatIO.in_chars-c.html">
+<link rel="Up" href="BatIO.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
@@ -102,27 +104,16 @@
 <link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatIO.Incubator.Array</title>
+<link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatIO.out_chars</title>
 </head>
 <body>
-<div class="navbar">&nbsp;<a class="up" href="BatIO.Incubator.html" title="BatIO.Incubator">Up</a>
-&nbsp;<a class="post" href="BatIO.Incubator.Enum.html" title="BatIO.Incubator.Enum">Next</a>
-</div>
-<h1>Module <a href="type_BatIO.Incubator.Array.html">BatIO.Incubator.Array</a></h1>
+<div class="navbar"><a class="pre" href="BatIO.in_chars-c.html" title="BatIO.in_chars">Previous</a>
+&nbsp;<a class="up" href="BatIO.html" title="BatIO">Up</a>
+&nbsp;</div>
+<h1>Class <a href="type_BatIO.out_chars.html">BatIO.out_chars</a></h1>
 
-<pre><span class="keyword">module</span> Array: <code class="code"><span class="keyword">sig</span></code> <a href="BatIO.Incubator.Array.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
+<pre><span name="TYPEout_chars"><span class="keyword">class</span> out_chars</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> </code><code class="code"><span class="keyword">object</span></code> <a href="BatIO.out_chars-c.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 
-<pre><span id="VALpp"><span class="keyword">val</span> pp</span> : <code class="type">?flush:bool -><br>       ?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ?indent:int -><br>       (Format.formatter -> 'a -> 'b) -> Format.formatter -> 'a array -> unit</code></pre><div class="info ">
-Print the contents of an array, with <code class="code">first</code> preceeding the first item
-          (default: <code class="code"><span class="string">"[|"</span></code>), <code class="code">last</code> following the last item (default: <code class="code"><span class="string">"|]"</span></code>)
-          and <code class="code">sep</code> separating items (default: <code class="code"><span class="string">"; "</span></code>). A printing function must
-          be provided to print the items in the array. The <code class="code">flush</code> parameter
-          (default: <code class="code"><span class="keyword">false</span></code>) should be set to <code class="code"><span class="keyword">true</span></code> for the outer-most printing
-          call.  Setting inner calls to <code class="code"><span class="keyword">true</span></code> - for example, for nested values -
-          prevent indentation from working properly.
-<p>
-
-          Example:
-            <code class="code">pp ~flush:<span class="keyword">true</span> <span class="constructor">Format</span>.pp_print_int <span class="constructor">Format</span>.std_formatter [|1; 2; 3|]</code><br>
-</div>
-</body></html>
+<pre><span id="METHODput"><span class="keyword">method</span> put</span> : <code class="type">char -> unit</code></pre>
+<pre><span id="METHODflush"><span class="keyword">method</span> flush</span> : <code class="type">unit -> unit</code></pre>
+<pre><span id="METHODclose_out"><span class="keyword">method</span> close_out</span> : <code class="type">unit -> unit</code></pre></body></html>

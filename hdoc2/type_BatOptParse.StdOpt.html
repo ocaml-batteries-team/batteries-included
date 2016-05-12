@@ -5,6 +5,8 @@
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
@@ -101,30 +103,30 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatOptParse.StdOpt</title>
 </head>
 <body>
-<code class="code"><span class="keyword">sig</span><br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;store_const&nbsp;:&nbsp;?default:<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;store_true&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;store_false&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;count_option&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?dest:int&nbsp;<span class="constructor">Pervasives</span>.ref&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;?increment:int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;incr_option&nbsp;:&nbsp;?dest:int&nbsp;<span class="constructor">Pervasives</span>.ref&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;decr_option&nbsp;:&nbsp;?dest:int&nbsp;<span class="constructor">Pervasives</span>.ref&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;int_option&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?default:int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?metavar:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;float_option&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?default:float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?metavar:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;str_option&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?default:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?metavar:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;any_option&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?default:<span class="keywordsign">'</span>a&nbsp;option&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;?metavar:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;int_callback&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?metavar:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;float_callback&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?metavar:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;str_callback&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?metavar:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;help_option&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;version_option&nbsp;:&nbsp;(unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t<br>
+<code class="code"><span class="keyword">sig</span>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;store_const&nbsp;:&nbsp;?default:<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;store_true&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;store_false&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;count_option&nbsp;:
+&nbsp;&nbsp;&nbsp;&nbsp;?dest:int&nbsp;<span class="constructor">Pervasives</span>.ref&nbsp;<span class="keywordsign">-&gt;</span>
+&nbsp;&nbsp;&nbsp;&nbsp;?increment:int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;incr_option&nbsp;:&nbsp;?dest:int&nbsp;<span class="constructor">Pervasives</span>.ref&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;decr_option&nbsp;:&nbsp;?dest:int&nbsp;<span class="constructor">Pervasives</span>.ref&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;int_option&nbsp;:
+&nbsp;&nbsp;&nbsp;&nbsp;?default:int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?metavar:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;float_option&nbsp;:
+&nbsp;&nbsp;&nbsp;&nbsp;?default:float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?metavar:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;str_option&nbsp;:
+&nbsp;&nbsp;&nbsp;&nbsp;?default:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?metavar:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;any_option&nbsp;:
+&nbsp;&nbsp;&nbsp;&nbsp;?default:<span class="keywordsign">'</span>a&nbsp;option&nbsp;<span class="keywordsign">-&gt;</span>
+&nbsp;&nbsp;&nbsp;&nbsp;?metavar:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;int_callback&nbsp;:
+&nbsp;&nbsp;&nbsp;&nbsp;?metavar:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;float_callback&nbsp;:
+&nbsp;&nbsp;&nbsp;&nbsp;?metavar:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;str_callback&nbsp;:
+&nbsp;&nbsp;&nbsp;&nbsp;?metavar:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;help_option&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;version_option&nbsp;:&nbsp;(unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">Opt</span>.t
 <span class="keyword">end</span></code></body></html>

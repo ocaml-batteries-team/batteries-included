@@ -10,6 +10,8 @@
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
 <link title="BatArray" rel="Chapter" href="BatArray.html">
@@ -296,6 +298,14 @@ Return the smaller of its two arguments.<br>
 <pre><span id="VALnum_digits_big_int"><span class="keyword">val</span> num_digits_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> int</code></pre><div class="info ">
 Return the number of machine words used to store the
     given big integer.<br>
+</div>
+
+<pre><span id="VALnum_bits_big_int"><span class="keyword">val</span> num_bits_big_int</span> : <code class="type"><a href="BatBig_int.html#TYPEbig_int">big_int</a> -> int</code></pre><div class="info ">
+Return the number of significant bits in the absolute
+            value of the given big integer.  <code class="code">num_bits_big_int a</code>
+            returns 0 if <code class="code">a</code> is 0; otherwise it returns a positive
+            integer <code class="code">n</code> such that <code class="code">2^(n-1) &lt;= <span class="keywordsign">|</span>a<span class="keywordsign">|</span> &lt; 2^n</code>.<br>
+<b>Since</b> 2.5.0 and OCaml 4.03<br>
 </div>
 <br>
 <h6 id="6_Conversionstoandfromstrings">Conversions to and from strings</h6><br>
