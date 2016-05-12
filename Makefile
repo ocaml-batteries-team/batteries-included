@@ -248,7 +248,7 @@ setup.ml: _oasis
 
 # uploads the current documentation to github hdoc2/ directory
 upload-docs:
-	make doc && git checkout gh-pages && rm -f hdoc2/*.html && cp _build/batteries.docdir/*.html hdoc2/ && git add hdoc2/*.html && git commit -a -m"Update to latest documentation" && git push github gh-pages
+	make doc && git checkout gh-pages && rm -f hdoc2/*.html && cp _build/batteries.docdir/*.html hdoc2/ && git add hdoc2/*.html && git commit -a -m"Update to latest documentation" && git push origin gh-pages && git checkout master
 
 ###############################################################################
 #	CODE COVERAGE REPORTS
