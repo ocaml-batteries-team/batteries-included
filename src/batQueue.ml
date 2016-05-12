@@ -79,11 +79,8 @@ let filter_map f q =
   |> BatList.of_enum |> (=) [2;3]
  *)
 
-##V<=4.2##module ConcreteQueue = BatConcreteQueue_402
-##V>=4.3##module ConcreteQueue = BatConcreteQueue_403
-
 let filter_inplace f q =
-  ConcreteQueue.(filter_inplace f (of_abstr q))
+  BatConcreteQueue.(filter_inplace f (of_abstr q))
 (*$T filter_inplace
   let q1 = Queue.create () in \
   for i = 1 to 5 do Queue.push i q1; done; \

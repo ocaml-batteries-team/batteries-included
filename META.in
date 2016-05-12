@@ -1,6 +1,6 @@
 name="batteries"
 version="@VERSION@"
-description="Batteries Included, the stdlib of choice"
+description="Batteries Included is a community-maintained standard library extension"
 requires    ="unix,num,bigarray,str,bytes"
 requires(mt)+="threads"
 archive(toploop)   ="batteries.cma batteriesConfig.cmo batteriesHelp.cmo batteriesPrint.cmo"

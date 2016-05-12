@@ -34,6 +34,7 @@ BatInnerPervasives
   BatPervasives
   BatPrintexc
   BatPrintf
+  BatConcreteQueue
   BatQueue
   BatRandom
   BatScanf

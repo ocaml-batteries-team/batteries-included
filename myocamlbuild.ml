@@ -89,7 +89,9 @@ let _ = dispatch begin function
           @ [
             Cmd(S[Sh"bisect-report -html coverage bisect*.out"]);
           ])
-        end
+        end;
+
+    ()
 
   | After_rules ->
 
@@ -108,6 +110,19 @@ let _ = dispatch begin function
      in
      prefilter_rule "ml";
      prefilter_rule "mli";
+
+     begin (* BatConcreteQueue is either BatConcreteQueue_40x *)
+       let major, minor =
+         try Scanf.sscanf Sys.ocaml_version "%d.%d" (fun m n -> (m, n))
+         with _ -> (* an arbitrary choice is better than failing here *)
+           (4, 0) in
+       let queue_implementation =
+         if major < 4 || major = 4 && minor <= 2
+         then "src/batConcreteQueue_402.ml"
+         else "src/batConcreteQueue_403.ml" in
+       copy_rule "queue implementation"
+         queue_implementation "src/BatConcreteQueue.ml";
+     end;
 
      (* Rules to create libraries from .mllib instead of .cmo.
          We need this because src/batteries.mllib is hidden by src/batteries.ml *)
