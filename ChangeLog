@@ -1,6 +1,10 @@
 Changelog
 ---------
 
+## v2.5.1
+
+Batteries 2.5.1 fixes a silly packaging bug in Batteries 2.5.0.
+
 ## v2.5.0
 
 Batteries 2.5.0 is a minor release whose main change is that it is
