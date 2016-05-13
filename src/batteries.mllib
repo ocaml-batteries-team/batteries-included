@@ -43,6 +43,7 @@ BatInnerPervasives
   BatStack
   BatStream
   BatString
+  BatOpaqueInnerSys
   BatSys
   BatUnit
   BatUnix
