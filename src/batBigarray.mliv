@@ -121,7 +121,7 @@ type ('a, 'b) kind = ('a,'b) Bigarray.kind
 ##V>=4.2##           | Nativeint : (nativeint, nativeint_elt) kind
 ##V>=4.2##           | Complex32 : (Complex.t, complex32_elt) kind
 ##V>=4.2##           | Complex64 : (Complex.t, complex64_elt) kind
-##V>=4.2##           | Char : (char, int8_unsigned_elt) kind
+##V>=4.2##           | Char : (char, int8_unsigned_elt) kind (**)
 (** To each element kind is associated an OCaml type, which is
     the type of OCaml values that can be stored in the big array
     or read back from it.  This type is not necessarily the same
@@ -221,11 +221,11 @@ val kind_size_in_bytes : ('a, 'b) kind -> int
 (** {6 Array layouts} *)
 
 type c_layout = Bigarray.c_layout
-##V>=4.2## = C_layout_typ
+##V>=4.2## = C_layout_typ (**)
 (** See {!Bigarray.fortran_layout}.*)
 
 type fortran_layout = Bigarray.fortran_layout
-##V>=4.2## = Fortran_layout_typ
+##V>=4.2## = Fortran_layout_typ (**)
 (** To facilitate interoperability with existing C and Fortran code,
     this library supports two different memory layouts for big arrays,
     one compatible with the C conventions,
@@ -250,7 +250,7 @@ type fortran_layout = Bigarray.fortran_layout
 
 type 'a layout = 'a Bigarray.layout
 ##V>=4.2##           = C_layout : c_layout layout
-##V>=4.2##           | Fortran_layout : fortran_layout layout
+##V>=4.2##           | Fortran_layout : fortran_layout layout (**)
 (** The type ['a layout] represents one of the two supported
     memory layouts: C-style if ['a] is {!Bigarray.c_layout}, Fortran-style
     if ['a] is {!Bigarray.fortran_layout}. *)
