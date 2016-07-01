@@ -45,6 +45,18 @@ module Tuple2 = struct
   let map1 f (a,b) = (f a, b)
   let map2 f (a,b) = (a, f b)
 
+  let sort cmp ((a,b) as orig) = if cmp a b > 0 then (b,a) else orig
+
+  (*$< Tuple2 *)
+  (*$= sort
+    (sort (fun _ _ -> 0) (2,1)) (2,1)
+  *)
+  (*$Q sort
+    Q.(pair int int) \
+    (fun p -> let (a,b) = sort Pervasives.compare p in a <= b)
+  *)
+  (*$>*)
+
   let curry f x y = f (x,y)
   let uncurry f (x,y) = f x y
 
@@ -128,6 +140,22 @@ module Tuple3 = struct
   let map1 f (a,b,c) = (f a, b, c)
   let map2 f (a,b,c) = (a, f b, c)
   let map3 f (a,b,c) = (a, b, f c)
+
+  let sort cmp (a,b,c) =
+    let (min1,max1) = Tuple2.sort cmp (a,b) in
+    let (min2,max2) = Tuple2.sort cmp (max1,c) in
+    let (min3,max3) = Tuple2.sort cmp (min1,min2) in
+    (min3,max3,max2)
+
+  (*$< Tuple3 *)
+  (*$= sort
+    (sort (fun _ _ -> 0) (3,1,2)) (3,1,2)
+  *)
+  (*$Q sort
+    Q.(triple int int int) \
+    (fun t -> let (a,b,c) = sort Pervasives.compare t in a <= b && b <= c)
+  *)
+  (*$>*)
 
   let curry f a b c = f (a,b,c)
   let uncurry f (a,b,c) = f a b c
@@ -232,6 +260,26 @@ module Tuple4 = struct
   let map2 f (a,b,c,d) = (a, f b, c, d)
   let map3 f (a,b,c,d) = (a, b, f c, d)
   let map4 f (a,b,c,d) = (a, b, c, f d)
+
+  let sort cmp (a,b,c,d) =
+    let (min1,max1) = Tuple2.sort cmp (a,b) in
+    let (min2,max2) = Tuple2.sort cmp (c,d) in
+    let (min3,max3) = Tuple2.sort cmp (min1,min2) in
+    let (min4,max4) = Tuple2.sort cmp (max1,max2) in
+    let (min5,max5) = Tuple2.sort cmp (min4,max3) in
+    (min3,min5,max5,max4)
+
+  (*$< Tuple4 *)
+  (*$= sort
+    (sort (fun _ _ -> 0) (3,1,4,2)) (3,1,4,2)
+  *)
+  (*$Q sort
+    Q.(array_of_size (fun _ -> 4) int) \
+    (fun x -> \
+    let (a,b,c,d) = sort Pervasives.compare (x.(0),x.(1),x.(2),x.(3)) in \
+    a <= b && b <= c && c <= d)
+  *)
+  (*$>*)
 
   let curry f a b c d = f (a,b,c,d)
   let uncurry f (a,b,c,d) = f a b c d
@@ -366,6 +414,30 @@ module Tuple5 = struct
   let map3 f (a,b,c,d,e) = (a, b, f c, d, e)
   let map4 f (a,b,c,d,e) = (a, b, c, f d, e)
   let map5 f (a,b,c,d,e) = (a, b, c, d, f e)
+
+  let sort cmp (a,b,c,d,e) =
+    let (min1,max1) = Tuple2.sort cmp (a,b) in
+    let (min2,max2) = Tuple2.sort cmp (d,e) in
+    let (min3,max3) = Tuple2.sort cmp (c,max2) in
+    let (min4,max4) = Tuple2.sort cmp (min3,min2) in
+    let (min5,max5) = Tuple2.sort cmp (min1,max4) in
+    let (min6,max6) = Tuple2.sort cmp (min5,min4) in
+    let (min7,max7) = Tuple2.sort cmp (max1,max3) in
+    let (min8,max8) = Tuple2.sort cmp (min7,max5) in
+    let (min9,max9) = Tuple2.sort cmp (min8,max6) in
+    (min6,min9,max9,max8,max7)
+
+  (*$< Tuple5 *)
+  (*$= sort
+    (sort (fun _ _ -> 0) (3,5,1,4,2)) (3,5,1,4,2)
+  *)
+  (*$Q sort
+    Q.(array_of_size (fun _ -> 5) int) \
+    (fun x -> \
+    let (a,b,c,d,e) = sort Pervasives.compare (x.(0),x.(1),x.(2),x.(3),x.(4)) in \
+    a <= b && b <= c && c <= d && d <= e)
+  *)
+  (*$>*)
 
   let curry f a b c d e = f (a,b,c,d,e)
   let uncurry f (a,b,c,d,e) = f a b c d e

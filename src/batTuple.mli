@@ -102,6 +102,10 @@ module Tuple2 : sig
   val map2 : ('b -> 'c) -> ('a * 'b) -> ('a * 'c)
   (** [map2 f (x,y)] returns (x,f y) *)
 
+  val sort : ('a -> 'a -> int) -> ('a * 'a) -> ('a * 'a)
+  (** [sort cmp (a, b)] swaps pair elements if first is greater than
+      second, according to the compare function. *)
+
   val curry : ('a * 'b -> 'c) -> 'a -> 'b -> 'c
   val uncurry : ('a -> 'b -> 'c) -> 'a * 'b -> 'c
 
@@ -161,6 +165,10 @@ module Tuple3 : sig
   val map1 : ('a -> 'd) -> ('a * 'b * 'c) -> ('d * 'b * 'c)
   val map2 : ('b -> 'd) -> ('a * 'b * 'c) -> ('a * 'd * 'c)
   val map3 : ('c -> 'd) -> ('a * 'b * 'c) -> ('a * 'b * 'd)
+
+  val sort : ('a -> 'a -> int) -> ('a * 'a * 'a) -> ('a * 'a * 'a)
+  (** [sort cmp (a, b, c)] returns a triple with elements in order,
+      according to the compare function. *)
 
   val curry : ('a * 'b * 'c -> 'd) -> 'a -> 'b -> 'c -> 'd
   val uncurry : ('a -> 'b -> 'c -> 'd) -> 'a * 'b * 'c -> 'd
@@ -233,6 +241,10 @@ module Tuple4 : sig
   val map2 : ('b -> 'e) -> ('a * 'b * 'c * 'd) -> ('a * 'e * 'c * 'd)
   val map3 : ('c -> 'e) -> ('a * 'b * 'c * 'd) -> ('a * 'b * 'e * 'd)
   val map4 : ('d -> 'e) -> ('a * 'b * 'c * 'd) -> ('a * 'b * 'c * 'e)
+
+  val sort : ('a -> 'a -> int) -> ('a * 'a * 'a * 'a) -> ('a * 'a * 'a * 'a)
+  (** [sort cmp (a, b, c, d)] returns a 4-tuple with elements in order,
+      according to the compare function. *)
 
   val curry : ('a * 'b * 'c * 'd -> 'e) -> 'a -> 'b -> 'c -> 'd -> 'e
   val uncurry : ('a -> 'b -> 'c -> 'd -> 'e) -> 'a * 'b * 'c * 'd -> 'e
@@ -324,6 +336,10 @@ module Tuple5 : sig
   val map3 : ('c -> 'f) -> ('a * 'b * 'c * 'd * 'e) -> ('a * 'b * 'f * 'd * 'e)
   val map4 : ('d -> 'f) -> ('a * 'b * 'c * 'd * 'e) -> ('a * 'b * 'c * 'f * 'e)
   val map5 : ('e -> 'f) -> ('a * 'b * 'c * 'd * 'e) -> ('a * 'b * 'c * 'd * 'f)
+
+  val sort : ('a -> 'a -> int) -> ('a * 'a * 'a * 'a * 'a) -> ('a * 'a * 'a * 'a * 'a)
+  (** [sort cmp (a, b, c, d, e)] returns a 5-tuple with elements in order,
+      according to the compare function. *)
 
   val curry : ('a * 'b * 'c * 'd * 'e -> 'f) -> 'a -> 'b -> 'c -> 'd -> 'e -> 'f
   val uncurry : ('a -> 'b -> 'c -> 'd -> 'e -> 'f) -> 'a * 'b * 'c * 'd * 'e -> 'f
