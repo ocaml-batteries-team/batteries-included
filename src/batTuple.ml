@@ -45,7 +45,7 @@ module Tuple2 = struct
   let map1 f (a,b) = (f a, b)
   let map2 f (a,b) = (a, f b)
 
-  let sort cmp ((a,b) as orig) = if cmp a b > 0 then (b,a) else orig
+  let sort cmp (a,b) = if cmp a b <= 0 then (a,b) else (b,a)
 
   (*$< Tuple2 *)
   (*$= sort
