@@ -142,10 +142,21 @@ module Tuple3 = struct
   let map3 f (a,b,c) = (a, b, f c)
 
   let sort cmp (a,b,c) =
-    let (min1,max1) = Tuple2.sort cmp (a,b) in
-    let (min2,max2) = Tuple2.sort cmp (max1,c) in
-    let (min3,max3) = Tuple2.sort cmp (min1,min2) in
-    (min3,max3,max2)
+    if cmp a b <= 0 then begin
+      if cmp b c <= 0 then
+        (a,b,c)
+      else if cmp a c <= 0 then
+        (a,c,b)
+      else
+        (c,a,b)
+    end else begin
+      if cmp a c <= 0 then
+        (b,a,c)
+      else if cmp b c <= 0 then
+        (b,c,a)
+      else
+        (c,b,a)
+    end
 
   (*$< Tuple3 *)
   (*$= sort
