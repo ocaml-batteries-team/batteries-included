@@ -95,9 +95,6 @@ module BaseInt = struct
   external to_int : int -> int = "%identity"
 
 
-  let of_string x =
-    try int_of_string x
-    with Failure err -> raise (Invalid_argument err)
   let to_string = string_of_int
 
   let enum = enum
