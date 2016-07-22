@@ -136,7 +136,7 @@ val of_string : string -> int
     The string is read in decimal (by default) or in hexadecimal,
     octal or binary if the string begins with [0x], [0o] or [0b]
     respectively.
-    @raise Invalid_argument if the given string is not
+    @raise Failure if the given string is not
     a valid representation of an integer, or if the integer represented
     exceeds the range of integers representable in type [int]. *)
 
@@ -354,7 +354,7 @@ module Safe_int : sig
       The string is read in decimal (by default) or in hexadecimal,
       octal or binary if the string begins with [0x], [0o] or [0b]
       respectively.
-      @raise Invalid_argument if the given string is not
+      @raise Failure if the given string is not
       a valid representation of an integer, or if the integer represented
       exceeds the range of integers representable in type [int]. *)
 
