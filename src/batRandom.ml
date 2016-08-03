@@ -73,6 +73,51 @@ let enum_char () = BatEnum.from char
 
 let choice e = BatEnum.drop (int (BatEnum.count e)) e; BatEnum.get_exn e
 
+let weighted_choice e =
+  let list, total_weight =
+    BatEnum.fold (fun (acc, total) ((_, w) as elem) ->
+        if w < 0. then
+          Printf.kprintf invalid_arg
+            "weighted_choice does not accept negative weights (here %f)"
+            w;
+        elem :: acc, total +. w) ([], 0.) e in
+
+  assert (total_weight >= 0.);
+  if list = [] then
+    invalid_arg "weighted_choice: cannot choose from empty enumeration";
+
+  let pick = float total_weight in
+  let rec find level =
+    (* [find level rest] invariant:
+         pick > level
+         level + (sum of weights of rest) = total_weight *)
+    function
+    | [] ->
+      (* this case can never arise, as it would imply
+         that (level + 0 = total_weight) and thus (pick > total_weight),
+         but (pick < total_weight) by definition of pick. *)
+      assert false
+    | (elem, w) :: rest ->
+      let next_level = level +. w in
+      if pick <= next_level then elem
+      else find next_level rest
+  in find 0. list
+(*$T weighted_choice
+  try ignore (weighted_choice (BatList.enum [1, 3.; 1, -2.])); false \
+    with Invalid_argument _ -> true
+  try ignore (weighted_choice (BatList.enum [])); false \
+    with Invalid_argument _ -> true
+  weighted_choice (BatList.enum [true, 1.]) = true
+  weighted_choice (BatList.enum [true, 1.; false, 0.]) = true
+  let choice () = weighted_choice (BatList.enum \
+    [0, 1.; 1, 10.; (-1), 0.; 2, 1.]) in \
+  Array.init 100_000 (fun _ -> choice ()) \
+  |> BatSet.of_array \
+  |> BatSet.elements \
+  |> (=) [0; 1; 2]
+*)
+
+
 (* Reservoir sampling algorithm (see for instance
    http://en.wikipedia.org/wiki/Reservoir_sampling)
 

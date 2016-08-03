@@ -7,6 +7,10 @@ Changelog
   #682, #685, #693
   (Florian Angeletti, Johannes Kloos, Michael Färber)
 
+- BatRandom.weighted_choice : ('a * float) Enum.t -> 'a
+  #686
+  (Gabriel Scherer, review by François Bérenger and Max Mouratov)
+
 - make `LazyList.split_at` lazy:
   `split_at : int -> 'a t -> 'a t * 'a t`
   would previously eagerly force the prefix of the list
