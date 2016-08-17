@@ -1,6 +1,12 @@
 Changelog
 ---------
 
+## NEXT_RELEASE
+
+- Compatibility with OCaml 4.04.
+  5e63a9a756f
+  (Gabriel Scherer)
+
 ## v2.5.1, v2.5.2
 
 Batteries 2.5.1 and 2.5.2 fix a silly packaging bug in Batteries 2.5.0.
