@@ -360,6 +360,24 @@ let nsplit str ~by:sep =
   nsplit "FOOaFOObFOOcFOOFOO" ~by:"FOO" = [""; "a"; "b"; "c"; ""; ""]
 *)
 
+let split_on_char sep str =
+  if str = "" then []
+  else
+    (* str is non empty *)
+    let rec loop acc ofs limit =
+      if ofs < 0 then sub str 0 limit :: acc
+      else if str.[ofs] <> sep then loop acc (ofs - 1) limit
+      else loop (sub str (ofs + 1) (limit - ofs - 1) :: acc) (ofs - 1) ofs
+    in
+    let len = length str in loop [] (len - 1) len
+
+(*$T split_on_char
+  split_on_char ';' "a;b;c" = ["a"; "b"; "c"]
+  split_on_char 'x' "" = []
+  split_on_char '/' "a/b/c" = ["a"; "b"; "c"]
+  split_on_char '/' "/a/b/c//" = [""; "a"; "b"; "c"; ""; ""]
+*)
+
 let join = concat
 
 let unsafe_slice i j s =

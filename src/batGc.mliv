@@ -181,6 +181,16 @@ external counters : unit -> float * float * float = "caml_gc_counters"
 (** Return [(minor_words, promoted_words, major_words)].  This function
     is as fast at [quick_stat]. *)
 
+##V>=4.4##external minor_words : unit -> (float [@unboxed])
+##V>=4.4##  = "caml_gc_minor_words" "caml_gc_minor_words_unboxed" [@@noalloc]
+##V>=4.4##(** Number of words allocated in the minor heap since the program was
+##V>=4.4##    started. This number is accurate in byte-code programs, but only an
+##V>=4.4##    approximation in programs compiled to native code.
+##V>=4.4##
+##V>=4.4##    In native code this function does not allocate.
+##V>=4.4##
+##V>=4.4##    @since NEXT_RELEASE and OCaml 4.04 *)
+
 external get : unit -> control = "caml_gc_get"
 (** Return the current values of the GC parameters in a [control] record. *)
 
@@ -295,6 +305,21 @@ val finalise : ('a -> unit) -> 'a -> unit
     {!Array.make}, and {!Pervasives.ref} are guaranteed to be
     heap-allocated and non-constant except when the length argument is [0].
 *)
+
+##V>=4.4##val finalise_last : (unit -> unit) -> 'a -> unit
+##V>=4.4##(** same as {!finalise} except the value is not given as argument. So
+##V>=4.4##    you can't use the given value for the computation of the
+##V>=4.4##    finalisation function. The benefit is that the function is called
+##V>=4.4##    after the value is unreachable for the last time instead of the
+##V>=4.4##    first time. So contrary to {!finalise} the value will never be
+##V>=4.4##    reachable again or used again. In particular every weak pointers
+##V>=4.4##    and ephemerons that contained this value as key or data is unset
+##V>=4.4##    before running the finalisation function. Moreover the
+##V>=4.4##    finalisation function attached with `GC.finalise` are always
+##V>=4.4##    called before the finalisation function attached with `GC.finalise_last`.
+##V>=4.4##
+##V>=4.4##    @since NEXT_RELASE and OCaml 4.04
+##V>=4.4##*)
 
 val finalise_release : unit -> unit;;
 (** A finalisation function may call [finalise_release] to tell the

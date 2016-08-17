@@ -44,21 +44,25 @@
 ##V>=4.2##type t = bytes
 (** An alias for the type of byte sequences. *)
 
-external length : t -> int = "%string_length"
+##V<4.4##external length : t -> int = "%string_length"
+##V>=4.4##external length : t -> int = "%bytes_length"
 (** Return the length (number of t) of the argument. *)
 
-external get : t -> int -> char = "%string_safe_get"
+##V<4.4##external get : t -> int -> char = "%string_safe_get"
+##V>=4.4##external get : t -> int -> char = "%bytes_safe_get"
 (** [get s n] returns the byte at index [n] in argument [s].
 
     Raise [Invalid_argument] if [n] not a valid index in [s]. *)
 
-external set : t -> int -> char -> unit = "%string_safe_set"
+##V<4.4##external set : t -> int -> char -> unit = "%string_safe_set"
+##V>=4.4##external set : t -> int -> char -> unit = "%bytes_safe_set"
 (** [set s n c] modifies [s] in place, replacing the byte at index [n]
     with [c].
 
     Raise [Invalid_argument] if [n] is not a valid index in [s]. *)
 
-external create : int -> t = "caml_create_string"
+##V<4.4##external create : int -> t = "caml_create_string"
+##V>=4.4##external create : int -> t = "caml_create_bytes"
 (** [create n] returns a new byte sequence of length [n]. The
     sequence is uninitialized and contains arbitrary bytes.
 
@@ -414,10 +418,14 @@ let s = Bytes.of_string "hello"
 
 (* The following is for system use only. Do not call directly. *)
 
-external unsafe_get : t -> int -> char = "%string_unsafe_get"
-external unsafe_set : t -> int -> char -> unit = "%string_unsafe_set"
-external unsafe_blit :
-  t -> int -> t -> int -> int -> unit
-  = "caml_blit_string" "noalloc"
-external unsafe_fill :
-  t -> int -> int -> char -> unit = "caml_fill_string" "noalloc"
+##V<4.4##external unsafe_get : t -> int -> char = "%string_unsafe_get"
+##V>=4.4##external unsafe_get : t -> int -> char = "%bytes_unsafe_get"
+
+##V<4.4##external unsafe_set : t -> int -> char -> unit = "%string_unsafe_set"
+##V>=4.4##external unsafe_set : t -> int -> char -> unit = "%bytes_unsafe_set"
+
+##V<4.4##external unsafe_blit :  t -> int -> t -> int -> int -> unit = "caml_blit_string" "noalloc"
+##V>=4.4##external unsafe_blit :  t -> int -> t -> int -> int -> unit = "caml_blit_bytes" "noalloc"
+
+##V<4.4##external unsafe_fill : t -> int -> int -> char -> unit = "caml_fill_string" "noalloc"
+##V>=4.4##external unsafe_fill:  t -> int -> int -> char -> unit = "caml_fill_bytes" "noalloc"

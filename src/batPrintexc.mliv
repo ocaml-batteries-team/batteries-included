@@ -242,6 +242,15 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##      @since 2.3.0 and OCaml 4.02
 ##V>=4.2##  *)
 ##V>=4.2##
+##V>=4.4##
+##V>=4.4##  val is_inline : t -> bool
+##V>=4.4##  (** [is_inline slot] is [true] when [slot] refers to a call
+##V>=4.4##      that got inlined by the compiler, and [false] when it comes from
+##V>=4.4##      any other context.
+##V>=4.4##
+##V>=4.4##      @since 4.04.0
+##V>=4.4##  *)
+##V>=4.4##
 ##V>=4.2##  val location : t -> location option
 ##V>=4.2##  (** [location slot] returns the location information of the slot,
 ##V>=4.2##      if available, and [None] otherwise.
@@ -304,6 +313,13 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##
 ##V>=4.2##    @since 2.3.0 and OCaml 4.02
 ##V>=4.2##*)
+
+##V>=4.4##val get_raw_backtrace_next_slot :
+##V>=4.4##    raw_backtrace_slot -> raw_backtrace_slot option
+##V>=4.4##(** [get_raw_backtrace_next_slot slot] returns the next slot inlined, if any.
+##V>=4.4##
+##V>=4.4##    @since NEXT_RELASE and OCaml 4.04
+##V>=4.4##*)
 
 
 ##V>=4.2##(** {6 Exception slots} *)

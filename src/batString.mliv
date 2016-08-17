@@ -102,14 +102,16 @@ external get : string -> int -> char = "%string_safe_get"
     @raise Invalid_argument if [n] not a valid character number in [s]. *)
 
 
-external set : string -> int -> char -> unit = "%string_safe_set"
+##V<4.4##external set : string -> int -> char -> unit = "%string_safe_set"
+##V>=4.4##external set : string -> int -> char -> unit = "%bytes_safe_set"
 (** [String.set s n c] modifies string [s] in place,
     replacing the character number [n] by [c].
     You can also write [s.[n] <- c] instead of [String.set s n c].
 
     @raise Invalid_argument if [n] is not a valid character number in [s]. *)
 
-external create : int -> string = "caml_create_string"
+##V<4.4##external create : int -> string = "caml_create_string"
+##V>=4.4##external create : int -> string = "caml_create_bytes"
 (** [String.create n] returns a fresh string of length [n].
     The string initially contains arbitrary characters.
 
@@ -658,6 +660,21 @@ val in_place_mirror : string -> unit
 
 (** {6 Splitting around}*)
 
+val split_on_char: char -> string -> string list
+(** [String.split_on_char sep s] returns the list of all (possibly empty)
+    substrings of [s] that are delimited by the [sep] character.
+
+    The function's output is specified by the following invariants:
+
+    - The list is not empty.
+    - Concatenating its elements using [sep] as a separator returns a
+      string equal to the input ([String.concat (String.make 1 sep)
+      (String.split_on_char sep s) = s]).
+    - No string in the result contains the [sep] character.
+
+    @since NEXT_RELEASE
+*)
+
 val split : string -> by:string -> string * string
 (** [split s sep] splits the string [s] between the first
     occurrence of [sep], and returns the two parts before
@@ -1098,8 +1115,7 @@ sig
   external unsafe_set : [> `Write] t -> int -> char -> unit = "%string_unsafe_set"
   external unsafe_blit :
     [> `Read] t -> int -> [> `Write] t -> int -> int -> unit = "caml_blit_string" "noalloc"
-  external unsafe_fill :
-    [> `Write] t -> int -> int -> char -> unit = "caml_fill_string" "noalloc"
+  external unsafe_fill : [> `Write] t -> int -> int -> char -> unit = "caml_fill_string" "noalloc"
 
   (**/**)
 
@@ -1141,10 +1157,11 @@ end
 (* The following is for system use only. Do not call directly. *)
 
 external unsafe_get : string -> int -> char = "%string_unsafe_get"
-external unsafe_set : string -> int -> char -> unit = "%string_unsafe_set"
+##V<4.4##external unsafe_set : string -> int -> char -> unit = "%string_unsafe_set"
+##V>=4.4##external unsafe_set : string -> int -> char -> unit = "%bytes_unsafe_set"
 external unsafe_blit :
   string -> int -> string -> int -> int -> unit = "caml_blit_string" "noalloc"
-external unsafe_fill :
-  string -> int -> int -> char -> unit = "caml_fill_string" "noalloc"
+##V<4.4##external unsafe_fill : string -> int -> int -> char -> unit = "caml_fill_string" "noalloc"
+##V>=4.4##external unsafe_fill : string -> int -> int -> char -> unit = "caml_fill_bytes" "noalloc"
 
   (**/**)

@@ -29,7 +29,6 @@
     @author David Teller
 *)
 
-
 val argv : string array
 (** The command line arguments given to the process.
     The first element is the command name used to invoke the program.
@@ -96,6 +95,21 @@ val os_type : string
     -  ["Unix"] (for all Unix versions, including Linux and Mac OS X),
     -  ["Win32"] (for MS-Windows, OCaml compiled with MSVC++ or Mingw),
     -  ["Cygwin"] (for MS-Windows, OCaml compiled with Cygwin). *)
+
+##V>=4.4##type backend_type = Sys.backend_type =
+##V>=4.4##  | Native
+##V>=4.4##  | Bytecode
+##V>=4.4##  | Other of string (**)
+##V>=4.4##(** Currently, the official distribution only supports [Native] and
+##V>=4.4##    [Bytecode], but it can be other backends with alternative
+##V>=4.4##    compilers, for example, javascript.
+##V>=4.4##
+##V>=4.4##    @since NEXT_RELEASE and 4.04 *)
+##V>=4.4##
+##V>=4.4##val backend_type : backend_type
+##V>=4.4##(** Backend type currently executing the OCaml program.
+##V>=4.4##    @ since NEXT_RELEASE and 4.04
+##V>=4.4## *)
 
 ##V>=4.1##val unix : bool
 ##V>=4.1##(** True if [Sys.os_type = "Unix"].
