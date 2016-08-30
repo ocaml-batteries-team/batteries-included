@@ -102,16 +102,14 @@ external get : string -> int -> char = "%string_safe_get"
     @raise Invalid_argument if [n] not a valid character number in [s]. *)
 
 
-##V<4.4##external set : string -> int -> char -> unit = "%string_safe_set"
-##V>=4.4##external set : string -> int -> char -> unit = "%bytes_safe_set"
+external set : string -> int -> char -> unit = "%string_safe_set"
 (** [String.set s n c] modifies string [s] in place,
     replacing the character number [n] by [c].
     You can also write [s.[n] <- c] instead of [String.set s n c].
 
     @raise Invalid_argument if [n] is not a valid character number in [s]. *)
 
-##V<4.4##external create : int -> string = "caml_create_string"
-##V>=4.4##external create : int -> string = "caml_create_bytes"
+external create : int -> string = "caml_create_string"
 (** [String.create n] returns a fresh string of length [n].
     The string initially contains arbitrary characters.
 
@@ -1157,11 +1155,9 @@ end
 (* The following is for system use only. Do not call directly. *)
 
 external unsafe_get : string -> int -> char = "%string_unsafe_get"
-##V<4.4##external unsafe_set : string -> int -> char -> unit = "%string_unsafe_set"
-##V>=4.4##external unsafe_set : string -> int -> char -> unit = "%bytes_unsafe_set"
+external unsafe_set : string -> int -> char -> unit = "%string_unsafe_set"
 external unsafe_blit :
   string -> int -> string -> int -> int -> unit = "caml_blit_string" "noalloc"
-##V<4.4##external unsafe_fill : string -> int -> int -> char -> unit = "caml_fill_string" "noalloc"
-##V>=4.4##external unsafe_fill : string -> int -> int -> char -> unit = "caml_fill_bytes" "noalloc"
+external unsafe_fill : string -> int -> int -> char -> unit = "caml_fill_string" "noalloc"
 
   (**/**)
