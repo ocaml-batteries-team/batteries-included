@@ -6,6 +6,13 @@ Make a release
 - `make test` on a 64 bits machine
 - `make test` on a 32 bits machine
 
+- install the to-be-released version with `opam pin add -k git .`, and
+  then run the post-install tests with `make test-build-from-install`
+
+  (If you do not want to provoke a rebuild of batteries-depending
+  software in your main development switch, feel free to move to
+  a fresh new switch to test this.)
+
 # Release marking
 
 These steps can be redone as many times as necessary, and do not need

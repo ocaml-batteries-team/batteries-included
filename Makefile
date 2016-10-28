@@ -214,6 +214,9 @@ full-test: $(TEST_TARGET)
 test-compat: src/batteries_compattest.ml
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) src/batteries_compattest.byte
 
+test-build-from-install:
+	$(MAKE) -C test-build
+
 test: test-byte test-compat
 
 ###############################################################################
