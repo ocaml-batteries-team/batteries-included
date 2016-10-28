@@ -10,8 +10,10 @@ From various emails and interviews with VIP:
 - build changelog (from `git log`, see `howto/changelog`)
 - Bump version in source (in `_oasis`)
 - change ocamlfind dependencies in `META` if necessary
-- Commit and add a tag (`git tag -a`; `git push --tags origin`)
 - run `make release`
+- Commit and add a tag (`git tag -a <name>`; `git push --tags origin`)
+  Tag names are usually of the form "vM.m.b", for example "v2.5.3",
+  use `git tag --list` to see existing tags.
 - upload tarball to ocamlforge
 - write release notes (using changelog)
 - upload documentation (`make upload-docs` ?)
