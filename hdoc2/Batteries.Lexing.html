@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="Batteries.Int64.html">
 <link rel="next" href="Batteries.List.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -283,7 +286,7 @@ The type of lexer buffers. A lexer buffer is the argument passed
 
 <pre><span id="VALfrom_input"><span class="keyword">val</span> from_input</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> <a href="BatLexing.html#TYPElexbuf">lexbuf</a></code></pre><div class="info ">
 Create a lexer buffer on the given input
-    <code class="code"><span class="constructor">Lexing</span>.from_input inp</code> returns a lexer buffer which reads
+    <code class="code"><span class="constructor">Lexing</span>.from_input&nbsp;inp</code> returns a lexer buffer which reads
     from the input <code class="code">inp</code>, at the current reading position.<br>
 </div>
 
@@ -315,23 +318,23 @@ The following functions can be called from the semantic actions
     function.<br>
 
 <pre><span id="VALlexeme"><span class="keyword">val</span> lexeme</span> : <code class="type"><a href="BatLexing.html#TYPElexbuf">lexbuf</a> -> string</code></pre><div class="info ">
-<code class="code"><span class="constructor">Lexing</span>.lexeme lexbuf</code> returns the string matched by
+<code class="code"><span class="constructor">Lexing</span>.lexeme&nbsp;lexbuf</code> returns the string matched by
            the regular expression.<br>
 </div>
 
 <pre><span id="VALlexeme_char"><span class="keyword">val</span> lexeme_char</span> : <code class="type"><a href="BatLexing.html#TYPElexbuf">lexbuf</a> -> int -> char</code></pre><div class="info ">
-<code class="code"><span class="constructor">Lexing</span>.lexeme_char lexbuf i</code> returns character number <code class="code">i</code> in
+<code class="code"><span class="constructor">Lexing</span>.lexeme_char&nbsp;lexbuf&nbsp;i</code> returns character number <code class="code">i</code> in
     the matched string.<br>
 </div>
 
 <pre><span id="VALlexeme_start"><span class="keyword">val</span> lexeme_start</span> : <code class="type"><a href="BatLexing.html#TYPElexbuf">lexbuf</a> -> int</code></pre><div class="info ">
-<code class="code"><span class="constructor">Lexing</span>.lexeme_start lexbuf</code> returns the offset in the
+<code class="code"><span class="constructor">Lexing</span>.lexeme_start&nbsp;lexbuf</code> returns the offset in the
     input stream of the first character of the matched string.
     The first character of the stream has offset 0.<br>
 </div>
 
 <pre><span id="VALlexeme_end"><span class="keyword">val</span> lexeme_end</span> : <code class="type"><a href="BatLexing.html#TYPElexbuf">lexbuf</a> -> int</code></pre><div class="info ">
-<code class="code"><span class="constructor">Lexing</span>.lexeme_end lexbuf</code> returns the offset in the input stream
+<code class="code"><span class="constructor">Lexing</span>.lexeme_end&nbsp;lexbuf</code> returns the offset in the input stream
     of the character following the last character of the matched
     string. The first character of the stream has offset 0.<br>
 </div>

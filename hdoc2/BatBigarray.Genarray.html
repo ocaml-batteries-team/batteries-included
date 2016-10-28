@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="next" href="BatBigarray.Array1.html">
 <link rel="Up" href="BatBigarray.html">
@@ -27,6 +28,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -67,6 +69,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -135,7 +138,7 @@ The type <code class="code"><span class="constructor">Genarray</span>.t</code> i
       (<code class="code">c_layout</code> or <code class="code">fortran_layout</code>).</li>
 </ul>
 
-      For instance, <code class="code">(float, float32_elt, fortran_layout) <span class="constructor">Genarray</span>.t</code>
+      For instance, <code class="code">(float,&nbsp;float32_elt,&nbsp;fortran_layout)&nbsp;<span class="constructor">Genarray</span>.t</code>
       is the type of generic big arrays containing 32-bit floats
       in Fortran layout; reads and writes in this array use the
       OCaml type <code class="code">float</code>.<br>
@@ -143,7 +146,7 @@ The type <code class="code"><span class="constructor">Genarray</span>.t</code> i
 
 
 <pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">('a, 'b) <a href="BatBigarray.html#TYPEkind">BatBigarray.kind</a> -><br>       'c <a href="BatBigarray.html#TYPElayout">BatBigarray.layout</a> -> int array -> ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code"><span class="constructor">Genarray</span>.create kind layout dimensions</code> returns a new big array
+<code class="code"><span class="constructor">Genarray</span>.create&nbsp;kind&nbsp;layout&nbsp;dimensions</code> returns a new big array
       whose element kind is determined by the parameter <code class="code">kind</code> (one of
       <code class="code">float32</code>, <code class="code">float64</code>, <code class="code">int8_signed</code>, etc) and whose layout is
       determined by the parameter <code class="code">layout</code> (one of <code class="code">c_layout</code> or
@@ -153,7 +156,7 @@ The type <code class="code"><span class="constructor">Genarray</span>.t</code> i
       of the bigarray.
 <p>
 
-      For instance, <code class="code"><span class="constructor">Genarray</span>.create int32 c_layout [|4;6;8|]</code>
+      For instance, <code class="code"><span class="constructor">Genarray</span>.create&nbsp;int32&nbsp;c_layout&nbsp;[|4;6;8|]</code>
       returns a fresh big array of 32-bit integers, in C layout,
       having three dimensions, the three dimensions being 4, 6 and 8
       respectively.
@@ -171,17 +174,17 @@ Return the number of dimensions of the given big array.<br>
 </div>
 
 <pre><span id="VALdims"><span class="keyword">val</span> dims</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> int array</code></pre><div class="info ">
-<code class="code"><span class="constructor">Genarray</span>.dims a</code> returns all dimensions of the big array <code class="code">a</code>,
-    as an array of integers of length <code class="code"><span class="constructor">Genarray</span>.num_dims a</code>.<br>
+<code class="code"><span class="constructor">Genarray</span>.dims&nbsp;a</code> returns all dimensions of the big array <code class="code">a</code>,
+    as an array of integers of length <code class="code"><span class="constructor">Genarray</span>.num_dims&nbsp;a</code>.<br>
 </div>
 
 <pre><span id="VALnth_dim"><span class="keyword">val</span> nth_dim</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> int -> int</code></pre><div class="info ">
-<code class="code"><span class="constructor">Genarray</span>.nth_dim a n</code> returns the <code class="code">n</code>-th dimension of the
-    big array <code class="code">a</code>.  The first dimension corresponds to <code class="code">n = 0</code>;
-    the second dimension corresponds to <code class="code">n = 1</code>; the last dimension,
-    to <code class="code">n = <span class="constructor">Genarray</span>.num_dims a - 1</code>.<br>
+<code class="code"><span class="constructor">Genarray</span>.nth_dim&nbsp;a&nbsp;n</code> returns the <code class="code">n</code>-th dimension of the
+    big array <code class="code">a</code>.  The first dimension corresponds to <code class="code">n&nbsp;=&nbsp;0</code>;
+    the second dimension corresponds to <code class="code">n&nbsp;=&nbsp;1</code>; the last dimension,
+    to <code class="code">n&nbsp;=&nbsp;<span class="constructor">Genarray</span>.num_dims&nbsp;a&nbsp;-&nbsp;1</code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> if <code class="code">n</code> is less than 0 or greater or equal than
-    <code class="code"><span class="constructor">Genarray</span>.num_dims a</code>.<br>
+    <code class="code"><span class="constructor">Genarray</span>.num_dims&nbsp;a</code>.<br>
 </div>
 
 <pre><span id="VALkind"><span class="keyword">val</span> kind</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> ('a, 'b) <a href="BatBigarray.html#TYPEkind">BatBigarray.kind</a></code></pre><div class="info ">
@@ -192,15 +195,25 @@ Return the kind of the given big array.<br>
 Return the layout of the given big array.<br>
 </div>
 
+<pre><span id="VALchange_layout"><span class="keyword">val</span> change_layout</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -><br>       'd <a href="BatBigarray.html#TYPElayout">BatBigarray.layout</a> -> ('a, 'b, 'd) <a href="BatBigarray.Genarray.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code"><span class="constructor">Genarray</span>.change_layout&nbsp;a&nbsp;layout</code> returns a bigarray with the
+      specified <code class="code">layout</code>, sharing the data with <code class="code">a</code> (and hence having
+      the same dimensions as <code class="code">a</code>). No copying of elements is involved: the
+      new array and the original array share the same storage space.
+      The dimensions are reversed, such that <code class="code">get&nbsp;v&nbsp;[|&nbsp;a;&nbsp;b&nbsp;|]</code> in
+      C layout becomes <code class="code">get&nbsp;v&nbsp;[|&nbsp;b+1;&nbsp;a+1&nbsp;|]</code> in Fortran layout.<br>
+<b>Since</b> 2.5.3 and OCaml 4.04.0<br>
+</div>
+
 <pre><span id="VALsize_in_bytes"><span class="keyword">val</span> size_in_bytes</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> int</code></pre><div class="info ">
-<code class="code">size_in_bytes a</code> is the number of elements in <code class="code">a</code> multiplied
+<code class="code">size_in_bytes&nbsp;a</code> is the number of elements in <code class="code">a</code> multiplied
     by <code class="code">a</code>'s <a href="BatBigarray.html#VALkind_size_in_bytes"><code class="code"><span class="constructor">BatBigarray</span>.kind_size_in_bytes</code></a>.<br>
 <b>Since</b> 2.5.0<br>
 </div>
 
 <pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> int array -> 'a</code></pre><div class="info ">
 Read an element of a generic big array.
-    <code class="code"><span class="constructor">Genarray</span>.get a [|i1; ...; iN|]</code> returns the element of <code class="code">a</code>
+    <code class="code"><span class="constructor">Genarray</span>.get&nbsp;a&nbsp;[|i1;&nbsp;...;&nbsp;iN|]</code> returns the element of <code class="code">a</code>
     whose coordinates are <code class="code">i1</code> in the first dimension, <code class="code">i2</code> in
     the second dimension, ..., <code class="code">iN</code> in the <code class="code"><span class="constructor">N</span></code>-th dimension.
 <p>
@@ -213,8 +226,8 @@ Read an element of a generic big array.
     dimensions, or if the coordinates are outside the array bounds.
 <p>
 
-    If <code class="code"><span class="constructor">N</span> &gt; 3</code>, alternate syntax is provided: you can write
-    <code class="code">a.{i1, i2, ..., iN}</code> instead of <code class="code"><span class="constructor">Genarray</span>.get a [|i1; ...; iN|]</code>.
+    If <code class="code"><span class="constructor">N</span>&nbsp;&gt;&nbsp;3</code>, alternate syntax is provided: you can write
+    <code class="code">a.{i1,&nbsp;i2,&nbsp;...,&nbsp;iN}</code> instead of <code class="code"><span class="constructor">Genarray</span>.get&nbsp;a&nbsp;[|i1;&nbsp;...;&nbsp;iN|]</code>.
     (The syntax <code class="code">a.{...}</code> with one, two or three coordinates is
     reserved for accessing one-, two- and three-dimensional arrays
     as described below.)<br>
@@ -222,7 +235,7 @@ Read an element of a generic big array.
 
 <pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> int array -> 'a -> unit</code></pre><div class="info ">
 Assign an element of a generic big array.
-    <code class="code"><span class="constructor">Genarray</span>.set a [|i1; ...; iN|] v</code> stores the value <code class="code">v</code> in the
+    <code class="code"><span class="constructor">Genarray</span>.set&nbsp;a&nbsp;[|i1;&nbsp;...;&nbsp;iN|]&nbsp;v</code> stores the value <code class="code">v</code> in the
     element of <code class="code">a</code> whose coordinates are <code class="code">i1</code> in the first dimension,
     <code class="code">i2</code> in the second dimension, ..., <code class="code">iN</code> in the <code class="code"><span class="constructor">N</span></code>-th dimension.
 <p>
@@ -232,93 +245,93 @@ Assign an element of a generic big array.
 <b>Raises</b> <code>Invalid_argument</code> otherwise.
 <p>
 
-    If <code class="code"><span class="constructor">N</span> &gt; 3</code>, alternate syntax is provided: you can write
-    <code class="code">a.{i1, i2, ..., iN} &lt;- v</code> instead of
-    <code class="code"><span class="constructor">Genarray</span>.set a [|i1; ...; iN|] v</code>.
-    (The syntax <code class="code">a.{...} &lt;- v</code> with one, two or three coordinates is
+    If <code class="code"><span class="constructor">N</span>&nbsp;&gt;&nbsp;3</code>, alternate syntax is provided: you can write
+    <code class="code">a.{i1,&nbsp;i2,&nbsp;...,&nbsp;iN}&nbsp;&lt;-&nbsp;v</code> instead of
+    <code class="code"><span class="constructor">Genarray</span>.set&nbsp;a&nbsp;[|i1;&nbsp;...;&nbsp;iN|]&nbsp;v</code>.
+    (The syntax <code class="code">a.{...}&nbsp;&lt;-&nbsp;v</code> with one, two or three coordinates is
     reserved for updating one-, two- and three-dimensional arrays
     as described below.)<br>
 </div>
 
 <pre><span id="VALsub_left"><span class="keyword">val</span> sub_left</span> : <code class="type">('a, 'b, <a href="BatBigarray.html#TYPEc_layout">BatBigarray.c_layout</a>) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -><br>       int -> int -> ('a, 'b, <a href="BatBigarray.html#TYPEc_layout">BatBigarray.c_layout</a>) <a href="BatBigarray.Genarray.html#TYPEt">t</a></code></pre><div class="info ">
 Extract a sub-array of the given big array by restricting the
-    first (left-most) dimension.  <code class="code"><span class="constructor">Genarray</span>.sub_left a ofs len</code>
+    first (left-most) dimension.  <code class="code"><span class="constructor">Genarray</span>.sub_left&nbsp;a&nbsp;ofs&nbsp;len</code>
     returns a big array with the same number of dimensions as <code class="code">a</code>,
     and the same dimensions as <code class="code">a</code>, except the first dimension,
-    which corresponds to the interval <code class="code">[ofs ... ofs + len - 1]</code>
+    which corresponds to the interval <code class="code">[ofs&nbsp;...&nbsp;ofs&nbsp;+&nbsp;len&nbsp;-&nbsp;1]</code>
     of the first dimension of <code class="code">a</code>.  No copying of elements is
     involved: the sub-array and the original array share the same
     storage space.  In other terms, the element at coordinates
-    <code class="code">[|i1; ...; iN|]</code> of the sub-array is identical to the
-    element at coordinates <code class="code">[|i1+ofs; ...; iN|]</code> of the original
+    <code class="code">[|i1;&nbsp;...;&nbsp;iN|]</code> of the sub-array is identical to the
+    element at coordinates <code class="code">[|i1+ofs;&nbsp;...;&nbsp;iN|]</code> of the original
     array <code class="code">a</code>.
 <p>
 
     <code class="code"><span class="constructor">Genarray</span>.sub_left</code> applies only to big arrays in C layout.<br>
 <b>Raises</b> <code>Invalid_argument</code> if <code class="code">ofs</code> and <code class="code">len</code> do not designate
-    a valid sub-array of <code class="code">a</code>, that is, if <code class="code">ofs &lt; 0</code>, or <code class="code">len &lt; 0</code>,
-    or <code class="code">ofs + len &gt; <span class="constructor">Genarray</span>.nth_dim a 0</code>.<br>
+    a valid sub-array of <code class="code">a</code>, that is, if <code class="code">ofs&nbsp;&lt;&nbsp;0</code>, or <code class="code">len&nbsp;&lt;&nbsp;0</code>,
+    or <code class="code">ofs&nbsp;+&nbsp;len&nbsp;&gt;&nbsp;<span class="constructor">Genarray</span>.nth_dim&nbsp;a&nbsp;0</code>.<br>
 </div>
 
 <pre><span id="VALsub_right"><span class="keyword">val</span> sub_right</span> : <code class="type">('a, 'b, <a href="BatBigarray.html#TYPEfortran_layout">BatBigarray.fortran_layout</a>) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -><br>       int -> int -> ('a, 'b, <a href="BatBigarray.html#TYPEfortran_layout">BatBigarray.fortran_layout</a>) <a href="BatBigarray.Genarray.html#TYPEt">t</a></code></pre><div class="info ">
 Extract a sub-array of the given big array by restricting the
-    last (right-most) dimension.  <code class="code"><span class="constructor">Genarray</span>.sub_right a ofs len</code>
+    last (right-most) dimension.  <code class="code"><span class="constructor">Genarray</span>.sub_right&nbsp;a&nbsp;ofs&nbsp;len</code>
     returns a big array with the same number of dimensions as <code class="code">a</code>,
     and the same dimensions as <code class="code">a</code>, except the last dimension,
-    which corresponds to the interval <code class="code">[ofs ... ofs + len - 1]</code>
+    which corresponds to the interval <code class="code">[ofs&nbsp;...&nbsp;ofs&nbsp;+&nbsp;len&nbsp;-&nbsp;1]</code>
     of the last dimension of <code class="code">a</code>.  No copying of elements is
     involved: the sub-array and the original array share the same
     storage space.  In other terms, the element at coordinates
-    <code class="code">[|i1; ...; iN|]</code> of the sub-array is identical to the
-    element at coordinates <code class="code">[|i1; ...; iN+ofs|]</code> of the original
+    <code class="code">[|i1;&nbsp;...;&nbsp;iN|]</code> of the sub-array is identical to the
+    element at coordinates <code class="code">[|i1;&nbsp;...;&nbsp;iN+ofs|]</code> of the original
     array <code class="code">a</code>.
 <p>
 
     <code class="code"><span class="constructor">Genarray</span>.sub_right</code> applies only to big arrays in Fortran layout.<br>
 <b>Raises</b> <code>Invalid_argument</code> if <code class="code">ofs</code> and <code class="code">len</code> do not designate
-    a valid sub-array of <code class="code">a</code>, that is, if <code class="code">ofs &lt; 1</code>, or <code class="code">len &lt; 0</code>,
-    or <code class="code">ofs + len &gt; <span class="constructor">Genarray</span>.nth_dim a (<span class="constructor">Genarray</span>.num_dims a - 1)</code>.<br>
+    a valid sub-array of <code class="code">a</code>, that is, if <code class="code">ofs&nbsp;&lt;&nbsp;1</code>, or <code class="code">len&nbsp;&lt;&nbsp;0</code>,
+    or <code class="code">ofs&nbsp;+&nbsp;len&nbsp;&gt;&nbsp;<span class="constructor">Genarray</span>.nth_dim&nbsp;a&nbsp;(<span class="constructor">Genarray</span>.num_dims&nbsp;a&nbsp;-&nbsp;1)</code>.<br>
 </div>
 
 <pre><span id="VALslice_left"><span class="keyword">val</span> slice_left</span> : <code class="type">('a, 'b, <a href="BatBigarray.html#TYPEc_layout">BatBigarray.c_layout</a>) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -><br>       int array -> ('a, 'b, <a href="BatBigarray.html#TYPEc_layout">BatBigarray.c_layout</a>) <a href="BatBigarray.Genarray.html#TYPEt">t</a></code></pre><div class="info ">
 Extract a sub-array of lower dimension from the given big array
     by fixing one or several of the first (left-most) coordinates.
-    <code class="code"><span class="constructor">Genarray</span>.slice_left a [|i1; ... ; iM|]</code> returns the ``slice''
+    <code class="code"><span class="constructor">Genarray</span>.slice_left&nbsp;a&nbsp;[|i1;&nbsp;...&nbsp;;&nbsp;iM|]</code> returns the ``slice''
     of <code class="code">a</code> obtained by setting the first <code class="code"><span class="constructor">M</span></code> coordinates to
     <code class="code">i1</code>, ..., <code class="code">iM</code>.  If <code class="code">a</code> has <code class="code"><span class="constructor">N</span></code> dimensions, the slice has
-    dimension <code class="code"><span class="constructor">N</span> - <span class="constructor">M</span></code>, and the element at coordinates
-    <code class="code">[|j1; ...; j(<span class="constructor">N</span>-<span class="constructor">M</span>)|]</code> in the slice is identical to the element
-    at coordinates <code class="code">[|i1; ...; iM; j1; ...; j(<span class="constructor">N</span>-<span class="constructor">M</span>)|]</code> in the original
+    dimension <code class="code"><span class="constructor">N</span>&nbsp;-&nbsp;<span class="constructor">M</span></code>, and the element at coordinates
+    <code class="code">[|j1;&nbsp;...;&nbsp;j(<span class="constructor">N</span>-<span class="constructor">M</span>)|]</code> in the slice is identical to the element
+    at coordinates <code class="code">[|i1;&nbsp;...;&nbsp;iM;&nbsp;j1;&nbsp;...;&nbsp;j(<span class="constructor">N</span>-<span class="constructor">M</span>)|]</code> in the original
     array <code class="code">a</code>.  No copying of elements is involved: the slice and
     the original array share the same storage space.
 <p>
 
     <code class="code"><span class="constructor">Genarray</span>.slice_left</code> applies only to big arrays in C layout.<br>
-<b>Raises</b> <code>Invalid_argument</code> if <code class="code"><span class="constructor">M</span> &gt;= <span class="constructor">N</span></code>, or if <code class="code">[|i1; ... ; iM|]</code>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code"><span class="constructor">M</span>&nbsp;&gt;=&nbsp;<span class="constructor">N</span></code>, or if <code class="code">[|i1;&nbsp;...&nbsp;;&nbsp;iM|]</code>
     is outside the bounds of <code class="code">a</code>.<br>
 </div>
 
 <pre><span id="VALslice_right"><span class="keyword">val</span> slice_right</span> : <code class="type">('a, 'b, <a href="BatBigarray.html#TYPEfortran_layout">BatBigarray.fortran_layout</a>) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -><br>       int array -> ('a, 'b, <a href="BatBigarray.html#TYPEfortran_layout">BatBigarray.fortran_layout</a>) <a href="BatBigarray.Genarray.html#TYPEt">t</a></code></pre><div class="info ">
 Extract a sub-array of lower dimension from the given big array
     by fixing one or several of the last (right-most) coordinates.
-    <code class="code"><span class="constructor">Genarray</span>.slice_right a [|i1; ... ; iM|]</code> returns the ``slice''
+    <code class="code"><span class="constructor">Genarray</span>.slice_right&nbsp;a&nbsp;[|i1;&nbsp;...&nbsp;;&nbsp;iM|]</code> returns the ``slice''
     of <code class="code">a</code> obtained by setting the last <code class="code"><span class="constructor">M</span></code> coordinates to
     <code class="code">i1</code>, ..., <code class="code">iM</code>.  If <code class="code">a</code> has <code class="code"><span class="constructor">N</span></code> dimensions, the slice has
-    dimension <code class="code"><span class="constructor">N</span> - <span class="constructor">M</span></code>, and the element at coordinates
-    <code class="code">[|j1; ...; j(<span class="constructor">N</span>-<span class="constructor">M</span>)|]</code> in the slice is identical to the element
-    at coordinates <code class="code">[|j1; ...; j(<span class="constructor">N</span>-<span class="constructor">M</span>); i1; ...; iM|]</code> in the original
+    dimension <code class="code"><span class="constructor">N</span>&nbsp;-&nbsp;<span class="constructor">M</span></code>, and the element at coordinates
+    <code class="code">[|j1;&nbsp;...;&nbsp;j(<span class="constructor">N</span>-<span class="constructor">M</span>)|]</code> in the slice is identical to the element
+    at coordinates <code class="code">[|j1;&nbsp;...;&nbsp;j(<span class="constructor">N</span>-<span class="constructor">M</span>);&nbsp;i1;&nbsp;...;&nbsp;iM|]</code> in the original
     array <code class="code">a</code>.  No copying of elements is involved: the slice and
     the original array share the same storage space.
 <p>
 
     <code class="code"><span class="constructor">Genarray</span>.slice_right</code> applies only to big arrays in Fortran layout.<br>
-<b>Raises</b> <code>Invalid_argument</code> if <code class="code"><span class="constructor">M</span> &gt;= <span class="constructor">N</span></code>, or if <code class="code">[|i1; ... ; iM|]</code>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code"><span class="constructor">M</span>&nbsp;&gt;=&nbsp;<span class="constructor">N</span></code>, or if <code class="code">[|i1;&nbsp;...&nbsp;;&nbsp;iM|]</code>
     is outside the bounds of <code class="code">a</code>.<br>
 </div>
 
 <pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -><br>       ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 Copy all elements of a big array in another big array.
-    <code class="code"><span class="constructor">Genarray</span>.blit src dst</code> copies all elements of <code class="code">src</code> into
+    <code class="code"><span class="constructor">Genarray</span>.blit&nbsp;src&nbsp;dst</code> copies all elements of <code class="code">src</code> into
     <code class="code">dst</code>.  Both arrays <code class="code">src</code> and <code class="code">dst</code> must have the same number of
     dimensions and equal dimensions.  Copying a sub-array of <code class="code">src</code>
     to a sub-array of <code class="code">dst</code> can be achieved by applying <code class="code"><span class="constructor">Genarray</span>.blit</code>
@@ -327,7 +340,7 @@ Copy all elements of a big array in another big array.
 
 <pre><span id="VALfill"><span class="keyword">val</span> fill</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> 'a -> unit</code></pre><div class="info ">
 Set all elements of a big array to a given value.
-    <code class="code"><span class="constructor">Genarray</span>.fill a v</code> stores the value <code class="code">v</code> in all elements of
+    <code class="code"><span class="constructor">Genarray</span>.fill&nbsp;a&nbsp;v</code> stores the value <code class="code">v</code> in all elements of
     the big array <code class="code">a</code>.  Setting only some elements of <code class="code">a</code> to <code class="code">v</code>
     can be achieved by applying <code class="code"><span class="constructor">Genarray</span>.fill</code> to a sub-array
     or a slice of <code class="code">a</code>.<br>
@@ -335,7 +348,7 @@ Set all elements of a big array to a given value.
 
 <pre><span id="VALmap_file"><span class="keyword">val</span> map_file</span> : <code class="type">Unix.file_descr -><br>       ?pos:int64 -><br>       ('a, 'b) <a href="BatBigarray.html#TYPEkind">BatBigarray.kind</a> -><br>       'c <a href="BatBigarray.html#TYPElayout">BatBigarray.layout</a> -><br>       bool -> int array -> ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a></code></pre><div class="info ">
 Memory mapping of a file as a big array.
-    <code class="code"><span class="constructor">Genarray</span>.map_file fd kind layout shared dims</code>
+    <code class="code"><span class="constructor">Genarray</span>.map_file&nbsp;fd&nbsp;kind&nbsp;layout&nbsp;shared&nbsp;dims</code>
     returns a big array of kind <code class="code">kind</code>, layout <code class="code">layout</code>,
     and dimensions as specified in <code class="code">dims</code>.  The data contained in
     this big array are the contents of the file referred to by
@@ -377,7 +390,7 @@ Memory mapping of a file as a big array.
 </div>
 
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">iter f a</code> applies function <code class="code">f</code> in turn to all
+<code class="code">iter&nbsp;f&nbsp;a</code> applies function <code class="code">f</code> in turn to all
     the elements of <code class="code">a</code>.<br>
 </div>
 
@@ -388,7 +401,7 @@ Same as <a href="BatBigarray.Genarray.html#VALiter"><code class="code"><span cla
 </div>
 
 <pre><span id="VALmodify"><span class="keyword">val</span> modify</span> : <code class="type">('a -> 'a) -> ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">modify f a</code> changes each element <code class="code">x</code> in <code class="code">a</code> to <code class="code">f x</code>
+<code class="code">modify&nbsp;f&nbsp;a</code> changes each element <code class="code">x</code> in <code class="code">a</code> to <code class="code">f&nbsp;x</code>
       in-place.<br>
 </div>
 
@@ -399,12 +412,12 @@ Same as <a href="BatBigarray.Genarray.html#VALmodify"><code class="code"><span c
 </div>
 
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-<code class="code">enum e</code> returns an enumeration on the elements of <code class="code">e</code>.
+<code class="code">enum&nbsp;e</code> returns an enumeration on the elements of <code class="code">e</code>.
     The order of enumeration is unspecified.<br>
 </div>
 
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -><br>       ('b, 'c) Bigarray.kind -><br>       ('a, 'd, 'e) <a href="BatBigarray.Genarray.html#TYPEt">t</a> -> ('b, 'c, 'e) <a href="BatBigarray.Genarray.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">map f kind a</code> applies function <code class="code">f</code> to all the elements of <code class="code">a</code>,
+<code class="code">map&nbsp;f&nbsp;kind&nbsp;a</code> applies function <code class="code">f</code> to all the elements of <code class="code">a</code>,
       and builds a <code class="code"><span class="constructor">Bigarray</span>.t</code> of kind <code class="code">kind</code> with the results
       returned by <code class="code">f</code>.<br>
 </div>

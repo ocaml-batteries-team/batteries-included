@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="Up" href="BatScanf.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
@@ -26,6 +27,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -66,6 +68,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -133,7 +136,7 @@ The type of scanning buffers. A scanning buffer is the source from which a
 
 <pre><span id="VALstdib"><span class="keyword">val</span> stdib</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a></code></pre><div class="info ">
 The scanning buffer reading from <code class="code">stdin</code>.
-      <code class="code">stdib</code> is equivalent to <code class="code"><span class="constructor">Scanning</span>.from_input stdin</code>.
+      <code class="code">stdib</code> is equivalent to <code class="code"><span class="constructor">Scanning</span>.from_input&nbsp;stdin</code>.
 <p>
 
       Note: when input is read interactively from <code class="code">stdin</code>, the newline character
@@ -143,7 +146,7 @@ The scanning buffer reading from <code class="code">stdin</code>.
 </div>
 
 <pre><span id="VALfrom_string"><span class="keyword">val</span> from_string</span> : <code class="type">string -> <a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a></code></pre><div class="info ">
-<code class="code"><span class="constructor">Scanning</span>.from_string s</code> returns a scanning buffer which reads from the
+<code class="code"><span class="constructor">Scanning</span>.from_string&nbsp;s</code> returns a scanning buffer which reads from the
       given string.
       Reading starts from the first character in the string.
       The end-of-input condition is set when the end of the string is reached.<br>
@@ -154,7 +157,7 @@ Bufferized file reading in text mode. The efficient and usual
       way to scan text mode files (in effect, <code class="code">from_file</code> returns a
       scanning buffer that reads characters in large chunks, rather than one
       character at a time as buffers returned by <code class="code">from_channel</code> do).
-      <code class="code"><span class="constructor">Scanning</span>.from_file fname</code> returns a scanning buffer which reads
+      <code class="code"><span class="constructor">Scanning</span>.from_file&nbsp;fname</code> returns a scanning buffer which reads
       from the given file <code class="code">fname</code> in text mode.<br>
 </div>
 
@@ -163,7 +166,7 @@ Bufferized file reading in binary mode.<br>
 </div>
 
 <pre><span id="VALfrom_function"><span class="keyword">val</span> from_function</span> : <code class="type">(unit -> char) -> <a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a></code></pre><div class="info ">
-<code class="code"><span class="constructor">Scanning</span>.from_function f</code> returns a scanning buffer with the given
+<code class="code"><span class="constructor">Scanning</span>.from_function&nbsp;f</code> returns a scanning buffer with the given
       function as its reading method.
 <p>
 
@@ -175,22 +178,22 @@ Bufferized file reading in binary mode.<br>
 </div>
 
 <pre><span id="VALfrom_input"><span class="keyword">val</span> from_input</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> <a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a></code></pre><div class="info ">
-<code class="code"><span class="constructor">Scanning</span>.from_channel ic</code> returns a scanning buffer which reads from the
+<code class="code"><span class="constructor">Scanning</span>.from_channel&nbsp;ic</code> returns a scanning buffer which reads from the
       input channel <code class="code">ic</code>, starting at the current reading position.<br>
 </div>
 
 <pre><span id="VALend_of_input"><span class="keyword">val</span> end_of_input</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a> -> bool</code></pre><div class="info ">
-<code class="code"><span class="constructor">Scanning</span>.end_of_input ib</code> tests the end-of-input condition of the given
+<code class="code"><span class="constructor">Scanning</span>.end_of_input&nbsp;ib</code> tests the end-of-input condition of the given
       scanning buffer.<br>
 </div>
 
 <pre><span id="VALbeginning_of_input"><span class="keyword">val</span> beginning_of_input</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a> -> bool</code></pre><div class="info ">
-<code class="code"><span class="constructor">Scanning</span>.beginning_of_input ib</code> tests the beginning of input condition of
+<code class="code"><span class="constructor">Scanning</span>.beginning_of_input&nbsp;ib</code> tests the beginning of input condition of
       the given scanning buffer.<br>
 </div>
 
 <pre><span id="VALname_of_input"><span class="keyword">val</span> name_of_input</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a> -> string</code></pre><div class="info ">
-<code class="code"><span class="constructor">Scanning</span>.file_name_of_input ib</code> returns the name of the character source
+<code class="code"><span class="constructor">Scanning</span>.file_name_of_input&nbsp;ib</code> returns the name of the character source
       for the scanning buffer <code class="code">ib</code>.<br>
 </div>
 <br>

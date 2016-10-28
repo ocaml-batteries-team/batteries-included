@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatBytes.html">
 <link rel="next" href="BatChar.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -126,20 +129,20 @@ The data structure for a manual cache with keys <code class="code"><span class="
     result.
 <p>
 
-    When <code class="code">c.get k</code> is called, an internal structure is first consulted to
-    see if <code class="code">f k</code> has been stored in that structure.  If it has, then
-    that previous result is returned, otherwise, <code class="code">f k</code> is evaluated,
+    When <code class="code">c.get&nbsp;k</code> is called, an internal structure is first consulted to
+    see if <code class="code">f&nbsp;k</code> has been stored in that structure.  If it has, then
+    that previous result is returned, otherwise, <code class="code">f&nbsp;k</code> is evaluated,
     the result stored in the caching structure and also returned to
     the user.
 <p>
 
     The user is allowed to remove a value from the caching structure
-    with <code class="code">c.del k</code>.  This allows the user to prevent unbounded growth
+    with <code class="code">c.del&nbsp;k</code>.  This allows the user to prevent unbounded growth
     of the cache by removing unneeded entries.  If the user prefers an
     automatically managed cache, this module provides <code class="code">!auto_cache</code>.
 <p>
 
-    Last, <code class="code">c.enum ()</code> will enumerate all the currently memorized
+    Last, <code class="code">c.enum&nbsp;()</code> will enumerate all the currently memorized
     bindings as pairs.  This allows inspection of what is currently
     cached.<br>
 </div>

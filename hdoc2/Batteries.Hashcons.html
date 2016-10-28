@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="Batteries.Deque.html">
 <link rel="next" href="Batteries.Heap.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -147,7 +150,7 @@ Hash code for this object<br>
 }
 
 <div class="info ">
-The type <code class="code">t hobj</code> represents hashed objects of type <code class="code">t</code>. A hashed
+The type <code class="code">t&nbsp;hobj</code> represents hashed objects of type <code class="code">t</code>. A hashed
     object contains a unique tag and a hash code.<br>
 </div>
 
@@ -166,7 +169,7 @@ Comparison on the tags<br>
 Hashcons tables
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatHashcons.MakeTable.html">MakeTable</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">HT</span></code><code class="code"> : </code><code class="type"><a href="BatHashtbl.HashedType.html">BatHashtbl.HashedType</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatHashcons.Table.html">Table</a></code><code class="type">  with type key = HT.t</code></div></pre>
+<pre><span class="keyword">module</span> <a href="BatHashcons.MakeTable.html">MakeTable</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">HT</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatHashtbl.HashedType.html">BatHashtbl.HashedType</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatHashcons.Table.html">Table</a></code><code class="type">  with type key = HT.t</code></div></pre>
 <pre><span class="keyword">module</span> <a href="BatHashcons.H.html">H</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashcons.H.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
 Hashing utilities
 </div>

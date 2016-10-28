@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="Batteries.Enum.html">
 <link rel="next" href="Batteries.Global.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -124,21 +127,21 @@
 <h6 id="6_Utilities">Utilities</h6><br>
 
 <pre><span id="VALlines_of"><span class="keyword">val</span> lines_of</span> : <code class="type">string -> string <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-<code class="code">line_of name</code> reads the contents of file <code class="code">name</code> as an enumeration of lines.
+<code class="code">line_of&nbsp;name</code> reads the contents of file <code class="code">name</code> as an enumeration of lines.
     The file is automatically closed once the last line has been reached or the
     enumeration is garbage-collected.<br>
 </div>
 
 <pre><span id="VALwrite_lines"><span class="keyword">val</span> write_lines</span> : <code class="type">string -> string <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info ">
-<code class="code">write_lines name lines</code> writes strings given by <code class="code">lines</code> to file <code class="code">name</code> with newline character appended to each line.<br>
+<code class="code">write_lines&nbsp;name&nbsp;lines</code> writes strings given by <code class="code">lines</code> to file <code class="code">name</code> with newline character appended to each line.<br>
 </div>
 
 <pre><span id="VALsize_of"><span class="keyword">val</span> size_of</span> : <code class="type">string -> int</code></pre><div class="info ">
-<code class="code">size_of name</code> returns the size of file <code class="code">name</code> in bytes.<br>
+<code class="code">size_of&nbsp;name</code> returns the size of file <code class="code">name</code> in bytes.<br>
 </div>
 
 <pre><span id="VALsize_of_big"><span class="keyword">val</span> size_of_big</span> : <code class="type">string -> Int64.t</code></pre><div class="info ">
-<code class="code">size_of_big name</code> returns the size of file <code class="code">name</code> in bytes, as a 64-bit integer.
+<code class="code">size_of_big&nbsp;name</code> returns the size of file <code class="code">name</code> in bytes, as a 64-bit integer.
 <p>
 
     This function is provided as the size of a file larger than 1 Gb cannot
@@ -215,7 +218,7 @@ Join permissions<br>
 Create a permission from a Unix-style octal integer.
    See your favorite Unix documentation on <code class="code">chmod</code>
    for more details.<br>
-<b>Raises</b> <code>Invalid_argument</code> if given number outside the <code class="code">[0, 0o777]</code> range<br>
+<b>Raises</b> <code>Invalid_argument</code> if given number outside the <code class="code">[0,&nbsp;0o777]</code> range<br>
 </div>
 
 <pre><span id="VALset_permissions"><span class="keyword">val</span> set_permissions</span> : <code class="type">string -> <a href="BatFile.html#TYPEpermission">permission</a> -> unit</code></pre><div class="info ">
@@ -232,7 +235,7 @@ As <a href="BatFile.html#VALset_permissions"><code class="code"><span class="con
 
 
 <pre><span id="VALopen_in"><span class="keyword">val</span> open_in</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_in_flag">open_in_flag</a> list -><br>       ?perm:<a href="BatFile.html#TYPEpermission">permission</a> -> string -> <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a></code></pre><div class="info ">
-<code class="code">open_in file_name</code> opens the file named <code class="code">file_name</code> for reading.
+<code class="code">open_in&nbsp;file_name</code> opens the file named <code class="code">file_name</code> for reading.
 <p>
 
     <b>Note</b> You will need to close the file manually, with
@@ -244,7 +247,7 @@ As <a href="BatFile.html#VALset_permissions"><code class="code"><span class="con
 </div>
 
 <pre><span id="VALwith_file_in"><span class="keyword">val</span> with_file_in</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_in_flag">open_in_flag</a> list -><br>       ?perm:<a href="BatFile.html#TYPEpermission">permission</a> -> string -> (<a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> 'a) -> 'a</code></pre><div class="info ">
-<code class="code">with_file_in file_name f</code> opens the file named <code class="code">file_name</code> for reading,
+<code class="code">with_file_in&nbsp;file_name&nbsp;f</code> opens the file named <code class="code">file_name</code> for reading,
     invokes <code class="code">f</code> to process the contents of that file then, once <code class="code">f</code> has returned
     or triggered an exception, closes the file before proceeding.<br>
 </div>
@@ -255,12 +258,12 @@ As <a href="BatFile.html#VALset_permissions"><code class="code"><span class="con
 <div class="info ">
 Flags governing file output; they correspond to the relevant
     flags to the POSIX <code class="code"><span class="keyword">open</span>()</code> call.  The default flags are
-    <code class="code">[<span class="keywordsign">`</span>create; <span class="keywordsign">`</span>trunc]</code>.<br>
+    <code class="code">[<span class="keywordsign">`</span>create;&nbsp;<span class="keywordsign">`</span>trunc]</code>.<br>
 </div>
 
 
 <pre><span id="VALopen_out"><span class="keyword">val</span> open_out</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_out_flag">open_out_flag</a> list -><br>       ?perm:<a href="BatFile.html#TYPEpermission">permission</a> -> string -> unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a></code></pre><div class="info ">
-<code class="code">open_out file_name</code> opens the file named <code class="code">file_name</code> for writing.
+<code class="code">open_out&nbsp;file_name</code> opens the file named <code class="code">file_name</code> for writing.
 <p>
 
     <b>Note</b> You will need to close the file manually, with
@@ -272,7 +275,7 @@ Flags governing file output; they correspond to the relevant
 </div>
 
 <pre><span id="VALwith_file_out"><span class="keyword">val</span> with_file_out</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_out_flag">open_out_flag</a> list -><br>       ?perm:<a href="BatFile.html#TYPEpermission">permission</a> -> string -> (unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'a) -> 'a</code></pre><div class="info ">
-<code class="code">with_file_out file_name f</code> opens the file named <code class="code">file_name</code> for writing,
+<code class="code">with_file_out&nbsp;file_name&nbsp;f</code> opens the file named <code class="code">file_name</code> for writing,
     invokes <code class="code">f</code> to write onto that file then, once <code class="code">f</code> has returned or triggered
     an exception, closes the file before proceeding.<br>
 </div>
@@ -283,7 +286,7 @@ Flags governing file output; they correspond to the relevant
 
 
 <pre><span id="VALopen_temporary_out"><span class="keyword">val</span> open_temporary_out</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_temporary_out_flag">open_temporary_out_flag</a> list -><br>       ?prefix:string -><br>       ?suffix:string -> ?temp_dir:string -> unit -> unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> * string</code></pre><div class="info ">
-<code class="code">open_temporary_out ()</code> opens a new temporary file for writing.<br>
+<code class="code">open_temporary_out&nbsp;()</code> opens a new temporary file for writing.<br>
 <b>Returns</b> The name of the file and the <code class="code">output</code> for writing in it.
 <p>
 
@@ -300,7 +303,7 @@ Flags governing file output; they correspond to the relevant
 <div class="param_info"><code class="code">temp_dir</code> : indicates what temp dir to use</div>
 
 <pre><span id="VALwith_temporary_out"><span class="keyword">val</span> with_temporary_out</span> : <code class="type">?mode:<a href="BatFile.html#TYPEopen_temporary_out_flag">open_temporary_out_flag</a> list -><br>       ?prefix:string -><br>       ?suffix:string -><br>       ?temp_dir:string -> (unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> string -> 'a) -> 'a</code></pre><div class="info ">
-<code class="code">with_temporary_out f</code> opens a new temporary file for writing, invokes <code class="code">f</code> with
+<code class="code">with_temporary_out&nbsp;f</code> opens a new temporary file for writing, invokes <code class="code">f</code> with
       to write onto that file then, once <code class="code">f</code> has returned or triggered an exception,
       closes the file before proceeding.<br>
 <b>Returns</b> The name of the file and the <code class="code">output</code> for writing in it.

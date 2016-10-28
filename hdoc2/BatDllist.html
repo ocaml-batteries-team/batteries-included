@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatDigest.html">
 <link rel="next" href="BatDynArray.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -165,30 +168,30 @@ Returns the length of the list.  This is an O(N) operation.<br>
 <pre><span id="VALrev"><span class="keyword">val</span> rev</span> : <code class="type">'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> unit</code></pre><div class="info ">
 List reversal.  This is an O(N) operation.
     The given node still points to the same element, so
-    <code class="code">to_list (rev (of_list [1;2;3;4])) = [1;4;3;2]</code><br>
+    <code class="code">to_list&nbsp;(rev&nbsp;(of_list&nbsp;[1;2;3;4]))&nbsp;=&nbsp;[1;4;3;2]</code><br>
 </div>
 
 <pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> 'a -> unit</code></pre><div class="info ">
-<code class="code">add n a</code> Creates a new node containing data <code class="code">a</code> and inserts it into
+<code class="code">add&nbsp;n&nbsp;a</code> Creates a new node containing data <code class="code">a</code> and inserts it into
     the list after node <code class="code">n</code>.  This is an O(1) operation.<br>
 </div>
 
 <pre><span id="VALappend"><span class="keyword">val</span> append</span> : <code class="type">'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> 'a -> 'a <a href="BatDllist.html#TYPEnode_t">node_t</a></code></pre><div class="info ">
-<code class="code">append n a</code> Creates a new node containing data <code class="code">a</code> and inserts it into
+<code class="code">append&nbsp;n&nbsp;a</code> Creates a new node containing data <code class="code">a</code> and inserts it into
     the list after node <code class="code">n</code>. Returns new node.  This is an O(1) operation.<br>
 </div>
 
 <pre><span id="VALprepend"><span class="keyword">val</span> prepend</span> : <code class="type">'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> 'a -> 'a <a href="BatDllist.html#TYPEnode_t">node_t</a></code></pre><div class="info ">
-<code class="code">prepend n a</code> Creates a new node containing data <code class="code">a</code> and inserts it into
+<code class="code">prepend&nbsp;n&nbsp;a</code> Creates a new node containing data <code class="code">a</code> and inserts it into
     the list before node <code class="code">n</code>. Returns new node.  This is an O(1) operation.<br>
 </div>
 
 <pre><span id="VALpromote"><span class="keyword">val</span> promote</span> : <code class="type">'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> unit</code></pre><div class="info ">
-<code class="code">promote n</code> Swaps <code class="code">n</code> with <code class="code">next n</code>.  This is an O(1) operation.<br>
+<code class="code">promote&nbsp;n</code> Swaps <code class="code">n</code> with <code class="code">next&nbsp;n</code>.  This is an O(1) operation.<br>
 </div>
 
 <pre><span id="VALdemote"><span class="keyword">val</span> demote</span> : <code class="type">'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> unit</code></pre><div class="info ">
-<code class="code">demote n</code> Swaps <code class="code">n</code> with <code class="code">prev n</code>.  This is an O(1) operation.<br>
+<code class="code">demote&nbsp;n</code> Swaps <code class="code">n</code> with <code class="code">prev&nbsp;n</code>.  This is an O(1) operation.<br>
 </div>
 
 <pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> unit</code></pre><div class="info ">
@@ -209,8 +212,8 @@ Remove node from the list no matter where it is. Return previous node.  This
 </div>
 
 <pre><span id="VALsplice"><span class="keyword">val</span> splice</span> : <code class="type">'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> 'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> unit</code></pre><div class="info ">
-<code class="code">splice n1 n2</code> Connects <code class="code">n1</code> and <code class="code">n2</code> so that
-    <code class="code">next n1 == n2 <span class="keywordsign">&amp;&amp;</span> prev n2 == n1</code>. This can be used to connect two discrete
+<code class="code">splice&nbsp;n1&nbsp;n2</code> Connects <code class="code">n1</code> and <code class="code">n2</code> so that
+    <code class="code">next&nbsp;n1&nbsp;==&nbsp;n2&nbsp;<span class="keywordsign">&amp;&amp;</span>&nbsp;prev&nbsp;n2&nbsp;==&nbsp;n1</code>. This can be used to connect two discrete
     lists, or, if used on two nodes within the same list, it can be used to
     separate the nodes between <code class="code">n1</code> and <code class="code">n2</code> from the rest of the list. In this
     case, those nodes become a discrete list by themselves.  This is an O(1)
@@ -250,13 +253,13 @@ Given a node, get the previous element in the list before the node.
 </div>
 
 <pre><span id="VALskip"><span class="keyword">val</span> skip</span> : <code class="type">'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> int -> 'a <a href="BatDllist.html#TYPEnode_t">node_t</a></code></pre><div class="info ">
-<code class="code">skip n i</code> Return the node that is <code class="code">i</code> nodes after node <code class="code">n</code> in the list.
+<code class="code">skip&nbsp;n&nbsp;i</code> Return the node that is <code class="code">i</code> nodes after node <code class="code">n</code> in the list.
     If <code class="code">i</code> is negative then return the node that is <code class="code">i</code> nodes before node <code class="code">n</code>
     in the list.  This is an O(N) operation.<br>
 </div>
 
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> 'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> unit</code></pre><div class="info ">
-<code class="code">iter f n</code> Apply <code class="code">f</code> to every element in the list, starting at <code class="code">n</code>.  This
+<code class="code">iter&nbsp;f&nbsp;n</code> Apply <code class="code">f</code> to every element in the list, starting at <code class="code">n</code>.  This
     is an O(N) operation.<br>
 </div>
 
@@ -273,7 +276,7 @@ Accumulate a value over the entire list.
 </div>
 
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('a -> bool) -> 'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> 'a <a href="BatDllist.html#TYPEnode_t">node_t</a></code></pre><div class="info ">
-<code class="code">find p l</code> returns the first element, <code class="code">l</code> or after, for which <code class="code">p</code>
+<code class="code">find&nbsp;p&nbsp;l</code> returns the first element, <code class="code">l</code> or after, for which <code class="code">p</code>
     returns true.<br>
 <b>Raises</b> <code>Not_found</code> if no such element exists<br>
 </div>
@@ -295,7 +298,7 @@ Allocate a new list, with entirely new nodes, whose values are
 </div>
 
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('a -> bool) -> 'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> 'a <a href="BatDllist.html#TYPEnode_t">node_t</a></code></pre><div class="info ">
-<code class="code">filter p l</code> returns a new list, with entirely new nodes, whose
+<code class="code">filter&nbsp;p&nbsp;l</code> returns a new list, with entirely new nodes, whose
     values are all the elements of the list <code class="code">l</code> that satisfy the
     predicate <code class="code">p</code>.  The order of the elements in the input list is
     preserved.<br>
@@ -303,9 +306,9 @@ Allocate a new list, with entirely new nodes, whose values are
 </div>
 
 <pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">('a -> 'b option) -> 'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> 'b <a href="BatDllist.html#TYPEnode_t">node_t</a></code></pre><div class="info ">
-<code class="code">filter_map f l</code> calls <code class="code">(f a0) (f a1) ... (f an)</code> where <code class="code">a0,a1...an</code>
+<code class="code">filter_map&nbsp;f&nbsp;l</code> calls <code class="code">(f&nbsp;a0)&nbsp;(f&nbsp;a1)&nbsp;...&nbsp;(f&nbsp;an)</code> where <code class="code">a0,a1...an</code>
     are the elements of <code class="code">l</code>. It returns a new list of elements <code class="code">bi</code>
-    such as <code class="code">f ai = <span class="constructor">Some</span> bi</code> (when <code class="code">f</code> returns <code class="code"><span class="constructor">None</span></code>, the
+    such as <code class="code">f&nbsp;ai&nbsp;=&nbsp;<span class="constructor">Some</span>&nbsp;bi</code> (when <code class="code">f</code> returns <code class="code"><span class="constructor">None</span></code>, the
     corresponding element of <code class="code">l</code> is discarded).<br>
 <b>Raises</b> <code>Empty</code> if the resulting list is empty.<br>
 </div>
@@ -332,7 +335,7 @@ Create an enum of the list.
 <pre><span id="VALrev_enum"><span class="keyword">val</span> rev_enum</span> : <code class="type">'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 Create a reverse enum of the list.
     The enumeration starts with the current element of the list:
-    <code class="code">rev_enum (of_list [1;2;3;4])</code> will generate the enumeration <code class="code">[1;4;3;2]</code>.
+    <code class="code">rev_enum&nbsp;(of_list&nbsp;[1;2;3;4])</code> will generate the enumeration <code class="code">[1;4;3;2]</code>.
 <p>
 
     If you want it to start with the last one, see <code class="code">backwards</code>.
@@ -343,11 +346,11 @@ Create a reverse enum of the list.
 </div>
 
 <pre><span id="VALbackwards"><span class="keyword">val</span> backwards</span> : <code class="type">'a <a href="BatDllist.html#TYPEnode_t">node_t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-<code class="code">backwards t</code> is similar to <code class="code">rev_enum t</code> except that the enumeration
+<code class="code">backwards&nbsp;t</code> is similar to <code class="code">rev_enum&nbsp;t</code> except that the enumeration
     starts at the node before the current one:
 <p>
 
-    <code class="code">backwards (of_list [1;2;3;4])</code> will generate the enumeration <code class="code">[4;3;2;1]</code>.<br>
+    <code class="code">backwards&nbsp;(of_list&nbsp;[1;2;3;4])</code> will generate the enumeration <code class="code">[4;3;2;1]</code>.<br>
 </div>
 
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatDllist.html#TYPEnode_t">node_t</a></code></pre><div class="info ">

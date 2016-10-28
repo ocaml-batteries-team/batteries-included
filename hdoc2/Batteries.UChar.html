@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="Batteries.Uref.html">
 <link rel="next" href="Batteries.UTF8.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -122,20 +125,20 @@
 <pre><span id="EXCEPTIONOut_of_range"><span class="keyword">exception</span> Out_of_range</span></pre>
 
 <pre><span id="VALchar_of"><span class="keyword">val</span> char_of</span> : <code class="type"><a href="BatUChar.html#TYPEt">t</a> -> char</code></pre><div class="info ">
-<code class="code">char_of u</code> returns the Latin-1 representation of <code class="code">u</code>.
+<code class="code">char_of&nbsp;u</code> returns the Latin-1 representation of <code class="code">u</code>.
     If <code class="code">u</code> can not be represented by Latin-1, raises Out_of_range<br>
 </div>
 
 <pre><span id="VALof_char"><span class="keyword">val</span> of_char</span> : <code class="type">char -> <a href="BatUChar.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">of_char c</code> returns the Unicode character of the Latin-1 character <code class="code">c</code><br>
+<code class="code">of_char&nbsp;c</code> returns the Unicode character of the Latin-1 character <code class="code">c</code><br>
 </div>
 
 <pre><span id="VALcode"><span class="keyword">val</span> code</span> : <code class="type"><a href="BatUChar.html#TYPEt">t</a> -> int</code></pre><div class="info ">
-<code class="code">code u</code> returns the Unicode code number of <code class="code">u</code>.<br>
+<code class="code">code&nbsp;u</code> returns the Unicode code number of <code class="code">u</code>.<br>
 </div>
 
 <pre><span id="VALchr"><span class="keyword">val</span> chr</span> : <code class="type">int -> <a href="BatUChar.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">chr n</code> returns the Unicode character with the code number <code class="code">n</code>.
+<code class="code">chr&nbsp;n</code> returns the Unicode character with the code number <code class="code">n</code>.
     If n does not lay in the valid range of Unicode or designates a
     surrogate charactor, raises Out_of_range<br>
 </div>
@@ -145,7 +148,7 @@ Equality by code point comparison<br>
 </div>
 
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatUChar.html#TYPEt">t</a> -> <a href="BatUChar.html#TYPEt">t</a> -> int</code></pre><div class="info ">
-<code class="code">compare u1 u2</code> returns,
+<code class="code">compare&nbsp;u1&nbsp;u2</code> returns,
     a value &gt; 0 if <code class="code">u1</code> has a larger Unicode code number than <code class="code">u2</code>,
     0 if <code class="code">u1</code> and <code class="code">u2</code> are the same Unicode character,
     a value &lt; 0 if <code class="code">u1</code> has a smaller Unicode code number than <code class="code">u2</code>.<br>
@@ -153,7 +156,7 @@ Equality by code point comparison<br>
 
 <pre><span id="TYPEuchar"><span class="keyword">type</span> <code class="type"></code>uchar</span> = <code class="type"><a href="BatUChar.html#TYPEt">t</a></code> </pre>
 <div class="info ">
-Aliases of <code class="code"><span class="keyword">type</span> t</code><br>
+Aliases of <code class="code"><span class="keyword">type</span>&nbsp;t</code><br>
 </div>
 
 

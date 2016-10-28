@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatHashtbl.html">
 <link rel="next" href="BatIMap.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -126,7 +129,7 @@ Functional heaps over ordered types
     Ascribes to:
 <p>
 
-    <code class="code"><span class="constructor">BatEnum</span>.<span class="constructor">Enumerable</span> <span class="keyword">with</span> <span class="keyword">type</span> <span class="keywordsign">'</span>a enumerable = <span class="keywordsign">'</span>a t</code><br>
+    <code class="code"><span class="constructor">BatEnum</span>.<span class="constructor">Enumerable</span>&nbsp;<span class="keyword">with</span>&nbsp;<span class="keyword">type</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;enumerable&nbsp;=&nbsp;<span class="keywordsign">'</span>a&nbsp;t</code><br>
 </div>
 <hr width="100%">
 
@@ -151,7 +154,7 @@ Insert an element into the heap. Duplicates are kept. O(log m)<br>
 </div>
 
 <pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">'a -> 'a <a href="BatHeap.html#TYPEt">t</a> -> 'a <a href="BatHeap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">add x h</code> is the same as <code class="code">insert h x</code>. This function is intended
+<code class="code">add&nbsp;x&nbsp;h</code> is the same as <code class="code">insert&nbsp;h&nbsp;x</code>. This function is intended
     to be used with <code class="code">fold_right</code>.<br>
 </div>
 <br>
@@ -207,7 +210,7 @@ Print the contents of the heap in heap order. O(n log n)<br>
 The result of <a href="BatHeap.Make.html"><code class="code"><span class="constructor">BatHeap</span>.<span class="constructor">Make</span></code></a>
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatHeap.Make.html">Make</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">Ord</span></code><code class="code"> : </code><code class="type"><a href="BatInterfaces.OrderedType.html">BatInterfaces.OrderedType</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatHeap.H.html">H</a></code><code class="type">  with type elem = Ord.t</code></div></pre><div class="info">
+<pre><span class="keyword">module</span> <a href="BatHeap.Make.html">Make</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Ord</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatInterfaces.OrderedType.html">BatInterfaces.OrderedType</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatHeap.H.html">H</a></code><code class="type">  with type elem = Ord.t</code></div></pre><div class="info">
 Functorized heaps over arbitrary orderings.
 </div>
 </body></html>

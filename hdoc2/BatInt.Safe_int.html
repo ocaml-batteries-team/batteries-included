@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatInt.Compare.html">
 <link rel="Up" href="BatInt.html">
@@ -27,6 +28,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -67,6 +69,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -193,54 +196,54 @@ Integer division. This division rounds the real quotient of
 
 <pre><span id="VALrem"><span class="keyword">val</span> rem</span> : <code class="type"><a href="BatInt.Safe_int.html#TYPEt">t</a> -> <a href="BatInt.Safe_int.html#TYPEt">t</a> -> <a href="BatInt.Safe_int.html#TYPEt">t</a></code></pre><div class="info ">
 Integer remainder.  If <code class="code">y</code> is not zero, the result
-      of <code class="code"><span class="constructor">Int</span>.rem x y</code> satisfies the following property:
-      <code class="code">x = <span class="constructor">Int</span>.add (<span class="constructor">Int</span>.mul (<span class="constructor">Int</span>.div x y) y) (<span class="constructor">Int</span>.rem x y)</code>.<br>
+      of <code class="code"><span class="constructor">Int</span>.rem&nbsp;x&nbsp;y</code> satisfies the following property:
+      <code class="code">x&nbsp;=&nbsp;<span class="constructor">Int</span>.add&nbsp;(<span class="constructor">Int</span>.mul&nbsp;(<span class="constructor">Int</span>.div&nbsp;x&nbsp;y)&nbsp;y)&nbsp;(<span class="constructor">Int</span>.rem&nbsp;x&nbsp;y)</code>.<br>
 <b>Raises</b> <code>Division_by_zero</code> if the second argument is zero.<br>
 </div>
 
 <pre><span id="VALmodulo"><span class="keyword">val</span> modulo</span> : <code class="type"><a href="BatInt.Safe_int.html#TYPEt">t</a> -> <a href="BatInt.Safe_int.html#TYPEt">t</a> -> <a href="BatInt.Safe_int.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">modulo a b</code> computes the remainder of the integer
-      division of <code class="code">a</code> by <code class="code">b</code>. This is defined only if <code class="code">b &lt;&gt; 0</code>.
+<code class="code">modulo&nbsp;a&nbsp;b</code> computes the remainder of the integer
+      division of <code class="code">a</code> by <code class="code">b</code>. This is defined only if <code class="code">b&nbsp;&lt;&gt;&nbsp;0</code>.
 <p>
 
-      The result of <code class="code">modulo a b</code> is a number <code class="code">m</code> between
-      <code class="code">0</code> and <code class="code">abs ( b - 1 )</code> if <code class="code">a &gt;= 0</code> or between <code class="code"><span class="keywordsign">~-</span> ( abs ( b - 1 ) ) </code>
-      if <code class="code">a &lt; 0</code> and such that <code class="code">a * k + (abs b) = m</code>,
+      The result of <code class="code">modulo&nbsp;a&nbsp;b</code> is a number <code class="code">m</code> between
+      <code class="code">0</code> and <code class="code">abs&nbsp;(&nbsp;b&nbsp;-&nbsp;1&nbsp;)</code> if <code class="code">a&nbsp;&gt;=&nbsp;0</code> or between <code class="code"><span class="keywordsign">~-</span>&nbsp;(&nbsp;abs&nbsp;(&nbsp;b&nbsp;-&nbsp;1&nbsp;)&nbsp;)&nbsp;</code>
+      if <code class="code">a&nbsp;&lt;&nbsp;0</code> and such that <code class="code">a&nbsp;*&nbsp;k&nbsp;+&nbsp;(abs&nbsp;b)&nbsp;=&nbsp;m</code>,
       for some <code class="code">k</code>.<br>
 </div>
 
 <pre><span id="VALpow"><span class="keyword">val</span> pow</span> : <code class="type"><a href="BatInt.Safe_int.html#TYPEt">t</a> -> <a href="BatInt.Safe_int.html#TYPEt">t</a> -> <a href="BatInt.Safe_int.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">pow a b</code> computes a<sup class="superscript">b</sup>.<br>
+<code class="code">pow&nbsp;a&nbsp;b</code> computes a<sup class="superscript">b</sup>.<br>
 <b>Raises</b> <code>Invalid_argument</code> when <code class="code">b</code> is negative.<br>
 </div>
 
 <pre><span id="VAL( ** )"><span class="keyword">val</span> ( ** )</span> : <code class="type"><a href="BatInt.Safe_int.html#TYPEt">t</a> -> <a href="BatInt.Safe_int.html#TYPEt">t</a> -> <a href="BatInt.Safe_int.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">a ** b</code> computes a<sup class="superscript">b</sup><br>
+<code class="code">a&nbsp;**&nbsp;b</code> computes a<sup class="superscript">b</sup><br>
 </div>
 
 <pre><span id="VAL(<>)"><span class="keyword">val</span> (&lt;&gt;)</span> : <code class="type"><a href="BatInt.Safe_int.html#TYPEt">t</a> -> <a href="BatInt.Safe_int.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-Comparaison: <code class="code">a &lt;&gt; b</code> is true if and only if <code class="code">a</code> and <code class="code">b</code> have
+Comparaison: <code class="code">a&nbsp;&lt;&gt;&nbsp;b</code> is true if and only if <code class="code">a</code> and <code class="code">b</code> have
       different values.<br>
 </div>
 
 <pre><span id="VAL(>)"><span class="keyword">val</span> (&gt;)</span> : <code class="type"><a href="BatInt.Safe_int.html#TYPEt">t</a> -> <a href="BatInt.Safe_int.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-Comparaison: <code class="code">a &gt; b</code> is true if and only if <code class="code">a</code> is strictly greater than <code class="code">b</code>.<br>
+Comparaison: <code class="code">a&nbsp;&gt;&nbsp;b</code> is true if and only if <code class="code">a</code> is strictly greater than <code class="code">b</code>.<br>
 </div>
 
 <pre><span id="VAL(<)"><span class="keyword">val</span> (&lt;)</span> : <code class="type"><a href="BatInt.Safe_int.html#TYPEt">t</a> -> <a href="BatInt.Safe_int.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-Comparaison: <code class="code">a &lt; b</code> is true if and only if <code class="code">a</code> is strictly smaller than <code class="code">b</code>.<br>
+Comparaison: <code class="code">a&nbsp;&lt;&nbsp;b</code> is true if and only if <code class="code">a</code> is strictly smaller than <code class="code">b</code>.<br>
 </div>
 
 <pre><span id="VAL(>=)"><span class="keyword">val</span> (&gt;=)</span> : <code class="type"><a href="BatInt.Safe_int.html#TYPEt">t</a> -> <a href="BatInt.Safe_int.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-Comparaison: <code class="code">a &gt;= b</code> is true if and only if <code class="code">a</code> is greater or equal to <code class="code">b</code>.<br>
+Comparaison: <code class="code">a&nbsp;&gt;=&nbsp;b</code> is true if and only if <code class="code">a</code> is greater or equal to <code class="code">b</code>.<br>
 </div>
 
 <pre><span id="VAL(<=)"><span class="keyword">val</span> (&lt;=)</span> : <code class="type"><a href="BatInt.Safe_int.html#TYPEt">t</a> -> <a href="BatInt.Safe_int.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-Comparaison: <code class="code">a &lt;= b</code> is true if and only if <code class="code">a</code> is smaller or equalto <code class="code">b</code>.<br>
+Comparaison: <code class="code">a&nbsp;&lt;=&nbsp;b</code> is true if and only if <code class="code">a</code> is smaller or equalto <code class="code">b</code>.<br>
 </div>
 
 <pre><span id="VAL(=)"><span class="keyword">val</span> (=)</span> : <code class="type"><a href="BatInt.Safe_int.html#TYPEt">t</a> -> <a href="BatInt.Safe_int.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-Comparaison: <code class="code">a = b</code> if and only if <code class="code">a</code> and <code class="code">b</code> have the same value.<br>
+Comparaison: <code class="code">a&nbsp;=&nbsp;b</code> if and only if <code class="code">a</code> and <code class="code">b</code> have the same value.<br>
 </div>
 
 <pre><span id="VALmax_num"><span class="keyword">val</span> max_num</span> : <code class="type"><a href="BatInt.Safe_int.html#TYPEt">t</a></code></pre><div class="info ">
@@ -252,11 +255,11 @@ The smallest representable integer, -2<sup class="superscript">30</sup> or 2<sup
 </div>
 
 <pre><span id="VALsucc"><span class="keyword">val</span> succ</span> : <code class="type"><a href="BatInt.Safe_int.html#TYPEt">t</a> -> <a href="BatInt.Safe_int.html#TYPEt">t</a></code></pre><div class="info ">
-Successor.  <code class="code">succ x</code> is <code class="code">add x one</code>.<br>
+Successor.  <code class="code">succ&nbsp;x</code> is <code class="code">add&nbsp;x&nbsp;one</code>.<br>
 </div>
 
 <pre><span id="VALpred"><span class="keyword">val</span> pred</span> : <code class="type"><a href="BatInt.Safe_int.html#TYPEt">t</a> -> <a href="BatInt.Safe_int.html#TYPEt">t</a></code></pre><div class="info ">
-Predecessor.  <code class="code">pred x</code> is <code class="code">sub x one</code>.<br>
+Predecessor.  <code class="code">pred&nbsp;x</code> is <code class="code">sub&nbsp;x&nbsp;one</code>.<br>
 </div>
 
 <pre><span id="VALabs"><span class="keyword">val</span> abs</span> : <code class="type"><a href="BatInt.Safe_int.html#TYPEt">t</a> -> <a href="BatInt.Safe_int.html#TYPEt">t</a></code></pre><div class="info ">

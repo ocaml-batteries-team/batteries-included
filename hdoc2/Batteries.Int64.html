@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="Batteries.Int32.html">
 <link rel="next" href="Batteries.Lexing.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -159,17 +162,17 @@ Integer division.
 
 <pre><span id="VALrem"><span class="keyword">val</span> rem</span> : <code class="type">int64 -> int64 -> int64</code></pre><div class="info ">
 Integer remainder.  If <code class="code">y</code> is not zero, the result
-    of <code class="code"><span class="constructor">Int64</span>.rem x y</code> satisfies the following property:
-    <code class="code">x = <span class="constructor">Int64</span>.add (<span class="constructor">Int64</span>.mul (<span class="constructor">Int64</span>.div x y) y) (<span class="constructor">Int64</span>.rem x y)</code>.<br>
+    of <code class="code"><span class="constructor">Int64</span>.rem&nbsp;x&nbsp;y</code> satisfies the following property:
+    <code class="code">x&nbsp;=&nbsp;<span class="constructor">Int64</span>.add&nbsp;(<span class="constructor">Int64</span>.mul&nbsp;(<span class="constructor">Int64</span>.div&nbsp;x&nbsp;y)&nbsp;y)&nbsp;(<span class="constructor">Int64</span>.rem&nbsp;x&nbsp;y)</code>.<br>
 <b>Raises</b> <code>Division_by_zero</code> if the second argument is zero.<br>
 </div>
 
 <pre><span id="VALsucc"><span class="keyword">val</span> succ</span> : <code class="type">int64 -> int64</code></pre><div class="info ">
-Successor.  <code class="code"><span class="constructor">Int64</span>.succ x</code> is <code class="code"><span class="constructor">Int64</span>.add x <span class="constructor">Int64</span>.one</code>.<br>
+Successor.  <code class="code"><span class="constructor">Int64</span>.succ&nbsp;x</code> is <code class="code"><span class="constructor">Int64</span>.add&nbsp;x&nbsp;<span class="constructor">Int64</span>.one</code>.<br>
 </div>
 
 <pre><span id="VALpred"><span class="keyword">val</span> pred</span> : <code class="type">int64 -> int64</code></pre><div class="info ">
-Predecessor.  <code class="code"><span class="constructor">Int64</span>.pred x</code> is <code class="code"><span class="constructor">Int64</span>.sub x <span class="constructor">Int64</span>.one</code>.<br>
+Predecessor.  <code class="code"><span class="constructor">Int64</span>.pred&nbsp;x</code> is <code class="code"><span class="constructor">Int64</span>.sub&nbsp;x&nbsp;<span class="constructor">Int64</span>.one</code>.<br>
 </div>
 
 <pre><span id="VALabs"><span class="keyword">val</span> abs</span> : <code class="type">int64 -> int64</code></pre><div class="info ">
@@ -201,38 +204,38 @@ Bitwise logical negation<br>
 </div>
 
 <pre><span id="VALshift_left"><span class="keyword">val</span> shift_left</span> : <code class="type">int64 -> int -> int64</code></pre><div class="info ">
-<code class="code"><span class="constructor">Int64</span>.shift_left x y</code> shifts <code class="code">x</code> to the left by <code class="code">y</code> bits.
-    The result is unspecified if <code class="code">y &lt; 0</code> or <code class="code">y &gt;= 64</code>.<br>
+<code class="code"><span class="constructor">Int64</span>.shift_left&nbsp;x&nbsp;y</code> shifts <code class="code">x</code> to the left by <code class="code">y</code> bits.
+    The result is unspecified if <code class="code">y&nbsp;&lt;&nbsp;0</code> or <code class="code">y&nbsp;&gt;=&nbsp;64</code>.<br>
 </div>
 
 <pre><span id="VALshift_right"><span class="keyword">val</span> shift_right</span> : <code class="type">int64 -> int -> int64</code></pre><div class="info ">
-<code class="code"><span class="constructor">Int64</span>.shift_right x y</code> shifts <code class="code">x</code> to the right by <code class="code">y</code> bits.
+<code class="code"><span class="constructor">Int64</span>.shift_right&nbsp;x&nbsp;y</code> shifts <code class="code">x</code> to the right by <code class="code">y</code> bits.
     This is an arithmetic shift: the sign bit of <code class="code">x</code> is replicated
     and inserted in the vacated bits.
-    The result is unspecified if <code class="code">y &lt; 0</code> or <code class="code">y &gt;= 64</code>.<br>
+    The result is unspecified if <code class="code">y&nbsp;&lt;&nbsp;0</code> or <code class="code">y&nbsp;&gt;=&nbsp;64</code>.<br>
 </div>
 
 <pre><span id="VALshift_right_logical"><span class="keyword">val</span> shift_right_logical</span> : <code class="type">int64 -> int -> int64</code></pre><div class="info ">
-<code class="code"><span class="constructor">Int64</span>.shift_right_logical x y</code> shifts <code class="code">x</code> to the right by <code class="code">y</code> bits.
+<code class="code"><span class="constructor">Int64</span>.shift_right_logical&nbsp;x&nbsp;y</code> shifts <code class="code">x</code> to the right by <code class="code">y</code> bits.
     This is a logical shift: zeroes are inserted in the vacated bits
     regardless of the sign of <code class="code">x</code>.
-    The result is unspecified if <code class="code">y &lt; 0</code> or <code class="code">y &gt;= 64</code>.<br>
+    The result is unspecified if <code class="code">y&nbsp;&lt;&nbsp;0</code> or <code class="code">y&nbsp;&gt;=&nbsp;64</code>.<br>
 </div>
 
 <pre><span id="VAL(--)"><span class="keyword">val</span> (--)</span> : <code class="type"><a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 Enumerate an interval.
 <p>
 
-    <code class="code">5<span class="constructor">L</span> -- 10<span class="constructor">L</span></code> is the enumeration 5L,6L,7L,8L,9L,10L.
-    <code class="code">10<span class="constructor">L</span> -- 5<span class="constructor">L</span></code> is the empty enumeration<br>
+    <code class="code">5<span class="constructor">L</span>&nbsp;--&nbsp;10<span class="constructor">L</span></code> is the enumeration 5L,6L,7L,8L,9L,10L.
+    <code class="code">10<span class="constructor">L</span>&nbsp;--&nbsp;5<span class="constructor">L</span></code> is the empty enumeration<br>
 </div>
 
 <pre><span id="VAL(---)"><span class="keyword">val</span> (---)</span> : <code class="type"><a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 Enumerate an interval.
 <p>
 
-    <code class="code">5<span class="constructor">L</span> -- 10<span class="constructor">L</span></code> is the enumeration 5L,6L,7L,8L,9L,10L.
-    <code class="code">10<span class="constructor">L</span> -- 5<span class="constructor">L</span></code> is the enumeration 10L,9L,8L,7L,6L,5L.<br>
+    <code class="code">5<span class="constructor">L</span>&nbsp;--&nbsp;10<span class="constructor">L</span></code> is the enumeration 5L,6L,7L,8L,9L,10L.
+    <code class="code">10<span class="constructor">L</span>&nbsp;--&nbsp;5<span class="constructor">L</span></code> is the enumeration 10L,9L,8L,7L,6L,5L.<br>
 </div>
 
 <pre><span id="VALof_int"><span class="keyword">val</span> of_int</span> : <code class="type">int -> int64</code></pre><div class="info ">

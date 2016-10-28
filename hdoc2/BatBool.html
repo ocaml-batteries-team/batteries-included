@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatBitSet.html">
 <link rel="next" href="BatBounded.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -124,7 +127,7 @@ Operations on booleans<br>
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">bool</code> </pre>
 <div class="info ">
-The type of booleans. Formally, this is defined as <code class="code"><span class="keyword">type</span> t = <span class="keyword">true</span> <span class="keywordsign">|</span> <span class="keyword">false</span></code><br>
+The type of booleans. Formally, this is defined as <code class="code"><span class="keyword">type</span>&nbsp;t&nbsp;=&nbsp;<span class="keyword">true</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keyword">false</span></code><br>
 </div>
 
 
@@ -134,13 +137,13 @@ The boolean negation.<br>
 
 <pre><span id="VAL(&&)"><span class="keyword">val</span> (&amp;&amp;)</span> : <code class="type">bool -> bool -> bool</code></pre><div class="info ">
 The boolean ``and''. Evaluation is sequential, left-to-right:
-    in <code class="code">e1 <span class="keywordsign">&amp;&amp;</span> e2</code>, <code class="code">e1</code> is evaluated first, and if it returns <code class="code"><span class="keyword">false</span></code>,
+    in <code class="code">e1&nbsp;<span class="keywordsign">&amp;&amp;</span>&nbsp;e2</code>, <code class="code">e1</code> is evaluated first, and if it returns <code class="code"><span class="keyword">false</span></code>,
     <code class="code">e2</code> is not evaluated at all.<br>
 </div>
 
 <pre><span id="VAL(||)"><span class="keyword">val</span> (||)</span> : <code class="type">bool -> bool -> bool</code></pre><div class="info ">
 The boolean ``or''. Evaluation is sequential, left-to-right:
-    in <code class="code">e1 <span class="keywordsign">||</span> e2</code>, <code class="code">e1</code> is evaluated first, and if it returns <code class="code"><span class="keyword">true</span></code>,
+    in <code class="code">e1&nbsp;<span class="keywordsign">||</span>&nbsp;e2</code>, <code class="code">e1</code> is evaluated first, and if it returns <code class="code"><span class="keyword">true</span></code>,
     <code class="code">e2</code> is not evaluated at all.<br>
 </div>
 

@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatOrd.Eq.html">
 <link rel="Up" href="BatOrd.html">
@@ -27,6 +28,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -67,6 +69,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -119,8 +122,8 @@
 <pre><span id="VALord_by"><span class="keyword">val</span> ord_by</span> : <code class="type">('a -> 'b) -> 'a <a href="BatOrd.html#TYPEord">BatOrd.ord</a></code></pre><div class="info ">
 Build a <code class="code">eq</code>, <code class="code">cmp</code> or <code class="code">ord</code> function from a projection function.
         For example, if you wanted to compare integers based on their
-        lowest 4 bits, you could write <code class="code"><span class="keyword">let</span> cmp_bot4 = cmp_by (<span class="keyword">fun</span> x
-        <span class="keywordsign">-&gt;</span> x <span class="keyword">land</span> 0xf)</code> and use cmp_bot4 as the desired integer
+        lowest 4 bits, you could write <code class="code"><span class="keyword">let</span>&nbsp;cmp_bot4&nbsp;=&nbsp;cmp_by&nbsp;(<span class="keyword">fun</span>&nbsp;x<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;x&nbsp;<span class="keyword">land</span>&nbsp;0xf)</code> and use cmp_bot4 as the desired integer
         comparator.<br>
 </div>
 </body></html>

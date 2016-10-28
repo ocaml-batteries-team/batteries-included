@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatOptParse.Formatter.html">
 <link rel="Up" href="BatOptParse.html">
@@ -27,6 +28,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -67,6 +69,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -130,7 +133,7 @@ This module contains the option parser itself.
 
 <pre><span id="EXCEPTIONOption_conflict"><span class="keyword">exception</span> Option_conflict</span> <span class="keyword">of</span> <code class="type">string</code></pre>
 <div class="info ">
-<code class="code"><span class="constructor">Option_conflict</span> name</code> is raised by <code class="code"><span class="constructor">OptParse</span>.<span class="constructor">OptParser</span>.add</code>
+<code class="code"><span class="constructor">Option_conflict</span>&nbsp;name</code> is raised by <code class="code"><span class="constructor">OptParse</span>.<span class="constructor">OptParser</span>.add</code>
       when two different options are added with identical
       names. Usually this doesn't need to be caught since this error
       is usually easily fixed permanently by removing/renaming the

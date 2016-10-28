@@ -1,6 +1,7 @@
 <html><head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
@@ -23,6 +24,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -63,6 +65,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -103,46 +106,46 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatPathGen.OfString</title>
 </head>
 <body>
-<code class="code"><span class="keyword">sig</span>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;ustring&nbsp;=&nbsp;string
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;uchar&nbsp;=&nbsp;char
-&nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">OperatorLift</span>&nbsp;:&nbsp;<span class="keyword">sig</span>&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;!!&nbsp;)&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;ustring&nbsp;<span class="keyword">end</span>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;t&nbsp;=&nbsp;ustring&nbsp;list
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;is_relative&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;is_absolute&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;root&nbsp;:&nbsp;t
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;append&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;ustring&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;concat&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t
-&nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Operators</span>&nbsp;:
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">sig</span>&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;/:&nbsp;)&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;ustring&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;//@&nbsp;)&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keyword">end</span>
-&nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Infix</span>&nbsp;:
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">sig</span>&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;/:&nbsp;)&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;ustring&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;//@&nbsp;)&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keyword">end</span>
-&nbsp;&nbsp;<span class="keyword">exception</span>&nbsp;<span class="constructor">Malformed_path</span>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;normalize_filepath&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;normalize_in_graph&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;normalize_in_tree&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;normalize&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;parent&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;belongs&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;relative_to_any&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t
-&nbsp;&nbsp;<span class="keyword">exception</span>&nbsp;<span class="constructor">Not_parent</span>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;relative_to_parent&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t
-&nbsp;&nbsp;<span class="keyword">exception</span>&nbsp;<span class="constructor">Illegal_char</span>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;validator&nbsp;=&nbsp;ustring&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;default_validator&nbsp;:&nbsp;validator&nbsp;ref
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;to_ustring&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;ustring
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;to_string&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;of_string&nbsp;:&nbsp;ustring&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;s&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;p&nbsp;:&nbsp;ustring&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;name&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;ustring
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;map_name&nbsp;:&nbsp;(ustring&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;ustring)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;ext&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;ustring&nbsp;option
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;map_ext&nbsp;:&nbsp;(ustring&nbsp;option&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;ustring&nbsp;option)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;name_core&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;ustring
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;components&nbsp;=&nbsp;t&nbsp;*&nbsp;ustring&nbsp;*&nbsp;ustring&nbsp;option
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;split&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;components
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;join&nbsp;:&nbsp;components&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;map&nbsp;:&nbsp;(components&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;components)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;drive_letter&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;uchar&nbsp;option
+<code class="code"><span class="keyword">sig</span><br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;ustring&nbsp;=&nbsp;string<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;uchar&nbsp;=&nbsp;char<br>
+&nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">OperatorLift</span>&nbsp;:&nbsp;<span class="keyword">sig</span>&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;!!&nbsp;)&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;ustring&nbsp;<span class="keyword">end</span><br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;t&nbsp;=&nbsp;ustring&nbsp;list<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;is_relative&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;is_absolute&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;root&nbsp;:&nbsp;t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;append&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;ustring&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;concat&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t<br>
+&nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Operators</span>&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">sig</span>&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;/:&nbsp;)&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;ustring&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;//@&nbsp;)&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keyword">end</span><br>
+&nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Infix</span>&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">sig</span>&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;/:&nbsp;)&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;ustring&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;//@&nbsp;)&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keyword">end</span><br>
+&nbsp;&nbsp;<span class="keyword">exception</span>&nbsp;<span class="constructor">Malformed_path</span><br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;normalize_filepath&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;normalize_in_graph&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;normalize_in_tree&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;normalize&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;parent&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;belongs&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;relative_to_any&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t<br>
+&nbsp;&nbsp;<span class="keyword">exception</span>&nbsp;<span class="constructor">Not_parent</span><br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;relative_to_parent&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t<br>
+&nbsp;&nbsp;<span class="keyword">exception</span>&nbsp;<span class="constructor">Illegal_char</span><br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;validator&nbsp;=&nbsp;ustring&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;default_validator&nbsp;:&nbsp;validator&nbsp;ref<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;to_ustring&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;ustring<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;to_string&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;of_string&nbsp;:&nbsp;ustring&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;s&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;p&nbsp;:&nbsp;ustring&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;name&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;ustring<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;map_name&nbsp;:&nbsp;(ustring&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;ustring)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;ext&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;ustring&nbsp;option<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;map_ext&nbsp;:&nbsp;(ustring&nbsp;option&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;ustring&nbsp;option)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;name_core&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;ustring<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;components&nbsp;=&nbsp;t&nbsp;*&nbsp;ustring&nbsp;*&nbsp;ustring&nbsp;option<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;split&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;components<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;join&nbsp;:&nbsp;components&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;map&nbsp;:&nbsp;(components&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;components)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;drive_letter&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;uchar&nbsp;option<br>
 <span class="keyword">end</span></code></body></html>

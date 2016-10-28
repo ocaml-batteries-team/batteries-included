@@ -1,6 +1,7 @@
 <html><head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
@@ -23,6 +24,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -63,6 +65,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -103,33 +106,33 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatLogger</title>
 </head>
 <body>
-<code class="code"><span class="keyword">sig</span>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;log
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;level&nbsp;=&nbsp;<span class="constructor">NONE</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">FATAL</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">ERROR</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">WARN</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">NOTICE</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">INFO</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">DEBUG</span>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;make_log&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.log
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;log_name&nbsp;:&nbsp;<span class="constructor">BatLogger</span>.log&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;log_enable&nbsp;:&nbsp;<span class="constructor">BatLogger</span>.log&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.level&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;log_level&nbsp;:&nbsp;<span class="constructor">BatLogger</span>.log&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.level
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;log_enabled&nbsp;:&nbsp;<span class="constructor">BatLogger</span>.log&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.level&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;event&nbsp;=&nbsp;string&nbsp;*&nbsp;(string&nbsp;*&nbsp;string)&nbsp;list
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;log&nbsp;:
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatLogger</span>.log&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.level&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.event)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;with_log&nbsp;:
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatLogger</span>.log&nbsp;<span class="keywordsign">-&gt;</span>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatLogger</span>.level&nbsp;<span class="keywordsign">-&gt;</span>
-&nbsp;&nbsp;&nbsp;&nbsp;(unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.event)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?result:(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;formatter&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatLogger</span>.log&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.level&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.event&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;register_formatter&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.formatter&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unregister_formatter&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;make_std_formatter&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.formatter
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;stderr_formatter&nbsp;:&nbsp;<span class="constructor">BatLogger</span>.formatter
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;null_formatter&nbsp;:&nbsp;<span class="constructor">BatLogger</span>.formatter
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;make_dbg_formatter&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.formatter
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;dbg_formatter&nbsp;:&nbsp;<span class="constructor">BatLogger</span>.formatter
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;init&nbsp;:&nbsp;(string&nbsp;*&nbsp;<span class="constructor">BatLogger</span>.level)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.formatter&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;init_from_string&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.formatter&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;level_of_name&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.level
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;name_of_level&nbsp;:&nbsp;<span class="constructor">BatLogger</span>.level&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;format_timestamp&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit
+<code class="code"><span class="keyword">sig</span><br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;log<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;level&nbsp;=&nbsp;<span class="constructor">NONE</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">FATAL</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">ERROR</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">WARN</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">NOTICE</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">INFO</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">DEBUG</span><br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;make_log&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.log<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;log_name&nbsp;:&nbsp;<span class="constructor">BatLogger</span>.log&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;log_enable&nbsp;:&nbsp;<span class="constructor">BatLogger</span>.log&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.level&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;log_level&nbsp;:&nbsp;<span class="constructor">BatLogger</span>.log&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.level<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;log_enabled&nbsp;:&nbsp;<span class="constructor">BatLogger</span>.log&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.level&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;event&nbsp;=&nbsp;string&nbsp;*&nbsp;(string&nbsp;*&nbsp;string)&nbsp;list<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;log&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatLogger</span>.log&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.level&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.event)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;with_log&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatLogger</span>.log&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatLogger</span>.level&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.event)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?result:(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;formatter&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatLogger</span>.log&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.level&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.event&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;register_formatter&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.formatter&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unregister_formatter&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;make_std_formatter&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.formatter<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;stderr_formatter&nbsp;:&nbsp;<span class="constructor">BatLogger</span>.formatter<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;null_formatter&nbsp;:&nbsp;<span class="constructor">BatLogger</span>.formatter<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;make_dbg_formatter&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.formatter<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;dbg_formatter&nbsp;:&nbsp;<span class="constructor">BatLogger</span>.formatter<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;init&nbsp;:&nbsp;(string&nbsp;*&nbsp;<span class="constructor">BatLogger</span>.level)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.formatter&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;init_from_string&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.formatter&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;level_of_name&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLogger</span>.level<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;name_of_level&nbsp;:&nbsp;<span class="constructor">BatLogger</span>.level&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;format_timestamp&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 <span class="keyword">end</span></code></body></html>

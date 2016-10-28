@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="Batteries.Float.html">
 <link rel="next" href="Batteries.Bool.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -181,29 +184,29 @@ Integer division.  This division rounds the real quotient of
 
 <pre><span id="VALrem"><span class="keyword">val</span> rem</span> : <code class="type">int -> int -> int</code></pre><div class="info ">
 Integer remainder.  If <code class="code">y</code> is not zero, the result
-    of <code class="code"><span class="constructor">Int</span>.rem x y</code> satisfies the following property:
-    <code class="code">x = <span class="constructor">Int</span>.add (<span class="constructor">Int</span>.mul (<span class="constructor">Int</span>.div x y) y) (<span class="constructor">Int</span>.rem x y)</code>.<br>
+    of <code class="code"><span class="constructor">Int</span>.rem&nbsp;x&nbsp;y</code> satisfies the following property:
+    <code class="code">x&nbsp;=&nbsp;<span class="constructor">Int</span>.add&nbsp;(<span class="constructor">Int</span>.mul&nbsp;(<span class="constructor">Int</span>.div&nbsp;x&nbsp;y)&nbsp;y)&nbsp;(<span class="constructor">Int</span>.rem&nbsp;x&nbsp;y)</code>.<br>
 <b>Raises</b> <code>Division_by_zero</code> if the second argument is zero.<br>
 </div>
 
 <pre><span id="VALmodulo"><span class="keyword">val</span> modulo</span> : <code class="type">int -> int -> int</code></pre><div class="info ">
-<code class="code">modulo a b</code> computes the remainder of the integer
-    division of <code class="code">a</code> by <code class="code">b</code>. This is defined only if <code class="code">b &lt;&gt; 0</code>.
+<code class="code">modulo&nbsp;a&nbsp;b</code> computes the remainder of the integer
+    division of <code class="code">a</code> by <code class="code">b</code>. This is defined only if <code class="code">b&nbsp;&lt;&gt;&nbsp;0</code>.
 <p>
 
-    The result of <code class="code">modulo a b</code> is a number <code class="code">m</code> between
-    <code class="code">0</code> and <code class="code">abs ( b - 1 )</code> if <code class="code">a &gt;= 0</code> or between <code class="code"><span class="keywordsign">~-</span> ( abs ( b - 1 ) ) </code>
-    if <code class="code">a &lt; 0</code> and such that <code class="code">a * k + (abs b) = m</code>,
+    The result of <code class="code">modulo&nbsp;a&nbsp;b</code> is a number <code class="code">m</code> between
+    <code class="code">0</code> and <code class="code">abs&nbsp;(&nbsp;b&nbsp;-&nbsp;1&nbsp;)</code> if <code class="code">a&nbsp;&gt;=&nbsp;0</code> or between <code class="code"><span class="keywordsign">~-</span>&nbsp;(&nbsp;abs&nbsp;(&nbsp;b&nbsp;-&nbsp;1&nbsp;)&nbsp;)&nbsp;</code>
+    if <code class="code">a&nbsp;&lt;&nbsp;0</code> and such that <code class="code">a&nbsp;*&nbsp;k&nbsp;+&nbsp;(abs&nbsp;b)&nbsp;=&nbsp;m</code>,
     for some <code class="code">k</code>.<br>
 </div>
 
 <pre><span id="VALpow"><span class="keyword">val</span> pow</span> : <code class="type">int -> int -> int</code></pre><div class="info ">
-<code class="code">pow a b</code> computes a<sup class="superscript">b</sup>.<br>
+<code class="code">pow&nbsp;a&nbsp;b</code> computes a<sup class="superscript">b</sup>.<br>
 <b>Raises</b> <code>Invalid_argument</code> when <code class="code">b</code> is negative.<br>
 </div>
 
 <pre><span id="VAL( ** )"><span class="keyword">val</span> ( ** )</span> : <code class="type">int -> int -> int</code></pre><div class="info ">
-<code class="code">a ** b</code> computes a<sup class="superscript">b</sup><br>
+<code class="code">a&nbsp;**&nbsp;b</code> computes a<sup class="superscript">b</sup><br>
 </div>
 
 <pre><span id="VAL(<>)"><span class="keyword">val</span> (&lt;&gt;)</span> : <code class="type">int -> int -> bool</code></pre>
@@ -221,16 +224,16 @@ The greatest representable integer, which is either 2<sup class="superscript">30
 </div>
 
 <pre><span id="VALsucc"><span class="keyword">val</span> succ</span> : <code class="type">int -> int</code></pre><div class="info ">
-Successor.  <code class="code"><span class="constructor">Int</span>.succ x</code> is <code class="code"><span class="constructor">Int</span>.add x <span class="constructor">Int</span>.one</code>.<br>
+Successor.  <code class="code"><span class="constructor">Int</span>.succ&nbsp;x</code> is <code class="code"><span class="constructor">Int</span>.add&nbsp;x&nbsp;<span class="constructor">Int</span>.one</code>.<br>
 </div>
 
 <pre><span id="VALpred"><span class="keyword">val</span> pred</span> : <code class="type">int -> int</code></pre><div class="info ">
-Predecessor.  <code class="code"><span class="constructor">Int</span>.pred x</code> is <code class="code"><span class="constructor">Int</span>.sub x <span class="constructor">Int</span>.one</code>.<br>
+Predecessor.  <code class="code"><span class="constructor">Int</span>.pred&nbsp;x</code> is <code class="code"><span class="constructor">Int</span>.sub&nbsp;x&nbsp;<span class="constructor">Int</span>.one</code>.<br>
 </div>
 
 <pre><span id="VALabs"><span class="keyword">val</span> abs</span> : <code class="type">int -> int</code></pre><div class="info ">
 Return the absolute value of its argument, except when the argument is
-    <code class="code">min_num</code>. In that case, <code class="code">abs min_num = min_num</code>.<br>
+    <code class="code">min_num</code>. In that case, <code class="code">abs&nbsp;min_num&nbsp;=&nbsp;min_num</code>.<br>
 </div>
 
 <pre><span id="VALof_float"><span class="keyword">val</span> of_float</span> : <code class="type">float -> int</code></pre><div class="info ">
@@ -269,7 +272,7 @@ The maximum of two integers. Faster than the polymorphic <code class="code">min<
 </div>
 
 <pre><span id="VALmid"><span class="keyword">val</span> mid</span> : <code class="type">int -> int -> int</code></pre><div class="info ">
-Midpoint function; <code class="code">mid a b</code> returns <code class="code">floor((a+b)/2)</code>, but done
+Midpoint function; <code class="code">mid&nbsp;a&nbsp;b</code> returns <code class="code">floor((a+b)/2)</code>, but done
     correctly to compensate for numeric overflows.  The result is an
     integer that lies between <code class="code">a</code> and <code class="code">b</code> and is as equidistant from
     both as possible.<br>
@@ -281,7 +284,7 @@ Returns the number of 1 bits set in the binary representation of
 </div>
 
 <pre><span id="VALcopysign"><span class="keyword">val</span> copysign</span> : <code class="type">int -> int -> int</code></pre><div class="info ">
-<code class="code">copysign n o</code> multiplies <code class="code">o</code> by the "sign" of <code class="code">n</code>, i.e. it returns either:<ul>
+<code class="code">copysign&nbsp;n&nbsp;o</code> multiplies <code class="code">o</code> by the "sign" of <code class="code">n</code>, i.e. it returns either:<ul>
 <li><code class="code">0</code> if <code class="code">n=0</code></li>
 <li><code class="code">o</code> if <code class="code">n&gt;0</code></li>
 <li><code class="code">-o</code> if <code class="code">n&lt;0</code></li>
@@ -295,16 +298,16 @@ Returns the number of 1 bits set in the binary representation of
 Enumerate an interval.
 <p>
 
-    <code class="code">5 -- 10</code> is the enumeration 5,6,7,8,9,10.
-    <code class="code">10 -- 5</code> is the empty enumeration<br>
+    <code class="code">5&nbsp;--&nbsp;10</code> is the enumeration 5,6,7,8,9,10.
+    <code class="code">10&nbsp;--&nbsp;5</code> is the empty enumeration<br>
 </div>
 
 <pre><span id="VAL(---)"><span class="keyword">val</span> (---)</span> : <code class="type"><a href="BatInt.html#TYPEt">t</a> -> <a href="BatInt.html#TYPEt">t</a> -> <a href="BatInt.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 Enumerate an interval.
 <p>
 
-    <code class="code">5 --- 10</code> is the enumeration 5,6,7,8,9,10.
-    <code class="code">10 --- 5</code> is the enumeration 10,9,8,7,6,5.<br>
+    <code class="code">5&nbsp;---&nbsp;10</code> is the enumeration 5,6,7,8,9,10.
+    <code class="code">10&nbsp;---&nbsp;5</code> is the enumeration 10,9,8,7,6,5.<br>
 </div>
 
 <pre><span id="VALof_int"><span class="keyword">val</span> of_int</span> : <code class="type">int -> int</code></pre>

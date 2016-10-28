@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatIO.html">
 <link rel="next" href="BatInnerIO.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -157,7 +160,7 @@ Add the given int to the set, returning a new set<br>
 </div>
 
 <pre><span id="VALadd_range"><span class="keyword">val</span> add_range</span> : <code class="type">int -> int -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">add_range lo hi t</code> adds the range of integers <code class="code">lo, hi</code> (including both endpoints) to
+<code class="code">add_range&nbsp;lo&nbsp;hi&nbsp;t</code> adds the range of integers <code class="code">lo,&nbsp;hi</code> (including both endpoints) to
     the given set, returning a new set<br>
 <b>Raises</b> <code>Invalid_argument</code> if <code class="code">lo</code> &gt; <code class="code">hi</code><br>
 </div>
@@ -171,7 +174,7 @@ Remove an element from the given set, returning a new set<br>
 </div>
 
 <pre><span id="VALremove_range"><span class="keyword">val</span> remove_range</span> : <code class="type">int -> int -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">remove_range lo hi t</code> removes a range of elements from the given set, returning a new set<br>
+<code class="code">remove_range&nbsp;lo&nbsp;hi&nbsp;t</code> removes a range of elements from the given set, returning a new set<br>
 <b>Raises</b> <code>Invalid_argument</code> if <code class="code">lo</code> &gt; <code class="code">hi</code><br>
 </div>
 
@@ -209,42 +212,42 @@ Test whether two sets are equal.  It is not safe to use the
 </div>
 
 <pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre><div class="info ">
-Same as <code class="code">compare</code> but returns <code class="code"><span class="constructor">BatOrd</span>.<span class="constructor">Lt</span> <span class="keywordsign">|</span> <span class="constructor">BatOrd</span>.<span class="constructor">Eq</span> <span class="keywordsign">|</span> <span class="constructor">BatOrd</span>.<span class="constructor">Gt</span></code>
+Same as <code class="code">compare</code> but returns <code class="code"><span class="constructor">BatOrd</span>.<span class="constructor">Lt</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">BatOrd</span>.<span class="constructor">Eq</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">BatOrd</span>.<span class="constructor">Gt</span></code>
     instead of an int.<br>
 </div>
 
 <pre><span id="VALsubset"><span class="keyword">val</span> subset</span> : <code class="type"><a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-<code class="code">subset t u</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">t</code> is a subset of <code class="code">u</code><br>
+<code class="code">subset&nbsp;t&nbsp;u</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">t</code> is a subset of <code class="code">u</code><br>
 </div>
 
 <pre><span id="VALfrom"><span class="keyword">val</span> from</span> : <code class="type">int -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">from x t</code> returns the portion of <code class="code">t</code> in the range <code class="code">x, max_int</code><br>
+<code class="code">from&nbsp;x&nbsp;t</code> returns the portion of <code class="code">t</code> in the range <code class="code">x,&nbsp;max_int</code><br>
 </div>
 
 <pre><span id="VALafter"><span class="keyword">val</span> after</span> : <code class="type">int -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">after x t</code> returns the portion of <code class="code">t</code> in the range <code class="code">x+1, max_int</code><br>
+<code class="code">after&nbsp;x&nbsp;t</code> returns the portion of <code class="code">t</code> in the range <code class="code">x+1,&nbsp;max_int</code><br>
 </div>
 
 <pre><span id="VALuntil"><span class="keyword">val</span> until</span> : <code class="type">int -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">until x t</code> returns the portion of <code class="code">t</code> in the range <code class="code">min_int, x</code><br>
+<code class="code">until&nbsp;x&nbsp;t</code> returns the portion of <code class="code">t</code> in the range <code class="code">min_int,&nbsp;x</code><br>
 </div>
 
 <pre><span id="VALbefore"><span class="keyword">val</span> before</span> : <code class="type">int -> <a href="BatISet.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">before x t</code> returns the portion of <code class="code">t</code> in the range <code class="code">min_int, x-1</code><br>
+<code class="code">before&nbsp;x&nbsp;t</code> returns the portion of <code class="code">t</code> in the range <code class="code">min_int,&nbsp;x-1</code><br>
 </div>
 
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(int -> unit) -> <a href="BatISet.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">iter f t</code> calls <code class="code">f</code> once for each element of <code class="code">t</code><br>
+<code class="code">iter&nbsp;f&nbsp;t</code> calls <code class="code">f</code> once for each element of <code class="code">t</code><br>
 </div>
 
 <pre><span id="VALiter_range"><span class="keyword">val</span> iter_range</span> : <code class="type">(int -> int -> unit) -> <a href="BatISet.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">iter_range f t</code> calls <code class="code">f</code> once for each contiguous range of <code class="code">t</code>.
+<code class="code">iter_range&nbsp;f&nbsp;t</code> calls <code class="code">f</code> once for each contiguous range of <code class="code">t</code>.
     The contiguous ranges of a set are sequences of adjacent integers
     all part of the set.<br>
 </div>
 
 <pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">(int -> 'a -> 'a) -> <a href="BatISet.html#TYPEt">t</a> -> 'a -> 'a</code></pre><div class="info ">
-<code class="code">fold f t x0</code> returns the final result of merging each element of
+<code class="code">fold&nbsp;f&nbsp;t&nbsp;x0</code> returns the final result of merging each element of
     <code class="code">t</code> into <code class="code">x0</code> using merge function <code class="code">f</code><br>
 </div>
 

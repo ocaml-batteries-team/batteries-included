@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="next" href="BatEnum.WithMonad.html">
 <link rel="Up" href="BatEnum.html">
@@ -27,6 +28,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -67,6 +69,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -118,33 +121,33 @@
 As <code class="code">range</code>, without the label.
 <p>
 
-      <code class="code">5 -- 10</code> is the enumeration 5,6,7,8,9,10.
-      <code class="code">10 -- 5</code> is the empty enumeration<br>
+      <code class="code">5&nbsp;--&nbsp;10</code> is the enumeration 5,6,7,8,9,10.
+      <code class="code">10&nbsp;--&nbsp;5</code> is the empty enumeration<br>
 </div>
 
 <pre><span id="VAL(--^)"><span class="keyword">val</span> (--^)</span> : <code class="type">int -> int -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 As <code class="code">(--)</code> but without the right endpoint
 <p>
 
-      <code class="code">5 --^ 10</code> is the enumeration 5,6,7,8,9.<br>
+      <code class="code">5&nbsp;--^&nbsp;10</code> is the enumeration 5,6,7,8,9.<br>
 </div>
 
 <pre><span id="VAL(--.)"><span class="keyword">val</span> (--.)</span> : <code class="type">float * float -> float -> float <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-<code class="code">(a, step) --. b)</code> creates a float enumeration from <code class="code">a</code> to <code class="code">b</code> with an
+<code class="code">(a,&nbsp;step)&nbsp;--.&nbsp;b)</code> creates a float enumeration from <code class="code">a</code> to <code class="code">b</code> with an
       increment of <code class="code">step</code> between elements.
 <p>
 
-      <code class="code">(5.0, 1.0) --. 10.0</code> is the enumeration 5.0,6.0,7.0,8.0,9.0,10.0.
-      <code class="code">(10.0, -1.0) --. 5.0</code> is the enumeration 10.0,9.0,8.0,7.0,6.0,5.0.
-      <code class="code">(10.0, 1.0) --. 1.0</code> is the empty enumeration.<br>
+      <code class="code">(5.0,&nbsp;1.0)&nbsp;--.&nbsp;10.0</code> is the enumeration 5.0,6.0,7.0,8.0,9.0,10.0.
+      <code class="code">(10.0,&nbsp;-1.0)&nbsp;--.&nbsp;5.0</code> is the enumeration 10.0,9.0,8.0,7.0,6.0,5.0.
+      <code class="code">(10.0,&nbsp;1.0)&nbsp;--.&nbsp;1.0</code> is the empty enumeration.<br>
 </div>
 
 <pre><span id="VAL(---)"><span class="keyword">val</span> (---)</span> : <code class="type">int -> int -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 As <code class="code">--</code>, but accepts enumerations in reverse order.
 <p>
 
-      <code class="code">5 --- 10</code> is the enumeration 5,6,7,8,9,10.
-      <code class="code">10 --- 5</code> is the enumeration 10,9,8,7,6,5.<br>
+      <code class="code">5&nbsp;---&nbsp;10</code> is the enumeration 5,6,7,8,9,10.
+      <code class="code">10&nbsp;---&nbsp;5</code> is the enumeration 10,9,8,7,6,5.<br>
 </div>
 
 <pre><span id="VAL(--~)"><span class="keyword">val</span> (--~)</span> : <code class="type">char -> char -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
@@ -155,7 +158,7 @@ As ( -- ), but for characters.<br>
 Filtering (pronounce this operator name "such that").
 <p>
 
-      For instance, <code class="code">(1 -- 37) // odd</code> is the enumeration of all odd
+      For instance, <code class="code">(1&nbsp;--&nbsp;37)&nbsp;//&nbsp;odd</code> is the enumeration of all odd
       numbers between 1 and 37.<br>
 </div>
 

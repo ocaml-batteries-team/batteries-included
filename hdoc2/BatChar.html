@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatCache.html">
 <link rel="next" href="BatCharParser.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -171,7 +174,7 @@ An alias for the type of characters.<br>
 <pre><span id="VALis_whitespace"><span class="keyword">val</span> is_whitespace</span> : <code class="type">char -> bool</code></pre><div class="info ">
 Determine if a character is a whitespace.
     Whitespace characters are defined as
-    <code class="code"><span class="string">' '</span></code>, <code class="code"><span class="string">'\010'</span></code>, <code class="code"><span class="string">'\013'</span></code>, <code class="code"><span class="string">'\009'</span></code>, <code class="code"><span class="string">'\026'</span></code>
+    <code class="code"><span class="string">'&nbsp;'</span></code>, <code class="code"><span class="string">'\010'</span></code>, <code class="code"><span class="string">'\013'</span></code>, <code class="code"><span class="string">'\009'</span></code>, <code class="code"><span class="string">'\026'</span></code>
     and <code class="code"><span class="string">'\012'</span></code>.<br>
 </div>
 
@@ -239,7 +242,7 @@ Produce the enumeration of all characters<br>
 </div>
 
 <pre><span id="VALrange"><span class="keyword">val</span> range</span> : <code class="type">?until:char -> char -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-<code class="code">range from ?until</code> produces an enumeration of the
+<code class="code">range&nbsp;from&nbsp;?until</code> produces an enumeration of the
     characters from <code class="code">from</code> to <code class="code">until</code> included
     <code class="code">until</code> defaults to <code class="code"><span class="string">'\255'</span></code><br>
 </div>
@@ -248,7 +251,7 @@ Produce the enumeration of all characters<br>
 Produce the enumeration of a segment of characters.
 <p>
 
-    <code class="code"><span class="string">'a'</span> -- <span class="string">'z'</span></code> is the enumeration of all characters
+    <code class="code"><span class="string">'a'</span>&nbsp;--&nbsp;<span class="string">'z'</span></code> is the enumeration of all characters
     between <code class="code"><span class="string">'a'</span></code> and <code class="code"><span class="string">'z'</span></code> included.<br>
 </div>
 

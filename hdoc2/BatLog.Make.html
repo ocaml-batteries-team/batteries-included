@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="next" href="BatLog.Easy.html">
 <link rel="Up" href="BatLog.html">
@@ -27,6 +28,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -67,6 +69,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -112,7 +115,7 @@
 </div>
 <h1>Functor <a href="type_BatLog.Make.html">BatLog.Make</a></h1>
 
-<pre><span class="keyword">module</span> Make: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">S</span></code><code class="code"> : </code><code class="type"><a href="BatLog.Config.html">Config</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Make.html">..</a> <code class="code"><span class="keyword">end</span></code></div></pre><div class="info module top">
+<pre><span class="keyword">module</span> Make: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">S</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatLog.Config.html">Config</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Make.html">..</a> <code class="code"><span class="keyword">end</span></code></div></pre><div class="info module top">
 Build a logger module with custom, fixed output, prefix and flags<br>
 </div>
 <table border="0" cellpadding="3" width="100%">
@@ -132,7 +135,7 @@ Build a logger module with custom, fixed output, prefix and flags<br>
 <hr width="100%">
 
 <pre><span id="VALlog"><span class="keyword">val</span> log</span> : <code class="type">?fp:string -> string -> unit</code></pre><div class="info ">
-<code class="code">print s</code> logs the message s, returning unit.<br>
+<code class="code">print&nbsp;s</code> logs the message s, returning unit.<br>
 </div>
 
 <pre><span id="VALlogf"><span class="keyword">val</span> logf</span> : <code class="type">?fp:string -> ('a, S.t <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit) Pervasives.format -> 'a</code></pre><div class="info ">
@@ -142,7 +145,7 @@ As <code class="code"><span class="constructor">Printf</span>.printf</code>, onl
 </div>
 
 <pre><span id="VALfatal"><span class="keyword">val</span> fatal</span> : <code class="type">?fp:string -> string -> 'a</code></pre><div class="info ">
-<code class="code">fatal s</code> logs the message <code class="code">s</code> and then calls <code class="code">exit 1</code>.  This
+<code class="code">fatal&nbsp;s</code> logs the message <code class="code">s</code> and then calls <code class="code">exit&nbsp;1</code>.  This
       exits the program with return code 1.<br>
 </div>
 

@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatSubstring.html">
 <link rel="next" href="BatText.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -209,18 +212,54 @@ Operating system currently executing the OCaml program. One of<ul>
 <br>
 </div>
 
+<pre><span id="TYPEbackend_type"><span class="keyword">type</span> <code class="type"></code>backend_type</span> = <code class="type">Sys.backend_type</code> = </pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTbackend_type.Native"><span class="constructor">Native</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTbackend_type.Bytecode"><span class="constructor">Bytecode</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTbackend_type.Other"><span class="constructor">Other</span></span> <span class="keyword">of</span> <code class="type">string</code></code></td>
+
+</tr></table>
+
+<div class="info ">
+Currently, the official distribution only supports <code class="code"><span class="constructor">Native</span></code> and
+    <code class="code"><span class="constructor">Bytecode</span></code>, but it can be other backends with alternative
+    compilers, for example, javascript.<br>
+<b>Since</b> 2.5.3 and 4.04<br>
+</div>
+
+
+<pre><span id="VALbackend_type"><span class="keyword">val</span> backend_type</span> : <code class="type"><a href="BatSys.html#TYPEbackend_type">backend_type</a></code></pre><div class="info ">
+Backend type currently executing the OCaml program.
+    @ since 2.5.3 and 4.04<br>
+</div>
+
 <pre><span id="VALunix"><span class="keyword">val</span> unix</span> : <code class="type">bool</code></pre><div class="info ">
-True if <code class="code"><span class="constructor">Sys</span>.os_type = <span class="string">"Unix"</span></code>.<br>
+True if <code class="code"><span class="constructor">Sys</span>.os_type&nbsp;=&nbsp;<span class="string">"Unix"</span></code>.<br>
 <b>Since</b> 4.01.0<br>
 </div>
 
 <pre><span id="VALwin32"><span class="keyword">val</span> win32</span> : <code class="type">bool</code></pre><div class="info ">
-True if <code class="code"><span class="constructor">Sys</span>.os_type = <span class="string">"Win32"</span></code>.<br>
+True if <code class="code"><span class="constructor">Sys</span>.os_type&nbsp;=&nbsp;<span class="string">"Win32"</span></code>.<br>
 <b>Since</b> 4.01.0<br>
 </div>
 
 <pre><span id="VALcygwin"><span class="keyword">val</span> cygwin</span> : <code class="type">bool</code></pre><div class="info ">
-True if <code class="code"><span class="constructor">Sys</span>.os_type = <span class="string">"Cygwin"</span></code>.<br>
+True if <code class="code"><span class="constructor">Sys</span>.os_type&nbsp;=&nbsp;<span class="string">"Cygwin"</span></code>.<br>
 <b>Since</b> 4.01.0<br>
 </div>
 
@@ -292,7 +331,7 @@ What to do when receiving a signal:<ul>
 <li><code class="code"><span class="constructor">Signal_default</span></code>: take the default behavior
        (usually: abort the program)</li>
 <li><code class="code"><span class="constructor">Signal_ignore</span></code>: ignore the signal</li>
-<li><code class="code"><span class="constructor">Signal_handle</span> f</code>: call function <code class="code">f</code>, giving it the signal
+<li><code class="code"><span class="constructor">Signal_handle</span>&nbsp;f</code>: call function <code class="code">f</code>, giving it the signal
       number as argument.</li>
 </ul>
 <br>
@@ -444,8 +483,8 @@ Exception raised on interactive interrupt if <code class="code"><span class="con
 <pre><span id="VALcatch_break"><span class="keyword">val</span> catch_break</span> : <code class="type">bool -> unit</code></pre><div class="info ">
 <code class="code">catch_break</code> governs whether interactive interrupt (ctrl-C)
     terminates the program or raises <code class="code"><span class="constructor">Break</span></code>.
-    Call <code class="code">catch_break <span class="keyword">true</span></code> to enable raising <code class="code"><span class="constructor">Break</span></code>,
-    and <code class="code">catch_break <span class="keyword">false</span></code> to let the system
+    Call <code class="code">catch_break&nbsp;<span class="keyword">true</span></code> to enable raising <code class="code"><span class="constructor">Break</span></code>,
+    and <code class="code">catch_break&nbsp;<span class="keyword">false</span></code> to let the system
     terminate the program on user interrupt.<br>
 </div>
 
@@ -487,10 +526,10 @@ For the purposes of optimization, <code class="code">opaque_identity</code> beha
 
     A typical use of this function is to prevent pure computations from being
     optimized away in benchmarking loops.  For example:
-    <pre class="codepre"><code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span>&nbsp;_round&nbsp;=&nbsp;1&nbsp;<span class="keyword">to</span>&nbsp;100_000&nbsp;<span class="keyword">do</span>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ignore&nbsp;(<span class="constructor">Sys</span>.opaque_identity&nbsp;(my_pure_computation&nbsp;()))
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">done</span>
-&nbsp;&nbsp;&nbsp;&nbsp;</code></pre>
+    <pre class="codepre"><code class="code">      <span class="keyword">for</span> _round = 1 <span class="keyword">to</span> 100_000 <span class="keyword">do</span>
+        ignore (<span class="constructor">Sys</span>.opaque_identity (my_pure_computation ()))
+      <span class="keyword">done</span>
+    </code></pre>
 <p>
 
     The compiler primitive was added to OCaml 4.03, but we emulate it

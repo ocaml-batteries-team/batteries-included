@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="Batteries.ParserCo.html">
 <link rel="next" href="Batteries.Return.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -135,8 +138,8 @@
 </tr></table>
 
 <div class="info ">
-The type of a result.  A result is either <code class="code"><span class="constructor">Ok</span> x</code> carrying the
-    normal return value <code class="code">x</code> or is <code class="code"><span class="constructor">Bad</span> e</code> carrying some indication of an
+The type of a result.  A result is either <code class="code"><span class="constructor">Ok</span>&nbsp;x</code> carrying the
+    normal return value <code class="code">x</code> or is <code class="code"><span class="constructor">Bad</span>&nbsp;e</code> carrying some indication of an
     error.  The value associated with a bad result is usually an exception
     (<code class="code">exn</code>) that can be raised.<br>
 <b>Since</b> 1.0<br>
@@ -161,35 +164,35 @@ As <code class="code">catch</code> but three paramaters.  This saves a closure c
 </div>
 
 <pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">('a, exn) <a href="BatResult.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
-<code class="code">get (<span class="constructor">Ok</span> x)</code> returns <code class="code">x</code>, and <code class="code">get (<span class="constructor">Bad</span> e)</code> raises <code class="code">e</code>.  This
+<code class="code">get&nbsp;(<span class="constructor">Ok</span>&nbsp;x)</code> returns <code class="code">x</code>, and <code class="code">get&nbsp;(<span class="constructor">Bad</span>&nbsp;e)</code> raises <code class="code">e</code>.  This
     function is, in a way, the opposite of the <code class="code">catch</code> function<br>
 <b>Since</b> 2.0<br>
 </div>
 
 <pre><span id="VALdefault"><span class="keyword">val</span> default</span> : <code class="type">'a -> ('a, 'b) <a href="BatResult.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
-<code class="code">default d r</code> evaluates to <code class="code">d</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Bad</span></code> else <code class="code">x</code> when <code class="code">r</code> is
-    <code class="code"><span class="constructor">Ok</span> x</code><br>
+<code class="code">default&nbsp;d&nbsp;r</code> evaluates to <code class="code">d</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Bad</span></code> else <code class="code">x</code> when <code class="code">r</code> is
+    <code class="code"><span class="constructor">Ok</span>&nbsp;x</code><br>
 <b>Since</b> 2.0<br>
 </div>
 
 <pre><span id="VALmap_default"><span class="keyword">val</span> map_default</span> : <code class="type">'b -> ('a -> 'b) -> ('a, 'c) <a href="BatResult.html#TYPEt">t</a> -> 'b</code></pre><div class="info ">
-<code class="code">map_default d f r</code> evaluates to <code class="code">d</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Bad</span></code> else <code class="code">f x</code>
-    when <code class="code">r</code> is <code class="code"><span class="constructor">Ok</span> x</code><br>
+<code class="code">map_default&nbsp;d&nbsp;f&nbsp;r</code> evaluates to <code class="code">d</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Bad</span></code> else <code class="code">f&nbsp;x</code>
+    when <code class="code">r</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;x</code><br>
 <b>Since</b> 2.0<br>
 </div>
 
 <pre><span id="VALis_ok"><span class="keyword">val</span> is_ok</span> : <code class="type">('a, 'b) <a href="BatResult.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-<code class="code">is_ok (<span class="constructor">Ok</span> _)</code> is <code class="code"><span class="keyword">true</span></code>, otherwise <code class="code"><span class="keyword">false</span></code>.<br>
+<code class="code">is_ok&nbsp;(<span class="constructor">Ok</span>&nbsp;_)</code> is <code class="code"><span class="keyword">true</span></code>, otherwise <code class="code"><span class="keyword">false</span></code>.<br>
 <b>Since</b> 2.0<br>
 </div>
 
 <pre><span id="VALis_bad"><span class="keyword">val</span> is_bad</span> : <code class="type">('a, 'b) <a href="BatResult.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-<code class="code">is_bad (<span class="constructor">Bad</span> _)</code> is <code class="code"><span class="keyword">true</span></code>, otherwise <code class="code"><span class="keyword">false</span></code><br>
+<code class="code">is_bad&nbsp;(<span class="constructor">Bad</span>&nbsp;_)</code> is <code class="code"><span class="keyword">true</span></code>, otherwise <code class="code"><span class="keyword">false</span></code><br>
 <b>Since</b> 2.0<br>
 </div>
 
 <pre><span id="VALis_exn"><span class="keyword">val</span> is_exn</span> : <code class="type">exn -> ('a, exn) <a href="BatResult.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-<code class="code">is_exn e1 r</code> is <code class="code"><span class="keyword">true</span></code> iff <code class="code">r</code> is <code class="code"><span class="constructor">Bad</span> e2</code> with <code class="code">e1=e2</code><br>
+<code class="code">is_exn&nbsp;e1&nbsp;r</code> is <code class="code"><span class="keyword">true</span></code> iff <code class="code">r</code> is <code class="code"><span class="constructor">Bad</span>&nbsp;e2</code> with <code class="code">e1=e2</code><br>
 </div>
 
 <pre><span id="VALof_option"><span class="keyword">val</span> of_option</span> : <code class="type">'a option -> ('a, unit) <a href="BatResult.html#TYPEt">t</a></code></pre><div class="info ">

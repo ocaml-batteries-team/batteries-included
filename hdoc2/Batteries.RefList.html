@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="Batteries.Option.html">
 <link rel="next" href="Batteries.Ref.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -229,13 +232,13 @@ Reverses the ref list - O(n)<br>
 <h6 id="6_FunctionalOperations">Functional Operations</h6><br>
 
 <pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatRefList.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
-<code class="code"><span class="constructor">List</span>.fold_left f a (ref [b0; b1; ...; bn])</code> is
-    <code class="code">f (... (f (f a b0) b1) ...) bn</code>.<br>
+<code class="code"><span class="constructor">List</span>.fold_left&nbsp;f&nbsp;a&nbsp;(ref&nbsp;[b0;&nbsp;b1;&nbsp;...;&nbsp;bn])</code> is
+    <code class="code">f&nbsp;(...&nbsp;(f&nbsp;(f&nbsp;a&nbsp;b0)&nbsp;b1)&nbsp;...)&nbsp;bn</code>.<br>
 </div>
 
 <pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">('a -> 'b -> 'b) -> 'a <a href="BatRefList.html#TYPEt">t</a> -> 'b -> 'b</code></pre><div class="info ">
-<code class="code"><span class="constructor">List</span>.fold_right f (ref [a0; a1; ...; an]) b</code> is
-    <code class="code">f a0 (f a1 (... (f an b) ...))</code>.  Tail-recursive.<br>
+<code class="code"><span class="constructor">List</span>.fold_right&nbsp;f&nbsp;(ref&nbsp;[a0;&nbsp;a1;&nbsp;...;&nbsp;an])&nbsp;b</code> is
+    <code class="code">f&nbsp;a0&nbsp;(f&nbsp;a1&nbsp;(...&nbsp;(f&nbsp;an&nbsp;b)&nbsp;...))</code>.  Tail-recursive.<br>
 </div>
 
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> 'a <a href="BatRefList.html#TYPEt">t</a> -> unit</code></pre><div class="info ">

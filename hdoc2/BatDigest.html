@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatDeque.html">
 <link rel="next" href="BatDllist.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -142,13 +145,13 @@ Return the digest of the given byte sequence.<br>
 </div>
 
 <pre><span id="VALsubstring"><span class="keyword">val</span> substring</span> : <code class="type">string -> int -> int -> <a href="BatDigest.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code"><span class="constructor">Digest</span>.substring s ofs len</code> returns the digest of the substring
+<code class="code"><span class="constructor">Digest</span>.substring&nbsp;s&nbsp;ofs&nbsp;len</code> returns the digest of the substring
     of <code class="code">s</code> starting at character number <code class="code">ofs</code> and containing <code class="code">len</code>
     characters.<br>
 </div>
 
 <pre><span id="VALsubbytes"><span class="keyword">val</span> subbytes</span> : <code class="type">Bytes.t -> int -> int -> <a href="BatDigest.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code"><span class="constructor">Digest</span>.subbytes s ofs len</code> returns the digest of the subsequence
+<code class="code"><span class="constructor">Digest</span>.subbytes&nbsp;s&nbsp;ofs&nbsp;len</code> returns the digest of the subsequence
     of <code class="code">s</code> starting at index <code class="code">ofs</code> and containing <code class="code">len</code> bytes.<br>
 <b>Since</b> 2.3.0<br>
 </div>
@@ -169,10 +172,10 @@ Convert a hexadecimal representation back into the corresponding digest.<br>
 </div>
 
 <pre><span id="VALchannel"><span class="keyword">val</span> channel</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int -> Digest.t</code></pre><div class="info ">
-If <code class="code">len</code> is nonnegative, <code class="code"><span class="constructor">Digest</span>.channel ic len</code> reads <code class="code">len</code>
+If <code class="code">len</code> is nonnegative, <code class="code"><span class="constructor">Digest</span>.channel&nbsp;ic&nbsp;len</code> reads <code class="code">len</code>
     characters from channel <code class="code">ic</code> and returns their digest, or<br>
 <b>Raises</b> <code>End_of_file</code> if end-of-file is reached before <code class="code">len</code> characters
-    are read.  If <code class="code">len</code> is negative, <code class="code"><span class="constructor">Digest</span>.channel ic len</code> reads
+    are read.  If <code class="code">len</code> is negative, <code class="code"><span class="constructor">Digest</span>.channel&nbsp;ic&nbsp;len</code> reads
     all characters from <code class="code">ic</code> until end-of-file is reached and return
     their digest.
 <p>

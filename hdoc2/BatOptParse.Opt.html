@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="next" href="BatOptParse.StdOpt.html">
 <link rel="Up" href="BatOptParse.html">
@@ -27,6 +28,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -67,6 +69,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -243,7 +246,7 @@ Set the value of an option.<br>
 
 <pre><span id="VALopt"><span class="keyword">val</span> opt</span> : <code class="type">'a <a href="BatOptParse.Opt.html#TYPEt">t</a> -> 'a option</code></pre><div class="info ">
 Get the value of an option as an optional value.<br>
-<b>Returns</b> <code class="code"><span class="constructor">Some</span> x</code> if the option has value <code class="code">x</code> (either by default or
+<b>Returns</b> <code class="code"><span class="constructor">Some</span>&nbsp;x</code> if the option has value <code class="code">x</code> (either by default or
       from the command line). If the option doesn't have a value <code class="code"><span class="constructor">None</span></code>
       is returned.<br>
 </div>
@@ -260,10 +263,10 @@ Find out if the option has a value (either by default or
 Make an option which takes a single argument.
 <p>
 
-      <code class="code">value_option metavar default coerce errfmt</code> returns an option
+      <code class="code">value_option&nbsp;metavar&nbsp;default&nbsp;coerce&nbsp;errfmt</code> returns an option
       which takes a single argument from the command line and calls
       <code class="code">coerce</code> to coerce it to the proper type. If <code class="code">coerce</code> raises an
-      exception, <code class="code">exn</code>, then <code class="code">errfmt exn argval</code> is called to generate
+      exception, <code class="code">exn</code>, then <code class="code">errfmt&nbsp;exn&nbsp;argval</code> is called to generate
       an error message for display. <code class="code">metavar</code> is the name of the
       metavariable of the option.
 <p>
@@ -277,10 +280,10 @@ Make an option which takes a single argument.
 Make a callback option which takes a single argument.
 <p>
 
-        <code class="code">callback_option metavar coerce errfmt f</code> returns an option which
+        <code class="code">callback_option&nbsp;metavar&nbsp;coerce&nbsp;errfmt&nbsp;f</code> returns an option which
         takes a single argument from the command line and calls <code class="code">coerce</code>
         to coerce it to the proper type. If <code class="code">coerce</code> raises an exception
-        <code class="code">errfmt exn argval</code> is called to format an error message for
+        <code class="code">errfmt&nbsp;exn&nbsp;argval</code> is called to format an error message for
         display. If <code class="code">coerce</code> succeeds, the callback function <code class="code">f</code> is called
         with the coerced value. Finally, <code class="code">metavar</code> is the name of the
         metavariable of the option.<br>

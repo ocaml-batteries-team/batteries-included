@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatPrintexc.html">
 <link rel="next" href="BatQueue.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -157,19 +160,19 @@ Formatted output functions (also known as unparsing).<br>
 <p>
 
    For instance, <code class="code"><span class="string">"foobar"</span></code> is a format with no directive. Calling
-   <code class="code">printf <span class="string">"foobar"</span></code> prints <code class="code"><span class="string">"foobar"</span></code> on the screen and returns
+   <code class="code">printf&nbsp;<span class="string">"foobar"</span></code> prints <code class="code"><span class="string">"foobar"</span></code> on the screen and returns
    <code class="code">()</code>. On the other hand, <code class="code"><span class="string">"%s"</span></code> is a format with one directive for
-   printing strings. <code class="code">printf <span class="string">"%s"</span></code> does nothing yet but returns a
-   function with type <code class="code">string <span class="keywordsign">-&gt;</span> unit</code>. In turn, <code class="code">printf <span class="string">"%s"</span>
-   <span class="string">"foobar"</span></code> prints <code class="code"><span class="string">"foobar"</span></code> on the screen and returns <code class="code">()</code>. The
+   printing strings. <code class="code">printf&nbsp;<span class="string">"%s"</span></code> does nothing yet but returns a
+   function with type <code class="code">string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit</code>. In turn, <code class="code">printf&nbsp;<span class="string">"%s"</span><br>
+&nbsp;&nbsp;&nbsp;<span class="string">"foobar"</span></code> prints <code class="code"><span class="string">"foobar"</span></code> on the screen and returns <code class="code">()</code>. The
    main interest of this module is that directives may be combined
    together and with text, to allow more complex printing. For instance
-   <code class="code">printf <span class="string">"(%s)\n"</span></code> is a function with type <code class="code">string <span class="keywordsign">-&gt;</span> unit</code> which,
+   <code class="code">printf&nbsp;<span class="string">"(%s)\n"</span></code> is a function with type <code class="code">string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit</code> which,
    when passed string <code class="code"><span class="string">"foobar"</span></code> prints <code class="code"><span class="string">"(foobar)"</span></code> and ends the
-   line. Similarly, <code class="code">printf <span class="string">"Here's the result: %s.\n\tComputation
-   took %i seconds.\n"</span> <span class="string">"foobar"</span> 5</code> prints
-   <pre class="codepre"><code class="code"><span class="constructor">Here's</span>&nbsp;the&nbsp;result:&nbsp;foobar
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Computation</span>&nbsp;took&nbsp;5&nbsp;seconds.</code></pre>
+   line. Similarly, <code class="code">printf&nbsp;<span class="string">"Here's&nbsp;the&nbsp;result:&nbsp;%s.\n\tComputation<br>
+&nbsp;&nbsp;&nbsp;took&nbsp;%i&nbsp;seconds.\n"</span>&nbsp;<span class="string">"foobar"</span>&nbsp;5</code> prints
+   <pre class="codepre"><code class="code"><span class="constructor">Here's</span> the result: foobar
+         <span class="constructor">Computation</span> took 5 seconds.</code></pre>
 <p>
 
    Note that <code class="code">\n</code> (the newline character) and <code class="code">\t</code> (the tabulation)
@@ -216,9 +219,9 @@ The format to use for displaying the various arguments passed to the function.
 <li><code class="code">%f</code>: convert a floating-point argument to decimal notation,
      in the style <code class="code">dddd.ddd</code>.</li>
 <li><code class="code">%<span class="constructor">F</span></code>: convert a floating-point argument to OCaml syntax (<code class="code">dddd.</code>
-     or <code class="code">dddd.ddd</code> or <code class="code">d.ddd e+-dd</code>).</li>
+     or <code class="code">dddd.ddd</code> or <code class="code">d.ddd&nbsp;e+-dd</code>).</li>
 <li><code class="code">%e</code> or <code class="code">%<span class="constructor">E</span></code>: convert a floating-point argument to decimal notation,
-     in the style <code class="code">d.ddd e+-dd</code> (mantissa and exponent).</li>
+     in the style <code class="code">d.ddd&nbsp;e+-dd</code> (mantissa and exponent).</li>
 <li><code class="code">%g</code> or <code class="code">%<span class="constructor">G</span></code>: convert a floating-point argument to decimal notation,
      in style <code class="code">%f</code> or <code class="code">%e</code>, <code class="code"><span class="constructor">E</span></code> (whichever is more compact).</li>
 <li><code class="code">%<span class="constructor">B</span></code>: convert a boolean argument to the string <code class="code"><span class="keyword">true</span></code> or <code class="code"><span class="keyword">false</span></code></li>
@@ -239,32 +242,32 @@ The format to use for displaying the various arguments passed to the function.
 <p>
 <ul>
 <li><code class="code">%a</code>: user-defined printer. Typically, this printer corresponds to two
-     arguments: a printing function <code class="code">f</code>, with type <code class="code"><span class="keywordsign">'</span>a output <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>c <span class="keywordsign">-&gt;</span> unit</code>
+     arguments: a printing function <code class="code">f</code>, with type <code class="code"><span class="keywordsign">'</span>a&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>c&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit</code>
      and the item <code class="code">x</code> you want to print, with type <code class="code"><span class="keywordsign">'</span>c</code>. Item <code class="code">x</code> will
-     be printing by calling <code class="code">f out x</code>, where <code class="code">out</code> is the output you are
+     be printing by calling <code class="code">f&nbsp;out&nbsp;x</code>, where <code class="code">out</code> is the output you are
      currently using -- if you are calling <a href="BatPrintf.html#VALprintf"><code class="code"><span class="constructor">BatPrintf</span>.printf</code></a>, this output is
      the standard output (i.e. the screen), if you are calling <a href="BatPrintf.html#VALeprintf"><code class="code"><span class="constructor">BatPrintf</span>.eprintf</code></a>,
      this will be the error channel, if you are calling <a href="BatPrintf.html#VALfprintf"><code class="code"><span class="constructor">BatPrintf</span>.fprintf</code></a>, this
      will be the output you provided yourself, etc. More generally, if your
-     <code class="code">format</code> has type <code class="code">(<span class="keywordsign">'</span>a, <span class="keywordsign">'</span>b, <span class="keywordsign">'</span>d) format</code> or <code class="code">(<span class="keywordsign">'</span>a, <span class="keywordsign">'</span>b, <span class="keywordsign">'</span>d, <span class="keywordsign">'</span>e) format4</code>,
-     the printing function <code class="code">f</code> must have type <code class="code"><span class="keywordsign">'</span>b <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>c <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>d</code>, where
+     <code class="code">format</code> has type <code class="code">(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>d)&nbsp;format</code> or <code class="code">(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>d,&nbsp;<span class="keywordsign">'</span>e)&nbsp;format4</code>,
+     the printing function <code class="code">f</code> must have type <code class="code"><span class="keywordsign">'</span>b&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>c&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>d</code>, where
      <code class="code">x</code> has type <code class="code"><span class="keywordsign">'</span>d</code>.</li>
 <li><code class="code">%t</code>: same as <code class="code">%a</code> but takes only a printing function <code class="code">f</code>,
-     without an item. If your <code class="code">format</code> has type <code class="code">(<span class="keywordsign">'</span>a, <span class="keywordsign">'</span>b, <span class="keywordsign">'</span>d) format</code>
-     or <code class="code">(<span class="keywordsign">'</span>a, <span class="keywordsign">'</span>b, <span class="keywordsign">'</span>d, <span class="keywordsign">'</span>e) format4</code>, function <code class="code">f</code> must have type
-     <code class="code"><span class="keywordsign">'</span>b <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>d</code>.</li>
+     without an item. If your <code class="code">format</code> has type <code class="code">(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>d)&nbsp;format</code>
+     or <code class="code">(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>d,&nbsp;<span class="keywordsign">'</span>e)&nbsp;format4</code>, function <code class="code">f</code> must have type
+     <code class="code"><span class="keywordsign">'</span>b&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>d</code>.</li>
 </ul>
 
    <div class="h7" id="7_Formattingformats">Formatting formats</div><ul>
-<li><code class="code">%{ fmt %}</code>: convert a <code class="code">format</code> to a string. The format argument
+<li><code class="code">%{&nbsp;fmt&nbsp;%}</code>: convert a <code class="code">format</code> to a string. The format argument
      must have the same type as the internal format string <code class="code">fmt</code>.
-     In other words, <code class="code">printf <span class="string">"%{ %s %}"</span></code> accepts an argument
+     In other words, <code class="code">printf&nbsp;<span class="string">"%{&nbsp;%s&nbsp;%}"</span></code> accepts an argument
      whose type must be the same as that of format <code class="code"><span class="string">"%s"</span></code>, and
      prints that format argument as if it were a character string.</li>
-<li><code class="code">%( fmt %)</code>: format string substitution. Takes a format string
+<li><code class="code">%(&nbsp;fmt&nbsp;%)</code>: format string substitution. Takes a format string
      argument and substitutes it to the internal format string <code class="code">fmt</code>
      to print following arguments. The argument must have the same
-     type as <code class="code">fmt</code>. <code class="code">printf <span class="string">"%{ %s %}"</span></code> accepts an argument
+     type as <code class="code">fmt</code>. <code class="code">printf&nbsp;<span class="string">"%{&nbsp;%s&nbsp;%}"</span></code> accepts an argument
      whose type must be the same as that of format <code class="code"><span class="string">"%s"</span></code>, and
      uses that argument to print the following arguments.</li>
 </ul>
@@ -273,11 +276,11 @@ The format to use for displaying the various arguments passed to the function.
    The general format of directives is
 <p>
 
-   <code class="code">% [flags] [width] [.precision] <span class="keyword">type</span></code>
+   <code class="code">%&nbsp;[flags]&nbsp;[width]&nbsp;[.precision]&nbsp;<span class="keyword">type</span></code>
 <p>
 
    <code class="code"><span class="keyword">type</span></code> is one of <code class="code">d</code>, <code class="code">i</code>, <code class="code">n</code>, <code class="code">l</code>, <code class="code"><span class="constructor">L</span></code>, <code class="code"><span class="constructor">N</span></code>, <code class="code">u</code>, <code class="code">x</code> ...,
-   <code class="code">( fmt %)</code> and behaves as explained above.
+   <code class="code">(&nbsp;fmt&nbsp;%)</code> and behaves as explained above.
 <p>
 
    The optional <code class="code">flags</code> are:<ul>
@@ -332,7 +335,7 @@ A function which doesn't print its result but returns it as a string. Useful
 <p>
 
     Note that any function called with <code class="code">%a</code> should return strings, i.e.
-    should have type <code class="code">unit <span class="keywordsign">-&gt;</span> string</code>.<br>
+    should have type <code class="code">unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string</code>.<br>
 </div>
 
 <pre><span id="VALsprintf2"><span class="keyword">val</span> sprintf2</span> : <code class="type">('a, 'b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, string) Pervasives.format4 -> 'a</code></pre><div class="info ">
@@ -345,12 +348,12 @@ A function which doesn't print its result but returns it as a string. Useful
     strings such as files, that's not its role. For this kind of usage, prefer
     the more modular and usually faster <a href="BatPrintf.html#VALfprintf"><code class="code"><span class="constructor">BatPrintf</span>.fprintf</code></a>.
     Note that any function called with <code class="code">%a</code> should be able to print its result,
-    i.e. should have type <code class="code"><span class="keywordsign">'</span>b output <span class="keywordsign">-&gt;</span> unit</code>.
+    i.e. should have type <code class="code"><span class="keywordsign">'</span>b&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit</code>.
 <p>
 
     Warning: a partial application of this function can only be used once,
     because the <a href="BatInnerIO.html#VALoutput"><code class="code"><span class="constructor">BatInnerIO</span>.output</code></a> that it uses is closed afterwards.
-    Example: <code class="code"><span class="keyword">let</span> f = sprintf2 <span class="string">"%a"</span> <span class="constructor">Int</span>.print <span class="keyword">in</span> [f 1; f 2]</code> will fail.<br>
+    Example: <code class="code"><span class="keyword">let</span>&nbsp;f&nbsp;=&nbsp;sprintf2&nbsp;<span class="string">"%a"</span>&nbsp;<span class="constructor">Int</span>.print&nbsp;<span class="keyword">in</span>&nbsp;[f&nbsp;1;&nbsp;f&nbsp;2]</code> will fail.<br>
 </div>
 <br>
 <h6 id="6_Generalfunctions">General functions</h6><br>
@@ -363,8 +366,8 @@ General function. This function prints to any output. Typically,
    looking for. If you are you are looking for a function to use for
    argument <code class="code">%a</code> with <a href="BatPrintf.html#VALprintf"><code class="code"><span class="constructor">BatPrintf</span>.printf</code></a>, <a href="BatPrintf.html#VALeprintf"><code class="code"><span class="constructor">BatPrintf</span>.eprintf</code></a>, <a href="BatPrintf.html#VALsprintf2"><code class="code"><span class="constructor">BatPrintf</span>.sprintf2</code></a>,
    <a href="BatPrintf.html#VALifprintf"><code class="code"><span class="constructor">BatPrintf</span>.ifprintf</code></a>, <a href="BatPrintf.html#VALbprintf2"><code class="code"><span class="constructor">BatPrintf</span>.bprintf2</code></a>, <a href="BatPrintf.html#VALkfprintf"><code class="code"><span class="constructor">BatPrintf</span>.kfprintf</code></a>, <a href="BatPrintf.html#VALksprintf2"><code class="code"><span class="constructor">BatPrintf</span>.ksprintf2</code></a>, <a href="BatPrintf.html#VALkbprintf2"><code class="code"><span class="constructor">BatPrintf</span>.kbprintf2</code></a>
-   or any other function with type <code class="code">(_, _ output, unit) format</code> or
-   <code class="code">(_, _ output, unit, _) format4</code>, this is also probably the
+   or any other function with type <code class="code">(_,&nbsp;_&nbsp;output,&nbsp;unit)&nbsp;format</code> or
+   <code class="code">(_,&nbsp;_&nbsp;output,&nbsp;unit,&nbsp;_)&nbsp;format4</code>, this is also probably the
    function you are looking for.<br>
 </div>
 
@@ -427,12 +430,12 @@ Same as <code class="code">bprintf2</code>, but instead of returning immediately
    <div class="h7" id="7_Format4">Format4</div>
 <p>
 
-   <code class="code">(<span class="keywordsign">'</span>a, <span class="keywordsign">'</span>b, <span class="keywordsign">'</span>c, <span class="keywordsign">'</span>d) format4</code> is the type of arguments for
+   <code class="code">(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d)&nbsp;format4</code> is the type of arguments for
    <code class="code">printf</code>-style functions such that<ul>
 <li><code class="code"><span class="keywordsign">'</span>a</code> is the type of arguments, with a return type of <code class="code"><span class="keywordsign">'</span>d</code>
    <ul>
-<li>if your format looks like <code class="code"><span class="string">"%s"</span></code>, <code class="code"><span class="keywordsign">'</span>a</code> is <code class="code">string <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>d</code></li>
-<li>if your format looks like <code class="code"><span class="string">"%s%s"</span></code>, <code class="code"><span class="keywordsign">'</span>a</code> is <code class="code">string <span class="keywordsign">-&gt;</span> string <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>d</code></li>
+<li>if your format looks like <code class="code"><span class="string">"%s"</span></code>, <code class="code"><span class="keywordsign">'</span>a</code> is <code class="code">string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>d</code></li>
+<li>if your format looks like <code class="code"><span class="string">"%s%s"</span></code>, <code class="code"><span class="keywordsign">'</span>a</code> is <code class="code">string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>d</code></li>
 <li>...</li>
 </ul>
 </li>
@@ -441,8 +444,8 @@ Same as <code class="code">bprintf2</code>, but instead of returning immediately
    <ul>
 <li>if your unparsers take a <code class="code">unit</code> argument, <code class="code"><span class="keywordsign">'</span>b</code> should be
    <code class="code">unit</code></li>
-<li>if your unparsers take a <code class="code">string output</code>, <code class="code"><span class="keywordsign">'</span>b</code> should be
-   <code class="code">string output</code></li>
+<li>if your unparsers take a <code class="code">string&nbsp;output</code>, <code class="code"><span class="keywordsign">'</span>b</code> should be
+   <code class="code">string&nbsp;output</code></li>
 <li>...</li>
 </ul>
 </li>
@@ -451,7 +454,7 @@ Same as <code class="code">bprintf2</code>, but instead of returning immediately
 <li>if you have an unparser introduced with <code class="code">%t</code> and its result
    has type <code class="code">unit</code>, <code class="code"><span class="keywordsign">'</span>c</code> should be <code class="code">unit</code></li>
 <li>if you have an unparser introduced with <code class="code">%a</code> and its type is
-   <code class="code">string output <span class="keywordsign">-&gt;</span> string <span class="keywordsign">-&gt;</span> unit</code>, <code class="code"><span class="keywordsign">'</span>c</code> should be <code class="code">unit</code></li>
+   <code class="code">string&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit</code>, <code class="code"><span class="keywordsign">'</span>c</code> should be <code class="code">unit</code></li>
 <li>...</li>
 </ul>
 </li>
@@ -460,7 +463,7 @@ Same as <code class="code">bprintf2</code>, but instead of returning immediately
 </ul>
 
    <div class="h7" id="7_Format">Format</div>
-   <code class="code">(<span class="keywordsign">'</span>a, <span class="keywordsign">'</span>b, <span class="keywordsign">'</span>c) format</code> or <code class="code">(<span class="keywordsign">'</span>a, <span class="keywordsign">'</span>b, <span class="keywordsign">'</span>c) t</code> is just a shortcut for <code class="code">(<span class="keywordsign">'</span>a, <span class="keywordsign">'</span>b, <span class="keywordsign">'</span>c, <span class="keywordsign">'</span>c) format4</code>.
+   <code class="code">(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c)&nbsp;format</code> or <code class="code">(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c)&nbsp;t</code> is just a shortcut for <code class="code">(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>c)&nbsp;format4</code>.
 <p>
 
    <div class="h7" id="7_Important">Important</div>

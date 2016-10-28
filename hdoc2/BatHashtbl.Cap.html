@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatHashtbl.Make.html">
 <link rel="Up" href="BatHashtbl.html">
@@ -27,6 +28,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -67,6 +69,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -140,7 +143,7 @@ Adopt a regular hashtable as a capability hashtble, allowing
 <p>
 
       This operation involves no copying. In other words, in
-      <code class="code"><span class="keyword">let</span> cap = of_table a <span class="keyword">in</span> ...</code>, any modification in <code class="code">a</code>
+      <code class="code"><span class="keyword">let</span>&nbsp;cap&nbsp;=&nbsp;of_table&nbsp;a&nbsp;<span class="keyword">in</span>&nbsp;...</code>, any modification in <code class="code">a</code>
       will also have effect on <code class="code">cap</code> and reciprocally.<br>
 </div>
 
@@ -150,7 +153,7 @@ Return a capability hashtable as a regular hashtable.
 
       This operation requires both read and write permissions
       on the capability table and involves no copying. In other
-      words, in <code class="code"><span class="keyword">let</span> a = of_table cap <span class="keyword">in</span> ...</code>, any modification
+      words, in <code class="code"><span class="keyword">let</span>&nbsp;a&nbsp;=&nbsp;of_table&nbsp;cap&nbsp;<span class="keyword">in</span>&nbsp;...</code>, any modification
       in <code class="code">a</code> will also have effect on <code class="code">cap</code> and reciprocally.<br>
 </div>
 

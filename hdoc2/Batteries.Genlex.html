@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="Batteries.Gc.html">
 <link rel="next" href="Batteries.Hashtbl.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -175,9 +178,9 @@ The type of tokens. The lexical classes are: <code class="code"><span class="con
 
 <pre><span id="VALmake_lexer"><span class="keyword">val</span> make_lexer</span> : <code class="type">string list -> char Stream.t -> <a href="BatGenlex.html#TYPEtoken">token</a> Stream.t</code></pre><div class="info ">
 Construct the lexer function. The first argument is the list of
-    keywords. An identifier <code class="code">s</code> is returned as <code class="code"><span class="constructor">Kwd</span> s</code> if <code class="code">s</code>
-    belongs to this list, and as <code class="code"><span class="constructor">Ident</span> s</code> otherwise.
-    A special character <code class="code">s</code> is returned as <code class="code"><span class="constructor">Kwd</span> s</code> if <code class="code">s</code>
+    keywords. An identifier <code class="code">s</code> is returned as <code class="code"><span class="constructor">Kwd</span>&nbsp;s</code> if <code class="code">s</code>
+    belongs to this list, and as <code class="code"><span class="constructor">Ident</span>&nbsp;s</code> otherwise.
+    A special character <code class="code">s</code> is returned as <code class="code"><span class="constructor">Kwd</span>&nbsp;s</code> if <code class="code">s</code>
     belongs to this list, and cause a lexical error (exception
     <code class="code"><span class="constructor">Parse_error</span></code>) otherwise. Blanks and newlines are skipped.
     Comments delimited by <code class="code">(*</code> and <code class="code">*)</code> are skipped as well,

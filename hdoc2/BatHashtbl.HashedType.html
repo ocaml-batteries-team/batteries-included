@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="next" href="BatHashtbl.S.html">
 <link rel="Up" href="BatHashtbl.html">
@@ -27,6 +28,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -67,6 +69,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -131,7 +134,7 @@ A hashing function on keys. It must be such that if two keys are
         Examples: suitable (<code class="code">equal</code>, <code class="code">hash</code>) pairs for arbitrary key
         types include
         (<code class="code">(=)</code>, <code class="code"><span class="constructor">Hashtbl</span>.hash</code>) for comparing objects by structure,
-        (<code class="code">(<span class="keyword">fun</span> x y <span class="keywordsign">-&gt;</span> compare x y = 0)</code>, <code class="code"><span class="constructor">Hashtbl</span>.hash</code>)
+        (<code class="code">(<span class="keyword">fun</span>&nbsp;x&nbsp;y&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;compare&nbsp;x&nbsp;y&nbsp;=&nbsp;0)</code>, <code class="code"><span class="constructor">Hashtbl</span>.hash</code>)
         for comparing objects by structure and handling <code class="code"><span class="constructor">Pervasives</span>.nan</code>
         correctly, and
         (<code class="code">(==)</code>, <code class="code"><span class="constructor">Hashtbl</span>.hash</code>) for comparing objects by addresses

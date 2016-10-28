@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatString.NumString.html">
 <link rel="next" href="BatString.Cap.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -130,13 +133,13 @@ Returns the float represented by the given string or
 </div>
 
 <pre><span id="VALindex"><span class="keyword">val</span> index</span> : <code class="type">string -> char -> int option</code></pre><div class="info ">
-<code class="code">index s c</code> returns <code class="code"><span class="constructor">Some</span> p</code>, the position of the leftmost
+<code class="code">index&nbsp;s&nbsp;c</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;p</code>, the position of the leftmost
       occurrence of character <code class="code">c</code> in string <code class="code">s</code> or
       <code class="code"><span class="constructor">None</span></code> if <code class="code">c</code> does not occur in <code class="code">s</code>.<br>
 </div>
 
 <pre><span id="VALrindex"><span class="keyword">val</span> rindex</span> : <code class="type">string -> char -> int option</code></pre><div class="info ">
-<code class="code">rindex s c</code> returns <code class="code"><span class="constructor">Some</span> p</code>, the position of the rightmost
+<code class="code">rindex&nbsp;s&nbsp;c</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;p</code>, the position of the rightmost
       occurrence of character <code class="code">c</code> in string <code class="code">s</code> or
       <code class="code"><span class="constructor">None</span></code> if <code class="code">c</code> does not occur in <code class="code">s</code>.<br>
 </div>
@@ -144,18 +147,18 @@ Returns the float represented by the given string or
 <pre><span id="VALindex_from"><span class="keyword">val</span> index_from</span> : <code class="type">string -> int -> char -> int option</code></pre><div class="info ">
 Same as <code class="code"><span class="constructor">String</span>.<span class="constructor">Exceptionless</span>.index</code>, but start
       searching at the character position given as second argument.
-      <code class="code">index s c</code> is equivalent to <code class="code">index_from s 0 c</code>.<br>
+      <code class="code">index&nbsp;s&nbsp;c</code> is equivalent to <code class="code">index_from&nbsp;s&nbsp;0&nbsp;c</code>.<br>
 </div>
 
 <pre><span id="VALrindex_from"><span class="keyword">val</span> rindex_from</span> : <code class="type">string -> int -> char -> int option</code></pre><div class="info ">
 Same as <code class="code"><span class="constructor">String</span>.<span class="constructor">Exceptionless</span>.rindex</code>, but start
       searching at the character position given as second argument.
-      <code class="code">rindex s c</code> is equivalent to
-      <code class="code">rindex_from s (<span class="constructor">String</span>.length s - 1) c</code>.<br>
+      <code class="code">rindex&nbsp;s&nbsp;c</code> is equivalent to
+      <code class="code">rindex_from&nbsp;s&nbsp;(<span class="constructor">String</span>.length&nbsp;s&nbsp;-&nbsp;1)&nbsp;c</code>.<br>
 </div>
 
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">string -> string -> int option</code></pre><div class="info ">
-<code class="code">find s x</code> returns <code class="code"><span class="constructor">Some</span> i</code>, the starting index of the first
+<code class="code">find&nbsp;s&nbsp;x</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;i</code>, the starting index of the first
       occurrence of string <code class="code">x</code> within string <code class="code">s</code>, or <code class="code"><span class="constructor">None</span></code> if <code class="code">x</code>
       is not a substring of <code class="code">s</code>.
 <p>
@@ -164,12 +167,12 @@ Same as <code class="code"><span class="constructor">String</span>.<span class="
 </div>
 
 <pre><span id="VALfind_from"><span class="keyword">val</span> find_from</span> : <code class="type">string -> int -> string -> int option</code></pre><div class="info ">
-<code class="code">find_from s ofs x</code> behaves as <code class="code">find s x</code> but starts searching
-      at offset <code class="code">ofs</code>. <code class="code">find s x</code> is equivalent to <code class="code">find_from s 0 x</code>.<br>
+<code class="code">find_from&nbsp;s&nbsp;ofs&nbsp;x</code> behaves as <code class="code">find&nbsp;s&nbsp;x</code> but starts searching
+      at offset <code class="code">ofs</code>. <code class="code">find&nbsp;s&nbsp;x</code> is equivalent to <code class="code">find_from&nbsp;s&nbsp;0&nbsp;x</code>.<br>
 </div>
 
 <pre><span id="VALrfind"><span class="keyword">val</span> rfind</span> : <code class="type">string -> string -> int option</code></pre><div class="info ">
-<code class="code">rfind s x</code> returns <code class="code"><span class="constructor">Some</span> i</code>, the starting index of the last occurrence
+<code class="code">rfind&nbsp;s&nbsp;x</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;i</code>, the starting index of the last occurrence
       of string <code class="code">x</code> within string <code class="code">s</code>, or <code class="code"><span class="constructor">None</span></code> if <code class="code">x</code> is not a substring
       of <code class="code">s</code>.
 <p>
@@ -178,19 +181,19 @@ Same as <code class="code"><span class="constructor">String</span>.<span class="
 </div>
 
 <pre><span id="VALrfind_from"><span class="keyword">val</span> rfind_from</span> : <code class="type">string -> int -> string -> int option</code></pre><div class="info ">
-<code class="code">rfind_from s ofs x</code> behaves as <code class="code">rfind s x</code> but starts searching
-      at offset <code class="code">ofs</code>. <code class="code">rfind s x</code> is equivalent to
-      <code class="code">rfind_from s (<span class="constructor">String</span>.length s - 1) x</code>.<br>
+<code class="code">rfind_from&nbsp;s&nbsp;ofs&nbsp;x</code> behaves as <code class="code">rfind&nbsp;s&nbsp;x</code> but starts searching
+      at offset <code class="code">ofs</code>. <code class="code">rfind&nbsp;s&nbsp;x</code> is equivalent to
+      <code class="code">rfind_from&nbsp;s&nbsp;(<span class="constructor">String</span>.length&nbsp;s&nbsp;-&nbsp;1)&nbsp;x</code>.<br>
 </div>
 
 <pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type">string -> by:string -> (string * string) option</code></pre><div class="info ">
-<code class="code">split s sep</code> splits the string <code class="code">s</code> between the first
+<code class="code">split&nbsp;s&nbsp;sep</code> splits the string <code class="code">s</code> between the first
       occurrence of <code class="code">sep</code>, or returns <code class="code"><span class="constructor">None</span></code> if the separator
       is not found.<br>
 </div>
 
 <pre><span id="VALrsplit"><span class="keyword">val</span> rsplit</span> : <code class="type">string -> by:string -> (string * string) option</code></pre><div class="info ">
-<code class="code">rsplit s sep</code> splits the string <code class="code">s</code> between the last
+<code class="code">rsplit&nbsp;s&nbsp;sep</code> splits the string <code class="code">s</code> between the last
         occurrence of <code class="code">sep</code>, or returns <code class="code"><span class="constructor">None</span></code> if the separator
         is not found.<br>
 </div>

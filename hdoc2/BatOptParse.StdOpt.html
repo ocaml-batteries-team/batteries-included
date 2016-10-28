@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatOptParse.Opt.html">
 <link rel="next" href="BatOptParse.Formatter.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -126,19 +129,19 @@ This module contains various standard options.<br>
 <h6 id="6_Flagoptions">Flag options</h6><br>
 
 <pre><span id="VALstore_const"><span class="keyword">val</span> store_const</span> : <code class="type">?default:'a -> 'a -> 'a <a href="BatOptParse.Opt.html#TYPEt">BatOptParse.Opt.t</a></code></pre><div class="info ">
-<code class="code">store_const ?default const</code> returns a flag option which
+<code class="code">store_const&nbsp;?default&nbsp;const</code> returns a flag option which
       stores the constant value <code class="code">const</code> when the option is
       encountered on the command line.<br>
 </div>
 
 <pre><span id="VALstore_true"><span class="keyword">val</span> store_true</span> : <code class="type">unit -> bool <a href="BatOptParse.Opt.html#TYPEt">BatOptParse.Opt.t</a></code></pre><div class="info ">
-<code class="code">store_true ()</code> returns an option which is set to true when
+<code class="code">store_true&nbsp;()</code> returns an option which is set to true when
       it is encountered on the command line. The default value is
       false.<br>
 </div>
 
 <pre><span id="VALstore_false"><span class="keyword">val</span> store_false</span> : <code class="type">unit -> bool <a href="BatOptParse.Opt.html#TYPEt">BatOptParse.Opt.t</a></code></pre><div class="info ">
-<code class="code">store_false ()</code> returns an option which is set to false when
+<code class="code">store_false&nbsp;()</code> returns an option which is set to false when
       it is encountered on the command line. The default value is
       true.<br>
 </div>
@@ -154,17 +157,17 @@ Create a counting option which increments its value each time the
       time the option is encountered.</div>
 
 <pre><span id="VALincr_option"><span class="keyword">val</span> incr_option</span> : <code class="type">?dest:int Pervasives.ref -> unit -> int <a href="BatOptParse.Opt.html#TYPEt">BatOptParse.Opt.t</a></code></pre><div class="info ">
-Exactly identical to <code class="code">count_option ~dest:dest ~increment:1 ()</code>.<br>
+Exactly identical to <code class="code">count_option&nbsp;~dest:dest&nbsp;~increment:1&nbsp;()</code>.<br>
 </div>
 
 <pre><span id="VALdecr_option"><span class="keyword">val</span> decr_option</span> : <code class="type">?dest:int Pervasives.ref -> unit -> int <a href="BatOptParse.Opt.html#TYPEt">BatOptParse.Opt.t</a></code></pre><div class="info ">
-Exactly identical to <code class="code">count_option ~dest:dest ~increment:(-1) ()</code>.<br>
+Exactly identical to <code class="code">count_option&nbsp;~dest:dest&nbsp;~increment:(-1)&nbsp;()</code>.<br>
 </div>
 <br>
 <h6 id="6_Valueoptions">Value options</h6><br>
 
 <pre><span id="VALint_option"><span class="keyword">val</span> int_option</span> : <code class="type">?default:int -> ?metavar:string -> unit -> int <a href="BatOptParse.Opt.html#TYPEt">BatOptParse.Opt.t</a></code></pre><div class="info ">
-<code class="code">int_option ?default ?metavar ()</code> returns an option which takes
+<code class="code">int_option&nbsp;?default&nbsp;?metavar&nbsp;()</code> returns an option which takes
       a single integer argument. If <code class="code">~default</code> is given it is the
       default value returned when the option has not been encountered
       on the command line.<br>
@@ -179,7 +182,7 @@ See <code class="code"><span class="constructor">OptParse</span>.<span class="co
 </div>
 
 <pre><span id="VALany_option"><span class="keyword">val</span> any_option</span> : <code class="type">?default:'a option -><br>       ?metavar:string -> (string -> 'a) -> 'a <a href="BatOptParse.Opt.html#TYPEt">BatOptParse.Opt.t</a></code></pre><div class="info ">
-<code class="code">any_option ?default ?metavar coerce</code> returns an option which takes
+<code class="code">any_option&nbsp;?default&nbsp;?metavar&nbsp;coerce</code> returns an option which takes
     a single argument from the command line and calls <code class="code">coerce</code> to coerce
     it to the proper type.
 <p>
@@ -191,7 +194,7 @@ See <code class="code"><span class="constructor">OptParse</span>.<span class="co
 <h6 id="6_Callbackoptions">Callback options</h6><br>
 
 <pre><span id="VALint_callback"><span class="keyword">val</span> int_callback</span> : <code class="type">?metavar:string -> (int -> unit) -> unit <a href="BatOptParse.Opt.html#TYPEt">BatOptParse.Opt.t</a></code></pre><div class="info ">
-<code class="code">int_callback ?metavar f</code> returns an option which takes a single
+<code class="code">int_callback&nbsp;?metavar&nbsp;f</code> returns an option which takes a single
       integer argument and calls <code class="code">f</code> with that argument when encountered
       on the command line.<br>
 </div>
@@ -207,14 +210,14 @@ See <code class="code"><span class="constructor">OptParse</span>.<span class="co
 <h6 id="6_Specialoptions">Special options</h6><br>
 
 <pre><span id="VALhelp_option"><span class="keyword">val</span> help_option</span> : <code class="type">unit -> 'a <a href="BatOptParse.Opt.html#TYPEt">BatOptParse.Opt.t</a></code></pre><div class="info ">
-<code class="code">help_option ()</code> returns the standard help option which
+<code class="code">help_option&nbsp;()</code> returns the standard help option which
       displays a usage message and exits the program when encountered
       on the command line.<br>
 </div>
 
 <pre><span id="VALversion_option"><span class="keyword">val</span> version_option</span> : <code class="type">(unit -> string) -> 'a <a href="BatOptParse.Opt.html#TYPEt">BatOptParse.Opt.t</a></code></pre><div class="info ">
-<code class="code">version_option f</code> returns the standard version option which
-          displays the string returned by <code class="code">f ()</code> (and nothing else) on
+<code class="code">version_option&nbsp;f</code> returns the standard version option which
+          displays the string returned by <code class="code">f&nbsp;()</code> (and nothing else) on
           standard output and exits.<br>
 </div>
 </body></html>

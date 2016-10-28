@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatGc.html">
 <link rel="next" href="BatGlobal.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -126,21 +129,21 @@ A generic lexical analyzer.
 <p>
 
     Example: a lexer suitable for a desk calculator is obtained by
-    <pre class="codepre"><code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;lexer&nbsp;=&nbsp;make_lexer&nbsp;[<span class="string">"+"</span>;<span class="string">"-"</span>;<span class="string">"*"</span>;<span class="string">"/"</span>;<span class="string">"let"</span>;<span class="string">"="</span>;&nbsp;<span class="string">"("</span>;&nbsp;<span class="string">")"</span>]&nbsp;&nbsp;</code></pre>
+    <pre class="codepre"><code class="code">     <span class="keyword">let</span> lexer = make_lexer [<span class="string">"+"</span>;<span class="string">"-"</span>;<span class="string">"*"</span>;<span class="string">"/"</span>;<span class="string">"let"</span>;<span class="string">"="</span>; <span class="string">"("</span>; <span class="string">")"</span>]  </code></pre>
 <p>
 
-    The associated parser would be a function from <code class="code">token stream</code>
+    The associated parser would be a function from <code class="code">token&nbsp;stream</code>
     to, for instance, <code class="code">int</code>, and would have rules such as:
 <p>
 
-    <pre class="codepre"><code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;parse_expr&nbsp;=&nbsp;<span class="keyword">parser</span>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&lt;&nbsp;<span class="keywordsign">'</span><span class="constructor">Int</span>&nbsp;n&nbsp;&gt;]&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;n
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;[&lt;&nbsp;<span class="keywordsign">'</span><span class="constructor">Kwd</span>&nbsp;<span class="string">"("</span>;&nbsp;n&nbsp;=&nbsp;parse_expr;&nbsp;<span class="keywordsign">'</span><span class="constructor">Kwd</span>&nbsp;<span class="string">")"</span>&nbsp;&gt;]&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;n
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;[&lt;&nbsp;n1&nbsp;=&nbsp;parse_expr;&nbsp;n2&nbsp;=&nbsp;parse_remainder&nbsp;n1&nbsp;&gt;]&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;n2
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">and</span>&nbsp;parse_remainder&nbsp;n1&nbsp;=&nbsp;<span class="keyword">parser</span>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&lt;&nbsp;<span class="keywordsign">'</span><span class="constructor">Kwd</span>&nbsp;<span class="string">"+"</span>;&nbsp;n2&nbsp;=&nbsp;parse_expr&nbsp;&gt;]&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;n1+n2
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;...
-&nbsp;&nbsp;&nbsp;&nbsp;</code></pre><br>
+    <pre class="codepre"><code class="code">      <span class="keyword">let</span> parse_expr = <span class="keyword">parser</span>
+          [&lt; <span class="keywordsign">'</span><span class="constructor">Int</span> n &gt;] <span class="keywordsign">-&gt;</span> n
+                     <span class="keywordsign">|</span> [&lt; <span class="keywordsign">'</span><span class="constructor">Kwd</span> <span class="string">"("</span>; n = parse_expr; <span class="keywordsign">'</span><span class="constructor">Kwd</span> <span class="string">")"</span> &gt;] <span class="keywordsign">-&gt;</span> n
+                     <span class="keywordsign">|</span> [&lt; n1 = parse_expr; n2 = parse_remainder n1 &gt;] <span class="keywordsign">-&gt;</span> n2
+      <span class="keyword">and</span> parse_remainder n1 = <span class="keyword">parser</span>
+          [&lt; <span class="keywordsign">'</span><span class="constructor">Kwd</span> <span class="string">"+"</span>; n2 = parse_expr &gt;] <span class="keywordsign">-&gt;</span> n1+n2
+                             <span class="keywordsign">|</span> ...
+    </code></pre><br>
 <b>Author(s):</b> Jacques Garrigue, David Teller<br>
 </div>
 <hr width="100%">
@@ -203,9 +206,9 @@ The type of tokens. The lexical classes are: <code class="code"><span class="con
 
 <pre><span id="VALmake_lexer"><span class="keyword">val</span> make_lexer</span> : <code class="type">string list -> char Stream.t -> <a href="BatGenlex.html#TYPEtoken">token</a> Stream.t</code></pre><div class="info ">
 Construct the lexer function. The first argument is the list of
-    keywords. An identifier <code class="code">s</code> is returned as <code class="code"><span class="constructor">Kwd</span> s</code> if <code class="code">s</code>
-    belongs to this list, and as <code class="code"><span class="constructor">Ident</span> s</code> otherwise.
-    A special character <code class="code">s</code> is returned as <code class="code"><span class="constructor">Kwd</span> s</code> if <code class="code">s</code>
+    keywords. An identifier <code class="code">s</code> is returned as <code class="code"><span class="constructor">Kwd</span>&nbsp;s</code> if <code class="code">s</code>
+    belongs to this list, and as <code class="code"><span class="constructor">Ident</span>&nbsp;s</code> otherwise.
+    A special character <code class="code">s</code> is returned as <code class="code"><span class="constructor">Kwd</span>&nbsp;s</code> if <code class="code">s</code>
     belongs to this list, and cause a lexical error (exception
     <code class="code"><span class="constructor">Parse_error</span></code>) otherwise. Blanks and newlines are skipped.
     Comments delimited by <code class="code">(*</code> and <code class="code">*)</code> are skipped as well,

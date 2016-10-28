@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="Up" href="BatRefList.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
@@ -26,6 +27,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -66,6 +68,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -138,16 +141,16 @@ Return the index (position : 0 starting) of an element in
 
 <pre><span id="VALat_index"><span class="keyword">val</span> at_index</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">BatRefList.t</a> -> int -> 'a</code></pre><div class="info ">
 Return the element of ref list at the specified index
-        raise <code class="code"><span class="constructor">Invalid_index</span></code> if the index is outside <code class="code">0 ; length-1</code><br>
+        raise <code class="code"><span class="constructor">Invalid_index</span></code> if the index is outside <code class="code">0&nbsp;;&nbsp;length-1</code><br>
 </div>
 
 <pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">BatRefList.t</a> -> int -> 'a -> unit</code></pre><div class="info ">
 Change the element at the specified index
-        raise <code class="code"><span class="constructor">Invalid_index</span></code> if the index is outside <code class="code">0 ; length-1</code><br>
+        raise <code class="code"><span class="constructor">Invalid_index</span></code> if the index is outside <code class="code">0&nbsp;;&nbsp;length-1</code><br>
 </div>
 
 <pre><span id="VALremove_at"><span class="keyword">val</span> remove_at</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">BatRefList.t</a> -> int -> unit</code></pre><div class="info ">
 Remove the element at the specified index
-            raise <code class="code"><span class="constructor">Invalid_index</span></code> if the index is outside <code class="code">0 ; length-1</code><br>
+            raise <code class="code"><span class="constructor">Invalid_index</span></code> if the index is outside <code class="code">0&nbsp;;&nbsp;length-1</code><br>
 </div>
 </body></html>

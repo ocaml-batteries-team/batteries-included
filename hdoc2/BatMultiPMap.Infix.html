@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="Up" href="BatMultiPMap.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
@@ -26,6 +27,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -66,6 +68,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -117,12 +120,12 @@ Infix operators over a <a href="BatMultiPMap.html"><code class="code"><span clas
 
 <pre><span id="VAL(-->)"><span class="keyword">val</span> (--&gt;)</span> : <code class="type">('a, 'b) <a href="BatMultiPMap.html#TYPEt">BatMultiPMap.t</a> -> 'a -> 'b <a href="BatSet.PSet.html#TYPEt">BatSet.PSet.t</a></code></pre><div class="info ">
 <code class="code">map--&gt;key</code> returns the current binding of <code class="code">key</code> in <code class="code">map</code>.
-      Equivalent to <code class="code">find key map</code>.<br>
+      Equivalent to <code class="code">find&nbsp;key&nbsp;map</code>.<br>
 </div>
 
 <pre><span id="VAL(<--)"><span class="keyword">val</span> (&lt;--)</span> : <code class="type">('a, 'b) <a href="BatMultiPMap.html#TYPEt">BatMultiPMap.t</a> -> 'a * 'b -> ('a, 'b) <a href="BatMultiPMap.html#TYPEt">BatMultiPMap.t</a></code></pre><div class="info ">
-<code class="code">map&lt;--(key, value)</code> returns a map containing the same bindings as
+<code class="code">map&lt;--(key,&nbsp;value)</code> returns a map containing the same bindings as
         <code class="code">map</code>, plus a binding of <code class="code">key</code> to <code class="code">value</code>. Equivalent to
-        <code class="code">add key value map</code><br>
+        <code class="code">add&nbsp;key&nbsp;value&nbsp;map</code><br>
 </div>
 </body></html>

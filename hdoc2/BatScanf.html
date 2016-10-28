@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatReturn.html">
 <link rel="next" href="BatSeq.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -156,7 +159,7 @@ The module <code class="code"><span class="constructor">Scanf</span></code> prov
 </ul>
 
     Hence, a typical call to the formatted input function <code class="code"><span class="constructor">Scanf</span>.bscanf</code> is
-    <code class="code">bscanf ib fmt f</code>, where:
+    <code class="code">bscanf&nbsp;ib&nbsp;fmt&nbsp;f</code>, where:
 <p>
 <ul>
 <li><code class="code">ib</code> is a source of characters (typically a <em>    scanning buffer</em> with type <a href="BatScanf.Scanning.html#TYPEscanbuf"><code class="code"><span class="constructor">BatScanf</span>.<span class="constructor">Scanning</span>.scanbuf</code></a>),</li>
@@ -173,8 +176,8 @@ The module <code class="code"><span class="constructor">Scanf</span></code> prov
 <br>
 <div class="h7" id="7_Asimpleexample">A simple example</div><br>
 <br>
-As suggested above, the expression <code class="code">bscanf ib <span class="string">"%d"</span> f</code> reads a decimal
-    integer <code class="code">n</code> from the source of characters <code class="code">ib</code> and returns <code class="code">f n</code>.
+As suggested above, the expression <code class="code">bscanf&nbsp;ib&nbsp;<span class="string">"%d"</span>&nbsp;f</code> reads a decimal
+    integer <code class="code">n</code> from the source of characters <code class="code">ib</code> and returns <code class="code">f&nbsp;n</code>.
 <p>
 
     For instance,
@@ -184,12 +187,12 @@ As suggested above, the expression <code class="code">bscanf ib <span class="str
     the predefined input buffer that reads from standard input),</li>
 </ul>
 <ul>
-<li>if we define the receiver <code class="code">f</code> as <code class="code"><span class="keyword">let</span> f x = x + 1</code>,</li>
+<li>if we define the receiver <code class="code">f</code> as <code class="code"><span class="keyword">let</span>&nbsp;f&nbsp;x&nbsp;=&nbsp;x&nbsp;+&nbsp;1</code>,</li>
 </ul>
 
-    then <code class="code">bscanf stdib <span class="string">"%d"</span> f</code> reads an integer <code class="code">n</code> from the standard input
-    and returns <code class="code">f n</code> (that is <code class="code">n + 1</code>). Thus, if we evaluate <code class="code">bscanf stdib
-    <span class="string">"%d"</span> f</code>, and then enter <code class="code">41</code> at the keyboard, we get <code class="code">42</code> as the final
+    then <code class="code">bscanf&nbsp;stdib&nbsp;<span class="string">"%d"</span>&nbsp;f</code> reads an integer <code class="code">n</code> from the standard input
+    and returns <code class="code">f&nbsp;n</code> (that is <code class="code">n&nbsp;+&nbsp;1</code>). Thus, if we evaluate <code class="code">bscanf&nbsp;stdib<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"%d"</span>&nbsp;f</code>, and then enter <code class="code">41</code> at the keyboard, we get <code class="code">42</code> as the final
     result.<br>
 <br>
 <div class="h7" id="7_Formattedinputasafunctionalfeature">Formatted input as a functional feature</div><br>
@@ -214,25 +217,25 @@ Scanning buffers
 
 <pre><span id="TYPEscanner"><span class="keyword">type</span> <code class="type">('a, 'b, 'c, 'd)</code> scanner</span> = <code class="type">('a, <a href="BatScanf.Scanning.html#TYPEscanbuf">Scanning.scanbuf</a>, 'b, 'c, 'a -> 'd, 'd) Pervasives.format6 -><br>       'c</code> </pre>
 <div class="info ">
-The type of formatted input scanners: <code class="code">(<span class="keywordsign">'</span>a, <span class="keywordsign">'</span>b, <span class="keywordsign">'</span>c, <span class="keywordsign">'</span>d) scanner</code> is the
+The type of formatted input scanners: <code class="code">(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d)&nbsp;scanner</code> is the
     type of a formatted input function that reads from some scanning buffer
     according to some format string; more precisely, if <code class="code">scan</code> is some
-    formatted input function, then <code class="code">scan ib fmt f</code> applies <code class="code">f</code> to the arguments
+    formatted input function, then <code class="code">scan&nbsp;ib&nbsp;fmt&nbsp;f</code> applies <code class="code">f</code> to the arguments
     specified by the format string <code class="code">fmt</code>, when <code class="code">scan</code> has read those arguments
     from the scanning input buffer <code class="code">ib</code>.
 <p>
 
-    For instance, the <code class="code">scanf</code> function below has type <code class="code">(<span class="keywordsign">'</span>a, <span class="keywordsign">'</span>b, <span class="keywordsign">'</span>c, <span class="keywordsign">'</span>d)
-    scanner</code>, since it is a formatted input function that reads from <code class="code">stdib</code>:
-    <code class="code">scanf fmt f</code> applies <code class="code">f</code> to the arguments specified by <code class="code">fmt</code>, reading
+    For instance, the <code class="code">scanf</code> function below has type <code class="code">(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;scanner</code>, since it is a formatted input function that reads from <code class="code">stdib</code>:
+    <code class="code">scanf&nbsp;fmt&nbsp;f</code> applies <code class="code">f</code> to the arguments specified by <code class="code">fmt</code>, reading
     those arguments from <code class="code">stdin</code> as expected.
 <p>
 
     If the format <code class="code">fmt</code> has some <code class="code">%r</code> indications, the corresponding input
     functions must be provided before the receiver <code class="code">f</code> argument. For
     instance, if <code class="code">read_elem</code> is an input function for values of type <code class="code">t</code>,
-    then <code class="code">bscanf ib <span class="string">"%r;"</span> read_elem f</code> reads a value <code class="code">v</code> of type <code class="code">t</code> followed
-    by a <code class="code"><span class="string">';'</span></code> character, and returns <code class="code">f v</code>.<br>
+    then <code class="code">bscanf&nbsp;ib&nbsp;<span class="string">"%r;"</span>&nbsp;read_elem&nbsp;f</code> reads a value <code class="code">v</code> of type <code class="code">t</code> followed
+    by a <code class="code"><span class="string">';'</span></code> character, and returns <code class="code">f&nbsp;v</code>.<br>
 </div>
 
 
@@ -245,13 +248,13 @@ The exception that formatted input functions raise when the input cannot be
 <h6 id="6_Thegeneralformattedinputfunction">The general formatted input function</h6><br>
 
 <pre><span id="VALbscanf"><span class="keyword">val</span> bscanf</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">Scanning.scanbuf</a> -> ('a, 'b, 'c, 'd) <a href="BatScanf.html#TYPEscanner">scanner</a></code></pre><div class="info ">
-<code class="code">bscanf ib fmt r1 ... rN f</code> reads arguments for the function <code class="code">f</code>, from the
+<code class="code">bscanf&nbsp;ib&nbsp;fmt&nbsp;r1&nbsp;...&nbsp;rN&nbsp;f</code> reads arguments for the function <code class="code">f</code>, from the
     scanning buffer <code class="code">ib</code>, according to the format string <code class="code">fmt</code>, and applies <code class="code">f</code>
     to these values.
     The result of this call to <code class="code">f</code> is returned as the result of the entire
     <code class="code">bscanf</code> call.
-    For instance, if <code class="code">f</code> is the function <code class="code"><span class="keyword">fun</span> s i <span class="keywordsign">-&gt;</span> i + 1</code>, then
-    <code class="code"><span class="constructor">Scanf</span>.sscanf <span class="string">"x=  1"</span> <span class="string">"%s = %i"</span> f</code> returns <code class="code">2</code>.
+    For instance, if <code class="code">f</code> is the function <code class="code"><span class="keyword">fun</span>&nbsp;s&nbsp;i&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;i&nbsp;+&nbsp;1</code>, then
+    <code class="code"><span class="constructor">Scanf</span>.sscanf&nbsp;<span class="string">"x=&nbsp;&nbsp;1"</span>&nbsp;<span class="string">"%s&nbsp;=&nbsp;%i"</span>&nbsp;f</code> returns <code class="code">2</code>.
 <p>
 
     Arguments <code class="code">r1</code> to <code class="code">rN</code> are user-defined input functions that read the
@@ -282,10 +285,10 @@ As mentioned above, a plain character in the format string is just
 <p>
 
     Matching <em>any</em> amount of whitespace, a space in the format string
-    also matches no amount of whitespace at all; hence, the call <code class="code">bscanf ib
-    <span class="string">"Price = %d $"</span> (<span class="keyword">fun</span> p <span class="keywordsign">-&gt;</span> p)</code> succeds and returns <code class="code">1</code> when reading an
-    input with various whitespace in it, such as <code class="code"><span class="constructor">Price</span> = 1 $</code>,
-    <code class="code"><span class="constructor">Price</span>  =  1    $</code>, or even <code class="code"><span class="constructor">Price</span>=1$</code>.<br>
+    also matches no amount of whitespace at all; hence, the call <code class="code">bscanf&nbsp;ib<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"Price&nbsp;=&nbsp;%d&nbsp;$"</span>&nbsp;(<span class="keyword">fun</span>&nbsp;p&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;p)</code> succeds and returns <code class="code">1</code> when reading an
+    input with various whitespace in it, such as <code class="code"><span class="constructor">Price</span>&nbsp;=&nbsp;1&nbsp;$</code>,
+    <code class="code"><span class="constructor">Price</span>&nbsp;&nbsp;=&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;$</code>, or even <code class="code"><span class="constructor">Price</span>=1$</code>.<br>
 <br>
 <div class="h7" id="7_Conversionspecificationsinformatstrings">Conversion specifications in format strings</div><br>
 <br>
@@ -319,7 +322,7 @@ Conversion specifications consist in the <code class="code">%</code> character, 
 <div class="h7" id="7_Scanningindicationsinformatstrings">Scanning indications in format strings</div><br>
 <br>
 Scanning indications appear just after the string conversions <code class="code">%s</code>
-    and <code class="code">%[ range ]</code> to delimit the end of the token. A scanning
+    and <code class="code">%[&nbsp;range&nbsp;]</code> to delimit the end of the token. A scanning
     indication is introduced by a <code class="code">@</code> character, followed by some
     constant character <code class="code">c</code>. It means that the string token should end
     just before the next matching <code class="code">c</code> (which is skipped). If no <code class="code">c</code>
@@ -390,7 +393,7 @@ Same as <code class="code"><span class="constructor">Scanf</span>.bscanf</code>,
 <h6 id="6_Readingformatstringsfrominput">Reading format strings from input</h6><br>
 
 <pre><span id="VALbscanf_format"><span class="keyword">val</span> bscanf_format</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">Scanning.scanbuf</a> -><br>       ('a, 'b, 'c, 'd, 'e, 'f) Pervasives.format6 -><br>       (('a, 'b, 'c, 'd, 'e, 'f) Pervasives.format6 -> 'g) -> 'g</code></pre><div class="info ">
-<code class="code">bscanf_format ib fmt f</code> reads a format string token from the scannning
+<code class="code">bscanf_format&nbsp;ib&nbsp;fmt&nbsp;f</code> reads a format string token from the scannning
     buffer <code class="code">ib</code>, according to the given format string <code class="code">fmt</code>, and applies <code class="code">f</code> to
     the resulting format string value.<br>
 <b>Raises</b> <code>Scan_failure</code> if the format string value read does not have the
@@ -402,7 +405,7 @@ Same as <code class="code"><span class="constructor">Scanf</span>.bscanf_format<
 </div>
 
 <pre><span id="VALformat_from_string"><span class="keyword">val</span> format_from_string</span> : <code class="type">string -><br>       ('a, 'b, 'c, 'd, 'e, 'f) Pervasives.format6 -><br>       ('a, 'b, 'c, 'd, 'e, 'f) Pervasives.format6</code></pre><div class="info ">
-<code class="code">format_from_string s fmt</code> converts a string argument to a format string,
+<code class="code">format_from_string&nbsp;s&nbsp;fmt</code> converts a string argument to a format string,
     according to the given format string <code class="code">fmt</code>.<br>
 <b>Raises</b> <code>Scan_failure</code> if <code class="code">s</code>, considered as a format string, does not
     have the same type as <code class="code">fmt</code>.<br>

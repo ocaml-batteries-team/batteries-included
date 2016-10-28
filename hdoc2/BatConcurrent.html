@@ -3,8 +3,9 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
-<link rel="previous" href="BatComplex.html">
+<link rel="previous" href="BatConcreteQueue.html">
 <link rel="next" href="BatDeque.html">
 <link rel="Up" href="index.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -108,7 +111,7 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatConcurrent</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatComplex.html" title="BatComplex">Previous</a>
+<div class="navbar"><a class="pre" href="BatConcreteQueue.html" title="BatConcreteQueue">Previous</a>
 &nbsp;<a class="up" href="index.html" title="Index">Up</a>
 &nbsp;<a class="post" href="BatDeque.html" title="BatDeque">Next</a>
 </div>
@@ -145,16 +148,16 @@ A lock which does nothing.<br>
 </div>
 
 <pre><span id="VALsynchronize"><span class="keyword">val</span> synchronize</span> : <code class="type">(unit -> <a href="BatConcurrent.html#TYPElock">lock</a>) -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info ">
-<code class="code">synchronize locker f</code> returns a function <code class="code">f'</code> which behaves as
+<code class="code">synchronize&nbsp;locker&nbsp;f</code> returns a function <code class="code">f'</code> which behaves as
    <code class="code">f</code> but whose executions are protected by one lock obtained from
    <code class="code">locker</code>.  The same lock will be reused for all subsequent uses of
    <code class="code">f'</code>.
 <p>
 
    For instance,
-   <code class="code">synchronize <span class="constructor">Mutex</span>.make f</code> is a new function whose executions
+   <code class="code">synchronize&nbsp;<span class="constructor">Mutex</span>.make&nbsp;f</code> is a new function whose executions
    will by synchronized by a new lock. Conversely,
-   <code class="code">synchronize (const my_lock) f</code> is a new function whose executions
+   <code class="code">synchronize&nbsp;(const&nbsp;my_lock)&nbsp;f</code> is a new function whose executions
    will be synchronized by an existing lock <code class="code">my_lock</code>.<br>
 </div>
 
@@ -162,7 +165,7 @@ A lock which does nothing.<br>
 Specialized version of <code class="code">synchronized</code>.
 <p>
 
-   <code class="code">sync lock f</code> behaves as <code class="code">synchronize (const lock) f</code> but slightly faster<br>
+   <code class="code">sync&nbsp;lock&nbsp;f</code> behaves as <code class="code">synchronize&nbsp;(const&nbsp;lock)&nbsp;f</code> but slightly faster<br>
 </div>
 
 <pre><span id="VALcompose"><span class="keyword">val</span> compose</span> : <code class="type"><a href="BatConcurrent.html#TYPElock">lock</a> -> <a href="BatConcurrent.html#TYPElock">lock</a> -> <a href="BatConcurrent.html#TYPElock">lock</a></code></pre><div class="info ">
@@ -174,5 +177,5 @@ A signature for modules which implement locking.
 </div>
 
 <pre><span class="keyword">module type</span> <a href="BatConcurrent.Lock.html">Lock</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatConcurrent.Lock.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
-<pre><span class="keyword">module</span> <a href="BatConcurrent.MakeLock.html">MakeLock</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">M</span></code><code class="code"> : </code><code class="type"><a href="BatConcurrent.BaseLock.html">BaseLock</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatConcurrent.Lock.html">Lock</a></code><code class="type">  with type t = M.t</code></div></pre>
+<pre><span class="keyword">module</span> <a href="BatConcurrent.MakeLock.html">MakeLock</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">M</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatConcurrent.BaseLock.html">BaseLock</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatConcurrent.Lock.html">Lock</a></code><code class="type">  with type t = M.t</code></div></pre>
 <pre><span class="keyword">module</span> <a href="BatConcurrent.NoLock.html">NoLock</a>: <code class="type"><a href="BatConcurrent.Lock.html">Lock</a></code><code class="type"> </code></pre></body></html>

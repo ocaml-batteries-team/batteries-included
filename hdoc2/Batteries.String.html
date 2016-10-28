@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="Batteries.Stream.html">
 <link rel="next" href="Batteries.Sys.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -126,15 +129,15 @@
 <pre><span class="keyword">module</span> String: <code class="type"><a href="BatString.html">BatString</a></code></pre><hr width="100%">
 
 <pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> (int -> char) -> string</code></pre><div class="info ">
-<code class="code">init l f</code> returns the string of length <code class="code">l</code> with the chars
+<code class="code">init&nbsp;l&nbsp;f</code> returns the string of length <code class="code">l</code> with the chars
     f 0 , f 1 , f 2 ... f (l-1).
 <p>
 
-    Example: <code class="code"><span class="constructor">String</span>.init 256 char_of_int</code><br>
+    Example: <code class="code"><span class="constructor">String</span>.init&nbsp;256&nbsp;char_of_int</code><br>
 </div>
 
 <pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">string -> bool</code></pre><div class="info ">
-<code class="code">is_empty s</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">s</code> is the empty string, <code class="code"><span class="keyword">false</span></code>
+<code class="code">is_empty&nbsp;s</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">s</code> is the empty string, <code class="code"><span class="keyword">false</span></code>
     otherwise.
 <p>
 
@@ -142,7 +145,7 @@
 <p>
 
     Example (for some string <code class="code">s</code>):
-    <code class="code"> <span class="keyword">if</span> <span class="constructor">String</span>.is_empty s <span class="keyword">then</span> <span class="string">"(Empty)"</span> <span class="keyword">else</span> s </code><br>
+    <code class="code">&nbsp;<span class="keyword">if</span>&nbsp;<span class="constructor">String</span>.is_empty&nbsp;s&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">"(Empty)"</span>&nbsp;<span class="keyword">else</span>&nbsp;s&nbsp;</code><br>
 </div>
 
 <pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type">string -> int</code></pre><div class="info ">
@@ -150,28 +153,28 @@ Return the length (number of characters) of the given string.<br>
 </div>
 
 <pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">string -> int -> char</code></pre><div class="info ">
-<code class="code"><span class="constructor">String</span>.get s n</code> returns character number <code class="code">n</code> in string <code class="code">s</code>.
-    You can also write <code class="code">s.[n]</code> instead of <code class="code"><span class="constructor">String</span>.get s n</code>.<br>
+<code class="code"><span class="constructor">String</span>.get&nbsp;s&nbsp;n</code> returns character number <code class="code">n</code> in string <code class="code">s</code>.
+    You can also write <code class="code">s.[n]</code> instead of <code class="code"><span class="constructor">String</span>.get&nbsp;s&nbsp;n</code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> if <code class="code">n</code> not a valid character number in <code class="code">s</code>.<br>
 </div>
 
 <pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">string -> int -> char -> unit</code></pre><div class="info ">
-<code class="code"><span class="constructor">String</span>.set s n c</code> modifies string <code class="code">s</code> in place,
+<code class="code"><span class="constructor">String</span>.set&nbsp;s&nbsp;n&nbsp;c</code> modifies string <code class="code">s</code> in place,
     replacing the character number <code class="code">n</code> by <code class="code">c</code>.
-    You can also write <code class="code">s.[n] &lt;- c</code> instead of <code class="code"><span class="constructor">String</span>.set s n c</code>.<br>
+    You can also write <code class="code">s.[n]&nbsp;&lt;-&nbsp;c</code> instead of <code class="code"><span class="constructor">String</span>.set&nbsp;s&nbsp;n&nbsp;c</code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> if <code class="code">n</code> is not a valid character number in <code class="code">s</code>.<br>
 </div>
 
 <pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -> string</code></pre><div class="info ">
-<code class="code"><span class="constructor">String</span>.create n</code> returns a fresh string of length <code class="code">n</code>.
+<code class="code"><span class="constructor">String</span>.create&nbsp;n</code> returns a fresh string of length <code class="code">n</code>.
     The string initially contains arbitrary characters.<br>
-<b>Raises</b> <code>Invalid_argument</code> if <code class="code">n &lt; 0</code> or <code class="code">n &gt; </code><code class="code"><span class="constructor">Sys</span>.max_string_length</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">n&nbsp;&lt;&nbsp;0</code> or <code class="code">n&nbsp;&gt;&nbsp;</code><code class="code"><span class="constructor">Sys</span>.max_string_length</code>.<br>
 </div>
 
 <pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">int -> char -> string</code></pre><div class="info ">
-<code class="code"><span class="constructor">String</span>.make n c</code> returns a fresh string of length <code class="code">n</code>,
+<code class="code"><span class="constructor">String</span>.make&nbsp;n&nbsp;c</code> returns a fresh string of length <code class="code">n</code>,
     filled with the character <code class="code">c</code>.<br>
-<b>Raises</b> <code>Invalid_argument</code> if <code class="code">n &lt; 0</code> or <code class="code">n &gt; </code><code class="code"><span class="constructor">Sys</span>.max_string_length</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">n&nbsp;&lt;&nbsp;0</code> or <code class="code">n&nbsp;&gt;&nbsp;</code><code class="code"><span class="constructor">Sys</span>.max_string_length</code>.<br>
 </div>
 
 <pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">string -> string</code></pre><div class="info ">
@@ -179,7 +182,7 @@ Return a copy of the given string.<br>
 </div>
 
 <pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type">string -> int -> int -> string</code></pre><div class="info ">
-<code class="code"><span class="constructor">String</span>.sub s start len</code> returns a fresh string of length <code class="code">len</code>,
+<code class="code"><span class="constructor">String</span>.sub&nbsp;s&nbsp;start&nbsp;len</code> returns a fresh string of length <code class="code">len</code>,
     containing the substring of <code class="code">s</code> that starts at position <code class="code">start</code> and
     has length <code class="code">len</code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> if <code class="code">start</code> and <code class="code">len</code> do not
@@ -187,14 +190,14 @@ Return a copy of the given string.<br>
 </div>
 
 <pre><span id="VALfill"><span class="keyword">val</span> fill</span> : <code class="type">string -> int -> int -> char -> unit</code></pre><div class="info ">
-<code class="code"><span class="constructor">String</span>.fill s start len c</code> modifies string <code class="code">s</code> in place,
+<code class="code"><span class="constructor">String</span>.fill&nbsp;s&nbsp;start&nbsp;len&nbsp;c</code> modifies string <code class="code">s</code> in place,
     replacing <code class="code">len</code> characters by <code class="code">c</code>, starting at <code class="code">start</code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> if <code class="code">start</code> and <code class="code">len</code> do not
     designate a valid substring of <code class="code">s</code>.<br>
 </div>
 
 <pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type">string -> int -> string -> int -> int -> unit</code></pre><div class="info ">
-<code class="code"><span class="constructor">String</span>.blit src srcoff dst dstoff len</code> copies <code class="code">len</code> characters
+<code class="code"><span class="constructor">String</span>.blit&nbsp;src&nbsp;srcoff&nbsp;dst&nbsp;dstoff&nbsp;len</code> copies <code class="code">len</code> characters
     from string <code class="code">src</code>, starting at character number <code class="code">srcoff</code>, to
     string <code class="code">dst</code>, starting at character number <code class="code">dstoff</code>. It works
     correctly even if <code class="code">src</code> and <code class="code">dst</code> are the same string,
@@ -205,14 +208,14 @@ Return a copy of the given string.<br>
 </div>
 
 <pre><span id="VALconcat"><span class="keyword">val</span> concat</span> : <code class="type">string -> string list -> string</code></pre><div class="info ">
-<code class="code"><span class="constructor">String</span>.concat sep sl</code> concatenates the list of strings <code class="code">sl</code>,
+<code class="code"><span class="constructor">String</span>.concat&nbsp;sep&nbsp;sl</code> concatenates the list of strings <code class="code">sl</code>,
     inserting the separator string <code class="code">sep</code> between each.<br>
 </div>
 
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(char -> unit) -> string -> unit</code></pre><div class="info ">
-<code class="code"><span class="constructor">String</span>.iter f s</code> applies function <code class="code">f</code> in turn to all
+<code class="code"><span class="constructor">String</span>.iter&nbsp;f&nbsp;s</code> applies function <code class="code">f</code> in turn to all
     the characters of <code class="code">s</code>.  It is equivalent to
-    <code class="code">f s.[0]; f s.[1]; ...; f s.[<span class="constructor">String</span>.length s - 1]; ()</code>.<br>
+    <code class="code">f&nbsp;s.[0];&nbsp;f&nbsp;s.[1];&nbsp;...;&nbsp;f&nbsp;s.[<span class="constructor">String</span>.length&nbsp;s&nbsp;-&nbsp;1];&nbsp;()</code>.<br>
 </div>
 
 <pre><span id="VALiteri"><span class="keyword">val</span> iteri</span> : <code class="type">(int -> char -> unit) -> string -> unit</code></pre><div class="info ">
@@ -223,14 +226,14 @@ Same as <code class="code"><span class="constructor">String</span>.iter</code>, 
 </div>
 
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">(char -> char) -> string -> string</code></pre><div class="info ">
-<code class="code"><span class="constructor">String</span>.map f s</code> applies function <code class="code">f</code> in turn to all
+<code class="code"><span class="constructor">String</span>.map&nbsp;f&nbsp;s</code> applies function <code class="code">f</code> in turn to all
     the characters of <code class="code">s</code> and stores the results in a new string that
     is returned.<br>
 <b>Since</b> 4.00.0<br>
 </div>
 
 <pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">(int -> char -> char) -> string -> string</code></pre><div class="info ">
-<code class="code"><span class="constructor">String</span>.mapi f s</code> calls <code class="code">f</code> with each character of <code class="code">s</code> and its
+<code class="code"><span class="constructor">String</span>.mapi&nbsp;f&nbsp;s</code> calls <code class="code">f</code> with each character of <code class="code">s</code> and its
     index (in increasing index order) and stores the results in a new
     string that is returned.<br>
 <b>Since</b> 4.02.0<br>
@@ -238,7 +241,7 @@ Same as <code class="code"><span class="constructor">String</span>.iter</code>, 
 
 <pre><span id="VALtrim"><span class="keyword">val</span> trim</span> : <code class="type">string -> string</code></pre><div class="info ">
 Return a copy of the argument, without leading and trailing
-    whitespace.  The characters regarded as whitespace are: <code class="code"><span class="string">' '</span></code>,
+    whitespace.  The characters regarded as whitespace are: <code class="code"><span class="string">'&nbsp;'</span></code>,
     <code class="code"><span class="string">'\012'</span></code>, <code class="code"><span class="string">'\n'</span></code>, <code class="code"><span class="string">'\r'</span></code>, and <code class="code"><span class="string">'\t'</span></code>.  If there is no leading nor
     trailing whitespace character in the argument, return the original
     string itself, not a copy.<br>
@@ -254,53 +257,53 @@ Return a copy of the argument, with special characters
 </div>
 
 <pre><span id="VALindex"><span class="keyword">val</span> index</span> : <code class="type">string -> char -> int</code></pre><div class="info ">
-<code class="code"><span class="constructor">String</span>.index s c</code> returns the character number of the first
+<code class="code"><span class="constructor">String</span>.index&nbsp;s&nbsp;c</code> returns the character number of the first
     occurrence of character <code class="code">c</code> in string <code class="code">s</code>.<br>
 <b>Raises</b> <code>Not_found</code> if <code class="code">c</code> does not occur in <code class="code">s</code>.<br>
 </div>
 
 <pre><span id="VALrindex"><span class="keyword">val</span> rindex</span> : <code class="type">string -> char -> int</code></pre><div class="info ">
-<code class="code"><span class="constructor">String</span>.rindex s c</code> returns the character number of the last
+<code class="code"><span class="constructor">String</span>.rindex&nbsp;s&nbsp;c</code> returns the character number of the last
     occurrence of character <code class="code">c</code> in string <code class="code">s</code>.<br>
 <b>Raises</b> <code>Not_found</code> if <code class="code">c</code> does not occur in <code class="code">s</code>.<br>
 </div>
 
 <pre><span id="VALindex_from"><span class="keyword">val</span> index_from</span> : <code class="type">string -> int -> char -> int</code></pre><div class="info ">
-<code class="code"><span class="constructor">String</span>.index_from s i c</code> returns the character number of the
+<code class="code"><span class="constructor">String</span>.index_from&nbsp;s&nbsp;i&nbsp;c</code> returns the character number of the
     first occurrence of character <code class="code">c</code> in string <code class="code">s</code> after position <code class="code">i</code>.
-    <code class="code"><span class="constructor">String</span>.index s c</code> is equivalent to <code class="code"><span class="constructor">String</span>.index_from s 0 c</code>.<br>
+    <code class="code"><span class="constructor">String</span>.index&nbsp;s&nbsp;c</code> is equivalent to <code class="code"><span class="constructor">String</span>.index_from&nbsp;s&nbsp;0&nbsp;c</code>.<br>
 <b>Raises</b><ul><li><code>Invalid_argument</code> if <code class="code">i</code> is not a valid position in <code class="code">s</code>.</li>
 <li><code>Not_found</code> if <code class="code">c</code> does not occur in <code class="code">s</code> after position <code class="code">i</code>.</li>
 </ul>
 </div>
 
 <pre><span id="VALrindex_from"><span class="keyword">val</span> rindex_from</span> : <code class="type">string -> int -> char -> int</code></pre><div class="info ">
-<code class="code"><span class="constructor">String</span>.rindex_from s i c</code> returns the character number of the
+<code class="code"><span class="constructor">String</span>.rindex_from&nbsp;s&nbsp;i&nbsp;c</code> returns the character number of the
     last occurrence of character <code class="code">c</code> in string <code class="code">s</code> before position <code class="code">i+1</code>.
-    <code class="code"><span class="constructor">String</span>.rindex s c</code> is equivalent to
-    <code class="code"><span class="constructor">String</span>.rindex_from s (<span class="constructor">String</span>.length s - 1) c</code>.<br>
+    <code class="code"><span class="constructor">String</span>.rindex&nbsp;s&nbsp;c</code> is equivalent to
+    <code class="code"><span class="constructor">String</span>.rindex_from&nbsp;s&nbsp;(<span class="constructor">String</span>.length&nbsp;s&nbsp;-&nbsp;1)&nbsp;c</code>.<br>
 <b>Raises</b><ul><li><code>Invalid_argument</code> if <code class="code">i+1</code> is not a valid position in <code class="code">s</code>.</li>
 <li><code>Not_found</code> if <code class="code">c</code> does not occur in <code class="code">s</code> before position <code class="code">i+1</code>.</li>
 </ul>
 </div>
 
 <pre><span id="VALcontains"><span class="keyword">val</span> contains</span> : <code class="type">string -> char -> bool</code></pre><div class="info ">
-<code class="code"><span class="constructor">String</span>.contains s c</code> tests if character <code class="code">c</code>
+<code class="code"><span class="constructor">String</span>.contains&nbsp;s&nbsp;c</code> tests if character <code class="code">c</code>
     appears in the string <code class="code">s</code>.<br>
 </div>
 
 <pre><span id="VALcontains_from"><span class="keyword">val</span> contains_from</span> : <code class="type">string -> int -> char -> bool</code></pre><div class="info ">
-<code class="code"><span class="constructor">String</span>.contains_from s start c</code> tests if character <code class="code">c</code>
+<code class="code"><span class="constructor">String</span>.contains_from&nbsp;s&nbsp;start&nbsp;c</code> tests if character <code class="code">c</code>
     appears in <code class="code">s</code> after position <code class="code">start</code>.
-    <code class="code"><span class="constructor">String</span>.contains s c</code> is equivalent to
-    <code class="code"><span class="constructor">String</span>.contains_from s 0 c</code>.<br>
+    <code class="code"><span class="constructor">String</span>.contains&nbsp;s&nbsp;c</code> is equivalent to
+    <code class="code"><span class="constructor">String</span>.contains_from&nbsp;s&nbsp;0&nbsp;c</code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> if <code class="code">start</code> is not a valid position in <code class="code">s</code>.<br>
 </div>
 
 <pre><span id="VALrcontains_from"><span class="keyword">val</span> rcontains_from</span> : <code class="type">string -> int -> char -> bool</code></pre><div class="info ">
-<code class="code"><span class="constructor">String</span>.rcontains_from s stop c</code> tests if character <code class="code">c</code>
+<code class="code"><span class="constructor">String</span>.rcontains_from&nbsp;s&nbsp;stop&nbsp;c</code> tests if character <code class="code">c</code>
     appears in <code class="code">s</code> before position <code class="code">stop+1</code>.<br>
-<b>Raises</b> <code>Invalid_argument</code> if <code class="code">stop &lt; 0</code> or <code class="code">stop+1</code> is not a valid
+<b>Raises</b> <code>Invalid_argument</code> if <code class="code">stop&nbsp;&lt;&nbsp;0</code> or <code class="code">stop+1</code> is not a valid
     position in <code class="code">s</code>.<br>
 </div>
 
@@ -370,13 +373,13 @@ Returns an enumeration of the characters of a string.
 <p>
 
     Examples:
-      <code class="code"><span class="string">"foo"</span> |&gt; <span class="constructor">String</span>.enum |&gt; <span class="constructor">List</span>.of_enum = [<span class="string">'f'</span>; <span class="string">'o'</span>; <span class="string">'o'</span>]</code>
-      <code class="code"><span class="constructor">String</span>.enum <span class="string">"a b c"</span> // ((&lt;&gt;) <span class="string">' '</span>) |&gt; <span class="constructor">String</span>.of_enum = <span class="string">"abc"</span></code><br>
+      <code class="code"><span class="string">"foo"</span>&nbsp;|&gt;&nbsp;<span class="constructor">String</span>.enum&nbsp;|&gt;&nbsp;<span class="constructor">List</span>.of_enum&nbsp;=&nbsp;[<span class="string">'f'</span>;&nbsp;<span class="string">'o'</span>;&nbsp;<span class="string">'o'</span>]</code>
+      <code class="code"><span class="constructor">String</span>.enum&nbsp;<span class="string">"a&nbsp;b&nbsp;c"</span>&nbsp;//&nbsp;((&lt;&gt;)&nbsp;<span class="string">'&nbsp;'</span>)&nbsp;|&gt;&nbsp;<span class="constructor">String</span>.of_enum&nbsp;=&nbsp;<span class="string">"abc"</span></code><br>
 </div>
 
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">char <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> string</code></pre><div class="info ">
 Creates a string from a character enumeration.
-    Example: <code class="code">[<span class="string">'f'</span>; <span class="string">'o'</span>; <span class="string">'o'</span>] |&gt; <span class="constructor">List</span>.enum |&gt; <span class="constructor">String</span>.of_enum = <span class="string">"foo"</span></code><br>
+    Example: <code class="code">[<span class="string">'f'</span>;&nbsp;<span class="string">'o'</span>;&nbsp;<span class="string">'o'</span>]&nbsp;|&gt;&nbsp;<span class="constructor">List</span>.enum&nbsp;|&gt;&nbsp;<span class="constructor">String</span>.of_enum&nbsp;=&nbsp;<span class="string">"foo"</span></code><br>
 </div>
 
 <pre><span id="VALbackwards"><span class="keyword">val</span> backwards</span> : <code class="type">string -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
@@ -384,8 +387,8 @@ Returns an enumeration of the characters of a string, from last to first.
 <p>
 
     Examples:
-    <code class="code"> <span class="string">"foo"</span> |&gt; <span class="constructor">String</span>.backwards |&gt; <span class="constructor">String</span>.of_enum = <span class="string">"oof"</span> </code>
-    <code class="code"> <span class="keyword">let</span> rev s = <span class="constructor">String</span>.backwards s |&gt; <span class="constructor">String</span>.of_enum </code><br>
+    <code class="code">&nbsp;<span class="string">"foo"</span>&nbsp;|&gt;&nbsp;<span class="constructor">String</span>.backwards&nbsp;|&gt;&nbsp;<span class="constructor">String</span>.of_enum&nbsp;=&nbsp;<span class="string">"oof"</span>&nbsp;</code>
+    <code class="code">&nbsp;<span class="keyword">let</span>&nbsp;rev&nbsp;s&nbsp;=&nbsp;<span class="constructor">String</span>.backwards&nbsp;s&nbsp;|&gt;&nbsp;<span class="constructor">String</span>.of_enum&nbsp;</code><br>
 </div>
 
 <pre><span id="VALof_backwards"><span class="keyword">val</span> of_backwards</span> : <code class="type">char <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> string</code></pre><div class="info ">
@@ -393,44 +396,44 @@ Build a string from an enumeration, starting with last character, ending with fi
 <p>
 
     Examples:
-    <code class="code"> <span class="string">"foo"</span> |&gt; <span class="constructor">String</span>.enum |&gt; <span class="constructor">String</span>.of_backwards = <span class="string">"oof"</span> </code>
-    <code class="code"> <span class="string">"foo"</span> |&gt; <span class="constructor">String</span>.backwards |&gt; <span class="constructor">String</span>.of_backwards = <span class="string">"foo"</span> </code>
-    <code class="code"> <span class="keyword">let</span> rev s = <span class="constructor">String</span>.enum s |&gt; <span class="constructor">String</span>.of_backwards </code><br>
+    <code class="code">&nbsp;<span class="string">"foo"</span>&nbsp;|&gt;&nbsp;<span class="constructor">String</span>.enum&nbsp;|&gt;&nbsp;<span class="constructor">String</span>.of_backwards&nbsp;=&nbsp;<span class="string">"oof"</span>&nbsp;</code>
+    <code class="code">&nbsp;<span class="string">"foo"</span>&nbsp;|&gt;&nbsp;<span class="constructor">String</span>.backwards&nbsp;|&gt;&nbsp;<span class="constructor">String</span>.of_backwards&nbsp;=&nbsp;<span class="string">"foo"</span>&nbsp;</code>
+    <code class="code">&nbsp;<span class="keyword">let</span>&nbsp;rev&nbsp;s&nbsp;=&nbsp;<span class="constructor">String</span>.enum&nbsp;s&nbsp;|&gt;&nbsp;<span class="constructor">String</span>.of_backwards&nbsp;</code><br>
 </div>
 
 <pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">char list -> string</code></pre><div class="info ">
 Converts a list of characters to a string.
 <p>
 
-    Example: <code class="code"> [<span class="string">'c'</span>; <span class="string">'h'</span>; <span class="string">'a'</span>; <span class="string">'r'</span>; <span class="string">'s'</span>] |&gt; <span class="constructor">String</span>.of_list = <span class="string">"chars"</span> </code><br>
+    Example: <code class="code">&nbsp;[<span class="string">'c'</span>;&nbsp;<span class="string">'h'</span>;&nbsp;<span class="string">'a'</span>;&nbsp;<span class="string">'r'</span>;&nbsp;<span class="string">'s'</span>]&nbsp;|&gt;&nbsp;<span class="constructor">String</span>.of_list&nbsp;=&nbsp;<span class="string">"chars"</span>&nbsp;</code><br>
 </div>
 
 <pre><span id="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type">string -> char list</code></pre><div class="info ">
 Converts a string to the list of its characters.
 <p>
 
-    Example: <code class="code"> <span class="constructor">String</span>.to_list <span class="string">"string"</span> |&gt; <span class="constructor">List</span>.interleave <span class="string">';'</span> |&gt; <span class="constructor">String</span>.of_list = <span class="string">"s;t;r;i;n;g"</span> </code><br>
+    Example: <code class="code">&nbsp;<span class="constructor">String</span>.to_list&nbsp;<span class="string">"string"</span>&nbsp;|&gt;&nbsp;<span class="constructor">List</span>.interleave&nbsp;<span class="string">';'</span>&nbsp;|&gt;&nbsp;<span class="constructor">String</span>.of_list&nbsp;=&nbsp;<span class="string">"s;t;r;i;n;g"</span>&nbsp;</code><br>
 </div>
 
 <pre><span id="VALof_int"><span class="keyword">val</span> of_int</span> : <code class="type">int -> string</code></pre><div class="info ">
 Returns the string representation of an int.
 <p>
 
-    Example: <code class="code"> <span class="constructor">String</span>.of_int 56 = <span class="string">"56"</span> <span class="keywordsign">&amp;&amp;</span> <span class="constructor">String</span>.of_int (-1) = <span class="string">"-1"</span> </code><br>
+    Example: <code class="code">&nbsp;<span class="constructor">String</span>.of_int&nbsp;56&nbsp;=&nbsp;<span class="string">"56"</span>&nbsp;<span class="keywordsign">&amp;&amp;</span>&nbsp;<span class="constructor">String</span>.of_int&nbsp;(-1)&nbsp;=&nbsp;<span class="string">"-1"</span>&nbsp;</code><br>
 </div>
 
 <pre><span id="VALof_float"><span class="keyword">val</span> of_float</span> : <code class="type">float -> string</code></pre><div class="info ">
 Returns the string representation of an float.
 <p>
 
-    Example: <code class="code"> <span class="constructor">String</span>.of_float 1.246 = <span class="string">"1.246"</span> </code><br>
+    Example: <code class="code">&nbsp;<span class="constructor">String</span>.of_float&nbsp;1.246&nbsp;=&nbsp;<span class="string">"1.246"</span>&nbsp;</code><br>
 </div>
 
 <pre><span id="VALof_char"><span class="keyword">val</span> of_char</span> : <code class="type">char -> string</code></pre><div class="info ">
 Returns a string containing one given character.
 <p>
 
-    Example: <code class="code"> <span class="constructor">String</span>.of_char <span class="string">'s'</span> = <span class="string">"s"</span> </code><br>
+    Example: <code class="code">&nbsp;<span class="constructor">String</span>.of_char&nbsp;<span class="string">'s'</span>&nbsp;=&nbsp;<span class="string">"s"</span>&nbsp;</code><br>
 </div>
 
 <pre><span id="VALto_int"><span class="keyword">val</span> to_int</span> : <code class="type">string -> int</code></pre><div class="info ">
@@ -443,8 +446,8 @@ Returns the integer represented by the given string
     readability but ignored.
 <p>
 
-    Examples: <code class="code"> <span class="constructor">String</span>.to_int <span class="string">"8_480"</span> = <span class="constructor">String</span>.to_int <span class="string">"0x21_20"</span> </code>
-    <code class="code"> <span class="keyword">try</span> ignore(<span class="constructor">String</span>.to_int <span class="string">"2,3"</span>); <span class="keyword">false</span> <span class="keyword">with</span> <span class="constructor">Failure</span> _ <span class="keywordsign">-&gt;</span> <span class="keyword">true</span> </code></li>
+    Examples: <code class="code">&nbsp;<span class="constructor">String</span>.to_int&nbsp;<span class="string">"8_480"</span>&nbsp;=&nbsp;<span class="constructor">String</span>.to_int&nbsp;<span class="string">"0x21_20"</span>&nbsp;</code>
+    <code class="code">&nbsp;<span class="keyword">try</span>&nbsp;ignore(<span class="constructor">String</span>.to_int&nbsp;<span class="string">"2,3"</span>);&nbsp;<span class="keyword">false</span>&nbsp;<span class="keyword">with</span>&nbsp;<span class="constructor">Failure</span>&nbsp;_&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keyword">true</span>&nbsp;</code></li>
 <li><code>Failure</code> if the string does not represent an integer.</li>
 </ul>
 </div>
@@ -458,9 +461,9 @@ Returns the float represented by the given string
     literals apply.
 <p>
 
-    Examples: <code class="code"><span class="constructor">String</span>.to_float <span class="string">"12.34e-1"</span> = <span class="constructor">String</span>.to_float <span class="string">"1.234"</span></code>
-    <code class="code"><span class="constructor">String</span>.to_float <span class="string">"1"</span> = 1.</code>
-    <code class="code"><span class="keyword">try</span> ignore(<span class="constructor">String</span>.to_float <span class="string">""</span>); <span class="keyword">false</span> <span class="keyword">with</span> <span class="constructor">Failure</span> _ <span class="keywordsign">-&gt;</span> <span class="keyword">true</span></code></li>
+    Examples: <code class="code"><span class="constructor">String</span>.to_float&nbsp;<span class="string">"12.34e-1"</span>&nbsp;=&nbsp;<span class="constructor">String</span>.to_float&nbsp;<span class="string">"1.234"</span></code>
+    <code class="code"><span class="constructor">String</span>.to_float&nbsp;<span class="string">"1"</span>&nbsp;=&nbsp;1.</code>
+    <code class="code"><span class="keyword">try</span>&nbsp;ignore(<span class="constructor">String</span>.to_float&nbsp;<span class="string">""</span>);&nbsp;<span class="keyword">false</span>&nbsp;<span class="keyword">with</span>&nbsp;<span class="constructor">Failure</span>&nbsp;_&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keyword">true</span></code></li>
 <li><code>Failure</code> if the string does not represent a float.</li>
 </ul>
 </div>
@@ -468,21 +471,21 @@ Returns the float represented by the given string
 <h6 id="6_Stringtraversals">String traversals</h6><br>
 
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">(char -> char) -> string -> string</code></pre><div class="info ">
-<code class="code">map f s</code> returns a string where all characters <code class="code">c</code> in <code class="code">s</code> have been
-    replaced by <code class="code">f c</code>.
+<code class="code">map&nbsp;f&nbsp;s</code> returns a string where all characters <code class="code">c</code> in <code class="code">s</code> have been
+    replaced by <code class="code">f&nbsp;c</code>.
 <p>
 
-    Example: <code class="code"><span class="constructor">String</span>.map <span class="constructor">Char</span>.uppercase <span class="string">"Five"</span> = <span class="string">"FIVE"</span></code>
+    Example: <code class="code"><span class="constructor">String</span>.map&nbsp;<span class="constructor">Char</span>.uppercase&nbsp;<span class="string">"Five"</span>&nbsp;=&nbsp;<span class="string">"FIVE"</span></code>
  *<br>
 </div>
 
 <pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">('a -> char -> 'a) -> 'a -> string -> 'a</code></pre><div class="info ">
-<code class="code">fold_left f a s</code> is
-    <code class="code">f (... (f (f a s.[0]) s.[1]) ...) s.[n-1]</code>
+<code class="code">fold_left&nbsp;f&nbsp;a&nbsp;s</code> is
+    <code class="code">f&nbsp;(...&nbsp;(f&nbsp;(f&nbsp;a&nbsp;s.[0])&nbsp;s.[1])&nbsp;...)&nbsp;s.[n-1]</code>
 <p>
 
-    Examples: <code class="code"><span class="constructor">String</span>.fold_left (<span class="keyword">fun</span> li c <span class="keywordsign">-&gt;</span> c::li) [] <span class="string">"foo"</span> = [<span class="string">'o'</span>;<span class="string">'o'</span>;<span class="string">'f'</span>]</code>
-    <code class="code"><span class="constructor">String</span>.fold_left max <span class="string">'a'</span> <span class="string">"apples"</span> = <span class="string">'s'</span></code><br>
+    Examples: <code class="code"><span class="constructor">String</span>.fold_left&nbsp;(<span class="keyword">fun</span>&nbsp;li&nbsp;c&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;c::li)&nbsp;[]&nbsp;<span class="string">"foo"</span>&nbsp;=&nbsp;[<span class="string">'o'</span>;<span class="string">'o'</span>;<span class="string">'f'</span>]</code>
+    <code class="code"><span class="constructor">String</span>.fold_left&nbsp;max&nbsp;<span class="string">'a'</span>&nbsp;<span class="string">"apples"</span>&nbsp;=&nbsp;<span class="string">'s'</span></code><br>
 </div>
 
 <pre><span id="VALfold_lefti"><span class="keyword">val</span> fold_lefti</span> : <code class="type">('a -> int -> char -> 'a) -> 'a -> string -> 'a</code></pre><div class="info ">
@@ -491,12 +494,12 @@ As <code class="code">fold_left</code>, but with the index of the element as add
 </div>
 
 <pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">(char -> 'a -> 'a) -> string -> 'a -> 'a</code></pre><div class="info ">
-<code class="code">fold_right f s b</code> is
-    <code class="code">f s.[0] (f s.[1] (... (f s.[n-1] b) ...))</code>
+<code class="code">fold_right&nbsp;f&nbsp;s&nbsp;b</code> is
+    <code class="code">f&nbsp;s.[0]&nbsp;(f&nbsp;s.[1]&nbsp;(...&nbsp;(f&nbsp;s.[n-1]&nbsp;b)&nbsp;...))</code>
 <p>
 
-    Examples: <code class="code"><span class="constructor">String</span>.fold_right <span class="constructor">List</span>.cons <span class="string">"foo"</span> [] = [<span class="string">'f'</span>;<span class="string">'o'</span>;<span class="string">'o'</span>]</code>
-    <code class="code"><span class="constructor">String</span>.fold_right (<span class="keyword">fun</span> c a <span class="keywordsign">-&gt;</span> <span class="keyword">if</span> c = <span class="string">' '</span> <span class="keyword">then</span> a+1 <span class="keyword">else</span> a) <span class="string">"a b c"</span> 0 = 2</code><br>
+    Examples: <code class="code"><span class="constructor">String</span>.fold_right&nbsp;<span class="constructor">List</span>.cons&nbsp;<span class="string">"foo"</span>&nbsp;[]&nbsp;=&nbsp;[<span class="string">'f'</span>;<span class="string">'o'</span>;<span class="string">'o'</span>]</code>
+    <code class="code"><span class="constructor">String</span>.fold_right&nbsp;(<span class="keyword">fun</span>&nbsp;c&nbsp;a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keyword">if</span>&nbsp;c&nbsp;=&nbsp;<span class="string">'&nbsp;'</span>&nbsp;<span class="keyword">then</span>&nbsp;a+1&nbsp;<span class="keyword">else</span>&nbsp;a)&nbsp;<span class="string">"a&nbsp;b&nbsp;c"</span>&nbsp;0&nbsp;=&nbsp;2</code><br>
 </div>
 
 <pre><span id="VALfold_righti"><span class="keyword">val</span> fold_righti</span> : <code class="type">(int -> char -> 'a -> 'a) -> string -> 'a -> 'a</code></pre><div class="info ">
@@ -505,44 +508,44 @@ As <code class="code">fold_right</code>, but with the index of the element as ad
 </div>
 
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">(char -> bool) -> string -> string</code></pre><div class="info ">
-<code class="code">filter f s</code> returns a copy of string <code class="code">s</code> in which only
-    characters <code class="code">c</code> such that <code class="code">f c = <span class="keyword">true</span></code> remain.
+<code class="code">filter&nbsp;f&nbsp;s</code> returns a copy of string <code class="code">s</code> in which only
+    characters <code class="code">c</code> such that <code class="code">f&nbsp;c&nbsp;=&nbsp;<span class="keyword">true</span></code> remain.
 <p>
 
-    Example: <code class="code"> <span class="constructor">String</span>.filter ((&lt;&gt;) <span class="string">' '</span>) <span class="string">"a b c"</span> = <span class="string">"abc"</span> </code><br>
+    Example: <code class="code">&nbsp;<span class="constructor">String</span>.filter&nbsp;((&lt;&gt;)&nbsp;<span class="string">'&nbsp;'</span>)&nbsp;<span class="string">"a&nbsp;b&nbsp;c"</span>&nbsp;=&nbsp;<span class="string">"abc"</span>&nbsp;</code><br>
 </div>
 
 <pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">(char -> char option) -> string -> string</code></pre><div class="info ">
-<code class="code">filter_map f s</code> calls <code class="code">(f a0) (f a1).... (f an)</code> where <code class="code">a0..an</code> are
+<code class="code">filter_map&nbsp;f&nbsp;s</code> calls <code class="code">(f&nbsp;a0)&nbsp;(f&nbsp;a1)....&nbsp;(f&nbsp;an)</code> where <code class="code">a0..an</code> are
     the characters of <code class="code">s</code>. It returns the string of characters <code class="code">ci</code> such as
-    <code class="code">f ai = <span class="constructor">Some</span> ci</code> (when <code class="code">f</code> returns <code class="code"><span class="constructor">None</span></code>, the corresponding element of
+    <code class="code">f&nbsp;ai&nbsp;=&nbsp;<span class="constructor">Some</span>&nbsp;ci</code> (when <code class="code">f</code> returns <code class="code"><span class="constructor">None</span></code>, the corresponding element of
     <code class="code">s</code> is discarded).
 <p>
 
-    Example: <code class="code"> <span class="constructor">String</span>.filter_map (<span class="keyword">function</span> <span class="string">'a'</span>..<span class="string">'z'</span> <span class="keyword">as</span> c <span class="keywordsign">-&gt;</span> <span class="constructor">Some</span> (<span class="constructor">Char</span>.uppercase c) <span class="keywordsign">|</span> _ <span class="keywordsign">-&gt;</span> <span class="constructor">None</span>) <span class="string">"a b c"</span> = <span class="string">"ABC"</span> </code><br>
+    Example: <code class="code">&nbsp;<span class="constructor">String</span>.filter_map&nbsp;(<span class="keyword">function</span>&nbsp;<span class="string">'a'</span>..<span class="string">'z'</span>&nbsp;<span class="keyword">as</span>&nbsp;c&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Some</span>&nbsp;(<span class="constructor">Char</span>.uppercase&nbsp;c)&nbsp;<span class="keywordsign">|</span>&nbsp;_&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">None</span>)&nbsp;<span class="string">"a&nbsp;b&nbsp;c"</span>&nbsp;=&nbsp;<span class="string">"ABC"</span>&nbsp;</code><br>
 </div>
 
 <pre><span id="VALiteri"><span class="keyword">val</span> iteri</span> : <code class="type">(int -> char -> unit) -> string -> unit</code></pre><div class="info ">
-<code class="code"><span class="constructor">String</span>.iteri f s</code> is equivalent to
-    <code class="code">f 0 s.[0]; f 1 s.[1]; ...; f len s.[len]</code> where <code class="code">len</code> is length of string <code class="code">s</code>.
+<code class="code"><span class="constructor">String</span>.iteri&nbsp;f&nbsp;s</code> is equivalent to
+    <code class="code">f&nbsp;0&nbsp;s.[0];&nbsp;f&nbsp;1&nbsp;s.[1];&nbsp;...;&nbsp;f&nbsp;len&nbsp;s.[len]</code> where <code class="code">len</code> is length of string <code class="code">s</code>.
     Example:
-    <pre class="codepre"><code class="code">&nbsp;<span class="keyword">let</span>&nbsp;letter_positions&nbsp;word&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;positions&nbsp;=&nbsp;<span class="constructor">Array</span>.make&nbsp;256&nbsp;[]&nbsp;<span class="keyword">in</span>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;count_letter&nbsp;pos&nbsp;c&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;positions.(int_of_char&nbsp;c)&nbsp;&lt;-&nbsp;pos&nbsp;::&nbsp;positions.(int_of_char&nbsp;c)&nbsp;<span class="keyword">in</span>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">String</span>.iteri&nbsp;count_letter&nbsp;word;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Array</span>.mapi&nbsp;(<span class="keyword">fun</span>&nbsp;c&nbsp;pos&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(char_of_int&nbsp;c,&nbsp;<span class="constructor">List</span>.rev&nbsp;pos))&nbsp;positions
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&gt;&nbsp;<span class="constructor">Array</span>.to_list
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&gt;&nbsp;<span class="constructor">List</span>.filter&nbsp;(<span class="keyword">fun</span>&nbsp;(c,pos)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;pos&nbsp;&lt;&gt;&nbsp;[])
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">in</span>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;letter_positions&nbsp;<span class="string">"hello"</span>&nbsp;=&nbsp;[<span class="string">'e'</span>,[1];&nbsp;<span class="string">'h'</span>,[0];&nbsp;<span class="string">'l'</span>,[2;3];&nbsp;<span class="string">'o'</span>,[4]&nbsp;]
-&nbsp;&nbsp;&nbsp;&nbsp;</code></pre><br>
+    <pre class="codepre"><code class="code"> <span class="keyword">let</span> letter_positions word =
+      <span class="keyword">let</span> positions = <span class="constructor">Array</span>.make 256 [] <span class="keyword">in</span>
+      <span class="keyword">let</span> count_letter pos c =
+        positions.(int_of_char c) &lt;- pos :: positions.(int_of_char c) <span class="keyword">in</span>
+      <span class="constructor">String</span>.iteri count_letter word;
+      <span class="constructor">Array</span>.mapi (<span class="keyword">fun</span> c pos <span class="keywordsign">-&gt;</span> (char_of_int c, <span class="constructor">List</span>.rev pos)) positions
+      |&gt; <span class="constructor">Array</span>.to_list
+      |&gt; <span class="constructor">List</span>.filter (<span class="keyword">fun</span> (c,pos) <span class="keywordsign">-&gt;</span> pos &lt;&gt; [])
+      <span class="keyword">in</span>
+      letter_positions <span class="string">"hello"</span> = [<span class="string">'e'</span>,[1]; <span class="string">'h'</span>,[0]; <span class="string">'l'</span>,[2;3]; <span class="string">'o'</span>,[4] ]
+    </code></pre><br>
 </div>
 <br>
 <h6 id="6_Finding">Finding</h6><br>
 
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">string -> string -> int</code></pre><div class="info ">
-<code class="code">find s x</code> returns the starting index of the first occurrence of
+<code class="code">find&nbsp;s&nbsp;x</code> returns the starting index of the first occurrence of
     string <code class="code">x</code> within string <code class="code">s</code>.
 <p>
 
@@ -550,22 +553,22 @@ As <code class="code">fold_right</code>, but with the index of the element as ad
 <b>Raises</b> <code>Not_found</code> if <code class="code">x</code> is not a substring of <code class="code">s</code>.
 <p>
 
-    Example: <code class="code"><span class="constructor">String</span>.find <span class="string">"foobarbaz"</span> <span class="string">"bar"</span> = 3</code><br>
+    Example: <code class="code"><span class="constructor">String</span>.find&nbsp;<span class="string">"foobarbaz"</span>&nbsp;<span class="string">"bar"</span>&nbsp;=&nbsp;3</code><br>
 </div>
 
 <pre><span id="VALfind_from"><span class="keyword">val</span> find_from</span> : <code class="type">string -> int -> string -> int</code></pre><div class="info ">
-<code class="code">find_from s pos x</code> behaves as <code class="code">find s x</code> but starts searching
-    at position <code class="code">pos</code>. <code class="code">find s x</code> is equivalent to <code class="code">find_from s 0 x</code>.<br>
+<code class="code">find_from&nbsp;s&nbsp;pos&nbsp;x</code> behaves as <code class="code">find&nbsp;s&nbsp;x</code> but starts searching
+    at position <code class="code">pos</code>. <code class="code">find&nbsp;s&nbsp;x</code> is equivalent to <code class="code">find_from&nbsp;s&nbsp;0&nbsp;x</code>.<br>
 <b>Raises</b><ul><li><code>Not_found</code> if not substring is found</li>
 <li><code>Invalid_argument</code> if <code class="code">pos</code> is not a valid position in the string.
 <p>
 
-    Example: <code class="code"><span class="constructor">String</span>.find_from <span class="string">"foobarbaz"</span> 4 <span class="string">"ba"</span> = 6</code></li>
+    Example: <code class="code"><span class="constructor">String</span>.find_from&nbsp;<span class="string">"foobarbaz"</span>&nbsp;4&nbsp;<span class="string">"ba"</span>&nbsp;=&nbsp;6</code></li>
 </ul>
 </div>
 
 <pre><span id="VALrfind"><span class="keyword">val</span> rfind</span> : <code class="type">string -> string -> int</code></pre><div class="info ">
-<code class="code">rfind s x</code> returns the starting index of the last occurrence
+<code class="code">rfind&nbsp;s&nbsp;x</code> returns the starting index of the last occurrence
     of string <code class="code">x</code> within string <code class="code">s</code>.
 <p>
 
@@ -573,52 +576,52 @@ As <code class="code">fold_right</code>, but with the index of the element as ad
 <b>Raises</b> <code>Not_found</code> if <code class="code">x</code> is not a substring of <code class="code">s</code>.
 <p>
 
-    Example: <code class="code"><span class="constructor">String</span>.rfind <span class="string">"foobarbaz"</span> <span class="string">"ba"</span> = 6</code><br>
+    Example: <code class="code"><span class="constructor">String</span>.rfind&nbsp;<span class="string">"foobarbaz"</span>&nbsp;<span class="string">"ba"</span>&nbsp;=&nbsp;6</code><br>
 </div>
 
 <pre><span id="VALrfind_from"><span class="keyword">val</span> rfind_from</span> : <code class="type">string -> int -> string -> int</code></pre><div class="info ">
-<code class="code">rfind_from s pos x</code> behaves as <code class="code">rfind s x</code> but starts searching
-    from the right at position <code class="code">pos + 1</code>. <code class="code">rfind s x</code> is equivalent to
-    <code class="code">rfind_from s (<span class="constructor">String</span>.length s - 1) x</code>.
+<code class="code">rfind_from&nbsp;s&nbsp;pos&nbsp;x</code> behaves as <code class="code">rfind&nbsp;s&nbsp;x</code> but starts searching
+    from the right at position <code class="code">pos&nbsp;+&nbsp;1</code>. <code class="code">rfind&nbsp;s&nbsp;x</code> is equivalent to
+    <code class="code">rfind_from&nbsp;s&nbsp;(<span class="constructor">String</span>.length&nbsp;s&nbsp;-&nbsp;1)&nbsp;x</code>.
 <p>
 
     <b>Beware</b>, it search between the <em>beginning</em> of the string to
-    the position <code class="code">pos + 1</code>, <em>not</em> between <code class="code">pos + 1</code> and the end.<br>
+    the position <code class="code">pos&nbsp;+&nbsp;1</code>, <em>not</em> between <code class="code">pos&nbsp;+&nbsp;1</code> and the end.<br>
 <b>Raises</b><ul><li><code>Not_found</code> if not substring is found</li>
 <li><code>Invalid_argument</code> if <code class="code">pos</code> is not a valid position in the string.
 <p>
 
-    Example: <code class="code"><span class="constructor">String</span>.rfind_from <span class="string">"foobarbaz"</span> 6 <span class="string">"ba"</span> = 6</code></li>
+    Example: <code class="code"><span class="constructor">String</span>.rfind_from&nbsp;<span class="string">"foobarbaz"</span>&nbsp;6&nbsp;<span class="string">"ba"</span>&nbsp;=&nbsp;6</code></li>
 </ul>
 </div>
 
 <pre><span id="VALfind_all"><span class="keyword">val</span> find_all</span> : <code class="type">string -> string -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-<code class="code">find_all s x</code> enumerates positions of <code class="code">s</code> at which <code class="code">x</code> occurs.
-    Example: <code class="code">find_all <span class="string">"aabaabaa"</span> <span class="string">"aba"</span> |&gt; <span class="constructor">List</span>.of_enum</code> will return
-    the list <code class="code">[1; 4]</code>.<br>
+<code class="code">find_all&nbsp;s&nbsp;x</code> enumerates positions of <code class="code">s</code> at which <code class="code">x</code> occurs.
+    Example: <code class="code">find_all&nbsp;<span class="string">"aabaabaa"</span>&nbsp;<span class="string">"aba"</span>&nbsp;|&gt;&nbsp;<span class="constructor">List</span>.of_enum</code> will return
+    the list <code class="code">[1;&nbsp;4]</code>.<br>
 <b>Since</b> 2.2.0<br>
 </div>
 
 <pre><span id="VALends_with"><span class="keyword">val</span> ends_with</span> : <code class="type">string -> string -> bool</code></pre><div class="info ">
-<code class="code">ends_with s x</code> returns <code class="code"><span class="keyword">true</span></code> if the string <code class="code">s</code> is ending with <code class="code">x</code>, <code class="code"><span class="keyword">false</span></code> otherwise.
+<code class="code">ends_with&nbsp;s&nbsp;x</code> returns <code class="code"><span class="keyword">true</span></code> if the string <code class="code">s</code> is ending with <code class="code">x</code>, <code class="code"><span class="keyword">false</span></code> otherwise.
 <p>
 
-    Example: <code class="code"><span class="constructor">String</span>.ends_with <span class="string">"foobarbaz"</span> <span class="string">"rbaz"</span> = <span class="keyword">true</span></code><br>
+    Example: <code class="code"><span class="constructor">String</span>.ends_with&nbsp;<span class="string">"foobarbaz"</span>&nbsp;<span class="string">"rbaz"</span>&nbsp;=&nbsp;<span class="keyword">true</span></code><br>
 </div>
 
 <pre><span id="VALstarts_with"><span class="keyword">val</span> starts_with</span> : <code class="type">string -> string -> bool</code></pre><div class="info ">
-<code class="code">starts_with s x</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">s</code> is starting with <code class="code">x</code>, <code class="code"><span class="keyword">false</span></code> otherwise.
+<code class="code">starts_with&nbsp;s&nbsp;x</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">s</code> is starting with <code class="code">x</code>, <code class="code"><span class="keyword">false</span></code> otherwise.
 <p>
 
-    Example: <code class="code"><span class="constructor">String</span>.starts_with <span class="string">"foobarbaz"</span> <span class="string">"fooz"</span> = <span class="keyword">false</span></code><br>
+    Example: <code class="code"><span class="constructor">String</span>.starts_with&nbsp;<span class="string">"foobarbaz"</span>&nbsp;<span class="string">"fooz"</span>&nbsp;=&nbsp;<span class="keyword">false</span></code><br>
 </div>
 
 <pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">string -> string -> bool</code></pre><div class="info ">
-<code class="code">exists str sub</code> returns true if <code class="code">sub</code> is a substring of <code class="code">str</code> or
+<code class="code">exists&nbsp;str&nbsp;sub</code> returns true if <code class="code">sub</code> is a substring of <code class="code">str</code> or
     false otherwise.
 <p>
 
-    Example: <code class="code"><span class="constructor">String</span>.exists <span class="string">"foobarbaz"</span> <span class="string">"obar"</span> = <span class="keyword">true</span></code><br>
+    Example: <code class="code"><span class="constructor">String</span>.exists&nbsp;<span class="string">"foobarbaz"</span>&nbsp;<span class="string">"obar"</span>&nbsp;=&nbsp;<span class="keyword">true</span></code><br>
 </div>
 <br>
 <h6 id="6_Transformations">Transformations</h6><br>
@@ -631,9 +634,9 @@ Returns the same string but without the first <code class="code">n</code> charac
 <p>
 
       Example:
-      <code class="code"><span class="constructor">String</span>.lchop <span class="string">"Weeble"</span> = <span class="string">"eeble"</span></code>
-      <code class="code"><span class="constructor">String</span>.lchop ~n:3 <span class="string">"Weeble"</span> = <span class="string">"ble"</span></code>
-      <code class="code"><span class="constructor">String</span>.lchop ~n:1000 <span class="string">"Weeble"</span> = <span class="string">""</span></code><br>
+      <code class="code"><span class="constructor">String</span>.lchop&nbsp;<span class="string">"Weeble"</span>&nbsp;=&nbsp;<span class="string">"eeble"</span></code>
+      <code class="code"><span class="constructor">String</span>.lchop&nbsp;~n:3&nbsp;<span class="string">"Weeble"</span>&nbsp;=&nbsp;<span class="string">"ble"</span></code>
+      <code class="code"><span class="constructor">String</span>.lchop&nbsp;~n:1000&nbsp;<span class="string">"Weeble"</span>&nbsp;=&nbsp;<span class="string">""</span></code><br>
 </div>
 
 <pre><span id="VALrchop"><span class="keyword">val</span> rchop</span> : <code class="type">?n:int -> string -> string</code></pre><div class="info ">
@@ -644,9 +647,9 @@ Returns the same string but without the last <code class="code">n</code> charact
 <p>
 
       Example:
-      <code class="code"><span class="constructor">String</span>.rchop <span class="string">"Weeble"</span> = <span class="string">"Weebl"</span></code>
-      <code class="code"><span class="constructor">String</span>.rchop ~n:3 <span class="string">"Weeble"</span> = <span class="string">"Wee"</span></code>
-      <code class="code"><span class="constructor">String</span>.rchop ~n:1000 <span class="string">"Weeble"</span> = <span class="string">""</span></code><br>
+      <code class="code"><span class="constructor">String</span>.rchop&nbsp;<span class="string">"Weeble"</span>&nbsp;=&nbsp;<span class="string">"Weebl"</span></code>
+      <code class="code"><span class="constructor">String</span>.rchop&nbsp;~n:3&nbsp;<span class="string">"Weeble"</span>&nbsp;=&nbsp;<span class="string">"Wee"</span></code>
+      <code class="code"><span class="constructor">String</span>.rchop&nbsp;~n:1000&nbsp;<span class="string">"Weeble"</span>&nbsp;=&nbsp;<span class="string">""</span></code><br>
 </div>
 
 <pre><span id="VALtrim"><span class="keyword">val</span> trim</span> : <code class="type">string -> string</code></pre><div class="info ">
@@ -654,7 +657,7 @@ Returns the same string but without the leading and trailing
     whitespaces (according to <a href="BatChar.html#VALis_whitespace"><code class="code"><span class="constructor">BatChar</span>.is_whitespace</code></a>).
 <p>
 
-    Example: <code class="code"><span class="constructor">String</span>.trim <span class="string">" \t foo\n  "</span> = <span class="string">"foo"</span></code><br>
+    Example: <code class="code"><span class="constructor">String</span>.trim&nbsp;<span class="string">"&nbsp;\t&nbsp;foo\n&nbsp;&nbsp;"</span>&nbsp;=&nbsp;<span class="string">"foo"</span></code><br>
 </div>
 
 <pre><span id="VALquote"><span class="keyword">val</span> quote</span> : <code class="type">string -> string</code></pre><div class="info ">
@@ -664,9 +667,9 @@ Add quotes around a string and escape any quote or escape
 <p>
 
     Examples:
-    <code class="code"><span class="constructor">String</span>.quote <span class="string">"foo"</span> = <span class="string">"\"foo\""</span></code>
-    <code class="code"><span class="constructor">String</span>.quote <span class="string">"\"foo\""</span> = <span class="string">"\"\\\"foo\\\"\""</span></code>
-    <code class="code"><span class="constructor">String</span>.quote <span class="string">"\n"</span> = <span class="string">"\"\\n\""</span></code>
+    <code class="code"><span class="constructor">String</span>.quote&nbsp;<span class="string">"foo"</span>&nbsp;=&nbsp;<span class="string">"\"foo\""</span></code>
+    <code class="code"><span class="constructor">String</span>.quote&nbsp;<span class="string">"\"foo\""</span>&nbsp;=&nbsp;<span class="string">"\"\\\"foo\\\"\""</span></code>
+    <code class="code"><span class="constructor">String</span>.quote&nbsp;<span class="string">"\n"</span>&nbsp;=&nbsp;<span class="string">"\"\\n\""</span></code>
     etc.
 <p>
 
@@ -676,23 +679,23 @@ Add quotes around a string and escape any quote or escape
 </div>
 
 <pre><span id="VALleft"><span class="keyword">val</span> left</span> : <code class="type">string -> int -> string</code></pre><div class="info ">
-<code class="code">left r len</code> returns the string containing the <code class="code">len</code> first
+<code class="code">left&nbsp;r&nbsp;len</code> returns the string containing the <code class="code">len</code> first
    characters of <code class="code">r</code>. If <code class="code">r</code> contains less than <code class="code">len</code> characters, it
    returns <code class="code">r</code>.
 <p>
 
    Examples:
-   <code class="code"><span class="constructor">String</span>.left <span class="string">"Weeble"</span> 4 = <span class="string">"Weeb"</span></code>
-   <code class="code"><span class="constructor">String</span>.left <span class="string">"Weeble"</span> 0 = <span class="string">""</span></code>
-   <code class="code"><span class="constructor">String</span>.left <span class="string">"Weeble"</span> 10 = <span class="string">"Weeble"</span></code><br>
+   <code class="code"><span class="constructor">String</span>.left&nbsp;<span class="string">"Weeble"</span>&nbsp;4&nbsp;=&nbsp;<span class="string">"Weeb"</span></code>
+   <code class="code"><span class="constructor">String</span>.left&nbsp;<span class="string">"Weeble"</span>&nbsp;0&nbsp;=&nbsp;<span class="string">""</span></code>
+   <code class="code"><span class="constructor">String</span>.left&nbsp;<span class="string">"Weeble"</span>&nbsp;10&nbsp;=&nbsp;<span class="string">"Weeble"</span></code><br>
 </div>
 
 <pre><span id="VALright"><span class="keyword">val</span> right</span> : <code class="type">string -> int -> string</code></pre><div class="info ">
-<code class="code">left r len</code> returns the string containing the <code class="code">len</code> last characters of <code class="code">r</code>.
+<code class="code">left&nbsp;r&nbsp;len</code> returns the string containing the <code class="code">len</code> last characters of <code class="code">r</code>.
    If <code class="code">r</code> contains less than <code class="code">len</code> characters, it returns <code class="code">r</code>.
 <p>
 
-   Example: <code class="code"><span class="constructor">String</span>.right <span class="string">"Weeble"</span> 4 = <span class="string">"eble"</span></code><br>
+   Example: <code class="code"><span class="constructor">String</span>.right&nbsp;<span class="string">"Weeble"</span>&nbsp;4&nbsp;=&nbsp;<span class="string">"eble"</span></code><br>
 </div>
 
 <pre><span id="VALhead"><span class="keyword">val</span> head</span> : <code class="type">string -> int -> string</code></pre><div class="info ">
@@ -700,10 +703,10 @@ as <a href="BatString.html#VALleft"><code class="code"><span class="constructor"
 </div>
 
 <pre><span id="VALtail"><span class="keyword">val</span> tail</span> : <code class="type">string -> int -> string</code></pre><div class="info ">
-<code class="code">tail r pos</code> returns the string containing all but the <code class="code">pos</code> first characters of <code class="code">r</code>
+<code class="code">tail&nbsp;r&nbsp;pos</code> returns the string containing all but the <code class="code">pos</code> first characters of <code class="code">r</code>
 <p>
 
-   Example: <code class="code"><span class="constructor">String</span>.tail <span class="string">"Weeble"</span> 4 = <span class="string">"le"</span></code><br>
+   Example: <code class="code"><span class="constructor">String</span>.tail&nbsp;<span class="string">"Weeble"</span>&nbsp;4&nbsp;=&nbsp;<span class="string">"le"</span></code><br>
 </div>
 
 <pre><span id="VALstrip"><span class="keyword">val</span> strip</span> : <code class="type">?chars:string -> string -> string</code></pre><div class="info ">
@@ -712,53 +715,53 @@ Returns the string without the chars if they are at the beginning or
 <p>
 
     Examples:
-    <code class="code"><span class="constructor">String</span>.strip <span class="string">" foo "</span> = <span class="string">"foo"</span></code>
-    <code class="code"><span class="constructor">String</span>.strip ~chars:<span class="string">" ,()"</span> <span class="string">" boo() bar()"</span> = <span class="string">"boo() bar"</span></code><br>
+    <code class="code"><span class="constructor">String</span>.strip&nbsp;<span class="string">"&nbsp;foo&nbsp;"</span>&nbsp;=&nbsp;<span class="string">"foo"</span></code>
+    <code class="code"><span class="constructor">String</span>.strip&nbsp;~chars:<span class="string">"&nbsp;,()"</span>&nbsp;<span class="string">"&nbsp;boo()&nbsp;bar()"</span>&nbsp;=&nbsp;<span class="string">"boo()&nbsp;bar"</span></code><br>
 </div>
 
 <pre><span id="VALreplace_chars"><span class="keyword">val</span> replace_chars</span> : <code class="type">(char -> string) -> string -> string</code></pre><div class="info ">
-<code class="code">replace_chars f s</code> returns a string where all chars <code class="code">c</code> of <code class="code">s</code> have been
-    replaced by the string returned by <code class="code">f c</code>.
+<code class="code">replace_chars&nbsp;f&nbsp;s</code> returns a string where all chars <code class="code">c</code> of <code class="code">s</code> have been
+    replaced by the string returned by <code class="code">f&nbsp;c</code>.
 <p>
 
-    Example: <code class="code"><span class="constructor">String</span>.replace_chars (<span class="keyword">function</span> <span class="string">' '</span> <span class="keywordsign">-&gt;</span> <span class="string">"(space)"</span> <span class="keywordsign">|</span> c <span class="keywordsign">-&gt;</span> <span class="constructor">String</span>.of_char c) <span class="string">"foo bar"</span> = <span class="string">"foo(space)bar"</span></code><br>
+    Example: <code class="code"><span class="constructor">String</span>.replace_chars&nbsp;(<span class="keyword">function</span>&nbsp;<span class="string">'&nbsp;'</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">"(space)"</span>&nbsp;<span class="keywordsign">|</span>&nbsp;c&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">String</span>.of_char&nbsp;c)&nbsp;<span class="string">"foo&nbsp;bar"</span>&nbsp;=&nbsp;<span class="string">"foo(space)bar"</span></code><br>
 </div>
 
 <pre><span id="VALreplace"><span class="keyword">val</span> replace</span> : <code class="type">str:string -> sub:string -> by:string -> bool * string</code></pre><div class="info ">
-<code class="code">replace ~str ~sub ~by</code> returns a tuple consisting of a boolean
+<code class="code">replace&nbsp;~str&nbsp;~sub&nbsp;~by</code> returns a tuple consisting of a boolean
     and a string where the first occurrence of the string <code class="code">sub</code>
     within <code class="code">str</code> has been replaced by the string <code class="code">by</code>. The boolean
     is true if a subtitution has taken place.
 <p>
 
-    Example: <code class="code"><span class="constructor">String</span>.replace <span class="string">"foobarbaz"</span> <span class="string">"bar"</span> <span class="string">"rab"</span> = (<span class="keyword">true</span>, <span class="string">"foorabbaz"</span>)</code><br>
+    Example: <code class="code"><span class="constructor">String</span>.replace&nbsp;<span class="string">"foobarbaz"</span>&nbsp;<span class="string">"bar"</span>&nbsp;<span class="string">"rab"</span>&nbsp;=&nbsp;(<span class="keyword">true</span>,&nbsp;<span class="string">"foorabbaz"</span>)</code><br>
 </div>
 
 <pre><span id="VALnreplace"><span class="keyword">val</span> nreplace</span> : <code class="type">str:string -> sub:string -> by:string -> string</code></pre><div class="info ">
-<code class="code">nreplace ~str ~sub ~by</code> returns a string obtained by iteratively
+<code class="code">nreplace&nbsp;~str&nbsp;~sub&nbsp;~by</code> returns a string obtained by iteratively
     replacing each occurrence of <code class="code">sub</code> by <code class="code">by</code> in <code class="code">str</code>, from right to left.
     It returns a copy of <code class="code">str</code> if <code class="code">sub</code> has no occurrence in <code class="code">str</code>.
 <p>
 
-    Example: <code class="code">nreplace ~str:<span class="string">"bar foo aaa bar"</span> ~sub:<span class="string">"aa"</span> ~by:<span class="string">"foo"</span> = <span class="string">"bar foo afoo bar"</span></code><br>
+    Example: <code class="code">nreplace&nbsp;~str:<span class="string">"bar&nbsp;foo&nbsp;aaa&nbsp;bar"</span>&nbsp;~sub:<span class="string">"aa"</span>&nbsp;~by:<span class="string">"foo"</span>&nbsp;=&nbsp;<span class="string">"bar&nbsp;foo&nbsp;afoo&nbsp;bar"</span></code><br>
 </div>
 
 <pre><span id="VALrepeat"><span class="keyword">val</span> repeat</span> : <code class="type">string -> int -> string</code></pre><div class="info ">
-<code class="code">repeat s n</code> returns <code class="code">s ^ s ^ ... ^ s</code>
+<code class="code">repeat&nbsp;s&nbsp;n</code> returns <code class="code">s&nbsp;^&nbsp;s&nbsp;^&nbsp;...&nbsp;^&nbsp;s</code>
 <p>
 
-    Example: <code class="code"><span class="constructor">String</span>.repeat <span class="string">"foo"</span> 4 = <span class="string">"foofoofoofoo"</span></code><br>
+    Example: <code class="code"><span class="constructor">String</span>.repeat&nbsp;<span class="string">"foo"</span>&nbsp;4&nbsp;=&nbsp;<span class="string">"foofoofoofoo"</span></code><br>
 </div>
 
 <pre><span id="VALrev"><span class="keyword">val</span> rev</span> : <code class="type">string -> string</code></pre><div class="info ">
-<code class="code">string s</code> returns the reverse of string <code class="code">s</code><br>
+<code class="code">string&nbsp;s</code> returns the reverse of string <code class="code">s</code><br>
 <b>Since</b> 2.1<br>
 </div>
 <br>
 <h6 id="6_InPlaceTransformations">In-Place Transformations</h6><br>
 
 <pre><span id="VALrev_in_place"><span class="keyword">val</span> rev_in_place</span> : <code class="type">string -> unit</code></pre><div class="info ">
-<code class="code">rev_in_place s</code> mutates the string <code class="code">s</code>, so that its new value is
+<code class="code">rev_in_place&nbsp;s</code> mutates the string <code class="code">s</code>, so that its new value is
     the mirror of its old one: for instance if s contained <code class="code"><span class="string">"Example!"</span></code>, after
     the mutation it will contain <code class="code"><span class="string">"!elpmaxE"</span></code>.<br>
 </div>
@@ -769,35 +772,53 @@ Returns the string without the chars if they are at the beginning or
 <br>
 <h6 id="6_Splittingaround">Splitting around</h6><br>
 
+<pre><span id="VALsplit_on_char"><span class="keyword">val</span> split_on_char</span> : <code class="type">char -> string -> string list</code></pre><div class="info ">
+<code class="code"><span class="constructor">String</span>.split_on_char&nbsp;sep&nbsp;s</code> returns the list of all (possibly empty)
+    substrings of <code class="code">s</code> that are delimited by the <code class="code">sep</code> character.
+<p>
+
+    The function's output is specified by the following invariants:
+<p>
+<ul>
+<li>The list is not empty.</li>
+<li>Concatenating its elements using <code class="code">sep</code> as a separator returns a
+      string equal to the input (<code class="code"><span class="constructor">String</span>.concat&nbsp;(<span class="constructor">String</span>.make&nbsp;1&nbsp;sep)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">String</span>.split_on_char&nbsp;sep&nbsp;s)&nbsp;=&nbsp;s</code>).</li>
+<li>No string in the result contains the <code class="code">sep</code> character.</li>
+</ul>
+<br>
+<b>Since</b> 2.5.3<br>
+</div>
+
 <pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type">string -> by:string -> string * string</code></pre><div class="info ">
-<code class="code">split s sep</code> splits the string <code class="code">s</code> between the first
+<code class="code">split&nbsp;s&nbsp;sep</code> splits the string <code class="code">s</code> between the first
     occurrence of <code class="code">sep</code>, and returns the two parts before
     and after the occurence (excluded).<br>
 <b>Raises</b> <code>Not_found</code> if the separator is not found.
 <p>
 
     Examples:
-    <code class="code"><span class="constructor">String</span>.split <span class="string">"abcabcabc"</span> <span class="string">"bc"</span> = (<span class="string">"a"</span>,<span class="string">"abcabc"</span>)</code>
-    <code class="code"><span class="constructor">String</span>.split <span class="string">"abcabcabc"</span> <span class="string">""</span> = (<span class="string">""</span>,<span class="string">"abcabcabc"</span>)</code><br>
+    <code class="code"><span class="constructor">String</span>.split&nbsp;<span class="string">"abcabcabc"</span>&nbsp;<span class="string">"bc"</span>&nbsp;=&nbsp;(<span class="string">"a"</span>,<span class="string">"abcabc"</span>)</code>
+    <code class="code"><span class="constructor">String</span>.split&nbsp;<span class="string">"abcabcabc"</span>&nbsp;<span class="string">""</span>&nbsp;=&nbsp;(<span class="string">""</span>,<span class="string">"abcabcabc"</span>)</code><br>
 </div>
 
 <pre><span id="VALrsplit"><span class="keyword">val</span> rsplit</span> : <code class="type">string -> by:string -> string * string</code></pre><div class="info ">
-<code class="code">rsplit s sep</code> splits the string <code class="code">s</code> between the last occurrence
+<code class="code">rsplit&nbsp;s&nbsp;sep</code> splits the string <code class="code">s</code> between the last occurrence
     of <code class="code">sep</code>, and returns the two parts before and after the
     occurence (excluded).<br>
 <b>Raises</b> <code>Not_found</code> if the separator is not found.
 <p>
 
-    Example: <code class="code"><span class="constructor">String</span>.rsplit <span class="string">"abcabcabc"</span> <span class="string">"bc"</span> = (<span class="string">"abcabca"</span>,<span class="string">""</span>)</code><br>
+    Example: <code class="code"><span class="constructor">String</span>.rsplit&nbsp;<span class="string">"abcabcabc"</span>&nbsp;<span class="string">"bc"</span>&nbsp;=&nbsp;(<span class="string">"abcabca"</span>,<span class="string">""</span>)</code><br>
 </div>
 
 <pre><span id="VALnsplit"><span class="keyword">val</span> nsplit</span> : <code class="type">string -> by:string -> string list</code></pre><div class="info ">
-<code class="code">nsplit s sep</code> splits the string <code class="code">s</code> into a list of strings
+<code class="code">nsplit&nbsp;s&nbsp;sep</code> splits the string <code class="code">s</code> into a list of strings
     which are separated by <code class="code">sep</code> (excluded).
-    <code class="code">nsplit <span class="string">""</span> _</code> returns the empty list.
+    <code class="code">nsplit&nbsp;<span class="string">""</span>&nbsp;_</code> returns the empty list.
 <p>
 
-    Example: <code class="code"><span class="constructor">String</span>.nsplit <span class="string">"abcabcabc"</span> <span class="string">"bc"</span> = [<span class="string">"a"</span>; <span class="string">"a"</span>; <span class="string">"a"</span>; <span class="string">""</span>]</code><br>
+    Example: <code class="code"><span class="constructor">String</span>.nsplit&nbsp;<span class="string">"abcabcabc"</span>&nbsp;<span class="string">"bc"</span>&nbsp;=&nbsp;[<span class="string">"a"</span>;&nbsp;<span class="string">"a"</span>;&nbsp;<span class="string">"a"</span>;&nbsp;<span class="string">""</span>]</code><br>
 </div>
 
 <pre><span id="VALjoin"><span class="keyword">val</span> join</span> : <code class="type">string -> string list -> string</code></pre><div class="info ">
@@ -805,18 +826,18 @@ Same as <a href="BatString.html#VALconcat"><code class="code"><span class="const
 </div>
 
 <pre><span id="VALslice"><span class="keyword">val</span> slice</span> : <code class="type">?first:int -> ?last:int -> string -> string</code></pre><div class="info ">
-<code class="code">slice ?first ?last s</code> returns a "slice" of the string
+<code class="code">slice&nbsp;?first&nbsp;?last&nbsp;s</code> returns a "slice" of the string
     which corresponds to the characters <code class="code">s.[first]</code>,
     <code class="code">s.[first+1]</code>, ..., <code class="code">s[last-1]</code>. Note that the character at
     index <code class="code">last</code> is <b>not</b> included! If <code class="code">first</code> is omitted it
     defaults to the start of the string, i.e. index 0, and if
     <code class="code">last</code> is omitted is defaults to point just past the end of
-    <code class="code">s</code>, i.e. <code class="code">length s</code>.  Thus, <code class="code">slice s</code> is equivalent to
-    <code class="code">copy s</code>.
+    <code class="code">s</code>, i.e. <code class="code">length&nbsp;s</code>.  Thus, <code class="code">slice&nbsp;s</code> is equivalent to
+    <code class="code">copy&nbsp;s</code>.
 <p>
 
     Negative indexes are interpreted as counting from the end of
-    the string. For example, <code class="code">slice ~last:(-2) s</code> will return the
+    the string. For example, <code class="code">slice&nbsp;~last:(-2)&nbsp;s</code> will return the
     string <code class="code">s</code>, but without the last two characters.
 <p>
 
@@ -824,16 +845,16 @@ Same as <a href="BatString.html#VALconcat"><code class="code"><span class="const
     indexes are out of bounds they are automatically clipped.
 <p>
 
-    Example: <code class="code"><span class="constructor">String</span>.slice ~first:1 ~last:(-3) <span class="string">" foo bar baz"</span> = <span class="string">"foo bar "</span></code><br>
+    Example: <code class="code"><span class="constructor">String</span>.slice&nbsp;~first:1&nbsp;~last:(-3)&nbsp;<span class="string">"&nbsp;foo&nbsp;bar&nbsp;baz"</span>&nbsp;=&nbsp;<span class="string">"foo&nbsp;bar&nbsp;"</span></code><br>
 </div>
 
 <pre><span id="VALsplice"><span class="keyword">val</span> splice</span> : <code class="type">string -> int -> int -> string -> string</code></pre><div class="info ">
-<code class="code"><span class="constructor">String</span>.splice s off len rep</code> cuts out the section of <code class="code">s</code>
+<code class="code"><span class="constructor">String</span>.splice&nbsp;s&nbsp;off&nbsp;len&nbsp;rep</code> cuts out the section of <code class="code">s</code>
     indicated by <code class="code">off</code> and <code class="code">len</code> and replaces it by <code class="code">rep</code>
 <p>
 
     Negative indexes are interpreted as counting from the end
-    of the string. If <code class="code">off+len</code> is greater than <code class="code">length s</code>,
+    of the string. If <code class="code">off+len</code> is greater than <code class="code">length&nbsp;s</code>,
     the end of the string is used, regardless of the value of
     <code class="code">len</code>.
 <p>
@@ -842,22 +863,22 @@ Same as <a href="BatString.html#VALconcat"><code class="code"><span class="const
     <code class="code">off</code> without replacing any of <code class="code">s</code>.
 <p>
 
-    Example: <code class="code"><span class="constructor">String</span>.splice <span class="string">"foo bar baz"</span> 3 5 <span class="string">"XXX"</span> = <span class="string">"fooXXXbaz"</span></code><br>
+    Example: <code class="code"><span class="constructor">String</span>.splice&nbsp;<span class="string">"foo&nbsp;bar&nbsp;baz"</span>&nbsp;3&nbsp;5&nbsp;<span class="string">"XXX"</span>&nbsp;=&nbsp;<span class="string">"fooXXXbaz"</span></code><br>
 </div>
 
 <pre><span id="VALexplode"><span class="keyword">val</span> explode</span> : <code class="type">string -> char list</code></pre><div class="info ">
-<code class="code">explode s</code> returns the list of characters in the string <code class="code">s</code>.
+<code class="code">explode&nbsp;s</code> returns the list of characters in the string <code class="code">s</code>.
 <p>
 
-    Example: <code class="code"><span class="constructor">String</span>.explode <span class="string">"foo"</span> = [<span class="string">'f'</span>; <span class="string">'o'</span>; <span class="string">'o'</span>]</code><br>
+    Example: <code class="code"><span class="constructor">String</span>.explode&nbsp;<span class="string">"foo"</span>&nbsp;=&nbsp;[<span class="string">'f'</span>;&nbsp;<span class="string">'o'</span>;&nbsp;<span class="string">'o'</span>]</code><br>
 </div>
 
 <pre><span id="VALimplode"><span class="keyword">val</span> implode</span> : <code class="type">char list -> string</code></pre><div class="info ">
-<code class="code">implode cs</code> returns a string resulting from concatenating
+<code class="code">implode&nbsp;cs</code> returns a string resulting from concatenating
     the characters in the list <code class="code">cs</code>.
 <p>
 
-    Example: <code class="code"><span class="constructor">String</span>.implode [<span class="string">'b'</span>; <span class="string">'a'</span>; <span class="string">'r'</span>] = <span class="string">"bar"</span></code><br>
+    Example: <code class="code"><span class="constructor">String</span>.implode&nbsp;[<span class="string">'b'</span>;&nbsp;<span class="string">'a'</span>;&nbsp;<span class="string">'r'</span>]&nbsp;=&nbsp;<span class="string">"bar"</span></code><br>
 </div>
 <br>
 <h6 id="6_Comparisons">Comparisons</h6><br>
@@ -877,14 +898,14 @@ The comparison function for strings, with the same specification as
     <code class="code"><span class="constructor">Set</span>.<span class="constructor">Make</span></code> and <code class="code"><span class="constructor">Map</span>.<span class="constructor">Make</span></code>.
 <p>
 
-    Example: <code class="code"><span class="constructor">String</span>.compare <span class="string">"FOO"</span> <span class="string">"bar"</span> = -1</code> i.e. "FOO" &lt; "bar"<br>
+    Example: <code class="code"><span class="constructor">String</span>.compare&nbsp;<span class="string">"FOO"</span>&nbsp;<span class="string">"bar"</span>&nbsp;=&nbsp;-1</code> i.e. "FOO" &lt; "bar"<br>
 </div>
 
 <pre><span id="VALicompare"><span class="keyword">val</span> icompare</span> : <code class="type"><a href="BatString.html#TYPEt">t</a> -> <a href="BatString.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 Compare two strings, case-insensitive.
 <p>
 
-    Example: <code class="code"><span class="constructor">String</span>.icompare <span class="string">"FOO"</span> <span class="string">"bar"</span> = 1</code> i.e. "foo" &gt; "bar"<br>
+    Example: <code class="code"><span class="constructor">String</span>.icompare&nbsp;<span class="string">"FOO"</span>&nbsp;<span class="string">"bar"</span>&nbsp;=&nbsp;1</code> i.e. "foo" &gt; "bar"<br>
 </div>
 
 <pre><span class="keyword">module</span> <a href="BatString.IString.html">IString</a>: <code class="type"><a href="BatInterfaces.OrderedType.html">BatInterfaces.OrderedType</a></code><code class="type">  with type t = t</code></pre><div class="info">
@@ -896,12 +917,12 @@ Compare two strings, sorting "abc32def" before "abc210abc".
 <p>
 
     Algorithm: splits both strings into lists of (strings of digits) or
-    (strings of non digits) (<code class="code">[<span class="string">"abc"</span>; <span class="string">"32"</span>; <span class="string">"def"</span>]</code> and <code class="code">[<span class="string">"abc"</span>; <span class="string">"210"</span>; <span class="string">"abc"</span>]</code>)
+    (strings of non digits) (<code class="code">[<span class="string">"abc"</span>;&nbsp;<span class="string">"32"</span>;&nbsp;<span class="string">"def"</span>]</code> and <code class="code">[<span class="string">"abc"</span>;&nbsp;<span class="string">"210"</span>;&nbsp;<span class="string">"abc"</span>]</code>)
     Then both lists are compared lexicographically by comparing elements
     numerically when both are numbers or lexicographically in other cases.
 <p>
 
-    Example: <code class="code"><span class="constructor">String</span>.numeric_compare <span class="string">"xx32"</span> <span class="string">"xx210"</span> &lt; 0</code><br>
+    Example: <code class="code"><span class="constructor">String</span>.numeric_compare&nbsp;<span class="string">"xx32"</span>&nbsp;<span class="string">"xx210"</span>&nbsp;&lt;&nbsp;0</code><br>
 </div>
 
 <pre><span class="keyword">module</span> <a href="BatString.NumString.html">NumString</a>: <code class="type"><a href="BatInterfaces.OrderedType.html">BatInterfaces.OrderedType</a></code><code class="type">  with type t = t</code></pre><div class="info">
@@ -922,27 +943,27 @@ Edition distance (also known as "Levenshtein distance").
 Print a string.
 <p>
 
-   Example: <code class="code"><span class="constructor">String</span>.print stdout <span class="string">"foo\n"</span></code><br>
+   Example: <code class="code"><span class="constructor">String</span>.print&nbsp;stdout&nbsp;<span class="string">"foo\n"</span></code><br>
 </div>
 
 <pre><span id="VALprintln"><span class="keyword">val</span> println</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> string -> unit</code></pre><div class="info ">
 Print a string, end the line.
 <p>
 
-   Example: <code class="code"><span class="constructor">String</span>.println stdout <span class="string">"foo"</span></code><br>
+   Example: <code class="code"><span class="constructor">String</span>.println&nbsp;stdout&nbsp;<span class="string">"foo"</span></code><br>
 </div>
 
 <pre><span id="VALprint_quoted"><span class="keyword">val</span> print_quoted</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> string -> unit</code></pre><div class="info ">
 Print a string, with quotes as added by the <code class="code">quote</code> function.
 <p>
 
-   <code class="code"><span class="constructor">String</span>.print_quoted stdout <span class="string">"foo"</span></code> prints <code class="code"><span class="string">"foo"</span></code> (with the quotes).
+   <code class="code"><span class="constructor">String</span>.print_quoted&nbsp;stdout&nbsp;<span class="string">"foo"</span></code> prints <code class="code"><span class="string">"foo"</span></code> (with the quotes).
 <p>
 
-   <code class="code"><span class="constructor">String</span>.print_quoted stdout <span class="string">"\"bar\""</span></code> prints <code class="code"><span class="string">"\"bar\""</span></code> (with the quotes).
+   <code class="code"><span class="constructor">String</span>.print_quoted&nbsp;stdout&nbsp;<span class="string">"\"bar\""</span></code> prints <code class="code"><span class="string">"\"bar\""</span></code> (with the quotes).
 <p>
 
-   <code class="code"><span class="constructor">String</span>.print_quoted stdout <span class="string">"\n"</span></code> prints <code class="code"><span class="string">"\n"</span></code> (not the escaped
+   <code class="code"><span class="constructor">String</span>.print_quoted&nbsp;stdout&nbsp;<span class="string">"\n"</span></code> prints <code class="code"><span class="string">"\n"</span></code> (not the escaped
    character, but <code class="code">'\'</code> then <code class="code"><span class="string">'n'</span></code>).<br>
 </div>
 

@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="Batteries.FingerTree.html">
 <link rel="next" href="Batteries.MultiMap.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -180,23 +183,23 @@
 
 
 <pre><span id="VALmake_log"><span class="keyword">val</span> make_log</span> : <code class="type">string -> <a href="BatLogger.html#TYPElog">log</a></code></pre><div class="info ">
-<code class="code">make_log name</code> returns a new logger.<br>
+<code class="code">make_log&nbsp;name</code> returns a new logger.<br>
 </div>
 
 <pre><span id="VALlog_name"><span class="keyword">val</span> log_name</span> : <code class="type"><a href="BatLogger.html#TYPElog">log</a> -> string</code></pre><div class="info ">
-<code class="code">log_name logger</code> returns the name of the logger.<br>
+<code class="code">log_name&nbsp;logger</code> returns the name of the logger.<br>
 </div>
 
 <pre><span id="VALlog_enable"><span class="keyword">val</span> log_enable</span> : <code class="type"><a href="BatLogger.html#TYPElog">log</a> -> <a href="BatLogger.html#TYPElevel">level</a> -> unit</code></pre><div class="info ">
-<code class="code">log_enable logger level</code> enables a log level for a logger.<br>
+<code class="code">log_enable&nbsp;logger&nbsp;level</code> enables a log level for a logger.<br>
 </div>
 
 <pre><span id="VALlog_level"><span class="keyword">val</span> log_level</span> : <code class="type"><a href="BatLogger.html#TYPElog">log</a> -> <a href="BatLogger.html#TYPElevel">level</a></code></pre><div class="info ">
-<code class="code">log_level logger</code> returns the currently enabled level for a logger.<br>
+<code class="code">log_level&nbsp;logger</code> returns the currently enabled level for a logger.<br>
 </div>
 
 <pre><span id="VALlog_enabled"><span class="keyword">val</span> log_enabled</span> : <code class="type"><a href="BatLogger.html#TYPElog">log</a> -> <a href="BatLogger.html#TYPElevel">level</a> -> bool</code></pre><div class="info ">
-<code class="code">log_enabled logger level</code> returns true if the specified level is
+<code class="code">log_enabled&nbsp;logger&nbsp;level</code> returns true if the specified level is
     currently enabled for the logger.<br>
 </div>
 <br>
@@ -212,15 +215,15 @@ A log <code class="code">event</code> consists of an event name and a list of ke
 
 
 <pre><span id="VALlog"><span class="keyword">val</span> log</span> : <code class="type"><a href="BatLogger.html#TYPElog">log</a> -> <a href="BatLogger.html#TYPElevel">level</a> -> (unit -> <a href="BatLogger.html#TYPEevent">event</a>) -> unit</code></pre><div class="info ">
-<code class="code">log logger level event_fun</code> raises a log event if if the
+<code class="code">log&nbsp;logger&nbsp;level&nbsp;event_fun</code> raises a log event if if the
     specified level is currently enabled for the logger. The
-    function <code class="code">event_fun ()</code> is called to return the event record,
+    function <code class="code">event_fun&nbsp;()</code> is called to return the event record,
     and is a function in order to delay construction or formatting
     of any event parameters in the case where the specified log
     level is not enabled. For example:
 <p>
 
-    <pre class="codepre"><code class="code">log&nbsp;io_log&nbsp;<span class="constructor">INFO</span>&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">"connect"</span>,&nbsp;[<span class="string">"ADDR"</span>,&nbsp;addr])</code></pre>
+    <pre class="codepre"><code class="code">log io_log <span class="constructor">INFO</span> (<span class="keyword">fun</span> () <span class="keywordsign">-&gt;</span> <span class="string">"connect"</span>, [<span class="string">"ADDR"</span>, addr])</code></pre>
 <p>
 
     would only log the <code class="code"><span class="string">"connect"</span></code> event (with the <code class="code"><span class="string">"ADDR"</span></code> string
@@ -229,8 +232,8 @@ A log <code class="code">event</code> consists of an event name and a list of ke
 </div>
 
 <pre><span id="VALwith_log"><span class="keyword">val</span> with_log</span> : <code class="type"><a href="BatLogger.html#TYPElog">log</a> -><br>       <a href="BatLogger.html#TYPElevel">level</a> -><br>       (unit -> <a href="BatLogger.html#TYPEevent">event</a>) -> ?result:('a -> string) -> (unit -> 'a) -> 'a</code></pre><div class="info ">
-<code class="code">with_log logger level event_fun ?result body</code> logs an event
-    before and after calling <code class="code">body ()</code>. The function <code class="code">event_fun ()</code>
+<code class="code">with_log&nbsp;logger&nbsp;level&nbsp;event_fun&nbsp;?result&nbsp;body</code> logs an event
+    before and after calling <code class="code">body&nbsp;()</code>. The function <code class="code">event_fun&nbsp;()</code>
     is called to return the event record to be logged. After the
     body is evaluated, the <code class="code">result</code> function is used to convert the
     body's result value into a string, which is added to the event
@@ -258,17 +261,17 @@ the type of a log formatter is a function that takes the
 
 
 <pre><span id="VALregister_formatter"><span class="keyword">val</span> register_formatter</span> : <code class="type">string -> <a href="BatLogger.html#TYPEformatter">formatter</a> -> unit</code></pre><div class="info ">
-<code class="code">register_formatter name formatter</code> registers a named log
+<code class="code">register_formatter&nbsp;name&nbsp;formatter</code> registers a named log
     formatter. The name is only used for subsequent calls to
     identify the formatter via <code class="code">unregister_formatter</code>.<br>
 </div>
 
 <pre><span id="VALunregister_formatter"><span class="keyword">val</span> unregister_formatter</span> : <code class="type">string -> unit</code></pre><div class="info ">
-<code class="code">unregister_formatter name</code> unregisters a named log formatter.<br>
+<code class="code">unregister_formatter&nbsp;name</code> unregisters a named log formatter.<br>
 </div>
 
 <pre><span id="VALmake_std_formatter"><span class="keyword">val</span> make_std_formatter</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> <a href="BatLogger.html#TYPEformatter">formatter</a></code></pre><div class="info ">
-<code class="code">make_std_formatter oc</code> constructs a formatter from an output
+<code class="code">make_std_formatter&nbsp;oc</code> constructs a formatter from an output
     channel.  This formatter will format log events as
     tab-separated <code class="code">&lt;keyword&gt;:&lt;value&gt;</code> pairs. The resulting
     formatter must be registered via <code class="code">register_formatter</code> to be
@@ -281,14 +284,14 @@ the type of a log formatter is a function that takes the
     event parameters. For example, the log statement:
 <p>
 
-    <pre class="codepre"><code class="code">log&nbsp;io_log&nbsp;<span class="constructor">INFO</span>&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">"connect"</span>,&nbsp;[<span class="string">"ADDR"</span>,&nbsp;addr])</code></pre>
+    <pre class="codepre"><code class="code">log io_log <span class="constructor">INFO</span> (<span class="keyword">fun</span> () <span class="keywordsign">-&gt;</span> <span class="string">"connect"</span>, [<span class="string">"ADDR"</span>, addr])</code></pre>
 <p>
 
     would produce formatted output like the following when the
     <code class="code">io_log</code> <code class="code"><span class="constructor">INFO</span></code> level was enabled:
 <p>
 
-    <pre class="codepre"><code class="code"><span class="constructor">D</span>:2009-01-26<span class="constructor">T00</span>:47:45.033329<span class="constructor">Z</span>&nbsp;&nbsp;&nbsp;<span class="constructor">E</span>:io.connect&nbsp;&nbsp;&nbsp;<span class="constructor">L</span>:<span class="constructor">INFO</span>&nbsp;&nbsp;&nbsp;<span class="constructor">I</span>:1&nbsp;&nbsp;&nbsp;<span class="constructor">ADDR</span>:localhost:8080</code></pre><br>
+    <pre class="codepre"><code class="code"><span class="constructor">D</span>:2009-01-26<span class="constructor">T00</span>:47:45.033329<span class="constructor">Z</span>   <span class="constructor">E</span>:io.connect   <span class="constructor">L</span>:<span class="constructor">INFO</span>   <span class="constructor">I</span>:1   <span class="constructor">ADDR</span>:localhost:8080</code></pre><br>
 </div>
 
 <pre><span id="VALstderr_formatter"><span class="keyword">val</span> stderr_formatter</span> : <code class="type"><a href="BatLogger.html#TYPEformatter">formatter</a></code></pre><div class="info ">
@@ -305,27 +308,27 @@ the type of a log formatter is a function that takes the
 </div>
 
 <pre><span id="VALmake_dbg_formatter"><span class="keyword">val</span> make_dbg_formatter</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> <a href="BatLogger.html#TYPEformatter">formatter</a></code></pre><div class="info ">
-<code class="code">make_dbg_formatter oc</code> constructs a debug formatter from an
+<code class="code">make_dbg_formatter&nbsp;oc</code> constructs a debug formatter from an
     output channel. The debug formatter outputs simplified format
     that is easier to read for debugging purposes and displays
     indentation level. E.g.:
 <p>
 
-    <pre class="codepre"><code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;with_log&nbsp;io_log&nbsp;<span class="constructor">DEBUG</span>&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">"listener"</span>&nbsp;[<span class="string">"ADDR"</span>,&nbsp;addr])
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;accept_connections&nbsp;<span class="comment">(*&nbsp;calls&nbsp;other&nbsp;log&nbsp;statements&nbsp;*)</span>
-&nbsp;&nbsp;&nbsp;&nbsp;</code></pre>
+    <pre class="codepre"><code class="code">      with_log io_log <span class="constructor">DEBUG</span> (<span class="keyword">fun</span> () <span class="keywordsign">-&gt;</span> <span class="string">"listener"</span> [<span class="string">"ADDR"</span>, addr])
+        accept_connections <span class="comment">(* calls other log statements *)</span>
+    </code></pre>
 <p>
 
     would produce formatted output like the following when the <code class="code">io_log</code>
     <code class="code"><span class="constructor">DEBUG</span></code> level was enabled:
 <p>
 
-    <pre class="codepre"><code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">#</span><span class="keywordsign">#</span><span class="keywordsign">#</span>&nbsp;io.listener&nbsp;<span class="constructor">ADDR</span>:localhost:8080&nbsp;[<span class="constructor">DEBUG</span>]
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">#</span><span class="keywordsign">#</span><span class="keywordsign">#</span>&nbsp;<span class="keywordsign">|</span>&nbsp;io.connected&nbsp;<span class="constructor">CLIENT_ADDR</span>:192.168.0.23:28303&nbsp;[<span class="constructor">DEBUG</span>]
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">#</span><span class="keywordsign">#</span><span class="keywordsign">#</span>&nbsp;<span class="keywordsign">|</span>&nbsp;io.disconnected&nbsp;<span class="constructor">CLIENT_ADDR</span>:192.168.0.23:28303&nbsp;[<span class="constructor">DEBUG</span>]
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">#</span><span class="keywordsign">#</span><span class="keywordsign">#</span>&nbsp;io.listener&nbsp;<span class="constructor">ADDR</span>:localhost:8080&nbsp;<span class="constructor">RESULT</span>:-&nbsp;[<span class="constructor">DEBUG</span>]
-&nbsp;&nbsp;&nbsp;&nbsp;</code></pre><br>
+    <pre class="codepre"><code class="code">      <span class="keywordsign">#</span><span class="keywordsign">#</span><span class="keywordsign">#</span> io.listener <span class="constructor">ADDR</span>:localhost:8080 [<span class="constructor">DEBUG</span>]
+          <span class="keywordsign">#</span><span class="keywordsign">#</span><span class="keywordsign">#</span> <span class="keywordsign">|</span> io.connected <span class="constructor">CLIENT_ADDR</span>:192.168.0.23:28303 [<span class="constructor">DEBUG</span>]
+          <span class="keywordsign">#</span><span class="keywordsign">#</span><span class="keywordsign">#</span> <span class="keywordsign">|</span> io.disconnected <span class="constructor">CLIENT_ADDR</span>:192.168.0.23:28303 [<span class="constructor">DEBUG</span>]
+                                                               ...
+            <span class="keywordsign">#</span><span class="keywordsign">#</span><span class="keywordsign">#</span> io.listener <span class="constructor">ADDR</span>:localhost:8080 <span class="constructor">RESULT</span>:- [<span class="constructor">DEBUG</span>]
+    </code></pre><br>
 </div>
 
 <pre><span id="VALdbg_formatter"><span class="keyword">val</span> dbg_formatter</span> : <code class="type"><a href="BatLogger.html#TYPEformatter">formatter</a></code></pre><div class="info ">
@@ -339,7 +342,7 @@ the type of a log formatter is a function that takes the
 <h6 id="6_loggerinitialization">logger initialization</h6><br>
 
 <pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">(string * <a href="BatLogger.html#TYPElevel">level</a>) list -> <a href="BatLogger.html#TYPEformatter">formatter</a> -> unit</code></pre><div class="info ">
-<code class="code">init name_level_list formatter</code> initializes the logging
+<code class="code">init&nbsp;name_level_list&nbsp;formatter</code> initializes the logging
     system enabling the specified levels for each named
     logger. The formatter is the initial formatter for any log
     events that are output and is registered with the name
@@ -348,10 +351,10 @@ the type of a log formatter is a function that takes the
 </div>
 
 <pre><span id="VALinit_from_string"><span class="keyword">val</span> init_from_string</span> : <code class="type">string -> <a href="BatLogger.html#TYPEformatter">formatter</a> -> unit</code></pre><div class="info ">
-<code class="code">init_from_string name_level_string formatter</code> initializes the
+<code class="code">init_from_string&nbsp;name_level_string&nbsp;formatter</code> initializes the
     logging system enabling the specified levels for each named
-    logger. The string must be a comma separated list of <code class="code">&lt;logger
-    name&gt;:&lt;level name&gt;</code> pairs, e.g.  <code class="code"><span class="string">"FOO:ERROR,BAR:WARN"</span></code>. If a
+    logger. The string must be a comma separated list of <code class="code">&lt;logger<br>
+&nbsp;&nbsp;&nbsp;&nbsp;name&gt;:&lt;level&nbsp;name&gt;</code> pairs, e.g.  <code class="code"><span class="string">"FOO:ERROR,BAR:WARN"</span></code>. If a
     un-prefixed level name is specified, then that becomes the
     default log level for all newly created logs, and all currently
     created logs are enabled to that level. If the logger does not
@@ -364,15 +367,15 @@ the type of a log formatter is a function that takes the
 <h6 id="6_logutilities">log utilities</h6><br>
 
 <pre><span id="VALlevel_of_name"><span class="keyword">val</span> level_of_name</span> : <code class="type">string -> <a href="BatLogger.html#TYPElevel">level</a></code></pre><div class="info ">
-<code class="code">level_of_name str</code> returns the <code class="code">level</code> associated with <code class="code">str</code>.<br>
+<code class="code">level_of_name&nbsp;str</code> returns the <code class="code">level</code> associated with <code class="code">str</code>.<br>
 </div>
 
 <pre><span id="VALname_of_level"><span class="keyword">val</span> name_of_level</span> : <code class="type"><a href="BatLogger.html#TYPElevel">level</a> -> string</code></pre><div class="info ">
-<code class="code">name_of_level level</code> returns the name of the specified <code class="code">level</code>.<br>
+<code class="code">name_of_level&nbsp;level</code> returns the name of the specified <code class="code">level</code>.<br>
 </div>
 
 <pre><span id="VALformat_timestamp"><span class="keyword">val</span> format_timestamp</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> float -> unit</code></pre><div class="info ">
-<code class="code">format_timestamp oc timestamp</code> prints an ISO-8601 formatted
+<code class="code">format_timestamp&nbsp;oc&nbsp;timestamp</code> prints an ISO-8601 formatted
       timestamp (extended to specify higher-resolution seconds) to
       the output channel, <code class="code">oc</code>.<br>
 </div>

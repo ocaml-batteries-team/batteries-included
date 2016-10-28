@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="Batteries.Num.html">
 <link rel="next" href="Batteries.Base64.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -134,7 +137,7 @@ Large, multi-dimensional, numerical arrays.
 <p>
 
     Concerning the naming conventions, users of this module are encouraged
-    to do <code class="code"><span class="keyword">open</span> <span class="constructor">Bigarray</span></code> in their source, then refer to array types and
+    to do <code class="code"><span class="keyword">open</span>&nbsp;<span class="constructor">Bigarray</span></code> in their source, then refer to array types and
     operations via short dot notation, e.g. <code class="code"><span class="constructor">Array1</span>.t</code> or <code class="code"><span class="constructor">Array2</span>.sub</code>.
 <p>
 
@@ -409,7 +412,7 @@ To each element kind is associated an OCaml type, which is
     64-bit double precision floats.
 <p>
 
-   The GADT type <code class="code">(<span class="keywordsign">'</span>a, <span class="keywordsign">'</span>b) kind</code> captures this association
+   The GADT type <code class="code">(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;kind</code> captures this association
    of an OCaml type <code class="code"><span class="keywordsign">'</span>a</code> for values read or written in the big array,
    and of an element kind <code class="code"><span class="keywordsign">'</span>b</code> which represents the actual contents
    of the big array. Its constructors list all possible associations
@@ -420,14 +423,14 @@ To each element kind is associated an OCaml type, which is
    Using a generalized algebraic datatype (GADT) here allows to write
    well-typed polymorphic functions whose return type depend on the
    argument type, such as:
-<pre class="codepre"><code class="code">&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;zero&nbsp;:&nbsp;<span class="keyword">type</span>&nbsp;a&nbsp;b.&nbsp;(a,&nbsp;b)&nbsp;kind&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;a&nbsp;=&nbsp;<span class="keyword">function</span>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Float32</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0.0&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Complex32</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.zero
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Float64</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0.0&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Complex64</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Complex</span>.zero
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int8_signed</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int8_unsigned</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int16_signed</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int16_unsigned</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int32</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0l&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int64</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0<span class="constructor">L</span>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Nativeint</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;0n
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Char</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">'\000'</span>
+<pre class="codepre"><code class="code">  <span class="keyword">let</span> zero : <span class="keyword">type</span> a b. (a, b) kind <span class="keywordsign">-&gt;</span> a = <span class="keyword">function</span>
+    <span class="keywordsign">|</span> <span class="constructor">Float32</span> <span class="keywordsign">-&gt;</span> 0.0 <span class="keywordsign">|</span> <span class="constructor">Complex32</span> <span class="keywordsign">-&gt;</span> <span class="constructor">Complex</span>.zero
+    <span class="keywordsign">|</span> <span class="constructor">Float64</span> <span class="keywordsign">-&gt;</span> 0.0 <span class="keywordsign">|</span> <span class="constructor">Complex64</span> <span class="keywordsign">-&gt;</span> <span class="constructor">Complex</span>.zero
+    <span class="keywordsign">|</span> <span class="constructor">Int8_signed</span> <span class="keywordsign">-&gt;</span> 0 <span class="keywordsign">|</span> <span class="constructor">Int8_unsigned</span> <span class="keywordsign">-&gt;</span> 0
+    <span class="keywordsign">|</span> <span class="constructor">Int16_signed</span> <span class="keywordsign">-&gt;</span> 0 <span class="keywordsign">|</span> <span class="constructor">Int16_unsigned</span> <span class="keywordsign">-&gt;</span> 0
+    <span class="keywordsign">|</span> <span class="constructor">Int32</span> <span class="keywordsign">-&gt;</span> 0l <span class="keywordsign">|</span> <span class="constructor">Int64</span> <span class="keywordsign">-&gt;</span> 0<span class="constructor">L</span>
+    <span class="keywordsign">|</span> <span class="constructor">Int</span> <span class="keywordsign">-&gt;</span> 0 <span class="keywordsign">|</span> <span class="constructor">Nativeint</span> <span class="keywordsign">-&gt;</span> 0n
+    <span class="keywordsign">|</span> <span class="constructor">Char</span> <span class="keywordsign">-&gt;</span> <span class="string">'\000'</span>
 </code></pre>
 # 160 "src/batBigarray.mliv"<br>
 </div>
@@ -502,7 +505,7 @@ As shown by the types of the values above,
 </div>
 
 <pre><span id="VALkind_size_in_bytes"><span class="keyword">val</span> kind_size_in_bytes</span> : <code class="type">('a, 'b) <a href="BatBigarray.html#TYPEkind">kind</a> -> int</code></pre><div class="info ">
-<code class="code">kind_size_in_bytes k</code> is the number of bytes used to store
+<code class="code">kind_size_in_bytes&nbsp;k</code> is the number of bytes used to store
    an element of type <code class="code">k</code>.<br>
 <b>Since</b> 2.5.0<br>
 </div>
@@ -541,7 +544,7 @@ To facilitate interoperability with existing C and Fortran code,
     That is, for a two-dimensional array, all elements of
     row 0 are contiguous in memory, followed by all elements of
     row 1, etc.  In other terms, the array elements at <code class="code">(x,y)</code>
-    and <code class="code">(x, y+1)</code> are adjacent in memory.
+    and <code class="code">(x,&nbsp;y+1)</code> are adjacent in memory.
 <p>
 
     In the Fortran-style layout, array indices start at 1, and
@@ -549,7 +552,7 @@ To facilitate interoperability with existing C and Fortran code,
     That is, for a two-dimensional array, all elements of
     column 0 are contiguous in memory, followed by all elements of
     column 1, etc.  In other terms, the array elements at <code class="code">(x,y)</code>
-    and <code class="code">(x+1, y)</code> are adjacent in memory.
+    and <code class="code">(x+1,&nbsp;y)</code> are adjacent in memory.
 <p>
 
     Each layout style is identified at the type level by the
@@ -574,7 +577,7 @@ To facilitate interoperability with existing C and Fortran code,
 <td align="left" valign="top" >
 <code><span id="TYPEELTlayout.Fortran_layout"><span class="constructor">Fortran_layout</span></span> <span class="keyword">:</span> <code class="type"><a href="BatBigarray.html#TYPEfortran_layout">fortran_layout</a> <a href="BatBigarray.html#TYPElayout">layout</a></code></code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-The type <code class="code"><span class="keywordsign">'</span>a layout</code> represents one of the two supported
+The type <code class="code"><span class="keywordsign">'</span>a&nbsp;layout</code> represents one of the two supported
     memory layouts: C-style if <code class="code"><span class="keywordsign">'</span>a</code> is <code class="code"><span class="constructor">Bigarray</span>.c_layout</code>, Fortran-style
     if <code class="code"><span class="keywordsign">'</span>a</code> is <code class="code"><span class="constructor">Bigarray</span>.fortran_layout</code>.<br>
 </div>
@@ -654,19 +657,19 @@ Return the three-dimensional big array corresponding to the given
 <h6 id="6_Reshapingbigarrays">Re-shaping big arrays</h6><br>
 
 <pre><span id="VALreshape"><span class="keyword">val</span> reshape</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a> -><br>       int array -> ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a></code></pre><div class="info ">
-<code class="code">reshape b [|d1;...;dN|]</code> converts the big array <code class="code">b</code> to a
+<code class="code">reshape&nbsp;b&nbsp;[|d1;...;dN|]</code> converts the big array <code class="code">b</code> to a
     <code class="code"><span class="constructor">N</span></code>-dimensional array of dimensions <code class="code">d1</code>...<code class="code">dN</code>.  The returned
     array and the original array <code class="code">b</code> share their data
     and have the same layout.  For instance, assuming that <code class="code">b</code>
-    is a one-dimensional array of dimension 12, <code class="code">reshape b [|3;4|]</code>
+    is a one-dimensional array of dimension 12, <code class="code">reshape&nbsp;b&nbsp;[|3;4|]</code>
     returns a two-dimensional array <code class="code">b'</code> of dimensions 3 and 4.
     If <code class="code">b</code> has C layout, the element <code class="code">(x,y)</code> of <code class="code">b'</code> corresponds
-    to the element <code class="code">x * 3 + y</code> of <code class="code">b</code>.  If <code class="code">b</code> has Fortran layout,
+    to the element <code class="code">x&nbsp;*&nbsp;3&nbsp;+&nbsp;y</code> of <code class="code">b</code>.  If <code class="code">b</code> has Fortran layout,
     the element <code class="code">(x,y)</code> of <code class="code">b'</code> corresponds to the element
-    <code class="code">x + (y - 1) * 4</code> of <code class="code">b</code>.
+    <code class="code">x&nbsp;+&nbsp;(y&nbsp;-&nbsp;1)&nbsp;*&nbsp;4</code> of <code class="code">b</code>.
     The returned big array must have exactly the same number of
     elements as the original big array <code class="code">b</code>.  That is, the product
-    of the dimensions of <code class="code">b</code> must be equal to <code class="code">i1 * ... * iN</code>.<br>
+    of the dimensions of <code class="code">b</code> must be equal to <code class="code">i1&nbsp;*&nbsp;...&nbsp;*&nbsp;iN</code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> otherwise.<br>
 </div>
 

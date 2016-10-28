@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="Up" href="BatIO.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
@@ -26,6 +27,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -66,6 +68,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -122,9 +125,9 @@ This module redefines the operations of module <a href="BatIO.html"><code class=
       Generally, to use this module you will wish to either open both
       <a href="BatIO.html"><code class="code"><span class="constructor">BatIO</span></code></a> and <a href="BatIO.BigEndian.html"><code class="code"><span class="constructor">BatIO</span>.<span class="constructor">BigEndian</span></code></a>, so as to import a big-endian version of
       <a href="BatIO.html"><code class="code"><span class="constructor">BatIO</span></code></a>, as per
-      <code class="code"><span class="keyword">open</span> <span class="constructor">System</span>.<span class="constructor">BatIO</span>, <span class="constructor">BigEndian</span> <span class="keyword">in</span> ...</code>,
+      <code class="code"><span class="keyword">open</span>&nbsp;<span class="constructor">System</span>.<span class="constructor">BatIO</span>,&nbsp;<span class="constructor">BigEndian</span>&nbsp;<span class="keyword">in</span>&nbsp;...</code>,
       or to redefine locally <a href="BatIO.html"><code class="code"><span class="constructor">BatIO</span></code></a> to use big-endian encodings
-      <code class="code"><span class="keyword">module</span> <span class="constructor">BatIO</span> = <span class="constructor">System</span>.<span class="constructor">BatIO</span> <span class="keyword">include</span> <span class="constructor">BigEndian</span></code><br>
+      <code class="code"><span class="keyword">module</span>&nbsp;<span class="constructor">BatIO</span>&nbsp;=&nbsp;<span class="constructor">System</span>.<span class="constructor">BatIO</span>&nbsp;<span class="keyword">include</span>&nbsp;<span class="constructor">BigEndian</span></code><br>
 
 <pre><span id="VALread_ui16"><span class="keyword">val</span> read_ui16</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int</code></pre><div class="info ">
 Read an unsigned 16-bit word.<br>

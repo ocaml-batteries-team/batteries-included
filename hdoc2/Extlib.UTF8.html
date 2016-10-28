@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="Extlib.UChar.html">
 <link rel="Up" href="Extlib.html">
@@ -27,6 +28,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -67,6 +69,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -123,25 +126,25 @@ UTF-8 encoded Unicode strings. The type is normal string.<br>
 <pre><span id="EXCEPTIONMalformed_code"><span class="keyword">exception</span> Malformed_code</span></pre>
 
 <pre><span id="VALvalidate"><span class="keyword">val</span> validate</span> : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">validate s</code>
+<code class="code">validate&nbsp;s</code>
     successes if s is valid UTF-8, otherwise raises Malformed_code.
     Other functions assume strings are valid UTF-8, so it is prudent
     to test their validity for strings from untrusted origins.<br>
 </div>
 
 <pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> int -> <a href="BatUChar.html#TYPEt">BatUChar.t</a></code></pre><div class="info ">
-<code class="code">get s n</code> returns <code class="code">n</code>-th Unicode character of <code class="code">s</code>.
+<code class="code">get&nbsp;s&nbsp;n</code> returns <code class="code">n</code>-th Unicode character of <code class="code">s</code>.
     The call requires O(n)-time.<br>
 </div>
 
 <pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> (int -> <a href="BatUChar.html#TYPEt">BatUChar.t</a>) -> <a href="BatUTF8.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">init len f</code>
+<code class="code">init&nbsp;len&nbsp;f</code>
     returns a new string which contains <code class="code">len</code> Unicode characters.
-    The i-th Unicode character is initialized by <code class="code">f i</code><br>
+    The i-th Unicode character is initialized by <code class="code">f&nbsp;i</code><br>
 </div>
 
 <pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> int</code></pre><div class="info ">
-<code class="code">length s</code> returns the number of Unicode characters contained in s<br>
+<code class="code">length&nbsp;s</code> returns the number of Unicode characters contained in s<br>
 </div>
 
 <pre><span id="TYPEindex"><span class="keyword">type</span> <code class="type"></code>index</span> = <code class="type">int</code> </pre>
@@ -152,7 +155,7 @@ Positions in the string represented by the number of bytes from the head.
 
 
 <pre><span id="VALnth"><span class="keyword">val</span> nth</span> : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> int -> <a href="BatUTF8.html#TYPEindex">index</a></code></pre><div class="info ">
-<code class="code">nth s n</code> returns the position of the <code class="code">n</code>-th Unicode character.
+<code class="code">nth&nbsp;s&nbsp;n</code> returns the position of the <code class="code">n</code>-th Unicode character.
     The call requires O(n)-time<br>
 </div>
 
@@ -165,24 +168,24 @@ The position of the head of the last Unicode character.<br>
 </div>
 
 <pre><span id="VALlook"><span class="keyword">val</span> look</span> : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> <a href="BatUTF8.html#TYPEindex">index</a> -> <a href="BatUChar.html#TYPEt">BatUChar.t</a></code></pre><div class="info ">
-<code class="code">look s i</code>
+<code class="code">look&nbsp;s&nbsp;i</code>
     returns the Unicode character of the location <code class="code">i</code> in the string <code class="code">s</code>.<br>
 </div>
 
 <pre><span id="VALout_of_range"><span class="keyword">val</span> out_of_range</span> : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> <a href="BatUTF8.html#TYPEindex">index</a> -> bool</code></pre><div class="info ">
-<code class="code">out_of_range s i</code>
+<code class="code">out_of_range&nbsp;s&nbsp;i</code>
     tests whether <code class="code">i</code> is a position inside of <code class="code">s</code>.<br>
 </div>
 
 <pre><span id="VALcompare_index"><span class="keyword">val</span> compare_index</span> : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> <a href="BatUTF8.html#TYPEindex">index</a> -> <a href="BatUTF8.html#TYPEindex">index</a> -> int</code></pre><div class="info ">
-<code class="code">compare_index s i1 i2</code> returns
+<code class="code">compare_index&nbsp;s&nbsp;i1&nbsp;i2</code> returns
     a value &lt; 0 if <code class="code">i1</code> is the position located before <code class="code">i2</code>,
     0 if <code class="code">i1</code> and <code class="code">i2</code> points the same location,
     a value &gt; 0 if <code class="code">i1</code> is the position located after <code class="code">i2</code>.<br>
 </div>
 
 <pre><span id="VALnext"><span class="keyword">val</span> next</span> : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> <a href="BatUTF8.html#TYPEindex">index</a> -> <a href="BatUTF8.html#TYPEindex">index</a></code></pre><div class="info ">
-<code class="code">next s i</code>
+<code class="code">next&nbsp;s&nbsp;i</code>
     returns the position of the head of the Unicode character
     located immediately after <code class="code">i</code>.
     If <code class="code">i</code> is inside of <code class="code">s</code>, the function always successes.
@@ -192,7 +195,7 @@ The position of the head of the last Unicode character.<br>
 </div>
 
 <pre><span id="VALprev"><span class="keyword">val</span> prev</span> : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> <a href="BatUTF8.html#TYPEindex">index</a> -> <a href="BatUTF8.html#TYPEindex">index</a></code></pre><div class="info ">
-<code class="code">prev s i</code>
+<code class="code">prev&nbsp;s&nbsp;i</code>
     returns the position of the head of the Unicode character
     located immediately before <code class="code">i</code>.
     If <code class="code">i</code> is inside of <code class="code">s</code>, the function always successes.
@@ -202,14 +205,14 @@ The position of the head of the last Unicode character.<br>
 </div>
 
 <pre><span id="VALmove"><span class="keyword">val</span> move</span> : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> <a href="BatUTF8.html#TYPEindex">index</a> -> int -> <a href="BatUTF8.html#TYPEindex">index</a></code></pre><div class="info ">
-<code class="code">move s i n</code>
+<code class="code">move&nbsp;s&nbsp;i&nbsp;n</code>
     returns <code class="code">n</code>-th Unicode character after <code class="code">i</code> if n &gt;= 0,
     <code class="code">n</code>-th Unicode character before <code class="code">i</code> if n &lt; 0.
     If there is no such character, the result is unspecified.<br>
 </div>
 
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(<a href="BatUChar.html#TYPEt">BatUChar.t</a> -> unit) -> <a href="BatUTF8.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">iter f s</code>
+<code class="code">iter&nbsp;f&nbsp;s</code>
     applies <code class="code">f</code> to all Unicode characters in <code class="code">s</code>.
     The order of application is same to the order
     of the Unicode characters in <code class="code">s</code>.<br>
@@ -217,7 +220,7 @@ The position of the head of the last Unicode character.<br>
 
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatUTF8.html#TYPEt">t</a> -> <a href="BatUTF8.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 Code point comparison by the lexicographic order.
-    <code class="code">compare s1 s2</code> returns
+    <code class="code">compare&nbsp;s1&nbsp;s2</code> returns
     a positive integer if <code class="code">s1</code> &gt; <code class="code">s2</code>,
     0 if <code class="code">s1</code> = <code class="code">s2</code>,
     a negative integer if <code class="code">s1</code> &lt; <code class="code">s2</code>.<br>

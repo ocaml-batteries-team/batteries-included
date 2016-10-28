@@ -1,6 +1,7 @@
 <html><head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
@@ -23,6 +24,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -63,6 +65,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -103,6 +106,6 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatTuple.Tuple4.Eq</title>
 </head>
 <body>
-<code class="code"><span class="keyword">functor</span>
-&nbsp;&nbsp;(<span class="constructor">T1</span>&nbsp;:&nbsp;<span class="constructor">BatOrd</span>.<span class="constructor">Eq</span>)&nbsp;(<span class="constructor">T2</span>&nbsp;:&nbsp;<span class="constructor">BatOrd</span>.<span class="constructor">Eq</span>)&nbsp;(<span class="constructor">T3</span>&nbsp;:&nbsp;<span class="constructor">BatOrd</span>.<span class="constructor">Eq</span>)&nbsp;(<span class="constructor">T4</span>&nbsp;:&nbsp;<span class="constructor">BatOrd</span>.<span class="constructor">Eq</span>)&nbsp;<span class="keywordsign">-&gt;</span>
+<code class="code"><span class="keyword">functor</span><br>
+&nbsp;&nbsp;(<span class="constructor">T1</span>&nbsp;:&nbsp;<span class="constructor">BatOrd</span>.<span class="constructor">Eq</span>)&nbsp;(<span class="constructor">T2</span>&nbsp;:&nbsp;<span class="constructor">BatOrd</span>.<span class="constructor">Eq</span>)&nbsp;(<span class="constructor">T3</span>&nbsp;:&nbsp;<span class="constructor">BatOrd</span>.<span class="constructor">Eq</span>)&nbsp;(<span class="constructor">T4</span>&nbsp;:&nbsp;<span class="constructor">BatOrd</span>.<span class="constructor">Eq</span>)&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;<span class="keyword">sig</span>&nbsp;<span class="keyword">type</span>&nbsp;t&nbsp;=&nbsp;<span class="constructor">T1</span>.t&nbsp;*&nbsp;<span class="constructor">T2</span>.t&nbsp;*&nbsp;<span class="constructor">T3</span>.t&nbsp;*&nbsp;<span class="constructor">T4</span>.t&nbsp;<span class="keyword">val</span>&nbsp;eq&nbsp;:&nbsp;t&nbsp;<span class="constructor">BatOrd</span>.eq&nbsp;<span class="keyword">end</span></code></body></html>

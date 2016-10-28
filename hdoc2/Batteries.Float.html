@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="Batteries.Number.html">
 <link rel="next" href="Batteries.Int.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -149,13 +152,13 @@ Returns the negation of the input, i.e. (fun x -&gt; ~-. x)<br>
 
 <pre><span id="VALsucc"><span class="keyword">val</span> succ</span> : <code class="type">float -> float</code></pre><div class="info ">
 Add <code class="code">1.</code> to a floating number. Note that, as per IEEE 754,
-    if <code class="code">x</code> is a large enough float number, <code class="code">succ x</code> might be
+    if <code class="code">x</code> is a large enough float number, <code class="code">succ&nbsp;x</code> might be
     equal to <code class="code">x</code>, due to rounding.<br>
 </div>
 
 <pre><span id="VALpred"><span class="keyword">val</span> pred</span> : <code class="type">float -> float</code></pre><div class="info ">
 Substract <code class="code">1.</code> from a floating number. Note that, as per
-    IEEE 754, if <code class="code">x</code> is a large enough float number, <code class="code">pred x</code>
+    IEEE 754, if <code class="code">x</code> is a large enough float number, <code class="code">pred&nbsp;x</code>
     might be equal to <code class="code">x</code>, due to rounding.<br>
 </div>
 
@@ -254,26 +257,26 @@ See <a href="BatFloat.html#VALfloor"><code class="code"><span class="constructor
 
 <pre><span id="VALfloor"><span class="keyword">val</span> floor</span> : <code class="type">float -> float</code></pre><div class="info ">
 Round the given float to an integer value.
-    <code class="code">floor f</code> returns the greatest integer value less than or
+    <code class="code">floor&nbsp;f</code> returns the greatest integer value less than or
     equal to <code class="code">f</code>.
-    <code class="code">ceil f</code> returns the least integer value greater than or
+    <code class="code">ceil&nbsp;f</code> returns the least integer value greater than or
     equal to <code class="code">f</code>.<br>
 </div>
 
 <pre><span id="VALround"><span class="keyword">val</span> round</span> : <code class="type">float -> float</code></pre><div class="info ">
-<code class="code">round x</code> rounds <code class="code">x</code> to the nearest integral floating-point
-    (the nearest of <code class="code">floor x</code> and <code class="code">ceil x</code>). In case the fraction
-    of x is exactly 0.5, we round away from 0. : <code class="code">round 1.5</code> is
-    <code class="code">2.</code> but <code class="code">round (-3.5)</code> is <code class="code">-4.</code>.<br>
+<code class="code">round&nbsp;x</code> rounds <code class="code">x</code> to the nearest integral floating-point
+    (the nearest of <code class="code">floor&nbsp;x</code> and <code class="code">ceil&nbsp;x</code>). In case the fraction
+    of x is exactly 0.5, we round away from 0. : <code class="code">round&nbsp;1.5</code> is
+    <code class="code">2.</code> but <code class="code">round&nbsp;(-3.5)</code> is <code class="code">-4.</code>.<br>
 </div>
 
 <pre><span id="VALround_to_int"><span class="keyword">val</span> round_to_int</span> : <code class="type">float -> int</code></pre><div class="info ">
-<code class="code">round_to_int x</code> is <code class="code">int_of_float (round x)</code>.<br>
+<code class="code">round_to_int&nbsp;x</code> is <code class="code">int_of_float&nbsp;(round&nbsp;x)</code>.<br>
 <b>Since</b> 2.0<br>
 </div>
 
 <pre><span id="VALround_to_string"><span class="keyword">val</span> round_to_string</span> : <code class="type">?digits:int -> float -> string</code></pre><div class="info ">
-<code class="code">round_to_string ~digits:d x</code> will return a string
+<code class="code">round_to_string&nbsp;~digits:d&nbsp;x</code> will return a string
     representation of <code class="code">x</code> -- in base 10 -- rounded to <code class="code">d</code> digits
     after the decimal point. By default, <code class="code">digits</code> is <code class="code">0</code>, we round
     to the nearest integer.<br>
@@ -291,19 +294,19 @@ Round the given float to an integer value.
     not be consistent with <code class="code">round</code> or <code class="code">round_to_int</code></li>
 </ul>
 <ul>
-<li><code class="code">round_to_string ~digits:0 3.</code> may return "3" instead of
+<li><code class="code">round_to_string&nbsp;~digits:0&nbsp;3.</code> may return "3" instead of
     "3." as <code class="code">string_of_float</code> would</li>
 </ul>
 <ul>
 <li>no guarantee is given on the behavior for abusively high
-    number of digits precision; for example <code class="code">round_to_string
-    ~digits:max_int x</code> may return the empty string.</li>
+    number of digits precision; for example <code class="code">round_to_string<br>
+&nbsp;&nbsp;&nbsp;&nbsp;~digits:max_int&nbsp;x</code> may return the empty string.</li>
 </ul>
 <br>
 </div>
 
 <pre><span id="VALroot"><span class="keyword">val</span> root</span> : <code class="type">float -> int -> float</code></pre><div class="info ">
-<code class="code">root x n</code> calculates the nth root of x.<br>
+<code class="code">root&nbsp;x&nbsp;n</code> calculates the nth root of x.<br>
 <b>Raises</b> <code>Invalid_argument</code> if n is negative or if the result would
     be imaginary<br>
 </div>
@@ -314,22 +317,22 @@ Round the given float to an integer value.
 </div>
 
 <pre><span id="VALcopysign"><span class="keyword">val</span> copysign</span> : <code class="type">float -> float -> float</code></pre><div class="info ">
-<code class="code">copysign x y</code> returns a copy of <code class="code">x</code> with the same sign as <code class="code">y</code>.<br>
+<code class="code">copysign&nbsp;x&nbsp;y</code> returns a copy of <code class="code">x</code> with the same sign as <code class="code">y</code>.<br>
 <b>Since</b> 2.0<br>
 </div>
 
 <pre><span id="VALis_nan"><span class="keyword">val</span> is_nan</span> : <code class="type">float -> bool</code></pre><div class="info ">
-<code class="code">is_nan f</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">f</code> is <code class="code">nan</code>, <code class="code"><span class="keyword">false</span></code> otherwise.<br>
+<code class="code">is_nan&nbsp;f</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">f</code> is <code class="code">nan</code>, <code class="code"><span class="keyword">false</span></code> otherwise.<br>
 </div>
 
 <pre><span id="VALis_special"><span class="keyword">val</span> is_special</span> : <code class="type">float -> bool</code></pre><div class="info ">
-<code class="code">is_special f</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">f</code> is <code class="code">nan</code> or <code class="code">+/- infinity</code>,
+<code class="code">is_special&nbsp;f</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">f</code> is <code class="code">nan</code> or <code class="code">+/-&nbsp;infinity</code>,
     <code class="code"><span class="keyword">false</span></code> otherwise.<br>
 <b>Since</b> 2.0<br>
 </div>
 
 <pre><span id="VALis_finite"><span class="keyword">val</span> is_finite</span> : <code class="type">float -> bool</code></pre><div class="info ">
-<code class="code">is_finite f</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">f</code> is not <code class="code">nan</code> or <code class="code">+/- infinity</code>,
+<code class="code">is_finite&nbsp;f</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">f</code> is not <code class="code">nan</code> or <code class="code">+/-&nbsp;infinity</code>,
     <code class="code"><span class="keyword">false</span></code> otherwise.<br>
 <b>Since</b> 2.0<br>
 </div>
@@ -351,7 +354,7 @@ Negative infinity.<br>
 
 <pre><span id="VALnan"><span class="keyword">val</span> nan</span> : <code class="type">float</code></pre><div class="info ">
 A special floating-point value denoting the result of an
-    undefined operation such as <code class="code">0.0 /. 0.0</code>.  Stands for ``not
+    undefined operation such as <code class="code">0.0&nbsp;/.&nbsp;0.0</code>.  Stands for ``not
     a number''.  Any floating-point operation with <code class="code">nan</code> as
     argument returns <code class="code">nan</code> as result.  As for floating-point
     comparisons, <code class="code">=</code>, <code class="code">&lt;</code>, <code class="code">&lt;=</code>, <code class="code">&gt;</code> and <code class="code">&gt;=</code> return <code class="code"><span class="keyword">false</span></code> and
@@ -362,7 +365,7 @@ A special floating-point value denoting the result of an
 Numeric constants<br>
 
 <pre><span id="VALepsilon"><span class="keyword">val</span> epsilon</span> : <code class="type">float</code></pre><div class="info ">
-The smallest positive float <code class="code">x</code> such that <code class="code">1.0 +. x &lt;&gt; 1.0</code>.<br>
+The smallest positive float <code class="code">x</code> such that <code class="code">1.0&nbsp;+.&nbsp;x&nbsp;&lt;&gt;&nbsp;1.0</code>.<br>
 </div>
 
 <pre><span id="VALe"><span class="keyword">val</span> e</span> : <code class="type">float</code></pre><div class="info ">
@@ -371,22 +374,22 @@ Euler? ... Euler? ... Euler?<br>
 </div>
 
 <pre><span id="VALlog2e"><span class="keyword">val</span> log2e</span> : <code class="type">float</code></pre><div class="info ">
-<code class="code"><span class="constructor">Math</span>.log2 e</code><br>
+<code class="code"><span class="constructor">Math</span>.log2&nbsp;e</code><br>
 <b>Since</b> 2.0<br>
 </div>
 
 <pre><span id="VALlog10e"><span class="keyword">val</span> log10e</span> : <code class="type">float</code></pre><div class="info ">
-<code class="code">log10 e</code><br>
+<code class="code">log10&nbsp;e</code><br>
 <b>Since</b> 2.0<br>
 </div>
 
 <pre><span id="VALln2"><span class="keyword">val</span> ln2</span> : <code class="type">float</code></pre><div class="info ">
-<code class="code">log 2</code><br>
+<code class="code">log&nbsp;2</code><br>
 <b>Since</b> 2.0<br>
 </div>
 
 <pre><span id="VALln10"><span class="keyword">val</span> ln10</span> : <code class="type">float</code></pre><div class="info ">
-<code class="code">log 10</code><br>
+<code class="code">log&nbsp;10</code><br>
 <b>Since</b> 2.0<br>
 </div>
 
@@ -395,37 +398,37 @@ The constant pi (3.14159...)<br>
 </div>
 
 <pre><span id="VALpi2"><span class="keyword">val</span> pi2</span> : <code class="type">float</code></pre><div class="info ">
-<code class="code">pi /. 2.</code><br>
+<code class="code">pi&nbsp;/.&nbsp;2.</code><br>
 <b>Since</b> 2.0<br>
 </div>
 
 <pre><span id="VALpi4"><span class="keyword">val</span> pi4</span> : <code class="type">float</code></pre><div class="info ">
-<code class="code">pi /. 4.</code><br>
+<code class="code">pi&nbsp;/.&nbsp;4.</code><br>
 <b>Since</b> 2.0<br>
 </div>
 
 <pre><span id="VALinvpi"><span class="keyword">val</span> invpi</span> : <code class="type">float</code></pre><div class="info ">
-<code class="code">1. /. pi</code><br>
+<code class="code">1.&nbsp;/.&nbsp;pi</code><br>
 <b>Since</b> 2.0<br>
 </div>
 
 <pre><span id="VALinvpi2"><span class="keyword">val</span> invpi2</span> : <code class="type">float</code></pre><div class="info ">
-<code class="code">2. /. pi</code><br>
+<code class="code">2.&nbsp;/.&nbsp;pi</code><br>
 <b>Since</b> 2.0<br>
 </div>
 
 <pre><span id="VALsqrtpi2"><span class="keyword">val</span> sqrtpi2</span> : <code class="type">float</code></pre><div class="info ">
-<code class="code">2. *. sqrt pi</code><br>
+<code class="code">2.&nbsp;*.&nbsp;sqrt&nbsp;pi</code><br>
 <b>Since</b> 2.0<br>
 </div>
 
 <pre><span id="VALsqrt2"><span class="keyword">val</span> sqrt2</span> : <code class="type">float</code></pre><div class="info ">
-<code class="code">sqrt 2.</code><br>
+<code class="code">sqrt&nbsp;2.</code><br>
 <b>Since</b> 2.0<br>
 </div>
 
 <pre><span id="VALinvsqrt2"><span class="keyword">val</span> invsqrt2</span> : <code class="type">float</code></pre><div class="info ">
-<code class="code">1. /. sqrt 2.</code><br>
+<code class="code">1.&nbsp;/.&nbsp;sqrt&nbsp;2.</code><br>
 <b>Since</b> 2.0<br>
 </div>
 <br>
@@ -433,18 +436,18 @@ The constant pi (3.14159...)<br>
     numbers</h6><br>
 
 <pre><span id="VALfrexp"><span class="keyword">val</span> frexp</span> : <code class="type">float -> float * int</code></pre><div class="info ">
-<code class="code">frexp f</code> returns the pair of the significant and the exponent
+<code class="code">frexp&nbsp;f</code> returns the pair of the significant and the exponent
     of <code class="code">f</code>.  When <code class="code">f</code> is zero, the significant <code class="code">x</code> and the
     exponent <code class="code">n</code> of <code class="code">f</code> are equal to zero.  When <code class="code">f</code> is non-zero,
-    they are defined by <code class="code">f = x *. 2 ** n</code> and <code class="code">0.5 &lt;= x &lt; 1.0</code>.<br>
+    they are defined by <code class="code">f&nbsp;=&nbsp;x&nbsp;*.&nbsp;2&nbsp;**&nbsp;n</code> and <code class="code">0.5&nbsp;&lt;=&nbsp;x&nbsp;&lt;&nbsp;1.0</code>.<br>
 </div>
 
 <pre><span id="VALldexp"><span class="keyword">val</span> ldexp</span> : <code class="type">float -> int -> float</code></pre><div class="info ">
-<code class="code">ldexp x n</code> returns <code class="code">x *. 2 ** n</code>.<br>
+<code class="code">ldexp&nbsp;x&nbsp;n</code> returns <code class="code">x&nbsp;*.&nbsp;2&nbsp;**&nbsp;n</code>.<br>
 </div>
 
 <pre><span id="VALmodf"><span class="keyword">val</span> modf</span> : <code class="type">float -> float * float</code></pre><div class="info ">
-<code class="code">modf f</code> returns the pair of the fractional and integral
+<code class="code">modf&nbsp;f</code> returns the pair of the fractional and integral
       part of <code class="code">f</code>.<br>
 </div>
 

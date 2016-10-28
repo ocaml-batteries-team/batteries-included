@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="Batteries.RefList.html">
 <link rel="next" href="Batteries.Cache.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -129,24 +132,24 @@ Return a fresh reference containing the given value.<br>
 
 <pre><span id="VAL(!)"><span class="keyword">val</span> (!)</span> : <code class="type">'a Pervasives.ref -> 'a</code></pre><div class="info ">
 <code class="code">!r</code> returns the current contents of reference <code class="code">r</code>.
-    Equivalent to <code class="code"><span class="keyword">fun</span> r <span class="keywordsign">-&gt;</span> r.contents</code>.<br>
+    Equivalent to <code class="code"><span class="keyword">fun</span>&nbsp;r&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;r.contents</code>.<br>
 </div>
 
 <pre><span id="VAL(:=)"><span class="keyword">val</span> (:=)</span> : <code class="type">'a Pervasives.ref -> 'a -> unit</code></pre><div class="info ">
-<code class="code">r := a</code> stores the value of <code class="code">a</code> in reference <code class="code">r</code>.
-    Equivalent to <code class="code"><span class="keyword">fun</span> r v <span class="keywordsign">-&gt;</span> r.contents &lt;- v</code>.<br>
+<code class="code">r&nbsp;:=&nbsp;a</code> stores the value of <code class="code">a</code> in reference <code class="code">r</code>.
+    Equivalent to <code class="code"><span class="keyword">fun</span>&nbsp;r&nbsp;v&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;r.contents&nbsp;&lt;-&nbsp;v</code>.<br>
 </div>
 
 <pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">'a Pervasives.ref -> 'a -> unit</code></pre><div class="info ">
-As <code class="code"> := </code><br>
+As <code class="code">&nbsp;:=&nbsp;</code><br>
 </div>
 
 <pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a Pervasives.ref -> 'a</code></pre><div class="info ">
-As <code class="code"> ! </code><br>
+As <code class="code">&nbsp;!&nbsp;</code><br>
 </div>
 
 <pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">'a Pervasives.ref -> 'a Pervasives.ref</code></pre><div class="info ">
-<code class="code">copy r</code> returns a new reference with the same initial
+<code class="code">copy&nbsp;r</code> returns a new reference with the same initial
     content as <code class="code">r</code>.<br>
 </div>
 
@@ -156,7 +159,7 @@ Perform an operation on a reference and return the
 <p>
 
     For instance, if <code class="code">x</code> is a reference to <code class="code">1</code>,
-    <code class="code">pre x ( ( + ) 1) </code> returns <code class="code">2</code> and sets <code class="code">x</code> to <code class="code">2</code>.<br>
+    <code class="code">pre&nbsp;x&nbsp;(&nbsp;(&nbsp;+&nbsp;)&nbsp;1)&nbsp;</code> returns <code class="code">2</code> and sets <code class="code">x</code> to <code class="code">2</code>.<br>
 </div>
 
 <pre><span id="VALpost"><span class="keyword">val</span> post</span> : <code class="type">'a Pervasives.ref -> ('a -> 'a) -> 'a</code></pre><div class="info ">
@@ -165,11 +168,11 @@ Perform an operation on a reference and return the
 <p>
 
     For instance, if <code class="code">x</code> is a reference to <code class="code">1</code>,
-    <code class="code">post x ( ( + ) 1)</code> returns <code class="code">1</code> and sets <code class="code">x</code> to <code class="code">2</code>.<br>
+    <code class="code">post&nbsp;x&nbsp;(&nbsp;(&nbsp;+&nbsp;)&nbsp;1)</code> returns <code class="code">1</code> and sets <code class="code">x</code> to <code class="code">2</code>.<br>
 </div>
 
 <pre><span id="VALswap"><span class="keyword">val</span> swap</span> : <code class="type">'a Pervasives.ref -> 'a Pervasives.ref -> unit</code></pre><div class="info ">
-<code class="code">swap a b</code> puts <code class="code">!b</code> in <code class="code">a</code> and <code class="code">!a</code> in <code class="code">b</code><br>
+<code class="code">swap&nbsp;a&nbsp;b</code> puts <code class="code">!b</code> in <code class="code">a</code> and <code class="code">!a</code> in <code class="code">b</code><br>
 </div>
 
 <pre><span id="VALpost_incr"><span class="keyword">val</span> post_incr</span> : <code class="type">int Pervasives.ref -> int</code></pre><div class="info ">
@@ -204,7 +207,7 @@ Increment an integer, return the new value.
 Assign a reference temporarily.
 <p>
 
-   <code class="code">protect r v body</code> sets the value of <code class="code">r</code> to <code class="code">v</code> and executes
+   <code class="code">protect&nbsp;r&nbsp;v&nbsp;body</code> sets the value of <code class="code">r</code> to <code class="code">v</code> and executes
    <code class="code">body</code>. Once body has been executed, whether termination happens
    as a consequence of regular evaluation or exception, the previous
    value of <code class="code">r</code> is restored.<br>
@@ -215,12 +218,12 @@ Invert the boolean stored in the reference<br>
 </div>
 
 <pre><span id="VALoset"><span class="keyword">val</span> oset</span> : <code class="type">'a option Pervasives.ref -> 'a -> unit</code></pre><div class="info ">
-Set the given option ref to <code class="code"><span class="constructor">Some</span> x</code><br>
+Set the given option ref to <code class="code"><span class="constructor">Some</span>&nbsp;x</code><br>
 </div>
 
 <pre><span id="VALoget_exn"><span class="keyword">val</span> oget_exn</span> : <code class="type">'a option Pervasives.ref -> 'a</code></pre><div class="info ">
 Get a value from an option ref;<br>
-<b>Raises</b> <code>Not_found</code> on <code class="code">oget_exn (ref <span class="constructor">None</span>)</code><br>
+<b>Raises</b> <code>Not_found</code> on <code class="code">oget_exn&nbsp;(ref&nbsp;<span class="constructor">None</span>)</code><br>
 </div>
 <br>
 <h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
@@ -230,14 +233,14 @@ Given a printing function for the value in the ref, produce a
     printing function for the ref.
 <p>
 
-    Example: <code class="code"><span class="constructor">IO</span>.to_string (<span class="constructor">Ref</span>.print <span class="constructor">Int</span>.print) (ref 20) = <span class="string">"20"</span></code><br>
+    Example: <code class="code"><span class="constructor">IO</span>.to_string&nbsp;(<span class="constructor">Ref</span>.print&nbsp;<span class="constructor">Int</span>.print)&nbsp;(ref&nbsp;20)&nbsp;=&nbsp;<span class="string">"20"</span></code><br>
 
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a> -> 'a Pervasives.ref <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a></code></pre><div class="info ">
 Given a comparison function, produce a comparison function for refs
     of that type.
 <p>
 
-    Example: <code class="code"><span class="keyword">let</span> a = ref 10 <span class="keyword">and</span> b = ref 20 <span class="keyword">in</span> <span class="constructor">Ref</span>.compare <span class="constructor">Int</span>.compare a b = -1</code><br>
+    Example: <code class="code"><span class="keyword">let</span>&nbsp;a&nbsp;=&nbsp;ref&nbsp;10&nbsp;<span class="keyword">and</span>&nbsp;b&nbsp;=&nbsp;ref&nbsp;20&nbsp;<span class="keyword">in</span>&nbsp;<span class="constructor">Ref</span>.compare&nbsp;<span class="constructor">Int</span>.compare&nbsp;a&nbsp;b&nbsp;=&nbsp;-1</code><br>
 </div>
 
 <pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">BatOrd.ord</a> -> 'a Pervasives.ref <a href="BatOrd.html#TYPEord">BatOrd.ord</a></code></pre><br>
@@ -245,6 +248,6 @@ Given an ordering function, produce an ordering function for refs
     of that type.
 <p>
 
-    Example: <code class="code"><span class="keyword">let</span> a = ref 10 <span class="keyword">and</span> b = ref 20 <span class="keyword">in</span> <span class="constructor">Ref</span>.ord <span class="constructor">Int</span>.ord a b = <span class="constructor">Ord</span>.<span class="constructor">Lt</span></code><br>
+    Example: <code class="code"><span class="keyword">let</span>&nbsp;a&nbsp;=&nbsp;ref&nbsp;10&nbsp;<span class="keyword">and</span>&nbsp;b&nbsp;=&nbsp;ref&nbsp;20&nbsp;<span class="keyword">in</span>&nbsp;<span class="constructor">Ref</span>.ord&nbsp;<span class="constructor">Int</span>.ord&nbsp;a&nbsp;b&nbsp;=&nbsp;<span class="constructor">Ord</span>.<span class="constructor">Lt</span></code><br>
 
 <pre><span id="VALeq"><span class="keyword">val</span> eq</span> : <code class="type">'a <a href="BatOrd.html#TYPEeq">BatOrd.eq</a> -> 'a Pervasives.ref <a href="BatOrd.html#TYPEeq">BatOrd.eq</a></code></pre></body></html>

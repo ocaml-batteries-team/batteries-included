@@ -2,6 +2,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
 <link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
@@ -24,6 +25,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -64,6 +66,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -131,6 +134,13 @@ Automatically managed caches
 </div>
 </td></tr>
 <tr><td align="left"><br>B</td></tr>
+<tr><td><a href="BatSys.html#TYPEbackend_type">backend_type</a> [<a href="BatSys.html">BatSys</a>]</td>
+<td><div class="info">
+Currently, the official distribution only supports <code class="code"><span class="constructor">Native</span></code> and
+    <code class="code"><span class="constructor">Bytecode</span></code>, but it can be other backends with alternative
+    compilers, for example, javascript.
+</div>
+</td></tr>
 <tr><td><a href="BatPrintexc.html#TYPEbacktrace_slot">backtrace_slot</a> [<a href="BatPrintexc.html">BatPrintexc</a>]</td>
 <td><div class="info">
 The abstract type <code class="code">backtrace_slot</code> represents a single slot of
@@ -180,6 +190,8 @@ Buffers for UTF-8 strings.
 <tr><td align="left"><br>C</td></tr>
 <tr><td><a href="BatBigarray.html#TYPEc_layout">c_layout</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatConcreteQueue.html#TYPEcell">cell</a> [<a href="BatConcreteQueue.html">BatConcreteQueue</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatOrd.html#TYPEchoice">choice</a> [<a href="BatOrd.html">BatOrd</a>]</td>
 <td><div class="info">
 choice functions, see <code class="code">min</code> and <code class="code">max</code>.
@@ -202,7 +214,7 @@ The legacy int-returning comparisons : compare a b &lt; 0 means a &lt; b, compar
 <tr><td><a href="BatPathGen.PathType.html#TYPEcomponents">components</a> [<a href="BatPathGen.PathType.html">BatPathGen.PathType</a>]</td>
 <td><div class="info">
 A <code class="code">path</code> can be represented by the following triple:
-      <code class="code">(<span class="constructor">Path</span>.parent path, <span class="constructor">Path</span>.name_core path, <span class="constructor">Path</span>.ext path)</code>
+      <code class="code">(<span class="constructor">Path</span>.parent&nbsp;path,&nbsp;<span class="constructor">Path</span>.name_core&nbsp;path,&nbsp;<span class="constructor">Path</span>.ext&nbsp;path)</code>
 </div>
 </td></tr>
 <tr><td><a href="BatGc.html#TYPEcontrol">control</a> [<a href="BatGc.html">BatGc</a>]</td>
@@ -375,7 +387,7 @@ Structure of entries in the <code class="code">groups</code> database.
 <tr><td align="left"><br>H</td></tr>
 <tr><td><a href="BatHashcons.html#TYPEhobj">hobj</a> [<a href="BatHashcons.html">BatHashcons</a>]</td>
 <td><div class="info">
-The type <code class="code">t hobj</code> represents hashed objects of type <code class="code">t</code>.
+The type <code class="code">t&nbsp;hobj</code> represents hashed objects of type <code class="code">t</code>.
 </div>
 </td></tr>
 <tr><td><a href="BatUnix.html#TYPEhost_entry">host_entry</a> [<a href="BatUnix.html">BatUnix</a>]</td>
@@ -662,10 +674,10 @@ The type of scanning buffers.
 </td></tr>
 <tr><td><a href="BatScanf.html#TYPEscanner">scanner</a> [<a href="BatScanf.html">BatScanf</a>]</td>
 <td><div class="info">
-The type of formatted input scanners: <code class="code">(<span class="keywordsign">'</span>a, <span class="keywordsign">'</span>b, <span class="keywordsign">'</span>c, <span class="keywordsign">'</span>d) scanner</code> is the
+The type of formatted input scanners: <code class="code">(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d)&nbsp;scanner</code> is the
     type of a formatted input function that reads from some scanning buffer
     according to some format string; more precisely, if <code class="code">scan</code> is some
-    formatted input function, then <code class="code">scan ib fmt f</code> applies <code class="code">f</code> to the arguments
+    formatted input function, then <code class="code">scan&nbsp;ib&nbsp;fmt&nbsp;f</code> applies <code class="code">f</code> to the arguments
     specified by the format string <code class="code">fmt</code>, when <code class="code">scan</code> has read those arguments
     from the scanning input buffer <code class="code">ib</code>.
 </div>
@@ -1075,6 +1087,8 @@ The type of a lock.
 The type of a lock.
 </div>
 </td></tr>
+<tr><td><a href="BatConcreteQueue.html#TYPEt">t</a> [<a href="BatConcreteQueue.html">BatConcreteQueue</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatComplex.html#TYPEt">t</a> [<a href="BatComplex.html">BatComplex</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatOrd.Eq.html#TYPEt">t</a> [<a href="BatOrd.Eq.html">BatOrd.Eq</a>]</td>
@@ -1194,7 +1208,7 @@ The type of tokens.
 </td></tr>
 <tr><td><a href="BatUChar.html#TYPEuchar">uchar</a> [<a href="BatUChar.html">BatUChar</a>]</td>
 <td><div class="info">
-Aliases of <code class="code"><span class="keyword">type</span> t</code>
+Aliases of <code class="code"><span class="keyword">type</span>&nbsp;t</code>
 </div>
 </td></tr>
 <tr><td><a href="BatPathGen.PathType.html#TYPEuchar">uchar</a> [<a href="BatPathGen.PathType.html">BatPathGen.PathType</a>]</td>
@@ -1204,7 +1218,7 @@ Type of characters.
 </td></tr>
 <tr><td><a href="BatUref.html#TYPEuref">uref</a> [<a href="BatUref.html">BatUref</a>]</td>
 <td><div class="info">
-A <code class="code">t uref</code> is a reference to a cell that contains a
+A <code class="code">t&nbsp;uref</code> is a reference to a cell that contains a
     value of type <code class="code">t</code>.
 </div>
 </td></tr>

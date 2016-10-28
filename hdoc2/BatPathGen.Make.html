@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="next" href="BatPathGen.OfString.html">
 <link rel="Up" href="BatPathGen.html">
@@ -27,6 +28,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -67,6 +69,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -118,7 +121,7 @@
 </div>
 <h1>Functor <a href="type_BatPathGen.Make.html">BatPathGen.Make</a></h1>
 
-<pre><span class="keyword">module</span> Make: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">S</span></code><code class="code"> : </code><code class="type"><a href="BatPathGen.StringType.html">StringType</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatPathGen.PathType.html">PathType</a></code><code class="type">  with type ustring = S.t and type uchar = S.tchar</code></div></pre><div class="info module top">
+<pre><span class="keyword">module</span> Make: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">S</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatPathGen.StringType.html">StringType</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatPathGen.PathType.html">PathType</a></code><code class="type">  with type ustring = S.t and type uchar = S.tchar</code></div></pre><div class="info module top">
 Constructs path handling module for string-like type and its operations given in <code class="code"><span class="constructor">S</span></code>.<br>
 </div>
 <table border="0" cellpadding="3" width="100%">
@@ -173,12 +176,12 @@ A type for storing paths. It is reversed list of names. In case of absolute path
       However it may be sometimes inevitable to write components in reverse, for example:
 <p>
 
-      <code class="code"><span class="keyword">let</span> whose_readme = <span class="keyword">function</span> <span class="string">"README"</span>::app::<span class="string">"doc"</span>::<span class="string">"share"</span>::_ <span class="keywordsign">-&gt;</span> <span class="constructor">Some</span> app <span class="keywordsign">|</span> _ <span class="keywordsign">-&gt;</span> <span class="constructor">None</span></code>
+      <code class="code"><span class="keyword">let</span>&nbsp;whose_readme&nbsp;=&nbsp;<span class="keyword">function</span>&nbsp;<span class="string">"README"</span>::app::<span class="string">"doc"</span>::<span class="string">"share"</span>::_&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Some</span>&nbsp;app&nbsp;<span class="keywordsign">|</span>&nbsp;_&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">None</span></code>
 <p>
 
       <em>Windows:</em> Windows absolute paths start with "\\" or with drive letter. Use following representation:<ul>
-<li><code class="code"><span class="constructor">Path</span>.root/:<span class="string">"."</span>/:<span class="string">"pipe"</span> = [<span class="string">"pipe"</span>;<span class="string">"."</span>;<span class="string">""</span>]</code>  for "\\.\pipe"</li>
-<li><code class="code">[<span class="string">"C:"</span>]/:<span class="string">"foo"</span> = [<span class="string">"foo"</span>;<span class="string">"C:"</span>]</code> for "C:\foo"</li>
+<li><code class="code"><span class="constructor">Path</span>.root/:<span class="string">"."</span>/:<span class="string">"pipe"</span>&nbsp;=&nbsp;[<span class="string">"pipe"</span>;<span class="string">"."</span>;<span class="string">""</span>]</code>  for "\\.\pipe"</li>
+<li><code class="code">[<span class="string">"C:"</span>]/:<span class="string">"foo"</span>&nbsp;=&nbsp;[<span class="string">"foo"</span>;<span class="string">"C:"</span>]</code> for "C:\foo"</li>
 </ul>
 
       In principle the first type of paths has broader range of allowed characters, but this implementation applies more strict rules to both (<a href="BatPathGen.PathType.html#VALdefault_validator"><code class="code"><span class="constructor">BatPathGen</span>.<span class="constructor">PathType</span>.default_validator</code></a>).<br>
@@ -219,7 +222,7 @@ As other Operators modules in batteries are named "Infix" we provide Infix as we
 Consumes single dots where possible, e.g.:
 <p>
 
-     <code class="code">normalize ([<span class="string">".."</span>]/:<span class="string">"foo"</span>/:<span class="string">"."</span>/:<span class="string">"bar"</span>/:<span class="string">"sub1"</span>/:<span class="string">".."</span>/:<span class="string">"sub2"</span>) = [<span class="string">".."</span>]/:<span class="string">"foo"</span>/:<span class="string">"bar"</span>/:<span class="string">"sub1"</span>/:<span class="string">".."</span>/:<span class="string">"sub2"</span></code>
+     <code class="code">normalize&nbsp;([<span class="string">".."</span>]/:<span class="string">"foo"</span>/:<span class="string">"."</span>/:<span class="string">"bar"</span>/:<span class="string">"sub1"</span>/:<span class="string">".."</span>/:<span class="string">"sub2"</span>)&nbsp;=&nbsp;[<span class="string">".."</span>]/:<span class="string">"foo"</span>/:<span class="string">"bar"</span>/:<span class="string">"sub1"</span>/:<span class="string">".."</span>/:<span class="string">"sub2"</span></code>
 <p>
 
      When a directory structure contains links, it can be not pefectly pure tree. Then meaing of the ".." symbol depends on the real nature of parent of what is denoted by the name that preceded the ".." symbol. This symbol cannot be resolved for a graph traversal case when dealing with abstract paths only.
@@ -236,7 +239,7 @@ Another name for <code class="code">normalize_filepath</code>.<br>
 Consumes single dots and applies double dots where possible, e.g.:
 <p>
 
-     <code class="code">normalize ([<span class="string">".."</span>]/:<span class="string">"foo"</span>/:<span class="string">"."</span>/:<span class="string">"bar"</span>/:<span class="string">"sub1"</span>/:<span class="string">".."</span>/:<span class="string">"sub2"</span>) = [<span class="string">".."</span>]/:<span class="string">"foo"</span>/:<span class="string">"bar"</span>/:<span class="string">"sub2"</span></code>
+     <code class="code">normalize&nbsp;([<span class="string">".."</span>]/:<span class="string">"foo"</span>/:<span class="string">"."</span>/:<span class="string">"bar"</span>/:<span class="string">"sub1"</span>/:<span class="string">".."</span>/:<span class="string">"sub2"</span>)&nbsp;=&nbsp;[<span class="string">".."</span>]/:<span class="string">"foo"</span>/:<span class="string">"bar"</span>/:<span class="string">"sub2"</span></code>
 <p>
 
      This normalization is useful when dealing with paths that describe locations in a tree and the ".." symbol always points to the only parent of what precedes this symbol.
@@ -251,22 +254,22 @@ Deprecated name for <code class="code">normalize_in_tree</code><br>
 </div>
 
 <pre><span id="VALparent"><span class="keyword">val</span> parent</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info ">
-Returns parent path, i.e. immediate ancestor: <code class="code">parent (foo/:bar) = foo</code><br>
+Returns parent path, i.e. immediate ancestor: <code class="code">parent&nbsp;(foo/:bar)&nbsp;=&nbsp;foo</code><br>
 <b>Raises</b> <code>Invalid_argument</code> if empty path (relative <code class="code">[]</code> or absolute <code class="code">[<span class="string">""</span>]</code>) is given<br>
 </div>
 
 <pre><span id="VALbelongs"><span class="keyword">val</span> belongs</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-<code class="code">belongs base sub</code> is <code class="code"><span class="keyword">true</span></code> when <code class="code">sub</code> descends from <code class="code">base</code>, i.e. <code class="code">base</code> is a prefix of <code class="code">sub</code>. If <code class="code">base</code>=<code class="code">sub</code> the function returns <code class="code"><span class="keyword">true</span></code>. It is otherwise <code class="code"><span class="keyword">false</span></code>.
+<code class="code">belongs&nbsp;base&nbsp;sub</code> is <code class="code"><span class="keyword">true</span></code> when <code class="code">sub</code> descends from <code class="code">base</code>, i.e. <code class="code">base</code> is a prefix of <code class="code">sub</code>. If <code class="code">base</code>=<code class="code">sub</code> the function returns <code class="code"><span class="keyword">true</span></code>. It is otherwise <code class="code"><span class="keyword">false</span></code>.
       Both arguments must be absolute paths or both relative.
 <p>
 
-      If both arguments have a root portion with drive letter and these letters are different, <code class="code">belongs base sub</code> returns false.<br>
+      If both arguments have a root portion with drive letter and these letters are different, <code class="code">belongs&nbsp;base&nbsp;sub</code> returns false.<br>
 <b>Raises</b> <code>Invalid_argument</code> if exactly one of given arguments is absolute path<br>
 </div>
 
 <pre><span id="VALrelative_to_any"><span class="keyword">val</span> relative_to_any</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">relative_to_any base sub</code> returns relative path <code class="code">rel</code> such that
-      <code class="code">normalize (base/:rel) = normalize sub</code>, i.e. common base is stripped and ".." are added if necessary.
+<code class="code">relative_to_any&nbsp;base&nbsp;sub</code> returns relative path <code class="code">rel</code> such that
+      <code class="code">normalize&nbsp;(base/:rel)&nbsp;=&nbsp;normalize&nbsp;sub</code>, i.e. common base is stripped and ".." are added if necessary.
       Both arguments must be absolute paths or both relative.
 <p>
 
@@ -274,7 +277,7 @@ Returns parent path, i.e. immediate ancestor: <code class="code">parent (foo/:ba
 <p>
 
       <em>Windows:</em> If <code class="code">base</code> and <code class="code">sub</code> are absolute, they must have the same root element: have the same drive letter or both starting with <a href="BatPathGen.PathType.html#VALroot"><code class="code"><span class="constructor">BatPathGen</span>.<span class="constructor">PathType</span>.root</code></a> (i.e. <code class="code"><span class="string">""</span></code> is the last element of the list).
-      Exceptionally it is possible to get an absolute path as a result if drive letter is in <code class="code">sub</code> but not as a root element (e .g. <code class="code">base = root/:<span class="string">"bar"</span></code> and <code class="code">sub = root/:bar//@([<span class="string">"C:"</span>]/:<span class="string">"foo"</span></code>).<br>
+      Exceptionally it is possible to get an absolute path as a result if drive letter is in <code class="code">sub</code> but not as a root element (e .g. <code class="code">base&nbsp;=&nbsp;root/:<span class="string">"bar"</span></code> and <code class="code">sub&nbsp;=&nbsp;root/:bar//@([<span class="string">"C:"</span>]/:<span class="string">"foo"</span></code>).<br>
 <b>Raises</b><ul><li><code>Invalid_argument</code> if exactly one of given arguments is an absolute path</li>
 <li><code>Malformed_path</code> if normalization fails (see <a href="BatPathGen.PathType.html#VALnormalize"><code class="code"><span class="constructor">BatPathGen</span>.<span class="constructor">PathType</span>.normalize</code></a>)</li>
 </ul>
@@ -284,15 +287,15 @@ Returns parent path, i.e. immediate ancestor: <code class="code">parent (foo/:ba
 <pre><span id="EXCEPTIONNot_parent"><span class="keyword">exception</span> Not_parent</span></pre>
 
 <pre><span id="VALrelative_to_parent"><span class="keyword">val</span> relative_to_parent</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">relative_to_parent parent sub</code> returns relative path <code class="code">rel</code> such that
-      <code class="code">(normalize parent)/:rel = normalize sub</code>. It is checked if <code class="code">sub</code> is really a descendant of <code class="code">parent</code>.
+<code class="code">relative_to_parent&nbsp;parent&nbsp;sub</code> returns relative path <code class="code">rel</code> such that
+      <code class="code">(normalize&nbsp;parent)/:rel&nbsp;=&nbsp;normalize&nbsp;sub</code>. It is checked if <code class="code">sub</code> is really a descendant of <code class="code">parent</code>.
       Both arguments must be absolute paths or both relative.
 <p>
 
       This function normalizes <code class="code">base</code> and <code class="code">sub</code> before calculation of the relative path.
 <p>
 
-      <em>Windows:</em> Exceptionally it is possible to get an absolute path as a result if drive letter is in <code class="code">sub</code> but not as a root element (e .g. <code class="code">base = root/:<span class="string">"bar"</span></code> and <code class="code">sub = root/:bar//@([<span class="string">"C:"</span>]/:<span class="string">"foo"</span>)</code>).<br>
+      <em>Windows:</em> Exceptionally it is possible to get an absolute path as a result if drive letter is in <code class="code">sub</code> but not as a root element (e .g. <code class="code">base&nbsp;=&nbsp;root/:<span class="string">"bar"</span></code> and <code class="code">sub&nbsp;=&nbsp;root/:bar//@([<span class="string">"C:"</span>]/:<span class="string">"foo"</span>)</code>).<br>
 <b>Raises</b><ul><li><code>Not_parent</code> if <code class="code">sub</code> is not descendant of <code class="code">parent</code></li>
 <li><code>Invalid_argument</code> if exactly one of given arguments is absolute path</li>
 <li><code>Malformed_path</code> if normalization fails (see <a href="BatPathGen.PathType.html#VALnormalize"><code class="code"><span class="constructor">BatPathGen</span>.<span class="constructor">PathType</span>.normalize</code></a>)</li>
@@ -360,15 +363,15 @@ Parse path in a given string. Any number of consecutive separators collapse ("a/
 
 <pre><span id="VALname"><span class="keyword">val</span> name</span> : <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEustring">ustring</a></code></pre><div class="info ">
 Returns name of the object the pathname points to, i.e.
-      <code class="code">name (foo/:bar) = bar</code><br>
+      <code class="code">name&nbsp;(foo/:bar)&nbsp;=&nbsp;bar</code><br>
 <b>Raises</b> <code>Invalid_argument</code> if empty path (relative <code class="code">[]</code> or absolute <code class="code">[<span class="string">""</span>]</code>) is given<br>
 </div>
 
 <pre><span id="VALmap_name"><span class="keyword">val</span> map_name</span> : <code class="type">(<a href="BatPathGen.PathType.html#TYPEustring">ustring</a> -> <a href="BatPathGen.PathType.html#TYPEustring">ustring</a>) -><br>       <a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">map_name fu path</code> returns <code class="code">path</code> with the name replaced by <code class="code">fu (</code><a href="BatPathGen.PathType.html#VALname"><code class="code"><span class="constructor">BatPathGen</span>.<span class="constructor">PathType</span>.name</code></a><code class="code"> path)</code>.
+<code class="code">map_name&nbsp;fu&nbsp;path</code> returns <code class="code">path</code> with the name replaced by <code class="code">fu&nbsp;(</code><a href="BatPathGen.PathType.html#VALname"><code class="code"><span class="constructor">BatPathGen</span>.<span class="constructor">PathType</span>.name</code></a><code class="code">&nbsp;path)</code>.
 <p>
 
-      Example: <code class="code">map_name (<span class="keyword">fun</span> nn <span class="keywordsign">-&gt;</span> nn ^ <span class="string">".backup"</span>) ([<span class="string">"foo"</span>]/:<span class="string">"bar"</span>) = [<span class="string">"foo"</span>]/:<span class="string">"bar.backup"</span></code>
+      Example: <code class="code">map_name&nbsp;(<span class="keyword">fun</span>&nbsp;nn&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;nn&nbsp;^&nbsp;<span class="string">".backup"</span>)&nbsp;([<span class="string">"foo"</span>]/:<span class="string">"bar"</span>)&nbsp;=&nbsp;[<span class="string">"foo"</span>]/:<span class="string">"bar.backup"</span></code>
 <p>
 
       <a href="BatPathGen.PathType.html#VALdefault_validator"><code class="code"><span class="constructor">BatPathGen</span>.<span class="constructor">PathType</span>.default_validator</code></a> is applied to new name.<br>
@@ -379,24 +382,24 @@ Returns name of the object the pathname points to, i.e.
 Returns extension of the name of the object the pathname points to. Examples:
 <p>
 
-      <code class="code">ext [<span class="string">"aa.bb"</span>] = <span class="constructor">Some</span> <span class="string">"bb"</span></code>
+      <code class="code">ext&nbsp;[<span class="string">"aa.bb"</span>]&nbsp;=&nbsp;<span class="constructor">Some</span>&nbsp;<span class="string">"bb"</span></code>
 <p>
 
-      <code class="code">ext [<span class="string">"aa."</span>] = <span class="constructor">Some</span> <span class="string">""</span></code>
+      <code class="code">ext&nbsp;[<span class="string">"aa."</span>]&nbsp;=&nbsp;<span class="constructor">Some</span>&nbsp;<span class="string">""</span></code>
 <p>
 
-      <code class="code">ext [<span class="string">"aa"</span>] = <span class="constructor">None</span></code>
+      <code class="code">ext&nbsp;[<span class="string">"aa"</span>]&nbsp;=&nbsp;<span class="constructor">None</span></code>
 <p>
 
-      <code class="code">ext [<span class="string">".hidden"</span>] = <span class="constructor">Some</span> <span class="string">"hidden"</span></code> <em>(!)</em>
+      <code class="code">ext&nbsp;[<span class="string">".hidden"</span>]&nbsp;=&nbsp;<span class="constructor">Some</span>&nbsp;<span class="string">"hidden"</span></code> <em>(!)</em>
 <p>
 
-      Extension begins where the rightmost dot in the name is found. If the name ends with a dot, the extension is empty and <code class="code"><span class="constructor">Some</span> <span class="string">""</span></code> is returned. If there is no extension (no dot) the function returns <code class="code"><span class="constructor">None</span></code>.<br>
+      Extension begins where the rightmost dot in the name is found. If the name ends with a dot, the extension is empty and <code class="code"><span class="constructor">Some</span>&nbsp;<span class="string">""</span></code> is returned. If there is no extension (no dot) the function returns <code class="code"><span class="constructor">None</span></code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> if empty path (relative <code class="code">[]</code> or absolute <code class="code">[<span class="string">""</span>]</code>) is given<br>
 </div>
 
 <pre><span id="VALmap_ext"><span class="keyword">val</span> map_ext</span> : <code class="type">(<a href="BatPathGen.PathType.html#TYPEustring">ustring</a> option -> <a href="BatPathGen.PathType.html#TYPEustring">ustring</a> option) -><br>       <a href="BatPathGen.PathType.html#TYPEt">t</a> -> <a href="BatPathGen.PathType.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">map_ext fu path</code> returns <code class="code">path</code> but with the name with extension given by <code class="code">fu (</code><a href="BatPathGen.PathType.html#VALext"><code class="code"><span class="constructor">BatPathGen</span>.<span class="constructor">PathType</span>.ext</code></a><code class="code"> path)</code>. If <code class="code">fu</code> returns <code class="code"><span class="constructor">Some</span> _</code>, the original extension may be replaced (when <code class="code"><span class="constructor">Some</span> ext</code> is passed to <code class="code">fu</code>) or new added (when <code class="code">fu</code> gets <code class="code"><span class="constructor">None</span></code>). In case <code class="code">fu</code> returns <code class="code"><span class="constructor">None</span></code>, the extension is removed (if exists).<br>
+<code class="code">map_ext&nbsp;fu&nbsp;path</code> returns <code class="code">path</code> but with the name with extension given by <code class="code">fu&nbsp;(</code><a href="BatPathGen.PathType.html#VALext"><code class="code"><span class="constructor">BatPathGen</span>.<span class="constructor">PathType</span>.ext</code></a><code class="code">&nbsp;path)</code>. If <code class="code">fu</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;_</code>, the original extension may be replaced (when <code class="code"><span class="constructor">Some</span>&nbsp;ext</code> is passed to <code class="code">fu</code>) or new added (when <code class="code">fu</code> gets <code class="code"><span class="constructor">None</span></code>). In case <code class="code">fu</code> returns <code class="code"><span class="constructor">None</span></code>, the extension is removed (if exists).<br>
 <b>Raises</b><ul><li><code>Illegal_char</code> (raised by validator if any bad character is found)</li>
 <li><code>Invalid_argument</code> if empty path (relative <code class="code">[]</code> or absolute <code class="code">[<span class="string">""</span>]</code>) is given</li>
 </ul>
@@ -410,7 +413,7 @@ Returns part of the name to the left of rightmost dot. Returns empty string if t
 <pre><span id="TYPEcomponents"><span class="keyword">type</span> <code class="type"></code>components</span> = <code class="type"><a href="BatPathGen.PathType.html#TYPEt">t</a> * <a href="BatPathGen.PathType.html#TYPEustring">ustring</a> *<br>       <a href="BatPathGen.PathType.html#TYPEustring">ustring</a> option</code> </pre>
 <div class="info ">
 A <code class="code">path</code> can be represented by the following triple:
-      <code class="code">(<span class="constructor">Path</span>.parent path, <span class="constructor">Path</span>.name_core path, <span class="constructor">Path</span>.ext path)</code><br>
+      <code class="code">(<span class="constructor">Path</span>.parent&nbsp;path,&nbsp;<span class="constructor">Path</span>.name_core&nbsp;path,&nbsp;<span class="constructor">Path</span>.ext&nbsp;path)</code><br>
 </div>
 
 
@@ -419,7 +422,7 @@ Dissect the path to its components (parent path, core part of name and possibly 
 <p>
 
       Resulting <code class="code">name_core</code> string can be empty. For example,
-      <code class="code"><span class="constructor">Path</span>.split (<span class="constructor">Path</span>.root/:<span class="string">"home"</span>/:<span class="string">"user"</span>/:<span class="string">".bashrc"</span>)</code> equals <code class="code">(<span class="constructor">Path</span>.root/:<span class="string">"home"</span>/:<span class="string">"user"</span>, <span class="string">""</span>, <span class="constructor">Some</span> <span class="string">"bashrc"</span>)</code>.<br>
+      <code class="code"><span class="constructor">Path</span>.split&nbsp;(<span class="constructor">Path</span>.root/:<span class="string">"home"</span>/:<span class="string">"user"</span>/:<span class="string">".bashrc"</span>)</code> equals <code class="code">(<span class="constructor">Path</span>.root/:<span class="string">"home"</span>/:<span class="string">"user"</span>,&nbsp;<span class="string">""</span>,&nbsp;<span class="constructor">Some</span>&nbsp;<span class="string">"bashrc"</span>)</code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> if empty path (relative <code class="code">[]</code> or absolute <code class="code">[<span class="string">""</span>]</code>) is given<br>
 </div>
 
@@ -441,7 +444,7 @@ Map a path through a function that operates on separate components.<br>
 Return drive letter of the given absolute path.
 <p>
 
-       <em>Windows:</em> <code class="code">drive_letter abs</code> returns <code class="code"><span class="constructor">None</span></code> if <code class="code">abs</code> is simple absolute path (i.e. begins with a separator), otherwise the root element of <code class="code">abs</code> consists of a letter <code class="code">ch</code> with a colon - in this case <code class="code"><span class="constructor">Some</span> ch</code> is returned.
+       <em>Windows:</em> <code class="code">drive_letter&nbsp;abs</code> returns <code class="code"><span class="constructor">None</span></code> if <code class="code">abs</code> is simple absolute path (i.e. begins with a separator), otherwise the root element of <code class="code">abs</code> consists of a letter <code class="code">ch</code> with a colon - in this case <code class="code"><span class="constructor">Some</span>&nbsp;ch</code> is returned.
 <p>
 
        <em>Other systems:</em> Returns <code class="code"><span class="constructor">None</span></code> on all absolute paths.<br>

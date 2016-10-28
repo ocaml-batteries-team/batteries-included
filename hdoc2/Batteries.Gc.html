@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="Batteries.Format.html">
 <link rel="next" href="Batteries.Genlex.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -295,7 +298,7 @@ The memory management counters are returned in a <code class="code">stat</code> 
 <p>
 
     The total amount of memory allocated by the program since it was started
-    is (in words) <code class="code">minor_words + major_words - promoted_words</code>.  Multiply by
+    is (in words) <code class="code">minor_words&nbsp;+&nbsp;major_words&nbsp;-&nbsp;promoted_words</code>.  Multiply by
     the word size (4 on a 32-bit machine, 8 on a 64-bit machine) to get
     the number of bytes.<br>
 </div>
@@ -376,7 +379,7 @@ Heap compaction is triggered when the estimated amount
         amount of live data.  If <code class="code">max_overhead</code> is set to 0, heap
         compaction is triggered at the end of each major GC cycle
         (this setting is intended for testing purposes only).
-        If <code class="code">max_overhead &gt;= 1000000</code>, compaction is never triggered.
+        If <code class="code">max_overhead&nbsp;&gt;=&nbsp;1000000</code>, compaction is never triggered.
         Default: 500.<br>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
@@ -447,8 +450,18 @@ Same as <code class="code">stat</code> except that <code class="code">live_words
 </div>
 
 <pre><span id="VALcounters"><span class="keyword">val</span> counters</span> : <code class="type">unit -> float * float * float</code></pre><div class="info ">
-Return <code class="code">(minor_words, promoted_words, major_words)</code>.  This function
+Return <code class="code">(minor_words,&nbsp;promoted_words,&nbsp;major_words)</code>.  This function
     is as fast at <code class="code">quick_stat</code>.<br>
+</div>
+
+<pre><span id="VALminor_words"><span class="keyword">val</span> minor_words</span> : <code class="type">unit -> float</code></pre><div class="info ">
+Number of words allocated in the minor heap since the program was
+    started. This number is accurate in byte-code programs, but only an
+    approximation in programs compiled to native code.
+<p>
+
+    In native code this function does not allocate.<br>
+<b>Since</b> 2.5.3 and OCaml 4.04<br>
 </div>
 
 <pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">unit -> <a href="BatGc.html#TYPEcontrol">control</a></code></pre><div class="info ">
@@ -456,8 +469,8 @@ Return the current values of the GC parameters in a <code class="code">control</
 </div>
 
 <pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type"><a href="BatGc.html#TYPEcontrol">control</a> -> unit</code></pre><div class="info ">
-<code class="code">set r</code> changes the GC parameters according to the <code class="code">control</code> record <code class="code">r</code>.
-    The normal usage is: <code class="code"><span class="constructor">Gc</span>.set { (<span class="constructor">Gc</span>.get()) <span class="keyword">with</span> <span class="constructor">Gc</span>.verbose = 0x00d }</code><br>
+<code class="code">set&nbsp;r</code> changes the GC parameters according to the <code class="code">control</code> record <code class="code">r</code>.
+    The normal usage is: <code class="code"><span class="constructor">Gc</span>.set&nbsp;{&nbsp;(<span class="constructor">Gc</span>.get())&nbsp;<span class="keyword">with</span>&nbsp;<span class="constructor">Gc</span>.verbose&nbsp;=&nbsp;0x00d&nbsp;}</code><br>
 </div>
 
 <pre><span id="VALminor"><span class="keyword">val</span> minor</span> : <code class="type">unit -> unit</code></pre><div class="info ">
@@ -502,7 +515,7 @@ Return the current size of the free space inside the minor heap.<br>
 </div>
 
 <pre><span id="VALget_bucket"><span class="keyword">val</span> get_bucket</span> : <code class="type">int -> int</code></pre><div class="info ">
-<code class="code">get_bucket n</code> returns the current size of the <code class="code">n</code>-th future bucket
+<code class="code">get_bucket&nbsp;n</code> returns the current size of the <code class="code">n</code>-th future bucket
     of the GC smoothing system. The unit is one millionth of a full GC.
     Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">n</code> is negative, return 0 if n is larger
     than the smoothing window.<br>
@@ -510,7 +523,7 @@ Return the current size of the free space inside the minor heap.<br>
 </div>
 
 <pre><span id="VALget_credit"><span class="keyword">val</span> get_credit</span> : <code class="type">unit -> int</code></pre><div class="info ">
-<code class="code">get_credit ()</code> returns the current size of the "work done in advance"
+<code class="code">get_credit&nbsp;()</code> returns the current size of the "work done in advance"
     counter of the GC smoothing system. The unit is one millionth of a
     full GC.<br>
 <b>Since</b> 2.5.0 and OCaml 4.03.0<br>
@@ -523,7 +536,7 @@ Return the number of times we tried to map huge pages and had to fall
 </div>
 
 <pre><span id="VALfinalise"><span class="keyword">val</span> finalise</span> : <code class="type">('a -> unit) -> 'a -> unit</code></pre><div class="info ">
-<code class="code">finalise f v</code> registers <code class="code">f</code> as a finalisation function for <code class="code">v</code>.
+<code class="code">finalise&nbsp;f&nbsp;v</code> registers <code class="code">f</code> as a finalisation function for <code class="code">v</code>.
     <code class="code">v</code> must be heap-allocated.  <code class="code">f</code> will be called with <code class="code">v</code> as
     argument at some point between the first time <code class="code">v</code> becomes unreachable
     and the time <code class="code">v</code> is collected by the GC.  Several functions can
@@ -545,11 +558,11 @@ Return the number of times we tried to map huge pages and had to fall
     Anything reachable from the closure of finalisation functions
     is considered reachable, so the following code will not work
     as expected:<ul>
-<li><code class="code"> <span class="keyword">let</span> v = ... <span class="keyword">in</span> <span class="constructor">Gc</span>.finalise (<span class="keyword">fun</span> x <span class="keywordsign">-&gt;</span> ...) v </code></li>
+<li><code class="code">&nbsp;<span class="keyword">let</span>&nbsp;v&nbsp;=&nbsp;...&nbsp;<span class="keyword">in</span>&nbsp;<span class="constructor">Gc</span>.finalise&nbsp;(<span class="keyword">fun</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;...)&nbsp;v&nbsp;</code></li>
 </ul>
 
     Instead you should write:<ul>
-<li><code class="code"> <span class="keyword">let</span> f = <span class="keyword">fun</span> x <span class="keywordsign">-&gt;</span> ... ;; <span class="keyword">let</span> v = ... <span class="keyword">in</span> <span class="constructor">Gc</span>.finalise f v </code></li>
+<li><code class="code">&nbsp;<span class="keyword">let</span>&nbsp;f&nbsp;=&nbsp;<span class="keyword">fun</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;...&nbsp;;;&nbsp;<span class="keyword">let</span>&nbsp;v&nbsp;=&nbsp;...&nbsp;<span class="keyword">in</span>&nbsp;<span class="constructor">Gc</span>.finalise&nbsp;f&nbsp;v&nbsp;</code></li>
 </ul>
 
     The <code class="code">f</code> function can use all features of OCaml, including
@@ -582,6 +595,20 @@ Return the number of times we tried to map huge pages and had to fall
     heap-allocated and non-constant except when the length argument is <code class="code">0</code>.<br>
 </div>
 
+<pre><span id="VALfinalise_last"><span class="keyword">val</span> finalise_last</span> : <code class="type">(unit -> unit) -> 'a -> unit</code></pre><div class="info ">
+same as <a href="BatGc.html#VALfinalise"><code class="code"><span class="constructor">BatGc</span>.finalise</code></a> except the value is not given as argument. So
+    you can't use the given value for the computation of the
+    finalisation function. The benefit is that the function is called
+    after the value is unreachable for the last time instead of the
+    first time. So contrary to <a href="BatGc.html#VALfinalise"><code class="code"><span class="constructor">BatGc</span>.finalise</code></a> the value will never be
+    reachable again or used again. In particular every weak pointers
+    and ephemerons that contained this value as key or data is unset
+    before running the finalisation function. Moreover the
+    finalisation function attached with `GC.finalise` are always
+    called before the finalisation function attached with `GC.finalise_last`.<br>
+<b>Since</b> NEXT_RELASE and OCaml 4.04<br>
+</div>
+
 <pre><span id="VALfinalise_release"><span class="keyword">val</span> finalise_release</span> : <code class="type">unit -> unit</code></pre><div class="info ">
 A finalisation function may call <code class="code">finalise_release</code> to tell the
     GC that it can launch the next finalisation function without waiting
@@ -597,14 +624,14 @@ An alarm is a piece of data that calls a user function at the end of
 
 
 <pre><span id="VALcreate_alarm"><span class="keyword">val</span> create_alarm</span> : <code class="type">(unit -> unit) -> <a href="BatGc.html#TYPEalarm">alarm</a></code></pre><div class="info ">
-<code class="code">create_alarm f</code> will arrange for <code class="code">f</code> to be called at the end of each
+<code class="code">create_alarm&nbsp;f</code> will arrange for <code class="code">f</code> to be called at the end of each
     major GC cycle, starting with the current cycle or the next one.
     A value of type <code class="code">alarm</code> is returned that you can
     use to call <code class="code">delete_alarm</code>.<br>
 </div>
 
 <pre><span id="VALdelete_alarm"><span class="keyword">val</span> delete_alarm</span> : <code class="type"><a href="BatGc.html#TYPEalarm">alarm</a> -> unit</code></pre><div class="info ">
-<code class="code">delete_alarm a</code> will stop the calls to the function associated
-      to <code class="code">a</code>.  Calling <code class="code">delete_alarm a</code> again has no effect.<br>
+<code class="code">delete_alarm&nbsp;a</code> will stop the calls to the function associated
+      to <code class="code">a</code>.  Calling <code class="code">delete_alarm&nbsp;a</code> again has no effect.<br>
 </div>
 </body></html>

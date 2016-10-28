@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="Batteries.ISet.html">
 <link rel="next" href="Batteries.Splay.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -133,33 +136,33 @@ Test whether a map is empty (i.e. has no bindings)<br>
 </div>
 
 <pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">int -> 'a -> 'a <a href="BatIMap.html#TYPEt">t</a> -> 'a <a href="BatIMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">add x y t</code> adds a binding from <code class="code">x</code> to <code class="code">y</code> in <code class="code">t</code>, returning a new map.<br>
+<code class="code">add&nbsp;x&nbsp;y&nbsp;t</code> adds a binding from <code class="code">x</code> to <code class="code">y</code> in <code class="code">t</code>, returning a new map.<br>
 </div>
 
 <pre><span id="VALadd_range"><span class="keyword">val</span> add_range</span> : <code class="type">int -> int -> 'a -> 'a <a href="BatIMap.html#TYPEt">t</a> -> 'a <a href="BatIMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">add lo hi y t</code> adds bindings to <code class="code">y</code> for all values in the range
+<code class="code">add&nbsp;lo&nbsp;hi&nbsp;y&nbsp;t</code> adds bindings to <code class="code">y</code> for all values in the range
     <code class="code">lo,hi</code>, returning a new map<br>
 </div>
 
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">int -> 'a <a href="BatIMap.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
-<code class="code">find x t</code> returns the <code class="code">y</code> that is bound to <code class="code">x</code> in <code class="code">t</code>.<br>
+<code class="code">find&nbsp;x&nbsp;t</code> returns the <code class="code">y</code> that is bound to <code class="code">x</code> in <code class="code">t</code>.<br>
 <b>Raises</b> <code>Not_found</code> if <code class="code">x</code> is unbound<br>
 </div>
 
 <pre><span id="VALmodify"><span class="keyword">val</span> modify</span> : <code class="type">int -> ('a -> 'a) -> 'a <a href="BatIMap.html#TYPEt">t</a> -> 'a <a href="BatIMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">modify x f t</code> replaces the <code class="code">y</code> that is bound to <code class="code">x</code> in <code class="code">t</code> by <code class="code">f y</code>.<br>
+<code class="code">modify&nbsp;x&nbsp;f&nbsp;t</code> replaces the <code class="code">y</code> that is bound to <code class="code">x</code> in <code class="code">t</code> by <code class="code">f&nbsp;y</code>.<br>
 <b>Since</b> 2.1<br>
 <b>Raises</b> <code>Not_found</code> if <code class="code">x</code> is unbound<br>
 </div>
 
 <pre><span id="VALmodify_def"><span class="keyword">val</span> modify_def</span> : <code class="type">'a -> int -> ('a -> 'a) -> 'a <a href="BatIMap.html#TYPEt">t</a> -> 'a <a href="BatIMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">modify_def dft x f t</code> does the same as <code class="code">modify x f t</code> but binds
-    <code class="code">x</code> to <code class="code">f dft</code> if <code class="code">x</code> was not bound.<br>
+<code class="code">modify_def&nbsp;dft&nbsp;x&nbsp;f&nbsp;t</code> does the same as <code class="code">modify&nbsp;x&nbsp;f&nbsp;t</code> but binds
+    <code class="code">x</code> to <code class="code">f&nbsp;dft</code> if <code class="code">x</code> was not bound.<br>
 <b>Since</b> 2.1<br>
 </div>
 
 <pre><span id="VALmodify_opt"><span class="keyword">val</span> modify_opt</span> : <code class="type">int -> ('a option -> 'a option) -> 'a <a href="BatIMap.html#TYPEt">t</a> -> 'a <a href="BatIMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">modify_opt x f t</code> allows to modify the binding for <code class="code">x</code> in <code class="code">t</code>
+<code class="code">modify_opt&nbsp;x&nbsp;f&nbsp;t</code> allows to modify the binding for <code class="code">x</code> in <code class="code">t</code>
     or absence thereof.<br>
 <b>Since</b> 2.1<br>
 </div>
@@ -181,11 +184,11 @@ Return the sub-map of bindings in the range <code class="code">x+1,max_int</code
 </div>
 
 <pre><span id="VALuntil"><span class="keyword">val</span> until</span> : <code class="type">int -> 'a <a href="BatIMap.html#TYPEt">t</a> -> 'a <a href="BatIMap.html#TYPEt">t</a></code></pre><div class="info ">
-Return the sub-map of bindings in the range <code class="code">min_int, x</code><br>
+Return the sub-map of bindings in the range <code class="code">min_int,&nbsp;x</code><br>
 </div>
 
 <pre><span id="VALbefore"><span class="keyword">val</span> before</span> : <code class="type">int -> 'a <a href="BatIMap.html#TYPEt">t</a> -> 'a <a href="BatIMap.html#TYPEt">t</a></code></pre><div class="info ">
-Return the sub-map of bindings in the range <code class="code">min_int, x-1</code><br>
+Return the sub-map of bindings in the range <code class="code">min_int,&nbsp;x-1</code><br>
 </div>
 
 <pre><span id="VALmem"><span class="keyword">val</span> mem</span> : <code class="type">int -> 'a <a href="BatIMap.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
@@ -193,11 +196,11 @@ Test whether there is a binding from the given int<br>
 </div>
 
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(int -> 'a -> unit) -> 'a <a href="BatIMap.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">iter f t</code> calls <code class="code">f</code> on every binding<br>
+<code class="code">iter&nbsp;f&nbsp;t</code> calls <code class="code">f</code> on every binding<br>
 </div>
 
 <pre><span id="VALiter_range"><span class="keyword">val</span> iter_range</span> : <code class="type">(int -> int -> 'a -> unit) -> 'a <a href="BatIMap.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">iter_range f t</code> calls <code class="code">f</code> on every contiguous range.  For maps, contiguous ranges must map to the same <code class="code">y</code><br>
+<code class="code">iter_range&nbsp;f&nbsp;t</code> calls <code class="code">f</code> on every contiguous range.  For maps, contiguous ranges must map to the same <code class="code">y</code><br>
 </div>
 
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">?eq:('b -> 'b -> bool) -> ('a -> 'b) -> 'a <a href="BatIMap.html#TYPEt">t</a> -> 'b <a href="BatIMap.html#TYPEt">t</a></code></pre><div class="info ">
@@ -220,39 +223,39 @@ Create a new map by modifying each <code class="code">y</code> using the given f
 </div>
 
 <pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">(int -> 'b -> 'a -> 'a) -> 'b <a href="BatIMap.html#TYPEt">t</a> -> 'a -> 'a</code></pre><div class="info ">
-<code class="code">fold f t x0</code> folds all the bindings of <code class="code">t</code> into <code class="code">x0</code> using <code class="code">f</code> to
+<code class="code">fold&nbsp;f&nbsp;t&nbsp;x0</code> folds all the bindings of <code class="code">t</code> into <code class="code">x0</code> using <code class="code">f</code> to
     merge.<br>
 </div>
 
 <pre><span id="VALfold_range"><span class="keyword">val</span> fold_range</span> : <code class="type">(int -> int -> 'b -> 'a -> 'a) -> 'b <a href="BatIMap.html#TYPEt">t</a> -> 'a -> 'a</code></pre><div class="info ">
-<code class="code">fold_range f t x0</code> folds all the contiguous ranges of <code class="code">t</code> into
+<code class="code">fold_range&nbsp;f&nbsp;t&nbsp;x0</code> folds all the contiguous ranges of <code class="code">t</code> into
     <code class="code">x0</code> using <code class="code">f</code> to merge. The order of foldings is unspecified.<br>
 </div>
 
 <pre><span id="VALset_to_map"><span class="keyword">val</span> set_to_map</span> : <code class="type">?eq:('a -> 'a -> bool) -> <a href="BatISet.html#TYPEt">BatISet.t</a> -> 'a -> 'a <a href="BatIMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">set_to_map s x</code> returns a map where every element of <code class="code">s</code> is bound
+<code class="code">set_to_map&nbsp;s&nbsp;x</code> returns a map where every element of <code class="code">s</code> is bound
     to <code class="code">x</code>.<br>
 </div>
 
 <pre><span id="VALdomain"><span class="keyword">val</span> domain</span> : <code class="type">'a <a href="BatIMap.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">BatISet.t</a></code></pre><div class="info ">
-<code class="code">domain t</code> returns the set of ints that are bound in <code class="code">t</code><br>
+<code class="code">domain&nbsp;t</code> returns the set of ints that are bound in <code class="code">t</code><br>
 </div>
 
 <pre><span id="VALmap_to_set"><span class="keyword">val</span> map_to_set</span> : <code class="type">('a -> bool) -> 'a <a href="BatIMap.html#TYPEt">t</a> -> <a href="BatISet.html#TYPEt">BatISet.t</a></code></pre><div class="info ">
-<code class="code">map_to_set p t</code> returns the set of keys of <code class="code">t</code> where <code class="code">p</code>
+<code class="code">map_to_set&nbsp;p&nbsp;t</code> returns the set of keys of <code class="code">t</code> where <code class="code">p</code>
     evaluates as true<br>
 </div>
 
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a <a href="BatIMap.html#TYPEt">t</a> -> (int * int * 'a) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-<code class="code">enum t</code> returns an enumeration of the bindings in <code class="code">t</code><br>
+<code class="code">enum&nbsp;t</code> returns an enumeration of the bindings in <code class="code">t</code><br>
 </div>
 
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">eq:('a -> 'a -> bool) -> (int * int * 'a) <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatIMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">of_enum e</code> returns the set of given ranges<br>
+<code class="code">of_enum&nbsp;e</code> returns the set of given ranges<br>
 </div>
 
 <pre><span id="VALfold2_range"><span class="keyword">val</span> fold2_range</span> : <code class="type">(int -> int -> 'a option -> 'b option -> 'c -> 'c) -><br>       'a <a href="BatIMap.html#TYPEt">t</a> -> 'b <a href="BatIMap.html#TYPEt">t</a> -> 'c -> 'c</code></pre><br>
-<code class="code">fold2_range f t u x0</code> folds across each range that's defined in
+<code class="code">fold2_range&nbsp;f&nbsp;t&nbsp;u&nbsp;x0</code> folds across each range that's defined in
     either <code class="code">t</code> or <code class="code">u</code> or both, giving that range and the possible values
     to <code class="code">f</code> to merge with <code class="code">x0</code>.
 <p>

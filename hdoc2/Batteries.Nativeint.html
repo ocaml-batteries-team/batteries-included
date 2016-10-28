@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="Batteries.Marshal.html">
 <link rel="next" href="Batteries.Oo.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -162,20 +165,20 @@ Integer division.<br>
 
 <pre><span id="VALrem"><span class="keyword">val</span> rem</span> : <code class="type">nativeint -> nativeint -> nativeint</code></pre><div class="info ">
 Integer remainder.  If <code class="code">y</code> is not zero, the result
-    of <code class="code"><span class="constructor">Nativeint</span>.rem x y</code> satisfies the following properties:
-    <code class="code"><span class="constructor">Nativeint</span>.zero &lt;= <span class="constructor">Nativeint</span>.rem x y &lt; <span class="constructor">Nativeint</span>.abs y</code> and
-    <code class="code">x = <span class="constructor">Nativeint</span>.add (<span class="constructor">Nativeint</span>.mul (<span class="constructor">Nativeint</span>.div x y) y) (<span class="constructor">Nativeint</span>.rem x y)</code>.
-    If <code class="code">y = 0</code>, <code class="code"><span class="constructor">Nativeint</span>.rem x y</code> raises <code class="code"><span class="constructor">Division_by_zero</span></code>.<br>
+    of <code class="code"><span class="constructor">Nativeint</span>.rem&nbsp;x&nbsp;y</code> satisfies the following properties:
+    <code class="code"><span class="constructor">Nativeint</span>.zero&nbsp;&lt;=&nbsp;<span class="constructor">Nativeint</span>.rem&nbsp;x&nbsp;y&nbsp;&lt;&nbsp;<span class="constructor">Nativeint</span>.abs&nbsp;y</code> and
+    <code class="code">x&nbsp;=&nbsp;<span class="constructor">Nativeint</span>.add&nbsp;(<span class="constructor">Nativeint</span>.mul&nbsp;(<span class="constructor">Nativeint</span>.div&nbsp;x&nbsp;y)&nbsp;y)&nbsp;(<span class="constructor">Nativeint</span>.rem&nbsp;x&nbsp;y)</code>.
+    If <code class="code">y&nbsp;=&nbsp;0</code>, <code class="code"><span class="constructor">Nativeint</span>.rem&nbsp;x&nbsp;y</code> raises <code class="code"><span class="constructor">Division_by_zero</span></code>.<br>
 </div>
 
 <pre><span id="VALsucc"><span class="keyword">val</span> succ</span> : <code class="type">nativeint -> nativeint</code></pre><div class="info ">
 Successor.
-    <code class="code"><span class="constructor">Nativeint</span>.succ x</code> is <code class="code"><span class="constructor">Nativeint</span>.add x <span class="constructor">Nativeint</span>.one</code>.<br>
+    <code class="code"><span class="constructor">Nativeint</span>.succ&nbsp;x</code> is <code class="code"><span class="constructor">Nativeint</span>.add&nbsp;x&nbsp;<span class="constructor">Nativeint</span>.one</code>.<br>
 </div>
 
 <pre><span id="VALpred"><span class="keyword">val</span> pred</span> : <code class="type">nativeint -> nativeint</code></pre><div class="info ">
 Predecessor.
-    <code class="code"><span class="constructor">Nativeint</span>.pred x</code> is <code class="code"><span class="constructor">Nativeint</span>.sub x <span class="constructor">Nativeint</span>.one</code>.<br>
+    <code class="code"><span class="constructor">Nativeint</span>.pred&nbsp;x</code> is <code class="code"><span class="constructor">Nativeint</span>.sub&nbsp;x&nbsp;<span class="constructor">Nativeint</span>.one</code>.<br>
 </div>
 
 <pre><span id="VALabs"><span class="keyword">val</span> abs</span> : <code class="type">nativeint -> nativeint</code></pre><div class="info ">
@@ -216,41 +219,41 @@ Bitwise logical negation<br>
 </div>
 
 <pre><span id="VALshift_left"><span class="keyword">val</span> shift_left</span> : <code class="type">nativeint -> int -> nativeint</code></pre><div class="info ">
-<code class="code"><span class="constructor">Nativeint</span>.shift_left x y</code> shifts <code class="code">x</code> to the left by <code class="code">y</code> bits.
-    The result is unspecified if <code class="code">y &lt; 0</code> or <code class="code">y &gt;= bitsize</code>,
+<code class="code"><span class="constructor">Nativeint</span>.shift_left&nbsp;x&nbsp;y</code> shifts <code class="code">x</code> to the left by <code class="code">y</code> bits.
+    The result is unspecified if <code class="code">y&nbsp;&lt;&nbsp;0</code> or <code class="code">y&nbsp;&gt;=&nbsp;bitsize</code>,
     where <code class="code">bitsize</code> is <code class="code">32</code> on a 32-bit platform and
     <code class="code">64</code> on a 64-bit platform.<br>
 </div>
 
 <pre><span id="VALshift_right"><span class="keyword">val</span> shift_right</span> : <code class="type">nativeint -> int -> nativeint</code></pre><div class="info ">
-<code class="code"><span class="constructor">Nativeint</span>.shift_right x y</code> shifts <code class="code">x</code> to the right by <code class="code">y</code> bits.
+<code class="code"><span class="constructor">Nativeint</span>.shift_right&nbsp;x&nbsp;y</code> shifts <code class="code">x</code> to the right by <code class="code">y</code> bits.
     This is an arithmetic shift: the sign bit of <code class="code">x</code> is replicated
     and inserted in the vacated bits.
-    The result is unspecified if <code class="code">y &lt; 0</code> or <code class="code">y &gt;= bitsize</code>.<br>
+    The result is unspecified if <code class="code">y&nbsp;&lt;&nbsp;0</code> or <code class="code">y&nbsp;&gt;=&nbsp;bitsize</code>.<br>
 </div>
 
 <pre><span id="VALshift_right_logical"><span class="keyword">val</span> shift_right_logical</span> : <code class="type">nativeint -> int -> nativeint</code></pre><div class="info ">
-<code class="code"><span class="constructor">Nativeint</span>.shift_right_logical x y</code> shifts <code class="code">x</code> to the right
+<code class="code"><span class="constructor">Nativeint</span>.shift_right_logical&nbsp;x&nbsp;y</code> shifts <code class="code">x</code> to the right
     by <code class="code">y</code> bits.
     This is a logical shift: zeroes are inserted in the vacated bits
     regardless of the sign of <code class="code">x</code>.
-    The result is unspecified if <code class="code">y &lt; 0</code> or <code class="code">y &gt;= bitsize</code>.<br>
+    The result is unspecified if <code class="code">y&nbsp;&lt;&nbsp;0</code> or <code class="code">y&nbsp;&gt;=&nbsp;bitsize</code>.<br>
 </div>
 
 <pre><span id="VAL(--)"><span class="keyword">val</span> (--)</span> : <code class="type"><a href="BatNativeint.html#TYPEt">t</a> -> <a href="BatNativeint.html#TYPEt">t</a> -> <a href="BatNativeint.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 Enumerate an interval.
 <p>
 
-    <code class="code">5n -- 10n</code> is the enumeration 5n,6n,7n,8n,9n,10n.
-    <code class="code">10n -- 5n</code> is the empty enumeration<br>
+    <code class="code">5n&nbsp;--&nbsp;10n</code> is the enumeration 5n,6n,7n,8n,9n,10n.
+    <code class="code">10n&nbsp;--&nbsp;5n</code> is the empty enumeration<br>
 </div>
 
 <pre><span id="VAL(---)"><span class="keyword">val</span> (---)</span> : <code class="type"><a href="BatNativeint.html#TYPEt">t</a> -> <a href="BatNativeint.html#TYPEt">t</a> -> <a href="BatNativeint.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 Enumerate an interval.
 <p>
 
-    <code class="code">5n -- 10n</code> is the enumeration 5n,6n,7n,8n,9n,10n.
-    <code class="code">10n -- 5n</code> is the enumeration 10n,9n,8n,7n,6n,5n.<br>
+    <code class="code">5n&nbsp;--&nbsp;10n</code> is the enumeration 5n,6n,7n,8n,9n,10n.
+    <code class="code">10n&nbsp;--&nbsp;5n</code> is the enumeration 10n,9n,8n,7n,6n,5n.<br>
 </div>
 
 <pre><span id="VALof_int"><span class="keyword">val</span> of_int</span> : <code class="type">int -> nativeint</code></pre><div class="info ">

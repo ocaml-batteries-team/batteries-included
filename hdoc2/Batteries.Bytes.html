@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="Batteries.Buffer.html">
 <link rel="next" href="Batteries.Char.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -128,14 +131,14 @@ Return the length (number of t) of the argument.<br>
 </div>
 
 <pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type"><a href="BatBytes.html#TYPEt">t</a> -> int -> char</code></pre><div class="info ">
-<code class="code">get s n</code> returns the byte at index <code class="code">n</code> in argument <code class="code">s</code>.
+<code class="code">get&nbsp;s&nbsp;n</code> returns the byte at index <code class="code">n</code> in argument <code class="code">s</code>.
 <p>
 
     Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">n</code> not a valid index in <code class="code">s</code>.<br>
 </div>
 
 <pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type"><a href="BatBytes.html#TYPEt">t</a> -> int -> char -> unit</code></pre><div class="info ">
-<code class="code">set s n c</code> modifies <code class="code">s</code> in place, replacing the byte at index <code class="code">n</code>
+<code class="code">set&nbsp;s&nbsp;n&nbsp;c</code> modifies <code class="code">s</code> in place, replacing the byte at index <code class="code">n</code>
     with <code class="code">c</code>.
 <p>
 
@@ -143,28 +146,28 @@ Return the length (number of t) of the argument.<br>
 </div>
 
 <pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -> <a href="BatBytes.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">create n</code> returns a new byte sequence of length <code class="code">n</code>. The
+<code class="code">create&nbsp;n</code> returns a new byte sequence of length <code class="code">n</code>. The
     sequence is uninitialized and contains arbitrary bytes.
 <p>
 
-    Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">n &lt; 0</code> or <code class="code">n &gt; </code><code class="code"><span class="constructor">Sys</span>.max_string_length</code>.<br>
+    Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">n&nbsp;&lt;&nbsp;0</code> or <code class="code">n&nbsp;&gt;&nbsp;</code><code class="code"><span class="constructor">Sys</span>.max_string_length</code>.<br>
 </div>
 
 <pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">int -> char -> <a href="BatBytes.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">make n c</code> returns a new byte sequence of length <code class="code">n</code>, filled with
+<code class="code">make&nbsp;n&nbsp;c</code> returns a new byte sequence of length <code class="code">n</code>, filled with
     the byte <code class="code">c</code>.
 <p>
 
-    Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">n &lt; 0</code> or <code class="code">n &gt; </code><code class="code"><span class="constructor">Sys</span>.max_string_length</code>.<br>
+    Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">n&nbsp;&lt;&nbsp;0</code> or <code class="code">n&nbsp;&gt;&nbsp;</code><code class="code"><span class="constructor">Sys</span>.max_string_length</code>.<br>
 </div>
 
 <pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> (int -> char) -> <a href="BatBytes.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code"><span class="constructor">Bytes</span>.init n f</code> returns a fresh byte sequence of length <code class="code">n</code>, with
-    character <code class="code">i</code> initialized to the result of <code class="code">f i</code> (in increasing
+<code class="code"><span class="constructor">Bytes</span>.init&nbsp;n&nbsp;f</code> returns a fresh byte sequence of length <code class="code">n</code>, with
+    character <code class="code">i</code> initialized to the result of <code class="code">f&nbsp;i</code> (in increasing
     index order).
 <p>
 
-    Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">n &lt; 0</code> or <code class="code">n &gt; </code><code class="code"><span class="constructor">Sys</span>.max_string_length</code>.<br>
+    Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">n&nbsp;&lt;&nbsp;0</code> or <code class="code">n&nbsp;&gt;&nbsp;</code><code class="code"><span class="constructor">Sys</span>.max_string_length</code>.<br>
 </div>
 
 <pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type"><a href="BatBytes.html#TYPEt">t</a></code></pre><div class="info ">
@@ -187,7 +190,7 @@ Return a new string that contains the same bytes as the given byte
 </div>
 
 <pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type"><a href="BatBytes.html#TYPEt">t</a> -> int -> int -> <a href="BatBytes.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">sub s start len</code> returns a new byte sequence of length <code class="code">len</code>,
+<code class="code">sub&nbsp;s&nbsp;start&nbsp;len</code> returns a new byte sequence of length <code class="code">len</code>,
     containing the subsequence of <code class="code">s</code> that starts at position <code class="code">start</code>
     and has length <code class="code">len</code>.
 <p>
@@ -201,7 +204,7 @@ Same as <code class="code">sub</code> but return a string instead of a byte sequ
 </div>
 
 <pre><span id="VALextend"><span class="keyword">val</span> extend</span> : <code class="type"><a href="BatBytes.html#TYPEt">t</a> -> int -> int -> <a href="BatBytes.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">extend s left right</code> returns a new byte sequence that contains
+<code class="code">extend&nbsp;s&nbsp;left&nbsp;right</code> returns a new byte sequence that contains
     the bytes of <code class="code">s</code>, with <code class="code">left</code> uninitialized bytes prepended and
     <code class="code">right</code> uninitialized bytes appended to it. If <code class="code">left</code> or <code class="code">right</code>
     is negative, then bytes are removed (instead of appended) from
@@ -213,7 +216,7 @@ Same as <code class="code">sub</code> but return a string instead of a byte sequ
 </div>
 
 <pre><span id="VALfill"><span class="keyword">val</span> fill</span> : <code class="type"><a href="BatBytes.html#TYPEt">t</a> -> int -> int -> char -> unit</code></pre><div class="info ">
-<code class="code">fill s start len c</code> modifies <code class="code">s</code> in place, replacing <code class="code">len</code>
+<code class="code">fill&nbsp;s&nbsp;start&nbsp;len&nbsp;c</code> modifies <code class="code">s</code> in place, replacing <code class="code">len</code>
     characters with <code class="code">c</code>, starting at <code class="code">start</code>.
 <p>
 
@@ -222,7 +225,7 @@ Same as <code class="code">sub</code> but return a string instead of a byte sequ
 </div>
 
 <pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type"><a href="BatBytes.html#TYPEt">t</a> -> int -> <a href="BatBytes.html#TYPEt">t</a> -> int -> int -> unit</code></pre><div class="info ">
-<code class="code">blit src srcoff dst dstoff len</code> copies <code class="code">len</code> bytes from sequence
+<code class="code">blit&nbsp;src&nbsp;srcoff&nbsp;dst&nbsp;dstoff&nbsp;len</code> copies <code class="code">len</code> bytes from sequence
     <code class="code">src</code>, starting at index <code class="code">srcoff</code>, to sequence <code class="code">dst</code>, starting at
     index <code class="code">dstoff</code>. It works correctly even if <code class="code">src</code> and <code class="code">dst</code> are the
     same byte sequence, and the source and destination intervals
@@ -235,7 +238,7 @@ Same as <code class="code">sub</code> but return a string instead of a byte sequ
 </div>
 
 <pre><span id="VALblit_string"><span class="keyword">val</span> blit_string</span> : <code class="type">string -> int -> <a href="BatBytes.html#TYPEt">t</a> -> int -> int -> unit</code></pre><div class="info ">
-<code class="code">blit src srcoff dst dstoff len</code> copies <code class="code">len</code> bytes from string
+<code class="code">blit&nbsp;src&nbsp;srcoff&nbsp;dst&nbsp;dstoff&nbsp;len</code> copies <code class="code">len</code> bytes from string
     <code class="code">src</code>, starting at index <code class="code">srcoff</code>, to byte sequence <code class="code">dst</code>,
     starting at index <code class="code">dstoff</code>.
 <p>
@@ -246,7 +249,7 @@ Same as <code class="code">sub</code> but return a string instead of a byte sequ
 </div>
 
 <pre><span id="VALconcat"><span class="keyword">val</span> concat</span> : <code class="type"><a href="BatBytes.html#TYPEt">t</a> -> <a href="BatBytes.html#TYPEt">t</a> list -> <a href="BatBytes.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">concat sep sl</code> concatenates the list of byte sequences <code class="code">sl</code>,
+<code class="code">concat&nbsp;sep&nbsp;sl</code> concatenates the list of byte sequences <code class="code">sl</code>,
     inserting the separator byte sequence <code class="code">sep</code> between each, and
     returns the result as a new byte sequence.
 <p>
@@ -256,7 +259,7 @@ Same as <code class="code">sub</code> but return a string instead of a byte sequ
 </div>
 
 <pre><span id="VALcat"><span class="keyword">val</span> cat</span> : <code class="type"><a href="BatBytes.html#TYPEt">t</a> -> <a href="BatBytes.html#TYPEt">t</a> -> <a href="BatBytes.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">cat s1 s2</code> concatenates <code class="code">s1</code> and <code class="code">s2</code> and returns the result
+<code class="code">cat&nbsp;s1&nbsp;s2</code> concatenates <code class="code">s1</code> and <code class="code">s2</code> and returns the result
      as new byte sequence.
 <p>
 
@@ -265,9 +268,9 @@ Same as <code class="code">sub</code> but return a string instead of a byte sequ
 </div>
 
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(char -> unit) -> <a href="BatBytes.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">iter f s</code> applies function <code class="code">f</code> in turn to all the bytes of <code class="code">s</code>.
-    It is equivalent to <code class="code">f (get s 0); f (get s 1); ...; f (get s
-    (length s - 1)); ()</code>.<br>
+<code class="code">iter&nbsp;f&nbsp;s</code> applies function <code class="code">f</code> in turn to all the bytes of <code class="code">s</code>.
+    It is equivalent to <code class="code">f&nbsp;(get&nbsp;s&nbsp;0);&nbsp;f&nbsp;(get&nbsp;s&nbsp;1);&nbsp;...;&nbsp;f&nbsp;(get&nbsp;s<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(length&nbsp;s&nbsp;-&nbsp;1));&nbsp;()</code>.<br>
 </div>
 
 <pre><span id="VALiteri"><span class="keyword">val</span> iteri</span> : <code class="type">(int -> char -> unit) -> <a href="BatBytes.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
@@ -277,13 +280,13 @@ Same as <code class="code"><span class="constructor">Bytes</span>.iter</code>, b
 </div>
 
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">(char -> char) -> <a href="BatBytes.html#TYPEt">t</a> -> <a href="BatBytes.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">map f s</code> applies function <code class="code">f</code> in turn to all the bytes of <code class="code">s</code>
+<code class="code">map&nbsp;f&nbsp;s</code> applies function <code class="code">f</code> in turn to all the bytes of <code class="code">s</code>
     (in increasing index order) and stores the resulting bytes in
     a new sequence that is returned as the result.<br>
 </div>
 
 <pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">(int -> char -> char) -> <a href="BatBytes.html#TYPEt">t</a> -> <a href="BatBytes.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">mapi f s</code> calls <code class="code">f</code> with each character of <code class="code">s</code> and its
+<code class="code">mapi&nbsp;f&nbsp;s</code> calls <code class="code">f</code> with each character of <code class="code">s</code> and its
     index (in increasing index order) and stores the resulting bytes
     in a new sequence that is returned as the result.<br>
 </div>
@@ -291,7 +294,7 @@ Same as <code class="code"><span class="constructor">Bytes</span>.iter</code>, b
 <pre><span id="VALtrim"><span class="keyword">val</span> trim</span> : <code class="type"><a href="BatBytes.html#TYPEt">t</a> -> <a href="BatBytes.html#TYPEt">t</a></code></pre><div class="info ">
 Return a copy of the argument, without leading and trailing
     whitespace. The bytes regarded as whitespace are the ASCII
-    characters <code class="code"><span class="string">' '</span></code>, <code class="code"><span class="string">'\012'</span></code>, <code class="code"><span class="string">'\n'</span></code>, <code class="code"><span class="string">'\r'</span></code>, and <code class="code"><span class="string">'\t'</span></code>.<br>
+    characters <code class="code"><span class="string">'&nbsp;'</span></code>, <code class="code"><span class="string">'\012'</span></code>, <code class="code"><span class="string">'\n'</span></code>, <code class="code"><span class="string">'\r'</span></code>, and <code class="code"><span class="string">'\t'</span></code>.<br>
 </div>
 
 <pre><span id="VALescaped"><span class="keyword">val</span> escaped</span> : <code class="type"><a href="BatBytes.html#TYPEt">t</a> -> <a href="BatBytes.html#TYPEt">t</a></code></pre><div class="info ">
@@ -304,7 +307,7 @@ Return a copy of the argument, with special characters represented
 </div>
 
 <pre><span id="VALindex"><span class="keyword">val</span> index</span> : <code class="type"><a href="BatBytes.html#TYPEt">t</a> -> char -> int</code></pre><div class="info ">
-<code class="code">index s c</code> returns the index of the first occurrence of byte <code class="code">c</code>
+<code class="code">index&nbsp;s&nbsp;c</code> returns the index of the first occurrence of byte <code class="code">c</code>
     in <code class="code">s</code>.
 <p>
 
@@ -312,7 +315,7 @@ Return a copy of the argument, with special characters represented
 </div>
 
 <pre><span id="VALrindex"><span class="keyword">val</span> rindex</span> : <code class="type"><a href="BatBytes.html#TYPEt">t</a> -> char -> int</code></pre><div class="info ">
-<code class="code">rindex s c</code> returns the index of the last occurrence of byte <code class="code">c</code>
+<code class="code">rindex&nbsp;s&nbsp;c</code> returns the index of the last occurrence of byte <code class="code">c</code>
     in <code class="code">s</code>.
 <p>
 
@@ -320,9 +323,9 @@ Return a copy of the argument, with special characters represented
 </div>
 
 <pre><span id="VALindex_from"><span class="keyword">val</span> index_from</span> : <code class="type"><a href="BatBytes.html#TYPEt">t</a> -> int -> char -> int</code></pre><div class="info ">
-<code class="code">index_from s i c</code> returns the index of the first occurrence of
-    byte <code class="code">c</code> in <code class="code">s</code> after position <code class="code">i</code>.  <code class="code"><span class="constructor">Bytes</span>.index s c</code> is
-    equivalent to <code class="code"><span class="constructor">Bytes</span>.index_from s 0 c</code>.
+<code class="code">index_from&nbsp;s&nbsp;i&nbsp;c</code> returns the index of the first occurrence of
+    byte <code class="code">c</code> in <code class="code">s</code> after position <code class="code">i</code>.  <code class="code"><span class="constructor">Bytes</span>.index&nbsp;s&nbsp;c</code> is
+    equivalent to <code class="code"><span class="constructor">Bytes</span>.index_from&nbsp;s&nbsp;0&nbsp;c</code>.
 <p>
 
     Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">i</code> is not a valid position in <code class="code">s</code>.
@@ -330,9 +333,9 @@ Return a copy of the argument, with special characters represented
 </div>
 
 <pre><span id="VALrindex_from"><span class="keyword">val</span> rindex_from</span> : <code class="type"><a href="BatBytes.html#TYPEt">t</a> -> int -> char -> int</code></pre><div class="info ">
-<code class="code">rindex_from s i c</code> returns the index of the last occurrence of
-    byte <code class="code">c</code> in <code class="code">s</code> before position <code class="code">i+1</code>.  <code class="code">rindex s c</code> is equivalent
-    to <code class="code">rindex_from s (<span class="constructor">Bytes</span>.length s - 1) c</code>.
+<code class="code">rindex_from&nbsp;s&nbsp;i&nbsp;c</code> returns the index of the last occurrence of
+    byte <code class="code">c</code> in <code class="code">s</code> before position <code class="code">i+1</code>.  <code class="code">rindex&nbsp;s&nbsp;c</code> is equivalent
+    to <code class="code">rindex_from&nbsp;s&nbsp;(<span class="constructor">Bytes</span>.length&nbsp;s&nbsp;-&nbsp;1)&nbsp;c</code>.
 <p>
 
     Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">i+1</code> is not a valid position in <code class="code">s</code>.
@@ -340,24 +343,24 @@ Return a copy of the argument, with special characters represented
 </div>
 
 <pre><span id="VALcontains"><span class="keyword">val</span> contains</span> : <code class="type"><a href="BatBytes.html#TYPEt">t</a> -> char -> bool</code></pre><div class="info ">
-<code class="code">contains s c</code> tests if byte <code class="code">c</code> appears in <code class="code">s</code>.<br>
+<code class="code">contains&nbsp;s&nbsp;c</code> tests if byte <code class="code">c</code> appears in <code class="code">s</code>.<br>
 </div>
 
 <pre><span id="VALcontains_from"><span class="keyword">val</span> contains_from</span> : <code class="type"><a href="BatBytes.html#TYPEt">t</a> -> int -> char -> bool</code></pre><div class="info ">
-<code class="code">contains_from s start c</code> tests if byte <code class="code">c</code> appears in <code class="code">s</code> after
-    position <code class="code">start</code>.  <code class="code">contains s c</code> is equivalent to <code class="code">contains_from
-    s 0 c</code>.
+<code class="code">contains_from&nbsp;s&nbsp;start&nbsp;c</code> tests if byte <code class="code">c</code> appears in <code class="code">s</code> after
+    position <code class="code">start</code>.  <code class="code">contains&nbsp;s&nbsp;c</code> is equivalent to <code class="code">contains_from<br>
+&nbsp;&nbsp;&nbsp;&nbsp;s&nbsp;0&nbsp;c</code>.
 <p>
 
     Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">start</code> is not a valid position in <code class="code">s</code>.<br>
 </div>
 
 <pre><span id="VALrcontains_from"><span class="keyword">val</span> rcontains_from</span> : <code class="type"><a href="BatBytes.html#TYPEt">t</a> -> int -> char -> bool</code></pre><div class="info ">
-<code class="code">rcontains_from s stop c</code> tests if byte <code class="code">c</code> appears in <code class="code">s</code> before
+<code class="code">rcontains_from&nbsp;s&nbsp;stop&nbsp;c</code> tests if byte <code class="code">c</code> appears in <code class="code">s</code> before
     position <code class="code">stop+1</code>.
 <p>
 
-    Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">stop &lt; 0</code> or <code class="code">stop+1</code> is not a valid
+    Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">stop&nbsp;&lt;&nbsp;0</code> or <code class="code">stop+1</code> is not a valid
     position in <code class="code">s</code>.<br>
 </div>
 
@@ -449,7 +452,7 @@ Unsafely convert a byte sequence into a string.
     uniquely-owned again.
 <p>
 
-   <code class="code">unsafe_to_string s</code> can only be used when the caller owns the byte
+   <code class="code">unsafe_to_string&nbsp;s</code> can only be used when the caller owns the byte
    sequence <code class="code">s</code> -- either uniquely or as shared immutable data. The
    caller gives up ownership of <code class="code">s</code>, and gains ownership of the
    returned string.
@@ -463,11 +466,11 @@ Unsafely convert a byte sequence into a string.
    that is never changed after initialization is performed.
 <p>
 
-   <pre class="codepre"><code class="code"><span class="keyword">let</span>&nbsp;string_init&nbsp;len&nbsp;f&nbsp;:&nbsp;string&nbsp;=
-&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;s&nbsp;=&nbsp;<span class="constructor">Bytes</span>.create&nbsp;len&nbsp;<span class="keyword">in</span>
-&nbsp;&nbsp;<span class="keyword">for</span>&nbsp;i&nbsp;=&nbsp;0&nbsp;<span class="keyword">to</span>&nbsp;len&nbsp;-&nbsp;1&nbsp;<span class="keyword">do</span>&nbsp;<span class="constructor">Bytes</span>.set&nbsp;s&nbsp;i&nbsp;(f&nbsp;i)&nbsp;<span class="keyword">done</span>;
-&nbsp;&nbsp;<span class="constructor">Bytes</span>.unsafe_to_string&nbsp;s
-&nbsp;&nbsp;&nbsp;</code></pre>
+   <pre class="codepre"><code class="code"><span class="keyword">let</span> string_init len f : string =
+  <span class="keyword">let</span> s = <span class="constructor">Bytes</span>.create len <span class="keyword">in</span>
+  <span class="keyword">for</span> i = 0 <span class="keyword">to</span> len - 1 <span class="keyword">do</span> <span class="constructor">Bytes</span>.set s i (f i) <span class="keyword">done</span>;
+  <span class="constructor">Bytes</span>.unsafe_to_string s
+   </code></pre>
 <p>
 
    This function is safe because the byte sequence <code class="code">s</code> will never be
@@ -494,13 +497,13 @@ Unsafely convert a byte sequence into a string.
    that we can mutate the sequence again after the call ended.
 <p>
 
-   <pre class="codepre"><code class="code"><span class="keyword">let</span>&nbsp;bytes_length&nbsp;(s&nbsp;:&nbsp;bytes)&nbsp;=
-&nbsp;&nbsp;<span class="constructor">String</span>.length&nbsp;(<span class="constructor">Bytes</span>.unsafe_to_string&nbsp;s)
-&nbsp;&nbsp;&nbsp;</code></pre>
+   <pre class="codepre"><code class="code"><span class="keyword">let</span> bytes_length (s : bytes) =
+  <span class="constructor">String</span>.length (<span class="constructor">Bytes</span>.unsafe_to_string s)
+   </code></pre>
 <p>
 
    In this use-case, we do not promise that <code class="code">s</code> will never be mutated
-   after the call to <code class="code">bytes_length s</code>. The <code class="code"><span class="constructor">String</span>.length</code> function
+   after the call to <code class="code">bytes_length&nbsp;s</code>. The <code class="code"><span class="constructor">String</span>.length</code> function
    temporarily borrows unique ownership of the byte sequence
    (and sees it as a <code class="code">string</code>), but returns this ownership back to
    the caller, which may assume that <code class="code">s</code> is still a valid byte
@@ -536,9 +539,9 @@ Unsafely convert a shared string to a byte sequence that should
     compiler, so you never uniquely own them.
 <p>
 
-    <pre class="codepre"><code class="code"><span class="keyword">let</span>&nbsp;incorrect&nbsp;=&nbsp;<span class="constructor">Bytes</span>.unsafe_of_string&nbsp;<span class="string">"hello"</span>
-<span class="keyword">let</span>&nbsp;s&nbsp;=&nbsp;<span class="constructor">Bytes</span>.of_string&nbsp;<span class="string">"hello"</span>
-&nbsp;&nbsp;&nbsp;&nbsp;</code></pre>
+    <pre class="codepre"><code class="code"><span class="keyword">let</span> incorrect = <span class="constructor">Bytes</span>.unsafe_of_string <span class="string">"hello"</span>
+<span class="keyword">let</span> s = <span class="constructor">Bytes</span>.of_string <span class="string">"hello"</span>
+    </code></pre>
 <p>
 
     The first declaration is incorrect, because the string literal
@@ -549,7 +552,7 @@ Unsafely convert a shared string to a byte sequence that should
 
     Assuming unique ownership of strings that are not string
     literals, but are (partly) built from string literals, is also
-    incorrect. For example, mutating <code class="code">unsafe_of_string (<span class="string">"foo"</span> ^ s)</code>
+    incorrect. For example, mutating <code class="code">unsafe_of_string&nbsp;(<span class="string">"foo"</span>&nbsp;^&nbsp;s)</code>
     could mutate the shared string <code class="code"><span class="string">"foo"</span></code> -- assuming a rope-like
     representation of strings. More generally, functions operating on
     strings will assume shared ownership, they do not preserve unique

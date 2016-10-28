@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatBool.html">
 <link rel="next" href="BatBuffer.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -137,26 +140,26 @@ The type of a bounding function with limits specified by <code class="code">boun
 
 
 <pre><span id="VALbounding_of_ord"><span class="keyword">val</span> bounding_of_ord</span> : <code class="type">default_low:'b -><br>       default_high:'b -><br>       ('a -> 'b) -> ('a -> 'a -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a>) -> ('a, 'b) <a href="BatBounded.html#TYPEbounding_f">bounding_f</a></code></pre><div class="info ">
-<code class="code">bounding_of_ord ~default_low ~default_high conv ord</code> will returning a
+<code class="code">bounding_of_ord&nbsp;~default_low&nbsp;~default_high&nbsp;conv&nbsp;ord</code> will returning a
     bounding function using <code class="code">ord</code> for value comparison and <code class="code">default_low</code> and
     <code class="code">default_high</code> for values which fall outside of the requested range.
     <code class="code">conv</code> is used to convert values which are in-range to the result type.<br>
 </div>
 
 <pre><span id="VALbounding_of_ord_chain"><span class="keyword">val</span> bounding_of_ord_chain</span> : <code class="type">low:('a -> 'b) -><br>       high:('a -> 'b) -><br>       ('a -> 'b) -> ('a -> 'a -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a>) -> ('a, 'b) <a href="BatBounded.html#TYPEbounding_f">bounding_f</a></code></pre><div class="info ">
-<code class="code">bounding_oF_ord_chain ?low ?high ord</code> is like <a href="BatBounded.html#VALbounding_of_ord"><code class="code"><span class="constructor">BatBounded</span>.bounding_of_ord</code></a> except
+<code class="code">bounding_oF_ord_chain&nbsp;?low&nbsp;?high&nbsp;ord</code> is like <a href="BatBounded.html#VALbounding_of_ord"><code class="code"><span class="constructor">BatBounded</span>.bounding_of_ord</code></a> except
     that functions are used to handle out of range values rather than single
     default values.<br>
 </div>
 
 <pre><span id="VALsaturate_of_ord"><span class="keyword">val</span> saturate_of_ord</span> : <code class="type">bounds:'a <a href="BatBounded.html#TYPEbound_t">bound_t</a> * 'a <a href="BatBounded.html#TYPEbound_t">bound_t</a> -><br>       ('a -> 'a -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a>) -> 'a -> 'a</code></pre><div class="info ">
-<code class="code">saturate_of_ord ~bounds:(low, high) ord</code> will returning a bounding
+<code class="code">saturate_of_ord&nbsp;~bounds:(low,&nbsp;high)&nbsp;ord</code> will returning a bounding
     function using <code class="code">ord</code> for value comparison and <code class="code">low</code> and <code class="code">high</code> for values
     which fall outside of the requested range.<br>
 </div>
 
 <pre><span id="VALopt_of_ord"><span class="keyword">val</span> opt_of_ord</span> : <code class="type">bounds:'a <a href="BatBounded.html#TYPEbound_t">bound_t</a> * 'a <a href="BatBounded.html#TYPEbound_t">bound_t</a> -><br>       ('a -> 'a -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a>) -> 'a -> 'a option</code></pre><div class="info ">
-<code class="code">opt_of_ord ~bounds:(low, high) ord</code> will returning a bounding function
+<code class="code">opt_of_ord&nbsp;~bounds:(low,&nbsp;high)&nbsp;ord</code> will returning a bounding function
     using <code class="code">ord</code> for value comparison and <code class="code"><span class="constructor">None</span></code> for values which fall outside
     of the requested range.<br>
 </div>
@@ -165,13 +168,13 @@ The type of a bounding function with limits specified by <code class="code">boun
 <pre><span class="keyword">module type</span> <a href="BatBounded.BoundedNumericType.html">BoundedNumericType</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatBounded.BoundedNumericType.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
 <pre><span class="keyword">module type</span> <a href="BatBounded.S.html">S</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatBounded.S.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
 <pre><span class="keyword">module type</span> <a href="BatBounded.NumericSig.html">NumericSig</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatBounded.NumericSig.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
-<pre><span class="keyword">module</span> <a href="BatBounded.Make.html">Make</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">M</span></code><code class="code"> : </code><code class="type"><a href="BatBounded.BoundedType.html">BoundedType</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatBounded.S.html">S</a></code><code class="type">  with type base_u = M.base_t</code><code class="type"> 
+<pre><span class="keyword">module</span> <a href="BatBounded.Make.html">Make</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">M</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatBounded.BoundedType.html">BoundedType</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatBounded.S.html">S</a></code><code class="type">  with type base_u = M.base_t</code><code class="type"> 
   with type u = M.t</code><code class="type"> 
   with type t = private M.t</code></div></pre><div class="info">
 Functor to build an implementation of a bounded type given the bounded
     values definition <code class="code"><span class="constructor">M</span></code>
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatBounded.MakeNumeric.html">MakeNumeric</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">M</span></code><code class="code"> : </code><code class="type"><a href="BatBounded.BoundedNumericType.html">BoundedNumericType</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatBounded.NumericSig.html">NumericSig</a></code><code class="type">  with type base_u = M.base_t</code><code class="type"> 
+<pre><span class="keyword">module</span> <a href="BatBounded.MakeNumeric.html">MakeNumeric</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">M</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatBounded.BoundedNumericType.html">BoundedNumericType</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatBounded.NumericSig.html">NumericSig</a></code><code class="type">  with type base_u = M.base_t</code><code class="type"> 
   with type u = M.t</code><code class="type"> 
   with type t = private M.t</code></div></pre></body></html>

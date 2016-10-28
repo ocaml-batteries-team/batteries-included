@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="Batteries.Set.html">
 <link rel="next" href="Batteries.Stream.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -134,17 +137,17 @@ Return a new stack, initially empty.<br>
 </div>
 
 <pre><span id="VALpush"><span class="keyword">val</span> push</span> : <code class="type">'a -> 'a <a href="BatStack.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">push x s</code> adds the element <code class="code">x</code> at the top of stack <code class="code">s</code>.<br>
+<code class="code">push&nbsp;x&nbsp;s</code> adds the element <code class="code">x</code> at the top of stack <code class="code">s</code>.<br>
 </div>
 
 <pre><span id="VALpop"><span class="keyword">val</span> pop</span> : <code class="type">'a <a href="BatStack.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
-<code class="code">pop s</code> removes and returns the topmost element in stack <code class="code">s</code>,
+<code class="code">pop&nbsp;s</code> removes and returns the topmost element in stack <code class="code">s</code>,
     or<br>
 <b>Raises</b> <code>Empty</code> if the stack is empty.<br>
 </div>
 
 <pre><span id="VALtop"><span class="keyword">val</span> top</span> : <code class="type">'a <a href="BatStack.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
-<code class="code">top s</code> returns the topmost element in stack <code class="code">s</code>,
+<code class="code">top&nbsp;s</code> returns the topmost element in stack <code class="code">s</code>,
     or<br>
 <b>Raises</b> <code>Empty</code> if the stack is empty.<br>
 </div>
@@ -166,7 +169,7 @@ Return the number of elements in a stack.<br>
 </div>
 
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> 'a <a href="BatStack.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">iter f s</code> applies <code class="code">f</code> in turn to all elements of <code class="code">s</code>,
+<code class="code">iter&nbsp;f&nbsp;s</code> applies <code class="code">f</code> in turn to all elements of <code class="code">s</code>,
     from the element at the top of the stack to the element at the
     bottom of the stack. The stack itself is unchanged.<br>
 </div>
@@ -174,25 +177,25 @@ Return the number of elements in a stack.<br>
 <pre><span class="keyword">include</span> <a href="BatEnum.Enumerable.html">BatEnum.Enumerable</a></pre>
 
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a <a href="BatStack.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-<code class="code">enum s</code> returns an enumeration of the elements of stack <code class="code">s</code>, from
+<code class="code">enum&nbsp;s</code> returns an enumeration of the elements of stack <code class="code">s</code>, from
     the most recently entered to the least recently entered.  This
     enumeration is made on a copy of the input stack, and reading from
     it will not affect <code class="code">s</code>.<br>
 </div>
 
 <pre><span id="VALenum_destruct"><span class="keyword">val</span> enum_destruct</span> : <code class="type">'a <a href="BatStack.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-<code class="code">enum s</code> returns a destructive enumeration of the elements of
+<code class="code">enum&nbsp;s</code> returns a destructive enumeration of the elements of
     stack <code class="code">s</code>, from the most recently entered to the least recently
     entered.  Reading the enumeration will progressively empty <code class="code">s</code>.<br>
 </div>
 
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatStack.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">of_enum e</code> returns a new stack containing all the elements of
+<code class="code">of_enum&nbsp;e</code> returns a new stack containing all the elements of
     <code class="code">e</code>.  This is equivalent to calling <code class="code">push</code> with the first element
     of the enumeration, then with the second, etc.
 <p>
 
-    Note: if <code class="code">s</code> is a stack, <code class="code">s &lt;&gt; of_enum (enum s)</code>, as <code class="code">of_enum</code>
+    Note: if <code class="code">s</code> is a stack, <code class="code">s&nbsp;&lt;&gt;&nbsp;of_enum&nbsp;(enum&nbsp;s)</code>, as <code class="code">of_enum</code>
     reverses the input order.<br>
 </div>
 <br>

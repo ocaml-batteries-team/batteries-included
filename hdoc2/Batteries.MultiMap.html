@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="Batteries.Logger.html">
 <link rel="next" href="Batteries.ParserCo.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -130,21 +133,21 @@ returns true if the map is empty.<br>
 </div>
 
 <pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">'a -> 'b -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">add x y m</code> returns a map containing the same bindings as
+<code class="code">add&nbsp;x&nbsp;y&nbsp;m</code> returns a map containing the same bindings as
     <code class="code">m</code>, plus a binding of <code class="code">x</code> to <code class="code">y</code>.<br>
 </div>
 
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">'a -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> 'b <a href="BatSet.html#TYPEt">BatSet.t</a></code></pre><div class="info ">
-<code class="code">find x m</code> returns the current binding of <code class="code">x</code> in <code class="code">m</code><br>
+<code class="code">find&nbsp;x&nbsp;m</code> returns the current binding of <code class="code">x</code> in <code class="code">m</code><br>
 </div>
 
 <pre><span id="VALremove_all"><span class="keyword">val</span> remove_all</span> : <code class="type">'a -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">remove_all x m</code> returns a map containing the same bindings as
+<code class="code">remove_all&nbsp;x&nbsp;m</code> returns a map containing the same bindings as
     <code class="code">m</code>, except for <code class="code">x</code> which is unbound in the returned map.<br>
 </div>
 
 <pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">'a -> 'b -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">remove k d m</code> returns a map containing the same bindings as
+<code class="code">remove&nbsp;k&nbsp;d&nbsp;m</code> returns a map containing the same bindings as
     <code class="code">m</code>, except for <code class="code">k</code> which is not bound to <code class="code">d</code> anymore in the returned
     map. If <code class="code">k</code> was not bound to <code class="code">d</code>, nothing is changed. If the operation
     removes the last binding of <code class="code">k</code>, then <code class="code">k</code> is also removed from the set
@@ -152,12 +155,12 @@ returns true if the map is empty.<br>
 </div>
 
 <pre><span id="VALmem"><span class="keyword">val</span> mem</span> : <code class="type">'a -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-<code class="code">mem x m</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">m</code> contains at least a binding for <code class="code">x</code>,
+<code class="code">mem&nbsp;x&nbsp;m</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">m</code> contains at least a binding for <code class="code">x</code>,
     and <code class="code"><span class="keyword">false</span></code> otherwise.<br>
 </div>
 
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> 'b <a href="BatSet.html#TYPEt">BatSet.t</a> -> unit) -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">iter f m</code> applies <code class="code">f</code> to all bindings in map <code class="code">m</code>.
+<code class="code">iter&nbsp;f&nbsp;m</code> applies <code class="code">f</code> to all bindings in map <code class="code">m</code>.
     <code class="code">f</code> receives the key as first argument, and the associated value
     as second argument. The order in which the bindings are passed to
     <code class="code">f</code> is unspecified. Only current bindings are presented to <code class="code">f</code>:
@@ -165,7 +168,7 @@ returns true if the map is empty.<br>
 </div>
 
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('b <a href="BatSet.html#TYPEt">BatSet.t</a> -> 'c <a href="BatSet.html#TYPEt">BatSet.t</a>) -><br>       ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> ('a, 'c) <a href="BatMultiMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">map f m</code> returns a map with same domain as <code class="code">m</code>, where the
+<code class="code">map&nbsp;f&nbsp;m</code> returns a map with same domain as <code class="code">m</code>, where the
     associated value <code class="code">a</code> of all bindings of <code class="code">m</code> has been
     replaced by the result of the application of <code class="code">f</code> to <code class="code">a</code>.
     The order in which the associated values are passed to <code class="code">f</code>
@@ -178,7 +181,7 @@ Same as <code class="code">map</code>, but the function receives as arguments bo
 </div>
 
 <pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('b <a href="BatSet.html#TYPEt">BatSet.t</a> -> 'c -> 'c) -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> 'c -> 'c</code></pre><div class="info ">
-<code class="code">fold f m a</code> computes <code class="code">(f kN dN ... (f k1 d1 (f k0 d0 a))...)</code>,
+<code class="code">fold&nbsp;f&nbsp;m&nbsp;a</code> computes <code class="code">(f&nbsp;kN&nbsp;dN&nbsp;...&nbsp;(f&nbsp;k1&nbsp;d1&nbsp;(f&nbsp;k0&nbsp;d0&nbsp;a))...)</code>,
     where <code class="code">k0,k1..kN</code> are the keys of all bindings in <code class="code">m</code>,
     and <code class="code">d0,d1..dN</code> are the associated data.
     The order in which the bindings are presented to <code class="code">f</code> is
@@ -191,20 +194,20 @@ Same as <code class="code">fold</code>, but the function receives as arguments b
 </div>
 
 <pre><span id="VALmodify"><span class="keyword">val</span> modify</span> : <code class="type">'a -><br>       ('b <a href="BatSet.html#TYPEt">BatSet.t</a> -> 'b <a href="BatSet.html#TYPEt">BatSet.t</a>) -><br>       ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">modify x f m</code> replaces the binding for <code class="code">x</code> with <code class="code">f</code> applied to
+<code class="code">modify&nbsp;x&nbsp;f&nbsp;m</code> replaces the binding for <code class="code">x</code> with <code class="code">f</code> applied to
     these values.<br>
 <b>Since</b> 2.1<br>
 <b>Raises</b> <code>Not_found</code> is <code class="code">x</code> is unbound in <code class="code">m</code><br>
 </div>
 
 <pre><span id="VALmodify_def"><span class="keyword">val</span> modify_def</span> : <code class="type">'b <a href="BatSet.html#TYPEt">BatSet.t</a> -><br>       'a -><br>       ('b <a href="BatSet.html#TYPEt">BatSet.t</a> -> 'b <a href="BatSet.html#TYPEt">BatSet.t</a>) -><br>       ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">modify_def dfl x f m</code> performs as <code class="code">modify x f m</code> but it adds
-    <code class="code">f dfl</code> in <code class="code">m</code> instead of raising <code class="code"><span class="constructor">Not_found</span></code> if <code class="code">x</code> was unbound.<br>
+<code class="code">modify_def&nbsp;dfl&nbsp;x&nbsp;f&nbsp;m</code> performs as <code class="code">modify&nbsp;x&nbsp;f&nbsp;m</code> but it adds
+    <code class="code">f&nbsp;dfl</code> in <code class="code">m</code> instead of raising <code class="code"><span class="constructor">Not_found</span></code> if <code class="code">x</code> was unbound.<br>
 <b>Since</b> 2.1<br>
 </div>
 
 <pre><span id="VALmodify_opt"><span class="keyword">val</span> modify_opt</span> : <code class="type">'a -><br>       ('b <a href="BatSet.html#TYPEt">BatSet.t</a> option -> 'b <a href="BatSet.html#TYPEt">BatSet.t</a> option) -><br>       ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">modify_opt x f m</code> allows to modify the bindings for <code class="code">k</code> in <code class="code">m</code>
+<code class="code">modify_opt&nbsp;x&nbsp;f&nbsp;m</code> allows to modify the bindings for <code class="code">k</code> in <code class="code">m</code>
     or absence thereof.<br>
 <b>Since</b> 2.1<br>
 </div>

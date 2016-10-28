@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatIMap.html">
 <link rel="next" href="BatISet.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -248,7 +251,7 @@ This exception is raised when reading on a closed output.<br>
 Standard input, as per Unix/Windows conventions (by default, keyboard).
 <p>
 
-    Example: <code class="code"><span class="keyword">if</span> read_line stdin |&gt; <span class="constructor">Int</span>.of_string &gt; 10 <span class="keyword">then</span> failwith <span class="string">"too big a number read"</span>; </code><br>
+    Example: <code class="code"><span class="keyword">if</span>&nbsp;read_line&nbsp;stdin&nbsp;|&gt;&nbsp;<span class="constructor">Int</span>.of_string&nbsp;&gt;&nbsp;10&nbsp;<span class="keyword">then</span>&nbsp;failwith&nbsp;<span class="string">"too&nbsp;big&nbsp;a&nbsp;number&nbsp;read"</span>;&nbsp;</code><br>
 </div>
 
 <pre><span id="VALstdout"><span class="keyword">val</span> stdout</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info ">
@@ -256,11 +259,11 @@ Standard output, as per Unix/Windows conventions (by default, console).
 <p>
 
     Use this output to display regular messages.
-    Example: <code class="code">
-       write_string stdout <span class="string">"Enter your name:"</span>;
-       <span class="keyword">let</span> name = read_line stdin <span class="keyword">in</span>
-       write_line stdout (<span class="string">"Your name is "</span> ^ name);
-    </code><br>
+    Example: <code class="code"><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;write_string&nbsp;stdout&nbsp;<span class="string">"Enter&nbsp;your&nbsp;name:"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;name&nbsp;=&nbsp;read_line&nbsp;stdin&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;write_line&nbsp;stdout&nbsp;(<span class="string">"Your&nbsp;name&nbsp;is&nbsp;"</span>&nbsp;^&nbsp;name);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;</code><br>
 </div>
 
 <pre><span id="VALstderr"><span class="keyword">val</span> stderr</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info ">
@@ -270,9 +273,9 @@ Standard error output, as per Unix/Windows conventions.
     Use this output to display warnings and error messages.
 <p>
 
-    Example: <code class="code">
-       write_line stderr <span class="string">"Error on Internet - please delete google.com"</span>;
-    </code><br>
+    Example: <code class="code"><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;write_line&nbsp;stderr&nbsp;<span class="string">"Error&nbsp;on&nbsp;Internet&nbsp;-&nbsp;please&nbsp;delete&nbsp;google.com"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;</code><br>
 </div>
 
 <pre><span id="VALstdnull"><span class="keyword">val</span> stdnull</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info ">
@@ -282,10 +285,10 @@ An output which discards everything written to it.
     Use this output to ignore messages.
 <p>
 
-    Example: <code class="code">
-      <span class="keyword">let</span> out_ch = <span class="keyword">if</span> debug <span class="keyword">then</span> stderr <span class="keyword">else</span> stdnull <span class="keyword">in</span>
-      write_line out_ch <span class="string">"Program running."</span>;
-    </code><br>
+    Example: <code class="code"><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;out_ch&nbsp;=&nbsp;<span class="keyword">if</span>&nbsp;debug&nbsp;<span class="keyword">then</span>&nbsp;stderr&nbsp;<span class="keyword">else</span>&nbsp;stdnull&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;write_line&nbsp;out_ch&nbsp;<span class="string">"Program&nbsp;running."</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;</code><br>
 </div>
 <br>
 <h6 id="6_StandardAPI">Standard API</h6><br>
@@ -295,32 +298,32 @@ Read a single char from an input or raise <code class="code"><span class="constr
     no input is available.
 <p>
 
-    Example: <code class="code"><span class="keyword">let</span> <span class="keyword">rec</span> skip_line ch = <span class="keyword">if</span> read ch = <span class="string">'\n'</span> <span class="keyword">then</span> skip_line ch <span class="keyword">else</span> ();</code><br>
+    Example: <code class="code"><span class="keyword">let</span>&nbsp;<span class="keyword">rec</span>&nbsp;skip_line&nbsp;ch&nbsp;=&nbsp;<span class="keyword">if</span>&nbsp;read&nbsp;ch&nbsp;=&nbsp;<span class="string">'\n'</span>&nbsp;<span class="keyword">then</span>&nbsp;skip_line&nbsp;ch&nbsp;<span class="keyword">else</span>&nbsp;();</code><br>
 </div>
 
 <pre><span id="VALnread"><span class="keyword">val</span> nread</span> : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> int -> string</code></pre><div class="info ">
-<code class="code">nread i n</code> reads a string of size up to <code class="code">n</code> from an input.
+<code class="code">nread&nbsp;i&nbsp;n</code> reads a string of size up to <code class="code">n</code> from an input.
     The function will raise <code class="code"><span class="constructor">No_more_input</span></code> if no input is available.
     It will raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">n</code> &lt; 0.
 <p>
 
-    Example: <code class="code"><span class="keyword">let</span> read_md5 ch = nread ch 32</code><br>
+    Example: <code class="code"><span class="keyword">let</span>&nbsp;read_md5&nbsp;ch&nbsp;=&nbsp;nread&nbsp;ch&nbsp;32</code><br>
 </div>
 
 <pre><span id="VALreally_nread"><span class="keyword">val</span> really_nread</span> : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> int -> string</code></pre><div class="info ">
-<code class="code">really_nread i n</code> reads a string of exactly <code class="code">n</code> characters
+<code class="code">really_nread&nbsp;i&nbsp;n</code> reads a string of exactly <code class="code">n</code> characters
     from the input.<br>
 <b>Raises</b><ul><li><code>No_more_input</code> if at least <code class="code">n</code> characters are
     not available.</li>
 <li><code>Invalid_argument</code> if <code class="code">n</code> &lt; 0.
 <p>
 
-    Example: <code class="code"><span class="keyword">let</span> read_md5 ch = really_nread ch 32</code></li>
+    Example: <code class="code"><span class="keyword">let</span>&nbsp;read_md5&nbsp;ch&nbsp;=&nbsp;really_nread&nbsp;ch&nbsp;32</code></li>
 </ul>
 </div>
 
 <pre><span id="VALinput"><span class="keyword">val</span> input</span> : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> string -> int -> int -> int</code></pre><div class="info ">
-<code class="code">input i s p l</code> reads up to <code class="code">l</code> characters from the given input,
+<code class="code">input&nbsp;i&nbsp;s&nbsp;p&nbsp;l</code> reads up to <code class="code">l</code> characters from the given input,
     storing them in string <code class="code">s</code>, starting at character number <code class="code">p</code>. It
     returns the actual number of characters read (which may be 0) or
     raise <code class="code"><span class="constructor">No_more_input</span></code> if no character can be read. It will raise
@@ -328,16 +331,16 @@ Read a single char from an input or raise <code class="code"><span class="constr
     substring of <code class="code">s</code>.
 <p>
 
-    Example: <code class="code"><span class="keyword">let</span> map_ch f ?(block_size=100) =
-    <span class="keyword">let</span> b = <span class="constructor">String</span>.create block_size <span class="keyword">in</span>
-    <span class="keyword">try</span> <span class="keyword">while</span> <span class="keyword">true</span> <span class="keyword">do</span>
-      <span class="keyword">let</span> l = input ch b 0 block_size <span class="keyword">in</span>
-      f b 0 l;
-    <span class="keyword">done</span> <span class="keyword">with</span> <span class="constructor">No_more_input</span> <span class="keywordsign">-&gt;</span> ()</code><br>
+    Example: <code class="code"><span class="keyword">let</span>&nbsp;map_ch&nbsp;f&nbsp;?(block_size=100)&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;b&nbsp;=&nbsp;<span class="constructor">String</span>.create&nbsp;block_size&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">try</span>&nbsp;<span class="keyword">while</span>&nbsp;<span class="keyword">true</span>&nbsp;<span class="keyword">do</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;l&nbsp;=&nbsp;input&nbsp;ch&nbsp;b&nbsp;0&nbsp;block_size&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f&nbsp;b&nbsp;0&nbsp;l;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">done</span>&nbsp;<span class="keyword">with</span>&nbsp;<span class="constructor">No_more_input</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;()</code><br>
 </div>
 
 <pre><span id="VALreally_input"><span class="keyword">val</span> really_input</span> : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> string -> int -> int -> int</code></pre><div class="info ">
-<code class="code">really_input i s p l</code> reads exactly <code class="code">l</code> characters from the
+<code class="code">really_input&nbsp;i&nbsp;s&nbsp;p&nbsp;l</code> reads exactly <code class="code">l</code> characters from the
     given input, storing them in the string <code class="code">s</code>, starting at
     position <code class="code">p</code>. For consistency with <a href="BatIO.html#VALinput"><code class="code"><span class="constructor">BatIO</span>.input</code></a> it returns
     <code class="code">l</code>.<br>
@@ -347,7 +350,7 @@ Read a single char from an input or raise <code class="code"><span class="constr
     designate a valid substring of <code class="code">s</code>.
 <p>
 
-    Example: <code class="code"><span class="keyword">let</span> _ = really_input stdin b 0 3</code></li>
+    Example: <code class="code"><span class="keyword">let</span>&nbsp;_&nbsp;=&nbsp;really_input&nbsp;stdin&nbsp;b&nbsp;0&nbsp;3</code></li>
 </ul>
 </div>
 
@@ -355,37 +358,37 @@ Read a single char from an input or raise <code class="code"><span class="constr
 Close the input. It can no longer be read from.
 <p>
 
-    Example: <code class="code">close_in network_in;</code><br>
+    Example: <code class="code">close_in&nbsp;network_in;</code><br>
 </div>
 
 <pre><span id="VALwrite"><span class="keyword">val</span> write</span> : <code class="type">(char, 'a) <a href="BatIO.html#TYPEprinter">printer</a></code></pre><div class="info ">
 Write a single char to an output.
 <p>
 
-    Example: <code class="code">write stdout <span class="string">'x'</span>;</code><br>
+    Example: <code class="code">write&nbsp;stdout&nbsp;<span class="string">'x'</span>;</code><br>
 </div>
 
 <pre><span id="VALnwrite"><span class="keyword">val</span> nwrite</span> : <code class="type">(string, 'a) <a href="BatIO.html#TYPEprinter">printer</a></code></pre><div class="info ">
 Write a string to an output.
 <p>
 
-    Example: <code class="code">nwrite stdout <span class="string">"Enter your name: "</span>;</code><br>
+    Example: <code class="code">nwrite&nbsp;stdout&nbsp;<span class="string">"Enter&nbsp;your&nbsp;name:&nbsp;"</span>;</code><br>
 </div>
 
 <pre><span id="VALoutput"><span class="keyword">val</span> output</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> string -> int -> int -> int</code></pre><div class="info ">
-<code class="code">output o s p l</code> writes up to <code class="code">l</code> characters from string <code class="code">s</code>, starting at
+<code class="code">output&nbsp;o&nbsp;s&nbsp;p&nbsp;l</code> writes up to <code class="code">l</code> characters from string <code class="code">s</code>, starting at
     offset <code class="code">p</code>. It returns the number of characters written. It will raise
     <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">p</code> and <code class="code">l</code> do not designate a valid substring of <code class="code">s</code>.
 <p>
 
-    Example: <code class="code"><span class="keyword">let</span> str = <span class="string">"Foo Bar Baz"</span> <span class="keyword">in</span> <span class="keyword">let</span> written = output stdout str 2 4;</code>
+    Example: <code class="code"><span class="keyword">let</span>&nbsp;str&nbsp;=&nbsp;<span class="string">"Foo&nbsp;Bar&nbsp;Baz"</span>&nbsp;<span class="keyword">in</span>&nbsp;<span class="keyword">let</span>&nbsp;written&nbsp;=&nbsp;output&nbsp;stdout&nbsp;str&nbsp;2&nbsp;4;</code>
 <p>
 
     This writes "o Ba" to stdout.<br>
 </div>
 
 <pre><span id="VALreally_output"><span class="keyword">val</span> really_output</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> string -> int -> int -> int</code></pre><div class="info ">
-<code class="code">really_output o s p l</code> writes exactly <code class="code">l</code> characters from string <code class="code">s</code> onto
+<code class="code">really_output&nbsp;o&nbsp;s&nbsp;p&nbsp;l</code> writes exactly <code class="code">l</code> characters from string <code class="code">s</code> onto
     the the output, starting with the character at offset <code class="code">p</code>. For consistency with
     <a href="BatIO.html#VALoutput"><code class="code"><span class="constructor">BatIO</span>.output</code></a> it returns <code class="code">l</code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> if <code class="code">p</code> and <code class="code">l</code> do not
@@ -405,14 +408,14 @@ Flush an output.
     If previous write operations have caused errors, this may trigger an exception.
 <p>
 
-    Example: <code class="code">flush stdout;</code><br>
+    Example: <code class="code">flush&nbsp;stdout;</code><br>
 </div>
 
 <pre><span id="VALflush_all"><span class="keyword">val</span> flush_all</span> : <code class="type">unit -> unit</code></pre><div class="info ">
 Flush all outputs, ignore errors.
 <p>
 
-    Example: <code class="code">flush_all ();</code><br>
+    Example: <code class="code">flush_all&nbsp;();</code><br>
 </div>
 
 <pre><span id="VALclose_out"><span class="keyword">val</span> close_out</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> 'a</code></pre><div class="info ">
@@ -424,11 +427,11 @@ Close the output and return its accumulator data.
     closed will have no effect.
 <p>
 
-    Example: <code class="code">
-    <span class="keyword">let</span> strout = output_string () <span class="keyword">in</span>
-    write strout <span class="string">'x'</span>;
-    <span class="keyword">if</span> 2+3&gt;5 <span class="keyword">then</span> write strout <span class="string">"y"</span>;
-    print_string (close_out strout) </code><br>
+    Example: <code class="code"><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;strout&nbsp;=&nbsp;output_string&nbsp;()&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;write&nbsp;strout&nbsp;<span class="string">'x'</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;2+3&gt;5&nbsp;<span class="keyword">then</span>&nbsp;write&nbsp;strout&nbsp;<span class="string">"y"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print_string&nbsp;(close_out&nbsp;strout)&nbsp;</code><br>
 </div>
 <br>
 <h6 id="6_CreationofBatIOInputsOutputs">Creation of BatIO Inputs/Outputs</h6>
@@ -441,13 +444,13 @@ Close the output and return its accumulator data.
 Create an input that will read from a string.
 <p>
 
-    Example: <code class="code">
-    <span class="keyword">let</span> inch = input_string <span class="string">"1234554321"</span> <span class="keyword">in</span>
-    <span class="keyword">let</span> str1 = nread inch 3 <span class="keyword">in</span> <span class="comment">(* "123" *)</span>
-    <span class="keyword">let</span> str2 = nread inch 5 <span class="keyword">in</span> <span class="comment">(* "45543" *)</span>
-    <span class="keyword">let</span> str3 = nread inch 2 <span class="keyword">in</span> <span class="comment">(* "21" *)</span>
-    <span class="keyword">try</span> string_of_char(read inch) <span class="keyword">with</span> <span class="constructor">BatIO</span>.<span class="constructor">No_more_input</span> <span class="keywordsign">-&gt;</span> <span class="string">"End of string"</span>;
-    </code><br>
+    Example: <code class="code"><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;inch&nbsp;=&nbsp;input_string&nbsp;<span class="string">"1234554321"</span>&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;str1&nbsp;=&nbsp;nread&nbsp;inch&nbsp;3&nbsp;<span class="keyword">in</span>&nbsp;<span class="comment">(*&nbsp;"123"&nbsp;*)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;str2&nbsp;=&nbsp;nread&nbsp;inch&nbsp;5&nbsp;<span class="keyword">in</span>&nbsp;<span class="comment">(*&nbsp;"45543"&nbsp;*)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;str3&nbsp;=&nbsp;nread&nbsp;inch&nbsp;2&nbsp;<span class="keyword">in</span>&nbsp;<span class="comment">(*&nbsp;"21"&nbsp;*)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">try</span>&nbsp;string_of_char(read&nbsp;inch)&nbsp;<span class="keyword">with</span>&nbsp;<span class="constructor">BatIO</span>.<span class="constructor">No_more_input</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">"End&nbsp;of&nbsp;string"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;</code><br>
 </div>
 
 <pre><span id="VALoutput_string"><span class="keyword">val</span> output_string</span> : <code class="type">unit -> string <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info ">
@@ -465,7 +468,7 @@ Create an output that will write into an <code class="code">enum</code>. The
 </div>
 
 <pre><span id="VALcombine"><span class="keyword">val</span> combine</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> * 'b <a href="BatIO.html#TYPEoutput">output</a> -> ('a * 'b) <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info ">
-<code class="code">combine (a,b)</code> creates a new <code class="code">output</code> <code class="code">c</code> such that
+<code class="code">combine&nbsp;(a,b)</code> creates a new <code class="code">output</code> <code class="code">c</code> such that
     writing to <code class="code">c</code> will actually write to both <code class="code">a</code> and <code class="code">b</code><br>
 </div>
 
@@ -474,13 +477,13 @@ Create an output shifted to the right by a number of spaces
     (or other character as specified by <code class="code">tab</code>).
 <p>
 
-    <code class="code">tab_out n out</code> produces a new output for writing into <code class="code">out</code>, in
+    <code class="code">tab_out&nbsp;n&nbsp;out</code> produces a new output for writing into <code class="code">out</code>, in
     which every new line starts with <code class="code">n</code> spaces.<br>
 <b>Raises</b> <code>Invalid_argument</code> if <code class="code">n</code> &lt; 0.
 <p>
 
-    Closing <code class="code">tab_out n out</code> does not close <code class="code">out</code>. Rather,
-    closing <code class="code">out</code> closes <code class="code">tab_out n out</code>.<br>
+    Closing <code class="code">tab_out&nbsp;n&nbsp;out</code> does not close <code class="code">out</code>. Rather,
+    closing <code class="code">out</code> closes <code class="code">tab_out&nbsp;n&nbsp;out</code>.<br>
 </div>
 <br>
 <h6 id="6_Utilities">Utilities</h6><br>
@@ -506,7 +509,7 @@ Create an input that provide a count function of the number of bytes
 </div>
 
 <pre><span id="VALprogress_in"><span class="keyword">val</span> progress_in</span> : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> (unit -> unit) -> <a href="BatIO.html#TYPEinput">input</a></code></pre><div class="info ">
-<code class="code">progress_in inp f</code> create an input that calls <code class="code">f ()</code>
+<code class="code">progress_in&nbsp;inp&nbsp;f</code> create an input that calls <code class="code">f&nbsp;()</code>
     whenever some content is succesfully read from it.<br>
 </div>
 
@@ -516,7 +519,7 @@ Create an output that provide a count function of the number of bytes
 </div>
 
 <pre><span id="VALprogress_out"><span class="keyword">val</span> progress_out</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> (unit -> unit) -> unit <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info ">
-<code class="code">progress_out out f</code> create an output that calls <code class="code">f ()</code>
+<code class="code">progress_out&nbsp;out&nbsp;f</code> create an output that calls <code class="code">f&nbsp;()</code>
     whenever some content is succesfully written to it.<br>
 </div>
 
@@ -707,8 +710,8 @@ Simplified and optimized version of <a href="BatIO.html#VALwrap_in"><code class=
     whenever only one input appears as dependency.
 <p>
 
-    <code class="code">inherit_in inp</code> will return an input identical to <code class="code">inp</code>.
-    <code class="code">inherit_in ~read inp</code> will return an input identical to
+    <code class="code">inherit_in&nbsp;inp</code> will return an input identical to <code class="code">inp</code>.
+    <code class="code">inherit_in&nbsp;~read&nbsp;inp</code> will return an input identical to
     <code class="code">inp</code> except for method <code class="code">read</code>, etc.
 <p>
 
@@ -739,7 +742,7 @@ Fully create an output that writes to one or more underlying outputs.
    To illustrate the need for dependency management, let us consider
    the following values:<ul>
 <li>an output <code class="code">out</code></li>
-<li>a function <code class="code">f : _ output <span class="keywordsign">-&gt;</span> _ output</code>, using <a href="BatIO.html#VALcreate_out"><code class="code"><span class="constructor">BatIO</span>.create_out</code></a> to
+<li>a function <code class="code">f&nbsp;:&nbsp;_&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;_&nbsp;output</code>, using <a href="BatIO.html#VALcreate_out"><code class="code"><span class="constructor">BatIO</span>.create_out</code></a> to
    create a new output for writing some data to an underyling
    output (for instance, a function comparale to <a href="BatIO.html#VALtab_out"><code class="code"><span class="constructor">BatIO</span>.tab_out</code></a> or a
    function performing transparent compression or transparent
@@ -747,11 +750,11 @@ Fully create an output that writes to one or more underlying outputs.
 </ul>
 
    With these values, let us consider the following scenario<ul>
-<li>a new output <code class="code">f out</code> is created</li>
-<li>some data is written to <code class="code">f out</code> but not flushed</li>
+<li>a new output <code class="code">f&nbsp;out</code> is created</li>
+<li>some data is written to <code class="code">f&nbsp;out</code> but not flushed</li>
 <li>output <code class="code">out</code> is closed, perhaps manually or as a consequence
    of garbage-collection, or because the program has ended</li>
-<li>data written to <code class="code">f out</code> is flushed.</li>
+<li>data written to <code class="code">f&nbsp;out</code> is flushed.</li>
 </ul>
 
    In this case, data reaches <code class="code">out</code> only after <code class="code">out</code> has been closed.
@@ -760,7 +763,7 @@ Fully create an output that writes to one or more underlying outputs.
 <p>
 
    If, instead, <code class="code">f</code> uses <code class="code">wrap_out</code>, then when output <code class="code">out</code> is closed,
-   <code class="code">f out</code> is first automatically flushed and closed, which avoids the
+   <code class="code">f&nbsp;out</code> is first automatically flushed and closed, which avoids the
    issue.<br>
 </div>
 <div class="param_info"><code class="code">write</code> : Write one character to the output (see <a href="BatIO.html#VALwrite"><code class="code"><span class="constructor">BatIO</span>.write</code></a>).</div>
@@ -782,8 +785,8 @@ Simplified and optimized version of <a href="BatIO.html#VALwrap_out"><code class
    one output appears as dependency.
 <p>
 
-   <code class="code">inherit_out out</code> will return an output identical to <code class="code">out</code>.
-   <code class="code">inherit_out ~write out</code> will return an output identical to
+   <code class="code">inherit_out&nbsp;out</code> will return an output identical to <code class="code">out</code>.
+   <code class="code">inherit_out&nbsp;~write&nbsp;out</code> will return an output identical to
    <code class="code">out</code> except for its <code class="code">write</code> method, etc.
 <p>
 
@@ -920,7 +923,7 @@ The default size for internal buffers.<br>
 <h6 id="6_Threadsafety">Thread-safety</h6><br>
 
 <pre><span id="VALsynchronize_in"><span class="keyword">val</span> synchronize_in</span> : <code class="type">?lock:<a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a> -> <a href="BatIO.html#TYPEinput">input</a> -> <a href="BatIO.html#TYPEinput">input</a></code></pre><div class="info ">
-<code class="code">synchronize_in inp</code> produces a new <a href="BatIO.html#TYPEinput"><code class="code"><span class="constructor">BatIO</span>.input</code></a> which reads from <code class="code">input</code>
+<code class="code">synchronize_in&nbsp;inp</code> produces a new <a href="BatIO.html#TYPEinput"><code class="code"><span class="constructor">BatIO</span>.input</code></a> which reads from <code class="code">input</code>
    in a thread-safe way. In other words, a lock prevents two distinct threads
    from reading from that input simultaneously, something which would potentially
    wreak havoc otherwise<br>
@@ -931,7 +934,7 @@ The default size for internal buffers.<br>
    of pipes.</div>
 
 <pre><span id="VALsynchronize_out"><span class="keyword">val</span> synchronize_out</span> : <code class="type">?lock:<a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a> -> 'a <a href="BatIO.html#TYPEoutput">output</a> -> unit <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info ">
-<code class="code">synchronize_out out</code> produces a new <a href="BatIO.html#TYPEoutput"><code class="code"><span class="constructor">BatIO</span>.output</code></a> which writes to <code class="code">output</code>
+<code class="code">synchronize_out&nbsp;out</code> produces a new <a href="BatIO.html#TYPEoutput"><code class="code"><span class="constructor">BatIO</span>.output</code></a> which writes to <code class="code">output</code>
    in a thread-safe way. In other words, a lock prevents two distinct threads
    from writing to that output simultaneously, something which would potentially
    wreak havoc otherwise<br>

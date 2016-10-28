@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="Batteries.Result.html">
 <link rel="next" href="Batteries.Seq.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -123,15 +126,15 @@ A label which may be used to return values of type <code class="code"><span clas
 
 
 <pre><span id="VALlabel"><span class="keyword">val</span> label</span> : <code class="type">('a <a href="BatReturn.html#TYPEt">t</a> -> 'a) -> 'a</code></pre><div class="info ">
-<code class="code">label f</code> creates a new label <code class="code">x</code> and invokes
-    <code class="code">f x</code>. If, during the execution of <code class="code">f</code>, <code class="code">return x v</code>
-    is invoked, the execution of <code class="code">f x</code> stops
-    immediately and <code class="code">label f</code> returns <code class="code">v</code>.
-    Otherwise, if <code class="code">f x</code> terminates normally and
-    returns <code class="code">y</code>, <code class="code">label f</code> returns <code class="code">y</code>.
+<code class="code">label&nbsp;f</code> creates a new label <code class="code">x</code> and invokes
+    <code class="code">f&nbsp;x</code>. If, during the execution of <code class="code">f</code>, <code class="code">return&nbsp;x&nbsp;v</code>
+    is invoked, the execution of <code class="code">f&nbsp;x</code> stops
+    immediately and <code class="code">label&nbsp;f</code> returns <code class="code">v</code>.
+    Otherwise, if <code class="code">f&nbsp;x</code> terminates normally and
+    returns <code class="code">y</code>, <code class="code">label&nbsp;f</code> returns <code class="code">y</code>.
 <p>
 
-    Calling <code class="code">return x v</code> from outside scope <code class="code">f</code>
+    Calling <code class="code">return&nbsp;x&nbsp;v</code> from outside scope <code class="code">f</code>
     is a run-time error and causes termination
     of the program.<br>
 </div>
@@ -141,12 +144,12 @@ as <code class="code">label</code><br>
 </div>
 
 <pre><span id="VALreturn"><span class="keyword">val</span> return</span> : <code class="type">'a <a href="BatReturn.html#TYPEt">t</a> -> 'a -> 'b</code></pre><div class="info ">
-Return to a label. <code class="code">return l v</code> returns
+Return to a label. <code class="code">return&nbsp;l&nbsp;v</code> returns
       to the point where label <code class="code">l</code> was obtained
       and produces value <code class="code">l</code>.
 <p>
 
-      Calling <code class="code">return l v</code> from outside the scope
+      Calling <code class="code">return&nbsp;l&nbsp;v</code> from outside the scope
       of <code class="code">l</code> (i.e. the call to function <code class="code">label</code>
       which produced <code class="code">l</code>) is a run-time error
       and causes termination of the program.<br>

@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="Up" href="BatFingerTree.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
@@ -26,6 +27,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -66,6 +68,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -133,7 +136,7 @@ A type meant to avoid duplication of signatures.
 <p>
 
       For the generic finger tree, this type will
-      be <code class="code">monoid:<span class="keywordsign">'</span>m monoid <span class="keywordsign">-&gt;</span> measure:(<span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>m) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>wrapped_type</code>.
+      be <code class="code">monoid:<span class="keywordsign">'</span>m&nbsp;monoid&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;measure:(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>m)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>wrapped_type</code>.
 <p>
 
       Once the finger tree has been specialized, the resulting module
@@ -149,7 +152,7 @@ A type meant to avoid duplication of signatures.
 </div>
 
 <pre><span id="VALsingleton"><span class="keyword">val</span> singleton</span> : <code class="type">'a -> ('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a></code></pre><div class="info ">
-<code class="code">singleton elt</code> build the sequence containing <code class="code">elt</code> as its sole
+<code class="code">singleton&nbsp;elt</code> build the sequence containing <code class="code">elt</code> as its sole
       element.
 <p>
 
@@ -157,14 +160,14 @@ A type meant to avoid duplication of signatures.
 </div>
 
 <pre><span id="VALcons"><span class="keyword">val</span> cons</span> : <code class="type">(('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> 'a -> ('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a>, 'a, 'm)<br>       <a href="BatFingerTree.S.html#TYPEwrap">wrap</a></code></pre><div class="info ">
-<code class="code">cons t elt</code> adds <code class="code">elt</code> to the left of <code class="code">t</code>.
+<code class="code">cons&nbsp;t&nbsp;elt</code> adds <code class="code">elt</code> to the left of <code class="code">t</code>.
 <p>
 
       O(1) amortized, O(log(n)) worst case.<br>
 </div>
 
 <pre><span id="VALsnoc"><span class="keyword">val</span> snoc</span> : <code class="type">(('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> 'a -> ('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a>, 'a, 'm)<br>       <a href="BatFingerTree.S.html#TYPEwrap">wrap</a></code></pre><div class="info ">
-<code class="code">snoc t elt</code> adds <code class="code">elt</code> to the right of <code class="code">t</code>.
+<code class="code">snoc&nbsp;t&nbsp;elt</code> adds <code class="code">elt</code> to the right of <code class="code">t</code>.
 <p>
 
       O(1) amortized, O(log(n)) worst case.<br>
@@ -173,8 +176,8 @@ A type meant to avoid duplication of signatures.
 <h6 id="6_Deconstruction">Deconstruction</h6><br>
 
 <pre><span id="VALfront"><span class="keyword">val</span> front</span> : <code class="type">(('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> (('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> * 'a) option,<br>        'a, 'm)<br>       <a href="BatFingerTree.S.html#TYPEwrap">wrap</a></code></pre><div class="info ">
-<code class="code">front t</code> returns <code class="code"><span class="constructor">None</span></code> when <code class="code">t</code> is empty,
-      or <code class="code"><span class="constructor">Some</span> (tl, hd)</code> when <code class="code">hd</code> is the first element of the sequence
+<code class="code">front&nbsp;t</code> returns <code class="code"><span class="constructor">None</span></code> when <code class="code">t</code> is empty,
+      or <code class="code"><span class="constructor">Some</span>&nbsp;(tl,&nbsp;hd)</code> when <code class="code">hd</code> is the first element of the sequence
       and <code class="code">tl</code> is the rest of the sequence.
 <p>
 
@@ -182,7 +185,7 @@ A type meant to avoid duplication of signatures.
 </div>
 
 <pre><span id="VALfront_exn"><span class="keyword">val</span> front_exn</span> : <code class="type">(('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> ('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> * 'a, 'a, 'm)<br>       <a href="BatFingerTree.S.html#TYPEwrap">wrap</a></code></pre><div class="info ">
-<code class="code">front_exn t</code> returns <code class="code">(tl, hd)</code> when <code class="code">hd</code> is the first element
+<code class="code">front_exn&nbsp;t</code> returns <code class="code">(tl,&nbsp;hd)</code> when <code class="code">hd</code> is the first element
       of the sequence and <code class="code">tl</code> is the rest of the sequence.<br>
 <b>Raises</b> <code>Empty</code> if <code class="code">t</code> is empty.
 <p>
@@ -191,8 +194,8 @@ A type meant to avoid duplication of signatures.
 </div>
 
 <pre><span id="VALhead"><span class="keyword">val</span> head</span> : <code class="type">('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> 'a option</code></pre><div class="info ">
-<code class="code">head t</code> returns <code class="code"><span class="constructor">None</span></code> if <code class="code">t</code> is empty,
-      or <code class="code"><span class="constructor">Some</span> hd</code> otherwise, where <code class="code">hd</code> is the first element
+<code class="code">head&nbsp;t</code> returns <code class="code"><span class="constructor">None</span></code> if <code class="code">t</code> is empty,
+      or <code class="code"><span class="constructor">Some</span>&nbsp;hd</code> otherwise, where <code class="code">hd</code> is the first element
       of the sequence.
 <p>
 
@@ -200,7 +203,7 @@ A type meant to avoid duplication of signatures.
 </div>
 
 <pre><span id="VALhead_exn"><span class="keyword">val</span> head_exn</span> : <code class="type">('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> 'a</code></pre><div class="info ">
-<code class="code">head_exn t</code> returns the first element of the sequence.<br>
+<code class="code">head_exn&nbsp;t</code> returns the first element of the sequence.<br>
 <b>Raises</b> <code>Empty</code> if <code class="code">t</code> is empty.
 <p>
 
@@ -208,8 +211,8 @@ A type meant to avoid duplication of signatures.
 </div>
 
 <pre><span id="VALlast"><span class="keyword">val</span> last</span> : <code class="type">('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> 'a option</code></pre><div class="info ">
-<code class="code">last t</code> returns <code class="code"><span class="constructor">None</span></code> if <code class="code">t</code> is empty,
-      or <code class="code"><span class="constructor">Some</span> hd</code> otherwise, where <code class="code">hd</code> is the last element
+<code class="code">last&nbsp;t</code> returns <code class="code"><span class="constructor">None</span></code> if <code class="code">t</code> is empty,
+      or <code class="code"><span class="constructor">Some</span>&nbsp;hd</code> otherwise, where <code class="code">hd</code> is the last element
       of the sequence.
 <p>
 
@@ -217,7 +220,7 @@ A type meant to avoid duplication of signatures.
 </div>
 
 <pre><span id="VALlast_exn"><span class="keyword">val</span> last_exn</span> : <code class="type">('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> 'a</code></pre><div class="info ">
-<code class="code">last_exn t</code> returns the last element of the sequence.<br>
+<code class="code">last_exn&nbsp;t</code> returns the last element of the sequence.<br>
 <b>Raises</b> <code>Empty</code> if <code class="code">t</code> is empty.
 <p>
 
@@ -225,8 +228,8 @@ A type meant to avoid duplication of signatures.
 </div>
 
 <pre><span id="VALtail"><span class="keyword">val</span> tail</span> : <code class="type">(('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> ('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> option, 'a, 'm)<br>       <a href="BatFingerTree.S.html#TYPEwrap">wrap</a></code></pre><div class="info ">
-<code class="code">tail t</code> returns <code class="code"><span class="constructor">None</span></code> when <code class="code">t</code> is empty,
-      or <code class="code"><span class="constructor">Some</span> tl</code> where <code class="code">tl</code> is the sequence <code class="code">t</code> where the first element
+<code class="code">tail&nbsp;t</code> returns <code class="code"><span class="constructor">None</span></code> when <code class="code">t</code> is empty,
+      or <code class="code"><span class="constructor">Some</span>&nbsp;tl</code> where <code class="code">tl</code> is the sequence <code class="code">t</code> where the first element
       has been removed.
 <p>
 
@@ -234,7 +237,7 @@ A type meant to avoid duplication of signatures.
 </div>
 
 <pre><span id="VALtail_exn"><span class="keyword">val</span> tail_exn</span> : <code class="type">(('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> ('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a>, 'a, 'm)<br>       <a href="BatFingerTree.S.html#TYPEwrap">wrap</a></code></pre><div class="info ">
-<code class="code">tail_exn t</code> returns the sequence <code class="code">t</code> where the first element
+<code class="code">tail_exn&nbsp;t</code> returns the sequence <code class="code">t</code> where the first element
       has been removed.<br>
 <b>Raises</b> <code>Empty</code> if <code class="code">t</code> is empty.
 <p>
@@ -243,8 +246,8 @@ A type meant to avoid duplication of signatures.
 </div>
 
 <pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">(('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> ('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> option, 'a, 'm)<br>       <a href="BatFingerTree.S.html#TYPEwrap">wrap</a></code></pre><div class="info ">
-<code class="code">init t</code> returns <code class="code"><span class="constructor">None</span></code> if <code class="code">t</code> is empty,
-      or <code class="code"><span class="constructor">Some</span> init</code> where <code class="code">init</code> is the sequence <code class="code">t</code> where the last element
+<code class="code">init&nbsp;t</code> returns <code class="code"><span class="constructor">None</span></code> if <code class="code">t</code> is empty,
+      or <code class="code"><span class="constructor">Some</span>&nbsp;init</code> where <code class="code">init</code> is the sequence <code class="code">t</code> where the last element
       has been removed.
 <p>
 
@@ -252,7 +255,7 @@ A type meant to avoid duplication of signatures.
 </div>
 
 <pre><span id="VALinit_exn"><span class="keyword">val</span> init_exn</span> : <code class="type">(('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> ('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a>, 'a, 'm)<br>       <a href="BatFingerTree.S.html#TYPEwrap">wrap</a></code></pre><div class="info ">
-<code class="code">init_exn t</code> returns the sequence <code class="code">t</code> where the last element
+<code class="code">init_exn&nbsp;t</code> returns the sequence <code class="code">t</code> where the last element
       has been removed.<br>
 <b>Raises</b> <code>Empty</code> if <code class="code">t</code> is empty.
 <p>
@@ -261,8 +264,8 @@ A type meant to avoid duplication of signatures.
 </div>
 
 <pre><span id="VALrear"><span class="keyword">val</span> rear</span> : <code class="type">(('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> (('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> * 'a) option,<br>        'a, 'm)<br>       <a href="BatFingerTree.S.html#TYPEwrap">wrap</a></code></pre><div class="info ">
-<code class="code">rear t</code> returns <code class="code"><span class="constructor">None</span></code> when <code class="code">t</code> is empty,
-      or <code class="code"><span class="constructor">Some</span> (init, last)</code> where <code class="code">last</code> is the last element of the
+<code class="code">rear&nbsp;t</code> returns <code class="code"><span class="constructor">None</span></code> when <code class="code">t</code> is empty,
+      or <code class="code"><span class="constructor">Some</span>&nbsp;(init,&nbsp;last)</code> where <code class="code">last</code> is the last element of the
       sequence and <code class="code">init</code> is the rest of the sequence.
 <p>
 
@@ -270,7 +273,7 @@ A type meant to avoid duplication of signatures.
 </div>
 
 <pre><span id="VALrear_exn"><span class="keyword">val</span> rear_exn</span> : <code class="type">(('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> ('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> * 'a, 'a, 'm)<br>       <a href="BatFingerTree.S.html#TYPEwrap">wrap</a></code></pre><div class="info ">
-<code class="code">rear t</code> returns <code class="code">(init, last)</code> when <code class="code">last</code> is the last element of
+<code class="code">rear&nbsp;t</code> returns <code class="code">(init,&nbsp;last)</code> when <code class="code">last</code> is the last element of
       the sequence and <code class="code">init</code> is the rest of the sequence.<br>
 <b>Raises</b> <code>Empty</code> if <code class="code">t</code> is empty.
 <p>
@@ -281,7 +284,7 @@ A type meant to avoid duplication of signatures.
 <h6 id="6_Inspection">Inspection</h6><br>
 
 <pre><span id="VALsize"><span class="keyword">val</span> size</span> : <code class="type">('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> int</code></pre><div class="info ">
-<code class="code">size t</code> returns the number of elements in the sequence.
+<code class="code">size&nbsp;t</code> returns the number of elements in the sequence.
       If you want to know that a sequence is empty, it is much
       better to use <a href="BatFingerTree.S.html#VALis_empty"><code class="code"><span class="constructor">BatFingerTree</span>.<span class="constructor">S</span>.is_empty</code></a>.
 <p>
@@ -290,7 +293,7 @@ A type meant to avoid duplication of signatures.
 </div>
 
 <pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> bool</code></pre><div class="info ">
-<code class="code">is_empty t</code> returns <code class="code"><span class="keyword">true</span></code> when the sequence has no elements.
+<code class="code">is_empty&nbsp;t</code> returns <code class="code"><span class="keyword">true</span></code> when the sequence has no elements.
 <p>
 
       O(1).<br>
@@ -318,21 +321,21 @@ A type meant to avoid duplication of signatures.
 </div>
 
 <pre><span id="VALiter_right"><span class="keyword">val</span> iter_right</span> : <code class="type">('a -> unit) -> ('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> unit</code></pre><div class="info ">
-<code class="code">iter_right</code> is equivalent to <code class="code"><span class="constructor">List</span>.iter o <span class="constructor">List</span>.rev</code>.
+<code class="code">iter_right</code> is equivalent to <code class="code"><span class="constructor">List</span>.iter&nbsp;o&nbsp;<span class="constructor">List</span>.rev</code>.
 <p>
 
       O(n).<br>
 </div>
 
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">('a -> 'a -> int) -><br>       ('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> ('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> int</code></pre><div class="info ">
-<code class="code">compare cmp t1 t2</code> compares the two sequences lexicographically.
+<code class="code">compare&nbsp;cmp&nbsp;t1&nbsp;t2</code> compares the two sequences lexicographically.
 <p>
 
       O(n).<br>
 </div>
 
 <pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">('a -> 'a -> bool) -><br>       ('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> ('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> bool</code></pre><div class="info ">
-<code class="code">equal eq t1 t2</code> returns <code class="code"><span class="keyword">true</span></code> when the two sequences contain the
+<code class="code">equal&nbsp;eq&nbsp;t1&nbsp;t2</code> returns <code class="code"><span class="keyword">true</span></code> when the two sequences contain the
       the same elements.
 <p>
 
@@ -344,7 +347,7 @@ A type meant to avoid duplication of signatures.
 <div class="h7" id="7_Conversionstootherstructures">Conversions to other structures</div><br>
 
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-<code class="code">enum t</code> builds an enumeration of the elements of <code class="code">t</code> going from
+<code class="code">enum&nbsp;t</code> builds an enumeration of the elements of <code class="code">t</code> going from
       left to right.
 <p>
 
@@ -355,20 +358,20 @@ A type meant to avoid duplication of signatures.
 </div>
 
 <pre><span id="VALbackwards"><span class="keyword">val</span> backwards</span> : <code class="type">('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-<code class="code">backwards t</code> builds an enumeration of the elements of <code class="code">t</code> going from
+<code class="code">backwards&nbsp;t</code> builds an enumeration of the elements of <code class="code">t</code> going from
       right to left.
       Same complexity as <a href="BatFingerTree.S.html#VALenum"><code class="code"><span class="constructor">BatFingerTree</span>.<span class="constructor">S</span>.enum</code></a>.<br>
 </div>
 
 <pre><span id="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type">('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> 'a list</code></pre><div class="info ">
-<code class="code">to_list t</code> is equivalent to <code class="code"><span class="constructor">BatList</span>.of_enum (enum t)</code>.
+<code class="code">to_list&nbsp;t</code> is equivalent to <code class="code"><span class="constructor">BatList</span>.of_enum&nbsp;(enum&nbsp;t)</code>.
 <p>
 
       O(n).<br>
 </div>
 
 <pre><span id="VALto_list_backwards"><span class="keyword">val</span> to_list_backwards</span> : <code class="type">('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> 'a list</code></pre><div class="info ">
-<code class="code">to_list_backwards t</code> is equivalent to <code class="code"><span class="constructor">BatList</span>.of_enum (backwards t)</code>.
+<code class="code">to_list_backwards&nbsp;t</code> is equivalent to <code class="code"><span class="constructor">BatList</span>.of_enum&nbsp;(backwards&nbsp;t)</code>.
 <p>
 
       O(n).<br>
@@ -377,7 +380,7 @@ A type meant to avoid duplication of signatures.
 <div class="h7" id="7_Conversionsfromotherstructures">Conversions from other structures</div><br>
 
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">('a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> ('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a>, 'a, 'm) <a href="BatFingerTree.S.html#TYPEwrap">wrap</a></code></pre><div class="info ">
-<code class="code">of_enum e</code> build the sequence containing the elements of <code class="code">e</code>
+<code class="code">of_enum&nbsp;e</code> build the sequence containing the elements of <code class="code">e</code>
       in the same order.
 <p>
 
@@ -385,22 +388,22 @@ A type meant to avoid duplication of signatures.
 </div>
 
 <pre><span id="VALof_backwards"><span class="keyword">val</span> of_backwards</span> : <code class="type">('a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> ('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a>, 'a, 'm) <a href="BatFingerTree.S.html#TYPEwrap">wrap</a></code></pre><div class="info ">
-<code class="code">of_backward e</code> is equivalent to <code class="code">reverse (of_enum e)</code>.
+<code class="code">of_backward&nbsp;e</code> is equivalent to <code class="code">reverse&nbsp;(of_enum&nbsp;e)</code>.
 <p>
 
       O(n).<br>
 </div>
 
 <pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">('a list -> ('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a>, 'a, 'm) <a href="BatFingerTree.S.html#TYPEwrap">wrap</a></code></pre><div class="info ">
-<code class="code">of_list l</code> is equivalent to <code class="code">of_enum (<span class="constructor">BatList</span>.enum l)</code>.
+<code class="code">of_list&nbsp;l</code> is equivalent to <code class="code">of_enum&nbsp;(<span class="constructor">BatList</span>.enum&nbsp;l)</code>.
 <p>
 
       O(n).<br>
 </div>
 
 <pre><span id="VALof_list_backwards"><span class="keyword">val</span> of_list_backwards</span> : <code class="type">('a list -> ('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a>, 'a, 'm) <a href="BatFingerTree.S.html#TYPEwrap">wrap</a></code></pre><div class="info ">
-<code class="code">of_list_backwards l</code> is equivalent to
-      <code class="code">of_enum_backwards (<span class="constructor">BatList</span>.enum l)</code>.
+<code class="code">of_list_backwards&nbsp;l</code> is equivalent to
+      <code class="code">of_enum_backwards&nbsp;(<span class="constructor">BatList</span>.enum&nbsp;l)</code>.
 <p>
 
       O(n).<br>
@@ -416,7 +419,7 @@ A type meant to avoid duplication of signatures.
 </div>
 
 <pre><span id="VALmap_right"><span class="keyword">val</span> map_right</span> : <code class="type">(('a -> 'b) -> ('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> ('b, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a>,<br>        'b, 'm)<br>       <a href="BatFingerTree.S.html#TYPEwrap">wrap</a></code></pre><div class="info ">
-<code class="code">map_right</code> is equivalent to <code class="code"><span class="constructor">List</span>.rev o <span class="constructor">List</span>.map o <span class="constructor">List</span>.rev</code>.
+<code class="code">map_right</code> is equivalent to <code class="code"><span class="constructor">List</span>.rev&nbsp;o&nbsp;<span class="constructor">List</span>.map&nbsp;o&nbsp;<span class="constructor">List</span>.rev</code>.
 <p>
 
       O(n).<br>
@@ -430,7 +433,7 @@ A type meant to avoid duplication of signatures.
 </div>
 
 <pre><span id="VALreverse"><span class="keyword">val</span> reverse</span> : <code class="type">(('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a> -> ('a, 'm) <a href="BatFingerTree.S.html#TYPEfg">fg</a>, 'a, 'm)<br>       <a href="BatFingerTree.S.html#TYPEwrap">wrap</a></code></pre><div class="info ">
-<code class="code">reverse t</code> is equivalent to <code class="code">of_list (<span class="constructor">List</span>.rev (to_list t))</code>.
+<code class="code">reverse&nbsp;t</code> is equivalent to <code class="code">of_list&nbsp;(<span class="constructor">List</span>.rev&nbsp;(to_list&nbsp;t))</code>.
 <p>
 
       O(n).<br>

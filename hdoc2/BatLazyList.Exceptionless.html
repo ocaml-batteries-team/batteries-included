@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatLazyList.Infix.html">
 <link rel="next" href="BatLazyList.Labels.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -120,42 +123,42 @@ Exceptionless counterparts for error-raising operations<br>
 <hr width="100%">
 
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('a -> bool) -> 'a <a href="BatLazyList.html#TYPEt">BatLazyList.t</a> -> 'a option</code></pre><div class="info ">
-<code class="code">rfind p l</code> returns <code class="code"><span class="constructor">Some</span> x</code> where <code class="code">x</code> is the first element of <code class="code">l</code> such
-    that <code class="code">p x</code> returns <code class="code"><span class="keyword">true</span></code> or <code class="code"><span class="constructor">None</span></code> if such element as not been found.<br>
+<code class="code">rfind&nbsp;p&nbsp;l</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;x</code> where <code class="code">x</code> is the first element of <code class="code">l</code> such
+    that <code class="code">p&nbsp;x</code> returns <code class="code"><span class="keyword">true</span></code> or <code class="code"><span class="constructor">None</span></code> if such element as not been found.<br>
 </div>
 
 <pre><span id="VALrfind"><span class="keyword">val</span> rfind</span> : <code class="type">('a -> bool) -> 'a <a href="BatLazyList.html#TYPEt">BatLazyList.t</a> -> 'a option</code></pre><div class="info ">
-<code class="code">rfind p l</code> returns <code class="code"><span class="constructor">Some</span> x</code> where <code class="code">x</code> is the last element of <code class="code">l</code> such
-    that <code class="code">p x</code> returns <code class="code"><span class="keyword">true</span></code> or <code class="code"><span class="constructor">None</span></code> if such element as not been found.<br>
+<code class="code">rfind&nbsp;p&nbsp;l</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;x</code> where <code class="code">x</code> is the last element of <code class="code">l</code> such
+    that <code class="code">p&nbsp;x</code> returns <code class="code"><span class="keyword">true</span></code> or <code class="code"><span class="constructor">None</span></code> if such element as not been found.<br>
 </div>
 
 <pre><span id="VALfindi"><span class="keyword">val</span> findi</span> : <code class="type">(int -> 'a -> bool) -> 'a <a href="BatLazyList.html#TYPEt">BatLazyList.t</a> -> (int * 'a) option</code></pre><div class="info ">
-<code class="code">findi p e l</code> returns <code class="code"><span class="constructor">Some</span> (i, ai)</code> where <code class="code">ai</code> and <code class="code">i</code> are respectively the
-    first element of <code class="code">l</code> and its index, such that <code class="code">p i ai</code> is true,
+<code class="code">findi&nbsp;p&nbsp;e&nbsp;l</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;(i,&nbsp;ai)</code> where <code class="code">ai</code> and <code class="code">i</code> are respectively the
+    first element of <code class="code">l</code> and its index, such that <code class="code">p&nbsp;i&nbsp;ai</code> is true,
     or <code class="code"><span class="constructor">None</span></code> if no such element has been found.<br>
 </div>
 
 <pre><span id="VALrfindi"><span class="keyword">val</span> rfindi</span> : <code class="type">(int -> 'a -> bool) -> 'a <a href="BatLazyList.html#TYPEt">BatLazyList.t</a> -> (int * 'a) option</code></pre><div class="info ">
-<code class="code">findi p e l</code> returns <code class="code"><span class="constructor">Some</span> (i, ai)</code> where <code class="code">ai</code> and <code class="code">i</code> are respectively the
-    last element of <code class="code">l</code> and its index, such that <code class="code">p i ai</code> is true,
+<code class="code">findi&nbsp;p&nbsp;e&nbsp;l</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;(i,&nbsp;ai)</code> where <code class="code">ai</code> and <code class="code">i</code> are respectively the
+    last element of <code class="code">l</code> and its index, such that <code class="code">p&nbsp;i&nbsp;ai</code> is true,
     or <code class="code"><span class="constructor">None</span></code> if no such element has been found.<br>
 </div>
 
 <pre><span id="VALsplit_at"><span class="keyword">val</span> split_at</span> : <code class="type">int -><br>       'a <a href="BatLazyList.html#TYPEt">BatLazyList.t</a> -><br>       [ `Invalid_index of int | `Ok of 'a <a href="BatLazyList.html#TYPEt">BatLazyList.t</a> * 'a <a href="BatLazyList.html#TYPEt">BatLazyList.t</a> ]</code></pre><div class="info ">
-Whenever <code class="code">n</code> is inside of <code class="code">l</code> size bounds, <code class="code">split_at n l</code> returns
-    <code class="code"><span class="keywordsign">`</span><span class="constructor">Ok</span> (l1,l2)</code>, where <code class="code">l1</code> contains the first <code class="code">n</code> elements of <code class="code">l</code> and <code class="code">l2</code>
-    contains the others. Otherwise, returns <code class="code"><span class="keywordsign">`</span><span class="constructor">Invalid_index</span> n</code><br>
+Whenever <code class="code">n</code> is inside of <code class="code">l</code> size bounds, <code class="code">split_at&nbsp;n&nbsp;l</code> returns
+    <code class="code"><span class="keywordsign">`</span><span class="constructor">Ok</span>&nbsp;(l1,l2)</code>, where <code class="code">l1</code> contains the first <code class="code">n</code> elements of <code class="code">l</code> and <code class="code">l2</code>
+    contains the others. Otherwise, returns <code class="code"><span class="keywordsign">`</span><span class="constructor">Invalid_index</span>&nbsp;n</code><br>
 </div>
 
 <pre><span id="VALat"><span class="keyword">val</span> at</span> : <code class="type">'a <a href="BatLazyList.html#TYPEt">BatLazyList.t</a> -> int -> [ `Invalid_index of int | `Ok of 'a ]</code></pre><div class="info ">
-If <code class="code">n</code> is inside the bounds of <code class="code">l</code>, <code class="code">at l n</code> returns <code class="code"><span class="keywordsign">`</span><span class="constructor">Ok</span> x</code>, where
+If <code class="code">n</code> is inside the bounds of <code class="code">l</code>, <code class="code">at&nbsp;l&nbsp;n</code> returns <code class="code"><span class="keywordsign">`</span><span class="constructor">Ok</span>&nbsp;x</code>, where
     <code class="code">x</code> is the n-th element of the list <code class="code">l</code>. Otherwise, returns
-    <code class="code"><span class="keywordsign">`</span><span class="constructor">Invalid_index</span> n</code>.<br>
+    <code class="code"><span class="keywordsign">`</span><span class="constructor">Invalid_index</span>&nbsp;n</code>.<br>
 </div>
 
 <pre><span id="VALassoc"><span class="keyword">val</span> assoc</span> : <code class="type">'a -> ('a * 'b) <a href="BatLazyList.html#TYPEt">BatLazyList.t</a> -> 'b option</code></pre><div class="info ">
-<code class="code">assoc a l</code> returns <code class="code"><span class="constructor">Some</span> b</code> where <code class="code">b</code> is the value associated with key <code class="code">a</code>
-    in the list of pairs <code class="code">l</code>. That is, <code class="code">assoc a [ ...; (a,b); ...] = <span class="constructor">Some</span> b</code>
+<code class="code">assoc&nbsp;a&nbsp;l</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;b</code> where <code class="code">b</code> is the value associated with key <code class="code">a</code>
+    in the list of pairs <code class="code">l</code>. That is, <code class="code">assoc&nbsp;a&nbsp;[&nbsp;...;&nbsp;(a,b);&nbsp;...]&nbsp;=&nbsp;<span class="constructor">Some</span>&nbsp;b</code>
     if <code class="code">(a,b)</code> is the leftmost binding of <code class="code">a</code> in list <code class="code">l</code>.
     Return <code class="code"><span class="constructor">None</span></code> if there is no value associated with <code class="code">a</code> in the
         list <code class="code">l</code>.<br>

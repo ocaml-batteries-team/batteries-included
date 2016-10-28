@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="next" href="Batteries.Incubator.Bounded.html">
 <link rel="Up" href="Batteries.Incubator.html">
@@ -27,6 +28,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -67,6 +69,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -131,7 +134,7 @@ This ref holds the text printed before each log message.  Defaults to
 
 <pre><span id="VALflags"><span class="keyword">val</span> flags</span> : <code class="type"><a href="BatLog.html#TYPEflag">flag</a> list Pervasives.ref</code></pre><div class="info ">
 This ref holds the output flags.  These flags control how the log
-    messages are output.  The default is <code class="code"><span class="keywordsign">`</span><span class="constructor">Date</span>; <span class="keywordsign">`</span><span class="constructor">Time</span></code> and log
+    messages are output.  The default is <code class="code"><span class="keywordsign">`</span><span class="constructor">Date</span>;&nbsp;<span class="keywordsign">`</span><span class="constructor">Time</span></code> and log
     messages are printed as:
 <p>
 
@@ -140,7 +143,7 @@ This ref holds the output flags.  These flags control how the log
 </div>
 
 <pre><span id="VALlog"><span class="keyword">val</span> log</span> : <code class="type">?fp:string -> string -> unit</code></pre><div class="info ">
-<code class="code">log s</code> logs the message s, returning unit.<br>
+<code class="code">log&nbsp;s</code> logs the message s, returning unit.<br>
 <b>Since</b> 2.0; was [print] in 1.x<br>
 </div>
 
@@ -152,7 +155,7 @@ As <code class="code"><span class="constructor">Printf</span>.printf</code>, onl
 </div>
 
 <pre><span id="VALfatal"><span class="keyword">val</span> fatal</span> : <code class="type">?fp:string -> string -> 'a</code></pre><div class="info ">
-<code class="code">fatal s</code> logs the message <code class="code">s</code> and then calls <code class="code">exit 1</code>.  This
+<code class="code">fatal&nbsp;s</code> logs the message <code class="code">s</code> and then calls <code class="code">exit&nbsp;1</code>.  This
     exits the program with return code 1.<br>
 </div>
 
@@ -163,7 +166,7 @@ As <code class="code"><span class="constructor">Printf</span>.printf</code>, onl
 </div>
 
 <pre><span class="keyword">module type</span> <a href="BatLog.Config.html">Config</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Config.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
-<pre><span class="keyword">module</span> <a href="BatLog.Make.html">Make</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">S</span></code><code class="code"> : </code><code class="type"><a href="BatLog.Config.html">Config</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Make.html">..</a> <code class="code"><span class="keyword">end</span></code></div></pre><div class="info">
+<pre><span class="keyword">module</span> <a href="BatLog.Make.html">Make</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">S</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatLog.Config.html">Config</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Make.html">..</a> <code class="code"><span class="keyword">end</span></code></div></pre><div class="info">
 Build a logger module with custom, fixed output, prefix and flags
 </div>
 <br>
@@ -189,7 +192,7 @@ A simple-to-use logger with verbosity levels that outputs by
 The details of a level scheme for verbosity-level loggers
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatLog.Make_lev.html">Make_lev</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">L</span></code><code class="code"> : </code><code class="type"><a href="BatLog.Level_sig.html">Level_sig</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">S</span></code><code class="code"> : </code><code class="type"><a href="BatLog.Config.html">Config</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Make_lev.html">..</a> <code class="code"><span class="keyword">end</span></code></div></div></pre><div class="info">
+<pre><span class="keyword">module</span> <a href="BatLog.Make_lev.html">Make_lev</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">L</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatLog.Level_sig.html">Level_sig</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">S</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatLog.Config.html">Config</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Make_lev.html">..</a> <code class="code"><span class="keyword">end</span></code></div></div></pre><div class="info">
 Make your own level-based logger, like <code class="code"><span class="constructor">Easy</span></code>
 </div>
 </body></html>

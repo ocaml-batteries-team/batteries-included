@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatOption.html">
 <link rel="next" href="BatParserCo.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -189,13 +192,13 @@ We use <code class="code">compare</code> as member name instead of <code class="
 Returns a variant ordering from a legacy comparison<br>
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatOrd.Ord.html">Ord</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">Comp</span></code><code class="code"> : </code><code class="type"><a href="BatOrd.Comp.html">Comp</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="type">  with type t = Comp.t</code></div></pre>
+<pre><span class="keyword">module</span> <a href="BatOrd.Ord.html">Ord</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Comp</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Comp.html">Comp</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="type">  with type t = Comp.t</code></div></pre>
 <pre><span id="VALcomp0"><span class="keyword">val</span> comp0</span> : <code class="type"><a href="BatOrd.html#TYPEorder">order</a> -> int</code></pre>
 <pre><span id="VALcomp"><span class="keyword">val</span> comp</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">ord</a> -> 'a <a href="BatOrd.html#TYPEcomp">comp</a></code></pre><div class="info ">
 Returns an legacy comparison from a variant ordering<br>
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatOrd.Comp.html">Comp</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">Ord</span></code><code class="code"> : </code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatOrd.Comp.html">Comp</a></code><code class="type">  with type t = Ord.t</code></div></pre>
+<pre><span class="keyword">module</span> <a href="BatOrd.Comp.html">Comp</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Ord</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatOrd.Comp.html">Comp</a></code><code class="type">  with type t = Ord.t</code></div></pre>
 <pre><span id="VALpoly_comp"><span class="keyword">val</span> poly_comp</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">comp</a></code></pre>
 <pre><span id="VALpoly_ord"><span class="keyword">val</span> poly_ord</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">ord</a></code></pre>
 <pre><span id="VALpoly"><span class="keyword">val</span> poly</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">ord</a></code></pre><div class="info ">
@@ -208,7 +211,7 @@ Polymorphic comparison functions, based on the
 
     They work by runtime magic, inspecting the values in an untyped
     way. While being an useful hack for base types and simple
-    composite types (say <code class="code">(int * float) list</code>, they do not play well
+    composite types (say <code class="code">(int&nbsp;*&nbsp;float)&nbsp;list</code>, they do not play well
     with functions, type abstractions, and structures that would need
     a finer notion of equality/comparison. For example, if one
     represent sets as balanced binary tree, one may want set with
@@ -228,12 +231,12 @@ Polymorphic comparison functions, based on the
 <pre><span id="VALrev_comp"><span class="keyword">val</span> rev_comp</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">comp</a> -> 'a <a href="BatOrd.html#TYPEcomp">comp</a></code></pre>
 <pre><span id="VALrev"><span class="keyword">val</span> rev</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">ord</a> -> 'a <a href="BatOrd.html#TYPEord">ord</a></code></pre><div class="info ">
 Reverse a given ordering. If <code class="code"><span class="constructor">Int</span>.ord</code> sorts integer by increasing
-    order, <code class="code">rev <span class="constructor">Int</span>.ord</code> will sort them by decreasing order.<br>
+    order, <code class="code">rev&nbsp;<span class="constructor">Int</span>.ord</code> will sort them by decreasing order.<br>
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatOrd.RevOrd.html">RevOrd</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">Ord</span></code><code class="code"> : </code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="type">  with type t = Ord.t</code></div></pre>
-<pre><span class="keyword">module</span> <a href="BatOrd.RevComp.html">RevComp</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">Comp</span></code><code class="code"> : </code><code class="type"><a href="BatOrd.Comp.html">Comp</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatOrd.Comp.html">Comp</a></code><code class="type">  with type t = Comp.t</code></div></pre>
-<pre><span class="keyword">module</span> <a href="BatOrd.Rev.html">Rev</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">Ord</span></code><code class="code"> : </code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="type">  with type t = Ord.t</code></div></pre>
+<pre><span class="keyword">module</span> <a href="BatOrd.RevOrd.html">RevOrd</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Ord</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="type">  with type t = Ord.t</code></div></pre>
+<pre><span class="keyword">module</span> <a href="BatOrd.RevComp.html">RevComp</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Comp</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Comp.html">Comp</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatOrd.Comp.html">Comp</a></code><code class="type">  with type t = Comp.t</code></div></pre>
+<pre><span class="keyword">module</span> <a href="BatOrd.Rev.html">Rev</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Ord</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="type">  with type t = Ord.t</code></div></pre>
 <pre><span id="TYPEeq"><span class="keyword">type</span> <code class="type">'a</code> eq</span> = <code class="type">'a -> 'a -> bool</code> </pre>
 <div class="info ">
 The type for equality function.
@@ -256,9 +259,9 @@ Derives an equality function from an ordering function.<br>
 </div>
 
 <pre><span class="keyword">module type</span> <a href="BatOrd.Eq.html">Eq</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatOrd.Eq.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
-<pre><span class="keyword">module</span> <a href="BatOrd.EqOrd.html">EqOrd</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">Ord</span></code><code class="code"> : </code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatOrd.Eq.html">Eq</a></code><code class="type">  with type t = Ord.t</code></div></pre>
-<pre><span class="keyword">module</span> <a href="BatOrd.EqComp.html">EqComp</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">Comp</span></code><code class="code"> : </code><code class="type"><a href="BatOrd.Comp.html">Comp</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatOrd.Eq.html">Eq</a></code><code class="type">  with type t = Comp.t</code></div></pre>
-<pre><span class="keyword">module</span> <a href="BatOrd.Eq.html">Eq</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span> (</code><code class="code"><span class="constructor">Ord</span></code><code class="code"> : </code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="code">) <span class="keywordsign">-&gt;</span> </code><code class="type"><a href="BatOrd.Eq.html">Eq</a></code><code class="type">  with type t = Ord.t</code></div></pre>
+<pre><span class="keyword">module</span> <a href="BatOrd.EqOrd.html">EqOrd</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Ord</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatOrd.Eq.html">Eq</a></code><code class="type">  with type t = Ord.t</code></div></pre>
+<pre><span class="keyword">module</span> <a href="BatOrd.EqComp.html">EqComp</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Comp</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Comp.html">Comp</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatOrd.Eq.html">Eq</a></code><code class="type">  with type t = Comp.t</code></div></pre>
+<pre><span class="keyword">module</span> <a href="BatOrd.Eq.html">Eq</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Ord</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatOrd.Eq.html">Eq</a></code><code class="type">  with type t = Ord.t</code></div></pre>
 <pre><span id="TYPEchoice"><span class="keyword">type</span> <code class="type">'a</code> choice</span> = <code class="type">'a -> 'a -> 'a</code> </pre>
 <div class="info ">
 choice functions, see <code class="code">min</code> and <code class="code">max</code>.<br>
@@ -270,24 +273,24 @@ choice functions, see <code class="code">min</code> and <code class="code">max</
 <pre><span id="VALmin_comp"><span class="keyword">val</span> min_comp</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">comp</a> -> 'a <a href="BatOrd.html#TYPEchoice">choice</a></code></pre>
 <pre><span id="VALmax_comp"><span class="keyword">val</span> max_comp</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">comp</a> -> 'a <a href="BatOrd.html#TYPEchoice">choice</a></code></pre>
 <pre><span id="VALmin"><span class="keyword">val</span> min</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">ord</a> -> 'a <a href="BatOrd.html#TYPEchoice">choice</a></code></pre><div class="info ">
-<code class="code">min ord</code> will choose the smallest element, according to <code class="code">ord</code>.
-    For example, <code class="code">min <span class="constructor">Int</span>.ord 1 2</code> will return <code class="code">1</code>.
+<code class="code">min&nbsp;ord</code> will choose the smallest element, according to <code class="code">ord</code>.
+    For example, <code class="code">min&nbsp;<span class="constructor">Int</span>.ord&nbsp;1&nbsp;2</code> will return <code class="code">1</code>.
 <p>
 
-    <pre class="codepre"><code class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;the&nbsp;minimum&nbsp;element&nbsp;of&nbsp;a&nbsp;list&nbsp;*)</span>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;list_min&nbsp;ord&nbsp;=&nbsp;<span class="constructor">List</span>.reduce&nbsp;(min&nbsp;ord)
-&nbsp;&nbsp;&nbsp;&nbsp;</code></pre><br>
+    <pre class="codepre"><code class="code">      <span class="comment">(* the minimum element of a list *)</span>
+      <span class="keyword">let</span> list_min ord = <span class="constructor">List</span>.reduce (min ord)
+    </code></pre><br>
 </div>
 
 <pre><span id="VALmax"><span class="keyword">val</span> max</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">ord</a> -> 'a <a href="BatOrd.html#TYPEchoice">choice</a></code></pre><div class="info ">
-<code class="code">max ord</code> will choose the biggest element according to <code class="code">ord</code>.<br>
+<code class="code">max&nbsp;ord</code> will choose the biggest element according to <code class="code">ord</code>.<br>
 </div>
 
 <pre><span id="VALbin_comp"><span class="keyword">val</span> bin_comp</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">comp</a> -> 'a -> 'a -> 'b <a href="BatOrd.html#TYPEcomp">comp</a> -> 'b -> 'b -> int</code></pre>
 <pre><span id="VALbin_ord"><span class="keyword">val</span> bin_ord</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">ord</a> -> 'a -> 'a -> 'b <a href="BatOrd.html#TYPEord">ord</a> -> 'b -> 'b -> <a href="BatOrd.html#TYPEorder">order</a></code></pre><div class="info ">
 binary lifting of the comparison function, using lexicographic order:
-    <code class="code">bin_ord ord1 v1 v1' ord2 v2 v2'</code> is <code class="code">ord2 v2 v2'</code> if <code class="code">ord1 v1 v1' = <span class="constructor">Eq</span></code>,
-    and <code class="code">ord1 v1 v1'</code> otherwhise.<br>
+    <code class="code">bin_ord&nbsp;ord1&nbsp;v1&nbsp;v1'&nbsp;ord2&nbsp;v2&nbsp;v2'</code> is <code class="code">ord2&nbsp;v2&nbsp;v2'</code> if <code class="code">ord1&nbsp;v1&nbsp;v1'&nbsp;=&nbsp;<span class="constructor">Eq</span></code>,
+    and <code class="code">ord1&nbsp;v1&nbsp;v1'</code> otherwhise.<br>
 </div>
 
 <pre><span id="VALbin_eq"><span class="keyword">val</span> bin_eq</span> : <code class="type">'a <a href="BatOrd.html#TYPEeq">eq</a> -> 'a -> 'a -> 'b <a href="BatOrd.html#TYPEeq">eq</a> -> 'b -> 'b -> bool</code></pre>
@@ -296,7 +299,7 @@ binary lifting of the comparison function, using lexicographic order:
 <pre><span id="VALmap_ord"><span class="keyword">val</span> map_ord</span> : <code class="type">('a -> 'b) -> 'b <a href="BatOrd.html#TYPEord">ord</a> -> 'a <a href="BatOrd.html#TYPEord">ord</a></code></pre><div class="info ">
 These functions extend an existing equality/comparison/ordering to
     a new domain through a mapping function.  For example, to order
-    sets by their cardinality, use <code class="code">map_ord <span class="constructor">Set</span>.cardinal <span class="constructor">Int</span>.ord</code>.
+    sets by their cardinality, use <code class="code">map_ord&nbsp;<span class="constructor">Set</span>.cardinal&nbsp;<span class="constructor">Int</span>.ord</code>.
     The input of the mapping function is the type you want to compare,
     so this is the reverse of <code class="code"><span class="constructor">List</span>.map</code>.<br>
 </div>

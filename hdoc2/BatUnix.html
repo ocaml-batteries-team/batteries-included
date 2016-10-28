@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link rel="previous" href="BatUnit.html">
 <link rel="next" href="BatUref.html">
@@ -28,6 +29,7 @@
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
 <link title="BatComplex" rel="Chapter" href="BatComplex.html">
+<link title="BatConcreteQueue" rel="Chapter" href="BatConcreteQueue.html">
 <link title="BatConcurrent" rel="Chapter" href="BatConcurrent.html">
 <link title="BatDeque" rel="Chapter" href="BatDeque.html">
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
@@ -68,6 +70,7 @@
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
 <link title="BatOo" rel="Chapter" href="BatOo.html">
+<link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
 <link title="BatOrd" rel="Chapter" href="BatOrd.html">
@@ -884,7 +887,7 @@ Return a string describing the given error code.<br>
 </div>
 
 <pre><span id="VALhandle_unix_error"><span class="keyword">val</span> handle_unix_error</span> : <code class="type">('a -> 'b) -> 'a -> 'b</code></pre><div class="info ">
-<code class="code">handle_unix_error f x</code> applies <code class="code">f</code> to <code class="code">x</code> and returns the result.
+<code class="code">handle_unix_error&nbsp;f&nbsp;x</code> applies <code class="code">f</code> to <code class="code">x</code> and returns the result.
     If the exception <code class="code"><span class="constructor">Unix_error</span></code> is raised, it prints a message
     describing the error and exits with code 2.<br>
 </div>
@@ -904,7 +907,7 @@ Return the value associated to a variable in the process
 </div>
 
 <pre><span id="VALputenv"><span class="keyword">val</span> putenv</span> : <code class="type">string -> string -> unit</code></pre><div class="info ">
-<code class="code"><span class="constructor">Unix</span>.putenv name value</code> sets the value associated to a
+<code class="code"><span class="constructor">Unix</span>.putenv&nbsp;name&nbsp;value</code> sets the value associated to a
     variable in the process environment.
     <code class="code">name</code> is the name of the environment variable,
     and <code class="code">value</code> its new associated value.<br>
@@ -983,7 +986,7 @@ Flags for <code class="code"><span class="constructor">Unix</span>.waitpid</code
 
 
 <pre><span id="VALexecv"><span class="keyword">val</span> execv</span> : <code class="type">string -> string array -> 'a</code></pre><div class="info ">
-<code class="code">execv prog args</code> execute the program in file <code class="code">prog</code>, with
+<code class="code">execv&nbsp;prog&nbsp;args</code> execute the program in file <code class="code">prog</code>, with
     the arguments <code class="code">args</code>, and the current process environment.
     These <code class="code">execv*</code> functions never return: on success, the current
     program is replaced by the new one;<br>
@@ -1029,12 +1032,12 @@ Same as <code class="code"><span class="constructor">Unix</span>.wait</code>, bu
 Execute the given command, wait until it terminates, and return
     its termination status. The string is interpreted by the shell
     <code class="code">/bin/sh</code> and therefore can contain redirections, quotes, variables,
-    etc. The result <code class="code"><span class="constructor">WEXITED</span> 127</code> indicates that the shell couldn't
+    etc. The result <code class="code"><span class="constructor">WEXITED</span>&nbsp;127</code> indicates that the shell couldn't
     be executed.<br>
 </div>
 
 <pre><span id="VALrun_and_read"><span class="keyword">val</span> run_and_read</span> : <code class="type">string -> <a href="BatUnix.html#TYPEprocess_status">process_status</a> * string</code></pre><div class="info ">
-<code class="code">(stat, output) = run_and_read cmd</code> run the command <code class="code">cmd</code>
+<code class="code">(stat,&nbsp;output)&nbsp;=&nbsp;run_and_read&nbsp;cmd</code> run the command <code class="code">cmd</code>
     (via Unix.system) then return its exit status <code class="code">stat</code> and
     output string <code class="code">output</code> as read from its standard output (which
     was redirected to a temporary file).<br>
@@ -1248,13 +1251,13 @@ Close a file descriptor.<br>
 </div>
 
 <pre><span id="VALread"><span class="keyword">val</span> read</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> Bytes.t -> int -> int -> int</code></pre><div class="info ">
-<code class="code">read fd buff ofs len</code> reads <code class="code">len</code> characters from descriptor
+<code class="code">read&nbsp;fd&nbsp;buff&nbsp;ofs&nbsp;len</code> reads <code class="code">len</code> characters from descriptor
     <code class="code">fd</code>, storing them in string <code class="code">buff</code>, starting at position <code class="code">ofs</code>
     in string <code class="code">buff</code>. Return the number of characters actually read.<br>
 </div>
 
 <pre><span id="VALwrite"><span class="keyword">val</span> write</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> Bytes.t -> int -> int -> int</code></pre><div class="info ">
-<code class="code">write fd buff ofs len</code> writes <code class="code">len</code> characters to descriptor
+<code class="code">write&nbsp;fd&nbsp;buff&nbsp;ofs&nbsp;len</code> writes <code class="code">len</code> characters to descriptor
     <code class="code">fd</code>, taking them from string <code class="code">buff</code>, starting at position <code class="code">ofs</code>
     in string <code class="code">buff</code>. Return the number of characters actually
     written.  <code class="code">write</code> repeats the writing operation until all characters
@@ -1284,13 +1287,13 @@ Same as <code class="code">single_write</code>, but take the data from a string 
 <pre><span id="VALin_channel_of_descr"><span class="keyword">val</span> in_channel_of_descr</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a></code></pre><div class="info ">
 Create an input channel reading from the given descriptor.
     The channel is initially in binary mode; use
-    <code class="code">set_binary_mode_in ic <span class="keyword">false</span></code> if text mode is desired.<br>
+    <code class="code">set_binary_mode_in&nbsp;ic&nbsp;<span class="keyword">false</span></code> if text mode is desired.<br>
 </div>
 
 <pre><span id="VALout_channel_of_descr"><span class="keyword">val</span> out_channel_of_descr</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a></code></pre><div class="info ">
 Create an output channel writing on the given descriptor.
     The channel is initially in binary mode; use
-    <code class="code">set_binary_mode_out oc <span class="keyword">false</span></code> if text mode is desired.<br>
+    <code class="code">set_binary_mode_out&nbsp;oc&nbsp;<span class="keyword">false</span></code> if text mode is desired.<br>
 </div>
 
 <pre><span id="VALdescr_of_in_channel"><span class="keyword">val</span> descr_of_in_channel</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> <a href="BatUnix.html#TYPEfile_descr">file_descr</a></code></pre><div class="info ">
@@ -1306,7 +1309,7 @@ Return the descriptor corresponding to an output channel.<br>
 <pre><span id="VALinput_of_descr"><span class="keyword">val</span> input_of_descr</span> : <code class="type">?autoclose:bool -> ?cleanup:bool -> <a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> <a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a></code></pre><div class="info ">
 Create an <code class="code">input</code> reading from the given descriptor.
     The <code class="code">input</code> is initially in binary mode; use
-    <code class="code">set_binary_mode_in ic <span class="keyword">false</span></code> if text mode is desired.<br>
+    <code class="code">set_binary_mode_in&nbsp;ic&nbsp;<span class="keyword">false</span></code> if text mode is desired.<br>
 </div>
 <div class="param_info"><code class="code">autoclose</code> : If true (default value), close the input
     automatically once there is no more content to read. Otherwise,
@@ -1321,7 +1324,7 @@ Create an <code class="code">input</code> reading from the given descriptor.
 <pre><span id="VALoutput_of_descr"><span class="keyword">val</span> output_of_descr</span> : <code class="type">?cleanup:bool -> <a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> unit <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a></code></pre><div class="info ">
 Create an <code class="code">output</code> writing on the given descriptor.
     The <code class="code">output</code> is initially in binary mode; use
-    <code class="code">set_binary_mode_out oc <span class="keyword">false</span></code> if text mode is desired.<br>
+    <code class="code">set_binary_mode_out&nbsp;oc&nbsp;<span class="keyword">false</span></code> if text mode is desired.<br>
 </div>
 <div class="param_info"><code class="code">cleanup</code> : If true, close the underlying file descriptor
     when the <code class="code">output</code> is closed. If false or unspecified,
@@ -1636,11 +1639,11 @@ Removes the named file<br>
 </div>
 
 <pre><span id="VALrename"><span class="keyword">val</span> rename</span> : <code class="type">string -> string -> unit</code></pre><div class="info ">
-<code class="code">rename old <span class="keyword">new</span></code> changes the name of a file from <code class="code">old</code> to <code class="code"><span class="keyword">new</span></code>.<br>
+<code class="code">rename&nbsp;old&nbsp;<span class="keyword">new</span></code> changes the name of a file from <code class="code">old</code> to <code class="code"><span class="keyword">new</span></code>.<br>
 </div>
 
 <pre><span id="VALlink"><span class="keyword">val</span> link</span> : <code class="type">string -> string -> unit</code></pre><div class="info ">
-<code class="code">link source dest</code> creates a hard link named <code class="code">dest</code> to the file
+<code class="code">link&nbsp;source&nbsp;dest</code> creates a hard link named <code class="code">dest</code> to the file
     named <code class="code">source</code>.<br>
 </div>
 <br>
@@ -1728,7 +1731,7 @@ Return a new file descriptor referencing the same file as
 </div>
 
 <pre><span id="VALdup2"><span class="keyword">val</span> dup2</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> <a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> unit</code></pre><div class="info ">
-<code class="code">dup2 fd1 fd2</code> duplicates <code class="code">fd1</code> to <code class="code">fd2</code>, closing <code class="code">fd2</code> if already
+<code class="code">dup2&nbsp;fd1&nbsp;fd2</code> duplicates <code class="code">fd1</code> to <code class="code">fd2</code>, closing <code class="code">fd2</code> if already
     opened.<br>
 </div>
 
@@ -1915,7 +1918,7 @@ Close i/o opened by <code class="code"><span class="constructor">Unix</span>.ope
 </div>
 
 <pre><span id="VALcreate_process"><span class="keyword">val</span> create_process</span> : <code class="type">string -><br>       string array -><br>       <a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> <a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> <a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> int</code></pre><div class="info ">
-<code class="code">create_process prog args new_stdin new_stdout new_stderr</code>
+<code class="code">create_process&nbsp;prog&nbsp;args&nbsp;new_stdin&nbsp;new_stdout&nbsp;new_stderr</code>
     forks a new process that executes the program
     in file <code class="code">prog</code>, with arguments <code class="code">args</code>. The pid of the new
     process is returned immediately; the new process executes
@@ -1930,7 +1933,7 @@ Close i/o opened by <code class="code"><span class="constructor">Unix</span>.ope
 </div>
 
 <pre><span id="VALcreate_process_env"><span class="keyword">val</span> create_process_env</span> : <code class="type">string -><br>       string array -><br>       string array -><br>       <a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> <a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> <a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> int</code></pre><div class="info ">
-<code class="code">create_process_env prog args env new_stdin new_stdout new_stderr</code>
+<code class="code">create_process_env&nbsp;prog&nbsp;args&nbsp;env&nbsp;new_stdin&nbsp;new_stdout&nbsp;new_stderr</code>
     works as <code class="code"><span class="constructor">Unix</span>.create_process</code>, except that the extra argument
     <code class="code">env</code> specifies the environment passed to the program.<br>
 </div>
@@ -1938,7 +1941,7 @@ Close i/o opened by <code class="code"><span class="constructor">Unix</span>.ope
 <pre><span id="VALsymlink"><span class="keyword">val</span> symlink</span> : <code class="type">?to_dir:bool -> string -> string -> unit</code></pre><div class="info ">
 <h6 id="6_Symboliclinks">Symbolic links</h6>
 <p>
-<code class="code">symlink ?to_dir source dest</code> creates the file <code class="code">dest</code> as
+<code class="code">symlink&nbsp;?to_dir&nbsp;source&nbsp;dest</code> creates the file <code class="code">dest</code> as
    a symbolic link to the file <code class="code">source</code>. On Windows, <code class="code">~to_dir</code>
    indicates if the symbolic link points to a directory or a file;
    if omitted, <code class="code">symlink</code> examines <code class="code">source</code> using <code class="code">stat</code> and picks
@@ -2079,7 +2082,7 @@ Commands for <code class="code"><span class="constructor">Unix</span>.lockf</cod
 
 
 <pre><span id="VALlockf"><span class="keyword">val</span> lockf</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> <a href="BatUnix.html#TYPElock_command">lock_command</a> -> int -> unit</code></pre><div class="info ">
-<code class="code">lockf fd cmd size</code> puts a lock on a region of the file opened
+<code class="code">lockf&nbsp;fd&nbsp;cmd&nbsp;size</code> puts a lock on a region of the file opened
     as <code class="code">fd</code>. The region starts at the current read/write position for
     <code class="code">fd</code> (as set by <code class="code"><span class="constructor">Unix</span>.lseek</code>), and extends <code class="code">size</code> bytes forward if
     <code class="code">size</code> is positive, <code class="code">size</code> bytes backwards if <code class="code">size</code> is negative,
@@ -2111,7 +2114,7 @@ Commands for <code class="code"><span class="constructor">Unix</span>.lockf</cod
     the functions <code class="code"><span class="constructor">Sys</span>.signal</code> and <code class="code"><span class="constructor">Sys</span>.set_signal</code>.<br>
 
 <pre><span id="VALkill"><span class="keyword">val</span> kill</span> : <code class="type">int -> int -> unit</code></pre><div class="info ">
-<code class="code">kill pid <span class="keyword">sig</span></code> sends signal number <code class="code"><span class="keyword">sig</span></code> to the process
+<code class="code">kill&nbsp;pid&nbsp;<span class="keyword">sig</span></code> sends signal number <code class="code"><span class="keyword">sig</span></code> to the process
     with id <code class="code">pid</code>.<br>
 </div>
 
@@ -2141,7 +2144,7 @@ Commands for <code class="code"><span class="constructor">Unix</span>.lockf</cod
 
 
 <pre><span id="VALsigprocmask"><span class="keyword">val</span> sigprocmask</span> : <code class="type"><a href="BatUnix.html#TYPEsigprocmask_command">sigprocmask_command</a> -> int list -> int list</code></pre><div class="info ">
-<code class="code">sigprocmask cmd sigs</code> changes the set of blocked signals.
+<code class="code">sigprocmask&nbsp;cmd&nbsp;sigs</code> changes the set of blocked signals.
     If <code class="code">cmd</code> is <code class="code"><span class="constructor">SIG_SETMASK</span></code>, blocked signals are set to those in
     the list <code class="code">sigs</code>.
     If <code class="code">cmd</code> is <code class="code"><span class="constructor">SIG_BLOCK</span></code>, the signals in <code class="code">sigs</code> are added to
@@ -2156,7 +2159,7 @@ Return the set of blocked signals that are currently pending.<br>
 </div>
 
 <pre><span id="VALsigsuspend"><span class="keyword">val</span> sigsuspend</span> : <code class="type">int list -> unit</code></pre><div class="info ">
-<code class="code">sigsuspend sigs</code> atomically sets the blocked signals to <code class="code">sigs</code>
+<code class="code">sigsuspend&nbsp;sigs</code> atomically sets the blocked signals to <code class="code">sigs</code>
     and waits for a non-ignored, non-blocked signal to be delivered.
     On return, the blocked signals are reset to their initial value.<br>
 </div>
@@ -2442,7 +2445,7 @@ Return the current status of the given interval timer.<br>
 </div>
 
 <pre><span id="VALsetitimer"><span class="keyword">val</span> setitimer</span> : <code class="type"><a href="BatUnix.html#TYPEinterval_timer">interval_timer</a> -><br>       <a href="BatUnix.html#TYPEinterval_timer_status">interval_timer_status</a> -> <a href="BatUnix.html#TYPEinterval_timer_status">interval_timer_status</a></code></pre><div class="info ">
-<code class="code">setitimer t s</code> sets the interval timer <code class="code">t</code> and returns
+<code class="code">setitimer&nbsp;t&nbsp;s</code> sets the interval timer <code class="code">t</code> and returns
     its previous status. The <code class="code">s</code> argument is interpreted as follows:
     <code class="code">s.it_value</code>, if nonzero, is the time to the next timer expiration;
     <code class="code">s.it_interval</code>, if nonzero, specifies a value to
@@ -2484,12 +2487,12 @@ Return the list of groups to which the user executing the process
 </div>
 
 <pre><span id="VALsetgroups"><span class="keyword">val</span> setgroups</span> : <code class="type">int array -> unit</code></pre><div class="info ">
-<code class="code">setgroups groups</code> sets the supplementary group IDs for the
+<code class="code">setgroups&nbsp;groups</code> sets the supplementary group IDs for the
     calling process. Appropriate privileges are required.<br>
 </div>
 
 <pre><span id="VALinitgroups"><span class="keyword">val</span> initgroups</span> : <code class="type">string -> int -> unit</code></pre><div class="info ">
-<code class="code">initgroups user group</code> initializes the group access list by
+<code class="code">initgroups&nbsp;user&nbsp;group</code> initializes the group access list by
     reading the group database /etc/group and using all groups of
     which <code class="code">user</code> is a member. The additional group <code class="code">group</code> is also
     added to the list.<br>
@@ -2756,7 +2759,7 @@ The type of socket kinds, specifying the semantics of
 <td align="left" valign="top" >
 <code><span id="TYPEELTsockaddr.ADDR_INET"><span class="constructor">ADDR_INET</span></span> <span class="keyword">of</span> <code class="type"><a href="BatUnix.html#TYPEinet_addr">inet_addr</a> * int</code></code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-The type of socket addresses. <code class="code"><span class="constructor">ADDR_UNIX</span> name</code> is a socket
+The type of socket addresses. <code class="code"><span class="constructor">ADDR_UNIX</span>&nbsp;name</code> is a socket
       address in the Unix domain; <code class="code">name</code> is a file name in the file
       system. <code class="code"><span class="constructor">ADDR_INET</span>(addr,port)</code> is a socket address in the Internet
       domain; <code class="code">addr</code> is the Internet address of the machine, and
@@ -3098,7 +3101,7 @@ Whether to linger on closed connections
 <div class="info ">
 The socket options that can be consulted with <code class="code"><span class="constructor">Unix</span>.getsockopt_optint</code>
     and modified with <code class="code"><span class="constructor">Unix</span>.setsockopt_optint</code>.  These options have a
-    value of type <code class="code">int option</code>, with <code class="code"><span class="constructor">None</span></code> meaning ``disabled''.<br>
+    value of type <code class="code">int&nbsp;option</code>, with <code class="code"><span class="constructor">None</span></code> meaning ``disabled''.<br>
 </div>
 
 
@@ -3151,12 +3154,12 @@ Same as <code class="code"><span class="constructor">Unix</span>.setsockopt</cod
 
 <pre><span id="VALgetsockopt_optint"><span class="keyword">val</span> getsockopt_optint</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> <a href="BatUnix.html#TYPEsocket_optint_option">socket_optint_option</a> -> int option</code></pre><div class="info ">
 Same as <code class="code"><span class="constructor">Unix</span>.getsockopt</code> for a socket option whose value is an
-    <code class="code">int option</code>.<br>
+    <code class="code">int&nbsp;option</code>.<br>
 </div>
 
 <pre><span id="VALsetsockopt_optint"><span class="keyword">val</span> setsockopt_optint</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> <a href="BatUnix.html#TYPEsocket_optint_option">socket_optint_option</a> -> int option -> unit</code></pre><div class="info ">
 Same as <code class="code"><span class="constructor">Unix</span>.setsockopt</code> for a socket option whose value is an
-    <code class="code">int option</code>.<br>
+    <code class="code">int&nbsp;option</code>.<br>
 </div>
 
 <pre><span id="VALgetsockopt_float"><span class="keyword">val</span> getsockopt_float</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> <a href="BatUnix.html#TYPEsocket_float_option">socket_float_option</a> -> float</code></pre><div class="info ">
@@ -3204,7 +3207,7 @@ Connect to a server at the given address.
 Establish a server on the given address.
 <p>
 
-    <code class="code">establish_server f addr</code> establishes a server on address
+    <code class="code">establish_server&nbsp;f&nbsp;addr</code> establishes a server on address
     <code class="code">addr</code>.  For each connection on this address, function <code class="code">f</code> is
     called with two buffered channels connected to the client. A new
     process is created for each connection. The function
@@ -3488,7 +3491,7 @@ Options to <code class="code"><span class="constructor">Unix</span>.getaddrinfo<
 
 
 <pre><span id="VALgetaddrinfo"><span class="keyword">val</span> getaddrinfo</span> : <code class="type">string -> string -> <a href="BatUnix.html#TYPEgetaddrinfo_option">getaddrinfo_option</a> list -> <a href="BatUnix.html#TYPEaddr_info">addr_info</a> list</code></pre><div class="info ">
-<code class="code">getaddrinfo host service opts</code> returns a list of <code class="code"><span class="constructor">Unix</span>.addr_info</code>
+<code class="code">getaddrinfo&nbsp;host&nbsp;service&nbsp;opts</code> returns a list of <code class="code"><span class="constructor">Unix</span>.addr_info</code>
     records describing socket parameters and addresses suitable for
     communicating with the given host and service.  The empty list is
     returned if the host or service names are unknown, or the constraints
@@ -3593,7 +3596,7 @@ Options to <code class="code"><span class="constructor">Unix</span>.getnameinfo<
 
 
 <pre><span id="VALgetnameinfo"><span class="keyword">val</span> getnameinfo</span> : <code class="type"><a href="BatUnix.html#TYPEsockaddr">sockaddr</a> -> <a href="BatUnix.html#TYPEgetnameinfo_option">getnameinfo_option</a> list -> <a href="BatUnix.html#TYPEname_info">name_info</a></code></pre><div class="info ">
-<code class="code">getnameinfo addr opts</code> returns the host name and service name
+<code class="code">getnameinfo&nbsp;addr&nbsp;opts</code> returns the host name and service name
     corresponding to the socket address <code class="code">addr</code>.  <code class="code">opts</code> is a possibly
     empty list of options that governs how these names are obtained.<br>
 <b>Raises</b> <code>Not_found</code> if an error occurs.<br>
@@ -4126,11 +4129,11 @@ Put the calling process in a new session and detach it from
 <h6 id="6_Smalltools">Small tools</h6><br>
 
 <pre><span id="VALis_directory"><span class="keyword">val</span> is_directory</span> : <code class="type">string -> bool</code></pre><div class="info ">
-<code class="code">is_directory filename</code> returns true if <code class="code">filename</code> refers to a directory (or symlink of a directory)<br>
+<code class="code">is_directory&nbsp;filename</code> returns true if <code class="code">filename</code> refers to a directory (or symlink of a directory)<br>
 </div>
 
 <pre><span id="VALrestart_on_EINTR"><span class="keyword">val</span> restart_on_EINTR</span> : <code class="type">('a -> 'b) -> 'a -> 'b</code></pre><div class="info ">
-<code class="code">restart_on_EINTR f x</code> invokes <code class="code">f</code> on <code class="code">x</code> repetedly until the function returns
+<code class="code">restart_on_EINTR&nbsp;f&nbsp;x</code> invokes <code class="code">f</code> on <code class="code">x</code> repetedly until the function returns
     a value or raises another exception than EINTR.<br>
 </div>
 <br>
