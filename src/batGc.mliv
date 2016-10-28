@@ -189,7 +189,7 @@ external counters : unit -> float * float * float = "caml_gc_counters"
 ##V>=4.4##
 ##V>=4.4##    In native code this function does not allocate.
 ##V>=4.4##
-##V>=4.4##    @since NEXT_RELEASE and OCaml 4.04 *)
+##V>=4.4##    @since 2.5.3 and OCaml 4.04 *)
 
 external get : unit -> control = "caml_gc_get"
 (** Return the current values of the GC parameters in a [control] record. *)

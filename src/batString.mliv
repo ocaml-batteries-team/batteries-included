@@ -670,7 +670,7 @@ val split_on_char: char -> string -> string list
       (String.split_on_char sep s) = s]).
     - No string in the result contains the [sep] character.
 
-    @since NEXT_RELEASE
+    @since 2.5.3
 *)
 
 val split : string -> by:string -> string * string

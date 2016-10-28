@@ -344,7 +344,7 @@ sig
 ##V>=4.4##      The dimensions are reversed, such that [get v [| a; b |]] in
 ##V>=4.4##      C layout becomes [get v [| b+1; a+1 |]] in Fortran layout.
 ##V>=4.4##
-##V>=4.4##      @since NEXT_RELEASE and OCaml 4.04.0
+##V>=4.4##      @since 2.5.3 and OCaml 4.04.0
 ##V>=4.4##  *)
 
   val size_in_bytes : ('a, 'b, 'c) t -> int
