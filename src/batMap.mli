@@ -55,8 +55,12 @@
             ...
     ]}
 
-    You can also use predefined maps such as {!IntMap} for maps with
-    integer keys.
+    To define maps with integer/string keys:
+    
+    {[
+      module IntMap = Map.Make(Int)
+      module StringMap = Map.Make(String)
+    ]}
 
     @author Xavier Leroy (Base library)
     @author Nicolas Cannasse
