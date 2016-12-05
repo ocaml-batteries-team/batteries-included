@@ -472,13 +472,20 @@ let range a b =
         lazy (Cons hi (decreasing lo (hi - 1)))*)
   if b >= a then increasing a b else (*decreasing b a*) nil
 
-let split_at n l =
-  let rec aux acc l i =
-    if i = 0 then (rev_of_list acc, l)
-    else match next l with
-      | Nil        -> raise (Invalid_index n)
-      | Cons(h, t) -> aux (h::acc) t (i - 1)
-  in aux [] l n
+let split_at n li =
+  let last_n = ref n in
+  let last_li = ref li in
+  let rec take n li =
+    last_n := n;
+    last_li := li;
+    if n = 0 then lazy Nil
+    else
+      lazy
+        (match (Lazy.force li) with
+         | Nil -> Nil
+         | Cons (x, xs) -> Cons (x, take (n - 1) xs))
+  in
+  take n li, lazy (Lazy.force (drop !last_n !last_li))
 
 let split_nth = split_at
 
