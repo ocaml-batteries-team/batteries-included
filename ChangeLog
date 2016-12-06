@@ -4,8 +4,15 @@ Changelog
 ## NEXT_RELEASE (minor release)
 
 - Clarification and improvements to the documentation
-  #682, #685
-  (Florian Angeletti, Johannes Kloos)
+  #682, #685, #693
+  (Florian Angeletti, Johannes Kloos, Michael Färber)
+
+- make `LazyList.split_at` lazy:
+  `split_at : int -> 'a t -> 'a t * 'a t`
+  would previously eagerly force the prefix of the list
+  and only be lazy in its second returned value.
+  #694
+  (Michael Färber, Gabriel Scherer)
 
 ## v2.5.3
 
