@@ -1,7 +1,11 @@
 Changelog
 ---------
 
-## NEXT_RELEASE
+## NEXT_RELEASE (minor release)
+
+- Clarification and improvements to the documentation
+  #682, #685
+  (Florian Angeletti, Johannes Kloos)
 
 ## v2.5.3
 
