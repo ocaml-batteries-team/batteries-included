@@ -162,8 +162,12 @@ Association tables over ordered types.
     </code></pre>
 <p>
 
-    You can also use predefined maps such as <code class="code"><span class="constructor">IntMap</span></code> for maps with
-    integer keys.<br>
+    To define maps with integer/string keys:
+<p>
+
+    <pre class="codepre"><code class="code">      <span class="keyword">module</span> <span class="constructor">IntMap</span> = <span class="constructor">Map</span>.<span class="constructor">Make</span>(<span class="constructor">Int</span>)
+      <span class="keyword">module</span> <span class="constructor">StringMap</span> = <span class="constructor">Map</span>.<span class="constructor">Make</span>(<span class="constructor">String</span>)
+    </code></pre><br>
 <b>Author(s):</b> Xavier Leroy (Base library), Nicolas Cannasse, Markus Mottl, David Rajchenbach-Teller, Gabriel Scherer<br>
 </div>
 <hr width="100%">

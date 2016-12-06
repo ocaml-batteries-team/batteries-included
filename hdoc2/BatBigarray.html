@@ -404,7 +404,10 @@ Big arrays can contain elements of the following kinds:<ul>
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
 <code><span id="TYPEELTkind.Char"><span class="constructor">Char</span></span> <span class="keyword">:</span> <code class="type">(char, <a href="BatBigarray.html#TYPEint8_unsigned_elt">int8_unsigned_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></code></td>
-<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+
+</tr></table>
+
+<div class="info ">
 To each element kind is associated an OCaml type, which is
     the type of OCaml values that can be stored in the big array
     or read back from it.  This type is not necessarily the same
@@ -437,9 +440,6 @@ To each element kind is associated an OCaml type, which is
 </code></pre>
 # 160 "src/batBigarray.mliv"<br>
 </div>
-</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
-</tr></table>
-
 
 
 <pre><span id="VALfloat32"><span class="keyword">val</span> float32</span> : <code class="type">(float, <a href="BatBigarray.html#TYPEfloat32_elt">float32_elt</a>) <a href="BatBigarray.html#TYPEkind">kind</a></code></pre><div class="info ">
@@ -521,12 +521,12 @@ As shown by the types of the values above,
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
 <code><span id="TYPEELTc_layout.C_layout_typ"><span class="constructor">C_layout_typ</span></span></code></td>
-<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-See <code class="code"><span class="constructor">Bigarray</span>.fortran_layout</code>.<br>
-</div>
-</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+
 </tr></table>
 
+<div class="info ">
+See <code class="code"><span class="constructor">Bigarray</span>.fortran_layout</code>.<br>
+</div>
 
 
 <pre><span id="TYPEfortran_layout"><span class="keyword">type</span> <code class="type"></code>fortran_layout</span> = <code class="type">Bigarray.fortran_layout</code> = </pre><table class="typetable">
@@ -535,7 +535,10 @@ See <code class="code"><span class="constructor">Bigarray</span>.fortran_layout<
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
 <code><span id="TYPEELTfortran_layout.Fortran_layout_typ"><span class="constructor">Fortran_layout_typ</span></span></code></td>
-<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+
+</tr></table>
+
+<div class="info ">
 To facilitate interoperability with existing C and Fortran code,
     this library supports two different memory layouts for big arrays,
     one compatible with the C conventions,
@@ -561,9 +564,6 @@ To facilitate interoperability with existing C and Fortran code,
     Each layout style is identified at the type level by the
     abstract types <code class="code"><span class="constructor">Bigarray</span>.c_layout</code> and <code class="code">fortran_layout</code> respectively.<br>
 </div>
-</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
-</tr></table>
-
 
 
 <pre><span id="TYPElayout"><span class="keyword">type</span> <code class="type">'a</code> layout</span> = <code class="type">'a Bigarray.layout</code> = </pre><table class="typetable">
@@ -579,14 +579,14 @@ To facilitate interoperability with existing C and Fortran code,
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
 <code><span id="TYPEELTlayout.Fortran_layout"><span class="constructor">Fortran_layout</span></span> <span class="keyword">:</span> <code class="type"><a href="BatBigarray.html#TYPEfortran_layout">fortran_layout</a> <a href="BatBigarray.html#TYPElayout">layout</a></code></code></td>
-<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+
+</tr></table>
+
+<div class="info ">
 The type <code class="code"><span class="keywordsign">'</span>a&nbsp;layout</code> represents one of the two supported
     memory layouts: C-style if <code class="code"><span class="keywordsign">'</span>a</code> is <code class="code"><span class="constructor">Bigarray</span>.c_layout</code>, Fortran-style
     if <code class="code"><span class="keywordsign">'</span>a</code> is <code class="code"><span class="constructor">Bigarray</span>.fortran_layout</code>.<br>
 </div>
-</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
-</tr></table>
-
 
 <br>
 <div class="h7" id="7_Supportedlayouts">Supported layouts</div>
