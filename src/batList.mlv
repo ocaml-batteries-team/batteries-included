@@ -517,11 +517,31 @@ let map2 f l1 l2 =
   loop dummy l1 l2;
   dummy.tl
 
+let map2i f l1 l2 =
+  let rec loop i dst src1 src2 =
+    match src1, src2 with
+    | [], [] -> ()
+    | h1 :: t1, h2 :: t2 ->
+      loop (succ i) (Acc.accum dst (f i h1 h2)) t1 t2
+    | _ -> invalid_arg "map2i: Different_list_size"
+  in
+  let dummy = Acc.dummy () in
+  loop 0 dummy l1 l2;
+  dummy.tl
+
 let rec iter2 f l1 l2 =
   match l1, l2 with
   | [], [] -> ()
   | h1 :: t1, h2 :: t2 -> f h1 h2; iter2 f t1 t2
   | _ -> invalid_arg "iter2: Different_list_size"
+
+let iter2i f l1 l2 =
+  let rec loop i l1 l2 =
+    match l1, l2 with
+    | [], [] -> ()
+    | h1 :: t1, h2 :: t2 -> f i h1 h2; loop (succ i) t1 t2
+    | _ -> invalid_arg "iter2: Different_list_size"
+  in loop 0 l1 l2
 
 let rec fold_left2 f accum l1 l2 =
   match l1, l2 with
