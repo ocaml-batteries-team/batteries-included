@@ -12,7 +12,7 @@ Changelog
   would previously eagerly force the prefix of the list
   and only be lazy in its second returned value.
   #694
-  (Michael Färber, Gabriel Scherer)
+  (Michael Färber, Gabriel Scherer, Thibault Suzanne)
 
 ## v2.5.3
 
