@@ -472,6 +472,14 @@ let range a b =
         lazy (Cons hi (decreasing lo (hi - 1)))*)
   if b >= a then increasing a b else (*decreasing b a*) nil
 
+let drop n l =
+  let rec aux l i =
+    if i = 0 then l
+    else match next l with
+      | Nil        -> raise (Invalid_index n)
+      | Cons(_, t) -> aux t (i - 1)
+  in aux l n
+
 let split_at n li =
   let last_n = ref n in
   let last_li = ref li in
@@ -552,14 +560,6 @@ let remove_all x l =
 let rec eternity = lazy (Cons ((), eternity))
 
 let take n l = fst (split_at n l)
-
-let drop n l =
-  let rec aux l i =
-    if i = 0 then l
-    else match next l with
-      | Nil        -> raise (Invalid_index n)
-      | Cons(_, t) -> aux t (i - 1)
-  in aux l n
 
 let drop_while p =
   let rec aux l = match next l with
