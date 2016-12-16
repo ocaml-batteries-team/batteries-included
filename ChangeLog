@@ -14,6 +14,10 @@ Changelog
   #694
   (Michael Färber, Gabriel Scherer, Thibault Suzanne)
 
+- Add `List.{map2i,iter2i}`
+  #696
+  (Thibault Suzanne)
+
 ## v2.5.3
 
 Batteries 2.5.3 synchronizes library functions with OCaml 4.04+beta2,

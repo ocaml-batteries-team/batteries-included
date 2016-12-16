@@ -262,11 +262,23 @@ val iter2 : ('a -> 'b -> unit) -> 'a list -> 'b list -> unit
     @raise Different_list_size if the two lists have
     different lengths. *)
 
+val iter2i : (int -> 'a -> 'b -> unit) -> 'a list -> 'b list -> unit
+(** [List.iter2i f [a0; a1; ...; an] [b0; b1; ...; bn]] calls in turn
+    [f 0 a0 b0; f 1 a1 b1; ...; f n an bn].
+    @raise Different_list_size or Invalid_argument if the two lists
+    have different lengths. *)
+
 val map2 : ('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list
 (** [List.map2 f [a0; a1; ...; an] [b0; b1; ...; bn]] is
     [[f a0 b0; f a1 b1; ...; f an bn]].
     @raise Different_list_size if the two lists have
     different lengths.  Tail-recursive. *)
+
+val map2i : (int -> 'a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list
+(** [List.map2i f [a0; a1; ...; an] [b0; b1; ...; bn]] is
+    [[f 0 a0 b0; f 1 a1 b1; ...; f n an bn]].
+    @raise Different_list_size or Invalid_argument if the two lists
+    have different lengths. Tail-recursive. *)
 
 val rev_map2 : ('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list
 (** [List.rev_map2 f l1 l2] gives the same result as
