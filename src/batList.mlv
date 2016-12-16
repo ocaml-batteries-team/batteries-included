@@ -529,6 +529,17 @@ let map2i f l1 l2 =
   loop 0 dummy l1 l2;
   dummy.tl
 
+(*$T map2i
+  map2i (fun i x y -> i, x, y) [] [] = []
+  map2i (fun i x y -> i, x, y) ['a'] ["b"] = [0, 'a', "b"]
+  map2i (fun i x y -> i, x, y) ['a', 'b', 'c'] ["d", "e", "f"] = \
+    [(0, 'a', "d"); (1, 'b', "e"); (2, 'c', "f")]
+  try ignore (map2i (fun i x y -> i, x, y) [] [0]); false \
+    with Invalid_argument _ -> true
+  try ignore (map2i (fun i x y -> i, x, y) [1, 2, 3] ["4"]); false \
+    with Invalid_argument _ -> true
+*)
+
 let rec iter2 f l1 l2 =
   match l1, l2 with
   | [], [] -> ()
@@ -542,6 +553,19 @@ let iter2i f l1 l2 =
     | h1 :: t1, h2 :: t2 -> f i h1 h2; loop (succ i) t1 t2
     | _ -> invalid_arg "iter2: Different_list_size"
   in loop 0 l1 l2
+
+(*$T iter2i
+  try iter2i (fun _ _ _ -> ()) [1] [1;2;3]; false \
+    with Invalid_argument _ -> true
+  try iter2i (fun _ _ _ -> ()) [1] []; false \
+    with Invalid_argument _ -> true
+*)
+
+(*$T iter2i
+  iter2i (fun _ _ _ -> assert false) [] []; true
+  let r = ref 0 in iter2i (fun i x y -> r := r + i * x + y) [1] [2]; !r = 2
+  let r = ref 0 in iter2i (fun i x y -> r := r + i * x + y) [1; 2] [3; 4]; !r = 9
+*)
 
 let rec fold_left2 f accum l1 l2 =
   match l1, l2 with
