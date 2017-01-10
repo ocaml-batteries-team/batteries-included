@@ -38,6 +38,16 @@ val get : ('a, exn) t -> 'a
 *)
 val default: 'a -> ('a, _) t -> 'a
 
+(** [map f (Ok x)] returns [Ok (f x)] and [map f (Bad e)] returns [Bad e].
+    @since 2.5.4
+*)
+val map : ('a -> 'b) -> ('a, 'c) t -> ('b, 'c) t
+
+(** [map_both f g (Ok x)] returns [Ok (f x)] and [map_both f g (Bad e)] returns [Bad (g e)].
+    @since 2.5.4
+*)
+val map_both : ('a -> 'b) -> ('c -> 'd) -> ('a, 'c) t -> ('b, 'd) t
+
 (** [map_default d f r] evaluates to [d] if [r] is [Bad] else [f x]
     when [r] is [Ok x]
     @since 2.0
