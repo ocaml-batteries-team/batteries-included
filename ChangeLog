@@ -18,6 +18,10 @@ Changelog
   #696
   (Thibault Suzanne)
 
+- Added `Result.{map,map_both}`
+  #705
+  (Ifaz Kabir)
+
 ## v2.5.3
 
 Batteries 2.5.3 synchronizes library functions with OCaml 4.04+beta2,

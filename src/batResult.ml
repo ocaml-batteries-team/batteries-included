@@ -19,6 +19,27 @@ let default def = function
   | Ok x  -> x
   | Bad _ -> def
 
+let map f = function
+  | Bad e -> Bad e
+  | Ok v  -> Ok (f v)
+(*$T map
+  map succ (Bad (-1)) = (Bad (-1))
+  map succ (Bad 0) = (Bad 0)
+  map succ (Ok 3) = (Ok 4)
+*)
+
+let map_both f g = function
+  | Bad e -> Bad (g e)
+  | Ok v  -> Ok (f v)
+(*$T map_both
+  map_both succ pred (Bad (-1)) = (Bad (-2))
+  map_both succ pred (Bad 0) = (Bad (-1))
+  map_both succ pred (Bad 1) = (Bad 0)
+  map_both succ pred (Ok (-1)) = (Ok 0)
+  map_both succ pred (Ok 0) = (Ok 1)
+  map_both succ pred (Ok 1) = (Ok 2)
+*)
+
 let map_default def f = function
   | Ok x -> f x
   | Bad _ -> def
