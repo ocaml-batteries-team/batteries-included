@@ -1,9 +1,10 @@
 let array_shuffle rand_state a =
-  (match rand_state with
-   | Some s -> Random.set_state s
-   | None -> ());
+  let state = match rand_state with
+    | Some s -> s
+    | None -> Random.get_state ()
+  in
   for n = Array.length a - 1 downto 1 do
-    let k = Random.int (n + 1) in
+    let k = Random.State.int state (n + 1) in
     if k <> n then
       let buf = Array.unsafe_get a n in
       Array.unsafe_set a n (Array.unsafe_get a k);
