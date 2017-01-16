@@ -1,7 +1,7 @@
 let array_shuffle rand_state a =
   (match rand_state with
    | Some s -> Random.set_state s
-   | None -> Random.self_init ());
+   | None -> ());
   for n = Array.length a - 1 downto 1 do
     let k = Random.int (n + 1) in
     if k <> n then
