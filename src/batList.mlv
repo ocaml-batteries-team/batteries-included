@@ -1304,6 +1304,15 @@ let subset cmp l l' = for_all (fun x -> mem_cmp cmp x l') l
   subset Pervasives.compare [1;2] [1;2;3] = true
 *)
 
+let shuffle s l =
+    Shuffle.list_shuffle s l
+(*$T shuffle
+  let () = Random.init 11 in \
+  let s = Random.get_state () in \
+  shuffle (Some s) [1;2;3;4;5;6;7;8;9] = [7; 2; 9; 5; 3; 6; 4; 1; 8]
+  shuffle None [] = []
+*)
+
 module Exceptionless = struct
   let rfind p l =
     try  Some (rfind p l)
