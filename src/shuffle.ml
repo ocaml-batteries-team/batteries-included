@@ -1,10 +1,6 @@
-let array_shuffle rand_state a =
-  let state = match rand_state with
-    | Some s -> s
-    | None -> Random.get_state ()
-  in
+let array_shuffle ?state:(s = Random.get_state ()) a =
   for n = Array.length a - 1 downto 1 do
-    let k = Random.State.int state (n + 1) in
+    let k = Random.State.int s (n + 1) in
     if k <> n then
       let buf = Array.unsafe_get a n in
       Array.unsafe_set a n (Array.unsafe_get a k);
@@ -12,6 +8,6 @@ let array_shuffle rand_state a =
   done;
   a
 
-let list_shuffle rand_state l =
-  let a = array_shuffle rand_state (Array.of_list l) in
+let list_shuffle ?state:(s = Random.get_state ()) l =
+  let a = array_shuffle ~state:s (Array.of_list l) in
   Array.to_list a
