@@ -7,7 +7,3 @@ let array_shuffle ?state:(s = Random.get_state ()) a =
       Array.unsafe_set a k buf
   done;
   a
-
-let list_shuffle ?state:(s = Random.get_state ()) l =
-  let a = array_shuffle ~state:s (Array.of_list l) in
-  Array.to_list a
