@@ -735,13 +735,12 @@ let ord ord_elt a1 a2 =
   ord BatInt.ord [|1;1;1|] [|1;1;1|] = BatOrd.Eq
 *)
 
-let shuffle rand_state a =
-  Shuffle.array_shuffle rand_state a
+let shuffle ?state:(s = Random.get_state ()) a =
+  Shuffle.array_shuffle ~state:s a
 (*$T shuffle
-  let () = Random.init 11 in \
-  let s = Random.get_state () in \
-  shuffle (Some s) [|1;2;3;4;5;6;7;8;9|] = [|7; 2; 9; 5; 3; 6; 4; 1; 8|]
-  shuffle None [||] = [||]
+  let s = Random.State.make [|11|] in \
+  shuffle ~state:s [|1;2;3;4;5;6;7;8;9|] = [|7; 2; 9; 5; 3; 6; 4; 1; 8|]
+  shuffle [||] = [||]
 *)
 
 module Incubator = struct

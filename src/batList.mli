@@ -98,16 +98,17 @@ val at : 'a list -> int -> 'a
 val rev : 'a list -> 'a list
 (** List reversal. *)
 
-val shuffle : Random.State.t option -> 'a list -> 'a list
-(** [shuffle rs l] randomly shuffles in place the elements of [l].
+val shuffle : ?state:Random.State.t -> 'a list -> 'a list
+(** [shuffle ~state:rs l] randomly shuffles the elements of [l].
     The optional random state [rs] allows to control the random
-    numbers being used during shuffling (if [rs] is None,
-    Random.self_init() will be called prior to generating
-    random numbers).
+    numbers being used during shuffling (for reproducibility).
 
     Shuffling is implemented using the Fisher-Yates
     algorithm on an array and works in O(n), where n is the number
-    of elements of [l]. *)
+    of elements of [l].
+
+    @since NEXT_RELEASE
+ *)
 
 val append : 'a list -> 'a list -> 'a list
 (** Catenate two lists.  Same function as the infix operator [@].
