@@ -4,10 +4,8 @@
 
 **** "Error: Unbound module Batteries"
 
-1) Change `open Batteries` to `open Batteries_uni`.  If compiling without threads, 
-   `Batteries` is not available, only `Batteries_uni`
-2) Check that you're using ocamlfind with `-package batteries`, or `pkg(batteries)`
-   in ocamlbuild to tell OCaml to make batteries available to your code.
+Check that you're using ocamlfind with `-package batteries`, or `pkg(batteries)`
+in OCamlBuild _tags file to tell OCaml to make Batteries available to your code.
 
 *** General ***
 
@@ -50,29 +48,26 @@ systems.
 
 *** Using Batteries ***
 
-In your source code, add [open Batteries] for the multithreaded
-batteries library.  If you want to build without threads, use [open
-Batteries_uni] instead.  When you've done this, you'll have access to
-the batteries modules that extend stdlib modules as part of the stdlib
-modules.  To access the original stdlib modules, use [Legacy.List],
-for example.  Other [BatFoo] modules provided by batteries are
-available as simply [Foo].
+In your source code, add [open Batteries].  When you've done this, you'll
+have access to the Batteries modules that extend stdlib modules as part of
+the stdlib modules.  To access the original stdlib modules, use
+[Legacy.List], for example.  Other [BatFoo] modules provided by batteries
+are available as simply [Foo].
 
 **** Compiling with Ocamlbuild ****
 
 Copy build/myocamlbuild.ml into your source directory, and use:
 
-    <*>: pkg_batteries, pkg_threads
+    <*>: package(batteries)
 
 in your _tags file to enable batteries for all modules.
 
 **** Bare Findlib ****
 
-ocamlfind ocamlc -thread -package batteries -linkpkg foo.ml -o foo
+ocamlfind ocamlc -package batteries -linkpkg foo.ml -o foo
 
 **** OMake ****
 
 Add the following to your OMakefile:
 
 OCAMLPACKS[] += batteries
-OCAMLFLAGS += -thread
