@@ -289,6 +289,10 @@ module Safe_int = struct
 
 end
 
+module Set = struct
+  include (Set.Make(BaseInt))
+end
+
 (*$T &
   Result.(catch (Safe_int.add max_int) max_int |> is_exn Number.Overflow)
   Result.(catch (Safe_int.add min_int) min_int |> is_exn Number.Overflow)
