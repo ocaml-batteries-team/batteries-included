@@ -139,10 +139,24 @@ clean-prefilter:
 
 ### List of source files that it's okay to try to test
 
+# TESTABLE contains the source files as the user sees them,
+# as a mix of .ml and .mlv files in the src/ directory
+
+# TESTDEPS represents the file whose changes Makefile should watch to
+# decide to reprocess the test results. It is identical to TESTABLE.
+
+# TESTFILES contains the OCaml source files as `qtest` wants to see
+# them, that is after preprocessing. We ask ocamlbuild to build the
+# $(TESTFILES) from $(TESTABLE), and pass them to qtest from the
+# `_build` directory.
+
 DONTTEST=src/batteriesHelp.ml \
 	 src/batConcreteQueue_402.ml src/batConcreteQueue_403.ml
-TESTABLE ?= $(filter-out $(DONTTEST), $(wildcard src/*.ml))
+TESTABLE ?= $(filter-out $(DONTTEST),\
+   $(wildcard src/*.ml) $(wildcard src/*.mlv))
 TESTDEPS = $(TESTABLE)
+
+TESTFILES = $(TESTABLE:.mlv=.ml)
 
 ### Test suite: "offline" unit tests
 ##############################################
@@ -158,7 +172,9 @@ _build/testsuite/main.native: $(TESTDEPS) $(wildcard testsuite/*.ml)
 
 # extract all qtest unit tests into a single ml file
 $(QTESTDIR)/all_tests.ml: $(TESTABLE)
-	qtest -o $@ --shuffle --preamble-file qtest/qtest_preamble.ml extract $(TESTABLE)
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(TESTFILES)
+	qtest -o $@ --shuffle --preamble-file qtest/qtest_preamble.ml \
+	  extract $(addprefix _build/,$(TESTFILES))
 
 _build/$(QTESTDIR)/all_tests.byte: $(QTESTDIR)/all_tests.ml
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26\
