@@ -47,13 +47,13 @@ include Bytes
 ##V<4.3##let lowercase_ascii s = map BatChar.lowercase_ascii s
 
 (*$T uppercase_ascii
-  equal ("five" |> of_string |> capitalize_ascii |> to_string) "FIVE"
-  equal ("école" |> of_string |> captialize_ascii |> to_string) "éCOLE"
+  equal ("five" |> of_string |> uppercase_ascii |> to_string) "FIVE"
+  equal ("école" |> of_string |> uppercase_ascii |> to_string) "éCOLE"
  *)
 
 (*$T lowercase_ascii
-  equal ("FIVE" |> of_string |> capitalize_ascii |> to_string) "five"
-  equal ("ÉCOLE" |> of_string |> captialize_ascii |> to_string) "École"
+  equal ("FIVE" |> of_string |> lowercase_ascii |> to_string) "five"
+  equal ("ÉCOLE" |> of_string |> lowercase_ascii |> to_string) "École"
  *)
 
 ##V<4.3##let map_first_char f s =
@@ -67,10 +67,10 @@ include Bytes
 
 (*$T capitalize_ascii
   equal ("five" |> of_string |> capitalize_ascii |> to_string) "Five"
-  equal ("école" |> of_string |> captialize_ascii |> to_string) "école"
+  equal ("école" |> of_string |> capitalize_ascii |> to_string) "école"
  *)
 
 (*$T uncapitalize_ascii
-  equal ("Five" |> of_string |> capitalize_ascii |> to_string) "Five"
-  equal ("école" |> of_string |> captialize_ascii |> to_string) "école"
+  equal ("Five" |> of_string |> uncapitalize_ascii |> to_string) "five"
+  equal ("École" |> of_string |> uncapitalize_ascii |> to_string) "École"
  *)
