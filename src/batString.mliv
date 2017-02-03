@@ -558,7 +558,7 @@ val chop : ?l:int -> ?r:int -> string -> string
 
     [chop ~l ~r s] is equivalent to [lchop ~n:l (rchop ~n:r s)].
 
-    @raise Invalid_argument if either [l] or [r] is are less than zero.
+    @raise Invalid_argument if either [l] or [r] is less than zero.
 
     Examples:
     [String.chop "\"Weeble\"" = "Weeble"]
