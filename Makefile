@@ -173,8 +173,9 @@ _build/testsuite/main.native: $(TESTDEPS) $(wildcard testsuite/*.ml)
 # extract all qtest unit tests into a single ml file
 $(QTESTDIR)/all_tests.ml: $(TESTABLE)
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(TESTFILES)
-	qtest -o $@ --shuffle --preamble-file qtest/qtest_preamble.ml \
-	  extract $(addprefix _build/,$(TESTFILES))
+	(cd _build; qtest -o ../$@ --shuffle \
+	  --preamble-file ../qtest/qtest_preamble.ml \
+	  extract $(TESTFILES))
 
 _build/$(QTESTDIR)/all_tests.byte: $(QTESTDIR)/all_tests.ml
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26\
