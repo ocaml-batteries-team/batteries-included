@@ -532,11 +532,11 @@ let map2i f l1 l2 =
 (*$T map2i
   map2i (fun i x y -> i, x, y) [] [] = []
   map2i (fun i x y -> i, x, y) ['a'] ["b"] = [0, 'a', "b"]
-  map2i (fun i x y -> i, x, y) ['a', 'b', 'c'] ["d", "e", "f"] = \
+  map2i (fun i x y -> i, x, y) ['a'; 'b'; 'c'] ["d"; "e"; "f"] = \
     [(0, 'a', "d"); (1, 'b', "e"); (2, 'c', "f")]
   try ignore (map2i (fun i x y -> i, x, y) [] [0]); false \
     with Invalid_argument _ -> true
-  try ignore (map2i (fun i x y -> i, x, y) [1, 2, 3] ["4"]); false \
+  try ignore (map2i (fun i x y -> i, x, y) [1; 2; 3] ["4"]); false \
     with Invalid_argument _ -> true
 *)
 
@@ -563,8 +563,8 @@ let iter2i f l1 l2 =
 
 (*$T iter2i
   iter2i (fun _ _ _ -> assert false) [] []; true
-  let r = ref 0 in iter2i (fun i x y -> r := r + i * x + y) [1] [2]; !r = 2
-  let r = ref 0 in iter2i (fun i x y -> r := r + i * x + y) [1; 2] [3; 4]; !r = 9
+  let r = ref 0 in iter2i (fun i x y -> r := !r + i * x + y) [1] [2]; !r = 2
+  let r = ref 0 in iter2i (fun i x y -> r := !r + i * x + y) [1; 2] [3; 4]; !r = 9
 *)
 
 let rec fold_left2 f accum l1 l2 =

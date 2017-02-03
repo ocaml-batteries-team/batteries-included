@@ -38,8 +38,9 @@ let print_loc = function
      end
 
 let process_line loc line =
-  if Str.string_match filter_cookie_re line 0 then begin
-    mark_loc_stale loc;
+  if not (Str.string_match filter_cookie_re line 0)
+  then print_endline line
+  else begin
     let cmp = match Str.matched_group 1 line with
     | "<" -> (<) | ">" -> (>) | "=" -> (=)
     | "<=" -> (<=) | ">=" -> (>=)
@@ -52,16 +53,15 @@ let process_line loc line =
     let pass = cmp (major*100+minor) (ver_maj*100+ver_min) in
     if pass
     then print_endline (Str.replace_first filter_cookie_re "" line)
-  end else begin
-    print_loc loc;
-    print_endline line;
-   end
+    else mark_loc_stale loc
+  end
 
 let ( |> ) x f = f x
 
 let process in_channel loc =
   try
     while true do
+      print_loc loc;
       input_line in_channel |> process_line loc;
       incr_loc loc;
     done

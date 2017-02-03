@@ -98,7 +98,7 @@ let compare = String.compare
 (*$T
   equal (string "foo") (string "foo")
   equal (string "") (string "")
-  not <| equal (string "foo") (string "bar")
-  not <| equal (string "foo") (string "foo\0")
-  not <| equal (string "foo") (string "")
+  not @@ equal (string "foo") (string "bar")
+  not @@ equal (string "foo") (string "foo\000")
+  not @@ equal (string "foo") (string "")
  *)
