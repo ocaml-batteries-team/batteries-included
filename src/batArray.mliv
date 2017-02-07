@@ -533,10 +533,10 @@ val ord : 'a BatOrd.ord -> 'a array BatOrd.ord
     lexicographically for arrays of the same size.  This is a
     different ordering than [compare], but is often faster. *)
 
-val shuffle : ?state:Random.State.t -> 'a array -> 'a array
-(** [shuffle ~state:rs a] randomly shuffles in place the elements of [a].
-    The optional random state [rs] allows to control the random
-    numbers being used during shuffling (for reproducibility).
+val shuffle : Random.State.t option -> 'a array -> 'a array
+(** [shuffle maybe_rs a] randomly shuffles in place the elements of [a].
+    The option [maybe_rs] allows to control the random
+    state being used during shuffling (for reproducibility).
 
     Shuffling is implemented using the Fisher-Yates
     algorithm and works in O(n), where n is the number

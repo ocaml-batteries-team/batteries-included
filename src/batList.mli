@@ -98,10 +98,10 @@ val at : 'a list -> int -> 'a
 val rev : 'a list -> 'a list
 (** List reversal. *)
 
-val shuffle : ?state:Random.State.t -> 'a list -> 'a list
-(** [shuffle ~state:rs l] randomly shuffles the elements of [l].
-    The optional random state [rs] allows to control the random
-    numbers being used during shuffling (for reproducibility).
+val shuffle : Random.State.t option -> 'a list -> 'a list
+(** [shuffle maybe_rs l] randomly shuffles the elements of [l].
+    The option [maybe_rs] allows to control the random
+    state being used during shuffling (for reproducibility).
 
     Shuffling is implemented using the Fisher-Yates
     algorithm on an array and works in O(n), where n is the number
