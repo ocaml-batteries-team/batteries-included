@@ -3,6 +3,10 @@ Changelog
 
 ## NEXT_RELEASE (minor release)
 
+- added {BatList|BatArray}.shuffle
+  #702, #707
+  (Francois Berenger, Gabriel Scherer)
+
 - Clarification and improvements to the documentation
   #682, #685, #693
   (Florian Angeletti, Johannes Kloos, Michael Färber)
