@@ -433,6 +433,24 @@ let rchop ?(n = 1) s =
    try ignore (rchop ~n:(-1) "Weeble"); false with Invalid_argument _ -> true
 *)
 
+let chop ?(l = 1) ?(r = 1) s =
+  if l < 0 then
+    invalid_arg "chop: number of characters to chop on the left is negative";
+  if r < 0 then
+    invalid_arg "chop: number of characters to chop on the right is negative";
+  let slen = length s in
+  if slen < l + r then ""
+  else sub s l (slen - l - r)
+(*$T chop
+   chop "\"Weeble\"" = "Weeble"
+   chop "" = ""
+   chop ~l:2 ~r:3 "01234567" = "234"
+   chop ~l:1000 "Weeble" = ""
+   chop ~r:1000 "Weeble" = ""
+   try ignore (chop ~l:(-1) "Weeble"); false with Invalid_argument _ -> true
+   try ignore (chop ~r:(-1) "Weeble"); false with Invalid_argument _ -> true
+*)
+
 let of_int = string_of_int
 (*$T of_int
    of_int 56 = "56"
@@ -1108,6 +1126,7 @@ struct
   let exists        = exists
   let lchop         = lchop
   let rchop         = rchop
+  let chop          = chop
   let strip         = strip
   let uppercase     = uppercase
   let lowercase     = lowercase

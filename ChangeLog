@@ -22,6 +22,10 @@ Changelog
   #705
   (Ifaz Kabir)
 
+- BatString: add `chop : ?l:int -> ?r:int -> string -> string`
+  #714, #716
+  (Gabriel Scherer, request by François Bérenger)
+
 ## v2.5.3
 
 Batteries 2.5.3 synchronizes library functions with OCaml 4.04+beta2,

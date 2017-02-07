@@ -551,6 +551,20 @@ val rchop : ?n:int -> string -> string
       [String.rchop ~n:1000 "Weeble" = ""]
 *)
 
+val chop : ?l:int -> ?r:int -> string -> string
+(** Returns the same string but with the first [l] characters
+    on the left and the first [r] characters on the right removed.
+    By default, [l] and [r] are both 1.
+
+    [chop ~l ~r s] is equivalent to [lchop ~n:l (rchop ~n:r s)].
+
+    @raise Invalid_argument if either [l] or [r] is less than zero.
+
+    Examples:
+    [String.chop "\"Weeble\"" = "Weeble"]
+    [String.chop ~l:2 ~r:3 "01234567" = "234"]
+*)
+
 val trim : string -> string
 (** Returns the same string but without the leading and trailing
     whitespaces (according to {!BatChar.is_whitespace}).
@@ -1031,6 +1045,8 @@ sig
   val lchop : ?n:int -> [> `Read] t -> _ t
 
   val rchop : ?n:int -> [> `Read] t -> _ t
+
+  val chop : ?l:int -> ?r:int -> [> `Read] t -> string
 
   val trim : [> `Read] t -> _ t
 
