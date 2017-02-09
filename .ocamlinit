@@ -1,0 +1,9 @@
+print_endline "loading...";;
+#use "topfind";;
+#require "num";;
+#require "str";;
+#require "unix";;
+#directory "_build/src/";;
+#load "batteries.cma";;
+open Batteries;;
+print_endline "Batteries loaded!";;
