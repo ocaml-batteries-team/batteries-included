@@ -1304,8 +1304,8 @@ let subset cmp l l' = for_all (fun x -> mem_cmp cmp x l') l
   subset Pervasives.compare [1;2] [1;2;3] = true
 *)
 
-let shuffle ?state:(s = Random.get_state ()) l =
-  let a = BatInnerShuffle.array_shuffle ~state:s (Array.of_list l) in
+let shuffle ?state l =
+  let a = BatInnerShuffle.array_shuffle ?state (Array.of_list l) in
   Array.to_list a
 (*$T shuffle
   let s = Random.State.make [|11|] in \
