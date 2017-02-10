@@ -735,7 +735,7 @@ let ord ord_elt a1 a2 =
   ord BatInt.ord [|1;1;1|] [|1;1;1|] = BatOrd.Eq
 *)
 
-let shuffle ?state:(s = Random.get_state ()) a =
+let shuffle ?state:(s = Random.State.make_self_init ()) a =
   BatInnerShuffle.array_shuffle ~state:s a
 (*$T shuffle
   let s = Random.State.make [|11|] in \
