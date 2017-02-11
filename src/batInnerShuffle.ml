@@ -18,3 +18,17 @@ let array_shuffle ?state a =
     (Array.to_list a' |> List.sort Pervasives.compare) = \
      (Array.to_list a |> List.sort Pervasives.compare))
 *)
+
+(*$R
+  let rec fact = function 0 -> 1 | n -> n * fact (n - 1) in
+  let length = 5 in
+  let test = Array.init length (fun i -> i) in (* all elements must be distinct *)
+  let permut_number = fact length in
+  let histogram = Hashtbl.create permut_number in
+  for i = 1 to 50_000 do
+    let a = Array.copy test in
+    array_shuffle a;
+    Hashtbl.replace histogram a ();
+  done;
+  assert_bool "all permutations occur" (Hashtbl.length histogram = permut_number)
+*)
