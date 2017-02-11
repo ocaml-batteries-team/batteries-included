@@ -106,7 +106,8 @@ let multi_choice n e =
 
 let shuffle e =
   let a = BatArray.of_enum e in
-  BatInnerShuffle.array_shuffle a
+  BatInnerShuffle.array_shuffle a;
+  a
 
 let get_state = Random.get_state
 let set_state = Random.set_state

@@ -533,7 +533,7 @@ val ord : 'a BatOrd.ord -> 'a array BatOrd.ord
     lexicographically for arrays of the same size.  This is a
     different ordering than [compare], but is often faster. *)
 
-val shuffle : ?state:Random.State.t -> 'a array -> 'a array
+val shuffle : ?state:Random.State.t -> 'a array -> unit
 (** [shuffle ~state:rs a] randomly shuffles in place the elements of [a].
     The optional random state [rs] allows to control the random
     numbers being used during shuffling (for reproducibility).

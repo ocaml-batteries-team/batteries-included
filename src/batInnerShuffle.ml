@@ -9,5 +9,4 @@ let array_shuffle ?state a =
       Array.unsafe_set a n (Array.unsafe_get a k);
       Array.unsafe_set a k buf
     end
-  done;
-  a
+  done

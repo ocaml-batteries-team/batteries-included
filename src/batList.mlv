@@ -1305,8 +1305,9 @@ let subset cmp l l' = for_all (fun x -> mem_cmp cmp x l') l
 *)
 
 let shuffle ?state l =
-  let a = BatInnerShuffle.array_shuffle ?state (Array.of_list l) in
-  Array.to_list a
+  let arr = Array.of_list l in
+  BatInnerShuffle.array_shuffle ?state arr;
+  Array.to_list arr
 (*$T shuffle
   let s = Random.State.make [|11|] in \
   shuffle ~state:s [1;2;3;4;5;6;7;8;9] = [7; 2; 9; 5; 3; 6; 4; 1; 8]
