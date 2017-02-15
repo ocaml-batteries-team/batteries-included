@@ -985,7 +985,7 @@ let at_rank_exn = Concrete.at_rank_exn
 (*$Q foldi
   (Q.list Q.small_int) (fun xs -> \
   let m = List.fold_left (fun acc x -> add x true acc) empty xs in \
-  foldi (fun x _y acc -> x :: acc) m [] |> List.rev = List.sort_unique Int.compare xs)
+  foldi (fun x _y acc -> x :: acc) m [] |> List.rev = List.sort_unique BatInt.compare xs)
 *)
 
 let enum = Concrete.enum
@@ -994,7 +994,7 @@ let enum = Concrete.enum
   (Q.list Q.small_int) (fun xs -> \
   List.fold_left (fun acc x -> add x true acc) \
     empty xs |> keys |> List.of_enum \
-  = List.sort_unique Int.compare xs)
+  = List.sort_unique BatInt.compare xs)
 *)
 
 let backwards = Concrete.backwards
@@ -1104,7 +1104,7 @@ module PMap = struct (*$< PMap *)
   let get_cmp {cmp} = cmp
 
   (*$T get_cmp
-    get_cmp (create Int.compare) == Int.compare
+    get_cmp (create BatInt.compare) == BatInt.compare
   *)
 
   let empty = { cmp = Pervasives.compare; map = Concrete.empty }
@@ -1171,8 +1171,8 @@ module PMap = struct (*$< PMap *)
 
   (*$Q foldi
     (Q.list Q.small_int) (fun xs -> \
-    let m = List.fold_left (fun acc x -> add x true acc) (create Int.compare) xs in \
-    foldi (fun x _y acc -> x :: acc) m [] |> List.rev = List.sort_unique Int.compare xs)
+    let m = List.fold_left (fun acc x -> add x true acc) (create BatInt.compare) xs in \
+    foldi (fun x _y acc -> x :: acc) m [] |> List.rev = List.sort_unique BatInt.compare xs)
   *)
 
   let at_rank_exn i m =
@@ -1183,8 +1183,8 @@ module PMap = struct (*$< PMap *)
   (*$Q keys
     (Q.list Q.small_int) (fun xs -> \
     List.fold_left (fun acc x -> add x true acc) \
-    (create Int.compare) xs |> keys |> List.of_enum \
-    = List.sort_unique Int.compare xs)
+    (create BatInt.compare) xs |> keys |> List.of_enum \
+    = List.sort_unique BatInt.compare xs)
   *)
 
   let backwards t = Concrete.backwards t.map

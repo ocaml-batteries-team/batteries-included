@@ -763,9 +763,9 @@ module Make2(O1 : OrderedType)(O2 : OrderedType) = struct
 end
 
 (*$T
-  let module S1 = Make(Int) in \
-  let module S2 = Make(String) in \
-  let module P = Make2(Int)(String) in \
+  let module S1 = Make(BatInt) in \
+  let module S2 = Make(BatString) in \
+  let module P = Make2(BatInt)(BatString) in \
   P.cartesian_product \
     (List.fold_right S1.add [1;2;3] S1.empty) \
     (List.fold_right S2.add ["a";"b"] S2.empty) \
@@ -787,7 +787,7 @@ module PSet = struct (*$< PSet *)
   let get_cmp {cmp} = cmp
 
   (*$T get_cmp
-    get_cmp (create Int.compare) == Int.compare
+    get_cmp (create BatInt.compare) == BatInt.compare
   *)
 
 
