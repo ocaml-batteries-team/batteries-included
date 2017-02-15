@@ -26,6 +26,11 @@ Changelog
   #714, #716
   (Gabriel Scherer, request by François Bérenger)
 
+- BatSet: make `to_array` allocate the resulting array at first
+  instead of using Dynarray (faster, uses less memory).
+  #724
+  (Thibault Suzanne)
+
 ## v2.5.3
 
 Batteries 2.5.3 synchronizes library functions with OCaml 4.04+beta2,
