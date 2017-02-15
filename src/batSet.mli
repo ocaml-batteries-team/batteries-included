@@ -375,7 +375,7 @@ module Make2(O1 : OrderedType) (O2 : OrderedType) : sig
   (** cartesian product of the two sets *)
 end
 
-(** {6 Polymorphic sets}
+(** {4 Polymorphic sets}
 
     The definitions below describe the polymorphic set interface.
 
