@@ -1199,10 +1199,10 @@ module PMap = struct (*$< PMap *)
 
   let max_binding t = Concrete.max_binding t.map
   let min_binding t = Concrete.min_binding t.map
-  let pop_min_binding m = 
+  let pop_min_binding m =
     let mini, rest = Concrete.pop_min_binding m.map in
     (mini, { m with map = rest })
-  let pop_max_binding m = 
+  let pop_max_binding m =
     let maxi, rest = Concrete.pop_max_binding m.map in
     (maxi, { m with map = rest })
 
