@@ -22,6 +22,11 @@ Changelog
   #705
   (Ifaz Kabir)
 
+- Add {BatSet,BatMap}.{Int,Int32,Int64,Nativeint,Float,Char,String} as
+  common instantions of the respective `Make` functor.
+  #709, #712
+  (Thibault Suzanne, François Bérenger)
+
 - BatString: add `chop : ?l:int -> ?r:int -> string -> string`
   #714, #716
   (Gabriel Scherer, request by François Bérenger)
