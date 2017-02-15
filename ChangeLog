@@ -114,8 +114,8 @@ then it is only available under OCaml 4.03.0.
 - BatHashtbl: more efficient modify_opt and modify_def
   (Anders Fugmann)
 - BatFormat: add pp_print_list: ?pp_sep:(formatter -> unit -> unit) ->
-	                        (formatter -> 'a -> unit) ->
-	                        (formatter -> 'a list -> unit)
+				(formatter -> 'a -> unit) ->
+				(formatter -> 'a list -> unit)
 	     and pp_print_text: formatter -> string -> unit
   (Christoph Höger)
 - BatEnum: add uniq_by: ('a -> 'a -> bool) -> 'a t -> 'a t
