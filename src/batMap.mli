@@ -363,6 +363,15 @@ module Make (Ord : BatInterfaces.OrderedType) : S with type key = Ord.t
     given a totally ordered type.
 *)
 
+(** {6 Common instantiations} **)
+
+module Int : S with type key = int
+module Int32 : S with type key = int32
+module Int64 : S with type key = int64
+module Nativeint : S with type key = nativeint
+module Float : S with type key = float
+module Char : S with type key = char
+module String : S with type key = string
 
 (** {4 Polymorphic maps}
 
@@ -946,4 +955,3 @@ module PMap : sig
   val get_cmp : ('a, 'b) t -> ('a -> 'a -> int)
 
 end (* PMap module *)
-

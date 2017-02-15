@@ -738,6 +738,14 @@ struct
   end
 end
 
+module Int = Make (BatInt)
+module Int32 = Make (BatInt32)
+module Int64 = Make (BatInt64)
+module Nativeint = Make (BatNativeint)
+module Float = Make (BatFloat)
+module Char = Make (BatChar)
+module String = Make (BatString)
+
 module Make2(O1 : OrderedType)(O2 : OrderedType) = struct
   module Set1 = Make(O1)
   module Set2 = Make(O2)

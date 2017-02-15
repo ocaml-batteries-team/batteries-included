@@ -912,6 +912,13 @@ struct
 
 end
 
+module Int = Make (BatInt)
+module Int32 = Make (BatInt32)
+module Int64 = Make (BatInt64)
+module Nativeint = Make (BatNativeint)
+module Float = Make (BatFloat)
+module Char = Make (BatChar)
+module String = Make (BatString)
 
 (**
  * PMap - Polymorphic maps
