@@ -119,7 +119,7 @@ module Concrete = struct
       Empty -> invalid_arg "Set.remove_min_elt"
     | Node(Empty, v, r, _) -> r
     | Node(l, v, r, _) -> bal (remove_min_elt l) v r
-    
+
   (* Merge two trees l and r into one.
      All elements of l must precede the elements of r.
      Assume | height l - height r | <= 2. *)
@@ -332,9 +332,13 @@ module Concrete = struct
   let to_list = elements
 
   let to_array s =
-    let acc = BatDynArray.create () in
-    iter (BatDynArray.add acc) s;
-    BatDynArray.to_array acc
+    match s with
+    | Empty -> [||]
+    | Node (_, e, _, _) ->
+      let arr = Array.make (cardinal s) e in
+      let i = ref 0 in
+      iter (fun x -> Array.unsafe_set arr (!i) x; incr i) s;
+      arr
 
   let rec cons_iter s t = match s with
       Empty -> t
