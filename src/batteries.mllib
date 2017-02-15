@@ -1,4 +1,5 @@
 BatInnerPervasives
+  BatInnerShuffle
   BatArray
   BatBigarray
   BatBig_int
