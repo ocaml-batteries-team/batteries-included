@@ -121,6 +121,27 @@ let enum h =
   in
   make (-1) Empty (Obj.magic()) (-1)
 
+let to_list ht =
+  fold (fun k v acc ->
+      (k, v) :: acc
+    ) ht []
+(*$T to_list
+  let ht = create 1 in \
+  add ht 1 '2'; \
+  to_list ht = [(1, '2')]
+*)
+
+let of_list l =
+  let res = create 11 in
+  List.iter (fun (k, v) ->
+      add res k v
+    ) l;
+  res
+(*$T of_list
+  let l = [(1,2);(2,3);(3,4)] in \
+  List.sort compare (to_list (of_list l)) = l
+*)
+
 let keys h = BatEnum.map (fun (k,_) -> k) (enum h)
 let values h = BatEnum.map (fun (_,v) -> v) (enum h)
 
@@ -403,7 +424,9 @@ sig
   val keys : 'a t -> key BatEnum.t
   val values : 'a t -> 'a BatEnum.t
   val enum : 'a t -> (key * 'a) BatEnum.t
+  val to_list: 'a t -> (key * 'a) list
   val of_enum : (key * 'a) BatEnum.t -> 'a t
+  val of_list : (key * 'a) list -> 'a t
   val print :  ?first:string -> ?last:string -> ?sep:string ->
     ('a BatInnerIO.output -> key -> unit) ->
     ('a BatInnerIO.output -> 'b -> unit) ->
@@ -562,10 +585,12 @@ struct
   let length = length
 
   let enum h = enum (to_hash h)
+  let to_list h = to_list (to_hash h)
   let of_enum e = of_hash (of_enum e)
   let values  h = values (to_hash h)
   let keys h = keys (to_hash h)
   let map (f:key -> 'a -> 'b) h = of_hash (map f (to_hash h))
+  let of_list l = of_hash (of_list l)
 
   (* We can use polymorphic filteri since we do not use the key at all for inline ops *)
   let map_inplace (f:key -> 'a -> 'b) h = map_inplace f (to_hash h)
@@ -751,7 +776,9 @@ struct
   let keys        = keys
   let values      = values
   let enum        = enum
+  let to_list     = to_list
   let of_enum     = of_enum
+  let of_list     = of_list
   let print       = print
   let filter      = filter
   let filteri     = filteri
