@@ -3,7 +3,8 @@ Changelog
 
 ## NEXT_RELEASE (minor release)
 
-- BatHashtbl: added {to|of}_list
+- BatHashtbl: added {to|of}_list, bindings
+  #728
   (Francois Berenger)
 
 - Clarification and improvements to the documentation
