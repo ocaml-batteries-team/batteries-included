@@ -3,6 +3,10 @@ Changelog
 
 ## NEXT_RELEASE (minor release)
 
+- BatHashtbl: added {to|of}_list, bindings
+  #728
+  (Francois Berenger, Thibault Suzanne)
+
 - Clarification and improvements to the documentation
   #682, #685, #693
   (Florian Angeletti, Johannes Kloos, Michael Färber)
