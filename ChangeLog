@@ -3,6 +3,10 @@ Changelog
 
 ## NEXT_RELEASE (minor release)
 
+- BatHashtbl: added {to|of}_list, bindings
+  #728
+  (Francois Berenger, Thibault Suzanne)
+
 - added {BatList|BatArray}.shuffle
   #702, #707
   (Francois Berenger, Gabriel Scherer)
@@ -26,9 +30,19 @@ Changelog
   #705
   (Ifaz Kabir)
 
+- Add {BatSet,BatMap}.{Int,Int32,Int64,Nativeint,Float,Char,String} as
+  common instantions of the respective `Make` functor.
+  #709, #712
+  (Thibault Suzanne, François Bérenger)
+
 - BatString: add `chop : ?l:int -> ?r:int -> string -> string`
   #714, #716
   (Gabriel Scherer, request by François Bérenger)
+
+- BatSet: make `to_array` allocate the resulting array at first
+  instead of using Dynarray (faster, uses less memory).
+  #724
+  (Thibault Suzanne)
 
 ## v2.5.3
 
@@ -113,8 +127,8 @@ then it is only available under OCaml 4.03.0.
 - BatHashtbl: more efficient modify_opt and modify_def
   (Anders Fugmann)
 - BatFormat: add pp_print_list: ?pp_sep:(formatter -> unit -> unit) ->
-	                        (formatter -> 'a -> unit) ->
-	                        (formatter -> 'a list -> unit)
+				(formatter -> 'a -> unit) ->
+				(formatter -> 'a list -> unit)
 	     and pp_print_text: formatter -> string -> unit
   (Christoph Höger)
 - BatEnum: add uniq_by: ('a -> 'a -> bool) -> 'a t -> 'a t

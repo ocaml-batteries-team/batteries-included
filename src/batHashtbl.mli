@@ -119,6 +119,19 @@ val enum : ('a, 'b) t -> ('a * 'b) BatEnum.t
 val of_enum : ('a * 'b) BatEnum.t -> ('a, 'b) t
 (** Create a hashtable from a (key,value) enumeration. *)
 
+(**{6 Lists}*)
+
+val of_list : ('a * 'b) list -> ('a, 'b) t
+(** Create a hashtable from a list of (key,value) pairs.
+    @since NEXT_RELEASE *)
+
+val to_list : ('a, 'b) t -> ('a * 'b) list
+(** Return the list of (key,value) pairs.
+    @since NEXT_RELEASE *)
+
+val bindings : ('a, 'b) t -> ('a * 'b) list
+(** Alias for [to_list].
+    @since NEXT_RELEASE *)
 
 (**{6 Searching}*)
 
@@ -382,7 +395,9 @@ sig
   val keys : 'a t -> key BatEnum.t
   val values : 'a t -> 'a BatEnum.t
   val enum : 'a t -> (key * 'a) BatEnum.t
+  val to_list : 'a t -> (key * 'a) list
   val of_enum : (key * 'a) BatEnum.t -> 'a t
+  val of_list : (key * 'a) list -> 'a t
   val print :  ?first:string -> ?last:string -> ?sep:string ->
     ('a BatInnerIO.output -> key -> unit) ->
     ('a BatInnerIO.output -> 'b -> unit) ->
@@ -546,6 +561,8 @@ sig
   val values : ('a, 'b, [>`Read]) t -> 'b BatEnum.t
   val enum : ('a, 'b, [>`Read]) t -> ('a * 'b) BatEnum.t
   val of_enum : ('a * 'b) BatEnum.t -> ('a, 'b, _) t
+  val to_list : ('a, 'b, [>`Read]) t -> ('a * 'b) list
+  val of_list : ('a * 'b) list -> ('a, 'b, _) t
 
   (** {6 Boilerplate code}*)
 

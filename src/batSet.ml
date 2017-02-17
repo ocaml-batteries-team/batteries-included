@@ -119,7 +119,7 @@ module Concrete = struct
       Empty -> invalid_arg "Set.remove_min_elt"
     | Node(Empty, v, r, _) -> r
     | Node(l, v, r, _) -> bal (remove_min_elt l) v r
-    
+
   (* Merge two trees l and r into one.
      All elements of l must precede the elements of r.
      Assume | height l - height r | <= 2. *)
@@ -332,9 +332,13 @@ module Concrete = struct
   let to_list = elements
 
   let to_array s =
-    let acc = BatDynArray.create () in
-    iter (BatDynArray.add acc) s;
-    BatDynArray.to_array acc
+    match s with
+    | Empty -> [||]
+    | Node (_, e, _, _) ->
+      let arr = Array.make (cardinal s) e in
+      let i = ref 0 in
+      iter (fun x -> Array.unsafe_set arr (!i) x; incr i) s;
+      arr
 
   let rec cons_iter s t = match s with
       Empty -> t
@@ -734,6 +738,14 @@ struct
   end
 end
 
+module Int = Make (BatInt)
+module Int32 = Make (BatInt32)
+module Int64 = Make (BatInt64)
+module Nativeint = Make (BatNativeint)
+module Float = Make (BatFloat)
+module Char = Make (BatChar)
+module String = Make (BatString)
+
 module Make2(O1 : OrderedType)(O2 : OrderedType) = struct
   module Set1 = Make(O1)
   module Set2 = Make(O2)
@@ -751,9 +763,9 @@ module Make2(O1 : OrderedType)(O2 : OrderedType) = struct
 end
 
 (*$T
-  let module S1 = Make(Int) in \
-  let module S2 = Make(String) in \
-  let module P = Make2(Int)(String) in \
+  let module S1 = Make(BatInt) in \
+  let module S2 = Make(BatString) in \
+  let module P = Make2(BatInt)(BatString) in \
   P.cartesian_product \
     (List.fold_right S1.add [1;2;3] S1.empty) \
     (List.fold_right S2.add ["a";"b"] S2.empty) \
@@ -775,7 +787,7 @@ module PSet = struct (*$< PSet *)
   let get_cmp {cmp} = cmp
 
   (*$T get_cmp
-    get_cmp (create Int.compare) == Int.compare
+    get_cmp (create BatInt.compare) == BatInt.compare
   *)
 
 
