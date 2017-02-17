@@ -7,6 +7,10 @@ Changelog
   #728
   (Francois Berenger, Thibault Suzanne)
 
+- added {BatList|BatArray}.shuffle
+  #702, #707
+  (Francois Berenger, Gabriel Scherer)
+
 - Clarification and improvements to the documentation
   #682, #685, #693
   (Florian Angeletti, Johannes Kloos, Michael Färber)
@@ -25,6 +29,11 @@ Changelog
 - Added `Result.{map,map_both}`
   #705
   (Ifaz Kabir)
+
+- Add {BatSet,BatMap}.{Int,Int32,Int64,Nativeint,Float,Char,String} as
+  common instantions of the respective `Make` functor.
+  #709, #712
+  (Thibault Suzanne, François Bérenger)
 
 - BatString: add `chop : ?l:int -> ?r:int -> string -> string`
   #714, #716
