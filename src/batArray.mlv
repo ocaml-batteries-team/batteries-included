@@ -735,6 +735,14 @@ let ord ord_elt a1 a2 =
   ord BatInt.ord [|1;1;1|] [|1;1;1|] = BatOrd.Eq
 *)
 
+let shuffle ?state:(s = Random.State.make_self_init ()) a =
+  BatInnerShuffle.array_shuffle ~state:s a
+(*$T shuffle
+  let s = Random.State.make [|11|] in \
+  shuffle ~state:s [|1;2;3;4;5;6;7;8;9|] = [|7; 2; 9; 5; 3; 6; 4; 1; 8|]
+  shuffle [||] = [||]
+*)
+
 module Incubator = struct
   module Eq (T : BatOrd.Eq) = struct
     type t = T.t array

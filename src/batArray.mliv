@@ -533,6 +533,18 @@ val ord : 'a BatOrd.ord -> 'a array BatOrd.ord
     lexicographically for arrays of the same size.  This is a
     different ordering than [compare], but is often faster. *)
 
+val shuffle : ?state:Random.State.t -> 'a array -> 'a array
+(** [shuffle ~state:rs a] randomly shuffles in place the elements of [a].
+    The optional random state [rs] allows to control the random
+    numbers being used during shuffling (for reproducibility).
+
+    Shuffling is implemented using the Fisher-Yates
+    algorithm and works in O(n), where n is the number
+    of elements of [a].
+
+    @since NEXT_RELEASE
+*)
+
 val equal : 'a BatOrd.eq -> 'a array BatOrd.eq
 (** Hoist a equality test for elements to arrays.  Arrays are only
     equal if their lengths are the same and corresponding elements
