@@ -375,7 +375,17 @@ module Make2(O1 : OrderedType) (O2 : OrderedType) : sig
   (** cartesian product of the two sets *)
 end
 
-(** {6 Polymorphic sets}
+(** {6 Common instantiations} *)
+
+module Int : S with type elt = int
+module Int32 : S with type elt = int32
+module Int64 : S with type elt = int64
+module Nativeint : S with type elt = nativeint
+module Float : S with type elt = float
+module Char : S with type elt = char
+module String : S with type elt = string
+
+(** {4 Polymorphic sets}
 
     The definitions below describe the polymorphic set interface.
 
