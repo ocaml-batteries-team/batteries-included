@@ -5,7 +5,7 @@ Changelog
 
 - BatHashtbl: added {to|of}_list, bindings
   #728
-  (Francois Berenger)
+  (Francois Berenger, Thibault Suzanne)
 
 - Clarification and improvements to the documentation
   #682, #685, #693
