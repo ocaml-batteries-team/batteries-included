@@ -739,8 +739,12 @@ let shuffle ?state a =
   BatInnerShuffle.array_shuffle ?state a
 (*$T shuffle
   let s = Random.State.make [|11|] in \
-  shuffle ~state:s [|1;2;3;4;5;6;7;8;9|] = [|7; 2; 9; 5; 3; 6; 4; 1; 8|]
-  shuffle [||] = [||]
+  let a = [|1;2;3;4;5;6;7;8;9|] in \
+  shuffle ~state:s a; \
+  a = [|7; 2; 9; 5; 3; 6; 4; 1; 8|]
+  let b = [||] in \
+  shuffle b; \
+  b = [||]
 *)
 
 module Incubator = struct
