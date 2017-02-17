@@ -130,7 +130,7 @@ val to_list : ('a, 'b) t -> ('a * 'b) list
     @since NEXT_RELEASE *)
 
 val bindings : ('a, 'b) t -> ('a * 'b) list
-(** An alias of [to_list].
+(** Alias for [to_list].
     @since NEXT_RELEASE *)
 
 (**{6 Searching}*)
