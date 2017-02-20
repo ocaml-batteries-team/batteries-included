@@ -3,6 +3,9 @@ Changelog
 
 ## NEXT_RELEASE (minor release)
 
+- added scripts/install_test.sh
+  Francois Berenger
+
 - BatHashtbl: added {to|of}_list, bindings
   #728
   (Francois Berenger, Thibault Suzanne)
