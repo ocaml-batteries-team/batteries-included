@@ -175,6 +175,10 @@ module Concrete = struct
     try Some (find x cmp map)
     with Not_found -> None
 
+  let find_default def x cmp map =
+    try find x cmp map
+    with Not_found -> def
+
   let remove x cmp map =
     let rec loop = function
       | Node (l, k, v, r, _) ->
@@ -721,6 +725,7 @@ sig
   val add: key -> 'a -> 'a t -> 'a t
   val update: key -> key -> 'a -> 'a t -> 'a t
   val find: key -> 'a t -> 'a
+  val find_default: 'a -> key -> 'a t -> 'a
   val remove: key -> 'a t -> 'a t
   val modify: key -> ('a -> 'a) -> 'a t -> 'a t
   val modify_def: 'a -> key -> ('a -> 'a) -> 'a t -> 'a t
@@ -815,6 +820,7 @@ struct
   let keys t = Concrete.keys (impl_of_t t)
   let values t = Concrete.values (impl_of_t t)
   let update k1 k2 v2 t = t_of_impl (Concrete.update k1 k2 v2 Ord.compare (impl_of_t t))
+  let find_default d k t = Concrete.find_default d k Ord.compare (impl_of_t t)
 
   let of_enum e = t_of_impl (Concrete.of_enum Ord.compare e)
 
@@ -943,6 +949,9 @@ let find x m = Concrete.find x Pervasives.compare m
   empty |> add 2 'y' |> add 1 'x' |> find 1 = 'x'
   empty |> add 2 'y' |> add 1 'x' |> find 2 = 'y'
 *)
+
+let find_default def x m =
+  Concrete.find_default def x Pervasives.compare m
 
 (*$T pop_min_binding
   (empty |> add 1 true |> pop_min_binding) = ((1, true), empty)
@@ -1120,6 +1129,9 @@ module PMap = struct (*$< PMap *)
   let find x m =
     Concrete.find x m.cmp m.map
 
+  let find_default def x m =
+    Concrete.find_default def x m.cmp m.map
+
   (*$T add; find
     empty |> add 1 true |> add 2 false |> find 1
     empty |> add 1 true |> add 2 false |> find 2 |> not
@@ -1127,6 +1139,11 @@ module PMap = struct (*$< PMap *)
     create BatInt.compare |> add 1 true |> add 2 false |> find 2 |> not
     empty |> add 2 'y' |> add 1 'x' |> find 1 = 'x'
     empty |> add 2 'y' |> add 1 'x' |> find 2 = 'y'
+  *)
+
+  (*$T find_default
+    find_default 3 4 (add 1 2 empty) = 3
+    find_default 3 1 (add 1 2 empty) = 2
   *)
 
   (*$T update
