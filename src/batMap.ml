@@ -953,6 +953,11 @@ let find x m = Concrete.find x Pervasives.compare m
 let find_default def x m =
   Concrete.find_default def x Pervasives.compare m
 
+(*$T find_default
+    find_default 3 4 (add 1 2 empty) = 3
+    find_default 3 1 (add 1 2 empty) = 2
+*)
+
 (*$T pop_min_binding
   (empty |> add 1 true |> pop_min_binding) = ((1, true), empty)
   (empty |> add 1 true |> add 2 false |> pop_min_binding) = \
