@@ -13,6 +13,9 @@ Make a release
   software in your main development switch, feel free to move to
   a fresh new switch to test this.)
 
+- instead of the previous, you can also run the fully automatic
+  'make test_install'
+
 # Release marking
 
 These steps can be redone as many times as necessary, and do not need
