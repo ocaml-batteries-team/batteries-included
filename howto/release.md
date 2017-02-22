@@ -81,10 +81,22 @@ practices.
 - Commit and add a tag (`git tag -a <name>`; `git push --tags origin`)
   Tag names are usually of the form "vM.m.b", for example "v2.5.3",
   use `git tag --list` to see existing tags.
+
 - run `make release` to produce a tarball
-- upload the tarball to ocamlforge
-- upload the documentation (`make upload-docs` ?)
-- send a pull-request against the public opam repository
+
+- on the Github "Releases"
+  [page](https://github.com/ocaml-batteries-team/batteries-included/releases)
+  you should see the just-pushed tag. You should `edit` the release to
+  include the release notes (the general blurb you wrote and the
+  detailed Changelog, in markdown format), and upload the release
+  tarball.
+
+- Upload the documentation (`make upload-docs`). You can check that
+  the documentation is appropriately updated at
+  http://ocaml-batteries-team.github.io/batteries-included/hdoc2/
+
+- send a pull-request against the public opam repository with the
+  opam file prepared for the new version
 
 # Post-release work
 
