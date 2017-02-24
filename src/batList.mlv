@@ -891,7 +891,7 @@ let fold_righti f l init =
   fold_righti (fun i x acc -> (i, x) :: acc) [0.; 1.] [] = [(0, 0.); (1, 1.)]
 *)
 
-let fold_map f acc = function
+let fold_left_map f acc = function
   | [] -> acc, []
   | h :: t ->
     let rec loop acc dst = function
@@ -905,9 +905,9 @@ let fold_map f acc = function
     let res = loop acc' r t in
     res, inj r
 
-(*$T fold_map
-  fold_map (fun acc x -> assert false) 0 [] = (0, [])
-  fold_map (fun acc x -> acc ^ x, int_of_string x) "0" ["1"; "2"; "3"] = ("0123", [1; 2; 3])
+(*$T fold_left_map
+  fold_left_map (fun acc x -> assert false) 0 [] = (0, [])
+  fold_left_map (fun acc x -> acc ^ x, int_of_string x) "0" ["1"; "2"; "3"] = ("0123", [1; 2; 3])
 *)
 
 let first = hd

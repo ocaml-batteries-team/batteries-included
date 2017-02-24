@@ -44,7 +44,7 @@ Changelog
   #724
   (Thibault Suzanne)
 
-- BatList: add `fold_map`
+- BatList: add `fold_left_map : ('a -> 'b -> 'a * 'c) -> 'a -> 'b list -> 'a * 'c list`
   #734
   (Thibault Suzanne)
 

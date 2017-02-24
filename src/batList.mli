@@ -231,11 +231,8 @@ val reduce : ('a -> 'a -> 'a) -> 'a list -> 'a
 
     @raise Invalid_argument on empty list. *)
 
-val fold_map : ('a -> 'b -> ('a * 'c)) -> 'a -> 'b list -> 'a * 'c list
-(** If [f x] is [(f_fst x, f_snd x)], [fold_map f acc [a0; a1; ...;
-    an]] returns both [f_fst (... (f_fst (f_fst acc a0) a1) ...) an]
-    (like [fold_left]) and [[f_snd a0; ...; f_snd an]] (like
-    [map]). Tail recursive.
+val fold_left_map : ('a -> 'b -> 'a * 'c) -> 'a -> 'b list -> 'a * 'c list
+(** Combines [fold_left] and [map]. Tail-recursive.
 
     @since NEXT_RELEASE
 *)
