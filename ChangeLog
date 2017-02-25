@@ -46,7 +46,7 @@ Changelog
 
 - BatList: add `fold_left_map : ('a -> 'b -> 'a * 'c) -> 'a -> 'b list -> 'a * 'c list`
   #734
-  (Thibault Suzanne, feature request by Oscar Gauthier)
+  (Thibault Suzanne, review by Gabriel Scherer, request by Oscar Gauthier)
 
 ## v2.5.3
 
