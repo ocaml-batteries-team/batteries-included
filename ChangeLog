@@ -3,6 +3,10 @@ Changelog
 
 ## NEXT_RELEASE (minor release)
 
+- BatMap: added find_default
+  #730
+  Francois Berenger
+
 - BatHashtbl: added {to|of}_list, bindings
   #728
   (Francois Berenger, Thibault Suzanne)

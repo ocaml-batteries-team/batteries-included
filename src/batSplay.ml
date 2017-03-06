@@ -301,6 +301,10 @@ struct
       v
     | _ -> raise Not_found
 
+  let find_default def k m =
+    try find k m
+    with Not_found -> def
+
   let cchange fn (C (cx, t)) = C (cx, fn t)
 
   let remove k tr =

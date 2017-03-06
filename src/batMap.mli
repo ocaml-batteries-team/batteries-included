@@ -102,6 +102,10 @@ sig
   (** [find x m] returns the current binding of [x] in [m],
       or raises [Not_found] if no such binding exists. *)
 
+  val find_default: 'a -> key -> 'a t -> 'a
+  (** [find_default d x m] returns the current binding of [x] in [m],
+      or the default value [d] if no such binding exists. *)
+
   val remove: key -> 'a t -> 'a t
   (** [remove x m] returns a map containing the same bindings as
       [m], except for [x] which is unbound in the returned map. *)
@@ -415,6 +419,10 @@ val find : 'a -> ('a, 'b) t -> 'b
 (** [find x m] returns the current binding of [x] in [m],
     or raises [Not_found] if no such binding exists. *)
 
+val find_default : 'b -> 'a -> ('a, 'b) t -> 'b
+(** [find_default d x m] returns the current binding of [x] in [m],
+     or the default value [d] if no such binding exists. *)
+
 val remove : 'a -> ('a, 'b) t -> ('a, 'b) t
 (** [remove x m] returns a map containing the same bindings as
     [m], except for [x] which is unbound in the returned map. *)
@@ -710,6 +718,10 @@ module PMap : sig
   val find : 'a -> ('a, 'b) t -> 'b
   (** [find x m] returns the current binding of [x] in [m],
       or raises [Not_found] if no such binding exists. *)
+
+  val find_default : 'b -> 'a -> ('a, 'b) t -> 'b
+  (** [find_default d x m] returns the current binding of [x] in [m],
+      or the default value [d] if no such binding exists. *)
 
   val remove : 'a -> ('a, 'b) t -> ('a, 'b) t
   (** [remove x m] returns a map containing the same bindings as
