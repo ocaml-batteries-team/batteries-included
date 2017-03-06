@@ -1224,7 +1224,25 @@ let reduce f = function [] -> invalid_arg "Empty List"
 let min l = reduce Pervasives.min l
 let max l = reduce Pervasives.max l
 let sum l = reduce (+) l
-let fsum l = reduce (+.) l
+
+let fsum l =
+  if l = [] then invalid_arg "Empty List"
+  else
+    let acc = ref 0.0 in
+    let rec loop = function
+      | [] -> !acc
+      | x :: xs ->
+        begin
+          acc := !acc +. x;
+          loop xs
+        end
+    in
+    loop l
+(*$T fsum
+     fsum [1.0; 2.0; 3.0] = 6.0
+     fsum [0.0] = 0.0
+     try let _ = fsum [] in false with Invalid_argument _ -> true
+*)
 
 let favg l =
   if l = [] then invalid_arg "Empty List"
