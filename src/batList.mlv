@@ -1229,11 +1229,16 @@ let fsum l = reduce (+.) l
 let favg l =
   if l = [] then invalid_arg "Empty List"
   else
-    let rec loop n acc = function
-      | [] -> acc /. (float_of_int n)
-      | x :: xs -> loop (n + 1) (acc +. x) xs
+    let acc = ref 0.0 in
+    let rec loop n = function
+      | [] -> !acc /. (float_of_int n)
+      | x :: xs ->
+        begin
+          acc := !acc +. x;
+          loop (n + 1) xs
+        end
     in
-    loop 0 0.0 l
+    loop 0 l
 (*$T favg
      favg [1.0; 2.0; 3.0] = 2.0
      favg [0.0] = 0.0
