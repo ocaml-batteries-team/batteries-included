@@ -1226,6 +1226,20 @@ let max l = reduce Pervasives.max l
 let sum l = reduce (+) l
 let fsum l = reduce (+.) l
 
+let favg l =
+  if l = [] then invalid_arg "Empty List"
+  else
+    let rec loop n acc = function
+      | [] -> acc /. (float_of_int n)
+      | x :: xs -> loop (n + 1) (acc +. x) xs
+    in
+    loop 0 0.0 l
+(*$T favg
+     favg [1.0; 2.0; 3.0] = 2.0
+     favg [0.0] = 0.0
+     try let _ = favg [] in false with Invalid_argument _ -> true
+*)
+
 let kahan_sum li =
   (* This algorithm is written in a particularly untasteful imperative
      style to benefit from the nice unboxing of float references that

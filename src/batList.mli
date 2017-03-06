@@ -247,7 +247,15 @@ val sum : int list -> int
 val fsum : float list -> float
 (** [fsum l] returns the sum of the floats of [l]
     @raise Invalid_argument on the empty list.
- *)
+*)
+
+val favg : float list -> float
+(** [favg l] returns [fsum l /. (float_of_int (length l))]
+    but is done in one pass.
+    @raise Invalid_argument on the empty list.
+
+    @since Next_Release
+*)
 
 val kahan_sum : float list -> float
 (** [kahan_sum l] returns a numerically-accurate sum of the floats of
