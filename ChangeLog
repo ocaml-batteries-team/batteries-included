@@ -88,6 +88,9 @@ then it is only available under OCaml 4.03.0.
   #670
   (Gabriel Scherer, KC Sivaramakrishnan)
 
+- PSet: add a cmp argument to every functions that create a PSet
+  (Cedric Cellier)
+
 ## v2.4.0
 
 - BatBitSet: use Bytes instead of String
