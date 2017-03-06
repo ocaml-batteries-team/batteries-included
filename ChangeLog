@@ -3,6 +3,10 @@ Changelog
 
 ## NEXT_RELEASE (minor release)
 
+- BatList: added favg
+  #737
+  (Francois Berenger)
+
 - BatHashtbl: added {to|of}_list, bindings
   #728
   (Francois Berenger, Thibault Suzanne)
