@@ -1226,7 +1226,7 @@ let max l = reduce Pervasives.max l
 let sum l = reduce (+) l
 
 let fsum l =
-  if l = [] then invalid_arg "Empty List"
+  if l = [] then invalid_arg "fsum: Empty List"
   else
     let acc = ref 0.0 in
     let rec loop = function
@@ -1245,7 +1245,7 @@ let fsum l =
 *)
 
 let favg l =
-  if l = [] then invalid_arg "Empty List"
+  if l = [] then invalid_arg "favg: Empty List"
   else
     let acc = ref 0.0 in
     let rec loop n = function
