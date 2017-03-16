@@ -121,7 +121,7 @@ let _ = dispatch begin function
          then "src/batConcreteQueue_402.ml"
          else "src/batConcreteQueue_403.ml" in
        copy_rule "queue implementation"
-         queue_implementation "src/BatConcreteQueue.ml";
+         queue_implementation "src/batConcreteQueue.ml";
      end;
 
      (* Rules to create libraries from .mllib instead of .cmo.
