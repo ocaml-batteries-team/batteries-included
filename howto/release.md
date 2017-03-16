@@ -40,17 +40,66 @@ to be performed by someone with commit rights.
 
 - check that `make release` correctly produces a release tarball
 
+## opam preparation work
+
+Performing the release will require sending a pull-request against the
+public opam repository with an `opam` metadata file for the new
+version. Here is how you should prepare this `opam` file.
+
+There are two sources of inspiration for the new opam file:
+
+- there is a local `opam` file at the root of the ocamlbuild
+  repository, that is used for pinning the development version.
+
+- there are the `opam` files for previous OCamlbuild releases in the
+  public opam repository:
+  https://github.com/ocaml/opam-repository/tree/master/packages/batteries
+
+In theory the two should be in synch: the `opam` file we send to the
+public opam repository is derived from the local `opam` file. However,
+upstream opam repository curators may have made changes to the public
+opam files, to reflect new packaging best practices and policies. You
+should check for any change to the latest version's `opam` file; if
+there is any, it should probably be reproduced into our local `opam`
+file, and commited.
+
+Note that the local file may have changed during the release lifetime
+to reflect new dependencies or changes in packaging policies. These
+changes should also be preserved in the opam file for the new version.
+
+To summarize, you should first update the local `opam` file to contain
+interesting changes from the in-repository versions. You can then
+prepare an `opam` file for the new version, derived from the local
+`opam` file.
+
+When editing an opam file (locally or in the package repository), you
+should use use `opam lint` to check that the opam file follows best
+practices.
+
 # Performing the actual release
 
 - Commit and add a tag (`git tag -a <name>`; `git push --tags origin`)
   Tag names are usually of the form "vM.m.b", for example "v2.5.3",
   use `git tag --list` to see existing tags.
+
 - run `make release` to produce a tarball
-- upload the tarball to ocamlforge
-- upload the documentation (`make upload-docs` ?)
-- send a pull-request against the public opam repository
+
+- on the Github "Releases"
+  [page](https://github.com/ocaml-batteries-team/batteries-included/releases)
+  you should see the just-pushed tag. You should `edit` the release to
+  include the release notes (the general blurb you wrote and the
+  detailed Changelog, in markdown format), and upload the release
+  tarball.
+
+- Upload the documentation (`make upload-docs`). You can check that
+  the documentation is appropriately updated at
+  http://ocaml-batteries-team.github.io/batteries-included/hdoc2/
+
+- send a pull-request against the public opam repository with the
+  opam file prepared for the new version
 
 # Post-release work
 
 - create a Changelog section for NEXT_RELEASE
-- once the new opam package is merged, announce on the mailing-list
+
+- once the new opam package is merged, announce on the mailing-list.
