@@ -3,6 +3,10 @@ Changelog
 
 ## NEXT_RELEASE (minor release)
 
+- install .cmt and .cmti files
+  #740
+  (Francois Berenger, Gabriel Scherer)
+
 - BatMap: added find_default
   #730
   Francois Berenger
