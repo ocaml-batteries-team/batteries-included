@@ -52,6 +52,10 @@ Changelog
   #724
   (Thibault Suzanne)
 
+- BatList: add `fold_left_map : ('a -> 'b -> 'a * 'c) -> 'a -> 'b list -> 'a * 'c list`
+  #734
+  (Thibault Suzanne, review by Gabriel Scherer, request by Oscar Gauthier)
+
 ## v2.5.3
 
 Batteries 2.5.3 synchronizes library functions with OCaml 4.04+beta2,

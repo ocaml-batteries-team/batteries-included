@@ -231,6 +231,23 @@ val reduce : ('a -> 'a -> 'a) -> 'a list -> 'a
 
     @raise Invalid_argument on empty list. *)
 
+val fold_left_map : ('a -> 'b -> 'a * 'c) -> 'a -> 'b list -> 'a * 'c list
+(** Combines [fold_left] and [map]. Tail-recursive.
+
+    More precisely :
+
+    {[
+    fold_left_map f acc [] = (acc, [])
+
+    fold_left_map f acc (x :: xs) =
+      let (acc', y) = f acc x in
+      let (res, ys) = fold_left_map acc' xs in
+      (res, y :: ys)
+    ]}
+
+    @since NEXT_RELEASE
+*)
+
 val max : 'a list -> 'a
 (** [max l] returns the largest value in [l] as judged by
     [Pervasives.compare] *)
