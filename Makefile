@@ -72,7 +72,7 @@ else
 endif
 endif
 
-.PHONY: all clean doc install uninstall reinstall test qtest qtest-clean camfail camfailunk coverage man
+.PHONY: all clean doc install uninstall reinstall test qtest qtest-clean camfail camfailunk coverage man test_install
 
 all:
 	@echo "Build mode:" $(MODE)
@@ -98,6 +98,9 @@ man: all batteries.odocl
 install: all uninstall_packages
 	ocamlfind install $(NAME) $(INSTALL_FILES) \
 		-optional $(OPT_INSTALL_FILES)
+
+test_install:
+	./scripts/test_install.sh
 
 uninstall_packages:
 	ocamlfind remove $(NAME)
