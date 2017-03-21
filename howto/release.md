@@ -13,6 +13,14 @@ Make a release
   software in your main development switch, feel free to move to
   a fresh new switch to test this.)
 
+- instead of the previous, you can also run the fully automatic
+  'make test_install'. This will force a rebuild and install
+  of batteries (make clean && make install);
+  then go to a temporary directory and try to compile and run
+  a test program using batteries.
+  After, you may want to 'opam reinstall batteries' in order to get rid
+  of this development version of batteries from your current opam switch.
+
 # Release marking
 
 These steps can be redone as many times as necessary, and do not need

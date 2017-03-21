@@ -9,6 +9,8 @@ Changelog
 
 - BatMap: added find_default
   #730
+
+- added scripts/test_install.sh
   Francois Berenger
 
 - BatHashtbl: added {to|of}_list, bindings
