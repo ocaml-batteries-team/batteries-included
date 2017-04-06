@@ -147,6 +147,19 @@ val range : int -> [< `To | `Downto ] -> int -> int list
     @raise Invalid_argument in ([range i `Downto j]) if (i < j).
     @since 2.2.0 *)
 
+val frange : float -> [< `To | `Downto ] -> float -> int -> float list
+(** [frange start `To stop n] generates (without accumulating
+    floating point errors) [n] floats in the range [[start..stop]].
+    [n] must be >= 2.
+    At each step, floats in an increasing (resp. decreasing) range increase
+    (resp. decrease) by approximately (stop - start) / (n - 1).
+    @raise Invalid_argument in ([frange i _ j n]) if (n < 2).
+    @raise Invalid_argument in ([frange i `To j _]) if (i >= j).
+    @raise Invalid_argument in ([frange i `Downto j _]) if (i <= j).
+    Examples: [frange 1.0 `To 3.0 3] = [[1.0; 2.0; 3.0]].
+    [frange 3.0 `Downto 1.0 3] = [[3.0; 2.0; 1.0]].
+    @since NEXT_RELEASE *)
+
 val init : int -> (int -> 'a) -> 'a list
 (** Similar to [Array.init], [init n f] returns the list containing
     the results of (f 0),(f 1).... (f (n-1)).
