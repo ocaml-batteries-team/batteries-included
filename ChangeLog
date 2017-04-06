@@ -58,6 +58,11 @@ Changelog
   #734
   (Thibault Suzanne, review by Gabriel Scherer, request by Oscar Gauthier)
 
+- add ``BatList.frange : float -> [< `To | `Downto ] -> float -> int -> float list``
+  ``frange 0. `To 1. 3`` is `[0.; 0.5; 1.]`.
+  #745
+  (François Bérenger)
+
 ## v2.5.3
 
 Batteries 2.5.3 synchronizes library functions with OCaml 4.04+beta2,
