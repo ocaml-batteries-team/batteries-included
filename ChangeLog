@@ -4,7 +4,7 @@ Changelog
 ## NEXT_RELEASE (minor release)
 
 - added BatList.favg and faster BatList.fsum
-  #TBD
+  #746
   (Gabriel Scherer, Francois Berenger)
 
 - install .cmt and .cmti files
