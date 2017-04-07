@@ -279,6 +279,12 @@ val fsum : float list -> float
     @raise Invalid_argument on the empty list.
  *)
 
+val favg : float list -> float
+(** [favg l] returns the average of the floats of [l]
+    @raise Invalid_argument on the empty list.
+    @since NEXT_RELEASE
+ *)
+
 val kahan_sum : float list -> float
 (** [kahan_sum l] returns a numerically-accurate sum of the floats of
     [l]. See {!BatArray.fsum} for more details.

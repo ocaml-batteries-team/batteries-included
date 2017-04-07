@@ -1286,7 +1286,48 @@ let reduce f = function [] -> invalid_arg "Empty List"
 let min l = reduce Pervasives.min l
 let max l = reduce Pervasives.max l
 let sum l = reduce (+) l
-let fsum l = reduce (+.) l
+
+let fsum l =
+  match l with
+  | [] -> invalid_arg "List.fsum: Empty List"
+  | x::xs ->
+    let acc = ref x in
+    let rem = ref xs in
+    let go = ref true in
+    while !go do
+      match !rem with
+      | [] -> go := false;
+      | x::xs ->
+        acc := !acc +. x;
+        rem := xs
+    done;
+    !acc
+(*$T fsum
+  try let _ = fsum [] in false with Invalid_argument _ -> true
+  fsum [1.;2.;3.] = 6.
+*)
+
+let favg l =
+  match l with
+  | [] -> invalid_arg "List.favg: Empty List"
+  | x::xs ->
+    let acc = ref x in
+    let len = ref 1 in
+    let rem = ref xs in
+    let go = ref true in
+    while !go do
+      match !rem with
+      | [] -> go := false;
+      | x::xs ->
+        acc := !acc +. x;
+        incr len;
+        rem := xs
+    done;
+    !acc /. float_of_int !len
+(*$T favg
+  try let _ = favg [] in false with Invalid_argument _ -> true
+  favg [1.;2.;3.] = 2.
+*)
 
 let kahan_sum li =
   (* This algorithm is written in a particularly untasteful imperative
