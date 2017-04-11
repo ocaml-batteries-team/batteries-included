@@ -123,15 +123,15 @@ val of_enum : ('a * 'b) BatEnum.t -> ('a, 'b) t
 
 val of_list : ('a * 'b) list -> ('a, 'b) t
 (** Create a hashtable from a list of (key,value) pairs.
-    @since 2.5.4 *)
+    @since 2.6.0 *)
 
 val to_list : ('a, 'b) t -> ('a * 'b) list
 (** Return the list of (key,value) pairs.
-    @since 2.5.4 *)
+    @since 2.6.0 *)
 
 val bindings : ('a, 'b) t -> ('a * 'b) list
 (** Alias for [to_list].
-    @since 2.5.4 *)
+    @since 2.6.0 *)
 
 (**{6 Searching}*)
 
