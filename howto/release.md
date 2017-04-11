@@ -6,6 +6,9 @@ Make a release
 - `make test` on a 64 bits machine
 - `make test` on a 32 bits machine
 
+- `make test` with the oldest ocaml compiler version we are supporting
+  (for example, in an opam 3.12.1 switch)
+
 - install the to-be-released version with `opam pin add -k git .`, and
   then run the post-install tests with `make test-build-from-install`
 
