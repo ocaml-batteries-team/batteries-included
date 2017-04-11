@@ -28,7 +28,7 @@ to be performed by someone with commit rights.
 
 - inspect commits and sources to find @since tags to add/substitute
   (especially @since NEXT_RELEASE); `sh scripts/find_since.sh` can
-  help
+  help. ./scripts/replace_since.sh helps even more.
 
 - check whether new functions should go in Incubator
 
