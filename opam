@@ -24,4 +24,5 @@ depends: [
 ]
 available: [
   ocaml-version >= "3.12.1"
+& ocaml-version < "4.05.0"
 ]
