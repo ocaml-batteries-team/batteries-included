@@ -1,4 +1,4 @@
-<**/*.ml> : annot
+<**/*.ml> : annot, bin_annot
 <**/*.ml> and not <libs/**.ml>: warn_-29
 true: package(bytes), warn_-3, bin_annot
 "build": include
