@@ -107,7 +107,7 @@ val shuffle : ?state:Random.State.t -> 'a list -> 'a list
     algorithm on an array and works in O(n), where n is the number
     of elements of [l].
 
-    @since NEXT_RELEASE
+    @since 2.6.0
  *)
 
 val append : 'a list -> 'a list -> 'a list
@@ -158,7 +158,7 @@ val frange : float -> [< `To | `Downto ] -> float -> int -> float list
     @raise Invalid_argument in ([frange i `Downto j _]) if (i <= j).
     Examples: [frange 1.0 `To 3.0 3] = [[1.0; 2.0; 3.0]].
     [frange 3.0 `Downto 1.0 3] = [[3.0; 2.0; 1.0]].
-    @since NEXT_RELEASE *)
+    @since 2.6.0 *)
 
 val init : int -> (int -> 'a) -> 'a list
 (** Similar to [Array.init], [init n f] returns the list containing
@@ -258,7 +258,7 @@ val fold_left_map : ('a -> 'b -> 'a * 'c) -> 'a -> 'b list -> 'a * 'c list
       (res, y :: ys)
     ]}
 
-    @since NEXT_RELEASE
+    @since 2.6.0
 *)
 
 val max : 'a list -> 'a
@@ -282,7 +282,7 @@ val fsum : float list -> float
 val favg : float list -> float
 (** [favg l] returns the average of the floats of [l]
     @raise Invalid_argument on the empty list.
-    @since NEXT_RELEASE
+    @since 2.6.0
  *)
 
 val kahan_sum : float list -> float

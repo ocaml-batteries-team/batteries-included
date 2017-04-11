@@ -1,7 +1,7 @@
 Changelog
 ---------
 
-## NEXT_RELEASE (minor release)
+## v2.6.0 (minor release)
 
 - added BatList.favg and faster BatList.fsum
   #746
@@ -13,9 +13,11 @@ Changelog
 
 - BatMap: added find_default
   #730
+  (Francois Berenger)
 
 - added scripts/test_install.sh
-  Francois Berenger
+  #743
+  (Francois Berenger)
 
 - BatHashtbl: added {to|of}_list, bindings
   #728

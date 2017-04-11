@@ -542,7 +542,7 @@ val shuffle : ?state:Random.State.t -> 'a array -> unit
     algorithm and works in O(n), where n is the number
     of elements of [a].
 
-    @since NEXT_RELEASE
+    @since 2.6.0
 *)
 
 val equal : 'a BatOrd.eq -> 'a array BatOrd.eq
