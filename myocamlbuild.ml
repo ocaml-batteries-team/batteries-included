@@ -214,8 +214,13 @@ let _ = dispatch begin function
       flag ["ocaml"; "link"; "compiler-libs"] & S compiler_libs;
       flag ["ocaml"; "ocamldep"; "compiler-libs"] & S compiler_libs;
 
-
       flag ["ocaml"; "link"; "linkall"] & S[A"-linkall"];
+
+      if ocaml_version = (4, 0) then begin
+        (* OCaml 4.00 has -bin-annot but no ocamlbuild flag *)
+        flag ["ocaml"; "bin_annot"; "compile"] (A "-bin-annot");
+        flag ["ocaml"; "bin_annot"; "pack"] (A "-bin-annot");
+      end;
 (*
       dep ["ocaml"; "link"; "include_tests"; "byte"] &
 	[Pathname.mk "qtest/test_mods.cma"];
