@@ -111,12 +111,17 @@ let _ = dispatch begin function
      prefilter_rule "ml";
      prefilter_rule "mli";
 
-     begin (* BatConcreteQueue is either BatConcreteQueue_40x *)
-       let major, minor =
-         try Scanf.sscanf Sys.ocaml_version "%d.%d" (fun m n -> (m, n))
-         with _ -> (* an arbitrary choice is better than failing here *)
-           (4, 0) in
+
+     let ocaml_version =
+       try Scanf.sscanf Sys.ocaml_version "%d.%d" (fun m n -> (m, n))
+       with _ -> (* an arbitrary choice is better than failing here *)
+         (4, 0)
+     in
+
+     begin
+       (* BatConcreteQueue is either BatConcreteQueue_40x *)
        let queue_implementation =
+         let major, minor = ocaml_version in
          if major < 4 || major = 4 && minor <= 2
          then "src/batConcreteQueue_402.ml"
          else "src/batConcreteQueue_403.ml" in
@@ -209,8 +214,13 @@ let _ = dispatch begin function
       flag ["ocaml"; "link"; "compiler-libs"] & S compiler_libs;
       flag ["ocaml"; "ocamldep"; "compiler-libs"] & S compiler_libs;
 
-
       flag ["ocaml"; "link"; "linkall"] & S[A"-linkall"];
+
+      if ocaml_version = (4, 0) then begin
+        (* OCaml 4.00 has -bin-annot but no ocamlbuild flag *)
+        flag ["ocaml"; "bin_annot"; "compile"] (A "-bin-annot");
+        flag ["ocaml"; "bin_annot"; "pack"] (A "-bin-annot");
+      end;
 (*
       dep ["ocaml"; "link"; "include_tests"; "byte"] &
 	[Pathname.mk "qtest/test_mods.cma"];
