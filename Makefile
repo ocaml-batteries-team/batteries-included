@@ -35,9 +35,17 @@ endif
 
 INSTALL_FILES = _build/META _build/src/*.cma \
 	battop.ml _build/src/*.cmi _build/src/*.mli \
-	_build/src/*.cmti _build/src/*.cmt \
 	_build/src/batteriesHelp.cmo _build/src/batteriesConfig.cmo _build/src/batteriesPrint.cmo \
 	ocamlinit build/ocaml
+# the bin_annot flag in _tags is not handled by versions of ocamlbuild < 4.01.0
+# hence we only install *.cmt{i} files if they were produced
+ifneq ($(wildcard _build/src/*.cmt),)
+	INSTALL_FILES += _build/src/*.cmt
+endif
+ifneq ($(wildcard _build/src/*.cmti),)
+	INSTALL_FILES += _build/src/*.cmti
+endif
+
 OPT_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa \
 	_build/src/*.cmxs _build/src/*.lib
 
