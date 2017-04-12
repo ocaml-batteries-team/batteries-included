@@ -111,12 +111,17 @@ let _ = dispatch begin function
      prefilter_rule "ml";
      prefilter_rule "mli";
 
-     begin (* BatConcreteQueue is either BatConcreteQueue_40x *)
-       let major, minor =
-         try Scanf.sscanf Sys.ocaml_version "%d.%d" (fun m n -> (m, n))
-         with _ -> (* an arbitrary choice is better than failing here *)
-           (4, 0) in
+
+     let ocaml_version =
+       try Scanf.sscanf Sys.ocaml_version "%d.%d" (fun m n -> (m, n))
+       with _ -> (* an arbitrary choice is better than failing here *)
+         (4, 0)
+     in
+
+     begin
+       (* BatConcreteQueue is either BatConcreteQueue_40x *)
        let queue_implementation =
+         let major, minor = ocaml_version in
          if major < 4 || major = 4 && minor <= 2
          then "src/batConcreteQueue_402.ml"
          else "src/batConcreteQueue_403.ml" in
