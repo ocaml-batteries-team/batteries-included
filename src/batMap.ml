@@ -403,10 +403,6 @@ module Concrete = struct
       | None   -> acc
       | Some v -> add k v cmp acc) t empty
 
-  let choose = function
-    | Empty -> invalid_arg "PMap.choose: empty tree"
-    | Node (_l,k,v,_r,_h) -> (k,v)
-
   let for_all f map =
     let rec loop = function
       | Empty -> true
@@ -434,7 +430,12 @@ module Concrete = struct
     in
     loop empty empty map
 
-  let choose = function
+  let choose = min_binding
+  (*$= choose
+    (empty |> add 0 1 |> add 1 1 |> choose) (empty |> add 1 1 |> add 0 1 |> choose)
+   *)
+
+  let any = function
     | Empty -> raise Not_found
     | Node (_, k, v, _, _) -> (k,v)
 
@@ -749,6 +750,7 @@ sig
   val max_binding : 'a t -> (key * 'a)
   val pop_max_binding: 'a t -> (key * 'a) * 'a t
   val choose : 'a t -> (key * 'a)
+  val any : 'a t -> (key * 'a)
   val split : key -> 'a t -> ('a t * 'a option * 'a t)
   val partition : (key -> 'a -> bool) -> 'a t -> 'a t * 'a t
   val singleton : key -> 'a -> 'a t
@@ -768,6 +770,8 @@ sig
     'a BatInnerIO.output -> 'c t -> unit
   module Exceptionless : sig
     val find: key -> 'a t -> 'a option
+    val choose: 'a t -> (key * 'a) option
+    val any: 'a t -> (key * 'a) option
   end
 
   module Infix : sig
@@ -860,6 +864,7 @@ struct
     (maxi, t_of_impl rest)
 
   let choose t = Concrete.choose (impl_of_t t)
+  let any t = Concrete.any (impl_of_t t)
 
   let split k t =
     let l, v, r = Concrete.split k Ord.compare (impl_of_t t) in
@@ -895,6 +900,8 @@ struct
   module Exceptionless =
   struct
     let find k t = try Some (find k t) with Not_found -> None
+    let choose t = try Some (choose t) with Not_found -> None
+    let any t = try Some (any t) with Not_found -> None
   end
 
   module Infix =
@@ -1025,6 +1032,7 @@ let filter f t = Concrete.filter f t Pervasives.compare
 let filter_map f t = Concrete.filter_map f t Pervasives.compare
 
 let choose = Concrete.choose
+let any = Concrete.any
 let max_binding = Concrete.max_binding
 let min_binding = Concrete.min_binding
 let pop_min_binding = Concrete.pop_min_binding
@@ -1093,6 +1101,8 @@ let equal eq_val m1 m2 = Concrete.equal Pervasives.compare (=) m1 m2
 module Exceptionless =
 struct
   let find k m = try Some (find k m) with Not_found -> None
+  let choose m = try Some (choose m) with Not_found -> None
+  let any m = try Some (any m) with Not_found -> None
 end
 
 module Infix =
@@ -1224,8 +1234,6 @@ module PMap = struct (*$< PMap *)
   let filter f t = { t with map = Concrete.filter f t.map t.cmp }
   let filter_map f t = { t with map = Concrete.filter_map f t.map t.cmp }
 
-  let choose t = Concrete.choose t.map
-
   let max_binding t = Concrete.max_binding t.map
   let min_binding t = Concrete.min_binding t.map
   let pop_min_binding m =
@@ -1249,6 +1257,7 @@ module PMap = struct (*$< PMap *)
   let cardinal m = Concrete.cardinal m.map
 
   let choose m = Concrete.choose m.map
+  let any m = Concrete.any m.map
 
   let split k m =
     let (l, v, r) = Concrete.split k m.cmp m.map in
@@ -1303,6 +1312,8 @@ module PMap = struct (*$< PMap *)
   module Exceptionless =
   struct
     let find k m = try Some (find k m) with Not_found -> None
+    let choose m = try Some (choose m) with Not_found -> None
+    let any m = try Some (any m) with Not_found -> None
   end
 
   module Infix =

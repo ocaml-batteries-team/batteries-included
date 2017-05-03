@@ -250,9 +250,17 @@ sig
       given set. *)
 
   val choose: t -> elt
-  (** Return one element of the given set, or raise [Not_found] if
-      the set is empty. Which element is chosen is unspecified,
-      but equal elements will be chosen for equal sets. *)
+  (** Return one element of the given set.
+      Which element is chosen is unspecified, but equal elements will be
+      chosen for equal sets.
+      @raise Not_found if the set is empty. *)
+
+  val any: t -> elt
+  (** Return one element of the given set.
+      The difference with choose is that there is no guarantee that equals
+      elements will be picked for equal sets.
+      This merely returns the quickest element to get (O(1)).
+      @raise Not_found if the set is empty. *)
 
   val pop : t -> elt * t
   (** returns one element of the set and the set without that element.
@@ -319,6 +327,7 @@ sig
     val min_elt: t -> elt option
     val max_elt: t -> elt option
     val choose:  t -> elt option
+    val any:     t -> elt option
     val find: elt -> t -> elt option
   end
 
@@ -613,6 +622,13 @@ val choose : 'a t -> 'a
 (** returns an arbitrary (but deterministic) element of the given set.
     @raise Not_found if given an empty set. *)
 
+val any: 'a t -> 'a
+(** Return one element of the given set.
+    The difference with choose is that there is no guarantee that equals
+    elements will be picked for equal sets.
+    This merely returns the quickest element to get (O(1)).
+    @raise Not_found if the set is empty. *)
+
 val pop : 'a t -> 'a * 'a t
 (** returns one element of the set and the set without that element.
     @raise Not_found if given an empty set *)
@@ -903,6 +919,14 @@ module PSet : sig
   val choose : 'a t -> 'a
   (** returns an arbitrary (but deterministic) element of the given set.
       @raise Not_found if given an empty set. *)
+
+  val any: 'a t -> 'a
+  (** Return one element of the given set.
+      The difference with choose is that there is no guarantee that equals
+      elements will be picked for equal sets.
+      This merely returns the quickest element to get (O(1)).
+      @raise Not_found if the set is empty. *)
+
 
   val pop : 'a t -> 'a * 'a t
   (** returns one element of the set and the set without that element.
