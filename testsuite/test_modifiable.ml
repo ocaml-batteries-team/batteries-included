@@ -26,7 +26,7 @@ let none _ = None
 module TestModifiable_mutable (M : MODIFIABLE_MUTABLE) =
 struct
     let test () =
-        let m = M.of_enum (Enum.combine (1 -- 5, 1 -- 5)) in
+        let m = M.of_enum (Enum.combine (1 -- 5) (1 -- 5)) in
         M.modify 2 succ m ;
         let e = M.enum m /@ snd |> List.of_enum |> List.sort Int.compare in
         assert_equal ~printer:(BatIO.to_string (List.print Int.print))
@@ -64,7 +64,7 @@ let rec reapply_i mi ma f m =
 module TestModifiable_immutable (M : MODIFIABLE_IMMUTABLE) =
 struct
     let test () =
-        let m = M.of_enum (Enum.combine (1 -- 5, 1 -- 5)) in
+        let m = M.of_enum (Enum.combine (1 -- 5) (1 -- 5)) in
         let m = M.modify 2 succ m in
         let e = M.enum m /@ snd |> List.of_enum |> List.sort Int.compare in
         assert_equal ~printer:(BatIO.to_string (List.print Int.print))
@@ -118,7 +118,7 @@ end
 module TestModifiable_poly_immutable (M : MODIFIABLE_POLY_IMMUTABLE) =
 struct
     let test () =
-        let m = M.of_enum (Enum.combine (1 -- 5, 1 -- 5)) in
+        let m = M.of_enum (Enum.combine (1 -- 5) (1 -- 5)) in
         let m = M.modify 2 succ m in
         let e = M.enum m /@ snd |> List.of_enum |> List.sort Int.compare in
         assert_equal ~printer:(BatIO.to_string (List.print Int.print))
@@ -165,7 +165,7 @@ end
 module TestModifiable_poly_multi_immutable (M : MODIFIABLE_POLY_MULTI_IMMUTABLE) =
 struct
     let test () =
-        let m = M.of_enum (Enum.combine (1 -- 5, 1 -- 5)) in
+        let m = M.of_enum (Enum.combine (1 -- 5) (1 -- 5)) in
         let m = M.modify 2 (BatSet.PSet.map succ) m in
         let e = M.enum m /@ snd |> List.of_enum |> List.sort Int.compare in
         assert_equal ~printer:(BatIO.to_string (List.print Int.print))
@@ -204,7 +204,7 @@ end
 module TestModifiable_multi_immutable (M : MODIFIABLE_MULTI_IMMUTABLE) =
 struct
     let test () =
-        let m = M.of_enum (Enum.combine (1 -- 5, 1 -- 5)) in
+        let m = M.of_enum (Enum.combine (1 -- 5) (1 -- 5)) in
         let m = M.modify 2 (BatSet.map succ) m in
         let e = M.enum m /@ snd |> List.of_enum |> List.sort Int.compare in
         assert_equal ~printer:(BatIO.to_string (List.print Int.print))
