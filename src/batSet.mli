@@ -583,7 +583,7 @@ val to_array: 'a t -> 'a array
 
 val min_elt : 'a t -> 'a
 (** returns the smallest element of the set.
-    @raise Invalid_argument if given an empty set. *)
+    @raise Not_found if given an empty set. *)
 
 val pop_min: 'a t -> 'a * 'a t
 (** Returns the smallest element of the given set
@@ -607,11 +607,11 @@ val pop_max: 'a t -> 'a * 'a t
 
 val max_elt : 'a t -> 'a
 (** returns the largest element of the set.
-    @raise Invalid_argument if given an empty set.*)
+    @raise Not_found if given an empty set.*)
 
 val choose : 'a t -> 'a
 (** returns an arbitrary (but deterministic) element of the given set.
-    @raise Invalid_argument if given an empty set. *)
+    @raise Not_found if given an empty set. *)
 
 val pop : 'a t -> 'a * 'a t
 (** returns one element of the set and the set without that element.
@@ -874,7 +874,7 @@ module PSet : sig
 
   val min_elt : 'a t -> 'a
   (** returns the smallest element of the set.
-      @raise Invalid_argument if given an empty set. *)
+      @raise Not_found if given an empty set. *)
 
   val pop_min: 'a t -> 'a * 'a t
   (** Returns the smallest element of the given set
@@ -898,11 +898,11 @@ module PSet : sig
 
   val max_elt : 'a t -> 'a
   (** returns the largest element of the set.
-      @raise Invalid_argument if given an empty set.*)
+      @raise Not_found if given an empty set.*)
 
   val choose : 'a t -> 'a
   (** returns an arbitrary (but deterministic) element of the given set.
-      @raise Invalid_argument if given an empty set. *)
+      @raise Not_found if given an empty set. *)
 
   val pop : 'a t -> 'a * 'a t
   (** returns one element of the set and the set without that element.
