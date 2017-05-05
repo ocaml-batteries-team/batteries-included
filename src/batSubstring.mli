@@ -137,20 +137,20 @@ val compare : t -> t -> int
 *)
 
 val index : t -> char -> int
-(** [index sus c] returns the index of the first occurence of [c] in [sus] or
+(** [index sus c] returns the index of the first occurrence of [c] in [sus] or
     @raise Not_found otherwise. *)
 
 val index_from : t -> int -> char -> int
-(** [index_from sus i c] returns the index of the first occurence of [c] in
+(** [index_from sus i c] returns the index of the first occurrence of [c] in
     [sus] after the index [i] or @raise Not_found otherwise. If [i] is beyond
     the range of [sus], @raise Invalid_argument. It is equivalent to [i + index (triml i sus) c]. *)
 
 val rindex : t -> char -> int
-(** [rindex sus c] returns the index of the last occurence of [c] in [sus] or
+(** [rindex sus c] returns the index of the last occurrence of [c] in [sus] or
     @raise Not_found otherwise. *)
 
 val rindex_from : t -> int -> char -> int
-(** [index_from sus i c] returns the index of the last occurence of [c] in [sus]
+(** [index_from sus i c] returns the index of the last occurrence of [c] in [sus]
     before the index [i] or @raise Not_found otherwise. If [i] is beyond the
     range of [sus], @raise Invalid_argument. It is equivalent to [rindex (trimr i sus) c]. *)
 

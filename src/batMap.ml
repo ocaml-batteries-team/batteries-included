@@ -1063,7 +1063,7 @@ let split k m = Concrete.split k Pervasives.compare m
 
 
 (* We can't compare external primitives directly using the physical equality
-   operator, since two different occurences of an external primitive are two
+   operator, since two different occurrences of an external primitive are two
    different closures. So we first make a local binding of [Pervasives.compare]
    and only then pass it to corresponding functions from Concrete. This way the
    physical equality check in [compatible_cmp] will work as needed *)

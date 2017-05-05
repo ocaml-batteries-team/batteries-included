@@ -690,7 +690,7 @@ val split_on_char: char -> string -> string list
 val split : string -> by:string -> string * string
 (** [split s sep] splits the string [s] between the first
     occurrence of [sep], and returns the two parts before
-    and after the occurence (excluded).
+    and after the occurrence (excluded).
 
     @raise Not_found if the separator is not found.
 
@@ -702,7 +702,7 @@ val split : string -> by:string -> string * string
 val rsplit : string -> by:string -> string * string
 (** [rsplit s sep] splits the string [s] between the last occurrence
     of [sep], and returns the two parts before and after the
-    occurence (excluded).
+    occurrence (excluded).
 
     @raise Not_found if the separator is not found.
 
