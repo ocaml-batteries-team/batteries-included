@@ -132,7 +132,7 @@ let nreplace_madroach ~str ~sub ~by =
     BatEnum.from (fun () -> let i = find !nexti in nexti := i+1; i) in
 
   (* collect all positions where we need to replace,
-   * skipping overlapping occurences *)
+   * skipping overlapping occurrences *)
   let todo =
     let skip_unto = ref 0 in
     find_simple sub str |>

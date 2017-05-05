@@ -430,7 +430,7 @@ val nsplit : t -> t -> t list
     [nsplit "" _] returns the empty list.
     If the separator is not found, it returns a list of
     the rope [s].
-    If two occurences of the separator are consecutive (with nothing
+    If two occurrences of the separator are consecutive (with nothing
     in between), the empty rope is added in the sequence. For example,
     [nsplit "a//b/" "/"] is ["a"; ""; "b"; ""].
 
