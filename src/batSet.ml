@@ -183,10 +183,6 @@ module Concrete = struct
       Empty -> ()
     | Node(l, v, r, _) -> iter f l; f v; iter f r
 
-  let get_root = function
-    | Empty -> raise Not_found
-    | Node(l, v, r, _) -> v
-
   let rec fold f s accu =
     match s with
       Empty -> accu
@@ -391,6 +387,16 @@ module Concrete = struct
   let filter_map cmp f e = fold (fun x acc -> match f x with Some v -> add cmp v acc | _ -> acc) e empty
 
   let choose = min_elt (* I'd rather this chose the root, but okay *)
+  (*$= choose
+    42 (empty |> add 42 |> choose)
+    (empty |> add 0 |> add 1 |> choose) (empty |> add 1 |> add 0 |> choose)
+  *)
+
+  let any = get_root
+  (*$T any
+    empty |> add 42 |> any = 42
+    try empty |> any |> ignore ; false with Not_found -> true
+  *)
 
   let rec for_all p = function
       Empty -> true
@@ -558,6 +564,7 @@ sig
   val pop_max: t -> elt * t
   val max_elt: t -> elt
   val choose: t -> elt
+  val any: t -> elt
   val pop: t -> elt * t
   val enum: t -> elt BatEnum.t
   val backwards: t -> elt BatEnum.t
@@ -582,6 +589,7 @@ sig
     val min_elt: t -> elt option
     val max_elt: t -> elt option
     val choose:  t -> elt option
+    val any:     t -> elt option
     val find: elt -> t -> elt option
   end
   (** Operations on {!Set} with labels. *)
@@ -642,6 +650,7 @@ struct
 
   let max_elt t = Concrete.max_elt (impl_of_t t)
   let choose t = Concrete.choose (impl_of_t t)
+  let any t = Concrete.any (impl_of_t t)
   let pop t =
     let e, t = Concrete.pop (impl_of_t t) in
     e, t_of_impl t
@@ -722,6 +731,7 @@ struct
     let min_elt t = try Some (min_elt t) with Not_found -> None
     let max_elt t = try Some (max_elt t) with Not_found -> None
     let choose  t = try Some (choose t)  with Not_found -> None
+    let any     t = try Some (any t)     with Not_found -> None
     let find  e t = try Some (find e t)  with Not_found -> None
   end
 
@@ -812,6 +822,7 @@ module PSet = struct (*$< PSet *)
   let to_list = elements
   let to_array s = Concrete.to_array s.set
   let choose s = Concrete.choose s.set
+  let any s = Concrete.any s.set
   let min_elt s = Concrete.min_elt s.set
   let pop_min s =
     let mini, others = Concrete.pop_min s.set in
@@ -939,6 +950,7 @@ let to_list = elements
 let to_array s = Concrete.to_array s
 
 let choose s = Concrete.choose s
+let any s = Concrete.any s
 
 let min_elt s = Concrete.min_elt s
 

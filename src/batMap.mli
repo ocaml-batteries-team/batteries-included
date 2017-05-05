@@ -226,16 +226,23 @@ sig
       along with the rest of the map *)
 
   (* The following documentations comments are from stdlib's map.mli:
-       - choose
        - split
        - singleton
        - partition
   *)
   val choose : 'a t -> (key * 'a)
-  (** Return one binding of the given map, or raise [Not_found] if
-      the map is empty. Which binding is chosen is unspecified,
-      but equal bindings will be chosen for equal maps.
+  (** Return one binding of the given map.
+      Which binding is chosen is unspecified, but equal bindings will be
+      chosen for equal maps.
+      @raise Not_found if the map is empty
   *)
+
+  val any : 'a t -> (key * 'a)
+  (** Return one binding of the given map.
+      The difference with choose is that there is no guarantee that equals
+      elements will be picked for equal sets.
+      This merely returns the quickest binding to get (O(1)).
+      @raise Not_found if the map is empty. *)
 
   val split : key -> 'a t -> ('a t * 'a option * 'a t)
   (** [split x m] returns a triple [(l, data, r)], where
@@ -323,6 +330,8 @@ sig
   (** Operations on {!Map} without exceptions.*)
   module Exceptionless : sig
     val find: key -> 'a t -> 'a option
+    val choose: 'a t -> (key * 'a) option
+    val any: 'a t -> (key * 'a) option
   end
 
   (** Infix operators over a {!BatMap} *)
@@ -490,16 +499,21 @@ val filter_map: ('key -> 'a -> 'b option) -> ('key, 'a) t -> ('key, 'b) t
     pairs [keyi],[bi] such as [f keyi ai = Some bi] (when [f] returns
     [None], the corresponding element of [m] is discarded). *)
 
-(* The following documentations comments are from stdlib's map.mli:
-   - choose
-   - split
-*)
 val choose : ('key, 'a) t -> ('key * 'a)
-(** Return one binding of the given map, or raise [Not_found] if
-    the map is empty. Which binding is chosen is unspecified,
-    but equal bindings will be chosen for equal maps.
+(** Return one binding of the given map.
+    Which binding is chosen is unspecified, but equal bindings will be
+    chosen for equal maps.
+    @raise Not_found if the map is empty
 *)
 
+val any : ('key, 'a) t -> ('key * 'a)
+(** Return one binding of the given map.
+    The difference with choose is that there is no guarantee that equals
+    elements will be picked for equal sets.
+    This merely returns the quickest binding to get (O(1)).
+    @raise Not_found if the map is empty. *)
+
+(* The following documentation comment is from stdlib's map.mli: *)
 val split : 'key -> ('key, 'a) t -> (('key, 'a) t * 'a option * ('key, 'a) t)
 (** [split x m] returns a triple [(l, data, r)], where
       [l] is the map with all the bindings of [m] whose key
@@ -620,6 +634,8 @@ val equal : ('b -> 'b -> bool) -> ('a,'b) t -> ('a, 'b) t -> bool
 (** Exceptionless versions of functions *)
 module Exceptionless : sig
   val find: 'a -> ('a,'b) t -> 'b option
+  val choose: ('a, 'b) t -> ('a * 'b) option
+  val any: ('a, 'b) t -> ('a * 'b) option
 end
 
 
@@ -790,15 +806,21 @@ module PMap : sig
       pairs [keyi],[bi] such as [f keyi ai = Some bi] (when [f] returns
       [None], the corresponding element of [m] is discarded). *)
 
-  (* The following documentations comments are from stdlib's map.mli:
-     - choose
-     - split
-  *)
   val choose : ('key, 'a) t -> ('key * 'a)
-  (** Return one binding of the given map, or raise [Not_found] if
-      the map is empty. Which binding is chosen is unspecified,
-      but equal bindings will be chosen for equal maps.  *)
+  (** Return one binding of the given map.
+      Which binding is chosen is unspecified, but equal bindings will be chosen
+      for equal maps.
+      @raise Not_found if the map is empty. *)
 
+  val any : ('key, 'a) t -> ('key * 'a)
+  (** Return one binding of the given map.
+      The difference with choose is that there is no guarantee that equals
+      elements will be picked for equal sets.
+      This merely returns the quickest binding to get (O(1)).
+      @raise Not_found if the map is empty. *)
+
+
+  (* The following documentation comment is from stdlib's map.mli: *)
   val split : 'key -> ('key, 'a) t -> (('key, 'a) t * 'a option * ('key, 'a) t)
   (** [split x m] returns a triple [(l, data, r)], where
       [l] is the map with all the bindings of [m] whose key
@@ -926,6 +948,8 @@ module PMap : sig
   (** Exceptionless versions of functions *)
   module Exceptionless : sig
     val find: 'a -> ('a,'b) t -> 'b option
+    val choose: ('a, 'b) t -> ('a * 'b) option
+    val any: ('a, 'b) t -> ('a * 'b) option
   end
 
 

@@ -222,6 +222,11 @@ end
 
 module Map (Ord : BatInterfaces.OrderedType) =
 struct
+  (*$inject
+    module TestMap = Splay.Map (Int)
+  *)
+  (*$< TestMap *)
+
   type key = Ord.t
 
   type 'a map = (key * 'a) bst
@@ -354,10 +359,6 @@ struct
     in
     visit acc tr
 
-  let choose tr = match sget tr with
-    | Empty -> raise Not_found
-    | Node (_, kv, _) -> kv
-
   let min_binding tr =
     let tr = sget tr in
     let rec bfind = function
@@ -366,6 +367,22 @@ struct
       | Empty -> raise Not_found
     in
     bfind tr
+
+  let choose = min_binding
+  (*$= choose
+    (empty |> add 0 1 |> add 1 1 |> choose) \
+      (empty |> add 1 1 |> add 0 1 |> choose)
+  *)
+  (*$T choose
+    try choose empty ; false with Not_found -> true
+  *)
+
+  let any tr = match sget tr with
+    | Empty -> raise Not_found
+    | Node (_, kv, _) -> kv
+  (*$T any
+    try any empty ; false with Not_found -> true
+  *)
 
   let pop_min_binding tr =
     let mini = ref (choose tr) in
@@ -536,8 +553,9 @@ struct
   end
 
   module Exceptionless = struct
-    let find k m =
-      try Some (find k m) with Not_found -> None
+    let find k m = try Some (find k m) with Not_found -> None
+    let choose m = try Some (choose m) with Not_found -> None
+    let any m = try Some (any m) with Not_found -> None
   end
 
   module Infix = struct
@@ -658,4 +676,5 @@ struct
     match !maybe_v with
     | None -> raise Not_found
     | Some v -> v, sref tr
+  (*$>*)
 end

@@ -3,6 +3,10 @@ Changelog
 
 ## v2.6.0 (minor release)
 
+- added Bat{Set,Map,Splay}.any and fixed Bat{Map,Splay}.choose
+  #751
+  (Cedric Cellier)
+
 - added BatList.favg and faster BatList.fsum
   #746
   (Gabriel Scherer, Francois Berenger)
