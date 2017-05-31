@@ -573,6 +573,24 @@ let max a = reduce Pervasives.max a
     max [|2;3;1|] = 3
   *)
 
+let min_max a =
+  let n = Array.length a in
+  if n = 0 then
+    invalid_arg "Array.min_max: empty array"
+  else
+    let mini = ref a.(0) in
+    let maxi = ref a.(0) in
+    for i = 1 to n - 1 do
+      if a.(i) > !maxi then maxi := a.(i);
+      if a.(i) < !mini then mini := a.(i)
+    done;
+    (!mini, !maxi)
+(*$T min_max
+    min_max [|1|] = (1, 1)
+    min_max [|1;-2;10;3|] = (-2, 10)
+    try min_max [||]; false with Invalid_argument _ -> true
+*)
+
 let sum = reduce (+)
 let fsum = reduce (+.)
 

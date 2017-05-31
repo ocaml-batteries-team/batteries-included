@@ -182,6 +182,12 @@ val min : 'a array -> 'a
 
     @raise Invalid_argument on empty input *)
 
+val min_max : 'a array -> 'a * 'a
+(** [min_max a] returns the (smallest, largest) pair of values from [a]
+    as judged by [Pervasives.compare]
+
+    @raise Invalid_argument on empty input *)
+
 val sum : int array -> int
 (** [sum l] returns the sum of the integers of [l] *)
 
