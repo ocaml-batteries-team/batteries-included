@@ -1,6 +1,12 @@
 Changelog
 ---------
 
+## next minor release
+
+- added BatArray.min_max
+  #757
+  (Francois Berenger)
+
 ## v2.6.0 (minor release)
 
 - added Bat{Set,Map,Splay}.any and fixed Bat{Map,Splay}.choose
