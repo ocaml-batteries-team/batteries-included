@@ -69,13 +69,11 @@ let ends_with str p =
   let diff = sl - el in
   if diff < 0 then false (*string is too short*)
   else
-    BatReturn.label
-      (fun label ->
-        for i = 0 to el - 1 do
-          if get str (diff + i) <> get p i then
-            BatReturn.return label false
-        done;
-        true)
+    let rec loop str p diff i =
+      if i = el then true
+      else if get str (diff + i) <> get p i then false
+      else loop str p diff (i + 1)
+    in loop str p diff 0
 (*$T ends_with
   ends_with "foobarbaz" "rbaz"
   ends_with "foobarbaz" ""
