@@ -508,25 +508,42 @@ let mapi f v =
   let off = ref 0 in
   map (fun x -> f (BatRef.post_incr off) x) v
 
-let exists f v =
-  BatReturn.label (fun label ->
-    let rec aux = function
-      | Empty -> ()
-      | Leaf a -> if BatArray.exists f a then BatReturn.return label true else ()
-      | Concat (l, _, r, _, _) -> aux l; aux r in
-    aux v;
-    false
-  )
+let rec exists f = function
+  | Empty -> false
+  | Leaf a -> BatArray.exists f a
+  | Concat (l, _, r, _, _) -> exists f l || exists f r
 
-let for_all f v =
-  BatReturn.label (fun label ->
-    let rec aux = function
-      | Empty -> ()
-      | Leaf a -> if not (BatArray.for_all f a) then BatReturn.return label false else ()
-      | Concat (l, _, r, _, _) -> aux l; aux r in
-    aux v;
-    true
-  )
+(*$T exists
+  exists (fun x -> x = 2) empty = false
+  exists (fun x -> x = 2) (singleton 2) = true
+  exists (fun x -> x = 2) (singleton 3) = false
+  exists (fun x -> x = 2) (of_array [|1; 3|]) = false
+  exists (fun x -> x = 2) (of_array [|2; 3|]) = true
+  exists (fun x -> x = 2) (concat (singleton 1) (singleton 3)) = false
+  exists (fun x -> x = 2) (concat (singleton 1) (of_array [|2|])) = true
+  exists (fun x -> x = 2) (concat (singleton 2) (singleton 3)) = true
+*)
+(*$Q exists
+  (Q.list Q.small_int) (fun li -> let p i = (i mod 4 = 0) in List.exists p li = exists p (of_list li))
+*)
+
+let rec for_all f = function
+  | Empty -> true
+  | Leaf a -> BatArray.for_all f a
+  | Concat (l, _, r, _, _) -> for_all f l && for_all f r
+(*$T for_all
+  for_all (fun x -> x = 2) empty = true
+  for_all (fun x -> x = 2) (singleton 2) = true
+  for_all (fun x -> x = 2) (singleton 3) = false
+  for_all (fun x -> x = 2) (of_array [|2; 3|]) = false
+  for_all (fun x -> x = 2) (of_array [|2; 2|]) = true
+  for_all (fun x -> x = 2) (concat (singleton 1) (singleton 2)) = false
+  for_all (fun x -> x = 2) (concat (singleton 2) (of_array [|2|])) = true
+  for_all (fun x -> x = 2) (concat (singleton 2) (singleton 3)) = false
+*)
+(*$Q for_all
+  (Q.list Q.small_int) (fun li -> let p i = (i mod 4 > 0) in List.for_all p li = for_all p (of_list li))
+*)
 
 let find f v =
   BatReturn.label (fun label ->
