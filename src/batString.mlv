@@ -90,16 +90,15 @@ let find_from str pos sub =
   let sublen = length sub in
   if pos < 0 || pos > len then raise (Invalid_argument "String.find_from");
   if sublen = 0 then pos else
-    BatReturn.label (fun label ->
-      for i = pos to len - sublen do
-        let j = ref 0 in
-        while unsafe_get str (i + !j) = unsafe_get sub !j do
-          incr j;
-          if !j = sublen then BatReturn.return label i
-        done;
-      done;
-      raise Not_found
-    )
+    let rec find ~str ~sub i =
+      if i > len - sublen then raise Not_found
+      else
+        let rec loop ~str ~sub i j =
+          if j = sublen then i
+          else if unsafe_get str (i + j) <> unsafe_get sub j then find ~str ~sub (i + 1)
+          else loop ~str ~sub i (j + 1)
+        in loop ~str ~sub i 0
+    in find ~str ~sub pos
 (*$Q find_from
   (Q.triple Q.string Q.char Q.small_int) ~count:1000 (fun (s, c, ofs) -> \
     let v1 = try `res (find_from s ofs (String.make 1 c)) with Not_found -> `nf | Invalid_argument _ -> `inv in \
