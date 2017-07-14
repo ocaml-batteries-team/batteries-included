@@ -46,13 +46,11 @@ let starts_with str p =
   let len = length p in
   if length str < len then false
   else
-    BatReturn.label
-      (fun label ->
-        for i = 0 to len - 1 do
-          if unsafe_get str i <> unsafe_get p i then
-            BatReturn.return label false
-        done;
-        true)
+    let rec loop str p i =
+      if i = len then true
+      else if unsafe_get str i <> unsafe_get p i then false
+      else loop str p (i + 1)
+    in loop str p 0
 (*$T starts_with
   starts_with "foobarbaz" "foob"
   starts_with "foobarbaz" ""
