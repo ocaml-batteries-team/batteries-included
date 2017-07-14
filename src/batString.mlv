@@ -132,16 +132,15 @@ let rfind_from str pos sub =
   and len = length str in
   if pos + 1 < 0 || pos + 1 > len then raise (Invalid_argument "String.rfind_from");
   if sublen = 0 then pos + 1 else
-    BatReturn.label (fun label ->
-      for i = pos - sublen + 1 downto 0 do
-        let j = ref 0 in
-        while unsafe_get str (i + !j) = unsafe_get sub !j do
-          incr j;
-          if !j = sublen then BatReturn.return label i
-        done;
-      done;
-      raise Not_found
-    )
+    let rec find ~str ~sub i =
+      if i < 0 then raise Not_found
+      else
+        let rec loop ~str ~sub i j =
+          if j = sublen then i
+          else if unsafe_get str (i + j) <> unsafe_get sub j then find ~str ~sub (i - 1)
+          else loop ~str ~sub i (j + 1)
+        in loop ~str ~sub i 0
+    in find ~str ~sub (pos - sublen + 1)
 (*$Q rfind_from
   (Q.triple Q.string Q.char Q.small_int) ~count:1000 (fun (s, c, ofs) -> \
     let v1 = try `res (rfind_from s ofs (String.make 1 c)) with Not_found -> `nf | Invalid_argument _ -> `inv in \
