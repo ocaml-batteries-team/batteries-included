@@ -588,7 +588,7 @@ let min_max a =
 (*$T min_max
     min_max [|1|] = (1, 1)
     min_max [|1;-2;10;3|] = (-2, 10)
-    try min_max [||]; false with Invalid_argument _ -> true
+    try ignore (min_max [||]); false with Invalid_argument _ -> true
 *)
 
 let sum = reduce (+)
