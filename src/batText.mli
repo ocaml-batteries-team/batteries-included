@@ -195,10 +195,10 @@ val iteri : ?base:int -> (int -> BatUChar.t -> unit) -> t -> unit
     to the given function. *)
 
 val range_iter : (BatUChar.t -> unit) -> int -> int -> t -> unit
-(** [rangeiter f m n r] applies [f] to all the characters whose
+(** [range_iter f m n r] applies [f] to all the characters whose
     indices [k] satisfy [m] <= [k] < [m + n].
     It is thus equivalent to [iter f (sub m n r)], but does not
-    create an intermediary rope. [rangeiter] operates in worst-case
+    create an intermediary rope. [range_iter] operates in worst-case
     [O(n + log m)] time, which improves on the [O(n log m)] bound
     from an explicit loop using [get].
 

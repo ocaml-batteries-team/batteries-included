@@ -301,7 +301,7 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##*)
 ##V>=4.2##
 ##V>=4.2##val get_raw_backtrace_slot : raw_backtrace -> int -> raw_backtrace_slot
-##V>=4.2##(** [get_slot bckt pos] returns the slot in position [pos] in the
+##V>=4.2##(** [get_raw_backtrace_slot bckt pos] returns the slot in position [pos] in the
 ##V>=4.2##    backtrace [bckt].
 ##V>=4.2##
 ##V>=4.2##    @since 2.3.0 and OCaml 4.02
@@ -333,7 +333,7 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##*)
 ##V>=4.2##
 ##V>=4.2##val exn_slot_name: exn -> string
-##V>=4.2##(** [Printexc.exn_slot_id exn] returns the internal name of the constructor
+##V>=4.2##(** [Printexc.exn_slot_name exn] returns the internal name of the constructor
 ##V>=4.2##    used to create the exception value [exn].
 ##V>=4.2##
 ##V>=4.2##    @since 2.3.0 and OCaml 4.02.0

@@ -77,11 +77,11 @@ val at : ?backwards:bool -> 'a dq -> int -> 'a option
 
 val map : ('a -> 'b) -> 'a dq -> 'b dq
 (** [map f dq] returns a deque where every element [x] of [dq] has
-    been replaces with [f x]. O(n) *)
+    been replaced with [f x]. O(n) *)
 
 val mapi : (int -> 'a -> 'b) -> 'a dq -> 'b dq
-(** [map f dq] returns a deque where every element [x] of [dq] has
-    been replaces with [f n x], where [n] is the position of [x]
+(** [mapi f dq] returns a deque where every element [x] of [dq] has
+    been replaced with [f n x], where [n] is the position of [x]
     from the front of [dq]. O(n) *)
 
 val iter : ('a -> unit) -> 'a dq -> unit
@@ -116,7 +116,7 @@ val append_list  : 'a dq -> 'a list -> 'a dq
     more efficient. O(min(m, n)) *)
 
 val prepend_list : 'a list -> 'a dq -> 'a dq
-(** [prepent_list l dq] is equivalent to [append (of_list l) dq],
+(** [prepend_list l dq] is equivalent to [append (of_list l) dq],
     but more efficient. O(min(m, n)) *)
 
 val rotate_forward : 'a dq -> 'a dq

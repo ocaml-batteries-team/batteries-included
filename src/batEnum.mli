@@ -600,7 +600,7 @@ val uniqq : 'a t -> 'a t
     @since 2.4.0 *)
 
 val uniq_by : ('a -> 'a -> bool) -> 'a t -> 'a t
-(** [uniqq cmp e] behaves as [uniq e] except it allows to specify a
+(** [uniq_by cmp e] behaves as [uniq e] except it allows to specify a
     comparison function.
 
     @since 2.4.0 *)

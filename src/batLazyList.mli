@@ -253,7 +253,7 @@ val find_exn : ('a -> bool) -> exn -> 'a t -> 'a
     returns [true] or raises [e] if such an element has not been found. *)
 
 val rfind_exn : ('a -> bool) -> exn -> 'a t -> 'a
-(** [find_exn p e l] returns the last element of [l] such as [p x]
+(** [rfind_exn p e l] returns the last element of [l] such as [p x]
     returns [true] or raises [e] if such an element has not been found. *)
 
 val findi : (int -> 'a -> bool) -> 'a t -> (int * 'a)
@@ -262,7 +262,7 @@ val findi : (int -> 'a -> bool) -> 'a t -> (int * 'a)
     @raise Not_found if no such element has been found. *)
 
 val rfindi : (int -> 'a -> bool) -> 'a t -> (int * 'a)
-(** [findi p e l] returns the last element [ai] of [l] along with its
+(** [rfindi p e l] returns the last element [ai] of [l] along with its
     index [i] such that [p i ai] is true.
     @raise Not_found if no such element has been found. *)
 
@@ -604,7 +604,7 @@ val print : ?first:string -> ?last:string -> ?sep:string ->('a BatInnerIO.output
 module Exceptionless : sig
 
   val find : ('a -> bool) -> 'a t -> 'a option
-  (** [rfind p l] returns [Some x] where [x] is the first element of [l] such
+  (** [find p l] returns [Some x] where [x] is the first element of [l] such
     that [p x] returns [true] or [None] if such element as not been found. *)
 
   val rfind : ('a -> bool) -> 'a t -> 'a option
@@ -617,7 +617,7 @@ module Exceptionless : sig
     or [None] if no such element has been found. *)
 
   val rfindi : (int -> 'a -> bool) -> 'a t -> (int * 'a) option
-  (** [findi p e l] returns [Some (i, ai)] where [ai] and [i] are respectively the
+  (** [rfindi p e l] returns [Some (i, ai)] where [ai] and [i] are respectively the
     last element of [l] and its index, such that [p i ai] is true,
     or [None] if no such element has been found. *)
 

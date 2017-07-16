@@ -153,7 +153,7 @@ val iter : ('a -> unit) -> 'a t -> unit
     is equivalent to [for i = 0 to length darr - 1 do f (get darr i) done;] *)
 
 val iteri : (int -> 'a -> unit) -> 'a t -> unit
-(** [iter f darr] calls the function [f] on every element of [darr].  It
+(** [iteri f darr] calls the function [f] on every element of [darr].  It
     is equivalent to [for i = 0 to length darr - 1 do f i (get darr i) done;]
     *)
 

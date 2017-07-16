@@ -75,7 +75,7 @@ val enum : 'a t -> 'a BatEnum.t
     it will not affect [s].  *)
 
 val enum_destruct : 'a t -> 'a BatEnum.t
-(** [enum s] returns a destructive enumeration of the elements of
+(** [enum_destruct s] returns a destructive enumeration of the elements of
     stack [s], from the most recently entered to the least recently
     entered.  Reading the enumeration will progressively empty [s].*)
 

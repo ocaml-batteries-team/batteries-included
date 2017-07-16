@@ -430,7 +430,7 @@ val filter : ('a -> bool) -> 'a list -> 'a list
     in the input list is preserved.  *)
 
 val filteri : (int -> 'a -> bool) -> 'a list -> 'a list
-(** [filter p [a0; a1; ...; an]] returns all the elements [ai] of index [i]
+(** [filteri p [a0; a1; ...; an]] returns all the elements [ai] of index [i]
     that satisfy the predicate [p i ai].  The order of the elements
     in the input list is preserved.
 
@@ -444,7 +444,7 @@ val filter_map : ('a -> 'b option) -> 'a list -> 'b list
     [l] is discarded). *)
 
 val filteri_map : (int -> 'a -> 'b option) -> 'a list -> 'b list
-(** [filter_map f l] calls [(f 0 a0) (f 1 a1).... (f n an)] where [a0,a1..an] are
+(** [filteri_map f l] calls [(f 0 a0) (f 1 a1).... (f n an)] where [a0,a1..an] are
     the elements of [l]. It returns the list of elements [bi] such as
     [f ai = Some bi] (when [f] returns [None], the corresponding element of
     [l] is discarded).
@@ -587,7 +587,7 @@ val modify_at : int -> ('a -> 'a) -> 'a list -> 'a list
     @since 2.3.0 *)
 
 val modify_opt_at : int -> ('a -> 'a option) -> 'a list -> 'a list
-(** [modify_at_opt n f l] returns the same list as [l] but with
+(** [modify_opt_at n f l] returns the same list as [l] but with
     nth-value [a] removed if [f a] is [None], and replaced by [v] if
     it is [Some v].
 
@@ -642,7 +642,7 @@ val drop : int -> 'a list -> 'a list
     list if [l] have less than [n] elements. *)
 
 val takedrop : int -> 'a list -> 'a list * 'a list
-(** [take_drop n l] is equivalent to [(take n l, drop n l)]
+(** [takedrop n l] is equivalent to [(take n l, drop n l)]
     but is done in one pass.
     @since 2.2.0 *)
 
