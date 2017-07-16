@@ -374,14 +374,14 @@ struct
       (empty |> add 1 1 |> add 0 1 |> choose)
   *)
   (*$T choose
-    try choose empty ; false with Not_found -> true
+    try ignore (choose empty) ; false with Not_found -> true
   *)
 
   let any tr = match sget tr with
     | Empty -> raise Not_found
     | Node (_, kv, _) -> kv
   (*$T any
-    try any empty ; false with Not_found -> true
+    try ignore (any empty) ; false with Not_found -> true
   *)
 
   let pop_min_binding tr =
