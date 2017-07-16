@@ -186,7 +186,7 @@ sig
   *)
 
   val rear_exn : (('a, 'm) fg -> (('a, 'm) fg * 'a), 'a, 'm) wrap
-  (** [rear t] returns [(init, last)] when [last] is the last element of
+  (** [rear_exn t] returns [(init, last)] when [last] is the last element of
       the sequence and [init] is the rest of the sequence.
       @raise Empty if [t] is empty.
 
@@ -287,7 +287,7 @@ sig
   *)
 
   val of_backwards : ('a BatEnum.t -> ('a, 'm) fg, 'a, 'm) wrap
-  (** [of_backward e] is equivalent to [reverse (of_enum e)].
+  (** [of_backwards e] is equivalent to [reverse (of_enum e)].
 
       O(n).
   *)

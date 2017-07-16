@@ -28,7 +28,7 @@ val bounding_of_ord_chain :
   high:('a -> 'b) ->
   ('a -> 'b) ->
   ('a -> 'a -> BatOrd.order) -> ('a, 'b) bounding_f
-(** [bounding_oF_ord_chain ?low ?high ord] is like {!bounding_of_ord} except
+(** [bounding_of_ord_chain ?low ?high ord] is like {!bounding_of_ord} except
     that functions are used to handle out of range values rather than single
     default values. *)
 
@@ -99,7 +99,7 @@ module type S = sig
       back to type {!base_u}, otherwise returns [None]. *)
 
   val map2 : (base_u -> base_u -> base_u) -> t -> t -> t option
-  (** [map f x y] applies [f] to [x] and [y].  Returns [Some z] if [x] and [y]
+  (** [map2 f x y] applies [f] to [x] and [y].  Returns [Some z] if [x] and [y]
       can be converted back to type {!base_u}, otherwise returns [None]. *)
 
   val map_exn : (base_u -> base_u) -> t -> t
@@ -107,7 +107,7 @@ module type S = sig
       back to type {!base_u}, otherwise raise an exception. *)
 
   val map2_exn : (base_u -> base_u -> base_u) -> t -> t -> t
-    (** [map f x y] applies [f] to [x] and [y].  Returns [z] if [x] and [y]
+    (** [map2_exn f x y] applies [f] to [x] and [y].  Returns [z] if [x] and [y]
         can be converted back to type {!base_u}, otherwise raise an exception. *)
 end
 

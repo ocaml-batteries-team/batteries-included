@@ -103,7 +103,7 @@ val add_string : t -> string -> unit
 (** [add_string b s] appends the string [s] at the end of the buffer [b]. *)
 
 val add_bytes : t -> Bytes.t -> unit
-(** [add_string b s] appends the string [s] at the end of the buffer [b].
+(** [add_bytes b s] appends the string [s] at the end of the buffer [b].
 
     @since 2.3.0
 *)
@@ -113,7 +113,7 @@ val add_substring : t -> string -> int -> int -> unit
     [ofs] in string [s] and appends them at the end of the buffer [b]. *)
 
 val add_subbytes : t -> Bytes.t -> int -> int -> unit
-(** [add_substring b s ofs len] takes [len] characters from offset
+(** [add_subbytes b s ofs len] takes [len] characters from offset
     [ofs] in byte sequence [s] and appends them at the end of the buffer [b].
 
     @since 2.3.0

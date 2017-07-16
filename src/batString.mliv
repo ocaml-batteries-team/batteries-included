@@ -655,7 +655,7 @@ val repeat: string -> int -> string
 *)
 
 val rev : string -> string
-(** [string s] returns the reverse of string [s]
+(** [rev s] returns the reverse of string [s]
 
     @since 2.1
 *)

@@ -220,7 +220,7 @@ val filter_inplace : ('a -> bool) -> ('key,'a) t -> unit
     @since 2.1 *)
 
 val filteri: ('key -> 'a -> bool) -> ('key, 'a) t -> ('key, 'a) t
-(** [filter f m] returns a hashtbl where only the key, values pairs
+(** [filteri f m] returns a hashtbl where only the key, values pairs
     [key], [a] of [m] such that [f key a = true] remain. *)
 
 val filteri_inplace : ('key -> 'a -> bool) -> ('key, 'a) t -> unit

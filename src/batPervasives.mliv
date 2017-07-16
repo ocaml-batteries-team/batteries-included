@@ -300,7 +300,7 @@ val open_in_bin : string -> BatIO.input
     mode, this function behaves like {!Pervasives.open_in}. *)
 
 val open_in_gen : open_flag list -> int -> string -> BatIO.input
-(** [open_in mode perm filename] opens the named file for reading,
+(** [open_in_gen mode perm filename] opens the named file for reading,
     as described above. The extra arguments [mode] and [perm]
     specify the opening mode and file permissions.
     {!Pervasives.open_in} and {!Pervasives.open_in_bin} are special
@@ -748,7 +748,7 @@ val exists: ('a -> bool) -> 'a BatEnum.t -> bool
     that [f x]*)
 
 val for_all: ('a -> bool) -> 'a BatEnum.t -> bool
-(** [exists f e] returns [true] if for every [x] in [e], [f x] is true*)
+(** [for_all f e] returns [true] if for every [x] in [e], [f x] is true*)
 
 
 

@@ -63,7 +63,7 @@ val base : t -> string * int * int
     n)]. *)
 
 val is_empty : t -> bool
-(** [isEmpty (s, i, n)] true if the substring is empty (that is,
+(** [is_empty (s, i, n)] true if the substring is empty (that is,
     [n = 0]). *)
 
 val getc : t -> (char * t) option
@@ -90,7 +90,7 @@ val trimr : int -> t -> t
 *)
 
 val get : t -> int -> char
-(** [sub sus k] returns the k'th character of the substring; that
+(** [get sus k] returns the k'th character of the substring; that
     is, s(i+k) where sus = (s, i, n).  @raise Invalid_argument if
     [k<0] or [k>=n].  *)
 
@@ -278,7 +278,7 @@ val fields : (char -> bool) -> t -> t list
 *)
 
 val fold_left : ('a -> char -> 'a) -> 'a -> t -> 'a
-(** [foldl f e sus] folds [f] over [sus] from left to right.  That is,
+(** [fold_left f e sus] folds [f] over [sus] from left to right.  That is,
     evaluates [f s.[i+n-1] (f ... (f s.[i+1] (f s.[i] e)) ...)]
     tail-recursively, where [sus = (s, i, n)].  Equivalent to
     [List.fold_left f e (explode sus)].  *)
@@ -290,7 +290,7 @@ val fold_lefti : ('a -> int -> char -> 'a) -> 'a -> t -> 'a
 *)
 
 val fold_right : (char -> 'a -> 'a) -> t -> 'a -> 'a
-(** [foldr f e sus] folds [f] over [sus] from right to left.  That is,
+(** [fold_right f e sus] folds [f] over [sus] from right to left.  That is,
     evaluates [f s.[i] (f s.[i+1] (f ... (f s.[i+n-1] e) ...))]
     tail-recursively, where [sus = (s, i, n)].  Equivalent to
     [List.fold_right f e (explode sus)].

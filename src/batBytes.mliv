@@ -136,7 +136,7 @@ val blit : t -> int -> t -> int -> int -> unit
     do not designate a valid range of [dst]. *)
 
 val blit_string : string -> int -> t -> int -> int -> unit
-(** [blit src srcoff dst dstoff len] copies [len] bytes from string
+(** [blit_string src srcoff dst dstoff len] copies [len] bytes from string
     [src], starting at index [srcoff], to byte sequence [dst],
     starting at index [dstoff].
 

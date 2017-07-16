@@ -137,7 +137,7 @@ module Scanning : sig
       end-of-input condition by raising the exception [End_of_file]. *)
 
   val from_input : BatIO.input -> scanbuf;;
-  (** [Scanning.from_channel ic] returns a scanning buffer which reads from the
+  (** [Scanning.from_input ic] returns a scanning buffer which reads from the
       input channel [ic], starting at the current reading position. *)
 
   val end_of_input : scanbuf -> bool;;
@@ -149,7 +149,7 @@ module Scanning : sig
       the given scanning buffer. *)
 
   val name_of_input : scanbuf -> string;;
-  (** [Scanning.file_name_of_input ib] returns the name of the character source
+  (** [Scanning.name_of_input ib] returns the name of the character source
       for the scanning buffer [ib]. *)
 
   (**
