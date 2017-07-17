@@ -157,8 +157,8 @@ val modify : 'a t -> int -> ('a -> 'a) -> 'a t
 
 
 val destructive_set : 'a t -> int -> 'a -> unit
-(** [destructive_set n e v] sets the element of index [n] in the [v] vect
-    to [e]. {b This operation is destructive}, and will also affect vects
+(** [destructive_set v n c] sets the element of index [n] in the [v] vect
+    to [c]. {b This operation is destructive}, and will also affect vects
     sharing the modified leaf with [v]. Use with caution. *)
 
 val sub : 'a t -> int -> int -> 'a t
@@ -216,18 +216,18 @@ val rangeiter : ('a -> unit) -> int -> int -> 'a t -> unit
     from an explicit loop using [get].
     @raise Out_of_bounds in the same cases as [sub]. *)
 
-val fold_left : ('b -> 'a -> 'b ) -> 'b -> 'a t -> 'b
+val fold_left : ('b -> 'a -> 'b) -> 'b -> 'a t -> 'b
 (** [fold_left f a r] computes [ f (... (f (f a r0) r1)...) rN-1 ]
     where [rn = Vect.get n r ] and [N = length r]. *)
 
-val fold : ('b -> 'a -> 'b ) -> 'b -> 'a t -> 'b
+val fold : ('b -> 'a -> 'b) -> 'b -> 'a t -> 'b
 (** An alias for {!fold_left} *)
 
 val reduce : ('a -> 'a -> 'a) -> 'a t -> 'a
 (** as {!fold_left}, but no initial value - just applies reducing
     function to elements from left to right. *)
 
-val fold_right : ('a -> 'b -> 'b ) -> 'a t -> 'b -> 'b
+val fold_right : ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
 (** [fold_right f r a] computes [ f (r0 ... (f rN-2 (f rN-1 a)) ...)) ]
     where [rn = Vect.get n r ] and [N = length r]. *)
 
@@ -327,6 +327,47 @@ val ord : 'a BatOrd.ord -> 'a t BatOrd.ord
 (**/**)
 val invariants : _ t -> unit
 (**/**)
+
+(** {6 Override modules}*)
+
+(** Operations on {!BatVect} with labels.
+
+    This module overrides a number of functions of {!BatVect} by
+    functions in which some arguments require labels. These labels are
+    there to improve readability and safety and to let you change the
+    order of arguments to functions. In every case, the behavior of the
+    function is identical to that of the corresponding function of {!BatVect}.
+*)
+module Labels : sig
+  val init : int -> f:(int -> 'a) -> 'a t
+  val concat : v1:'a t -> v2:'a t -> 'a t
+  val get : 'a t -> n:int -> 'a
+  val at : 'a t -> n:int -> 'a
+  val set : 'a t -> n:int -> c:'a -> 'a t
+  val modify : 'a t -> n:int -> f:('a -> 'a) -> 'a t
+  val destructive_set : 'a t -> n:int -> c:'a -> unit
+  val sub : 'a t -> m:int -> n:int -> 'a t
+  val iter : f:('a -> unit) -> 'a t -> unit
+  val iteri : f:(int -> 'a -> unit) -> 'a t -> unit
+  val rangeiter : f:('a -> unit) -> m:int -> n:int -> 'a t -> unit
+  val fold_left : f:('b -> 'a -> 'b) -> x0:'b -> 'a t -> 'b
+  val fold : f:('b -> 'a -> 'b) -> x0:'b -> 'a t -> 'b
+  val reduce : f:('a -> 'a -> 'a) -> 'a t -> 'a
+  val fold_right : f:('a -> 'b -> 'b) -> 'a t -> x0:'b -> 'b
+  val foldi : f:(int -> 'b -> 'a -> 'b) -> x0:'b -> 'a t -> 'b
+  val map : f:('a -> 'b) -> 'a t -> 'b t
+  val mapi : f:(int -> 'a -> 'b) -> 'a t -> 'b t
+  val for_all : f:('a -> bool) -> 'a t -> bool
+  val exists : f:('a -> bool) -> 'a t -> bool
+  val find : f:('a -> bool) -> 'a t -> 'a
+  val mem : c:'a -> 'a t -> bool
+  val memq : c:'a -> 'a t -> bool
+  val findi : f:('a -> bool) -> 'a t -> int
+  val filter : f:('a -> bool) -> 'a t -> 'a t
+  val filter_map : f:('a -> 'b option) -> 'a t -> 'b t
+  val find_all : f:('a -> bool) -> 'a t -> 'a t
+  val partition : f:('a -> bool) -> 'a t -> 'a t * 'a t
+end
 
 (** {6 Functorial interface} *)
 
@@ -462,8 +503,8 @@ val modify : 'a t -> int -> ('a -> 'a) -> 'a t
 
 
 val destructive_set : 'a t -> int -> 'a -> unit
-(** [destructive_set n e v] sets the element of index [n] in the [v] vect
-    to [e]. {b This operation is destructive}, and will also affect vects
+(** [destructive_set v n c] sets the element of index [n] in the [v] vect
+    to [c]. {b This operation is destructive}, and will also affect vects
     sharing the modified leaf with [v]. Use with caution. *)
 
 val sub : 'a t -> int -> int -> 'a t
@@ -622,6 +663,47 @@ val pop : 'a t -> 'a * 'a t
 (** Return the last element of a vector and its first [n-1] elements. *)
 
 (** {6 Boilerplate code}*)
+
+(** {6 Override modules}*)
+
+  (** Operations on {!BatVect} with labels.
+
+      This module overrides a number of functions of {!BatVect} by
+      functions in which some arguments require labels. These labels are
+      there to improve readability and safety and to let you change the
+      order of arguments to functions. In every case, the behavior of the
+      function is identical to that of the corresponding function of {!BatVect}.
+  *)
+  module Labels : sig
+    val init : int -> f:(int -> 'a) -> 'a t
+    val concat : v1:'a t -> v2:'a t -> 'a t
+    val get : 'a t -> n:int -> 'a
+    val at : 'a t -> n:int -> 'a
+    val set : 'a t -> n:int -> c:'a -> 'a t
+    val modify : 'a t -> n:int -> f:('a -> 'a) -> 'a t
+    val destructive_set : 'a t -> n:int -> c:'a -> unit
+    val sub : 'a t -> m:int -> n:int -> 'a t
+    val iter : f:('a -> unit) -> 'a t -> unit
+    val iteri : f:(int -> 'a -> unit) -> 'a t -> unit
+    val rangeiter : f:('a -> unit) -> m:int -> n:int -> 'a t -> unit
+    val fold_left : f:('b -> 'a -> 'b) -> x0:'b -> 'a t -> 'b
+    val fold : f:('b -> 'a -> 'b) -> x0:'b -> 'a t -> 'b
+    val reduce : f:('a -> 'a -> 'a) -> 'a t -> 'a
+    val fold_right : f:('a -> 'b -> 'b) -> 'a t -> x0:'b -> 'b
+    val foldi : f:(int -> 'b -> 'a -> 'b) -> x0:'b -> 'a t -> 'b
+    val map : f:('a -> 'b) -> 'a t -> 'b t
+    val mapi : f:(int -> 'a -> 'b) -> 'a t -> 'b t
+    val for_all : f:('a -> bool) -> 'a t -> bool
+    val exists : f:('a -> bool) -> 'a t -> bool
+    val find : f:('a -> bool) -> 'a t -> 'a
+    val mem : c:'a -> 'a t -> bool
+    val memq : c:'a -> 'a t -> bool
+    val findi : f:('a -> bool) -> 'a t -> int
+    val filter : f:('a -> bool) -> 'a t -> 'a t
+    val filter_map : f:('a -> 'b option) -> 'a t -> 'b t
+    val find_all : f:('a -> bool) -> 'a t -> 'a t
+    val partition : f:('a -> bool) -> 'a t -> 'a t * 'a t
+  end
 
 (** {7 Printing}*)
 
