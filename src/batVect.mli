@@ -340,28 +340,29 @@ val invariants : _ t -> unit
 *)
 module Labels : sig
   val init : int -> f:(int -> 'a) -> 'a t
-  val concat : v1:'a t -> v2:'a t -> 'a t
   val get : 'a t -> n:int -> 'a
   val at : 'a t -> n:int -> 'a
-  val set : 'a t -> n:int -> c:'a -> 'a t
+  val set : 'a t -> n:int -> elem:'a -> 'a t
   val modify : 'a t -> n:int -> f:('a -> 'a) -> 'a t
-  val destructive_set : 'a t -> n:int -> c:'a -> unit
+  val destructive_set : 'a t -> n:int -> elem:'a -> unit
   val sub : 'a t -> m:int -> n:int -> 'a t
+  val insert : n:int -> sub:'a t -> 'a t -> 'a t
+  val remove : m:int -> n:int -> 'a t -> 'a t
   val iter : f:('a -> unit) -> 'a t -> unit
   val iteri : f:(int -> 'a -> unit) -> 'a t -> unit
   val rangeiter : f:('a -> unit) -> m:int -> n:int -> 'a t -> unit
-  val fold_left : f:('b -> 'a -> 'b) -> x0:'b -> 'a t -> 'b
-  val fold : f:('b -> 'a -> 'b) -> x0:'b -> 'a t -> 'b
+  val fold_left : f:('b -> 'a -> 'b) -> init:'b -> 'a t -> 'b
+  val fold : f:('b -> 'a -> 'b) -> init:'b -> 'a t -> 'b
   val reduce : f:('a -> 'a -> 'a) -> 'a t -> 'a
-  val fold_right : f:('a -> 'b -> 'b) -> 'a t -> x0:'b -> 'b
-  val foldi : f:(int -> 'b -> 'a -> 'b) -> x0:'b -> 'a t -> 'b
+  val fold_right : f:('a -> 'b -> 'b) -> 'a t -> init:'b -> 'b
+  val foldi : f:(int -> 'b -> 'a -> 'b) -> init:'b -> 'a t -> 'b
   val map : f:('a -> 'b) -> 'a t -> 'b t
   val mapi : f:(int -> 'a -> 'b) -> 'a t -> 'b t
   val for_all : f:('a -> bool) -> 'a t -> bool
   val exists : f:('a -> bool) -> 'a t -> bool
   val find : f:('a -> bool) -> 'a t -> 'a
-  val mem : c:'a -> 'a t -> bool
-  val memq : c:'a -> 'a t -> bool
+  val mem : elem:'a -> 'a t -> bool
+  val memq : elem:'a -> 'a t -> bool
   val findi : f:('a -> bool) -> 'a t -> int
   val filter : f:('a -> bool) -> 'a t -> 'a t
   val filter_map : f:('a -> 'b option) -> 'a t -> 'b t
@@ -676,28 +677,29 @@ val pop : 'a t -> 'a * 'a t
   *)
   module Labels : sig
     val init : int -> f:(int -> 'a) -> 'a t
-    val concat : v1:'a t -> v2:'a t -> 'a t
     val get : 'a t -> n:int -> 'a
     val at : 'a t -> n:int -> 'a
-    val set : 'a t -> n:int -> c:'a -> 'a t
+    val set : 'a t -> n:int -> elem:'a -> 'a t
     val modify : 'a t -> n:int -> f:('a -> 'a) -> 'a t
-    val destructive_set : 'a t -> n:int -> c:'a -> unit
+    val destructive_set : 'a t -> n:int -> elem:'a -> unit
     val sub : 'a t -> m:int -> n:int -> 'a t
+    val insert : n:int -> sub:'a t -> 'a t -> 'a t
+    val remove : m:int -> n:int -> 'a t -> 'a t
     val iter : f:('a -> unit) -> 'a t -> unit
     val iteri : f:(int -> 'a -> unit) -> 'a t -> unit
     val rangeiter : f:('a -> unit) -> m:int -> n:int -> 'a t -> unit
-    val fold_left : f:('b -> 'a -> 'b) -> x0:'b -> 'a t -> 'b
-    val fold : f:('b -> 'a -> 'b) -> x0:'b -> 'a t -> 'b
+    val fold_left : f:('b -> 'a -> 'b) -> init:'b -> 'a t -> 'b
+    val fold : f:('b -> 'a -> 'b) -> init:'b -> 'a t -> 'b
     val reduce : f:('a -> 'a -> 'a) -> 'a t -> 'a
-    val fold_right : f:('a -> 'b -> 'b) -> 'a t -> x0:'b -> 'b
-    val foldi : f:(int -> 'b -> 'a -> 'b) -> x0:'b -> 'a t -> 'b
+    val fold_right : f:('a -> 'b -> 'b) -> 'a t -> init:'b -> 'b
+    val foldi : f:(int -> 'b -> 'a -> 'b) -> init:'b -> 'a t -> 'b
     val map : f:('a -> 'b) -> 'a t -> 'b t
     val mapi : f:(int -> 'a -> 'b) -> 'a t -> 'b t
     val for_all : f:('a -> bool) -> 'a t -> bool
     val exists : f:('a -> bool) -> 'a t -> bool
     val find : f:('a -> bool) -> 'a t -> 'a
-    val mem : c:'a -> 'a t -> bool
-    val memq : c:'a -> 'a t -> bool
+    val mem : elem:'a -> 'a t -> bool
+    val memq : elem:'a -> 'a t -> bool
     val findi : f:('a -> bool) -> 'a t -> int
     val filter : f:('a -> bool) -> 'a t -> 'a t
     val filter_map : f:('a -> 'b option) -> 'a t -> 'b t
