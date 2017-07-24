@@ -592,6 +592,39 @@ let ord ord_val v1 v2 =
   let cmp_val = BatOrd.comp ord_val in
   BatOrd.ord0 (BatEnum.compare cmp_val (enum v1) (enum v2))
 
+module Labels =
+struct
+  let init n ~f      = init n f
+  let get v ~n       = get v n
+  let at v ~n        = at v n
+  let set v ~n ~elem = set v n elem
+  let modify v ~n ~f = modify v n f
+  let sub v ~m ~n    = sub v m n
+  let insert ~n ~sub = insert n sub
+  let remove ~m ~n   = remove m n
+  let iter ~f        = iter f
+  let iteri ~f       = iteri f
+  let map ~f         = map f
+  let mapi ~f        = mapi f
+  let for_all ~f     = for_all f
+  let exists ~f      = exists f
+  let find ~f        = find f
+  let mem ~elem      = mem elem
+  let memq ~elem     = memq elem
+  let findi ~f       = findi f
+  let filter ~f      = filter f
+  let filter_map ~f  = filter_map f
+  let find_all ~f    = find_all f
+  let partition ~f   = partition f
+  let destructive_set v ~n ~elem = destructive_set v n elem
+  let rangeiter ~f ~m ~n    = rangeiter f m n
+  let fold_left ~f ~init    = fold_left f init
+  let fold ~f ~init         = fold f init
+  let reduce ~f             = reduce f
+  let fold_right ~f v ~init = fold_right f v init
+  let foldi ~f ~init        = foldi f init
+end
+
 (* Functorial interface *)
 
 module type RANDOMACCESS =
@@ -1164,5 +1197,38 @@ struct
 
   let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a out t =
     BatEnum.print ~first ~last ~sep print_a out (enum t)
+
+  module Labels =
+  struct
+    let init n ~f      = init n f
+    let get v ~n       = get v n
+    let at v ~n        = at v n
+    let set v ~n ~elem = set v n elem
+    let modify v ~n ~f = modify v n f
+    let sub v ~m ~n    = sub v m n
+    let insert ~n ~sub = insert n sub
+    let remove ~m ~n   = remove m n
+    let iter ~f        = iter f
+    let iteri ~f       = iteri f
+    let map ~f         = map f
+    let mapi ~f        = mapi f
+    let for_all ~f     = for_all f
+    let exists ~f      = exists f
+    let find ~f        = find f
+    let mem ~elem      = mem elem
+    let memq ~elem     = memq elem
+    let findi ~f       = findi f
+    let filter ~f      = filter f
+    let filter_map ~f  = filter_map f
+    let find_all ~f    = find_all f
+    let partition ~f   = partition f
+    let destructive_set v ~n ~elem = destructive_set v n elem
+    let rangeiter ~f ~m ~n    = rangeiter f m n
+    let fold_left ~f ~init    = fold_left f init
+    let fold ~f ~init         = fold f init
+    let reduce ~f             = reduce f
+    let fold_right ~f v ~init = fold_right f v init
+    let foldi ~f ~init        = foldi f init
+  end
 
 end
