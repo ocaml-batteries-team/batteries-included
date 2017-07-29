@@ -545,15 +545,25 @@ let rec for_all f = function
   (Q.list Q.small_int) (fun li -> let p i = (i mod 4 > 0) in List.for_all p li = for_all p (of_list li))
 *)
 
+let rec find_opt f = function
+  | Empty -> None
+  | Leaf a -> BatArray.Exceptionless.find f a
+  | Concat (l, _, r, _, _) ->
+    begin match find_opt f l with
+      | Some _ as result -> result
+      | None -> find_opt f r
+    end
+
 let find f v =
-  BatReturn.label (fun label ->
-    let rec aux = function
-      | Empty -> ()
-      | Leaf a -> (try BatReturn.return label (BatArray.find f a) with Not_found -> ())
-      | Concat (l, _, r, _, _) -> aux l; aux r in
-    aux v;
-    raise Not_found
-  )
+  match find_opt f v with
+  | None -> raise Not_found
+  | Some x -> x
+(*$T find
+  [0;1;2;3] |> of_list |> find ((=) 2) = 2
+  try [0;1;2;3] |> of_list |> find ((=) 4) |> ignore; false with Not_found -> true
+  try [] |> of_list |> find ((=) 2) |> ignore; false with Not_found -> true
+  concat (of_list [0; 1]) (of_list ([2; 3])) |> find (fun n -> n > 0) = 1
+*)
 
 let findi f v =
   let off = ref (-1) in
