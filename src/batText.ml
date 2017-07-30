@@ -707,6 +707,15 @@ let contains_from r start char =
     let contains_aux c = if c = char then Return.return label true in
     range_iter contains_aux start (length r - start) r;
     false)
+(*$T contains_from
+  try ignore (contains_from empty 4 (BatUChar.of_char 't')); false with Out_of_bounds -> true
+  try ignore (contains_from (of_string "") 4 (BatUChar.of_char 't')); false with Out_of_bounds -> true
+  contains_from (of_string "batteries") 4 (BatUChar.of_char 't') = false
+  contains_from (of_string "batteries") 3 (BatUChar.of_char 't') = true
+  contains_from (of_string "batteries") 2 (BatUChar.of_char 't') = true
+  contains_from (of_string "batteries") 1 (BatUChar.of_char 't') = true
+  contains_from (of_string "batteries") 4 (BatUChar.of_char 'y') = false
+*)
 
 let rcontains_from = contains_from
 
