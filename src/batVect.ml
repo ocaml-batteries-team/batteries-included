@@ -1157,25 +1157,23 @@ struct
     let off = ref 0 in
     map (fun x -> f (BatRef.post_incr off) x) v
 
-  let exists f v =
-    BatReturn.label (fun label ->
-      let rec aux = function
-        | Empty -> ()
-        | Leaf a -> STRING.iter (fun x -> if f x then BatReturn.return label true) a
-        | Concat (l, _, r, _, _) -> aux l; aux r in
-      aux v;
-      false
-    )
+  let rec exists f = function
+    | Empty -> false
+    | Leaf a ->
+      let rec aux f a len i =
+        (i < len)
+        && (f (STRING.unsafe_get a i) || aux f a len (i + 1)) in
+      aux f a (STRING.length a) 0
+    | Concat (l, _, r, _, _) -> exists f l || exists f r
 
-  let for_all f v =
-    BatReturn.label (fun label ->
-      let rec aux = function
-        | Empty -> ()
-        | Leaf a -> STRING.iter (fun x -> if not (f x) then BatReturn.return label false) a
-        | Concat (l, _, r, _, _) -> aux l; aux r in
-      aux v;
-      true
-    )
+  let rec for_all f = function
+    | Empty -> true
+    | Leaf a ->
+      let rec aux f a len i =
+        (i >= len)
+        || (f (STRING.unsafe_get a i) && aux f a len (i + 1)) in
+      aux f a (STRING.length a) 0
+    | Concat (l, _, r, _, _) -> for_all f l && for_all f r
 
   let find f v =
     BatReturn.label (fun label ->
