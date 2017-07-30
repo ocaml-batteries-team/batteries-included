@@ -1175,15 +1175,26 @@ struct
       aux f a (STRING.length a) 0
     | Concat (l, _, r, _, _) -> for_all f l && for_all f r
 
-  let find f v =
-    BatReturn.label (fun label ->
-      let rec aux = function
-        | Empty -> ()
-        | Leaf a -> STRING.iter (fun x -> if (f x) then BatReturn.return label x) a
-        | Concat (l, _, r, _, _) -> aux l; aux r in
-      aux v;
-      raise Not_found
-    )
+  let rec find_opt f = function
+    | Empty -> None
+    | Leaf a ->
+      let rec aux f a len i =
+        if i >= len then None
+        else begin
+          let x = STRING.unsafe_get a i in
+          if f x then Some x
+          else aux f a len (i + 1)
+        end in
+      aux f a (STRING.length a) 0
+    | Concat (l, _, r, _, _) ->
+      begin match find_opt f l with
+        | Some _ as res -> res
+        | None -> find_opt f r
+      end
+
+  let find f v = match find_opt f v with
+    | None -> raise Not_found
+    | Some a -> a
 
   let findi f v =
     let off = ref (-1) in
