@@ -717,7 +717,20 @@ let contains_from r start char =
   contains_from (of_string "batteries") 4 (BatUChar.of_char 'y') = false
 *)
 
-let rcontains_from = contains_from
+let rcontains_from r stop char =
+  Return.with_label (fun label ->
+    let contains_aux c = if c = char then Return.return label true in
+    range_iter contains_aux 0 (stop + 1) r;
+    false)
+(*$T rcontains_from
+  try ignore (rcontains_from empty 4 (BatUChar.of_char 't')); false with Out_of_bounds -> true
+  try ignore (rcontains_from (of_string "") 4 (BatUChar.of_char 't')); false with Out_of_bounds -> true
+  rcontains_from (of_string "batteries") 4 (BatUChar.of_char 't') = true
+  rcontains_from (of_string "batteries") 3 (BatUChar.of_char 't') = true
+  rcontains_from (of_string "batteries") 2 (BatUChar.of_char 't') = true
+  rcontains_from (of_string "batteries") 1 (BatUChar.of_char 't') = false
+  rcontains_from (of_string "batteries") 4 (BatUChar.of_char 'y') = false
+*)
 
 let equal r1 r2 = compare r1 r2 = 0
 
