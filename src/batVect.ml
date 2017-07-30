@@ -712,6 +712,15 @@ module Make(RANDOMACCESS : RANDOMACCESS)
      end)=
 struct
   module STRING = RANDOMACCESS
+  (*$inject module Test_functor = struct
+    module STRING = struct
+      include BatArray
+      let empty = [||]
+    end
+    module PARAM = struct let max_height = 256 let leaf_size = 256 end
+    module Instance = Make(STRING)(PARAM)
+    open Instance
+  *)
 
   type 'a t =
     | Empty
@@ -1166,6 +1175,13 @@ struct
       aux f a (STRING.length a) 0
     | Concat (l, _, r, _, _) -> exists f l || exists f r
 
+  (*$T exists
+    exists (fun x -> true) empty = false
+    exists (fun x -> false) (of_array [|0;1;2|]) = false
+    exists (fun x -> x mod 2 <> 0) (of_array [|0;1;2|]) = true
+    exists (fun x -> x mod 2 <> 0) (of_array [|0;2|]) = false
+  *)
+
   let rec for_all f = function
     | Empty -> true
     | Leaf a ->
@@ -1174,6 +1190,13 @@ struct
         || (f (STRING.unsafe_get a i) && aux f a len (i + 1)) in
       aux f a (STRING.length a) 0
     | Concat (l, _, r, _, _) -> for_all f l && for_all f r
+
+  (*$T for_all
+    for_all (fun x -> true) empty = true
+    for_all (fun x -> true) (of_array [|0;1;2|]) = true
+    for_all (fun x -> x mod 2 = 0) (of_array [|0;1;2|]) = false
+    for_all (fun x -> x mod 2 = 0) (of_array [|0;2|]) = true
+  *)
 
   let rec find_opt f = function
     | Empty -> None
@@ -1195,6 +1218,13 @@ struct
   let find f v = match find_opt f v with
     | None -> raise Not_found
     | Some a -> a
+
+  (*$T find
+    try ignore (find (fun x -> true) empty); false with Not_found -> true
+    find (fun x -> true) (of_array [|0;1;2|]) = 0
+    find (fun x -> x mod 2 <> 0) (of_array [|0;1;2|]) = 1
+    try ignore (find (fun x -> x mod 2 <> 0) (of_array [|0;2|])); false with Not_found -> true
+  *)
 
   let findi f v =
     let off = ref (-1) in
@@ -1295,4 +1325,5 @@ struct
     let foldi ~f ~init        = foldi f init
   end
 
+(*$inject end *)
 end
