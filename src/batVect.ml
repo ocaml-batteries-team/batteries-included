@@ -553,6 +553,12 @@ let rec find_opt f = function
       | Some _ as result -> result
       | None -> find_opt f r
     end
+(*$T find_opt
+  [0;1;2;3] |> of_list |> find_opt ((=) 2) = Some 2
+  [0;1;2;3] |> of_list |> find_opt ((=) 4) = None
+  [] |> of_list |> find_opt ((=) 2) = None
+  concat (of_list [0; 1]) (of_list ([2; 3])) |> find_opt (fun n -> n > 0) = Some 1
+*)
 
 let find f v =
   match find_opt f v with

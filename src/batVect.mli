@@ -269,32 +269,39 @@ val exists : ('a -> bool) -> 'a t -> bool
     [ (p a0) || (p a1) || ... || (p an)]. *)
 
 val find : ('a -> bool) -> 'a t -> 'a
-(** [find p a] returns the first element of vect [a]
+(** [find p v] returns the first element of vect [v]
     that satisfies the predicate [p].
     @raise Not_found if there is no value that satisfies [p] in the
-    vect [a]. *)
+    vect [v]. *)
+
+val find_opt : ('a -> bool) -> 'a t -> 'a option
+(** [find_opt p v] returns [Some a], where [a] is the first element
+    of vect [v] that satisfies the predicate [p], or [None]
+    if no such element exists.
+
+    @since NEXT_RELEASE *)
 
 val mem : 'a -> 'a t -> bool
-(** [mem m a] is true if and only if [m] is equal to an element of [a]. *)
+(** [mem a v] is true if and only if [a] is equal to an element of [v]. *)
 
 val memq : 'a -> 'a t -> bool
 (** Same as {!Vect.mem} but uses physical equality instead of
     structural equality to compare vect elements.  *)
 
 val findi : ('a -> bool) -> 'a t -> int
-(** [findi p a] returns the index of the first element of vect [a]
+(** [findi p v] returns the index of the first element of vect [v]
     that satisfies the predicate [p].
     @raise Not_found if there is no value that satisfies [p] in the
-    vect [a].  *)
+    vect [v].  *)
 
 val filter : ('a -> bool) -> 'a t -> 'a t
-(** [filter f v] returns a vect with the elements [x] from [v] such that
-    [f x] returns [true]. Operates in [O(n)] time. *)
+(** [filter f v] returns a vect with the elements [a] from [v] such that
+    [f a] returns [true]. Operates in [O(n)] time. *)
 
 val filter_map : ('a -> 'b option) -> 'a t -> 'b t
-(** [filter_map f e] returns a vect consisting of all elements
-    [x] such that [f y] returns [Some x] , where [y] is an element
-    of [e]. *)
+(** [filter_map f v] returns a vect consisting of all elements
+    [b] such that [f a] returns [Some b] , where [a] is an element
+    of [v]. *)
 
 val find_all : ('a -> bool) -> 'a t -> 'a t
 (** [find_all] is another name for {!Vect.filter}. *)

@@ -24,6 +24,10 @@ Changelog
     from the modules BatString and BatSubstring.
   (Gabriel Scherer, request and review by Clément Pit-Claudel)
 
+- added `BatVect.find_opt : ('a -> bool) -> 'a t -> 'a option`
+  #TODO
+  (Gabriel Scherer)
+
 - Documents exceptions for List.(min, max)
   #770
   (Varun Gandhi)
