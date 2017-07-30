@@ -33,6 +33,10 @@ Changelog
   #770
   (Varun Gandhi)
 
+- fix return value of BatText.rindex{,_from}
+  #TODO
+  (Gabriel Scherer)
+
 ## v2.6.0 (minor release)
 
 - added Bat{Set,Map,Splay}.any and fixed Bat{Map,Splay}.choose
