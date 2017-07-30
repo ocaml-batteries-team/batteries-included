@@ -288,7 +288,7 @@ val contains_from : t -> int -> BatUChar.t -> bool
 val rcontains_from : t -> int -> BatUChar.t -> bool
 (** [rcontains_from s stop c] tests if character [c]
     appears in the subrope of [s] starting from the beginning
-    of [s] to index [stop].
+    of [s] to index [stop] (included).
     @raise Out_of_bounds if [stop] is not a valid index of [s]. *)
 
 val find : t -> t -> int

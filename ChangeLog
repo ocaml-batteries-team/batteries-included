@@ -33,7 +33,7 @@ Changelog
   #770
   (Varun Gandhi)
 
-- fix return value of BatText.rindex{,_from}
+- BatText: bugfixes in `rindex{,_from}` and `rcontains_from`
   #TODO
   (Gabriel Scherer)
 
