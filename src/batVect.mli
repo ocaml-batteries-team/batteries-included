@@ -628,6 +628,14 @@ val find : ('a -> bool) -> 'a t -> 'a
     @raise Not_found if there is no value that satisfies [p] in the
     vect [a]. *)
 
+val find_opt : ('a -> bool) -> 'a t -> 'a option
+(** [find_opt p a] returns [Some x], where [x] is the first element
+    of vect [a] that satisfies the predicate [p], or [None]
+    if no such element exists.
+
+    @since NEXT_RELEASE
+*)
+
 val mem : 'a -> 'a t -> bool
 (** [mem m a] is true if and only if [m] is equal to an element of [a]. *)
 

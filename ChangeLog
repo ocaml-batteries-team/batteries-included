@@ -25,6 +25,7 @@ Changelog
   (Gabriel Scherer, request and review by Clément Pit-Claudel)
 
 - added `BatVect.find_opt : ('a -> bool) -> 'a t -> 'a option`
+  and BatVect.Make.find_opt
   #TODO
   (Gabriel Scherer)
 

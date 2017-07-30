@@ -1215,6 +1215,13 @@ struct
         | None -> find_opt f r
       end
 
+  (*$T find_opt
+    find_opt (fun x -> true) empty = None
+    find_opt (fun x -> true) (of_array [|0;1;2|]) = Some 0
+    find_opt (fun x -> x mod 2 <> 0) (of_array [|0;1;2|]) = Some 1
+    find_opt (fun x -> x mod 2 <> 0) (of_array [|0;2|]) = None
+  *)
+
   let find f v = match find_opt f v with
     | None -> raise Not_found
     | Some a -> a
