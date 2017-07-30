@@ -169,9 +169,9 @@ val sub : 'a t -> int -> int -> 'a t
 
 val insert : int -> 'a t -> 'a t -> 'a t
 (** [insert n r u] returns a copy of the [u] vect where [r] has been
-    inserted between the elements with index [n] and [n + 1] in the
-    original vect. The length of the new vect is
-    [length u + length r].
+    inserted between the elements with index [n - 1] and [n] in the
+    original vect; after insertion, the first element of [r] (if any)
+    is at index [n]. The length of the new vect is [length u + length r].
     Operates in amortized [O(log(size r) + log(size u))] time. *)
 
 val remove : int -> int -> 'a t -> 'a t

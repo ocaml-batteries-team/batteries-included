@@ -11,6 +11,10 @@ Changelog
   #763
   (Varun Gandhi, review by Francois Berenger, Gabriel Scherer, Thibault Suzanne)
 
+- fix documentation of BatVect.insert to match (correct) implementation
+  #766, #767
+  (Gabriel Scherer, report by Varun Gandhi)
+
 - Documents exceptions for List.(min, max)
   #770
   (Varun Gandhi)

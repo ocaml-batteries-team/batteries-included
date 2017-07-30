@@ -318,8 +318,30 @@ let sub v s l = sub s l v
 let insert start rope r =
   concat (concat (sub r 0 start) rope) (sub r start (length r - start))
 
+(*$T insert
+(of_list [0;1;2;3] |> insert 0 (singleton 10) |> to_list) = [10;0;1;2;3]
+(of_list [0;1;2;3] |> insert 1 (singleton 10) |> to_list) = [0;10;1;2;3]
+(of_list [0;1;2;3] |> insert 2 (singleton 10) |> to_list) = [0;1;10;2;3]
+(of_list [0;1;2;3] |> insert 3 (singleton 10) |> to_list) = [0;1;2;10;3]
+(of_list [0;1;2;3] |> insert 4 (singleton 10) |> to_list) = [0;1;2;3;10]
+try of_list [0;1;2;3] |> insert (-1) (singleton 10) |> to_list |> ignore; false; with _ -> true
+try of_list [0;1;2;3] |> insert 5 (singleton 10) |> to_list |> ignore; false; with _ -> true
+(of_list [] |> insert 0 (singleton 1) |> to_list) = [1]
+(of_list [0] |> insert 0 (singleton 1) |> to_list) = [1; 0]
+(of_list [0] |> insert 1 (singleton 1) |> to_list) = [0; 1]
+*)
+
 let remove start len r =
   concat (sub r 0 start) (sub r (start + len) (length r - start - len))
+
+(*$Q remove
+(Q.pair (Q.pair Q.small_int Q.small_int) (Q.small_int)) \
+(fun ((n1, n2), lr) -> \
+  let init len = of_list (BatList.init len (fun i -> i)) in \
+  let n, lu = min n1 n2, max n1 n2 in \
+  let u, r = init lu, init lr in \
+  equal (=) u (u |> insert n r |> remove n (length r)))
+*)
 
 let to_string r =
   let rec strings l = function
