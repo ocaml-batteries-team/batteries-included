@@ -6,6 +6,10 @@ Changelog
 - added BatArray.min_max
   #757
   (Francois Berenger)
+  
+- Documents exceptions for List.(min, max)
+  #770
+  (Varun Gandhi)
 
 ## v2.6.0 (minor release)
 
