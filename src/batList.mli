@@ -71,7 +71,7 @@ val is_empty : 'a list -> bool
 (** [is_empty e] returns true if [e] does not contains any element. *)
 
 val cons : 'a -> 'a list -> 'a list
-(** [cons h t] returns the list starting with [h] and continuing as [t] *)
+(** [cons h t] returns the list starting with [h] and continuing as [t]. *)
 
 val first : 'a list -> 'a
 (** Returns the first element of the list, or @raise Empty_list if
@@ -263,19 +263,23 @@ val fold_left_map : ('a -> 'b -> 'a * 'c) -> 'a -> 'b list -> 'a * 'c list
 
 val max : 'a list -> 'a
 (** [max l] returns the largest value in [l] as judged by
-    [Pervasives.compare] *)
+    [Pervasives.compare].
+    @raise Invalid_argument on an empty list.
+*)
 
 val min : 'a list -> 'a
 (** [min l] returns the smallest value in [l] as judged by
-    [Pervasives.compare] *)
+    [Pervasives.compare].
+    @raise Invalid_argument on an empty list.
+*)
 
 val sum : int list -> int
-(** [sum l] returns the sum of the integers of [l]
+(** [sum l] returns the sum of the integers of [l].
     @raise Invalid_argument on the empty list.
  *)
 
 val fsum : float list -> float
-(** [fsum l] returns the sum of the floats of [l]
+(** [fsum l] returns the sum of the floats of [l].
     @raise Invalid_argument on the empty list.
  *)
 
@@ -698,7 +702,7 @@ val group_consecutive : ('a -> 'a -> bool) -> 'a list -> 'a list list
 
 val interleave : ?first:'a -> ?last:'a -> 'a -> 'a list -> 'a list
 (** [interleave ~first ~last sep [a0;a1;a2;...;an]] returns
-    [first; a0; sep; a1; sep; a2; sep; ...; sep; an; last] *)
+    [first; a0; sep; a1; sep; a2; sep; ...; sep; an; last]. *)
 
 
 (** {6 BatEnum functions}
@@ -709,7 +713,7 @@ val interleave : ?first:'a -> ?last:'a -> 'a -> 'a list -> 'a list
 val enum : 'a list -> 'a BatEnum.t
 (** Returns an enumeration of the elements of a list. This enumeration may
     be used to visit elements of the list in forward order (i.e. from the
-    first element to the last one)*)
+    first element to the last one). *)
 
 val of_enum : 'a BatEnum.t -> 'a list
 (** Build a list from an enumeration. In the result, elements appear in the
@@ -718,7 +722,7 @@ val of_enum : 'a BatEnum.t -> 'a list
 val backwards : 'a list -> 'a BatEnum.t
 (** Returns an enumeration of the elements of a list. This enumeration may
     be used to visit elements of the list in backwards order (i.e. from the
-    last element to the first one)*)
+    last element to the first one). *)
 
 val of_backwards : 'a BatEnum.t -> 'a list
 (** Build a list from an enumeration. The first element of the enumeration
@@ -812,7 +816,7 @@ val group : ('a -> 'a -> int) -> 'a list -> 'a list list
 
     For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if
     following conditions are met:
-    [cmp a b = 0], [cmp b c = -1], [cmp c d = -1], [cmp d e = 0],...
+    [cmp a b = 0], [cmp b c = -1], [cmp c d = -1], [cmp d e = 0], ...
 
     See the note on [group_consecutive].
 *)
@@ -876,7 +880,7 @@ val dropwhile : ('a -> bool) -> 'a list -> 'a list
    The following modules replace functions defined in {!List} with functions
    behaving slightly differently but having the same name. This is by
    design:
-   the functions meant to override the corresponding functions of {!List}.
+   the functions are meant to override the corresponding functions of {!List}.
 
 *)
 
@@ -903,7 +907,7 @@ module Exceptionless : sig
                                     `Invalid_argument of string]
   (** Whenever [n] is inside of [l] size bounds, [split_at n l] returns
       [Ok(l1,l2)], where [l1] contains the first [n] elements of [l] and [l2]
-      contains the others. Otherwise, returns [`Invalid_argument n] *)
+      contains the others. Otherwise, returns [`Invalid_argument n]. *)
 
   val at : 'a list -> int -> [`Ok of 'a | `Invalid_argument of string]
   (** If [n] is inside the bounds of [l], [at l n] returns [Ok x], where
@@ -944,7 +948,7 @@ module Exceptionless : sig
   val tl : ('a list -> 'a list option)
   (** [tl l] returns [Some x] such that [x] is the given list [l] without its
       first element.
-      Returns [None] if list [l] is empty *)
+      Returns [None] if list [l] is empty. *)
 
   val last : 'a list -> 'a option
     (** [last l] returns either [Some x] where [x] is the last element of the list, or [None] if
