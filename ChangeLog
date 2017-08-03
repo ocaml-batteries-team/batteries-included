@@ -6,7 +6,11 @@ Changelog
 - added BatArray.min_max
   #757
   (Francois Berenger)
-  
+
+- added a Label module to BatVect
+  #763
+  (Varun Gandhi, review by Francois Berenger, Gabriel Scherer, Thibault Suzanne)
+
 - Documents exceptions for List.(min, max)
   #770
   (Varun Gandhi)
