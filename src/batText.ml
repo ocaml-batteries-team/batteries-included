@@ -492,7 +492,7 @@ let rec iteri ?(base=0) f = function
 
 let rec bulk_iteri_backwards ~top f = function
   | Empty -> ()
-  | Leaf (lens,s) -> f (top-lens) s (* gives f the base position, not the top *)
+  | Leaf (lens,s) -> f top s
   | Concat(l,_,r,cr,_) ->
     bulk_iteri_backwards ~top f r;
     bulk_iteri_backwards ~top:(top-cr) f l
@@ -670,12 +670,23 @@ let rindex r char =
         Return.return label (p+i)
       with Not_found -> ()
     in
-    bulk_iteri_backwards ~top:(length r) index_aux r;
+    bulk_iteri_backwards ~top:(length r - 1) index_aux r;
     raise Not_found)
+(*$T rindex
+  rindex (of_string "batteries") (BatUChar.of_char 't') = 3
+  rindex (of_string "batt") (BatUChar.of_char 't') = 3
+  try ignore (rindex (of_string "batteries") (BatUChar.of_char 'y')); false with Not_found -> true
+*)
 
 let rindex_from r start char =
-  let rsub = left r start in
+  let rsub = left r (start + 1) in
   (rindex rsub char)
+(*$T rindex_from
+  let s = "batteries" in rindex_from (of_string s) (String.length s - 1) (BatUChar.of_char 't') = 3
+  let s = "batteries" in rindex_from (of_string s) 2 (BatUChar.of_char 't') = 2
+  try ignore (rindex_from (of_string "batteries") 4 (BatUChar.of_char 'y')); false with Not_found -> true
+  try ignore (rindex_from (of_string "batteries") 20 (BatUChar.of_char 'y')); false with Out_of_bounds -> true
+*)
 
 let contains r char =
   Return.with_label (fun label ->
@@ -684,14 +695,42 @@ let contains r char =
     in
     bulk_iter contains_aux r;
     false)
+(*$T contains
+  contains empty (BatUChar.of_char 't') = false
+  contains (of_string "") (BatUChar.of_char 't') = false
+  contains (of_string "batteries") (BatUChar.of_char 't') = true
+  contains (of_string "batteries") (BatUChar.of_char 'y') = false
+*)
 
 let contains_from r start char =
   Return.with_label (fun label ->
     let contains_aux c = if c = char then Return.return label true in
     range_iter contains_aux start (length r - start) r;
     false)
+(*$T contains_from
+  try ignore (contains_from empty 4 (BatUChar.of_char 't')); false with Out_of_bounds -> true
+  try ignore (contains_from (of_string "") 4 (BatUChar.of_char 't')); false with Out_of_bounds -> true
+  contains_from (of_string "batteries") 4 (BatUChar.of_char 't') = false
+  contains_from (of_string "batteries") 3 (BatUChar.of_char 't') = true
+  contains_from (of_string "batteries") 2 (BatUChar.of_char 't') = true
+  contains_from (of_string "batteries") 1 (BatUChar.of_char 't') = true
+  contains_from (of_string "batteries") 4 (BatUChar.of_char 'y') = false
+*)
 
-let rcontains_from = contains_from
+let rcontains_from r stop char =
+  Return.with_label (fun label ->
+    let contains_aux c = if c = char then Return.return label true in
+    range_iter contains_aux 0 (stop + 1) r;
+    false)
+(*$T rcontains_from
+  try ignore (rcontains_from empty 4 (BatUChar.of_char 't')); false with Out_of_bounds -> true
+  try ignore (rcontains_from (of_string "") 4 (BatUChar.of_char 't')); false with Out_of_bounds -> true
+  rcontains_from (of_string "batteries") 4 (BatUChar.of_char 't') = true
+  rcontains_from (of_string "batteries") 3 (BatUChar.of_char 't') = true
+  rcontains_from (of_string "batteries") 2 (BatUChar.of_char 't') = true
+  rcontains_from (of_string "batteries") 1 (BatUChar.of_char 't') = false
+  rcontains_from (of_string "batteries") 4 (BatUChar.of_char 'y') = false
+*)
 
 let equal r1 r2 = compare r1 r2 = 0
 
