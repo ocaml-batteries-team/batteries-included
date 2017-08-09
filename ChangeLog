@@ -22,7 +22,7 @@ Changelog
     raising/catching than the native OCaml backend.
     Internal exceptions (trough the BatReturn label) have been removed
     from the modules BatString and BatSubstring.
-  (Gabriel Scherer, request by Clément Pit-Claudel)
+  (Gabriel Scherer, request and review by Clément Pit-Claudel)
 
 - Documents exceptions for List.(min, max)
   #770
