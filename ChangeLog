@@ -16,12 +16,12 @@ Changelog
   (Gabriel Scherer, report by Varun Gandhi)
 
 - avoid using exceptions for internal control-flow
-  #768, #769
+  #768, #769, #773
     This purely internal change should improve performances when using
     js_of_ocaml, which generates much slower code for local exceptions
     raising/catching than the native OCaml backend.
     Internal exceptions (trough the BatReturn label) have been removed
-    from the modules BatString, BatSubstring and BatVect.
+    from the modules BatString, BatSubstring, BatVect and BatText.
   (Gabriel Scherer, request and review by Clément Pit-Claudel)
 
 - added `BatVect.find_opt : ('a -> bool) -> 'a t -> 'a option`
@@ -34,7 +34,7 @@ Changelog
   (Varun Gandhi)
 
 - BatText: bugfixes in `rindex{,_from}` and `rcontains_from`
-  #TODO
+  #773
   (Gabriel Scherer)
 
 ## v2.6.0 (minor release)
