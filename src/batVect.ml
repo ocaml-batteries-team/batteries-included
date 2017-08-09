@@ -508,35 +508,68 @@ let mapi f v =
   let off = ref 0 in
   map (fun x -> f (BatRef.post_incr off) x) v
 
-let exists f v =
-  BatReturn.label (fun label ->
-    let rec aux = function
-      | Empty -> ()
-      | Leaf a -> if BatArray.exists f a then BatReturn.return label true else ()
-      | Concat (l, _, r, _, _) -> aux l; aux r in
-    aux v;
-    false
-  )
+let rec exists f = function
+  | Empty -> false
+  | Leaf a -> BatArray.exists f a
+  | Concat (l, _, r, _, _) -> exists f l || exists f r
 
-let for_all f v =
-  BatReturn.label (fun label ->
-    let rec aux = function
-      | Empty -> ()
-      | Leaf a -> if not (BatArray.for_all f a) then BatReturn.return label false else ()
-      | Concat (l, _, r, _, _) -> aux l; aux r in
-    aux v;
-    true
-  )
+(*$T exists
+  exists (fun x -> x = 2) empty = false
+  exists (fun x -> x = 2) (singleton 2) = true
+  exists (fun x -> x = 2) (singleton 3) = false
+  exists (fun x -> x = 2) (of_array [|1; 3|]) = false
+  exists (fun x -> x = 2) (of_array [|2; 3|]) = true
+  exists (fun x -> x = 2) (concat (singleton 1) (singleton 3)) = false
+  exists (fun x -> x = 2) (concat (singleton 1) (of_array [|2|])) = true
+  exists (fun x -> x = 2) (concat (singleton 2) (singleton 3)) = true
+*)
+(*$Q exists
+  (Q.list Q.small_int) (fun li -> let p i = (i mod 4 = 0) in List.exists p li = exists p (of_list li))
+*)
+
+let rec for_all f = function
+  | Empty -> true
+  | Leaf a -> BatArray.for_all f a
+  | Concat (l, _, r, _, _) -> for_all f l && for_all f r
+(*$T for_all
+  for_all (fun x -> x = 2) empty = true
+  for_all (fun x -> x = 2) (singleton 2) = true
+  for_all (fun x -> x = 2) (singleton 3) = false
+  for_all (fun x -> x = 2) (of_array [|2; 3|]) = false
+  for_all (fun x -> x = 2) (of_array [|2; 2|]) = true
+  for_all (fun x -> x = 2) (concat (singleton 1) (singleton 2)) = false
+  for_all (fun x -> x = 2) (concat (singleton 2) (of_array [|2|])) = true
+  for_all (fun x -> x = 2) (concat (singleton 2) (singleton 3)) = false
+*)
+(*$Q for_all
+  (Q.list Q.small_int) (fun li -> let p i = (i mod 4 > 0) in List.for_all p li = for_all p (of_list li))
+*)
+
+let rec find_opt f = function
+  | Empty -> None
+  | Leaf a -> BatArray.Exceptionless.find f a
+  | Concat (l, _, r, _, _) ->
+    begin match find_opt f l with
+      | Some _ as result -> result
+      | None -> find_opt f r
+    end
+(*$T find_opt
+  [0;1;2;3] |> of_list |> find_opt ((=) 2) = Some 2
+  [0;1;2;3] |> of_list |> find_opt ((=) 4) = None
+  [] |> of_list |> find_opt ((=) 2) = None
+  concat (of_list [0; 1]) (of_list ([2; 3])) |> find_opt (fun n -> n > 0) = Some 1
+*)
 
 let find f v =
-  BatReturn.label (fun label ->
-    let rec aux = function
-      | Empty -> ()
-      | Leaf a -> (try BatReturn.return label (BatArray.find f a) with Not_found -> ())
-      | Concat (l, _, r, _, _) -> aux l; aux r in
-    aux v;
-    raise Not_found
-  )
+  match find_opt f v with
+  | None -> raise Not_found
+  | Some x -> x
+(*$T find
+  [0;1;2;3] |> of_list |> find ((=) 2) = 2
+  try [0;1;2;3] |> of_list |> find ((=) 4) |> ignore; false with Not_found -> true
+  try [] |> of_list |> find ((=) 2) |> ignore; false with Not_found -> true
+  concat (of_list [0; 1]) (of_list ([2; 3])) |> find (fun n -> n > 0) = 1
+*)
 
 let findi f v =
   let off = ref (-1) in
@@ -679,6 +712,15 @@ module Make(RANDOMACCESS : RANDOMACCESS)
      end)=
 struct
   module STRING = RANDOMACCESS
+  (*$inject module Test_functor = struct
+    module STRING = struct
+      include BatArray
+      let empty = [||]
+    end
+    module PARAM = struct let max_height = 256 let leaf_size = 256 end
+    module Instance = Make(STRING)(PARAM)
+    open Instance
+  *)
 
   type 'a t =
     | Empty
@@ -1124,35 +1166,72 @@ struct
     let off = ref 0 in
     map (fun x -> f (BatRef.post_incr off) x) v
 
-  let exists f v =
-    BatReturn.label (fun label ->
-      let rec aux = function
-        | Empty -> ()
-        | Leaf a -> STRING.iter (fun x -> if f x then BatReturn.return label true) a
-        | Concat (l, _, r, _, _) -> aux l; aux r in
-      aux v;
-      false
-    )
+  let rec exists f = function
+    | Empty -> false
+    | Leaf a ->
+      let rec aux f a len i =
+        (i < len)
+        && (f (STRING.unsafe_get a i) || aux f a len (i + 1)) in
+      aux f a (STRING.length a) 0
+    | Concat (l, _, r, _, _) -> exists f l || exists f r
 
-  let for_all f v =
-    BatReturn.label (fun label ->
-      let rec aux = function
-        | Empty -> ()
-        | Leaf a -> STRING.iter (fun x -> if not (f x) then BatReturn.return label false) a
-        | Concat (l, _, r, _, _) -> aux l; aux r in
-      aux v;
-      true
-    )
+  (*$T exists
+    exists (fun x -> true) empty = false
+    exists (fun x -> false) (of_array [|0;1;2|]) = false
+    exists (fun x -> x mod 2 <> 0) (of_array [|0;1;2|]) = true
+    exists (fun x -> x mod 2 <> 0) (of_array [|0;2|]) = false
+  *)
 
-  let find f v =
-    BatReturn.label (fun label ->
-      let rec aux = function
-        | Empty -> ()
-        | Leaf a -> STRING.iter (fun x -> if (f x) then BatReturn.return label x) a
-        | Concat (l, _, r, _, _) -> aux l; aux r in
-      aux v;
-      raise Not_found
-    )
+  let rec for_all f = function
+    | Empty -> true
+    | Leaf a ->
+      let rec aux f a len i =
+        (i >= len)
+        || (f (STRING.unsafe_get a i) && aux f a len (i + 1)) in
+      aux f a (STRING.length a) 0
+    | Concat (l, _, r, _, _) -> for_all f l && for_all f r
+
+  (*$T for_all
+    for_all (fun x -> true) empty = true
+    for_all (fun x -> true) (of_array [|0;1;2|]) = true
+    for_all (fun x -> x mod 2 = 0) (of_array [|0;1;2|]) = false
+    for_all (fun x -> x mod 2 = 0) (of_array [|0;2|]) = true
+  *)
+
+  let rec find_opt f = function
+    | Empty -> None
+    | Leaf a ->
+      let rec aux f a len i =
+        if i >= len then None
+        else begin
+          let x = STRING.unsafe_get a i in
+          if f x then Some x
+          else aux f a len (i + 1)
+        end in
+      aux f a (STRING.length a) 0
+    | Concat (l, _, r, _, _) ->
+      begin match find_opt f l with
+        | Some _ as res -> res
+        | None -> find_opt f r
+      end
+
+  (*$T find_opt
+    find_opt (fun x -> true) empty = None
+    find_opt (fun x -> true) (of_array [|0;1;2|]) = Some 0
+    find_opt (fun x -> x mod 2 <> 0) (of_array [|0;1;2|]) = Some 1
+    find_opt (fun x -> x mod 2 <> 0) (of_array [|0;2|]) = None
+  *)
+
+  let find f v = match find_opt f v with
+    | None -> raise Not_found
+    | Some a -> a
+
+  (*$T find
+    try ignore (find (fun x -> true) empty); false with Not_found -> true
+    find (fun x -> true) (of_array [|0;1;2|]) = 0
+    find (fun x -> x mod 2 <> 0) (of_array [|0;1;2|]) = 1
+    try ignore (find (fun x -> x mod 2 <> 0) (of_array [|0;2|])); false with Not_found -> true
+  *)
 
   let findi f v =
     let off = ref (-1) in
@@ -1253,4 +1332,5 @@ struct
     let foldi ~f ~init        = foldi f init
   end
 
+(*$inject end *)
 end
