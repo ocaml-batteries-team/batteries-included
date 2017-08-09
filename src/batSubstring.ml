@@ -54,14 +54,17 @@ let create len = String.make len '\000', 0, len
 
 let equal (s1,o1,l1) (s2,o2,l2) =
   if l1 <> l2 then false
-  else BatReturn.label (fun label ->
-      for i = 0 to l1-1 do
-        if s1.[i+o1] <> s1.[i+o2] then BatReturn.return label false
-      done; true)
+  else
+    let rec loop i =
+      if i = l1 then true
+      else if s1.[i+o1] <> s2.[i+o2] then false
+      else loop (i + 1)
+    in loop 0
 (*$T equal
    equal (of_string "abc") (of_string "abc") = true
    equal (substring "aba" 0 1) (substring "aba" 2 1) = true
    equal (substring "aba" 1 1) (substring "aba" 2 1) = false
+   equal (substring "abc" 0 2) (substring "cab" 1 2) = true
 *)
 
 (*

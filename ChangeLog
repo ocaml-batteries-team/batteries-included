@@ -15,6 +15,15 @@ Changelog
   #766, #767
   (Gabriel Scherer, report by Varun Gandhi)
 
+- avoid using exceptions for internal control-flow
+  #768
+    This purely internal change should improve performances when using
+    js_of_ocaml, which generates much slower code for local exceptions
+    raising/catching than the native OCaml backend.
+    Internal exceptions (trough the BatReturn label) have been removed
+    from the modules BatString and BatSubstring.
+  (Gabriel Scherer, request and review by Clément Pit-Claudel)
+
 - Documents exceptions for List.(min, max)
   #770
   (Varun Gandhi)
