@@ -49,6 +49,12 @@ endif
 OPT_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa \
 	_build/src/*.cmxs _build/src/*.lib
 
+ifneq ($(QTEST_SEED),)
+	QTEST_SEED_FLAG = --seed $(QTEST_SEED)
+else
+	QTEST_SEED_FLAG =
+endif
+
 # What to build
 TARGETS  = src/batteries.cma
 TARGETS += src/batteriesHelp.cmo
@@ -207,21 +213,22 @@ qtest-byte-clean:
 	@${MAKE} _build/$(QTESTDIR)/all_tests.byte
 
 qtest-byte: qtest-byte-clean
-	@_build/$(QTESTDIR)/all_tests.byte
+	@_build/$(QTESTDIR)/all_tests.byte $(QTEST_SEED_FLAG)
 
 qtest-native-clean:
 	@${RM} $(QTESTDIR)/all_tests.ml
-	@${MAKE} _build/$(QTESTDIR)/all_tests.native
+	@${MAKE} _build/$(QTESTDIR)/all_tests.native $(QTEST_SEED_FLAG)
 
 qtest-native: prefilter qtest-native-clean
-	@_build/$(QTESTDIR)/all_tests.native
+	@_build/$(QTESTDIR)/all_tests.native $(QTEST_SEED_FLAG)
 
 qtest-clean:
 	@${RM} $(QTESTDIR)/all_tests.ml
 	@${MAKE} _build/$(QTESTDIR)/all_tests.$(EXT)
 
 qtest: qtest-clean
-	@_build/$(QTESTDIR)/all_tests.$(EXT)
+	@_build/$(QTESTDIR)/all_tests.$(EXT) $(QTEST_SEED_FLAG)
+
 
 ### run all unit tests
 ##############################################
