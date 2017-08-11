@@ -182,7 +182,8 @@ external counters : unit -> float * float * float = "caml_gc_counters"
     is as fast at [quick_stat]. *)
 
 ##V>=4.4##external minor_words : unit -> (float [@unboxed])
-##V>=4.4##  = "caml_gc_minor_words" "caml_gc_minor_words_unboxed" [@@noalloc]
+##V>=4.4##  = "caml_gc_minor_words" "caml_gc_minor_words_unboxed"
+##V<4.5##     [@@noalloc]
 ##V>=4.4##(** Number of words allocated in the minor heap since the program was
 ##V>=4.4##    started. This number is accurate in byte-code programs, but only an
 ##V>=4.4##    approximation in programs compiled to native code.
@@ -227,7 +228,8 @@ val allocated_bytes : unit -> float
     started.  It is returned as a [float] to avoid overflow problems
     with [int] on 32-bit machines. *)
 
-##V>=4.3##external get_minor_free : unit -> int = "caml_get_minor_free" [@@noalloc]
+##V>=4.3##external get_minor_free : unit -> int = "caml_get_minor_free"
+##V<4.5##          [@@noalloc]
 (** Return the current size of the free space inside the minor heap.
     @since 2.5.0 and OCaml 4.03.0 *)
 

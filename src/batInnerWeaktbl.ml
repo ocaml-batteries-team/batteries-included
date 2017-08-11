@@ -95,6 +95,7 @@ module Make (H: Hashtbl.HashedType) : Hashtbl.S with type key = H.t = struct
   let find_all tbl key =
     try all_value (W.find tbl (dummy key)) with Not_found-> []
   let find tbl key = top_value (W.find tbl (dummy key))
+  let find_opt tbl key = try Some (top_value (W.find tbl (dummy key))) with Not_found -> None
   let add tbl key data =
     let bd = bind_new key data in
     let cls =
