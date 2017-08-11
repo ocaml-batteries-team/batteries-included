@@ -151,6 +151,10 @@ val output_buffer : t -> string BatInnerIO.output
 (** [output_buffer b] creates an output channel that writes to that
     buffer, and when closed, returns the contents of the buffer. *)
 
+##V>=4.5##val truncate : t -> int -> unit
+##V>=4.5##(** [truncate b len] truncates the length of [b] to [len]
+##V>=4.5##    Note: the internal byte sequence is not shortened.
+##V>=4.5##    Raises [Invalid_argument] if [len < 0] or [len > length b]. *)
 
 (** {6 Boilerplate code}*)
 
