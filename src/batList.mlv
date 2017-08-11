@@ -172,8 +172,8 @@ let map f = function
     loop r t;
     inj r
 (*$Q map
-  (Q.pair (Q.fun1 Q.int Q.int) (Q.list Q.small_int)) \
-  (fun (f,l) -> map f l = List.map f l)
+  (Q.pair (Q.fun1 Q.Observable.int Q.int) (Q.list Q.small_int)) \
+  (fun (Q.Fun (_,f),l) -> map f l = List.map f l)
 *)
 
 let rec drop n = function
