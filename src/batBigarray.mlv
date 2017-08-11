@@ -284,6 +284,8 @@ struct
 end
 
 
+##V>=4.5##external genarray_of_array0: ('a, 'b, 'c) Bigarray.Array0.t -> ('a, 'b, 'c) Genarray.t
+##V>=4.5##  = "%identity"
 external genarray_of_array1: ('a, 'b, 'c) Bigarray.Array1.t -> ('a, 'b, 'c) Genarray.t
   = "%identity"
 external genarray_of_array2: ('a, 'b, 'c) Bigarray.Array2.t -> ('a, 'b, 'c) Genarray.t
@@ -298,10 +300,16 @@ external reshape:
 let reshape_3 = Bigarray.reshape_3
 let reshape_2 = Bigarray.reshape_2
 let reshape_1 = Bigarray.reshape_1
+##V>=4.5##let reshape_0 = Bigarray.reshape_0
 
 let array3_of_genarray = Bigarray.array3_of_genarray
 let array2_of_genarray = Bigarray.array2_of_genarray
 let array1_of_genarray = Bigarray.array1_of_genarray
+##V>=4.5##let array0_of_genarray = Bigarray.array0_of_genarray
+
+##V>=4.5##module Array0 = struct
+##V>=4.5##  include Bigarray.Array0
+##V>=4.5##end
 
 module Array1 = struct
   include Bigarray.Array1
