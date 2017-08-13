@@ -33,6 +33,10 @@ Changelog
   #770
   (Varun Gandhi)
 
+- BatText: bugfixes in `rindex{,_from}` and `rcontains_from`
+  #775
+  (Gabriel Scherer)
+
 ## v2.6.0 (minor release)
 
 - added Bat{Set,Map,Splay}.any and fixed Bat{Map,Splay}.choose
