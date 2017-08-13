@@ -74,3 +74,9 @@ include Bytes
   equal ("Five" |> of_string |> uncapitalize_ascii |> to_string) "five"
   equal ("École" |> of_string |> uncapitalize_ascii |> to_string) "École"
  *)
+
+
+##V<4.5##let index_opt b c = try Some (index b c) with _ -> None
+##V<4.5##let rindex_opt b c = try Some (rindex b c) with _ -> None
+##V<4.5##let index_from_opt b i c = try Some (index_from b i c) with _ -> None
+##V<4.5##let rindex_from_opt b i c = try Some (rindex_from b i c) with _ -> None

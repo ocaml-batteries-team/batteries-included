@@ -109,10 +109,11 @@ val at : 'a list -> int -> 'a
 (** [at l n] returns the n-th element of the list [l] or
     @raise Invalid_argument if the index is outside of [l] bounds.  O(l) *)
 
-##V>=4.5##val at_opt : 'a list -> int -> 'a option
-##V>=4.5##(** [at_opt] returns the n-th element of the list [l] or None if the index is
-##V>=4.5##    beyond the length of [l].
-##V>=4.5##    @raise Invalid_argument if the index is negative *)
+val at_opt : 'a list -> int -> 'a option
+(** [at_opt] returns the n-th element of the list [l] or None if the index is
+    beyond the length of [l].
+    @since NEXT_RELEASE
+    @raise Invalid_argument if the index is negative *)
 
 val rev : 'a list -> 'a list
 (** List reversal. *)
@@ -427,11 +428,11 @@ val find : ('a -> bool) -> 'a list -> 'a
     @raise Not_found if there is no value that satisfies [p] in the
     list [l]. *)
 
-##V>=4.5##val find_opt: ('a -> bool) -> 'a list -> 'a option
-##V>=4.5##(** [find_opt p l] returns the first element of the list [l] that
-##V>=4.5##    satisfies the predicate [p], or [None] if there is no value that
-##V>=4.5##    satisfies [p] in the list [l].
-##V>=4.5##    @since 4.05 *)
+val find_opt: ('a -> bool) -> 'a list -> 'a option
+(** [find_opt p l] returns the first element of the list [l] that
+    satisfies the predicate [p], or [None] if there is no value that
+    satisfies [p] in the list [l].
+    @since NEXT_RELEASE *)
 
 val find_exn : ('a -> bool) -> exn -> 'a list -> 'a
 (** [find_exn p e l] returns the first element of [l] such as [p x]
@@ -555,14 +556,14 @@ val assoc : 'a -> ('a * 'b) list -> 'b
     @raise Not_found if there is no value associated with [a] in the
     list [l]. *)
 
-##V>=4.5##val assoc_opt: 'a -> ('a * 'b) list -> 'b option
-##V>=4.5##(** [assoc_opt a l] returns the value associated with key [a] in the list of
-##V>=4.5##   pairs [l]. That is,
-##V>=4.5##   [assoc_opt a [ ...; (a,b); ...] = b]
-##V>=4.5##   if [(a,b)] is the leftmost binding of [a] in list [l].
-##V>=4.5##   Returns [None] if there is no value associated with [a] in the
-##V>=4.5##   list [l].
-##V>=4.5##   @since 4.05 *)
+val assoc_opt: 'a -> ('a * 'b) list -> 'b option
+(** [assoc_opt a l] returns the value associated with key [a] in the list of
+   pairs [l]. That is,
+   [assoc_opt a [ ...; (a,b); ...] = b]
+   if [(a,b)] is the leftmost binding of [a] in list [l].
+   Returns [None] if there is no value associated with [a] in the
+   list [l].
+   @since NEXT_RELEASE *)
 
 val assoc_inv : 'b -> ('a * 'b) list -> 'a
 (** [assoc_inv b l] returns the key associated with value [b] in the list of
@@ -584,10 +585,10 @@ val assq : 'a -> ('a * 'b) list -> 'b
 (** Same as {!List.assoc}, but uses physical equality instead of structural
     equality to compare keys. *)
 
-##V>=4.5##val assq_opt : 'a -> ('a * 'b) list -> 'b option
-##V>=4.5##(** Same as {!List.assoc_opt}, but uses physical equality instead of structural
-##V>=4.5##    equality to compare keys.
-##V>=4.5##    @since 4.05 *)
+val assq_opt : 'a -> ('a * 'b) list -> 'b option
+(** Same as {!List.assoc_opt}, but uses physical equality instead of structural
+    equality to compare keys.
+    @since NEXT_RELEASE *)
 
 val assq_inv : 'b -> ('a * 'b) list -> 'a
 (** Same as {!List.assoc_inv}, but uses physical equality instead of structural
@@ -907,13 +908,13 @@ module Comp (T : Comp) : Comp with type t = T.t list
 val nth : 'a list -> int -> 'a
 (** Obsolete. As [at]. *)
 
-##V>=4.5##val nth_opt: 'a list -> int -> 'a option
-##V>=4.5##(** Return the [n]-th element of the given list.
-##V>=4.5##    The first element (head of the list) is at position 0.
-##V>=4.5##    Return [None] if the list is too short.
-##V>=4.5##    Raise [Invalid_argument "List.nth"] if [n] is negative.
-##V>=4.5##    @since 4.05
-##V>=4.5##*)
+val nth_opt: 'a list -> int -> 'a option
+(** Return the [n]-th element of the given list.
+    The first element (head of the list) is at position 0.
+    Return [None] if the list is too short.
+    Raise [Invalid_argument "List.nth"] if [n] is negative.
+    @since NEXT_RELEASE
+*)
 
 val takewhile :  ('a -> bool) -> 'a list -> 'a list
 (** obsolete, as {!take_while} *)

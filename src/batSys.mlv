@@ -35,3 +35,5 @@ let files_of d = BatArray.enum (readdir d)
 
 ##V>=4.3##external opaque_identity : 'a -> 'a = "%opaque"
 ##V<4.3##let opaque_identity = BatOpaqueInnerSys.opaque_identity
+
+##V<4.5##let getenv_opt v = try Some (getenv v) with Not_found -> None
