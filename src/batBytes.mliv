@@ -197,10 +197,10 @@ val index : t -> char -> int
 
     Raise [Not_found] if [c] does not occur in [s]. *)
 
-##V>=4.5##val index_opt: bytes -> char -> int option
-##V>=4.5##(** [index_opt s c] returns the index of the first occurrence of byte [c]
-##V>=4.5##    in [s] or [None] if [c] does not occur in [s].
-##V>=4.5##    @since 4.05 *)
+val index_opt: bytes -> char -> int option
+(** [index_opt s c] returns the index of the first occurrence of byte [c]
+    in [s] or [None] if [c] does not occur in [s].
+    @since NEXT_RELEASE *)
 
 val rindex : t -> char -> int
 (** [rindex s c] returns the index of the last occurrence of byte [c]
@@ -208,10 +208,10 @@ val rindex : t -> char -> int
 
     Raise [Not_found] if [c] does not occur in [s]. *)
 
-##V>=4.5##val rindex_opt: bytes -> char -> int option
-##V>=4.5##(** [rindex_opt s c] returns the index of the last occurrence of byte [c]
-##V>=4.5##    in [s] or [None] if [c] does not occur in [s].
-##V>=4.5##    @since 4.05 *)
+val rindex_opt: bytes -> char -> int option
+(** [rindex_opt s c] returns the index of the last occurrence of byte [c]
+    in [s] or [None] if [c] does not occur in [s].
+    @since NEXT_RELEASE *)
 
 val index_from : t -> int -> char -> int
 (** [index_from s i c] returns the index of the first occurrence of
@@ -221,13 +221,13 @@ val index_from : t -> int -> char -> int
     Raise [Invalid_argument] if [i] is not a valid position in [s].
     Raise [Not_found] if [c] does not occur in [s] after position [i]. *)
 
-##V>=4.5##val index_from_opt: bytes -> int -> char -> int option
-##V>=4.5##(** [index_from _opts i c] returns the index of the first occurrence of
-##V>=4.5##    byte [c] in [s] after position [i] or [None] if [c] does not occur in [s] after position [i].
-##V>=4.5##    [Bytes.index_opt s c] is equivalent to [Bytes.index_from_opt s 0 c].
-##V>=4.5##
-##V>=4.5##    Raise [Invalid_argument] if [i] is not a valid position in [s].
-##V>=4.5##    @since 4.05 *)
+val index_from_opt: bytes -> int -> char -> int option
+(** [index_from _opts i c] returns the index of the first occurrence of
+    byte [c] in [s] after position [i] or [None] if [c] does not occur in [s] after position [i].
+    [Bytes.index_opt s c] is equivalent to [Bytes.index_from_opt s 0 c].
+
+    Raise [Invalid_argument] if [i] is not a valid position in [s].
+    @since NEXT_RELEASE *)
 
 val rindex_from : t -> int -> char -> int
 (** [rindex_from s i c] returns the index of the last occurrence of
@@ -237,14 +237,14 @@ val rindex_from : t -> int -> char -> int
     Raise [Invalid_argument] if [i+1] is not a valid position in [s].
     Raise [Not_found] if [c] does not occur in [s] before position [i+1]. *)
 
-##V>=4.5##val rindex_from_opt: bytes -> int -> char -> int option
-##V>=4.5##(** [rindex_from_opt s i c] returns the index of the last occurrence
-##V>=4.5##    of byte [c] in [s] before position [i+1] or [None] if [c] does not
-##V>=4.5##    occur in [s] before position [i+1].  [rindex_opt s c] is equivalent to
-##V>=4.5##    [rindex_from s (Bytes.length s - 1) c].
-##V>=4.5##
-##V>=4.5##    Raise [Invalid_argument] if [i+1] is not a valid position in [s].
-##V>=4.5##    @since 4.05 *)
+val rindex_from_opt: bytes -> int -> char -> int option
+(** [rindex_from_opt s i c] returns the index of the last occurrence
+    of byte [c] in [s] before position [i+1] or [None] if [c] does not
+    occur in [s] before position [i+1].  [rindex_opt s c] is equivalent to
+    [rindex_from s (Bytes.length s - 1) c].
+
+    Raise [Invalid_argument] if [i+1] is not a valid position in [s].
+    @since NEXT_RELEASE *)
 
 val contains : t -> char -> bool
 (** [contains s c] tests if byte [c] appears in [s]. *)

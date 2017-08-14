@@ -1080,6 +1080,11 @@ struct
   *)
 end (* String.Exceptionless *)
 
+##V<4.5##let index_opt = Exceptionless.index
+##V<4.5##let rindex_opt = Exceptionless.rindex
+##V<4.5##let index_from_opt = Exceptionless.index_from
+##V<4.5##let rindex_from_opt = Exceptionless.rindex_from
+
 module Cap =
 struct
   type 'a t = string

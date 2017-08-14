@@ -29,10 +29,13 @@ let stable_sort = List.stable_sort
 let sort = List.sort
 let assq = List.assq
 ##V>=4.5##let assq_opt = List.assq_opt
+##V<4.5##let assq_opt k li = try Some (assq k li) with Not_found -> None
 let assoc = List.assoc
 ##V>=4.5##let assoc_opt = List.assoc_opt
+##V<4.5##let assoc_opt k li = try Some (assoc k li) with Not_found -> None
 let find = List.find
 ##V>=4.5##let find_opt = List.find_opt
+##V<4.5##let find_opt p li = try Some (find p li) with Not_found -> None
 let exists = List.exists
 let for_all = List.for_all
 let fold_left = List.fold_left
@@ -51,6 +54,49 @@ let mem_assq = List.mem_assq
 let mem_assoc = List.mem_assoc
 let rev_map2 = List.rev_map2
 (* ::VH:: END GLUE *)
+
+let rec compare_lengths la lb = match la, lb with
+  | [], [] -> 0
+  | [], _::_ -> -1
+  | _::_, [] -> 1
+  | _::la, _::lb -> compare_lengths la lb
+
+(*$T compare_lengths
+compare_lengths [] [] = 0
+compare_lengths [] [1] = -1
+compare_lengths [1] [] = 1
+compare_lengths [1; 2] [3; 4] = 0
+compare_lengths [1; 2; 3] [3; 4] = 1
+compare_lengths [1; 2] [2; 3; 4] = -1
+*)
+
+(*$Q compare_lengths
+  (Q.pair (Q.list Q.small_int) (Q.list Q.small_int)) \
+  (fun (la, lb) -> \
+    BatOrd.ord0 (compare_lengths la lb) \
+    = BatOrd.ord0 (Pervasives.compare (length la) (length lb)))
+*)
+
+let rec compare_length_with li n = match li, n with
+  | [], n -> Pervasives.compare 0 n
+  | _::tl, n -> compare_length_with tl (n-1)
+
+(*$T compare_length_with
+compare_length_with [] 0 = 0
+compare_length_with [] 1 = -1
+compare_length_with [1] 0 = 1
+compare_length_with [1; 2] 2 = 0
+compare_length_with [1; 2; 3] 2 = 1
+compare_length_with [1; 2] 3 = -1
+*)
+
+(*$Q compare_length_with
+  (Q.pair (Q.list Q.small_int) Q.small_int) \
+  (fun (li, n) -> \
+    BatOrd.ord0 (compare_length_with li n) \
+    = BatOrd.ord0 (Pervasives.compare (length li) n))
+*)
+
 
 (* Thanks to Jacques Garrigue for suggesting the following structure *)
 type 'a mut_list =  {
@@ -106,14 +152,14 @@ let at = nth
   at [1;2;3] 2 = 3
 *)
 
-##V>=4.5##let at_opt l index =
-##V>=4.5##  if index < 0 then invalid_arg at_negative_index_msg;
-##V>=4.5##  try Some (at l index) with Invalid_argument _ -> None
-##V>=4.5##(*$T at_opt
-##V>=4.5##  at_opt [] 0 = None
-##V>=4.5##  try ignore (at_opt [1;2;3] (-1)); false with Invalid_argument _ -> true
-##V>=4.5##  at_opt [1;2;3] 2 = Some 3
-##V>=4.5##*)
+let at_opt l index =
+  if index < 0 then invalid_arg at_negative_index_msg;
+  try Some (at l index) with Invalid_argument _ -> None
+(*$T at_opt
+  at_opt [] 0 = None
+  try ignore (at_opt [1;2;3] (-1)); false with Invalid_argument _ -> true
+  at_opt [1;2;3] 2 = Some 3
+*)
 
 let mem_cmp cmp x l =
   exists (fun y -> cmp x y = 0) l
@@ -372,6 +418,7 @@ let group_consecutive p l =
 *)
 
 ##V>=4.5##let nth_opt = List.nth_opt
+##V<4.5##let nth_opt li n = try Some (nth li n) with _ -> None
 let takewhile = take_while
 let dropwhile = drop_while
 

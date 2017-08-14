@@ -19,6 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+
 let big_int_base_default_symbols =
   let s = Bytes.create (10 + 26*2) in
   let set off c k = Bytes.set s k (char_of_int (k - off + (int_of_char c))) in
@@ -172,3 +173,10 @@ let print out t = BatIO.nwrite out (to_string t)
     ((of_int 3 --- of_int 1) /@ to_int |> List.of_enum) [3; 2; 1]
   *)
   (*$>*)
+
+
+##V<4.5##let big_int_of_string_opt s = try Some (big_int_of_string s) with _ -> None
+##V<4.5##let int_of_big_int_opt n = try Some (int_of_big_int n) with _ -> None
+##V<4.5##let int32_of_big_int_opt n = try Some (int32_of_big_int n) with _ -> None
+##V<4.5##let int64_of_big_int_opt n = try Some (int64_of_big_int n) with _ -> None
+##V<4.5##let nativeint_of_big_int_opt n = try Some (nativeint_of_big_int n) with _ -> None

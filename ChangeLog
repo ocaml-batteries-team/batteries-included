@@ -41,6 +41,13 @@ Changelog
   #775
   (Gabriel Scherer)
 
+- Support for the new OCaml release 4.05
+  the `*_opt` functions and List.compare_lengths, compare_length_with
+  are also backported to older OCaml releases, so code using them from
+  Batteries should be backwards-compatible
+  #777, #779
+  (Tej Chajed, Gabriel Scherer)
+
 ## v2.6.0 (minor release)
 
 - added Bat{Set,Map,Splay}.any and fixed Bat{Map,Splay}.choose

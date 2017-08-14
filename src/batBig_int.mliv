@@ -180,13 +180,13 @@ val big_int_of_string : string -> big_int
 (** Convert a string to a big integer, in decimal.
     The string consists of an optional [-] or [+] sign,
     followed by one or several decimal digits. *)
-##V>=4.5##val big_int_of_string_opt: string -> big_int option
-##V>=4.5##(** Convert a string to a big integer, in decimal.
-##V>=4.5##    The string consists of an optional [-] or [+] sign,
-##V>=4.5##    followed by one or several decimal digits. Other the function
-##V>=4.5##    returns [None].
-##V>=4.5##    @since 4.05
-##V>=4.5##*)
+val big_int_of_string_opt: string -> big_int option
+(** Convert a string to a big integer, in decimal.
+    The string consists of an optional [-] or [+] sign,
+    followed by one or several decimal digits. Other the function
+    returns [None].
+    @since NEXT_RELEASE
+*)
 
 val to_string_in_binary : big_int -> string
 (** as [string_of_big_int], but in base 2 *)
@@ -249,12 +249,12 @@ val int_of_big_int : big_int -> int
 (** Convert a big integer to a small integer (type [int]).
     @raise Failure if the big integer
     is not representable as a small integer. *)
-##V>=4.5##val int_of_big_int_opt: big_int -> int option
-##V>=4.5##(** Convert a big integer to a small integer (type [int]).  Return
-##V>=4.5##    [None] if the big integer is not representable as a small
-##V>=4.5##    integer.
-##V>=4.5##    @since 4.05
-##V>=4.5##*)
+val int_of_big_int_opt: big_int -> int option
+(** Convert a big integer to a small integer (type [int]).  Return
+    [None] if the big integer is not representable as a small
+    integer.
+    @since NEXT_RELEASE
+*)
 
 val big_int_of_int32 : int32 -> big_int
 (** Convert a 32-bit integer to a big integer. *)
@@ -266,30 +266,30 @@ val int32_of_big_int : big_int -> int32
 (** Convert a big integer to a 32-bit integer.
     @raise Failure if the big integer is outside the
     range [[-2{^31}, 2{^31}-1]]. *)
-##V>=4.5##val int32_of_big_int_opt: big_int -> int32 option
-##V>=4.5##(** Convert a big integer to a 32-bit integer.  Return [None] if the
-##V>=4.5##    big integer is outside the range \[-2{^31}, 2{^31}-1\].
-##V>=4.5##    @since 4.05
-##V>=4.5##*)
+val int32_of_big_int_opt: big_int -> int32 option
+(** Convert a big integer to a 32-bit integer.  Return [None] if the
+    big integer is outside the range \[-2{^31}, 2{^31}-1\].
+    @since NEXT_RELEASE
+*)
 val nativeint_of_big_int : big_int -> nativeint
 (** Convert a big integer to a native integer.
     @raise Failure if the big integer is outside the
     range [[Nativeint.min_int, Nativeint.max_int]]. *)
-##V>=4.5##val nativeint_of_big_int_opt: big_int -> nativeint option
-##V>=4.5##(** Convert a big integer to a native integer. Return [None] if the
-##V>=4.5##    big integer is outside the range [[Nativeint.min_int,
-##V>=4.5##    Nativeint.max_int]];
-##V>=4.5##    @since 4.05
-##V>=4.5##*)
+val nativeint_of_big_int_opt: big_int -> nativeint option
+(** Convert a big integer to a native integer. Return [None] if the
+    big integer is outside the range [[Nativeint.min_int,
+    Nativeint.max_int]];
+    @since NEXT_RELEASE
+*)
 val int64_of_big_int : big_int -> int64
 (** Convert a big integer to a 64-bit integer.
     @raise Failure if the big integer is outside the
     range [[-2{^63}, 2{^63}-1]]. *)
-##V>=4.5##val int64_of_big_int_opt: big_int -> int64 option
-##V>=4.5##(** Convert a big integer to a 64-bit integer. Return [None] if the
-##V>=4.5##    big integer is outside the range \[-2{^63}, 2{^63}-1\].
-##V>=4.5##    @since 4.05
-##V>=4.5##*)
+val int64_of_big_int_opt: big_int -> int64 option
+(** Convert a big integer to a 64-bit integer. Return [None] if the
+    big integer is outside the range \[-2{^63}, 2{^63}-1\].
+    @since NEXT_RELEASE
+*)
 
 val float_of_big_int : big_int -> float
 (** Returns a floating-point number approximating the
