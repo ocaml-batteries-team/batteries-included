@@ -3,6 +3,10 @@ Changelog
 
 ## next minor release
 
+- BatNum: fix of_float_string to handle negative numbers properly
+  #780
+  (Anton Yabchinskiy)
+
 - added BatArray.min_max
   #757
   (Francois Berenger)

@@ -104,11 +104,13 @@ let of_float_string a =
         let frac = pow num10 (of_int (String.length fpart_s)) in
         Infix.(fpart/frac)
     in
-    add ipart fpart
+    if lt_num ipart zero then sub ipart fpart
+    else add ipart fpart
   with Not_found -> of_string a
 
                     (**T
                        of_float_string "2.5" = of_string "5/2"
+                       of_float_string "-2.5" = of_string "-5/2"
                        of_float_string "2." = of_string "2"
                        of_float_string ".5" = of_string "1/2"
                     *)
