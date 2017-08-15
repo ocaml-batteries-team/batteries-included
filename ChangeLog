@@ -3,6 +3,13 @@ Changelog
 
 ## next minor release
 
+This minor release is the first to support OCaml 4.05.0. As with
+previous OCaml versions, we backported new 4.05.0 convenience function
+from the compiler stdlib, allowing Batteries user to use them with
+older OCaml versions, and thus write backward-compatible code. In
+particular, the new *_opt functions returning option values instead of
+exceptions are all backported.
+
 - BatNum: fix of_float_string to handle negative numbers properly
   #780
   (Anton Yabchinskiy)
