@@ -185,7 +185,7 @@ val big_int_of_string_opt: string -> big_int option
     The string consists of an optional [-] or [+] sign,
     followed by one or several decimal digits. Other the function
     returns [None].
-    @since NEXT_RELEASE
+    @since 2.7.0
 *)
 
 val to_string_in_binary : big_int -> string
@@ -253,7 +253,7 @@ val int_of_big_int_opt: big_int -> int option
 (** Convert a big integer to a small integer (type [int]).  Return
     [None] if the big integer is not representable as a small
     integer.
-    @since NEXT_RELEASE
+    @since 2.7.0
 *)
 
 val big_int_of_int32 : int32 -> big_int
@@ -269,7 +269,7 @@ val int32_of_big_int : big_int -> int32
 val int32_of_big_int_opt: big_int -> int32 option
 (** Convert a big integer to a 32-bit integer.  Return [None] if the
     big integer is outside the range \[-2{^31}, 2{^31}-1\].
-    @since NEXT_RELEASE
+    @since 2.7.0
 *)
 val nativeint_of_big_int : big_int -> nativeint
 (** Convert a big integer to a native integer.
@@ -279,7 +279,7 @@ val nativeint_of_big_int_opt: big_int -> nativeint option
 (** Convert a big integer to a native integer. Return [None] if the
     big integer is outside the range [[Nativeint.min_int,
     Nativeint.max_int]];
-    @since NEXT_RELEASE
+    @since 2.7.0
 *)
 val int64_of_big_int : big_int -> int64
 (** Convert a big integer to a 64-bit integer.
@@ -288,7 +288,7 @@ val int64_of_big_int : big_int -> int64
 val int64_of_big_int_opt: big_int -> int64 option
 (** Convert a big integer to a 64-bit integer. Return [None] if the
     big integer is outside the range \[-2{^63}, 2{^63}-1\].
-    @since NEXT_RELEASE
+    @since 2.7.0
 *)
 
 val float_of_big_int : big_int -> float

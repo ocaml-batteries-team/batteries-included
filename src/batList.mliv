@@ -95,14 +95,14 @@ val compare_lengths : 'a list -> 'b list -> int
 (** Compare the lengths of two lists. [compare_lengths l1 l2] is
    equivalent to [compare (length l1) (length l2)], except that
    the computation stops after itering on the shortest list.
-   @since NEXT_RELEASE
+   @since 2.7.0
  *)
 
 val compare_length_with : 'a list -> int -> int
 (** Compare the length of a list to an integer. [compare_length_with l n] is
    equivalent to [compare (length l) n], except that
    the computation stops after at most [n] iterations on the list.
-   @since NEXT_RELEASE
+   @since 2.7.0
 *)
 
 val at : 'a list -> int -> 'a
@@ -112,7 +112,7 @@ val at : 'a list -> int -> 'a
 val at_opt : 'a list -> int -> 'a option
 (** [at_opt] returns the n-th element of the list [l] or None if the index is
     beyond the length of [l].
-    @since NEXT_RELEASE
+    @since 2.7.0
     @raise Invalid_argument if the index is negative *)
 
 val rev : 'a list -> 'a list
@@ -432,7 +432,7 @@ val find_opt: ('a -> bool) -> 'a list -> 'a option
 (** [find_opt p l] returns the first element of the list [l] that
     satisfies the predicate [p], or [None] if there is no value that
     satisfies [p] in the list [l].
-    @since NEXT_RELEASE *)
+    @since 2.7.0 *)
 
 val find_exn : ('a -> bool) -> exn -> 'a list -> 'a
 (** [find_exn p e l] returns the first element of [l] such as [p x]
@@ -563,7 +563,7 @@ val assoc_opt: 'a -> ('a * 'b) list -> 'b option
    if [(a,b)] is the leftmost binding of [a] in list [l].
    Returns [None] if there is no value associated with [a] in the
    list [l].
-   @since NEXT_RELEASE *)
+   @since 2.7.0 *)
 
 val assoc_inv : 'b -> ('a * 'b) list -> 'a
 (** [assoc_inv b l] returns the key associated with value [b] in the list of
@@ -588,7 +588,7 @@ val assq : 'a -> ('a * 'b) list -> 'b
 val assq_opt : 'a -> ('a * 'b) list -> 'b option
 (** Same as {!List.assoc_opt}, but uses physical equality instead of structural
     equality to compare keys.
-    @since NEXT_RELEASE *)
+    @since 2.7.0 *)
 
 val assq_inv : 'b -> ('a * 'b) list -> 'a
 (** Same as {!List.assoc_inv}, but uses physical equality instead of structural
@@ -913,7 +913,7 @@ val nth_opt: 'a list -> int -> 'a option
     The first element (head of the list) is at position 0.
     Return [None] if the list is too short.
     Raise [Invalid_argument "List.nth"] if [n] is negative.
-    @since NEXT_RELEASE
+    @since 2.7.0
 *)
 
 val takewhile :  ('a -> bool) -> 'a list -> 'a list

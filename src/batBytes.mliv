@@ -200,7 +200,7 @@ val index : t -> char -> int
 val index_opt: t -> char -> int option
 (** [index_opt s c] returns the index of the first occurrence of byte [c]
     in [s] or [None] if [c] does not occur in [s].
-    @since NEXT_RELEASE *)
+    @since 2.7.0 *)
 
 val rindex : t -> char -> int
 (** [rindex s c] returns the index of the last occurrence of byte [c]
@@ -211,7 +211,7 @@ val rindex : t -> char -> int
 val rindex_opt: t -> char -> int option
 (** [rindex_opt s c] returns the index of the last occurrence of byte [c]
     in [s] or [None] if [c] does not occur in [s].
-    @since NEXT_RELEASE *)
+    @since 2.7.0 *)
 
 val index_from : t -> int -> char -> int
 (** [index_from s i c] returns the index of the first occurrence of
@@ -227,7 +227,7 @@ val index_from_opt: t -> int -> char -> int option
     [Bytes.index_opt s c] is equivalent to [Bytes.index_from_opt s 0 c].
 
     Raise [Invalid_argument] if [i] is not a valid position in [s].
-    @since NEXT_RELEASE *)
+    @since 2.7.0 *)
 
 val rindex_from : t -> int -> char -> int
 (** [rindex_from s i c] returns the index of the last occurrence of
@@ -244,7 +244,7 @@ val rindex_from_opt: t -> int -> char -> int option
     [rindex_from s (Bytes.length s - 1) c].
 
     Raise [Invalid_argument] if [i+1] is not a valid position in [s].
-    @since NEXT_RELEASE *)
+    @since 2.7.0 *)
 
 val contains : t -> char -> bool
 (** [contains s c] tests if byte [c] appears in [s]. *)

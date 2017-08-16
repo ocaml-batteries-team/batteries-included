@@ -279,7 +279,7 @@ val find_opt : ('a -> bool) -> 'a t -> 'a option
     of vect [v] that satisfies the predicate [p], or [None]
     if no such element exists.
 
-    @since NEXT_RELEASE *)
+    @since 2.7.0 *)
 
 val mem : 'a -> 'a t -> bool
 (** [mem a v] is true if and only if [a] is equal to an element of [v]. *)
@@ -633,7 +633,7 @@ val find_opt : ('a -> bool) -> 'a t -> 'a option
     of vect [a] that satisfies the predicate [p], or [None]
     if no such element exists.
 
-    @since NEXT_RELEASE
+    @since 2.7.0
 *)
 
 val mem : 'a -> 'a t -> bool

@@ -1,7 +1,7 @@
 Changelog
 ---------
 
-## next minor release
+## v2.7.0 (minor release)
 
 This minor release is the first to support OCaml 4.05.0. As with
 previous OCaml versions, we backported new 4.05.0 convenience function

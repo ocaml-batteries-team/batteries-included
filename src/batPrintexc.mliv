@@ -112,7 +112,7 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.5##(** Reraise the exception using the given raw_backtrace for the
 ##V>=4.5##    origin of the exception
 ##V>=4.5##
-##V>=4.5##    @since NEXT_RELEASE and OCaml 4.05.0
+##V>=4.5##    @since 2.7.0 and OCaml 4.05.0
 ##V>=4.5##*)
 
 ##V=4.1##(** {6 Current call stack} *)
