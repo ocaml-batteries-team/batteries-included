@@ -47,6 +47,7 @@
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
 <link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
+<link title="BatInnerShuffle" rel="Chapter" href="BatInnerShuffle.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -122,6 +123,11 @@
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Array.html">Array</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatBigarray.Array0.html">Array0</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
+<td><div class="info">
+Zero-dimensional arrays.
+</div>
+</td></tr>
 <tr><td><a href="BatBigarray.Array1.html">Array1</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
 <td><div class="info">
 One-dimensional arrays.
@@ -324,6 +330,8 @@ Core of the BatIO module.
 Operators
 </div>
 </td></tr>
+<tr><td><a href="BatInnerShuffle.html">BatInnerShuffle</a> </td>
+<td></td></tr>
 <tr><td><a href="BatInnerWeaktbl.html">BatInnerWeaktbl</a> </td>
 <td><div class="info">
 Weak hash table library for OCaml, with an interface compatible with
@@ -662,6 +670,10 @@ Capabilities for arrays.
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Char.html">Char</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatSet.Char.html">Char</a> [<a href="BatSet.html">BatSet</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatMap.Char.html">Char</a> [<a href="BatMap.html">BatMap</a>]</td>
+<td></td></tr>
 <tr><td><a href="Batteries.CharParser.html">CharParser</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatTuple.Tuple5.Comp.html">Comp</a> [<a href="BatTuple.Tuple5.html">BatTuple.Tuple5</a>]</td>
@@ -851,6 +863,10 @@ Operations on <code class="code"><span class="constructor">Array</span></code> w
 <tr><td><a href="Batteries.FingerTree.html">FingerTree</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Float.html">Float</a> [<a href="Batteries.html">Batteries</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatSet.Float.html">Float</a> [<a href="BatSet.html">BatSet</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatMap.Float.html">Float</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Format.html">Format</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
@@ -1045,13 +1061,25 @@ Infix submodule regrouping all infix operators
 <td></td></tr>
 <tr><td><a href="Batteries.Int.html">Int</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatSet.Int.html">Int</a> [<a href="BatSet.html">BatSet</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatMap.Int.html">Int</a> [<a href="BatMap.html">BatMap</a>]</td>
+<td></td></tr>
 <tr><td><a href="Batteries.Int32.html">Int32</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Int32.html">Int32</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatSet.Int32.html">Int32</a> [<a href="BatSet.html">BatSet</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatMap.Int32.html">Int32</a> [<a href="BatMap.html">BatMap</a>]</td>
+<td></td></tr>
 <tr><td><a href="Batteries.Int64.html">Int64</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Int64.html">Int64</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatSet.Int64.html">Int64</a> [<a href="BatSet.html">BatSet</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatMap.Int64.html">Int64</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatteriesPrint.IntSet.html">IntSet</a> [<a href="BatteriesPrint.html">BatteriesPrint</a>]</td>
 <td></td></tr>
@@ -1074,6 +1102,16 @@ Infix submodule regrouping all infix operators
 <td></td></tr>
 <tr><td><a href="BatteriesExceptionless.Array.Labels.html">Labels</a> [<a href="BatteriesExceptionless.Array.html">BatteriesExceptionless.Array</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatVect.Make.Labels.html">Labels</a> [<a href="BatVect.Make.html">BatVect.Make</a>]</td>
+<td><div class="info">
+Operations on <a href="BatVect.html"><code class="code"><span class="constructor">BatVect</span></code></a> with labels.
+</div>
+</td></tr>
+<tr><td><a href="BatVect.Labels.html">Labels</a> [<a href="BatVect.html">BatVect</a>]</td>
+<td><div class="info">
+Operations on <a href="BatVect.html"><code class="code"><span class="constructor">BatVect</span></code></a> with labels.
+</div>
+</td></tr>
 <tr><td><a href="BatSet.S.Labels.html">Labels</a> [<a href="BatSet.S.html">BatSet.S</a>]</td>
 <td><div class="info">
 Operations on <code class="code"><span class="constructor">Set</span></code> with labels.
@@ -1264,6 +1302,10 @@ The BatEnum Monad
 <tr><td><a href="Batteries.Nativeint.html">Nativeint</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.Nativeint.html">Nativeint</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatSet.Nativeint.html">Nativeint</a> [<a href="BatSet.html">BatSet</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatMap.Nativeint.html">Nativeint</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatConcurrent.NoLock.html">NoLock</a> [<a href="BatConcurrent.html">BatConcurrent</a>]</td>
 <td></td></tr>
@@ -1473,6 +1515,10 @@ This module contains various standard options.
 <tr><td><a href="Batteries.String.html">String</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.String.html">String</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatSet.String.html">String</a> [<a href="BatSet.html">BatSet</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatMap.String.html">String</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.StringLabels.html">StringLabels</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
 <td></td></tr>

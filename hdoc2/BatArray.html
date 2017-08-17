@@ -50,6 +50,7 @@
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
 <link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
+<link title="BatInnerShuffle" rel="Chapter" href="BatInnerShuffle.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -287,6 +288,12 @@ Same as <code class="code"><span class="constructor">Array</span>.append</code>,
 <pre><span id="VALmin"><span class="keyword">val</span> min</span> : <code class="type">'a array -> 'a</code></pre><div class="info ">
 <code class="code">min&nbsp;a</code> returns the smallest value in <code class="code">a</code> as judged by
     <code class="code"><span class="constructor">Pervasives</span>.compare</code><br>
+<b>Raises</b> <code>Invalid_argument</code> on empty input<br>
+</div>
+
+<pre><span id="VALmin_max"><span class="keyword">val</span> min_max</span> : <code class="type">'a array -> 'a * 'a</code></pre><div class="info ">
+<code class="code">min_max&nbsp;a</code> returns the (smallest, largest) pair of values from <code class="code">a</code>
+    as judged by <code class="code"><span class="constructor">Pervasives</span>.compare</code><br>
 <b>Raises</b> <code>Invalid_argument</code> on empty input<br>
 </div>
 
@@ -679,6 +686,18 @@ Hoist an element comparison function to compare arrays of those
     elements, with shorter arrays less than longer ones, and
     lexicographically for arrays of the same size.  This is a
     different ordering than <code class="code">compare</code>, but is often faster.<br>
+</div>
+
+<pre><span id="VALshuffle"><span class="keyword">val</span> shuffle</span> : <code class="type">?state:Random.State.t -> 'a array -> unit</code></pre><div class="info ">
+<code class="code">shuffle&nbsp;~state:rs&nbsp;a</code> randomly shuffles in place the elements of <code class="code">a</code>.
+    The optional random state <code class="code">rs</code> allows to control the random
+    numbers being used during shuffling (for reproducibility).
+<p>
+
+    Shuffling is implemented using the Fisher-Yates
+    algorithm and works in O(n), where n is the number
+    of elements of <code class="code">a</code>.<br>
+<b>Since</b> 2.6.0<br>
 </div>
 
 <pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">'a <a href="BatOrd.html#TYPEeq">BatOrd.eq</a> -> 'a array <a href="BatOrd.html#TYPEeq">BatOrd.eq</a></code></pre><div class="info ">

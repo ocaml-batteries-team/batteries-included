@@ -49,6 +49,7 @@
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
 <link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
+<link title="BatInnerShuffle" rel="Chapter" href="BatInnerShuffle.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -108,6 +109,7 @@
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Base operations" rel="Section" href="#6_Baseoperations">
 <link title="Enumerations" rel="Section" href="#6_Enumerations">
+<link title="Lists" rel="Section" href="#6_Lists">
 <link title="Searching" rel="Section" href="#6_Searching">
 <link title="Traversing" rel="Section" href="#6_Traversing">
 <link title="The polymorphic hash primitive" rel="Section" href="#6_Thepolymorphichashprimitive">
@@ -233,6 +235,23 @@ Return an enumeration of (key,value) pairs of a hashtable.<br>
 Create a hashtable from a (key,value) enumeration.<br>
 </div>
 <br>
+<h6 id="6_Lists">Lists</h6><br>
+
+<pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">('a * 'b) list -> ('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a></code></pre><div class="info ">
+Create a hashtable from a list of (key,value) pairs.<br>
+<b>Since</b> 2.6.0<br>
+</div>
+
+<pre><span id="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type">('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> ('a * 'b) list</code></pre><div class="info ">
+Return the list of (key,value) pairs.<br>
+<b>Since</b> 2.6.0<br>
+</div>
+
+<pre><span id="VALbindings"><span class="keyword">val</span> bindings</span> : <code class="type">('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> ('a * 'b) list</code></pre><div class="info ">
+Alias for <code class="code">to_list</code>.<br>
+<b>Since</b> 2.6.0<br>
+</div>
+<br>
 <h6 id="6_Searching">Searching</h6><br>
 
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> 'a -> 'b</code></pre><div class="info ">
@@ -327,7 +346,7 @@ Find a binding for the key, or return <code class="code"><span class="constructo
 </div>
 
 <pre><span id="VALfilteri"><span class="keyword">val</span> filteri</span> : <code class="type">('key -> 'a -> bool) -> ('key, 'a) <a href="BatHashtbl.html#TYPEt">t</a> -> ('key, 'a) <a href="BatHashtbl.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">filter&nbsp;f&nbsp;m</code> returns a hashtbl where only the key, values pairs
+<code class="code">filteri&nbsp;f&nbsp;m</code> returns a hashtbl where only the key, values pairs
     <code class="code">key</code>, <code class="code">a</code> of <code class="code">m</code> such that <code class="code">f&nbsp;key&nbsp;a&nbsp;=&nbsp;<span class="keyword">true</span></code> remain.<br>
 </div>
 

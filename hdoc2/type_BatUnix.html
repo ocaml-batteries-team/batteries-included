@@ -46,6 +46,7 @@
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
 <link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
+<link title="BatInnerShuffle" rel="Chapter" href="BatInnerShuffle.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -222,6 +223,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">O_RSYNC</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">O_SHARE_DELETE</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">O_CLOEXEC</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">O_KEEPEXEC</span><br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;file_perm&nbsp;=&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;openfile&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span><br>
@@ -307,8 +309,9 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;fchown&nbsp;:&nbsp;<span class="constructor">BatUnix</span>.file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;umask&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;access&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatUnix</span>.access_permission&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;dup&nbsp;:&nbsp;<span class="constructor">BatUnix</span>.file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatUnix</span>.file_descr<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;dup2&nbsp;:&nbsp;<span class="constructor">BatUnix</span>.file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatUnix</span>.file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;dup&nbsp;:&nbsp;?cloexec:bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatUnix</span>.file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatUnix</span>.file_descr<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;dup2&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;?cloexec:bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatUnix</span>.file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatUnix</span>.file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;set_nonblock&nbsp;:&nbsp;<span class="constructor">BatUnix</span>.file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;clear_nonblock&nbsp;:&nbsp;<span class="constructor">BatUnix</span>.file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;set_close_on_exec&nbsp;:&nbsp;<span class="constructor">BatUnix</span>.file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
@@ -323,7 +326,7 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;readdir&nbsp;:&nbsp;<span class="constructor">BatUnix</span>.dir_handle&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;rewinddir&nbsp;:&nbsp;<span class="constructor">BatUnix</span>.dir_handle&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;closedir&nbsp;:&nbsp;<span class="constructor">BatUnix</span>.dir_handle&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;pipe&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatUnix</span>.file_descr&nbsp;*&nbsp;<span class="constructor">BatUnix</span>.file_descr<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;pipe&nbsp;:&nbsp;?cloexec:bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatUnix</span>.file_descr&nbsp;*&nbsp;<span class="constructor">BatUnix</span>.file_descr<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;mkfifo&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatUnix</span>.file_perm&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_process_in&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;?autoclose:bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?cleanup:bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatInnerIO</span>.input<br>
@@ -475,12 +478,16 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">ADDR_UNIX</span>&nbsp;<span class="keyword">of</span>&nbsp;string<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">ADDR_INET</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">BatUnix</span>.inet_addr&nbsp;*&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;socket&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;?cloexec:bool&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatUnix</span>.socket_domain&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatUnix</span>.socket_type&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatUnix</span>.file_descr<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;domain_of_sockaddr&nbsp;:&nbsp;<span class="constructor">BatUnix</span>.sockaddr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatUnix</span>.socket_domain<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;socketpair&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;?cloexec:bool&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatUnix</span>.socket_domain&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatUnix</span>.socket_type&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatUnix</span>.file_descr&nbsp;*&nbsp;<span class="constructor">BatUnix</span>.file_descr<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;accept&nbsp;:&nbsp;<span class="constructor">BatUnix</span>.file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatUnix</span>.file_descr&nbsp;*&nbsp;<span class="constructor">BatUnix</span>.sockaddr<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;accept&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;?cloexec:bool&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatUnix</span>.file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatUnix</span>.file_descr&nbsp;*&nbsp;<span class="constructor">BatUnix</span>.sockaddr<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;bind&nbsp;:&nbsp;<span class="constructor">BatUnix</span>.file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatUnix</span>.sockaddr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;connect&nbsp;:&nbsp;<span class="constructor">BatUnix</span>.file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatUnix</span>.sockaddr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;listen&nbsp;:&nbsp;<span class="constructor">BatUnix</span>.file_descr&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>

@@ -46,6 +46,7 @@
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
 <link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
+<link title="BatInnerShuffle" rel="Chapter" href="BatInnerShuffle.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -141,7 +142,7 @@
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;quick_stat&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatGc</span>.stat&nbsp;=&nbsp;<span class="string">"caml_gc_quick_stat"</span><br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;counters&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;=&nbsp;<span class="string">"caml_gc_counters"</span><br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;minor_words&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(float&nbsp;[@unboxed])&nbsp;=&nbsp;<span class="string">"caml_gc_minor_words"</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"caml_gc_minor_words_unboxed"</span>&nbsp;[@@noalloc]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"caml_gc_minor_words_unboxed"</span><br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;get&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatGc</span>.control&nbsp;=&nbsp;<span class="string">"caml_gc_get"</span><br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;set&nbsp;:&nbsp;<span class="constructor">BatGc</span>.control&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;=&nbsp;<span class="string">"caml_gc_set"</span><br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;minor&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;=&nbsp;<span class="string">"caml_gc_minor"</span><br>
@@ -151,7 +152,7 @@
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;compact&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;=&nbsp;<span class="string">"caml_gc_compaction"</span><br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;print_stat&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;allocated_bytes&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float<br>
-&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;get_minor_free&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;=&nbsp;<span class="string">"caml_get_minor_free"</span>&nbsp;[@@noalloc]<br>
+&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;get_minor_free&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;=&nbsp;<span class="string">"caml_get_minor_free"</span><br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;get_bucket&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;=&nbsp;<span class="string">"caml_get_major_bucket"</span>&nbsp;[@@noalloc]<br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;get_credit&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;=&nbsp;<span class="string">"caml_get_major_credit"</span>&nbsp;[@@noalloc]<br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;huge_fallback_count&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;=&nbsp;<span class="string">"caml_gc_huge_fallback_count"</span><br>

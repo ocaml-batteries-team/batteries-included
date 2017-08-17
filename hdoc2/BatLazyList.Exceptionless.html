@@ -51,6 +51,7 @@
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
 <link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
+<link title="BatInnerShuffle" rel="Chapter" href="BatInnerShuffle.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -123,7 +124,7 @@ Exceptionless counterparts for error-raising operations<br>
 <hr width="100%">
 
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('a -> bool) -> 'a <a href="BatLazyList.html#TYPEt">BatLazyList.t</a> -> 'a option</code></pre><div class="info ">
-<code class="code">rfind&nbsp;p&nbsp;l</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;x</code> where <code class="code">x</code> is the first element of <code class="code">l</code> such
+<code class="code">find&nbsp;p&nbsp;l</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;x</code> where <code class="code">x</code> is the first element of <code class="code">l</code> such
     that <code class="code">p&nbsp;x</code> returns <code class="code"><span class="keyword">true</span></code> or <code class="code"><span class="constructor">None</span></code> if such element as not been found.<br>
 </div>
 
@@ -139,7 +140,7 @@ Exceptionless counterparts for error-raising operations<br>
 </div>
 
 <pre><span id="VALrfindi"><span class="keyword">val</span> rfindi</span> : <code class="type">(int -> 'a -> bool) -> 'a <a href="BatLazyList.html#TYPEt">BatLazyList.t</a> -> (int * 'a) option</code></pre><div class="info ">
-<code class="code">findi&nbsp;p&nbsp;e&nbsp;l</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;(i,&nbsp;ai)</code> where <code class="code">ai</code> and <code class="code">i</code> are respectively the
+<code class="code">rfindi&nbsp;p&nbsp;e&nbsp;l</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;(i,&nbsp;ai)</code> where <code class="code">ai</code> and <code class="code">i</code> are respectively the
     last element of <code class="code">l</code> and its index, such that <code class="code">p&nbsp;i&nbsp;ai</code> is true,
     or <code class="code"><span class="constructor">None</span></code> if no such element has been found.<br>
 </div>

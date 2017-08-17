@@ -46,6 +46,7 @@
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
 <link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
+<link title="BatInnerShuffle" rel="Chapter" href="BatInnerShuffle.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -114,6 +115,7 @@
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;remove&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;=&nbsp;<span class="string">"caml_sys_remove"</span><br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;rename&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;=&nbsp;<span class="string">"caml_sys_rename"</span><br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;getenv&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;=&nbsp;<span class="string">"caml_sys_getenv"</span><br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;getenv_opt&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;option<br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;command&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;=&nbsp;<span class="string">"caml_sys_system_command"</span><br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;time&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(float&nbsp;[@unboxed])&nbsp;=&nbsp;<span class="string">"caml_sys_time"</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"caml_sys_time_unboxed"</span>&nbsp;[@@noalloc]<br>

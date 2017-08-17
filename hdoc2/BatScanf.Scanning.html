@@ -49,6 +49,7 @@
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
 <link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
+<link title="BatInnerShuffle" rel="Chapter" href="BatInnerShuffle.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -178,7 +179,7 @@ Bufferized file reading in binary mode.<br>
 </div>
 
 <pre><span id="VALfrom_input"><span class="keyword">val</span> from_input</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> <a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a></code></pre><div class="info ">
-<code class="code"><span class="constructor">Scanning</span>.from_channel&nbsp;ic</code> returns a scanning buffer which reads from the
+<code class="code"><span class="constructor">Scanning</span>.from_input&nbsp;ic</code> returns a scanning buffer which reads from the
       input channel <code class="code">ic</code>, starting at the current reading position.<br>
 </div>
 
@@ -193,7 +194,7 @@ Bufferized file reading in binary mode.<br>
 </div>
 
 <pre><span id="VALname_of_input"><span class="keyword">val</span> name_of_input</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">scanbuf</a> -> string</code></pre><div class="info ">
-<code class="code"><span class="constructor">Scanning</span>.file_name_of_input&nbsp;ib</code> returns the name of the character source
+<code class="code"><span class="constructor">Scanning</span>.name_of_input&nbsp;ib</code> returns the name of the character source
       for the scanning buffer <code class="code">ib</code>.<br>
 </div>
 <br>

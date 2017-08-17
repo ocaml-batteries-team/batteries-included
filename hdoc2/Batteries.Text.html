@@ -51,6 +51,7 @@
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
 <link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
+<link title="BatInnerShuffle" rel="Chapter" href="BatInnerShuffle.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -282,10 +283,10 @@ Operates like <code class="code">iter</code>, but also passes the index of the c
 </div>
 
 <pre><span id="VALrange_iter"><span class="keyword">val</span> range_iter</span> : <code class="type">(<a href="BatUChar.html#TYPEt">BatUChar.t</a> -> unit) -> int -> int -> <a href="BatText.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">rangeiter&nbsp;f&nbsp;m&nbsp;n&nbsp;r</code> applies <code class="code">f</code> to all the characters whose
+<code class="code">range_iter&nbsp;f&nbsp;m&nbsp;n&nbsp;r</code> applies <code class="code">f</code> to all the characters whose
     indices <code class="code">k</code> satisfy <code class="code">m</code> &lt;= <code class="code">k</code> &lt; <code class="code">m&nbsp;+&nbsp;n</code>.
     It is thus equivalent to <code class="code">iter&nbsp;f&nbsp;(sub&nbsp;m&nbsp;n&nbsp;r)</code>, but does not
-    create an intermediary rope. <code class="code">rangeiter</code> operates in worst-case
+    create an intermediary rope. <code class="code">range_iter</code> operates in worst-case
     <code class="code"><span class="constructor">O</span>(n&nbsp;+&nbsp;log&nbsp;m)</code> time, which improves on the <code class="code"><span class="constructor">O</span>(n&nbsp;log&nbsp;m)</code> bound
     from an explicit loop using <code class="code">get</code>.<br>
 <b>Raises</b> <code>Out_of_bounds</code> in the same cases as <code class="code">sub</code>.<br>
@@ -376,14 +377,14 @@ Same as <a href="BatText.html#VALrindex"><code class="code"><span class="constru
 <pre><span id="VALcontains_from"><span class="keyword">val</span> contains_from</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> bool</code></pre><div class="info ">
 <code class="code">contains_from&nbsp;s&nbsp;start&nbsp;c</code> tests if character <code class="code">c</code> appears in
     the subrope of <code class="code">s</code> starting from <code class="code">start</code> to the end of <code class="code">s</code>.<br>
-<b>Raises</b> <code>Invalid_argument</code> if <code class="code">start</code> is not a valid index of <code class="code">s</code>.<br>
+<b>Raises</b> <code>Out_of_bounds</code> if <code class="code">start</code> is not a valid index of <code class="code">s</code>.<br>
 </div>
 
 <pre><span id="VALrcontains_from"><span class="keyword">val</span> rcontains_from</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> int -> <a href="BatUChar.html#TYPEt">BatUChar.t</a> -> bool</code></pre><div class="info ">
 <code class="code">rcontains_from&nbsp;s&nbsp;stop&nbsp;c</code> tests if character <code class="code">c</code>
     appears in the subrope of <code class="code">s</code> starting from the beginning
-    of <code class="code">s</code> to index <code class="code">stop</code>.<br>
-<b>Raises</b> <code>Invalid_argument</code> if <code class="code">stop</code> is not a valid index of <code class="code">s</code>.<br>
+    of <code class="code">s</code> to index <code class="code">stop</code> (included).<br>
+<b>Raises</b> <code>Out_of_bounds</code> if <code class="code">stop</code> is not a valid index of <code class="code">s</code>.<br>
 </div>
 
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type"><a href="BatText.html#TYPEt">t</a> -> <a href="BatText.html#TYPEt">t</a> -> int</code></pre><div class="info ">
@@ -544,7 +545,7 @@ Returns the same rope but without the last character.
     <code class="code">nsplit&nbsp;<span class="string">""</span>&nbsp;_</code> returns the empty list.
     If the separator is not found, it returns a list of
     the rope <code class="code">s</code>.
-    If two occurences of the separator are consecutive (with nothing
+    If two occurrences of the separator are consecutive (with nothing
     in between), the empty rope is added in the sequence. For example,
     <code class="code">nsplit&nbsp;<span class="string">"a//b/"</span>&nbsp;<span class="string">"/"</span></code> is <code class="code"><span class="string">"a"</span>;&nbsp;<span class="string">""</span>;&nbsp;<span class="string">"b"</span>;&nbsp;<span class="string">""</span></code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> if the separator is empty<br>

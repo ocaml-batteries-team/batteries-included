@@ -51,6 +51,7 @@
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
 <link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
+<link title="BatInnerShuffle" rel="Chapter" href="BatInnerShuffle.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -156,7 +157,7 @@ The type of lists<br>
 </div>
 
 <pre><span id="VALcons"><span class="keyword">val</span> cons</span> : <code class="type">'a -> 'a list -> 'a list</code></pre><div class="info ">
-<code class="code">cons&nbsp;h&nbsp;t</code> returns the list starting with <code class="code">h</code> and continuing as <code class="code">t</code><br>
+<code class="code">cons&nbsp;h&nbsp;t</code> returns the list starting with <code class="code">h</code> and continuing as <code class="code">t</code>.<br>
 </div>
 
 <pre><span id="VALfirst"><span class="keyword">val</span> first</span> : <code class="type">'a list -> 'a</code></pre><div class="info ">
@@ -185,13 +186,46 @@ Returns the last element of the list, or<br>
 Return the length (number of elements) of the given list.<br>
 </div>
 
+<pre><span id="VALcompare_lengths"><span class="keyword">val</span> compare_lengths</span> : <code class="type">'a list -> 'b list -> int</code></pre><div class="info ">
+Compare the lengths of two lists. <code class="code">compare_lengths&nbsp;l1&nbsp;l2</code> is
+   equivalent to <code class="code">compare&nbsp;(length&nbsp;l1)&nbsp;(length&nbsp;l2)</code>, except that
+   the computation stops after itering on the shortest list.<br>
+<b>Since</b> 2.7.0<br>
+</div>
+
+<pre><span id="VALcompare_length_with"><span class="keyword">val</span> compare_length_with</span> : <code class="type">'a list -> int -> int</code></pre><div class="info ">
+Compare the length of a list to an integer. <code class="code">compare_length_with&nbsp;l&nbsp;n</code> is
+   equivalent to <code class="code">compare&nbsp;(length&nbsp;l)&nbsp;n</code>, except that
+   the computation stops after at most <code class="code">n</code> iterations on the list.<br>
+<b>Since</b> 2.7.0<br>
+</div>
+
 <pre><span id="VALat"><span class="keyword">val</span> at</span> : <code class="type">'a list -> int -> 'a</code></pre><div class="info ">
 <code class="code">at&nbsp;l&nbsp;n</code> returns the n-th element of the list <code class="code">l</code> or<br>
 <b>Raises</b> <code>Invalid_argument</code> if the index is outside of <code class="code">l</code> bounds.  O(l)<br>
 </div>
 
+<pre><span id="VALat_opt"><span class="keyword">val</span> at_opt</span> : <code class="type">'a list -> int -> 'a option</code></pre><div class="info ">
+<code class="code">at_opt</code> returns the n-th element of the list <code class="code">l</code> or None if the index is
+    beyond the length of <code class="code">l</code>.<br>
+<b>Since</b> 2.7.0<br>
+<b>Raises</b> <code>Invalid_argument</code> if the index is negative<br>
+</div>
+
 <pre><span id="VALrev"><span class="keyword">val</span> rev</span> : <code class="type">'a list -> 'a list</code></pre><div class="info ">
 List reversal.<br>
+</div>
+
+<pre><span id="VALshuffle"><span class="keyword">val</span> shuffle</span> : <code class="type">?state:Random.State.t -> 'a list -> 'a list</code></pre><div class="info ">
+<code class="code">shuffle&nbsp;~state:rs&nbsp;l</code> randomly shuffles the elements of <code class="code">l</code>.
+    The optional random state <code class="code">rs</code> allows to control the random
+    numbers being used during shuffling (for reproducibility).
+<p>
+
+    Shuffling is implemented using the Fisher-Yates
+    algorithm on an array and works in O(n), where n is the number
+    of elements of <code class="code">l</code>.<br>
+<b>Since</b> 2.6.0<br>
 </div>
 
 <pre><span id="VALappend"><span class="keyword">val</span> append</span> : <code class="type">'a list -> 'a list -> 'a list</code></pre><div class="info ">
@@ -232,6 +266,21 @@ Similar to <code class="code"><span class="constructor">String</span>.make</code
 <b>Since</b> 2.2.0<br>
 <b>Raises</b><ul><li><code>Invalid_argument</code> in (<code class="code">range&nbsp;i&nbsp;<span class="keywordsign">`</span><span class="constructor">To</span>&nbsp;j</code>) if (i &gt; j).</li>
 <li><code>Invalid_argument</code> in (<code class="code">range&nbsp;i&nbsp;<span class="keywordsign">`</span><span class="constructor">Downto</span>&nbsp;j</code>) if (i &lt; j).</li>
+</ul>
+</div>
+
+<pre><span id="VALfrange"><span class="keyword">val</span> frange</span> : <code class="type">float -> [< `Downto | `To ] -> float -> int -> float list</code></pre><div class="info ">
+<code class="code">frange&nbsp;start&nbsp;<span class="keywordsign">`</span><span class="constructor">To</span>&nbsp;stop&nbsp;n</code> generates (without accumulating
+    floating point errors) <code class="code">n</code> floats in the range <code class="code">[start..stop]</code>.
+    <code class="code">n</code> must be &gt;= 2.
+    At each step, floats in an increasing (resp. decreasing) range increase
+    (resp. decrease) by approximately (stop - start) / (n - 1).<br>
+<b>Since</b> 2.6.0<br>
+<b>Raises</b><ul><li><code>Invalid_argument</code> in (<code class="code">frange&nbsp;i&nbsp;_&nbsp;j&nbsp;n</code>) if (n &lt; 2).</li>
+<li><code>Invalid_argument</code> in (<code class="code">frange&nbsp;i&nbsp;<span class="keywordsign">`</span><span class="constructor">To</span>&nbsp;j&nbsp;_</code>) if (i &gt;= j).</li>
+<li><code>Invalid_argument</code> in (<code class="code">frange&nbsp;i&nbsp;<span class="keywordsign">`</span><span class="constructor">Downto</span>&nbsp;j&nbsp;_</code>) if (i &lt;= j).
+    Examples: <code class="code">frange&nbsp;1.0&nbsp;<span class="keywordsign">`</span><span class="constructor">To</span>&nbsp;3.0&nbsp;3</code> = <code class="code">[1.0;&nbsp;2.0;&nbsp;3.0]</code>.
+    <code class="code">frange&nbsp;3.0&nbsp;<span class="keywordsign">`</span><span class="constructor">Downto</span>&nbsp;1.0&nbsp;3</code> = <code class="code">[3.0;&nbsp;2.0;&nbsp;1.0]</code>.</li>
 </ul>
 </div>
 
@@ -321,23 +370,48 @@ As <code class="code">fold_right</code>, but with the index of the element, from
 <b>Raises</b> <code>Invalid_argument</code> on empty list.<br>
 </div>
 
+<pre><span id="VALfold_left_map"><span class="keyword">val</span> fold_left_map</span> : <code class="type">('a -> 'b -> 'a * 'c) -> 'a -> 'b list -> 'a * 'c list</code></pre><div class="info ">
+Combines <code class="code">fold_left</code> and <code class="code">map</code>. Tail-recursive.
+<p>
+
+    More precisely :
+<p>
+
+    <pre class="codepre"><code class="code">    fold_left_map f acc [] = (acc, [])
+
+    fold_left_map f acc (x :: xs) =
+      <span class="keyword">let</span> (acc', y) = f acc x <span class="keyword">in</span>
+      <span class="keyword">let</span> (res, ys) = fold_left_map acc' xs <span class="keyword">in</span>
+      (res, y :: ys)
+    </code></pre><br>
+<b>Since</b> 2.6.0<br>
+</div>
+
 <pre><span id="VALmax"><span class="keyword">val</span> max</span> : <code class="type">'a list -> 'a</code></pre><div class="info ">
 <code class="code">max&nbsp;l</code> returns the largest value in <code class="code">l</code> as judged by
-    <code class="code"><span class="constructor">Pervasives</span>.compare</code><br>
+    <code class="code"><span class="constructor">Pervasives</span>.compare</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> on an empty list.<br>
 </div>
 
 <pre><span id="VALmin"><span class="keyword">val</span> min</span> : <code class="type">'a list -> 'a</code></pre><div class="info ">
 <code class="code">min&nbsp;l</code> returns the smallest value in <code class="code">l</code> as judged by
-    <code class="code"><span class="constructor">Pervasives</span>.compare</code><br>
+    <code class="code"><span class="constructor">Pervasives</span>.compare</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> on an empty list.<br>
 </div>
 
 <pre><span id="VALsum"><span class="keyword">val</span> sum</span> : <code class="type">int list -> int</code></pre><div class="info ">
-<code class="code">sum&nbsp;l</code> returns the sum of the integers of <code class="code">l</code><br>
+<code class="code">sum&nbsp;l</code> returns the sum of the integers of <code class="code">l</code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> on the empty list.<br>
 </div>
 
 <pre><span id="VALfsum"><span class="keyword">val</span> fsum</span> : <code class="type">float list -> float</code></pre><div class="info ">
-<code class="code">fsum&nbsp;l</code> returns the sum of the floats of <code class="code">l</code><br>
+<code class="code">fsum&nbsp;l</code> returns the sum of the floats of <code class="code">l</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> on the empty list.<br>
+</div>
+
+<pre><span id="VALfavg"><span class="keyword">val</span> favg</span> : <code class="type">float list -> float</code></pre><div class="info ">
+<code class="code">favg&nbsp;l</code> returns the average of the floats of <code class="code">l</code><br>
+<b>Since</b> 2.6.0<br>
 <b>Raises</b> <code>Invalid_argument</code> on the empty list.<br>
 </div>
 
@@ -364,11 +438,25 @@ As <code class="code">fold_right</code>, but with the index of the element, from
     different lengths.<br>
 </div>
 
+<pre><span id="VALiter2i"><span class="keyword">val</span> iter2i</span> : <code class="type">(int -> 'a -> 'b -> unit) -> 'a list -> 'b list -> unit</code></pre><div class="info ">
+<code class="code"><span class="constructor">List</span>.iter2i&nbsp;f&nbsp;[a0;&nbsp;a1;&nbsp;...;&nbsp;an]&nbsp;[b0;&nbsp;b1;&nbsp;...;&nbsp;bn]</code> calls in turn
+    <code class="code">f&nbsp;0&nbsp;a0&nbsp;b0;&nbsp;f&nbsp;1&nbsp;a1&nbsp;b1;&nbsp;...;&nbsp;f&nbsp;n&nbsp;an&nbsp;bn</code>.<br>
+<b>Raises</b> <code>Different_list_size</code> or Invalid_argument if the two lists
+    have different lengths.<br>
+</div>
+
 <pre><span id="VALmap2"><span class="keyword">val</span> map2</span> : <code class="type">('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list</code></pre><div class="info ">
 <code class="code"><span class="constructor">List</span>.map2&nbsp;f&nbsp;[a0;&nbsp;a1;&nbsp;...;&nbsp;an]&nbsp;[b0;&nbsp;b1;&nbsp;...;&nbsp;bn]</code> is
     <code class="code">[f&nbsp;a0&nbsp;b0;&nbsp;f&nbsp;a1&nbsp;b1;&nbsp;...;&nbsp;f&nbsp;an&nbsp;bn]</code>.<br>
 <b>Raises</b> <code>Different_list_size</code> if the two lists have
     different lengths.  Tail-recursive.<br>
+</div>
+
+<pre><span id="VALmap2i"><span class="keyword">val</span> map2i</span> : <code class="type">(int -> 'a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list</code></pre><div class="info ">
+<code class="code"><span class="constructor">List</span>.map2i&nbsp;f&nbsp;[a0;&nbsp;a1;&nbsp;...;&nbsp;an]&nbsp;[b0;&nbsp;b1;&nbsp;...;&nbsp;bn]</code> is
+    <code class="code">[f&nbsp;0&nbsp;a0&nbsp;b0;&nbsp;f&nbsp;1&nbsp;a1&nbsp;b1;&nbsp;...;&nbsp;f&nbsp;n&nbsp;an&nbsp;bn]</code>.<br>
+<b>Raises</b> <code>Different_list_size</code> or Invalid_argument if the two lists
+    have different lengths. Tail-recursive.<br>
 </div>
 
 <pre><span id="VALrev_map2"><span class="keyword">val</span> rev_map2</span> : <code class="type">('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list</code></pre><div class="info ">
@@ -452,6 +540,13 @@ Same as <code class="code"><span class="constructor">List</span>.exists</code>, 
     list <code class="code">l</code>.<br>
 </div>
 
+<pre><span id="VALfind_opt"><span class="keyword">val</span> find_opt</span> : <code class="type">('a -> bool) -> 'a list -> 'a option</code></pre><div class="info ">
+<code class="code">find_opt&nbsp;p&nbsp;l</code> returns the first element of the list <code class="code">l</code> that
+    satisfies the predicate <code class="code">p</code>, or <code class="code"><span class="constructor">None</span></code> if there is no value that
+    satisfies <code class="code">p</code> in the list <code class="code">l</code>.<br>
+<b>Since</b> 2.7.0<br>
+</div>
+
 <pre><span id="VALfind_exn"><span class="keyword">val</span> find_exn</span> : <code class="type">('a -> bool) -> exn -> 'a list -> 'a</code></pre><div class="info ">
 <code class="code">find_exn&nbsp;p&nbsp;e&nbsp;l</code> returns the first element of <code class="code">l</code> such as <code class="code">p&nbsp;x</code>
     returns <code class="code"><span class="keyword">true</span></code> or raises <code class="code">e</code> if such an element has not been found.<br>
@@ -485,7 +580,7 @@ Same as <code class="code"><span class="constructor">List</span>.exists</code>, 
 </div>
 
 <pre><span id="VALfilteri"><span class="keyword">val</span> filteri</span> : <code class="type">(int -> 'a -> bool) -> 'a list -> 'a list</code></pre><div class="info ">
-<code class="code">filter&nbsp;p&nbsp;[a0;&nbsp;a1;&nbsp;...;&nbsp;an]</code> returns all the elements <code class="code">ai</code> of index <code class="code">i</code>
+<code class="code">filteri&nbsp;p&nbsp;[a0;&nbsp;a1;&nbsp;...;&nbsp;an]</code> returns all the elements <code class="code">ai</code> of index <code class="code">i</code>
     that satisfy the predicate <code class="code">p&nbsp;i&nbsp;ai</code>.  The order of the elements
     in the input list is preserved.<br>
 <b>Since</b> 2.2.0<br>
@@ -499,7 +594,7 @@ Same as <code class="code"><span class="constructor">List</span>.exists</code>, 
 </div>
 
 <pre><span id="VALfilteri_map"><span class="keyword">val</span> filteri_map</span> : <code class="type">(int -> 'a -> 'b option) -> 'a list -> 'b list</code></pre><div class="info ">
-<code class="code">filter_map&nbsp;f&nbsp;l</code> calls <code class="code">(f&nbsp;0&nbsp;a0)&nbsp;(f&nbsp;1&nbsp;a1)....&nbsp;(f&nbsp;n&nbsp;an)</code> where <code class="code">a0,a1..an</code> are
+<code class="code">filteri_map&nbsp;f&nbsp;l</code> calls <code class="code">(f&nbsp;0&nbsp;a0)&nbsp;(f&nbsp;1&nbsp;a1)....&nbsp;(f&nbsp;n&nbsp;an)</code> where <code class="code">a0,a1..an</code> are
     the elements of <code class="code">l</code>. It returns the list of elements <code class="code">bi</code> such as
     <code class="code">f&nbsp;ai&nbsp;=&nbsp;<span class="constructor">Some</span>&nbsp;bi</code> (when <code class="code">f</code> returns <code class="code"><span class="constructor">None</span></code>, the corresponding element of
     <code class="code">l</code> is discarded).<br>
@@ -590,6 +685,16 @@ As <code class="code">unique</code>, except uses a hash table to cut down the ex
     list <code class="code">l</code>.<br>
 </div>
 
+<pre><span id="VALassoc_opt"><span class="keyword">val</span> assoc_opt</span> : <code class="type">'a -> ('a * 'b) list -> 'b option</code></pre><div class="info ">
+<code class="code">assoc_opt&nbsp;a&nbsp;l</code> returns the value associated with key <code class="code">a</code> in the list of
+   pairs <code class="code">l</code>. That is,
+   <code class="code">assoc_opt&nbsp;a&nbsp;[&nbsp;...;&nbsp;(a,b);&nbsp;...]&nbsp;=&nbsp;b</code>
+   if <code class="code">(a,b)</code> is the leftmost binding of <code class="code">a</code> in list <code class="code">l</code>.
+   Returns <code class="code"><span class="constructor">None</span></code> if there is no value associated with <code class="code">a</code> in the
+   list <code class="code">l</code>.<br>
+<b>Since</b> 2.7.0<br>
+</div>
+
 <pre><span id="VALassoc_inv"><span class="keyword">val</span> assoc_inv</span> : <code class="type">'b -> ('a * 'b) list -> 'a</code></pre><div class="info ">
 <code class="code">assoc_inv&nbsp;b&nbsp;l</code> returns the key associated with value <code class="code">b</code> in the list of
     pairs <code class="code">l</code>. That is, <code class="code">assoc&nbsp;b&nbsp;[&nbsp;...;&nbsp;(a,b);&nbsp;...]&nbsp;=&nbsp;a</code>
@@ -612,6 +717,12 @@ Same as <code class="code"><span class="constructor">List</span>.assoc</code>, b
 <pre><span id="VALassq"><span class="keyword">val</span> assq</span> : <code class="type">'a -> ('a * 'b) list -> 'b</code></pre><div class="info ">
 Same as <code class="code"><span class="constructor">List</span>.assoc</code>, but uses physical equality instead of structural
     equality to compare keys.<br>
+</div>
+
+<pre><span id="VALassq_opt"><span class="keyword">val</span> assq_opt</span> : <code class="type">'a -> ('a * 'b) list -> 'b option</code></pre><div class="info ">
+Same as <code class="code"><span class="constructor">List</span>.assoc_opt</code>, but uses physical equality instead of structural
+    equality to compare keys.<br>
+<b>Since</b> 2.7.0<br>
 </div>
 
 <pre><span id="VALassq_inv"><span class="keyword">val</span> assq_inv</span> : <code class="type">'b -> ('a * 'b) list -> 'a</code></pre><div class="info ">
@@ -658,7 +769,7 @@ Same as <code class="code"><span class="constructor">List</span>.mem_assoc</code
 </div>
 
 <pre><span id="VALmodify_opt_at"><span class="keyword">val</span> modify_opt_at</span> : <code class="type">int -> ('a -> 'a option) -> 'a list -> 'a list</code></pre><div class="info ">
-<code class="code">modify_at_opt&nbsp;n&nbsp;f&nbsp;l</code> returns the same list as <code class="code">l</code> but with
+<code class="code">modify_opt_at&nbsp;n&nbsp;f&nbsp;l</code> returns the same list as <code class="code">l</code> but with
     nth-value <code class="code">a</code> removed if <code class="code">f&nbsp;a</code> is <code class="code"><span class="constructor">None</span></code>, and replaced by <code class="code">v</code> if
     it is <code class="code"><span class="constructor">Some</span>&nbsp;v</code>.<br>
 <b>Since</b> 2.3.0<br>
@@ -719,7 +830,7 @@ Obsolete. As <code class="code">split_at</code>.<br>
 </div>
 
 <pre><span id="VALtakedrop"><span class="keyword">val</span> takedrop</span> : <code class="type">int -> 'a list -> 'a list * 'a list</code></pre><div class="info ">
-<code class="code">take_drop&nbsp;n&nbsp;l</code> is equivalent to <code class="code">(take&nbsp;n&nbsp;l,&nbsp;drop&nbsp;n&nbsp;l)</code>
+<code class="code">takedrop&nbsp;n&nbsp;l</code> is equivalent to <code class="code">(take&nbsp;n&nbsp;l,&nbsp;drop&nbsp;n&nbsp;l)</code>
     but is done in one pass.<br>
 <b>Since</b> 2.2.0<br>
 </div>
@@ -778,7 +889,7 @@ The <code class="code">group_consecutive</code> function takes a list and return
 
 <pre><span id="VALinterleave"><span class="keyword">val</span> interleave</span> : <code class="type">?first:'a -> ?last:'a -> 'a -> 'a list -> 'a list</code></pre><div class="info ">
 <code class="code">interleave&nbsp;~first&nbsp;~last&nbsp;sep&nbsp;[a0;a1;a2;...;an]</code> returns
-    <code class="code">first;&nbsp;a0;&nbsp;sep;&nbsp;a1;&nbsp;sep;&nbsp;a2;&nbsp;sep;&nbsp;...;&nbsp;sep;&nbsp;an;&nbsp;last</code><br>
+    <code class="code">first;&nbsp;a0;&nbsp;sep;&nbsp;a1;&nbsp;sep;&nbsp;a2;&nbsp;sep;&nbsp;...;&nbsp;sep;&nbsp;an;&nbsp;last</code>.<br>
 </div>
 <br>
 <h6 id="6_BatEnumfunctions">BatEnum functions</h6>
@@ -789,7 +900,7 @@ The <code class="code">group_consecutive</code> function takes a list and return
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a list -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 Returns an enumeration of the elements of a list. This enumeration may
     be used to visit elements of the list in forward order (i.e. from the
-    first element to the last one)<br>
+    first element to the last one).<br>
 </div>
 
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a list</code></pre><div class="info ">
@@ -800,7 +911,7 @@ Build a list from an enumeration. In the result, elements appear in the
 <pre><span id="VALbackwards"><span class="keyword">val</span> backwards</span> : <code class="type">'a list -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 Returns an enumeration of the elements of a list. This enumeration may
     be used to visit elements of the list in backwards order (i.e. from the
-    last element to the first one)<br>
+    last element to the first one).<br>
 </div>
 
 <pre><span id="VALof_backwards"><span class="keyword">val</span> of_backwards</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a list</code></pre><div class="info ">
@@ -896,7 +1007,7 @@ synonym for <code class="code">sort_uniq</code><br>
 
     For example <code class="code">group&nbsp;cmp&nbsp;[f;c;b;e;d;a]</code> can give <code class="code">[[a;b];[c];[d;e;f]]</code> if
     following conditions are met:
-    <code class="code">cmp&nbsp;a&nbsp;b&nbsp;=&nbsp;0</code>, <code class="code">cmp&nbsp;b&nbsp;c&nbsp;=&nbsp;-1</code>, <code class="code">cmp&nbsp;c&nbsp;d&nbsp;=&nbsp;-1</code>, <code class="code">cmp&nbsp;d&nbsp;e&nbsp;=&nbsp;0</code>,...
+    <code class="code">cmp&nbsp;a&nbsp;b&nbsp;=&nbsp;0</code>, <code class="code">cmp&nbsp;b&nbsp;c&nbsp;=&nbsp;-1</code>, <code class="code">cmp&nbsp;c&nbsp;d&nbsp;=&nbsp;-1</code>, <code class="code">cmp&nbsp;d&nbsp;e&nbsp;=&nbsp;0</code>, ...
 <p>
 
     See the note on <code class="code">group_consecutive</code>.<br>
@@ -946,6 +1057,14 @@ Comparison and equality for lists based on element comparison and
 Obsolete. As <code class="code">at</code>.<br>
 </div>
 
+<pre><span id="VALnth_opt"><span class="keyword">val</span> nth_opt</span> : <code class="type">'a list -> int -> 'a option</code></pre><div class="info ">
+Return the <code class="code">n</code>-th element of the given list.
+    The first element (head of the list) is at position 0.
+    Return <code class="code"><span class="constructor">None</span></code> if the list is too short.
+    Raise <code class="code"><span class="constructor">Invalid_argument</span>&nbsp;<span class="string">"List.nth"</span></code> if <code class="code">n</code> is negative.<br>
+<b>Since</b> 2.7.0<br>
+</div>
+
 <pre><span id="VALtakewhile"><span class="keyword">val</span> takewhile</span> : <code class="type">('a -> bool) -> 'a list -> 'a list</code></pre><div class="info ">
 obsolete, as <a href="BatList.html#VALtake_while"><code class="code"><span class="constructor">BatList</span>.take_while</code></a><br>
 </div>
@@ -959,7 +1078,7 @@ obsolete, as <a href="BatList.html#VALdrop_while"><code class="code"><span class
 The following modules replace functions defined in <code class="code"><span class="constructor">List</span></code> with functions
    behaving slightly differently but having the same name. This is by
    design:
-   the functions meant to override the corresponding functions of <code class="code"><span class="constructor">List</span></code>.<br>
+   the functions are meant to override the corresponding functions of <code class="code"><span class="constructor">List</span></code>.<br>
 
 <pre><span class="keyword">module</span> <a href="BatList.Exceptionless.html">Exceptionless</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatList.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
 Exceptionless counterparts for error-raising operations

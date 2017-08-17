@@ -51,6 +51,7 @@
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
 <link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
+<link title="BatInnerShuffle" rel="Chapter" href="BatInnerShuffle.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -430,7 +431,7 @@ Same as <code class="code"><span class="constructor">Pervasives</span>.open_in</
 
 <pre><span id="VALopen_in_gen"><span class="keyword">val</span> open_in_gen</span> : <code class="type">Pervasives.open_flag list -> int -> string -> <a href="BatIO.html#TYPEinput">BatIO.input</a></code></pre><div class="info ">
 <span class="warning">Deprecated.</span>Use <code class="code">open_in&nbsp;instead</code><br>
-<code class="code">open_in&nbsp;mode&nbsp;perm&nbsp;filename</code> opens the named file for reading,
+<code class="code">open_in_gen&nbsp;mode&nbsp;perm&nbsp;filename</code> opens the named file for reading,
     as described above. The extra arguments <code class="code">mode</code> and <code class="code">perm</code>
     specify the opening mode and file permissions.
     <code class="code"><span class="constructor">Pervasives</span>.open_in</code> and <code class="code"><span class="constructor">Pervasives</span>.open_in_bin</code> are special
@@ -912,7 +913,7 @@ Map combined with filter. Same as <a href="BatPervasives.html#VALfilter_map"><co
 </div>
 
 <pre><span id="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> bool</code></pre><div class="info ">
-<code class="code">exists&nbsp;f&nbsp;e</code> returns <code class="code"><span class="keyword">true</span></code> if for every <code class="code">x</code> in <code class="code">e</code>, <code class="code">f&nbsp;x</code> is true<br>
+<code class="code">for_all&nbsp;f&nbsp;e</code> returns <code class="code"><span class="keyword">true</span></code> if for every <code class="code">x</code> in <code class="code">e</code>, <code class="code">f&nbsp;x</code> is true<br>
 </div>
 
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a</code></pre><div class="info ">

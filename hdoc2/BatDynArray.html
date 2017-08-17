@@ -51,6 +51,7 @@
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
 <link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
+<link title="BatInnerShuffle" rel="Chapter" href="BatInnerShuffle.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -288,7 +289,7 @@ remove all elements from the array and resize it to 0.<br>
 </div>
 
 <pre><span id="VALiteri"><span class="keyword">val</span> iteri</span> : <code class="type">(int -> 'a -> unit) -> 'a <a href="BatDynArray.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">iter&nbsp;f&nbsp;darr</code> calls the function <code class="code">f</code> on every element of <code class="code">darr</code>.  It
+<code class="code">iteri&nbsp;f&nbsp;darr</code> calls the function <code class="code">f</code> on every element of <code class="code">darr</code>.  It
     is equivalent to <code class="code"><span class="keyword">for</span>&nbsp;i&nbsp;=&nbsp;0&nbsp;<span class="keyword">to</span>&nbsp;length&nbsp;darr&nbsp;-&nbsp;1&nbsp;<span class="keyword">do</span>&nbsp;f&nbsp;i&nbsp;(get&nbsp;darr&nbsp;i)&nbsp;<span class="keyword">done</span>;</code><br>
 </div>
 

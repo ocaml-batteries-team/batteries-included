@@ -51,6 +51,7 @@
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
 <link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
+<link title="BatInnerShuffle" rel="Chapter" href="BatInnerShuffle.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -109,6 +110,7 @@
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Polymorphic maps" rel="Section" href="#4_Polymorphicmaps">
+<link title="Common instantiations" rel="Subsection" href="#6_Commoninstantiations">
 <link title="Boilerplate code" rel="Subsection" href="#6_Boilerplatecode">
 <title>Batteries user guide : Extlib.PMap</title>
 </head>
@@ -127,6 +129,15 @@ Functor building an implementation of the map structure
     given a totally ordered type.
 </div>
 <br>
+<h6 id="6_Commoninstantiations">Common instantiations</h6> *<br>
+
+<pre><span class="keyword">module</span> <a href="BatMap.Int.html">Int</a>: <code class="type"><a href="BatMap.S.html">S</a></code><code class="type">  with type key = int</code></pre>
+<pre><span class="keyword">module</span> <a href="BatMap.Int32.html">Int32</a>: <code class="type"><a href="BatMap.S.html">S</a></code><code class="type">  with type key = int32</code></pre>
+<pre><span class="keyword">module</span> <a href="BatMap.Int64.html">Int64</a>: <code class="type"><a href="BatMap.S.html">S</a></code><code class="type">  with type key = int64</code></pre>
+<pre><span class="keyword">module</span> <a href="BatMap.Nativeint.html">Nativeint</a>: <code class="type"><a href="BatMap.S.html">S</a></code><code class="type">  with type key = nativeint</code></pre>
+<pre><span class="keyword">module</span> <a href="BatMap.Float.html">Float</a>: <code class="type"><a href="BatMap.S.html">S</a></code><code class="type">  with type key = float</code></pre>
+<pre><span class="keyword">module</span> <a href="BatMap.Char.html">Char</a>: <code class="type"><a href="BatMap.S.html">S</a></code><code class="type">  with type key = char</code></pre>
+<pre><span class="keyword">module</span> <a href="BatMap.String.html">String</a>: <code class="type"><a href="BatMap.S.html">S</a></code><code class="type">  with type key = string</code></pre><br>
 <h4 id="4_Polymorphicmaps">Polymorphic maps</h4>
 <p>
 
@@ -177,6 +188,11 @@ Return the number of bindings of a map.<br>
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">'a -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> 'b</code></pre><div class="info ">
 <code class="code">find&nbsp;x&nbsp;m</code> returns the current binding of <code class="code">x</code> in <code class="code">m</code>,
     or raises <code class="code"><span class="constructor">Not_found</span></code> if no such binding exists.<br>
+</div>
+
+<pre><span id="VALfind_default"><span class="keyword">val</span> find_default</span> : <code class="type">'b -> 'a -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> 'b</code></pre><div class="info ">
+<code class="code">find_default&nbsp;d&nbsp;x&nbsp;m</code> returns the current binding of <code class="code">x</code> in <code class="code">m</code>,
+     or the default value <code class="code">d</code> if no such binding exists.<br>
 </div>
 
 <pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">'a -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info ">
@@ -259,9 +275,18 @@ Same as <code class="code">fold</code>, but the function receives as arguments b
 </div>
 
 <pre><span id="VALchoose"><span class="keyword">val</span> choose</span> : <code class="type">('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> 'key * 'a</code></pre><div class="info ">
-Return one binding of the given map, or raise <code class="code"><span class="constructor">Not_found</span></code> if
-    the map is empty. Which binding is chosen is unspecified,
-    but equal bindings will be chosen for equal maps.<br>
+Return one binding of the given map.
+    Which binding is chosen is unspecified, but equal bindings will be
+    chosen for equal maps.<br>
+<b>Raises</b> <code>Not_found</code> if the map is empty<br>
+</div>
+
+<pre><span id="VALany"><span class="keyword">val</span> any</span> : <code class="type">('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> 'key * 'a</code></pre><div class="info ">
+Return one binding of the given map.
+    The difference with choose is that there is no guarantee that equals
+    elements will be picked for equal sets.
+    This merely returns the quickest binding to get (O(1)).<br>
+<b>Raises</b> <code>Not_found</code> if the map is empty.<br>
 </div>
 
 <pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type">'key -><br>       ('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('key, 'a) <a href="BatMap.html#TYPEt">t</a> * 'a option * ('key, 'a) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info ">

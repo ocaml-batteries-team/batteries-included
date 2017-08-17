@@ -51,6 +51,7 @@
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
 <link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
+<link title="BatInnerShuffle" rel="Chapter" href="BatInnerShuffle.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -1213,11 +1214,18 @@ Set the close-on-exec flag on the
                                     Since OCaml 4.1<br>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
-</tr></table>
-
-<div class="info ">
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTopen_flag.O_KEEPEXEC"><span class="constructor">O_KEEPEXEC</span></span></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
 The flags to <code class="code"><span class="constructor">Unix</span>.openfile</code>.<br>
 </div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr></table>
+
 
 
 <pre><span id="TYPEfile_perm"><span class="keyword">type</span> <code class="type"></code>file_perm</span> = <code class="type">int</code> </pre>
@@ -1712,12 +1720,12 @@ Check that the process has the given permissions over the named
 <br>
 <h6 id="6_Operationsonfiledescriptors">Operations on file descriptors</h6><br>
 
-<pre><span id="VALdup"><span class="keyword">val</span> dup</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> <a href="BatUnix.html#TYPEfile_descr">file_descr</a></code></pre><div class="info ">
+<pre><span id="VALdup"><span class="keyword">val</span> dup</span> : <code class="type">?cloexec:bool -> <a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> <a href="BatUnix.html#TYPEfile_descr">file_descr</a></code></pre><div class="info ">
 Return a new file descriptor referencing the same file as
     the given descriptor.<br>
 </div>
 
-<pre><span id="VALdup2"><span class="keyword">val</span> dup2</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> <a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> unit</code></pre><div class="info ">
+<pre><span id="VALdup2"><span class="keyword">val</span> dup2</span> : <code class="type">?cloexec:bool -> <a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> <a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> unit</code></pre><div class="info ">
 <code class="code">dup2&nbsp;fd1&nbsp;fd2</code> duplicates <code class="code">fd1</code> to <code class="code">fd2</code>, closing <code class="code">fd2</code> if already
     opened.<br>
 </div>
@@ -1795,7 +1803,7 @@ Close a directory descriptor.<br>
 <br>
 <h6 id="6_Pipesandredirections">Pipes and redirections</h6><br>
 
-<pre><span id="VALpipe"><span class="keyword">val</span> pipe</span> : <code class="type">unit -> <a href="BatUnix.html#TYPEfile_descr">file_descr</a> * <a href="BatUnix.html#TYPEfile_descr">file_descr</a></code></pre><div class="info ">
+<pre><span id="VALpipe"><span class="keyword">val</span> pipe</span> : <code class="type">?cloexec:bool -> unit -> <a href="BatUnix.html#TYPEfile_descr">file_descr</a> * <a href="BatUnix.html#TYPEfile_descr">file_descr</a></code></pre><div class="info ">
 Create a pipe. The first component of the result is opened
     for reading, that's the exit to the pipe. The second component is
     opened for writing, that's the entrance to the pipe.<br>
@@ -2757,7 +2765,7 @@ The type of socket addresses. <code class="code"><span class="constructor">ADDR_
 
 
 
-<pre><span id="VALsocket"><span class="keyword">val</span> socket</span> : <code class="type"><a href="BatUnix.html#TYPEsocket_domain">socket_domain</a> -> <a href="BatUnix.html#TYPEsocket_type">socket_type</a> -> int -> <a href="BatUnix.html#TYPEfile_descr">file_descr</a></code></pre><div class="info ">
+<pre><span id="VALsocket"><span class="keyword">val</span> socket</span> : <code class="type">?cloexec:bool -><br>       <a href="BatUnix.html#TYPEsocket_domain">socket_domain</a> -> <a href="BatUnix.html#TYPEsocket_type">socket_type</a> -> int -> <a href="BatUnix.html#TYPEfile_descr">file_descr</a></code></pre><div class="info ">
 Create a new socket in the given domain, and with the
     given kind. The third argument is the protocol type; 0 selects
     the default protocol for that kind of sockets.<br>
@@ -2767,11 +2775,11 @@ Create a new socket in the given domain, and with the
 Return the socket domain adequate for the given socket address.<br>
 </div>
 
-<pre><span id="VALsocketpair"><span class="keyword">val</span> socketpair</span> : <code class="type"><a href="BatUnix.html#TYPEsocket_domain">socket_domain</a> -><br>       <a href="BatUnix.html#TYPEsocket_type">socket_type</a> -> int -> <a href="BatUnix.html#TYPEfile_descr">file_descr</a> * <a href="BatUnix.html#TYPEfile_descr">file_descr</a></code></pre><div class="info ">
+<pre><span id="VALsocketpair"><span class="keyword">val</span> socketpair</span> : <code class="type">?cloexec:bool -><br>       <a href="BatUnix.html#TYPEsocket_domain">socket_domain</a> -><br>       <a href="BatUnix.html#TYPEsocket_type">socket_type</a> -> int -> <a href="BatUnix.html#TYPEfile_descr">file_descr</a> * <a href="BatUnix.html#TYPEfile_descr">file_descr</a></code></pre><div class="info ">
 Create a pair of unnamed sockets, connected together.<br>
 </div>
 
-<pre><span id="VALaccept"><span class="keyword">val</span> accept</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> <a href="BatUnix.html#TYPEfile_descr">file_descr</a> * <a href="BatUnix.html#TYPEsockaddr">sockaddr</a></code></pre><div class="info ">
+<pre><span id="VALaccept"><span class="keyword">val</span> accept</span> : <code class="type">?cloexec:bool -> <a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> <a href="BatUnix.html#TYPEfile_descr">file_descr</a> * <a href="BatUnix.html#TYPEsockaddr">sockaddr</a></code></pre><div class="info ">
 Accept connections on the given socket. The returned descriptor
     is a socket connected to the client; the returned address is
     the address of the connecting client.<br>

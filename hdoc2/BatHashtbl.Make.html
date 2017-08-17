@@ -51,6 +51,7 @@
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
 <link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
+<link title="BatInnerShuffle" rel="Chapter" href="BatInnerShuffle.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -180,7 +181,9 @@ Functor building an implementation of the hashtable structure.
 <pre><span id="VALkeys"><span class="keyword">val</span> keys</span> : <code class="type">'a <a href="BatHashtbl.S.html#TYPEt">t</a> -> <a href="BatHashtbl.S.html#TYPEkey">key</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
 <pre><span id="VALvalues"><span class="keyword">val</span> values</span> : <code class="type">'a <a href="BatHashtbl.S.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a <a href="BatHashtbl.S.html#TYPEt">t</a> -> (<a href="BatHashtbl.S.html#TYPEkey">key</a> * 'a) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
+<pre><span id="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type">'a <a href="BatHashtbl.S.html#TYPEt">t</a> -> (<a href="BatHashtbl.S.html#TYPEkey">key</a> * 'a) list</code></pre>
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">(<a href="BatHashtbl.S.html#TYPEkey">key</a> * 'a) <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatHashtbl.S.html#TYPEt">t</a></code></pre>
+<pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">(<a href="BatHashtbl.S.html#TYPEkey">key</a> * 'a) list -> 'a <a href="BatHashtbl.S.html#TYPEt">t</a></code></pre>
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatHashtbl.S.html#TYPEkey">key</a> -> unit) -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatHashtbl.S.html#TYPEt">t</a> -> unit</code></pre><br>
 <h6 id="6_Overridemodules">Override modules</h6><br>
 <br>

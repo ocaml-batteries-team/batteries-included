@@ -51,6 +51,7 @@
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
 <link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
+<link title="BatInnerShuffle" rel="Chapter" href="BatInnerShuffle.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -176,6 +177,16 @@ As <code class="code">catch</code> but three paramaters.  This saves a closure c
 <code class="code">default&nbsp;d&nbsp;r</code> evaluates to <code class="code">d</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Bad</span></code> else <code class="code">x</code> when <code class="code">r</code> is
     <code class="code"><span class="constructor">Ok</span>&nbsp;x</code><br>
 <b>Since</b> 2.0<br>
+</div>
+
+<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> ('a, 'c) <a href="BatResult.html#TYPEt">t</a> -> ('b, 'c) <a href="BatResult.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">map&nbsp;f&nbsp;(<span class="constructor">Ok</span>&nbsp;x)</code> returns <code class="code"><span class="constructor">Ok</span>&nbsp;(f&nbsp;x)</code> and <code class="code">map&nbsp;f&nbsp;(<span class="constructor">Bad</span>&nbsp;e)</code> returns <code class="code"><span class="constructor">Bad</span>&nbsp;e</code>.<br>
+<b>Since</b> 2.6.0<br>
+</div>
+
+<pre><span id="VALmap_both"><span class="keyword">val</span> map_both</span> : <code class="type">('a1 -> 'a2) -><br>       ('b1 -> 'b2) -> ('a1, 'b1) <a href="BatResult.html#TYPEt">t</a> -> ('a2, 'b2) <a href="BatResult.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">map_both&nbsp;f&nbsp;g&nbsp;(<span class="constructor">Ok</span>&nbsp;x)</code> returns <code class="code"><span class="constructor">Ok</span>&nbsp;(f&nbsp;x)</code> and <code class="code">map_both&nbsp;f&nbsp;g&nbsp;(<span class="constructor">Bad</span>&nbsp;e)</code> returns <code class="code"><span class="constructor">Bad</span>&nbsp;(g&nbsp;e)</code>.<br>
+<b>Since</b> 2.6.0<br>
 </div>
 
 <pre><span id="VALmap_default"><span class="keyword">val</span> map_default</span> : <code class="type">'b -> ('a -> 'b) -> ('a, 'c) <a href="BatResult.html#TYPEt">t</a> -> 'b</code></pre><div class="info ">

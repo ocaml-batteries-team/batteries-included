@@ -51,6 +51,7 @@
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
 <link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
+<link title="BatInnerShuffle" rel="Chapter" href="BatInnerShuffle.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -109,7 +110,8 @@
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Functorized Sets" rel="Section" href="#4_FunctorizedSets">
-<link title="Polymorphic sets" rel="Subsection" href="#6_Polymorphicsets">
+<link title="Polymorphic sets" rel="Section" href="#4_Polymorphicsets">
+<link title="Common instantiations" rel="Subsection" href="#6_Commoninstantiations">
 <link title="Boilerplate code" rel="Subsection" href="#6_Boilerplatecode">
 <title>Batteries user guide : BatSet</title>
 </head>
@@ -163,7 +165,16 @@ Functor building an implementation of the set structure
 </div>
 
 <pre><span class="keyword">module</span> <a href="BatSet.Make2.html">Make2</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">O1</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatSet.OrderedType.html">OrderedType</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">O2</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatSet.OrderedType.html">OrderedType</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="code"><span class="keyword">sig</span></code> <a href="BatSet.Make2.html">..</a> <code class="code"><span class="keyword">end</span></code></div></div></pre><br>
-<h6 id="6_Polymorphicsets">Polymorphic sets</h6>
+<h6 id="6_Commoninstantiations">Common instantiations</h6><br>
+
+<pre><span class="keyword">module</span> <a href="BatSet.Int.html">Int</a>: <code class="type"><a href="BatSet.S.html">S</a></code><code class="type">  with type elt = int</code></pre>
+<pre><span class="keyword">module</span> <a href="BatSet.Int32.html">Int32</a>: <code class="type"><a href="BatSet.S.html">S</a></code><code class="type">  with type elt = int32</code></pre>
+<pre><span class="keyword">module</span> <a href="BatSet.Int64.html">Int64</a>: <code class="type"><a href="BatSet.S.html">S</a></code><code class="type">  with type elt = int64</code></pre>
+<pre><span class="keyword">module</span> <a href="BatSet.Nativeint.html">Nativeint</a>: <code class="type"><a href="BatSet.S.html">S</a></code><code class="type">  with type elt = nativeint</code></pre>
+<pre><span class="keyword">module</span> <a href="BatSet.Float.html">Float</a>: <code class="type"><a href="BatSet.S.html">S</a></code><code class="type">  with type elt = float</code></pre>
+<pre><span class="keyword">module</span> <a href="BatSet.Char.html">Char</a>: <code class="type"><a href="BatSet.S.html">S</a></code><code class="type">  with type elt = char</code></pre>
+<pre><span class="keyword">module</span> <a href="BatSet.String.html">String</a>: <code class="type"><a href="BatSet.S.html">S</a></code><code class="type">  with type elt = string</code></pre><br>
+<h4 id="4_Polymorphicsets">Polymorphic sets</h4>
 <p>
 
     The definitions below describe the polymorphic set interface.
@@ -391,7 +402,7 @@ Same as <code class="code">to_list</code> but with an array instead of a list.<b
 
 <pre><span id="VALmin_elt"><span class="keyword">val</span> min_elt</span> : <code class="type">'a <a href="BatSet.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
 returns the smallest element of the set.<br>
-<b>Raises</b> <code>Invalid_argument</code> if given an empty set.<br>
+<b>Raises</b> <code>Not_found</code> if given an empty set.<br>
 </div>
 
 <pre><span id="VALpop_min"><span class="keyword">val</span> pop_min</span> : <code class="type">'a <a href="BatSet.html#TYPEt">t</a> -> 'a * 'a <a href="BatSet.html#TYPEt">t</a></code></pre><div class="info ">
@@ -418,12 +429,20 @@ Returns the biggest element of the given set
 
 <pre><span id="VALmax_elt"><span class="keyword">val</span> max_elt</span> : <code class="type">'a <a href="BatSet.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
 returns the largest element of the set.<br>
-<b>Raises</b> <code>Invalid_argument</code> if given an empty set.<br>
+<b>Raises</b> <code>Not_found</code> if given an empty set.<br>
 </div>
 
 <pre><span id="VALchoose"><span class="keyword">val</span> choose</span> : <code class="type">'a <a href="BatSet.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
 returns an arbitrary (but deterministic) element of the given set.<br>
-<b>Raises</b> <code>Invalid_argument</code> if given an empty set.<br>
+<b>Raises</b> <code>Not_found</code> if given an empty set.<br>
+</div>
+
+<pre><span id="VALany"><span class="keyword">val</span> any</span> : <code class="type">'a <a href="BatSet.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
+Return one element of the given set.
+    The difference with choose is that there is no guarantee that equals
+    elements will be picked for equal sets.
+    This merely returns the quickest element to get (O(1)).<br>
+<b>Raises</b> <code>Not_found</code> if the set is empty.<br>
 </div>
 
 <pre><span id="VALpop"><span class="keyword">val</span> pop</span> : <code class="type">'a <a href="BatSet.html#TYPEt">t</a> -> 'a * 'a <a href="BatSet.html#TYPEt">t</a></code></pre><div class="info ">

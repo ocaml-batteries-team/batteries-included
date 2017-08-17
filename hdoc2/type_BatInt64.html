@@ -46,6 +46,7 @@
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
 <link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
+<link title="BatInnerShuffle" rel="Chapter" href="BatInnerShuffle.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -142,6 +143,7 @@
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;of_nativeint&nbsp;:&nbsp;nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int64&nbsp;=&nbsp;<span class="string">"%int64_of_nativeint"</span><br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;to_nativeint&nbsp;:&nbsp;int64&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;nativeint&nbsp;=&nbsp;<span class="string">"%int64_to_nativeint"</span><br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;of_string&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int64&nbsp;=&nbsp;<span class="string">"caml_int64_of_string"</span><br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;of_string_opt&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int64&nbsp;option<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;to_string&nbsp;:&nbsp;int64&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;bits_of_float&nbsp;:&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int64&nbsp;=&nbsp;<span class="string">"caml_int64_bits_of_float"</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"caml_int64_bits_of_float_unboxed"</span>&nbsp;[@@unboxed]&nbsp;[@@noalloc]<br>

@@ -51,6 +51,7 @@
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
 <link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
+<link title="BatInnerShuffle" rel="Chapter" href="BatInnerShuffle.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -110,6 +111,7 @@
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
 <link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Element kinds" rel="Section" href="#6_Elementkinds">
 <link title="Array layouts" rel="Section" href="#6_Arraylayouts">
+<link title="Zero-dimensional arrays" rel="Section" href="#6_Zerodimensionalarrays">
 <link title="One-dimensional arrays" rel="Section" href="#6_Onedimensionalarrays">
 <link title="Two-dimensional arrays" rel="Section" href="#6_Twodimensionalarrays">
 <link title="Three-dimensional arrays" rel="Section" href="#6_Threedimensionalarrays">
@@ -415,6 +417,12 @@ To each element kind is associated an OCaml type, which is
     64-bit double precision floats.
 <p>
 
+# 135 "src/batBigarray.mliv"
+# 136 "src/batBigarray.mliv"
+# 137 "src/batBigarray.mliv"
+# 138 "src/batBigarray.mliv"
+# 139 "src/batBigarray.mliv"
+# 140 "src/batBigarray.mliv"
    The GADT type <code class="code">(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;kind</code> captures this association
    of an OCaml type <code class="code"><span class="keywordsign">'</span>a</code> for values read or written in the big array,
    and of an element kind <code class="code"><span class="keywordsign">'</span>b</code> which represents the actual contents
@@ -434,8 +442,7 @@ To each element kind is associated an OCaml type, which is
     <span class="keywordsign">|</span> <span class="constructor">Int32</span> <span class="keywordsign">-&gt;</span> 0l <span class="keywordsign">|</span> <span class="constructor">Int64</span> <span class="keywordsign">-&gt;</span> 0<span class="constructor">L</span>
     <span class="keywordsign">|</span> <span class="constructor">Int</span> <span class="keywordsign">-&gt;</span> 0 <span class="keywordsign">|</span> <span class="constructor">Nativeint</span> <span class="keywordsign">-&gt;</span> 0n
     <span class="keywordsign">|</span> <span class="constructor">Char</span> <span class="keywordsign">-&gt;</span> <span class="string">'\000'</span>
-</code></pre>
-# 160 "src/batBigarray.mliv"<br>
+</code></pre><br>
 </div>
 
 
@@ -598,6 +605,12 @@ The type <code class="code"><span class="keywordsign">'</span>a&nbsp;layout</cod
 Generic arrays (of arbitrarily many dimensions)
 </div>
 <br>
+<h6 id="6_Zerodimensionalarrays">Zero-dimensional arrays</h6><br>
+
+<pre><span class="keyword">module</span> <a href="BatBigarray.Array0.html">Array0</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatBigarray.Array0.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+Zero-dimensional arrays.
+</div>
+<br>
 <h6 id="6_Onedimensionalarrays">One-dimensional arrays</h6><br>
 
 <pre><span class="keyword">module</span> <a href="BatBigarray.Array1.html">Array1</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatBigarray.Array1.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
@@ -618,6 +631,12 @@ Three-dimensional arrays.
 <br>
 <h6 id="6_Coercionsbetweengenericbigarraysandfixeddimensionbigarrays">Coercions between generic big arrays and fixed-dimension big arrays</h6><br>
 
+<pre><span id="VALgenarray_of_array0"><span class="keyword">val</span> genarray_of_array0</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array0.html#TYPEt">Array0.t</a> -> ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a></code></pre><div class="info ">
+Return the generic big array corresponding to the given zero-dimensional
+   big array.<br>
+<b>Since</b> 2.7.0 and OCaml 4.05.0<br>
+</div>
+
 <pre><span id="VALgenarray_of_array1"><span class="keyword">val</span> genarray_of_array1</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">Array1.t</a> -> ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a></code></pre><div class="info ">
 Return the generic big array corresponding to the given one-dimensional
     big array.<br>
@@ -631,6 +650,13 @@ Return the generic big array corresponding to the given two-dimensional
 <pre><span id="VALgenarray_of_array3"><span class="keyword">val</span> genarray_of_array3</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array3.html#TYPEt">Array3.t</a> -> ('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a></code></pre><div class="info ">
 Return the generic big array corresponding to the given three-dimensional
     big array.<br>
+</div>
+
+<pre><span id="VALarray0_of_genarray"><span class="keyword">val</span> array0_of_genarray</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a> -> ('a, 'b, 'c) <a href="BatBigarray.Array0.html#TYPEt">Array0.t</a></code></pre><div class="info ">
+Return the zero-dimensional big array corresponding to the given
+   generic big array.  Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if the generic big array
+   does not have exactly zero dimension.<br>
+<b>Since</b> 2.7.0 and OCaml 4.05.0<br>
 </div>
 
 <pre><span id="VALarray1_of_genarray"><span class="keyword">val</span> array1_of_genarray</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a> -> ('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">Array1.t</a></code></pre><div class="info ">
@@ -671,6 +697,12 @@ Return the three-dimensional big array corresponding to the given
     elements as the original big array <code class="code">b</code>.  That is, the product
     of the dimensions of <code class="code">b</code> must be equal to <code class="code">i1&nbsp;*&nbsp;...&nbsp;*&nbsp;iN</code>.<br>
 <b>Raises</b> <code>Invalid_argument</code> otherwise.<br>
+</div>
+
+<pre><span id="VALreshape_0"><span class="keyword">val</span> reshape_0</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a> -> ('a, 'b, 'c) <a href="BatBigarray.Array0.html#TYPEt">Array0.t</a></code></pre><div class="info ">
+Specialized version of <code class="code"><span class="constructor">Bigarray</span>.reshape</code> for reshaping to
+   zero-dimensional arrays.<br>
+<b>Since</b> 2.7.0 and OCaml 4.05.0<br>
 </div>
 
 <pre><span id="VALreshape_1"><span class="keyword">val</span> reshape_1</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Genarray.html#TYPEt">Genarray.t</a> -><br>       int -> ('a, 'b, 'c) <a href="BatBigarray.Array1.html#TYPEt">Array1.t</a></code></pre><div class="info ">

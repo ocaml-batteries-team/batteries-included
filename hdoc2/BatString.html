@@ -51,6 +51,7 @@
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
 <link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
+<link title="BatInnerShuffle" rel="Chapter" href="BatInnerShuffle.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -316,10 +317,24 @@ Return a copy of the argument, with special characters
 <b>Raises</b> <code>Not_found</code> if <code class="code">c</code> does not occur in <code class="code">s</code>.<br>
 </div>
 
+<pre><span id="VALindex_opt"><span class="keyword">val</span> index_opt</span> : <code class="type">string -> char -> int option</code></pre><div class="info ">
+<code class="code"><span class="constructor">String</span>.index_opt&nbsp;s&nbsp;c</code> returns the index of the first
+    occurrence of character <code class="code">c</code> in string <code class="code">s</code>, or
+    <code class="code"><span class="constructor">None</span></code> if <code class="code">c</code> does not occur in <code class="code">s</code>.<br>
+<b>Since</b> 2.7.0<br>
+</div>
+
 <pre><span id="VALrindex"><span class="keyword">val</span> rindex</span> : <code class="type">string -> char -> int</code></pre><div class="info ">
 <code class="code"><span class="constructor">String</span>.rindex&nbsp;s&nbsp;c</code> returns the character number of the last
     occurrence of character <code class="code">c</code> in string <code class="code">s</code>.<br>
 <b>Raises</b> <code>Not_found</code> if <code class="code">c</code> does not occur in <code class="code">s</code>.<br>
+</div>
+
+<pre><span id="VALrindex_opt"><span class="keyword">val</span> rindex_opt</span> : <code class="type">string -> char -> int option</code></pre><div class="info ">
+<code class="code"><span class="constructor">String</span>.rindex_opt&nbsp;s&nbsp;c</code> returns the index of the last occurrence
+    of character <code class="code">c</code> in string <code class="code">s</code>, or <code class="code"><span class="constructor">None</span></code> if <code class="code">c</code> does not occur in
+    <code class="code">s</code>.<br>
+<b>Since</b> 2.7.0<br>
 </div>
 
 <pre><span id="VALindex_from"><span class="keyword">val</span> index_from</span> : <code class="type">string -> int -> char -> int</code></pre><div class="info ">
@@ -331,6 +346,17 @@ Return a copy of the argument, with special characters
 </ul>
 </div>
 
+<pre><span id="VALindex_from_opt"><span class="keyword">val</span> index_from_opt</span> : <code class="type">string -> int -> char -> int option</code></pre><div class="info ">
+<code class="code"><span class="constructor">String</span>.index_from_opt&nbsp;s&nbsp;i&nbsp;c</code> returns the index of the
+    first occurrence of character <code class="code">c</code> in string <code class="code">s</code> after position <code class="code">i</code>
+    or <code class="code"><span class="constructor">None</span></code> if <code class="code">c</code> does not occur in <code class="code">s</code> after position <code class="code">i</code>.
+<p>
+
+    <code class="code"><span class="constructor">String</span>.index_opt&nbsp;s&nbsp;c</code> is equivalent to <code class="code"><span class="constructor">String</span>.index_from_opt&nbsp;s&nbsp;0&nbsp;c</code>.
+    Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">i</code> is not a valid position in <code class="code">s</code>.<br>
+<b>Since</b> 2.7.0<br>
+</div>
+
 <pre><span id="VALrindex_from"><span class="keyword">val</span> rindex_from</span> : <code class="type">string -> int -> char -> int</code></pre><div class="info ">
 <code class="code"><span class="constructor">String</span>.rindex_from&nbsp;s&nbsp;i&nbsp;c</code> returns the character number of the
     last occurrence of character <code class="code">c</code> in string <code class="code">s</code> before position <code class="code">i+1</code>.
@@ -339,6 +365,20 @@ Return a copy of the argument, with special characters
 <b>Raises</b><ul><li><code>Invalid_argument</code> if <code class="code">i+1</code> is not a valid position in <code class="code">s</code>.</li>
 <li><code>Not_found</code> if <code class="code">c</code> does not occur in <code class="code">s</code> before position <code class="code">i+1</code>.</li>
 </ul>
+</div>
+
+<pre><span id="VALrindex_from_opt"><span class="keyword">val</span> rindex_from_opt</span> : <code class="type">string -> int -> char -> int option</code></pre><div class="info ">
+<code class="code"><span class="constructor">String</span>.rindex_from_opt&nbsp;s&nbsp;i&nbsp;c</code> returns the index of the
+   last occurrence of character <code class="code">c</code> in string <code class="code">s</code> before position <code class="code">i+1</code>
+   or <code class="code"><span class="constructor">None</span></code> if <code class="code">c</code> does not occur in <code class="code">s</code> before position <code class="code">i+1</code>.
+<p>
+
+   <code class="code"><span class="constructor">String</span>.rindex_opt&nbsp;s&nbsp;c</code> is equivalent to
+   <code class="code"><span class="constructor">String</span>.rindex_from_opt&nbsp;s&nbsp;(<span class="constructor">String</span>.length&nbsp;s&nbsp;-&nbsp;1)&nbsp;c</code>.
+<p>
+
+   Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">i+1</code> is not a valid position in <code class="code">s</code>.<br>
+<b>Since</b> 2.7.0<br>
 </div>
 
 <pre><span id="VALcontains"><span class="keyword">val</span> contains</span> : <code class="type">string -> char -> bool</code></pre><div class="info ">
@@ -706,6 +746,21 @@ Returns the same string but without the last <code class="code">n</code> charact
       <code class="code"><span class="constructor">String</span>.rchop&nbsp;~n:1000&nbsp;<span class="string">"Weeble"</span>&nbsp;=&nbsp;<span class="string">""</span></code><br>
 </div>
 
+<pre><span id="VALchop"><span class="keyword">val</span> chop</span> : <code class="type">?l:int -> ?r:int -> string -> string</code></pre><div class="info ">
+Returns the same string but with the first <code class="code">l</code> characters
+    on the left and the first <code class="code">r</code> characters on the right removed.
+    By default, <code class="code">l</code> and <code class="code">r</code> are both 1.
+<p>
+
+    <code class="code">chop&nbsp;~l&nbsp;~r&nbsp;s</code> is equivalent to <code class="code">lchop&nbsp;~n:l&nbsp;(rchop&nbsp;~n:r&nbsp;s)</code>.<br>
+<b>Raises</b> <code>Invalid_argument</code> if either <code class="code">l</code> or <code class="code">r</code> is less than zero.
+<p>
+
+    Examples:
+    <code class="code"><span class="constructor">String</span>.chop&nbsp;<span class="string">"\"Weeble\""</span>&nbsp;=&nbsp;<span class="string">"Weeble"</span></code>
+    <code class="code"><span class="constructor">String</span>.chop&nbsp;~l:2&nbsp;~r:3&nbsp;<span class="string">"01234567"</span>&nbsp;=&nbsp;<span class="string">"234"</span></code><br>
+</div>
+
 <pre><span id="VALtrim"><span class="keyword">val</span> trim</span> : <code class="type">string -> string</code></pre><div class="info ">
 Returns the same string but without the leading and trailing
     whitespaces (according to <a href="BatChar.html#VALis_whitespace"><code class="code"><span class="constructor">BatChar</span>.is_whitespace</code></a>).
@@ -808,7 +863,7 @@ Returns the string without the chars if they are at the beginning or
 </div>
 
 <pre><span id="VALrev"><span class="keyword">val</span> rev</span> : <code class="type">string -> string</code></pre><div class="info ">
-<code class="code">string&nbsp;s</code> returns the reverse of string <code class="code">s</code><br>
+<code class="code">rev&nbsp;s</code> returns the reverse of string <code class="code">s</code><br>
 <b>Since</b> 2.1<br>
 </div>
 <br>
@@ -847,7 +902,7 @@ Returns the string without the chars if they are at the beginning or
 <pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type">string -> by:string -> string * string</code></pre><div class="info ">
 <code class="code">split&nbsp;s&nbsp;sep</code> splits the string <code class="code">s</code> between the first
     occurrence of <code class="code">sep</code>, and returns the two parts before
-    and after the occurence (excluded).<br>
+    and after the occurrence (excluded).<br>
 <b>Raises</b> <code>Not_found</code> if the separator is not found.
 <p>
 
@@ -859,7 +914,7 @@ Returns the string without the chars if they are at the beginning or
 <pre><span id="VALrsplit"><span class="keyword">val</span> rsplit</span> : <code class="type">string -> by:string -> string * string</code></pre><div class="info ">
 <code class="code">rsplit&nbsp;s&nbsp;sep</code> splits the string <code class="code">s</code> between the last occurrence
     of <code class="code">sep</code>, and returns the two parts before and after the
-    occurence (excluded).<br>
+    occurrence (excluded).<br>
 <b>Raises</b> <code>Not_found</code> if the separator is not found.
 <p>
 

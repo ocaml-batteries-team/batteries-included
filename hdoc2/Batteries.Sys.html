@@ -51,6 +51,7 @@
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
 <link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
+<link title="BatInnerShuffle" rel="Chapter" href="BatInnerShuffle.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -159,6 +160,12 @@ Rename a file. The first argument is the old name and the
 Return the value associated to a variable in the process
     environment.<br>
 <b>Raises</b> <code>Not_found</code> if the variable is unbound.<br>
+</div>
+
+<pre><span id="VALgetenv_opt"><span class="keyword">val</span> getenv_opt</span> : <code class="type">string -> string option</code></pre><div class="info ">
+Return the value associated to a variable in the process
+    environment or <code class="code"><span class="constructor">None</span></code> if the variable is unbound.<br>
+<b>Since</b> 4.05<br>
 </div>
 
 <pre><span id="VALcommand"><span class="keyword">val</span> command</span> : <code class="type">string -> int</code></pre><div class="info ">

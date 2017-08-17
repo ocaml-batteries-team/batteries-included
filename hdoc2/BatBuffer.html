@@ -51,6 +51,7 @@
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
 <link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
+<link title="BatInnerShuffle" rel="Chapter" href="BatInnerShuffle.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -210,7 +211,7 @@ Empty the buffer and deallocate the internal string holding the
 </div>
 
 <pre><span id="VALadd_bytes"><span class="keyword">val</span> add_bytes</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Bytes.t -> unit</code></pre><div class="info ">
-<code class="code">add_string&nbsp;b&nbsp;s</code> appends the string <code class="code">s</code> at the end of the buffer <code class="code">b</code>.<br>
+<code class="code">add_bytes&nbsp;b&nbsp;s</code> appends the string <code class="code">s</code> at the end of the buffer <code class="code">b</code>.<br>
 <b>Since</b> 2.3.0<br>
 </div>
 
@@ -220,7 +221,7 @@ Empty the buffer and deallocate the internal string holding the
 </div>
 
 <pre><span id="VALadd_subbytes"><span class="keyword">val</span> add_subbytes</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Bytes.t -> int -> int -> unit</code></pre><div class="info ">
-<code class="code">add_substring&nbsp;b&nbsp;s&nbsp;ofs&nbsp;len</code> takes <code class="code">len</code> characters from offset
+<code class="code">add_subbytes&nbsp;b&nbsp;s&nbsp;ofs&nbsp;len</code> takes <code class="code">len</code> characters from offset
     <code class="code">ofs</code> in byte sequence <code class="code">s</code> and appends them at the end of the buffer <code class="code">b</code>.<br>
 <b>Since</b> 2.3.0<br>
 </div>
@@ -262,6 +263,12 @@ Empty the buffer and deallocate the internal string holding the
 <pre><span id="VALoutput_buffer"><span class="keyword">val</span> output_buffer</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> string <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a></code></pre><div class="info ">
 <code class="code">output_buffer&nbsp;b</code> creates an output channel that writes to that
     buffer, and when closed, returns the contents of the buffer.<br>
+</div>
+
+<pre><span id="VALtruncate"><span class="keyword">val</span> truncate</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int -> unit</code></pre><div class="info ">
+<code class="code">truncate&nbsp;b&nbsp;len</code> truncates the length of <code class="code">b</code> to <code class="code">len</code>
+    Note: the internal byte sequence is not shortened.
+    Raises <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">len&nbsp;&lt;&nbsp;0</code> or <code class="code">len&nbsp;&gt;&nbsp;length&nbsp;b</code>.<br>
 </div>
 <br>
 <h6 id="6_Boilerplatecode">Boilerplate code</h6><br>

@@ -51,6 +51,7 @@
 <link title="BatISet" rel="Chapter" href="BatISet.html">
 <link title="BatInnerIO" rel="Chapter" href="BatInnerIO.html">
 <link title="BatInnerPervasives" rel="Chapter" href="BatInnerPervasives.html">
+<link title="BatInnerShuffle" rel="Chapter" href="BatInnerShuffle.html">
 <link title="BatInnerWeaktbl" rel="Chapter" href="BatInnerWeaktbl.html">
 <link title="BatInt" rel="Chapter" href="BatInt.html">
 <link title="BatInt32" rel="Chapter" href="BatInt32.html">
@@ -202,7 +203,7 @@ Substring equality<br>
 </div>
 
 <pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-<code class="code">isEmpty&nbsp;(s,&nbsp;i,&nbsp;n)</code> true if the substring is empty (that is,
+<code class="code">is_empty&nbsp;(s,&nbsp;i,&nbsp;n)</code> true if the substring is empty (that is,
     <code class="code">n&nbsp;=&nbsp;0</code>).<br>
 </div>
 
@@ -233,7 +234,7 @@ Substring equality<br>
 </div>
 
 <pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> int -> char</code></pre><div class="info ">
-<code class="code">sub&nbsp;sus&nbsp;k</code> returns the k'th character of the substring; that
+<code class="code">get&nbsp;sus&nbsp;k</code> returns the k'th character of the substring; that
     is, s(i+k) where sus = (s, i, n).<br>
 <b>Raises</b> <code>Invalid_argument</code> if
     <code class="code">k&lt;0</code> or <code class="code">k&gt;=n</code>.<br>
@@ -285,12 +286,12 @@ Equivalent to <a href="BatSubstring.html#VALsize"><code class="code"><span class
 </div>
 
 <pre><span id="VALindex"><span class="keyword">val</span> index</span> : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> char -> int</code></pre><div class="info ">
-<code class="code">index&nbsp;sus&nbsp;c</code> returns the index of the first occurence of <code class="code">c</code> in <code class="code">sus</code> or<br>
+<code class="code">index&nbsp;sus&nbsp;c</code> returns the index of the first occurrence of <code class="code">c</code> in <code class="code">sus</code> or<br>
 <b>Raises</b> <code>Not_found</code> otherwise.<br>
 </div>
 
 <pre><span id="VALindex_from"><span class="keyword">val</span> index_from</span> : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> int -> char -> int</code></pre><div class="info ">
-<code class="code">index_from&nbsp;sus&nbsp;i&nbsp;c</code> returns the index of the first occurence of <code class="code">c</code> in
+<code class="code">index_from&nbsp;sus&nbsp;i&nbsp;c</code> returns the index of the first occurrence of <code class="code">c</code> in
     <code class="code">sus</code> after the index <code class="code">i</code> or<br>
 <b>Raises</b><ul><li><code>Not_found</code> otherwise. If <code class="code">i</code> is beyond
     the range of <code class="code">sus</code>,</li>
@@ -299,12 +300,12 @@ Equivalent to <a href="BatSubstring.html#VALsize"><code class="code"><span class
 </div>
 
 <pre><span id="VALrindex"><span class="keyword">val</span> rindex</span> : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> char -> int</code></pre><div class="info ">
-<code class="code">rindex&nbsp;sus&nbsp;c</code> returns the index of the last occurence of <code class="code">c</code> in <code class="code">sus</code> or<br>
+<code class="code">rindex&nbsp;sus&nbsp;c</code> returns the index of the last occurrence of <code class="code">c</code> in <code class="code">sus</code> or<br>
 <b>Raises</b> <code>Not_found</code> otherwise.<br>
 </div>
 
 <pre><span id="VALrindex_from"><span class="keyword">val</span> rindex_from</span> : <code class="type"><a href="BatSubstring.html#TYPEt">t</a> -> int -> char -> int</code></pre><div class="info ">
-<code class="code">index_from&nbsp;sus&nbsp;i&nbsp;c</code> returns the index of the last occurence of <code class="code">c</code> in <code class="code">sus</code>
+<code class="code">index_from&nbsp;sus&nbsp;i&nbsp;c</code> returns the index of the last occurrence of <code class="code">c</code> in <code class="code">sus</code>
     before the index <code class="code">i</code> or<br>
 <b>Raises</b><ul><li><code>Not_found</code> otherwise. If <code class="code">i</code> is beyond the
     range of <code class="code">sus</code>,</li>
@@ -426,7 +427,7 @@ Equivalent to <a href="BatSubstring.html#VALsize"><code class="code"><span class
 </div>
 
 <pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">('a -> char -> 'a) -> 'a -> <a href="BatSubstring.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
-<code class="code">foldl&nbsp;f&nbsp;e&nbsp;sus</code> folds <code class="code">f</code> over <code class="code">sus</code> from left to right.  That is,
+<code class="code">fold_left&nbsp;f&nbsp;e&nbsp;sus</code> folds <code class="code">f</code> over <code class="code">sus</code> from left to right.  That is,
     evaluates <code class="code">f&nbsp;s.[i+n-1]&nbsp;(f&nbsp;...&nbsp;(f&nbsp;s.[i+1]&nbsp;(f&nbsp;s.[i]&nbsp;e))&nbsp;...)</code>
     tail-recursively, where <code class="code">sus&nbsp;=&nbsp;(s,&nbsp;i,&nbsp;n)</code>.  Equivalent to
     <code class="code"><span class="constructor">List</span>.fold_left&nbsp;f&nbsp;e&nbsp;(explode&nbsp;sus)</code>.<br>
@@ -438,7 +439,7 @@ As <code class="code">fold_left</code>, but with the index of the element as add
 </div>
 
 <pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">(char -> 'a -> 'a) -> <a href="BatSubstring.html#TYPEt">t</a> -> 'a -> 'a</code></pre><div class="info ">
-<code class="code">foldr&nbsp;f&nbsp;e&nbsp;sus</code> folds <code class="code">f</code> over <code class="code">sus</code> from right to left.  That is,
+<code class="code">fold_right&nbsp;f&nbsp;e&nbsp;sus</code> folds <code class="code">f</code> over <code class="code">sus</code> from right to left.  That is,
     evaluates <code class="code">f&nbsp;s.[i]&nbsp;(f&nbsp;s.[i+1]&nbsp;(f&nbsp;...&nbsp;(f&nbsp;s.[i+n-1]&nbsp;e)&nbsp;...))</code>
     tail-recursively, where <code class="code">sus&nbsp;=&nbsp;(s,&nbsp;i,&nbsp;n)</code>.  Equivalent to
     <code class="code"><span class="constructor">List</span>.fold_right&nbsp;f&nbsp;e&nbsp;(explode&nbsp;sus)</code>.<br>
