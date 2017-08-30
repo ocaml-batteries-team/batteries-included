@@ -21,6 +21,8 @@ the
 {{:https://github.com/ocaml-batteries-team/batteries-included/wiki/Getting-started}Getting
 started manual}.
 
+Modules listed below can also be referenced as [Batteries.<short name>]--where [<short name>] is the module name without the initial "Bat"--or as [<short name>] alone, if [Batteries] has been [open]ed.  For example, [BatLazyList] can also be used as [Batteries.LazyList], or as [LazyList] after executing [open Batteries].
+
 Do you have suggestions? Remarks? Bug reports ? To contact us or to be
 kept informed, don't hesitate to visit our
 {{:http://batteries.forge.ocamlcore.org/}website},
