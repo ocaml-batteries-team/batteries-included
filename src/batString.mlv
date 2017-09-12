@@ -42,15 +42,15 @@ let init len f =
    init 5 (fun i -> BatChar.chr (i + int_of_char '0')) = "01234";
 *)
 
-let starts_with str p =
-  let len = length p in
-  if length str < len then false
-  else
-    let rec loop str p i =
-      if i = len then true
-      else if unsafe_get str i <> unsafe_get p i then false
-      else loop str p (i + 1)
-    in loop str p 0
+let starts_with s p =
+  let s_len = String.length s in
+  let p_len = String.length p in
+  p_len <= s_len &&
+  begin
+    let i = ref 0 in
+    while !i < p_len && s.[!i] = p.[!i] do incr i done;
+    !i = p_len
+  end
 (*$T starts_with
   starts_with "foobarbaz" "foob"
   starts_with "foobarbaz" ""
@@ -61,7 +61,6 @@ let starts_with str p =
   not (starts_with "Jon \"Maddog\" Orwant" "Jon \"Maddog\" Orwants")
   not (starts_with "Jon \"Maddog\" Orwant" "Orwants")
 *)
-
 
 let ends_with str p =
   let el = length p
