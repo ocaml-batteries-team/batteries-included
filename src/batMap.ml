@@ -932,6 +932,7 @@ module Nativeint = Make (BatNativeint)
 module Float = Make (BatFloat)
 module Char = Make (BatChar)
 module String = Make (BatString)
+module Big_int = Make (BatBig_int)
 
 (**
  * PMap - Polymorphic maps

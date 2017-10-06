@@ -385,6 +385,7 @@ module Nativeint : S with type key = nativeint
 module Float : S with type key = float
 module Char : S with type key = char
 module String : S with type key = string
+module Big_int : S with type key = BatBig_int.t
 
 (** {4 Polymorphic maps}
 
