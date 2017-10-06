@@ -27,6 +27,7 @@ let print_rope fmt t =
 let print_ustring fmt t =
   Format.fprintf fmt "u%S" t
 
+(*
 let string_of_cap t = BatString.Cap.to_string (BatString.Cap.copy t)
 
 let print_string_cap_rw fmt t =
@@ -34,6 +35,7 @@ let print_string_cap_rw fmt t =
 
 let print_string_cap_ro fmt t =
   Format.fprintf fmt "ro%S" (string_of_cap t)
+ *)
 
 let string_dynarray = BatIO.to_f_printer (BatDynArray.print BatString.print)
 let int_dynarray = BatIO.to_f_printer (BatDynArray.print BatInt.print)

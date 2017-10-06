@@ -63,12 +63,13 @@ val to_bytes : t -> Bytes.t
 *)
 
 val sub : t -> int -> int -> string
-(** [Buffer.sub b off len] returns (a copy of) the substring of the
-    current contents of the buffer [b] starting at offset [off] of length
-    [len] bytes. May raise [Invalid_argument] if out of bounds request. The
-    buffer itself is unaffected. *)
+(** [Buffer.sub b off len] returns a copy of [len] bytes from the
+    current contents of the buffer [b], starting at offset [off].
 
-val blit : t -> int -> string -> int -> int -> unit
+    Raise [Invalid_argument] if [srcoff] and [len] do not designate a valid
+    range of [b]. *)
+
+val blit : t -> int -> Bytes.t -> int -> int -> unit
 (** [Buffer.blit src srcoff dst dstoff len] copies [len] characters from
     the current contents of the buffer [src], starting at offset [srcoff]
     to string [dst], starting at character [dstoff].

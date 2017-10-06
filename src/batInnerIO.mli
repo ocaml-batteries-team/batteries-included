@@ -70,19 +70,21 @@ val really_nread : input -> int -> string
     from the input. @raise No_more_input if at least [n] characters are
     not available. @raise Invalid_argument if [n] < 0. *)
 
-val input : input -> string -> int -> int -> int
-(** [input i s p l] reads up to [l] characters from the given input, storing
-    them in string [s], starting at character number [p]. It returns the actual
-    number of characters read or raise [No_more_input] if no character can be
-    read. It will raise [Invalid_argument] if [p] and [l] do not designate a
-    valid substring of [s]. *)
+val input : input -> Bytes.t -> int -> int -> int
+(** [input i s p len] reads up to [len] bytes from the given input,
+    storing them in byte sequence [s], starting at position [p]. It
+    returns the actual number of bytes read or raise
+    [No_more_input] if no character can be read. It will raise
+    [Invalid_argument] if [p] and [len] do not designate a valid
+    subsequence of [s]. *)
 
-val really_input : input -> string -> int -> int -> int
-(** [really_input i s p l] reads exactly [l] characters from the given input,
-    storing them in the string [s], starting at position [p]. For consistency with
-    {!BatIO.input} it returns [l]. @raise No_more_input if at [l] characters are
-    not available. @raise Invalid_argument if [p] and [l] do not designate a
-    valid substring of [s]. *)
+val really_input : input -> Bytes.t -> int -> int -> int
+(** [really_input i s p len] reads exactly [len] characters from the
+    given input, storing them in the byte sequence [s], starting at
+    position [p]. For consistency with {!BatIO.input} it returns
+    [len]. @raise No_more_input if at least [len] characters are not
+    available. @raise Invalid_argument if [p] and [len] do not designate
+    a valid subsequence of [s]. *)
 
 val close_in : input -> unit
 (** Close the input. It can no longer be read from. *)
@@ -97,16 +99,29 @@ val write : 'a output -> char -> unit
 val nwrite : 'a output -> string -> unit
 (** Write a string to an output. *)
 
-val output : 'a output -> string -> int -> int -> int
-(** [output o s p l] writes up to [l] characters from string [s], starting at
-    offset [p]. It returns the number of characters written. It will raise
-    [Invalid_argument] if [p] and [l] do not designate a valid substring of [s]. *)
+val nwrite_bytes : 'a output -> Bytes.t -> unit
+(** Write a byte sequence to an output. *)
 
-val really_output : 'a output -> string -> int -> int -> int
-(** [really_output o s p l] writes exactly [l] characters from string [s] onto
-    the the output, starting with the character at offset [p]. For consistency with
-    {!BatIO.output} it returns [l]. @raise Invalid_argument if [p] and [l] do not
-    designate a valid substring of [s]. *)
+val output : 'a output -> Bytes.t -> int -> int -> int
+(** [output o s p len] writes up to [len] characters from byte
+    sequence [len], starting at offset [p]. It returns the number of
+    characters written. It will raise [Invalid_argument] if [p] and
+    [len] do not designate a valid subsequence of [s]. *)
+
+val output_substring : 'a output -> string -> int -> int -> int
+(** like [output] above, but outputs from a substring instead of
+    a subsequence of bytes *)
+
+val really_output : 'a output -> Bytes.t -> int -> int -> int
+(** [really_output o s p len] writes exactly [len] characters from
+    byte sequence [s] onto the the output, starting with the character
+    at offset [p]. For consistency with {!BatIO.output} it returns
+    [len]. @raise Invalid_argument if [p] and [len] do not designate
+    a valid subsequence of [s]. *)
+
+val really_output_substring : 'a output -> string -> int -> int -> int
+(** like [really_output] above, but outputs from a substring instead
+    of a subsequence of bytes *)
 
 val flush : 'a output -> unit
 (** Flush an output. *)
@@ -136,7 +151,7 @@ val on_close_out : 'a output -> ('a output -> unit) -> unit
 
 val create_in :
   read:(unit -> char) ->
-  input:(string -> int -> int -> int) ->
+  input:(Bytes.t -> int -> int -> int) ->
   close:(unit -> unit) -> input
 (** Fully create an input by giving all the needed functions.
 
@@ -147,7 +162,7 @@ val create_in :
 
 val inherit_in:
   ?read:(unit -> char) ->
-  ?input:(string -> int -> int -> int) ->
+  ?input:(Bytes.t -> int -> int -> int) ->
   ?close:(unit -> unit) ->
   input -> input
 (**
@@ -158,7 +173,7 @@ val inherit_in:
 
 val wrap_in :
   read:(unit -> char) ->
-  input:(string -> int -> int -> int) ->
+  input:(Bytes.t -> int -> int -> int) ->
   close:(unit -> unit) ->
   underlying:(input list) ->
   input
@@ -173,7 +188,7 @@ val wrap_in :
 
 val create_out :
   write:(char -> unit) ->
-  output:(string -> int -> int -> int) ->
+  output:(Bytes.t -> int -> int -> int) ->
   flush:(unit -> unit) ->
   close:(unit -> 'a) ->
   'a output
@@ -192,7 +207,7 @@ val create_out :
 
 val inherit_out:
   ?write:(char -> unit) ->
-  ?output:(string -> int -> int -> int) ->
+  ?output:(Bytes.t -> int -> int -> int) ->
   ?flush:(unit -> unit) ->
   ?close:(unit -> unit) ->
   _ output -> unit output
@@ -204,7 +219,7 @@ val inherit_out:
 
 val wrap_out :
   write:(char -> unit)         ->
-  output:(string -> int -> int -> int) ->
+  output:(Bytes.t -> int -> int -> int) ->
   flush:(unit -> unit)         ->
   close:(unit -> 'a)           ->
   underlying:('b output list)  ->
@@ -437,7 +452,7 @@ external noop        : unit      -> unit        = "%ignore"
    {7 Optimized access to fields}
 *)
 
-val get_output : _ output -> (string -> int -> int -> int)
+val get_output : _ output -> (Bytes.t -> int -> int -> int)
 val get_flush  : _ output -> (unit -> unit)
 
 val lock : BatConcurrent.lock ref

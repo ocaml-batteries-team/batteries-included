@@ -51,16 +51,16 @@ let to_enum_filter kwd_table =
   let reset_buffer () = buffer := initial_buffer; bufpos := 0 in
 
   let store c =
-    if !bufpos >= String.length !buffer then
+    if !bufpos >= Bytes.length !buffer then
       begin
         let newbuffer = Bytes.create (2 * !bufpos) in
-        String.blit !buffer 0 newbuffer 0 !bufpos; buffer := newbuffer
+        Bytes.blit !buffer 0 newbuffer 0 !bufpos; buffer := newbuffer
       end;
     Bytes.set !buffer !bufpos c;
     incr bufpos in
 
   let get_string () =
-    let s = String.sub !buffer 0 !bufpos in buffer := initial_buffer; s
+    let s = Bytes.sub_string !buffer 0 !bufpos in buffer := initial_buffer; s
   in
   let ident_or_keyword id =
     try Hashtbl.find kwd_table id with

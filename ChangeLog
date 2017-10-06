@@ -1,6 +1,16 @@
 Changelog
 ---------
 
+## v2.8.0 (minor release)
+
+This minor release supports the -safe-string mode for OCaml
+compilation, enforcing a type-level separation between (immutable)
+strings and mutable byte sequences.
+
+- support -safe-string compilation
+  #673
+  (Gabriel Scherer)
+
 ## v2.7.0 (minor release)
 
 This minor release is the first to support OCaml 4.05.0. As with
