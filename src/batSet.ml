@@ -755,6 +755,7 @@ module Nativeint = Make (BatNativeint)
 module Float = Make (BatFloat)
 module Char = Make (BatChar)
 module String = Make (BatString)
+module Big_int = Make (BatBig_int)
 
 module Make2(O1 : OrderedType)(O2 : OrderedType) = struct
   module Set1 = Make(O1)

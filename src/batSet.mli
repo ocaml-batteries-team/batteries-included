@@ -393,6 +393,7 @@ module Nativeint : S with type elt = nativeint
 module Float : S with type elt = float
 module Char : S with type elt = char
 module String : S with type elt = string
+module Big_int : S with type elt = BatBig_int.t
 
 (** {4 Polymorphic sets}
 
