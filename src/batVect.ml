@@ -32,7 +32,7 @@ module STRING : sig
   val fold_right : ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
   val append : 'a t -> 'a t -> 'a t
   val concat : 'a t list -> 'a t
-end = struct include Array include BatArray end
+end = BatArray
 
 type 'a t =
   | Empty
