@@ -137,10 +137,33 @@ val environment : unit -> string array
 (** Return the process environment, as an array of strings
     with the format ``variable=value''. *)
 
+##V>=4.6##val unsafe_environment : unit -> string array
+##V>=4.6##(** Return the process environment, as an array of strings with the
+##V>=4.6##    format ``variable=value''.  Unlike {!environment}, this function
+##V>=4.6##    returns a populated array even if the process has special
+##V>=4.6##    privileges.  See the documentation for {!unsafe_getenv} for more
+##V>=4.6##    details.
+##V>=4.6##
+##V>=4.6##    @since NEXT_RELEASE and OCaml 4.06.0 *)
+
 val getenv : string -> string
 (** Return the value associated to a variable in the process
     environment. @raise Not_found if the variable is unbound.
     (This function is identical to {!Sys.getenv}.) *)
+
+##V>=4.6##val unsafe_getenv : string -> string
+##V>=4.6##(** Return the value associated to a variable in the process
+##V>=4.6##   environment.
+##V>=4.6##
+##V>=4.6##   Unlike {!getenv}, this function returns the value even if the
+##V>=4.6##   process has special privileges. It is considered unsafe because the
+##V>=4.6##   programmer of a setuid or setgid program must be careful to avoid
+##V>=4.6##   using maliciously crafted environment variables in the search path
+##V>=4.6##   for executables, the locations for temporary files or logs, and the
+##V>=4.6##   like.
+##V>=4.6##
+##V>=4.6##   @raise Not_found if the variable is unbound.
+##V>=4.6##   @since NEXT_RELEASE and 4.06.0  *)
 
 val putenv : string -> string -> unit
 (** [Unix.putenv name value] sets the value associated to a
@@ -497,6 +520,59 @@ end
     regular integers (type [int]), thus allowing operating on files
     whose sizes are greater than [max_int]. *)
 
+
+##V>=4.6##(** {6 Mapping files into memory} *)
+##V>=4.6##
+##V>=4.6##val map_file :
+##V>=4.6##  file_descr -> ?pos:int64 -> ('a, 'b) CamlinternalBigarray.kind ->
+##V>=4.6##  'c CamlinternalBigarray.layout -> bool -> int array ->
+##V>=4.6##  ('a, 'b, 'c) CamlinternalBigarray.genarray
+##V>=4.6##(** Memory mapping of a file as a big array.
+##V>=4.6##  [map_file fd kind layout shared dims]
+##V>=4.6##  returns a big array of kind [kind], layout [layout],
+##V>=4.6##  and dimensions as specified in [dims].  The data contained in
+##V>=4.6##  this big array are the contents of the file referred to by
+##V>=4.6##  the file descriptor [fd] (as opened previously with
+##V>=4.6##  [Unix.openfile], for example).  The optional [pos] parameter
+##V>=4.6##  is the byte offset in the file of the data being mapped;
+##V>=4.6##  it defaults to 0 (map from the beginning of the file).
+##V>=4.6##
+##V>=4.6##  If [shared] is [true], all modifications performed on the array
+##V>=4.6##  are reflected in the file.  This requires that [fd] be opened
+##V>=4.6##  with write permissions.  If [shared] is [false], modifications
+##V>=4.6##  performed on the array are done in memory only, using
+##V>=4.6##  copy-on-write of the modified pages; the underlying file is not
+##V>=4.6##  affected.
+##V>=4.6##
+##V>=4.6##  [Genarray.map_file] is much more efficient than reading
+##V>=4.6##  the whole file in a big array, modifying that big array,
+##V>=4.6##  and writing it afterwards.
+##V>=4.6##
+##V>=4.6##  To adjust automatically the dimensions of the big array to
+##V>=4.6##  the actual size of the file, the major dimension (that is,
+##V>=4.6##  the first dimension for an array with C layout, and the last
+##V>=4.6##  dimension for an array with Fortran layout) can be given as
+##V>=4.6##  [-1].  [Genarray.map_file] then determines the major dimension
+##V>=4.6##  from the size of the file.  The file must contain an integral
+##V>=4.6##  number of sub-arrays as determined by the non-major dimensions,
+##V>=4.6##  otherwise [Failure] is raised.
+##V>=4.6##
+##V>=4.6##  If all dimensions of the big array are given, the file size is
+##V>=4.6##  matched against the size of the big array.  If the file is larger
+##V>=4.6##  than the big array, only the initial portion of the file is
+##V>=4.6##  mapped to the big array.  If the file is smaller than the big
+##V>=4.6##  array, the file is automatically grown to the size of the big array.
+##V>=4.6##  This requires write permissions on [fd].
+##V>=4.6##
+##V>=4.6##  Array accesses are bounds-checked, but the bounds are determined by
+##V>=4.6##  the initial call to [map_file]. Therefore, you should make sure no
+##V>=4.6##  other process modifies the mapped file while you're accessing it,
+##V>=4.6##  or a SIGBUS signal may be raised. This happens, for instance, if the
+##V>=4.6##  file is shrunk.
+##V>=4.6##
+##V>=4.6##  [Invalid_argument] or [Failure] may be raised in cases where argument
+##V>=4.6##  validation fails.
+##V>=4.6##  @since NEXT_RELEASE and OCaml 4.06.0 *)
 
 (** {6 Operations on file names} *)
 
