@@ -11,6 +11,9 @@ strings and mutable byte sequences.
   #673
   (Gabriel Scherer)
 
+- Support for the upcoming OCaml release 4.06
+  (Gabriel Scherer)
+
 ## v2.7.0 (minor release)
 
 This minor release is the first to support OCaml 4.05.0. As with
