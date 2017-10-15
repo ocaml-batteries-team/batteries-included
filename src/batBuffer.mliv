@@ -155,7 +155,28 @@ val output_buffer : t -> string BatInnerIO.output
 ##V>=4.5##val truncate : t -> int -> unit
 ##V>=4.5##(** [truncate b len] truncates the length of [b] to [len]
 ##V>=4.5##    Note: the internal byte sequence is not shortened.
-##V>=4.5##    Raises [Invalid_argument] if [len < 0] or [len > length b]. *)
+##V>=4.5##    Raises [Invalid_argument] if [len < 0] or [len > length b].
+##V>=4.5## @since 2.7.0 and OCaml 4.05.0 *)
+
+##V>=4.6##val add_utf_8_uchar : t -> Uchar.t -> unit
+##V>=4.6##(** [add_utf_8_uchar b u] appends the {{:https://tools.ietf.org/html/rfc3629}
+##V>=4.6##    UTF-8} encoding of [u] at the end of buffer [b].
+##V>=4.6##
+##V>=4.6##    @since NEXT_RELEASE and OCaml 4.06.0 *)
+
+##V>=4.6##val add_utf_16le_uchar : t -> Uchar.t -> unit
+##V>=4.6##(** [add_utf_16le_uchar b u] appends the
+##V>=4.6##    {{:https://tools.ietf.org/html/rfc2781}UTF-16LE} encoding of [u]
+##V>=4.6##    at the end of buffer [b].
+##V>=4.6##
+##V>=4.6##    @since NEXT_RELEASE and OCaml 4.06.0 *)
+
+##V>=4.6##val add_utf_16be_uchar : t -> Uchar.t -> unit
+##V>=4.6##(** [add_utf_16be_uchar b u] appends the
+##V>=4.6##    {{:https://tools.ietf.org/html/rfc2781}UTF-16BE} encoding of [u]
+##V>=4.6##    at the end of buffer [b].
+##V>=4.6##
+##V>=4.6##    @since NEXT_RELEASE and OCaml 4.06.0 *)
 
 (** {6 Boilerplate code}*)
 

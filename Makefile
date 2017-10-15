@@ -169,6 +169,7 @@ clean-prefilter:
 # `_build` directory.
 
 DONTTEST=src/batteriesHelp.ml \
+	 src/batteries_compattest.ml \
 	 src/batConcreteQueue_402.ml src/batConcreteQueue_403.ml
 TESTABLE ?= $(filter-out $(DONTTEST),\
    $(wildcard src/*.ml) $(wildcard src/*.mlv))
