@@ -4,13 +4,13 @@ module Dllist = BatDllist
 module DynArray = BatDynArray
 module Enum = BatEnum
 module ExtArray = struct
-  module Array = struct include Array include BatArray end
+  module Array = BatArray
 end
 module ExtHashtbl = struct
   module Hashtbl = BatHashtbl
 end
 module ExtList = struct
-  module List = struct include List include BatList end
+  module List = BatList
 end
 module ExtString = struct
   module String = BatString
