@@ -611,6 +611,19 @@ let fold_left f init str =
    fold_left max 'a' "apples" = 's'
 *)
 
+let count_char str char =
+  fold_left (fun acc c ->
+      if c = char then
+        acc + 1
+      else
+        acc
+    ) 0 str
+(*$T count_char
+  count_char "abc" 'd' = 0
+  count_char "" 'd' = 0
+  count_char "dad" 'd' = 2
+*)
+
 let fold_lefti f init str =
   let n = String.length str in
   let rec loop i result =
@@ -1129,6 +1142,7 @@ struct
   let ends_with b1 b2 = ends_with (usob b1) (usob b2)
   let starts_with b1 b2   = starts_with (usob b1) (usob b2)
   let exists b1 b2  = exists (usob b1) (usob b2)
+  let count_char s c = count_char (usob s) c
   let lchop ?n b    = ubos (lchop ?n (usob b))
   let rchop ?n b    = ubos (rchop ?n (usob b))
   let chop ?l ?r b  = ubos (chop ?l ?r (usob b))
