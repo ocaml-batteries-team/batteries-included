@@ -31,12 +31,7 @@ let equal a b = String.compare a b = 0
 let ord = BatOrd.ord String.compare
 
 
-let init len f =
-  let s = Bytes.create len in
-  for i = 0 to len - 1 do
-    Bytes.unsafe_set s i (f i)
-  done;
-  Bytes.unsafe_to_string s
+let init = BatBytesCompat.string_init
 
 (*$T init
    init 5 (fun i -> BatChar.chr (i + int_of_char '0')) = "01234";

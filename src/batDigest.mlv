@@ -71,7 +71,7 @@ let from_hex s =
     | _ -> raise (Invalid_argument "Digest.from_hex")
   in
   let byte i = digit s.[i] lsl 4 + digit s.[i+1] in
-  String.init 16 (fun i -> Char.chr (byte (2 * i)))
+  BatBytesCompat.string_init 16 (fun i -> Char.chr (byte (2 * i)))
 
 (*$Q
   Q.string (fun s -> \

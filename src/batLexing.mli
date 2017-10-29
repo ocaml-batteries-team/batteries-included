@@ -60,7 +60,7 @@ val dummy_pos : position;;
 
 type lexbuf = Lexing.lexbuf =
   { refill_buff : lexbuf -> unit;
-    mutable lex_buffer : bytes;
+    mutable lex_buffer : Bytes.t;
     mutable lex_buffer_len : int;
     mutable lex_abs_pos : int;
     mutable lex_start_pos : int;
