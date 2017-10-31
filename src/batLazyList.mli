@@ -120,7 +120,7 @@ val from_loop: 'b -> ('b -> ('a * 'b)) -> 'a t
    first element is typically the previous element of the resulting lazy list.  
    However, note that [data] and the elements of the resulting lazy list need 
    not have the same type.  Here is an example in which they do:
-   [from_loop 0 (fun n -> (n, n + 1))] *)
+   [from_loop 0 (fun n -> (n, n + 1))], which returns [^0, 1, 2, ... ^] *)
 
 val unfold: 'b -> ('b -> ('a * 'b) option) -> 'a t
 (**[unfold data next] creates a (possibly infinite) lazy list from
