@@ -105,17 +105,22 @@ val from_while: (unit -> 'a option) -> 'a t
    results of [next].
    The list ends whenever [next] returns [None]. *)
 
+val seq: 'a -> ('a -> 'a) -> ('a -> bool) -> 'a t
+(**[seq init step cond] creates a lazy list from the successive results
+   of applying [next] to [data], then to the result, etc.  The list
+   continues until the condition [cond] fails.  E.g. [seq 1 ((+) 1) ((>) 100)]
+   returns [[^1, 2, ... 99^]].  To create an infinite lazy list, pass 
+   [(fun _ -> true)] as [cond].  If [cond init] is false, the result is empty. *)
+
 val from_loop: 'b -> ('b -> ('a * 'b)) -> 'a t
 (**[from_loop data next] creates a (possibly infinite) lazy list from
    the successive results of applying [next] to [data], then to the
-   result, etc. The list ends whenever the function raises
-   {!LazyList.No_more_elements}.*)
-
-val seq: 'a -> ('a -> 'a) -> ('a -> bool) -> 'a t
-(** [seq init step cond] creates a sequence of data, which starts
-    from [init],  extends by [step],  until the condition [cond]
-    fails. E.g. [seq 1 ((+) 1) ((>) 100)] returns [[^1, 2, ... 99^]]. If [cond
-    init] is false, the result is empty. *)
+   result, etc.  The list ends whenever the function raises
+   {!LazyList.No_more_elements}.  [next] should returns a pair in which the 
+   first element is typically the previous element of the resulting lazy list.  
+   However, note that [data] and the elements of the resulting lazy list need 
+   not have the same type.  Here is an example in which they do:
+   [from_loop 0 (fun n -> (n, n + 1))] *)
 
 val unfold: 'b -> ('b -> ('a * 'b) option) -> 'a t
 (**[unfold data next] creates a (possibly infinite) lazy list from
