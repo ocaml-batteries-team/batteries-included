@@ -457,6 +457,14 @@ module Concrete = struct
       | (l2, true, r2) ->
         concat (sym_diff cmp12 l1 l2) (sym_diff cmp12 r1 r2)
 
+  let delta cmp12 s1 s2 =
+    fold (fun x (only_in_s1, common, only_in_s2) ->
+        if mem cmp12 x s2 then
+          (only_in_s1, add cmp12 x common, remove cmp12 x only_in_s2)
+        else
+          (add cmp12 x only_in_s1, common, only_in_s2)
+      ) s1 (empty, empty, s2)
+
   let rec inter cmp12 s1 s2 =
     match (s1, s2) with
       (Empty, t2) -> Empty
@@ -478,6 +486,12 @@ module Concrete = struct
         join (diff cmp12 l1 l2) v1 (diff cmp12 r1 r2)
       | (l2, true, r2) ->
         concat (diff cmp12 l1 l2) (diff cmp12 r1 r2)
+
+  (*$T delta
+    let l = of_list [1; 2; 3] in \
+    let r = of_list [2; 3; 4] in \
+    delta l r = (diff l r, of_list [2; 3], diff r l)
+  *)
 
   let rec disjoint cmp12 s1 s2 =
     match (s1, s2) with
@@ -537,6 +551,7 @@ sig
   val inter: t -> t -> t
   val diff: t -> t -> t
   val sym_diff: t -> t -> t
+  val delta: t -> t -> t * t * t
   val compare: t -> t -> int
   val equal: t -> t -> bool
   val subset: t -> t -> bool
@@ -684,6 +699,9 @@ struct
     t_of_impl (Concrete.inter Ord.compare (impl_of_t s1) (impl_of_t s2))
   let sym_diff s1 s2 =
     t_of_impl (Concrete.sym_diff Ord.compare (impl_of_t s1) (impl_of_t s2))
+  let delta s1 s2 =
+    let a, b, c = Concrete.delta Ord.compare (impl_of_t s1) (impl_of_t s2) in
+    (t_of_impl a, t_of_impl b, t_of_impl c)
 
   let compare t1 t2 = Concrete.compare Ord.compare (impl_of_t t1) (impl_of_t t2)
   let equal t1 t2 = Concrete.equal Ord.compare (impl_of_t t1) (impl_of_t t2)
@@ -864,6 +882,11 @@ module PSet = struct (*$< PSet *)
     { s1 with set = Concrete.diff s1.cmp s1.set s2.set }
   let sym_diff s1 s2 =
     { s1 with set = Concrete.sym_diff s1.cmp s1.set s2.set }
+  let delta s1 s2 =
+    let a, b, c = Concrete.delta s1.cmp s1.set s2.set in
+    ({ s1 with set = a },
+     { s1 with set = b },
+     { s1 with set = c })
   let intersect s1 s2 =
     { s1 with set = Concrete.inter s1.cmp s1.set s2.set }
   let compare s1 s2 = Concrete.compare s1.cmp s1.set s2.set
@@ -1021,6 +1044,7 @@ let split_le e s = Concrete.split_le Pervasives.compare e s
 let union s1 s2 = Concrete.union Pervasives.compare s1 s2
 let diff s1 s2 = Concrete.diff Pervasives.compare s1 s2
 let sym_diff s1 s2 = Concrete.sym_diff Pervasives.compare s1 s2
+let delta s1 s2 = Concrete.delta Pervasives.compare s1 s2
 let intersect s1 s2 = Concrete.inter Pervasives.compare s1 s2
 let compare s1 s2 = Concrete.compare Pervasives.compare s1 s2
 let equal s1 s2 = Concrete.equal Pervasives.compare s1 s2

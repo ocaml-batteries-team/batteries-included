@@ -101,8 +101,11 @@ sig
 
   val sym_diff: t -> t -> t
   (** [sym_diff s t] returns the set of all elements in [s] or [t]
-    but not both.  This is the same as [diff (union s t) (inter s
-    t)]. *)
+      but not both.  This is the same as [diff (union s t) (inter s
+      t)]. *)
+
+  val delta: t -> t -> t * t * t
+  (** [delta l r] returns [(diff l r, inter l r, diff r l)] *)
 
   val compare: t -> t -> int
   (** Total ordering between sets. Can be used as the ordering function
@@ -471,6 +474,9 @@ val sym_diff: 'a t -> 'a t -> 'a t
     same as [diff (union s t) (inter s t)]. The returned set uses
     [s]'s comparison function.*)
 
+val delta: 'a t -> 'a t -> 'a t * 'a t * 'a t
+(** [delta l r] returns [(diff l r, inter l r, diff r l)] *)
+
 val compare: 'a t -> 'a t -> int
 (** Total ordering between sets. Can be used as the ordering function
     for doing sets of sets. *)
@@ -773,6 +779,9 @@ module PSet : sig
   (** [sym_diff s t] returns the set of all elements in [s] or [t] but not both.
       This is the same as [diff (union s t) (inter s t)]. The returned set uses
       [s]'s comparison function.*)
+
+  val delta: 'a t -> 'a t -> 'a t * 'a t * 'a t
+  (** [delta l r] returns [(diff l r, inter l r, diff r l)] *)
 
   val compare: 'a t -> 'a t -> int
   (** Total ordering between sets. Can be used as the ordering function
