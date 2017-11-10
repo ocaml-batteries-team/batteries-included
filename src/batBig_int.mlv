@@ -19,11 +19,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-
 let big_int_base_default_symbols =
   let symbol offset base k =
     char_of_int (k - offset + (int_of_char base)) in
-  String.init (10 + 26*2) (fun k ->
+  BatBytesCompat.string_init (10 + 26*2) (fun k ->
     if k < 10
     then symbol 0 '0' k
     else if k < 36

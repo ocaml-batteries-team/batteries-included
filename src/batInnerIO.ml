@@ -356,7 +356,7 @@ let output_string() =
   let b = Buffer.create default_buffer_size in
   create_out
     ~write:  (fun c -> Buffer.add_char b c )
-    ~output: (fun s p l -> Buffer.add_subbytes b s p l;  l  )
+    ~output: (fun s p l -> BatBytesCompat.buffer_add_subbytes b s p l;  l  )
     ~close:  (fun () -> Buffer.contents b)
     ~flush:  noop
 
@@ -435,7 +435,7 @@ let pipe() =
     Buffer.add_char output c
   in
   let output s p l =
-    Buffer.add_subbytes output s p l;
+    BatBytesCompat.buffer_add_subbytes output s p l;
     l
   in
   let input  = create_in ~read ~input  ~close:noop

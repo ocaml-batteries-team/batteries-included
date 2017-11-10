@@ -38,7 +38,7 @@ let run_and_read cmd =
     begin
       let was_read = ref (input ic line_buff 0 buff_size) in
       while !was_read <> 0 do
-        Buffer.add_subbytes buff line_buff 0 !was_read;
+        BatBytesCompat.buffer_add_subbytes buff line_buff 0 !was_read;
         was_read := input ic line_buff 0 buff_size;
       done;
       close_in ic;

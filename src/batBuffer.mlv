@@ -72,6 +72,12 @@ let add_input t inp n =
   (Q.string) (fun s -> let b = create 10 in add_input b (BatIO.input_string s) (String.length s); contents b = s)
 *)
 
+let add_channel = add_input
+
+##V<4.2##let add_bytes = add_string
+##V<4.2##let add_subbytes = add_substring
+##V<4.2##let to_bytes = contents
+
 let output_buffer buf =
   BatInnerIO.create_out
     ~write: (add_char buf)
@@ -82,9 +88,3 @@ let output_buffer buf =
 (*$Q output_buffer
   (Q.string) (fun s -> let b = create 10 in let oc = output_buffer b in IO.nwrite oc s; IO.close_out oc = s)
 *)
-
-let add_channel = add_input
-
-##V<4.2##let add_bytes = add_string
-##V<4.2##let add_subbytes = add_substring
-##V<4.2##let to_bytes = contents

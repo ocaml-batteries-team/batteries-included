@@ -85,7 +85,7 @@ let of_input inp =
   and tmp = Bytes.create tempsize in
   let n = ref 0 in
   while n := BatIO.input inp tmp 0 tempsize; !n > 0 do
-    Buffer.add_subbytes buf tmp 0 !n;
+    BatBytesCompat.buffer_add_subbytes buf tmp 0 !n;
   done;
   Buffer.contents buf, 0, Buffer.length buf
 

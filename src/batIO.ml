@@ -133,7 +133,7 @@ let output_enum() =
       Buffer.add_char b x
     )
     ~output:(fun s p l ->
-      Buffer.add_subbytes b s p l;
+      BatBytesCompat.buffer_add_subbytes b s p l;
       l
     )
     ~close:(fun () ->
@@ -579,7 +579,7 @@ let tab_out ?(tab=' ') n out =
         if is_newline c then
           Buffer.add_string buffer spaces
       done;
-      let s' = Buffer.to_bytes buffer in
+      let s' = BatBytesCompat.buffer_to_bytes buffer in
       really_output out s' 0 (Bytes.length s'))
     ~flush:noop
     ~close:noop

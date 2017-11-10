@@ -540,6 +540,10 @@ val find_all : string -> string -> int BatEnum.t
     the list [[1; 4]].
     @since 2.2.0 *)
 
+val count_string : string -> string -> int
+(** [count_string s x] count how many times [x] is found in [s].
+    @since NEXT_RELEASE *)
+
 val ends_with : string -> string -> bool
 (** [ends_with s x] returns [true] if the string [s] is ending with [x], [false] otherwise.
 
@@ -995,7 +999,7 @@ sig
   (** {6 Constructors}*)
 
   external of_string : Bytes.t -> _ t = "%identity"
-    [@@ocaml.deprecated "Use Cap.of_bytes instead"]
+##V>=4.2##    [@@ocaml.deprecated "Use Cap.of_bytes instead"]
   (**Adopt a regular byte sequence.
 
      One could give a perfectly safe semantics to
@@ -1028,7 +1032,7 @@ sig
   *)
 
   external to_string : [`Read | `Write] t -> Bytes.t = "%identity"
-    [@@ocaml.deprecated "Use Cap.to_bytes instead"]
+##V>=4.2##    [@@ocaml.deprecated "Use Cap.to_bytes instead"]
   (** Return a capability string as a regular byte sequence.
 
       We cannot return a [string] here, and it would be incorrect to

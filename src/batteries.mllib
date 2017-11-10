@@ -6,6 +6,7 @@ BatInnerPervasives
   BatBool
   BatBounded
   BatBuffer
+  BatBytesCompat
   BatBytes
   BatChar
   BatComplex
