@@ -540,10 +540,6 @@ val find_all : string -> string -> int BatEnum.t
     the list [[1; 4]].
     @since 2.2.0 *)
 
-val count_string : string -> string -> int
-(** [count_string s x] count how many times [x] is found in [s].
-    @since NEXT_RELEASE *)
-
 val ends_with : string -> string -> bool
 (** [ends_with s x] returns [true] if the string [s] is ending with [x], [false] otherwise.
 
