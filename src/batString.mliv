@@ -955,7 +955,7 @@ end (* String.Exceptionless *)
     with the added twist that strings can be made read-only or write-only.
     Read-only strings may then be safely shared and distributed.
 
-    @since NEXT_RELEASE the interface and implementation of the Cap
+    @since 2.8.0 the interface and implementation of the Cap
     module changed to accomodate the -safe-string transition. OCaml
     now uses two distinct types for mutable and immutable string,
     which is a good design but is not as expressive as the present Cap
@@ -1024,7 +1024,7 @@ sig
       or make a copy of it at adoption time: [Cap.of_bytes
       (Bytes.copy buf)].
 
-      @since NEXT_RELEASE
+      @since 2.8.0
   *)
 
   external to_string : [`Read | `Write] t -> Bytes.t = "%identity"
@@ -1052,7 +1052,7 @@ sig
   external to_bytes : [`Read | `Write] t -> Bytes.t = "%identity"
   (** Return a capability string as a regular byte sequence.
 
-      @since NEXT_RELEASE
+      @since 2.8.0
   *)
 
   external read_only : [> `Read] t -> [`Read] t     = "%identity"

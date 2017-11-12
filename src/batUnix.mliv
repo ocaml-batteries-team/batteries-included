@@ -144,7 +144,7 @@ val environment : unit -> string array
 ##V>=4.6##    privileges.  See the documentation for {!unsafe_getenv} for more
 ##V>=4.6##    details.
 ##V>=4.6##
-##V>=4.6##    @since NEXT_RELEASE and OCaml 4.06.0 *)
+##V>=4.6##    @since 2.8.0 and OCaml 4.06.0 *)
 
 val getenv : string -> string
 (** Return the value associated to a variable in the process
@@ -163,7 +163,7 @@ val getenv : string -> string
 ##V>=4.6##   like.
 ##V>=4.6##
 ##V>=4.6##   @raise Not_found if the variable is unbound.
-##V>=4.6##   @since NEXT_RELEASE and 4.06.0  *)
+##V>=4.6##   @since 2.8.0 and 4.06.0  *)
 
 val putenv : string -> string -> unit
 (** [Unix.putenv name value] sets the value associated to a
@@ -572,7 +572,7 @@ end
 ##V>=4.6##
 ##V>=4.6##  [Invalid_argument] or [Failure] may be raised in cases where argument
 ##V>=4.6##  validation fails.
-##V>=4.6##  @since NEXT_RELEASE and OCaml 4.06.0 *)
+##V>=4.6##  @since 2.8.0 and OCaml 4.06.0 *)
 
 (** {6 Operations on file names} *)
 
