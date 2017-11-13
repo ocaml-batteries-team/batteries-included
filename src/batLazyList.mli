@@ -130,8 +130,8 @@ val unfold: 'b -> ('b -> ('a * 'b) option) -> 'a t
    ]}
 
    The first element [x] of the pair within [Some] will be the current 
-   value of the sequence; the next value and the one after that are
-   recorded as [y] and [x + y]. *)
+   value of the sequence; the next value of the sequence, and the one after
+   that, are recorded as [y] and [x + y] respectively. *)
 
 val from_loop: 'b -> ('b -> ('a * 'b)) -> 'a t
 (**[from_loop data next] creates a (possibly infinite) lazy list from
@@ -151,8 +151,8 @@ val from_loop: 'b -> ('b -> ('a * 'b)) -> 'a t
    ]}
 
    The first element [x] of the result of [next] will be the current 
-   value of the sequence; the next value and the one after that are 
-   recorded as [y] and [x + y]. *)
+   value of the sequence; the next value of the sequence, and the one after
+   that, are recorded as [y] and [x + y] respectively. *)
 
 val init : int -> (int -> 'a) -> 'a t
 (** Similar to [Array.init], [init n f] returns the lazy list
