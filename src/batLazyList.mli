@@ -108,19 +108,20 @@ val from_while: (unit -> 'a option) -> 'a t
 val seq: 'a -> ('a -> 'a) -> ('a -> bool) -> 'a t
 (**[seq data next cond] creates a lazy list from the successive results
    of applying [next] to [data], then to the result, etc.  The list
-   continues until the condition [cond] fails.  E.g. [seq 1 ((+) 1) ((>) 100)]
-   returns [[^1, 2, ... 99^]].  To create an infinite lazy list, pass 
-   [(fun _ -> true)] as [cond].  If [cond init] is false, the result is empty. *)
+   continues until the condition [cond] fails.  For example, 
+   [seq 1 ((+) 1) ((>) 100)] returns [[^1, 2, ... 99^]].  If [cond init] 
+   is false, the result is empty.  To create an infinite lazy list, pass 
+   [(fun _ -> true)] as [cond]. *)
 
 val unfold: 'b -> ('b -> ('a * 'b) option) -> 'a t
 (**[unfold data next] creates a (possibly infinite) lazy list from
    the successive results of applying [next] to [data], then to the
-   result, etc. The list ends whenever [next] returns [None].  [next] 
-   should return an [option] of a pair whose first element will be the
-   current value of the sequence, and whose second element will be passed 
+   result, etc. The list ends whenever [next] returns [None].  The function 
+   [next] should return a pair [option] whose first element will be the
+   current value of the sequence; the second element will be passed 
    (lazily) to [next] in order to compute the following element.  One use 
-   is to allows each element of the resulting sequence to depend on the 
-   previous two elements, as in this definition of a Fibonacci sequence:
+   of [unfold] is to make each element of the resulting sequence to depend 
+   on the previous two elements, as in this Fibonacci sequence definition:
 
    {[
      let data = (1, 1)
@@ -129,18 +130,18 @@ val unfold: 'b -> ('b -> ('a * 'b) option) -> 'a t
    ]}
 
    The first element [x] of the pair within [Some] will be the current 
-   value of the sequence; the next value and subsequent value are recorded
-   as [y] and [x + y]. *)
+   value of the sequence; the next value and the one after that are
+   recorded as [y] and [x + y]. *)
 
 val from_loop: 'b -> ('b -> ('a * 'b)) -> 'a t
 (**[from_loop data next] creates a (possibly infinite) lazy list from
    the successive results of applying [next] to [data], then to the
    result, etc.  The list ends whenever the function raises
-   {!LazyList.No_more_elements}.  [next] should return a pair whose first 
-   element will be the current value of the sequence, and whose second 
+   {!LazyList.No_more_elements}.  The function [next] should return a pair 
+   whose first element will be the current value of the sequence; the second 
    element will be passed (lazily) to [next] in order to compute the following
-   element.  One use is to allows each element of the resulting sequence to
-   depend on the previous two elements, as in this definition of a Fibonacci 
+   element.  One use of [unfold] is to make each element of the resulting sequence 
+   to depend on the previous two elements, as in this definition of a Fibonacci 
    sequence:
 
    {[
@@ -150,8 +151,8 @@ val from_loop: 'b -> ('b -> ('a * 'b)) -> 'a t
    ]}
 
    The first element [x] of the result of [next] will be the current 
-   value of the sequence; the next value and subsequent value are recorded
-   as [y] and [x + y]. *)
+   value of the sequence; the next value and the one after that are 
+   recorded as [y] and [x + y]. *)
 
 val init : int -> (int -> 'a) -> 'a t
 (** Similar to [Array.init], [init n f] returns the lazy list
