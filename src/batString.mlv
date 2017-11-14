@@ -200,7 +200,28 @@ let find_all str sub =
   let e = find_all "aaabbaabaaa" "aa" in \
     Enum.drop 2 e; let e' = Enum.clone e in \
     (List.of_enum e = [5;8;9]) && (Enum.skip 1 e' |> List.of_enum = [8;9])
- *)
+*)
+
+let count_string str sub =
+  if sub = "" then raise (Invalid_argument "String.count_string");
+  let m = length str in
+  let n = length sub in
+  let rec loop acc i =
+    if i >= m then
+      acc
+    else
+      try
+        let j = find_from str i sub in
+        loop (acc + 1) (j + n)
+      with Not_found -> acc
+  in
+  loop 0 0
+(*$T count_string
+  try let _ = count_string "abc" "" in false with Invalid_argument _ -> true
+  count_string "aaa" "a" = 3
+  count_string "aaa" "aa" = 1
+  count_string "coucou" "cou" = 2
+*)
 
 let exists str sub =
   try
