@@ -1,6 +1,8 @@
 Changelog
 ---------
 
+## NEXT_RELEASE
+
 ## v2.8.0 (minor release)
 
 This minor release supports the -safe-string mode for OCaml
