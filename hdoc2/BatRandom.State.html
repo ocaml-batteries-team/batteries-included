@@ -24,6 +24,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -116,33 +117,42 @@
 </div>
 <h1>Module <a href="type_BatRandom.State.html">BatRandom.State</a></h1>
 
-<pre><span class="keyword">module</span> State: <code class="code"><span class="keyword">sig</span></code> <a href="BatRandom.State.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Manipulate the current state of the random generator.
-<p>
+<pre><span id="MODULEState"><span class="keyword">module</span> State</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatRandom.State.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Manipulate the current state of the random generator.</p>
 
-    This allows using one or several deterministic PRNGs, even in a
+<p>This allows using one or several deterministic PRNGs, even in a
     multi-threaded program, without interference from other parts of
-    the program.<br>
+    the program.</p>
+</div>
 </div>
 <hr width="100%">
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">Random.State.t</code> </pre>
 <div class="info ">
-The type of PRNG states.<br>
+<div class="info-desc">
+<p>The type of PRNG states.</p>
+</div>
 </div>
 
 
 <pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">int array -> <a href="BatRandom.State.html#TYPEt">t</a></code></pre><div class="info ">
-Create a new state and initialize it with the given seed.<br>
+<div class="info-desc">
+<p>Create a new state and initialize it with the given seed.</p>
+</div>
 </div>
 
 <pre><span id="VALmake_self_init"><span class="keyword">val</span> make_self_init</span> : <code class="type">unit -> <a href="BatRandom.State.html#TYPEt">t</a></code></pre><div class="info ">
-Create a new state and initialize it with a system-dependent
-      low-entropy seed.<br>
+<div class="info-desc">
+<p>Create a new state and initialize it with a system-dependent
+      low-entropy seed.</p>
+</div>
 </div>
 
 <pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> <a href="BatRandom.State.html#TYPEt">t</a></code></pre><div class="info ">
-Return a copy of the given state.<br>
+<div class="info-desc">
+<p>Return a copy of the given state.</p>
+</div>
 </div>
 
 <pre><span id="VALbits"><span class="keyword">val</span> bits</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> int</code></pre>
@@ -160,7 +170,6 @@ Return a copy of the given state.<br>
 <pre><span id="VALenum_int32"><span class="keyword">val</span> enum_int32</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Int32.t -> Int32.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
 <pre><span id="VALenum_int64"><span class="keyword">val</span> enum_int64</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Int64.t -> Int64.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
 <pre><span id="VALenum_nativeint"><span class="keyword">val</span> enum_nativeint</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Nativeint.t -> Nativeint.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
-<pre><span id="VALenum_char"><span class="keyword">val</span> enum_char</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> unit -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><br>
-These functions are the same as the basic functions, except that they
-          use (and update) the given PRNG state instead of the default one.<br>
+<pre><span id="VALenum_char"><span class="keyword">val</span> enum_char</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> unit -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><p>These functions are the same as the basic functions, except that they
+          use (and update) the given PRNG state instead of the default one.</p>
 </body></html>

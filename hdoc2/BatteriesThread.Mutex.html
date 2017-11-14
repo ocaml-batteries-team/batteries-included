@@ -24,6 +24,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -116,30 +117,31 @@
 </div>
 <h1>Module <a href="type_BatteriesThread.Mutex.html">BatteriesThread.Mutex</a></h1>
 
-<pre><span class="keyword">module</span> Mutex: <code class="type"><a href="BatMutex.html">BatMutex</a></code></pre><hr width="100%">
+<pre><span id="MODULEMutex"><span class="keyword">module</span> Mutex</span>: <code class="type"><a href="BatMutex.html">BatMutex</a></code></pre><hr width="100%">
 
 <pre><span id="VALsynchronize"><span class="keyword">val</span> synchronize</span> : <code class="type">?lock:Mutex.t -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info ">
-Protect a function.
-<p>
+<div class="info-desc">
+<p>Protect a function.</p>
 
-    <code class="code">synchronize&nbsp;f</code> returns a new function <code class="code">f'</code> with the same behavior
+<p><code class="code">synchronize&nbsp;f</code> returns a new function <code class="code">f'</code> with the same behavior
     as <code class="code">f</code> but such that concurrent calls to <code class="code">f'</code> are queued if
-    necessary to avoid races.
-<p>
+    necessary to avoid races.</p>
 
-    <code class="code">synchronize&nbsp;~lock:l&nbsp;f</code> behaves as <code class="code">synchronize&nbsp;f</code> but uses a
+<p><code class="code">synchronize&nbsp;~lock:l&nbsp;f</code> behaves as <code class="code">synchronize&nbsp;f</code> but uses a
     user-specified lock <code class="code">l</code>, which may be useful to share a lock
     between several function. This is necessary in particular when
     the lock is specific to a data structure rather than to a
-    function.
-<p>
+    function.</p>
 
-    In either case, the lock is acquired when entering the function
+<p>In either case, the lock is acquired when entering the function
     and released when the function call ends, whether this is due
-    to normal termination or to some exception being raised.<br>
+    to normal termination or to some exception being raised.</p>
+</div>
 </div>
 
 <pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">unit -> <a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a></code></pre><div class="info ">
-Create a new abstract lock based on Mutexes.<br>
+<div class="info-desc">
+<p>Create a new abstract lock based on Mutexes.</p>
+</div>
 </div>
 </body></html>

@@ -23,6 +23,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -114,45 +115,50 @@
 &nbsp;</div>
 <h1>Module <a href="type_BatFingerTree.Generic.html">BatFingerTree.Generic</a></h1>
 
-<pre><span class="keyword">module</span> Generic: <code class="code"><span class="keyword">sig</span></code> <a href="BatFingerTree.Generic.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
+<pre><span id="MODULEGeneric"><span class="keyword">module</span> Generic</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatFingerTree.Generic.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 
 <pre><span class="keyword">include</span> <a href="BatFingerTree.S.html">BatFingerTree.S</a></pre>
 
 <pre><span id="VALlookup"><span class="keyword">val</span> lookup</span> : <code class="type">(('m -> bool) -> ('a, 'm) fg -> 'a, 'a, 'm) wrap</code></pre><div class="info ">
-<code class="code">lookup&nbsp;p&nbsp;t</code>, when <code class="code">p</code> is monotonic, returns the first element
+<div class="info-desc">
+<p><code class="code">lookup&nbsp;p&nbsp;t</code>, when <code class="code">p</code> is monotonic, returns the first element
       of the sequence for which the measure of its predecessors in the
-      sequence (itself included) satisfies <code class="code">p</code>.<br>
-<b>Raises</b> <code>Empty</code> is there is no such element.
-<p>
+      sequence (itself included) satisfies <code class="code">p</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Empty</code> is there is no such element.
 
       O(log(n)).
-<p>
 
       When <code class="code">p</code> is not monotonic, take a look at the code or at the paper
       cited above and see if you understand something (lookup is a
       specialized version of splitTree that returns the element without
-      building the left and right tree).<br>
+      building the left and right tree).</li>
+</ul>
 </div>
 
 <pre><span id="VALmeasure"><span class="keyword">val</span> measure</span> : <code class="type">(('a, 'm) fg -> 'm, 'a, 'm) wrap</code></pre><div class="info ">
-<code class="code">measure&nbsp;m</code> gives the measure of the whole tree, whose meaning
-      depends on the measure chosen.
-<p>
+<div class="info-desc">
+<p><code class="code">measure&nbsp;m</code> gives the measure of the whole tree, whose meaning
+      depends on the measure chosen.</p>
 
-      O(1).<br>
+<p>O(1).</p>
+</div>
 </div>
 
 <pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type">(('m -> bool) -> ('a, 'm) fg -> ('a, 'm) fg * ('a, 'm) fg, 'a, 'm) wrap</code></pre><div class="info ">
-<code class="code">split&nbsp;p&nbsp;t</code>, when <code class="code">p</code> is monotonic, returns <code class="code">(t1,&nbsp;t2)</code> where
+<div class="info-desc">
+<p><code class="code">split&nbsp;p&nbsp;t</code>, when <code class="code">p</code> is monotonic, returns <code class="code">(t1,&nbsp;t2)</code> where
         <code class="code">t1</code> is the longest prefix of <code class="code">t</code> whose measure does not satifies
-        <code class="code">p</code>, and <code class="code">t2</code> is the rest of <code class="code">t</code>.<br>
-<b>Raises</b> <code>Empty</code> is there is no such element
-<p>
+        <code class="code">p</code>, and <code class="code">t2</code> is the rest of <code class="code">t</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Empty</code> is there is no such element
 
         O(log(n)).
-<p>
 
         When <code class="code">p</code> is not monotonic, take a look at the code or at the paper
-        cited above and see if you understand something.<br>
+        cited above and see if you understand something.</li>
+</ul>
 </div>
 </body></html>

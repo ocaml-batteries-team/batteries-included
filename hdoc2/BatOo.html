@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -118,20 +119,28 @@
 </div>
 <h1>Module <a href="type_BatOo.html">BatOo</a></h1>
 
-<pre><span class="keyword">module</span> BatOo: <code class="code"><span class="keyword">sig</span></code> <a href="BatOo.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Operations on objects<br>
-<b>Author(s):</b> Jerome Vouillon (Base module), David Teller (integration to Batteries)<br>
+<pre><span id="MODULEBatOo"><span class="keyword">module</span> BatOo</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatOo.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Operations on objects</p>
+</div>
+<ul class="info-attributes">
+<li><b>Author(s):</b> Jerome Vouillon (Base module), David Teller (integration to Batteries)</li>
+</ul>
 </div>
 <hr width="100%">
 
 <pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">(< .. > as 'a) -> 'a</code></pre><div class="info ">
-<code class="code"><span class="constructor">Oo</span>.copy&nbsp;o</code> returns a copy of object <code class="code">o</code>, that is a fresh
-    object with the same methods and instance variables as <code class="code">o</code><br>
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Oo</span>.copy&nbsp;o</code> returns a copy of object <code class="code">o</code>, that is a fresh
+    object with the same methods and instance variables as <code class="code">o</code></p>
+</div>
 </div>
 
 <pre><span id="VALid"><span class="keyword">val</span> id</span> : <code class="type">< .. > -> int</code></pre><div class="info ">
-Return an integer identifying this object, unique for
-    the current execution of the program.<br>
+<div class="info-desc">
+<p>Return an integer identifying this object, unique for
+    the current execution of the program.</p>
+</div>
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatOo.Internal.html">Internal</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatOo.Internal.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>
+<pre><span id="MODULEInternal"><span class="keyword">module</span> <a href="BatOo.Internal.html">Internal</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatOo.Internal.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>

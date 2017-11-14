@@ -23,6 +23,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -114,27 +115,35 @@
 &nbsp;</div>
 <h1>Module <a href="type_BatRandom.Incubator.Private_state_enums.State.html">BatRandom.Incubator.Private_state_enums.State</a></h1>
 
-<pre><span class="keyword">module</span> State: <code class="code"><span class="keyword">sig</span></code> <a href="BatRandom.Incubator.Private_state_enums.State.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
+<pre><span id="MODULEState"><span class="keyword">module</span> State</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatRandom.Incubator.Private_state_enums.State.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">Random.State.t</code> </pre>
 <div class="info ">
-same as BatRandom.State
-<p>
-The type of PRNG states.<br>
+<div class="info-desc">
+<p>same as BatRandom.State</p>
+
+<p>The type of PRNG states.</p>
+</div>
 </div>
 
 
 <pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">int array -> <a href="BatRandom.Incubator.Private_state_enums.State.html#TYPEt">t</a></code></pre><div class="info ">
-Create a new state and initialize it with the given seed.<br>
+<div class="info-desc">
+<p>Create a new state and initialize it with the given seed.</p>
+</div>
 </div>
 
 <pre><span id="VALmake_self_init"><span class="keyword">val</span> make_self_init</span> : <code class="type">unit -> <a href="BatRandom.Incubator.Private_state_enums.State.html#TYPEt">t</a></code></pre><div class="info ">
-Create a new state and initialize it with a system-dependent
-          low-entropy seed.<br>
+<div class="info-desc">
+<p>Create a new state and initialize it with a system-dependent
+          low-entropy seed.</p>
+</div>
 </div>
 
 <pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type"><a href="BatRandom.Incubator.Private_state_enums.State.html#TYPEt">t</a> -><br>       <a href="BatRandom.Incubator.Private_state_enums.State.html#TYPEt">t</a></code></pre><div class="info ">
-Return a copy of the given state.<br>
+<div class="info-desc">
+<p>Return a copy of the given state.</p>
+</div>
 </div>
 
 <pre><span id="VALbits"><span class="keyword">val</span> bits</span> : <code class="type"><a href="BatRandom.Incubator.Private_state_enums.State.html#TYPEt">t</a> -> int</code></pre>
@@ -146,10 +155,12 @@ Return a copy of the given state.<br>
 <pre><span id="VALbool"><span class="keyword">val</span> bool</span> : <code class="type"><a href="BatRandom.Incubator.Private_state_enums.State.html#TYPEt">t</a> -> bool</code></pre>
 <pre><span id="VALchar"><span class="keyword">val</span> char</span> : <code class="type"><a href="BatRandom.Incubator.Private_state_enums.State.html#TYPEt">t</a> -> char</code></pre>
 <pre><span id="VALenum_bits"><span class="keyword">val</span> enum_bits</span> : <code class="type"><a href="BatRandom.Incubator.Private_state_enums.State.html#TYPEt">t</a> -> unit -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-A copy of the input state is made to start these generators;
+<div class="info-desc">
+<p>A copy of the input state is made to start these generators;
           the input state is not modified.  This means that two enums
           constructed from the same state will produce the same value
-          sequence.<br>
+          sequence.</p>
+</div>
 </div>
 
 <pre><span id="VALenum_int"><span class="keyword">val</span> enum_int</span> : <code class="type"><a href="BatRandom.Incubator.Private_state_enums.State.html#TYPEt">t</a> -> int -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
@@ -160,8 +171,10 @@ A copy of the input state is made to start these generators;
 <pre><span id="VALenum_nativeint"><span class="keyword">val</span> enum_nativeint</span> : <code class="type"><a href="BatRandom.Incubator.Private_state_enums.State.html#TYPEt">t</a> -><br>       Nativeint.t -> Nativeint.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
 <pre><span id="VALenum_char"><span class="keyword">val</span> enum_char</span> : <code class="type"><a href="BatRandom.Incubator.Private_state_enums.State.html#TYPEt">t</a> -> unit -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
 <pre><span id="VALperturb"><span class="keyword">val</span> perturb</span> : <code class="type"><a href="BatRandom.Incubator.Private_state_enums.State.html#TYPEt">t</a> -><br>       <a href="BatRandom.Incubator.Private_state_enums.State.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">perturb&nbsp;s</code> returns a new state based on the given state
+<div class="info-desc">
+<p><code class="code">perturb&nbsp;s</code> returns a new state based on the given state
           that is, in a sense, the hash of the input state.  This new
-          state should be quite different from the input.<br>
+          state should be quite different from the input.</p>
+</div>
 </div>
 </body></html>

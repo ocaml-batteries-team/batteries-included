@@ -24,6 +24,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -124,56 +125,60 @@
 &nbsp;</div>
 <h1>Module <a href="type_BatHashtbl.Cap.html">BatHashtbl.Cap</a></h1>
 
-<pre><span class="keyword">module</span> Cap: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.Cap.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Capabilities for hashtables.<br>
+<pre><span id="MODULECap"><span class="keyword">module</span> Cap</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.Cap.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Capabilities for hashtables.</p>
+</div>
 </div>
 <hr width="100%">
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b, [< `Read | `Write ])</code> t</span> </pre>
 <div class="info ">
-The type of a hashtable.<br>
+<div class="info-desc">
+<p>The type of a hashtable.</p>
+</div>
 </div>
 
-<br>
-<h6 id="6_Constructors">Constructors</h6><br>
-
+<h7 id="6_Constructors">Constructors</h7>
 <pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -> ('a, 'b, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALof_table"><span class="keyword">val</span> of_table</span> : <code class="type">('a, 'b) Hashtbl.t -> ('a, 'b, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre><div class="info ">
-Adopt a regular hashtable as a capability hashtble, allowing
-      to decrease capabilities if necessary.
-<p>
+<div class="info-desc">
+<p>Adopt a regular hashtable as a capability hashtble, allowing
+      to decrease capabilities if necessary.</p>
 
-      This operation involves no copying. In other words, in
+<p>This operation involves no copying. In other words, in
       <code class="code"><span class="keyword">let</span>&nbsp;cap&nbsp;=&nbsp;of_table&nbsp;a&nbsp;<span class="keyword">in</span>&nbsp;...</code>, any modification in <code class="code">a</code>
-      will also have effect on <code class="code">cap</code> and reciprocally.<br>
+      will also have effect on <code class="code">cap</code> and reciprocally.</p>
+</div>
 </div>
 
 <pre><span id="VALto_table"><span class="keyword">val</span> to_table</span> : <code class="type">('a, 'b, [ `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> ('a, 'b) Hashtbl.t</code></pre><div class="info ">
-Return a capability hashtable as a regular hashtable.
-<p>
+<div class="info-desc">
+<p>Return a capability hashtable as a regular hashtable.</p>
 
-      This operation requires both read and write permissions
+<p>This operation requires both read and write permissions
       on the capability table and involves no copying. In other
       words, in <code class="code"><span class="keyword">let</span>&nbsp;a&nbsp;=&nbsp;of_table&nbsp;cap&nbsp;<span class="keyword">in</span>&nbsp;...</code>, any modification
-      in <code class="code">a</code> will also have effect on <code class="code">cap</code> and reciprocally.<br>
+      in <code class="code">a</code> will also have effect on <code class="code">cap</code> and reciprocally.</p>
+</div>
 </div>
 
 <pre><span id="VALread_only"><span class="keyword">val</span> read_only</span> : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -><br>       ('a, 'b, [ `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre><div class="info ">
-Drop to read-only permissions.
-<p>
+<div class="info-desc">
+<p>Drop to read-only permissions.</p>
 
-      This operation involves no copying.<br>
+<p>This operation involves no copying.</p>
+</div>
 </div>
 
 <pre><span id="VALwrite_only"><span class="keyword">val</span> write_only</span> : <code class="type">('a, 'b, [< `Read | `Write > `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -><br>       ('a, 'b, [ `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre><div class="info ">
-Drop to write-only permissions.
-<p>
+<div class="info-desc">
+<p>Drop to write-only permissions.</p>
 
-      This operation involves no copying.<br>
+<p>This operation involves no copying.</p>
 </div>
-<br>
-<h6 id="6_Baseoperations">Base operations</h6><br>
-
+</div>
+<h7 id="6_Baseoperations">Base operations</h7>
 <pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type">('a, 'b, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> int</code></pre>
 <pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">('a, 'b, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> bool</code></pre>
 <pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">('a, 'b, [< `Read | `Write > `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> 'b -> unit</code></pre>
@@ -181,16 +186,12 @@ Drop to write-only permissions.
 <pre><span id="VALremove_all"><span class="keyword">val</span> remove_all</span> : <code class="type">('a, 'b, [< `Read | `Write > `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> unit</code></pre>
 <pre><span id="VALreplace"><span class="keyword">val</span> replace</span> : <code class="type">('a, 'b, [< `Read | `Write > `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> 'b -> unit</code></pre>
 <pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -><br>       ('a, 'b, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre>
-<pre><span id="VALclear"><span class="keyword">val</span> clear</span> : <code class="type">('a, 'b, [< `Read | `Write > `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> unit</code></pre><br>
-<h6 id="6_Searching">Searching</h6><br>
-
+<pre><span id="VALclear"><span class="keyword">val</span> clear</span> : <code class="type">('a, 'b, [< `Read | `Write > `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> unit</code></pre><h7 id="6_Searching">Searching</h7>
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> 'b</code></pre>
 <pre><span id="VALfind_all"><span class="keyword">val</span> find_all</span> : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> 'b list</code></pre>
 <pre><span id="VALfind_default"><span class="keyword">val</span> find_default</span> : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> 'b -> 'b</code></pre>
 <pre><span id="VALfind_option"><span class="keyword">val</span> find_option</span> : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> 'b option</code></pre>
-<pre><span id="VALmem"><span class="keyword">val</span> mem</span> : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> bool</code></pre><br>
-<h6 id="6_Traversing">Traversing</h6><br>
-
+<pre><span id="VALmem"><span class="keyword">val</span> mem</span> : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a -> bool</code></pre><h7 id="6_Traversing">Traversing</h7>
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> 'b -> unit) -><br>       ('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> unit</code></pre>
 <pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -> 'b -> 'c -> 'c) -><br>       ('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'c -> 'c</code></pre>
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b -> 'c) -><br>       ('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -><br>       ('a, 'c, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre>
@@ -200,27 +201,21 @@ Drop to write-only permissions.
 <pre><span id="VALfilteri"><span class="keyword">val</span> filteri</span> : <code class="type">('key -> 'a -> bool) -><br>       ('key, 'a, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -><br>       ('key, 'a, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALfilteri_inplace"><span class="keyword">val</span> filteri_inplace</span> : <code class="type">('key -> 'a -> bool) -><br>       ('key, 'a, [< `Read | `Write > `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> unit</code></pre>
 <pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">('key -> 'a -> 'b option) -><br>       ('key, 'a, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -><br>       ('key, 'b, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre>
-<pre><span id="VALfilter_map_inplace"><span class="keyword">val</span> filter_map_inplace</span> : <code class="type">('key -> 'a -> 'a option) -><br>       ('key, 'a, [< `Read | `Write > `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> unit</code></pre><br>
-<h6 id="6_Conversions">Conversions</h6><br>
-
+<pre><span id="VALfilter_map_inplace"><span class="keyword">val</span> filter_map_inplace</span> : <code class="type">('key -> 'a -> 'a option) -><br>       ('key, 'a, [< `Read | `Write > `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> unit</code></pre><h7 id="6_Conversions">Conversions</h7>
 <pre><span id="VALkeys"><span class="keyword">val</span> keys</span> : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
 <pre><span id="VALvalues"><span class="keyword">val</span> values</span> : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> ('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> ('a, 'b, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type">('a, 'b, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> ('a * 'b) list</code></pre>
-<pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">('a * 'b) list -> ('a, 'b, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre><br>
-<h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
-<br>
-<div class="h7" id="7_Printing">Printing</div><br>
+<pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">('a * 'b) list -> ('a, 'b, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre><h7 id="6_Boilerplatecode">Boilerplate code</h7><div class="h8" id="7_Printing">Printing</div>
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ?kvsep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'c -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -><br>       ('b, 'c, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> unit</code></pre><h7 id="6_Overridemodules">Override modules</h7>
+<pre><span id="MODULEExceptionless"><span class="keyword">module</span> <a href="BatHashtbl.Cap.Exceptionless.html">Exceptionless</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.Cap.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>Operations on <a href="BatHashtbl.Cap.html"><code class="code"><span class="constructor">BatHashtbl</span>.<span class="constructor">Cap</span></code></a> without exceptions.</p>
 
-<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ?kvsep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'c -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -><br>       ('b, 'c, [< `Read | `Write > `Read ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> unit</code></pre><br>
-<h6 id="6_Overridemodules">Override modules</h6><br>
-
-<pre><span class="keyword">module</span> <a href="BatHashtbl.Cap.Exceptionless.html">Exceptionless</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.Cap.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-Operations on <a href="BatHashtbl.Cap.html"><code class="code"><span class="constructor">BatHashtbl</span>.<span class="constructor">Cap</span></code></a> without exceptions.
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatHashtbl.Cap.Labels.html">Labels</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.Cap.Labels.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-Operations on <a href="BatHashtbl.Cap.html"><code class="code"><span class="constructor">BatHashtbl</span>.<span class="constructor">Cap</span></code></a> with labels.
+<pre><span id="MODULELabels"><span class="keyword">module</span> <a href="BatHashtbl.Cap.Labels.html">Labels</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.Cap.Labels.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>Operations on <a href="BatHashtbl.Cap.html"><code class="code"><span class="constructor">BatHashtbl</span>.<span class="constructor">Cap</span></code></a> with labels.</p>
+
 </div>
 </body></html>

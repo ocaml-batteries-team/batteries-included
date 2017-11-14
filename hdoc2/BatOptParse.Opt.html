@@ -24,6 +24,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -120,42 +121,45 @@
 </div>
 <h1>Module <a href="type_BatOptParse.Opt.html">BatOptParse.Opt</a></h1>
 
-<pre><span class="keyword">module</span> Opt: <code class="code"><span class="keyword">sig</span></code> <a href="BatOptParse.Opt.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-This module contains the basic functions and types for defining
-    new option types and accessing the values of options.<br>
+<pre><span id="MODULEOpt"><span class="keyword">module</span> Opt</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatOptParse.Opt.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>This module contains the basic functions and types for defining
+    new option types and accessing the values of options.</p>
+</div>
 </div>
 <hr width="100%">
-<br>
-<h6 id="6_Exceptions">Exceptions</h6><br>
-
+<h7 id="6_Exceptions">Exceptions</h7>
 <pre><span id="EXCEPTIONNo_value"><span class="keyword">exception</span> No_value</span></pre>
 <div class="info ">
-<code class="code"><span class="constructor">No_value</span></code> gets raised by <code class="code"><span class="constructor">OptParse</span>.<span class="constructor">Opt</span>.get</code> when an option
-      value is not available.<br>
+<div class="info-desc">
+<p><code class="code"><span class="constructor">No_value</span></code> gets raised by <code class="code"><span class="constructor">OptParse</span>.<span class="constructor">Opt</span>.get</code> when an option
+      value is not available.</p>
+</div>
 </div>
 
 <pre><span id="EXCEPTIONOption_error"><span class="keyword">exception</span> Option_error</span> <span class="keyword">of</span> <code class="type">string * string</code></pre>
 <div class="info ">
-This exception signals that an option value is invalid. The
+<div class="info-desc">
+<p>This exception signals that an option value is invalid. The
       first string contains the option string ('-x' or '--long-name')
-      and the second string contains an error message.
-<p>
+      and the second string contains an error message.</p>
 
-      This exception is only used when implementing custom option types
+<p>This exception is only used when implementing custom option types
       and can never "escape" the scope of a <code class="code"><span class="constructor">OptParse</span>.<span class="constructor">OptParser</span>.parse</code>.
-      The user should therefore not attempt to catch it.<br>
+      The user should therefore not attempt to catch it.</p>
+</div>
 </div>
 
 <pre><span id="EXCEPTIONOption_help"><span class="keyword">exception</span> Option_help</span></pre>
 <div class="info ">
-When an option wants to display a usage message, this exception
+<div class="info-desc">
+<p>When an option wants to display a usage message, this exception
       may be raised.  It can never "escape" the scope of a
       <code class="code"><span class="constructor">OptParse</span>.<span class="constructor">OptParser</span>.parse</code> call and the user should therefore not
-      attempt to catch it.<br>
+      attempt to catch it.</p>
 </div>
-<br>
-<h6 id="6_Types">Types</h6><br>
-
+</div>
+<h7 id="6_Types">Types</h7>
 <pre><code><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = {</code></pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
@@ -195,99 +199,111 @@ When an option wants to display a usage message, this exception
 }
 
 <div class="info ">
-Option type.
-<p>
+<div class="info-desc">
+<p>Option type.</p>
 
-      <code class="code">option_set</code> is a closure which converts and records the value of
+<p><code class="code">option_set</code> is a closure which converts and records the value of
       an option so that it can be retrieved with a later call to the
       <code class="code">option_get</code> closure. It is called with the option name which was
       given on the command line and a list of strings, each representing
       one of the argument values given on the command line. It may raise
-      <code class="code"><span class="constructor">Option_error</span></code> if the value is invalid (for whatever reason).
-<p>
+      <code class="code"><span class="constructor">Option_error</span></code> if the value is invalid (for whatever reason).</p>
 
-      <code class="code">option_set_value</code> is a closure which sets the value of an option
-      to a particular value.
-<p>
+<p><code class="code">option_set_value</code> is a closure which sets the value of an option
+      to a particular value.</p>
 
-      <code class="code">option_get</code> is a closure which retrieves the recorded value
+<p><code class="code">option_get</code> is a closure which retrieves the recorded value
       of the option. If the option value has not been set from the
       command line, the default value is used.  If there is no default
-      value, then <code class="code"><span class="constructor">None</span></code> should be returned.
-<p>
+      value, then <code class="code"><span class="constructor">None</span></code> should be returned.</p>
 
-      <code class="code">option_metavars</code> is a list of "meta-variables" (arguments)
+<p><code class="code">option_metavars</code> is a list of "meta-variables" (arguments)
       which this option accepts. This is mainly for display purposes,
       but the length of this list determines how many arguments the
       option parser accepts for this option (currently only lists of
-      length 0 or 1 are supported).
-<p>
+      length 0 or 1 are supported).</p>
 
-      <code class="code">option_defhelp</code> is the default help string (if any).  It is
+<p><code class="code">option_defhelp</code> is the default help string (if any).  It is
       used for displaying help messages whenever the user does <b>      not</b> specify a help string manually when adding this
       option. Using a non-None value here only makes sense for
-      completely generic options like <code class="code"><span class="constructor">OptParse</span>.<span class="constructor">StdOpt</span>.help_option</code>.<br>
+      completely generic options like <code class="code"><span class="constructor">OptParse</span>.<span class="constructor">StdOpt</span>.help_option</code>.</p>
+</div>
 </div>
 
-<br>
-<h6 id="6_Optionvalueretrieval">Option value retrieval</h6><br>
-
+<h7 id="6_Optionvalueretrieval">Option value retrieval</h7>
 <pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a <a href="BatOptParse.Opt.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
-Get the value of an option.<br>
-<b>Raises</b> <code>No_value</code> if no default values has been given
-      and the option value has not been set from the command line.<br>
-<b>Returns</b> the value of the option. If the option has not been
+<div class="info-desc">
+<p>Get the value of an option.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>No_value</code> if no default values has been given
+      and the option value has not been set from the command line.</li>
+<li><b>Returns</b> the value of the option. If the option has not been
       encountered while parsing the command line, the default value is
-      returned.<br>
+      returned.</li>
+</ul>
 </div>
 
 <pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">'a <a href="BatOptParse.Opt.html#TYPEt">t</a> -> 'a -> unit</code></pre><div class="info ">
-Set the value of an option.<br>
+<div class="info-desc">
+<p>Set the value of an option.</p>
+</div>
 </div>
 
 <pre><span id="VALopt"><span class="keyword">val</span> opt</span> : <code class="type">'a <a href="BatOptParse.Opt.html#TYPEt">t</a> -> 'a option</code></pre><div class="info ">
-Get the value of an option as an optional value.<br>
-<b>Returns</b> <code class="code"><span class="constructor">Some</span>&nbsp;x</code> if the option has value <code class="code">x</code> (either by default or
+<div class="info-desc">
+<p>Get the value of an option as an optional value.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> <code class="code"><span class="constructor">Some</span>&nbsp;x</code> if the option has value <code class="code">x</code> (either by default or
       from the command line). If the option doesn't have a value <code class="code"><span class="constructor">None</span></code>
-      is returned.<br>
+      is returned.</li>
+</ul>
 </div>
 
 <pre><span id="VALis_set"><span class="keyword">val</span> is_set</span> : <code class="type">'a <a href="BatOptParse.Opt.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-Find out if the option has a value (either by default or
-      from the command line).<br>
-<b>Returns</b> <code class="code"><span class="constructor">True</span></code> iff the option has a value.<br>
+<div class="info-desc">
+<p>Find out if the option has a value (either by default or
+      from the command line).</p>
 </div>
-<br>
-<h6 id="6_Optioncreation">Option creation</h6><br>
-
+<ul class="info-attributes">
+<li><b>Returns</b> <code class="code"><span class="constructor">True</span></code> iff the option has a value.</li>
+</ul>
+</div>
+<h7 id="6_Optioncreation">Option creation</h7>
 <pre><span id="VALvalue_option"><span class="keyword">val</span> value_option</span> : <code class="type">string -><br>       'a option -><br>       (string -> 'a) -> (exn -> string -> string) -> 'a <a href="BatOptParse.Opt.html#TYPEt">t</a></code></pre><div class="info ">
-Make an option which takes a single argument.
-<p>
+<div class="info-desc">
+<p>Make an option which takes a single argument.</p>
 
-      <code class="code">value_option&nbsp;metavar&nbsp;default&nbsp;coerce&nbsp;errfmt</code> returns an option
+<p><code class="code">value_option&nbsp;metavar&nbsp;default&nbsp;coerce&nbsp;errfmt</code> returns an option
       which takes a single argument from the command line and calls
       <code class="code">coerce</code> to coerce it to the proper type. If <code class="code">coerce</code> raises an
       exception, <code class="code">exn</code>, then <code class="code">errfmt&nbsp;exn&nbsp;argval</code> is called to generate
       an error message for display. <code class="code">metavar</code> is the name of the
-      metavariable of the option.
-<p>
+      metavariable of the option.</p>
 
-      <code class="code">default</code> is the default value of the option. If <code class="code"><span class="constructor">None</span></code>, the
-      option has no default value.<br>
-<b>Returns</b> the newly created option.<br>
+<p><code class="code">default</code> is the default value of the option. If <code class="code"><span class="constructor">None</span></code>, the
+      option has no default value.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> the newly created option.</li>
+</ul>
 </div>
 
 <pre><span id="VALcallback_option"><span class="keyword">val</span> callback_option</span> : <code class="type">string -><br>       (string -> 'a) -><br>       (exn -> string -> string) -> ('a -> unit) -> unit <a href="BatOptParse.Opt.html#TYPEt">t</a></code></pre><div class="info ">
-Make a callback option which takes a single argument.
-<p>
+<div class="info-desc">
+<p>Make a callback option which takes a single argument.</p>
 
-        <code class="code">callback_option&nbsp;metavar&nbsp;coerce&nbsp;errfmt&nbsp;f</code> returns an option which
+<p><code class="code">callback_option&nbsp;metavar&nbsp;coerce&nbsp;errfmt&nbsp;f</code> returns an option which
         takes a single argument from the command line and calls <code class="code">coerce</code>
         to coerce it to the proper type. If <code class="code">coerce</code> raises an exception
         <code class="code">errfmt&nbsp;exn&nbsp;argval</code> is called to format an error message for
         display. If <code class="code">coerce</code> succeeds, the callback function <code class="code">f</code> is called
         with the coerced value. Finally, <code class="code">metavar</code> is the name of the
-        metavariable of the option.<br>
-<b>Returns</b> the newly created option.<br>
+        metavariable of the option.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> the newly created option.</li>
+</ul>
 </div>
 </body></html>

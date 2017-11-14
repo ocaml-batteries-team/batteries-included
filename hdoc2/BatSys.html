@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -121,102 +122,141 @@
 </div>
 <h1>Module <a href="type_BatSys.html">BatSys</a></h1>
 
-<pre><span class="keyword">module</span> BatSys: <code class="code"><span class="keyword">sig</span></code> <a href="BatSys.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-System interface.
-<p>
+<pre><span id="MODULEBatSys"><span class="keyword">module</span> BatSys</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatSys.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>System interface.</p>
 
-    This module defines higher-level functions than the <code class="code"><span class="constructor">Unix</span></code> module
+<p>This module defines higher-level functions than the <code class="code"><span class="constructor">Unix</span></code> module
     and should, wherever possible, be used rather than the <code class="code"><span class="constructor">Unix</span></code> module
-    to ensure portability.<br>
-<b>Author(s):</b> Xavier Leroy (Base module), David Teller<br>
+    to ensure portability.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Author(s):</b> Xavier Leroy (Base module), David Teller</li>
+</ul>
 </div>
 <hr width="100%">
 
 <pre><span id="VALargv"><span class="keyword">val</span> argv</span> : <code class="type">string array</code></pre><div class="info ">
-The command line arguments given to the process.
+<div class="info-desc">
+<p>The command line arguments given to the process.
     The first element is the command name used to invoke the program.
     The following elements are the command-line arguments
-    given to the program.<br>
+    given to the program.</p>
+</div>
 </div>
 
 <pre><span id="VALexecutable_name"><span class="keyword">val</span> executable_name</span> : <code class="type">string</code></pre><div class="info ">
-The name of the file containing the executable currently running.<br>
+<div class="info-desc">
+<p>The name of the file containing the executable currently running.</p>
+</div>
 </div>
 
 <pre><span id="VALfile_exists"><span class="keyword">val</span> file_exists</span> : <code class="type">string -> bool</code></pre><div class="info ">
-Test if a file with the given name exists.<br>
+<div class="info-desc">
+<p>Test if a file with the given name exists.</p>
+</div>
 </div>
 
 <pre><span id="VALis_directory"><span class="keyword">val</span> is_directory</span> : <code class="type">string -> bool</code></pre><div class="info ">
-Returns <code class="code"><span class="keyword">true</span></code> if the given name refers to a directory,
-    <code class="code"><span class="keyword">false</span></code> if it refers to another kind of file.<br>
-<b>Since</b> 3.10.0<br>
-<b>Raises</b> <code>Sys_error</code> if no file exists with the given name.<br>
+<div class="info-desc">
+<p>Returns <code class="code"><span class="keyword">true</span></code> if the given name refers to a directory,
+    <code class="code"><span class="keyword">false</span></code> if it refers to another kind of file.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.10.0</li>
+<li><b>Raises</b> <code>Sys_error</code> if no file exists with the given name.</li>
+</ul>
 </div>
 
 <pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">string -> unit</code></pre><div class="info ">
-Remove the given file name from the file system.<br>
+<div class="info-desc">
+<p>Remove the given file name from the file system.</p>
+</div>
 </div>
 
 <pre><span id="VALrename"><span class="keyword">val</span> rename</span> : <code class="type">string -> string -> unit</code></pre><div class="info ">
-Rename a file. The first argument is the old name and the
+<div class="info-desc">
+<p>Rename a file. The first argument is the old name and the
     second is the new name. If there is already another file
     under the new name, <code class="code">rename</code> may replace it, or raise an
-    exception, depending on your operating system.<br>
+    exception, depending on your operating system.</p>
+</div>
 </div>
 
 <pre><span id="VALgetenv"><span class="keyword">val</span> getenv</span> : <code class="type">string -> string</code></pre><div class="info ">
-Return the value associated to a variable in the process
-    environment.<br>
-<b>Raises</b> <code>Not_found</code> if the variable is unbound.<br>
+<div class="info-desc">
+<p>Return the value associated to a variable in the process
+    environment.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Not_found</code> if the variable is unbound.</li>
+</ul>
 </div>
 
 <pre><span id="VALgetenv_opt"><span class="keyword">val</span> getenv_opt</span> : <code class="type">string -> string option</code></pre><div class="info ">
-Return the value associated to a variable in the process
-    environment or <code class="code"><span class="constructor">None</span></code> if the variable is unbound.<br>
-<b>Since</b> 4.05<br>
+<div class="info-desc">
+<p>Return the value associated to a variable in the process
+    environment or <code class="code"><span class="constructor">None</span></code> if the variable is unbound.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 4.05</li>
+</ul>
 </div>
 
 <pre><span id="VALcommand"><span class="keyword">val</span> command</span> : <code class="type">string -> int</code></pre><div class="info ">
-Execute the given shell command and return its exit code.<br>
+<div class="info-desc">
+<p>Execute the given shell command and return its exit code.</p>
+</div>
 </div>
 
 <pre><span id="VALtime"><span class="keyword">val</span> time</span> : <code class="type">unit -> float</code></pre><div class="info ">
-Return the processor time, in seconds, used by the program
-    since the beginning of execution.<br>
+<div class="info-desc">
+<p>Return the processor time, in seconds, used by the program
+    since the beginning of execution.</p>
+</div>
 </div>
 
 <pre><span id="VALchdir"><span class="keyword">val</span> chdir</span> : <code class="type">string -> unit</code></pre><div class="info ">
-Change the current working directory of the process.<br>
+<div class="info-desc">
+<p>Change the current working directory of the process.</p>
+</div>
 </div>
 
 <pre><span id="VALgetcwd"><span class="keyword">val</span> getcwd</span> : <code class="type">unit -> string</code></pre><div class="info ">
-Return the current working directory of the process.<br>
+<div class="info-desc">
+<p>Return the current working directory of the process.</p>
+</div>
 </div>
 
 <pre><span id="VALreaddir"><span class="keyword">val</span> readdir</span> : <code class="type">string -> string array</code></pre><div class="info ">
-Return the names of all files present in the given directory.
+<div class="info-desc">
+<p>Return the names of all files present in the given directory.
     Names denoting the current directory and the parent directory
     (<code class="code"><span class="string">"."</span></code> and <code class="code"><span class="string">".."</span></code> in Unix) are not returned.  Each string in the
     result is a file name rather than a complete path.  There is no
     guarantee that the name strings in the resulting array will appear
     in any specific order; they are not, in particular, guaranteed to
-    appear in alphabetical order.<br>
+    appear in alphabetical order.</p>
+</div>
 </div>
 
 <pre><span id="VALinteractive"><span class="keyword">val</span> interactive</span> : <code class="type">bool Pervasives.ref</code></pre><div class="info ">
-This reference is initially set to <code class="code"><span class="keyword">false</span></code> in standalone
+<div class="info-desc">
+<p>This reference is initially set to <code class="code"><span class="keyword">false</span></code> in standalone
     programs and to <code class="code"><span class="keyword">true</span></code> if the code is being executed under
-    the interactive toplevel system <code class="code">ocaml</code>.<br>
+    the interactive toplevel system <code class="code">ocaml</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALos_type"><span class="keyword">val</span> os_type</span> : <code class="type">string</code></pre><div class="info ">
-Operating system currently executing the OCaml program. One of<ul>
+<div class="info-desc">
+<p>Operating system currently executing the OCaml program. One of</p>
+<ul>
 <li> <code class="code"><span class="string">"Unix"</span></code> (for all Unix versions, including Linux and Mac OS X),</li>
 <li> <code class="code"><span class="string">"Win32"</span></code> (for MS-Windows, OCaml compiled with MSVC++ or Mingw),</li>
 <li> <code class="code"><span class="string">"Cygwin"</span></code> (for MS-Windows, OCaml compiled with Cygwin).</li>
 </ul>
-<br>
+</div>
 </div>
 
 <pre><span id="TYPEbackend_type"><span class="keyword">type</span> <code class="type"></code>backend_type</span> = <code class="type">Sys.backend_type</code> = </pre><table class="typetable">
@@ -243,76 +283,114 @@ Operating system currently executing the OCaml program. One of<ul>
 </tr></table>
 
 <div class="info ">
-Currently, the official distribution only supports <code class="code"><span class="constructor">Native</span></code> and
+<div class="info-desc">
+<p>Currently, the official distribution only supports <code class="code"><span class="constructor">Native</span></code> and
     <code class="code"><span class="constructor">Bytecode</span></code>, but it can be other backends with alternative
-    compilers, for example, javascript.<br>
-<b>Since</b> 2.5.3 and 4.04<br>
+    compilers, for example, javascript.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.5.3 and 4.04</li>
+</ul>
 </div>
 
 
 <pre><span id="VALbackend_type"><span class="keyword">val</span> backend_type</span> : <code class="type"><a href="BatSys.html#TYPEbackend_type">backend_type</a></code></pre><div class="info ">
-Backend type currently executing the OCaml program.
-    @ since 2.5.3 and 4.04<br>
+<div class="info-desc">
+<p>Backend type currently executing the OCaml program.
+    @ since 2.5.3 and 4.04</p>
+</div>
 </div>
 
 <pre><span id="VALunix"><span class="keyword">val</span> unix</span> : <code class="type">bool</code></pre><div class="info ">
-True if <code class="code"><span class="constructor">Sys</span>.os_type&nbsp;=&nbsp;<span class="string">"Unix"</span></code>.<br>
-<b>Since</b> 4.01.0<br>
+<div class="info-desc">
+<p>True if <code class="code"><span class="constructor">Sys</span>.os_type&nbsp;=&nbsp;<span class="string">"Unix"</span></code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 4.01.0</li>
+</ul>
 </div>
 
 <pre><span id="VALwin32"><span class="keyword">val</span> win32</span> : <code class="type">bool</code></pre><div class="info ">
-True if <code class="code"><span class="constructor">Sys</span>.os_type&nbsp;=&nbsp;<span class="string">"Win32"</span></code>.<br>
-<b>Since</b> 4.01.0<br>
+<div class="info-desc">
+<p>True if <code class="code"><span class="constructor">Sys</span>.os_type&nbsp;=&nbsp;<span class="string">"Win32"</span></code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 4.01.0</li>
+</ul>
 </div>
 
 <pre><span id="VALcygwin"><span class="keyword">val</span> cygwin</span> : <code class="type">bool</code></pre><div class="info ">
-True if <code class="code"><span class="constructor">Sys</span>.os_type&nbsp;=&nbsp;<span class="string">"Cygwin"</span></code>.<br>
-<b>Since</b> 4.01.0<br>
+<div class="info-desc">
+<p>True if <code class="code"><span class="constructor">Sys</span>.os_type&nbsp;=&nbsp;<span class="string">"Cygwin"</span></code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 4.01.0</li>
+</ul>
 </div>
 
 <pre><span id="VALword_size"><span class="keyword">val</span> word_size</span> : <code class="type">int</code></pre><div class="info ">
-Size of one word on the machine currently executing the OCaml
-    program, in bits: 32 or 64.<br>
+<div class="info-desc">
+<p>Size of one word on the machine currently executing the OCaml
+    program, in bits: 32 or 64.</p>
+</div>
 </div>
 
 <pre><span id="VALint_size"><span class="keyword">val</span> int_size</span> : <code class="type">int</code></pre><div class="info ">
-Size of an int.  It is 31 bits (resp. 63 bits) when using the
+<div class="info-desc">
+<p>Size of an int.  It is 31 bits (resp. 63 bits) when using the
     OCaml compiler on a 32 bits (resp. 64 bits) platform.  It may
     differ for other compilers, e.g. it is 32 bits when compiling to
-    JavaScript.<br>
-<b>Since</b> 2.5.0 and OCaml 4.03.0<br>
+    JavaScript.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.5.0 and OCaml 4.03.0</li>
+</ul>
 </div>
 
 <pre><span id="VALbig_endian"><span class="keyword">val</span> big_endian</span> : <code class="type">bool</code></pre><div class="info ">
-Whether the machine currently executing the OCaml program is big-endian.<br>
-<b>Since</b> 4.00.0<br>
+<div class="info-desc">
+<p>Whether the machine currently executing the OCaml program is big-endian.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 4.00.0</li>
+</ul>
 </div>
 
 <pre><span id="VALmax_string_length"><span class="keyword">val</span> max_string_length</span> : <code class="type">int</code></pre><div class="info ">
-Maximum length of a string.<br>
+<div class="info-desc">
+<p>Maximum length of a string.</p>
+</div>
 </div>
 
 <pre><span id="VALmax_array_length"><span class="keyword">val</span> max_array_length</span> : <code class="type">int</code></pre><div class="info ">
-Maximum length of a normal array.  The maximum length of a float
+<div class="info-desc">
+<p>Maximum length of a normal array.  The maximum length of a float
     array is <code class="code">max_array_length/2</code> on 32-bit machines and
-    <code class="code">max_array_length</code> on 64-bit machines.<br>
+    <code class="code">max_array_length</code> on 64-bit machines.</p>
+</div>
 </div>
 
 <pre><span id="VALruntime_variant"><span class="keyword">val</span> runtime_variant</span> : <code class="type">unit -> string</code></pre><div class="info ">
-Return the name of the runtime variant the program is running on.
+<div class="info-desc">
+<p>Return the name of the runtime variant the program is running on.
     This is normally the argument given to <code class="code">-runtime-variant</code> at compile
-    time, but for byte-code it can be changed after compilation.<br>
-<b>Since</b> 2.5.0 and OCaml 4.03.0<br>
+    time, but for byte-code it can be changed after compilation.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.5.0 and OCaml 4.03.0</li>
+</ul>
 </div>
 
 <pre><span id="VALruntime_parameters"><span class="keyword">val</span> runtime_parameters</span> : <code class="type">unit -> string</code></pre><div class="info ">
-Return the value of the runtime parameters, in the same format
-    as the contents of the <code class="code"><span class="constructor">OCAMLRUNPARAM</span></code> environment variable.<br>
-<b>Since</b> 2.5.0 and OCaml 4.03.0<br>
+<div class="info-desc">
+<p>Return the value of the runtime parameters, in the same format
+    as the contents of the <code class="code"><span class="constructor">OCAMLRUNPARAM</span></code> environment variable.</p>
 </div>
-<br>
-<h6 id="6_Signalhandling">Signal handling</h6><br>
-
+<ul class="info-attributes">
+<li><b>Since</b> 2.5.0 and OCaml 4.03.0</li>
+</ul>
+</div>
+<h7 id="6_Signalhandling">Signal handling</h7>
 <pre><span id="TYPEsignal_behavior"><span class="keyword">type</span> <code class="type"></code>signal_behavior</span> = <code class="type">Sys.signal_behavior</code> = </pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
@@ -334,14 +412,16 @@ Return the value of the runtime parameters, in the same format
 <td align="left" valign="top" >
 <code><span id="TYPEELTsignal_behavior.Signal_handle"><span class="constructor">Signal_handle</span></span> <span class="keyword">of</span> <code class="type">(int -> unit)</code></code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-What to do when receiving a signal:<ul>
+<div class="info-desc">
+<p>What to do when receiving a signal:</p>
+<ul>
 <li><code class="code"><span class="constructor">Signal_default</span></code>: take the default behavior
        (usually: abort the program)</li>
 <li><code class="code"><span class="constructor">Signal_ignore</span></code>: ignore the signal</li>
 <li><code class="code"><span class="constructor">Signal_handle</span>&nbsp;f</code>: call function <code class="code">f</code>, giving it the signal
       number as argument.</li>
 </ul>
-<br>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
@@ -349,200 +429,288 @@ What to do when receiving a signal:<ul>
 
 
 <pre><span id="VALsignal"><span class="keyword">val</span> signal</span> : <code class="type">int -> <a href="BatSys.html#TYPEsignal_behavior">signal_behavior</a> -> <a href="BatSys.html#TYPEsignal_behavior">signal_behavior</a></code></pre><div class="info ">
-Set the behavior of the system on receipt of a given signal.  The
+<div class="info-desc">
+<p>Set the behavior of the system on receipt of a given signal.  The
     first argument is the signal number.  Return the behavior
-    previously associated with the signal.<br>
-<b>Raises</b> <code>Invalid_argument</code> If the signal number is
-    invalid (or not available on your system).<br>
+    previously associated with the signal.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Invalid_argument</code> If the signal number is
+    invalid (or not available on your system).</li>
+</ul>
 </div>
 
 <pre><span id="VALset_signal"><span class="keyword">val</span> set_signal</span> : <code class="type">int -> <a href="BatSys.html#TYPEsignal_behavior">signal_behavior</a> -> unit</code></pre><div class="info ">
-Same as <code class="code"><span class="constructor">Sys</span>.signal</code> but return value is ignored.<br>
+<div class="info-desc">
+<p>Same as <code class="code"><span class="constructor">Sys</span>.signal</code> but return value is ignored.</p>
 </div>
-<br>
-<div class="h7" id="7_SignalnumbersforthestandardPOSIXsignals">Signal numbers for the standard POSIX signals.</div><br>
-
+</div>
+<div class="h8" id="7_SignalnumbersforthestandardPOSIXsignals">Signal numbers for the standard POSIX signals.</div>
 <pre><span id="VALsigabrt"><span class="keyword">val</span> sigabrt</span> : <code class="type">int</code></pre><div class="info ">
-Abnormal termination<br>
+<div class="info-desc">
+<p>Abnormal termination</p>
+</div>
 </div>
 
 <pre><span id="VALsigalrm"><span class="keyword">val</span> sigalrm</span> : <code class="type">int</code></pre><div class="info ">
-Timeout<br>
+<div class="info-desc">
+<p>Timeout</p>
+</div>
 </div>
 
 <pre><span id="VALsigfpe"><span class="keyword">val</span> sigfpe</span> : <code class="type">int</code></pre><div class="info ">
-Arithmetic exception<br>
+<div class="info-desc">
+<p>Arithmetic exception</p>
+</div>
 </div>
 
 <pre><span id="VALsighup"><span class="keyword">val</span> sighup</span> : <code class="type">int</code></pre><div class="info ">
-Hangup on controlling terminal<br>
+<div class="info-desc">
+<p>Hangup on controlling terminal</p>
+</div>
 </div>
 
 <pre><span id="VALsigill"><span class="keyword">val</span> sigill</span> : <code class="type">int</code></pre><div class="info ">
-Invalid hardware instruction<br>
+<div class="info-desc">
+<p>Invalid hardware instruction</p>
+</div>
 </div>
 
 <pre><span id="VALsigint"><span class="keyword">val</span> sigint</span> : <code class="type">int</code></pre><div class="info ">
-Interactive interrupt (ctrl-C)<br>
+<div class="info-desc">
+<p>Interactive interrupt (ctrl-C)</p>
+</div>
 </div>
 
 <pre><span id="VALsigkill"><span class="keyword">val</span> sigkill</span> : <code class="type">int</code></pre><div class="info ">
-Termination (cannot be ignored)<br>
+<div class="info-desc">
+<p>Termination (cannot be ignored)</p>
+</div>
 </div>
 
 <pre><span id="VALsigpipe"><span class="keyword">val</span> sigpipe</span> : <code class="type">int</code></pre><div class="info ">
-Broken pipe<br>
+<div class="info-desc">
+<p>Broken pipe</p>
+</div>
 </div>
 
 <pre><span id="VALsigquit"><span class="keyword">val</span> sigquit</span> : <code class="type">int</code></pre><div class="info ">
-Interactive termination<br>
+<div class="info-desc">
+<p>Interactive termination</p>
+</div>
 </div>
 
 <pre><span id="VALsigsegv"><span class="keyword">val</span> sigsegv</span> : <code class="type">int</code></pre><div class="info ">
-Invalid memory reference<br>
+<div class="info-desc">
+<p>Invalid memory reference</p>
+</div>
 </div>
 
 <pre><span id="VALsigterm"><span class="keyword">val</span> sigterm</span> : <code class="type">int</code></pre><div class="info ">
-Termination<br>
+<div class="info-desc">
+<p>Termination</p>
+</div>
 </div>
 
 <pre><span id="VALsigusr1"><span class="keyword">val</span> sigusr1</span> : <code class="type">int</code></pre><div class="info ">
-Application-defined signal 1<br>
+<div class="info-desc">
+<p>Application-defined signal 1</p>
+</div>
 </div>
 
 <pre><span id="VALsigusr2"><span class="keyword">val</span> sigusr2</span> : <code class="type">int</code></pre><div class="info ">
-Application-defined signal 2<br>
+<div class="info-desc">
+<p>Application-defined signal 2</p>
+</div>
 </div>
 
 <pre><span id="VALsigchld"><span class="keyword">val</span> sigchld</span> : <code class="type">int</code></pre><div class="info ">
-Child process terminated<br>
+<div class="info-desc">
+<p>Child process terminated</p>
+</div>
 </div>
 
 <pre><span id="VALsigcont"><span class="keyword">val</span> sigcont</span> : <code class="type">int</code></pre><div class="info ">
-Continue<br>
+<div class="info-desc">
+<p>Continue</p>
+</div>
 </div>
 
 <pre><span id="VALsigstop"><span class="keyword">val</span> sigstop</span> : <code class="type">int</code></pre><div class="info ">
-Stop<br>
+<div class="info-desc">
+<p>Stop</p>
+</div>
 </div>
 
 <pre><span id="VALsigtstp"><span class="keyword">val</span> sigtstp</span> : <code class="type">int</code></pre><div class="info ">
-Interactive stop<br>
+<div class="info-desc">
+<p>Interactive stop</p>
+</div>
 </div>
 
 <pre><span id="VALsigttin"><span class="keyword">val</span> sigttin</span> : <code class="type">int</code></pre><div class="info ">
-Terminal read from background process<br>
+<div class="info-desc">
+<p>Terminal read from background process</p>
+</div>
 </div>
 
 <pre><span id="VALsigttou"><span class="keyword">val</span> sigttou</span> : <code class="type">int</code></pre><div class="info ">
-Terminal write from background process<br>
+<div class="info-desc">
+<p>Terminal write from background process</p>
+</div>
 </div>
 
 <pre><span id="VALsigvtalrm"><span class="keyword">val</span> sigvtalrm</span> : <code class="type">int</code></pre><div class="info ">
-Timeout in virtual time<br>
+<div class="info-desc">
+<p>Timeout in virtual time</p>
+</div>
 </div>
 
 <pre><span id="VALsigprof"><span class="keyword">val</span> sigprof</span> : <code class="type">int</code></pre><div class="info ">
-Profiling interrupt<br>
+<div class="info-desc">
+<p>Profiling interrupt</p>
+</div>
 </div>
 
 <pre><span id="VALsigbus"><span class="keyword">val</span> sigbus</span> : <code class="type">int</code></pre><div class="info ">
-Bus error<br>
-<b>Since</b> 2.5.0<br>
+<div class="info-desc">
+<p>Bus error</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.5.0</li>
+</ul>
 </div>
 
 <pre><span id="VALsigpoll"><span class="keyword">val</span> sigpoll</span> : <code class="type">int</code></pre><div class="info ">
-Pollable event<br>
-<b>Since</b> 2.5.0<br>
+<div class="info-desc">
+<p>Pollable event</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.5.0</li>
+</ul>
 </div>
 
 <pre><span id="VALsigsys"><span class="keyword">val</span> sigsys</span> : <code class="type">int</code></pre><div class="info ">
-Bad argument to routine<br>
-<b>Since</b> 2.5.0<br>
+<div class="info-desc">
+<p>Bad argument to routine</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.5.0</li>
+</ul>
 </div>
 
 <pre><span id="VALsigtrap"><span class="keyword">val</span> sigtrap</span> : <code class="type">int</code></pre><div class="info ">
-Trace/breakpoint trap<br>
-<b>Since</b> 2.5.0<br>
+<div class="info-desc">
+<p>Trace/breakpoint trap</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.5.0</li>
+</ul>
 </div>
 
 <pre><span id="VALsigurg"><span class="keyword">val</span> sigurg</span> : <code class="type">int</code></pre><div class="info ">
-Urgent condition on socket<br>
-<b>Since</b> 2.5.0<br>
+<div class="info-desc">
+<p>Urgent condition on socket</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.5.0</li>
+</ul>
 </div>
 
 <pre><span id="VALsigxcpu"><span class="keyword">val</span> sigxcpu</span> : <code class="type">int</code></pre><div class="info ">
-Timeout in cpu time<br>
-<b>Since</b> 2.5.0<br>
+<div class="info-desc">
+<p>Timeout in cpu time</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.5.0</li>
+</ul>
 </div>
 
 <pre><span id="VALsigxfsz"><span class="keyword">val</span> sigxfsz</span> : <code class="type">int</code></pre><div class="info ">
-File size limit exceeded<br>
-<b>Since</b> 2.5.0<br>
+<div class="info-desc">
+<p>File size limit exceeded</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.5.0</li>
+</ul>
 </div>
 
 <pre><span id="EXCEPTIONBreak"><span class="keyword">exception</span> Break</span></pre>
 <div class="info ">
-Exception raised on interactive interrupt if <code class="code"><span class="constructor">Sys</span>.catch_break</code>
-    is on.<br>
+<div class="info-desc">
+<p>Exception raised on interactive interrupt if <code class="code"><span class="constructor">Sys</span>.catch_break</code>
+    is on.</p>
+</div>
 </div>
 
 <pre><span id="VALcatch_break"><span class="keyword">val</span> catch_break</span> : <code class="type">bool -> unit</code></pre><div class="info ">
-<code class="code">catch_break</code> governs whether interactive interrupt (ctrl-C)
+<div class="info-desc">
+<p><code class="code">catch_break</code> governs whether interactive interrupt (ctrl-C)
     terminates the program or raises <code class="code"><span class="constructor">Break</span></code>.
     Call <code class="code">catch_break&nbsp;<span class="keyword">true</span></code> to enable raising <code class="code"><span class="constructor">Break</span></code>,
     and <code class="code">catch_break&nbsp;<span class="keyword">false</span></code> to let the system
-    terminate the program on user interrupt.<br>
+    terminate the program on user interrupt.</p>
+</div>
 </div>
 
 <pre><span id="VALocaml_version"><span class="keyword">val</span> ocaml_version</span> : <code class="type">string</code></pre><div class="info ">
-<code class="code">ocaml_version</code> is the version of OCaml.
+<div class="info-desc">
+<p><code class="code">ocaml_version</code> is the version of OCaml.
     It is a string of the form <code class="code"><span class="string">"major.minor[.patchlevel][+additional-info]"</span></code>,
     where <code class="code">major</code>, <code class="code">minor</code>, and <code class="code">patchlevel</code> are integers, and
     <code class="code">additional-info</code> is an arbitrary string. The <code class="code">[.patchlevel]</code> and
-    <code class="code">[+additional-info]</code> parts may be absent.<br>
+    <code class="code">[+additional-info]</code> parts may be absent.</p>
+</div>
 </div>
 
 <pre><span id="VALfiles_of"><span class="keyword">val</span> files_of</span> : <code class="type">string -> string <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-As <a href="BatSys.html#VALreaddir"><code class="code"><span class="constructor">BatSys</span>.readdir</code></a> but the results are presented as an enumeration
-       of names.<br>
+<div class="info-desc">
+<p>As <a href="BatSys.html#VALreaddir"><code class="code"><span class="constructor">BatSys</span>.readdir</code></a> but the results are presented as an enumeration
+       of names.</p>
+</div>
 </div>
 
 <pre><span id="VALenable_runtime_warnings"><span class="keyword">val</span> enable_runtime_warnings</span> : <code class="type">bool -> unit</code></pre><div class="info ">
-Control whether the OCaml runtime system can emit warnings
+<div class="info-desc">
+<p>Control whether the OCaml runtime system can emit warnings
     on stderr.  Currently, the only supported warning is triggered
     when a channel created by <code class="code">open_*</code> functions is finalized without
-    being closed.  Runtime warnings are enabled by default.<br>
-<b>Since</b> 2.5.0 and OCaml 4.03<br>
+    being closed.  Runtime warnings are enabled by default.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.5.0 and OCaml 4.03</li>
+</ul>
 </div>
 
 <pre><span id="VALruntime_warnings_enabled"><span class="keyword">val</span> runtime_warnings_enabled</span> : <code class="type">unit -> bool</code></pre><div class="info ">
-Return whether runtime warnings are currently enabled.<br>
-<b>Since</b> 2.5.0 and OCaml 4.03<br>
+<div class="info-desc">
+<p>Return whether runtime warnings are currently enabled.</p>
 </div>
-<br>
-<h6 id="6_Optimization">Optimization</h6><br>
-
+<ul class="info-attributes">
+<li><b>Since</b> 2.5.0 and OCaml 4.03</li>
+</ul>
+</div>
+<h7 id="6_Optimization">Optimization</h7>
 <pre><span id="VALopaque_identity"><span class="keyword">val</span> opaque_identity</span> : <code class="type">'a -> 'a</code></pre><div class="info ">
-For the purposes of optimization, <code class="code">opaque_identity</code> behaves like an
-    unknown (and thus possibly side-effecting) function.
-<p>
+<div class="info-desc">
+<p>For the purposes of optimization, <code class="code">opaque_identity</code> behaves like an
+    unknown (and thus possibly side-effecting) function.</p>
 
-    At runtime, <code class="code">opaque_identity</code> disappears altogether.
-<p>
+<p>At runtime, <code class="code">opaque_identity</code> disappears altogether.</p>
 
-    A typical use of this function is to prevent pure computations from being
-    optimized away in benchmarking loops.  For example:
-    <pre class="codepre"><code class="code">      <span class="keyword">for</span> _round = 1 <span class="keyword">to</span> 100_000 <span class="keyword">do</span>
+<p>A typical use of this function is to prevent pure computations from being
+    optimized away in benchmarking loops.  For example:</p>
+<pre class="codepre"><code class="code">      <span class="keyword">for</span> _round = 1 <span class="keyword">to</span> 100_000 <span class="keyword">do</span>
         ignore (<span class="constructor">Sys</span>.opaque_identity (my_pure_computation ()))
       <span class="keyword">done</span>
     </code></pre>
-<p>
-
-    The compiler primitive was added to OCaml 4.03, but we emulate it
+<p>The compiler primitive was added to OCaml 4.03, but we emulate it
     under 4.02 using the -opaque compilation flag. There is no easy
     way for Batteries to emulate it correctly under older OCaml
-    versions.<br>
-<b>Since</b> 2.5.0 and OCaml 4.02<br>
+    versions.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.5.0 and OCaml 4.02</li>
+</ul>
 </div>
 </body></html>

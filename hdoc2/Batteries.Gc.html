@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -118,7 +119,7 @@
 </div>
 <h1>Module <a href="type_Batteries.Gc.html">Batteries.Gc</a></h1>
 
-<pre><span class="keyword">module</span> Gc: <code class="type"><a href="BatGc.html">BatGc</a></code></pre><hr width="100%">
+<pre><span id="MODULEGc"><span class="keyword">module</span> Gc</span>: <code class="type"><a href="BatGc.html">BatGc</a></code></pre><hr width="100%">
 
 <pre><span id="TYPEstat"><span class="keyword">type</span> <code class="type"></code>stat</span> = <code class="type">Gc.stat</code> = {</pre><table class="typetable">
 <tr>
@@ -127,10 +128,12 @@
 <td align="left" valign="top" >
 <code><span id="TYPEELTstat.minor_words">minor_words</span>&nbsp;: <code class="type">float</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Number of words allocated in the minor heap since
+<div class="info-desc">
+<p>Number of words allocated in the minor heap since
         the program was started.  This number is accurate in
         byte-code programs, but only an approximation in programs
-        compiled to native code.<br>
+        compiled to native code.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -140,9 +143,11 @@ Number of words allocated in the minor heap since
 <td align="left" valign="top" >
 <code><span id="TYPEELTstat.promoted_words">promoted_words</span>&nbsp;: <code class="type">float</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Number of words allocated in the minor heap that
+<div class="info-desc">
+<p>Number of words allocated in the minor heap that
         survived a minor collection and were moved to the major heap
-        since the program was started.<br>
+        since the program was started.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -152,8 +157,10 @@ Number of words allocated in the minor heap that
 <td align="left" valign="top" >
 <code><span id="TYPEELTstat.major_words">major_words</span>&nbsp;: <code class="type">float</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Number of words allocated in the major heap, including
-        the promoted words, since the program was started.<br>
+<div class="info-desc">
+<p>Number of words allocated in the major heap, including
+        the promoted words, since the program was started.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -163,7 +170,9 @@ Number of words allocated in the major heap, including
 <td align="left" valign="top" >
 <code><span id="TYPEELTstat.minor_collections">minor_collections</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Number of minor collections since the program was started.<br>
+<div class="info-desc">
+<p>Number of minor collections since the program was started.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -173,8 +182,10 @@ Number of minor collections since the program was started.<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTstat.major_collections">major_collections</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Number of major collection cycles completed since the program
-        was started.<br>
+<div class="info-desc">
+<p>Number of major collection cycles completed since the program
+        was started.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -184,7 +195,9 @@ Number of major collection cycles completed since the program
 <td align="left" valign="top" >
 <code><span id="TYPEELTstat.heap_words">heap_words</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Total size of the major heap, in words.<br>
+<div class="info-desc">
+<p>Total size of the major heap, in words.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -194,7 +207,9 @@ Total size of the major heap, in words.<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTstat.heap_chunks">heap_chunks</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Number of contiguous pieces of memory that make up the major heap.<br>
+<div class="info-desc">
+<p>Number of contiguous pieces of memory that make up the major heap.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -204,8 +219,10 @@ Number of contiguous pieces of memory that make up the major heap.<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTstat.live_words">live_words</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Number of words of live data in the major heap, including the header
-        words.<br>
+<div class="info-desc">
+<p>Number of words of live data in the major heap, including the header
+        words.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -215,7 +232,9 @@ Number of words of live data in the major heap, including the header
 <td align="left" valign="top" >
 <code><span id="TYPEELTstat.live_blocks">live_blocks</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Number of live blocks in the major heap.<br>
+<div class="info-desc">
+<p>Number of live blocks in the major heap.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -225,7 +244,9 @@ Number of live blocks in the major heap.<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTstat.free_words">free_words</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Number of words in the free list.<br>
+<div class="info-desc">
+<p>Number of words in the free list.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -235,7 +256,9 @@ Number of words in the free list.<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTstat.free_blocks">free_blocks</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Number of blocks in the free list.<br>
+<div class="info-desc">
+<p>Number of blocks in the free list.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -245,7 +268,9 @@ Number of blocks in the free list.<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTstat.largest_free">largest_free</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Size (in words) of the largest block in the free list.<br>
+<div class="info-desc">
+<p>Size (in words) of the largest block in the free list.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -255,9 +280,11 @@ Size (in words) of the largest block in the free list.<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTstat.fragments">fragments</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Number of wasted words due to fragmentation.  These are
+<div class="info-desc">
+<p>Number of wasted words due to fragmentation.  These are
         1-words free blocks placed between two live blocks.  They
-        are not available for allocation.<br>
+        are not available for allocation.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -267,7 +294,9 @@ Number of wasted words due to fragmentation.  These are
 <td align="left" valign="top" >
 <code><span id="TYPEELTstat.compactions">compactions</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Number of heap compactions since the program was started.<br>
+<div class="info-desc">
+<p>Number of heap compactions since the program was started.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -277,7 +306,9 @@ Number of heap compactions since the program was started.<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTstat.top_heap_words">top_heap_words</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Maximum size reached by the major heap, in words.<br>
+<div class="info-desc">
+<p>Maximum size reached by the major heap, in words.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -287,21 +318,26 @@ Maximum size reached by the major heap, in words.<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTstat.stack_size">stack_size</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Current size of the stack, in words.<br>
-<b>Since</b> 3.12.0<br>
+<div class="info-desc">
+<p>Current size of the stack, in words.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.12.0</li>
+</ul>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 }
 
 <div class="info ">
-The memory management counters are returned in a <code class="code">stat</code> record.
-<p>
+<div class="info-desc">
+<p>The memory management counters are returned in a <code class="code">stat</code> record.</p>
 
-    The total amount of memory allocated by the program since it was started
+<p>The total amount of memory allocated by the program since it was started
     is (in words) <code class="code">minor_words&nbsp;+&nbsp;major_words&nbsp;-&nbsp;promoted_words</code>.  Multiply by
     the word size (4 on a 32-bit machine, 8 on a 64-bit machine) to get
-    the number of bytes.<br>
+    the number of bytes.</p>
+</div>
 </div>
 
 
@@ -312,8 +348,10 @@ The memory management counters are returned in a <code class="code">stat</code> 
 <td align="left" valign="top" >
 <code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTcontrol.minor_heap_size">minor_heap_size</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-The size (in words) of the minor heap.  Changing
-        this parameter will trigger a minor collection.  Default: 32k.<br>
+<div class="info-desc">
+<p>The size (in words) of the minor heap.  Changing
+        this parameter will trigger a minor collection.  Default: 32k.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -323,8 +361,10 @@ The size (in words) of the minor heap.  Changing
 <td align="left" valign="top" >
 <code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTcontrol.major_heap_increment">major_heap_increment</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-The minimum number of words to add to the
-        major heap when increasing it.  Default: 124k.<br>
+<div class="info-desc">
+<p>The minimum number of words to add to the
+        major heap when increasing it.  Default: 124k.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -334,13 +374,15 @@ The minimum number of words to add to the
 <td align="left" valign="top" >
 <code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTcontrol.space_overhead">space_overhead</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-The major GC speed is computed from this parameter.
+<div class="info-desc">
+<p>The major GC speed is computed from this parameter.
         This is the memory that will be "wasted" because the GC does not
         immediatly collect unreachable blocks.  It is expressed as a
         percentage of the memory used for live data.
         The GC will work more (use more CPU time and collect
         blocks more eagerly) if <code class="code">space_overhead</code> is smaller.
-        Default: 80.<br>
+        Default: 80.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -350,9 +392,11 @@ The major GC speed is computed from this parameter.
 <td align="left" valign="top" >
 <code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTcontrol.verbose">verbose</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-This value controls the GC messages on standard error output.
+<div class="info-desc">
+<p>This value controls the GC messages on standard error output.
         It is a sum of some of the following flags, to print messages
-        on the corresponding events:<ul>
+        on the corresponding events:</p>
+<ul>
 <li><code class="code">0x001</code> Start of major GC cycle.</li>
 <li><code class="code">0x002</code> Minor collection and major GC slice.</li>
 <li><code class="code">0x004</code> Growing and shrinking of the heap.</li>
@@ -365,7 +409,7 @@ This value controls the GC messages on standard error output.
 <li><code class="code">0x200</code> Computation of compaction triggering condition.
         Default: 0.</li>
 </ul>
-<br>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -375,13 +419,15 @@ This value controls the GC messages on standard error output.
 <td align="left" valign="top" >
 <code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTcontrol.max_overhead">max_overhead</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Heap compaction is triggered when the estimated amount
+<div class="info-desc">
+<p>Heap compaction is triggered when the estimated amount
         of "wasted" memory is more than <code class="code">max_overhead</code> percent of the
         amount of live data.  If <code class="code">max_overhead</code> is set to 0, heap
         compaction is triggered at the end of each major GC cycle
         (this setting is intended for testing purposes only).
         If <code class="code">max_overhead&nbsp;&gt;=&nbsp;1000000</code>, compaction is never triggered.
-        Default: 500.<br>
+        Default: 500.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -391,9 +437,11 @@ Heap compaction is triggered when the estimated amount
 <td align="left" valign="top" >
 <code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTcontrol.stack_limit">stack_limit</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-The maximum size of the stack (in words).  This is only
+<div class="info-desc">
+<p>The maximum size of the stack (in words).  This is only
         relevant to the byte-code runtime, as the native code runtime
-        uses the operating system's stack.  Default: 256k.<br>
+        uses the operating system's stack.  Default: 256k.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -403,13 +451,17 @@ The maximum size of the stack (in words).  This is only
 <td align="left" valign="top" >
 <code><span class="keyword">mutable&nbsp;</span><span id="TYPEELTcontrol.allocation_policy">allocation_policy</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-The policy used for allocating in the heap.  Possible
+<div class="info-desc">
+<p>The policy used for allocating in the heap.  Possible
         values are 0 and 1.  0 is the next-fit policy, which is
         quite fast but can result in fragmentation.  1 is the
         first-fit policy, which can be slower in some cases but
         can be better for programs with fragmentation problems.
-        Default: 0.<br>
-<b>Since</b> 3.11.0<br>
+        Default: 0.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.11.0</li>
+</ul>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -419,154 +471,202 @@ The policy used for allocating in the heap.  Possible
 <td align="left" valign="top" >
 <code><span id="TYPEELTcontrol.window_size">window_size</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-The size of the window used by the major GC for smoothing
+<div class="info-desc">
+<p>The size of the window used by the major GC for smoothing
         out variations in its workload. This is an integer between
         1 and 50.
-        Default: 1.<br>
-<b>Since</b> 2.5.0 and OCaml 4.03.0<br>
+        Default: 1.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.5.0 and OCaml 4.03.0</li>
+</ul>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 }
 
 <div class="info ">
-The GC parameters are given as a <code class="code">control</code> record.  Note that
+<div class="info-desc">
+<p>The GC parameters are given as a <code class="code">control</code> record.  Note that
     these parameters can also be initialised by setting the
     OCAMLRUNPARAM environment variable.  See the documentation of
-    ocamlrun.<br>
+    ocamlrun.</p>
+</div>
 </div>
 
 
 <pre><span id="VALstat"><span class="keyword">val</span> stat</span> : <code class="type">unit -> <a href="BatGc.html#TYPEstat">stat</a></code></pre><div class="info ">
-Return the current values of the memory management counters in a
+<div class="info-desc">
+<p>Return the current values of the memory management counters in a
     <code class="code">stat</code> record.  This function examines every heap block to get the
-    statistics.<br>
+    statistics.</p>
+</div>
 </div>
 
 <pre><span id="VALquick_stat"><span class="keyword">val</span> quick_stat</span> : <code class="type">unit -> <a href="BatGc.html#TYPEstat">stat</a></code></pre><div class="info ">
-Same as <code class="code">stat</code> except that <code class="code">live_words</code>, <code class="code">live_blocks</code>, <code class="code">free_words</code>,
+<div class="info-desc">
+<p>Same as <code class="code">stat</code> except that <code class="code">live_words</code>, <code class="code">live_blocks</code>, <code class="code">free_words</code>,
     <code class="code">free_blocks</code>, <code class="code">largest_free</code>, and <code class="code">fragments</code> are set to 0.  This
     function is much faster than <code class="code">stat</code> because it does not need to go
-    through the heap.<br>
+    through the heap.</p>
+</div>
 </div>
 
 <pre><span id="VALcounters"><span class="keyword">val</span> counters</span> : <code class="type">unit -> float * float * float</code></pre><div class="info ">
-Return <code class="code">(minor_words,&nbsp;promoted_words,&nbsp;major_words)</code>.  This function
-    is as fast at <code class="code">quick_stat</code>.<br>
+<div class="info-desc">
+<p>Return <code class="code">(minor_words,&nbsp;promoted_words,&nbsp;major_words)</code>.  This function
+    is as fast at <code class="code">quick_stat</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALminor_words"><span class="keyword">val</span> minor_words</span> : <code class="type">unit -> float</code></pre><div class="info ">
-Number of words allocated in the minor heap since the program was
+<div class="info-desc">
+<p>Number of words allocated in the minor heap since the program was
     started. This number is accurate in byte-code programs, but only an
-    approximation in programs compiled to native code.
-<p>
+    approximation in programs compiled to native code.</p>
 
-    In native code this function does not allocate.<br>
-<b>Since</b> 2.5.3 and OCaml 4.04<br>
+<p>In native code this function does not allocate.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.5.3 and OCaml 4.04</li>
+</ul>
 </div>
 
 <pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">unit -> <a href="BatGc.html#TYPEcontrol">control</a></code></pre><div class="info ">
-Return the current values of the GC parameters in a <code class="code">control</code> record.<br>
+<div class="info-desc">
+<p>Return the current values of the GC parameters in a <code class="code">control</code> record.</p>
+</div>
 </div>
 
 <pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type"><a href="BatGc.html#TYPEcontrol">control</a> -> unit</code></pre><div class="info ">
-<code class="code">set&nbsp;r</code> changes the GC parameters according to the <code class="code">control</code> record <code class="code">r</code>.
-    The normal usage is: <code class="code"><span class="constructor">Gc</span>.set&nbsp;{&nbsp;(<span class="constructor">Gc</span>.get())&nbsp;<span class="keyword">with</span>&nbsp;<span class="constructor">Gc</span>.verbose&nbsp;=&nbsp;0x00d&nbsp;}</code><br>
+<div class="info-desc">
+<p><code class="code">set&nbsp;r</code> changes the GC parameters according to the <code class="code">control</code> record <code class="code">r</code>.
+    The normal usage is: <code class="code"><span class="constructor">Gc</span>.set&nbsp;{&nbsp;(<span class="constructor">Gc</span>.get())&nbsp;<span class="keyword">with</span>&nbsp;<span class="constructor">Gc</span>.verbose&nbsp;=&nbsp;0x00d&nbsp;}</code></p>
+</div>
 </div>
 
 <pre><span id="VALminor"><span class="keyword">val</span> minor</span> : <code class="type">unit -> unit</code></pre><div class="info ">
-Trigger a minor collection.<br>
+<div class="info-desc">
+<p>Trigger a minor collection.</p>
+</div>
 </div>
 
 <pre><span id="VALmajor_slice"><span class="keyword">val</span> major_slice</span> : <code class="type">int -> int</code></pre><div class="info ">
-Do a minor collection and a slice of major collection.  The argument
+<div class="info-desc">
+<p>Do a minor collection and a slice of major collection.  The argument
     is the size of the slice, 0 to use the automatically-computed
-    slice size.  In all cases, the result is the computed slice size.<br>
+    slice size.  In all cases, the result is the computed slice size.</p>
+</div>
 </div>
 
 <pre><span id="VALmajor"><span class="keyword">val</span> major</span> : <code class="type">unit -> unit</code></pre><div class="info ">
-Do a minor collection and finish the current major collection cycle.<br>
+<div class="info-desc">
+<p>Do a minor collection and finish the current major collection cycle.</p>
+</div>
 </div>
 
 <pre><span id="VALfull_major"><span class="keyword">val</span> full_major</span> : <code class="type">unit -> unit</code></pre><div class="info ">
-Do a minor collection, finish the current major collection cycle,
+<div class="info-desc">
+<p>Do a minor collection, finish the current major collection cycle,
     and perform a complete new cycle.  This will collect all currently
-    unreachable blocks.<br>
+    unreachable blocks.</p>
+</div>
 </div>
 
 <pre><span id="VALcompact"><span class="keyword">val</span> compact</span> : <code class="type">unit -> unit</code></pre><div class="info ">
-Perform a full major collection and compact the heap.  Note that heap
-    compaction is a lengthy operation.<br>
+<div class="info-desc">
+<p>Perform a full major collection and compact the heap.  Note that heap
+    compaction is a lengthy operation.</p>
+</div>
 </div>
 
 <pre><span id="VALprint_stat"><span class="keyword">val</span> print_stat</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> unit</code></pre><div class="info ">
-Print the current values of the memory management counters (in
-    human-readable form) into the channel argument.<br>
+<div class="info-desc">
+<p>Print the current values of the memory management counters (in
+    human-readable form) into the channel argument.</p>
+</div>
 </div>
 
 <pre><span id="VALallocated_bytes"><span class="keyword">val</span> allocated_bytes</span> : <code class="type">unit -> float</code></pre><div class="info ">
-Return the total number of bytes allocated since the program was
+<div class="info-desc">
+<p>Return the total number of bytes allocated since the program was
     started.  It is returned as a <code class="code">float</code> to avoid overflow problems
-    with <code class="code">int</code> on 32-bit machines.<br>
+    with <code class="code">int</code> on 32-bit machines.</p>
+</div>
 </div>
 
 <pre><span id="VALget_minor_free"><span class="keyword">val</span> get_minor_free</span> : <code class="type">unit -> int</code></pre><div class="info ">
-Return the current size of the free space inside the minor heap.<br>
-<b>Since</b> 2.5.0 and OCaml 4.03.0<br>
+<div class="info-desc">
+<p>Return the current size of the free space inside the minor heap.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.5.0 and OCaml 4.03.0</li>
+</ul>
 </div>
 
 <pre><span id="VALget_bucket"><span class="keyword">val</span> get_bucket</span> : <code class="type">int -> int</code></pre><div class="info ">
-<code class="code">get_bucket&nbsp;n</code> returns the current size of the <code class="code">n</code>-th future bucket
+<div class="info-desc">
+<p><code class="code">get_bucket&nbsp;n</code> returns the current size of the <code class="code">n</code>-th future bucket
     of the GC smoothing system. The unit is one millionth of a full GC.
     Raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">n</code> is negative, return 0 if n is larger
-    than the smoothing window.<br>
-<b>Since</b> 2.5.0 and OCaml 4.03.0<br>
+    than the smoothing window.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.5.0 and OCaml 4.03.0</li>
+</ul>
 </div>
 
 <pre><span id="VALget_credit"><span class="keyword">val</span> get_credit</span> : <code class="type">unit -> int</code></pre><div class="info ">
-<code class="code">get_credit&nbsp;()</code> returns the current size of the "work done in advance"
+<div class="info-desc">
+<p><code class="code">get_credit&nbsp;()</code> returns the current size of the "work done in advance"
     counter of the GC smoothing system. The unit is one millionth of a
-    full GC.<br>
-<b>Since</b> 2.5.0 and OCaml 4.03.0<br>
+    full GC.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.5.0 and OCaml 4.03.0</li>
+</ul>
 </div>
 
 <pre><span id="VALhuge_fallback_count"><span class="keyword">val</span> huge_fallback_count</span> : <code class="type">unit -> int</code></pre><div class="info ">
-Return the number of times we tried to map huge pages and had to fall
-    back to small pages. This is always 0 if <code class="code"><span class="constructor">OCAMLRUNPARAM</span></code> contains <code class="code"><span class="constructor">H</span>=1</code>.<br>
-<b>Since</b> 2.5.0 and OCaml 4.03.0<br>
+<div class="info-desc">
+<p>Return the number of times we tried to map huge pages and had to fall
+    back to small pages. This is always 0 if <code class="code"><span class="constructor">OCAMLRUNPARAM</span></code> contains <code class="code"><span class="constructor">H</span>=1</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.5.0 and OCaml 4.03.0</li>
+</ul>
 </div>
 
 <pre><span id="VALfinalise"><span class="keyword">val</span> finalise</span> : <code class="type">('a -> unit) -> 'a -> unit</code></pre><div class="info ">
-<code class="code">finalise&nbsp;f&nbsp;v</code> registers <code class="code">f</code> as a finalisation function for <code class="code">v</code>.
+<div class="info-desc">
+<p><code class="code">finalise&nbsp;f&nbsp;v</code> registers <code class="code">f</code> as a finalisation function for <code class="code">v</code>.
     <code class="code">v</code> must be heap-allocated.  <code class="code">f</code> will be called with <code class="code">v</code> as
     argument at some point between the first time <code class="code">v</code> becomes unreachable
     and the time <code class="code">v</code> is collected by the GC.  Several functions can
     be registered for the same value, or even several instances of the
     same function.  Each instance will be called once (or never,
-    if the program terminates before <code class="code">v</code> becomes unreachable).
-<p>
+    if the program terminates before <code class="code">v</code> becomes unreachable).</p>
 
-    The GC will call the finalisation functions in the order of
+<p>The GC will call the finalisation functions in the order of
     deallocation.  When several values become unreachable at the
     same time (i.e. during the same GC cycle), the finalisation
     functions will be called in the reverse order of the corresponding
     calls to <code class="code">finalise</code>.  If <code class="code">finalise</code> is called in the same order
     as the values are allocated, that means each value is finalised
     before the values it depends upon.  Of course, this becomes
-    false if additional dependencies are introduced by assignments.
-<p>
+    false if additional dependencies are introduced by assignments.</p>
 
-    Anything reachable from the closure of finalisation functions
+<p>Anything reachable from the closure of finalisation functions
     is considered reachable, so the following code will not work
-    as expected:<ul>
+    as expected:</p>
+<ul>
 <li><code class="code">&nbsp;<span class="keyword">let</span>&nbsp;v&nbsp;=&nbsp;...&nbsp;<span class="keyword">in</span>&nbsp;<span class="constructor">Gc</span>.finalise&nbsp;(<span class="keyword">fun</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;...)&nbsp;v&nbsp;</code></li>
 </ul>
-
-    Instead you should write:<ul>
+<p>Instead you should write:</p>
+<ul>
 <li><code class="code">&nbsp;<span class="keyword">let</span>&nbsp;f&nbsp;=&nbsp;<span class="keyword">fun</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;...&nbsp;;;&nbsp;<span class="keyword">let</span>&nbsp;v&nbsp;=&nbsp;...&nbsp;<span class="keyword">in</span>&nbsp;<span class="constructor">Gc</span>.finalise&nbsp;f&nbsp;v&nbsp;</code></li>
 </ul>
-
-    The <code class="code">f</code> function can use all features of OCaml, including
+<p>The <code class="code">f</code> function can use all features of OCaml, including
     assignments that make the value reachable again.  It can also
     loop forever (in this case, the other
     finalisation functions will not be called during the execution of f,
@@ -574,10 +674,9 @@ Return the number of times we tried to map huge pages and had to fall
     It can call <code class="code">finalise</code> on <code class="code">v</code> or other values to register other
     functions or even itself.  It can raise an exception; in this case
     the exception will interrupt whatever the program was doing when
-    the function was called.
-<p>
+    the function was called.</p>
 
-    <code class="code">finalise</code> will raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">v</code> is not
+<p><code class="code">finalise</code> will raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">v</code> is not
     heap-allocated.  Some examples of values that are not
     heap-allocated are integers, constant constructors, booleans,
     the empty array, the empty list, the unit value.  The exact list
@@ -588,16 +687,17 @@ Return the number of times we tried to map huge pages and had to fall
     You should also be aware that compiler optimisations may duplicate
     some immutable values, for example floating-point numbers when
     stored into arrays, so they can be finalised and collected while
-    another copy is still in use by the program.
-<p>
+    another copy is still in use by the program.</p>
 
-    The results of calling <code class="code"><span class="constructor">String</span>.make</code>, <code class="code"><span class="constructor">String</span>.create</code>,
+<p>The results of calling <code class="code"><span class="constructor">String</span>.make</code>, <code class="code"><span class="constructor">String</span>.create</code>,
     <code class="code"><span class="constructor">Array</span>.make</code>, and <code class="code"><span class="constructor">Pervasives</span>.ref</code> are guaranteed to be
-    heap-allocated and non-constant except when the length argument is <code class="code">0</code>.<br>
+    heap-allocated and non-constant except when the length argument is <code class="code">0</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALfinalise_last"><span class="keyword">val</span> finalise_last</span> : <code class="type">(unit -> unit) -> 'a -> unit</code></pre><div class="info ">
-same as <a href="BatGc.html#VALfinalise"><code class="code"><span class="constructor">BatGc</span>.finalise</code></a> except the value is not given as argument. So
+<div class="info-desc">
+<p>same as <a href="BatGc.html#VALfinalise"><code class="code"><span class="constructor">BatGc</span>.finalise</code></a> except the value is not given as argument. So
     you can't use the given value for the computation of the
     finalisation function. The benefit is that the function is called
     after the value is unreachable for the last time instead of the
@@ -606,33 +706,44 @@ same as <a href="BatGc.html#VALfinalise"><code class="code"><span class="constru
     and ephemerons that contained this value as key or data is unset
     before running the finalisation function. Moreover the
     finalisation function attached with `GC.finalise` are always
-    called before the finalisation function attached with `GC.finalise_last`.<br>
-<b>Since</b> NEXT_RELASE and OCaml 4.04<br>
+    called before the finalisation function attached with `GC.finalise_last`.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> NEXT_RELASE and OCaml 4.04</li>
+</ul>
 </div>
 
 <pre><span id="VALfinalise_release"><span class="keyword">val</span> finalise_release</span> : <code class="type">unit -> unit</code></pre><div class="info ">
-A finalisation function may call <code class="code">finalise_release</code> to tell the
+<div class="info-desc">
+<p>A finalisation function may call <code class="code">finalise_release</code> to tell the
     GC that it can launch the next finalisation function without waiting
-    for the current one to return.<br>
+    for the current one to return.</p>
+</div>
 </div>
 
 <pre><span id="TYPEalarm"><span class="keyword">type</span> <code class="type"></code>alarm</span> = <code class="type">Gc.alarm</code> </pre>
 <div class="info ">
-An alarm is a piece of data that calls a user function at the end of
+<div class="info-desc">
+<p>An alarm is a piece of data that calls a user function at the end of
     each major GC cycle.  The following functions are provided to create
-    and delete alarms.<br>
+    and delete alarms.</p>
+</div>
 </div>
 
 
 <pre><span id="VALcreate_alarm"><span class="keyword">val</span> create_alarm</span> : <code class="type">(unit -> unit) -> <a href="BatGc.html#TYPEalarm">alarm</a></code></pre><div class="info ">
-<code class="code">create_alarm&nbsp;f</code> will arrange for <code class="code">f</code> to be called at the end of each
+<div class="info-desc">
+<p><code class="code">create_alarm&nbsp;f</code> will arrange for <code class="code">f</code> to be called at the end of each
     major GC cycle, starting with the current cycle or the next one.
     A value of type <code class="code">alarm</code> is returned that you can
-    use to call <code class="code">delete_alarm</code>.<br>
+    use to call <code class="code">delete_alarm</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALdelete_alarm"><span class="keyword">val</span> delete_alarm</span> : <code class="type"><a href="BatGc.html#TYPEalarm">alarm</a> -> unit</code></pre><div class="info ">
-<code class="code">delete_alarm&nbsp;a</code> will stop the calls to the function associated
-      to <code class="code">a</code>.  Calling <code class="code">delete_alarm&nbsp;a</code> again has no effect.<br>
+<div class="info-desc">
+<p><code class="code">delete_alarm&nbsp;a</code> will stop the calls to the function associated
+      to <code class="code">a</code>.  Calling <code class="code">delete_alarm&nbsp;a</code> again has no effect.</p>
+</div>
 </div>
 </body></html>

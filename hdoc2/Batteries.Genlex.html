@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -119,7 +120,7 @@
 </div>
 <h1>Module <a href="type_Batteries.Genlex.html">Batteries.Genlex</a></h1>
 
-<pre><span class="keyword">module</span> Genlex: <code class="type"><a href="BatGenlex.html">BatGenlex</a></code></pre><hr width="100%">
+<pre><span id="MODULEGenlex"><span class="keyword">module</span> Genlex</span>: <code class="type"><a href="BatGenlex.html">BatGenlex</a></code></pre><hr width="100%">
 
 <pre><span id="TYPEtoken"><span class="keyword">type</span> <code class="type"></code>token</span> = <code class="type">Genlex.token</code> = </pre><table class="typetable">
 <tr>
@@ -166,26 +167,30 @@
 </tr></table>
 
 <div class="info ">
-The type of tokens. The lexical classes are: <code class="code"><span class="constructor">Int</span></code> and <code class="code"><span class="constructor">Float</span></code>
+<div class="info-desc">
+<p>The type of tokens. The lexical classes are: <code class="code"><span class="constructor">Int</span></code> and <code class="code"><span class="constructor">Float</span></code>
     for integer and floating-point numbers; <code class="code"><span class="constructor">String</span></code> for
     string literals, enclosed in double quotes; <code class="code"><span class="constructor">Char</span></code> for
     character literals, enclosed in single quotes; <code class="code"><span class="constructor">Ident</span></code> for
     identifiers (either sequences of letters, digits, underscores
     and quotes, or sequences of ``operator characters'' such as
     <code class="code">+</code>, <code class="code">*</code>, etc); and <code class="code"><span class="constructor">Kwd</span></code> for keywords (either identifiers or
-    single ``special characters'' such as <code class="code">(</code>, <code class="code">}</code>, etc).<br>
+    single ``special characters'' such as <code class="code">(</code>, <code class="code">}</code>, etc).</p>
+</div>
 </div>
 
 
 <pre><span id="VALmake_lexer"><span class="keyword">val</span> make_lexer</span> : <code class="type">string list -> char Stream.t -> <a href="BatGenlex.html#TYPEtoken">token</a> Stream.t</code></pre><div class="info ">
-Construct the lexer function. The first argument is the list of
+<div class="info-desc">
+<p>Construct the lexer function. The first argument is the list of
     keywords. An identifier <code class="code">s</code> is returned as <code class="code"><span class="constructor">Kwd</span>&nbsp;s</code> if <code class="code">s</code>
     belongs to this list, and as <code class="code"><span class="constructor">Ident</span>&nbsp;s</code> otherwise.
     A special character <code class="code">s</code> is returned as <code class="code"><span class="constructor">Kwd</span>&nbsp;s</code> if <code class="code">s</code>
     belongs to this list, and cause a lexical error (exception
     <code class="code"><span class="constructor">Parse_error</span></code>) otherwise. Blanks and newlines are skipped.
     Comments delimited by <code class="code">(*</code> and <code class="code">*)</code> are skipped as well,
-    and can be nested.<br>
+    and can be nested.</p>
+</div>
 </div>
 
 <pre><code><span id="TYPElexer_error"><span class="keyword">type</span> <code class="type"></code>lexer_error</span> = </code></pre><table class="typetable">
@@ -224,27 +229,35 @@ Construct the lexer function. The first argument is the list of
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
 <div class="info ">
-A lexer<br>
+<div class="info-desc">
+<p>A lexer</p>
+</div>
 </div>
 
 
 <pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">string list -> <a href="BatGenlex.html#TYPEt">t</a></code></pre><div class="info ">
-Create a lexer from a list of keywords<br>
+<div class="info-desc">
+<p>Create a lexer from a list of keywords</p>
+</div>
 </div>
 
 <pre><span id="VALto_stream_filter"><span class="keyword">val</span> to_stream_filter</span> : <code class="type"><a href="BatGenlex.html#TYPEt">t</a> -> char Stream.t -> <a href="BatGenlex.html#TYPEtoken">token</a> Stream.t</code></pre><div class="info ">
-Apply the lexer to a stream.<br>
+<div class="info-desc">
+<p>Apply the lexer to a stream.</p>
+</div>
 </div>
 
 <pre><span id="VALto_enum_filter"><span class="keyword">val</span> to_enum_filter</span> : <code class="type"><a href="BatGenlex.html#TYPEt">t</a> -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> <a href="BatGenlex.html#TYPEtoken">token</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-Apply the lexer to an enum.<br>
+<div class="info-desc">
+<p>Apply the lexer to an enum.</p>
+</div>
 </div>
 
 <pre><span id="VALto_lazy_list_filter"><span class="keyword">val</span> to_lazy_list_filter</span> : <code class="type"><a href="BatGenlex.html#TYPEt">t</a> -> char <a href="BatLazyList.html#TYPEt">BatLazyList.t</a> -> <a href="BatGenlex.html#TYPEtoken">token</a> <a href="BatLazyList.html#TYPEt">BatLazyList.t</a></code></pre><div class="info ">
-Apply the lexer to a lazy list.<br>
+<div class="info-desc">
+<p>Apply the lexer to a lazy list.</p>
+</div>
 </div>
 
-<pre><span id="VALstring_of_token"><span class="keyword">val</span> string_of_token</span> : <code class="type"><a href="BatGenlex.html#TYPEtoken">token</a> -> string</code></pre><br>
-<h6 id="6_Extendingtootherlanguages">Extending to other languages</h6><br>
-
-<pre><span class="keyword">module</span> <a href="BatGenlex.Languages.html">Languages</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatGenlex.Languages.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>
+<pre><span id="VALstring_of_token"><span class="keyword">val</span> string_of_token</span> : <code class="type"><a href="BatGenlex.html#TYPEtoken">token</a> -> string</code></pre><h7 id="6_Extendingtootherlanguages">Extending to other languages</h7>
+<pre><span id="MODULELanguages"><span class="keyword">module</span> <a href="BatGenlex.Languages.html">Languages</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatGenlex.Languages.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>

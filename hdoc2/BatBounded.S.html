@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -118,57 +119,77 @@
 </div>
 <h1>Module type <a href="type_BatBounded.S.html">BatBounded.S</a></h1>
 
-<pre><span class="keyword">module type</span> S = <code class="code"><span class="keyword">sig</span></code> <a href="BatBounded.S.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
+<pre><span id="MODULETYPES"><span class="keyword">module type</span> S</span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatBounded.S.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 
 <pre><span id="TYPEbase_u"><span class="keyword">type</span> <code class="type"></code>base_u</span> </pre>
 <div class="info ">
-Raw unbounded type<br>
+<div class="info-desc">
+<p>Raw unbounded type</p>
+</div>
 </div>
 
 
 <pre><span id="TYPEu"><span class="keyword">type</span> <code class="type"></code>u</span> </pre>
 <div class="info ">
-<a href="BatBounded.S.html#TYPEbase_u"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">S</span>.base_u</code></a> after bounding constraints have been applied<br>
+<div class="info-desc">
+<p><a href="BatBounded.S.html#TYPEbase_u"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">S</span>.base_u</code></a> after bounding constraints have been applied</p>
+</div>
 </div>
 
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = private <code class="type"><a href="BatBounded.S.html#TYPEu">u</a></code> </pre>
 <div class="info ">
-Private version of <a href="BatBounded.S.html#TYPEu"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">S</span>.u</code></a> to avoid construction of <a href="BatBounded.S.html#TYPEt"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">S</span>.t</code></a> values without
-      using <code class="code">make</code> below.<br>
+<div class="info-desc">
+<p>Private version of <a href="BatBounded.S.html#TYPEu"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">S</span>.u</code></a> to avoid construction of <a href="BatBounded.S.html#TYPEt"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">S</span>.t</code></a> values without
+      using <code class="code">make</code> below.</p>
+</div>
 </div>
 
 
 <pre><span id="VALbounds"><span class="keyword">val</span> bounds</span> : <code class="type"><a href="BatBounded.S.html#TYPEbase_u">base_u</a> <a href="BatBounded.html#TYPEbound_t">BatBounded.bound_t</a> *<br>       <a href="BatBounded.S.html#TYPEbase_u">base_u</a> <a href="BatBounded.html#TYPEbound_t">BatBounded.bound_t</a></code></pre><div class="info ">
-<code class="code">bounds</code> defines the <code class="code">(min,&nbsp;max)</code> bounds for the bounded range<br>
+<div class="info-desc">
+<p><code class="code">bounds</code> defines the <code class="code">(min,&nbsp;max)</code> bounds for the bounded range</p>
+</div>
 </div>
 
 <pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type"><a href="BatBounded.S.html#TYPEbase_u">base_u</a> -> <a href="BatBounded.S.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">make&nbsp;x</code> will return a value of type <a href="BatBounded.S.html#TYPEt"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">S</span>.t</code></a> derived from <code class="code">x</code>.<br>
+<div class="info-desc">
+<p><code class="code">make&nbsp;x</code> will return a value of type <a href="BatBounded.S.html#TYPEt"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">S</span>.t</code></a> derived from <code class="code">x</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALextract"><span class="keyword">val</span> extract</span> : <code class="type"><a href="BatBounded.S.html#TYPEt">t</a> -> <a href="BatBounded.S.html#TYPEu">u</a></code></pre><div class="info ">
-<code class="code">extract&nbsp;x</code> will return <code class="code">x</code> as a value of type <a href="BatBounded.S.html#TYPEu"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">S</span>.u</code></a>.  A similar result
-      could be achieved with <code class="code">(x&nbsp;:&gt;&nbsp;u)</code><br>
+<div class="info-desc">
+<p><code class="code">extract&nbsp;x</code> will return <code class="code">x</code> as a value of type <a href="BatBounded.S.html#TYPEu"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">S</span>.u</code></a>.  A similar result
+      could be achieved with <code class="code">(x&nbsp;:&gt;&nbsp;u)</code></p>
+</div>
 </div>
 
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">(<a href="BatBounded.S.html#TYPEbase_u">base_u</a> -> <a href="BatBounded.S.html#TYPEbase_u">base_u</a>) -><br>       <a href="BatBounded.S.html#TYPEt">t</a> -> <a href="BatBounded.S.html#TYPEt">t</a> option</code></pre><div class="info ">
-<code class="code">map&nbsp;f&nbsp;x</code> applies <code class="code">f</code> to <code class="code">x</code>.  Returns <code class="code"><span class="constructor">Some</span>&nbsp;y</code> if <code class="code">x</code> can be converted
-      back to type <a href="BatBounded.S.html#TYPEbase_u"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">S</span>.base_u</code></a>, otherwise returns <code class="code"><span class="constructor">None</span></code>.<br>
+<div class="info-desc">
+<p><code class="code">map&nbsp;f&nbsp;x</code> applies <code class="code">f</code> to <code class="code">x</code>.  Returns <code class="code"><span class="constructor">Some</span>&nbsp;y</code> if <code class="code">x</code> can be converted
+      back to type <a href="BatBounded.S.html#TYPEbase_u"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">S</span>.base_u</code></a>, otherwise returns <code class="code"><span class="constructor">None</span></code>.</p>
+</div>
 </div>
 
 <pre><span id="VALmap2"><span class="keyword">val</span> map2</span> : <code class="type">(<a href="BatBounded.S.html#TYPEbase_u">base_u</a> -> <a href="BatBounded.S.html#TYPEbase_u">base_u</a> -> <a href="BatBounded.S.html#TYPEbase_u">base_u</a>) -><br>       <a href="BatBounded.S.html#TYPEt">t</a> -> <a href="BatBounded.S.html#TYPEt">t</a> -> <a href="BatBounded.S.html#TYPEt">t</a> option</code></pre><div class="info ">
-<code class="code">map2&nbsp;f&nbsp;x&nbsp;y</code> applies <code class="code">f</code> to <code class="code">x</code> and <code class="code">y</code>.  Returns <code class="code"><span class="constructor">Some</span>&nbsp;z</code> if <code class="code">x</code> and <code class="code">y</code>
-      can be converted back to type <a href="BatBounded.S.html#TYPEbase_u"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">S</span>.base_u</code></a>, otherwise returns <code class="code"><span class="constructor">None</span></code>.<br>
+<div class="info-desc">
+<p><code class="code">map2&nbsp;f&nbsp;x&nbsp;y</code> applies <code class="code">f</code> to <code class="code">x</code> and <code class="code">y</code>.  Returns <code class="code"><span class="constructor">Some</span>&nbsp;z</code> if <code class="code">x</code> and <code class="code">y</code>
+      can be converted back to type <a href="BatBounded.S.html#TYPEbase_u"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">S</span>.base_u</code></a>, otherwise returns <code class="code"><span class="constructor">None</span></code>.</p>
+</div>
 </div>
 
 <pre><span id="VALmap_exn"><span class="keyword">val</span> map_exn</span> : <code class="type">(<a href="BatBounded.S.html#TYPEbase_u">base_u</a> -> <a href="BatBounded.S.html#TYPEbase_u">base_u</a>) -><br>       <a href="BatBounded.S.html#TYPEt">t</a> -> <a href="BatBounded.S.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">map_exn&nbsp;f&nbsp;x</code> applies <code class="code">f</code> to <code class="code">x</code>.  Returns <code class="code">y</code> if <code class="code">x</code> can be converted
-      back to type <a href="BatBounded.S.html#TYPEbase_u"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">S</span>.base_u</code></a>, otherwise raise an exception.<br>
+<div class="info-desc">
+<p><code class="code">map_exn&nbsp;f&nbsp;x</code> applies <code class="code">f</code> to <code class="code">x</code>.  Returns <code class="code">y</code> if <code class="code">x</code> can be converted
+      back to type <a href="BatBounded.S.html#TYPEbase_u"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">S</span>.base_u</code></a>, otherwise raise an exception.</p>
+</div>
 </div>
 
 <pre><span id="VALmap2_exn"><span class="keyword">val</span> map2_exn</span> : <code class="type">(<a href="BatBounded.S.html#TYPEbase_u">base_u</a> -> <a href="BatBounded.S.html#TYPEbase_u">base_u</a> -> <a href="BatBounded.S.html#TYPEbase_u">base_u</a>) -><br>       <a href="BatBounded.S.html#TYPEt">t</a> -> <a href="BatBounded.S.html#TYPEt">t</a> -> <a href="BatBounded.S.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">map2_exn&nbsp;f&nbsp;x&nbsp;y</code> applies <code class="code">f</code> to <code class="code">x</code> and <code class="code">y</code>.  Returns <code class="code">z</code> if <code class="code">x</code> and <code class="code">y</code>
-        can be converted back to type <a href="BatBounded.S.html#TYPEbase_u"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">S</span>.base_u</code></a>, otherwise raise an exception.<br>
+<div class="info-desc">
+<p><code class="code">map2_exn&nbsp;f&nbsp;x&nbsp;y</code> applies <code class="code">f</code> to <code class="code">x</code> and <code class="code">y</code>.  Returns <code class="code">z</code> if <code class="code">x</code> and <code class="code">y</code>
+        can be converted back to type <a href="BatBounded.S.html#TYPEbase_u"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">S</span>.base_u</code></a>, otherwise raise an exception.</p>
+</div>
 </div>
 </body></html>

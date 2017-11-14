@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -118,8 +119,10 @@
 </div>
 <h1>Module <a href="type_BatAvlTree.html">BatAvlTree</a></h1>
 
-<pre><span class="keyword">module</span> BatAvlTree: <code class="code"><span class="keyword">sig</span></code> <a href="BatAvlTree.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Internals of ISet and IMap, usable as generic tree library<br>
+<pre><span id="MODULEBatAvlTree"><span class="keyword">module</span> BatAvlTree</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatAvlTree.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Internals of ISet and IMap, usable as generic tree library</p>
+</div>
 </div>
 <hr width="100%">
 
@@ -130,22 +133,30 @@ Internals of ISet and IMap, usable as generic tree library<br>
 <pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> bool</code></pre>
 <pre><span id="VALmake_tree"><span class="keyword">val</span> make_tree</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a></code></pre>
 <pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a></code></pre><div class="info ">
-<code class="code">create&nbsp;l&nbsp;v&nbsp;r</code> is similar to <code class="code">make_tree&nbsp;l&nbsp;v&nbsp;r</code> but performs no rebalancing;
+<div class="info-desc">
+<p><code class="code">create&nbsp;l&nbsp;v&nbsp;r</code> is similar to <code class="code">make_tree&nbsp;l&nbsp;v&nbsp;r</code> but performs no rebalancing;
     in other words, you should use this only when you <em>know</em> that <code class="code">l</code> and <code class="code">r</code>
-    are already balanced.<br>
+    are already balanced.</p>
+</div>
 </div>
 
 <pre><span id="VALheight"><span class="keyword">val</span> height</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> int</code></pre>
 <pre><span id="VALleft_branch"><span class="keyword">val</span> left_branch</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a></code></pre><div class="info ">
-<b>Raises</b> <code>Not_found</code> if the tree is empty<br>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Not_found</code> if the tree is empty</li>
+</ul>
 </div>
 
 <pre><span id="VALright_branch"><span class="keyword">val</span> right_branch</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a></code></pre><div class="info ">
-<b>Raises</b> <code>Not_found</code> if the tree is empty<br>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Not_found</code> if the tree is empty</li>
+</ul>
 </div>
 
 <pre><span id="VALroot"><span class="keyword">val</span> root</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a</code></pre><div class="info ">
-<b>Raises</b> <code>Not_found</code> if the tree is empty<br>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Not_found</code> if the tree is empty</li>
+</ul>
 </div>
 
 <pre><span id="VALsingleton_tree"><span class="keyword">val</span> singleton_tree</span> : <code class="type">'a -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a></code></pre>
@@ -156,9 +167,13 @@ Internals of ISet and IMap, usable as generic tree library<br>
 <pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -> 'b -> 'b) -> 'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'b -> 'b</code></pre>
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
 <pre><span id="VALcheck"><span class="keyword">val</span> check</span> : <code class="type">'a <a href="BatAvlTree.html#TYPEtree">tree</a> -> bool</code></pre><div class="info ">
-Check that the tree is balanced according to the AVL tree rules.
+<div class="info-desc">
+<p>Check that the tree is balanced according to the AVL tree rules.
     An AVL tree is balanced when for every node the height of the
-    subnodes differs by at most 1.<br>
-<b>Since</b> 2.3.0<br>
+    subnodes differs by at most 1.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.3.0</li>
+</ul>
 </div>
 </body></html>

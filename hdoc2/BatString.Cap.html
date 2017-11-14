@@ -24,6 +24,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -122,35 +123,44 @@
 &nbsp;</div>
 <h1>Module <a href="type_BatString.Cap.html">BatString.Cap</a></h1>
 
-<pre><span class="keyword">module</span> Cap: <code class="code"><span class="keyword">sig</span></code> <a href="BatString.Cap.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Capabilities for strings.
-<p>
+<pre><span id="MODULECap"><span class="keyword">module</span> Cap</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatString.Cap.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Capabilities for strings.</p>
 
-    This modules provides the same set of features as <code class="code"><span class="constructor">String</span></code>, but
+<p>This modules provides the same set of features as <code class="code"><span class="constructor">String</span></code>, but
     with the added twist that strings can be made read-only or write-only.
-    Read-only strings may then be safely shared and distributed.
-<p>
-
-    There is no loss of performance involved.<br>
+    Read-only strings may then be safely shared and distributed.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.8.0 the interface and implementation of the Cap
+    module changed to accomodate the -safe-string transition. OCaml
+    now uses two distinct types for mutable and immutable string,
+    which is a good design but is not as expressive as the present Cap
+    interface, and actually makes implementing Cap harder than it
+    previously was. We are aware that current state is not optimal for
+    heavy Cap users; if you are one of them, please get in touch (on
+    the Batteries issue tracker for example) so that we can discuss
+    code refactoring and improvements for this sub-module.</li>
+</ul>
 </div>
 <hr width="100%">
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
 <div class="info ">
-The type of capability strings.
-<p>
+<div class="info-desc">
+<p>The type of capability strings.</p>
 
-      If <code class="code"><span class="keywordsign">'</span>a</code> contains <code class="code">[<span class="keywordsign">`</span><span class="constructor">Read</span>]</code>, the contents of the string may be read.
-      If <code class="code"><span class="keywordsign">'</span>a</code> contains <code class="code">[<span class="keywordsign">`</span><span class="constructor">Write</span>]</code>, the contents of the string may be written.
-<p>
+<p>If <code class="code"><span class="keywordsign">'</span>a</code> contains <code class="code">[<span class="keywordsign">`</span><span class="constructor">Read</span>]</code>, the contents of the string may be read.
+      If <code class="code"><span class="keywordsign">'</span>a</code> contains <code class="code">[<span class="keywordsign">`</span><span class="constructor">Write</span>]</code>, the contents of the string may be written.</p>
 
-      Other (user-defined) capabilities may be added without loss of
+<p>Other (user-defined) capabilities may be added without loss of
       performance or features. For instance, a string could be labelled
       <code class="code">[<span class="keywordsign">`</span><span class="constructor">Read</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keywordsign">`</span><span class="constructor">UTF8</span>]</code> to state that it contains UTF-8 encoded data and
       may be used only for reading.  Conversely, a string labelled with
       <code class="code">[]</code> (i.e. nothing) can neither be read nor written. It can only
       be compared for textual equality using OCaml's built-in <code class="code">compare</code>
-      or for physical equality using OCaml's built-in <code class="code">==</code>.<br>
+      or for physical equality using OCaml's built-in <code class="code">==</code>.</p>
+</div>
 </div>
 
 
@@ -158,29 +168,93 @@ The type of capability strings.
 <pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">'a <a href="BatString.Cap.html#TYPEt">t</a> -> bool</code></pre>
 <pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> int -> char</code></pre>
 <pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">[> `Write ] <a href="BatString.Cap.html#TYPEt">t</a> -> int -> char -> unit</code></pre>
-<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -> 'a <a href="BatString.Cap.html#TYPEt">t</a></code></pre><br>
-<h6 id="6_Constructors">Constructors</h6><br>
+<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -> 'a <a href="BatString.Cap.html#TYPEt">t</a></code></pre><h7 id="6_Constructors">Constructors</h7>
+<pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">Bytes.t -> 'a <a href="BatString.Cap.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Adopt a regular byte sequence.</p>
 
-<pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -> 'a <a href="BatString.Cap.html#TYPEt">t</a></code></pre><div class="info ">
-Adopt a regular string.<br>
+<p>One could give a perfectly safe semantics to
+     an <code class="code">of_string&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;_&nbsp;t</code> function, but this
+     requires making a copy of the string. Previous
+     versions of this interface advertised the absence
+     of performance overhead, so it's better to warn
+     the user and let them decide (through the use of
+     either Bytes.of_string or Bytes.unsafe_of_string)
+     whether they can safely avoid a copy or need to
+     insert one.</p>
+</div>
 </div>
 
-<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">[ `Read | `Write ] <a href="BatString.Cap.html#TYPEt">t</a> -> string</code></pre><div class="info ">
-Return a capability string as a regular string.<br>
+<pre><span id="VALof_bytes"><span class="keyword">val</span> of_bytes</span> : <code class="type">Bytes.t -> 'a <a href="BatString.Cap.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Adopt a regular byte sequence.</p>
+
+<p>Note that adopting a byte sequence, even at the restrictive
+      <code class="code"><span class="keywordsign">`</span><span class="constructor">Read</span></code> type, does not make a copy. Having a <code class="code"><span class="keywordsign">`</span><span class="constructor">Read</span></code> string
+      prevents you (and anyone you pass it to) from writing it, but
+      your parent may have knowledge of the string at a more permissive
+      type and perform writes on it.</p>
+
+<p>If you want to use a <code class="code"><span class="keywordsign">`</span><span class="constructor">Read</span></code> string and assume it will not get
+      written to, you should either properly "adopt" it by ensuring
+      unique ownership (this cannot be guaranteed by the type system),
+      or make a copy of it at adoption time: <code class="code"><span class="constructor">Cap</span>.of_bytes<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">Bytes</span>.copy&nbsp;buf)</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.8.0</li>
+</ul>
+</div>
+
+<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">[ `Read | `Write ] <a href="BatString.Cap.html#TYPEt">t</a> -> Bytes.t</code></pre><div class="info ">
+<div class="info-desc">
+<p>Return a capability string as a regular byte sequence.</p>
+
+<p>We cannot return a <code class="code">string</code> here, and it would be incorrect to
+      do so even if we required <code class="code">[&lt;&nbsp;<span class="keywordsign">`</span><span class="constructor">Read</span>]&nbsp;t</code> as input. Indeed, one
+      can start from a writeable byte sequence, and then use the
+      <code class="code">read_only</code> function below to cast it into a <code class="code">[<span class="keywordsign">`</span><span class="constructor">Read</span>]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t</code>. Capabilities are used to enforce local protocol (only reads,
+      only writes, both reads and writes...), they don't guarantee
+      that other users of the same (shared) value all follow the same
+      protocol. To safely reason about mutability one needs stronger
+      ownership guarantees.</p>
+
+<p>If you want to obtain an immutable <code class="code">string</code> out of a capability
+      string, you should first convert it to a mutable byte sequence
+      and then copy it into an immutable string. If you have extra
+      knowledge about the ownership of the value, you may use unsafe
+      conversion functions to avoid the copy, see the documentation of
+      unsafe conversion functions.</p>
+</div>
+</div>
+
+<pre><span id="VALto_bytes"><span class="keyword">val</span> to_bytes</span> : <code class="type">[ `Read | `Write ] <a href="BatString.Cap.html#TYPEt">t</a> -> Bytes.t</code></pre><div class="info ">
+<div class="info-desc">
+<p>Return a capability string as a regular byte sequence.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.8.0</li>
+</ul>
 </div>
 
 <pre><span id="VALread_only"><span class="keyword">val</span> read_only</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> [ `Read ] <a href="BatString.Cap.html#TYPEt">t</a></code></pre><div class="info ">
-Drop capabilities to read only.<br>
+<div class="info-desc">
+<p>Drop capabilities to read only.</p>
+</div>
 </div>
 
 <pre><span id="VALwrite_only"><span class="keyword">val</span> write_only</span> : <code class="type">[> `Write ] <a href="BatString.Cap.html#TYPEt">t</a> -> [ `Write ] <a href="BatString.Cap.html#TYPEt">t</a></code></pre><div class="info ">
-Drop capabilities to write only.<br>
+<div class="info-desc">
+<p>Drop capabilities to write only.</p>
+</div>
 </div>
 
 <pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">int -> char -> 'a <a href="BatString.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> (int -> char) -> 'a <a href="BatString.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-<h6 id="6_Conversions">Conversions</h6><br>
+<div class="info-desc">
+<h7 id="6_Conversions">Conversions</h7></div>
 </div>
 
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">char <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatString.Cap.html#TYPEt">t</a></code></pre>
@@ -192,9 +266,7 @@ Drop capabilities to write only.<br>
 <pre><span id="VALof_float"><span class="keyword">val</span> of_float</span> : <code class="type">float -> 'a <a href="BatString.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALof_char"><span class="keyword">val</span> of_char</span> : <code class="type">char -> 'a <a href="BatString.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALto_int"><span class="keyword">val</span> to_int</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> int</code></pre>
-<pre><span id="VALto_float"><span class="keyword">val</span> to_float</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> float</code></pre><br>
-<h6 id="6_Stringtraversals">String traversals</h6><br>
-
+<pre><span id="VALto_float"><span class="keyword">val</span> to_float</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> float</code></pre><h7 id="6_Stringtraversals">String traversals</h7>
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">(char -> char) -> [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> 'a <a href="BatString.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">(int -> char -> char) -> [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> 'a <a href="BatString.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">('a -> char -> 'a) -> 'a -> [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> 'a</code></pre>
@@ -203,9 +275,7 @@ Drop capabilities to write only.<br>
 <pre><span id="VALfold_righti"><span class="keyword">val</span> fold_righti</span> : <code class="type">(int -> char -> 'a -> 'a) -> [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> 'a -> 'a</code></pre>
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">(char -> bool) -> [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> 'a <a href="BatString.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">(char -> char option) -> [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> 'a <a href="BatString.Cap.html#TYPEt">t</a></code></pre>
-<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(char -> unit) -> [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> unit</code></pre><br>
-<h6 id="6_Finding">Finding</h6><br>
-
+<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(char -> unit) -> [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> unit</code></pre><h7 id="6_Finding">Finding</h7>
 <pre><span id="VALindex"><span class="keyword">val</span> index</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> char -> int</code></pre>
 <pre><span id="VALrindex"><span class="keyword">val</span> rindex</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> char -> int</code></pre>
 <pre><span id="VALindex_from"><span class="keyword">val</span> index_from</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> int -> char -> int</code></pre>
@@ -219,12 +289,10 @@ Drop capabilities to write only.<br>
 <pre><span id="VALrfind_from"><span class="keyword">val</span> rfind_from</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> int -> [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> int</code></pre>
 <pre><span id="VALends_with"><span class="keyword">val</span> ends_with</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> bool</code></pre>
 <pre><span id="VALstarts_with"><span class="keyword">val</span> starts_with</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> bool</code></pre>
-<pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> bool</code></pre><br>
-<h6 id="6_Transformations">Transformations</h6><br>
-
+<pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> bool</code></pre><h7 id="6_Transformations">Transformations</h7>
 <pre><span id="VALlchop"><span class="keyword">val</span> lchop</span> : <code class="type">?n:int -> [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> 'a <a href="BatString.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALrchop"><span class="keyword">val</span> rchop</span> : <code class="type">?n:int -> [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> 'a <a href="BatString.Cap.html#TYPEt">t</a></code></pre>
-<pre><span id="VALchop"><span class="keyword">val</span> chop</span> : <code class="type">?l:int -> ?r:int -> [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> string</code></pre>
+<pre><span id="VALchop"><span class="keyword">val</span> chop</span> : <code class="type">?l:int -> ?r:int -> [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> 'a <a href="BatString.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALtrim"><span class="keyword">val</span> trim</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> 'a <a href="BatString.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALquote"><span class="keyword">val</span> quote</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> string</code></pre>
 <pre><span id="VALleft"><span class="keyword">val</span> left</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> int -> 'a <a href="BatString.Cap.html#TYPEt">t</a></code></pre>
@@ -247,26 +315,24 @@ Drop capabilities to write only.<br>
 <pre><span id="VALnreplace"><span class="keyword">val</span> nreplace</span> : <code class="type">str:[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -><br>       sub:[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -><br>       by:[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> 'a <a href="BatString.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALrepeat"><span class="keyword">val</span> repeat</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> int -> 'a <a href="BatString.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -><br>       by:[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> 'a <a href="BatString.Cap.html#TYPEt">t</a> * 'b <a href="BatString.Cap.html#TYPEt">t</a></code></pre><div class="info ">
-<h6 id="6_Splittingaround">Splitting around</h6><br>
+<div class="info-desc">
+<h7 id="6_Splittingaround">Splitting around</h7></div>
 </div>
 
-<pre><span id="VALrsplit"><span class="keyword">val</span> rsplit</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> by:string -> string * string</code></pre>
+<pre><span id="VALrsplit"><span class="keyword">val</span> rsplit</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -><br>       by:[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> 'a <a href="BatString.Cap.html#TYPEt">t</a> * 'b <a href="BatString.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALnsplit"><span class="keyword">val</span> nsplit</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -><br>       by:[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> 'a <a href="BatString.Cap.html#TYPEt">t</a> list</code></pre>
-<pre><span id="VALsplice"><span class="keyword">val</span> splice</span> : <code class="type">[ `Read | `Write ] <a href="BatString.Cap.html#TYPEt">t</a> -><br>       int -> int -> [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> string</code></pre>
+<pre><span id="VALsplice"><span class="keyword">val</span> splice</span> : <code class="type">[ `Read | `Write ] <a href="BatString.Cap.html#TYPEt">t</a> -><br>       int -> int -> [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> 'a <a href="BatString.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALjoin"><span class="keyword">val</span> join</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -><br>       [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> list -> 'a <a href="BatString.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALslice"><span class="keyword">val</span> slice</span> : <code class="type">?first:int -> ?last:int -> [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> 'a <a href="BatString.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALexplode"><span class="keyword">val</span> explode</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> char list</code></pre>
-<pre><span id="VALimplode"><span class="keyword">val</span> implode</span> : <code class="type">char list -> 'a <a href="BatString.Cap.html#TYPEt">t</a></code></pre><br>
-<h6 id="6_Comparisons">Comparisons</h6><br>
-
+<pre><span id="VALimplode"><span class="keyword">val</span> implode</span> : <code class="type">char list -> 'a <a href="BatString.Cap.html#TYPEt">t</a></code></pre><h7 id="6_Comparisons">Comparisons</h7>
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> int</code></pre>
-<pre><span id="VALicompare"><span class="keyword">val</span> icompare</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> int</code></pre><br>
-<div class="h7" id="7_Printing">Printing</div><br>
-
+<pre><span id="VALicompare"><span class="keyword">val</span> icompare</span> : <code class="type">[> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> int</code></pre><div class="h8" id="7_Printing">Printing</div>
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> unit</code></pre>
 <pre><span id="VALprintln"><span class="keyword">val</span> println</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> unit</code></pre>
 <pre><span id="VALprint_quoted"><span class="keyword">val</span> print_quoted</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> [> `Read ] <a href="BatString.Cap.html#TYPEt">t</a> -> unit</code></pre>
-<pre><span class="keyword">module</span> <a href="BatString.Cap.Exceptionless.html">Exceptionless</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatString.Cap.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-Exceptionless counterparts for error-raising operations
+<pre><span id="MODULEExceptionless"><span class="keyword">module</span> <a href="BatString.Cap.Exceptionless.html">Exceptionless</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatString.Cap.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>Exceptionless counterparts for error-raising operations</p>
+
 </div>
 </body></html>

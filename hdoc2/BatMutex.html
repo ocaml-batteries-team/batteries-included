@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -118,47 +119,49 @@
 </div>
 <h1>Module <a href="type_BatMutex.html">BatMutex</a></h1>
 
-<pre><span class="keyword">module</span> BatMutex: <code class="code"><span class="keyword">sig</span></code> <a href="BatMutex.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Locks for mutual exclusion.
-<p>
+<pre><span id="MODULEBatMutex"><span class="keyword">module</span> BatMutex</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatMutex.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Locks for mutual exclusion.</p>
 
-    Mutexes (mutual-exclusion locks) are used to implement critical sections
+<p>Mutexes (mutual-exclusion locks) are used to implement critical sections
     and protect shared mutable data structures against concurrent accesses.
     The typical use is (if <code class="code">m</code> is the mutex associated with the data structure
-    <code class="code"><span class="constructor">D</span></code>):
-    <pre class="codepre"><code class="code">      <span class="constructor">Mutex</span>.synchronize ~lock:m (<span class="keyword">fun</span> () <span class="keywordsign">-&gt;</span>
+    <code class="code"><span class="constructor">D</span></code>):</p>
+<pre class="codepre"><code class="code">      <span class="constructor">Mutex</span>.synchronize ~lock:m (<span class="keyword">fun</span> () <span class="keywordsign">-&gt;</span>
         <span class="comment">(* Critical section that operates over D *)</span>;
       ) ()
     </code></pre>
-<p>
-
-    This module implements <code class="code"><span class="constructor">Control</span>.<span class="constructor">Concurrency</span>.<span class="constructor">Common</span></code><br>
-<b>Author(s):</b> Xavier Leroy (Base module), Damien Doligez (Base module), David Teller<br>
+<p>This module implements <code class="code"><span class="constructor">Control</span>.<span class="constructor">Concurrency</span>.<span class="constructor">Common</span></code></p>
+</div>
+<ul class="info-attributes">
+<li><b>Author(s):</b> Xavier Leroy (Base module), Damien Doligez (Base module), David Teller</li>
+</ul>
 </div>
 <hr width="100%">
 
 <pre><span id="VALsynchronize"><span class="keyword">val</span> synchronize</span> : <code class="type">?lock:Mutex.t -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info ">
-Protect a function.
-<p>
+<div class="info-desc">
+<p>Protect a function.</p>
 
-    <code class="code">synchronize&nbsp;f</code> returns a new function <code class="code">f'</code> with the same behavior
+<p><code class="code">synchronize&nbsp;f</code> returns a new function <code class="code">f'</code> with the same behavior
     as <code class="code">f</code> but such that concurrent calls to <code class="code">f'</code> are queued if
-    necessary to avoid races.
-<p>
+    necessary to avoid races.</p>
 
-    <code class="code">synchronize&nbsp;~lock:l&nbsp;f</code> behaves as <code class="code">synchronize&nbsp;f</code> but uses a
+<p><code class="code">synchronize&nbsp;~lock:l&nbsp;f</code> behaves as <code class="code">synchronize&nbsp;f</code> but uses a
     user-specified lock <code class="code">l</code>, which may be useful to share a lock
     between several function. This is necessary in particular when
     the lock is specific to a data structure rather than to a
-    function.
-<p>
+    function.</p>
 
-    In either case, the lock is acquired when entering the function
+<p>In either case, the lock is acquired when entering the function
     and released when the function call ends, whether this is due
-    to normal termination or to some exception being raised.<br>
+    to normal termination or to some exception being raised.</p>
+</div>
 </div>
 
 <pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">unit -> <a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a></code></pre><div class="info ">
-Create a new abstract lock based on Mutexes.<br>
+<div class="info-desc">
+<p>Create a new abstract lock based on Mutexes.</p>
+</div>
 </div>
 </body></html>

@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -120,13 +121,16 @@
 </div>
 <h1>Module <a href="type_BatRefList.html">BatRefList</a></h1>
 
-<pre><span class="keyword">module</span> BatRefList: <code class="code"><span class="keyword">sig</span></code> <a href="BatRefList.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Reference on lists.
-<p>
+<pre><span id="MODULEBatRefList"><span class="keyword">module</span> BatRefList</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatRefList.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Reference on lists.</p>
 
-    RefList is a extended set of functions that manipulate list
-    references.<br>
-<b>Author(s):</b> Nicolas Cannasse, David Teller (Boilerplate code)<br>
+<p>RefList is a extended set of functions that manipulate list
+    references.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Author(s):</b> Nicolas Cannasse, David Teller (Boilerplate code)</li>
+</ul>
 </div>
 <hr width="100%">
 
@@ -134,200 +138,277 @@ Reference on lists.
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
 <div class="info ">
-The type of an empty ref list<br>
+<div class="info-desc">
+<p>The type of an empty ref list</p>
+</div>
 </div>
 
 
 <pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">unit -> 'a <a href="BatRefList.html#TYPEt">t</a></code></pre><div class="info ">
-Returns a new empty ref list<br>
+<div class="info-desc">
+<p>Returns a new empty ref list</p>
+</div>
 </div>
 
 <pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-Return <code class="code"><span class="keyword">true</span></code> if a ref list is empty<br>
+<div class="info-desc">
+<p>Return <code class="code"><span class="keyword">true</span></code> if a ref list is empty</p>
+</div>
 </div>
 
 <pre><span id="VALclear"><span class="keyword">val</span> clear</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-Removes all elements<br>
+<div class="info-desc">
+<p>Removes all elements</p>
+</div>
 </div>
 
 <pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">t</a> -> int</code></pre><div class="info ">
-Returns the number of elements - O(n)<br>
+<div class="info-desc">
+<p>Returns the number of elements - O(n)</p>
+</div>
 </div>
 
 <pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">dst:'a <a href="BatRefList.html#TYPEt">t</a> -> src:'a <a href="BatRefList.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-Makes a copy of a ref list - O(1)<br>
+<div class="info-desc">
+<p>Makes a copy of a ref list - O(1)</p>
+</div>
 </div>
 
 <pre><span id="VALcopy_list"><span class="keyword">val</span> copy_list</span> : <code class="type">dst:'a <a href="BatRefList.html#TYPEt">t</a> -> src:'a list -> unit</code></pre><div class="info ">
-Makes a copy of a list - O(1)<br>
+<div class="info-desc">
+<p>Makes a copy of a list - O(1)</p>
+</div>
 </div>
 
 <pre><span id="VALcopy_enum"><span class="keyword">val</span> copy_enum</span> : <code class="type">dst:'a <a href="BatRefList.html#TYPEt">t</a> -> src:'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> unit</code></pre><div class="info ">
-Makes a copy of a enum.<br>
+<div class="info-desc">
+<p>Makes a copy of a enum.</p>
+</div>
 </div>
 <div class="param_info"><code class="code">dst</code> : A reflist, whose contents will be forgotten.</div>
 
 <pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">'a list -> 'a <a href="BatRefList.html#TYPEt">t</a></code></pre><div class="info ">
-Creates a ref list from a list - O(1)<br>
+<div class="info-desc">
+<p>Creates a ref list from a list - O(1)</p>
+</div>
 </div>
 
 <pre><span id="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">t</a> -> 'a list</code></pre><div class="info ">
-Returns the current elements as a list - O(1)<br>
+<div class="info-desc">
+<p>Returns the current elements as a list - O(1)</p>
+</div>
 </div>
 
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatRefList.html#TYPEt">t</a></code></pre><div class="info ">
-Creates a ref list from an enumeration<br>
+<div class="info-desc">
+<p>Creates a ref list from an enumeration</p>
+</div>
 </div>
 
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-Returns an enumeration of current elements in the ref list<br>
+<div class="info-desc">
+<p>Returns an enumeration of current elements in the ref list</p>
+</div>
 </div>
 
 <pre><span id="VALof_backwards"><span class="keyword">val</span> of_backwards</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatRefList.html#TYPEt">t</a></code></pre><div class="info ">
-Creates a ref list from an enumeration, going from last to first<br>
+<div class="info-desc">
+<p>Creates a ref list from an enumeration, going from last to first</p>
+</div>
 </div>
 
 <pre><span id="VALbackwards"><span class="keyword">val</span> backwards</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-Returns an enumeration of current elements in the ref list, going from last to first<br>
+<div class="info-desc">
+<p>Returns an enumeration of current elements in the ref list, going from last to first</p>
+</div>
 </div>
 
 <pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">t</a> -> 'a -> unit</code></pre><div class="info ">
-Adds an element at the end - O(n)<br>
+<div class="info-desc">
+<p>Adds an element at the end - O(n)</p>
+</div>
 </div>
 
 <pre><span id="VALpush"><span class="keyword">val</span> push</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">t</a> -> 'a -> unit</code></pre><div class="info ">
-Adds an element at the head - O(1)<br>
+<div class="info-desc">
+<p>Adds an element at the head - O(1)</p>
+</div>
 </div>
 
 <pre><span id="VALadd_sort"><span class="keyword">val</span> add_sort</span> : <code class="type">cmp:('a -> 'a -> int) -> 'a <a href="BatRefList.html#TYPEt">t</a> -> 'a -> unit</code></pre><div class="info ">
-Adds an element in a sorted list, using the given comparator.<br>
+<div class="info-desc">
+<p>Adds an element in a sorted list, using the given comparator.</p>
+</div>
 </div>
 
 <pre><span id="VALfirst"><span class="keyword">val</span> first</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
-Returns the first element or
-    raises <code class="code"><span class="constructor">Empty_list</span></code> if the ref list is empty<br>
+<div class="info-desc">
+<p>Returns the first element or
+    raises <code class="code"><span class="constructor">Empty_list</span></code> if the ref list is empty</p>
+</div>
 </div>
 
 <pre><span id="VALlast"><span class="keyword">val</span> last</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
-Returns the last element - O(n) or
-    raises <code class="code"><span class="constructor">Empty_list</span></code> if the ref list is empty<br>
+<div class="info-desc">
+<p>Returns the last element - O(n) or
+    raises <code class="code"><span class="constructor">Empty_list</span></code> if the ref list is empty</p>
+</div>
 </div>
 
 <pre><span id="VALpop"><span class="keyword">val</span> pop</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
-Removes and returns the first element or
-    raises <code class="code"><span class="constructor">Empty_list</span></code> if the ref list is empty<br>
+<div class="info-desc">
+<p>Removes and returns the first element or
+    raises <code class="code"><span class="constructor">Empty_list</span></code> if the ref list is empty</p>
+</div>
 </div>
 
 <pre><span id="VALnpop"><span class="keyword">val</span> npop</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">t</a> -> int -> 'a list</code></pre><div class="info ">
-Removes and returns the n first elements or
+<div class="info-desc">
+<p>Removes and returns the n first elements or
     raises <code class="code"><span class="constructor">Empty_list</span></code> if the ref list does not
-    contain enough elements<br>
+    contain enough elements</p>
+</div>
 </div>
 
 <pre><span id="VALhd"><span class="keyword">val</span> hd</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
-same as <code class="code">first</code><br>
+<div class="info-desc">
+<p>same as <code class="code">first</code></p>
+</div>
 </div>
 
 <pre><span id="VALtl"><span class="keyword">val</span> tl</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">t</a> -> 'a <a href="BatRefList.html#TYPEt">t</a></code></pre><div class="info ">
-Returns a ref list containing the same elements
+<div class="info-desc">
+<p>Returns a ref list containing the same elements
     but without the first one or
-    raises <code class="code"><span class="constructor">Empty_list</span></code> if the ref list is empty<br>
+    raises <code class="code"><span class="constructor">Empty_list</span></code> if the ref list is empty</p>
+</div>
 </div>
 
 <pre><span id="VALrev"><span class="keyword">val</span> rev</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-Reverses the ref list - O(n)<br>
+<div class="info-desc">
+<p>Reverses the ref list - O(n)</p>
 </div>
-<br>
-<h6 id="6_FunctionalOperations">Functional Operations</h6><br>
-
+</div>
+<h7 id="6_FunctionalOperations">Functional Operations</h7>
 <pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="BatRefList.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
-<code class="code"><span class="constructor">List</span>.fold_left&nbsp;f&nbsp;a&nbsp;(ref&nbsp;[b0;&nbsp;b1;&nbsp;...;&nbsp;bn])</code> is
-    <code class="code">f&nbsp;(...&nbsp;(f&nbsp;(f&nbsp;a&nbsp;b0)&nbsp;b1)&nbsp;...)&nbsp;bn</code>.<br>
+<div class="info-desc">
+<p><code class="code"><span class="constructor">List</span>.fold_left&nbsp;f&nbsp;a&nbsp;(ref&nbsp;[b0;&nbsp;b1;&nbsp;...;&nbsp;bn])</code> is
+    <code class="code">f&nbsp;(...&nbsp;(f&nbsp;(f&nbsp;a&nbsp;b0)&nbsp;b1)&nbsp;...)&nbsp;bn</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">('a -> 'b -> 'b) -> 'a <a href="BatRefList.html#TYPEt">t</a> -> 'b -> 'b</code></pre><div class="info ">
-<code class="code"><span class="constructor">List</span>.fold_right&nbsp;f&nbsp;(ref&nbsp;[a0;&nbsp;a1;&nbsp;...;&nbsp;an])&nbsp;b</code> is
-    <code class="code">f&nbsp;a0&nbsp;(f&nbsp;a1&nbsp;(...&nbsp;(f&nbsp;an&nbsp;b)&nbsp;...))</code>.  Tail-recursive.<br>
+<div class="info-desc">
+<p><code class="code"><span class="constructor">List</span>.fold_right&nbsp;f&nbsp;(ref&nbsp;[a0;&nbsp;a1;&nbsp;...;&nbsp;an])&nbsp;b</code> is
+    <code class="code">f&nbsp;a0&nbsp;(f&nbsp;a1&nbsp;(...&nbsp;(f&nbsp;an&nbsp;b)&nbsp;...))</code>.  Tail-recursive.</p>
+</div>
 </div>
 
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> 'a <a href="BatRefList.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-Apply the given function to all elements of the
-    ref list, in respect with the order of the list<br>
+<div class="info-desc">
+<p>Apply the given function to all elements of the
+    ref list, in respect with the order of the list</p>
+</div>
 </div>
 
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('a -> bool) -> 'a <a href="BatRefList.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
-Find the first element matching
+<div class="info-desc">
+<p>Find the first element matching
     the specified predicate
-    raise <code class="code"><span class="constructor">Not_found</span></code> if no element is found<br>
+    raise <code class="code"><span class="constructor">Not_found</span></code> if no element is found</p>
+</div>
 </div>
 
 <pre><span id="VALrfind"><span class="keyword">val</span> rfind</span> : <code class="type">('a -> bool) -> 'a <a href="BatRefList.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
-Find the first element in the reversed ref list matching
+<div class="info-desc">
+<p>Find the first element in the reversed ref list matching
     the specified predicate
-    raise <code class="code"><span class="constructor">Not_found</span></code> if no element is found<br>
+    raise <code class="code"><span class="constructor">Not_found</span></code> if no element is found</p>
+</div>
 </div>
 
 <pre><span id="VALfind_exc"><span class="keyword">val</span> find_exc</span> : <code class="type">('a -> bool) -> exn -> 'a <a href="BatRefList.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
-Same as find but takes an exception to be raised when
-    no element is found as additional parameter<br>
+<div class="info-desc">
+<p>Same as find but takes an exception to be raised when
+    no element is found as additional parameter</p>
+</div>
 </div>
 
 <pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">('a -> bool) -> 'a <a href="BatRefList.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-Return <code class="code"><span class="keyword">true</span></code> if an element matches the specified
-    predicate<br>
+<div class="info-desc">
+<p>Return <code class="code"><span class="keyword">true</span></code> if an element matches the specified
+    predicate</p>
+</div>
 </div>
 
 <pre><span id="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">('a -> bool) -> 'a <a href="BatRefList.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-Return <code class="code"><span class="keyword">true</span></code> if all elements match the specified
-    predicate<br>
+<div class="info-desc">
+<p>Return <code class="code"><span class="keyword">true</span></code> if all elements match the specified
+    predicate</p>
+</div>
 </div>
 
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> 'a <a href="BatRefList.html#TYPEt">t</a> -> 'b <a href="BatRefList.html#TYPEt">t</a></code></pre><div class="info ">
-Apply a function to all elements
+<div class="info-desc">
+<p>Apply a function to all elements
     and return the ref list constructed with
-    the function returned values<br>
+    the function returned values</p>
+</div>
 </div>
 
 <pre><span id="VALtransform"><span class="keyword">val</span> transform</span> : <code class="type">('a -> 'a) -> 'a <a href="BatRefList.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-transform all elements in the ref list
-    using a function.<br>
+<div class="info-desc">
+<p>transform all elements in the ref list
+    using a function.</p>
+</div>
 </div>
 
 <pre><span id="VALmap_list"><span class="keyword">val</span> map_list</span> : <code class="type">('a -> 'b) -> 'a <a href="BatRefList.html#TYPEt">t</a> -> 'b list</code></pre><div class="info ">
-Apply a function to all elements
+<div class="info-desc">
+<p>Apply a function to all elements
     and return the list constructed with
-    the function returned values<br>
+    the function returned values</p>
+</div>
 </div>
 
 <pre><span id="VALsort"><span class="keyword">val</span> sort</span> : <code class="type">cmp:('a -> 'a -> int) -> 'a <a href="BatRefList.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-Sort elements using the specified comparator<br>
+<div class="info-desc">
+<p>Sort elements using the specified comparator</p>
+</div>
 </div>
 
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('a -> bool) -> 'a <a href="BatRefList.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-Remove all elements that do not match the
-    specified predicate<br>
+<div class="info-desc">
+<p>Remove all elements that do not match the
+    specified predicate</p>
+</div>
 </div>
 
 <pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">t</a> -> 'a -> unit</code></pre><div class="info ">
-Remove an element from the ref list
-    raise <code class="code"><span class="constructor">Not_found</span></code> if the element is not found<br>
+<div class="info-desc">
+<p>Remove an element from the ref list
+    raise <code class="code"><span class="constructor">Not_found</span></code> if the element is not found</p>
+</div>
 </div>
 
 <pre><span id="VALremove_if"><span class="keyword">val</span> remove_if</span> : <code class="type">('a -> bool) -> 'a <a href="BatRefList.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-Remove the first element matching the
+<div class="info-desc">
+<p>Remove the first element matching the
     specified predicate
-    raise <code class="code"><span class="constructor">Not_found</span></code> if no element has been removed<br>
+    raise <code class="code"><span class="constructor">Not_found</span></code> if no element has been removed</p>
+</div>
 </div>
 
 <pre><span id="VALremove_all"><span class="keyword">val</span> remove_all</span> : <code class="type">'a <a href="BatRefList.html#TYPEt">t</a> -> 'a -> unit</code></pre><div class="info ">
-Remove all elements equal to the specified
-    element from the ref list<br>
+<div class="info-desc">
+<p>Remove all elements equal to the specified
+    element from the ref list</p>
 </div>
-<br>
-<h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
+</div>
+<h7 id="6_Boilerplatecode">Boilerplate code</h7>
+<pre><span id="MODULEIndex"><span class="keyword">module</span> <a href="BatRefList.Index.html">Index</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatRefList.Index.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>Functions that operate on the element at index <code class="code">i</code> in a list (with
+    indices starting from 0).</p>
 
-<pre><span class="keyword">module</span> <a href="BatRefList.Index.html">Index</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatRefList.Index.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-Functions that operate on the element at index <code class="code">i</code> in a list (with
-    indices starting from 0).
 </div>
 </body></html>

@@ -23,6 +23,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -114,107 +115,153 @@
 &nbsp;</div>
 <h1>Module <a href="type_BatIO.BigEndian.html">BatIO.BigEndian</a></h1>
 
-<pre><span class="keyword">module</span> BigEndian: <code class="code"><span class="keyword">sig</span></code> <a href="BatIO.BigEndian.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Same operations as module <a href="BatIO.html"><code class="code"><span class="constructor">BatIO</span></code></a>, but with big-endian encoding<br>
+<pre><span id="MODULEBigEndian"><span class="keyword">module</span> BigEndian</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatIO.BigEndian.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Same operations as module <a href="BatIO.html"><code class="code"><span class="constructor">BatIO</span></code></a>, but with big-endian encoding</p>
+</div>
 </div>
 <hr width="100%">
-<br>
-This module redefines the operations of module <a href="BatIO.html"><code class="code"><span class="constructor">BatIO</span></code></a> which behave
-      differently on big-endian <code class="code">input</code>s/<code class="code">output</code>s.
-<p>
+<p>This module redefines the operations of module <a href="BatIO.html"><code class="code"><span class="constructor">BatIO</span></code></a> which behave
+      differently on big-endian <code class="code">input</code>s/<code class="code">output</code>s.</p>
 
-      Generally, to use this module you will wish to either open both
+<p>Generally, to use this module you will wish to either open both
       <a href="BatIO.html"><code class="code"><span class="constructor">BatIO</span></code></a> and <a href="BatIO.BigEndian.html"><code class="code"><span class="constructor">BatIO</span>.<span class="constructor">BigEndian</span></code></a>, so as to import a big-endian version of
       <a href="BatIO.html"><code class="code"><span class="constructor">BatIO</span></code></a>, as per
       <code class="code"><span class="keyword">open</span>&nbsp;<span class="constructor">System</span>.<span class="constructor">BatIO</span>,&nbsp;<span class="constructor">BigEndian</span>&nbsp;<span class="keyword">in</span>&nbsp;...</code>,
       or to redefine locally <a href="BatIO.html"><code class="code"><span class="constructor">BatIO</span></code></a> to use big-endian encodings
-      <code class="code"><span class="keyword">module</span>&nbsp;<span class="constructor">BatIO</span>&nbsp;=&nbsp;<span class="constructor">System</span>.<span class="constructor">BatIO</span>&nbsp;<span class="keyword">include</span>&nbsp;<span class="constructor">BigEndian</span></code><br>
+      <code class="code"><span class="keyword">module</span>&nbsp;<span class="constructor">BatIO</span>&nbsp;=&nbsp;<span class="constructor">System</span>.<span class="constructor">BatIO</span>&nbsp;<span class="keyword">include</span>&nbsp;<span class="constructor">BigEndian</span></code></p>
 
 <pre><span id="VALread_ui16"><span class="keyword">val</span> read_ui16</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int</code></pre><div class="info ">
-Read an unsigned 16-bit word.<br>
+<div class="info-desc">
+<p>Read an unsigned 16-bit word.</p>
+</div>
 </div>
 
 <pre><span id="VALread_i16"><span class="keyword">val</span> read_i16</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int</code></pre><div class="info ">
-Read a signed 16-bit word.<br>
+<div class="info-desc">
+<p>Read a signed 16-bit word.</p>
+</div>
 </div>
 
 <pre><span id="VALread_i32"><span class="keyword">val</span> read_i32</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int</code></pre><div class="info ">
-Read a signed 32-bit integer.<br>
-<b>Raises</b> <code>Overflow</code> if the
-          read integer cannot be represented as an OCaml 31-bit integer.<br>
+<div class="info-desc">
+<p>Read a signed 32-bit integer.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Overflow</code> if the
+          read integer cannot be represented as an OCaml 31-bit integer.</li>
+</ul>
 </div>
 
 <pre><span id="VALread_real_i32"><span class="keyword">val</span> read_real_i32</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int32</code></pre><div class="info ">
-Read a signed 32-bit integer as an OCaml int32.<br>
+<div class="info-desc">
+<p>Read a signed 32-bit integer as an OCaml int32.</p>
+</div>
 </div>
 
 <pre><span id="VALread_i64"><span class="keyword">val</span> read_i64</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int64</code></pre><div class="info ">
-Read a signed 64-bit integer as an OCaml int64.<br>
+<div class="info-desc">
+<p>Read a signed 64-bit integer as an OCaml int64.</p>
+</div>
 </div>
 
 <pre><span id="VALread_double"><span class="keyword">val</span> read_double</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> float</code></pre><div class="info ">
-Read an IEEE double precision floating point value.<br>
+<div class="info-desc">
+<p>Read an IEEE double precision floating point value.</p>
+</div>
 </div>
 
 <pre><span id="VALread_float"><span class="keyword">val</span> read_float</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> float</code></pre><div class="info ">
-Read an IEEE single precision floating point value.<br>
+<div class="info-desc">
+<p>Read an IEEE single precision floating point value.</p>
+</div>
 </div>
 
 <pre><span id="VALwrite_ui16"><span class="keyword">val</span> write_ui16</span> : <code class="type">(int, 'a) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info ">
-Write an unsigned 16-bit word.<br>
+<div class="info-desc">
+<p>Write an unsigned 16-bit word.</p>
+</div>
 </div>
 
 <pre><span id="VALwrite_i16"><span class="keyword">val</span> write_i16</span> : <code class="type">(int, 'a) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info ">
-Write a signed 16-bit word.<br>
+<div class="info-desc">
+<p>Write a signed 16-bit word.</p>
+</div>
 </div>
 
 <pre><span id="VALwrite_i32"><span class="keyword">val</span> write_i32</span> : <code class="type">(int, 'a) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info ">
-Write a signed 32-bit integer.<br>
+<div class="info-desc">
+<p>Write a signed 32-bit integer.</p>
+</div>
 </div>
 
 <pre><span id="VALwrite_real_i32"><span class="keyword">val</span> write_real_i32</span> : <code class="type">(int32, 'a) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info ">
-Write an OCaml int32.<br>
+<div class="info-desc">
+<p>Write an OCaml int32.</p>
+</div>
 </div>
 
 <pre><span id="VALwrite_i64"><span class="keyword">val</span> write_i64</span> : <code class="type">(int64, 'a) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info ">
-Write an OCaml int64.<br>
+<div class="info-desc">
+<p>Write an OCaml int64.</p>
+</div>
 </div>
 
 <pre><span id="VALwrite_double"><span class="keyword">val</span> write_double</span> : <code class="type">(float, 'a) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info ">
-Write an IEEE double precision floating point value.<br>
+<div class="info-desc">
+<p>Write an IEEE double precision floating point value.</p>
+</div>
 </div>
 
 <pre><span id="VALwrite_float"><span class="keyword">val</span> write_float</span> : <code class="type">(float, 'a) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info ">
-Write an IEEE single precision floating point value.<br>
+<div class="info-desc">
+<p>Write an IEEE single precision floating point value.</p>
+</div>
 </div>
 
 <pre><span id="VALui16s_of"><span class="keyword">val</span> ui16s_of</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-Read an enumeration of unsigned 16-bit words.<br>
+<div class="info-desc">
+<p>Read an enumeration of unsigned 16-bit words.</p>
+</div>
 </div>
 
 <pre><span id="VALi16s_of"><span class="keyword">val</span> i16s_of</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-Read an enumartion of signed 16-bit words.<br>
+<div class="info-desc">
+<p>Read an enumartion of signed 16-bit words.</p>
+</div>
 </div>
 
 <pre><span id="VALi32s_of"><span class="keyword">val</span> i32s_of</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-Read an enumeration of signed 32-bit integers.<br>
-<b>Raises</b> <code>Overflow</code> if the read integer cannot be represented as an OCaml
-        31-bit integer.<br>
+<div class="info-desc">
+<p>Read an enumeration of signed 32-bit integers.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Overflow</code> if the read integer cannot be represented as an OCaml
+        31-bit integer.</li>
+</ul>
 </div>
 
 <pre><span id="VALreal_i32s_of"><span class="keyword">val</span> real_i32s_of</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int32 <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-Read an enumeration of signed 32-bit integers as OCaml <code class="code">int32</code>s.<br>
+<div class="info-desc">
+<p>Read an enumeration of signed 32-bit integers as OCaml <code class="code">int32</code>s.</p>
+</div>
 </div>
 
 <pre><span id="VALi64s_of"><span class="keyword">val</span> i64s_of</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int64 <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-Read an enumeration of signed 64-bit integers as OCaml <code class="code">int64</code>s.<br>
+<div class="info-desc">
+<p>Read an enumeration of signed 64-bit integers as OCaml <code class="code">int64</code>s.</p>
+</div>
 </div>
 
 <pre><span id="VALdoubles_of"><span class="keyword">val</span> doubles_of</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> float <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-Read an enumeration of IEEE double precision floating point values.<br>
+<div class="info-desc">
+<p>Read an enumeration of IEEE double precision floating point values.</p>
+</div>
 </div>
 
 <pre><span id="VALfloats_of"><span class="keyword">val</span> floats_of</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> float <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-Read an enumeration of IEEE single precision floating point values.<br>
+<div class="info-desc">
+<p>Read an enumeration of IEEE single precision floating point values.</p>
+</div>
 </div>
 </body></html>

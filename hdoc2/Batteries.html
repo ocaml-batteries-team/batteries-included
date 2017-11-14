@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -118,92 +119,92 @@
 </div>
 <h1>Module <a href="type_Batteries.html">Batteries</a></h1>
 
-<pre><span class="keyword">module</span> Batteries: <code class="code"><span class="keyword">sig</span></code> <a href="Batteries.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
+<pre><span id="MODULEBatteries"><span class="keyword">module</span> Batteries</span>: <code class="code"><span class="keyword">sig</span></code> <a href="Batteries.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 
-<pre><span class="keyword">module</span> <a href="Batteries.Legacy.html">Legacy</a>: <code class="code"><span class="keyword">sig</span></code> <a href="Batteries.Legacy.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Array.html">Array</a>: <code class="type"><a href="BatArray.html">BatArray</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Buffer.html">Buffer</a>: <code class="type"><a href="BatBuffer.html">BatBuffer</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Bytes.html">Bytes</a>: <code class="type"><a href="BatBytes.html">BatBytes</a></code></pre>
+<pre><span id="MODULELegacy"><span class="keyword">module</span> <a href="Batteries.Legacy.html">Legacy</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="Batteries.Legacy.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span id="MODULEArray"><span class="keyword">module</span> <a href="Batteries.Array.html">Array</a></span>: <code class="type"><a href="BatArray.html">BatArray</a></code></pre>
+<pre><span id="MODULEBuffer"><span class="keyword">module</span> <a href="Batteries.Buffer.html">Buffer</a></span>: <code class="type"><a href="BatBuffer.html">BatBuffer</a></code></pre>
+<pre><span id="MODULEBytes"><span class="keyword">module</span> <a href="Batteries.Bytes.html">Bytes</a></span>: <code class="type"><a href="BatBytes.html">BatBytes</a></code></pre>
 <pre><span id="TYPEbytes"><span class="keyword">type</span> <code class="type"></code>bytes</span> = <code class="type">Bytes.t</code> </pre>
 
 
-<pre><span class="keyword">module</span> <a href="Batteries.Char.html">Char</a>: <code class="type"><a href="BatChar.html">BatChar</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Complex.html">Complex</a>: <code class="type"><a href="BatComplex.html">BatComplex</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Digest.html">Digest</a>: <code class="type"><a href="BatDigest.html">BatDigest</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Format.html">Format</a>: <code class="type"><a href="BatFormat.html">BatFormat</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Gc.html">Gc</a>: <code class="type"><a href="BatGc.html">BatGc</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Genlex.html">Genlex</a>: <code class="type"><a href="BatGenlex.html">BatGenlex</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Hashtbl.html">Hashtbl</a>: <code class="type"><a href="BatHashtbl.html">BatHashtbl</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Int32.html">Int32</a>: <code class="type"><a href="BatInt32.html">BatInt32</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Int64.html">Int64</a>: <code class="type"><a href="BatInt64.html">BatInt64</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Lexing.html">Lexing</a>: <code class="type"><a href="BatLexing.html">BatLexing</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.List.html">List</a>: <code class="type"><a href="BatList.html">BatList</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Map.html">Map</a>: <code class="type"><a href="BatMap.html">BatMap</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Marshal.html">Marshal</a>: <code class="type"><a href="BatMarshal.html">BatMarshal</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Nativeint.html">Nativeint</a>: <code class="type"><a href="BatNativeint.html">BatNativeint</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Oo.html">Oo</a>: <code class="type"><a href="BatOo.html">BatOo</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Printexc.html">Printexc</a>: <code class="type"><a href="BatPrintexc.html">BatPrintexc</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Printf.html">Printf</a>: <code class="type"><a href="BatPrintf.html">BatPrintf</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Queue.html">Queue</a>: <code class="type"><a href="BatQueue.html">BatQueue</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Random.html">Random</a>: <code class="type"><a href="BatRandom.html">BatRandom</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Scanf.html">Scanf</a>: <code class="type"><a href="BatScanf.html">BatScanf</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Set.html">Set</a>: <code class="type"><a href="BatSet.html">BatSet</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Stack.html">Stack</a>: <code class="type"><a href="BatStack.html">BatStack</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Stream.html">Stream</a>: <code class="type"><a href="BatStream.html">BatStream</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.String.html">String</a>: <code class="type"><a href="BatString.html">BatString</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Sys.html">Sys</a>: <code class="type"><a href="BatSys.html">BatSys</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Unix.html">Unix</a>: <code class="type"><a href="BatUnix.html">BatUnix</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Big_int.html">Big_int</a>: <code class="type"><a href="BatBig_int.html">BatBig_int</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Num.html">Num</a>: <code class="type"><a href="BatNum.html">BatNum</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Bigarray.html">Bigarray</a>: <code class="type"><a href="BatBigarray.html">BatBigarray</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Base64.html">Base64</a>: <code class="type"><a href="BatBase64.html">BatBase64</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.BitSet.html">BitSet</a>: <code class="type"><a href="BatBitSet.html">BatBitSet</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Bit_set.html">Bit_set</a>: <code class="type"><a href="BatBitSet.html">BatBitSet</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Dllist.html">Dllist</a>: <code class="type"><a href="BatDllist.html">BatDllist</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.DynArray.html">DynArray</a>: <code class="type"><a href="BatDynArray.html">BatDynArray</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Enum.html">Enum</a>: <code class="type"><a href="BatEnum.html">BatEnum</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.File.html">File</a>: <code class="type"><a href="BatFile.html">BatFile</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Global.html">Global</a>: <code class="type"><a href="BatGlobal.html">BatGlobal</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.IO.html">IO</a>: <code class="type"><a href="BatIO.html">BatIO</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.LazyList.html">LazyList</a>: <code class="type"><a href="BatLazyList.html">BatLazyList</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.MultiPMap.html">MultiPMap</a>: <code class="type"><a href="BatMultiPMap.html">BatMultiPMap</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Option.html">Option</a>: <code class="type"><a href="BatOption.html">BatOption</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.RefList.html">RefList</a>: <code class="type"><a href="BatRefList.html">BatRefList</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Ref.html">Ref</a>: <code class="type"><a href="BatRef.html">BatRef</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Cache.html">Cache</a>: <code class="type"><a href="BatCache.html">BatCache</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.CharParser.html">CharParser</a>: <code class="type"><a href="BatCharParser.html">BatCharParser</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Deque.html">Deque</a>: <code class="type"><a href="BatDeque.html">BatDeque</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Hashcons.html">Hashcons</a>: <code class="type"><a href="BatHashcons.html">BatHashcons</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Heap.html">Heap</a>: <code class="type"><a href="BatHeap.html">BatHeap</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.FingerTree.html">FingerTree</a>: <code class="type"><a href="BatFingerTree.html">BatFingerTree</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Logger.html">Logger</a>: <code class="type"><a href="BatLogger.html">BatLogger</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.MultiMap.html">MultiMap</a>: <code class="type"><a href="BatMultiMap.html">BatMultiMap</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.ParserCo.html">ParserCo</a>: <code class="type"><a href="BatParserCo.html">BatParserCo</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Result.html">Result</a>: <code class="type"><a href="BatResult.html">BatResult</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Return.html">Return</a>: <code class="type"><a href="BatReturn.html">BatReturn</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Seq.html">Seq</a>: <code class="type"><a href="BatSeq.html">BatSeq</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Substring.html">Substring</a>: <code class="type"><a href="BatSubstring.html">BatSubstring</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Tuple.html">Tuple</a>: <code class="type"><a href="BatTuple.html">BatTuple</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Tuple2.html">Tuple2</a>: <code class="type"><a href="BatTuple.Tuple2.html">BatTuple.Tuple2</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Tuple3.html">Tuple3</a>: <code class="type"><a href="BatTuple.Tuple3.html">BatTuple.Tuple3</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Tuple4.html">Tuple4</a>: <code class="type"><a href="BatTuple.Tuple4.html">BatTuple.Tuple4</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Tuple5.html">Tuple5</a>: <code class="type"><a href="BatTuple.Tuple5.html">BatTuple.Tuple5</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Vect.html">Vect</a>: <code class="type"><a href="BatVect.html">BatVect</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.ISet.html">ISet</a>: <code class="type"><a href="BatISet.html">BatISet</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.IMap.html">IMap</a>: <code class="type"><a href="BatIMap.html">BatIMap</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Splay.html">Splay</a>: <code class="type"><a href="BatSplay.html">BatSplay</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Uref.html">Uref</a>: <code class="type"><a href="BatUref.html">BatUref</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.UChar.html">UChar</a>: <code class="type"><a href="BatUChar.html">BatUChar</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.UTF8.html">UTF8</a>: <code class="type"><a href="BatUTF8.html">BatUTF8</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Text.html">Text</a>: <code class="type"><a href="BatText.html">BatText</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Concurrent.html">Concurrent</a>: <code class="type"><a href="BatConcurrent.html">BatConcurrent</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Interfaces.html">Interfaces</a>: <code class="type"><a href="BatInterfaces.html">BatInterfaces</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Number.html">Number</a>: <code class="type"><a href="BatNumber.html">BatNumber</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Float.html">Float</a>: <code class="type"><a href="BatFloat.html">BatFloat</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Int.html">Int</a>: <code class="type"><a href="BatInt.html">BatInt</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Bool.html">Bool</a>: <code class="type"><a href="BatBool.html">BatBool</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Unit.html">Unit</a>: <code class="type"><a href="BatUnit.html">BatUnit</a></code></pre>
-<pre><span class="keyword">module</span> <a href="Batteries.Incubator.html">Incubator</a>: <code class="code"><span class="keyword">sig</span></code> <a href="Batteries.Incubator.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span id="MODULEChar"><span class="keyword">module</span> <a href="Batteries.Char.html">Char</a></span>: <code class="type"><a href="BatChar.html">BatChar</a></code></pre>
+<pre><span id="MODULEComplex"><span class="keyword">module</span> <a href="Batteries.Complex.html">Complex</a></span>: <code class="type"><a href="BatComplex.html">BatComplex</a></code></pre>
+<pre><span id="MODULEDigest"><span class="keyword">module</span> <a href="Batteries.Digest.html">Digest</a></span>: <code class="type"><a href="BatDigest.html">BatDigest</a></code></pre>
+<pre><span id="MODULEFormat"><span class="keyword">module</span> <a href="Batteries.Format.html">Format</a></span>: <code class="type"><a href="BatFormat.html">BatFormat</a></code></pre>
+<pre><span id="MODULEGc"><span class="keyword">module</span> <a href="Batteries.Gc.html">Gc</a></span>: <code class="type"><a href="BatGc.html">BatGc</a></code></pre>
+<pre><span id="MODULEGenlex"><span class="keyword">module</span> <a href="Batteries.Genlex.html">Genlex</a></span>: <code class="type"><a href="BatGenlex.html">BatGenlex</a></code></pre>
+<pre><span id="MODULEHashtbl"><span class="keyword">module</span> <a href="Batteries.Hashtbl.html">Hashtbl</a></span>: <code class="type"><a href="BatHashtbl.html">BatHashtbl</a></code></pre>
+<pre><span id="MODULEInt32"><span class="keyword">module</span> <a href="Batteries.Int32.html">Int32</a></span>: <code class="type"><a href="BatInt32.html">BatInt32</a></code></pre>
+<pre><span id="MODULEInt64"><span class="keyword">module</span> <a href="Batteries.Int64.html">Int64</a></span>: <code class="type"><a href="BatInt64.html">BatInt64</a></code></pre>
+<pre><span id="MODULELexing"><span class="keyword">module</span> <a href="Batteries.Lexing.html">Lexing</a></span>: <code class="type"><a href="BatLexing.html">BatLexing</a></code></pre>
+<pre><span id="MODULEList"><span class="keyword">module</span> <a href="Batteries.List.html">List</a></span>: <code class="type"><a href="BatList.html">BatList</a></code></pre>
+<pre><span id="MODULEMap"><span class="keyword">module</span> <a href="Batteries.Map.html">Map</a></span>: <code class="type"><a href="BatMap.html">BatMap</a></code></pre>
+<pre><span id="MODULEMarshal"><span class="keyword">module</span> <a href="Batteries.Marshal.html">Marshal</a></span>: <code class="type"><a href="BatMarshal.html">BatMarshal</a></code></pre>
+<pre><span id="MODULENativeint"><span class="keyword">module</span> <a href="Batteries.Nativeint.html">Nativeint</a></span>: <code class="type"><a href="BatNativeint.html">BatNativeint</a></code></pre>
+<pre><span id="MODULEOo"><span class="keyword">module</span> <a href="Batteries.Oo.html">Oo</a></span>: <code class="type"><a href="BatOo.html">BatOo</a></code></pre>
+<pre><span id="MODULEPrintexc"><span class="keyword">module</span> <a href="Batteries.Printexc.html">Printexc</a></span>: <code class="type"><a href="BatPrintexc.html">BatPrintexc</a></code></pre>
+<pre><span id="MODULEPrintf"><span class="keyword">module</span> <a href="Batteries.Printf.html">Printf</a></span>: <code class="type"><a href="BatPrintf.html">BatPrintf</a></code></pre>
+<pre><span id="MODULEQueue"><span class="keyword">module</span> <a href="Batteries.Queue.html">Queue</a></span>: <code class="type"><a href="BatQueue.html">BatQueue</a></code></pre>
+<pre><span id="MODULERandom"><span class="keyword">module</span> <a href="Batteries.Random.html">Random</a></span>: <code class="type"><a href="BatRandom.html">BatRandom</a></code></pre>
+<pre><span id="MODULEScanf"><span class="keyword">module</span> <a href="Batteries.Scanf.html">Scanf</a></span>: <code class="type"><a href="BatScanf.html">BatScanf</a></code></pre>
+<pre><span id="MODULESet"><span class="keyword">module</span> <a href="Batteries.Set.html">Set</a></span>: <code class="type"><a href="BatSet.html">BatSet</a></code></pre>
+<pre><span id="MODULEStack"><span class="keyword">module</span> <a href="Batteries.Stack.html">Stack</a></span>: <code class="type"><a href="BatStack.html">BatStack</a></code></pre>
+<pre><span id="MODULEStream"><span class="keyword">module</span> <a href="Batteries.Stream.html">Stream</a></span>: <code class="type"><a href="BatStream.html">BatStream</a></code></pre>
+<pre><span id="MODULEString"><span class="keyword">module</span> <a href="Batteries.String.html">String</a></span>: <code class="type"><a href="BatString.html">BatString</a></code></pre>
+<pre><span id="MODULESys"><span class="keyword">module</span> <a href="Batteries.Sys.html">Sys</a></span>: <code class="type"><a href="BatSys.html">BatSys</a></code></pre>
+<pre><span id="MODULEUnix"><span class="keyword">module</span> <a href="Batteries.Unix.html">Unix</a></span>: <code class="type"><a href="BatUnix.html">BatUnix</a></code></pre>
+<pre><span id="MODULEBig_int"><span class="keyword">module</span> <a href="Batteries.Big_int.html">Big_int</a></span>: <code class="type"><a href="BatBig_int.html">BatBig_int</a></code></pre>
+<pre><span id="MODULENum"><span class="keyword">module</span> <a href="Batteries.Num.html">Num</a></span>: <code class="type"><a href="BatNum.html">BatNum</a></code></pre>
+<pre><span id="MODULEBigarray"><span class="keyword">module</span> <a href="Batteries.Bigarray.html">Bigarray</a></span>: <code class="type"><a href="BatBigarray.html">BatBigarray</a></code></pre>
+<pre><span id="MODULEBase64"><span class="keyword">module</span> <a href="Batteries.Base64.html">Base64</a></span>: <code class="type"><a href="BatBase64.html">BatBase64</a></code></pre>
+<pre><span id="MODULEBitSet"><span class="keyword">module</span> <a href="Batteries.BitSet.html">BitSet</a></span>: <code class="type"><a href="BatBitSet.html">BatBitSet</a></code></pre>
+<pre><span id="MODULEBit_set"><span class="keyword">module</span> <a href="Batteries.Bit_set.html">Bit_set</a></span>: <code class="type"><a href="BatBitSet.html">BatBitSet</a></code></pre>
+<pre><span id="MODULEDllist"><span class="keyword">module</span> <a href="Batteries.Dllist.html">Dllist</a></span>: <code class="type"><a href="BatDllist.html">BatDllist</a></code></pre>
+<pre><span id="MODULEDynArray"><span class="keyword">module</span> <a href="Batteries.DynArray.html">DynArray</a></span>: <code class="type"><a href="BatDynArray.html">BatDynArray</a></code></pre>
+<pre><span id="MODULEEnum"><span class="keyword">module</span> <a href="Batteries.Enum.html">Enum</a></span>: <code class="type"><a href="BatEnum.html">BatEnum</a></code></pre>
+<pre><span id="MODULEFile"><span class="keyword">module</span> <a href="Batteries.File.html">File</a></span>: <code class="type"><a href="BatFile.html">BatFile</a></code></pre>
+<pre><span id="MODULEGlobal"><span class="keyword">module</span> <a href="Batteries.Global.html">Global</a></span>: <code class="type"><a href="BatGlobal.html">BatGlobal</a></code></pre>
+<pre><span id="MODULEIO"><span class="keyword">module</span> <a href="Batteries.IO.html">IO</a></span>: <code class="type"><a href="BatIO.html">BatIO</a></code></pre>
+<pre><span id="MODULELazyList"><span class="keyword">module</span> <a href="Batteries.LazyList.html">LazyList</a></span>: <code class="type"><a href="BatLazyList.html">BatLazyList</a></code></pre>
+<pre><span id="MODULEMultiPMap"><span class="keyword">module</span> <a href="Batteries.MultiPMap.html">MultiPMap</a></span>: <code class="type"><a href="BatMultiPMap.html">BatMultiPMap</a></code></pre>
+<pre><span id="MODULEOption"><span class="keyword">module</span> <a href="Batteries.Option.html">Option</a></span>: <code class="type"><a href="BatOption.html">BatOption</a></code></pre>
+<pre><span id="MODULERefList"><span class="keyword">module</span> <a href="Batteries.RefList.html">RefList</a></span>: <code class="type"><a href="BatRefList.html">BatRefList</a></code></pre>
+<pre><span id="MODULERef"><span class="keyword">module</span> <a href="Batteries.Ref.html">Ref</a></span>: <code class="type"><a href="BatRef.html">BatRef</a></code></pre>
+<pre><span id="MODULECache"><span class="keyword">module</span> <a href="Batteries.Cache.html">Cache</a></span>: <code class="type"><a href="BatCache.html">BatCache</a></code></pre>
+<pre><span id="MODULECharParser"><span class="keyword">module</span> <a href="Batteries.CharParser.html">CharParser</a></span>: <code class="type"><a href="BatCharParser.html">BatCharParser</a></code></pre>
+<pre><span id="MODULEDeque"><span class="keyword">module</span> <a href="Batteries.Deque.html">Deque</a></span>: <code class="type"><a href="BatDeque.html">BatDeque</a></code></pre>
+<pre><span id="MODULEHashcons"><span class="keyword">module</span> <a href="Batteries.Hashcons.html">Hashcons</a></span>: <code class="type"><a href="BatHashcons.html">BatHashcons</a></code></pre>
+<pre><span id="MODULEHeap"><span class="keyword">module</span> <a href="Batteries.Heap.html">Heap</a></span>: <code class="type"><a href="BatHeap.html">BatHeap</a></code></pre>
+<pre><span id="MODULEFingerTree"><span class="keyword">module</span> <a href="Batteries.FingerTree.html">FingerTree</a></span>: <code class="type"><a href="BatFingerTree.html">BatFingerTree</a></code></pre>
+<pre><span id="MODULELogger"><span class="keyword">module</span> <a href="Batteries.Logger.html">Logger</a></span>: <code class="type"><a href="BatLogger.html">BatLogger</a></code></pre>
+<pre><span id="MODULEMultiMap"><span class="keyword">module</span> <a href="Batteries.MultiMap.html">MultiMap</a></span>: <code class="type"><a href="BatMultiMap.html">BatMultiMap</a></code></pre>
+<pre><span id="MODULEParserCo"><span class="keyword">module</span> <a href="Batteries.ParserCo.html">ParserCo</a></span>: <code class="type"><a href="BatParserCo.html">BatParserCo</a></code></pre>
+<pre><span id="MODULEResult"><span class="keyword">module</span> <a href="Batteries.Result.html">Result</a></span>: <code class="type"><a href="BatResult.html">BatResult</a></code></pre>
+<pre><span id="MODULEReturn"><span class="keyword">module</span> <a href="Batteries.Return.html">Return</a></span>: <code class="type"><a href="BatReturn.html">BatReturn</a></code></pre>
+<pre><span id="MODULESeq"><span class="keyword">module</span> <a href="Batteries.Seq.html">Seq</a></span>: <code class="type"><a href="BatSeq.html">BatSeq</a></code></pre>
+<pre><span id="MODULESubstring"><span class="keyword">module</span> <a href="Batteries.Substring.html">Substring</a></span>: <code class="type"><a href="BatSubstring.html">BatSubstring</a></code></pre>
+<pre><span id="MODULETuple"><span class="keyword">module</span> <a href="Batteries.Tuple.html">Tuple</a></span>: <code class="type"><a href="BatTuple.html">BatTuple</a></code></pre>
+<pre><span id="MODULETuple2"><span class="keyword">module</span> <a href="Batteries.Tuple2.html">Tuple2</a></span>: <code class="type"><a href="BatTuple.Tuple2.html">BatTuple.Tuple2</a></code></pre>
+<pre><span id="MODULETuple3"><span class="keyword">module</span> <a href="Batteries.Tuple3.html">Tuple3</a></span>: <code class="type"><a href="BatTuple.Tuple3.html">BatTuple.Tuple3</a></code></pre>
+<pre><span id="MODULETuple4"><span class="keyword">module</span> <a href="Batteries.Tuple4.html">Tuple4</a></span>: <code class="type"><a href="BatTuple.Tuple4.html">BatTuple.Tuple4</a></code></pre>
+<pre><span id="MODULETuple5"><span class="keyword">module</span> <a href="Batteries.Tuple5.html">Tuple5</a></span>: <code class="type"><a href="BatTuple.Tuple5.html">BatTuple.Tuple5</a></code></pre>
+<pre><span id="MODULEVect"><span class="keyword">module</span> <a href="Batteries.Vect.html">Vect</a></span>: <code class="type"><a href="BatVect.html">BatVect</a></code></pre>
+<pre><span id="MODULEISet"><span class="keyword">module</span> <a href="Batteries.ISet.html">ISet</a></span>: <code class="type"><a href="BatISet.html">BatISet</a></code></pre>
+<pre><span id="MODULEIMap"><span class="keyword">module</span> <a href="Batteries.IMap.html">IMap</a></span>: <code class="type"><a href="BatIMap.html">BatIMap</a></code></pre>
+<pre><span id="MODULESplay"><span class="keyword">module</span> <a href="Batteries.Splay.html">Splay</a></span>: <code class="type"><a href="BatSplay.html">BatSplay</a></code></pre>
+<pre><span id="MODULEUref"><span class="keyword">module</span> <a href="Batteries.Uref.html">Uref</a></span>: <code class="type"><a href="BatUref.html">BatUref</a></code></pre>
+<pre><span id="MODULEUChar"><span class="keyword">module</span> <a href="Batteries.UChar.html">UChar</a></span>: <code class="type"><a href="BatUChar.html">BatUChar</a></code></pre>
+<pre><span id="MODULEUTF8"><span class="keyword">module</span> <a href="Batteries.UTF8.html">UTF8</a></span>: <code class="type"><a href="BatUTF8.html">BatUTF8</a></code></pre>
+<pre><span id="MODULEText"><span class="keyword">module</span> <a href="Batteries.Text.html">Text</a></span>: <code class="type"><a href="BatText.html">BatText</a></code></pre>
+<pre><span id="MODULEConcurrent"><span class="keyword">module</span> <a href="Batteries.Concurrent.html">Concurrent</a></span>: <code class="type"><a href="BatConcurrent.html">BatConcurrent</a></code></pre>
+<pre><span id="MODULEInterfaces"><span class="keyword">module</span> <a href="Batteries.Interfaces.html">Interfaces</a></span>: <code class="type"><a href="BatInterfaces.html">BatInterfaces</a></code></pre>
+<pre><span id="MODULENumber"><span class="keyword">module</span> <a href="Batteries.Number.html">Number</a></span>: <code class="type"><a href="BatNumber.html">BatNumber</a></code></pre>
+<pre><span id="MODULEFloat"><span class="keyword">module</span> <a href="Batteries.Float.html">Float</a></span>: <code class="type"><a href="BatFloat.html">BatFloat</a></code></pre>
+<pre><span id="MODULEInt"><span class="keyword">module</span> <a href="Batteries.Int.html">Int</a></span>: <code class="type"><a href="BatInt.html">BatInt</a></code></pre>
+<pre><span id="MODULEBool"><span class="keyword">module</span> <a href="Batteries.Bool.html">Bool</a></span>: <code class="type"><a href="BatBool.html">BatBool</a></code></pre>
+<pre><span id="MODULEUnit"><span class="keyword">module</span> <a href="Batteries.Unit.html">Unit</a></span>: <code class="type"><a href="BatUnit.html">BatUnit</a></code></pre>
+<pre><span id="MODULEIncubator"><span class="keyword">module</span> <a href="Batteries.Incubator.html">Incubator</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="Batteries.Incubator.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
 <pre><span class="keyword">include</span> Pervasives</pre>
 
 <pre><span class="keyword">include</span> <a href="BatPervasives.html">BatPervasives</a></pre>

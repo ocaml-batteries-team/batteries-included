@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -120,139 +121,190 @@
 </div>
 <h1>Module <a href="type_BatQueue.html">BatQueue</a></h1>
 
-<pre><span class="keyword">module</span> BatQueue: <code class="code"><span class="keyword">sig</span></code> <a href="BatQueue.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-First-in first-out queues.
-<p>
+<pre><span id="MODULEBatQueue"><span class="keyword">module</span> BatQueue</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatQueue.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>First-in first-out queues.</p>
 
-    This module implements queues (FIFOs), with in-place modification.<br>
-<b>Author(s):</b> Xavier Leroy (Base module), David Teller<br>
+<p>This module implements queues (FIFOs), with in-place modification.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Author(s):</b> Xavier Leroy (Base module), David Teller</li>
+</ul>
 </div>
 <hr width="100%">
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a Queue.t</code> </pre>
 <div class="info ">
-The type of queues containing elements of type <code class="code"><span class="keywordsign">'</span>a</code>.<br>
+<div class="info-desc">
+<p>The type of queues containing elements of type <code class="code"><span class="keywordsign">'</span>a</code>.</p>
+</div>
 </div>
 
 
 <pre><span id="EXCEPTIONEmpty"><span class="keyword">exception</span> Empty</span></pre>
 <div class="info ">
-Raised when <code class="code"><span class="constructor">Queue</span>.take</code> or <code class="code"><span class="constructor">Queue</span>.peek</code> is applied to an empty queue.<br>
+<div class="info-desc">
+<p>Raised when <code class="code"><span class="constructor">Queue</span>.take</code> or <code class="code"><span class="constructor">Queue</span>.peek</code> is applied to an empty queue.</p>
+</div>
 </div>
 
 <pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">unit -> 'a <a href="BatQueue.html#TYPEt">t</a></code></pre><div class="info ">
-Return a new queue, initially empty.<br>
+<div class="info-desc">
+<p>Return a new queue, initially empty.</p>
+</div>
 </div>
 
 <pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">'a -> 'a <a href="BatQueue.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">add&nbsp;x&nbsp;q</code> adds the element <code class="code">x</code> at the end of the queue <code class="code">q</code>.<br>
+<div class="info-desc">
+<p><code class="code">add&nbsp;x&nbsp;q</code> adds the element <code class="code">x</code> at the end of the queue <code class="code">q</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALpush"><span class="keyword">val</span> push</span> : <code class="type">'a -> 'a <a href="BatQueue.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">push</code> is a synonym for <code class="code">add</code>.<br>
+<div class="info-desc">
+<p><code class="code">push</code> is a synonym for <code class="code">add</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALtake"><span class="keyword">val</span> take</span> : <code class="type">'a <a href="BatQueue.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
-<code class="code">take&nbsp;q</code> removes and returns the first element in queue <code class="code">q</code>,
-    or raises <code class="code"><span class="constructor">Empty</span></code> if the queue is empty.<br>
+<div class="info-desc">
+<p><code class="code">take&nbsp;q</code> removes and returns the first element in queue <code class="code">q</code>,
+    or raises <code class="code"><span class="constructor">Empty</span></code> if the queue is empty.</p>
+</div>
 </div>
 
 <pre><span id="VALpop"><span class="keyword">val</span> pop</span> : <code class="type">'a <a href="BatQueue.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
-<code class="code">pop</code> is a synonym for <code class="code">take</code>.<br>
+<div class="info-desc">
+<p><code class="code">pop</code> is a synonym for <code class="code">take</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALpeek"><span class="keyword">val</span> peek</span> : <code class="type">'a <a href="BatQueue.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
-<code class="code">peek&nbsp;q</code> returns the first element in queue <code class="code">q</code>, without removing
-    it from the queue, or raises <code class="code"><span class="constructor">Empty</span></code> if the queue is empty.<br>
+<div class="info-desc">
+<p><code class="code">peek&nbsp;q</code> returns the first element in queue <code class="code">q</code>, without removing
+    it from the queue, or raises <code class="code"><span class="constructor">Empty</span></code> if the queue is empty.</p>
+</div>
 </div>
 
 <pre><span id="VALtop"><span class="keyword">val</span> top</span> : <code class="type">'a <a href="BatQueue.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
-<code class="code">top</code> is a synonym for <code class="code">peek</code>.<br>
+<div class="info-desc">
+<p><code class="code">top</code> is a synonym for <code class="code">peek</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALclear"><span class="keyword">val</span> clear</span> : <code class="type">'a <a href="BatQueue.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-Discard all elements from a queue.<br>
+<div class="info-desc">
+<p>Discard all elements from a queue.</p>
+</div>
 </div>
 
 <pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">'a <a href="BatQueue.html#TYPEt">t</a> -> 'a <a href="BatQueue.html#TYPEt">t</a></code></pre><div class="info ">
-Return a copy of the given queue.<br>
+<div class="info-desc">
+<p>Return a copy of the given queue.</p>
+</div>
 </div>
 
 <pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">'a <a href="BatQueue.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-Return <code class="code"><span class="keyword">true</span></code> if the given queue is empty, <code class="code"><span class="keyword">false</span></code> otherwise.<br>
+<div class="info-desc">
+<p>Return <code class="code"><span class="keyword">true</span></code> if the given queue is empty, <code class="code"><span class="keyword">false</span></code> otherwise.</p>
+</div>
 </div>
 
 <pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type">'a <a href="BatQueue.html#TYPEt">t</a> -> int</code></pre><div class="info ">
-Return the number of elements in a queue.<br>
+<div class="info-desc">
+<p>Return the number of elements in a queue.</p>
+</div>
 </div>
 
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> 'a <a href="BatQueue.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">iter&nbsp;f&nbsp;q</code> applies <code class="code">f</code> in turn to all elements of <code class="code">q</code>,
+<div class="info-desc">
+<p><code class="code">iter&nbsp;f&nbsp;q</code> applies <code class="code">f</code> in turn to all elements of <code class="code">q</code>,
     from the least recently entered to the most recently entered.
-    The queue itself is unchanged.<br>
+    The queue itself is unchanged.</p>
+</div>
 </div>
 
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> 'a <a href="BatQueue.html#TYPEt">t</a> -> 'b <a href="BatQueue.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">map&nbsp;f&nbsp;q</code> applies function <code class="code">f</code> to each element of the queue
+<div class="info-desc">
+<p><code class="code">map&nbsp;f&nbsp;q</code> applies function <code class="code">f</code> to each element of the queue
    and returns a new queue <code class="code">q'</code> with the results returned by <code class="code">f</code>.
    Order is preserved and <code class="code">q</code> is not consumed. So that if
-   <code class="code">take&nbsp;q</code> returns <code class="code">x</code> <code class="code">take&nbsp;q'</code> will return <code class="code">f&nbsp;x</code>.<br>
-<b>Since</b> 2.3.0<br>
+   <code class="code">take&nbsp;q</code> returns <code class="code">x</code> <code class="code">take&nbsp;q'</code> will return <code class="code">f&nbsp;x</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.3.0</li>
+</ul>
 </div>
 
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('a -> bool) -> 'a <a href="BatQueue.html#TYPEt">t</a> -> 'a <a href="BatQueue.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">filter&nbsp;p&nbsp;q</code> returns a new queue that contain the elements of <code class="code">q</code>
-    that satisfy the predicate <code class="code">p</code>, in the same order.<br>
-<b>Since</b> 2.4<br>
+<div class="info-desc">
+<p><code class="code">filter&nbsp;p&nbsp;q</code> returns a new queue that contain the elements of <code class="code">q</code>
+    that satisfy the predicate <code class="code">p</code>, in the same order.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.4</li>
+</ul>
 </div>
 
 <pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">('a -> 'b option) -> 'a <a href="BatQueue.html#TYPEt">t</a> -> 'b <a href="BatQueue.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">filter_map&nbsp;f&nbsp;q</code> applies <code class="code">f</code> to the elements <code class="code">a0,a1..an</code> of <code class="code">q</code> in order,
+<div class="info-desc">
+<p><code class="code">filter_map&nbsp;f&nbsp;q</code> applies <code class="code">f</code> to the elements <code class="code">a0,a1..an</code> of <code class="code">q</code> in order,
     and returns the queue of the elements <code class="code">bi</code> such that <code class="code">f&nbsp;ai&nbsp;=&nbsp;<span class="constructor">Some</span>&nbsp;bi</code>,
-    in the corresponding order.<br>
-<b>Since</b> 2.4<br>
+    in the corresponding order.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.4</li>
+</ul>
 </div>
 
 <pre><span id="VALfilter_inplace"><span class="keyword">val</span> filter_inplace</span> : <code class="type">('a -> bool) -> 'a <a href="BatQueue.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">filter_inplace&nbsp;p&nbsp;q</code> removes all the elements of the queue <code class="code">q</code> that
+<div class="info-desc">
+<p><code class="code">filter_inplace&nbsp;p&nbsp;q</code> removes all the elements of the queue <code class="code">q</code> that
     don't satisfy the predicate <code class="code">p</code>.  The order of the elements
-    in the queue is preserved.<br>
-<b>Since</b> 2.4<br>
+    in the queue is preserved.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.4</li>
+</ul>
 </div>
 
 <pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('b -> 'a -> 'b) -> 'b -> 'a <a href="BatQueue.html#TYPEt">t</a> -> 'b</code></pre><div class="info ">
-<code class="code">fold&nbsp;f&nbsp;accu&nbsp;q</code> is equivalent to <code class="code"><span class="constructor">List</span>.fold_left&nbsp;f&nbsp;accu&nbsp;l</code>,
+<div class="info-desc">
+<p><code class="code">fold&nbsp;f&nbsp;accu&nbsp;q</code> is equivalent to <code class="code"><span class="constructor">List</span>.fold_left&nbsp;f&nbsp;accu&nbsp;l</code>,
     where <code class="code">l</code> is the list of <code class="code">q</code>'s elements. The queue remains
-    unchanged.<br>
+    unchanged.</p>
+</div>
 </div>
 
 <pre><span id="VALtransfer"><span class="keyword">val</span> transfer</span> : <code class="type">'a <a href="BatQueue.html#TYPEt">t</a> -> 'a <a href="BatQueue.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">transfer&nbsp;q1&nbsp;q2</code> adds all of <code class="code">q1</code>'s elements at the end of
+<div class="info-desc">
+<p><code class="code">transfer&nbsp;q1&nbsp;q2</code> adds all of <code class="code">q1</code>'s elements at the end of
     the queue <code class="code">q2</code>, then clears <code class="code">q1</code>. It is equivalent to the
     sequence <code class="code">iter&nbsp;(<span class="keyword">fun</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;add&nbsp;x&nbsp;q2)&nbsp;q1;&nbsp;clear&nbsp;q1</code>, but runs
-    in constant time.<br>
+    in constant time.</p>
+</div>
 </div>
 
 <pre><span id="TYPEenumerable"><span class="keyword">type</span> <code class="type">'a</code> enumerable</span> = <code class="type">'a <a href="BatQueue.html#TYPEt">t</a></code> </pre>
 
 
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a <a href="BatQueue.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-<code class="code">enum&nbsp;q</code> returns a destructive enumeration of the elements of queue
+<div class="info-desc">
+<p><code class="code">enum&nbsp;q</code> returns a destructive enumeration of the elements of queue
     <code class="code">q</code>, from the least recently entered to the most recently entered.
-    Reading the enumeration will progressively empty <code class="code">q</code>.<br>
+    Reading the enumeration will progressively empty <code class="code">q</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatQueue.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">of_enum&nbsp;e</code> returns a new queue containing all the elements of <code class="code">e</code>.
+<div class="info-desc">
+<p><code class="code">of_enum&nbsp;e</code> returns a new queue containing all the elements of <code class="code">e</code>.
     This is equivalent to calling <code class="code">push</code> with the first element of the
-    enumeration, then with the second, etc.<br>
+    enumeration, then with the second, etc.</p>
 </div>
-<br>
-<h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
-<br>
-<div class="h7" id="7_Printing">Printing</div><br>
-
+</div>
+<h7 id="6_Boilerplatecode">Boilerplate code</h7><div class="h8" id="7_Printing">Printing</div>
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatQueue.html#TYPEt">t</a> -> unit</code></pre>
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a> -> 'a <a href="BatQueue.html#TYPEt">t</a> <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a></code></pre>
 <pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">'a <a href="BatOrd.html#TYPEeq">BatOrd.eq</a> -> 'a <a href="BatQueue.html#TYPEt">t</a> <a href="BatOrd.html#TYPEeq">BatOrd.eq</a></code></pre>
-<pre><span class="keyword">module</span> <a href="BatQueue.Exceptionless.html">Exceptionless</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatQueue.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>
+<pre><span id="MODULEExceptionless"><span class="keyword">module</span> <a href="BatQueue.Exceptionless.html">Exceptionless</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatQueue.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>

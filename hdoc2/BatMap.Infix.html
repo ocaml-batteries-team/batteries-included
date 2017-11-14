@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -118,20 +119,26 @@
 </div>
 <h1>Module <a href="type_BatMap.Infix.html">BatMap.Infix</a></h1>
 
-<pre><span class="keyword">module</span> Infix: <code class="code"><span class="keyword">sig</span></code> <a href="BatMap.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Infix operators over a <code class="code"><span class="constructor">BatPMap</span></code><br>
+<pre><span id="MODULEInfix"><span class="keyword">module</span> Infix</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatMap.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Infix operators over a <code class="code"><span class="constructor">BatPMap</span></code></p>
+</div>
 </div>
 <hr width="100%">
 
 <pre><span id="VAL(-->)"><span class="keyword">val</span> (--&gt;)</span> : <code class="type">('a, 'b) <a href="BatMap.html#TYPEt">BatMap.t</a> -> 'a -> 'b</code></pre><div class="info ">
-<code class="code">map--&gt;key</code> returns the current binding of <code class="code">key</code> in <code class="code">map</code>,
-      or raises <code class="code"><span class="constructor">Not_found</span></code>. Equivalent to <code class="code">find&nbsp;key&nbsp;map</code>.<br>
+<div class="info-desc">
+<p><code class="code">map--&gt;key</code> returns the current binding of <code class="code">key</code> in <code class="code">map</code>,
+      or raises <code class="code"><span class="constructor">Not_found</span></code>. Equivalent to <code class="code">find&nbsp;key&nbsp;map</code>.</p>
+</div>
 </div>
 
 <pre><span id="VAL(<--)"><span class="keyword">val</span> (&lt;--)</span> : <code class="type">('a, 'b) <a href="BatMap.html#TYPEt">BatMap.t</a> -> 'a * 'b -> ('a, 'b) <a href="BatMap.html#TYPEt">BatMap.t</a></code></pre><div class="info ">
-<code class="code">map&lt;--(key,&nbsp;value)</code> returns a map containing the same bindings as
+<div class="info-desc">
+<p><code class="code">map&lt;--(key,&nbsp;value)</code> returns a map containing the same bindings as
         <code class="code">map</code>, plus a binding of <code class="code">key</code> to <code class="code">value</code>. If <code class="code">key</code> was already bound
         in <code class="code">map</code>, its previous binding disappears. Equivalent
-        to <code class="code">add&nbsp;key&nbsp;value&nbsp;map</code><br>
+        to <code class="code">add&nbsp;key&nbsp;value&nbsp;map</code></p>
+</div>
 </div>
 </body></html>

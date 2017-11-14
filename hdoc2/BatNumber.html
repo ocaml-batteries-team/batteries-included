@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -118,39 +119,43 @@
 </div>
 <h1>Module <a href="type_BatNumber.html">BatNumber</a></h1>
 
-<pre><span class="keyword">module</span> BatNumber: <code class="code"><span class="keyword">sig</span></code> <a href="BatNumber.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-A common interface for numbers.<br>
-<b>Author(s):</b> Gabriel Scherer, David Teller<br>
+<pre><span id="MODULEBatNumber"><span class="keyword">module</span> BatNumber</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatNumber.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>A common interface for numbers.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Author(s):</b> Gabriel Scherer, David Teller</li>
+</ul>
 </div>
 <hr width="100%">
 
 <pre><span id="EXCEPTIONOverflow"><span class="keyword">exception</span> Overflow</span></pre>
 <div class="info ">
-Arithmetic overflow.
-<p>
+<div class="info-desc">
+<p>Arithmetic overflow.</p>
 
-   This kind of exception is raised by "safe" numeric modules whenever
-   the number which should be returned is too large to be represented.
-<p>
+<p>This kind of exception is raised by "safe" numeric modules whenever
+   the number which should be returned is too large to be represented.</p>
 
-   Non-"safe" numeric modules will return a result which depends on
+<p>Non-"safe" numeric modules will return a result which depends on
    the internal representation. For instance, with module <code class="code"><span class="constructor">Int</span></code>,
    <code class="code">max_num&nbsp;+&nbsp;1</code> returns <code class="code">min_num</code>. By opposition, with module
-   <code class="code"><span class="constructor">Safe_int</span></code>, <code class="code">max_num&nbsp;+&nbsp;1</code> raises <code class="code"><span class="constructor">Overflow</span></code>.<br>
+   <code class="code"><span class="constructor">Safe_int</span></code>, <code class="code">max_num&nbsp;+&nbsp;1</code> raises <code class="code"><span class="constructor">Overflow</span></code>.</p>
+</div>
 </div>
 
 <pre><span id="EXCEPTIONNaN"><span class="keyword">exception</span> NaN</span></pre>
 <div class="info ">
-Not a Number
-<p>
+<div class="info-desc">
+<p>Not a Number</p>
 
-   This kind of exception is raised by "safe" modules whenever the
-   number which should be returned is not a number.
-<p>
+<p>This kind of exception is raised by "safe" modules whenever the
+   number which should be returned is not a number.</p>
 
-   For instance, with module <code class="code"><span class="constructor">Safe_float</span></code>, <code class="code">0.0&nbsp;/&nbsp;0.0</code> raises <code class="code"><span class="constructor">NaN</span></code>.
+<p>For instance, with module <code class="code"><span class="constructor">Safe_float</span></code>, <code class="code">0.0&nbsp;/&nbsp;0.0</code> raises <code class="code"><span class="constructor">NaN</span></code>.
    By opposition, with module <code class="code"><span class="constructor">Float</span></code>, <code class="code">0.0&nbsp;/&nbsp;0.0</code> does not interrupt
-   computation and returns a special value <code class="code">nan</code>.<br>
+   computation and returns a special value <code class="code">nan</code>.</p>
+</div>
 </div>
 
 <pre><code><span id="TYPEnumeric"><span class="keyword">type</span> <code class="type">'a</code> numeric</span> = {</code></pre><table class="typetable">
@@ -290,30 +295,35 @@ Not a Number
 }
 
 <div class="info ">
-The smallest set of operations supported by every set of numbers.
-<p>
+<div class="info-desc">
+<p>The smallest set of operations supported by every set of numbers.</p>
 
-   This is presented as record to permit lightweight typeclass-style
-   computation.<br>
+<p>This is presented as record to permit lightweight typeclass-style
+   computation.</p>
+</div>
 </div>
 
 
-<pre><span class="keyword">module type</span> <a href="BatNumber.Infix.html">Infix</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatNumber.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-The infix operators available with any type of numbers
+<pre><span id="MODULETYPEInfix"><span class="keyword">module type</span> <a href="BatNumber.Infix.html">Infix</a></span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatNumber.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>The infix operators available with any type of numbers</p>
+
 </div>
 
-<pre><span class="keyword">module type</span> <a href="BatNumber.Compare.html">Compare</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatNumber.Compare.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-And if you are ready to drop generic comparison operators,
-    then you can open this one as well
+<pre><span id="MODULETYPECompare"><span class="keyword">module type</span> <a href="BatNumber.Compare.html">Compare</a></span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatNumber.Compare.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>And if you are ready to drop generic comparison operators,
+    then you can open this one as well</p>
+
 </div>
 
-<pre><span class="keyword">module type</span> <a href="BatNumber.RefOps.html">RefOps</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatNumber.RefOps.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-Reference operators ala C.
+<pre><span id="MODULETYPERefOps"><span class="keyword">module type</span> <a href="BatNumber.RefOps.html">RefOps</a></span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatNumber.RefOps.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>Reference operators ala C.</p>
+
 </div>
 
-<pre><span class="keyword">module type</span> <a href="BatNumber.Numeric.html">Numeric</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatNumber.Numeric.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-The full set of operations of a type of numbers
+<pre><span id="MODULETYPENumeric"><span class="keyword">module type</span> <a href="BatNumber.Numeric.html">Numeric</a></span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatNumber.Numeric.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>The full set of operations of a type of numbers</p>
+
 </div>
 
-<pre><span class="keyword">module type</span> <a href="BatNumber.Bounded.html">Bounded</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatNumber.Bounded.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
-<pre><span class="keyword">module type</span> <a href="BatNumber.Discrete.html">Discrete</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatNumber.Discrete.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>
+<pre><span id="MODULETYPEBounded"><span class="keyword">module type</span> <a href="BatNumber.Bounded.html">Bounded</a></span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatNumber.Bounded.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span id="MODULETYPEDiscrete"><span class="keyword">module type</span> <a href="BatNumber.Discrete.html">Discrete</a></span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatNumber.Discrete.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>

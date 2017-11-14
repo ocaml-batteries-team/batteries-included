@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -120,8 +121,10 @@
 </div>
 <h1>Module <a href="type_BatResult.html">BatResult</a></h1>
 
-<pre><span class="keyword">module</span> BatResult: <code class="code"><span class="keyword">sig</span></code> <a href="BatResult.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Monadic results of computations that can raise exceptions<br>
+<pre><span id="MODULEBatResult"><span class="keyword">module</span> BatResult</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatResult.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Monadic results of computations that can raise exceptions</p>
+</div>
 </div>
 <hr width="100%">
 
@@ -142,97 +145,149 @@ Monadic results of computations that can raise exceptions<br>
 </tr></table>
 
 <div class="info ">
-The type of a result.  A result is either <code class="code"><span class="constructor">Ok</span>&nbsp;x</code> carrying the
+<div class="info-desc">
+<p>The type of a result.  A result is either <code class="code"><span class="constructor">Ok</span>&nbsp;x</code> carrying the
     normal return value <code class="code">x</code> or is <code class="code"><span class="constructor">Bad</span>&nbsp;e</code> carrying some indication of an
     error.  The value associated with a bad result is usually an exception
-    (<code class="code">exn</code>) that can be raised.<br>
-<b>Since</b> 1.0<br>
+    (<code class="code">exn</code>) that can be raised.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 1.0</li>
+</ul>
 </div>
 
 
 <pre><span id="VALcatch"><span class="keyword">val</span> catch</span> : <code class="type">('a -> 'b) -> 'a -> ('b, exn) <a href="BatResult.html#TYPEt">t</a></code></pre><div class="info ">
-Execute a function and catch any exception as a result.  This
+<div class="info-desc">
+<p>Execute a function and catch any exception as a result.  This
     function encapsulates code that could throw an exception and returns
-    that exception as a value.<br>
-<b>Since</b> 1.0<br>
+    that exception as a value.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 1.0</li>
+</ul>
 </div>
 
 <pre><span id="VALcatch2"><span class="keyword">val</span> catch2</span> : <code class="type">('a -> 'b -> 'c) -> 'a -> 'b -> ('c, exn) <a href="BatResult.html#TYPEt">t</a></code></pre><div class="info ">
-As <code class="code">catch</code> but two paramaters.  This saves a closure construction<br>
-<b>Since</b> 2.0<br>
+<div class="info-desc">
+<p>As <code class="code">catch</code> but two paramaters.  This saves a closure construction</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.0</li>
+</ul>
 </div>
 
 <pre><span id="VALcatch3"><span class="keyword">val</span> catch3</span> : <code class="type">('a -> 'b -> 'c -> 'd) -> 'a -> 'b -> 'c -> ('d, exn) <a href="BatResult.html#TYPEt">t</a></code></pre><div class="info ">
-As <code class="code">catch</code> but three paramaters.  This saves a closure construction<br>
-<b>Since</b> 2.0<br>
+<div class="info-desc">
+<p>As <code class="code">catch</code> but three paramaters.  This saves a closure construction</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.0</li>
+</ul>
 </div>
 
 <pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">('a, exn) <a href="BatResult.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
-<code class="code">get&nbsp;(<span class="constructor">Ok</span>&nbsp;x)</code> returns <code class="code">x</code>, and <code class="code">get&nbsp;(<span class="constructor">Bad</span>&nbsp;e)</code> raises <code class="code">e</code>.  This
-    function is, in a way, the opposite of the <code class="code">catch</code> function<br>
-<b>Since</b> 2.0<br>
+<div class="info-desc">
+<p><code class="code">get&nbsp;(<span class="constructor">Ok</span>&nbsp;x)</code> returns <code class="code">x</code>, and <code class="code">get&nbsp;(<span class="constructor">Bad</span>&nbsp;e)</code> raises <code class="code">e</code>.  This
+    function is, in a way, the opposite of the <code class="code">catch</code> function</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.0</li>
+</ul>
 </div>
 
 <pre><span id="VALdefault"><span class="keyword">val</span> default</span> : <code class="type">'a -> ('a, 'b) <a href="BatResult.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
-<code class="code">default&nbsp;d&nbsp;r</code> evaluates to <code class="code">d</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Bad</span></code> else <code class="code">x</code> when <code class="code">r</code> is
-    <code class="code"><span class="constructor">Ok</span>&nbsp;x</code><br>
-<b>Since</b> 2.0<br>
+<div class="info-desc">
+<p><code class="code">default&nbsp;d&nbsp;r</code> evaluates to <code class="code">d</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Bad</span></code> else <code class="code">x</code> when <code class="code">r</code> is
+    <code class="code"><span class="constructor">Ok</span>&nbsp;x</code></p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.0</li>
+</ul>
 </div>
 
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> ('a, 'c) <a href="BatResult.html#TYPEt">t</a> -> ('b, 'c) <a href="BatResult.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">map&nbsp;f&nbsp;(<span class="constructor">Ok</span>&nbsp;x)</code> returns <code class="code"><span class="constructor">Ok</span>&nbsp;(f&nbsp;x)</code> and <code class="code">map&nbsp;f&nbsp;(<span class="constructor">Bad</span>&nbsp;e)</code> returns <code class="code"><span class="constructor">Bad</span>&nbsp;e</code>.<br>
-<b>Since</b> 2.6.0<br>
+<div class="info-desc">
+<p><code class="code">map&nbsp;f&nbsp;(<span class="constructor">Ok</span>&nbsp;x)</code> returns <code class="code"><span class="constructor">Ok</span>&nbsp;(f&nbsp;x)</code> and <code class="code">map&nbsp;f&nbsp;(<span class="constructor">Bad</span>&nbsp;e)</code> returns <code class="code"><span class="constructor">Bad</span>&nbsp;e</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.6.0</li>
+</ul>
 </div>
 
 <pre><span id="VALmap_both"><span class="keyword">val</span> map_both</span> : <code class="type">('a1 -> 'a2) -><br>       ('b1 -> 'b2) -> ('a1, 'b1) <a href="BatResult.html#TYPEt">t</a> -> ('a2, 'b2) <a href="BatResult.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">map_both&nbsp;f&nbsp;g&nbsp;(<span class="constructor">Ok</span>&nbsp;x)</code> returns <code class="code"><span class="constructor">Ok</span>&nbsp;(f&nbsp;x)</code> and <code class="code">map_both&nbsp;f&nbsp;g&nbsp;(<span class="constructor">Bad</span>&nbsp;e)</code> returns <code class="code"><span class="constructor">Bad</span>&nbsp;(g&nbsp;e)</code>.<br>
-<b>Since</b> 2.6.0<br>
+<div class="info-desc">
+<p><code class="code">map_both&nbsp;f&nbsp;g&nbsp;(<span class="constructor">Ok</span>&nbsp;x)</code> returns <code class="code"><span class="constructor">Ok</span>&nbsp;(f&nbsp;x)</code> and <code class="code">map_both&nbsp;f&nbsp;g&nbsp;(<span class="constructor">Bad</span>&nbsp;e)</code> returns <code class="code"><span class="constructor">Bad</span>&nbsp;(g&nbsp;e)</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.6.0</li>
+</ul>
 </div>
 
 <pre><span id="VALmap_default"><span class="keyword">val</span> map_default</span> : <code class="type">'b -> ('a -> 'b) -> ('a, 'c) <a href="BatResult.html#TYPEt">t</a> -> 'b</code></pre><div class="info ">
-<code class="code">map_default&nbsp;d&nbsp;f&nbsp;r</code> evaluates to <code class="code">d</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Bad</span></code> else <code class="code">f&nbsp;x</code>
-    when <code class="code">r</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;x</code><br>
-<b>Since</b> 2.0<br>
+<div class="info-desc">
+<p><code class="code">map_default&nbsp;d&nbsp;f&nbsp;r</code> evaluates to <code class="code">d</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Bad</span></code> else <code class="code">f&nbsp;x</code>
+    when <code class="code">r</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;x</code></p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.0</li>
+</ul>
 </div>
 
 <pre><span id="VALis_ok"><span class="keyword">val</span> is_ok</span> : <code class="type">('a, 'b) <a href="BatResult.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-<code class="code">is_ok&nbsp;(<span class="constructor">Ok</span>&nbsp;_)</code> is <code class="code"><span class="keyword">true</span></code>, otherwise <code class="code"><span class="keyword">false</span></code>.<br>
-<b>Since</b> 2.0<br>
+<div class="info-desc">
+<p><code class="code">is_ok&nbsp;(<span class="constructor">Ok</span>&nbsp;_)</code> is <code class="code"><span class="keyword">true</span></code>, otherwise <code class="code"><span class="keyword">false</span></code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.0</li>
+</ul>
 </div>
 
 <pre><span id="VALis_bad"><span class="keyword">val</span> is_bad</span> : <code class="type">('a, 'b) <a href="BatResult.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-<code class="code">is_bad&nbsp;(<span class="constructor">Bad</span>&nbsp;_)</code> is <code class="code"><span class="keyword">true</span></code>, otherwise <code class="code"><span class="keyword">false</span></code><br>
-<b>Since</b> 2.0<br>
+<div class="info-desc">
+<p><code class="code">is_bad&nbsp;(<span class="constructor">Bad</span>&nbsp;_)</code> is <code class="code"><span class="keyword">true</span></code>, otherwise <code class="code"><span class="keyword">false</span></code></p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.0</li>
+</ul>
 </div>
 
 <pre><span id="VALis_exn"><span class="keyword">val</span> is_exn</span> : <code class="type">exn -> ('a, exn) <a href="BatResult.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-<code class="code">is_exn&nbsp;e1&nbsp;r</code> is <code class="code"><span class="keyword">true</span></code> iff <code class="code">r</code> is <code class="code"><span class="constructor">Bad</span>&nbsp;e2</code> with <code class="code">e1=e2</code><br>
+<div class="info-desc">
+<p><code class="code">is_exn&nbsp;e1&nbsp;r</code> is <code class="code"><span class="keyword">true</span></code> iff <code class="code">r</code> is <code class="code"><span class="constructor">Bad</span>&nbsp;e2</code> with <code class="code">e1=e2</code></p>
+</div>
 </div>
 
 <pre><span id="VALof_option"><span class="keyword">val</span> of_option</span> : <code class="type">'a option -> ('a, unit) <a href="BatResult.html#TYPEt">t</a></code></pre><div class="info ">
-Convert an <code class="code">option</code> to a <code class="code">result</code><br>
-<b>Since</b> 1.0<br>
+<div class="info-desc">
+<p>Convert an <code class="code">option</code> to a <code class="code">result</code></p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 1.0</li>
+</ul>
 </div>
 
 <pre><span id="VALto_option"><span class="keyword">val</span> to_option</span> : <code class="type">('a, 'b) <a href="BatResult.html#TYPEt">t</a> -> 'a option</code></pre><div class="info ">
-Convert a <code class="code">result</code> to an <code class="code">option</code><br>
-<b>Since</b> 1.0<br>
+<div class="info-desc">
+<p>Convert a <code class="code">result</code> to an <code class="code">option</code></p>
 </div>
-<br>
-<h6 id="6_TheResultMonad">The Result Monad</h6><br>
-<br>
-This monad is very similar to the option monad, but instead of
+<ul class="info-attributes">
+<li><b>Since</b> 1.0</li>
+</ul>
+</div>
+<h7 id="6_TheResultMonad">The Result Monad</h7><p>This monad is very similar to the option monad, but instead of
     being <code class="code"><span class="constructor">None</span></code> when an error occurs, the first error in the sequence is
-    preserved as the return value.<br>
+    preserved as the return value.</p>
 
-<pre><span class="keyword">module</span> <a href="BatResult.Monad.html">Monad</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatResult.Monad.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><br>
-<h6 id="6_Infix">Infix</h6><br>
+<pre><span id="MODULEMonad"><span class="keyword">module</span> <a href="BatResult.Monad.html">Monad</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatResult.Monad.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><h7 id="6_Infix">Infix</h7>
+<pre><span id="MODULEInfix"><span class="keyword">module</span> <a href="BatResult.Infix.html">Infix</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatResult.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>This infix module provides the operator <code class="code">(&gt;&gt;=)</code></p>
 
-<pre><span class="keyword">module</span> <a href="BatResult.Infix.html">Infix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatResult.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-This infix module provides the operator <code class="code">(&gt;&gt;=)</code>
 </div>
 
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">('b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'a -> unit) -><br>       'b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> ('a, exn) <a href="BatResult.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-Print a result as Ok(x) or Bad(exn)<br>
+<div class="info-desc">
+<p>Print a result as Ok(x) or Bad(exn)</p>
+</div>
 </div>
 </body></html>

@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -123,7 +124,7 @@
 </div>
 <h1>Module <a href="type_Batteries.Num.html">Batteries.Num</a></h1>
 
-<pre><span class="keyword">module</span> Num: <code class="type"><a href="BatNum.html">BatNum</a></code></pre><hr width="100%">
+<pre><span id="MODULENum"><span class="keyword">module</span> Num</span>: <code class="type"><a href="BatNum.html">BatNum</a></code></pre><hr width="100%">
 
 <pre><span id="TYPEnum"><span class="keyword">type</span> <code class="type"></code>num</span> = <code class="type">Num.num</code> = </pre><table class="typetable">
 <tr>
@@ -149,7 +150,9 @@
 </tr></table>
 
 <div class="info ">
-The type of numbers.<br>
+<div class="info-desc">
+<p>The type of numbers.</p>
+</div>
 </div>
 
 
@@ -157,7 +160,8 @@ The type of numbers.<br>
 
 
 <pre><span id="VALzero"><span class="keyword">val</span> zero</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a></code></pre><div class="info ">
-<h6 id="6_Usualoperations">Usual operations</h6><br>
+<div class="info-desc">
+<h7 id="6_Usualoperations">Usual operations</h7></div>
 </div>
 
 <pre><span id="VALone"><span class="keyword">val</span> one</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a></code></pre>
@@ -178,15 +182,19 @@ The type of numbers.<br>
 <pre><span id="VALto_float"><span class="keyword">val</span> to_float</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> float</code></pre>
 <pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
 <pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> string</code></pre><div class="info ">
-Convert a number to a string, using fractional notation. Two
+<div class="info-desc">
+<p>Convert a number to a string, using fractional notation. Two
     formats are recognized: simple integer literals and a pair of integer
-    literals separated by a '/', to indicate a rational number.<br>
+    literals separated by a '/', to indicate a rational number.</p>
+</div>
 </div>
 
 <pre><span id="VALof_float_string"><span class="keyword">val</span> of_float_string</span> : <code class="type">string -> <a href="BatNum.html#TYPEnum">num</a></code></pre><div class="info ">
-Convert a simple floating point literal to a num.  Plain integer
+<div class="info-desc">
+<p>Convert a simple floating point literal to a num.  Plain integer
     literals are also accepted; numbers written with a trailing exponent
-    are not currently accepted.<br>
+    are not currently accepted.</p>
+</div>
 </div>
 
 <pre><span id="VAL(+)"><span class="keyword">val</span> (+)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
@@ -197,39 +205,48 @@ Convert a simple floating point literal to a num.  Plain integer
 <pre><span id="VALmax_num"><span class="keyword">val</span> max_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
 <pre><span id="VALmin_num"><span class="keyword">val</span> min_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
 <pre><span id="VALquo"><span class="keyword">val</span> quo</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><div class="info ">
-<h6 id="6_Additionaloperations">Additional operations</h6>
-<p>
-Euclidian divisiom<br>
+<div class="info-desc">
+<h7 id="6_Additionaloperations">Additional operations</h7>
+<p>Euclidian divisiom</p>
+</div>
 </div>
 
 <pre><span id="VALsquare"><span class="keyword">val</span> square</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
 <pre><span id="VALsucc"><span class="keyword">val</span> succ</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><div class="info ">
-<b>Raises</b> <code>Invalid_argument</code> <code class="code"><span class="string">"Num.succ"</span></code> for <code class="code"><span class="constructor">Num</span>.<span class="constructor">Ratio</span>&nbsp;_</code> argument<br>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Invalid_argument</code> <code class="code"><span class="string">"Num.succ"</span></code> for <code class="code"><span class="constructor">Num</span>.<span class="constructor">Ratio</span>&nbsp;_</code> argument</li>
+</ul>
 </div>
 
 <pre><span id="VALpred"><span class="keyword">val</span> pred</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><div class="info ">
-<b>Raises</b> <code>Invalid_argument</code> <code class="code"><span class="string">"Num.pred"</span></code> for <code class="code"><span class="constructor">Num</span>.<span class="constructor">Ratio</span>&nbsp;_</code> argument<br>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Invalid_argument</code> <code class="code"><span class="string">"Num.pred"</span></code> for <code class="code"><span class="constructor">Num</span>.<span class="constructor">Ratio</span>&nbsp;_</code> argument</li>
+</ul>
 </div>
 
 <pre><span id="VALis_integer"><span class="keyword">val</span> is_integer</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre><div class="info ">
-<code class="code">is_integer&nbsp;x</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">x</code> represents an integer value,
-    <code class="code"><span class="keyword">false</span></code> otherwise<br>
+<div class="info-desc">
+<p><code class="code">is_integer&nbsp;x</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">x</code> represents an integer value,
+    <code class="code"><span class="keyword">false</span></code> otherwise</p>
+</div>
 </div>
 
 <pre><span id="VALround"><span class="keyword">val</span> round</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
 <pre><span id="VALfloor"><span class="keyword">val</span> floor</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
 <pre><span id="VALceil"><span class="keyword">val</span> ceil</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
 <pre><span id="VALapprox"><span class="keyword">val</span> approx</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre><div class="info ">
-<code class="code">approx&nbsp;n</code> return the integer closest to <code class="code">n</code><br>
+<div class="info-desc">
+<p><code class="code">approx&nbsp;n</code> return the integer closest to <code class="code">n</code></p>
+</div>
 </div>
 
 <pre><span id="VALsign"><span class="keyword">val</span> sign</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> int</code></pre><div class="info ">
-Return <code class="code">-1</code>, <code class="code">0</code> or <code class="code">1</code> according to the sign of the argument.<br>
+<div class="info-desc">
+<p>Return <code class="code">-1</code>, <code class="code">0</code> or <code class="code">1</code> according to the sign of the argument.</p>
+</div>
 </div>
 
-<pre><span id="VALoperations"><span class="keyword">val</span> operations</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> <a href="BatNumber.html#TYPEnumeric">BatNumber.numeric</a></code></pre><br>
-<h6 id="6_Comparisonsbetweennumbers">Comparisons between numbers</h6><br>
-
+<pre><span id="VALoperations"><span class="keyword">val</span> operations</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> <a href="BatNumber.html#TYPEnumeric">BatNumber.numeric</a></code></pre><h7 id="6_Comparisonsbetweennumbers">Comparisons between numbers</h7>
 <pre><span id="VAL(=/)"><span class="keyword">val</span> (=/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre>
 <pre><span id="VAL(</)"><span class="keyword">val</span> (&lt;/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre>
 <pre><span id="VAL(>/)"><span class="keyword">val</span> (&gt;/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre>
@@ -240,24 +257,27 @@ Return <code class="code">-1</code>, <code class="code">0</code> or <code class=
 <pre><span id="VALlt_num"><span class="keyword">val</span> lt_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre>
 <pre><span id="VALle_num"><span class="keyword">val</span> le_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre>
 <pre><span id="VALgt_num"><span class="keyword">val</span> gt_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre>
-<pre><span id="VALge_num"><span class="keyword">val</span> ge_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre><br>
-<h6 id="6_Coercionswithstrings">Coercions with strings</h6><br>
-
+<pre><span id="VALge_num"><span class="keyword">val</span> ge_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> bool</code></pre><h7 id="6_Coercionswithstrings">Coercions with strings</h7>
 <pre><span id="VALapprox_num_fix"><span class="keyword">val</span> approx_num_fix</span> : <code class="type">int -> <a href="BatNum.html#TYPEnum">num</a> -> string</code></pre><div class="info ">
-See <code class="code"><span class="constructor">Num</span>.approx_num_exp</code>.<br>
+<div class="info-desc">
+<p>See <code class="code"><span class="constructor">Num</span>.approx_num_exp</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALapprox_num_exp"><span class="keyword">val</span> approx_num_exp</span> : <code class="type">int -> <a href="BatNum.html#TYPEnum">num</a> -> string</code></pre><div class="info ">
-Approximate a number by a decimal. The first argument is the
+<div class="info-desc">
+<p>Approximate a number by a decimal. The first argument is the
     required precision. The second argument is the number to
     approximate. <code class="code"><span class="constructor">Num</span>.approx_num_fix</code> uses decimal notation; the first
     argument is the number of digits after the decimal point.
     <code class="code">approx_num_exp</code> uses scientific (exponential) notation; the
-    first argument is the number of digits in the mantissa.<br>
+    first argument is the number of digits in the mantissa.</p>
+</div>
 </div>
 
 <pre><span id="VALnat_of_num"><span class="keyword">val</span> nat_of_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> Nat.nat</code></pre><div class="info ">
-<h6 id="6_Coercionsbetweennumericaltypes">Coercions between numerical types</h6><br>
+<div class="info-desc">
+<h7 id="6_Coercionsbetweennumericaltypes">Coercions between numerical types</h7></div>
 </div>
 
 <pre><span id="VALnum_of_nat"><span class="keyword">val</span> num_of_nat</span> : <code class="type">Nat.nat -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
@@ -265,20 +285,15 @@ Approximate a number by a decimal. The first argument is the
 <pre><span id="VALbig_int_of_num"><span class="keyword">val</span> big_int_of_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> Big_int.big_int</code></pre>
 <pre><span id="VALratio_of_num"><span class="keyword">val</span> ratio_of_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> Ratio.ratio</code></pre>
 <pre><span id="VALnum_of_ratio"><span class="keyword">val</span> num_of_ratio</span> : <code class="type">Ratio.ratio -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
-<pre><span id="VALfloat_of_num"><span class="keyword">val</span> float_of_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> float</code></pre><br>
-<h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
-
+<pre><span id="VALfloat_of_num"><span class="keyword">val</span> float_of_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> float</code></pre><h7 id="6_Boilerplatecode">Boilerplate code</h7>
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatNum.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<div class="h7" id="7_Printing">Printing</div><br>
+<div class="info-desc">
+<div class="h8" id="7_Printing">Printing</div></div>
 </div>
-<br>
-<h6 id="6_Submodulesgroupingallinfixoperators">Submodules grouping all infix operators</h6><br>
-
-<pre><span class="keyword">module</span> <a href="BatNum.TaggedInfix.html">TaggedInfix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatNum.TaggedInfix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
-<pre><span class="keyword">module</span> <a href="BatNum.Infix.html">Infix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatNum.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
-<pre><span class="keyword">module</span> <a href="BatNum.Compare.html">Compare</a>: <code class="type"><a href="BatNumber.Compare.html">BatNumber.Compare</a></code><code class="type">  with type bat__compare_t = t</code></pre><br>
-<h6 id="6_Deprecated">Deprecated</h6><br>
-
+<h7 id="6_Submodulesgroupingallinfixoperators">Submodules grouping all infix operators</h7>
+<pre><span id="MODULETaggedInfix"><span class="keyword">module</span> <a href="BatNum.TaggedInfix.html">TaggedInfix</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatNum.TaggedInfix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span id="MODULEInfix"><span class="keyword">module</span> <a href="BatNum.Infix.html">Infix</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatNum.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span id="MODULECompare"><span class="keyword">module</span> <a href="BatNum.Compare.html">Compare</a></span>: <code class="type"><a href="BatNumber.Compare.html">BatNumber.Compare</a></code><code class="type">  with type bat__compare_t = t</code></pre><h7 id="6_Deprecated">Deprecated</h7>
 <pre><span id="VAL(+/)"><span class="keyword">val</span> (+/)</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
 <pre><span id="VALadd_num"><span class="keyword">val</span> add_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>
 <pre><span id="VALminus_num"><span class="keyword">val</span> minus_num</span> : <code class="type"><a href="BatNum.html#TYPEnum">num</a> -> <a href="BatNum.html#TYPEnum">num</a></code></pre>

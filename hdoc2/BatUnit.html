@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -119,51 +120,65 @@
 </div>
 <h1>Module <a href="type_BatUnit.html">BatUnit</a></h1>
 
-<pre><span class="keyword">module</span> BatUnit: <code class="code"><span class="keyword">sig</span></code> <a href="BatUnit.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Operations on <code class="code">unit</code>.<br>
-<b>Author(s):</b> David Teller<br>
+<pre><span id="MODULEBatUnit"><span class="keyword">module</span> BatUnit</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatUnit.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Operations on <code class="code">unit</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Author(s):</b> David Teller</li>
+</ul>
 </div>
 <hr width="100%">
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">unit</code> </pre>
 <div class="info ">
-The unit type, i.e. a type with only one element, <code class="code">()</code>.<br>
+<div class="info-desc">
+<p>The unit type, i.e. a type with only one element, <code class="code">()</code>.</p>
+</div>
 </div>
 
 
 <pre><span id="VALstring_of"><span class="keyword">val</span> string_of</span> : <code class="type"><a href="BatUnit.html#TYPEt">t</a> -> string</code></pre><div class="info ">
-Convert the given unit to a string.
-<p>
+<div class="info-desc">
+<p>Convert the given unit to a string.</p>
 
-   Returns <code class="code"><span class="string">"()"</span></code>.<br>
+<p>Returns <code class="code"><span class="string">"()"</span></code>.</p>
+</div>
 </div>
 
 <pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -> <a href="BatUnit.html#TYPEt">t</a></code></pre><div class="info ">
-Convert the given string to a unit.
-<p>
+<div class="info-desc">
+<p>Convert the given string to a unit.</p>
 
-   Accepts <code class="code"><span class="string">"()"</span></code>.<br>
-<b>Raises</b> <code>Invalid_argument</code> if the given string is not <code class="code"><span class="string">"()"</span></code>.<br>
+<p>Accepts <code class="code"><span class="string">"()"</span></code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Invalid_argument</code> if the given string is not <code class="code"><span class="string">"()"</span></code>.</li>
+</ul>
 </div>
 
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatUnit.html#TYPEt">t</a> -> <a href="BatUnit.html#TYPEt">t</a> -> int</code></pre><div class="info ">
-Compare two units.
-<p>
+<div class="info-desc">
+<p>Compare two units.</p>
 
-    Always returns 0.<br>
+<p>Always returns 0.</p>
+</div>
 </div>
 
 <pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type"><a href="BatUnit.html#TYPEt">t</a> -> <a href="BatUnit.html#TYPEt">t</a> -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre><div class="info ">
-Always returns <code class="code"><span class="constructor">BatOrd</span>.<span class="constructor">Eq</span></code><br>
+<div class="info-desc">
+<p>Always returns <code class="code"><span class="constructor">BatOrd</span>.<span class="constructor">Eq</span></code></p>
+</div>
 </div>
 
 <pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="BatUnit.html#TYPEt">t</a> -> <a href="BatUnit.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-Always returns true.<br>
+<div class="info-desc">
+<p>Always returns true.</p>
 </div>
-<br>
-<h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
-
+</div>
+<h7 id="6_Boilerplatecode">Boilerplate code</h7>
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> unit -> unit</code></pre><div class="info ">
-<div class="h7" id="7_Printing">Printing</div><br>
+<div class="info-desc">
+<div class="h8" id="7_Printing">Printing</div></div>
 </div>
 </body></html>

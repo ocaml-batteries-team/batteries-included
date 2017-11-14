@@ -24,6 +24,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -116,11 +117,12 @@
 </div>
 <h1>Module <a href="type_BatString.IString.html">BatString.IString</a></h1>
 
-<pre><span class="keyword">module</span> IString: <code class="type"><a href="BatInterfaces.OrderedType.html">BatInterfaces.OrderedType</a></code><code class="type">  with type t = t</code></pre><div class="info module top">
-uses icompare as ordering function
-<p>
+<pre><span id="MODULEIString"><span class="keyword">module</span> IString</span>: <code class="type"><a href="BatInterfaces.OrderedType.html">BatInterfaces.OrderedType</a></code><code class="type">  with type t = t</code></pre><div class="info module top">
+<div class="info-desc">
+<p>uses icompare as ordering function</p>
 
-    Example: <code class="code"><span class="keyword">module</span>&nbsp;<span class="constructor">Nameset</span>&nbsp;=&nbsp;<span class="constructor">Set</span>.<span class="constructor">Make</span>(<span class="constructor">String</span>.<span class="constructor">IString</span>)</code><br>
+<p>Example: <code class="code"><span class="keyword">module</span>&nbsp;<span class="constructor">Nameset</span>&nbsp;=&nbsp;<span class="constructor">Set</span>.<span class="constructor">Make</span>(<span class="constructor">String</span>.<span class="constructor">IString</span>)</code></p>
+</div>
 </div>
 <hr width="100%">
 
@@ -128,12 +130,14 @@ uses icompare as ordering function
 
 
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatInterfaces.OrderedType.html#TYPEt">t</a> -> <a href="BatInterfaces.OrderedType.html#TYPEt">t</a> -> int</code></pre><div class="info ">
-A total ordering function
+<div class="info-desc">
+<p>A total ordering function
         This is a two-argument function <code class="code">f</code> such that
         <code class="code">f&nbsp;e1&nbsp;e2</code> is zero if the values <code class="code">e1</code> and <code class="code">e2</code> are equal,
         <code class="code">f&nbsp;e1&nbsp;e2</code> is strictly negative if <code class="code">e1</code> is smaller than <code class="code">e2</code>,
         and <code class="code">f&nbsp;e1&nbsp;e2</code> is strictly positive if <code class="code">e1</code> is greater than <code class="code">e2</code>.
         Example: a suitable ordering function is the generic structural
-        comparison function <code class="code"><span class="constructor">Pervasives</span>.compare</code>.<br>
+        comparison function <code class="code"><span class="constructor">Pervasives</span>.compare</code>.</p>
+</div>
 </div>
 </body></html>

@@ -23,6 +23,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -114,15 +115,17 @@
 &nbsp;</div>
 <h1>Functor <a href="type_BatInnerWeaktbl.Make.html">BatInnerWeaktbl.Make</a></h1>
 
-<pre><span class="keyword">module</span> Make: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">H</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type">Hashtbl.HashedType</code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type">Hashtbl.S</code><code class="type">  with type key = H.t</code></div></pre><div class="info module top">
-Functor building an implementation of the hashtable structure.
+<pre><span id="MODULEMake"><span class="keyword">module</span> Make</span>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">H</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type">Hashtbl.HashedType</code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type">Hashtbl.S</code><code class="type">  with type key = H.t</code></div></pre><div class="info module top">
+<div class="info-desc">
+<p>Functor building an implementation of the hashtable structure.
       The functor <code class="code"><span class="constructor">Weaktbl</span>.<span class="constructor">Make</span></code> returns a structure containing
       a type <code class="code">key</code> of keys and a type <code class="code"><span class="keywordsign">'</span>a&nbsp;t</code> of hash tables
       associating data of type <code class="code"><span class="keywordsign">'</span>a</code> to keys of type <code class="code">key</code>.
       The operations perform similarly to those of the generic
       interface, but use the hashing and equality functions
       specified in the functor argument <code class="code"><span class="constructor">H</span></code> instead of generic
-      equality and hashing.<br>
+      equality and hashing.</p>
+</div>
 </div>
 <table border="0" cellpadding="3" width="100%">
 <tr>

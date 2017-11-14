@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -120,16 +121,18 @@
 </div>
 <h1>Module <a href="type_BatMultiMap.html">BatMultiMap</a></h1>
 
-<pre><span class="keyword">module</span> BatMultiMap: <code class="code"><span class="keyword">sig</span></code> <a href="BatMultiMap.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Polymorphic Multi-Map.
-<p>
+<pre><span id="MODULEBatMultiMap"><span class="keyword">module</span> BatMultiMap</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatMultiMap.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Polymorphic Multi-Map.</p>
 
-    This is a polymorphic multi-map, i.e. an association from 1 to many.
-<p>
+<p>This is a polymorphic multi-map, i.e. an association from 1 to many.</p>
 
-   This implementation uses <code class="code"><span class="constructor">Pervasives</span>.compare</code> to compare both keys and
-   values.<br>
-<b>Author(s):</b> Xavier Leroy, Nicolas Cannasse, Markus Mottle, David Teller<br>
+<p>This implementation uses <code class="code"><span class="constructor">Pervasives</span>.compare</code> to compare both keys and
+   values.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Author(s):</b> Xavier Leroy, Nicolas Cannasse, Markus Mottle, David Teller</li>
+</ul>
 </div>
 <hr width="100%">
 
@@ -137,108 +140,145 @@ Polymorphic Multi-Map.
 
 
 <pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a></code></pre><div class="info ">
-The empty map, using <code class="code">compare</code> as key comparison function.<br>
+<div class="info-desc">
+<p>The empty map, using <code class="code">compare</code> as key comparison function.</p>
+</div>
 </div>
 
 <pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-returns true if the map is empty.<br>
+<div class="info-desc">
+<p>returns true if the map is empty.</p>
+</div>
 </div>
 
 <pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">'a -> 'b -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">add&nbsp;x&nbsp;y&nbsp;m</code> returns a map containing the same bindings as
-    <code class="code">m</code>, plus a binding of <code class="code">x</code> to <code class="code">y</code>.<br>
+<div class="info-desc">
+<p><code class="code">add&nbsp;x&nbsp;y&nbsp;m</code> returns a map containing the same bindings as
+    <code class="code">m</code>, plus a binding of <code class="code">x</code> to <code class="code">y</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">'a -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> 'b <a href="BatSet.html#TYPEt">BatSet.t</a></code></pre><div class="info ">
-<code class="code">find&nbsp;x&nbsp;m</code> returns the current binding of <code class="code">x</code> in <code class="code">m</code><br>
+<div class="info-desc">
+<p><code class="code">find&nbsp;x&nbsp;m</code> returns the current binding of <code class="code">x</code> in <code class="code">m</code></p>
+</div>
 </div>
 
 <pre><span id="VALremove_all"><span class="keyword">val</span> remove_all</span> : <code class="type">'a -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">remove_all&nbsp;x&nbsp;m</code> returns a map containing the same bindings as
-    <code class="code">m</code>, except for <code class="code">x</code> which is unbound in the returned map.<br>
+<div class="info-desc">
+<p><code class="code">remove_all&nbsp;x&nbsp;m</code> returns a map containing the same bindings as
+    <code class="code">m</code>, except for <code class="code">x</code> which is unbound in the returned map.</p>
+</div>
 </div>
 
 <pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">'a -> 'b -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">remove&nbsp;k&nbsp;d&nbsp;m</code> returns a map containing the same bindings as
+<div class="info-desc">
+<p><code class="code">remove&nbsp;k&nbsp;d&nbsp;m</code> returns a map containing the same bindings as
     <code class="code">m</code>, except for <code class="code">k</code> which is not bound to <code class="code">d</code> anymore in the returned
     map. If <code class="code">k</code> was not bound to <code class="code">d</code>, nothing is changed. If the operation
     removes the last binding of <code class="code">k</code>, then <code class="code">k</code> is also removed from the set
-    of keys.<br>
+    of keys.</p>
+</div>
 </div>
 
 <pre><span id="VALmem"><span class="keyword">val</span> mem</span> : <code class="type">'a -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-<code class="code">mem&nbsp;x&nbsp;m</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">m</code> contains at least a binding for <code class="code">x</code>,
-    and <code class="code"><span class="keyword">false</span></code> otherwise.<br>
+<div class="info-desc">
+<p><code class="code">mem&nbsp;x&nbsp;m</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">m</code> contains at least a binding for <code class="code">x</code>,
+    and <code class="code"><span class="keyword">false</span></code> otherwise.</p>
+</div>
 </div>
 
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> 'b <a href="BatSet.html#TYPEt">BatSet.t</a> -> unit) -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">iter&nbsp;f&nbsp;m</code> applies <code class="code">f</code> to all bindings in map <code class="code">m</code>.
+<div class="info-desc">
+<p><code class="code">iter&nbsp;f&nbsp;m</code> applies <code class="code">f</code> to all bindings in map <code class="code">m</code>.
     <code class="code">f</code> receives the key as first argument, and the associated value
     as second argument. The order in which the bindings are passed to
     <code class="code">f</code> is unspecified. Only current bindings are presented to <code class="code">f</code>:
-    bindings hidden by more recent bindings are not passed to <code class="code">f</code>.<br>
+    bindings hidden by more recent bindings are not passed to <code class="code">f</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('b <a href="BatSet.html#TYPEt">BatSet.t</a> -> 'c <a href="BatSet.html#TYPEt">BatSet.t</a>) -><br>       ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> ('a, 'c) <a href="BatMultiMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">map&nbsp;f&nbsp;m</code> returns a map with same domain as <code class="code">m</code>, where the
+<div class="info-desc">
+<p><code class="code">map&nbsp;f&nbsp;m</code> returns a map with same domain as <code class="code">m</code>, where the
     associated value <code class="code">a</code> of all bindings of <code class="code">m</code> has been
     replaced by the result of the application of <code class="code">f</code> to <code class="code">a</code>.
     The order in which the associated values are passed to <code class="code">f</code>
-    is unspecified.<br>
+    is unspecified.</p>
+</div>
 </div>
 
 <pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">('a -> 'b <a href="BatSet.html#TYPEt">BatSet.t</a> -> 'c <a href="BatSet.html#TYPEt">BatSet.t</a>) -><br>       ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> ('a, 'c) <a href="BatMultiMap.html#TYPEt">t</a></code></pre><div class="info ">
-Same as <code class="code">map</code>, but the function receives as arguments both the
-    key and the associated value for each binding of the map.<br>
+<div class="info-desc">
+<p>Same as <code class="code">map</code>, but the function receives as arguments both the
+    key and the associated value for each binding of the map.</p>
+</div>
 </div>
 
 <pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('b <a href="BatSet.html#TYPEt">BatSet.t</a> -> 'c -> 'c) -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> 'c -> 'c</code></pre><div class="info ">
-<code class="code">fold&nbsp;f&nbsp;m&nbsp;a</code> computes <code class="code">(f&nbsp;kN&nbsp;dN&nbsp;...&nbsp;(f&nbsp;k1&nbsp;d1&nbsp;(f&nbsp;k0&nbsp;d0&nbsp;a))...)</code>,
+<div class="info-desc">
+<p><code class="code">fold&nbsp;f&nbsp;m&nbsp;a</code> computes <code class="code">(f&nbsp;kN&nbsp;dN&nbsp;...&nbsp;(f&nbsp;k1&nbsp;d1&nbsp;(f&nbsp;k0&nbsp;d0&nbsp;a))...)</code>,
     where <code class="code">k0,k1..kN</code> are the keys of all bindings in <code class="code">m</code>,
     and <code class="code">d0,d1..dN</code> are the associated data.
     The order in which the bindings are presented to <code class="code">f</code> is
-    unspecified.<br>
+    unspecified.</p>
+</div>
 </div>
 
 <pre><span id="VALfoldi"><span class="keyword">val</span> foldi</span> : <code class="type">('a -> 'b <a href="BatSet.html#TYPEt">BatSet.t</a> -> 'c -> 'c) -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> 'c -> 'c</code></pre><div class="info ">
-Same as <code class="code">fold</code>, but the function receives as arguments both the
-    key and the associated value for each binding of the map.<br>
+<div class="info-desc">
+<p>Same as <code class="code">fold</code>, but the function receives as arguments both the
+    key and the associated value for each binding of the map.</p>
+</div>
 </div>
 
 <pre><span id="VALmodify"><span class="keyword">val</span> modify</span> : <code class="type">'a -><br>       ('b <a href="BatSet.html#TYPEt">BatSet.t</a> -> 'b <a href="BatSet.html#TYPEt">BatSet.t</a>) -><br>       ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">modify&nbsp;x&nbsp;f&nbsp;m</code> replaces the binding for <code class="code">x</code> with <code class="code">f</code> applied to
-    these values.<br>
-<b>Since</b> 2.1<br>
-<b>Raises</b> <code>Not_found</code> is <code class="code">x</code> is unbound in <code class="code">m</code><br>
+<div class="info-desc">
+<p><code class="code">modify&nbsp;x&nbsp;f&nbsp;m</code> replaces the binding for <code class="code">x</code> with <code class="code">f</code> applied to
+    these values.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.1</li>
+<li><b>Raises</b> <code>Not_found</code> is <code class="code">x</code> is unbound in <code class="code">m</code></li>
+</ul>
 </div>
 
 <pre><span id="VALmodify_def"><span class="keyword">val</span> modify_def</span> : <code class="type">'b <a href="BatSet.html#TYPEt">BatSet.t</a> -><br>       'a -><br>       ('b <a href="BatSet.html#TYPEt">BatSet.t</a> -> 'b <a href="BatSet.html#TYPEt">BatSet.t</a>) -><br>       ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">modify_def&nbsp;dfl&nbsp;x&nbsp;f&nbsp;m</code> performs as <code class="code">modify&nbsp;x&nbsp;f&nbsp;m</code> but it adds
-    <code class="code">f&nbsp;dfl</code> in <code class="code">m</code> instead of raising <code class="code"><span class="constructor">Not_found</span></code> if <code class="code">x</code> was unbound.<br>
-<b>Since</b> 2.1<br>
+<div class="info-desc">
+<p><code class="code">modify_def&nbsp;dfl&nbsp;x&nbsp;f&nbsp;m</code> performs as <code class="code">modify&nbsp;x&nbsp;f&nbsp;m</code> but it adds
+    <code class="code">f&nbsp;dfl</code> in <code class="code">m</code> instead of raising <code class="code"><span class="constructor">Not_found</span></code> if <code class="code">x</code> was unbound.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.1</li>
+</ul>
 </div>
 
 <pre><span id="VALmodify_opt"><span class="keyword">val</span> modify_opt</span> : <code class="type">'a -><br>       ('b <a href="BatSet.html#TYPEt">BatSet.t</a> option -> 'b <a href="BatSet.html#TYPEt">BatSet.t</a> option) -><br>       ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">modify_opt&nbsp;x&nbsp;f&nbsp;m</code> allows to modify the bindings for <code class="code">k</code> in <code class="code">m</code>
-    or absence thereof.<br>
-<b>Since</b> 2.1<br>
+<div class="info-desc">
+<p><code class="code">modify_opt&nbsp;x&nbsp;f&nbsp;m</code> allows to modify the bindings for <code class="code">k</code> in <code class="code">m</code>
+    or absence thereof.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.1</li>
+</ul>
 </div>
 
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a> -> ('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-creates an enumeration for this map.<br>
+<div class="info-desc">
+<p>creates an enumeration for this map.</p>
+</div>
 </div>
 
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> ('a, 'b) <a href="BatMultiMap.html#TYPEt">t</a></code></pre><div class="info ">
-creates a map from an enumeration, using the specified function
-    for key comparison or <code class="code">compare</code> by default.<br>
+<div class="info-desc">
+<p>creates a map from an enumeration, using the specified function
+    for key comparison or <code class="code">compare</code> by default.</p>
+</div>
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatMultiMap.Infix.html">Infix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatMultiMap.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-Infix operators over a <a href="BatMultiPMap.html"><code class="code"><span class="constructor">BatMultiPMap</span></code></a>
-</div>
-<br>
-<h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
-<br>
-<div class="h7" id="7_Printing">Printing</div><br>
+<pre><span id="MODULEInfix"><span class="keyword">module</span> <a href="BatMultiMap.Infix.html">Infix</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatMultiMap.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>Infix operators over a <a href="BatMultiPMap.html"><code class="code"><span class="constructor">BatMultiPMap</span></code></a></p>
 
+</div>
+<h7 id="6_Boilerplatecode">Boilerplate code</h7><div class="h8" id="7_Printing">Printing</div>
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ?kvsep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'c -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> ('b, 'c) <a href="BatMultiMap.html#TYPEt">t</a> -> unit</code></pre></body></html>

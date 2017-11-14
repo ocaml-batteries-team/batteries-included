@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -118,84 +119,110 @@
 </div>
 <h1>Module <a href="type_BatList.Exceptionless.html">BatList.Exceptionless</a></h1>
 
-<pre><span class="keyword">module</span> Exceptionless: <code class="code"><span class="keyword">sig</span></code> <a href="BatList.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Exceptionless counterparts for error-raising operations<br>
+<pre><span id="MODULEExceptionless"><span class="keyword">module</span> Exceptionless</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatList.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Exceptionless counterparts for error-raising operations</p>
+</div>
 </div>
 <hr width="100%">
 
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('a -> bool) -> 'a list -> 'a option</code></pre><div class="info ">
-<code class="code">find&nbsp;p&nbsp;l</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;x</code> where <code class="code">x</code> is the first element
+<div class="info-desc">
+<p><code class="code">find&nbsp;p&nbsp;l</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;x</code> where <code class="code">x</code> is the first element
       of <code class="code">l</code> such as <code class="code">p&nbsp;x</code> returns <code class="code"><span class="keyword">true</span></code> or <code class="code"><span class="constructor">None</span></code> if such an
-      element has not been found.<br>
+      element has not been found.</p>
+</div>
 </div>
 
 <pre><span id="VALrfind"><span class="keyword">val</span> rfind</span> : <code class="type">('a -> bool) -> 'a list -> 'a option</code></pre><div class="info ">
-<code class="code">rfind&nbsp;p&nbsp;l</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;x</code> where <code class="code">x</code> is the last element of <code class="code">l</code>
+<div class="info-desc">
+<p><code class="code">rfind&nbsp;p&nbsp;l</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;x</code> where <code class="code">x</code> is the last element of <code class="code">l</code>
       such
-      that <code class="code">p&nbsp;x</code> returns <code class="code"><span class="keyword">true</span></code> or <code class="code"><span class="constructor">None</span></code> if such element as not been found.<br>
+      that <code class="code">p&nbsp;x</code> returns <code class="code"><span class="keyword">true</span></code> or <code class="code"><span class="constructor">None</span></code> if such element as not been found.</p>
+</div>
 </div>
 
 <pre><span id="VALfindi"><span class="keyword">val</span> findi</span> : <code class="type">(int -> 'a -> bool) -> 'a list -> (int * 'a) option</code></pre><div class="info ">
-<code class="code">findi&nbsp;p&nbsp;e&nbsp;l</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;(i,&nbsp;ai)</code> where <code class="code">ai</code> and <code class="code">i</code> are
+<div class="info-desc">
+<p><code class="code">findi&nbsp;p&nbsp;e&nbsp;l</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;(i,&nbsp;ai)</code> where <code class="code">ai</code> and <code class="code">i</code> are
       respectively the
       first element of <code class="code">l</code> and its index, such that <code class="code">p&nbsp;i&nbsp;ai</code> is true,
-      or <code class="code"><span class="constructor">None</span></code> if no  such element has been found.<br>
+      or <code class="code"><span class="constructor">None</span></code> if no  such element has been found.</p>
+</div>
 </div>
 
 <pre><span id="VALsplit_at"><span class="keyword">val</span> split_at</span> : <code class="type">int -> 'a list -> [ `Invalid_argument of string | `Ok of 'a list * 'a list ]</code></pre><div class="info ">
-Whenever <code class="code">n</code> is inside of <code class="code">l</code> size bounds, <code class="code">split_at&nbsp;n&nbsp;l</code> returns
+<div class="info-desc">
+<p>Whenever <code class="code">n</code> is inside of <code class="code">l</code> size bounds, <code class="code">split_at&nbsp;n&nbsp;l</code> returns
       <code class="code"><span class="constructor">Ok</span>(l1,l2)</code>, where <code class="code">l1</code> contains the first <code class="code">n</code> elements of <code class="code">l</code> and <code class="code">l2</code>
-      contains the others. Otherwise, returns <code class="code"><span class="keywordsign">`</span><span class="constructor">Invalid_argument</span>&nbsp;n</code>.<br>
+      contains the others. Otherwise, returns <code class="code"><span class="keywordsign">`</span><span class="constructor">Invalid_argument</span>&nbsp;n</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALat"><span class="keyword">val</span> at</span> : <code class="type">'a list -> int -> [ `Invalid_argument of string | `Ok of 'a ]</code></pre><div class="info ">
-If <code class="code">n</code> is inside the bounds of <code class="code">l</code>, <code class="code">at&nbsp;l&nbsp;n</code> returns <code class="code"><span class="constructor">Ok</span>&nbsp;x</code>, where
+<div class="info-desc">
+<p>If <code class="code">n</code> is inside the bounds of <code class="code">l</code>, <code class="code">at&nbsp;l&nbsp;n</code> returns <code class="code"><span class="constructor">Ok</span>&nbsp;x</code>, where
       <code class="code">x</code> is the n-th element of the list <code class="code">l</code>. Otherwise, returns <code class="code"><span class="constructor">Error</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">`</span><span class="constructor">Invalid_argument</span>(n))</code>.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">`</span><span class="constructor">Invalid_argument</span>(n))</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALassoc"><span class="keyword">val</span> assoc</span> : <code class="type">'a -> ('a * 'b) list -> 'b option</code></pre><div class="info ">
-<code class="code">assoc&nbsp;a&nbsp;l</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;b</code> where <code class="code">b</code> is the value associated with
+<div class="info-desc">
+<p><code class="code">assoc&nbsp;a&nbsp;l</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;b</code> where <code class="code">b</code> is the value associated with
       key <code class="code">b</code>
       in the list of pairs <code class="code">l</code>. That is, <code class="code">assoc&nbsp;a&nbsp;[&nbsp;...;&nbsp;(a,b);&nbsp;...]&nbsp;=&nbsp;<span class="constructor">Some</span>&nbsp;b</code>
       if <code class="code">(a,b)</code> is the leftmost binding of <code class="code">a</code> in list <code class="code">l</code>.
       Return <code class="code"><span class="constructor">None</span></code> if there is no value associated with <code class="code">a</code> in the
-      list <code class="code">l</code>.<br>
+      list <code class="code">l</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALassoc_inv"><span class="keyword">val</span> assoc_inv</span> : <code class="type">'b -> ('a * 'b) list -> 'a option</code></pre><div class="info ">
-<code class="code">assoc_inv&nbsp;b&nbsp;l</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;a</code> where <code class="code">a</code> is the key associated with
+<div class="info-desc">
+<p><code class="code">assoc_inv&nbsp;b&nbsp;l</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;a</code> where <code class="code">a</code> is the key associated with
       value <code class="code">b</code>
       in the list of pairs <code class="code">l</code>. That is, <code class="code">assoc&nbsp;b&nbsp;[&nbsp;...;&nbsp;(a,b);&nbsp;...]&nbsp;=&nbsp;<span class="constructor">Some</span>&nbsp;a</code>
       if <code class="code">(a,b)</code> is the leftmost binding of <code class="code">a</code> in list <code class="code">l</code>.
       Return <code class="code"><span class="constructor">None</span></code> if there is no key associated with <code class="code">b</code> in the
-      list <code class="code">l</code>.<br>
+      list <code class="code">l</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALassq"><span class="keyword">val</span> assq</span> : <code class="type">'a -> ('a * 'b) list -> 'b option</code></pre><div class="info ">
-As <a href="BatList.Exceptionless.html#VALassoc"><code class="code"><span class="constructor">BatList</span>.<span class="constructor">Exceptionless</span>.assoc</code></a> but with physical equality.<br>
+<div class="info-desc">
+<p>As <a href="BatList.Exceptionless.html#VALassoc"><code class="code"><span class="constructor">BatList</span>.<span class="constructor">Exceptionless</span>.assoc</code></a> but with physical equality.</p>
+</div>
 </div>
 
 <pre><span id="VALfind_map"><span class="keyword">val</span> find_map</span> : <code class="type">('a -> 'b option) -> 'a list -> 'b option</code></pre><div class="info ">
-<code class="code">find_map&nbsp;f&nbsp;xs</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;y</code> such that <code class="code">x</code> is the first
+<div class="info-desc">
+<p><code class="code">find_map&nbsp;f&nbsp;xs</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;y</code> such that <code class="code">x</code> is the first
       element of the list where <code class="code">f&nbsp;x</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;y</code>.  It returns <code class="code"><span class="constructor">None</span></code>
-      if no such element exists.<br>
+      if no such element exists.</p>
+</div>
 </div>
 
 <pre><span id="VALhd"><span class="keyword">val</span> hd</span> : <code class="type">'a list -> 'a option</code></pre><div class="info ">
-<code class="code">hd&nbsp;l</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;x</code> such that <code class="code">x</code> is the first element of the given
+<div class="info-desc">
+<p><code class="code">hd&nbsp;l</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;x</code> such that <code class="code">x</code> is the first element of the given
       list <code class="code">l</code>.
-      Returns <code class="code"><span class="constructor">None</span></code> if list <code class="code">l</code> is empty.<br>
+      Returns <code class="code"><span class="constructor">None</span></code> if list <code class="code">l</code> is empty.</p>
+</div>
 </div>
 
 <pre><span id="VALtl"><span class="keyword">val</span> tl</span> : <code class="type">'a list -> 'a list option</code></pre><div class="info ">
-<code class="code">tl&nbsp;l</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;x</code> such that <code class="code">x</code> is the given list <code class="code">l</code> without its
+<div class="info-desc">
+<p><code class="code">tl&nbsp;l</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;x</code> such that <code class="code">x</code> is the given list <code class="code">l</code> without its
       first element.
-      Returns <code class="code"><span class="constructor">None</span></code> if list <code class="code">l</code> is empty.<br>
+      Returns <code class="code"><span class="constructor">None</span></code> if list <code class="code">l</code> is empty.</p>
+</div>
 </div>
 
 <pre><span id="VALlast"><span class="keyword">val</span> last</span> : <code class="type">'a list -> 'a option</code></pre><div class="info ">
-<code class="code">last&nbsp;l</code> returns either <code class="code"><span class="constructor">Some</span>&nbsp;x</code> where <code class="code">x</code> is the last element of the list, or <code class="code"><span class="constructor">None</span></code> if
-        the list is empty. This function takes linear time.<br>
+<div class="info-desc">
+<p><code class="code">last&nbsp;l</code> returns either <code class="code"><span class="constructor">Some</span>&nbsp;x</code> where <code class="code">x</code> is the last element of the list, or <code class="code"><span class="constructor">None</span></code> if
+        the list is empty. This function takes linear time.</p>
+</div>
 </div>
 </body></html>

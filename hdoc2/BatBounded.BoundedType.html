@@ -24,6 +24,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -116,35 +117,47 @@
 </div>
 <h1>Module type <a href="type_BatBounded.BoundedType.html">BatBounded.BoundedType</a></h1>
 
-<pre><span class="keyword">module type</span> BoundedType = <code class="code"><span class="keyword">sig</span></code> <a href="BatBounded.BoundedType.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
+<pre><span id="MODULETYPEBoundedType"><span class="keyword">module type</span> BoundedType</span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatBounded.BoundedType.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 
 <pre><span id="TYPEbase_t"><span class="keyword">type</span> <code class="type"></code>base_t</span> </pre>
 <div class="info ">
-The base/raw type<br>
+<div class="info-desc">
+<p>The base/raw type</p>
+</div>
 </div>
 
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
 <div class="info ">
-The type that makes up the bounded range<br>
+<div class="info-desc">
+<p>The type that makes up the bounded range</p>
+</div>
 </div>
 
 
 <pre><span id="VALbounds"><span class="keyword">val</span> bounds</span> : <code class="type"><a href="BatBounded.BoundedType.html#TYPEbase_t">base_t</a> <a href="BatBounded.html#TYPEbound_t">BatBounded.bound_t</a> *<br>       <a href="BatBounded.BoundedType.html#TYPEbase_t">base_t</a> <a href="BatBounded.html#TYPEbound_t">BatBounded.bound_t</a></code></pre><div class="info ">
-<code class="code">bounds</code> defines the <code class="code">(min,&nbsp;max)</code> bounds for the bounded range<br>
+<div class="info-desc">
+<p><code class="code">bounds</code> defines the <code class="code">(min,&nbsp;max)</code> bounds for the bounded range</p>
+</div>
 </div>
 
 <pre><span id="VALbounded"><span class="keyword">val</span> bounded</span> : <code class="type">(<a href="BatBounded.BoundedType.html#TYPEbase_t">base_t</a>, <a href="BatBounded.BoundedType.html#TYPEt">t</a>)<br>       <a href="BatBounded.html#TYPEbounding_f">BatBounded.bounding_f</a></code></pre><div class="info ">
-<code class="code">bounded&nbsp;~bounds&nbsp;x</code> returns a bounded <a href="BatBounded.BoundedType.html#TYPEt"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">BoundedType</span>.t</code></a> value derived from <code class="code">x</code>.<br>
+<div class="info-desc">
+<p><code class="code">bounded&nbsp;~bounds&nbsp;x</code> returns a bounded <a href="BatBounded.BoundedType.html#TYPEt"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">BoundedType</span>.t</code></a> value derived from <code class="code">x</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALbase_of_t"><span class="keyword">val</span> base_of_t</span> : <code class="type"><a href="BatBounded.BoundedType.html#TYPEt">t</a> -> <a href="BatBounded.BoundedType.html#TYPEbase_t">base_t</a> option</code></pre><div class="info ">
-<code class="code">base_of_t&nbsp;x</code> converts a value of type <a href="BatBounded.BoundedType.html#TYPEt"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">BoundedType</span>.t</code></a> back to a <a href="BatBounded.BoundedType.html#TYPEbase_t"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">BoundedType</span>.base_t</code></a> if
-      possible.<br>
+<div class="info-desc">
+<p><code class="code">base_of_t&nbsp;x</code> converts a value of type <a href="BatBounded.BoundedType.html#TYPEt"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">BoundedType</span>.t</code></a> back to a <a href="BatBounded.BoundedType.html#TYPEbase_t"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">BoundedType</span>.base_t</code></a> if
+      possible.</p>
+</div>
 </div>
 
 <pre><span id="VALbase_of_t_exn"><span class="keyword">val</span> base_of_t_exn</span> : <code class="type"><a href="BatBounded.BoundedType.html#TYPEt">t</a> -> <a href="BatBounded.BoundedType.html#TYPEbase_t">base_t</a></code></pre><div class="info ">
-<code class="code">base_of_t_exn&nbsp;x</code> converts a value of type <a href="BatBounded.BoundedType.html#TYPEt"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">BoundedType</span>.t</code></a> back to a <a href="BatBounded.BoundedType.html#TYPEbase_t"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">BoundedType</span>.base_t</code></a>.  If
-        a conversion is not possible then an exception will be raised.<br>
+<div class="info-desc">
+<p><code class="code">base_of_t_exn&nbsp;x</code> converts a value of type <a href="BatBounded.BoundedType.html#TYPEt"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">BoundedType</span>.t</code></a> back to a <a href="BatBounded.BoundedType.html#TYPEbase_t"><code class="code"><span class="constructor">BatBounded</span>.<span class="constructor">BoundedType</span>.base_t</code></a>.  If
+        a conversion is not possible then an exception will be raised.</p>
+</div>
 </div>
 </body></html>

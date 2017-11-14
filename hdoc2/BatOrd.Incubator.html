@@ -24,6 +24,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -116,15 +117,17 @@
 &nbsp;</div>
 <h1>Module <a href="type_BatOrd.Incubator.html">BatOrd.Incubator</a></h1>
 
-<pre><span class="keyword">module</span> Incubator: <code class="code"><span class="keyword">sig</span></code> <a href="BatOrd.Incubator.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
+<pre><span id="MODULEIncubator"><span class="keyword">module</span> Incubator</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatOrd.Incubator.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 
 <pre><span id="VALeq_by"><span class="keyword">val</span> eq_by</span> : <code class="type">('a -> 'b) -> 'a <a href="BatOrd.html#TYPEeq">BatOrd.eq</a></code></pre>
 <pre><span id="VALcomp_by"><span class="keyword">val</span> comp_by</span> : <code class="type">('a -> 'b) -> 'a <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a></code></pre>
 <pre><span id="VALord_by"><span class="keyword">val</span> ord_by</span> : <code class="type">('a -> 'b) -> 'a <a href="BatOrd.html#TYPEord">BatOrd.ord</a></code></pre><div class="info ">
-Build a <code class="code">eq</code>, <code class="code">cmp</code> or <code class="code">ord</code> function from a projection function.
+<div class="info-desc">
+<p>Build a <code class="code">eq</code>, <code class="code">cmp</code> or <code class="code">ord</code> function from a projection function.
         For example, if you wanted to compare integers based on their
         lowest 4 bits, you could write <code class="code"><span class="keyword">let</span>&nbsp;cmp_bot4&nbsp;=&nbsp;cmp_by&nbsp;(<span class="keyword">fun</span>&nbsp;x<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;x&nbsp;<span class="keyword">land</span>&nbsp;0xf)</code> and use cmp_bot4 as the desired integer
-        comparator.<br>
+        comparator.</p>
+</div>
 </div>
 </body></html>

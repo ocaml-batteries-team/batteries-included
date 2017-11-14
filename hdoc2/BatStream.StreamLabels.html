@@ -23,6 +23,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -114,14 +115,12 @@
 &nbsp;</div>
 <h1>Module <a href="type_BatStream.StreamLabels.html">BatStream.StreamLabels</a></h1>
 
-<pre><span class="keyword">module</span> StreamLabels: <code class="code"><span class="keyword">sig</span></code> <a href="BatStream.StreamLabels.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
-<br>
-<b>Note</b> This module is provided essentially for
+<pre><span id="MODULEStreamLabels"><span class="keyword">module</span> StreamLabels</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatStream.StreamLabels.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
+<p><b>Note</b> This module is provided essentially for
       backwards-compatibility.  If you feel like using <code class="code"><span class="constructor">Stream</span>.t</code>, please
-      take a look at <code class="code"><span class="constructor">BatEnum</span></code> or <code class="code"><span class="constructor">LazyList</span></code> and <code class="code"><span class="constructor">GenParser</span></code>.
-<p>
+      take a look at <code class="code"><span class="constructor">BatEnum</span></code> or <code class="code"><span class="constructor">LazyList</span></code> and <code class="code"><span class="constructor">GenParser</span></code>.</p>
 
-      See the complete <code class="code"><span class="constructor">Stream</span></code> module for the function documentations.<br>
+<p>See the complete <code class="code"><span class="constructor">Stream</span></code> module for the function documentations.</p>
 
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">f:('a -> unit) -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a> -> unit</code></pre>
 <pre><span id="VALto_string_fmt"><span class="keyword">val</span> to_string_fmt</span> : <code class="type">fmt:('a -> string, unit, string) Pervasives.format -><br>       'a <a href="BatStream.html#TYPEt">BatStream.t</a> -> string</code></pre>

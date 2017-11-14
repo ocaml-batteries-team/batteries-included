@@ -24,6 +24,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -116,27 +117,35 @@
 &nbsp;</div>
 <h1>Module type <a href="type_BatLog.Level_sig.html">BatLog.Level_sig</a></h1>
 
-<pre><span class="keyword">module type</span> Level_sig = <code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Level_sig.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info modtype top">
-The details of a level scheme for verbosity-level loggers<br>
+<pre><span id="MODULETYPELevel_sig"><span class="keyword">module type</span> Level_sig</span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Level_sig.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info modtype top">
+<div class="info-desc">
+<p>The details of a level scheme for verbosity-level loggers</p>
+</div>
 </div>
 <hr width="100%">
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
 <div class="info ">
-A type for level values, usually a polymorphic variant
-<p>
-Convert each level to a string<br>
+<div class="info-desc">
+<p>A type for level values, usually a polymorphic variant</p>
+
+<p>Convert each level to a string</p>
+</div>
 </div>
 
 
 <pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="BatLog.Level_sig.html#TYPEt">t</a> -> string</code></pre><div class="info ">
-The default level for loggers created with this; log messages
-      with level less than this won't be printed by default.<br>
+<div class="info-desc">
+<p>The default level for loggers created with this; log messages
+      with level less than this won't be printed by default.</p>
+</div>
 </div>
 
 <pre><span id="VALdefault_level"><span class="keyword">val</span> default_level</span> : <code class="type"><a href="BatLog.Level_sig.html#TYPEt">t</a></code></pre><div class="info ">
-a comparison function between levels, to know whether logging at a
-      particular level should be printed<br>
+<div class="info-desc">
+<p>a comparison function between levels, to know whether logging at a
+      particular level should be printed</p>
+</div>
 </div>
 
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatLog.Level_sig.html#TYPEt">t</a> -> <a href="BatLog.Level_sig.html#TYPEt">t</a> -> int</code></pre></body></html>

@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -119,15 +120,17 @@
 </div>
 <h1>Functor <a href="type_BatHashtbl.Make.html">BatHashtbl.Make</a></h1>
 
-<pre><span class="keyword">module</span> Make: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">H</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatHashtbl.HashedType.html">HashedType</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatHashtbl.S.html">S</a></code><code class="type">  with type key = H.t</code></div></pre><div class="info module top">
-Functor building an implementation of the hashtable structure.
+<pre><span id="MODULEMake"><span class="keyword">module</span> Make</span>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">H</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatHashtbl.HashedType.html">HashedType</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatHashtbl.S.html">S</a></code><code class="type">  with type key = H.t</code></div></pre><div class="info module top">
+<div class="info-desc">
+<p>Functor building an implementation of the hashtable structure.
     The functor <code class="code"><span class="constructor">Hashtbl</span>.<span class="constructor">Make</span></code> returns a structure containing
     a type <code class="code">key</code> of keys and a type <code class="code"><span class="keywordsign">'</span>a&nbsp;t</code> of hash tables
     associating data of type <code class="code"><span class="keywordsign">'</span>a</code> to keys of type <code class="code">key</code>.
     The operations perform similarly to those of the generic
     interface, but use the hashing and equality functions
     specified in the functor argument <code class="code"><span class="constructor">H</span></code> instead of generic
-    equality and hashing.<br>
+    equality and hashing.</p>
+</div>
 </div>
 <table border="0" cellpadding="3" width="100%">
 <tr>
@@ -184,22 +187,22 @@ Functor building an implementation of the hashtable structure.
 <pre><span id="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type">'a <a href="BatHashtbl.S.html#TYPEt">t</a> -> (<a href="BatHashtbl.S.html#TYPEkey">key</a> * 'a) list</code></pre>
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">(<a href="BatHashtbl.S.html#TYPEkey">key</a> * 'a) <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatHashtbl.S.html#TYPEt">t</a></code></pre>
 <pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">(<a href="BatHashtbl.S.html#TYPEkey">key</a> * 'a) list -> 'a <a href="BatHashtbl.S.html#TYPEt">t</a></code></pre>
-<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatHashtbl.S.html#TYPEkey">key</a> -> unit) -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatHashtbl.S.html#TYPEt">t</a> -> unit</code></pre><br>
-<h6 id="6_Overridemodules">Override modules</h6><br>
-<br>
-The following modules replace functions defined in <code class="code"><span class="constructor">Hashtbl</span></code> with functions
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatHashtbl.S.html#TYPEkey">key</a> -> unit) -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatHashtbl.S.html#TYPEt">t</a> -> unit</code></pre><h7 id="6_Overridemodules">Override modules</h7><p>The following modules replace functions defined in <code class="code"><span class="constructor">Hashtbl</span></code> with functions
      behaving slightly differently but having the same name. This is by design:
-     the functions meant to override the corresponding functions of <code class="code"><span class="constructor">Hashtbl</span></code>.<br>
+     the functions meant to override the corresponding functions of <code class="code"><span class="constructor">Hashtbl</span></code>.</p>
 
-<pre><span class="keyword">module</span> <a href="BatHashtbl.S.Exceptionless.html">Exceptionless</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.S.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-Operations on <code class="code"><span class="constructor">Hashtbl</span></code> without exceptions.
+<pre><span id="MODULEExceptionless"><span class="keyword">module</span> <a href="BatHashtbl.S.Exceptionless.html">Exceptionless</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.S.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>Operations on <code class="code"><span class="constructor">Hashtbl</span></code> without exceptions.</p>
+
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatHashtbl.S.Infix.html">Infix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.S.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-Infix operators over a <a href="BatHashtbl.html"><code class="code"><span class="constructor">BatHashtbl</span></code></a>
+<pre><span id="MODULEInfix"><span class="keyword">module</span> <a href="BatHashtbl.S.Infix.html">Infix</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.S.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>Infix operators over a <a href="BatHashtbl.html"><code class="code"><span class="constructor">BatHashtbl</span></code></a></p>
+
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatHashtbl.S.Labels.html">Labels</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.S.Labels.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-Operations on <code class="code"><span class="constructor">Hashtbl</span></code> with labels.
+<pre><span id="MODULELabels"><span class="keyword">module</span> <a href="BatHashtbl.S.Labels.html">Labels</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.S.Labels.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>Operations on <code class="code"><span class="constructor">Hashtbl</span></code> with labels.</p>
+
 </div>
 </body></html>

@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -119,159 +120,228 @@
 </div>
 <h1>Module <a href="type_BatBigarray.Array2.html">BatBigarray.Array2</a></h1>
 
-<pre><span class="keyword">module</span> Array2: <code class="code"><span class="keyword">sig</span></code> <a href="BatBigarray.Array2.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Two-dimensional arrays. The <code class="code"><span class="constructor">Array2</span></code> structure provides operations
+<pre><span id="MODULEArray2"><span class="keyword">module</span> Array2</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatBigarray.Array2.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Two-dimensional arrays. The <code class="code"><span class="constructor">Array2</span></code> structure provides operations
     similar to those of <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Genarray</span></code>, but specialized to the
-    case of two-dimensional arrays.<br>
+    case of two-dimensional arrays.</p>
+</div>
 </div>
 <hr width="100%">
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b, 'c)</code> t</span> = <code class="type">('a, 'b, 'c) Bigarray.Array2.t</code> </pre>
 <div class="info ">
-The type of two-dimensional big arrays whose elements have
-      OCaml type <code class="code"><span class="keywordsign">'</span>a</code>, representation kind <code class="code"><span class="keywordsign">'</span>b</code>, and memory layout <code class="code"><span class="keywordsign">'</span>c</code>.<br>
+<div class="info-desc">
+<p>The type of two-dimensional big arrays whose elements have
+      OCaml type <code class="code"><span class="keywordsign">'</span>a</code>, representation kind <code class="code"><span class="keywordsign">'</span>b</code>, and memory layout <code class="code"><span class="keywordsign">'</span>c</code>.</p>
+</div>
 </div>
 
 
 <pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">('a, 'b) <a href="BatBigarray.html#TYPEkind">BatBigarray.kind</a> -><br>       'c <a href="BatBigarray.html#TYPElayout">BatBigarray.layout</a> -> int -> int -> ('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code"><span class="constructor">Array2</span>.create&nbsp;kind&nbsp;layout&nbsp;dim1&nbsp;dim2</code> returns a new bigarray of
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Array2</span>.create&nbsp;kind&nbsp;layout&nbsp;dim1&nbsp;dim2</code> returns a new bigarray of
       two dimension, whose size is <code class="code">dim1</code> in the first dimension
       and <code class="code">dim2</code> in the second dimension.  <code class="code">kind</code> and <code class="code">layout</code>
       determine the array element kind and the array layout
-      as described for <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Genarray</span>.create</code>.<br>
+      as described for <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Genarray</span>.create</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALdim1"><span class="keyword">val</span> dim1</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a> -> int</code></pre><div class="info ">
-Return the first dimension of the given two-dimensional big array.<br>
+<div class="info-desc">
+<p>Return the first dimension of the given two-dimensional big array.</p>
+</div>
 </div>
 
 <pre><span id="VALdim2"><span class="keyword">val</span> dim2</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a> -> int</code></pre><div class="info ">
-Return the second dimension of the given two-dimensional big array.<br>
+<div class="info-desc">
+<p>Return the second dimension of the given two-dimensional big array.</p>
+</div>
 </div>
 
 <pre><span id="VALkind"><span class="keyword">val</span> kind</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a> -> ('a, 'b) <a href="BatBigarray.html#TYPEkind">BatBigarray.kind</a></code></pre><div class="info ">
-Return the kind of the given big array.<br>
+<div class="info-desc">
+<p>Return the kind of the given big array.</p>
+</div>
 </div>
 
 <pre><span id="VALlayout"><span class="keyword">val</span> layout</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a> -> 'c <a href="BatBigarray.html#TYPElayout">BatBigarray.layout</a></code></pre><div class="info ">
-Return the layout of the given big array.<br>
+<div class="info-desc">
+<p>Return the layout of the given big array.</p>
+</div>
+</div>
+
+<pre><span id="VALchange_layout"><span class="keyword">val</span> change_layout</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a> -><br>       'd <a href="BatBigarray.html#TYPElayout">BatBigarray.layout</a> -> ('a, 'b, 'd) <a href="BatBigarray.Array2.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Array2</span>.change_layout&nbsp;a&nbsp;layout</code> returns a bigarray with the
+      specified <code class="code">layout</code>, sharing the data with <code class="code">a</code> (and hence having
+      the same dimensions as <code class="code">a</code>). No copying of elements is involved: the
+      new array and the original array share the same storage space.
+      The dimensions are reversed, such that <code class="code">get&nbsp;v&nbsp;[|&nbsp;a;&nbsp;b&nbsp;|]</code> in
+      C layout becomes <code class="code">get&nbsp;v&nbsp;[|&nbsp;b+1;&nbsp;a+1&nbsp;|]</code> in Fortran layout.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 4.06.0</li>
+</ul>
 </div>
 
 <pre><span id="VALsize_in_bytes"><span class="keyword">val</span> size_in_bytes</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a> -> int</code></pre><div class="info ">
-<code class="code">size_in_bytes&nbsp;a</code> is the number of elements in <code class="code">a</code> multiplied
-    by <code class="code">a</code>'s <a href="BatBigarray.html#VALkind_size_in_bytes"><code class="code"><span class="constructor">BatBigarray</span>.kind_size_in_bytes</code></a>.<br>
-<b>Since</b> 2.5.0<br>
+<div class="info-desc">
+<p><code class="code">size_in_bytes&nbsp;a</code> is the number of elements in <code class="code">a</code> multiplied
+    by <code class="code">a</code>'s <a href="BatBigarray.html#VALkind_size_in_bytes"><code class="code"><span class="constructor">BatBigarray</span>.kind_size_in_bytes</code></a>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.5.0</li>
+</ul>
 </div>
 
 <pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a> -> int -> int -> 'a</code></pre><div class="info ">
-<code class="code"><span class="constructor">Array2</span>.get&nbsp;a&nbsp;x&nbsp;y</code>, also written <code class="code">a.{x,y}</code>,
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Array2</span>.get&nbsp;a&nbsp;x&nbsp;y</code>, also written <code class="code">a.{x,y}</code>,
       returns the element of <code class="code">a</code> at coordinates (<code class="code">x</code>, <code class="code">y</code>).
       <code class="code">x</code> and <code class="code">y</code> must be within the bounds
-      of <code class="code">a</code>, as described for <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Genarray</span>.get</code>;<br>
-<b>Raises</b> <code>Invalid_argument</code> otherwise.<br>
+      of <code class="code">a</code>, as described for <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Genarray</span>.get</code>;</p>
+</div>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Invalid_argument</code> otherwise.</li>
+</ul>
 </div>
 
 <pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a> -> int -> int -> 'a -> unit</code></pre><div class="info ">
-<code class="code"><span class="constructor">Array2</span>.set&nbsp;a&nbsp;x&nbsp;y&nbsp;v</code>, or alternatively <code class="code">a.{x,y}&nbsp;&lt;-&nbsp;v</code>,
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Array2</span>.set&nbsp;a&nbsp;x&nbsp;y&nbsp;v</code>, or alternatively <code class="code">a.{x,y}&nbsp;&lt;-&nbsp;v</code>,
       stores the value <code class="code">v</code> at coordinates (<code class="code">x</code>, <code class="code">y</code>) in <code class="code">a</code>.
       <code class="code">x</code> and <code class="code">y</code> must be within the bounds of <code class="code">a</code>,
-      as described for <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Genarray</span>.set</code>;<br>
-<b>Raises</b> <code>Invalid_argument</code> otherwise.<br>
+      as described for <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Genarray</span>.set</code>;</p>
+</div>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Invalid_argument</code> otherwise.</li>
+</ul>
 </div>
 
 <pre><span id="VALsub_left"><span class="keyword">val</span> sub_left</span> : <code class="type">('a, 'b, <a href="BatBigarray.html#TYPEc_layout">BatBigarray.c_layout</a>) <a href="BatBigarray.Array2.html#TYPEt">t</a> -><br>       int -> int -> ('a, 'b, <a href="BatBigarray.html#TYPEc_layout">BatBigarray.c_layout</a>) <a href="BatBigarray.Array2.html#TYPEt">t</a></code></pre><div class="info ">
-Extract a two-dimensional sub-array of the given two-dimensional
+<div class="info-desc">
+<p>Extract a two-dimensional sub-array of the given two-dimensional
       big array by restricting the first dimension.
       See <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Genarray</span>.sub_left</code> for more details.
-      <code class="code"><span class="constructor">Array2</span>.sub_left</code> applies only to arrays with C layout.<br>
+      <code class="code"><span class="constructor">Array2</span>.sub_left</code> applies only to arrays with C layout.</p>
+</div>
 </div>
 
 <pre><span id="VALsub_right"><span class="keyword">val</span> sub_right</span> : <code class="type">('a, 'b, <a href="BatBigarray.html#TYPEfortran_layout">BatBigarray.fortran_layout</a>) <a href="BatBigarray.Array2.html#TYPEt">t</a> -><br>       int -> int -> ('a, 'b, <a href="BatBigarray.html#TYPEfortran_layout">BatBigarray.fortran_layout</a>) <a href="BatBigarray.Array2.html#TYPEt">t</a></code></pre><div class="info ">
-Extract a two-dimensional sub-array of the given two-dimensional
+<div class="info-desc">
+<p>Extract a two-dimensional sub-array of the given two-dimensional
       big array by restricting the second dimension.
       See <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Genarray</span>.sub_right</code> for more details.
-      <code class="code"><span class="constructor">Array2</span>.sub_right</code> applies only to arrays with Fortran layout.<br>
+      <code class="code"><span class="constructor">Array2</span>.sub_right</code> applies only to arrays with Fortran layout.</p>
+</div>
 </div>
 
 <pre><span id="VALslice_left"><span class="keyword">val</span> slice_left</span> : <code class="type">('a, 'b, <a href="BatBigarray.html#TYPEc_layout">BatBigarray.c_layout</a>) <a href="BatBigarray.Array2.html#TYPEt">t</a> -><br>       int -> ('a, 'b, <a href="BatBigarray.html#TYPEc_layout">BatBigarray.c_layout</a>) <a href="BatBigarray.Array1.html#TYPEt">BatBigarray.Array1.t</a></code></pre><div class="info ">
-Extract a row (one-dimensional slice) of the given two-dimensional
+<div class="info-desc">
+<p>Extract a row (one-dimensional slice) of the given two-dimensional
       big array.  The integer parameter is the index of the row to
       extract.  See <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Genarray</span>.slice_left</code> for more details.
-      <code class="code"><span class="constructor">Array2</span>.slice_left</code> applies only to arrays with C layout.<br>
+      <code class="code"><span class="constructor">Array2</span>.slice_left</code> applies only to arrays with C layout.</p>
+</div>
 </div>
 
 <pre><span id="VALslice_right"><span class="keyword">val</span> slice_right</span> : <code class="type">('a, 'b, <a href="BatBigarray.html#TYPEfortran_layout">BatBigarray.fortran_layout</a>) <a href="BatBigarray.Array2.html#TYPEt">t</a> -><br>       int -> ('a, 'b, <a href="BatBigarray.html#TYPEfortran_layout">BatBigarray.fortran_layout</a>) <a href="BatBigarray.Array1.html#TYPEt">BatBigarray.Array1.t</a></code></pre><div class="info ">
-Extract a column (one-dimensional slice) of the given
+<div class="info-desc">
+<p>Extract a column (one-dimensional slice) of the given
       two-dimensional big array.  The integer parameter is the
       index of the column to extract.  See <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Genarray</span>.slice_right</code>
       for more details.  <code class="code"><span class="constructor">Array2</span>.slice_right</code> applies only to arrays
-      with Fortran layout.<br>
+      with Fortran layout.</p>
+</div>
 </div>
 
 <pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a> -><br>       ('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-Copy the first big array to the second big array.
-      See <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Genarray</span>.blit</code> for more details.<br>
+<div class="info-desc">
+<p>Copy the first big array to the second big array.
+      See <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Genarray</span>.blit</code> for more details.</p>
+</div>
 </div>
 
 <pre><span id="VALfill"><span class="keyword">val</span> fill</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a> -> 'a -> unit</code></pre><div class="info ">
-Fill the given big array with the given value.
-      See <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Genarray</span>.fill</code> for more details.<br>
+<div class="info-desc">
+<p>Fill the given big array with the given value.
+      See <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Genarray</span>.fill</code> for more details.</p>
+</div>
 </div>
 
 <pre><span id="VALof_array"><span class="keyword">val</span> of_array</span> : <code class="type">('a, 'b) <a href="BatBigarray.html#TYPEkind">BatBigarray.kind</a> -><br>       'c <a href="BatBigarray.html#TYPElayout">BatBigarray.layout</a> -> 'a array array -> ('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a></code></pre><div class="info ">
-Build a two-dimensional big array initialized from the
-      given array of arrays.<br>
+<div class="info-desc">
+<p>Build a two-dimensional big array initialized from the
+      given array of arrays.</p>
+</div>
 </div>
 
 <pre><span id="VALmap_file"><span class="keyword">val</span> map_file</span> : <code class="type">Unix.file_descr -><br>       ?pos:int64 -><br>       ('a, 'b) <a href="BatBigarray.html#TYPEkind">BatBigarray.kind</a> -><br>       'c <a href="BatBigarray.html#TYPElayout">BatBigarray.layout</a> -><br>       bool -> int -> int -> ('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a></code></pre><div class="info ">
-Memory mapping of a file as a two-dimensional big array.
-      See <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Genarray</span>.map_file</code> for more details.<br>
+<div class="info-desc">
+<p>Memory mapping of a file as a two-dimensional big array.
+      See <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Genarray</span>.map_file</code> for more details.</p>
+</div>
 </div>
 
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-<code class="code">enum&nbsp;e</code> returns an enumeration on the elements of <code class="code">e</code>.
-    The order of enumeration is unspecified.<br>
+<div class="info-desc">
+<p><code class="code">enum&nbsp;e</code> returns an enumeration on the elements of <code class="code">e</code>.
+    The order of enumeration is unspecified.</p>
+</div>
 </div>
 
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -><br>       ('b, 'c) Bigarray.kind -><br>       ('a, 'd, 'e) <a href="BatBigarray.Array2.html#TYPEt">t</a> -> ('b, 'c, 'e) <a href="BatBigarray.Array2.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code"><span class="constructor">Array2</span>.map&nbsp;f&nbsp;a</code> applies function <code class="code">f</code> to all the elements of <code class="code">a</code>,
-      and builds a <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Array2</span>.t</code> with the results returned by <code class="code">f</code>.<br>
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Array2</span>.map&nbsp;f&nbsp;a</code> applies function <code class="code">f</code> to all the elements of <code class="code">a</code>,
+      and builds a <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Array2</span>.t</code> with the results returned by <code class="code">f</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALmapij"><span class="keyword">val</span> mapij</span> : <code class="type">(int -> int -> 'a -> 'b) -><br>       ('b, 'c) Bigarray.kind -><br>       ('a, 'd, 'e) <a href="BatBigarray.Array2.html#TYPEt">t</a> -> ('b, 'c, 'e) <a href="BatBigarray.Array2.html#TYPEt">t</a></code></pre><div class="info ">
-Same as <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Array2</span>.map</code>, but the
+<div class="info-desc">
+<p>Same as <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Array2</span>.map</code>, but the
       function is applied to the index of the element as the first two
-      arguments, and the element itself as the third argument.<br>
+      arguments, and the element itself as the third argument.</p>
+</div>
 </div>
 
 <pre><span id="VALmodify"><span class="keyword">val</span> modify</span> : <code class="type">('a -> 'a) -> ('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">modify&nbsp;f&nbsp;a</code> changes each element <code class="code">x</code> in <code class="code">a</code> to <code class="code">f&nbsp;x</code>
-      in-place.<br>
+<div class="info-desc">
+<p><code class="code">modify&nbsp;f&nbsp;a</code> changes each element <code class="code">x</code> in <code class="code">a</code> to <code class="code">f&nbsp;x</code>
+      in-place.</p>
+</div>
 </div>
 
 <pre><span id="VALmodifyij"><span class="keyword">val</span> modifyij</span> : <code class="type">(int -> int -> 'a -> 'a) -> ('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-Same as <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Array2</span>.modify</code>, but the function is applied
+<div class="info-desc">
+<p>Same as <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Array2</span>.modify</code>, but the function is applied
       to the index of the element as the first two arguments, and the
-      element itself as the third argument.<br>
+      element itself as the third argument.</p>
+</div>
 </div>
 
 <pre><span id="VALto_array"><span class="keyword">val</span> to_array</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a> -> 'a array array</code></pre><div class="info ">
-Build a two-dimensional array initialized from the
-      given big array.<br>
+<div class="info-desc">
+<p>Build a two-dimensional array initialized from the
+      given big array.</p>
 </div>
-<br>
-<h6 id="6_Unsafeoperations">Unsafe operations</h6>
-<p>
-
-     In case of doubt, don't use them.<br>
+</div>
+<h7 id="6_Unsafeoperations">Unsafe operations</h7>
+<p>In case of doubt, don't use them.</p>
 
 <pre><span id="VALunsafe_get"><span class="keyword">val</span> unsafe_get</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a> -> int -> int -> 'a</code></pre><div class="info ">
-Like <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Array2</span>.get</code>, but bounds checking is not always
-      performed.<br>
+<div class="info-desc">
+<p>Like <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Array2</span>.get</code>, but bounds checking is not always
+      performed.</p>
+</div>
 </div>
 
 <pre><span id="VALunsafe_set"><span class="keyword">val</span> unsafe_set</span> : <code class="type">('a, 'b, 'c) <a href="BatBigarray.Array2.html#TYPEt">t</a> -> int -> int -> 'a -> unit</code></pre><div class="info ">
-Like <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Array2</span>.set</code>, but bounds checking is not always
-        performed.<br>
+<div class="info-desc">
+<p>Like <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Array2</span>.set</code>, but bounds checking is not always
+        performed.</p>
+</div>
 </div>
 </body></html>

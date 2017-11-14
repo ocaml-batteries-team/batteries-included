@@ -24,6 +24,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -116,17 +117,21 @@
 </div>
 <h1>Module <a href="type_BatParserCo.Source.html">BatParserCo.Source</a></h1>
 
-<pre><span class="keyword">module</span> Source: <code class="code"><span class="keyword">sig</span></code> <a href="BatParserCo.Source.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-A source for parsing.  Unless you are parsing from exotic sources,
+<pre><span id="MODULESource"><span class="keyword">module</span> Source</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatParserCo.Source.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>A source for parsing.  Unless you are parsing from exotic sources,
     you will probably not need to use this module directly. Rather, use
-    <code class="code"><span class="constructor">CharParser</span>.source_of_string</code> or <code class="code"><span class="constructor">CharParser</span>.source_of_enum</code>.<br>
+    <code class="code"><span class="constructor">CharParser</span>.source_of_string</code> or <code class="code"><span class="constructor">CharParser</span>.source_of_enum</code>.</p>
+</div>
 </div>
 <hr width="100%">
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b)</code> t</span> </pre>
 <div class="info ">
-A source of elements of type <code class="code"><span class="keywordsign">'</span>a</code>, with a user-defined state
-      of type <code class="code"><span class="keywordsign">'</span>b</code><br>
+<div class="info-desc">
+<p>A source of elements of type <code class="code"><span class="keywordsign">'</span>a</code>, with a user-defined state
+      of type <code class="code"><span class="keywordsign">'</span>b</code></p>
+</div>
 </div>
 
 

@@ -5,7 +5,7 @@
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
-<link rel="previous" href="BatBytes.html">
+<link rel="previous" href="BatBytesCompat.html">
 <link rel="next" href="BatChar.html">
 <link rel="Up" href="index.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -112,40 +113,38 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><title>Batteries user guide : BatCache</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="BatBytes.html" title="BatBytes">Previous</a>
+<div class="navbar"><a class="pre" href="BatBytesCompat.html" title="BatBytesCompat">Previous</a>
 &nbsp;<a class="up" href="index.html" title="Index">Up</a>
 &nbsp;<a class="post" href="BatChar.html" title="BatChar">Next</a>
 </div>
 <h1>Module <a href="type_BatCache.html">BatCache</a></h1>
 
-<pre><span class="keyword">module</span> BatCache: <code class="code"><span class="keyword">sig</span></code> <a href="BatCache.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-The data structure for a manual cache with keys <code class="code"><span class="keywordsign">'</span>a</code> and values <code class="code"><span class="keywordsign">'</span>b</code>.
-<p>
+<pre><span id="MODULEBatCache"><span class="keyword">module</span> BatCache</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatCache.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>The data structure for a manual cache with keys <code class="code"><span class="keywordsign">'</span>a</code> and values <code class="code"><span class="keywordsign">'</span>b</code>.</p>
 
-    This cache gives access to some internals of a memoized function
+<p>This cache gives access to some internals of a memoized function
     <code class="code">f</code>, called the generating function.  This function is usually
     pure; always returning the same output for a given input.  This
     module allows the results of complex functions to be cached so
     that the function does not need to be called again to get that
-    result.
-<p>
+    result.</p>
 
-    When <code class="code">c.get&nbsp;k</code> is called, an internal structure is first consulted to
+<p>When <code class="code">c.get&nbsp;k</code> is called, an internal structure is first consulted to
     see if <code class="code">f&nbsp;k</code> has been stored in that structure.  If it has, then
     that previous result is returned, otherwise, <code class="code">f&nbsp;k</code> is evaluated,
     the result stored in the caching structure and also returned to
-    the user.
-<p>
+    the user.</p>
 
-    The user is allowed to remove a value from the caching structure
+<p>The user is allowed to remove a value from the caching structure
     with <code class="code">c.del&nbsp;k</code>.  This allows the user to prevent unbounded growth
     of the cache by removing unneeded entries.  If the user prefers an
-    automatically managed cache, this module provides <code class="code">!auto_cache</code>.
-<p>
+    automatically managed cache, this module provides <code class="code">!auto_cache</code>.</p>
 
-    Last, <code class="code">c.enum&nbsp;()</code> will enumerate all the currently memorized
+<p>Last, <code class="code">c.enum&nbsp;()</code> will enumerate all the currently memorized
     bindings as pairs.  This allows inspection of what is currently
-    cached.<br>
+    cached.</p>
+</div>
 </div>
 <hr width="100%">
 
@@ -176,31 +175,35 @@ The data structure for a manual cache with keys <code class="code"><span class="
 
 
 <pre><span id="VALmake_ht"><span class="keyword">val</span> make_ht</span> : <code class="type">gen:('a -> 'b) -> init_size:int -> ('a, 'b) <a href="BatCache.html#TYPEmanual_cache">manual_cache</a></code></pre><div class="info ">
-Make a manual cache backed by a hashtable.  The generating
+<div class="info-desc">
+<p>Make a manual cache backed by a hashtable.  The generating
     function is passed with <code class="code">~gen</code> and the initial size of the
     hashtable is <code class="code">~init_size</code>. The hashtable uses the polymorphic
-    <code class="code">hash</code> and <code class="code">(=)</code>.<br>
+    <code class="code">hash</code> and <code class="code">(=)</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALmake_map"><span class="keyword">val</span> make_map</span> : <code class="type">gen:('a -> 'b) -> ('a, 'b) <a href="BatCache.html#TYPEmanual_cache">manual_cache</a></code></pre><div class="info ">
-Make a manual cache for function <code class="code">~gen</code> backed by a Set.t.  This
+<div class="info-desc">
+<p>Make a manual cache for function <code class="code">~gen</code> backed by a Set.t.  This
     set uses the polymorphic <code class="code">(&lt;)</code> for comparison, so <code class="code"><span class="keywordsign">'</span>a</code> should be
-    properly comparable by it.<br>
+    properly comparable by it.</p>
+</div>
 </div>
 
 <pre><span id="TYPEauto_cache"><span class="keyword">type</span> <code class="type">('a, 'b)</code> auto_cache</span> = <code class="type">'a -> 'b</code> </pre>
 <div class="info ">
-Automatically managed caches
-<p>
+<div class="info-desc">
+<p>Automatically managed caches</p>
 
-    This type of cache is more transparent than the <code class="code">!manual_cache</code>
+<p>This type of cache is more transparent than the <code class="code">!manual_cache</code>
     above.  It does not provide inspection of the caching structure,
     but guarantees bounded memory usage through some policy of
-    discarding some entries.
-<p>
+    discarding some entries.</p>
 
-    Each auto-cache can have a different policy to decide which entry
-    to discard.<br>
+<p>Each auto-cache can have a different policy to decide which entry
+    to discard.</p>
+</div>
 </div>
 
 

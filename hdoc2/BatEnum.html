@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -129,448 +130,518 @@
 </div>
 <h1>Module <a href="type_BatEnum.html">BatEnum</a></h1>
 
-<pre><span class="keyword">module</span> BatEnum: <code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Enumeration over abstract collection of elements.
-<p>
+<pre><span id="MODULEBatEnum"><span class="keyword">module</span> BatEnum</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Enumeration over abstract collection of elements.</p>
 
-    Enumerations are a representation of finite or infinite sequences
+<p>Enumerations are a representation of finite or infinite sequences
     of elements. In Batteries Included, enumerations are used
     pervasively, both as a uniform manner of reading and manipulating
     the contents of a data structure, or as a simple manner of reading
     or writing sequences of characters, numbers, strings, etc. from/to
-    files, network connections or other inputs/outputs.
-<p>
+    files, network connections or other inputs/outputs.</p>
 
-    Enumerations are typically computed as needed, which allows the
+<p>Enumerations are typically computed as needed, which allows the
     definition and manipulation of huge (possibly infinite) sequences.
     Manipulating an enumeration is a uniform and often comfortable way
     of extracting subsequences (function <a href="BatEnum.html#VALfilter"><code class="code"><span class="constructor">BatEnum</span>.filter</code></a> or operator <code class="code">//</code> et
     al), converting sequences into other sequences (function <a href="BatEnum.html#VALmap"><code class="code"><span class="constructor">BatEnum</span>.map</code></a> or
     operators <code class="code">/@</code> and <code class="code">@/</code> et al), gathering information (function
     <a href="BatEnum.html#VALscanl"><code class="code"><span class="constructor">BatEnum</span>.scanl</code></a> et al) or performing loops (functions <a href="BatEnum.html#VALiter"><code class="code"><span class="constructor">BatEnum</span>.iter</code></a> and
-    <a href="BatEnum.html#VALmap"><code class="code"><span class="constructor">BatEnum</span>.map</code></a>).
-<p>
+    <a href="BatEnum.html#VALmap"><code class="code"><span class="constructor">BatEnum</span>.map</code></a>).</p>
 
-    For instance, function <a href="BatRandom.html#VALenum_int"><code class="code"><span class="constructor">BatRandom</span>.enum_int</code></a> creates an
+<p>For instance, function <a href="BatRandom.html#VALenum_int"><code class="code"><span class="constructor">BatRandom</span>.enum_int</code></a> creates an
     infinite enumeration of random numbers. Combined with <code class="code">//</code>
     and <a href="BatEnum.html#VALmap"><code class="code"><span class="constructor">BatEnum</span>.map</code></a>, we may turn this into an infinite enumeration of
     squares of random even numbers:
-    <code class="code">map&nbsp;(<span class="keyword">fun</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;x&nbsp;*&nbsp;x)&nbsp;(&nbsp;(<span class="constructor">Random</span>.enum_int&nbsp;100)&nbsp;//&nbsp;even&nbsp;)</code>
-<p>
+    <code class="code">map&nbsp;(<span class="keyword">fun</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;x&nbsp;*&nbsp;x)&nbsp;(&nbsp;(<span class="constructor">Random</span>.enum_int&nbsp;100)&nbsp;//&nbsp;even&nbsp;)</code></p>
 
-    Similarly, to obtain an enumeration of 50 random integers,
+<p>Similarly, to obtain an enumeration of 50 random integers,
     we may use <a href="BatEnum.html#VALtake"><code class="code"><span class="constructor">BatEnum</span>.take</code></a>, as follows:
-    <code class="code">take&nbsp;50&nbsp;(<span class="constructor">Random</span>.enum_int&nbsp;100)</code>
-<p>
+    <code class="code">take&nbsp;50&nbsp;(<span class="constructor">Random</span>.enum_int&nbsp;100)</code></p>
 
-    As most data structures in Batteries can be enumerated and built
+<p>As most data structures in Batteries can be enumerated and built
     from enumerations, these operations may be used also on lists,
     arrays, hashtables, etc. When designing a new data structure, it
     is usuallly a good idea to allow enumeration and construction
-    from an enumeration.
-<p>
+    from an enumeration.</p>
 
-    <b>Note</b> Enumerations are not thread-safe. You should not attempt
-    to access one enumeration from different threads.<br>
-<b>Author(s):</b> Nicolas Cannasse, David Rajchenbach-Teller<br>
+<p><b>Note</b> Enumerations are not thread-safe. You should not attempt
+    to access one enumeration from different threads.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Author(s):</b> Nicolas Cannasse, David Rajchenbach-Teller</li>
+</ul>
 </div>
 <hr width="100%">
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
 
 
-<pre><span class="keyword">module type</span> <a href="BatEnum.Enumerable.html">Enumerable</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.Enumerable.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-A signature for data structures which may be converted to and from <code class="code">enum</code>.
+<pre><span id="MODULETYPEEnumerable"><span class="keyword">module type</span> <a href="BatEnum.Enumerable.html">Enumerable</a></span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.Enumerable.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>A signature for data structures which may be converted to and from <code class="code">enum</code>.</p>
+
 </div>
 
 <pre><span class="keyword">include</span> <a href="BatEnum.Enumerable.html">BatEnum.Enumerable</a></pre>
 
 <pre><span class="keyword">include</span> <a href="BatInterfaces.Mappable.html">BatInterfaces.Mappable</a></pre>
-<br>
-<h6 id="6_Finalfunctions">Final functions</h6>
-<p>
-
-    These functions consume the enumeration until
+<h7 id="6_Finalfunctions">Final functions</h7>
+<p>These functions consume the enumeration until
     it ends or an exception is raised by the first
-    argument function.<br>
+    argument function.</p>
 
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">iter&nbsp;f&nbsp;e</code> calls the function <code class="code">f</code> with each elements of <code class="code">e</code> in turn.<br>
+<div class="info-desc">
+<p><code class="code">iter&nbsp;f&nbsp;e</code> calls the function <code class="code">f</code> with each elements of <code class="code">e</code> in turn.</p>
+</div>
 </div>
 
 <pre><span id="VALiter2"><span class="keyword">val</span> iter2</span> : <code class="type">('a -> 'b -> unit) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">iter2&nbsp;f&nbsp;e1&nbsp;e2</code> calls the function <code class="code">f</code> with the next elements of <code class="code">e1</code> and
-    <code class="code">e2</code> repeatedly until one of the two enumerations ends.<br>
+<div class="info-desc">
+<p><code class="code">iter2&nbsp;f&nbsp;e1&nbsp;e2</code> calls the function <code class="code">f</code> with the next elements of <code class="code">e1</code> and
+    <code class="code">e2</code> repeatedly until one of the two enumerations ends.</p>
+</div>
 </div>
 
 <pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-<code class="code">exists&nbsp;f&nbsp;e</code> returns <code class="code"><span class="keyword">true</span></code> if there is some <code class="code">x</code> in <code class="code">e</code> such
-    that <code class="code">f&nbsp;x</code><br>
+<div class="info-desc">
+<p><code class="code">exists&nbsp;f&nbsp;e</code> returns <code class="code"><span class="keyword">true</span></code> if there is some <code class="code">x</code> in <code class="code">e</code> such
+    that <code class="code">f&nbsp;x</code></p>
+</div>
 </div>
 
 <pre><span id="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-<code class="code">for_all&nbsp;f&nbsp;e</code> returns <code class="code"><span class="keyword">true</span></code> if for every <code class="code">x</code> in <code class="code">e</code>, <code class="code">f&nbsp;x</code> is true<br>
+<div class="info-desc">
+<p><code class="code">for_all&nbsp;f&nbsp;e</code> returns <code class="code"><span class="keyword">true</span></code> if for every <code class="code">x</code> in <code class="code">e</code>, <code class="code">f&nbsp;x</code> is true</p>
+</div>
 </div>
 
 <pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('b -> 'a -> 'b) -> 'b -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b</code></pre><div class="info ">
-A general loop on an enumeration.
-<p>
+<div class="info-desc">
+<p>A general loop on an enumeration.</p>
 
-    If <code class="code">e</code> is empty, <code class="code">fold&nbsp;f&nbsp;v&nbsp;e</code> returns <code class="code">v</code>. Otherwise, <code class="code">fold&nbsp;v&nbsp;e</code>
+<p>If <code class="code">e</code> is empty, <code class="code">fold&nbsp;f&nbsp;v&nbsp;e</code> returns <code class="code">v</code>. Otherwise, <code class="code">fold&nbsp;v&nbsp;e</code>
     returns <code class="code">f&nbsp;(...&nbsp;(f&nbsp;(f&nbsp;v&nbsp;a0)&nbsp;a1)&nbsp;...)&nbsp;aN</code> where <code class="code">a0,a1..aN</code> are the
     elements of <code class="code">e</code>. This function may be used, for instance, to
     compute the sum of all elements of an enumeration <code class="code">e</code> as follows:
-    <code class="code">fold&nbsp;(&nbsp;+&nbsp;)&nbsp;0&nbsp;e</code>. Eager.<br>
+    <code class="code">fold&nbsp;(&nbsp;+&nbsp;)&nbsp;0&nbsp;e</code>. Eager.</p>
+</div>
 </div>
 
 <pre><span id="VALreduce"><span class="keyword">val</span> reduce</span> : <code class="type">('a -> 'a -> 'a) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
-A simplified version of <code class="code">fold</code>, which uses the first element
-    of the enumeration as a default value.
-<p>
+<div class="info-desc">
+<p>A simplified version of <code class="code">fold</code>, which uses the first element
+    of the enumeration as a default value.</p>
 
-      <code class="code">reduce&nbsp;f&nbsp;e</code> throws <code class="code"><span class="constructor">Not_found</span></code> if <code class="code">e</code> is empty, returns its only
+<p><code class="code">reduce&nbsp;f&nbsp;e</code> throws <code class="code"><span class="constructor">Not_found</span></code> if <code class="code">e</code> is empty, returns its only
       element if e is a singleton, otherwise <code class="code">f&nbsp;(...&nbsp;(f&nbsp;(f&nbsp;a0&nbsp;a1)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a2)...)&nbsp;aN</code> where <code class="code">a0,a1..aN</code> are the elements of <code class="code">e</code>.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a2)...)&nbsp;aN</code> where <code class="code">a0,a1..aN</code> are the elements of <code class="code">e</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALsum"><span class="keyword">val</span> sum</span> : <code class="type">int <a href="BatEnum.html#TYPEt">t</a> -> int</code></pre><div class="info ">
-<code class="code">sum</code> returns the sum of the given int enum.  If the argument is
-    empty, returns 0. Eager<br>
+<div class="info-desc">
+<p><code class="code">sum</code> returns the sum of the given int enum.  If the argument is
+    empty, returns 0. Eager</p>
+</div>
 </div>
 
 <pre><span id="VALfsum"><span class="keyword">val</span> fsum</span> : <code class="type">float <a href="BatEnum.html#TYPEt">t</a> -> float</code></pre><div class="info ">
-<b>Since</b> 2.0<br>
+<ul class="info-attributes">
+<li><b>Since</b> 2.0</li>
+</ul>
 </div>
 
 <pre><span id="VALkahan_sum"><span class="keyword">val</span> kahan_sum</span> : <code class="type">float <a href="BatEnum.html#TYPEt">t</a> -> float</code></pre><div class="info ">
-<code class="code">kahan_sum&nbsp;l</code> returns a numerically-accurate sum of the floats of
-    <code class="code">l</code>. See <a href="BatArray.html#VALfsum"><code class="code"><span class="constructor">BatArray</span>.fsum</code></a> for more details.<br>
-<b>Since</b> 2.2.0<br>
+<div class="info-desc">
+<p><code class="code">kahan_sum&nbsp;l</code> returns a numerically-accurate sum of the floats of
+    <code class="code">l</code>. See <a href="BatArray.html#VALfsum"><code class="code"><span class="constructor">BatArray</span>.fsum</code></a> for more details.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.2.0</li>
+</ul>
 </div>
 
 <pre><span id="VALfold2"><span class="keyword">val</span> fold2</span> : <code class="type">('a -> 'b -> 'c -> 'c) -> 'c -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a> -> 'c</code></pre><div class="info ">
-<code class="code">fold2</code> is similar to <code class="code">fold</code> but will fold over two enumerations at the
-    same time until one of the two enumerations ends.<br>
+<div class="info-desc">
+<p><code class="code">fold2</code> is similar to <code class="code">fold</code> but will fold over two enumerations at the
+    same time until one of the two enumerations ends.</p>
+</div>
 </div>
 
 <pre><span id="VALscanl"><span class="keyword">val</span> scanl</span> : <code class="type">('b -> 'a -> 'b) -> 'b -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-A variant of <code class="code">fold</code> producing an enumeration of its intermediate values.
+<div class="info-desc">
+<p>A variant of <code class="code">fold</code> producing an enumeration of its intermediate values.
     If <code class="code">e</code> contains <code class="code">x0</code>, <code class="code">x1</code>, ..., <code class="code">scanl&nbsp;f&nbsp;init&nbsp;e</code> is the enumeration
-    containing <code class="code">init</code>, <code class="code">f&nbsp;init&nbsp;x0</code>, <code class="code">f&nbsp;(f&nbsp;init&nbsp;x0)&nbsp;x1</code>... Lazy.<br>
+    containing <code class="code">init</code>, <code class="code">f&nbsp;init&nbsp;x0</code>, <code class="code">f&nbsp;(f&nbsp;init&nbsp;x0)&nbsp;x1</code>... Lazy.</p>
+</div>
 </div>
 
 <pre><span id="VALscan"><span class="keyword">val</span> scan</span> : <code class="type">('a -> 'a -> 'a) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">scan</code> is similar to <code class="code">scanl</code> but without the <code class="code">init</code> value: if <code class="code">e</code>
+<div class="info-desc">
+<p><code class="code">scan</code> is similar to <code class="code">scanl</code> but without the <code class="code">init</code> value: if <code class="code">e</code>
     contains <code class="code">x0</code>, <code class="code">x1</code>, <code class="code">x2</code> ..., <code class="code">scan&nbsp;f&nbsp;e</code> is the enumeration containing
-    <code class="code">x0</code>, <code class="code">f&nbsp;x0&nbsp;x1</code>, <code class="code">f&nbsp;(f&nbsp;x0&nbsp;x1)&nbsp;x2</code>...
-<p>
+    <code class="code">x0</code>, <code class="code">f&nbsp;x0&nbsp;x1</code>, <code class="code">f&nbsp;(f&nbsp;x0&nbsp;x1)&nbsp;x2</code>...</p>
 
-    For instance, <code class="code">scan&nbsp;(&nbsp;*&nbsp;)&nbsp;(1&nbsp;--&nbsp;10)</code> will produce an enumeration
-    containing the successive values of the factorial function.<br>
+<p>For instance, <code class="code">scan&nbsp;(&nbsp;*&nbsp;)&nbsp;(1&nbsp;--&nbsp;10)</code> will produce an enumeration
+    containing the successive values of the factorial function.</p>
 </div>
-<br>
-Indexed functions : these functions are similar to previous ones
+</div>
+<p>Indexed functions : these functions are similar to previous ones
     except that they call the function with one additional argument which
-    is an index starting at 0 and incremented after each call to the function.<br>
+    is an index starting at 0 and incremented after each call to the function.</p>
 
 <pre><span id="VALiteri"><span class="keyword">val</span> iteri</span> : <code class="type">(int -> 'a -> unit) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> unit</code></pre>
 <pre><span id="VALiter2i"><span class="keyword">val</span> iter2i</span> : <code class="type">(int -> 'a -> 'b -> unit) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a> -> unit</code></pre>
 <pre><span id="VALfoldi"><span class="keyword">val</span> foldi</span> : <code class="type">(int -> 'a -> 'b -> 'b) -> 'b -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b</code></pre>
-<pre><span id="VALfold2i"><span class="keyword">val</span> fold2i</span> : <code class="type">(int -> 'a -> 'b -> 'c -> 'c) -> 'c -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a> -> 'c</code></pre><br>
-<h6 id="6_Usefulfunctions">Useful functions</h6><br>
-
+<pre><span id="VALfold2i"><span class="keyword">val</span> fold2i</span> : <code class="type">(int -> 'a -> 'b -> 'c -> 'c) -> 'c -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a> -> 'c</code></pre><h7 id="6_Usefulfunctions">Useful functions</h7>
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
-<code class="code">find&nbsp;f&nbsp;e</code> returns the first element <code class="code">x</code> of <code class="code">e</code> such that <code class="code">f&nbsp;x</code> returns
+<div class="info-desc">
+<p><code class="code">find&nbsp;f&nbsp;e</code> returns the first element <code class="code">x</code> of <code class="code">e</code> such that <code class="code">f&nbsp;x</code> returns
     <code class="code"><span class="keyword">true</span></code>, consuming the enumeration up to and including the
-    found element.<br>
-<b>Raises</b> <code>Not_found</code> if no such element exists
+    found element.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Not_found</code> if no such element exists
     in the enumeration, consuming the whole enumeration in the search.
-<p>
 
     Since <code class="code">find</code> (eagerly) consumes a prefix of the enumeration, it
     can be used several times on the same enumeration to find the
-    next element.<br>
+    next element.</li>
+</ul>
 </div>
 
 <pre><span id="VALfind_map"><span class="keyword">val</span> find_map</span> : <code class="type">('a -> 'b option) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b</code></pre><div class="info ">
-<code class="code">find_map&nbsp;f&nbsp;e</code> finds the first element <code class="code">x</code> of <code class="code">e</code> such that <code class="code">f&nbsp;x</code> returns
+<div class="info-desc">
+<p><code class="code">find_map&nbsp;f&nbsp;e</code> finds the first element <code class="code">x</code> of <code class="code">e</code> such that <code class="code">f&nbsp;x</code> returns
     <code class="code"><span class="constructor">Some</span>&nbsp;r</code>, then returns r. It consumes the enumeration up to and including
-    the found element.<br>
-<b>Since</b> 2.0<br>
-<b>Raises</b> <code>Not_found</code> if no such element exists in the
+    the found element.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.0</li>
+<li><b>Raises</b> <code>Not_found</code> if no such element exists in the
     enumeration, consuming the whole enumeration in the search.
-<p>
 
     Since <code class="code">find_map</code> (eagerly) consumes a prefix of the enumeration, it can be
-    used several times on the same enumeration to find the next element.<br>
+    used several times on the same enumeration to find the next element.</li>
+</ul>
 </div>
 
 <pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-<code class="code">is_empty&nbsp;e</code> returns true if <code class="code">e</code> does not contains any element.
-    Forces at most one element.<br>
+<div class="info-desc">
+<p><code class="code">is_empty&nbsp;e</code> returns true if <code class="code">e</code> does not contains any element.
+    Forces at most one element.</p>
+</div>
 </div>
 
 <pre><span id="VALpeek"><span class="keyword">val</span> peek</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> 'a option</code></pre><div class="info ">
-<code class="code">peek&nbsp;e</code> returns <code class="code"><span class="constructor">None</span></code> if <code class="code">e</code> is empty or <code class="code"><span class="constructor">Some</span>&nbsp;x</code> where <code class="code">x</code> is
+<div class="info-desc">
+<p><code class="code">peek&nbsp;e</code> returns <code class="code"><span class="constructor">None</span></code> if <code class="code">e</code> is empty or <code class="code"><span class="constructor">Some</span>&nbsp;x</code> where <code class="code">x</code> is
     the next element of <code class="code">e</code>. The element is not removed from the
-    enumeration.<br>
+    enumeration.</p>
+</div>
 </div>
 
 <pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> 'a option</code></pre><div class="info ">
-<code class="code">get&nbsp;e</code> returns <code class="code"><span class="constructor">None</span></code> if <code class="code">e</code> is empty or <code class="code"><span class="constructor">Some</span>&nbsp;x</code> where <code class="code">x</code> is
+<div class="info-desc">
+<p><code class="code">get&nbsp;e</code> returns <code class="code"><span class="constructor">None</span></code> if <code class="code">e</code> is empty or <code class="code"><span class="constructor">Some</span>&nbsp;x</code> where <code class="code">x</code> is
     the next element of <code class="code">e</code>, in which case the element is removed
-    from the enumeration.<br>
+    from the enumeration.</p>
+</div>
 </div>
 
 <pre><span id="VALget_exn"><span class="keyword">val</span> get_exn</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
-<code class="code">get_exn&nbsp;e</code> returns the first element of <code class="code">e</code>.<br>
-<b>Since</b> 2.0<br>
-<b>Raises</b> <code>No_more_elements</code> if <code class="code">e</code> is empty.<br>
+<div class="info-desc">
+<p><code class="code">get_exn&nbsp;e</code> returns the first element of <code class="code">e</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.0</li>
+<li><b>Raises</b> <code>No_more_elements</code> if <code class="code">e</code> is empty.</li>
+</ul>
 </div>
 
 <pre><span id="VALpush"><span class="keyword">val</span> push</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> 'a -> unit</code></pre><div class="info ">
-<code class="code">push&nbsp;e&nbsp;x</code> will add <code class="code">x</code> at the beginning of <code class="code">e</code>.<br>
+<div class="info-desc">
+<p><code class="code">push&nbsp;e&nbsp;x</code> will add <code class="code">x</code> at the beginning of <code class="code">e</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALjunk"><span class="keyword">val</span> junk</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">junk&nbsp;e</code> removes the first element from the enumeration, if any.<br>
+<div class="info-desc">
+<p><code class="code">junk&nbsp;e</code> removes the first element from the enumeration, if any.</p>
+</div>
 </div>
 
 <pre><span id="VALclone"><span class="keyword">val</span> clone</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">clone&nbsp;e</code> creates a new enumeration that is copy of <code class="code">e</code>. If <code class="code">e</code>
-    is consumed by later operations, the clone will not get affected.<br>
+<div class="info-desc">
+<p><code class="code">clone&nbsp;e</code> creates a new enumeration that is copy of <code class="code">e</code>. If <code class="code">e</code>
+    is consumed by later operations, the clone will not get affected.</p>
+</div>
 </div>
 
 <pre><span id="VALforce"><span class="keyword">val</span> force</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">force&nbsp;e</code> forces the application of all lazy functions and the
-    enumeration of all elements, exhausting the enumeration.
-<p>
+<div class="info-desc">
+<p><code class="code">force&nbsp;e</code> forces the application of all lazy functions and the
+    enumeration of all elements, exhausting the enumeration.</p>
 
-    An efficient intermediate data structure
+<p>An efficient intermediate data structure
     of enumerated elements is constructed and <code class="code">e</code> will now enumerate over
-    that data structure.<br>
+    that data structure.</p>
+</div>
 </div>
 
 <pre><span id="VALtake"><span class="keyword">val</span> take</span> : <code class="type">int -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">take&nbsp;n&nbsp;e</code> returns the prefix of <code class="code">e</code> of length <code class="code">n</code>, or <code class="code">e</code>
-    itself if <code class="code">n</code> is greater than the length of <code class="code">e</code><br>
+<div class="info-desc">
+<p><code class="code">take&nbsp;n&nbsp;e</code> returns the prefix of <code class="code">e</code> of length <code class="code">n</code>, or <code class="code">e</code>
+    itself if <code class="code">n</code> is greater than the length of <code class="code">e</code></p>
+</div>
 </div>
 
 <pre><span id="VALdrop"><span class="keyword">val</span> drop</span> : <code class="type">int -> 'a <a href="BatEnum.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">drop&nbsp;n&nbsp;e</code> removes the first <code class="code">n</code> element from the enumeration, if any.<br>
+<div class="info-desc">
+<p><code class="code">drop&nbsp;n&nbsp;e</code> removes the first <code class="code">n</code> element from the enumeration, if any.</p>
+</div>
 </div>
 
 <pre><span id="VALskip"><span class="keyword">val</span> skip</span> : <code class="type">int -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">skip&nbsp;n&nbsp;e</code> removes the first <code class="code">n</code> element from the enumeration, if any,
-    then returns <code class="code">e</code>.
-<p>
+<div class="info-desc">
+<p><code class="code">skip&nbsp;n&nbsp;e</code> removes the first <code class="code">n</code> element from the enumeration, if any,
+    then returns <code class="code">e</code>.</p>
 
-    This function has the same behavior as <code class="code">drop</code> but is often easier to
+<p>This function has the same behavior as <code class="code">drop</code> but is often easier to
     compose with, e.g., <code class="code">skip&nbsp;5&nbsp;%&gt;&nbsp;take&nbsp;3</code> is a new function which skips
-    5 elements and then returns the next 3 elements.<br>
+    5 elements and then returns the next 3 elements.</p>
+</div>
 </div>
 
 <pre><span id="VALtake_while"><span class="keyword">val</span> take_while</span> : <code class="type">('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">take_while&nbsp;f&nbsp;e</code> produces a new enumeration in which only remain
-    the first few elements <code class="code">x</code> of <code class="code">e</code> such that <code class="code">f&nbsp;x</code><br>
+<div class="info-desc">
+<p><code class="code">take_while&nbsp;f&nbsp;e</code> produces a new enumeration in which only remain
+    the first few elements <code class="code">x</code> of <code class="code">e</code> such that <code class="code">f&nbsp;x</code></p>
+</div>
 </div>
 
 <pre><span id="VALdrop_while"><span class="keyword">val</span> drop_while</span> : <code class="type">('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">drop_while&nbsp;p&nbsp;e</code> produces a new enumeration in which only
-    all the first elements such that <code class="code">f&nbsp;e</code> have been junked.<br>
+<div class="info-desc">
+<p><code class="code">drop_while&nbsp;p&nbsp;e</code> produces a new enumeration in which only
+    all the first elements such that <code class="code">f&nbsp;e</code> have been junked.</p>
+</div>
 </div>
 
 <pre><span id="VALspan"><span class="keyword">val</span> span</span> : <code class="type">('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> * 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">span&nbsp;test&nbsp;e</code> produces two enumerations <code class="code">(hd,&nbsp;tl)</code>, such that
+<div class="info-desc">
+<p><code class="code">span&nbsp;test&nbsp;e</code> produces two enumerations <code class="code">(hd,&nbsp;tl)</code>, such that
     <code class="code">hd</code> is the same as <code class="code">take_while&nbsp;test&nbsp;e</code> and <code class="code">tl</code> is the same
-    as <code class="code">drop_while&nbsp;test&nbsp;e</code>.<br>
+    as <code class="code">drop_while&nbsp;test&nbsp;e</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALbreak"><span class="keyword">val</span> break</span> : <code class="type">('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> * 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-Negated span.
-    <code class="code">break&nbsp;test&nbsp;e</code> is equivalent to <code class="code">span&nbsp;(<span class="keyword">fun</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;not&nbsp;(test&nbsp;x))&nbsp;e</code><br>
+<div class="info-desc">
+<p>Negated span.
+    <code class="code">break&nbsp;test&nbsp;e</code> is equivalent to <code class="code">span&nbsp;(<span class="keyword">fun</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;not&nbsp;(test&nbsp;x))&nbsp;e</code></p>
+</div>
 </div>
 
 <pre><span id="VALgroup"><span class="keyword">val</span> group</span> : <code class="type">('a -> 'b) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">group&nbsp;test&nbsp;e</code> divides <code class="code">e</code> into an enumeration of enumerations,
+<div class="info-desc">
+<p><code class="code">group&nbsp;test&nbsp;e</code> divides <code class="code">e</code> into an enumeration of enumerations,
     where each sub-enumeration is the longest continuous enumeration
-    of elements whose <code class="code">test</code> results are the same.
-<p>
+    of elements whose <code class="code">test</code> results are the same.</p>
 
-    <code class="code"><span class="constructor">Enum</span>.group&nbsp;(x&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;x&nbsp;<span class="keyword">mod</span>&nbsp;2)&nbsp;[1;2;4;1]&nbsp;=&nbsp;[[1];[2;4];[1]]</code>
-<p>
+<p><code class="code"><span class="constructor">Enum</span>.group&nbsp;(x&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;x&nbsp;<span class="keyword">mod</span>&nbsp;2)&nbsp;[1;2;4;1]&nbsp;=&nbsp;[[1];[2;4];[1]]</code></p>
 
-    <code class="code"><span class="constructor">Enum</span>.group&nbsp;(<span class="keyword">fun</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;x&nbsp;<span class="keyword">mod</span>&nbsp;3)&nbsp;[1;2;4;1]&nbsp;=&nbsp;[[1];[2];[4;1]]</code>
-<p>
+<p><code class="code"><span class="constructor">Enum</span>.group&nbsp;(<span class="keyword">fun</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;x&nbsp;<span class="keyword">mod</span>&nbsp;3)&nbsp;[1;2;4;1]&nbsp;=&nbsp;[[1];[2];[4;1]]</code></p>
 
-    <code class="code"><span class="constructor">Enum</span>.group&nbsp;(<span class="keyword">fun</span>&nbsp;s&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;s.[0])&nbsp;[<span class="string">"cat"</span>;&nbsp;<span class="string">"canary"</span>;&nbsp;<span class="string">"dog"</span>;&nbsp;<span class="string">"dodo"</span>;&nbsp;<span class="string">"ant"</span>;&nbsp;<span class="string">"cow"</span>]&nbsp;=&nbsp;[[<span class="string">"cat"</span>;&nbsp;<span class="string">"canary"</span>];[<span class="string">"dog"</span>;<span class="string">"dodo"</span>];[<span class="string">"ant"</span>];[<span class="string">"cow"</span>]]</code>
-<p>
+<p><code class="code"><span class="constructor">Enum</span>.group&nbsp;(<span class="keyword">fun</span>&nbsp;s&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;s.[0])&nbsp;[<span class="string">"cat"</span>;&nbsp;<span class="string">"canary"</span>;&nbsp;<span class="string">"dog"</span>;&nbsp;<span class="string">"dodo"</span>;&nbsp;<span class="string">"ant"</span>;&nbsp;<span class="string">"cow"</span>]&nbsp;=&nbsp;[[<span class="string">"cat"</span>;&nbsp;<span class="string">"canary"</span>];[<span class="string">"dog"</span>;<span class="string">"dodo"</span>];[<span class="string">"ant"</span>];[<span class="string">"cow"</span>]]</code></p>
 
-    Warning: The result of this operation cannot be directly cloned
+<p>Warning: The result of this operation cannot be directly cloned
     safely; instead, reify to a non-lazy structure and read from that
-    structure multiple times.<br>
+    structure multiple times.</p>
+</div>
 </div>
 
 <pre><span id="VALgroup_by"><span class="keyword">val</span> group_by</span> : <code class="type">('a -> 'a -> bool) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">group_by&nbsp;eq&nbsp;e</code> divides <code class="code">e</code> into an enumeration of enumerations,
+<div class="info-desc">
+<p><code class="code">group_by&nbsp;eq&nbsp;e</code> divides <code class="code">e</code> into an enumeration of enumerations,
     where each sub-enumeration is the longest continuous enumeration
-    of elements that are equal, as judged by <code class="code">eq</code>.
-<p>
+    of elements that are equal, as judged by <code class="code">eq</code>.</p>
 
-    Warning: The result of this operation cannot be directly cloned
+<p>Warning: The result of this operation cannot be directly cloned
     safely; instead, reify to a non-lazy structure and read from that
-    structure multiple times.<br>
+    structure multiple times.</p>
+</div>
 </div>
 
 <pre><span id="VALclump"><span class="keyword">val</span> clump</span> : <code class="type">int -> ('a -> unit) -> (unit -> 'b) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">clump&nbsp;size&nbsp;add&nbsp;get&nbsp;e</code> runs <code class="code">add</code> on <code class="code">size</code> (or less at the end)
+<div class="info-desc">
+<p><code class="code">clump&nbsp;size&nbsp;add&nbsp;get&nbsp;e</code> runs <code class="code">add</code> on <code class="code">size</code> (or less at the end)
     elements of <code class="code">e</code> and then runs <code class="code">get</code> to produce value for the
     result enumeration.  Useful to convert a char enum into string
-    enum.<br>
+    enum.</p>
+</div>
 </div>
 
 <pre><span id="VALcartesian_product"><span class="keyword">val</span> cartesian_product</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a> -> ('a * 'b) <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">cartesian_product&nbsp;e1&nbsp;e2</code> computes the cartesian product of <code class="code">e1</code> and <code class="code">e2</code>.
+<div class="info-desc">
+<p><code class="code">cartesian_product&nbsp;e1&nbsp;e2</code> computes the cartesian product of <code class="code">e1</code> and <code class="code">e2</code>.
     Pairs are enumerated in a non-specified order, but in fair enough an order
     so that it works on infinite enums (i.e. even then, any pair is eventually
-    returned)<br>
-<b>Since</b> 2.2.0<br>
+    returned)</p>
 </div>
-<br>
-<h6 id="6_Lazyconstructors">Lazy constructors</h6>
-<p>
-
-    These functions are lazy which means that they will create a new modified
+<ul class="info-attributes">
+<li><b>Since</b> 2.2.0</li>
+</ul>
+</div>
+<h7 id="6_Lazyconstructors">Lazy constructors</h7>
+<p>These functions are lazy which means that they will create a new modified
     enumeration without actually enumerating any element until they are asked
-    to do so by the programmer (using one of the functions above).
-<p>
+    to do so by the programmer (using one of the functions above).</p>
 
-    When the resulting enumerations of these functions are consumed, the
-    underlying enumerations they were created from are also consumed.<br>
+<p>When the resulting enumerations of these functions are consumed, the
+    underlying enumerations they were created from are also consumed.</p>
 
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">map&nbsp;f&nbsp;e</code> returns an enumeration over <code class="code">(f&nbsp;a0,&nbsp;f&nbsp;a1,&nbsp;...)</code> where
-    <code class="code">a0,a1...</code> are the elements of <code class="code">e</code>. Lazy.<br>
+<div class="info-desc">
+<p><code class="code">map&nbsp;f&nbsp;e</code> returns an enumeration over <code class="code">(f&nbsp;a0,&nbsp;f&nbsp;a1,&nbsp;...)</code> where
+    <code class="code">a0,a1...</code> are the elements of <code class="code">e</code>. Lazy.</p>
+</div>
 </div>
 
 <pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">(int -> 'a -> 'b) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">mapi</code> is similar to <code class="code">map</code> except that <code class="code">f</code> is passed one extra argument
+<div class="info-desc">
+<p><code class="code">mapi</code> is similar to <code class="code">map</code> except that <code class="code">f</code> is passed one extra argument
     which is the index of the element in the enumeration, starting from 0 :
     mapi f e returns an enumeration over <code class="code">(f&nbsp;0&nbsp;a0,&nbsp;f&nbsp;1&nbsp;a1,&nbsp;...)</code> where
-    <code class="code">a0,a1...</code> are the elements of <code class="code">e</code>.<br>
+    <code class="code">a0,a1...</code> are the elements of <code class="code">e</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">filter&nbsp;f&nbsp;e</code> returns an enumeration over all elements <code class="code">x</code> of <code class="code">e</code> such
-    as <code class="code">f&nbsp;x</code> returns <code class="code"><span class="keyword">true</span></code>. Lazy.
-<p>
+<div class="info-desc">
+<p><code class="code">filter&nbsp;f&nbsp;e</code> returns an enumeration over all elements <code class="code">x</code> of <code class="code">e</code> such
+    as <code class="code">f&nbsp;x</code> returns <code class="code"><span class="keyword">true</span></code>. Lazy.</p>
 
-    <b>Note</b> filter is lazy in that it returns a lazy enumeration, but
+<p><b>Note</b> filter is lazy in that it returns a lazy enumeration, but
     each element in the result is eagerly searched in the input
     enumeration. Therefore, the access to a given element in the result
     will diverge if it is preceded, in the input enumeration, by
     infinitely many false elements (elements on which the predicate
-    <code class="code">p</code> returns <code class="code"><span class="keyword">false</span></code>).
-<p>
+    <code class="code">p</code> returns <code class="code"><span class="keyword">false</span></code>).</p>
 
-    Other functions that may drop an unbound number of elements
-    (<code class="code">filter_map</code>, <code class="code">take_while</code>, etc.) have the same behavior.<br>
+<p>Other functions that may drop an unbound number of elements
+    (<code class="code">filter_map</code>, <code class="code">take_while</code>, etc.) have the same behavior.</p>
+</div>
 </div>
 
 <pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">('a -> 'b option) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">filter_map&nbsp;f&nbsp;e</code> returns an enumeration over all elements <code class="code">x</code> such as
-    <code class="code">f&nbsp;y</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;x</code> , where <code class="code">y</code> is an element of <code class="code">e</code>.
-<p>
+<div class="info-desc">
+<p><code class="code">filter_map&nbsp;f&nbsp;e</code> returns an enumeration over all elements <code class="code">x</code> such as
+    <code class="code">f&nbsp;y</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;x</code> , where <code class="code">y</code> is an element of <code class="code">e</code>.</p>
 
-    <code class="code">filter_map</code> works on infinite enumerations; see <code class="code">filter</code>.<br>
+<p><code class="code">filter_map</code> works on infinite enumerations; see <code class="code">filter</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALappend"><span class="keyword">val</span> append</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">append&nbsp;e1&nbsp;e2</code> returns an enumeration that will enumerate over all
-    elements of <code class="code">e1</code> followed by all elements of <code class="code">e2</code>. Lazy.
-<p>
+<div class="info-desc">
+<p><code class="code">append&nbsp;e1&nbsp;e2</code> returns an enumeration that will enumerate over all
+    elements of <code class="code">e1</code> followed by all elements of <code class="code">e2</code>. Lazy.</p>
 
-    <b>Note</b> The behavior of appending <code class="code">e</code> to itself or to something
+<p><b>Note</b> The behavior of appending <code class="code">e</code> to itself or to something
     derived from <code class="code">e</code> is not specified. In particular, cloning <code class="code">append&nbsp;e&nbsp;e</code>
-    may destroy any sharing between the first and the second argument.<br>
+    may destroy any sharing between the first and the second argument.</p>
+</div>
 </div>
 
 <pre><span id="VALprefix_action"><span class="keyword">val</span> prefix_action</span> : <code class="type">(unit -> unit) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">prefix_action&nbsp;f&nbsp;e</code> will behave as <code class="code">e</code> but guarantees that <code class="code">f&nbsp;()</code>
+<div class="info-desc">
+<p><code class="code">prefix_action&nbsp;f&nbsp;e</code> will behave as <code class="code">e</code> but guarantees that <code class="code">f&nbsp;()</code>
     will be invoked exactly once before the current first element of <code class="code">e</code>
-    is read.
-<p>
+    is read.</p>
 
-    If <code class="code">prefix_action&nbsp;f&nbsp;e</code> is cloned, <code class="code">f</code> is invoked only once, during
+<p>If <code class="code">prefix_action&nbsp;f&nbsp;e</code> is cloned, <code class="code">f</code> is invoked only once, during
     the cloning. If <code class="code">prefix_action&nbsp;f&nbsp;e</code> is counted, <code class="code">f</code> is invoked
-    only once, during the counting.
-<p>
+    only once, during the counting.</p>
 
-    May be used for signalling that reading starts or for performing
-    delayed evaluations.<br>
+<p>May be used for signalling that reading starts or for performing
+    delayed evaluations.</p>
+</div>
 </div>
 
 <pre><span id="VALsuffix_action"><span class="keyword">val</span> suffix_action</span> : <code class="type">(unit -> unit) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">suffix_action&nbsp;f&nbsp;e</code> will behave as <code class="code">e</code> but guarantees that <code class="code">f&nbsp;()</code>
-    will be invoked after the contents of <code class="code">e</code> are exhausted.
-<p>
+<div class="info-desc">
+<p><code class="code">suffix_action&nbsp;f&nbsp;e</code> will behave as <code class="code">e</code> but guarantees that <code class="code">f&nbsp;()</code>
+    will be invoked after the contents of <code class="code">e</code> are exhausted.</p>
 
-    If <code class="code">suffix_action&nbsp;f&nbsp;e</code> is cloned, <code class="code">f</code> is invoked only once, when
+<p>If <code class="code">suffix_action&nbsp;f&nbsp;e</code> is cloned, <code class="code">f</code> is invoked only once, when
     the original enumeration is exhausted. If <code class="code">suffix_action&nbsp;f&nbsp;e</code>
     is counted, <code class="code">f</code> is only invoked if the act of counting
-    requires a call to <code class="code">force</code>.
-<p>
+    requires a call to <code class="code">force</code>.</p>
 
-    May be used for signalling that reading stopped or for performing
-    delayed evaluations.<br>
+<p>May be used for signalling that reading stopped or for performing
+    delayed evaluations.</p>
+</div>
 </div>
 
 <pre><span id="VALconcat"><span class="keyword">val</span> concat</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">concat&nbsp;e</code> returns an enumeration over all elements of all enumerations
-    of <code class="code">e</code>.<br>
+<div class="info-desc">
+<p><code class="code">concat&nbsp;e</code> returns an enumeration over all elements of all enumerations
+    of <code class="code">e</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALflatten"><span class="keyword">val</span> flatten</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-Synonym of <a href="BatEnum.html#VALconcat"><code class="code"><span class="constructor">BatEnum</span>.concat</code></a><br>
+<div class="info-desc">
+<p>Synonym of <a href="BatEnum.html#VALconcat"><code class="code"><span class="constructor">BatEnum</span>.concat</code></a></p>
+</div>
 </div>
 
 <pre><span id="VALconcat_map"><span class="keyword">val</span> concat_map</span> : <code class="type">('a -> 'b <a href="BatEnum.html#TYPEt">t</a>) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-Synonym of <a href="BatEnum.Monad.html#VALbind"><code class="code"><span class="constructor">BatEnum</span>.<span class="constructor">Monad</span>.bind</code></a>, with flipped arguments.
-    <code class="code">concat_map&nbsp;f&nbsp;e</code> is the same as <code class="code">concat&nbsp;(map&nbsp;f&nbsp;e)</code>.<br>
-<b>Since</b> 2.2.0<br>
+<div class="info-desc">
+<p>Synonym of <a href="BatEnum.Monad.html#VALbind"><code class="code"><span class="constructor">BatEnum</span>.<span class="constructor">Monad</span>.bind</code></a>, with flipped arguments.
+    <code class="code">concat_map&nbsp;f&nbsp;e</code> is the same as <code class="code">concat&nbsp;(map&nbsp;f&nbsp;e)</code>.</p>
 </div>
-<br>
-<h6 id="6_Constructors">Constructors</h6>
-<p>
-
-    In this section the word <i>shall</i> denotes a semantic
+<ul class="info-attributes">
+<li><b>Since</b> 2.2.0</li>
+</ul>
+</div>
+<h7 id="6_Constructors">Constructors</h7>
+<p>In this section the word <i>shall</i> denotes a semantic
     requirement. The correct operation of the functions in this
     interface are conditional on the client meeting these
-    requirements.<br>
+    requirements.</p>
 
 <pre><span id="EXCEPTIONNo_more_elements"><span class="keyword">exception</span> No_more_elements</span></pre>
 <div class="info ">
-This exception <i>shall</i> be raised by the <code class="code">next</code> function of <code class="code">make</code>
+<div class="info-desc">
+<p>This exception <i>shall</i> be raised by the <code class="code">next</code> function of <code class="code">make</code>
     or <code class="code">from</code> when no more elements can be enumerated, it <i>shall not</i>
     be raised by any function which is an argument to any
-    other function specified in the interface.<br>
+    other function specified in the interface.</p>
+</div>
 </div>
 
 <pre><span id="EXCEPTIONInfinite_enum"><span class="keyword">exception</span> Infinite_enum</span></pre>
 <div class="info ">
-As a convenience for debugging, this exception <i>may</i> be raised by
-    the <code class="code">count</code> function of <code class="code">make</code> when attempting to count an infinite enum.<br>
+<div class="info-desc">
+<p>As a convenience for debugging, this exception <i>may</i> be raised by
+    the <code class="code">count</code> function of <code class="code">make</code> when attempting to count an infinite enum.</p>
+</div>
 </div>
 
 <pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">unit -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-The empty enumeration : contains no element<br>
+<div class="info-desc">
+<p>The empty enumeration : contains no element</p>
+</div>
 </div>
 
 <pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">next:(unit -> 'a) -><br>       count:(unit -> int) -> clone:(unit -> 'a <a href="BatEnum.html#TYPEt">t</a>) -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-This function creates a fully defined enumeration.
-<p>
+<div class="info-desc">
+<p>This function creates a fully defined enumeration.</p>
 
-    <ul>
+<ul>
 <li>the <code class="code">next</code> function <i>shall</i> return the next element of the
     enumeration or raise <code class="code"><span class="constructor">No_more_elements</span></code> if the underlying data structure
     does not have any more elements to enumerate.</li>
@@ -582,90 +653,104 @@ This function creates a fully defined enumeration.
     clone. </li>
 </ul>
 
-<p>
-
-    For some samples on how to correctly use <code class="code">make</code>, you can have a look
-    at implementation of <code class="code"><span class="constructor">BatList</span>.enum</code>.<br>
+<p>For some samples on how to correctly use <code class="code">make</code>, you can have a look
+    at implementation of <code class="code"><span class="constructor">BatList</span>.enum</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALfrom"><span class="keyword">val</span> from</span> : <code class="type">(unit -> 'a) -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">from&nbsp;next</code> creates an enumeration from the <code class="code">next</code> function.
+<div class="info-desc">
+<p><code class="code">from&nbsp;next</code> creates an enumeration from the <code class="code">next</code> function.
     <code class="code">next</code> <i>shall</i> return the next element of the enumeration or raise
     <code class="code"><span class="constructor">No_more_elements</span></code> when no more elements can be enumerated. Since the
     enumeration definition is incomplete, a call to <code class="code">count</code> will result in
     a call to <code class="code">force</code> that will enumerate all elements in order to
-    return a correct value.<br>
+    return a correct value.</p>
+</div>
 </div>
 
 <pre><span id="VALfrom_while"><span class="keyword">val</span> from_while</span> : <code class="type">(unit -> 'a option) -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">from_while&nbsp;next</code> creates an enumeration from the <code class="code">next</code> function.
+<div class="info-desc">
+<p><code class="code">from_while&nbsp;next</code> creates an enumeration from the <code class="code">next</code> function.
     <code class="code">next</code> <i>shall</i> return <code class="code"><span class="constructor">Some</span>&nbsp;x</code> where <code class="code">x</code> is the next element of the
     enumeration or <code class="code"><span class="constructor">None</span></code> when no more elements can be enumerated. Since the
     enumeration definition is incomplete, a call to <code class="code">clone</code> or <code class="code">count</code> will
     result in a call to <code class="code">force</code> that will enumerate all elements in order to
-    return a correct value.<br>
+    return a correct value.</p>
+</div>
 </div>
 
 <pre><span id="VALfrom_loop"><span class="keyword">val</span> from_loop</span> : <code class="type">'b -> ('b -> 'a * 'b) -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">from_loop&nbsp;data&nbsp;next</code> creates a (possibly infinite) enumeration from
+<div class="info-desc">
+<p><code class="code">from_loop&nbsp;data&nbsp;next</code> creates a (possibly infinite) enumeration from
    the successive results of applying <code class="code">next</code> to <code class="code">data</code>, then to the
    result, etc. The list ends whenever the function raises
-   <a href="BatEnum.html#EXCEPTIONNo_more_elements"><code class="code"><span class="constructor">BatEnum</span>.<span class="constructor">No_more_elements</span></code></a>.<br>
+   <a href="BatEnum.html#EXCEPTIONNo_more_elements"><code class="code"><span class="constructor">BatEnum</span>.<span class="constructor">No_more_elements</span></code></a>.</p>
+</div>
 </div>
 
 <pre><span id="VALseq"><span class="keyword">val</span> seq</span> : <code class="type">'a -> ('a -> 'a) -> ('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">seq&nbsp;init&nbsp;step&nbsp;cond</code> creates a sequence of data, which starts
+<div class="info-desc">
+<p><code class="code">seq&nbsp;init&nbsp;step&nbsp;cond</code> creates a sequence of data, which starts
     from <code class="code">init</code>,  extends by <code class="code">step</code>,  until the condition <code class="code">cond</code>
     fails. E.g. <code class="code">seq&nbsp;1&nbsp;((+)&nbsp;1)&nbsp;((&gt;)&nbsp;100)</code> returns <code class="code">1,&nbsp;2,&nbsp;...&nbsp;99</code>. If <code class="code">cond<br>
-&nbsp;&nbsp;&nbsp;&nbsp;init</code> is false, the result is empty.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;init</code> is false, the result is empty.</p>
+</div>
 </div>
 
 <pre><span id="VALunfold"><span class="keyword">val</span> unfold</span> : <code class="type">'b -> ('b -> ('a * 'b) option) -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-As <code class="code">from_loop</code>, except uses option type to signal the end of the enumeration.
-<p>
+<div class="info-desc">
+<p>As <code class="code">from_loop</code>, except uses option type to signal the end of the enumeration.</p>
 
-   <code class="code">unfold&nbsp;data&nbsp;next</code> creates a (possibly infinite) enumeration from
+<p><code class="code">unfold&nbsp;data&nbsp;next</code> creates a (possibly infinite) enumeration from
    the successive results of applying <code class="code">next</code> to <code class="code">data</code>, then to the
-   result, etc. The enumeration ends whenever the function returns <code class="code"><span class="constructor">None</span></code>
-<p>
+   result, etc. The enumeration ends whenever the function returns <code class="code"><span class="constructor">None</span></code></p>
 
-   Example: <code class="code"><span class="constructor">Enum</span>.unfold&nbsp;n&nbsp;(<span class="keyword">fun</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keyword">if</span>&nbsp;x&nbsp;=&nbsp;1&nbsp;<span class="keyword">then</span>&nbsp;<span class="constructor">None</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="constructor">Some</span><br>
+<p>Example: <code class="code"><span class="constructor">Enum</span>.unfold&nbsp;n&nbsp;(<span class="keyword">fun</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keyword">if</span>&nbsp;x&nbsp;=&nbsp;1&nbsp;<span class="keyword">then</span>&nbsp;<span class="constructor">None</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="constructor">Some</span><br>
 &nbsp;&nbsp;&nbsp;(x,&nbsp;<span class="keyword">if</span>&nbsp;x&nbsp;<span class="keyword">land</span>&nbsp;1&nbsp;=&nbsp;1&nbsp;<span class="keyword">then</span>&nbsp;3&nbsp;*&nbsp;x&nbsp;+&nbsp;1&nbsp;<span class="keyword">else</span>&nbsp;x&nbsp;/&nbsp;2))</code> returns the
-   hailstone sequence starting at <code class="code">n</code>.<br>
+   hailstone sequence starting at <code class="code">n</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> (int -> 'a) -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">init&nbsp;n&nbsp;f</code> creates a new enumeration over elements
-    <code class="code">f&nbsp;0,&nbsp;f&nbsp;1,&nbsp;...,&nbsp;f&nbsp;(n-1)</code><br>
+<div class="info-desc">
+<p><code class="code">init&nbsp;n&nbsp;f</code> creates a new enumeration over elements
+    <code class="code">f&nbsp;0,&nbsp;f&nbsp;1,&nbsp;...,&nbsp;f&nbsp;(n-1)</code></p>
+</div>
 </div>
 
 <pre><span id="VALsingleton"><span class="keyword">val</span> singleton</span> : <code class="type">'a -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-Create an enumeration consisting of exactly one element.<br>
+<div class="info-desc">
+<p>Create an enumeration consisting of exactly one element.</p>
+</div>
 </div>
 
 <pre><span id="VALrepeat"><span class="keyword">val</span> repeat</span> : <code class="type">?times:int -> 'a -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">repeat&nbsp;~times:n&nbsp;x</code> creates a enum sequence filled with <code class="code">n</code> times of
+<div class="info-desc">
+<p><code class="code">repeat&nbsp;~times:n&nbsp;x</code> creates a enum sequence filled with <code class="code">n</code> times of
     <code class="code">x</code>. It return infinite enum when <code class="code">~times</code> is absent. It returns empty
-    enum when <code class="code">times&nbsp;&lt;=&nbsp;0</code><br>
+    enum when <code class="code">times&nbsp;&lt;=&nbsp;0</code></p>
+</div>
 </div>
 
 <pre><span id="VALcycle"><span class="keyword">val</span> cycle</span> : <code class="type">?times:int -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">cycle</code> is similar to <code class="code">repeat</code>, except that the content to fill is a
+<div class="info-desc">
+<p><code class="code">cycle</code> is similar to <code class="code">repeat</code>, except that the content to fill is a
     subenum rather than a single element. Note that <code class="code">times</code> represents the
     times of repeating not the length of enum. When <code class="code">~times</code> is absent the
-    result is an infinite enum.<br>
+    result is an infinite enum.</p>
+</div>
 </div>
 
 <pre><span id="VALdelay"><span class="keyword">val</span> delay</span> : <code class="type">(unit -> 'a <a href="BatEnum.html#TYPEt">t</a>) -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">delay&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;e)</code> produces an enumeration which behaves as <code class="code">e</code>.
-    The enumeration itself will only be computed when consumed.
-<p>
+<div class="info-desc">
+<p><code class="code">delay&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;e)</code> produces an enumeration which behaves as <code class="code">e</code>.
+    The enumeration itself will only be computed when consumed.</p>
 
-    A typical use of this function is to explore lazily non-trivial
-    data structures, as follows:
-<p>
+<p>A typical use of this function is to explore lazily non-trivial
+    data structures, as follows:</p>
 
-    <code class="code"><span class="keyword">type</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;tree&nbsp;=&nbsp;<span class="constructor">Leaf</span><br>
+<p><code class="code"><span class="keyword">type</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;tree&nbsp;=&nbsp;<span class="constructor">Leaf</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Node</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;*&nbsp;<span class="keywordsign">'</span>a&nbsp;tree&nbsp;*&nbsp;<span class="keywordsign">'</span>a&nbsp;tree<br>
 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;enum_tree&nbsp;=<br>
@@ -674,168 +759,199 @@ Create an enumeration consisting of exactly one element.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Node</span>&nbsp;(n,&nbsp;l,&nbsp;r)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatEnum</span>.append&nbsp;(<span class="constructor">BatEnum</span>.singleton&nbsp;n)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">BatEnum</span>.append&nbsp;(delay&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;aux&nbsp;l))<br>
 &nbsp;&nbsp;&nbsp;&nbsp;(delay&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;aux&nbsp;r)))<br>
-&nbsp;&nbsp;&nbsp;&nbsp;</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;</code></p>
+</div>
 </div>
 
 <pre><span id="VALto_object"><span class="keyword">val</span> to_object</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> (< clone : 'b; count : int; next : 'a > as 'b)</code></pre><div class="info ">
-<code class="code">to_object&nbsp;e</code> returns a representation of <code class="code">e</code> as an object.<br>
+<div class="info-desc">
+<p><code class="code">to_object&nbsp;e</code> returns a representation of <code class="code">e</code> as an object.</p>
+</div>
 </div>
 
 <pre><span id="VALof_object"><span class="keyword">val</span> of_object</span> : <code class="type">(< clone : 'b; count : int; next : 'a > as 'b) -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">of_object&nbsp;e</code> returns a representation of an object as an enumeration<br>
+<div class="info-desc">
+<p><code class="code">of_object&nbsp;e</code> returns a representation of an object as an enumeration</p>
+</div>
 </div>
 
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-identity : added for consistency with the other data structures<br>
+<div class="info-desc">
+<p>identity : added for consistency with the other data structures</p>
+</div>
 </div>
 
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-identity : added for consistency with the other data structures<br>
+<div class="info-desc">
+<p>identity : added for consistency with the other data structures</p>
 </div>
-<br>
-<h6 id="6_Counting">Counting</h6><br>
-
+</div>
+<h7 id="6_Counting">Counting</h7>
 <pre><span id="VALcount"><span class="keyword">val</span> count</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> int</code></pre><div class="info ">
-<code class="code">count&nbsp;e</code> returns the number of remaining elements in <code class="code">e</code> without
-    consuming the enumeration.
-<p>
+<div class="info-desc">
+<p><code class="code">count&nbsp;e</code> returns the number of remaining elements in <code class="code">e</code> without
+    consuming the enumeration.</p>
 
-    Depending of the underlying data structure that is implementing the
+<p>Depending of the underlying data structure that is implementing the
     enumeration functions, the count operation can be costly, and even sometimes
-    can cause a call to <code class="code">force</code>.<br>
+    can cause a call to <code class="code">force</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALfast_count"><span class="keyword">val</span> fast_count</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-For users worried about the speed of <code class="code">count</code> you can call the <code class="code">fast_count</code>
+<div class="info-desc">
+<p>For users worried about the speed of <code class="code">count</code> you can call the <code class="code">fast_count</code>
     function that will give an hint about <code class="code">count</code> implementation. Basically, if
     the enumeration has been created with <code class="code">make</code> or <code class="code">init</code> or if <code class="code">force</code> has
-    been called on it, then <code class="code">fast_count</code> will return true.<br>
+    been called on it, then <code class="code">fast_count</code> will return true.</p>
+</div>
 </div>
 
 <pre><span id="VALhard_count"><span class="keyword">val</span> hard_count</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> int</code></pre><div class="info ">
-<code class="code">hard_count</code> returns the number of remaining in elements in <code class="code">e</code>,
+<div class="info-desc">
+<p><code class="code">hard_count</code> returns the number of remaining in elements in <code class="code">e</code>,
     consuming the whole enumeration somewhere along the way. This
     function is always at least as fast as the fastest of either
-    <code class="code">count</code> or a <code class="code">fold</code> on the elements of <code class="code">t</code>.
-<p>
+    <code class="code">count</code> or a <code class="code">fold</code> on the elements of <code class="code">t</code>.</p>
 
-    This function is useful when you have opened an enumeration for
+<p>This function is useful when you have opened an enumeration for
     the sole purpose of counting its elements (e.g. the number of
-    lines in a file).<br>
+    lines in a file).</p>
 </div>
-<br>
-<h6 id="6_Utilities">Utilities </h6><br>
-
+</div>
+<h7 id="6_Utilities">Utilities </h7>
 <pre><span id="VALrange"><span class="keyword">val</span> range</span> : <code class="type">?until:int -> int -> int <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">range&nbsp;p&nbsp;until:q</code> creates an enumeration of integers <code class="code">[p,&nbsp;p+1,&nbsp;...,&nbsp;q]</code>.
+<div class="info-desc">
+<p><code class="code">range&nbsp;p&nbsp;until:q</code> creates an enumeration of integers <code class="code">[p,&nbsp;p+1,&nbsp;...,&nbsp;q]</code>.
     If <code class="code">until</code> is omitted, the enumeration is not bounded. Behaviour is
-    not-specified once <code class="code">max_int</code> has been reached.<br>
+    not-specified once <code class="code">max_int</code> has been reached.</p>
+</div>
 </div>
 
 <pre><span id="VALdup"><span class="keyword">val</span> dup</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> * 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">dup&nbsp;stream</code> returns a pair of streams which are identical to <code class="code">stream</code>. Note
+<div class="info-desc">
+<p><code class="code">dup&nbsp;stream</code> returns a pair of streams which are identical to <code class="code">stream</code>. Note
     that stream is a destructive data structure, the point of <code class="code">dup</code> is to
-    return two streams can be used independently.<br>
+    return two streams can be used independently.</p>
+</div>
 </div>
 
 <pre><span id="VALcombine"><span class="keyword">val</span> combine</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> * 'b <a href="BatEnum.html#TYPEt">t</a> -> ('a * 'b) <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">combine</code> transform a pair of stream into a stream of pairs of corresponding
+<div class="info-desc">
+<p><code class="code">combine</code> transform a pair of stream into a stream of pairs of corresponding
     elements. If one stream is short, excess elements of the longer stream are
-    ignored.<br>
+    ignored.</p>
+</div>
 </div>
 
 <pre><span id="VALuncombine"><span class="keyword">val</span> uncombine</span> : <code class="type">('a * 'b) <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> * 'b <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">uncombine</code> is the opposite of <code class="code">combine</code><br>
+<div class="info-desc">
+<p><code class="code">uncombine</code> is the opposite of <code class="code">combine</code></p>
+</div>
 </div>
 
 <pre><span id="VALmerge"><span class="keyword">val</span> merge</span> : <code class="type">('a -> 'a -> bool) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">merge&nbsp;test&nbsp;a&nbsp;b</code> merge the elements from <code class="code">a</code> and <code class="code">b</code> into a single
+<div class="info-desc">
+<p><code class="code">merge&nbsp;test&nbsp;a&nbsp;b</code> merge the elements from <code class="code">a</code> and <code class="code">b</code> into a single
     enumeration. At each step, <code class="code">test</code> is applied to the first element <code class="code">xa</code> of
     <code class="code">a</code> and the first element <code class="code">xb</code> of <code class="code">b</code> to determine which should get first
     into resulting enumeration. If <code class="code">test&nbsp;xa&nbsp;xb</code> returns <code class="code"><span class="keyword">true</span></code>, <code class="code">xa</code> (the
     first element of <code class="code">a</code>) is used, otherwise <code class="code">xb</code> is used.  If <code class="code">a</code> or <code class="code">b</code> runs
     out of elements, the process will append all elements of the other
-    enumeration to the result.
-<p>
+    enumeration to the result.</p>
 
-    For example, if <code class="code">a</code> and <code class="code">b</code> are enumerations of integers sorted
-    in increasing order, then <code class="code">merge&nbsp;(&lt;)&nbsp;a&nbsp;b</code> will also be sorted.<br>
+<p>For example, if <code class="code">a</code> and <code class="code">b</code> are enumerations of integers sorted
+    in increasing order, then <code class="code">merge&nbsp;(&lt;)&nbsp;a&nbsp;b</code> will also be sorted.</p>
+</div>
 </div>
 
 <pre><span id="VALinterleave"><span class="keyword">val</span> interleave</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> array -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">interleave&nbsp;enums</code> creates a new enumeration from an array of enumerations.
+<div class="info-desc">
+<p><code class="code">interleave&nbsp;enums</code> creates a new enumeration from an array of enumerations.
     The new enumeration first yields the first elements of the enumerations in
     the supplied order, then second elements, etc.  Thus, a sequence
     <code class="code">&nbsp;[|&nbsp;[x11&nbsp;;&nbsp;x12&nbsp;;&nbsp;...]&nbsp;;&nbsp;[x21&nbsp;;&nbsp;x22,&nbsp;...]&nbsp;,&nbsp;...&nbsp;[xN1&nbsp;;&nbsp;xN2&nbsp;;&nbsp;...]&nbsp;|]&nbsp;</code> becomes
-    <code class="code">[&nbsp;x11&nbsp;;&nbsp;x12&nbsp;;&nbsp;...&nbsp;;&nbsp;xN1&nbsp;;&nbsp;x21&nbsp;;&nbsp;x22&nbsp;;&nbsp;...&nbsp;;&nbsp;xN2&nbsp;;&nbsp;x31&nbsp;;&nbsp;...&nbsp;]</code>.<br>
+    <code class="code">[&nbsp;x11&nbsp;;&nbsp;x12&nbsp;;&nbsp;...&nbsp;;&nbsp;xN1&nbsp;;&nbsp;x21&nbsp;;&nbsp;x22&nbsp;;&nbsp;...&nbsp;;&nbsp;xN2&nbsp;;&nbsp;x31&nbsp;;&nbsp;...&nbsp;]</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALuniq"><span class="keyword">val</span> uniq</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">uniq&nbsp;e</code> returns a duplicate of <code class="code">e</code> with repeated values
+<div class="info-desc">
+<p><code class="code">uniq&nbsp;e</code> returns a duplicate of <code class="code">e</code> with repeated values
     omitted (similar to unix's <code class="code">uniq</code> command).
-    It uses structural equality to compare consecutive elements.<br>
+    It uses structural equality to compare consecutive elements.</p>
+</div>
 </div>
 
 <pre><span id="VALuniqq"><span class="keyword">val</span> uniqq</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">uniqq&nbsp;e</code> behaves as <code class="code">uniq&nbsp;e</code> except it uses physical equality
-    to compare consecutive elements.<br>
-<b>Since</b> 2.4.0<br>
+<div class="info-desc">
+<p><code class="code">uniqq&nbsp;e</code> behaves as <code class="code">uniq&nbsp;e</code> except it uses physical equality
+    to compare consecutive elements.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.4.0</li>
+</ul>
 </div>
 
 <pre><span id="VALuniq_by"><span class="keyword">val</span> uniq_by</span> : <code class="type">('a -> 'a -> bool) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">uniq_by&nbsp;cmp&nbsp;e</code> behaves as <code class="code">uniq&nbsp;e</code> except it allows to specify a
-    comparison function.<br>
-<b>Since</b> 2.4.0<br>
+<div class="info-desc">
+<p><code class="code">uniq_by&nbsp;cmp&nbsp;e</code> behaves as <code class="code">uniq&nbsp;e</code> except it allows to specify a
+    comparison function.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.4.0</li>
+</ul>
 </div>
 
 <pre><span id="VALswitch"><span class="keyword">val</span> switch</span> : <code class="type">('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> * 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">switch&nbsp;test&nbsp;enum</code> splits <code class="code">enum</code> into two enums, where the first enum have
+<div class="info-desc">
+<p><code class="code">switch&nbsp;test&nbsp;enum</code> splits <code class="code">enum</code> into two enums, where the first enum have
     all the elements satisfying <code class="code">test</code>, the second enum is opposite. The
-    order of elements in the source enum is preserved.<br>
+    order of elements in the source enum is preserved.</p>
+</div>
 </div>
 
 <pre><span id="VALpartition"><span class="keyword">val</span> partition</span> : <code class="type">('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> * 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-as <code class="code">switch</code><br>
+<div class="info-desc">
+<p>as <code class="code">switch</code></p>
+</div>
 </div>
 
 <pre><span id="VALarg_min"><span class="keyword">val</span> arg_min</span> : <code class="type">('a -> 'b) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a</code></pre>
 <pre><span id="VALarg_max"><span class="keyword">val</span> arg_max</span> : <code class="type">('a -> 'b) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
-<code class="code">arg_min&nbsp;f&nbsp;xs</code> returns the <code class="code">x</code> in <code class="code">xs</code> for which <code class="code">f&nbsp;x</code> is minimum.
+<div class="info-desc">
+<p><code class="code">arg_min&nbsp;f&nbsp;xs</code> returns the <code class="code">x</code> in <code class="code">xs</code> for which <code class="code">f&nbsp;x</code> is minimum.
     Similarly for <code class="code">arg_max</code>, except it returns the maximum.  If
     multiple values reach the maximum, one of them is
-    returned. (currently the first, but this is not guaranteed)
-<p>
+    returned. (currently the first, but this is not guaranteed)</p>
 
-    Example: <code class="code">-5&nbsp;--&nbsp;5&nbsp;|&gt;&nbsp;arg_min&nbsp;(<span class="keyword">fun</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;x&nbsp;*&nbsp;x&nbsp;+&nbsp;6&nbsp;*&nbsp;x&nbsp;-&nbsp;5)&nbsp;=&nbsp;-3</code>
-    Example: <code class="code"><span class="constructor">List</span>.enum&nbsp;[<span class="string">"cat"</span>;&nbsp;<span class="string">"canary"</span>;&nbsp;<span class="string">"dog"</span>;&nbsp;<span class="string">"dodo"</span>;&nbsp;<span class="string">"ant"</span>;&nbsp;<span class="string">"cow"</span>]&nbsp;|&gt;&nbsp;arg_max&nbsp;<span class="constructor">String</span>.length&nbsp;=&nbsp;<span class="string">"canary"</span></code><br>
-<b>Raises</b> <code>Invalid_argument</code> if the input enum is empty<br>
+<p>Example: <code class="code">-5&nbsp;--&nbsp;5&nbsp;|&gt;&nbsp;arg_min&nbsp;(<span class="keyword">fun</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;x&nbsp;*&nbsp;x&nbsp;+&nbsp;6&nbsp;*&nbsp;x&nbsp;-&nbsp;5)&nbsp;=&nbsp;-3</code>
+    Example: <code class="code"><span class="constructor">List</span>.enum&nbsp;[<span class="string">"cat"</span>;&nbsp;<span class="string">"canary"</span>;&nbsp;<span class="string">"dog"</span>;&nbsp;<span class="string">"dodo"</span>;&nbsp;<span class="string">"ant"</span>;&nbsp;<span class="string">"cow"</span>]&nbsp;|&gt;&nbsp;arg_max&nbsp;<span class="constructor">String</span>.length&nbsp;=&nbsp;<span class="string">"canary"</span></code></p>
 </div>
-<br>
-<h6 id="6_Trampolining">Trampolining</h6><br>
-
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Invalid_argument</code> if the input enum is empty</li>
+</ul>
+</div>
+<h7 id="6_Trampolining">Trampolining</h7>
 <pre><span id="VALwhile_do"><span class="keyword">val</span> while_do</span> : <code class="type">('a -> bool) -><br>       ('a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a>) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">while_do&nbsp;cont&nbsp;f&nbsp;e</code> is a loop on <code class="code">e</code> using <code class="code">f</code> as body and <code class="code">cont</code> as
-    condition for continuing.
-<p>
+<div class="info-desc">
+<p><code class="code">while_do&nbsp;cont&nbsp;f&nbsp;e</code> is a loop on <code class="code">e</code> using <code class="code">f</code> as body and <code class="code">cont</code> as
+    condition for continuing.</p>
 
-    If <code class="code">e</code> contains elements <code class="code">x0</code>, <code class="code">x1</code>, <code class="code">x2</code>..., then if <code class="code">cont&nbsp;x0</code> is <code class="code"><span class="keyword">false</span></code>,
+<p>If <code class="code">e</code> contains elements <code class="code">x0</code>, <code class="code">x1</code>, <code class="code">x2</code>..., then if <code class="code">cont&nbsp;x0</code> is <code class="code"><span class="keyword">false</span></code>,
     <code class="code">x0</code> is returned as such and treatment stops. On the other hand, if <code class="code">cont&nbsp;x0</code>
-    is <code class="code"><span class="keyword">true</span></code>, <code class="code">f&nbsp;x0</code> is returned and the loop proceeds with <code class="code">x1</code>...
-<p>
+    is <code class="code"><span class="keyword">true</span></code>, <code class="code">f&nbsp;x0</code> is returned and the loop proceeds with <code class="code">x1</code>...</p>
 
-    Note that f is used as halting condition <i>after</i> the
-    corresponding element has been added to the result stream.<br>
+<p>Note that f is used as halting condition <i>after</i> the
+    corresponding element has been added to the result stream.</p>
 </div>
-<br>
-<h6 id="6_Infixoperators">Infix operators</h6><br>
-<br>
-Infix versions of some functions
-<p>
+</div>
+<h7 id="6_Infixoperators">Infix operators</h7><p>Infix versions of some functions</p>
 
-    This module groups together all infix operators so that
-    you can open it without opening the whole batEnum module.<br>
+<p>This module groups together all infix operators so that
+    you can open it without opening the whole batEnum module.</p>
 
-<pre><span class="keyword">module</span> <a href="BatEnum.Infix.html">Infix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span id="MODULEInfix"><span class="keyword">module</span> <a href="BatEnum.Infix.html">Infix</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
 <pre><span id="VAL(--)"><span class="keyword">val</span> (--)</span> : <code class="type">int -> int -> int <a href="BatEnum.html#TYPEt">t</a></code></pre>
 <pre><span id="VAL(--^)"><span class="keyword">val</span> (--^)</span> : <code class="type">int -> int -> int <a href="BatEnum.html#TYPEt">t</a></code></pre>
 <pre><span id="VAL(--.)"><span class="keyword">val</span> (--.)</span> : <code class="type">float * float -> float -> float <a href="BatEnum.html#TYPEt">t</a></code></pre>
@@ -845,62 +961,73 @@ Infix versions of some functions
 <pre><span id="VAL(/@)"><span class="keyword">val</span> (/@)</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> ('a -> 'b) -> 'b <a href="BatEnum.html#TYPEt">t</a></code></pre>
 <pre><span id="VAL(@/)"><span class="keyword">val</span> (@/)</span> : <code class="type">('a -> 'b) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a></code></pre>
 <pre><span id="VAL(//@)"><span class="keyword">val</span> (//@)</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> ('a -> 'b option) -> 'b <a href="BatEnum.html#TYPEt">t</a></code></pre>
-<pre><span id="VAL(@//)"><span class="keyword">val</span> (@//)</span> : <code class="type">('a -> 'b option) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a></code></pre><br>
-<h6 id="6_Monadrelatedmodules">Monad related modules</h6><br>
+<pre><span id="VAL(@//)"><span class="keyword">val</span> (@//)</span> : <code class="type">('a -> 'b option) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a></code></pre><h7 id="6_Monadrelatedmodules">Monad related modules</h7>
+<pre><span id="MODULEWithMonad"><span class="keyword">module</span> <a href="BatEnum.WithMonad.html">WithMonad</a></span>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Mon</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatInterfaces.Monad.html">BatInterfaces.Monad</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.WithMonad.html">..</a> <code class="code"><span class="keyword">end</span></code></div></pre><div class="info">
+<p>Monadic operations on Enumerations containing monadic elements</p>
 
-<pre><span class="keyword">module</span> <a href="BatEnum.WithMonad.html">WithMonad</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Mon</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatInterfaces.Monad.html">BatInterfaces.Monad</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.WithMonad.html">..</a> <code class="code"><span class="keyword">end</span></code></div></pre><div class="info">
-Monadic operations on Enumerations containing monadic elements
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatEnum.Monad.html">Monad</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.Monad.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-The BatEnum Monad
-</div>
-<br>
-<h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
+<pre><span id="MODULEMonad"><span class="keyword">module</span> <a href="BatEnum.Monad.html">Monad</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.Monad.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>The BatEnum Monad</p>
 
+</div>
+<h7 id="6_Boilerplatecode">Boilerplate code</h7>
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatEnum.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-Print and consume the contents of an enumeration.<br>
+<div class="info-desc">
+<p>Print and consume the contents of an enumeration.</p>
+</div>
 </div>
 
 <pre><span id="VALprint_at_most"><span class="keyword">val</span> print_at_most</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       limit:int -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatEnum.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">print_at_most&nbsp;pp&nbsp;limit&nbsp;out&nbsp;enum</code> consumes <code class="code">enum</code> to print its elements
+<div class="info-desc">
+<p><code class="code">print_at_most&nbsp;pp&nbsp;limit&nbsp;out&nbsp;enum</code> consumes <code class="code">enum</code> to print its elements
     into <code class="code">out</code> (using <code class="code">pp</code> to print individual elements).
     At most <code class="code">limit</code> arguments are printed, if more elements are
-      available an ellipsis "..." is added.<br>
-<b>Since</b> 2.2.0<br>
-<b>Raises</b> <code>Invalid_argument</code> if the limit is &lt;= 0.<br>
+      available an ellipsis "..." is added.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.2.0</li>
+<li><b>Raises</b> <code>Invalid_argument</code> if the limit is &lt;= 0.</li>
+</ul>
 </div>
 
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">('a -> 'a -> int) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> -> int</code></pre><div class="info ">
-<code class="code">compare&nbsp;cmp&nbsp;a&nbsp;b</code> compares enumerations <code class="code">a</code> and <code class="code">b</code>
-    by lexicographical order using comparison <code class="code">cmp</code>.<br>
-<b>Returns</b> <code class="code">compare&nbsp;cmp&nbsp;a'&nbsp;b'</code>, where <code class="code">a'</code> and <code class="code">b'</code> are
+<div class="info-desc">
+<p><code class="code">compare&nbsp;cmp&nbsp;a&nbsp;b</code> compares enumerations <code class="code">a</code> and <code class="code">b</code>
+    by lexicographical order using comparison <code class="code">cmp</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Returns</b> <code class="code">compare&nbsp;cmp&nbsp;a'&nbsp;b'</code>, where <code class="code">a'</code> and <code class="code">b'</code> are
     respectively equal to <code class="code">a</code> and <code class="code">b</code> without their first
     element, if both <code class="code">a</code> and <code class="code">b</code> are non-empty and <code class="code">cmp&nbsp;x&nbsp;y&nbsp;=&nbsp;0</code>,
     where <code class="code">x</code> is the first element of <code class="code">a</code> and <code class="code">y</code> is the first
-    element of <code class="code">b</code><br>
+    element of <code class="code">b</code></li>
+</ul>
 </div>
 
 <pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type">('a -> 'a -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a>) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre><div class="info ">
-Same as <code class="code">compare</code> but returning a <a href="BatOrd.html#TYPEorder"><code class="code"><span class="constructor">BatOrd</span>.order</code></a> instead of an interger.<br>
+<div class="info-desc">
+<p>Same as <code class="code">compare</code> but returning a <a href="BatOrd.html#TYPEorder"><code class="code"><span class="constructor">BatOrd</span>.order</code></a> instead of an interger.</p>
+</div>
 </div>
 
 <pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">('a -> 'a -> bool) -> 'a <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-<code class="code">equal&nbsp;eq&nbsp;a&nbsp;b</code> returns <code class="code"><span class="keyword">true</span></code> when <code class="code">a</code> and <code class="code">b</code> contain
-    the same sequence of elements.<br>
+<div class="info-desc">
+<p><code class="code">equal&nbsp;eq&nbsp;a&nbsp;b</code> returns <code class="code"><span class="keyword">true</span></code> when <code class="code">a</code> and <code class="code">b</code> contain
+    the same sequence of elements.</p>
 </div>
-<br>
-<h6 id="6_Overridemodules">Override modules</h6><br>
-<br>
-The following modules replace functions defined in <a href="BatEnum.html"><code class="code"><span class="constructor">BatEnum</span></code></a> with functions
+</div>
+<h7 id="6_Overridemodules">Override modules</h7><p>The following modules replace functions defined in <a href="BatEnum.html"><code class="code"><span class="constructor">BatEnum</span></code></a> with functions
    behaving slightly differently but having the same name. This is by design:
-   the functions meant to override the corresponding functions of <a href="BatEnum.html"><code class="code"><span class="constructor">BatEnum</span></code></a>.<br>
+   the functions meant to override the corresponding functions of <a href="BatEnum.html"><code class="code"><span class="constructor">BatEnum</span></code></a>.</p>
 
-<pre><span class="keyword">module</span> <a href="BatEnum.Exceptionless.html">Exceptionless</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-Operations on <a href="BatEnum.html"><code class="code"><span class="constructor">BatEnum</span></code></a> without exceptions.
+<pre><span id="MODULEExceptionless"><span class="keyword">module</span> <a href="BatEnum.Exceptionless.html">Exceptionless</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>Operations on <a href="BatEnum.html"><code class="code"><span class="constructor">BatEnum</span></code></a> without exceptions.</p>
+
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatEnum.Labels.html">Labels</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.Labels.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-Operations on <a href="BatEnum.html"><code class="code"><span class="constructor">BatEnum</span></code></a> with labels.
+<pre><span id="MODULELabels"><span class="keyword">module</span> <a href="BatEnum.Labels.html">Labels</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.Labels.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>Operations on <a href="BatEnum.html"><code class="code"><span class="constructor">BatEnum</span></code></a> with labels.</p>
+
 </div>
 </body></html>

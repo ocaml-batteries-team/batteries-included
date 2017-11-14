@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -119,10 +120,7 @@
 </div>
 <h1>Module <a href="type_BatInnerPervasives.html">BatInnerPervasives</a></h1>
 
-<pre><span class="keyword">module</span> BatInnerPervasives: <code class="code"><span class="keyword">sig</span></code> <a href="BatInnerPervasives.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-<h6 id="6_Operators">Operators</h6><br>
-</div>
-<hr width="100%">
+<pre><span id="MODULEBatInnerPervasives"><span class="keyword">module</span> BatInnerPervasives</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatInnerPervasives.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 
 <pre><span id="VALfinally"><span class="keyword">val</span> finally</span> : <code class="type">(unit -> 'a) -> ('b -> 'c) -> 'b -> 'c</code></pre>
 <pre><span id="VALwith_dispose"><span class="keyword">val</span> with_dispose</span> : <code class="type">dispose:('a -> 'b) -> ('a -> 'c) -> 'a -> 'c</code></pre>
@@ -151,9 +149,7 @@
 <pre><span id="VALok"><span class="keyword">val</span> ok</span> : <code class="type">('a, exn) <a href="BatInnerPervasives.html#TYPEresult">result</a> -> 'a</code></pre>
 <pre><span id="VALwrap"><span class="keyword">val</span> wrap</span> : <code class="type">('a -> 'b) -> 'a -> ('b, exn) <a href="BatInnerPervasives.html#TYPEresult">result</a></code></pre>
 <pre><span id="VALforever"><span class="keyword">val</span> forever</span> : <code class="type">('a -> 'b) -> 'a -> unit</code></pre>
-<pre><span id="VALignore_exceptions"><span class="keyword">val</span> ignore_exceptions</span> : <code class="type">('a -> 'b) -> 'a -> unit</code></pre><br>
-<h6 id="6_Operators">Operators</h6><br>
-
+<pre><span id="VALignore_exceptions"><span class="keyword">val</span> ignore_exceptions</span> : <code class="type">('a -> 'b) -> 'a -> unit</code></pre><h7 id="6_Operators">Operators</h7>
 <pre><span id="VAL(|>)"><span class="keyword">val</span> (|&gt;)</span> : <code class="type">'a -> ('a -> 'b) -> 'b</code></pre>
 <pre><span id="VAL(@@)"><span class="keyword">val</span> (@@)</span> : <code class="type">('a -> 'b) -> 'a -> 'b</code></pre>
 <pre><span id="VAL(%>)"><span class="keyword">val</span> (%&gt;)</span> : <code class="type">('a -> 'b) -> ('b -> 'c) -> 'a -> 'c</code></pre>

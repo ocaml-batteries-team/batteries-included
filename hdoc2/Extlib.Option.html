@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -121,127 +122,176 @@
 </div>
 <h1>Module <a href="type_Extlib.Option.html">Extlib.Option</a></h1>
 
-<pre><span class="keyword">module</span> Option: <code class="type"><a href="BatOption.html">BatOption</a></code></pre><hr width="100%">
+<pre><span id="MODULEOption"><span class="keyword">module</span> Option</span>: <code class="type"><a href="BatOption.html">BatOption</a></code></pre><hr width="100%">
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a option</code> </pre>
 
 
 <pre><span id="VALsome"><span class="keyword">val</span> some</span> : <code class="type">'a -> 'a option</code></pre><div class="info ">
-<code class="code">some&nbsp;x</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;x</code>.<br>
-<b>Since</b> 2.2.0<br>
+<div class="info-desc">
+<p><code class="code">some&nbsp;x</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;x</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.2.0</li>
+</ul>
 </div>
 
 <pre><span id="VALmay"><span class="keyword">val</span> may</span> : <code class="type">('a -> unit) -> 'a option -> unit</code></pre><div class="info ">
-<code class="code">may&nbsp;f&nbsp;(<span class="constructor">Some</span>&nbsp;x)</code> calls <code class="code">f&nbsp;x</code> and <code class="code">may&nbsp;f&nbsp;<span class="constructor">None</span></code> does nothing.<br>
+<div class="info-desc">
+<p><code class="code">may&nbsp;f&nbsp;(<span class="constructor">Some</span>&nbsp;x)</code> calls <code class="code">f&nbsp;x</code> and <code class="code">may&nbsp;f&nbsp;<span class="constructor">None</span></code> does nothing.</p>
+</div>
 </div>
 
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> 'a option -> 'b option</code></pre><div class="info ">
-<code class="code">map&nbsp;f&nbsp;(<span class="constructor">Some</span>&nbsp;x)</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;(f&nbsp;x)</code> and <code class="code">map&nbsp;f&nbsp;<span class="constructor">None</span></code> returns <code class="code"><span class="constructor">None</span></code>.<br>
+<div class="info-desc">
+<p><code class="code">map&nbsp;f&nbsp;(<span class="constructor">Some</span>&nbsp;x)</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;(f&nbsp;x)</code> and <code class="code">map&nbsp;f&nbsp;<span class="constructor">None</span></code> returns <code class="code"><span class="constructor">None</span></code>.</p>
+</div>
 </div>
 
 <pre><span id="VALbind"><span class="keyword">val</span> bind</span> : <code class="type">'a option -> ('a -> 'b option) -> 'b option</code></pre><div class="info ">
-<code class="code">bind&nbsp;(<span class="constructor">Some</span>&nbsp;x)&nbsp;f</code> returns <code class="code">f&nbsp;x</code> and <code class="code">bind&nbsp;<span class="constructor">None</span>&nbsp;f</code> returns <code class="code"><span class="constructor">None</span></code>.<br>
+<div class="info-desc">
+<p><code class="code">bind&nbsp;(<span class="constructor">Some</span>&nbsp;x)&nbsp;f</code> returns <code class="code">f&nbsp;x</code> and <code class="code">bind&nbsp;<span class="constructor">None</span>&nbsp;f</code> returns <code class="code"><span class="constructor">None</span></code>.</p>
+</div>
 </div>
 
 <pre><span id="VALapply"><span class="keyword">val</span> apply</span> : <code class="type">('a -> 'a) option -> 'a -> 'a</code></pre><div class="info ">
-<code class="code">apply&nbsp;<span class="constructor">None</span>&nbsp;x</code> returns <code class="code">x</code> and <code class="code">apply&nbsp;(<span class="constructor">Some</span>&nbsp;f)&nbsp;x</code> returns <code class="code">f&nbsp;x</code><br>
+<div class="info-desc">
+<p><code class="code">apply&nbsp;<span class="constructor">None</span>&nbsp;x</code> returns <code class="code">x</code> and <code class="code">apply&nbsp;(<span class="constructor">Some</span>&nbsp;f)&nbsp;x</code> returns <code class="code">f&nbsp;x</code></p>
+</div>
 </div>
 
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('a -> bool) -> 'a option -> 'a option</code></pre><div class="info ">
-<code class="code">filter&nbsp;f&nbsp;<span class="constructor">None</span></code> returns <code class="code"><span class="constructor">None</span></code>, <code class="code">filter&nbsp;f&nbsp;(<span class="constructor">Some</span>&nbsp;x)</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;x</code>
-    if <code class="code">f&nbsp;x</code> is true, and <code class="code"><span class="constructor">None</span></code> otherwise.<br>
+<div class="info-desc">
+<p><code class="code">filter&nbsp;f&nbsp;<span class="constructor">None</span></code> returns <code class="code"><span class="constructor">None</span></code>, <code class="code">filter&nbsp;f&nbsp;(<span class="constructor">Some</span>&nbsp;x)</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;x</code>
+    if <code class="code">f&nbsp;x</code> is true, and <code class="code"><span class="constructor">None</span></code> otherwise.</p>
+</div>
 </div>
 
 <pre><span id="VALdefault"><span class="keyword">val</span> default</span> : <code class="type">'a -> 'a option -> 'a</code></pre><div class="info ">
-<code class="code">default&nbsp;x&nbsp;(<span class="constructor">Some</span>&nbsp;v)</code> returns <code class="code">v</code> and <code class="code">default&nbsp;x&nbsp;<span class="constructor">None</span></code> returns <code class="code">x</code>.<br>
+<div class="info-desc">
+<p><code class="code">default&nbsp;x&nbsp;(<span class="constructor">Some</span>&nbsp;v)</code> returns <code class="code">v</code> and <code class="code">default&nbsp;x&nbsp;<span class="constructor">None</span></code> returns <code class="code">x</code>.</p>
+</div>
 </div>
 
 <pre><span id="VAL(|?)"><span class="keyword">val</span> (|?)</span> : <code class="type">'a option -> 'a -> 'a</code></pre><div class="info ">
-Like <a href="BatOption.html#VALdefault"><code class="code"><span class="constructor">BatOption</span>.default</code></a>, with the arguments reversed.
-    <code class="code"><span class="constructor">None</span>&nbsp;|?&nbsp;10</code> returns <code class="code">10</code>, while <code class="code"><span class="constructor">Some</span>&nbsp;<span class="string">"foo"</span>&nbsp;|?&nbsp;<span class="string">"bar"</span></code> returns <code class="code"><span class="string">"foo"</span></code>.
-<p>
+<div class="info-desc">
+<p>Like <a href="BatOption.html#VALdefault"><code class="code"><span class="constructor">BatOption</span>.default</code></a>, with the arguments reversed.
+    <code class="code"><span class="constructor">None</span>&nbsp;|?&nbsp;10</code> returns <code class="code">10</code>, while <code class="code"><span class="constructor">Some</span>&nbsp;<span class="string">"foo"</span>&nbsp;|?&nbsp;<span class="string">"bar"</span></code> returns <code class="code"><span class="string">"foo"</span></code>.</p>
 
-    <b>Note</b> This operator does not short circuit like <code class="code">(&nbsp;<span class="keywordsign">||</span>&nbsp;)</code> and <code class="code">(&nbsp;<span class="keywordsign">&amp;&amp;</span>&nbsp;)</code>.
-    Both arguments will be evaluated.<br>
-<b>Since</b> 2.0<br>
+<p><b>Note</b> This operator does not short circuit like <code class="code">(&nbsp;<span class="keywordsign">||</span>&nbsp;)</code> and <code class="code">(&nbsp;<span class="keywordsign">&amp;&amp;</span>&nbsp;)</code>.
+    Both arguments will be evaluated.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.0</li>
+</ul>
 </div>
 
 <pre><span id="VALdefault_delayed"><span class="keyword">val</span> default_delayed</span> : <code class="type">(unit -> 'a) -> 'a option -> 'a</code></pre><div class="info ">
-Like <a href="BatOption.html#VALdefault"><code class="code"><span class="constructor">BatOption</span>.default</code></a>, but the default value is passed as a thunk that
-    is only computed if needed.<br>
-<b>Since</b> 2.1<br>
+<div class="info-desc">
+<p>Like <a href="BatOption.html#VALdefault"><code class="code"><span class="constructor">BatOption</span>.default</code></a>, but the default value is passed as a thunk that
+    is only computed if needed.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.1</li>
+</ul>
 </div>
 
 <pre><span id="VALmap_default"><span class="keyword">val</span> map_default</span> : <code class="type">('a -> 'b) -> 'b -> 'a option -> 'b</code></pre><div class="info ">
-<code class="code">map_default&nbsp;f&nbsp;x&nbsp;(<span class="constructor">Some</span>&nbsp;v)</code> returns <code class="code">f&nbsp;v</code> and <code class="code">map_default&nbsp;f&nbsp;x&nbsp;<span class="constructor">None</span></code>
-    returns <code class="code">x</code>.<br>
+<div class="info-desc">
+<p><code class="code">map_default&nbsp;f&nbsp;x&nbsp;(<span class="constructor">Some</span>&nbsp;v)</code> returns <code class="code">f&nbsp;v</code> and <code class="code">map_default&nbsp;f&nbsp;x&nbsp;<span class="constructor">None</span></code>
+    returns <code class="code">x</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALmap_default_delayed"><span class="keyword">val</span> map_default_delayed</span> : <code class="type">('a -> 'b) -> (unit -> 'b) -> 'a option -> 'b</code></pre><div class="info ">
-Like <a href="BatOption.html#VALmap_default"><code class="code"><span class="constructor">BatOption</span>.map_default</code></a>, but the default value is passed as a thunk that
-    is only computed if needed.<br>
-<b>Since</b> 2.1<br>
+<div class="info-desc">
+<p>Like <a href="BatOption.html#VALmap_default"><code class="code"><span class="constructor">BatOption</span>.map_default</code></a>, but the default value is passed as a thunk that
+    is only computed if needed.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.1</li>
+</ul>
 </div>
 
 <pre><span id="VALis_none"><span class="keyword">val</span> is_none</span> : <code class="type">'a option -> bool</code></pre><div class="info ">
-<code class="code">is_none&nbsp;<span class="constructor">None</span></code> returns <code class="code"><span class="keyword">true</span></code> otherwise it returns <code class="code"><span class="keyword">false</span></code>.<br>
+<div class="info-desc">
+<p><code class="code">is_none&nbsp;<span class="constructor">None</span></code> returns <code class="code"><span class="keyword">true</span></code> otherwise it returns <code class="code"><span class="keyword">false</span></code>.</p>
+</div>
 </div>
 
 <pre><span id="VALis_some"><span class="keyword">val</span> is_some</span> : <code class="type">'a option -> bool</code></pre><div class="info ">
-<code class="code">is_some&nbsp;(<span class="constructor">Some</span>&nbsp;x)</code> returns <code class="code"><span class="keyword">true</span></code> otherwise it returns <code class="code"><span class="keyword">false</span></code>.<br>
+<div class="info-desc">
+<p><code class="code">is_some&nbsp;(<span class="constructor">Some</span>&nbsp;x)</code> returns <code class="code"><span class="keyword">true</span></code> otherwise it returns <code class="code"><span class="keyword">false</span></code>.</p>
+</div>
 </div>
 
 <pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a option -> 'a</code></pre><div class="info ">
-<code class="code">get&nbsp;(<span class="constructor">Some</span>&nbsp;x)</code> returns <code class="code">x</code>.<br>
-<b>Raises</b> <code>Invalid_argument</code> on <code class="code">get&nbsp;<span class="constructor">None</span></code>.<br>
+<div class="info-desc">
+<p><code class="code">get&nbsp;(<span class="constructor">Some</span>&nbsp;x)</code> returns <code class="code">x</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Invalid_argument</code> on <code class="code">get&nbsp;<span class="constructor">None</span></code>.</li>
+</ul>
 </div>
 
 <pre><span id="VALget_exn"><span class="keyword">val</span> get_exn</span> : <code class="type">'a option -> exn -> 'a</code></pre><div class="info ">
-<code class="code">get_exn&nbsp;(<span class="constructor">Some</span>&nbsp;x)&nbsp;e</code> returns <code class="code">x</code> and <code class="code">get_exn&nbsp;<span class="constructor">None</span>&nbsp;e</code> raises <code class="code">e</code>.<br>
+<div class="info-desc">
+<p><code class="code">get_exn&nbsp;(<span class="constructor">Some</span>&nbsp;x)&nbsp;e</code> returns <code class="code">x</code> and <code class="code">get_exn&nbsp;<span class="constructor">None</span>&nbsp;e</code> raises <code class="code">e</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">?cmp:('a -> 'a -> int) -> 'a option -> 'a option -> int</code></pre><div class="info ">
-Compare two options, possibly using custom comparators for the
+<div class="info-desc">
+<p>Compare two options, possibly using custom comparators for the
     value.  <code class="code"><span class="constructor">None</span></code> is always assumed to be less than <code class="code"><span class="constructor">Some</span>&nbsp;_</code>.  The
-    parameter <code class="code">cmp</code> defaults to <code class="code"><span class="constructor">Pervasives</span>.compare</code>.<br>
+    parameter <code class="code">cmp</code> defaults to <code class="code"><span class="constructor">Pervasives</span>.compare</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALeq"><span class="keyword">val</span> eq</span> : <code class="type">?eq:('a -> 'a -> bool) -> 'a option -> 'a option -> bool</code></pre><div class="info ">
-Test for equality between option types, possibly using a custom
+<div class="info-desc">
+<p>Test for equality between option types, possibly using a custom
     equality predicate.  The parameter <code class="code">eq</code> defaults to
-    <code class="code"><span class="constructor">Pervasives</span>.(=)</code>.<br>
-<b>Since</b> 1.4.0<br>
+    <code class="code"><span class="constructor">Pervasives</span>.(=)</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 1.4.0</li>
+</ul>
 </div>
 
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a option -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-<code class="code">enum&nbsp;(<span class="constructor">Some</span>&nbsp;x)</code> returns the singleton <code class="code">x</code>, while <code class="code">enum&nbsp;<span class="constructor">None</span></code> returns
-    the empty enumeration.<br>
+<div class="info-desc">
+<p><code class="code">enum&nbsp;(<span class="constructor">Some</span>&nbsp;x)</code> returns the singleton <code class="code">x</code>, while <code class="code">enum&nbsp;<span class="constructor">None</span></code> returns
+    the empty enumeration.</p>
+</div>
 </div>
 
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a option</code></pre><div class="info ">
-<code class="code">of_enum&nbsp;e</code> consumes the first element of <code class="code">e</code>, if it exists, and
-    returns <code class="code"><span class="constructor">Some</span>&nbsp;e</code>. If <code class="code">e</code> is empty, return <code class="code"><span class="constructor">None</span></code>.<br>
+<div class="info-desc">
+<p><code class="code">of_enum&nbsp;e</code> consumes the first element of <code class="code">e</code>, if it exists, and
+    returns <code class="code"><span class="constructor">Some</span>&nbsp;e</code>. If <code class="code">e</code> is empty, return <code class="code"><span class="constructor">None</span></code>.</p>
 </div>
-<br>
-<h6 id="6_TheOptionMonad">The Option Monad</h6><br>
-
-<pre><span class="keyword">module</span> <a href="BatOption.Monad.html">Monad</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatOption.Monad.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-This module provides everything needed to write and execute computations
-    in the Option monad.
 </div>
-<br>
-<h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
+<h7 id="6_TheOptionMonad">The Option Monad</h7>
+<pre><span id="MODULEMonad"><span class="keyword">module</span> <a href="BatOption.Monad.html">Monad</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatOption.Monad.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>This module provides everything needed to write and execute computations
+    in the Option monad.</p>
 
+</div>
+<h7 id="6_Boilerplatecode">Boilerplate code</h7>
 <pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">BatOrd.ord</a> -> 'a option <a href="BatOrd.html#TYPEord">BatOrd.ord</a></code></pre><div class="info ">
-Comparison between optional values<br>
-<b>Since</b> 2.2.0<br>
+<div class="info-desc">
+<p>Comparison between optional values</p>
 </div>
-<br>
-<div class="h7" id="7_Printing">Printing</div><br>
-
+<ul class="info-attributes">
+<li><b>Since</b> 2.2.0</li>
+</ul>
+</div>
+<div class="h8" id="7_Printing">Printing</div>
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatOption.html#TYPEt">t</a> -> unit</code></pre>
-<pre><span class="keyword">module</span> <a href="BatOption.Labels.html">Labels</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatOption.Labels.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-Operations on options, with labels.
+<pre><span id="MODULELabels"><span class="keyword">module</span> <a href="BatOption.Labels.html">Labels</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatOption.Labels.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>Operations on options, with labels.</p>
+
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatOption.Infix.html">Infix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatOption.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>
+<pre><span id="MODULEInfix"><span class="keyword">module</span> <a href="BatOption.Infix.html">Infix</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatOption.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>

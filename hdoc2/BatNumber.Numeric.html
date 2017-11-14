@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -118,8 +119,10 @@
 </div>
 <h1>Module type <a href="type_BatNumber.Numeric.html">BatNumber.Numeric</a></h1>
 
-<pre><span class="keyword">module type</span> Numeric = <code class="code"><span class="keyword">sig</span></code> <a href="BatNumber.Numeric.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info modtype top">
-The full set of operations of a type of numbers<br>
+<pre><span id="MODULETYPENumeric"><span class="keyword">module type</span> Numeric</span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatNumber.Numeric.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info modtype top">
+<div class="info-desc">
+<p>The full set of operations of a type of numbers</p>
+</div>
 </div>
 <hr width="100%">
 
@@ -151,8 +154,8 @@ The full set of operations of a type of numbers<br>
 
 <pre><span id="VALsucc"><span class="keyword">val</span> succ</span> : <code class="type"><a href="BatNumber.Numeric.html#TYPEt">t</a> -> <a href="BatNumber.Numeric.html#TYPEt">t</a></code></pre>
 <pre><span id="VALpred"><span class="keyword">val</span> pred</span> : <code class="type"><a href="BatNumber.Numeric.html#TYPEt">t</a> -> <a href="BatNumber.Numeric.html#TYPEt">t</a></code></pre>
-<pre><span class="keyword">module</span> <a href="BatNumber.Numeric.Infix.html">Infix</a>: <code class="type"><a href="BatNumber.Infix.html">BatNumber.Infix</a></code><code class="type">  with type bat__infix_t = t</code></pre>
-<pre><span class="keyword">module</span> <a href="BatNumber.Numeric.Compare.html">Compare</a>: <code class="type"><a href="BatNumber.Compare.html">BatNumber.Compare</a></code><code class="type">  with type bat__compare_t = t</code></pre>
+<pre><span id="MODULEInfix"><span class="keyword">module</span> <a href="BatNumber.Numeric.Infix.html">Infix</a></span>: <code class="type"><a href="BatNumber.Infix.html">BatNumber.Infix</a></code><code class="type">  with type bat__infix_t = t</code></pre>
+<pre><span id="MODULECompare"><span class="keyword">module</span> <a href="BatNumber.Numeric.Compare.html">Compare</a></span>: <code class="type"><a href="BatNumber.Compare.html">BatNumber.Compare</a></code><code class="type">  with type bat__compare_t = t</code></pre>
 <pre><span class="keyword">include</span> <a href="BatNumber.Numeric.Infix.html">BatNumber.Numeric.Infix</a></pre>
 
 <pre><span class="keyword">include</span> <a href="BatNumber.RefOps.html">BatNumber.RefOps</a></pre>

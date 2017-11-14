@@ -21,6 +21,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -112,10 +113,11 @@
 &nbsp;</div>
 <h1>Index of module types</h1>
 <table>
-<tr><td align="left"><br>B</td></tr>
+<tr><td align="left"><div>B</div></td></tr>
 <tr><td><a href="BatConcurrent.BaseLock.html">BaseLock</a> [<a href="BatConcurrent.html">BatConcurrent</a>]</td>
 <td><div class="info">
-A signature for modules which implement locking.
+<p>A signature for modules which implement locking.</p>
+
 </div>
 </td></tr>
 <tr><td><a href="BatNumber.Bounded.html">Bounded</a> [<a href="BatNumber.html">BatNumber</a>]</td>
@@ -124,111 +126,125 @@ A signature for modules which implement locking.
 <td></td></tr>
 <tr><td><a href="BatBounded.BoundedType.html">BoundedType</a> [<a href="BatBounded.html">BatBounded</a>]</td>
 <td></td></tr>
-<tr><td align="left"><br>C</td></tr>
+<tr><td align="left"><div>C</div></td></tr>
 <tr><td><a href="BatOrd.Comp.html">Comp</a> [<a href="BatOrd.html">BatOrd</a>]</td>
 <td><div class="info">
-We use <code class="code">compare</code> as member name instead of <code class="code">comp</code>, so that the
-    Comp modules can be used as the legacy OrderedType interface.
+<p>We use <code class="code">compare</code> as member name instead of <code class="code">comp</code>, so that the
+    Comp modules can be used as the legacy OrderedType interface.</p>
+
 </div>
 </td></tr>
 <tr><td><a href="BatNumber.Compare.html">Compare</a> [<a href="BatNumber.html">BatNumber</a>]</td>
 <td><div class="info">
-And if you are ready to drop generic comparison operators,
-    then you can open this one as well
+<p>And if you are ready to drop generic comparison operators,
+    then you can open this one as well</p>
+
 </div>
 </td></tr>
 <tr><td><a href="BatLog.Config.html">Config</a> [<a href="BatLog.html">BatLog</a>]</td>
 <td></td></tr>
-<tr><td align="left"><br>D</td></tr>
+<tr><td align="left"><div>D</div></td></tr>
 <tr><td><a href="BatGenlex.Languages.Definition.html">Definition</a> [<a href="BatGenlex.Languages.html">BatGenlex.Languages</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatNumber.Discrete.html">Discrete</a> [<a href="BatNumber.html">BatNumber</a>]</td>
 <td></td></tr>
-<tr><td align="left"><br>E</td></tr>
+<tr><td align="left"><div>E</div></td></tr>
 <tr><td><a href="BatEnum.Enumerable.html">Enumerable</a> [<a href="BatEnum.html">BatEnum</a>]</td>
 <td><div class="info">
-A signature for data structures which may be converted to and from <code class="code">enum</code>.
+<p>A signature for data structures which may be converted to and from <code class="code">enum</code>.</p>
+
 </div>
 </td></tr>
 <tr><td><a href="BatOrd.Eq.html">Eq</a> [<a href="BatOrd.html">BatOrd</a>]</td>
 <td></td></tr>
-<tr><td align="left"><br>H</td></tr>
+<tr><td align="left"><div>H</div></td></tr>
 <tr><td><a href="BatHeap.H.html">H</a> [<a href="BatHeap.html">BatHeap</a>]</td>
 <td><div class="info">
-The result of <a href="BatHeap.Make.html"><code class="code"><span class="constructor">BatHeap</span>.<span class="constructor">Make</span></code></a>
+<p>The result of <a href="BatHeap.Make.html"><code class="code"><span class="constructor">BatHeap</span>.<span class="constructor">Make</span></code></a></p>
+
 </div>
 </td></tr>
 <tr><td><a href="BatHashtbl.HashedType.html">HashedType</a> [<a href="BatHashtbl.html">BatHashtbl</a>]</td>
 <td></td></tr>
-<tr><td align="left"><br>I</td></tr>
+<tr><td align="left"><div>I</div></td></tr>
 <tr><td><a href="BatNumber.Infix.html">Infix</a> [<a href="BatNumber.html">BatNumber</a>]</td>
 <td><div class="info">
-The infix operators available with any type of numbers
+<p>The infix operators available with any type of numbers</p>
+
 </div>
 </td></tr>
-<tr><td align="left"><br>L</td></tr>
+<tr><td align="left"><div>L</div></td></tr>
 <tr><td><a href="BatLog.Level_sig.html">Level_sig</a> [<a href="BatLog.html">BatLog</a>]</td>
 <td><div class="info">
-The details of a level scheme for verbosity-level loggers
+<p>The details of a level scheme for verbosity-level loggers</p>
+
 </div>
 </td></tr>
 <tr><td><a href="BatConcurrent.Lock.html">Lock</a> [<a href="BatConcurrent.html">BatConcurrent</a>]</td>
 <td></td></tr>
-<tr><td align="left"><br>M</td></tr>
+<tr><td align="left"><div>M</div></td></tr>
 <tr><td><a href="BatInterfaces.Mappable.html">Mappable</a> [<a href="BatInterfaces.html">BatInterfaces</a>]</td>
 <td><div class="info">
-A signature for data structures which have a
-    <code class="code">map&nbsp;:&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>a&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b&nbsp;t)</code> operation.
+<p>A signature for data structures which have a
+    <code class="code">map&nbsp;:&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>a&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b&nbsp;t)</code> operation.</p>
+
 </div>
 </td></tr>
 <tr><td><a href="BatInterfaces.Monad.html">Monad</a> [<a href="BatInterfaces.html">BatInterfaces</a>]</td>
 <td><div class="info">
-Signature for monads
+<p>Signature for monads</p>
+
 </div>
 </td></tr>
-<tr><td align="left"><br>N</td></tr>
+<tr><td align="left"><div>N</div></td></tr>
 <tr><td><a href="BatNumber.Numeric.html">Numeric</a> [<a href="BatNumber.html">BatNumber</a>]</td>
 <td><div class="info">
-The full set of operations of a type of numbers
+<p>The full set of operations of a type of numbers</p>
+
 </div>
 </td></tr>
 <tr><td><a href="BatBounded.NumericSig.html">NumericSig</a> [<a href="BatBounded.html">BatBounded</a>]</td>
 <td></td></tr>
-<tr><td align="left"><br>O</td></tr>
+<tr><td align="left"><div>O</div></td></tr>
 <tr><td><a href="BatOrd.Ord.html">Ord</a> [<a href="BatOrd.html">BatOrd</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatSet.OrderedType.html">OrderedType</a> [<a href="BatSet.html">BatSet</a>]</td>
 <td><div class="info">
-Input signature of the functor <code class="code"><span class="constructor">Set</span>.<span class="constructor">Make</span></code>.
+<p>Input signature of the functor <code class="code"><span class="constructor">Set</span>.<span class="constructor">Make</span></code>.</p>
+
 </div>
 </td></tr>
 <tr><td><a href="BatInterfaces.OrderedType.html">OrderedType</a> [<a href="BatInterfaces.html">BatInterfaces</a>]</td>
 <td></td></tr>
-<tr><td align="left"><br>P</td></tr>
+<tr><td align="left"><div>P</div></td></tr>
 <tr><td><a href="BatPathGen.PathType.html">PathType</a> [<a href="BatPathGen.html">BatPathGen</a>]</td>
 <td><div class="info">
-All implementations of <code class="code"><span class="constructor">Path</span></code> functionality have this module type.
+<p>All implementations of <code class="code"><span class="constructor">Path</span></code> functionality have this module type.</p>
+
 </div>
 </td></tr>
-<tr><td align="left"><br>R</td></tr>
+<tr><td align="left"><div>R</div></td></tr>
 <tr><td><a href="BatVect.RANDOMACCESS.html">RANDOMACCESS</a> [<a href="BatVect.html">BatVect</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatNumber.RefOps.html">RefOps</a> [<a href="BatNumber.html">BatNumber</a>]</td>
 <td><div class="info">
-Reference operators ala C.
+<p>Reference operators ala C.</p>
+
 </div>
 </td></tr>
-<tr><td align="left"><br>S</td></tr>
+<tr><td align="left"><div>S</div></td></tr>
 <tr><td><a href="BatSet.S.html">S</a> [<a href="BatSet.html">BatSet</a>]</td>
 <td><div class="info">
-Output signature of the functor <code class="code"><span class="constructor">Set</span>.<span class="constructor">Make</span></code>.
+<p>Output signature of the functor <code class="code"><span class="constructor">Set</span>.<span class="constructor">Make</span></code>.</p>
+
 </div>
 </td></tr>
 <tr><td><a href="BatMap.S.html">S</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatHashtbl.S.html">S</a> [<a href="BatHashtbl.html">BatHashtbl</a>]</td>
 <td><div class="info">
-The output signature of the functor <code class="code"><span class="constructor">Hashtbl</span>.<span class="constructor">Make</span></code>.
+<p>The output signature of the functor <code class="code"><span class="constructor">Hashtbl</span>.<span class="constructor">Make</span></code>.</p>
+
 </div>
 </td></tr>
 <tr><td><a href="BatFingerTree.S.html">S</a> [<a href="BatFingerTree.html">BatFingerTree</a>]</td>
@@ -237,13 +253,15 @@ The output signature of the functor <code class="code"><span class="constructor"
 <td></td></tr>
 <tr><td><a href="BatPathGen.StringType.html">StringType</a> [<a href="BatPathGen.html">BatPathGen</a>]</td>
 <td><div class="info">
-This signature lists few basic operations provided by all string types.
+<p>This signature lists few basic operations provided by all string types.</p>
+
 </div>
 </td></tr>
-<tr><td align="left"><br>T</td></tr>
+<tr><td align="left"><div>T</div></td></tr>
 <tr><td><a href="BatHashcons.Table.html">Table</a> [<a href="BatHashcons.html">BatHashcons</a>]</td>
 <td><div class="info">
-Hashcons tables
+<p>Hashcons tables</p>
+
 </div>
 </td></tr>
 </table>

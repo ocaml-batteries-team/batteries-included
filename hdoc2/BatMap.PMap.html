@@ -24,6 +24,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -118,335 +119,444 @@
 &nbsp;</div>
 <h1>Module <a href="type_BatMap.PMap.html">BatMap.PMap</a></h1>
 
-<pre><span class="keyword">module</span> PMap: <code class="code"><span class="keyword">sig</span></code> <a href="BatMap.PMap.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
-<br>
-<h4 id="4_Polymorphicmaps">Polymorphic maps</h4>
-<p>
+<pre><span id="MODULEPMap"><span class="keyword">module</span> PMap</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatMap.PMap.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
+<h5 id="4_Polymorphicmaps">Polymorphic maps</h5>
+<p>The functions below present the manipulation of polymorphic maps,
+      as were provided by the Extlib PMap module.</p>
 
-      The functions below present the manipulation of polymorphic maps,
-      as were provided by the Extlib PMap module.
-<p>
-
-      They are similar in functionality to the functorized <a href="BatMap.Make.html"><code class="code"><span class="constructor">BatMap</span>.<span class="constructor">Make</span></code></a>
+<p>They are similar in functionality to the functorized <a href="BatMap.Make.html"><code class="code"><span class="constructor">BatMap</span>.<span class="constructor">Make</span></code></a>
       module, but the compiler cannot ensure that maps using different
       key ordering have different types: the responsibility of not
       mixing non-sensical comparison functions together is to the
       programmer. If in doubt, you should rather use the <a href="BatMap.Make.html"><code class="code"><span class="constructor">BatMap</span>.<span class="constructor">Make</span></code></a>
-      functor for additional safety.<br>
+      functor for additional safety.</p>
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b)</code> t</span> </pre>
 
 
 <pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre><div class="info ">
-The empty map, using <code class="code">compare</code> as key comparison function.<br>
+<div class="info-desc">
+<p>The empty map, using <code class="code">compare</code> as key comparison function.</p>
+</div>
 </div>
 
 <pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-returns true if the map is empty.<br>
+<div class="info-desc">
+<p>returns true if the map is empty.</p>
+</div>
 </div>
 
 <pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">('a -> 'a -> int) -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre><div class="info ">
-creates a new empty map, using the provided function for key comparison.<br>
+<div class="info-desc">
+<p>creates a new empty map, using the provided function for key comparison.</p>
+</div>
 </div>
 
 <pre><span id="VALget_cmp"><span class="keyword">val</span> get_cmp</span> : <code class="type">('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> 'a -> 'a -> int</code></pre><div class="info ">
-returns the comparison function of the given map<br>
+<div class="info-desc">
+<p>returns the comparison function of the given map</p>
+</div>
 </div>
 
 <pre><span id="VALsingleton"><span class="keyword">val</span> singleton</span> : <code class="type">?cmp:('a -> 'a -> int) -> 'a -> 'b -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre><div class="info ">
-creates a new map with a single binding<br>
+<div class="info-desc">
+<p>creates a new map with a single binding</p>
+</div>
 </div>
 
 <pre><span id="VALcardinal"><span class="keyword">val</span> cardinal</span> : <code class="type">('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> int</code></pre><div class="info ">
-Return the number of bindings of a map.<br>
+<div class="info-desc">
+<p>Return the number of bindings of a map.</p>
+</div>
 </div>
 
 <pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">'a -> 'b -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">add&nbsp;x&nbsp;y&nbsp;m</code> returns a map containing the same bindings as
+<div class="info-desc">
+<p><code class="code">add&nbsp;x&nbsp;y&nbsp;m</code> returns a map containing the same bindings as
       <code class="code">m</code>, plus a binding of <code class="code">x</code> to <code class="code">y</code>. If <code class="code">x</code> was already bound
-      in <code class="code">m</code>, its previous binding disappears.<br>
+      in <code class="code">m</code>, its previous binding disappears.</p>
+</div>
 </div>
 
 <pre><span id="VALupdate"><span class="keyword">val</span> update</span> : <code class="type">'a -> 'a -> 'b -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">update&nbsp;k1&nbsp;k2&nbsp;v2&nbsp;m</code> replace the previous binding of <code class="code">k1</code> in <code class="code">m</code> by
+<div class="info-desc">
+<p><code class="code">update&nbsp;k1&nbsp;k2&nbsp;v2&nbsp;m</code> replace the previous binding of <code class="code">k1</code> in <code class="code">m</code> by
       <code class="code">k2</code> associated to <code class="code">v2</code>.
       This is equivalent to <code class="code">add&nbsp;k2&nbsp;v2&nbsp;(remove&nbsp;k1)&nbsp;m</code>, but more efficient
-      in the case where <code class="code">k1</code> and <code class="code">k2</code> have the same key ordering.<br>
-<b>Since</b> 2.4.0<br>
-<b>Raises</b> <code>Not_found</code> if <code class="code">k1</code> is not bound in <code class="code">m</code>.<br>
+      in the case where <code class="code">k1</code> and <code class="code">k2</code> have the same key ordering.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.4.0</li>
+<li><b>Raises</b> <code>Not_found</code> if <code class="code">k1</code> is not bound in <code class="code">m</code>.</li>
+</ul>
 </div>
 
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">'a -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> 'b</code></pre><div class="info ">
-<code class="code">find&nbsp;x&nbsp;m</code> returns the current binding of <code class="code">x</code> in <code class="code">m</code>,
-      or raises <code class="code"><span class="constructor">Not_found</span></code> if no such binding exists.<br>
+<div class="info-desc">
+<p><code class="code">find&nbsp;x&nbsp;m</code> returns the current binding of <code class="code">x</code> in <code class="code">m</code>,
+      or raises <code class="code"><span class="constructor">Not_found</span></code> if no such binding exists.</p>
+</div>
 </div>
 
 <pre><span id="VALfind_default"><span class="keyword">val</span> find_default</span> : <code class="type">'b -> 'a -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> 'b</code></pre><div class="info ">
-<code class="code">find_default&nbsp;d&nbsp;x&nbsp;m</code> returns the current binding of <code class="code">x</code> in <code class="code">m</code>,
-      or the default value <code class="code">d</code> if no such binding exists.<br>
+<div class="info-desc">
+<p><code class="code">find_default&nbsp;d&nbsp;x&nbsp;m</code> returns the current binding of <code class="code">x</code> in <code class="code">m</code>,
+      or the default value <code class="code">d</code> if no such binding exists.</p>
+</div>
 </div>
 
 <pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">'a -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">remove&nbsp;x&nbsp;m</code> returns a map containing the same bindings as
-      <code class="code">m</code>, except for <code class="code">x</code> which is unbound in the returned map.<br>
+<div class="info-desc">
+<p><code class="code">remove&nbsp;x&nbsp;m</code> returns a map containing the same bindings as
+      <code class="code">m</code>, except for <code class="code">x</code> which is unbound in the returned map.</p>
+</div>
 </div>
 
 <pre><span id="VALmem"><span class="keyword">val</span> mem</span> : <code class="type">'a -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-<code class="code">mem&nbsp;x&nbsp;m</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">m</code> contains a binding for <code class="code">x</code>,
-      and <code class="code"><span class="keyword">false</span></code> otherwise.<br>
+<div class="info-desc">
+<p><code class="code">mem&nbsp;x&nbsp;m</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">m</code> contains a binding for <code class="code">x</code>,
+      and <code class="code"><span class="keyword">false</span></code> otherwise.</p>
+</div>
 </div>
 
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> 'b -> unit) -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">iter&nbsp;f&nbsp;m</code> applies <code class="code">f</code> to all bindings in map <code class="code">m</code>.
+<div class="info-desc">
+<p><code class="code">iter&nbsp;f&nbsp;m</code> applies <code class="code">f</code> to all bindings in map <code class="code">m</code>.
       <code class="code">f</code> receives the key as first argument, and the associated value
       as second argument. The order in which the bindings are passed to
       <code class="code">f</code> is unspecified. Only current bindings are presented to <code class="code">f</code>:
-      bindings hidden by more recent bindings are not passed to <code class="code">f</code>.<br>
+      bindings hidden by more recent bindings are not passed to <code class="code">f</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('b -> 'c) -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('a, 'c) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">map&nbsp;f&nbsp;m</code> returns a map with same domain as <code class="code">m</code>, where the
+<div class="info-desc">
+<p><code class="code">map&nbsp;f&nbsp;m</code> returns a map with same domain as <code class="code">m</code>, where the
       associated value <code class="code">a</code> of all bindings of <code class="code">m</code> has been
       replaced by the result of the application of <code class="code">f</code> to <code class="code">a</code>.
       The order in which the associated values are passed to <code class="code">f</code>
-      is unspecified.<br>
+      is unspecified.</p>
+</div>
 </div>
 
 <pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">('a -> 'b -> 'c) -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('a, 'c) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre><div class="info ">
-Same as <code class="code">map</code>, but the function receives as arguments both the
-      key and the associated value for each binding of the map.<br>
+<div class="info-desc">
+<p>Same as <code class="code">map</code>, but the function receives as arguments both the
+      key and the associated value for each binding of the map.</p>
+</div>
 </div>
 
 <pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('b -> 'c -> 'c) -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> 'c -> 'c</code></pre><div class="info ">
-<code class="code">fold&nbsp;f&nbsp;m&nbsp;a</code> computes <code class="code">(f&nbsp;kN&nbsp;dN&nbsp;...&nbsp;(f&nbsp;k1&nbsp;d1&nbsp;(f&nbsp;k0&nbsp;d0&nbsp;a))...)</code>,
+<div class="info-desc">
+<p><code class="code">fold&nbsp;f&nbsp;m&nbsp;a</code> computes <code class="code">(f&nbsp;kN&nbsp;dN&nbsp;...&nbsp;(f&nbsp;k1&nbsp;d1&nbsp;(f&nbsp;k0&nbsp;d0&nbsp;a))...)</code>,
       where <code class="code">k0,k1..kN</code> are the keys of all bindings in <code class="code">m</code>,
       and <code class="code">d0,d1..dN</code> are the associated data.
       The order in which the bindings are presented to <code class="code">f</code> is
-      unspecified.<br>
+      unspecified.</p>
+</div>
 </div>
 
 <pre><span id="VALfoldi"><span class="keyword">val</span> foldi</span> : <code class="type">('a -> 'b -> 'c -> 'c) -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> 'c -> 'c</code></pre><div class="info ">
-Same as <code class="code">fold</code>, but the function receives as arguments both the
-      key and the associated value for each binding of the map.<br>
+<div class="info-desc">
+<p>Same as <code class="code">fold</code>, but the function receives as arguments both the
+      key and the associated value for each binding of the map.</p>
+</div>
 </div>
 
 <pre><span id="VALat_rank_exn"><span class="keyword">val</span> at_rank_exn</span> : <code class="type">int -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> 'a * 'b</code></pre><div class="info ">
-<code class="code">at_rank_exn&nbsp;i&nbsp;m</code> returns the <code class="code">(key,value)</code> pair
+<div class="info-desc">
+<p><code class="code">at_rank_exn&nbsp;i&nbsp;m</code> returns the <code class="code">(key,value)</code> pair
       whose key is at rank <code class="code">i</code> in <code class="code">m</code>,
       that is the <code class="code">i</code>-th element in increasing order of the keys
       (the <code class="code">0</code>-th element being the smallest key in <code class="code">m</code> with its
-      associated value).<br>
-<b>Since</b> 2.4<br>
-<b>Raises</b><ul><li><code>Not_found</code> if <code class="code">m&nbsp;=&nbsp;empty</code>.</li>
+      associated value).</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.4</li>
+<li><b>Raises</b><ul><li><code>Not_found</code> if <code class="code">m&nbsp;=&nbsp;empty</code>.</li>
 <li><code>Invalid_argument</code> error_message if <code class="code">i&nbsp;&lt;&nbsp;0&nbsp;<span class="keywordsign">||</span>&nbsp;i&nbsp;&gt;=&nbsp;cardinal&nbsp;m</code></li>
+</ul></li>
 </ul>
 </div>
 
 <pre><span id="VALfilterv"><span class="keyword">val</span> filterv</span> : <code class="type">('a -> bool) -> ('key, 'a) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('key, 'a) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">filterv&nbsp;f&nbsp;m</code> returns a map where only the values <code class="code">a</code> of <code class="code">m</code>
+<div class="info-desc">
+<p><code class="code">filterv&nbsp;f&nbsp;m</code> returns a map where only the values <code class="code">a</code> of <code class="code">m</code>
      such that <code class="code">f&nbsp;a&nbsp;=&nbsp;<span class="keyword">true</span></code> remain. The bindings are passed to <code class="code">f</code>
      in increasing order with respect to the ordering over the
-     type of the keys.<br>
+     type of the keys.</p>
+</div>
 </div>
 
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('key -> 'a -> bool) -> ('key, 'a) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('key, 'a) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">filter&nbsp;f&nbsp;m</code> returns a map where only the (key, value) pairs
+<div class="info-desc">
+<p><code class="code">filter&nbsp;f&nbsp;m</code> returns a map where only the (key, value) pairs
      <code class="code">key</code>, <code class="code">a</code> of <code class="code">m</code> such that <code class="code">f&nbsp;key&nbsp;a&nbsp;=&nbsp;<span class="keyword">true</span></code> remain. The
      bindings are passed to <code class="code">f</code> in increasing order with respect
-     to the ordering over the type of the keys.<br>
+     to the ordering over the type of the keys.</p>
+</div>
 </div>
 
 <pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">('key -> 'a -> 'b option) -><br>       ('key, 'a) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('key, 'b) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">filter_map&nbsp;f&nbsp;m</code> combines the features of <code class="code">filter</code> and
+<div class="info-desc">
+<p><code class="code">filter_map&nbsp;f&nbsp;m</code> combines the features of <code class="code">filter</code> and
       <code class="code">map</code>.  It calls calls <code class="code">f&nbsp;key0&nbsp;a0</code>, <code class="code">f&nbsp;key1&nbsp;a1</code>, <code class="code">f&nbsp;keyn&nbsp;an</code>
       where <code class="code">a0..an</code> are the elements of <code class="code">m</code> and <code class="code">key0..keyn</code> the
       respective corresponding keys. It returns the map of
       pairs <code class="code">keyi</code>,<code class="code">bi</code> such as <code class="code">f&nbsp;keyi&nbsp;ai&nbsp;=&nbsp;<span class="constructor">Some</span>&nbsp;bi</code> (when <code class="code">f</code> returns
-      <code class="code"><span class="constructor">None</span></code>, the corresponding element of <code class="code">m</code> is discarded).<br>
+      <code class="code"><span class="constructor">None</span></code>, the corresponding element of <code class="code">m</code> is discarded).</p>
+</div>
 </div>
 
 <pre><span id="VALchoose"><span class="keyword">val</span> choose</span> : <code class="type">('key, 'a) <a href="BatMap.PMap.html#TYPEt">t</a> -> 'key * 'a</code></pre><div class="info ">
-Return one binding of the given map.
+<div class="info-desc">
+<p>Return one binding of the given map.
       Which binding is chosen is unspecified, but equal bindings will be chosen
-      for equal maps.<br>
-<b>Raises</b> <code>Not_found</code> if the map is empty.<br>
+      for equal maps.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Not_found</code> if the map is empty.</li>
+</ul>
 </div>
 
 <pre><span id="VALany"><span class="keyword">val</span> any</span> : <code class="type">('key, 'a) <a href="BatMap.PMap.html#TYPEt">t</a> -> 'key * 'a</code></pre><div class="info ">
-Return one binding of the given map.
+<div class="info-desc">
+<p>Return one binding of the given map.
       The difference with choose is that there is no guarantee that equals
       elements will be picked for equal sets.
-      This merely returns the quickest binding to get (O(1)).<br>
-<b>Raises</b> <code>Not_found</code> if the map is empty.<br>
+      This merely returns the quickest binding to get (O(1)).</p>
+</div>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Not_found</code> if the map is empty.</li>
+</ul>
 </div>
 
 <pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type">'key -><br>       ('key, 'a) <a href="BatMap.PMap.html#TYPEt">t</a> -><br>       ('key, 'a) <a href="BatMap.PMap.html#TYPEt">t</a> * 'a option * ('key, 'a) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">split&nbsp;x&nbsp;m</code> returns a triple <code class="code">(l,&nbsp;data,&nbsp;r)</code>, where
+<div class="info-desc">
+<p><code class="code">split&nbsp;x&nbsp;m</code> returns a triple <code class="code">(l,&nbsp;data,&nbsp;r)</code>, where
       <code class="code">l</code> is the map with all the bindings of <code class="code">m</code> whose key
       is strictly less than <code class="code">x</code>;
       <code class="code">r</code> is the map with all the bindings of <code class="code">m</code> whose key
       is strictly greater than <code class="code">x</code>;
       <code class="code">data</code> is <code class="code"><span class="constructor">None</span></code> if <code class="code">m</code> contains no binding for <code class="code">x</code>,
-      or <code class="code"><span class="constructor">Some</span>&nbsp;v</code> if <code class="code">m</code> binds <code class="code">v</code> to <code class="code">x</code>.<br>
+      or <code class="code"><span class="constructor">Some</span>&nbsp;v</code> if <code class="code">m</code> binds <code class="code">v</code> to <code class="code">x</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALmin_binding"><span class="keyword">val</span> min_binding</span> : <code class="type">('key, 'a) <a href="BatMap.PMap.html#TYPEt">t</a> -> 'key * 'a</code></pre><div class="info ">
-returns the binding with the smallest key<br>
+<div class="info-desc">
+<p>returns the binding with the smallest key</p>
+</div>
 </div>
 
 <pre><span id="VALpop_min_binding"><span class="keyword">val</span> pop_min_binding</span> : <code class="type">('key, 'a) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('key * 'a) * ('key, 'a) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre><div class="info ">
-return the binding with the smallest key along with the rest of the map<br>
+<div class="info-desc">
+<p>return the binding with the smallest key along with the rest of the map</p>
+</div>
 </div>
 
 <pre><span id="VALmax_binding"><span class="keyword">val</span> max_binding</span> : <code class="type">('key, 'a) <a href="BatMap.PMap.html#TYPEt">t</a> -> 'key * 'a</code></pre><div class="info ">
-returns the binding with the largest key<br>
+<div class="info-desc">
+<p>returns the binding with the largest key</p>
+</div>
 </div>
 
 <pre><span id="VALpop_max_binding"><span class="keyword">val</span> pop_max_binding</span> : <code class="type">('key, 'a) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('key * 'a) * ('key, 'a) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre><div class="info ">
-return the binding with the largest key along with the rest of the map<br>
+<div class="info-desc">
+<p>return the binding with the largest key along with the rest of the map</p>
+</div>
 </div>
 
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-creates an enumeration for this map, enumerating key,value pairs with the keys in increasing order.<br>
+<div class="info-desc">
+<p>creates an enumeration for this map, enumerating key,value pairs with the keys in increasing order.</p>
+</div>
 </div>
 
 <pre><span id="VALbackwards"><span class="keyword">val</span> backwards</span> : <code class="type">('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-creates an enumeration for this map, enumerating key,value pairs with the keys in decreasing order.<br>
+<div class="info-desc">
+<p>creates an enumeration for this map, enumerating key,value pairs with the keys in decreasing order.</p>
+</div>
 </div>
 
 <pre><span id="VALkeys"><span class="keyword">val</span> keys</span> : <code class="type">('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-Return an enumeration of all the keys of a map.<br>
+<div class="info-desc">
+<p>Return an enumeration of all the keys of a map.</p>
+</div>
 </div>
 
 <pre><span id="VALvalues"><span class="keyword">val</span> values</span> : <code class="type">('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-Return an enumeration of al the values of a map.<br>
+<div class="info-desc">
+<p>Return an enumeration of al the values of a map.</p>
+</div>
 </div>
 
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">?cmp:('a -> 'a -> int) -> ('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre><div class="info ">
-creates a map from an enumeration, using the specified function
-      for key comparison or <code class="code">compare</code> by default.<br>
+<div class="info-desc">
+<p>creates a map from an enumeration, using the specified function
+      for key comparison or <code class="code">compare</code> by default.</p>
+</div>
 </div>
 
 <pre><span id="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">('a -> 'b -> bool) -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-Tests whether all key value pairs satisfy some predicate function<br>
+<div class="info-desc">
+<p>Tests whether all key value pairs satisfy some predicate function</p>
+</div>
 </div>
 
 <pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">('a -> 'b -> bool) -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-Tests whether some key value pair satisfies some predicate function<br>
+<div class="info-desc">
+<p>Tests whether some key value pair satisfies some predicate function</p>
+</div>
 </div>
 
 <pre><span id="VALpartition"><span class="keyword">val</span> partition</span> : <code class="type">('a -> 'b -> bool) -><br>       ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> * ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">partition&nbsp;p&nbsp;m</code> returns a pair of maps <code class="code">(m1,&nbsp;m2)</code>, where <code class="code">m1</code>
+<div class="info-desc">
+<p><code class="code">partition&nbsp;p&nbsp;m</code> returns a pair of maps <code class="code">(m1,&nbsp;m2)</code>, where <code class="code">m1</code>
       contains all the bindings of <code class="code">s</code> that satisfy the predicate
       <code class="code">p</code>, and <code class="code">m2</code> is the map with all the bindings of <code class="code">s</code> that do
-      not satisfy <code class="code">p</code>.<br>
+      not satisfy <code class="code">p</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALadd_carry"><span class="keyword">val</span> add_carry</span> : <code class="type">'a -> 'b -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> * 'b option</code></pre><div class="info ">
-<code class="code">add_carry&nbsp;k&nbsp;v&nbsp;m</code> adds the binding <code class="code">(k,v)</code> to <code class="code">m</code>, returning the new map and optionally the previous value bound to <code class="code">k</code>.<br>
+<div class="info-desc">
+<p><code class="code">add_carry&nbsp;k&nbsp;v&nbsp;m</code> adds the binding <code class="code">(k,v)</code> to <code class="code">m</code>, returning the new map and optionally the previous value bound to <code class="code">k</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALmodify"><span class="keyword">val</span> modify</span> : <code class="type">'a -> ('b -> 'b) -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">modify&nbsp;k&nbsp;f&nbsp;m</code> replaces the previous binding for <code class="code">k</code> with <code class="code">f</code>
+<div class="info-desc">
+<p><code class="code">modify&nbsp;k&nbsp;f&nbsp;m</code> replaces the previous binding for <code class="code">k</code> with <code class="code">f</code>
       applied to that value.  If <code class="code">k</code> is unbound in <code class="code">m</code> or <code class="code"><span class="constructor">Not_found</span></code> is
-      raised during the search,  <code class="code"><span class="constructor">Not_found</span></code> is raised.<br>
-<b>Since</b> 1.2.0<br>
-<b>Raises</b> <code>Not_found</code> if <code class="code">k</code> is unbound in <code class="code">m</code> (or <code class="code">f</code> raises <code class="code"><span class="constructor">Not_found</span></code>)<br>
+      raised during the search,  <code class="code"><span class="constructor">Not_found</span></code> is raised.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 1.2.0</li>
+<li><b>Raises</b> <code>Not_found</code> if <code class="code">k</code> is unbound in <code class="code">m</code> (or <code class="code">f</code> raises <code class="code"><span class="constructor">Not_found</span></code>)</li>
+</ul>
 </div>
 
 <pre><span id="VALmodify_def"><span class="keyword">val</span> modify_def</span> : <code class="type">'b -> 'a -> ('b -> 'b) -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">modify_def&nbsp;v0&nbsp;k&nbsp;f&nbsp;m</code> replaces the previous binding for <code class="code">k</code>
+<div class="info-desc">
+<p><code class="code">modify_def&nbsp;v0&nbsp;k&nbsp;f&nbsp;m</code> replaces the previous binding for <code class="code">k</code>
       with <code class="code">f</code> applied to that value. If <code class="code">k</code> is unbound in <code class="code">m</code> or
       <code class="code"><span class="constructor">Not_found</span></code> is raised during the search, <code class="code">f&nbsp;v0</code> is
-      inserted (as if the value found were <code class="code">v0</code>).<br>
-<b>Since</b> 1.3.0<br>
+      inserted (as if the value found were <code class="code">v0</code>).</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 1.3.0</li>
+</ul>
 </div>
 
 <pre><span id="VALmodify_opt"><span class="keyword">val</span> modify_opt</span> : <code class="type">'a -><br>       ('b option -> 'b option) -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">modify_opt&nbsp;k&nbsp;f&nbsp;m</code> allow to modify the binding for <code class="code">k</code> in <code class="code">m</code>
-      or absence thereof.<br>
-<b>Since</b> 2.1<br>
+<div class="info-desc">
+<p><code class="code">modify_opt&nbsp;k&nbsp;f&nbsp;m</code> allow to modify the binding for <code class="code">k</code> in <code class="code">m</code>
+      or absence thereof.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.1</li>
+</ul>
 </div>
 
 <pre><span id="VALextract"><span class="keyword">val</span> extract</span> : <code class="type">'a -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> 'b * ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">extract&nbsp;k&nbsp;m</code> removes the current binding of <code class="code">k</code> from <code class="code">m</code>,
-      returning the value <code class="code">k</code> was bound to and the updated <code class="code">m</code>.<br>
+<div class="info-desc">
+<p><code class="code">extract&nbsp;k&nbsp;m</code> removes the current binding of <code class="code">k</code> from <code class="code">m</code>,
+      returning the value <code class="code">k</code> was bound to and the updated <code class="code">m</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALpop"><span class="keyword">val</span> pop</span> : <code class="type">('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('a * 'b) * ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">pop&nbsp;m</code> returns a binding from <code class="code">m</code> and <code class="code">m</code> without that
-      binding.<br>
+<div class="info-desc">
+<p><code class="code">pop&nbsp;m</code> returns a binding from <code class="code">m</code> and <code class="code">m</code> without that
+      binding.</p>
+</div>
 </div>
 
 <pre><span id="VALunion"><span class="keyword">val</span> union</span> : <code class="type">('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">union&nbsp;m1&nbsp;m2</code> merges two maps, using the comparison function of
+<div class="info-desc">
+<p><code class="code">union&nbsp;m1&nbsp;m2</code> merges two maps, using the comparison function of
       <code class="code">m1</code>. In case of conflicted bindings, <code class="code">m2</code>'s bindings override
       <code class="code">m1</code>'s. Equivalent to <code class="code">foldi&nbsp;add&nbsp;m2&nbsp;m1</code>.
-      The resulting map uses the comparison function of <code class="code">m1</code>.<br>
+      The resulting map uses the comparison function of <code class="code">m1</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALdiff"><span class="keyword">val</span> diff</span> : <code class="type">('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">diff&nbsp;m1&nbsp;m2</code> removes all bindings of keys found in <code class="code">m2</code> from <code class="code">m1</code>,
+<div class="info-desc">
+<p><code class="code">diff&nbsp;m1&nbsp;m2</code> removes all bindings of keys found in <code class="code">m2</code> from <code class="code">m1</code>,
       using the comparison function of <code class="code">m1</code>. Equivalent to
       <code class="code">foldi&nbsp;(<span class="keyword">fun</span>&nbsp;k&nbsp;_v&nbsp;m&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;remove&nbsp;k&nbsp;m)&nbsp;m2&nbsp;m1</code>
-      The resulting map uses the comparison function of <code class="code">m1</code>.<br>
+      The resulting map uses the comparison function of <code class="code">m1</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALintersect"><span class="keyword">val</span> intersect</span> : <code class="type">('b -> 'c -> 'd) -><br>       ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('a, 'c) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('a, 'd) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">intersect&nbsp;merge_f&nbsp;m1&nbsp;m2</code> returns a map with bindings only for
+<div class="info-desc">
+<p><code class="code">intersect&nbsp;merge_f&nbsp;m1&nbsp;m2</code> returns a map with bindings only for
       keys bound in both <code class="code">m1</code> and <code class="code">m2</code>, and with <code class="code">k</code> bound to <code class="code">merge_f<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v1&nbsp;v2</code>, where <code class="code">v1</code> and <code class="code">v2</code> are <code class="code">k</code>'s bindings in <code class="code">m1</code> and <code class="code">m2</code>.
-      The resulting map uses the comparison function of <code class="code">m1</code>.<br>
+      The resulting map uses the comparison function of <code class="code">m1</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALmerge"><span class="keyword">val</span> merge</span> : <code class="type">('key -> 'a option -> 'b option -> 'c option) -><br>       ('key, 'a) <a href="BatMap.PMap.html#TYPEt">t</a> -><br>       ('key, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('key, 'c) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">merge&nbsp;f&nbsp;m1&nbsp;m2</code> computes a map whose keys is a subset of keys of <code class="code">m1</code>
+<div class="info-desc">
+<p><code class="code">merge&nbsp;f&nbsp;m1&nbsp;m2</code> computes a map whose keys is a subset of keys of <code class="code">m1</code>
       and of <code class="code">m2</code>. The presence of each such binding, and the corresponding
       value, is determined with the function <code class="code">f</code>.
-      The resulting map uses the comparison function of <code class="code">m1</code>.<br>
+      The resulting map uses the comparison function of <code class="code">m1</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALmerge_unsafe"><span class="keyword">val</span> merge_unsafe</span> : <code class="type">('key -> 'a option -> 'b option -> 'c option) -><br>       ('key, 'a) <a href="BatMap.PMap.html#TYPEt">t</a> -><br>       ('key, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('key, 'c) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre><div class="info ">
-Same as merge, but assumes the comparison function of both maps
+<div class="info-desc">
+<p>Same as merge, but assumes the comparison function of both maps
       are equal. If it's not the case, the result is a map using the
       comparison function of its first parameter, but which <code class="code"><span class="keywordsign">'</span>b&nbsp;option</code>
-      elements are passed to the function is unspecified.<br>
+      elements are passed to the function is unspecified.</p>
+</div>
 </div>
 
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">('b -> 'b -> int) -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> int</code></pre>
 <pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">('b -> 'b -> bool) -><br>       ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-Construct a comparison or equality function for maps based on a
+<div class="info-desc">
+<p>Construct a comparison or equality function for maps based on a
       value comparison or equality function.  Uses the key comparison
-      function to compare keys<br>
+      function to compare keys</p>
+</div>
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatMap.PMap.Exceptionless.html">Exceptionless</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatMap.PMap.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-Exceptionless versions of functions
+<pre><span id="MODULEExceptionless"><span class="keyword">module</span> <a href="BatMap.PMap.Exceptionless.html">Exceptionless</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatMap.PMap.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>Exceptionless versions of functions</p>
+
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatMap.PMap.Infix.html">Infix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatMap.PMap.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-Infix operators over a <a href="BatMap.PMap.html"><code class="code"><span class="constructor">BatMap</span>.<span class="constructor">PMap</span></code></a>
+<pre><span id="MODULEInfix"><span class="keyword">module</span> <a href="BatMap.PMap.Infix.html">Infix</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatMap.PMap.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>Infix operators over a <a href="BatMap.PMap.html"><code class="code"><span class="constructor">BatMap</span>.<span class="constructor">PMap</span></code></a></p>
+
 </div>
 
 <pre><span id="VAL(-->)"><span class="keyword">val</span> (--&gt;)</span> : <code class="type">('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> 'a -> 'b</code></pre><div class="info ">
-Map find and insert from Infix<br>
+<div class="info-desc">
+<p>Map find and insert from Infix</p>
+</div>
 </div>
 
 <pre><span id="VAL(<--)"><span class="keyword">val</span> (&lt;--)</span> : <code class="type">('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> 'a * 'b -> ('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALbindings"><span class="keyword">val</span> bindings</span> : <code class="type">('key, 'a) <a href="BatMap.PMap.html#TYPEt">t</a> -> ('key * 'a) list</code></pre><div class="info ">
-Return the list of all bindings of the given map.
-      The returned list is sorted in increasing key order.
-<p>
+<div class="info-desc">
+<p>Return the list of all bindings of the given map.
+      The returned list is sorted in increasing key order.</p>
 
-      Added for compatibility with stdlib 3.12<br>
+<p>Added for compatibility with stdlib 3.12</p>
 </div>
-<br>
-<h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
-<br>
-<div class="h7" id="7_Printing">Printing</div><br>
-
+</div>
+<h7 id="6_Boilerplatecode">Boilerplate code</h7><div class="h8" id="7_Printing">Printing</div>
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ?kvsep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'c -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> ('b, 'c) <a href="BatMap.PMap.html#TYPEt">t</a> -> unit</code></pre>
 <pre><span id="VALget_cmp"><span class="keyword">val</span> get_cmp</span> : <code class="type">('a, 'b) <a href="BatMap.PMap.html#TYPEt">t</a> -> 'a -> 'a -> int</code></pre><div class="info ">
-get the comparison function used for a polymorphic map<br>
+<div class="info-desc">
+<p>get the comparison function used for a polymorphic map</p>
+</div>
 </div>
 </body></html>

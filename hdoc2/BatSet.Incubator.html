@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -118,16 +119,21 @@
 </div>
 <h1>Module <a href="type_BatSet.Incubator.html">BatSet.Incubator</a></h1>
 
-<pre><span class="keyword">module</span> Incubator: <code class="code"><span class="keyword">sig</span></code> <a href="BatSet.Incubator.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-<h6 id="6_Incubator">Incubator</h6><br>
+<pre><span id="MODULEIncubator"><span class="keyword">module</span> Incubator</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatSet.Incubator.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<h7 id="6_Incubator">Incubator</h7></div>
 </div>
 <hr width="100%">
 
 <pre><span id="VALop_map"><span class="keyword">val</span> op_map</span> : <code class="type">('a -> 'b) -> 'a <a href="BatSet.html#TYPEt">BatSet.t</a> -> 'b <a href="BatSet.html#TYPEt">BatSet.t</a></code></pre><div class="info ">
-Order Preserving map; as <code class="code">map</code>, but <code class="code">f</code> must be order preserving;
+<div class="info-desc">
+<p>Order Preserving map; as <code class="code">map</code>, but <code class="code">f</code> must be order preserving;
         i.e. if <code class="code">a&nbsp;&lt;&nbsp;b</code> then <code class="code">f&nbsp;a&nbsp;&lt;&nbsp;f&nbsp;b</code>.  This allows the tree structure
         to be maintained internally, resulting in O(n) work instead of O(n
-        log n).<br>
-<b>Since</b> 2.1<br>
+        log n).</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.1</li>
+</ul>
 </div>
 </body></html>

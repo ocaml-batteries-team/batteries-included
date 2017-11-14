@@ -23,6 +23,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -114,72 +115,103 @@
 &nbsp;</div>
 <h1>Module type <a href="type_BatHeap.H.html">BatHeap.H</a></h1>
 
-<pre><span class="keyword">module type</span> H = <code class="code"><span class="keyword">sig</span></code> <a href="BatHeap.H.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info modtype top">
-The result of <a href="BatHeap.Make.html"><code class="code"><span class="constructor">BatHeap</span>.<span class="constructor">Make</span></code></a><br>
+<pre><span id="MODULETYPEH"><span class="keyword">module type</span> H</span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatHeap.H.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info modtype top">
+<div class="info-desc">
+<p>The result of <a href="BatHeap.Make.html"><code class="code"><span class="constructor">BatHeap</span>.<span class="constructor">Make</span></code></a></p>
+</div>
 </div>
 <hr width="100%">
 
 <pre><span id="TYPEelem"><span class="keyword">type</span> <code class="type"></code>elem</span> </pre>
 <div class="info ">
-Type of elements of the heap<br>
+<div class="info-desc">
+<p>Type of elements of the heap</p>
+</div>
 </div>
 
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
 <div class="info ">
-Type of the heap<br>
+<div class="info-desc">
+<p>Type of the heap</p>
+</div>
 </div>
 
 
 <pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a></code></pre><div class="info ">
-See <a href="BatHeap.html#VALempty"><code class="code"><span class="constructor">BatHeap</span>.empty</code></a>.<br>
+<div class="info-desc">
+<p>See <a href="BatHeap.html#VALempty"><code class="code"><span class="constructor">BatHeap</span>.empty</code></a>.</p>
+</div>
 </div>
 
 <pre><span id="VALsize"><span class="keyword">val</span> size</span> : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a> -> int</code></pre><div class="info ">
-See <a href="BatHeap.html#VALsize"><code class="code"><span class="constructor">BatHeap</span>.size</code></a>.<br>
+<div class="info-desc">
+<p>See <a href="BatHeap.html#VALsize"><code class="code"><span class="constructor">BatHeap</span>.size</code></a>.</p>
+</div>
 </div>
 
 <pre><span id="VALinsert"><span class="keyword">val</span> insert</span> : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEelem">elem</a> -> <a href="BatHeap.H.html#TYPEt">t</a></code></pre><div class="info ">
-See <a href="BatHeap.html#VALadd"><code class="code"><span class="constructor">BatHeap</span>.add</code></a>.<br>
+<div class="info-desc">
+<p>See <a href="BatHeap.html#VALadd"><code class="code"><span class="constructor">BatHeap</span>.add</code></a>.</p>
+</div>
 </div>
 
 <pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type"><a href="BatHeap.H.html#TYPEelem">elem</a> -> <a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEt">t</a></code></pre><div class="info ">
-See <a href="BatHeap.html#VALinsert"><code class="code"><span class="constructor">BatHeap</span>.insert</code></a>.<br>
+<div class="info-desc">
+<p>See <a href="BatHeap.html#VALinsert"><code class="code"><span class="constructor">BatHeap</span>.insert</code></a>.</p>
+</div>
 </div>
 
 <pre><span id="VALmerge"><span class="keyword">val</span> merge</span> : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEt">t</a></code></pre><div class="info ">
-See <a href="BatHeap.html#VALmerge"><code class="code"><span class="constructor">BatHeap</span>.merge</code></a>.<br>
+<div class="info-desc">
+<p>See <a href="BatHeap.html#VALmerge"><code class="code"><span class="constructor">BatHeap</span>.merge</code></a>.</p>
+</div>
 </div>
 
 <pre><span id="VALfind_min"><span class="keyword">val</span> find_min</span> : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEelem">elem</a></code></pre><div class="info ">
-See <a href="BatHeap.html#VALfind_min"><code class="code"><span class="constructor">BatHeap</span>.find_min</code></a>.<br>
+<div class="info-desc">
+<p>See <a href="BatHeap.html#VALfind_min"><code class="code"><span class="constructor">BatHeap</span>.find_min</code></a>.</p>
+</div>
 </div>
 
 <pre><span id="VALdel_min"><span class="keyword">val</span> del_min</span> : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEt">t</a></code></pre><div class="info ">
-See <a href="BatHeap.html#VALdel_min"><code class="code"><span class="constructor">BatHeap</span>.del_min</code></a>.<br>
+<div class="info-desc">
+<p>See <a href="BatHeap.html#VALdel_min"><code class="code"><span class="constructor">BatHeap</span>.del_min</code></a>.</p>
+</div>
 </div>
 
 <pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type"><a href="BatHeap.H.html#TYPEelem">elem</a> list -> <a href="BatHeap.H.html#TYPEt">t</a></code></pre><div class="info ">
-See <a href="BatHeap.html#VALof_list"><code class="code"><span class="constructor">BatHeap</span>.of_list</code></a>.<br>
+<div class="info-desc">
+<p>See <a href="BatHeap.html#VALof_list"><code class="code"><span class="constructor">BatHeap</span>.of_list</code></a>.</p>
+</div>
 </div>
 
 <pre><span id="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEelem">elem</a> list</code></pre><div class="info ">
-See <a href="BatHeap.html#VALto_list"><code class="code"><span class="constructor">BatHeap</span>.to_list</code></a>.<br>
+<div class="info-desc">
+<p>See <a href="BatHeap.html#VALto_list"><code class="code"><span class="constructor">BatHeap</span>.to_list</code></a>.</p>
+</div>
 </div>
 
 <pre><span id="VALelems"><span class="keyword">val</span> elems</span> : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEelem">elem</a> list</code></pre><div class="info ">
-<span class="warning">Deprecated.</span>Same as <code class="code">to_list</code>.<br>
+<div class="info-deprecated">
+<span class="warning">Deprecated.</span>Same as <code class="code">to_list</code>.</div>
 </div>
 
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type"><a href="BatHeap.H.html#TYPEelem">elem</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> <a href="BatHeap.H.html#TYPEt">t</a></code></pre><div class="info ">
-See <a href="BatHeap.html#VALof_enum"><code class="code"><span class="constructor">BatHeap</span>.of_enum</code></a>.<br>
+<div class="info-desc">
+<p>See <a href="BatHeap.html#VALof_enum"><code class="code"><span class="constructor">BatHeap</span>.of_enum</code></a>.</p>
+</div>
 </div>
 
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type"><a href="BatHeap.H.html#TYPEt">t</a> -> <a href="BatHeap.H.html#TYPEelem">elem</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-See <a href="BatHeap.html#VALenum"><code class="code"><span class="constructor">BatHeap</span>.enum</code></a>.<br>
+<div class="info-desc">
+<p>See <a href="BatHeap.html#VALenum"><code class="code"><span class="constructor">BatHeap</span>.enum</code></a>.</p>
+</div>
 </div>
 
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       (<a href="BatHeap.H.html#TYPEelem">elem</a>, 'a) <a href="BatIO.html#TYPEprinter">BatIO.printer</a> -> (<a href="BatHeap.H.html#TYPEt">t</a>, 'a) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info ">
-See <a href="BatHeap.html#VALprint"><code class="code"><span class="constructor">BatHeap</span>.print</code></a>.<br>
+<div class="info-desc">
+<p>See <a href="BatHeap.html#VALprint"><code class="code"><span class="constructor">BatHeap</span>.print</code></a>.</p>
+</div>
 </div>
 </body></html>

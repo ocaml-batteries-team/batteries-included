@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -118,41 +119,47 @@
 </div>
 <h1>Module <a href="type_Batteries.Return.html">Batteries.Return</a></h1>
 
-<pre><span class="keyword">module</span> Return: <code class="type"><a href="BatReturn.html">BatReturn</a></code></pre><hr width="100%">
+<pre><span id="MODULEReturn"><span class="keyword">module</span> Return</span>: <code class="type"><a href="BatReturn.html">BatReturn</a></code></pre><hr width="100%">
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
 <div class="info ">
-A label which may be used to return values of type <code class="code"><span class="keywordsign">'</span>a</code><br>
+<div class="info-desc">
+<p>A label which may be used to return values of type <code class="code"><span class="keywordsign">'</span>a</code></p>
+</div>
 </div>
 
 
 <pre><span id="VALlabel"><span class="keyword">val</span> label</span> : <code class="type">('a <a href="BatReturn.html#TYPEt">t</a> -> 'a) -> 'a</code></pre><div class="info ">
-<code class="code">label&nbsp;f</code> creates a new label <code class="code">x</code> and invokes
+<div class="info-desc">
+<p><code class="code">label&nbsp;f</code> creates a new label <code class="code">x</code> and invokes
     <code class="code">f&nbsp;x</code>. If, during the execution of <code class="code">f</code>, <code class="code">return&nbsp;x&nbsp;v</code>
     is invoked, the execution of <code class="code">f&nbsp;x</code> stops
     immediately and <code class="code">label&nbsp;f</code> returns <code class="code">v</code>.
     Otherwise, if <code class="code">f&nbsp;x</code> terminates normally and
-    returns <code class="code">y</code>, <code class="code">label&nbsp;f</code> returns <code class="code">y</code>.
-<p>
+    returns <code class="code">y</code>, <code class="code">label&nbsp;f</code> returns <code class="code">y</code>.</p>
 
-    Calling <code class="code">return&nbsp;x&nbsp;v</code> from outside scope <code class="code">f</code>
+<p>Calling <code class="code">return&nbsp;x&nbsp;v</code> from outside scope <code class="code">f</code>
     is a run-time error and causes termination
-    of the program.<br>
+    of the program.</p>
+</div>
 </div>
 
 <pre><span id="VALwith_label"><span class="keyword">val</span> with_label</span> : <code class="type">('a <a href="BatReturn.html#TYPEt">t</a> -> 'a) -> 'a</code></pre><div class="info ">
-as <code class="code">label</code><br>
+<div class="info-desc">
+<p>as <code class="code">label</code></p>
+</div>
 </div>
 
 <pre><span id="VALreturn"><span class="keyword">val</span> return</span> : <code class="type">'a <a href="BatReturn.html#TYPEt">t</a> -> 'a -> 'b</code></pre><div class="info ">
-Return to a label. <code class="code">return&nbsp;l&nbsp;v</code> returns
+<div class="info-desc">
+<p>Return to a label. <code class="code">return&nbsp;l&nbsp;v</code> returns
       to the point where label <code class="code">l</code> was obtained
-      and produces value <code class="code">l</code>.
-<p>
+      and produces value <code class="code">l</code>.</p>
 
-      Calling <code class="code">return&nbsp;l&nbsp;v</code> from outside the scope
+<p>Calling <code class="code">return&nbsp;l&nbsp;v</code> from outside the scope
       of <code class="code">l</code> (i.e. the call to function <code class="code">label</code>
       which produced <code class="code">l</code>) is a run-time error
-      and causes termination of the program.<br>
+      and causes termination of the program.</p>
+</div>
 </div>
 </body></html>

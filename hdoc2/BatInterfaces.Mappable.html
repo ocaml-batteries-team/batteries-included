@@ -24,6 +24,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -116,23 +117,28 @@
 </div>
 <h1>Module type <a href="type_BatInterfaces.Mappable.html">BatInterfaces.Mappable</a></h1>
 
-<pre><span class="keyword">module type</span> Mappable = <code class="code"><span class="keyword">sig</span></code> <a href="BatInterfaces.Mappable.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info modtype top">
-A signature for data structures which have a
-    <code class="code">map&nbsp;:&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>a&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b&nbsp;t)</code> operation.
-<p>
+<pre><span id="MODULETYPEMappable"><span class="keyword">module type</span> Mappable</span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatInterfaces.Mappable.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info modtype top">
+<div class="info-desc">
+<p>A signature for data structures which have a
+    <code class="code">map&nbsp;:&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>a&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b&nbsp;t)</code> operation.</p>
 
-    If you create a new data structure, you should make it compatible
-    with <code class="code"><span class="constructor">Mappable</span></code>.<br>
+<p>If you create a new data structure, you should make it compatible
+    with <code class="code"><span class="constructor">Mappable</span></code>.</p>
+</div>
 </div>
 <hr width="100%">
 
 <pre><span id="TYPEmappable"><span class="keyword">type</span> <code class="type">'a</code> mappable</span> </pre>
 <div class="info ">
-The data structure, e.g. <code class="code"><span class="keywordsign">'</span>a&nbsp;<span class="constructor">List</span>.t</code><br>
+<div class="info-desc">
+<p>The data structure, e.g. <code class="code"><span class="keywordsign">'</span>a&nbsp;<span class="constructor">List</span>.t</code></p>
+</div>
 </div>
 
 
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -><br>       'a <a href="BatInterfaces.Mappable.html#TYPEmappable">mappable</a> -> 'b <a href="BatInterfaces.Mappable.html#TYPEmappable">mappable</a></code></pre><div class="info ">
-<code class="code">map&nbsp;f&nbsp;e</code> applies <code class="code">f</code> to every element of <code class="code">e</code> and returns the corresponding data structure<br>
+<div class="info-desc">
+<p><code class="code">map&nbsp;f&nbsp;e</code> applies <code class="code">f</code> to every element of <code class="code">e</code> and returns the corresponding data structure</p>
+</div>
 </div>
 </body></html>

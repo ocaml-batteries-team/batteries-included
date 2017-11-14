@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -120,86 +121,109 @@
 </div>
 <h1>Module <a href="type_BatInnerWeaktbl.html">BatInnerWeaktbl</a></h1>
 
-<pre><span class="keyword">module</span> BatInnerWeaktbl: <code class="code"><span class="keyword">sig</span></code> <a href="BatInnerWeaktbl.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Weak hash table library for OCaml, with an interface compatible with
-    the standard Hashtbl module.<br>
+<pre><span id="MODULEBatInnerWeaktbl"><span class="keyword">module</span> BatInnerWeaktbl</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatInnerWeaktbl.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Weak hash table library for OCaml, with an interface compatible with
+    the standard Hashtbl module.</p>
+</div>
 </div>
 <hr width="100%">
-<br>
-<h6 id="6_Genericinterface">Generic interface</h6><br>
-
+<h7 id="6_Genericinterface">Generic interface</h7>
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b)</code> t</span> </pre>
 <div class="info ">
-The type of hash tables from type <code class="code"><span class="keywordsign">'</span>a</code> to type <code class="code"><span class="keywordsign">'</span>b</code>.<br>
+<div class="info-desc">
+<p>The type of hash tables from type <code class="code"><span class="keywordsign">'</span>a</code> to type <code class="code"><span class="keywordsign">'</span>b</code>.</p>
+</div>
 </div>
 
 
 <pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -> ('a, 'b) <a href="BatInnerWeaktbl.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code"><span class="constructor">Weaktbl</span>.create&nbsp;n</code> creates a new, empty hash table, with
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Weaktbl</span>.create&nbsp;n</code> creates a new, empty hash table, with
     initial size <code class="code">n</code>.  For best results, <code class="code">n</code> should be on the
     order of the expected number of elements that will be in
     the table.  The table grows as needed, so <code class="code">n</code> is just an
-    initial guess.<br>
+    initial guess.</p>
+</div>
 </div>
 
 <pre><span id="VALclear"><span class="keyword">val</span> clear</span> : <code class="type">('a, 'b) <a href="BatInnerWeaktbl.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-Empty a hash table.<br>
+<div class="info-desc">
+<p>Empty a hash table.</p>
+</div>
 </div>
 
 <pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">('a, 'b) <a href="BatInnerWeaktbl.html#TYPEt">t</a> -> 'a -> 'b -> unit</code></pre><div class="info ">
-<code class="code"><span class="constructor">Weaktbl</span>.add&nbsp;tbl&nbsp;x&nbsp;y</code> adds a binding of <code class="code">x</code> to <code class="code">y</code> in table <code class="code">tbl</code>.
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Weaktbl</span>.add&nbsp;tbl&nbsp;x&nbsp;y</code> adds a binding of <code class="code">x</code> to <code class="code">y</code> in table <code class="code">tbl</code>.
     Previous bindings for <code class="code">x</code> are not removed, but simply
     hidden. That is, after performing <code class="code"><span class="constructor">Weaktbl</span>.remove</code><code class="code">&nbsp;tbl&nbsp;x</code>,
     the previous binding for <code class="code">x</code>, if any, is restored.
-    (Same behavior as with association lists.)<br>
+    (Same behavior as with association lists.)</p>
+</div>
 </div>
 
 <pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">('a, 'b) <a href="BatInnerWeaktbl.html#TYPEt">t</a> -> ('a, 'b) <a href="BatInnerWeaktbl.html#TYPEt">t</a></code></pre><div class="info ">
-Return a copy of the given hashtable.<br>
+<div class="info-desc">
+<p>Return a copy of the given hashtable.</p>
+</div>
 </div>
 
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('a, 'b) <a href="BatInnerWeaktbl.html#TYPEt">t</a> -> 'a -> 'b</code></pre><div class="info ">
-<code class="code"><span class="constructor">Weaktbl</span>.find&nbsp;tbl&nbsp;x</code> returns the current binding of <code class="code">x</code> in <code class="code">tbl</code>,
-    or raises <code class="code"><span class="constructor">Not_found</span></code> if no such binding exists.<br>
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Weaktbl</span>.find&nbsp;tbl&nbsp;x</code> returns the current binding of <code class="code">x</code> in <code class="code">tbl</code>,
+    or raises <code class="code"><span class="constructor">Not_found</span></code> if no such binding exists.</p>
+</div>
 </div>
 
 <pre><span id="VALfind_all"><span class="keyword">val</span> find_all</span> : <code class="type">('a, 'b) <a href="BatInnerWeaktbl.html#TYPEt">t</a> -> 'a -> 'b list</code></pre><div class="info ">
-<code class="code"><span class="constructor">Weaktbl</span>.find_all&nbsp;tbl&nbsp;x</code> returns the list of all data
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Weaktbl</span>.find_all&nbsp;tbl&nbsp;x</code> returns the list of all data
     associated with <code class="code">x</code> in <code class="code">tbl</code>.
     The current binding is returned first, then the previous
-    bindings, in reverse order of introduction in the table.<br>
+    bindings, in reverse order of introduction in the table.</p>
+</div>
 </div>
 
 <pre><span id="VALmem"><span class="keyword">val</span> mem</span> : <code class="type">('a, 'b) <a href="BatInnerWeaktbl.html#TYPEt">t</a> -> 'a -> bool</code></pre><div class="info ">
-<code class="code"><span class="constructor">Weaktbl</span>.mem&nbsp;tbl&nbsp;x</code> checks if <code class="code">x</code> is bound in <code class="code">tbl</code>.<br>
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Weaktbl</span>.mem&nbsp;tbl&nbsp;x</code> checks if <code class="code">x</code> is bound in <code class="code">tbl</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">('a, 'b) <a href="BatInnerWeaktbl.html#TYPEt">t</a> -> 'a -> unit</code></pre><div class="info ">
-<code class="code"><span class="constructor">Weaktbl</span>.remove&nbsp;tbl&nbsp;x</code> removes the current binding of <code class="code">x</code> in <code class="code">tbl</code>,
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Weaktbl</span>.remove&nbsp;tbl&nbsp;x</code> removes the current binding of <code class="code">x</code> in <code class="code">tbl</code>,
     restoring the previous binding if it exists.
-    It does nothing if <code class="code">x</code> is not bound in <code class="code">tbl</code>.<br>
+    It does nothing if <code class="code">x</code> is not bound in <code class="code">tbl</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALreplace"><span class="keyword">val</span> replace</span> : <code class="type">('a, 'b) <a href="BatInnerWeaktbl.html#TYPEt">t</a> -> 'a -> 'b -> unit</code></pre><div class="info ">
-<code class="code"><span class="constructor">Weaktbl</span>.replace&nbsp;tbl&nbsp;x&nbsp;y</code> replaces the current binding of <code class="code">x</code>
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Weaktbl</span>.replace&nbsp;tbl&nbsp;x&nbsp;y</code> replaces the current binding of <code class="code">x</code>
     in <code class="code">tbl</code> by a binding of <code class="code">x</code> to <code class="code">y</code>.  If <code class="code">x</code> is unbound in <code class="code">tbl</code>,
     a binding of <code class="code">x</code> to <code class="code">y</code> is added to <code class="code">tbl</code>.
     This is functionally equivalent to <code class="code"><span class="constructor">Weaktbl</span>.remove</code><code class="code">&nbsp;tbl&nbsp;x</code>
-    followed by <code class="code"><span class="constructor">Weaktbl</span>.add</code><code class="code">&nbsp;tbl&nbsp;x&nbsp;y</code>.<br>
+    followed by <code class="code"><span class="constructor">Weaktbl</span>.add</code><code class="code">&nbsp;tbl&nbsp;x&nbsp;y</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> 'b -> unit) -> ('a, 'b) <a href="BatInnerWeaktbl.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code"><span class="constructor">Weaktbl</span>.iter&nbsp;f&nbsp;tbl</code> applies <code class="code">f</code> to all bindings in table <code class="code">tbl</code>.
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Weaktbl</span>.iter&nbsp;f&nbsp;tbl</code> applies <code class="code">f</code> to all bindings in table <code class="code">tbl</code>.
     <code class="code">f</code> receives the key as first argument, and the associated value
     as second argument. Each binding is presented exactly once to <code class="code">f</code>.
     The order in which the bindings are passed to <code class="code">f</code> is unspecified.
     However, if the table contains several bindings for the same key,
     they are passed to <code class="code">f</code> in reverse order of introduction, that is,
-    the most recent binding is passed first.<br>
+    the most recent binding is passed first.</p>
+</div>
 </div>
 
 <pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -> 'b -> 'c -> 'c) -> ('a, 'b) <a href="BatInnerWeaktbl.html#TYPEt">t</a> -> 'c -> 'c</code></pre><div class="info ">
-<code class="code"><span class="constructor">Weaktbl</span>.fold&nbsp;f&nbsp;tbl&nbsp;init</code> computes
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Weaktbl</span>.fold&nbsp;f&nbsp;tbl&nbsp;init</code> computes
     <code class="code">(f&nbsp;kN&nbsp;dN&nbsp;...&nbsp;(f&nbsp;k1&nbsp;d1&nbsp;init)...)</code>,
     where <code class="code">k1&nbsp;...&nbsp;kN</code> are the keys of all bindings in <code class="code">tbl</code>,
     and <code class="code">d1&nbsp;...&nbsp;dN</code> are the associated values.
@@ -207,18 +231,20 @@ Return a copy of the given hashtable.<br>
     The order in which the bindings are passed to <code class="code">f</code> is unspecified.
     However, if the table contains several bindings for the same key,
     they are passed to <code class="code">f</code> in reverse order of introduction, that is,
-    the most recent binding is passed first.<br>
+    the most recent binding is passed first.</p>
+</div>
 </div>
 
 <pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type">('a, 'b) <a href="BatInnerWeaktbl.html#TYPEt">t</a> -> int</code></pre><div class="info ">
-<code class="code"><span class="constructor">Weaktbl</span>.length&nbsp;tbl</code> returns the number of bindings in <code class="code">tbl</code>.
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Weaktbl</span>.length&nbsp;tbl</code> returns the number of bindings in <code class="code">tbl</code>.
     Multiple bindings are counted multiply, so <code class="code"><span class="constructor">Weaktbl</span>.length</code>
-    gives the number of times <code class="code"><span class="constructor">Weaktbl</span>.iter</code> calls its first argument.<br>
+    gives the number of times <code class="code"><span class="constructor">Weaktbl</span>.iter</code> calls its first argument.</p>
 </div>
-<br>
-<h6 id="6_Functorialinterface">Functorial interface</h6><br>
+</div>
+<h7 id="6_Functorialinterface">Functorial interface</h7>
+<pre><span id="MODULEMake"><span class="keyword">module</span> <a href="BatInnerWeaktbl.Make.html">Make</a></span>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">H</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type">Hashtbl.HashedType</code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type">Hashtbl.S</code><code class="type">  with type key = H.t</code></div></pre><div class="info">
+<p>Functor building an implementation of the hashtable structure.</p>
 
-<pre><span class="keyword">module</span> <a href="BatInnerWeaktbl.Make.html">Make</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">H</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type">Hashtbl.HashedType</code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type">Hashtbl.S</code><code class="type">  with type key = H.t</code></div></pre><div class="info">
-Functor building an implementation of the hashtable structure.
 </div>
 </body></html>

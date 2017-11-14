@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -118,7 +119,7 @@
 </div>
 <h1>Module <a href="type_Batteries.Cache.html">Batteries.Cache</a></h1>
 
-<pre><span class="keyword">module</span> Cache: <code class="type"><a href="BatCache.html">BatCache</a></code></pre><hr width="100%">
+<pre><span id="MODULECache"><span class="keyword">module</span> Cache</span>: <code class="type"><a href="BatCache.html">BatCache</a></code></pre><hr width="100%">
 
 <pre><code><span id="TYPEmanual_cache"><span class="keyword">type</span> <code class="type">('a, 'b)</code> manual_cache</span> = {</code></pre><table class="typetable">
 <tr>
@@ -147,31 +148,35 @@
 
 
 <pre><span id="VALmake_ht"><span class="keyword">val</span> make_ht</span> : <code class="type">gen:('a -> 'b) -> init_size:int -> ('a, 'b) <a href="BatCache.html#TYPEmanual_cache">manual_cache</a></code></pre><div class="info ">
-Make a manual cache backed by a hashtable.  The generating
+<div class="info-desc">
+<p>Make a manual cache backed by a hashtable.  The generating
     function is passed with <code class="code">~gen</code> and the initial size of the
     hashtable is <code class="code">~init_size</code>. The hashtable uses the polymorphic
-    <code class="code">hash</code> and <code class="code">(=)</code>.<br>
+    <code class="code">hash</code> and <code class="code">(=)</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALmake_map"><span class="keyword">val</span> make_map</span> : <code class="type">gen:('a -> 'b) -> ('a, 'b) <a href="BatCache.html#TYPEmanual_cache">manual_cache</a></code></pre><div class="info ">
-Make a manual cache for function <code class="code">~gen</code> backed by a Set.t.  This
+<div class="info-desc">
+<p>Make a manual cache for function <code class="code">~gen</code> backed by a Set.t.  This
     set uses the polymorphic <code class="code">(&lt;)</code> for comparison, so <code class="code"><span class="keywordsign">'</span>a</code> should be
-    properly comparable by it.<br>
+    properly comparable by it.</p>
+</div>
 </div>
 
 <pre><span id="TYPEauto_cache"><span class="keyword">type</span> <code class="type">('a, 'b)</code> auto_cache</span> = <code class="type">'a -> 'b</code> </pre>
 <div class="info ">
-Automatically managed caches
-<p>
+<div class="info-desc">
+<p>Automatically managed caches</p>
 
-    This type of cache is more transparent than the <code class="code">!manual_cache</code>
+<p>This type of cache is more transparent than the <code class="code">!manual_cache</code>
     above.  It does not provide inspection of the caching structure,
     but guarantees bounded memory usage through some policy of
-    discarding some entries.
-<p>
+    discarding some entries.</p>
 
-    Each auto-cache can have a different policy to decide which entry
-    to discard.<br>
+<p>Each auto-cache can have a different policy to decide which entry
+    to discard.</p>
+</div>
 </div>
 
 

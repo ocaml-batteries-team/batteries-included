@@ -24,6 +24,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -116,28 +117,38 @@
 &nbsp;</div>
 <h1>Module <a href="type_BatHashcons.H.html">BatHashcons.H</a></h1>
 
-<pre><span class="keyword">module</span> H: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashcons.H.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Hashing utilities<br>
+<pre><span id="MODULEH"><span class="keyword">module</span> H</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashcons.H.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Hashing utilities</p>
+</div>
 </div>
 <hr width="100%">
 
 <pre><span id="VALhc0_"><span class="keyword">val</span> hc0_</span> : <code class="type">int -> int</code></pre><div class="info ">
-<code class="code">hc0_&nbsp;h</code> corresponds to the hashcode of a first constructor
-      applied to an object of hashcode <code class="code">h</code><br>
+<div class="info-desc">
+<p><code class="code">hc0_&nbsp;h</code> corresponds to the hashcode of a first constructor
+      applied to an object of hashcode <code class="code">h</code></p>
+</div>
 </div>
 
 <pre><span id="VALhc0"><span class="keyword">val</span> hc0</span> : <code class="type">'a <a href="BatHashcons.html#TYPEhobj">BatHashcons.hobj</a> -> int</code></pre><div class="info ">
-<code class="code">hc0&nbsp;ho</code> is the hashcode of a first constructor applied to the
-      hashed object <code class="code">ho</code><br>
+<div class="info-desc">
+<p><code class="code">hc0&nbsp;ho</code> is the hashcode of a first constructor applied to the
+      hashed object <code class="code">ho</code></p>
+</div>
 </div>
 
 <pre><span id="VALhc1_"><span class="keyword">val</span> hc1_</span> : <code class="type">int -> int -> int</code></pre><div class="info ">
-<code class="code">hc1_&nbsp;h&nbsp;k</code> corresponds to the hashcode of the <code class="code">k</code>th
-      constructor applied to an object of hashcode <code class="code">h</code>.<br>
+<div class="info-desc">
+<p><code class="code">hc1_&nbsp;h&nbsp;k</code> corresponds to the hashcode of the <code class="code">k</code>th
+      constructor applied to an object of hashcode <code class="code">h</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALhc1"><span class="keyword">val</span> hc1</span> : <code class="type">'a <a href="BatHashcons.html#TYPEhobj">BatHashcons.hobj</a> -> int -> int</code></pre><div class="info ">
-<code class="code">hc1&nbsp;ho&nbsp;k</code> corresponds to the hashcode of the <code class="code">k</code>th
-        constructor applied to the hashed object <code class="code">ho</code>.<br>
+<div class="info-desc">
+<p><code class="code">hc1&nbsp;ho&nbsp;k</code> corresponds to the hashcode of the <code class="code">k</code>th
+        constructor applied to the hashed object <code class="code">ho</code>.</p>
+</div>
 </div>
 </body></html>

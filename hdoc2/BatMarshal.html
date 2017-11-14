@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -119,19 +120,18 @@
 </div>
 <h1>Module <a href="type_BatMarshal.html">BatMarshal</a></h1>
 
-<pre><span class="keyword">module</span> BatMarshal: <code class="code"><span class="keyword">sig</span></code> <a href="BatMarshal.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Marshaling of data structures.
-<p>
+<pre><span id="MODULEBatMarshal"><span class="keyword">module</span> BatMarshal</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatMarshal.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Marshaling of data structures.</p>
 
-    This module provides functions to encode arbitrary data structures
+<p>This module provides functions to encode arbitrary data structures
     as sequences of bytes, which can then be written on a file or
     sent over a pipe or network connection.  The bytes can then
     be read back later, possibly in another process, and decoded back
     into a data structure. The format for the byte sequences
-    is compatible across all machines for a given version of OCaml.
-<p>
+    is compatible across all machines for a given version of OCaml.</p>
 
-    Warning: marshaling is currently not type-safe. The type
+<p>Warning: marshaling is currently not type-safe. The type
     of marshaled data is not transmitted along the value of the data,
     making it impossible to check that the data read back possesses the
     type expected by the context. In particular, the result type of
@@ -139,21 +139,24 @@ Marshaling of data structures.
     misleading: the returned OCaml value does not possess type <code class="code"><span class="keywordsign">'</span>a</code>
     for all <code class="code"><span class="keywordsign">'</span>a</code>; it has one, unique type which cannot be determined
     at compile-type.  The programmer should explicitly give the expected
-    type of the returned value, using the following syntax:<ul>
+    type of the returned value, using the following syntax:</p>
+<ul>
 <li><code class="code">(<span class="constructor">Marshal</span>.from_channel&nbsp;chan&nbsp;:&nbsp;<span class="keyword">type</span>)</code>.
     Anything can happen at run-time if the object in the file does not
     belong to the given type.</li>
 </ul>
-
-    The representation of marshaled values is not human-readable, and
+<p>The representation of marshaled values is not human-readable, and
     uses bytes that are not printable characters. Therefore, input and
     output channels used in conjunction with <code class="code"><span class="constructor">Marshal</span>.output</code> and
     <code class="code"><span class="constructor">Marshal</span>.input</code> must be opened in binary mode, using e.g.
     <a href="BatPervasives.html#VALopen_out_bin"><code class="code"><span class="constructor">BatPervasives</span>.open_out_bin</code></a> or
     <a href="BatPervasives.html#VALopen_in_bin"><code class="code"><span class="constructor">BatPervasives</span>.open_in_bin</code></a>; channels opened in text
     mode will cause unmarshaling errors on platforms where text
-    channels behave differently than binary channels, e.g. Windows.<br>
-<b>Author(s):</b> Xavier Leroy (base module), David Teller<br>
+    channels behave differently than binary channels, e.g. Windows.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Author(s):</b> Xavier Leroy (base module), David Teller</li>
+</ul>
 </div>
 <hr width="100%">
 
@@ -164,7 +167,9 @@ Marshaling of data structures.
 <td align="left" valign="top" >
 <code><span id="TYPEELTextern_flags.No_sharing"><span class="constructor">No_sharing</span></span></code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Don't preserve sharing<br>
+<div class="info-desc">
+<p>Don't preserve sharing</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -174,7 +179,9 @@ Don't preserve sharing<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTextern_flags.Closures"><span class="constructor">Closures</span></span></code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Send function closures<br>
+<div class="info-desc">
+<p>Send function closures</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -184,18 +191,24 @@ Send function closures<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTextern_flags.Compat_32"><span class="constructor">Compat_32</span></span></code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Ensure 32-bit compatibility<br>
+<div class="info-desc">
+<p>Ensure 32-bit compatibility</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 
 <div class="info ">
-The flags to the <code class="code"><span class="constructor">Marshal</span>.to_*</code> functions below.<br>
+<div class="info-desc">
+<p>The flags to the <code class="code"><span class="constructor">Marshal</span>.to_*</code> functions below.</p>
+</div>
 </div>
 
 
 <pre><span id="VALoutput"><span class="keyword">val</span> output</span> : <code class="type">'b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> ?sharing:bool -> ?closures:bool -> 'a -> unit</code></pre><div class="info ">
-<code class="code">output&nbsp;out&nbsp;v</code> writes the representation of <code class="code">v</code> on <code class="code">chan</code>.<br>
+<div class="info-desc">
+<p><code class="code">output&nbsp;out&nbsp;v</code> writes the representation of <code class="code">v</code> on <code class="code">chan</code>.</p>
+</div>
 </div>
 <div class="param_info"><code class="code">sharing</code> : If <code class="code"><span class="keyword">true</span></code> (default value), circularities
     and sharing inside the value <code class="code">v</code> are detected and preserved
@@ -219,51 +232,68 @@ The flags to the <code class="code"><span class="constructor">Marshal</span>.to_
     along with the code position.)</div>
 
 <pre><span id="VALto_bytes"><span class="keyword">val</span> to_bytes</span> : <code class="type">'a -> <a href="BatMarshal.html#TYPEextern_flags">extern_flags</a> list -> Bytes.t</code></pre><div class="info ">
-<code class="code"><span class="constructor">Marshal</span>.to_bytes&nbsp;v&nbsp;flags</code> returns a byte sequence containing
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Marshal</span>.to_bytes&nbsp;v&nbsp;flags</code> returns a byte sequence containing
    the representation of <code class="code">v</code>.
    The <code class="code">flags</code> argument has the same meaning as for
-   <code class="code"><span class="constructor">Marshal</span>.output</code>.<br>
-<b>Since</b> 2.3.0<br>
+   <code class="code"><span class="constructor">Marshal</span>.output</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.3.0</li>
+</ul>
 </div>
 
 <pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">'a -> <a href="BatMarshal.html#TYPEextern_flags">extern_flags</a> list -> string</code></pre><div class="info ">
-Same as <code class="code">to_bytes</code> but return the result as a string instead of
-    a byte sequence.<br>
+<div class="info-desc">
+<p>Same as <code class="code">to_bytes</code> but return the result as a string instead of
+    a byte sequence.</p>
+</div>
 </div>
 
 <pre><span id="VALto_buffer"><span class="keyword">val</span> to_buffer</span> : <code class="type">Bytes.t -> int -> int -> 'a -> <a href="BatMarshal.html#TYPEextern_flags">extern_flags</a> list -> int</code></pre><div class="info ">
-<code class="code"><span class="constructor">Marshal</span>.to_buffer&nbsp;buff&nbsp;ofs&nbsp;len&nbsp;v&nbsp;flags</code> marshals the value <code class="code">v</code>,
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Marshal</span>.to_buffer&nbsp;buff&nbsp;ofs&nbsp;len&nbsp;v&nbsp;flags</code> marshals the value <code class="code">v</code>,
    storing its byte representation in the sequence <code class="code">buff</code>,
    starting at index <code class="code">ofs</code>, and writing at most
    <code class="code">len</code> bytes.  It returns the number of bytes
    actually written to the sequence. If the byte representation
    of <code class="code">v</code> does not fit in <code class="code">len</code> characters, the exception <code class="code"><span class="constructor">Failure</span></code>
-   is raised.<br>
+   is raised.</p>
+</div>
 </div>
 
 <pre><span id="VALinput"><span class="keyword">val</span> input</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> 'a</code></pre><div class="info ">
-<code class="code">input&nbsp;inp</code> reads from <code class="code">inp</code> the
+<div class="info-desc">
+<p><code class="code">input&nbsp;inp</code> reads from <code class="code">inp</code> the
     byte representation of a structured value, as produced by
     one of the <code class="code"><span class="constructor">Marshal</span>.to_*</code> functions, and reconstructs and
-    returns the corresponding value.<br>
+    returns the corresponding value.</p>
+</div>
 </div>
 
 <pre><span id="VALfrom_bytes"><span class="keyword">val</span> from_bytes</span> : <code class="type">Bytes.t -> int -> 'a</code></pre><div class="info ">
-<code class="code"><span class="constructor">Marshal</span>.from_bytes&nbsp;buff&nbsp;ofs</code> unmarshals a structured value
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Marshal</span>.from_bytes&nbsp;buff&nbsp;ofs</code> unmarshals a structured value
    like <code class="code"><span class="constructor">Marshal</span>.from_channel</code> does, except that the byte
    representation is not read from a channel, but taken from
    the byte sequence <code class="code">buff</code>, starting at position <code class="code">ofs</code>.
-   The byte sequence is not mutated.<br>
-<b>Since</b> 2.3.0<br>
+   The byte sequence is not mutated.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.3.0</li>
+</ul>
 </div>
 
 <pre><span id="VALfrom_string"><span class="keyword">val</span> from_string</span> : <code class="type">string -> int -> 'a</code></pre><div class="info ">
-Same as <code class="code">from_bytes</code> but take a string as argument instead of a
-    byte sequence.<br>
+<div class="info-desc">
+<p>Same as <code class="code">from_bytes</code> but take a string as argument instead of a
+    byte sequence.</p>
+</div>
 </div>
 
 <pre><span id="VALheader_size"><span class="keyword">val</span> header_size</span> : <code class="type">int</code></pre><div class="info ">
-The bytes representing a marshaled value are composed of
+<div class="info-desc">
+<p>The bytes representing a marshaled value are composed of
    a fixed-size header and a variable-sized data part,
    whose size can be determined from the header.
    <code class="code"><span class="constructor">Marshal</span>.header_size</code> is the size, in bytes, of the header.
@@ -273,34 +303,38 @@ The bytes representing a marshaled value are composed of
    Finally, <code class="code"><span class="constructor">Marshal</span>.total_size</code> <code class="code">buff&nbsp;ofs</code> is the total size,
    in bytes, of the marshaled value.
    Both <code class="code"><span class="constructor">Marshal</span>.data_size</code> and <code class="code"><span class="constructor">Marshal</span>.total_size</code> raise <code class="code"><span class="constructor">Failure</span></code>
-   if <code class="code">buff</code>, <code class="code">ofs</code> does not contain a valid header.
-<p>
+   if <code class="code">buff</code>, <code class="code">ofs</code> does not contain a valid header.</p>
 
-   To read the byte representation of a marshaled value into
+<p>To read the byte representation of a marshaled value into
    a byte sequence, the program needs to read first
    <code class="code"><span class="constructor">Marshal</span>.header_size</code> bytes into the sequence,
    then determine the length of the remainder of the
    representation using <code class="code"><span class="constructor">Marshal</span>.data_size</code>,
    make sure the sequence is large enough to hold the remaining
    data, then read it, and finally call <code class="code"><span class="constructor">Marshal</span>.from_bytes</code>
-   to unmarshal the value.<br>
+   to unmarshal the value.</p>
+</div>
 </div>
 
 <pre><span id="VALdata_size"><span class="keyword">val</span> data_size</span> : <code class="type">Bytes.t -> int -> int</code></pre><div class="info ">
-See <code class="code"><span class="constructor">Marshal</span>.header_size</code>.<br>
+<div class="info-desc">
+<p>See <code class="code"><span class="constructor">Marshal</span>.header_size</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALtotal_size"><span class="keyword">val</span> total_size</span> : <code class="type">Bytes.t -> int -> int</code></pre><div class="info ">
-See <code class="code"><span class="constructor">Marshal</span>.header_size</code>.<br>
+<div class="info-desc">
+<p>See <code class="code"><span class="constructor">Marshal</span>.header_size</code>.</p>
 </div>
-<br>
-<h6 id="6_Deprecated">Deprecated</h6><br>
-
+</div>
+<h7 id="6_Deprecated">Deprecated</h7>
 <pre><span id="VALto_channel"><span class="keyword">val</span> to_channel</span> : <code class="type">'b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'a -> <a href="BatMarshal.html#TYPEextern_flags">extern_flags</a> list -> unit</code></pre><div class="info ">
-<span class="warning">Deprecated.</span>Use <a href="BatMarshal.html#VALoutput"><code class="code"><span class="constructor">BatMarshal</span>.output</code></a> instead<br>
+<div class="info-deprecated">
+<span class="warning">Deprecated.</span>Use <a href="BatMarshal.html#VALoutput"><code class="code"><span class="constructor">BatMarshal</span>.output</code></a> instead</div>
 </div>
 
 <pre><span id="VALfrom_channel"><span class="keyword">val</span> from_channel</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> 'a</code></pre><div class="info ">
-<span class="warning">Deprecated.</span>Use <a href="BatMarshal.html#VALinput"><code class="code"><span class="constructor">BatMarshal</span>.input</code></a> instead<br>
+<div class="info-deprecated">
+<span class="warning">Deprecated.</span>Use <a href="BatMarshal.html#VALinput"><code class="code"><span class="constructor">BatMarshal</span>.input</code></a> instead</div>
 </div>
 </body></html>

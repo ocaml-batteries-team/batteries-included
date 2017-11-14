@@ -23,6 +23,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -114,48 +115,62 @@
 &nbsp;</div>
 <h1>Module <a href="type_BatPrintexc.Slot.html">BatPrintexc.Slot</a></h1>
 
-<pre><span class="keyword">module</span> Slot: <code class="code"><span class="keyword">sig</span></code> <a href="BatPrintexc.Slot.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
+<pre><span id="MODULESlot"><span class="keyword">module</span> Slot</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatPrintexc.Slot.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type"><a href="BatPrintexc.html#TYPEbacktrace_slot">BatPrintexc.backtrace_slot</a></code> </pre>
 
 
 <pre><span id="VALis_raise"><span class="keyword">val</span> is_raise</span> : <code class="type"><a href="BatPrintexc.Slot.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-<code class="code">is_raise&nbsp;slot</code> is <code class="code"><span class="keyword">true</span></code> when <code class="code">slot</code> refers to a raising
+<div class="info-desc">
+<p><code class="code">is_raise&nbsp;slot</code> is <code class="code"><span class="keyword">true</span></code> when <code class="code">slot</code> refers to a raising
       point in the code, and <code class="code"><span class="keyword">false</span></code> when it comes from a simple
-      function call.<br>
-<b>Since</b> 2.3.0 and OCaml 4.02<br>
+      function call.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.3.0 and OCaml 4.02</li>
+</ul>
 </div>
 
 <pre><span id="VALis_inline"><span class="keyword">val</span> is_inline</span> : <code class="type"><a href="BatPrintexc.Slot.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-<code class="code">is_inline&nbsp;slot</code> is <code class="code"><span class="keyword">true</span></code> when <code class="code">slot</code> refers to a call
+<div class="info-desc">
+<p><code class="code">is_inline&nbsp;slot</code> is <code class="code"><span class="keyword">true</span></code> when <code class="code">slot</code> refers to a call
       that got inlined by the compiler, and <code class="code"><span class="keyword">false</span></code> when it comes from
-      any other context.<br>
-<b>Since</b> 4.04.0<br>
+      any other context.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 4.04.0</li>
+</ul>
 </div>
 
 <pre><span id="VALlocation"><span class="keyword">val</span> location</span> : <code class="type"><a href="BatPrintexc.Slot.html#TYPEt">t</a> -> <a href="BatPrintexc.html#TYPElocation">BatPrintexc.location</a> option</code></pre><div class="info ">
-<code class="code">location&nbsp;slot</code> returns the location information of the slot,
-      if available, and <code class="code"><span class="constructor">None</span></code> otherwise.
-<p>
+<div class="info-desc">
+<p><code class="code">location&nbsp;slot</code> returns the location information of the slot,
+      if available, and <code class="code"><span class="constructor">None</span></code> otherwise.</p>
 
-      Some possible reasons for failing to return a location are as follow:<ul>
+<p>Some possible reasons for failing to return a location are as follow:</p>
+<ul>
 <li>the slot corresponds to a compiler-inserted raise</li>
 <li>the slot corresponds to a part of the program that has not been
       compiled with debug information (<code class="code">-g</code>)</li>
 </ul>
-<br>
-<b>Since</b> 2.3.0 and OCaml 4.02<br>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.3.0 and OCaml 4.02</li>
+</ul>
 </div>
 
 <pre><span id="VALformat"><span class="keyword">val</span> format</span> : <code class="type">int -> <a href="BatPrintexc.Slot.html#TYPEt">t</a> -> string option</code></pre><div class="info ">
-<code class="code">format&nbsp;pos&nbsp;slot</code> returns the string representation of <code class="code">slot</code> as
+<div class="info-desc">
+<p><code class="code">format&nbsp;pos&nbsp;slot</code> returns the string representation of <code class="code">slot</code> as
       <code class="code">raw_backtrace_to_string</code> would format it, assuming it is the
       <code class="code">pos</code>-th element of the backtrace: the <code class="code">0</code>-th element is
-      pretty-printed differently than the others.
-<p>
+      pretty-printed differently than the others.</p>
 
-      Whole-backtrace printing functions also skip some uninformative
-      slots; in that case, <code class="code">format&nbsp;pos&nbsp;slot</code> returns <code class="code"><span class="constructor">None</span></code>.<br>
-<b>Since</b> 2.3.0 and OCaml 4.02<br>
+<p>Whole-backtrace printing functions also skip some uninformative
+      slots; in that case, <code class="code">format&nbsp;pos&nbsp;slot</code> returns <code class="code"><span class="constructor">None</span></code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.3.0 and OCaml 4.02</li>
+</ul>
 </div>
 </body></html>

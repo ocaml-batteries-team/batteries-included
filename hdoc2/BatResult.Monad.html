@@ -24,6 +24,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -116,22 +117,29 @@
 </div>
 <h1>Module <a href="type_BatResult.Monad.html">BatResult.Monad</a></h1>
 
-<pre><span class="keyword">module</span> Monad: <code class="code"><span class="keyword">sig</span></code> <a href="BatResult.Monad.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
+<pre><span id="MODULEMonad"><span class="keyword">module</span> Monad</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatResult.Monad.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 
 <pre><span id="VALbind"><span class="keyword">val</span> bind</span> : <code class="type">('a, 'b) <a href="BatResult.html#TYPEt">BatResult.t</a> -> ('a -> ('c, 'b) <a href="BatResult.html#TYPEt">BatResult.t</a>) -> ('c, 'b) <a href="BatResult.html#TYPEt">BatResult.t</a></code></pre><div class="info ">
-Monadic composition.
-<p>
+<div class="info-desc">
+<p>Monadic composition.</p>
 
-      <code class="code">bind&nbsp;r&nbsp;f</code> proceeds as <code class="code">f&nbsp;x</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;x</code>, or returns <code class="code">r</code> if
-      <code class="code">r</code> is an error.<br>
-<b>Since</b> 2.0<br>
+<p><code class="code">bind&nbsp;r&nbsp;f</code> proceeds as <code class="code">f&nbsp;x</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;x</code>, or returns <code class="code">r</code> if
+      <code class="code">r</code> is an error.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.0</li>
+</ul>
 </div>
 
 <pre><span id="VAL(>>=)"><span class="keyword">val</span> (&gt;&gt;=)</span> : <code class="type">('a, 'b) <a href="BatResult.html#TYPEt">BatResult.t</a> -> ('a -> ('c, 'b) <a href="BatResult.html#TYPEt">BatResult.t</a>) -> ('c, 'b) <a href="BatResult.html#TYPEt">BatResult.t</a></code></pre><div class="info ">
-as <code class="code">bind</code><br>
+<div class="info-desc">
+<p>as <code class="code">bind</code></p>
+</div>
 </div>
 
 <pre><span id="VALreturn"><span class="keyword">val</span> return</span> : <code class="type">'a -> ('a, 'b) <a href="BatResult.html#TYPEt">BatResult.t</a></code></pre><div class="info ">
-Monadic return, just encapsulates the given value with Ok<br>
+<div class="info-desc">
+<p>Monadic return, just encapsulates the given value with Ok</p>
+</div>
 </div>
 </body></html>

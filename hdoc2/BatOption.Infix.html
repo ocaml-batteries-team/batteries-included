@@ -24,6 +24,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -116,14 +117,18 @@
 &nbsp;</div>
 <h1>Module <a href="type_BatOption.Infix.html">BatOption.Infix</a></h1>
 
-<pre><span class="keyword">module</span> Infix: <code class="code"><span class="keyword">sig</span></code> <a href="BatOption.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
+<pre><span id="MODULEInfix"><span class="keyword">module</span> Infix</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatOption.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 
 <pre><span id="VAL(|?)"><span class="keyword">val</span> (|?)</span> : <code class="type">'a option -> 'a -> 'a</code></pre><div class="info ">
-Like <a href="BatOption.html#VALdefault"><code class="code"><span class="constructor">BatOption</span>.default</code></a>, with the arguments reversed.
-        <code class="code"><span class="constructor">None</span>&nbsp;|?&nbsp;10</code> returns <code class="code">10</code>, while <code class="code"><span class="constructor">Some</span>&nbsp;<span class="string">"foo"</span>&nbsp;|?&nbsp;<span class="string">"bar"</span></code> returns <code class="code"><span class="string">"foo"</span></code>.<br>
+<div class="info-desc">
+<p>Like <a href="BatOption.html#VALdefault"><code class="code"><span class="constructor">BatOption</span>.default</code></a>, with the arguments reversed.
+        <code class="code"><span class="constructor">None</span>&nbsp;|?&nbsp;10</code> returns <code class="code">10</code>, while <code class="code"><span class="constructor">Some</span>&nbsp;<span class="string">"foo"</span>&nbsp;|?&nbsp;<span class="string">"bar"</span></code> returns <code class="code"><span class="string">"foo"</span></code>.</p>
+</div>
 </div>
 
 <pre><span id="VAL(>>=)"><span class="keyword">val</span> (&gt;&gt;=)</span> : <code class="type">'a option -> ('a -> 'b option) -> 'b option</code></pre><div class="info ">
-as <code class="code"><span class="constructor">Monad</span>.bind</code><br>
+<div class="info-desc">
+<p>as <code class="code"><span class="constructor">Monad</span>.bind</code></p>
+</div>
 </div>
 </body></html>

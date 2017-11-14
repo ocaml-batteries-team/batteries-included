@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -120,28 +121,36 @@
 </div>
 <h1>Module <a href="type_Batteries.Bool.html">Batteries.Bool</a></h1>
 
-<pre><span class="keyword">module</span> Bool: <code class="type"><a href="BatBool.html">BatBool</a></code></pre><hr width="100%">
+<pre><span id="MODULEBool"><span class="keyword">module</span> Bool</span>: <code class="type"><a href="BatBool.html">BatBool</a></code></pre><hr width="100%">
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">bool</code> </pre>
 <div class="info ">
-The type of booleans. Formally, this is defined as <code class="code"><span class="keyword">type</span>&nbsp;t&nbsp;=&nbsp;<span class="keyword">true</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keyword">false</span></code><br>
+<div class="info-desc">
+<p>The type of booleans. Formally, this is defined as <code class="code"><span class="keyword">type</span>&nbsp;t&nbsp;=&nbsp;<span class="keyword">true</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keyword">false</span></code></p>
+</div>
 </div>
 
 
 <pre><span id="VALnot"><span class="keyword">val</span> not</span> : <code class="type">bool -> bool</code></pre><div class="info ">
-The boolean negation.<br>
+<div class="info-desc">
+<p>The boolean negation.</p>
+</div>
 </div>
 
 <pre><span id="VAL(&&)"><span class="keyword">val</span> (&amp;&amp;)</span> : <code class="type">bool -> bool -> bool</code></pre><div class="info ">
-The boolean ``and''. Evaluation is sequential, left-to-right:
+<div class="info-desc">
+<p>The boolean ``and''. Evaluation is sequential, left-to-right:
     in <code class="code">e1&nbsp;<span class="keywordsign">&amp;&amp;</span>&nbsp;e2</code>, <code class="code">e1</code> is evaluated first, and if it returns <code class="code"><span class="keyword">false</span></code>,
-    <code class="code">e2</code> is not evaluated at all.<br>
+    <code class="code">e2</code> is not evaluated at all.</p>
+</div>
 </div>
 
 <pre><span id="VAL(||)"><span class="keyword">val</span> (||)</span> : <code class="type">bool -> bool -> bool</code></pre><div class="info ">
-The boolean ``or''. Evaluation is sequential, left-to-right:
+<div class="info-desc">
+<p>The boolean ``or''. Evaluation is sequential, left-to-right:
     in <code class="code">e1&nbsp;<span class="keywordsign">||</span>&nbsp;e2</code>, <code class="code">e1</code> is evaluated first, and if it returns <code class="code"><span class="keyword">true</span></code>,
-    <code class="code">e2</code> is not evaluated at all.<br>
+    <code class="code">e2</code> is not evaluated at all.</p>
+</div>
 </div>
 
 <pre><span id="VALzero"><span class="keyword">val</span> zero</span> : <code class="type">bool</code></pre>
@@ -162,19 +171,27 @@ The boolean ``or''. Evaluation is sequential, left-to-right:
 <pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">bool -> bool -> bool</code></pre>
 <pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type">bool -> bool -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre>
 <pre><span id="VALof_int"><span class="keyword">val</span> of_int</span> : <code class="type">int -> bool</code></pre><div class="info ">
-anything but <code class="code">0</code> is <code class="code"><span class="keyword">true</span></code><br>
+<div class="info-desc">
+<p>anything but <code class="code">0</code> is <code class="code"><span class="keyword">true</span></code></p>
+</div>
 </div>
 
 <pre><span id="VALto_int"><span class="keyword">val</span> to_int</span> : <code class="type">bool -> int</code></pre>
 <pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -> bool</code></pre><div class="info ">
-Convert the given string to a boolean.<br>
-<b>Raises</b> <code>Invalid_argument</code> if the string is not
-    <code class="code"><span class="string">"true"</span></code>, <code class="code"><span class="string">"false"</span></code>, <code class="code"><span class="string">"0"</span></code>, <code class="code"><span class="string">"1"</span></code>, <code class="code"><span class="string">"tt"</span></code> or <code class="code"><span class="string">"ff"</span></code>.<br>
+<div class="info-desc">
+<p>Convert the given string to a boolean.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Invalid_argument</code> if the string is not
+    <code class="code"><span class="string">"true"</span></code>, <code class="code"><span class="string">"false"</span></code>, <code class="code"><span class="string">"0"</span></code>, <code class="code"><span class="string">"1"</span></code>, <code class="code"><span class="string">"tt"</span></code> or <code class="code"><span class="string">"ff"</span></code>.</li>
+</ul>
 </div>
 
 <pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">bool -> string</code></pre>
 <pre><span id="VALof_float"><span class="keyword">val</span> of_float</span> : <code class="type">float -> bool</code></pre><div class="info ">
-<code class="code">0.</code>, <code class="code">nan</code> <code class="code">+infinity</code> and <code class="code">-infiity</code> are <code class="code"><span class="keyword">false</span></code>. The other values convert to <code class="code"><span class="keyword">true</span></code><br>
+<div class="info-desc">
+<p><code class="code">0.</code>, <code class="code">nan</code> <code class="code">+infinity</code> and <code class="code">-infiity</code> are <code class="code"><span class="keyword">false</span></code>. The other values convert to <code class="code"><span class="keyword">true</span></code></p>
+</div>
 </div>
 
 <pre><span id="VALto_float"><span class="keyword">val</span> to_float</span> : <code class="type">bool -> float</code></pre>
@@ -185,14 +202,11 @@ Convert the given string to a boolean.<br>
 <pre><span id="VAL( ** )"><span class="keyword">val</span> ( ** )</span> : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a></code></pre>
 <pre><span id="VAL(--)"><span class="keyword">val</span> (--)</span> : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
 <pre><span id="VAL(---)"><span class="keyword">val</span> (---)</span> : <code class="type"><a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> -> <a href="BatBool.html#TYPEt">t</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
-<pre><span id="VALoperations"><span class="keyword">val</span> operations</span> : <code class="type"><a href="BatBool.html#TYPEt">t</a> <a href="BatNumber.html#TYPEnumeric">BatNumber.numeric</a></code></pre><br>
-<h6 id="6_Submodulesgroupingallinfixoperators">Submodules grouping all infix operators</h6><br>
-
-<pre><span class="keyword">module</span> <a href="BatBool.Infix.html">Infix</a>: <code class="type"><a href="BatNumber.Infix.html">BatNumber.Infix</a></code><code class="type">  with type bat__infix_t = t</code></pre>
-<pre><span class="keyword">module</span> <a href="BatBool.Compare.html">Compare</a>: <code class="type"><a href="BatNumber.Compare.html">BatNumber.Compare</a></code><code class="type">  with type bat__compare_t = t</code></pre><br>
-<h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
-
+<pre><span id="VALoperations"><span class="keyword">val</span> operations</span> : <code class="type"><a href="BatBool.html#TYPEt">t</a> <a href="BatNumber.html#TYPEnumeric">BatNumber.numeric</a></code></pre><h7 id="6_Submodulesgroupingallinfixoperators">Submodules grouping all infix operators</h7>
+<pre><span id="MODULEInfix"><span class="keyword">module</span> <a href="BatBool.Infix.html">Infix</a></span>: <code class="type"><a href="BatNumber.Infix.html">BatNumber.Infix</a></code><code class="type">  with type bat__infix_t = t</code></pre>
+<pre><span id="MODULECompare"><span class="keyword">module</span> <a href="BatBool.Compare.html">Compare</a></span>: <code class="type"><a href="BatNumber.Compare.html">BatNumber.Compare</a></code><code class="type">  with type bat__compare_t = t</code></pre><h7 id="6_Boilerplatecode">Boilerplate code</h7>
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatBool.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<div class="h7" id="7_Printing">Printing</div><br>
+<div class="info-desc">
+<div class="h8" id="7_Printing">Printing</div></div>
 </div>
 </body></html>

@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -118,19 +119,22 @@
 </div>
 <h1>Module <a href="type_BatEnum.Exceptionless.html">BatEnum.Exceptionless</a></h1>
 
-<pre><span class="keyword">module</span> Exceptionless: <code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Operations on <a href="BatEnum.html"><code class="code"><span class="constructor">BatEnum</span></code></a> without exceptions.<br>
+<pre><span id="MODULEExceptionless"><span class="keyword">module</span> Exceptionless</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatEnum.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Operations on <a href="BatEnum.html"><code class="code"><span class="constructor">BatEnum</span></code></a> without exceptions.</p>
+</div>
 </div>
 <hr width="100%">
 
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('a -> bool) -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a option</code></pre><div class="info ">
-<code class="code">find&nbsp;f&nbsp;e</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;x</code> where <code class="code">x</code> is the first element <code class="code">x</code> of <code class="code">e</code>
+<div class="info-desc">
+<p><code class="code">find&nbsp;f&nbsp;e</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;x</code> where <code class="code">x</code> is the first element <code class="code">x</code> of <code class="code">e</code>
         such that <code class="code">f&nbsp;x</code> returns <code class="code"><span class="keyword">true</span></code>, consuming the enumeration up to and
         including the found element, or <code class="code"><span class="constructor">None</span></code> if no such element exists
-        in the enumeration, consuming the whole enumeration in the search.
-<p>
+        in the enumeration, consuming the whole enumeration in the search.</p>
 
-        Since <code class="code">find</code> consumes a prefix of the enumeration, it can be used several
-        times on the same enumeration to find the next element.<br>
+<p>Since <code class="code">find</code> consumes a prefix of the enumeration, it can be used several
+        times on the same enumeration to find the next element.</p>
+</div>
 </div>
 </body></html>

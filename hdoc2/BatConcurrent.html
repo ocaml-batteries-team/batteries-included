@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -118,65 +119,79 @@
 </div>
 <h1>Module <a href="type_BatConcurrent.html">BatConcurrent</a></h1>
 
-<pre><span class="keyword">module</span> BatConcurrent: <code class="code"><span class="keyword">sig</span></code> <a href="BatConcurrent.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Definition of concurrency primitives.<br>
-<b>Author(s):</b> David Teller<br>
+<pre><span id="MODULEBatConcurrent"><span class="keyword">module</span> BatConcurrent</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatConcurrent.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Definition of concurrency primitives.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Author(s):</b> David Teller</li>
+</ul>
 </div>
 <hr width="100%">
 
 <pre><span id="TYPElock"><span class="keyword">type</span> <code class="type"></code>lock</span> </pre>
 <div class="info ">
-The light-weight type of a lock, i.e. a construction which may be
+<div class="info-desc">
+<p>The light-weight type of a lock, i.e. a construction which may be
     used to guarantee that a section will not be interrupted by
-    another thread.
-<p>
+    another thread.</p>
 
-    This light-weight type is independent of the underlying locking
+<p>This light-weight type is independent of the underlying locking
     mechanism and can be used if you do not know whether your code
-    will run with vmthreads, Posix threads, coThreads, etc.<br>
+    will run with vmthreads, Posix threads, coThreads, etc.</p>
+</div>
 </div>
 
 
 <pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">enter:(unit -> unit) -> leave:(unit -> unit) -> <a href="BatConcurrent.html#TYPElock">lock</a></code></pre><div class="info ">
-Create a lock from a pair of locking/unlocking functions<br>
+<div class="info-desc">
+<p>Create a lock from a pair of locking/unlocking functions</p>
+</div>
 </div>
 <div class="param_info"><code class="code">enter</code> : Enter critical section.</div>
 <div class="param_info"><code class="code">leave</code> : Leave critical section.
     .</div>
 
 <pre><span id="VALnolock"><span class="keyword">val</span> nolock</span> : <code class="type"><a href="BatConcurrent.html#TYPElock">lock</a></code></pre><div class="info ">
-A lock which does nothing.<br>
+<div class="info-desc">
+<p>A lock which does nothing.</p>
+</div>
 </div>
 
 <pre><span id="VALsynchronize"><span class="keyword">val</span> synchronize</span> : <code class="type">(unit -> <a href="BatConcurrent.html#TYPElock">lock</a>) -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info ">
-<code class="code">synchronize&nbsp;locker&nbsp;f</code> returns a function <code class="code">f'</code> which behaves as
+<div class="info-desc">
+<p><code class="code">synchronize&nbsp;locker&nbsp;f</code> returns a function <code class="code">f'</code> which behaves as
    <code class="code">f</code> but whose executions are protected by one lock obtained from
    <code class="code">locker</code>.  The same lock will be reused for all subsequent uses of
-   <code class="code">f'</code>.
-<p>
+   <code class="code">f'</code>.</p>
 
-   For instance,
+<p>For instance,
    <code class="code">synchronize&nbsp;<span class="constructor">Mutex</span>.make&nbsp;f</code> is a new function whose executions
    will by synchronized by a new lock. Conversely,
    <code class="code">synchronize&nbsp;(const&nbsp;my_lock)&nbsp;f</code> is a new function whose executions
-   will be synchronized by an existing lock <code class="code">my_lock</code>.<br>
+   will be synchronized by an existing lock <code class="code">my_lock</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALsync"><span class="keyword">val</span> sync</span> : <code class="type"><a href="BatConcurrent.html#TYPElock">lock</a> -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info ">
-Specialized version of <code class="code">synchronized</code>.
-<p>
+<div class="info-desc">
+<p>Specialized version of <code class="code">synchronized</code>.</p>
 
-   <code class="code">sync&nbsp;lock&nbsp;f</code> behaves as <code class="code">synchronize&nbsp;(const&nbsp;lock)&nbsp;f</code> but slightly faster<br>
+<p><code class="code">sync&nbsp;lock&nbsp;f</code> behaves as <code class="code">synchronize&nbsp;(const&nbsp;lock)&nbsp;f</code> but slightly faster</p>
+</div>
 </div>
 
 <pre><span id="VALcompose"><span class="keyword">val</span> compose</span> : <code class="type"><a href="BatConcurrent.html#TYPElock">lock</a> -> <a href="BatConcurrent.html#TYPElock">lock</a> -> <a href="BatConcurrent.html#TYPElock">lock</a></code></pre><div class="info ">
-Compose two lock systems into a third lock system.<br>
+<div class="info-desc">
+<p>Compose two lock systems into a third lock system.</p>
+</div>
 </div>
 
-<pre><span class="keyword">module type</span> <a href="BatConcurrent.BaseLock.html">BaseLock</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatConcurrent.BaseLock.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-A signature for modules which implement locking.
+<pre><span id="MODULETYPEBaseLock"><span class="keyword">module type</span> <a href="BatConcurrent.BaseLock.html">BaseLock</a></span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatConcurrent.BaseLock.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>A signature for modules which implement locking.</p>
+
 </div>
 
-<pre><span class="keyword">module type</span> <a href="BatConcurrent.Lock.html">Lock</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatConcurrent.Lock.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
-<pre><span class="keyword">module</span> <a href="BatConcurrent.MakeLock.html">MakeLock</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">M</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatConcurrent.BaseLock.html">BaseLock</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatConcurrent.Lock.html">Lock</a></code><code class="type">  with type t = M.t</code></div></pre>
-<pre><span class="keyword">module</span> <a href="BatConcurrent.NoLock.html">NoLock</a>: <code class="type"><a href="BatConcurrent.Lock.html">Lock</a></code><code class="type"> </code></pre></body></html>
+<pre><span id="MODULETYPELock"><span class="keyword">module type</span> <a href="BatConcurrent.Lock.html">Lock</a></span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatConcurrent.Lock.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span id="MODULEMakeLock"><span class="keyword">module</span> <a href="BatConcurrent.MakeLock.html">MakeLock</a></span>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">M</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatConcurrent.BaseLock.html">BaseLock</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatConcurrent.Lock.html">Lock</a></code><code class="type">  with type t = M.t</code></div></pre>
+<pre><span id="MODULENoLock"><span class="keyword">module</span> <a href="BatConcurrent.NoLock.html">NoLock</a></span>: <code class="type"><a href="BatConcurrent.Lock.html">Lock</a></code><code class="type"> </code></pre></body></html>

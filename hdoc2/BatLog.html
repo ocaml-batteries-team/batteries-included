@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -118,88 +119,120 @@
 </div>
 <h1>Module <a href="type_BatLog.html">BatLog</a></h1>
 
-<pre><span class="keyword">module</span> BatLog: <code class="code"><span class="keyword">sig</span></code> <a href="BatLog.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Simple logging<br>
-<b>Author(s):</b> Edgar Friendly<br>
+<pre><span id="MODULEBatLog"><span class="keyword">module</span> BatLog</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatLog.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Simple logging</p>
+</div>
+<ul class="info-attributes">
+<li><b>Author(s):</b> Edgar Friendly</li>
+</ul>
 </div>
 <hr width="100%">
 
 <pre><span id="VALoutput"><span class="keyword">val</span> output</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> Pervasives.ref</code></pre><div class="info ">
-This ref holds the output channel for simple logging.  Defaults to
-    <code class="code">stderr</code><br>
-<b>Since</b> 2.0; had getter and setter in 1.x<br>
+<div class="info-desc">
+<p>This ref holds the output channel for simple logging.  Defaults to
+    <code class="code">stderr</code></p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.0; had getter and setter in 1.x</li>
+</ul>
 </div>
 
 <pre><span id="VALprefix"><span class="keyword">val</span> prefix</span> : <code class="type">string Pervasives.ref</code></pre><div class="info ">
-This ref holds the text printed before each log message.  Defaults to
-    the empty string.<br>
-<b>Since</b> 2.0; had getter and setter in 1.x<br>
+<div class="info-desc">
+<p>This ref holds the text printed before each log message.  Defaults to
+    the empty string.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.0; had getter and setter in 1.x</li>
+</ul>
 </div>
 
 <pre><span id="TYPEflag"><span class="keyword">type</span> <code class="type"></code>flag</span> = <code class="type">[ `Custom of unit -> string | `Date | `Filepos | `Time ]</code> </pre>
 
 
 <pre><span id="VALflags"><span class="keyword">val</span> flags</span> : <code class="type"><a href="BatLog.html#TYPEflag">flag</a> list Pervasives.ref</code></pre><div class="info ">
-This ref holds the output flags.  These flags control how the log
+<div class="info-desc">
+<p>This ref holds the output flags.  These flags control how the log
     messages are output.  The default is <code class="code"><span class="keywordsign">`</span><span class="constructor">Date</span>;&nbsp;<span class="keywordsign">`</span><span class="constructor">Time</span></code> and log
-    messages are printed as:
-<p>
+    messages are printed as:</p>
 
-    2011/0628 01:23:45: prefixmessage<br>
-<b>Since</b> 2.0; had getter and setter in 1.x<br>
+<p>2011/0628 01:23:45: prefixmessage</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.0; had getter and setter in 1.x</li>
+</ul>
 </div>
 
 <pre><span id="VALlog"><span class="keyword">val</span> log</span> : <code class="type">?fp:string -> string -> unit</code></pre><div class="info ">
-<code class="code">log&nbsp;s</code> logs the message s, returning unit.<br>
-<b>Since</b> 2.0; was [print] in 1.x<br>
+<div class="info-desc">
+<p><code class="code">log&nbsp;s</code> logs the message s, returning unit.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.0; was [print] in 1.x</li>
+</ul>
 </div>
 
 <pre><span id="VALlogf"><span class="keyword">val</span> logf</span> : <code class="type">?fp:string -> ('a, unit <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit) Pervasives.format -> 'a</code></pre><div class="info ">
-As <code class="code"><span class="constructor">Printf</span>.printf</code>, only the message is printed to the logging
+<div class="info-desc">
+<p>As <code class="code"><span class="constructor">Printf</span>.printf</code>, only the message is printed to the logging
     output and prefixed with status information per the current flags and
-    the currently set prefix.<br>
-<b>Since</b> 2.0; was [printf] in 1.x<br>
+    the currently set prefix.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.0; was [printf] in 1.x</li>
+</ul>
 </div>
 
 <pre><span id="VALfatal"><span class="keyword">val</span> fatal</span> : <code class="type">?fp:string -> string -> 'a</code></pre><div class="info ">
-<code class="code">fatal&nbsp;s</code> logs the message <code class="code">s</code> and then calls <code class="code">exit&nbsp;1</code>.  This
-    exits the program with return code 1.<br>
+<div class="info-desc">
+<p><code class="code">fatal&nbsp;s</code> logs the message <code class="code">s</code> and then calls <code class="code">exit&nbsp;1</code>.  This
+    exits the program with return code 1.</p>
+</div>
 </div>
 
 <pre><span id="VALfatalf"><span class="keyword">val</span> fatalf</span> : <code class="type">?fp:string -> ('a, unit <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit) Pervasives.format -> 'a</code></pre><div class="info ">
-<code class="code">fatalf</code> allows a format string (as <code class="code"><span class="constructor">Printf</span>.printf</code>)and the
+<div class="info-desc">
+<p><code class="code">fatalf</code> allows a format string (as <code class="code"><span class="constructor">Printf</span>.printf</code>)and the
     arguments to that format string to build the logging message.
-    Exits the program with return code 1.<br>
+    Exits the program with return code 1.</p>
+</div>
 </div>
 
-<pre><span class="keyword">module type</span> <a href="BatLog.Config.html">Config</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Config.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
-<pre><span class="keyword">module</span> <a href="BatLog.Make.html">Make</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">S</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatLog.Config.html">Config</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Make.html">..</a> <code class="code"><span class="keyword">end</span></code></div></pre><div class="info">
-Build a logger module with custom, fixed output, prefix and flags
+<pre><span id="MODULETYPEConfig"><span class="keyword">module type</span> <a href="BatLog.Config.html">Config</a></span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Config.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span id="MODULEMake"><span class="keyword">module</span> <a href="BatLog.Make.html">Make</a></span>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">S</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatLog.Config.html">Config</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Make.html">..</a> <code class="code"><span class="keyword">end</span></code></div></pre><div class="info">
+<p>Build a logger module with custom, fixed output, prefix and flags</p>
+
 </div>
-<br>
-Returns an object with methods <code class="code">fatal</code>, <code class="code">fatalf</code>, <code class="code">log</code>, and
+<p>Returns an object with methods <code class="code">fatal</code>, <code class="code">fatalf</code>, <code class="code">log</code>, and
     <code class="code">logf</code> that logs to the given output channel, with given prefix
     and flags.  These methods work like the corresponding functions in
-    the BatLog module.<br>
+    the BatLog module.</p>
 
 <pre><span id="VALmake_logger"><span class="keyword">val</span> make_logger</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -><br>       string -><br>       [< `Custom of unit -> string | `Date | `Filepos | `Time ] list -><br>       < fatal : ?fp:string -> string -> 'b;<br>         fatalf : ?fp:string -><br>                  ('c, 'a <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit, unit, unit, 'd) Pervasives.format6 -><br>                  'c;<br>         log : ?fp:string -> string -> unit;<br>         logf : ?fp:string -> ('e, 'a <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit) Pervasives.format -> 'e ></code></pre>
 <pre><span id="TYPEeasy_lev"><span class="keyword">type</span> <code class="type"></code>easy_lev</span> = <code class="type">[ `always | `debug | `error | `fatal | `info | `trace | `warn ]</code> </pre>
 <div class="info ">
-The different verbosity levels supported in the <code class="code"><span class="constructor">Easy</span></code> logger<br>
+<div class="info-desc">
+<p>The different verbosity levels supported in the <code class="code"><span class="constructor">Easy</span></code> logger</p>
+</div>
 </div>
 
 
-<pre><span class="keyword">module</span> <a href="BatLog.Easy.html">Easy</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Easy.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-A simple-to-use logger with verbosity levels that outputs by
+<pre><span id="MODULEEasy"><span class="keyword">module</span> <a href="BatLog.Easy.html">Easy</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Easy.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>A simple-to-use logger with verbosity levels that outputs by
     default to stderr (changeable at runtime) with the date and time
-    at the beginning of each log message.
+    at the beginning of each log message.</p>
+
 </div>
 
-<pre><span class="keyword">module type</span> <a href="BatLog.Level_sig.html">Level_sig</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Level_sig.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-The details of a level scheme for verbosity-level loggers
+<pre><span id="MODULETYPELevel_sig"><span class="keyword">module type</span> <a href="BatLog.Level_sig.html">Level_sig</a></span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Level_sig.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>The details of a level scheme for verbosity-level loggers</p>
+
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatLog.Make_lev.html">Make_lev</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">L</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatLog.Level_sig.html">Level_sig</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">S</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatLog.Config.html">Config</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Make_lev.html">..</a> <code class="code"><span class="keyword">end</span></code></div></div></pre><div class="info">
-Make your own level-based logger, like <code class="code"><span class="constructor">Easy</span></code>
+<pre><span id="MODULEMake_lev"><span class="keyword">module</span> <a href="BatLog.Make_lev.html">Make_lev</a></span>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">L</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatLog.Level_sig.html">Level_sig</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">S</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatLog.Config.html">Config</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Make_lev.html">..</a> <code class="code"><span class="keyword">end</span></code></div></div></pre><div class="info">
+<p>Make your own level-based logger, like <code class="code"><span class="constructor">Easy</span></code></p>
+
 </div>
 </body></html>

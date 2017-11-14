@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -128,86 +129,88 @@
 </div>
 <h1>Module <a href="type_BatArray.Cap.html">BatArray.Cap</a></h1>
 
-<pre><span class="keyword">module</span> Cap: <code class="code"><span class="keyword">sig</span></code> <a href="BatArray.Cap.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-<h5 id="5_Capabilitiesforarrays">Capabilities for arrays.</h5>
-<p>
-
-    This modules provides the same set of features as <code class="code"><span class="constructor">Array</span></code>, but
+<pre><span id="MODULECap"><span class="keyword">module</span> Cap</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatArray.Cap.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<h6 id="5_Capabilitiesforarrays">Capabilities for arrays.</h6>
+<p>This modules provides the same set of features as <code class="code"><span class="constructor">Array</span></code>, but
     with the added twist that arrays can be made read-only or
     write-only.  Read-only arrays may then be safely shared and
-    distributed.
-<p>
+    distributed.</p>
 
-    There is no loss of performance involved.<br>
+<p>There is no loss of performance involved.</p>
+</div>
 </div>
 <hr width="100%">
-<br>
-Only the capability-specific functions are documented here.
-     See the complete <code class="code"><span class="constructor">Array</span></code> module for the documentation of other functions.<br>
+<p>Only the capability-specific functions are documented here.
+     See the complete <code class="code"><span class="constructor">Array</span></code> module for the documentation of other functions.</p>
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, [< `Read | `Write ])</code> t</span> </pre>
 <div class="info ">
-The type of arrays with capabilities.
+<div class="info-desc">
+<p>The type of arrays with capabilities.
      An <code class="code">(<span class="keywordsign">'</span>a,&nbsp;[<span class="keywordsign">`</span><span class="constructor">Read</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keywordsign">`</span><span class="constructor">Write</span>])</code> array behaves as a regular <code class="code"><span class="keywordsign">'</span>a&nbsp;array</code>,
      while a <code class="code">(<span class="keywordsign">'</span>a,&nbsp;[<span class="keywordsign">`</span><span class="constructor">Read</span>])&nbsp;array</code> only has read-only capabilities
-     and a <code class="code">(<span class="keywordsign">'</span>a,&nbsp;[<span class="keywordsign">`</span><span class="constructor">Write</span>])&nbsp;array</code> only has write-only capabilities.<br>
+     and a <code class="code">(<span class="keywordsign">'</span>a,&nbsp;[<span class="keywordsign">`</span><span class="constructor">Write</span>])&nbsp;array</code> only has write-only capabilities.</p>
+</div>
 </div>
 
-<br>
-<h6 id="6_Baseoperations">Base operations</h6><br>
-
+<h7 id="6_Baseoperations">Base operations</h7>
 <pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type">('a, [< `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> int</code></pre>
 <pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> int -> 'a</code></pre>
-<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">('a, [< `Read | `Write > `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> int -> 'a -> unit</code></pre><br>
-<h6 id="6_Constructors">Constructors</h6><br>
-
+<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">('a, [< `Read | `Write > `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> int -> 'a -> unit</code></pre><h7 id="6_Constructors">Constructors</h7>
 <pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">int -> 'a -> ('a, [< `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -> 'a -> ('a, [< `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALmake_float"><span class="keyword">val</span> make_float</span> : <code class="type">int -> (float, [< `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code"><span class="constructor">Array</span>.make_float&nbsp;n</code> returns a fresh float array of length <code class="code">n</code>,
-    with uninitialized data.<br>
-<b>Since</b> 2.3.0 and OCaml 4.2.0<br>
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Array</span>.make_float&nbsp;n</code> returns a fresh float array of length <code class="code">n</code>,
+    with uninitialized data.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.3.0 and OCaml 4.2.0</li>
+</ul>
 </div>
 
 <pre><span id="VALof_array"><span class="keyword">val</span> of_array</span> : <code class="type">'a array -> ('a, [< `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a></code></pre><div class="info ">
-Adopt a regular array as a capability array, allowing
-    to decrease capabilities if necessary.
-<p>
+<div class="info-desc">
+<p>Adopt a regular array as a capability array, allowing
+    to decrease capabilities if necessary.</p>
 
-    This operation involves no copying. In other words, in
+<p>This operation involves no copying. In other words, in
     <code class="code"><span class="keyword">let</span>&nbsp;cap&nbsp;=&nbsp;of_array&nbsp;a&nbsp;<span class="keyword">in</span>&nbsp;...</code>, any modification in <code class="code">a</code>
-    will also have effect on <code class="code">cap</code> and reciprocally.<br>
+    will also have effect on <code class="code">cap</code> and reciprocally.</p>
+</div>
 </div>
 
 <pre><span id="VALto_array"><span class="keyword">val</span> to_array</span> : <code class="type">('a, [ `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> 'a array</code></pre><div class="info ">
-Return a capability array as an array.
-<p>
+<div class="info-desc">
+<p>Return a capability array as an array.</p>
 
-    This operation requires both read and write permissions
+<p>This operation requires both read and write permissions
     on the capability array and involves no copying. In other
     words, in <code class="code"><span class="keyword">let</span>&nbsp;a&nbsp;=&nbsp;of_array&nbsp;cap&nbsp;<span class="keyword">in</span>&nbsp;...</code>, any modification
-    in <code class="code">a</code> will also have effect on <code class="code">cap</code> and reciprocally.<br>
+    in <code class="code">a</code> will also have effect on <code class="code">cap</code> and reciprocally.</p>
+</div>
 </div>
 
 <pre><span id="VALread_only"><span class="keyword">val</span> read_only</span> : <code class="type">('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -><br>       ('a, [ `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a></code></pre><div class="info ">
-Drop to read-only permissions.
-<p>
+<div class="info-desc">
+<p>Drop to read-only permissions.</p>
 
-    This operation involves no copying.<br>
+<p>This operation involves no copying.</p>
+</div>
 </div>
 
 <pre><span id="VALwrite_only"><span class="keyword">val</span> write_only</span> : <code class="type">('a, [< `Read | `Write > `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a> -><br>       ('a, [ `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a></code></pre><div class="info ">
-Drop to write-only permissions.
-<p>
+<div class="info-desc">
+<p>Drop to write-only permissions.</p>
 
-    This operation involves no copying.<br>
+<p>This operation involves no copying.</p>
+</div>
 </div>
 
 <pre><span id="VALinit"><span class="keyword">val</span> init</span> : <code class="type">int -> (int -> 'a) -> ('a, [< `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALmake_matrix"><span class="keyword">val</span> make_matrix</span> : <code class="type">int -><br>       int -><br>       'a -><br>       (('a, [< `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a>, [< `Read | `Write ])<br>       <a href="BatArray.Cap.html#TYPEt">t</a></code></pre>
-<pre><span id="VALcreate_matrix"><span class="keyword">val</span> create_matrix</span> : <code class="type">int -><br>       int -><br>       'a -><br>       (('a, [< `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a>, [< `Read | `Write ])<br>       <a href="BatArray.Cap.html#TYPEt">t</a></code></pre><br>
-<h6 id="6_Iterators">Iterators</h6><br>
-
+<pre><span id="VALcreate_matrix"><span class="keyword">val</span> create_matrix</span> : <code class="type">int -><br>       int -><br>       'a -><br>       (('a, [< `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a>, [< `Read | `Write ])<br>       <a href="BatArray.Cap.html#TYPEt">t</a></code></pre><h7 id="6_Iterators">Iterators</h7>
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> ('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> unit</code></pre>
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -><br>       ('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -><br>       ('b, [< `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALiteri"><span class="keyword">val</span> iteri</span> : <code class="type">(int -> 'a -> unit) -><br>       ('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> unit</code></pre>
@@ -215,13 +218,9 @@ Drop to write-only permissions.
 <pre><span id="VALmodify"><span class="keyword">val</span> modify</span> : <code class="type">('a -> 'a) -> ('a, [ `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> unit</code></pre>
 <pre><span id="VALmodifyi"><span class="keyword">val</span> modifyi</span> : <code class="type">(int -> 'a -> 'a) -> ('a, [ `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> unit</code></pre>
 <pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">('a -> 'b -> 'a) -><br>       'a -> ('b, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> 'a</code></pre>
-<pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">('b -> 'a -> 'a) -><br>       ('b, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> 'a -> 'a</code></pre><br>
-<h6 id="6_Operationsontwoarrays">Operations on two arrays</h6><br>
-
+<pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">('b -> 'a -> 'a) -><br>       ('b, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> 'a -> 'a</code></pre><h7 id="6_Operationsontwoarrays">Operations on two arrays</h7>
 <pre><span id="VALiter2"><span class="keyword">val</span> iter2</span> : <code class="type">('a -> 'b -> unit) -><br>       ('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -><br>       ('b, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> unit</code></pre>
-<pre><span id="VALiter2i"><span class="keyword">val</span> iter2i</span> : <code class="type">(int -> 'a -> 'b -> unit) -><br>       ('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -><br>       ('b, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> unit</code></pre><br>
-<h6 id="6_Predicates">Predicates</h6><br>
-
+<pre><span id="VALiter2i"><span class="keyword">val</span> iter2i</span> : <code class="type">(int -> 'a -> 'b -> unit) -><br>       ('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -><br>       ('b, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> unit</code></pre><h7 id="6_Predicates">Predicates</h7>
 <pre><span id="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">('a -> bool) -> ('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> bool</code></pre>
 <pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">('a -> bool) -> ('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> bool</code></pre>
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('a -> bool) -> ('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> 'a</code></pre>
@@ -231,9 +230,7 @@ Drop to write-only permissions.
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('a -> bool) -><br>       ('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -><br>       ('a, [< `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">('a -> 'b option) -><br>       ('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -><br>       ('b, [< `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALfind_all"><span class="keyword">val</span> find_all</span> : <code class="type">('a -> bool) -><br>       ('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -><br>       ('a, [< `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a></code></pre>
-<pre><span id="VALpartition"><span class="keyword">val</span> partition</span> : <code class="type">('a -> bool) -><br>       ('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -><br>       ('a, [< `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a> *<br>       ('a, [< `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a></code></pre><br>
-<h6 id="6_Arraytransformations">Array transformations</h6><br>
-
+<pre><span id="VALpartition"><span class="keyword">val</span> partition</span> : <code class="type">('a -> bool) -><br>       ('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -><br>       ('a, [< `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a> *<br>       ('a, [< `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a></code></pre><h7 id="6_Arraytransformations">Array transformations</h7>
 <pre><span id="VALrev"><span class="keyword">val</span> rev</span> : <code class="type">('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -><br>       ('a, [< `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALrev_in_place"><span class="keyword">val</span> rev_in_place</span> : <code class="type">('a, [ `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> unit</code></pre>
 <pre><span id="VALappend"><span class="keyword">val</span> append</span> : <code class="type">('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -><br>       ('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -><br>       ('a, [< `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a></code></pre>
@@ -241,33 +238,27 @@ Drop to write-only permissions.
 <pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type">('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -><br>       int -> int -> ('a, [< `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> 'a array</code></pre>
 <pre><span id="VALfill"><span class="keyword">val</span> fill</span> : <code class="type">('a, [< `Read | `Write > `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> int -> int -> 'a -> unit</code></pre>
-<pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type">('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -><br>       int -><br>       ('a, [< `Read | `Write > `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> int -> int -> unit</code></pre><br>
-<h6 id="6_Conversions">Conversions</h6><br>
-
+<pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type">('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -><br>       int -><br>       ('a, [< `Read | `Write > `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> int -> int -> unit</code></pre><h7 id="6_Conversions">Conversions</h7>
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> ('a, [< `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALbackwards"><span class="keyword">val</span> backwards</span> : <code class="type">('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
 <pre><span id="VALof_backwards"><span class="keyword">val</span> of_backwards</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> ('a, [< `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a></code></pre>
 <pre><span id="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type">('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> 'a list</code></pre>
-<pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">'a list -> ('a, [< `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a></code></pre><br>
-<h6 id="6_Utilities">Utilities</h6><br>
-
+<pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">'a list -> ('a, [< `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a></code></pre><h7 id="6_Utilities">Utilities</h7>
 <pre><span id="VALsort"><span class="keyword">val</span> sort</span> : <code class="type">('a -> 'a -> int) -> ('a, [ `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> unit</code></pre>
 <pre><span id="VALstable_sort"><span class="keyword">val</span> stable_sort</span> : <code class="type">('a -> 'a -> int) -> ('a, [ `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> unit</code></pre>
-<pre><span id="VALfast_sort"><span class="keyword">val</span> fast_sort</span> : <code class="type">('a -> 'a -> int) -> ('a, [ `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> unit</code></pre><br>
-<h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
-
+<pre><span id="VALfast_sort"><span class="keyword">val</span> fast_sort</span> : <code class="type">('a -> 'a -> int) -> ('a, [ `Read | `Write ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> unit</code></pre><h7 id="6_Boilerplatecode">Boilerplate code</h7>
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> ('b, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> -> unit</code></pre>
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a> -><br>       ('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a></code></pre>
 <pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">BatOrd.ord</a> -> ('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> <a href="BatOrd.html#TYPEord">BatOrd.ord</a></code></pre>
-<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">'a <a href="BatOrd.html#TYPEeq">BatOrd.eq</a> -> ('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> <a href="BatOrd.html#TYPEeq">BatOrd.eq</a></code></pre><br>
-<h6 id="6_Overridemodules">Override modules</h6><br>
+<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">'a <a href="BatOrd.html#TYPEeq">BatOrd.eq</a> -> ('a, [< `Read | `Write > `Read ]) <a href="BatArray.Cap.html#TYPEt">t</a> <a href="BatOrd.html#TYPEeq">BatOrd.eq</a></code></pre><h7 id="6_Overridemodules">Override modules</h7>
+<pre><span id="MODULEExceptionless"><span class="keyword">module</span> <a href="BatArray.Cap.Exceptionless.html">Exceptionless</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatArray.Cap.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>Operations on <a href="BatArray.Cap.html"><code class="code"><span class="constructor">BatArray</span>.<span class="constructor">Cap</span></code></a> without exceptions.</p>
 
-<pre><span class="keyword">module</span> <a href="BatArray.Cap.Exceptionless.html">Exceptionless</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatArray.Cap.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-Operations on <a href="BatArray.Cap.html"><code class="code"><span class="constructor">BatArray</span>.<span class="constructor">Cap</span></code></a> without exceptions.
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatArray.Cap.Labels.html">Labels</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatArray.Cap.Labels.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-Operations on <a href="BatArray.Cap.html"><code class="code"><span class="constructor">BatArray</span>.<span class="constructor">Cap</span></code></a> with labels.
+<pre><span id="MODULELabels"><span class="keyword">module</span> <a href="BatArray.Cap.Labels.html">Labels</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatArray.Cap.Labels.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>Operations on <a href="BatArray.Cap.html"><code class="code"><span class="constructor">BatArray</span>.<span class="constructor">Cap</span></code></a> with labels.</p>
+
 </div>
 </body></html>

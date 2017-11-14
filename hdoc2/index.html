@@ -22,6 +22,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -110,14 +111,12 @@
 </head>
 <body>
 <h1>Batteries user guide</h1>
-OCaml Batteries Included documentation.
-<p>
+<div class="info-desc">
+<p>OCaml Batteries Included documentation.</p>
 
-OCaml Batteries included (or simply "Batteries") is a community-driven effort to standardize on an consistent, documented, and comprehensive development platform for the OCaml programming language.
-<p>
+<p>OCaml Batteries included (or simply "Batteries") is a community-driven effort to standardize on an consistent, documented, and comprehensive development platform for the OCaml programming language.</p>
 
-For the moment, Batteries Included concentrates on:
-<p>
+<p>For the moment, Batteries Included concentrates on:</p>
 
 <ul>
 <li>data structures</li>
@@ -128,437 +127,461 @@ For the moment, Batteries Included concentrates on:
 <li>text, including Unicode</li>
 </ul>
 
-<p>
-
-For more information on the installation of Batteries Included, please
+<p>For more information on the installation of Batteries Included, please
 read the
 <a href="https://github.com/ocaml-batteries-team/batteries-included/wiki/Installing-Batteries">Installation
 guide</a> and for an example using it in different build systems, we have
 the
 <a href="https://github.com/ocaml-batteries-team/batteries-included/wiki/Getting-started">Getting
-started manual</a>.
-<p>
+started manual</a>.</p>
 
-Do you have suggestions? Remarks? Bug reports ? To contact us or to be
+<p>Modules listed below can also be referenced as <code class="code"><span class="constructor">Batteries</span>.&lt;short&nbsp;name&gt;</code>--where <code class="code">&lt;short&nbsp;name&gt;</code> is the module name without the initial "Bat"--or as <code class="code">&lt;short&nbsp;name&gt;</code> alone, if <code class="code"><span class="constructor">Batteries</span></code> has been <code class="code"><span class="keyword">open</span></code>ed.  For example, <code class="code"><span class="constructor">BatLazyList</span></code> can also be used as <code class="code"><span class="constructor">Batteries</span>.<span class="constructor">LazyList</span></code>, or as <code class="code"><span class="constructor">LazyList</span></code> after executing <code class="code"><span class="keyword">open</span>&nbsp;<span class="constructor">Batteries</span></code>.</p>
+
+<p>Do you have suggestions? Remarks? Bug reports ? To contact us or to be
 kept informed, don't hesitate to visit our
 <a href="http://batteries.forge.ocamlcore.org/">website</a>,
 <a href="https://github.com/ocaml-batteries-team/batteries-included">Git
 repo</a>, and our
 <a href="https://github.com/ocaml-batteries-team/batteries-included/issues?sort=created&amp;direction=desc&amp;state=open">Issue
-tracker</a>.
-<p>
+tracker</a>.</p>
 
-<h6 id="6_NewDataStructuresinBatteries">New Data Structures in Batteries</h6>
-<p>
-
-<br>
-<table class="indextable">
+<h7 id="6_NewDataStructuresinBatteries">New Data Structures in Batteries</h7>
+<p><table class="indextable module-list">
 <tr><td class="module"><a href="BatBitSet.html">BatBitSet</a></td><td><div class="info">
-Efficient bit sets.
+<p>Efficient bit sets.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatCache.html">BatCache</a></td><td><div class="info">
-The data structure for a manual cache with keys <code class="code"><span class="keywordsign">'</span>a</code> and values <code class="code"><span class="keywordsign">'</span>b</code>.
+<p>The data structure for a manual cache with keys <code class="code"><span class="keywordsign">'</span>a</code> and values <code class="code"><span class="keywordsign">'</span>b</code>.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatDeque.html">BatDeque</a></td><td><div class="info">
-Functional double-ended queues
+<p>Functional double-ended queues</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatDllist.html">BatDllist</a></td><td><div class="info">
-A mutable, imperative, circular, doubly linked list library
+<p>A mutable, imperative, circular, doubly linked list library</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatDynArray.html">BatDynArray</a></td><td><div class="info">
-Dynamic arrays.
+<p>Dynamic arrays.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatEnum.html">BatEnum</a></td><td><div class="info">
-Enumeration over abstract collection of elements.
+<p>Enumeration over abstract collection of elements.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatFingerTree.html">BatFingerTree</a></td><td><div class="info">
-This module implements a generic finger tree datastructure
+<p>This module implements a generic finger tree datastructure
    as described here:
    Finger Trees: A Simple General-purpose Data Structure
-   http://www.soi.city.ac.uk/~ross/papers/FingerTree.pdf
+   http://www.soi.city.ac.uk/~ross/papers/FingerTree.pdf</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatGlobal.html">BatGlobal</a></td><td><div class="info">
-Mutable global variable.
+<p>Mutable global variable.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatHashcons.html">BatHashcons</a></td><td><div class="info">
-Hash consing of data structures
+<p>Hash consing of data structures</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatHeap.html">BatHeap</a></td><td><div class="info">
-Functional heaps over ordered types
+<p>Functional heaps over ordered types</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatIMap.html">BatIMap</a></td><td><div class="info">
-DIET Maps from integers, packed using ranges
+<p>DIET Maps from integers, packed using ranges</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatISet.html">BatISet</a></td><td><div class="info">
-DIET : Discrete Interval Encoding Trees
+<p>DIET : Discrete Interval Encoding Trees</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatLazyList.html">BatLazyList</a></td><td><div class="info">
-Lazy lists of elements.
+<p>Lazy lists of elements.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatMultiPMap.html">BatMultiPMap</a></td><td><div class="info">
-Polymorphic Multi-Map.
+<p>Polymorphic Multi-Map.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatRefList.html">BatRefList</a></td><td><div class="info">
-Reference on lists.
+<p>Reference on lists.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatSeq.html">BatSeq</a></td><td><div class="info">
-Sequence of elements
+<p>Sequence of elements</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatSplay.html">BatSplay</a></td><td><div class="info">
-Maps and sets based on splay trees
+<p>Maps and sets based on splay trees</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatText.html">BatText</a></td><td><div class="info">
-Heavyweight strings ("ropes")
+<p>Heavyweight strings ("ropes")</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatUChar.html">BatUChar</a></td><td><div class="info">
-Unicode characters.
+<p>Unicode characters.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatUref.html">BatUref</a></td><td><div class="info">
-Unifiable references using destructive union-find
+<p>Unifiable references using destructive union-find</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatUTF8.html">BatUTF8</a></td><td><div class="info">
-UTF-8 encoded Unicode strings.
+<p>UTF-8 encoded Unicode strings.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatVect.html">BatVect</a></td><td><div class="info">
-Extensible vectors with constant-time append/prepend.
+<p>Extensible vectors with constant-time append/prepend.</p>
+
 </div>
 </td></tr>
-</table>
+</table></p>
 
-<p>
-
-<h6 id="6_NewModulesinBatteries">New Modules in Batteries</h6>
-<p>
-
-<br>
-<table class="indextable">
+<h7 id="6_NewModulesinBatteries">New Modules in Batteries</h7>
+<p><table class="indextable module-list">
 <tr><td class="module"><a href="BatBase64.html">BatBase64</a></td><td><div class="info">
-Base64 codec.
+<p>Base64 codec.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatCharParser.html">BatCharParser</a></td><td><div class="info">
-Parsing character strings.
+<p>Parsing character strings.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatFile.html">BatFile</a></td><td><div class="info">
-File manipulation.
+<p>File manipulation.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatInterfaces.html">BatInterfaces</a></td><td><div class="info">
-Common signatures for data structures.
+<p>Common signatures for data structures.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatIO.html">BatIO</a></td><td><div class="info">
-High-order abstract I/O.
+<p>High-order abstract I/O.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatLog.html">BatLog</a></td><td><div class="info">
-Simple logging
+<p>Simple logging</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatLogger.html">BatLogger</a></td><td><div class="info">
-Logging Library
+<p>Logging Library</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatNumber.html">BatNumber</a></td><td><div class="info">
-A common interface for numbers.
+<p>A common interface for numbers.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatOptParse.html">BatOptParse</a></td><td><div class="info">
-Modules for GNU <code class="code">getopt(3)</code>-style command line parsing.
+<p>Modules for GNU <code class="code">getopt(3)</code>-style command line parsing.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatParserCo.html">BatParserCo</a></td><td><div class="info">
-A simple parser combinator library.
+<p>A simple parser combinator library.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatResult.html">BatResult</a></td><td><div class="info">
-Monadic results of computations that can raise exceptions
+<p>Monadic results of computations that can raise exceptions</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatReturn.html">BatReturn</a></td><td><div class="info">
-Local exceptions/labels/goto/return.
+<p>Local exceptions/labels/goto/return.</p>
+
 </div>
 </td></tr>
-</table>
+</table></p>
 
-<p>
-
-<h6 id="6_BuiltinTypesasModules">Builtin Types as Modules</h6>
-<p>
-
-<br>
-<table class="indextable">
+<h7 id="6_BuiltinTypesasModules">Builtin Types as Modules</h7>
+<p><table class="indextable module-list">
 <tr><td class="module"><a href="BatBool.html">BatBool</a></td><td><div class="info">
-Operations on booleans
+<p>Operations on booleans</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatChar.html">BatChar</a></td><td><div class="info">
-Operations on characters.
+<p>Operations on characters.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatFloat.html">BatFloat</a></td><td><div class="info">
-Operations on floating-point numbers.
+<p>Operations on floating-point numbers.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatInt.html">BatInt</a></td><td><div class="info">
-Operations on integers.
+<p>Operations on integers.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatInt32.html">BatInt32</a></td><td><div class="info">
-32-bit integers.
+<p>32-bit integers.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatInt64.html">BatInt64</a></td><td><div class="info">
-64-bit integers.
+<p>64-bit integers.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatNativeint.html">BatNativeint</a></td><td><div class="info">
-Processor-native integers.
+<p>Processor-native integers.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatOption.html">BatOption</a></td><td><div class="info">
-Functions for the option type.
+<p>Functions for the option type.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatRef.html">BatRef</a></td><td><div class="info">
-Operations on references.
+<p>Operations on references.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatTuple.html">BatTuple</a></td><td><div class="info">
-Tuples.
+<p>Tuples.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatUnit.html">BatUnit</a></td><td><div class="info">
-Operations on <code class="code">unit</code>.
+<p>Operations on <code class="code">unit</code>.</p>
+
 </div>
 </td></tr>
-</table>
+</table></p>
 
-<p>
+<h7 id="6_ExtensionstotheStandardLibrary">Extensions to the Standard Library</h7>
+<p>These modules have base library equivalents.  When using <code class="code"><span class="keyword">open</span>&nbsp;<span class="constructor">Batteries</span></code>, <code class="code"><span class="constructor">BatFoo</span></code> will replace <code class="code"><span class="constructor">Foo</span></code>, so that the new functions are easily available without a <code class="code"><span class="constructor">Bat</span></code> prefix on the module name.  As well, <code class="code"><span class="constructor">BatPervasives</span></code> is opened into the global namespace.  Finally, the previous versions of replaced modules are available in the <code class="code"><span class="constructor">Legacy</span></code> module, i.e. <code class="code"><span class="constructor">Legacy</span>.<span class="constructor">Unix</span></code> and <code class="code"><span class="constructor">Legacy</span>.<span class="constructor">Pervasives</span></code>.</p>
 
-<h6 id="6_ExtensionstotheStandardLibrary">Extensions to the Standard Library</h6>
-<p>
-
-These modules have base library equivalents.  When using <code class="code"><span class="keyword">open</span>&nbsp;<span class="constructor">Batteries</span></code>, <code class="code"><span class="constructor">BatFoo</span></code> will replace <code class="code"><span class="constructor">Foo</span></code>, so that the new functions are easily available without a <code class="code"><span class="constructor">Bat</span></code> prefix on the module name.  As well, <code class="code"><span class="constructor">BatPervasives</span></code> is opened into the global namespace.  Finally, the previous versions of replaced modules are available in the <code class="code"><span class="constructor">Legacy</span></code> module, i.e. <code class="code"><span class="constructor">Legacy</span>.<span class="constructor">Unix</span></code> and <code class="code"><span class="constructor">Legacy</span>.<span class="constructor">Pervasives</span></code>.
-<p>
-
-<br>
-<table class="indextable">
+<p><table class="indextable module-list">
 <tr><td class="module"><a href="BatArray.html">BatArray</a></td><td><div class="info">
-Array operations
+<p>Array operations</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatBigarray.html">BatBigarray</a></td><td><div class="info">
-Additional and modified functions for big arrays.
+<p>Additional and modified functions for big arrays.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatBig_int.html">BatBig_int</a></td><td><div class="info">
-Operations on arbitrary-precision integers.
+<p>Operations on arbitrary-precision integers.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatBuffer.html">BatBuffer</a></td><td><div class="info">
-Extensible string buffers.
+<p>Extensible string buffers.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatComplex.html">BatComplex</a></td><td><div class="info">
-Additional and modified functions for complex numbers.
+<p>Additional and modified functions for complex numbers.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatDigest.html">BatDigest</a></td><td><div class="info">
-MD5 message digest.
+<p>MD5 message digest.</p>
+
 </div>
 </td></tr>
-<tr><td class="module"><a href="BatFormat.html">BatFormat</a></td><td><div class="info">
-Pretty printing.
-</div>
-</td></tr>
+<tr><td class="module"><a href="BatFormat.html">BatFormat</a></td><td></td></tr>
 <tr><td class="module"><a href="BatGc.html">BatGc</a></td><td><div class="info">
-Memory management control and statistics; finalised values.
+<p>Memory management control and statistics; finalised values.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatGenlex.html">BatGenlex</a></td><td><div class="info">
-A generic lexical analyzer.
+<p>A generic lexical analyzer.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatHashtbl.html">BatHashtbl</a></td><td><div class="info">
-Extra functions over hashtables.
+<p>Extra functions over hashtables.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatLexing.html">BatLexing</a></td><td><div class="info">
-Simple lexing using ocaml conventions
+<p>Simple lexing using ocaml conventions</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatList.html">BatList</a></td><td><div class="info">
-Additional and modified functions for lists.
+<p>Additional and modified functions for lists.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatMap.html">BatMap</a></td><td><div class="info">
-Association tables over ordered types.
+<p>Association tables over ordered types.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatMarshal.html">BatMarshal</a></td><td><div class="info">
-Marshaling of data structures.
+<p>Marshaling of data structures.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatNum.html">BatNum</a></td><td><div class="info">
-Operation on arbitrary-precision numbers.
+<p>Operation on arbitrary-precision numbers.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatOo.html">BatOo</a></td><td><div class="info">
-Operations on objects
+<p>Operations on objects</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatPervasives.html">BatPervasives</a></td><td><div class="info">
-Additional functions.
+<p>Additional functions.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatPrintexc.html">BatPrintexc</a></td><td><div class="info">
-Facilities for printing exceptions.
+<p>Facilities for printing exceptions.</p>
+
 </div>
 </td></tr>
-<tr><td class="module"><a href="BatPrintf.html">BatPrintf</a></td><td><div class="info">
-Formatted output functions (also known as unparsing).
-</div>
-</td></tr>
+<tr><td class="module"><a href="BatPrintf.html">BatPrintf</a></td><td></td></tr>
 <tr><td class="module"><a href="BatQueue.html">BatQueue</a></td><td><div class="info">
-First-in first-out queues.
+<p>First-in first-out queues.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatRandom.html">BatRandom</a></td><td><div class="info">
-Pseudo-random number generators (PRNG).
+<p>Pseudo-random number generators (PRNG).</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatScanf.html">BatScanf</a></td><td><div class="info">
-Formatted input functions.
+<p>Formatted input functions.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatSet.html">BatSet</a></td><td><div class="info">
-Sets over ordered types.
+<p>Sets over ordered types.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatStack.html">BatStack</a></td><td><div class="info">
-Last-in first-out stacks.
+<p>Last-in first-out stacks.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatStream.html">BatStream</a></td><td><div class="info">
-Streams and stream parsers
+<p>Streams and stream parsers</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatString.html">BatString</a></td><td><div class="info">
-String operations.
+<p>String operations.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatSys.html">BatSys</a></td><td><div class="info">
-System interface.
+<p>System interface.</p>
+
 </div>
 </td></tr>
-<tr><td class="module"><a href="BatUnix.html">BatUnix</a></td><td><div class="info">
-Low-level interface to the operating system (both Unix and Windows).
-</div>
-</td></tr>
-</table>
+<tr><td class="module"><a href="BatUnix.html">BatUnix</a></td><td></td></tr>
+</table></p>
 
-<p>
+<h7 id="6_ThreadrelatedModules">Thread-related Modules</h7>
+<p>These modules are available only when compiling with threads.  To use
+them, do <code class="code"><span class="keyword">open</span>&nbsp;<span class="constructor">BatteriesThread</span></code> at the top of your code.</p>
 
-<h6 id="6_ThreadrelatedModules">Thread-related Modules</h6>
-<p>
-
-These modules are available only when compiling with threads.  To use
-them, do <code class="code"><span class="keyword">open</span>&nbsp;<span class="constructor">BatteriesThread</span></code> at the top of your code.
-<p>
-
-<br>
-<table class="indextable">
+<p><table class="indextable module-list">
 <tr><td class="module"><a href="BatConcurrent.html">BatConcurrent</a></td><td><div class="info">
-Definition of concurrency primitives.
+<p>Definition of concurrency primitives.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatMutex.html">BatMutex</a></td><td><div class="info">
-Locks for mutual exclusion.
+<p>Locks for mutual exclusion.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatRMutex.html">BatRMutex</a></td><td><div class="info">
-Reentrant Mutexes
+<p>Reentrant Mutexes</p>
+
 </div>
 </td></tr>
-</table>
+</table></p>
 
-<p>
-
-<h6 id="6_Incubator">Incubator</h6>
-<p>
-
-These modules are available only inside <code class="code"><span class="constructor">Batteries</span>.<span class="constructor">Incubator</span></code>.  Their
+<h7 id="6_Incubator">Incubator</h7>
+<p>These modules are available only inside <code class="code"><span class="constructor">Batteries</span>.<span class="constructor">Incubator</span></code>.  Their
 interface is not guaranteed stable, and may be changed at any time,
 including with backwards incompatible changes between point releases.
 They are included for testing and stabilization until they can be
-finalized and moved to batteries proper.
-<p>
+finalized and moved to batteries proper.</p>
 
-<br>
-<table class="indextable">
+<p><table class="indextable module-list">
 <tr><td class="module"><a href="BatBounded.html">BatBounded</a></td><td><div class="info">
-Bounded values
+<p>Bounded values</p>
+
 </div>
 </td></tr>
-<tr><td class="module"><a href="BatOrd.html">BatOrd</a></td><td><div class="info">
-An algebraic datatype for ordering.
-</div>
-</td></tr>
+<tr><td class="module"><a href="BatOrd.html">BatOrd</a></td><td></td></tr>
 <tr><td class="module"><a href="BatPathGen.html">BatPathGen</a></td><td><div class="info">
-Filepath handling.
+<p>Filepath handling.</p>
+
 </div>
 </td></tr>
-<tr><td class="module"><a href="BatSubstring.html">BatSubstring</a></td><td><div class="info">
-<code class="code"><span class="constructor">Substring</span>.t</code> is the type of substrings of a basestring, an efficient
-   representation of a piece of a string.
-</div>
-</td></tr>
-</table>
+<tr><td class="module"><a href="BatSubstring.html">BatSubstring</a></td><td></td></tr>
+</table></p>
 
-<p>
-
-<h6 id="6_InternalModules">Internal Modules</h6>
-<p>
-
-<br>
-<table class="indextable">
+<h7 id="6_InternalModules">Internal Modules</h7>
+<p><table class="indextable module-list">
 <tr><td class="module"><a href="BatAvlTree.html">BatAvlTree</a></td><td><div class="info">
-Internals of ISet and IMap, usable as generic tree library
+<p>Internals of ISet and IMap, usable as generic tree library</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatInnerIO.html">BatInnerIO</a></td><td><div class="info">
-Core of the BatIO module.
+<p>Core of the BatIO module.</p>
+
 </div>
 </td></tr>
 <tr><td class="module"><a href="BatInnerWeaktbl.html">BatInnerWeaktbl</a></td><td><div class="info">
-Weak hash table library for OCaml, with an interface compatible with
-    the standard Hashtbl module.
+<p>Weak hash table library for OCaml, with an interface compatible with
+    the standard Hashtbl module.</p>
+
 </div>
 </td></tr>
-</table>
-<br>
+</table></p>
+</div>
 </body>
 </html>

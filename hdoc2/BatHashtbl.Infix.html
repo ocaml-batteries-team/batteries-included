@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -118,23 +119,29 @@
 </div>
 <h1>Module <a href="type_BatHashtbl.Infix.html">BatHashtbl.Infix</a></h1>
 
-<pre><span class="keyword">module</span> Infix: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Infix operators over a <a href="BatHashtbl.html"><code class="code"><span class="constructor">BatHashtbl</span></code></a><br>
+<pre><span id="MODULEInfix"><span class="keyword">module</span> Infix</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Infix operators over a <a href="BatHashtbl.html"><code class="code"><span class="constructor">BatHashtbl</span></code></a></p>
+</div>
 </div>
 <hr width="100%">
 
 <pre><span id="VAL(-->)"><span class="keyword">val</span> (--&gt;)</span> : <code class="type">('a, 'b) <a href="BatHashtbl.html#TYPEt">BatHashtbl.t</a> -> 'a -> 'b</code></pre><div class="info ">
-<code class="code">tbl--&gt;x</code> returns the current binding of <code class="code">x</code> in <code class="code">tbl</code>,
+<div class="info-desc">
+<p><code class="code">tbl--&gt;x</code> returns the current binding of <code class="code">x</code> in <code class="code">tbl</code>,
       or raises <code class="code"><span class="constructor">Not_found</span></code> if no such binding exists.
-      Equivalent to <code class="code"><span class="constructor">Hashtbl</span>.find&nbsp;tbl&nbsp;x</code><br>
+      Equivalent to <code class="code"><span class="constructor">Hashtbl</span>.find&nbsp;tbl&nbsp;x</code></p>
+</div>
 </div>
 
 <pre><span id="VAL(<--)"><span class="keyword">val</span> (&lt;--)</span> : <code class="type">('a, 'b) <a href="BatHashtbl.html#TYPEt">BatHashtbl.t</a> -> 'a * 'b -> unit</code></pre><div class="info ">
-<code class="code">tbl&lt;--(x,&nbsp;y)</code> adds a binding of <code class="code">x</code> to <code class="code">y</code> in table <code class="code">tbl</code>.
+<div class="info-desc">
+<p><code class="code">tbl&lt;--(x,&nbsp;y)</code> adds a binding of <code class="code">x</code> to <code class="code">y</code> in table <code class="code">tbl</code>.
         Previous bindings for <code class="code">x</code> are not removed, but simply
         hidden. That is, after performing <code class="code"><span class="constructor">Hashtbl</span>.remove</code><code class="code">&nbsp;tbl&nbsp;x</code>,
         the previous binding for <code class="code">x</code>, if any, is restored.
         (Same behavior as with association lists.)
-        Equivalent to <code class="code"><span class="constructor">Hashtbl</span>.add&nbsp;tbl&nbsp;x&nbsp;y</code><br>
+        Equivalent to <code class="code"><span class="constructor">Hashtbl</span>.add&nbsp;tbl&nbsp;x&nbsp;y</code></p>
+</div>
 </div>
 </body></html>

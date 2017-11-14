@@ -23,6 +23,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -114,8 +115,9 @@
 &nbsp;</div>
 <h1>Module <a href="type_BatUnix.LargeFile.html">BatUnix.LargeFile</a></h1>
 
-<pre><span class="keyword">module</span> LargeFile: <code class="code"><span class="keyword">sig</span></code> <a href="BatUnix.LargeFile.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-File operations on large files.
+<pre><span id="MODULELargeFile"><span class="keyword">module</span> LargeFile</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatUnix.LargeFile.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>File operations on large files.
     This sub-module provides 64-bit variants of the functions
     <code class="code"><span class="constructor">Unix</span>.lseek</code> (for positioning a file descriptor),
     <code class="code"><span class="constructor">Unix</span>.truncate</code> and <code class="code"><span class="constructor">Unix</span>.ftruncate</code> (for changing the size of a file),
@@ -123,7 +125,8 @@ File operations on large files.
     information on files).  These alternate functions represent
     positions and sizes by 64-bit integers (type <code class="code">int64</code>) instead of
     regular integers (type <code class="code">int</code>), thus allowing operating on files
-    whose sizes are greater than <code class="code">max_int</code>.<br>
+    whose sizes are greater than <code class="code">max_int</code>.</p>
+</div>
 </div>
 <hr width="100%">
 
@@ -137,7 +140,9 @@ File operations on large files.
 <td align="left" valign="top" >
 <code><span id="TYPEELTstats.st_dev">st_dev</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Device number<br>
+<div class="info-desc">
+<p>Device number</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -147,7 +152,9 @@ Device number<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTstats.st_ino">st_ino</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Inode number<br>
+<div class="info-desc">
+<p>Inode number</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -157,7 +164,9 @@ Inode number<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTstats.st_kind">st_kind</span>&nbsp;: <code class="type"><a href="BatUnix.html#TYPEfile_kind">BatUnix.file_kind</a></code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Kind of the file<br>
+<div class="info-desc">
+<p>Kind of the file</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -167,7 +176,9 @@ Kind of the file<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTstats.st_perm">st_perm</span>&nbsp;: <code class="type"><a href="BatUnix.html#TYPEfile_perm">BatUnix.file_perm</a></code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Access rights<br>
+<div class="info-desc">
+<p>Access rights</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -177,7 +188,9 @@ Access rights<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTstats.st_nlink">st_nlink</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Number of links<br>
+<div class="info-desc">
+<p>Number of links</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -187,7 +200,9 @@ Number of links<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTstats.st_uid">st_uid</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-User id of the owner<br>
+<div class="info-desc">
+<p>User id of the owner</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -197,7 +212,9 @@ User id of the owner<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTstats.st_gid">st_gid</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Group ID of the file's group<br>
+<div class="info-desc">
+<p>Group ID of the file's group</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -207,7 +224,9 @@ Group ID of the file's group<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTstats.st_rdev">st_rdev</span>&nbsp;: <code class="type">int</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Device minor number<br>
+<div class="info-desc">
+<p>Device minor number</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -217,7 +236,9 @@ Device minor number<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTstats.st_size">st_size</span>&nbsp;: <code class="type">int64</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Size in bytes<br>
+<div class="info-desc">
+<p>Size in bytes</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -227,7 +248,9 @@ Size in bytes<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTstats.st_atime">st_atime</span>&nbsp;: <code class="type">float</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Last access time<br>
+<div class="info-desc">
+<p>Last access time</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -237,7 +260,9 @@ Last access time<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTstats.st_mtime">st_mtime</span>&nbsp;: <code class="type">float</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Last modification time<br>
+<div class="info-desc">
+<p>Last modification time</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -247,7 +272,9 @@ Last modification time<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTstats.st_ctime">st_ctime</span>&nbsp;: <code class="type">float</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-Last status change time<br>
+<div class="info-desc">
+<p>Last status change time</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>

@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -119,158 +120,213 @@
 </div>
 <h1>Module <a href="type_BatChar.html">BatChar</a></h1>
 
-<pre><span class="keyword">module</span> BatChar: <code class="code"><span class="keyword">sig</span></code> <a href="BatChar.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Operations on characters.
-<p>
+<pre><span id="MODULEBatChar"><span class="keyword">module</span> BatChar</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatChar.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Operations on characters.</p>
 
-    Characters range upon Latin-1 encoding, i.e. languages used in
+<p>Characters range upon Latin-1 encoding, i.e. languages used in
     Western Europe and North America. For international characters,
-    another, richer, module is provided: <code class="code"><span class="constructor">UChar</span></code>.<br>
-<b>Author(s):</b> Xavier Leroy (base module), David Teller<br>
+    another, richer, module is provided: <code class="code"><span class="constructor">UChar</span></code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Author(s):</b> Xavier Leroy (base module), David Teller</li>
+</ul>
 </div>
 <hr width="100%">
 
 <pre><span id="VALcode"><span class="keyword">val</span> code</span> : <code class="type">char -> int</code></pre><div class="info ">
-Return the ASCII code of the argument.<br>
+<div class="info-desc">
+<p>Return the ASCII code of the argument.</p>
+</div>
 </div>
 
 <pre><span id="VALchr"><span class="keyword">val</span> chr</span> : <code class="type">int -> char</code></pre><div class="info ">
-Return the character with the given ASCII code.<br>
-<b>Raises</b> <code>Invalid_argument</code> if the argument is
-    outside the range 0--255.<br>
+<div class="info-desc">
+<p>Return the character with the given ASCII code.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Invalid_argument</code> if the argument is
+    outside the range 0--255.</li>
+</ul>
 </div>
 
 <pre><span id="VALescaped"><span class="keyword">val</span> escaped</span> : <code class="type">char -> string</code></pre><div class="info ">
-Return a string representing the given character,
+<div class="info-desc">
+<p>Return a string representing the given character,
     with special characters escaped following the lexical conventions
-    of OCaml.<br>
+    of OCaml.</p>
+</div>
 </div>
 
 <pre><span id="VALlowercase"><span class="keyword">val</span> lowercase</span> : <code class="type">char -> char</code></pre><div class="info ">
-Convert the given character to its equivalent lowercase character.<br>
+<div class="info-desc">
+<p>Convert the given character to its equivalent lowercase character.</p>
+</div>
 </div>
 
 <pre><span id="VALuppercase"><span class="keyword">val</span> uppercase</span> : <code class="type">char -> char</code></pre><div class="info ">
-Convert the given character to its equivalent uppercase character.<br>
+<div class="info-desc">
+<p>Convert the given character to its equivalent uppercase character.</p>
+</div>
 </div>
 
 <pre><span id="VALlowercase_ascii"><span class="keyword">val</span> lowercase_ascii</span> : <code class="type">char -> char</code></pre><div class="info ">
-Convert the given character to its equivalent lowercase character,
-   using the US-ASCII character set.<br>
-<b>Since</b> 2.5.0<br>
+<div class="info-desc">
+<p>Convert the given character to its equivalent lowercase character,
+   using the US-ASCII character set.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.5.0</li>
+</ul>
 </div>
 
 <pre><span id="VALuppercase_ascii"><span class="keyword">val</span> uppercase_ascii</span> : <code class="type">char -> char</code></pre><div class="info ">
-Convert the given character to its equivalent uppercase character,
-   using the US-ASCII character set.<br>
-<b>Since</b> 2.5.0<br>
+<div class="info-desc">
+<p>Convert the given character to its equivalent uppercase character,
+   using the US-ASCII character set.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.5.0</li>
+</ul>
 </div>
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">char</code> </pre>
 <div class="info ">
-An alias for the type of characters.<br>
+<div class="info-desc">
+<p>An alias for the type of characters.</p>
+</div>
 </div>
 
 
 <pre><span id="VALis_whitespace"><span class="keyword">val</span> is_whitespace</span> : <code class="type">char -> bool</code></pre><div class="info ">
-Determine if a character is a whitespace.
+<div class="info-desc">
+<p>Determine if a character is a whitespace.
     Whitespace characters are defined as
     <code class="code"><span class="string">'&nbsp;'</span></code>, <code class="code"><span class="string">'\010'</span></code>, <code class="code"><span class="string">'\013'</span></code>, <code class="code"><span class="string">'\009'</span></code>, <code class="code"><span class="string">'\026'</span></code>
-    and <code class="code"><span class="string">'\012'</span></code>.<br>
+    and <code class="code"><span class="string">'\012'</span></code>.</p>
+</div>
 </div>
 
 <pre><span id="VALis_uppercase"><span class="keyword">val</span> is_uppercase</span> : <code class="type">char -> bool</code></pre><div class="info ">
-Determine if a character is uppercase ASCII.
+<div class="info-desc">
+<p>Determine if a character is uppercase ASCII.
     A character is uppercase ASCII if it is between
-    <code class="code"><span class="string">'A'</span></code> and <code class="code"><span class="string">'Z'</span></code><br>
+    <code class="code"><span class="string">'A'</span></code> and <code class="code"><span class="string">'Z'</span></code></p>
+</div>
 </div>
 
 <pre><span id="VALis_lowercase"><span class="keyword">val</span> is_lowercase</span> : <code class="type">char -> bool</code></pre><div class="info ">
-Determine if a character is lowercase ASCII.
+<div class="info-desc">
+<p>Determine if a character is lowercase ASCII.
     A character is lowercase ASCII if it is between
-    <code class="code"><span class="string">'a'</span></code> and <code class="code"><span class="string">'z'</span></code><br>
+    <code class="code"><span class="string">'a'</span></code> and <code class="code"><span class="string">'z'</span></code></p>
+</div>
 </div>
 
 <pre><span id="VALis_uppercase_latin1"><span class="keyword">val</span> is_uppercase_latin1</span> : <code class="type">char -> bool</code></pre><div class="info ">
-Determine if a character is uppercase Latin 1.
+<div class="info-desc">
+<p>Determine if a character is uppercase Latin 1.
     A character is uppercase Latin 1 if it is between
     <code class="code"><span class="string">'A'</span></code> and <code class="code"><span class="string">'Z'</span></code>, between <code class="code"><span class="string">'À'</span></code> and <code class="code"><span class="string">'Ö'</span></code> or
-    between <code class="code"><span class="string">'Ø'</span></code> and <code class="code"><span class="string">'Ý'</span></code><br>
+    between <code class="code"><span class="string">'Ø'</span></code> and <code class="code"><span class="string">'Ý'</span></code></p>
+</div>
 </div>
 
 <pre><span id="VALis_lowercase_latin1"><span class="keyword">val</span> is_lowercase_latin1</span> : <code class="type">char -> bool</code></pre><div class="info ">
-Determine if a character is lowercase Latin 1.
+<div class="info-desc">
+<p>Determine if a character is lowercase Latin 1.
     A character is lowercase Latin 1 if it is between
     <code class="code"><span class="string">'a'</span></code> and <code class="code"><span class="string">'z'</span></code>, between <code class="code"><span class="string">'Þ'</span></code> and <code class="code"><span class="string">'ö'</span></code> or
-    between <code class="code"><span class="string">'ø'</span></code> and <code class="code"><span class="string">'ÿ'</span></code><br>
+    between <code class="code"><span class="string">'ø'</span></code> and <code class="code"><span class="string">'ÿ'</span></code></p>
+</div>
 </div>
 
 <pre><span id="VALis_latin1"><span class="keyword">val</span> is_latin1</span> : <code class="type">char -> bool</code></pre><div class="info ">
-Determine if a character is a Latin 1 letter.
+<div class="info-desc">
+<p>Determine if a character is a Latin 1 letter.
     A character is a Latin 1 letter if it is either
-    an uppercase or a lowercase Latin 1 character.<br>
+    an uppercase or a lowercase Latin 1 character.</p>
+</div>
 </div>
 
 <pre><span id="VALis_digit"><span class="keyword">val</span> is_digit</span> : <code class="type">char -> bool</code></pre><div class="info ">
-Determine if a character represents a digit.  Digits are <code class="code"><span class="string">'0'</span></code>,
-      <code class="code"><span class="string">'1'</span></code>, ... <code class="code"><span class="string">'9'</span></code>.<br>
+<div class="info-desc">
+<p>Determine if a character represents a digit.  Digits are <code class="code"><span class="string">'0'</span></code>,
+      <code class="code"><span class="string">'1'</span></code>, ... <code class="code"><span class="string">'9'</span></code>.</p>
+</div>
 </div>
 
 <pre><span id="VALis_symbol"><span class="keyword">val</span> is_symbol</span> : <code class="type">char -> bool</code></pre><div class="info ">
-Determine if a character represents a (OCaml-style)
+<div class="info-desc">
+<p>Determine if a character represents a (OCaml-style)
       symbol. Symbols are <code class="code"><span class="string">'!'</span></code>, <code class="code"><span class="string">'%'</span></code>, <code class="code"><span class="string">'&amp;'</span></code>, <code class="code"><span class="string">'$'</span></code>, <code class="code"><span class="string">'#'</span></code>, <code class="code"><span class="string">'+'</span></code>,
       <code class="code"><span class="string">'-'</span></code>, <code class="code"><span class="string">'/'</span></code>, <code class="code"><span class="string">':'</span></code>, <code class="code"><span class="string">'&lt;'</span></code>, <code class="code"><span class="string">'='</span></code> <code class="code"><span class="string">'&gt;'</span></code>, <code class="code"><span class="string">'?'</span></code>, <code class="code"><span class="string">'@'</span></code>, <code class="code"><span class="string">'\\'</span></code>,
-      <code class="code"><span class="string">'~'</span></code>, <code class="code"><span class="string">'^'</span></code>, <code class="code"><span class="string">'|'</span></code>, <code class="code"><span class="string">'*'</span></code><br>
+      <code class="code"><span class="string">'~'</span></code>, <code class="code"><span class="string">'^'</span></code>, <code class="code"><span class="string">'|'</span></code>, <code class="code"><span class="string">'*'</span></code></p>
+</div>
 </div>
 
 <pre><span id="VALis_letter"><span class="keyword">val</span> is_letter</span> : <code class="type">char -> bool</code></pre><div class="info ">
-Determine if a character represents a ASCII letter.<br>
+<div class="info-desc">
+<p>Determine if a character represents a ASCII letter.</p>
+</div>
 </div>
 
 <pre><span id="VALis_newline"><span class="keyword">val</span> is_newline</span> : <code class="type">char -> bool</code></pre><div class="info ">
-Determine if a character is a newline.  Newline characters are
-      defined as <code class="code"><span class="string">'\010'</span></code> and <code class="code"><span class="string">'\013'</span></code><br>
+<div class="info-desc">
+<p>Determine if a character is a newline.  Newline characters are
+      defined as <code class="code"><span class="string">'\010'</span></code> and <code class="code"><span class="string">'\013'</span></code></p>
+</div>
 </div>
 
 <pre><span id="VALof_digit"><span class="keyword">val</span> of_digit</span> : <code class="type">int -> char</code></pre><div class="info ">
-Return the character representing a given digit.<br>
-<b>Raises</b> <code>Invalid_argument</code> if the
-    argument is outside the range 0--9<br>
+<div class="info-desc">
+<p>Return the character representing a given digit.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Invalid_argument</code> if the
+    argument is outside the range 0--9</li>
+</ul>
 </div>
 
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">unit -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-Produce the enumeration of all characters<br>
+<div class="info-desc">
+<p>Produce the enumeration of all characters</p>
+</div>
 </div>
 
 <pre><span id="VALrange"><span class="keyword">val</span> range</span> : <code class="type">?until:char -> char -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-<code class="code">range&nbsp;from&nbsp;?until</code> produces an enumeration of the
+<div class="info-desc">
+<p><code class="code">range&nbsp;from&nbsp;?until</code> produces an enumeration of the
     characters from <code class="code">from</code> to <code class="code">until</code> included
-    <code class="code">until</code> defaults to <code class="code"><span class="string">'\255'</span></code><br>
+    <code class="code">until</code> defaults to <code class="code"><span class="string">'\255'</span></code></p>
+</div>
 </div>
 
 <pre><span id="VAL(--)"><span class="keyword">val</span> (--)</span> : <code class="type">char -> char -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-Produce the enumeration of a segment of characters.
-<p>
+<div class="info-desc">
+<p>Produce the enumeration of a segment of characters.</p>
 
-    <code class="code"><span class="string">'a'</span>&nbsp;--&nbsp;<span class="string">'z'</span></code> is the enumeration of all characters
-    between <code class="code"><span class="string">'a'</span></code> and <code class="code"><span class="string">'z'</span></code> included.<br>
+<p><code class="code"><span class="string">'a'</span>&nbsp;--&nbsp;<span class="string">'z'</span></code> is the enumeration of all characters
+    between <code class="code"><span class="string">'a'</span></code> and <code class="code"><span class="string">'z'</span></code> included.</p>
+</div>
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatChar.Infix.html">Infix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatChar.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-Infix submodule regrouping all infix operators
-</div>
-<br>
-<h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
+<pre><span id="MODULEInfix"><span class="keyword">module</span> <a href="BatChar.Infix.html">Infix</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatChar.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>Infix submodule regrouping all infix operators</p>
 
+</div>
+<h7 id="6_Boilerplatecode">Boilerplate code</h7>
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> Char.t -> unit</code></pre>
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatChar.html#TYPEt">t</a> -> <a href="BatChar.html#TYPEt">t</a> -> int</code></pre><div class="info ">
-The comparison function for characters, with the same specification as
+<div class="info-desc">
+<p>The comparison function for characters, with the same specification as
     <code class="code"><span class="constructor">Pervasives</span>.compare</code>.  Along with the type <code class="code">t</code>, this function <code class="code">compare</code>
     allows the module <code class="code"><span class="constructor">Char</span></code> to be passed as argument to the functors
-    <code class="code"><span class="constructor">Set</span>.<span class="constructor">Make</span></code> and <code class="code"><span class="constructor">Map</span>.<span class="constructor">Make</span></code>.<br>
+    <code class="code"><span class="constructor">Set</span>.<span class="constructor">Make</span></code> and <code class="code"><span class="constructor">Map</span>.<span class="constructor">Make</span></code>.</p>
+</div>
 </div>
 
 <pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="BatChar.html#TYPEt">t</a> -> <a href="BatChar.html#TYPEt">t</a> -> bool</code></pre>
 <pre><span id="VALhash"><span class="keyword">val</span> hash</span> : <code class="type"><a href="BatChar.html#TYPEt">t</a> -> int</code></pre>
 <pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type">char <a href="BatOrd.html#TYPEord">BatOrd.ord</a></code></pre>
-<pre><span class="keyword">module</span> <a href="BatChar.Incubator.html">Incubator</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatChar.Incubator.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>
+<pre><span id="MODULEIncubator"><span class="keyword">module</span> <a href="BatChar.Incubator.html">Incubator</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatChar.Incubator.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>

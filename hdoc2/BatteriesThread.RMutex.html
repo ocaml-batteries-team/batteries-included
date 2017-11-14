@@ -24,6 +24,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -116,60 +117,70 @@
 &nbsp;</div>
 <h1>Module <a href="type_BatteriesThread.RMutex.html">BatteriesThread.RMutex</a></h1>
 
-<pre><span class="keyword">module</span> RMutex: <code class="type"><a href="BatRMutex.html">BatRMutex</a></code></pre><hr width="100%">
+<pre><span id="MODULERMutex"><span class="keyword">module</span> RMutex</span>: <code class="type"><a href="BatRMutex.html">BatRMutex</a></code></pre><hr width="100%">
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
 <div class="info ">
-The type of mutexes.<br>
+<div class="info-desc">
+<p>The type of mutexes.</p>
+</div>
 </div>
 
 
 <pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">unit -> <a href="BatRMutex.html#TYPEt">t</a></code></pre><div class="info ">
-Return a new mutex.<br>
+<div class="info-desc">
+<p>Return a new mutex.</p>
+</div>
 </div>
 
 <pre><span id="VALlock"><span class="keyword">val</span> lock</span> : <code class="type"><a href="BatRMutex.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-Lock the given mutex. Only one thread can have the mutex locked
+<div class="info-desc">
+<p>Lock the given mutex. Only one thread can have the mutex locked
     at any time. A thread that attempts to lock a mutex already locked
-    will suspend until the other mutex is unlocked.
-<p>
+    will suspend until the other mutex is unlocked.</p>
 
-    <b>Note</b> attempting to lock a mutex you already have locked from
-    the same thread will not suspend your thread.<br>
+<p><b>Note</b> attempting to lock a mutex you already have locked from
+    the same thread will not suspend your thread.</p>
+</div>
 </div>
 
 <pre><span id="VALtry_lock"><span class="keyword">val</span> try_lock</span> : <code class="type"><a href="BatRMutex.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-Same as <code class="code"><span class="constructor">RMutex</span>.lock</code>, but does not suspend the calling thread if
+<div class="info-desc">
+<p>Same as <code class="code"><span class="constructor">RMutex</span>.lock</code>, but does not suspend the calling thread if
     the mutex is already locked: just return <code class="code"><span class="keyword">false</span></code> immediately
     in that case. If the mutex is unlocked, lock it and
-    return <code class="code"><span class="keyword">true</span></code>.<br>
+    return <code class="code"><span class="keyword">true</span></code>.</p>
+</div>
 </div>
 
 <pre><span id="VALunlock"><span class="keyword">val</span> unlock</span> : <code class="type"><a href="BatRMutex.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-Unlock the given mutex. Other threads suspended trying to lock
-    the mutex will restart. If the mutex wasn't locked, nothing happens.<br>
+<div class="info-desc">
+<p>Unlock the given mutex. Other threads suspended trying to lock
+    the mutex will restart. If the mutex wasn't locked, nothing happens.</p>
+</div>
 </div>
 
 <pre><span id="VALsynchronize"><span class="keyword">val</span> synchronize</span> : <code class="type">?lock:<a href="BatRMutex.html#TYPEt">t</a> -> ('a -> 'b) -> 'a -> 'b</code></pre><div class="info ">
-Protect a function.
-<p>
+<div class="info-desc">
+<p>Protect a function.</p>
 
-    <code class="code">synchronize&nbsp;f</code> returns a new function <code class="code">f'</code> with the same behavior
+<p><code class="code">synchronize&nbsp;f</code> returns a new function <code class="code">f'</code> with the same behavior
     as <code class="code">f</code> but such that concurrenty calls to <code class="code">f'</code> are queued if
-    necessary to avoid races.
-<p>
+    necessary to avoid races.</p>
 
-    <code class="code">synchronize&nbsp;~lock:l&nbsp;f</code> behaves as <code class="code">synchronize&nbsp;f</code> but uses a
+<p><code class="code">synchronize&nbsp;~lock:l&nbsp;f</code> behaves as <code class="code">synchronize&nbsp;f</code> but uses a
     user-specified lock <code class="code">l</code>, which may be useful to share a lock
-    between several function.
-<p>
+    between several function.</p>
 
-    In either case, the lock is acquired when entering the function
+<p>In either case, the lock is acquired when entering the function
     and released when the function call ends, whether this is due
-    to normal termination or to some exception being raised.<br>
+    to normal termination or to some exception being raised.</p>
+</div>
 </div>
 
 <pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">unit -> <a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a></code></pre><div class="info ">
-Create a new abstract lock based on Reentrant Mutexes.<br>
+<div class="info-desc">
+<p>Create a new abstract lock based on Reentrant Mutexes.</p>
+</div>
 </div>
 </body></html>

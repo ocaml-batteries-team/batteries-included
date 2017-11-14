@@ -24,6 +24,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -117,23 +118,25 @@
 &nbsp;</div>
 <h1>Module <a href="type_Batteries.Incubator.PathGen.html">Batteries.Incubator.PathGen</a></h1>
 
-<pre><span class="keyword">module</span> PathGen: <code class="type"><a href="BatPathGen.html">BatPathGen</a></code></pre><hr width="100%">
-<br>
-<h6 id="6_Functorizedinterface">Functorized interface</h6><br>
+<pre><span id="MODULEPathGen"><span class="keyword">module</span> PathGen</span>: <code class="type"><a href="BatPathGen.html">BatPathGen</a></code></pre><hr width="100%">
+<h7 id="6_Functorizedinterface">Functorized interface</h7>
+<pre><span id="MODULETYPEStringType"><span class="keyword">module type</span> <a href="BatPathGen.StringType.html">StringType</a></span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatPathGen.StringType.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>This signature lists few basic operations provided by all string types.</p>
 
-<pre><span class="keyword">module type</span> <a href="BatPathGen.StringType.html">StringType</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatPathGen.StringType.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-This signature lists few basic operations provided by all string types.
 </div>
 
-<pre><span class="keyword">module type</span> <a href="BatPathGen.PathType.html">PathType</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatPathGen.PathType.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-All implementations of <code class="code"><span class="constructor">Path</span></code> functionality have this module type.
+<pre><span id="MODULETYPEPathType"><span class="keyword">module type</span> <a href="BatPathGen.PathType.html">PathType</a></span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatPathGen.PathType.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>All implementations of <code class="code"><span class="constructor">Path</span></code> functionality have this module type.</p>
+
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatPathGen.Make.html">Make</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">S</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatPathGen.StringType.html">StringType</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatPathGen.PathType.html">PathType</a></code><code class="type">  with type ustring = S.t and type uchar = S.tchar</code></div></pre><div class="info">
-Constructs path handling module for string-like type and its operations given in <code class="code"><span class="constructor">S</span></code>.
+<pre><span id="MODULEMake"><span class="keyword">module</span> <a href="BatPathGen.Make.html">Make</a></span>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">S</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatPathGen.StringType.html">StringType</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatPathGen.PathType.html">PathType</a></code><code class="type">  with type ustring = S.t and type uchar = S.tchar</code></div></pre><div class="info">
+<p>Constructs path handling module for string-like type and its operations given in <code class="code"><span class="constructor">S</span></code>.</p>
+
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatPathGen.OfString.html">OfString</a>: <code class="type"><a href="BatPathGen.PathType.html">PathType</a></code><code class="type">  with type ustring = string and type uchar = char</code></pre><div class="info">
-This implementation can be used with UTF-8, but encoding of used strings is not verified.
+<pre><span id="MODULEOfString"><span class="keyword">module</span> <a href="BatPathGen.OfString.html">OfString</a></span>: <code class="type"><a href="BatPathGen.PathType.html">PathType</a></code><code class="type">  with type ustring = string and type uchar = char</code></pre><div class="info">
+<p>This implementation can be used with UTF-8, but encoding of used strings is not verified.</p>
+
 </div>
 </body></html>

@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -122,17 +123,19 @@
 </div>
 <h1>Module <a href="type_BatInnerIO.html">BatInnerIO</a></h1>
 
-<pre><span class="keyword">module</span> BatInnerIO: <code class="code"><span class="keyword">sig</span></code> <a href="BatInnerIO.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Core of the BatIO module.
-<p>
+<pre><span id="MODULEBatInnerIO"><span class="keyword">module</span> BatInnerIO</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatInnerIO.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Core of the BatIO module.</p>
 
-   This module contains the core definitions of <a href="BatIO.html"><code class="code"><span class="constructor">BatIO</span></code></a>, so as to avoid circular
+<p>This module contains the core definitions of <a href="BatIO.html"><code class="code"><span class="constructor">BatIO</span></code></a>, so as to avoid circular
    dependencies between modules which only need simple functions of <a href="BatIO.html"><code class="code"><span class="constructor">BatIO</span></code></a> and
-   that module itself.
-<p>
+   that module itself.</p>
 
-   Don't use this module, use <a href="BatIO.html"><code class="code"><span class="constructor">BatIO</span></code></a>.<br>
-<b>Author(s):</b> Nicolas Cannasse, David Teller, Philippe Strauss, Edgar Friendly<br>
+<p>Don't use this module, use <a href="BatIO.html"><code class="code"><span class="constructor">BatIO</span></code></a>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Author(s):</b> Nicolas Cannasse, David Teller, Philippe Strauss, Edgar Friendly</li>
+</ul>
 </div>
 <hr width="100%">
 
@@ -144,175 +147,265 @@ Core of the BatIO module.
 
 <pre><span id="EXCEPTIONNo_more_input"><span class="keyword">exception</span> No_more_input</span></pre>
 <div class="info ">
-This exception is raised when reading on an input with the <code class="code">read</code> or
-    <code class="code">nread</code> functions while there is no available token to read.<br>
+<div class="info-desc">
+<p>This exception is raised when reading on an input with the <code class="code">read</code> or
+    <code class="code">nread</code> functions while there is no available token to read.</p>
+</div>
 </div>
 
 <pre><span id="EXCEPTIONInput_closed"><span class="keyword">exception</span> Input_closed</span></pre>
 <div class="info ">
-This exception is raised when reading on a closed input.<br>
+<div class="info-desc">
+<p>This exception is raised when reading on a closed input.</p>
+</div>
 </div>
 
 <pre><span id="EXCEPTIONOutput_closed"><span class="keyword">exception</span> Output_closed</span></pre>
 <div class="info ">
-This exception is raised when reading on a closed output.<br>
+<div class="info-desc">
+<p>This exception is raised when reading on a closed output.</p>
+</div>
 </div>
 
 <pre><span id="VALread"><span class="keyword">val</span> read</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> char</code></pre><div class="info ">
-Read a single char from an input or raise <code class="code"><span class="constructor">No_more_input</span></code> if
-    no input available.<br>
+<div class="info-desc">
+<p>Read a single char from an input or raise <code class="code"><span class="constructor">No_more_input</span></code> if
+    no input available.</p>
+</div>
 </div>
 
 <pre><span id="VALread_all"><span class="keyword">val</span> read_all</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> string</code></pre><div class="info ">
-read all the contents of the input until <code class="code"><span class="constructor">No_more_input</span></code> is raised.<br>
+<div class="info-desc">
+<p>read all the contents of the input until <code class="code"><span class="constructor">No_more_input</span></code> is raised.</p>
+</div>
 </div>
 
 <pre><span id="VALpipe"><span class="keyword">val</span> pipe</span> : <code class="type">unit -> <a href="BatInnerIO.html#TYPEinput">input</a> * unit <a href="BatInnerIO.html#TYPEoutput">output</a></code></pre><div class="info ">
-Create a pipe between an input and an ouput. Data written from
-    the output can be read from the input.<br>
+<div class="info-desc">
+<p>Create a pipe between an input and an ouput. Data written from
+    the output can be read from the input.</p>
+</div>
 </div>
 
 <pre><span id="VALnread"><span class="keyword">val</span> nread</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> int -> string</code></pre><div class="info ">
-<code class="code">nread&nbsp;i&nbsp;n</code> reads a string of size up to <code class="code">n</code> from an input.
+<div class="info-desc">
+<p><code class="code">nread&nbsp;i&nbsp;n</code> reads a string of size up to <code class="code">n</code> from an input.
     The function will raise <code class="code"><span class="constructor">No_more_input</span></code> if no input is available.
-    It will raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">n</code> &lt; 0.<br>
+    It will raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">n</code> &lt; 0.</p>
+</div>
 </div>
 
 <pre><span id="VALreally_nread"><span class="keyword">val</span> really_nread</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> int -> string</code></pre><div class="info ">
-<code class="code">really_nread&nbsp;i&nbsp;n</code> reads a string of exactly <code class="code">n</code> characters
-    from the input.<br>
-<b>Raises</b><ul><li><code>No_more_input</code> if at least <code class="code">n</code> characters are
+<div class="info-desc">
+<p><code class="code">really_nread&nbsp;i&nbsp;n</code> reads a string of exactly <code class="code">n</code> characters
+    from the input.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Raises</b><ul><li><code>No_more_input</code> if at least <code class="code">n</code> characters are
     not available.</li>
 <li><code>Invalid_argument</code> if <code class="code">n</code> &lt; 0.</li>
+</ul></li>
 </ul>
 </div>
 
-<pre><span id="VALinput"><span class="keyword">val</span> input</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> string -> int -> int -> int</code></pre><div class="info ">
-<code class="code">input&nbsp;i&nbsp;s&nbsp;p&nbsp;l</code> reads up to <code class="code">l</code> characters from the given input, storing
-    them in string <code class="code">s</code>, starting at character number <code class="code">p</code>. It returns the actual
-    number of characters read or raise <code class="code"><span class="constructor">No_more_input</span></code> if no character can be
-    read. It will raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">p</code> and <code class="code">l</code> do not designate a
-    valid substring of <code class="code">s</code>.<br>
+<pre><span id="VALinput"><span class="keyword">val</span> input</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> Bytes.t -> int -> int -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">input&nbsp;i&nbsp;s&nbsp;p&nbsp;len</code> reads up to <code class="code">len</code> bytes from the given input,
+    storing them in byte sequence <code class="code">s</code>, starting at position <code class="code">p</code>. It
+    returns the actual number of bytes read or raise
+    <code class="code"><span class="constructor">No_more_input</span></code> if no character can be read. It will raise
+    <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">p</code> and <code class="code">len</code> do not designate a valid
+    subsequence of <code class="code">s</code>.</p>
+</div>
 </div>
 
-<pre><span id="VALreally_input"><span class="keyword">val</span> really_input</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> string -> int -> int -> int</code></pre><div class="info ">
-<code class="code">really_input&nbsp;i&nbsp;s&nbsp;p&nbsp;l</code> reads exactly <code class="code">l</code> characters from the given input,
-    storing them in the string <code class="code">s</code>, starting at position <code class="code">p</code>. For consistency with
-    <a href="BatIO.html#VALinput"><code class="code"><span class="constructor">BatIO</span>.input</code></a> it returns <code class="code">l</code>.<br>
-<b>Raises</b><ul><li><code>No_more_input</code> if at <code class="code">l</code> characters are
-    not available.</li>
-<li><code>Invalid_argument</code> if <code class="code">p</code> and <code class="code">l</code> do not designate a
-    valid substring of <code class="code">s</code>.</li>
+<pre><span id="VALreally_input"><span class="keyword">val</span> really_input</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> Bytes.t -> int -> int -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">really_input&nbsp;i&nbsp;s&nbsp;p&nbsp;len</code> reads exactly <code class="code">len</code> characters from the
+    given input, storing them in the byte sequence <code class="code">s</code>, starting at
+    position <code class="code">p</code>. For consistency with <a href="BatIO.html#VALinput"><code class="code"><span class="constructor">BatIO</span>.input</code></a> it returns
+    <code class="code">len</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Raises</b><ul><li><code>No_more_input</code> if at least <code class="code">len</code> characters are not
+    available.</li>
+<li><code>Invalid_argument</code> if <code class="code">p</code> and <code class="code">len</code> do not designate
+    a valid subsequence of <code class="code">s</code>.</li>
+</ul></li>
 </ul>
 </div>
 
 <pre><span id="VALclose_in"><span class="keyword">val</span> close_in</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> unit</code></pre><div class="info ">
-Close the input. It can no longer be read from.<br>
+<div class="info-desc">
+<p>Close the input. It can no longer be read from.</p>
+</div>
 </div>
 
 <pre><span id="VALwrite"><span class="keyword">val</span> write</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> char -> unit</code></pre><div class="info ">
-Write a single char to an output.<br>
+<div class="info-desc">
+<p>Write a single char to an output.</p>
+</div>
 </div>
 
 <pre><span id="VALnwrite"><span class="keyword">val</span> nwrite</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> string -> unit</code></pre><div class="info ">
-Write a string to an output.<br>
+<div class="info-desc">
+<p>Write a string to an output.</p>
+</div>
 </div>
 
-<pre><span id="VALoutput"><span class="keyword">val</span> output</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> string -> int -> int -> int</code></pre><div class="info ">
-<code class="code">output&nbsp;o&nbsp;s&nbsp;p&nbsp;l</code> writes up to <code class="code">l</code> characters from string <code class="code">s</code>, starting at
-    offset <code class="code">p</code>. It returns the number of characters written. It will raise
-    <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">p</code> and <code class="code">l</code> do not designate a valid substring of <code class="code">s</code>.<br>
+<pre><span id="VALnwrite_bytes"><span class="keyword">val</span> nwrite_bytes</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> Bytes.t -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Write a byte sequence to an output.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.8.0</li>
+</ul>
 </div>
 
-<pre><span id="VALreally_output"><span class="keyword">val</span> really_output</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> string -> int -> int -> int</code></pre><div class="info ">
-<code class="code">really_output&nbsp;o&nbsp;s&nbsp;p&nbsp;l</code> writes exactly <code class="code">l</code> characters from string <code class="code">s</code> onto
-    the the output, starting with the character at offset <code class="code">p</code>. For consistency with
-    <a href="BatIO.html#VALoutput"><code class="code"><span class="constructor">BatIO</span>.output</code></a> it returns <code class="code">l</code>.<br>
-<b>Raises</b> <code>Invalid_argument</code> if <code class="code">p</code> and <code class="code">l</code> do not
-    designate a valid substring of <code class="code">s</code>.<br>
+<pre><span id="VALoutput"><span class="keyword">val</span> output</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> Bytes.t -> int -> int -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">output&nbsp;o&nbsp;s&nbsp;p&nbsp;len</code> writes up to <code class="code">len</code> characters from byte
+    sequence <code class="code">len</code>, starting at offset <code class="code">p</code>. It returns the number of
+    characters written. It will raise <code class="code"><span class="constructor">Invalid_argument</span></code> if <code class="code">p</code> and
+    <code class="code">len</code> do not designate a valid subsequence of <code class="code">s</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALoutput_substring"><span class="keyword">val</span> output_substring</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> string -> int -> int -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p>like <code class="code">output</code> above, but outputs from a substring instead of
+    a subsequence of bytes</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.8.0</li>
+</ul>
+</div>
+
+<pre><span id="VALreally_output"><span class="keyword">val</span> really_output</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> Bytes.t -> int -> int -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">really_output&nbsp;o&nbsp;s&nbsp;p&nbsp;len</code> writes exactly <code class="code">len</code> characters from
+    byte sequence <code class="code">s</code> onto the the output, starting with the character
+    at offset <code class="code">p</code>. For consistency with <a href="BatIO.html#VALoutput"><code class="code"><span class="constructor">BatIO</span>.output</code></a> it returns
+    <code class="code">len</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Invalid_argument</code> if <code class="code">p</code> and <code class="code">len</code> do not designate
+    a valid subsequence of <code class="code">s</code>.</li>
+</ul>
+</div>
+
+<pre><span id="VALreally_output_substring"><span class="keyword">val</span> really_output_substring</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> string -> int -> int -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p>like <code class="code">really_output</code> above, but outputs from a substring instead
+    of a subsequence of bytes</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.8.0</li>
+</ul>
 </div>
 
 <pre><span id="VALflush"><span class="keyword">val</span> flush</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> unit</code></pre><div class="info ">
-Flush an output.<br>
+<div class="info-desc">
+<p>Flush an output.</p>
+</div>
 </div>
 
 <pre><span id="VALflush_all"><span class="keyword">val</span> flush_all</span> : <code class="type">unit -> unit</code></pre><div class="info ">
-Flush all outputs.<br>
+<div class="info-desc">
+<p>Flush all outputs.</p>
+</div>
 </div>
 
 <pre><span id="VALclose_out"><span class="keyword">val</span> close_out</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> 'a</code></pre><div class="info ">
-Close the output and return its accumulator data.
-    It can no longer be written.<br>
+<div class="info-desc">
+<p>Close the output and return its accumulator data.
+    It can no longer be written.</p>
+</div>
 </div>
 
 <pre><span id="VALclose_all"><span class="keyword">val</span> close_all</span> : <code class="type">unit -> unit</code></pre><div class="info ">
-Close all outputs.
-    Ignore errors.<br>
+<div class="info-desc">
+<p>Close all outputs.
+    Ignore errors.</p>
+</div>
 </div>
 
 <pre><span id="VALinput_string"><span class="keyword">val</span> input_string</span> : <code class="type">string -> <a href="BatInnerIO.html#TYPEinput">input</a></code></pre><div class="info ">
-Create an input that will read from a string.<br>
+<div class="info-desc">
+<p>Create an input that will read from a string.</p>
+</div>
 </div>
 
 <pre><span id="VALoutput_string"><span class="keyword">val</span> output_string</span> : <code class="type">unit -> string <a href="BatInnerIO.html#TYPEoutput">output</a></code></pre><div class="info ">
-Create an output that will write into a string in an efficient way.
-    When closed, the output returns all the data written into it.<br>
+<div class="info-desc">
+<p>Create an output that will write into a string in an efficient way.
+    When closed, the output returns all the data written into it.</p>
+</div>
 </div>
 
 <pre><span id="VALon_close_out"><span class="keyword">val</span> on_close_out</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> ('a <a href="BatInnerIO.html#TYPEoutput">output</a> -> unit) -> unit</code></pre><div class="info ">
-Register a function to be triggered just before an output is closed.<br>
+<div class="info-desc">
+<p>Register a function to be triggered just before an output is closed.</p>
+</div>
 </div>
 
-<pre><span id="VALcreate_in"><span class="keyword">val</span> create_in</span> : <code class="type">read:(unit -> char) -><br>       input:(string -> int -> int -> int) -><br>       close:(unit -> unit) -> <a href="BatInnerIO.html#TYPEinput">input</a></code></pre><div class="info ">
-Fully create an input by giving all the needed functions.
-<p>
+<pre><span id="VALcreate_in"><span class="keyword">val</span> create_in</span> : <code class="type">read:(unit -> char) -><br>       input:(Bytes.t -> int -> int -> int) -><br>       close:(unit -> unit) -> <a href="BatInnerIO.html#TYPEinput">input</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Fully create an input by giving all the needed functions.</p>
 
-    <b>Note</b> Do <em>not</em> use this function for creating an input
+<p><b>Note</b> Do <em>not</em> use this function for creating an input
     which reads from one or more underlying inputs. Rather, use
-    <a href="BatInnerIO.html#VALwrap_in"><code class="code"><span class="constructor">BatInnerIO</span>.wrap_in</code></a>.<br>
+    <a href="BatInnerIO.html#VALwrap_in"><code class="code"><span class="constructor">BatInnerIO</span>.wrap_in</code></a>.</p>
+</div>
 </div>
 
-<pre><span id="VALinherit_in"><span class="keyword">val</span> inherit_in</span> : <code class="type">?read:(unit -> char) -><br>       ?input:(string -> int -> int -> int) -><br>       ?close:(unit -> unit) -> <a href="BatInnerIO.html#TYPEinput">input</a> -> <a href="BatInnerIO.html#TYPEinput">input</a></code></pre><div class="info ">
-Simplified and optimized version of <a href="BatInnerIO.html#VALwrap_in"><code class="code"><span class="constructor">BatInnerIO</span>.wrap_in</code></a> whenever only
-   one input appears as dependency.<br>
+<pre><span id="VALinherit_in"><span class="keyword">val</span> inherit_in</span> : <code class="type">?read:(unit -> char) -><br>       ?input:(Bytes.t -> int -> int -> int) -><br>       ?close:(unit -> unit) -> <a href="BatInnerIO.html#TYPEinput">input</a> -> <a href="BatInnerIO.html#TYPEinput">input</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Simplified and optimized version of <a href="BatInnerIO.html#VALwrap_in"><code class="code"><span class="constructor">BatInnerIO</span>.wrap_in</code></a> whenever only
+   one input appears as dependency.</p>
+</div>
 </div>
 
-<pre><span id="VALwrap_in"><span class="keyword">val</span> wrap_in</span> : <code class="type">read:(unit -> char) -><br>       input:(string -> int -> int -> int) -><br>       close:(unit -> unit) -> underlying:<a href="BatInnerIO.html#TYPEinput">input</a> list -> <a href="BatInnerIO.html#TYPEinput">input</a></code></pre><div class="info ">
-Fully create an input reading from other inputs by giving all the needed functions.
-<p>
+<pre><span id="VALwrap_in"><span class="keyword">val</span> wrap_in</span> : <code class="type">read:(unit -> char) -><br>       input:(Bytes.t -> int -> int -> int) -><br>       close:(unit -> unit) -> underlying:<a href="BatInnerIO.html#TYPEinput">input</a> list -> <a href="BatInnerIO.html#TYPEinput">input</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Fully create an input reading from other inputs by giving all the needed functions.</p>
 
-    This function is a more general version of <a href="BatInnerIO.html#VALcreate_in"><code class="code"><span class="constructor">BatInnerIO</span>.create_in</code></a>
-    which also handles dependency management between inputs.<br>
+<p>This function is a more general version of <a href="BatInnerIO.html#VALcreate_in"><code class="code"><span class="constructor">BatInnerIO</span>.create_in</code></a>
+    which also handles dependency management between inputs.</p>
+</div>
 </div>
 
-<pre><span id="VALcreate_out"><span class="keyword">val</span> create_out</span> : <code class="type">write:(char -> unit) -><br>       output:(string -> int -> int -> int) -><br>       flush:(unit -> unit) -> close:(unit -> 'a) -> 'a <a href="BatInnerIO.html#TYPEoutput">output</a></code></pre><div class="info ">
-Fully create an output by giving all the needed functions.<br>
+<pre><span id="VALcreate_out"><span class="keyword">val</span> create_out</span> : <code class="type">write:(char -> unit) -><br>       output:(Bytes.t -> int -> int -> int) -><br>       flush:(unit -> unit) -> close:(unit -> 'a) -> 'a <a href="BatInnerIO.html#TYPEoutput">output</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Fully create an output by giving all the needed functions.</p>
+</div>
 </div>
 <div class="param_info"><code class="code">write</code> : Write one character to the output (see <a href="BatInnerIO.html#VALwrite"><code class="code"><span class="constructor">BatInnerIO</span>.write</code></a>).</div>
 <div class="param_info"><code class="code">output</code> : Write a (sub)string to the output (see <a href="BatInnerIO.html#VALoutput"><code class="code"><span class="constructor">BatInnerIO</span>.output</code></a>).</div>
 <div class="param_info"><code class="code">flush</code> : Flush any buffers of this output  (see <a href="BatInnerIO.html#VALflush"><code class="code"><span class="constructor">BatInnerIO</span>.flush</code></a>).</div>
 <div class="param_info"><code class="code">close</code> : Close this output. The output will be automatically
     flushed.
-<p>
 
     <b>Note</b> Do <em>not</em> use this function for creating an output which
     writes to one or more underlying outputs. Rather, use <a href="BatInnerIO.html#VALwrap_out"><code class="code"><span class="constructor">BatInnerIO</span>.wrap_out</code></a>.</div>
 
-<pre><span id="VALinherit_out"><span class="keyword">val</span> inherit_out</span> : <code class="type">?write:(char -> unit) -><br>       ?output:(string -> int -> int -> int) -><br>       ?flush:(unit -> unit) -><br>       ?close:(unit -> unit) -> 'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> unit <a href="BatInnerIO.html#TYPEoutput">output</a></code></pre><div class="info ">
-Simplified and optimized version of <a href="BatInnerIO.html#VALwrap_out"><code class="code"><span class="constructor">BatInnerIO</span>.wrap_out</code></a> whenever only
-   one output appears as dependency.<br>
+<pre><span id="VALinherit_out"><span class="keyword">val</span> inherit_out</span> : <code class="type">?write:(char -> unit) -><br>       ?output:(Bytes.t -> int -> int -> int) -><br>       ?flush:(unit -> unit) -><br>       ?close:(unit -> unit) -> 'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> unit <a href="BatInnerIO.html#TYPEoutput">output</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Simplified and optimized version of <a href="BatInnerIO.html#VALwrap_out"><code class="code"><span class="constructor">BatInnerIO</span>.wrap_out</code></a> whenever only
+   one output appears as dependency.</p>
+</div>
 </div>
 
-<pre><span id="VALwrap_out"><span class="keyword">val</span> wrap_out</span> : <code class="type">write:(char -> unit) -><br>       output:(string -> int -> int -> int) -><br>       flush:(unit -> unit) -><br>       close:(unit -> 'a) -><br>       underlying:'b <a href="BatInnerIO.html#TYPEoutput">output</a> list -> 'a <a href="BatInnerIO.html#TYPEoutput">output</a></code></pre><div class="info ">
-Fully create an output that writes to one or more underlying outputs.
-<p>
+<pre><span id="VALwrap_out"><span class="keyword">val</span> wrap_out</span> : <code class="type">write:(char -> unit) -><br>       output:(Bytes.t -> int -> int -> int) -><br>       flush:(unit -> unit) -><br>       close:(unit -> 'a) -><br>       underlying:'b <a href="BatInnerIO.html#TYPEoutput">output</a> list -> 'a <a href="BatInnerIO.html#TYPEoutput">output</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Fully create an output that writes to one or more underlying outputs.</p>
 
-   This function is a more general version of <a href="BatInnerIO.html#VALcreate_out"><code class="code"><span class="constructor">BatInnerIO</span>.create_out</code></a>,
-   which also handles dependency management between outputs.
-<p>
+<p>This function is a more general version of <a href="BatInnerIO.html#VALcreate_out"><code class="code"><span class="constructor">BatInnerIO</span>.create_out</code></a>,
+   which also handles dependency management between outputs.</p>
 
-   To illustrate the need for dependency management, let us consider
-   the following values:<ul>
+<p>To illustrate the need for dependency management, let us consider
+   the following values:</p>
+<ul>
 <li>an output <code class="code">out</code></li>
 <li>a function <code class="code">f&nbsp;:&nbsp;_&nbsp;output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;_&nbsp;output</code>, using <a href="BatInnerIO.html#VALcreate_out"><code class="code"><span class="constructor">BatInnerIO</span>.create_out</code></a> to
    create a new output for writing some data to an underyling
@@ -320,24 +413,23 @@ Fully create an output that writes to one or more underlying outputs.
    function performing transparent compression or transparent
    traduction between encodings)</li>
 </ul>
-
-   With these values, let us consider the following scenario<ul>
+<p>With these values, let us consider the following scenario</p>
+<ul>
 <li>a new output <code class="code">f&nbsp;out</code> is created</li>
 <li>some data is written to <code class="code">f&nbsp;out</code> but not flushed</li>
 <li>output <code class="code">out</code> is closed, perhaps manually or as a consequence
    of garbage-collection, or because the program has ended</li>
 <li>data written to <code class="code">f&nbsp;out</code> is flushed.</li>
 </ul>
-
-   In this case, data reaches <code class="code">out</code> only after <code class="code">out</code> has been closed,
+<p>In this case, data reaches <code class="code">out</code> only after <code class="code">out</code> has been closed,
    which violates the protocol.  Despite appearances, it is quite easy
-   to reach such situation, especially in short programs.
-<p>
+   to reach such situation, especially in short programs.</p>
 
-   The solution is to use <code class="code">wrap_out</code> rather than <code class="code">create_out</code> in <code class="code">f</code>.
+<p>The solution is to use <code class="code">wrap_out</code> rather than <code class="code">create_out</code> in <code class="code">f</code>.
    Specifying that <code class="code">f&nbsp;out</code> writes on <code class="code">out</code> will then let the run-time
    flush and close <code class="code">f&nbsp;out</code> when <code class="code">out</code> is closed for any reason, which
-   in turn avoids the issue.<br>
+   in turn avoids the issue.</p>
+</div>
 </div>
 <div class="param_info"><code class="code">write</code> : Write one character to the output (see <a href="BatInnerIO.html#VALwrite"><code class="code"><span class="constructor">BatInnerIO</span>.write</code></a>).</div>
 <div class="param_info"><code class="code">output</code> : Write a (sub)string to the output (see <a href="BatInnerIO.html#VALoutput"><code class="code"><span class="constructor">BatInnerIO</span>.output</code></a>).</div>
@@ -346,7 +438,6 @@ Fully create an output that writes to one or more underlying outputs.
    flushed.</div>
 <div class="param_info"><code class="code">underlying</code> : The list of outputs to which the new output will
    write.
-<p>
 
    <b>Note</b> Function <code class="code">close</code> should <em>not</em> close <code class="code">underlying</code>
    yourself. This is a common mistake which may cause sockets or
@@ -354,118 +445,165 @@ Fully create an output that writes to one or more underlying outputs.
    another part of the program.</div>
 
 <pre><span id="VALdefault_buffer_size"><span class="keyword">val</span> default_buffer_size</span> : <code class="type">int</code></pre><div class="info ">
-The default size of buffers.<br>
+<div class="info-desc">
+<p>The default size of buffers.</p>
 </div>
-<br>
-<h6 id="6_BinaryfilesAPI">Binary files API</h6>
-<p>
-
-    Here is some API useful for working with binary files, in particular
+</div>
+<h7 id="6_BinaryfilesAPI">Binary files API</h7>
+<p>Here is some API useful for working with binary files, in particular
     binary files generated by C applications. By default, encoding of
     multibyte integers is low-endian. The BigEndian module provide multibyte
-    operations with other encoding.<br>
+    operations with other encoding.</p>
 
 <pre><span id="EXCEPTIONOverflow"><span class="keyword">exception</span> Overflow</span> <span class="keyword">of</span> <code class="type">string</code></pre>
 <div class="info ">
-Exception raised when a read or write operation cannot be completed.<br>
+<div class="info-desc">
+<p>Exception raised when a read or write operation cannot be completed.</p>
+</div>
 </div>
 
 <pre><span id="VALread_byte"><span class="keyword">val</span> read_byte</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> int</code></pre><div class="info ">
-Read an unsigned 8-bit integer.<br>
+<div class="info-desc">
+<p>Read an unsigned 8-bit integer.</p>
+</div>
 </div>
 
 <pre><span id="VALread_signed_byte"><span class="keyword">val</span> read_signed_byte</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> int</code></pre><div class="info ">
-Read an signed 8-bit integer.<br>
+<div class="info-desc">
+<p>Read an signed 8-bit integer.</p>
+</div>
 </div>
 
 <pre><span id="VALread_ui16"><span class="keyword">val</span> read_ui16</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> int</code></pre><div class="info ">
-Read an unsigned 16-bit word.<br>
+<div class="info-desc">
+<p>Read an unsigned 16-bit word.</p>
+</div>
 </div>
 
 <pre><span id="VALread_i16"><span class="keyword">val</span> read_i16</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> int</code></pre><div class="info ">
-Read a signed 16-bit word.<br>
+<div class="info-desc">
+<p>Read a signed 16-bit word.</p>
+</div>
 </div>
 
 <pre><span id="VALread_i32"><span class="keyword">val</span> read_i32</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> int</code></pre><div class="info ">
-Read a signed 32-bit integer.<br>
-<b>Raises</b> <code>Overflow</code> if the
-    read integer cannot be represented as an OCaml 31-bit integer.<br>
+<div class="info-desc">
+<p>Read a signed 32-bit integer.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Overflow</code> if the
+    read integer cannot be represented as an OCaml 31-bit integer.</li>
+</ul>
 </div>
 
 <pre><span id="VALread_real_i32"><span class="keyword">val</span> read_real_i32</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> int32</code></pre><div class="info ">
-Read a signed 32-bit integer as an OCaml int32.<br>
+<div class="info-desc">
+<p>Read a signed 32-bit integer as an OCaml int32.</p>
+</div>
 </div>
 
 <pre><span id="VALread_i64"><span class="keyword">val</span> read_i64</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> int64</code></pre><div class="info ">
-Read a signed 64-bit integer as an OCaml int64.<br>
+<div class="info-desc">
+<p>Read a signed 64-bit integer as an OCaml int64.</p>
+</div>
 </div>
 
 <pre><span id="VALread_float"><span class="keyword">val</span> read_float</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> float</code></pre><div class="info ">
-Read an IEEE single precision floating point value.<br>
+<div class="info-desc">
+<p>Read an IEEE single precision floating point value.</p>
+</div>
 </div>
 
 <pre><span id="VALread_double"><span class="keyword">val</span> read_double</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> float</code></pre><div class="info ">
-Read an IEEE double precision floating point value.<br>
+<div class="info-desc">
+<p>Read an IEEE double precision floating point value.</p>
+</div>
 </div>
 
 <pre><span id="VALread_string"><span class="keyword">val</span> read_string</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> string</code></pre><div class="info ">
-Read a null-terminated string.<br>
+<div class="info-desc">
+<p>Read a null-terminated string.</p>
+</div>
 </div>
 
 <pre><span id="VALread_line"><span class="keyword">val</span> read_line</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a> -> string</code></pre><div class="info ">
-Read a LF or CRLF terminated string.<br>
+<div class="info-desc">
+<p>Read a LF or CRLF terminated string.</p>
+</div>
 </div>
 
 <pre><span id="VALwrite_byte"><span class="keyword">val</span> write_byte</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> int -> unit</code></pre><div class="info ">
-Write an unsigned 8-bit byte.<br>
+<div class="info-desc">
+<p>Write an unsigned 8-bit byte.</p>
+</div>
 </div>
 
 <pre><span id="VALwrite_ui16"><span class="keyword">val</span> write_ui16</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> int -> unit</code></pre><div class="info ">
-Write an unsigned 16-bit word.<br>
+<div class="info-desc">
+<p>Write an unsigned 16-bit word.</p>
+</div>
 </div>
 
 <pre><span id="VALwrite_i16"><span class="keyword">val</span> write_i16</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> int -> unit</code></pre><div class="info ">
-Write a signed 16-bit word.<br>
+<div class="info-desc">
+<p>Write a signed 16-bit word.</p>
+</div>
 </div>
 
 <pre><span id="VALwrite_i32"><span class="keyword">val</span> write_i32</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> int -> unit</code></pre><div class="info ">
-Write a signed 32-bit integer.<br>
+<div class="info-desc">
+<p>Write a signed 32-bit integer.</p>
+</div>
 </div>
 
 <pre><span id="VALwrite_real_i32"><span class="keyword">val</span> write_real_i32</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> int32 -> unit</code></pre><div class="info ">
-Write an OCaml int32.<br>
+<div class="info-desc">
+<p>Write an OCaml int32.</p>
+</div>
 </div>
 
 <pre><span id="VALwrite_i64"><span class="keyword">val</span> write_i64</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> int64 -> unit</code></pre><div class="info ">
-Write an OCaml int64.<br>
+<div class="info-desc">
+<p>Write an OCaml int64.</p>
+</div>
 </div>
 
 <pre><span id="VALwrite_double"><span class="keyword">val</span> write_double</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> float -> unit</code></pre><div class="info ">
-Write an IEEE double precision floating point value.<br>
+<div class="info-desc">
+<p>Write an IEEE double precision floating point value.</p>
+</div>
 </div>
 
 <pre><span id="VALwrite_float"><span class="keyword">val</span> write_float</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> float -> unit</code></pre><div class="info ">
-Write an IEEE single precision floating point value.<br>
+<div class="info-desc">
+<p>Write an IEEE single precision floating point value.</p>
+</div>
 </div>
 
 <pre><span id="VALwrite_string"><span class="keyword">val</span> write_string</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> string -> unit</code></pre><div class="info ">
-Write a string and append an null character.<br>
+<div class="info-desc">
+<p>Write a string and append an null character.</p>
+</div>
 </div>
 
 <pre><span id="VALwrite_line"><span class="keyword">val</span> write_line</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> string -> unit</code></pre><div class="info ">
-Write a line and append a LF (it might be converted
-    to CRLF on some systems depending on the underlying BatIO).<br>
+<div class="info-desc">
+<p>Write a line and append a LF (it might be converted
+    to CRLF on some systems depending on the underlying BatIO).</p>
+</div>
 </div>
 
 <pre><span id="VALcast_output"><span class="keyword">val</span> cast_output</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">output</a> -> unit <a href="BatInnerIO.html#TYPEoutput">output</a></code></pre><div class="info ">
-You can safely transform any output to an unit output in a safe way
-    by using this function.<br>
+<div class="info-desc">
+<p>You can safely transform any output to an unit output in a safe way
+    by using this function.</p>
 </div>
-<br>
-<h6 id="6_Forcompatibilitypurposes">For compatibility purposes</h6><br>
-
+</div>
+<h7 id="6_Forcompatibilitypurposes">For compatibility purposes</h7>
 <pre><span id="VALinput_channel"><span class="keyword">val</span> input_channel</span> : <code class="type">?autoclose:bool -> ?cleanup:bool -> Pervasives.in_channel -> <a href="BatInnerIO.html#TYPEinput">input</a></code></pre><div class="info ">
-Create an input that will read from a channel.<br>
+<div class="info-desc">
+<p>Create an input that will read from a channel.</p>
+</div>
 </div>
 <div class="param_info"><code class="code">autoclose</code> : If true or unspecified, the <a href="BatInnerIO.html#TYPEinput"><code class="code"><span class="constructor">BatInnerIO</span>.input</code></a>
     will be automatically closed when the underlying <code class="code">in_channel</code>
@@ -475,43 +613,45 @@ Create an input that will read from a channel.<br>
     Otherwise, you will need to close the channel manually.</div>
 
 <pre><span id="VALoutput_channel"><span class="keyword">val</span> output_channel</span> : <code class="type">?cleanup:bool -> Pervasives.out_channel -> unit <a href="BatInnerIO.html#TYPEoutput">output</a></code></pre><div class="info ">
-Create an output that will write into a channel.<br>
+<div class="info-desc">
+<p>Create an output that will write into a channel.</p>
+</div>
 </div>
 <div class="param_info"><code class="code">cleanup</code> : If true, the channel
     will be automatically closed when the <a href="BatInnerIO.html#TYPEoutput"><code class="code"><span class="constructor">BatInnerIO</span>.output</code></a> is closed.
     Otherwise, you will need to close the channel manually.</div>
-<br>
-<h6 id="6_Standardinputsoutputs">Standard inputs/outputs</h6><br>
-
+<h7 id="6_Standardinputsoutputs">Standard inputs/outputs</h7>
 <pre><span id="VALstdin"><span class="keyword">val</span> stdin</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">input</a></code></pre><div class="info ">
-Standard input, as per Unix/Windows conventions (by default, keyboard).<br>
+<div class="info-desc">
+<p>Standard input, as per Unix/Windows conventions (by default, keyboard).</p>
+</div>
 </div>
 
 <pre><span id="VALstdout"><span class="keyword">val</span> stdout</span> : <code class="type">unit <a href="BatInnerIO.html#TYPEoutput">output</a></code></pre><div class="info ">
-Standard output, as per Unix/Windows conventions (by default, console).
-<p>
+<div class="info-desc">
+<p>Standard output, as per Unix/Windows conventions (by default, console).</p>
 
-    Use this output to display regular messages.<br>
+<p>Use this output to display regular messages.</p>
+</div>
 </div>
 
 <pre><span id="VALstderr"><span class="keyword">val</span> stderr</span> : <code class="type">unit <a href="BatInnerIO.html#TYPEoutput">output</a></code></pre><div class="info ">
-Standard error output, as per Unix/Windows conventions.
-<p>
+<div class="info-desc">
+<p>Standard error output, as per Unix/Windows conventions.</p>
 
-    Use this output to display warnings and error messages.<br>
+<p>Use this output to display warnings and error messages.</p>
+</div>
 </div>
 
 <pre><span id="VALstdnull"><span class="keyword">val</span> stdnull</span> : <code class="type">unit <a href="BatInnerIO.html#TYPEoutput">output</a></code></pre><div class="info ">
-An output which discards everything written to it.
-<p>
+<div class="info-desc">
+<p>An output which discards everything written to it.</p>
 
-    Use this output to ignore messages.<br>
+<p>Use this output to ignore messages.</p>
 </div>
-<br>
-<h6 id="6_Comparison">Comparison</h6>
-<p>
+</div>
+<h7 id="6_Comparison">Comparison</h7>
+<p>The following modules may be useful to create hashtables of inputs or outputs.</p>
 
-    The following modules may be useful to create hashtables of inputs or outputs.<br>
-
-<pre><span class="keyword">module</span> <a href="BatInnerIO.Input.html">Input</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatInnerIO.Input.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
-<pre><span class="keyword">module</span> <a href="BatInnerIO.Output.html">Output</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatInnerIO.Output.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>
+<pre><span id="MODULEInput"><span class="keyword">module</span> <a href="BatInnerIO.Input.html">Input</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatInnerIO.Input.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span id="MODULEOutput"><span class="keyword">module</span> <a href="BatInnerIO.Output.html">Output</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatInnerIO.Output.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>

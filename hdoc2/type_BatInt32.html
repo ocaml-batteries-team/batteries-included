@@ -20,6 +20,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -155,10 +156,10 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"caml_int32_float_of_bits_unboxed"</span>&nbsp;[@@unboxed]&nbsp;[@@noalloc]<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;of_byte&nbsp;:&nbsp;char&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;to_byte&nbsp;:&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;pack&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;pack_big&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unpack&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unpack_big&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;pack&nbsp;:&nbsp;<span class="constructor">Bytes</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;pack_big&nbsp;:&nbsp;<span class="constructor">Bytes</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unpack&nbsp;:&nbsp;<span class="constructor">Bytes</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unpack_big&nbsp;:&nbsp;<span class="constructor">Bytes</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;compare&nbsp;:&nbsp;<span class="constructor">BatInt32</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatInt32</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;equal&nbsp;:&nbsp;<span class="constructor">BatInt32</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatInt32</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;ord&nbsp;:&nbsp;<span class="constructor">BatInt32</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatInt32</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatOrd</span>.order<br>

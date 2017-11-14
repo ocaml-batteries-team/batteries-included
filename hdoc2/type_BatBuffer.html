@@ -20,6 +20,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -113,7 +114,7 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;contents&nbsp;:&nbsp;<span class="constructor">BatBuffer</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;to_bytes&nbsp;:&nbsp;<span class="constructor">BatBuffer</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Bytes</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sub&nbsp;:&nbsp;<span class="constructor">BatBuffer</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;blit&nbsp;:&nbsp;<span class="constructor">BatBuffer</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;blit&nbsp;:&nbsp;<span class="constructor">BatBuffer</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Bytes</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;nth&nbsp;:&nbsp;<span class="constructor">BatBuffer</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;length&nbsp;:&nbsp;<span class="constructor">BatBuffer</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;clear&nbsp;:&nbsp;<span class="constructor">BatBuffer</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
@@ -129,6 +130,9 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;add_channel&nbsp;:&nbsp;<span class="constructor">BatBuffer</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatInnerIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_buffer&nbsp;:&nbsp;<span class="constructor">BatBuffer</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="constructor">BatInnerIO</span>.output<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;truncate&nbsp;:&nbsp;<span class="constructor">BatBuffer</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;add_utf_8_uchar&nbsp;:&nbsp;<span class="constructor">BatBuffer</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Uchar</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;add_utf_16le_uchar&nbsp;:&nbsp;<span class="constructor">BatBuffer</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Uchar</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;add_utf_16be_uchar&nbsp;:&nbsp;<span class="constructor">BatBuffer</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Uchar</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;enum&nbsp;:&nbsp;<span class="constructor">BatBuffer</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;of_enum&nbsp;:&nbsp;char&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatBuffer</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;print&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatInnerIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatBuffer</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>

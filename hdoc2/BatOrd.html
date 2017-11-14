@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -118,17 +119,7 @@
 </div>
 <h1>Module <a href="type_BatOrd.html">BatOrd</a></h1>
 
-<pre><span class="keyword">module</span> BatOrd: <code class="code"><span class="keyword">sig</span></code> <a href="BatOrd.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-An algebraic datatype for ordering.
-<p>
-
-    Traditional OCaml code, under the influence of C comparison
-    functions, has used int-returning comparisons (&lt; 0, 0 or &gt;
-    0). Using an algebraic datatype instead is actually nicer, both
-    for comparison producers (no arbitrary choice of a positive and
-    negative value) and consumers (nice pattern-matching elimination).<br>
-</div>
-<hr width="100%">
+<pre><span id="MODULEBatOrd"><span class="keyword">module</span> BatOrd</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatOrd.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 
 <pre><code><span id="TYPEorder"><span class="keyword">type</span> <code class="type"></code>order</span> = </code></pre><table class="typetable">
 <tr>
@@ -151,14 +142,15 @@ An algebraic datatype for ordering.
 <td align="left" valign="top" >
 <code><span id="TYPEELTorder.Gt"><span class="constructor">Gt</span></span></code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-An algebraic datatype for ordering.
-<p>
+<div class="info-desc">
+<p>An algebraic datatype for ordering.</p>
 
-    Traditional OCaml code, under the influence of C comparison
+<p>Traditional OCaml code, under the influence of C comparison
     functions, has used int-returning comparisons (&lt; 0, 0 or &gt;
     0). Using an algebraic datatype instead is actually nicer, both
     for comparison producers (no arbitrary choice of a positive and
-    negative value) and consumers (nice pattern-matching elimination).<br>
+    negative value) and consumers (nice pattern-matching elimination).</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
@@ -167,63 +159,72 @@ An algebraic datatype for ordering.
 
 <pre><span id="TYPEord"><span class="keyword">type</span> <code class="type">'a</code> ord</span> = <code class="type">'a -> 'a -> <a href="BatOrd.html#TYPEorder">order</a></code> </pre>
 <div class="info ">
-The type of ordering functions returning an <code class="code">order</code> variant.<br>
+<div class="info-desc">
+<p>The type of ordering functions returning an <code class="code">order</code> variant.</p>
+</div>
 </div>
 
 
 <pre><span id="TYPEcomp"><span class="keyword">type</span> <code class="type">'a</code> comp</span> = <code class="type">'a -> 'a -> int</code> </pre>
 <div class="info ">
-The legacy int-returning comparisons :<ul>
+<div class="info-desc">
+<p>The legacy int-returning comparisons :</p>
+<ul>
 <li>compare a b &lt; 0 means a &lt; b</li>
 <li>compare a b = 0 means a = b</li>
 <li>compare a b &gt; 0 means a &gt; b</li>
 </ul>
-<br>
+</div>
 </div>
 
 
-<pre><span class="keyword">module type</span> <a href="BatOrd.Comp.html">Comp</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatOrd.Comp.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-We use <code class="code">compare</code> as member name instead of <code class="code">comp</code>, so that the
-    Comp modules can be used as the legacy OrderedType interface.
+<pre><span id="MODULETYPEComp"><span class="keyword">module type</span> <a href="BatOrd.Comp.html">Comp</a></span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatOrd.Comp.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>We use <code class="code">compare</code> as member name instead of <code class="code">comp</code>, so that the
+    Comp modules can be used as the legacy OrderedType interface.</p>
+
 </div>
 
-<pre><span class="keyword">module type</span> <a href="BatOrd.Ord.html">Ord</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatOrd.Ord.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span id="MODULETYPEOrd"><span class="keyword">module type</span> <a href="BatOrd.Ord.html">Ord</a></span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatOrd.Ord.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
 <pre><span id="VALord0"><span class="keyword">val</span> ord0</span> : <code class="type">int -> <a href="BatOrd.html#TYPEorder">order</a></code></pre>
 <pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">comp</a> -> 'a <a href="BatOrd.html#TYPEord">ord</a></code></pre><div class="info ">
-Returns a variant ordering from a legacy comparison<br>
+<div class="info-desc">
+<p>Returns a variant ordering from a legacy comparison</p>
+</div>
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatOrd.Ord.html">Ord</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Comp</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Comp.html">Comp</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="type">  with type t = Comp.t</code></div></pre>
+<pre><span id="MODULEOrd"><span class="keyword">module</span> <a href="BatOrd.Ord.html">Ord</a></span>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Comp</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Comp.html">Comp</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="type">  with type t = Comp.t</code></div></pre>
 <pre><span id="VALcomp0"><span class="keyword">val</span> comp0</span> : <code class="type"><a href="BatOrd.html#TYPEorder">order</a> -> int</code></pre>
 <pre><span id="VALcomp"><span class="keyword">val</span> comp</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">ord</a> -> 'a <a href="BatOrd.html#TYPEcomp">comp</a></code></pre><div class="info ">
-Returns an legacy comparison from a variant ordering<br>
+<div class="info-desc">
+<p>Returns an legacy comparison from a variant ordering</p>
+</div>
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatOrd.Comp.html">Comp</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Ord</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatOrd.Comp.html">Comp</a></code><code class="type">  with type t = Ord.t</code></div></pre>
+<pre><span id="MODULEComp"><span class="keyword">module</span> <a href="BatOrd.Comp.html">Comp</a></span>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Ord</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatOrd.Comp.html">Comp</a></code><code class="type">  with type t = Ord.t</code></div></pre>
 <pre><span id="VALpoly_comp"><span class="keyword">val</span> poly_comp</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">comp</a></code></pre>
 <pre><span id="VALpoly_ord"><span class="keyword">val</span> poly_ord</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">ord</a></code></pre>
 <pre><span id="VALpoly"><span class="keyword">val</span> poly</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">ord</a></code></pre><div class="info ">
-Polymorphic comparison functions, based on the
+<div class="info-desc">
+<p>Polymorphic comparison functions, based on the
     <code class="code"><span class="constructor">Pervasives</span>.compare</code> function from inria's stdlib, have
     polymorphic types: they claim to be able to compare values of any
     type. In practice, they work for only some types, may fail on
-    function types and may not terminate on cyclic values.
-<p>
+    function types and may not terminate on cyclic values.</p>
 
-    They work by runtime magic, inspecting the values in an untyped
+<p>They work by runtime magic, inspecting the values in an untyped
     way. While being an useful hack for base types and simple
     composite types (say <code class="code">(int&nbsp;*&nbsp;float)&nbsp;list</code>, they do not play well
     with functions, type abstractions, and structures that would need
     a finer notion of equality/comparison. For example, if one
     represent sets as balanced binary tree, one may want set with
     equal elements but different balancings to be equal, which would
-    not be the case using the polymorphic equality function.
-<p>
+    not be the case using the polymorphic equality function.</p>
 
-    When possible, you should therefore avoid relying on these
+<p>When possible, you should therefore avoid relying on these
     polymorphic comparison functions. You should be especially careful
     if your data structure may later evolve to allow cyclic data
-    structures or functions.<br>
+    structures or functions.</p>
+</div>
 </div>
 
 <pre><span id="VALrev_ord0"><span class="keyword">val</span> rev_ord0</span> : <code class="type"><a href="BatOrd.html#TYPEorder">order</a> -> <a href="BatOrd.html#TYPEorder">order</a></code></pre>
@@ -231,23 +232,26 @@ Polymorphic comparison functions, based on the
 <pre><span id="VALrev_ord"><span class="keyword">val</span> rev_ord</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">ord</a> -> 'a <a href="BatOrd.html#TYPEord">ord</a></code></pre>
 <pre><span id="VALrev_comp"><span class="keyword">val</span> rev_comp</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">comp</a> -> 'a <a href="BatOrd.html#TYPEcomp">comp</a></code></pre>
 <pre><span id="VALrev"><span class="keyword">val</span> rev</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">ord</a> -> 'a <a href="BatOrd.html#TYPEord">ord</a></code></pre><div class="info ">
-Reverse a given ordering. If <code class="code"><span class="constructor">Int</span>.ord</code> sorts integer by increasing
-    order, <code class="code">rev&nbsp;<span class="constructor">Int</span>.ord</code> will sort them by decreasing order.<br>
+<div class="info-desc">
+<p>Reverse a given ordering. If <code class="code"><span class="constructor">Int</span>.ord</code> sorts integer by increasing
+    order, <code class="code">rev&nbsp;<span class="constructor">Int</span>.ord</code> will sort them by decreasing order.</p>
+</div>
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatOrd.RevOrd.html">RevOrd</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Ord</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="type">  with type t = Ord.t</code></div></pre>
-<pre><span class="keyword">module</span> <a href="BatOrd.RevComp.html">RevComp</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Comp</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Comp.html">Comp</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatOrd.Comp.html">Comp</a></code><code class="type">  with type t = Comp.t</code></div></pre>
-<pre><span class="keyword">module</span> <a href="BatOrd.Rev.html">Rev</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Ord</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="type">  with type t = Ord.t</code></div></pre>
+<pre><span id="MODULERevOrd"><span class="keyword">module</span> <a href="BatOrd.RevOrd.html">RevOrd</a></span>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Ord</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="type">  with type t = Ord.t</code></div></pre>
+<pre><span id="MODULERevComp"><span class="keyword">module</span> <a href="BatOrd.RevComp.html">RevComp</a></span>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Comp</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Comp.html">Comp</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatOrd.Comp.html">Comp</a></code><code class="type">  with type t = Comp.t</code></div></pre>
+<pre><span id="MODULERev"><span class="keyword">module</span> <a href="BatOrd.Rev.html">Rev</a></span>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Ord</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="type">  with type t = Ord.t</code></div></pre>
 <pre><span id="TYPEeq"><span class="keyword">type</span> <code class="type">'a</code> eq</span> = <code class="type">'a -> 'a -> bool</code> </pre>
 <div class="info ">
-The type for equality function.
-<p>
+<div class="info-desc">
+<p>The type for equality function.</p>
 
-    All ordered types also support equality, as equality can be
+<p>All ordered types also support equality, as equality can be
     derived from ordering. However, there are also cases where
     elements may be compared for equality, but have no natural
     ordering. It is therefore useful to provide equality as an
-    independent notion.<br>
+    independent notion.</p>
+</div>
 </div>
 
 
@@ -256,16 +260,20 @@ The type for equality function.
 <pre><span id="VALeq_ord"><span class="keyword">val</span> eq_ord</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">ord</a> -> 'a <a href="BatOrd.html#TYPEeq">eq</a></code></pre>
 <pre><span id="VALeq_comp"><span class="keyword">val</span> eq_comp</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">comp</a> -> 'a <a href="BatOrd.html#TYPEeq">eq</a></code></pre>
 <pre><span id="VALeq"><span class="keyword">val</span> eq</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">ord</a> -> 'a <a href="BatOrd.html#TYPEeq">eq</a></code></pre><div class="info ">
-Derives an equality function from an ordering function.<br>
+<div class="info-desc">
+<p>Derives an equality function from an ordering function.</p>
+</div>
 </div>
 
-<pre><span class="keyword">module type</span> <a href="BatOrd.Eq.html">Eq</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatOrd.Eq.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
-<pre><span class="keyword">module</span> <a href="BatOrd.EqOrd.html">EqOrd</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Ord</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatOrd.Eq.html">Eq</a></code><code class="type">  with type t = Ord.t</code></div></pre>
-<pre><span class="keyword">module</span> <a href="BatOrd.EqComp.html">EqComp</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Comp</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Comp.html">Comp</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatOrd.Eq.html">Eq</a></code><code class="type">  with type t = Comp.t</code></div></pre>
-<pre><span class="keyword">module</span> <a href="BatOrd.Eq.html">Eq</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Ord</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatOrd.Eq.html">Eq</a></code><code class="type">  with type t = Ord.t</code></div></pre>
+<pre><span id="MODULETYPEEq"><span class="keyword">module type</span> <a href="BatOrd.Eq.html">Eq</a></span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatOrd.Eq.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span id="MODULEEqOrd"><span class="keyword">module</span> <a href="BatOrd.EqOrd.html">EqOrd</a></span>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Ord</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatOrd.Eq.html">Eq</a></code><code class="type">  with type t = Ord.t</code></div></pre>
+<pre><span id="MODULEEqComp"><span class="keyword">module</span> <a href="BatOrd.EqComp.html">EqComp</a></span>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Comp</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Comp.html">Comp</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatOrd.Eq.html">Eq</a></code><code class="type">  with type t = Comp.t</code></div></pre>
+<pre><span id="MODULEEq"><span class="keyword">module</span> <a href="BatOrd.Eq.html">Eq</a></span>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">Ord</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">Ord</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatOrd.Eq.html">Eq</a></code><code class="type">  with type t = Ord.t</code></div></pre>
 <pre><span id="TYPEchoice"><span class="keyword">type</span> <code class="type">'a</code> choice</span> = <code class="type">'a -> 'a -> 'a</code> </pre>
 <div class="info ">
-choice functions, see <code class="code">min</code> and <code class="code">max</code>.<br>
+<div class="info-desc">
+<p>choice functions, see <code class="code">min</code> and <code class="code">max</code>.</p>
+</div>
 </div>
 
 
@@ -274,35 +282,41 @@ choice functions, see <code class="code">min</code> and <code class="code">max</
 <pre><span id="VALmin_comp"><span class="keyword">val</span> min_comp</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">comp</a> -> 'a <a href="BatOrd.html#TYPEchoice">choice</a></code></pre>
 <pre><span id="VALmax_comp"><span class="keyword">val</span> max_comp</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">comp</a> -> 'a <a href="BatOrd.html#TYPEchoice">choice</a></code></pre>
 <pre><span id="VALmin"><span class="keyword">val</span> min</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">ord</a> -> 'a <a href="BatOrd.html#TYPEchoice">choice</a></code></pre><div class="info ">
-<code class="code">min&nbsp;ord</code> will choose the smallest element, according to <code class="code">ord</code>.
-    For example, <code class="code">min&nbsp;<span class="constructor">Int</span>.ord&nbsp;1&nbsp;2</code> will return <code class="code">1</code>.
-<p>
+<div class="info-desc">
+<p><code class="code">min&nbsp;ord</code> will choose the smallest element, according to <code class="code">ord</code>.
+    For example, <code class="code">min&nbsp;<span class="constructor">Int</span>.ord&nbsp;1&nbsp;2</code> will return <code class="code">1</code>.</p>
 
-    <pre class="codepre"><code class="code">      <span class="comment">(* the minimum element of a list *)</span>
+<pre class="codepre"><code class="code">      <span class="comment">(* the minimum element of a list *)</span>
       <span class="keyword">let</span> list_min ord = <span class="constructor">List</span>.reduce (min ord)
-    </code></pre><br>
+    </code></pre></div>
 </div>
 
 <pre><span id="VALmax"><span class="keyword">val</span> max</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">ord</a> -> 'a <a href="BatOrd.html#TYPEchoice">choice</a></code></pre><div class="info ">
-<code class="code">max&nbsp;ord</code> will choose the biggest element according to <code class="code">ord</code>.<br>
+<div class="info-desc">
+<p><code class="code">max&nbsp;ord</code> will choose the biggest element according to <code class="code">ord</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALbin_comp"><span class="keyword">val</span> bin_comp</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">comp</a> -> 'a -> 'a -> 'b <a href="BatOrd.html#TYPEcomp">comp</a> -> 'b -> 'b -> int</code></pre>
 <pre><span id="VALbin_ord"><span class="keyword">val</span> bin_ord</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">ord</a> -> 'a -> 'a -> 'b <a href="BatOrd.html#TYPEord">ord</a> -> 'b -> 'b -> <a href="BatOrd.html#TYPEorder">order</a></code></pre><div class="info ">
-binary lifting of the comparison function, using lexicographic order:
+<div class="info-desc">
+<p>binary lifting of the comparison function, using lexicographic order:
     <code class="code">bin_ord&nbsp;ord1&nbsp;v1&nbsp;v1'&nbsp;ord2&nbsp;v2&nbsp;v2'</code> is <code class="code">ord2&nbsp;v2&nbsp;v2'</code> if <code class="code">ord1&nbsp;v1&nbsp;v1'&nbsp;=&nbsp;<span class="constructor">Eq</span></code>,
-    and <code class="code">ord1&nbsp;v1&nbsp;v1'</code> otherwhise.<br>
+    and <code class="code">ord1&nbsp;v1&nbsp;v1'</code> otherwhise.</p>
+</div>
 </div>
 
 <pre><span id="VALbin_eq"><span class="keyword">val</span> bin_eq</span> : <code class="type">'a <a href="BatOrd.html#TYPEeq">eq</a> -> 'a -> 'a -> 'b <a href="BatOrd.html#TYPEeq">eq</a> -> 'b -> 'b -> bool</code></pre>
 <pre><span id="VALmap_eq"><span class="keyword">val</span> map_eq</span> : <code class="type">('a -> 'b) -> 'b <a href="BatOrd.html#TYPEeq">eq</a> -> 'a <a href="BatOrd.html#TYPEeq">eq</a></code></pre>
 <pre><span id="VALmap_comp"><span class="keyword">val</span> map_comp</span> : <code class="type">('a -> 'b) -> 'b <a href="BatOrd.html#TYPEcomp">comp</a> -> 'a <a href="BatOrd.html#TYPEcomp">comp</a></code></pre>
 <pre><span id="VALmap_ord"><span class="keyword">val</span> map_ord</span> : <code class="type">('a -> 'b) -> 'b <a href="BatOrd.html#TYPEord">ord</a> -> 'a <a href="BatOrd.html#TYPEord">ord</a></code></pre><div class="info ">
-These functions extend an existing equality/comparison/ordering to
+<div class="info-desc">
+<p>These functions extend an existing equality/comparison/ordering to
     a new domain through a mapping function.  For example, to order
     sets by their cardinality, use <code class="code">map_ord&nbsp;<span class="constructor">Set</span>.cardinal&nbsp;<span class="constructor">Int</span>.ord</code>.
     The input of the mapping function is the type you want to compare,
-    so this is the reverse of <code class="code"><span class="constructor">List</span>.map</code>.<br>
+    so this is the reverse of <code class="code"><span class="constructor">List</span>.map</code>.</p>
+</div>
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatOrd.Incubator.html">Incubator</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatOrd.Incubator.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>
+<pre><span id="MODULEIncubator"><span class="keyword">module</span> <a href="BatOrd.Incubator.html">Incubator</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatOrd.Incubator.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>

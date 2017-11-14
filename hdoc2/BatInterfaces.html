@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -118,37 +119,38 @@
 </div>
 <h1>Module <a href="type_BatInterfaces.html">BatInterfaces</a></h1>
 
-<pre><span class="keyword">module</span> BatInterfaces: <code class="code"><span class="keyword">sig</span></code> <a href="BatInterfaces.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Common signatures for data structures.<br>
+<pre><span id="MODULEBatInterfaces"><span class="keyword">module</span> BatInterfaces</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatInterfaces.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Common signatures for data structures.</p>
+</div>
 </div>
 <hr width="100%">
 
-<pre><span class="keyword">module type</span> <a href="BatInterfaces.Mappable.html">Mappable</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatInterfaces.Mappable.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-A signature for data structures which have a
-    <code class="code">map&nbsp;:&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>a&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b&nbsp;t)</code> operation.
+<pre><span id="MODULETYPEMappable"><span class="keyword">module type</span> <a href="BatInterfaces.Mappable.html">Mappable</a></span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatInterfaces.Mappable.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>A signature for data structures which have a
+    <code class="code">map&nbsp;:&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>a&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b&nbsp;t)</code> operation.</p>
+
 </div>
 
-<pre><span class="keyword">module type</span> <a href="BatInterfaces.OrderedType.html">OrderedType</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatInterfaces.OrderedType.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><br>
-Monads are a design pattern which may be used to enforce strong
+<pre><span id="MODULETYPEOrderedType"><span class="keyword">module type</span> <a href="BatInterfaces.OrderedType.html">OrderedType</a></span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatInterfaces.OrderedType.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><p>Monads are a design pattern which may be used to enforce strong
     functional or non-functional constraints on the manipulation of
     resources, while remaining in the world of functional programming.
     For instance, monads may serve to implement approximations of a
     types-and-effects type system, to enforce functional use of arrays
     or other mutable data structures, or to enforce the fact that only
-    files opened for writing may be actually used for writing.
-<p>
+    files opened for writing may be actually used for writing.</p>
 
-    For more information on monads, see
+<p>For more information on monads, see
     <a href="http://enfranchisedmind.com/blog/2007/08/06/a-monad-tutorial-for-ocaml/">
-    A Monad Tutorial for Ocaml</a>.
-<p>
+    A Monad Tutorial for Ocaml</a>.</p>
 
-    This definition is compatible with the standard syntax extension
+<p>This definition is compatible with the standard syntax extension
     for monads.  For more information, see
     <a href="http://www.cas.mcmaster.ca/~carette/pa_monad/"> the
-    documentation of pa_monad</a>.<br>
+    documentation of pa_monad</a>.</p>
 
-<pre><span class="keyword">module type</span> <a href="BatInterfaces.Monad.html">Monad</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatInterfaces.Monad.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-Signature for monads
+<pre><span id="MODULETYPEMonad"><span class="keyword">module type</span> <a href="BatInterfaces.Monad.html">Monad</a></span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatInterfaces.Monad.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>Signature for monads</p>
+
 </div>
 </body></html>

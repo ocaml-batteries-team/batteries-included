@@ -24,6 +24,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -116,10 +117,14 @@
 </div>
 <h1>Module <a href="type_BatTuple.Tuple2.html">BatTuple.Tuple2</a></h1>
 
-<pre><span class="keyword">module</span> Tuple2: <code class="code"><span class="keyword">sig</span></code> <a href="BatTuple.Tuple2.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-Pairs. Some of the functions here are also exposed in
-    <code class="code"><span class="constructor">Pervasives</span></code>, as documented below.<br>
-<b>Author(s):</b> Edgar Friendly, Ashish Agarwal<br>
+<pre><span id="MODULETuple2"><span class="keyword">module</span> Tuple2</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatTuple.Tuple2.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>Pairs. Some of the functions here are also exposed in
+    <code class="code"><span class="constructor">Pervasives</span></code>, as documented below.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Author(s):</b> Edgar Friendly, Ashish Agarwal</li>
+</ul>
 </div>
 <hr width="100%">
 
@@ -128,40 +133,53 @@ Pairs. Some of the functions here are also exposed in
 
 <pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">'a -> 'b -> 'a * 'b</code></pre>
 <pre><span id="VALfirst"><span class="keyword">val</span> first</span> : <code class="type">'a * 'b -> 'a</code></pre><div class="info ">
-Equivalent to <code class="code"><span class="constructor">Pervasives</span>.fst</code>.<br>
+<div class="info-desc">
+<p>Equivalent to <code class="code"><span class="constructor">Pervasives</span>.fst</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALsecond"><span class="keyword">val</span> second</span> : <code class="type">'a * 'b -> 'b</code></pre><div class="info ">
-Equivalent to <code class="code"><span class="constructor">Pervasives</span>.snd</code>.<br>
+<div class="info-desc">
+<p>Equivalent to <code class="code"><span class="constructor">Pervasives</span>.snd</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALswap"><span class="keyword">val</span> swap</span> : <code class="type">'a * 'b -> 'b * 'a</code></pre>
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'c) -> ('b -> 'd) -> 'a * 'b -> 'c * 'd</code></pre><div class="info ">
-Equivalent to <code class="code"><span class="constructor">BatPervasives</span>.</code><table><tr><td></td><td><span class="comment">(***)</span></td></tr></table><code class="code"></code>.<br>
+<div class="info-desc">
+<p>Equivalent to <code class="code"><span class="constructor">BatPervasives</span>.</code><table><tr><td></td><td><span class="comment">(***)</span></td></tr></table><code class="code"></code>.</p>
+</div>
 </div>
 
 <pre><span id="VALmapn"><span class="keyword">val</span> mapn</span> : <code class="type">('a -> 'b) -> 'a * 'a -> 'b * 'b</code></pre><div class="info ">
-Like <a href="BatTuple.Tuple2.html#VALmap"><code class="code"><span class="constructor">BatTuple</span>.<span class="constructor">Tuple2</span>.map</code></a> but specialized for tuples with elements of the
-      same type.
-<p>
+<div class="info-desc">
+<p>Like <a href="BatTuple.Tuple2.html#VALmap"><code class="code"><span class="constructor">BatTuple</span>.<span class="constructor">Tuple2</span>.map</code></a> but specialized for tuples with elements of the
+      same type.</p>
 
-      <code class="code">mapn&nbsp;f</code> is equivalent to <code class="code">map&nbsp;f&nbsp;f</code>.<br>
+<p><code class="code">mapn&nbsp;f</code> is equivalent to <code class="code">map&nbsp;f&nbsp;f</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALmap1"><span class="keyword">val</span> map1</span> : <code class="type">('a -> 'c) -> 'a * 'b -> 'c * 'b</code></pre><div class="info ">
-<code class="code">map1&nbsp;f&nbsp;(x,y)</code> returns (f x,y)<br>
+<div class="info-desc">
+<p><code class="code">map1&nbsp;f&nbsp;(x,y)</code> returns (f x,y)</p>
+</div>
 </div>
 
 <pre><span id="VALmap2"><span class="keyword">val</span> map2</span> : <code class="type">('b -> 'c) -> 'a * 'b -> 'a * 'c</code></pre><div class="info ">
-<code class="code">map2&nbsp;f&nbsp;(x,y)</code> returns (x,f y)<br>
+<div class="info-desc">
+<p><code class="code">map2&nbsp;f&nbsp;(x,y)</code> returns (x,f y)</p>
+</div>
 </div>
 
 <pre><span id="VALcurry"><span class="keyword">val</span> curry</span> : <code class="type">('a * 'b -> 'c) -> 'a -> 'b -> 'c</code></pre>
 <pre><span id="VALuncurry"><span class="keyword">val</span> uncurry</span> : <code class="type">('a -> 'b -> 'c) -> 'a * 'b -> 'c</code></pre>
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a enumerable -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a enumerable</code></pre><div class="info ">
-<b>Raises</b> <code>Failure</code> if enum does not contain at least 2
-      elements.<br>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Failure</code> if enum does not contain at least 2
+      elements.</li>
+</ul>
 </div>
 
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?sep:string -><br>       ?last:string -><br>       ('o <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'a -> unit) -><br>       ('o <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'b -> unit) -> 'o <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> 'a * 'b -> unit</code></pre>
@@ -172,6 +190,6 @@ Like <a href="BatTuple.Tuple2.html#VALmap"><code class="code"><span class="const
 <pre><span id="VALeq"><span class="keyword">val</span> eq</span> : <code class="type">'a <a href="BatOrd.html#TYPEeq">BatOrd.eq</a> -> 'b <a href="BatOrd.html#TYPEeq">BatOrd.eq</a> -> ('a * 'b) <a href="BatOrd.html#TYPEeq">BatOrd.eq</a></code></pre>
 <pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">BatOrd.ord</a> -> 'b <a href="BatOrd.html#TYPEord">BatOrd.ord</a> -> ('a * 'b) <a href="BatOrd.html#TYPEord">BatOrd.ord</a></code></pre>
 <pre><span id="VALcomp"><span class="keyword">val</span> comp</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a> -> 'b <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a> -> ('a * 'b) <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a></code></pre>
-<pre><span class="keyword">module</span> <a href="BatTuple.Tuple2.Eq.html">Eq</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">T1</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Eq.html">BatOrd.Eq</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">T2</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Eq.html">BatOrd.Eq</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type">Eq</code><code class="type">  with type t = T1.t * T2.t</code></div></div></pre>
-<pre><span class="keyword">module</span> <a href="BatTuple.Tuple2.Ord.html">Ord</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">T1</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">BatOrd.Ord</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">T2</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">BatOrd.Ord</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type">Ord</code><code class="type">  with type t = T1.t * T2.t</code></div></div></pre>
-<pre><span class="keyword">module</span> <a href="BatTuple.Tuple2.Comp.html">Comp</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">T1</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Comp.html">BatOrd.Comp</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">T2</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Comp.html">BatOrd.Comp</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type">Comp</code><code class="type">  with type t = T1.t * T2.t</code></div></div></pre></body></html>
+<pre><span id="MODULEEq"><span class="keyword">module</span> <a href="BatTuple.Tuple2.Eq.html">Eq</a></span>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">T1</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Eq.html">BatOrd.Eq</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">T2</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Eq.html">BatOrd.Eq</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type">Eq</code><code class="type">  with type t = T1.t * T2.t</code></div></div></pre>
+<pre><span id="MODULEOrd"><span class="keyword">module</span> <a href="BatTuple.Tuple2.Ord.html">Ord</a></span>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">T1</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">BatOrd.Ord</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">T2</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Ord.html">BatOrd.Ord</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type">Ord</code><code class="type">  with type t = T1.t * T2.t</code></div></div></pre>
+<pre><span id="MODULEComp"><span class="keyword">module</span> <a href="BatTuple.Tuple2.Comp.html">Comp</a></span>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">T1</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Comp.html">BatOrd.Comp</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">T2</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatOrd.Comp.html">BatOrd.Comp</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type">Comp</code><code class="type">  with type t = T1.t * T2.t</code></div></div></pre></body></html>

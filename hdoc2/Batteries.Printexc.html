@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -124,180 +125,220 @@
 </div>
 <h1>Module <a href="type_Batteries.Printexc.html">Batteries.Printexc</a></h1>
 
-<pre><span class="keyword">module</span> Printexc: <code class="type"><a href="BatPrintexc.html">BatPrintexc</a></code></pre><hr width="100%">
+<pre><span id="MODULEPrintexc"><span class="keyword">module</span> Printexc</span>: <code class="type"><a href="BatPrintexc.html">BatPrintexc</a></code></pre><hr width="100%">
 
 <pre><span id="VALpass"><span class="keyword">val</span> pass</span> : <code class="type">('a -> 'b) -> 'a -> 'b</code></pre><div class="info ">
-<code class="code"><span class="constructor">Printexc</span>.pass&nbsp;fn&nbsp;x</code> applies <code class="code">fn</code> to <code class="code">x</code> and returns the result.
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Printexc</span>.pass&nbsp;fn&nbsp;x</code> applies <code class="code">fn</code> to <code class="code">x</code> and returns the result.
     If the evaluation of <code class="code">fn&nbsp;x</code> raises any exception, the name of the
     exception is printed on standard error output, and the exception
     is raised again.  The typical use is to catch and report
     exceptions that escape a function application. This function is a
-    renamed version of <code class="code"><span class="constructor">Printexc</span>.print</code> from stdlib.<br>
+    renamed version of <code class="code"><span class="constructor">Printexc</span>.print</code> from stdlib.</p>
+</div>
 </div>
 
 <pre><span id="VALcatch"><span class="keyword">val</span> catch</span> : <code class="type">('a -> 'b) -> 'a -> 'b</code></pre><div class="info ">
-<code class="code"><span class="constructor">Printexc</span>.catch&nbsp;fn&nbsp;x</code> is similar to <code class="code"><span class="constructor">Printexc</span>.print</code>, but aborts
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Printexc</span>.catch&nbsp;fn&nbsp;x</code> is similar to <code class="code"><span class="constructor">Printexc</span>.print</code>, but aborts
     the program with exit code 2 after printing the uncaught exception.
     This function is deprecated: the runtime system is now able to
     print uncaught exceptions as precisely as <code class="code"><span class="constructor">Printexc</span>.catch</code> does.
     Moreover, calling <code class="code"><span class="constructor">Printexc</span>.catch</code> makes it harder to track the
     location of the exception using the debugger or the stack backtrace
-    facility.  So, do not use <code class="code"><span class="constructor">Printexc</span>.catch</code> in new code.<br>
+    facility.  So, do not use <code class="code"><span class="constructor">Printexc</span>.catch</code> in new code.</p>
+</div>
 </div>
 
 <pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">exn -> string</code></pre><div class="info ">
-<code class="code"><span class="constructor">Printexc</span>.to_string&nbsp;e</code> returns a string representation of the
-    exception <code class="code">e</code>.<br>
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Printexc</span>.to_string&nbsp;e</code> returns a string representation of the
+    exception <code class="code">e</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALprint_backtrace"><span class="keyword">val</span> print_backtrace</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> unit</code></pre><div class="info ">
-<code class="code">print_backtrace&nbsp;oc</code> Prints the an exception backtrace on the
+<div class="info-desc">
+<p><code class="code">print_backtrace&nbsp;oc</code> Prints the an exception backtrace on the
     output channel <code class="code">oc</code>.  The backtrace lists the program locations
     where the most-recently raised exception was raised and where it
-    was propagated through function calls.<br>
-<b>Since</b> 1.4.0<br>
+    was propagated through function calls.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 1.4.0</li>
+</ul>
 </div>
 
 <pre><span id="VALget_backtrace"><span class="keyword">val</span> get_backtrace</span> : <code class="type">unit -> string</code></pre><div class="info ">
-<code class="code"><span class="constructor">Printexc</span>.get_backtrace&nbsp;()</code> returns a string containing the same
-    exception backtrace that <code class="code"><span class="constructor">Printexc</span>.print_backtrace</code> would print.<br>
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Printexc</span>.get_backtrace&nbsp;()</code> returns a string containing the same
+    exception backtrace that <code class="code"><span class="constructor">Printexc</span>.print_backtrace</code> would print.</p>
+</div>
 </div>
 
 <pre><span id="VALrecord_backtrace"><span class="keyword">val</span> record_backtrace</span> : <code class="type">bool -> unit</code></pre><div class="info ">
-<code class="code"><span class="constructor">Printexc</span>.record_backtrace&nbsp;b</code> turns recording of exception
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Printexc</span>.record_backtrace&nbsp;b</code> turns recording of exception
     backtraces on (if <code class="code">b&nbsp;=&nbsp;<span class="keyword">true</span></code>) or off (if <code class="code">b&nbsp;=&nbsp;<span class="keyword">false</span></code>).  Initially,
     backtraces are not recorded, unless the <code class="code">b</code> flag is given to the
-    program through the <code class="code"><span class="constructor">OCAMLRUNPARAM</span></code> variable.<br>
+    program through the <code class="code"><span class="constructor">OCAMLRUNPARAM</span></code> variable.</p>
+</div>
 </div>
 
 <pre><span id="VALbacktrace_status"><span class="keyword">val</span> backtrace_status</span> : <code class="type">unit -> bool</code></pre><div class="info ">
-<code class="code"><span class="constructor">Printexc</span>.backtrace_status()</code> returns <code class="code"><span class="keyword">true</span></code> if exception
-    backtraces are currently recorded, <code class="code"><span class="keyword">false</span></code> if not.<br>
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Printexc</span>.backtrace_status()</code> returns <code class="code"><span class="keyword">true</span></code> if exception
+    backtraces are currently recorded, <code class="code"><span class="keyword">false</span></code> if not.</p>
+</div>
 </div>
 
 <pre><span id="VALregister_printer"><span class="keyword">val</span> register_printer</span> : <code class="type">(exn -> string option) -> unit</code></pre><div class="info ">
-<code class="code"><span class="constructor">Printexc</span>.register_printer&nbsp;fn</code> registers <code class="code">fn</code> as an exception
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Printexc</span>.register_printer&nbsp;fn</code> registers <code class="code">fn</code> as an exception
     printer.  The printer should return <code class="code"><span class="constructor">None</span></code> or raise an exception
     if it does not know how to convert the passed exception, and <code class="code"><span class="constructor">Some</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;s</code> with <code class="code">s</code> the resulting string if it can convert the passed
-    exception. Exceptions raised by the printer are ignored.
-<p>
+    exception. Exceptions raised by the printer are ignored.</p>
 
-    When converting an exception into a string, the printers will be invoked
+<p>When converting an exception into a string, the printers will be invoked
     in the reverse order of their registrations, until a printer returns
     a <code class="code"><span class="constructor">Some</span>&nbsp;s</code> value (if no such printer exists, the runtime will use a
-    generic printer).<br>
+    generic printer).</p>
+</div>
 </div>
 
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> exn -> unit</code></pre><div class="info ">
-Print an exception.  The stdlib <code class="code">print</code> function is now named <code class="code">!pass</code>.<br>
+<div class="info-desc">
+<p>Print an exception.  The stdlib <code class="code">print</code> function is now named <code class="code">!pass</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALraise_with_backtrace"><span class="keyword">val</span> raise_with_backtrace</span> : <code class="type">exn -> Printexc.raw_backtrace -> 'a</code></pre><div class="info ">
-Reraise the exception using the given raw_backtrace for the
-    origin of the exception<br>
-<b>Since</b> 2.7.0 and OCaml 4.05.0<br>
+<div class="info-desc">
+<p>Reraise the exception using the given raw_backtrace for the
+    origin of the exception</p>
 </div>
-<br>
-<h6 id="6_Rawbacktraces">Raw backtraces</h6><br>
-
+<ul class="info-attributes">
+<li><b>Since</b> 2.7.0 and OCaml 4.05.0</li>
+</ul>
+</div>
+<h7 id="6_Rawbacktraces">Raw backtraces</h7>
 <pre><span id="TYPEraw_backtrace"><span class="keyword">type</span> <code class="type"></code>raw_backtrace</span> = <code class="type">Printexc.raw_backtrace</code> </pre>
 <div class="info ">
-The abstract type <code class="code">raw_backtrace</code> stores a backtrace in
+<div class="info-desc">
+<p>The abstract type <code class="code">raw_backtrace</code> stores a backtrace in
     a low-level format, instead of directly exposing them as string as
-    the <code class="code">get_backtrace()</code> function does.
-<p>
+    the <code class="code">get_backtrace()</code> function does.</p>
 
-    This allows delaying the formatting of backtraces to when they are
+<p>This allows delaying the formatting of backtraces to when they are
     actually printed, which may be useful if you record more
-    backtraces than you print.
-<p>
+    backtraces than you print.</p>
 
-    Raw backtraces cannot be marshalled. If you need marshalling, you
+<p>Raw backtraces cannot be marshalled. If you need marshalling, you
     should use the array returned by the <code class="code">backtrace_slots</code> function of
-    the next section.<br>
-<b>Since</b> 2.2.0 and OCaml 4.01.0<br>
+    the next section.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.2.0 and OCaml 4.01.0</li>
+</ul>
 </div>
 
 
 <pre><span id="VALget_raw_backtrace"><span class="keyword">val</span> get_raw_backtrace</span> : <code class="type">unit -> <a href="BatPrintexc.html#TYPEraw_backtrace">raw_backtrace</a></code></pre><div class="info ">
-<code class="code"><span class="constructor">Printexc</span>.get_raw_backtrace&nbsp;()</code> returns the same exception
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Printexc</span>.get_raw_backtrace&nbsp;()</code> returns the same exception
     backtrace that <code class="code"><span class="constructor">Printexc</span>.print_backtrace</code> would print, but in
-    a raw format.<br>
-<b>Since</b> 2.2.0 and OCaml 4.01.0<br>
+    a raw format.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.2.0 and OCaml 4.01.0</li>
+</ul>
 </div>
 
 <pre><span id="VALprint_raw_backtrace"><span class="keyword">val</span> print_raw_backtrace</span> : <code class="type">Pervasives.out_channel -> <a href="BatPrintexc.html#TYPEraw_backtrace">raw_backtrace</a> -> unit</code></pre><div class="info ">
-Print a raw backtrace in the same format
-    <code class="code"><span class="constructor">Printexc</span>.print_backtrace</code> uses.<br>
-<b>Since</b> 2.2.0 and OCaml 4.01.0<br>
+<div class="info-desc">
+<p>Print a raw backtrace in the same format
+    <code class="code"><span class="constructor">Printexc</span>.print_backtrace</code> uses.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.2.0 and OCaml 4.01.0</li>
+</ul>
 </div>
 
 <pre><span id="VALraw_backtrace_to_string"><span class="keyword">val</span> raw_backtrace_to_string</span> : <code class="type"><a href="BatPrintexc.html#TYPEraw_backtrace">raw_backtrace</a> -> string</code></pre><div class="info ">
-Return a string from a raw backtrace, in the same format
-    <code class="code"><span class="constructor">Printexc</span>.get_backtrace</code> uses.<br>
-<b>Since</b> 2.2.0 and OCaml 4.01.0<br>
+<div class="info-desc">
+<p>Return a string from a raw backtrace, in the same format
+    <code class="code"><span class="constructor">Printexc</span>.get_backtrace</code> uses.</p>
 </div>
-<br>
-<h6 id="6_Currentcallstack">Current call stack</h6><br>
-
+<ul class="info-attributes">
+<li><b>Since</b> 2.2.0 and OCaml 4.01.0</li>
+</ul>
+</div>
+<h7 id="6_Currentcallstack">Current call stack</h7>
 <pre><span id="VALget_callstack"><span class="keyword">val</span> get_callstack</span> : <code class="type">int -> <a href="BatPrintexc.html#TYPEraw_backtrace">raw_backtrace</a></code></pre><div class="info ">
-<code class="code"><span class="constructor">Printexc</span>.get_callstack&nbsp;n</code> returns a description of the top of the
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Printexc</span>.get_callstack&nbsp;n</code> returns a description of the top of the
     call stack on the current program point (for the current thread),
     with at most <code class="code">n</code> entries.  (Note: this function is not related to
-    exceptions at all, despite being part of the <code class="code"><span class="constructor">Printexc</span></code> module.)<br>
-<b>Since</b> 2.2.0 and OCaml 4.01.0<br>
+    exceptions at all, despite being part of the <code class="code"><span class="constructor">Printexc</span></code> module.)</p>
 </div>
-<br>
-<h6 id="6_Uncaughtexceptions">Uncaught exceptions</h6><br>
-
+<ul class="info-attributes">
+<li><b>Since</b> 2.2.0 and OCaml 4.01.0</li>
+</ul>
+</div>
+<h7 id="6_Uncaughtexceptions">Uncaught exceptions</h7>
 <pre><span id="VALset_uncaught_exception_handler"><span class="keyword">val</span> set_uncaught_exception_handler</span> : <code class="type">(exn -> <a href="BatPrintexc.html#TYPEraw_backtrace">raw_backtrace</a> -> unit) -> unit</code></pre><div class="info ">
-<code class="code"><span class="constructor">Printexc</span>.set_uncaught_exception_handler&nbsp;fn</code> registers <code class="code">fn</code> as the handler
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Printexc</span>.set_uncaught_exception_handler&nbsp;fn</code> registers <code class="code">fn</code> as the handler
     for uncaught exceptions. The default handler prints the exception and
-    backtrace on standard error output.
-<p>
+    backtrace on standard error output.</p>
 
-    Note that when <code class="code">fn</code> is called all the functions registered with
+<p>Note that when <code class="code">fn</code> is called all the functions registered with
     <code class="code"><span class="constructor">Pervasives</span>.at_exit</code> have already been called. Because of this you must
-    make sure any output channel <code class="code">fn</code> writes on is flushed.
-<p>
+    make sure any output channel <code class="code">fn</code> writes on is flushed.</p>
 
-    If <code class="code">fn</code> raises an exception, it is ignored.<br>
-<b>Since</b> 2.3.0 and OCaml 4.02.0<br>
+<p>If <code class="code">fn</code> raises an exception, it is ignored.</p>
 </div>
-<br>
-<h6 id="6_Manipulationofbacktraceinformation">Manipulation of backtrace information</h6>
-<p>
-
-    Those function allow to traverse the slots of a raw backtrace,
-    extract information from them in a programmer-friendly format.<br>
+<ul class="info-attributes">
+<li><b>Since</b> 2.3.0 and OCaml 4.02.0</li>
+</ul>
+</div>
+<h7 id="6_Manipulationofbacktraceinformation">Manipulation of backtrace information</h7>
+<p>Those function allow to traverse the slots of a raw backtrace,
+    extract information from them in a programmer-friendly format.</p>
 
 <pre><span id="TYPEbacktrace_slot"><span class="keyword">type</span> <code class="type"></code>backtrace_slot</span> = <code class="type">Printexc.backtrace_slot</code> </pre>
 <div class="info ">
-The abstract type <code class="code">backtrace_slot</code> represents a single slot of
-    a backtrace.<br>
-<b>Since</b> 2.3.0 and OCaml 4.02<br>
+<div class="info-desc">
+<p>The abstract type <code class="code">backtrace_slot</code> represents a single slot of
+    a backtrace.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.3.0 and OCaml 4.02</li>
+</ul>
 </div>
 
 
 <pre><span id="VALbacktrace_slots"><span class="keyword">val</span> backtrace_slots</span> : <code class="type"><a href="BatPrintexc.html#TYPEraw_backtrace">raw_backtrace</a> -> <a href="BatPrintexc.html#TYPEbacktrace_slot">backtrace_slot</a> array option</code></pre><div class="info ">
-Returns the slots of a raw backtrace, or <code class="code"><span class="constructor">None</span></code> if none of them
-    contain useful information.
-<p>
+<div class="info-desc">
+<p>Returns the slots of a raw backtrace, or <code class="code"><span class="constructor">None</span></code> if none of them
+    contain useful information.</p>
 
-    In the return array, the slot at index <code class="code">0</code> corresponds to the most
+<p>In the return array, the slot at index <code class="code">0</code> corresponds to the most
     recent function call, raise, or primitive <code class="code">get_backtrace</code> call in
-    the trace.
-<p>
+    the trace.</p>
 
-    Some possible reasons for returning <code class="code"><span class="constructor">None</span></code> are as follow:<ul>
+<p>Some possible reasons for returning <code class="code"><span class="constructor">None</span></code> are as follow:</p>
+<ul>
 <li>none of the slots in the trace come from modules compiled with
     debug information (<code class="code">-g</code>)</li>
 <li>the program is a bytecode program that has not been linked with
     debug information enabled (<code class="code">ocamlc&nbsp;-g</code>)</li>
 </ul>
-<br>
-<b>Since</b> 2.3.0 and OCaml 4.02.0<br>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.3.0 and OCaml 4.02.0</li>
+</ul>
 </div>
 
 <pre><span id="TYPElocation"><span class="keyword">type</span> <code class="type"></code>location</span> = <code class="type">Printexc.location</code> = {</pre><table class="typetable">
@@ -332,68 +373,93 @@ Returns the slots of a raw backtrace, or <code class="code"><span class="constru
 }
 
 <div class="info ">
-The type of location information found in backtraces. <code class="code">start_char</code>
+<div class="info-desc">
+<p>The type of location information found in backtraces. <code class="code">start_char</code>
     and <code class="code">end_char</code> are positions relative to the beginning of the
-    line.<br>
-<b>Since</b> 2.3.0 and OCaml 4.02<br>
+    line.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.3.0 and OCaml 4.02</li>
+</ul>
 </div>
 
 
-<pre><span class="keyword">module</span> <a href="BatPrintexc.Slot.html">Slot</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatPrintexc.Slot.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><br>
-<h6 id="6_Rawbacktraceslots">Raw backtrace slots</h6><br>
-
+<pre><span id="MODULESlot"><span class="keyword">module</span> <a href="BatPrintexc.Slot.html">Slot</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatPrintexc.Slot.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><h7 id="6_Rawbacktraceslots">Raw backtrace slots</h7>
 <pre><span id="TYPEraw_backtrace_slot"><span class="keyword">type</span> <code class="type"></code>raw_backtrace_slot</span> = <code class="type">Printexc.raw_backtrace_slot</code> </pre>
 <div class="info ">
-This type allows direct access to raw backtrace slots, without any
+<div class="info-desc">
+<p>This type allows direct access to raw backtrace slots, without any
     conversion in an OCaml-usable data-structure. Being
     process-specific, they must absolutely not be marshalled, and are
     unsafe to use for this reason (marshalling them may not fail, but
     un-marshalling and using the result will result in
-    undefined behavior).
-<p>
+    undefined behavior).</p>
 
-    Elements of this type can still be compared and hashed: when two
+<p>Elements of this type can still be compared and hashed: when two
     elements are equal, then they represent the same source location
     (the converse is not necessarily true in presence of inlining,
-    for example).<br>
+    for example).</p>
+</div>
 </div>
 
 
 <pre><span id="VALraw_backtrace_length"><span class="keyword">val</span> raw_backtrace_length</span> : <code class="type"><a href="BatPrintexc.html#TYPEraw_backtrace">raw_backtrace</a> -> int</code></pre><div class="info ">
-<code class="code">raw_backtrace_length&nbsp;bckt</code> returns the number of slots in the
-    backtrace <code class="code">bckt</code>.<br>
-<b>Since</b> 2.3.0 and OCaml 4.02<br>
+<div class="info-desc">
+<p><code class="code">raw_backtrace_length&nbsp;bckt</code> returns the number of slots in the
+    backtrace <code class="code">bckt</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.3.0 and OCaml 4.02</li>
+</ul>
 </div>
 
 <pre><span id="VALget_raw_backtrace_slot"><span class="keyword">val</span> get_raw_backtrace_slot</span> : <code class="type"><a href="BatPrintexc.html#TYPEraw_backtrace">raw_backtrace</a> -> int -> <a href="BatPrintexc.html#TYPEraw_backtrace_slot">raw_backtrace_slot</a></code></pre><div class="info ">
-<code class="code">get_raw_backtrace_slot&nbsp;bckt&nbsp;pos</code> returns the slot in position <code class="code">pos</code> in the
-    backtrace <code class="code">bckt</code>.<br>
-<b>Since</b> 2.3.0 and OCaml 4.02<br>
+<div class="info-desc">
+<p><code class="code">get_raw_backtrace_slot&nbsp;bckt&nbsp;pos</code> returns the slot in position <code class="code">pos</code> in the
+    backtrace <code class="code">bckt</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.3.0 and OCaml 4.02</li>
+</ul>
 </div>
 
 <pre><span id="VALconvert_raw_backtrace_slot"><span class="keyword">val</span> convert_raw_backtrace_slot</span> : <code class="type"><a href="BatPrintexc.html#TYPEraw_backtrace_slot">raw_backtrace_slot</a> -> <a href="BatPrintexc.html#TYPEbacktrace_slot">backtrace_slot</a></code></pre><div class="info ">
-Extracts the user-friendly <code class="code">backtrace_slot</code> from a low-level
-    <code class="code">raw_backtrace_slot</code>.<br>
-<b>Since</b> 2.3.0 and OCaml 4.02<br>
+<div class="info-desc">
+<p>Extracts the user-friendly <code class="code">backtrace_slot</code> from a low-level
+    <code class="code">raw_backtrace_slot</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.3.0 and OCaml 4.02</li>
+</ul>
 </div>
 
 <pre><span id="VALget_raw_backtrace_next_slot"><span class="keyword">val</span> get_raw_backtrace_next_slot</span> : <code class="type"><a href="BatPrintexc.html#TYPEraw_backtrace_slot">raw_backtrace_slot</a> -> <a href="BatPrintexc.html#TYPEraw_backtrace_slot">raw_backtrace_slot</a> option</code></pre><div class="info ">
-<code class="code">get_raw_backtrace_next_slot&nbsp;slot</code> returns the next slot inlined, if any.<br>
-<b>Since</b> NEXT_RELASE and OCaml 4.04<br>
+<div class="info-desc">
+<p><code class="code">get_raw_backtrace_next_slot&nbsp;slot</code> returns the next slot inlined, if any.</p>
 </div>
-<br>
-<h6 id="6_Exceptionslots">Exception slots</h6><br>
-
+<ul class="info-attributes">
+<li><b>Since</b> NEXT_RELASE and OCaml 4.04</li>
+</ul>
+</div>
+<h7 id="6_Exceptionslots">Exception slots</h7>
 <pre><span id="VALexn_slot_id"><span class="keyword">val</span> exn_slot_id</span> : <code class="type">exn -> int</code></pre><div class="info ">
-<code class="code"><span class="constructor">Printexc</span>.exn_slot_id</code> returns an integer which uniquely identifies
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Printexc</span>.exn_slot_id</code> returns an integer which uniquely identifies
     the constructor used to create the exception value <code class="code">exn</code>
-    (in the current runtime).<br>
-<b>Since</b> 2.3.0 and OCaml 4.02.0<br>
+    (in the current runtime).</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.3.0 and OCaml 4.02.0</li>
+</ul>
 </div>
 
 <pre><span id="VALexn_slot_name"><span class="keyword">val</span> exn_slot_name</span> : <code class="type">exn -> string</code></pre><div class="info ">
-<code class="code"><span class="constructor">Printexc</span>.exn_slot_name&nbsp;exn</code> returns the internal name of the constructor
-    used to create the exception value <code class="code">exn</code>.<br>
-<b>Since</b> 2.3.0 and OCaml 4.02.0<br>
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Printexc</span>.exn_slot_name&nbsp;exn</code> returns the internal name of the constructor
+    used to create the exception value <code class="code">exn</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.3.0 and OCaml 4.02.0</li>
+</ul>
 </div>
 </body></html>

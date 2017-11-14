@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -118,33 +119,43 @@
 </div>
 <h1>Module <a href="type_BatLog.Easy.html">BatLog.Easy</a></h1>
 
-<pre><span class="keyword">module</span> Easy: <code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Easy.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
-A simple-to-use logger with verbosity levels that outputs by
+<pre><span id="MODULEEasy"><span class="keyword">module</span> Easy</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Easy.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>A simple-to-use logger with verbosity levels that outputs by
     default to stderr (changeable at runtime) with the date and time
-    at the beginning of each log message.<br>
-<b>Since</b> 2.0<br>
+    at the beginning of each log message.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.0</li>
+</ul>
 </div>
 <hr width="100%">
 
 <pre><span id="VALlevel"><span class="keyword">val</span> level</span> : <code class="type"><a href="BatLog.html#TYPEeasy_lev">BatLog.easy_lev</a> Pervasives.ref</code></pre><div class="info ">
-Set this ref to the lowest level of log you want logged.  For
+<div class="info-desc">
+<p>Set this ref to the lowest level of log you want logged.  For
       example, <code class="code"><span class="constructor">Easy</span>.level&nbsp;:=&nbsp;<span class="keywordsign">`</span>always</code> disables all logging except
       that at the <code class="code"><span class="keywordsign">`</span>always</code> level.  Setting <code class="code"><span class="constructor">Easy</span>.level&nbsp;:=&nbsp;<span class="keywordsign">`</span>info</code> will
       enable logging for <code class="code"><span class="keywordsign">`</span>info</code>, <code class="code"><span class="keywordsign">`</span>warn</code>, <code class="code"><span class="keywordsign">`</span>error</code>, <code class="code"><span class="keywordsign">`</span>fatal</code> and
-      <code class="code"><span class="keywordsign">`</span>always</code> levels.
-<p>
-Set this ref to the output you want logging messages to go
-      to.  Defaults to <code class="code">stderr</code>.<br>
+      <code class="code"><span class="keywordsign">`</span>always</code> levels.</p>
+
+<p>Set this ref to the output you want logging messages to go
+      to.  Defaults to <code class="code">stderr</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALoutput"><span class="keyword">val</span> output</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> Pervasives.ref</code></pre>
 <pre><span id="VALlog"><span class="keyword">val</span> log</span> : <code class="type">?fp:string -> <a href="BatLog.html#TYPEeasy_lev">BatLog.easy_lev</a> -> string -> unit</code></pre><div class="info ">
-<code class="code">log&nbsp;lev&nbsp;msg</code> logs the message <code class="code">msg</code> if the current logging
-      level is <code class="code">lev</code> or lower.<br>
+<div class="info-desc">
+<p><code class="code">log&nbsp;lev&nbsp;msg</code> logs the message <code class="code">msg</code> if the current logging
+      level is <code class="code">lev</code> or lower.</p>
+</div>
 </div>
 
 <pre><span id="VALlogf"><span class="keyword">val</span> logf</span> : <code class="type">?fp:string -><br>       <a href="BatLog.html#TYPEeasy_lev">BatLog.easy_lev</a> -> ('a, unit <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit) Pervasives.format -> 'a</code></pre><div class="info ">
-As <code class="code">log</code>, but instead of a string message, a printf format is
-      allowed with whatever arguments are appropriate.<br>
+<div class="info-desc">
+<p>As <code class="code">log</code>, but instead of a string message, a printf format is
+      allowed with whatever arguments are appropriate.</p>
+</div>
 </div>
 </body></html>

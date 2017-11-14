@@ -24,6 +24,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -116,8 +117,10 @@
 </div>
 <h1>Functor <a href="type_BatLog.Make.html">BatLog.Make</a></h1>
 
-<pre><span class="keyword">module</span> Make: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">S</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatLog.Config.html">Config</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Make.html">..</a> <code class="code"><span class="keyword">end</span></code></div></pre><div class="info module top">
-Build a logger module with custom, fixed output, prefix and flags<br>
+<pre><span id="MODULEMake"><span class="keyword">module</span> Make</span>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">S</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatLog.Config.html">Config</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="code"><span class="keyword">sig</span></code> <a href="BatLog.Make.html">..</a> <code class="code"><span class="keyword">end</span></code></div></pre><div class="info module top">
+<div class="info-desc">
+<p>Build a logger module with custom, fixed output, prefix and flags</p>
+</div>
 </div>
 <table border="0" cellpadding="3" width="100%">
 <tr>
@@ -136,23 +139,31 @@ Build a logger module with custom, fixed output, prefix and flags<br>
 <hr width="100%">
 
 <pre><span id="VALlog"><span class="keyword">val</span> log</span> : <code class="type">?fp:string -> string -> unit</code></pre><div class="info ">
-<code class="code">print&nbsp;s</code> logs the message s, returning unit.<br>
+<div class="info-desc">
+<p><code class="code">print&nbsp;s</code> logs the message s, returning unit.</p>
+</div>
 </div>
 
 <pre><span id="VALlogf"><span class="keyword">val</span> logf</span> : <code class="type">?fp:string -> ('a, S.t <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit) Pervasives.format -> 'a</code></pre><div class="info ">
-As <code class="code"><span class="constructor">Printf</span>.printf</code>, only the message is printed to the logging
+<div class="info-desc">
+<p>As <code class="code"><span class="constructor">Printf</span>.printf</code>, only the message is printed to the logging
       output and prefixed with status information per the current flags and
-      the currently set prefix.<br>
+      the currently set prefix.</p>
+</div>
 </div>
 
 <pre><span id="VALfatal"><span class="keyword">val</span> fatal</span> : <code class="type">?fp:string -> string -> 'a</code></pre><div class="info ">
-<code class="code">fatal&nbsp;s</code> logs the message <code class="code">s</code> and then calls <code class="code">exit&nbsp;1</code>.  This
-      exits the program with return code 1.<br>
+<div class="info-desc">
+<p><code class="code">fatal&nbsp;s</code> logs the message <code class="code">s</code> and then calls <code class="code">exit&nbsp;1</code>.  This
+      exits the program with return code 1.</p>
+</div>
 </div>
 
 <pre><span id="VALfatalf"><span class="keyword">val</span> fatalf</span> : <code class="type">?fp:string -> ('a, S.t <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit) Pervasives.format -> 'a</code></pre><div class="info ">
-<code class="code">fatalf</code> allows a format string (as <code class="code"><span class="constructor">Printf</span>.printf</code>)and the
+<div class="info-desc">
+<p><code class="code">fatalf</code> allows a format string (as <code class="code"><span class="constructor">Printf</span>.printf</code>)and the
       arguments to that format string to build the logging message.
-      Exits the program with return code 1.<br>
+      Exits the program with return code 1.</p>
+</div>
 </div>
 </body></html>

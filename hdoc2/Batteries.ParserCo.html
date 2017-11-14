@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -125,10 +126,8 @@
 </div>
 <h1>Module <a href="type_Batteries.ParserCo.html">Batteries.ParserCo</a></h1>
 
-<pre><span class="keyword">module</span> ParserCo: <code class="type"><a href="BatParserCo.html">BatParserCo</a></code></pre><hr width="100%">
-<br>
-<h6 id="6_Basedefinitions">Base definitions</h6><br>
-
+<pre><span id="MODULEParserCo"><span class="keyword">module</span> ParserCo</span>: <code class="type"><a href="BatParserCo.html">BatParserCo</a></code></pre><hr width="100%">
+<h7 id="6_Basedefinitions">Base definitions</h7>
 <pre><code><span id="TYPEstate"><span class="keyword">type</span> <code class="type">'a</code> state</span> = </code></pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
@@ -136,7 +135,9 @@
 <td align="left" valign="top" >
 <code><span id="TYPEELTstate.Eof"><span class="constructor">Eof</span></span></code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-The end of the source has been reached.<br>
+<div class="info-desc">
+<p>The end of the source has been reached.</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr>
@@ -149,12 +150,13 @@ The end of the source has been reached.<br>
 </tr></table>
 
 <div class="info ">
-The current state of the parser.
-<p>
+<div class="info-desc">
+<p>The current state of the parser.</p>
 
-   The actual set of states is defined by the user. States are
+<p>The actual set of states is defined by the user. States are
    typically used to convey informations, such as position in the file
-   (i.e. line number and character).<br>
+   (i.e. line number and character).</p>
+</div>
 </div>
 
 
@@ -165,211 +167,280 @@ The current state of the parser.
 <td align="left" valign="top" >
 <code><span id="TYPEELTreport.Report"><span class="constructor">Report</span></span> <span class="keyword">of</span> <code class="type">('a <a href="BatParserCo.html#TYPEstate">state</a> * string * 'a <a href="BatParserCo.html#TYPEreport">report</a>) list</code></code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
-The final result of parsing<br>
+<div class="info-desc">
+<p>The final result of parsing</p>
+</div>
 </div>
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 
 
 
-<pre><span class="keyword">module</span> <a href="BatParserCo.Source.html">Source</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatParserCo.Source.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-A source for parsing.
-</div>
-<br>
-<h6 id="6_Primitives">Primitives</h6><br>
+<pre><span id="MODULESource"><span class="keyword">module</span> <a href="BatParserCo.Source.html">Source</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatParserCo.Source.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>A source for parsing.</p>
 
+</div>
+<h7 id="6_Primitives">Primitives</h7>
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b, 'c)</code> t</span> </pre>
 <div class="info ">
-A parser for elements of type <code class="code"><span class="keywordsign">'</span>a</code>, producing
+<div class="info-desc">
+<p>A parser for elements of type <code class="code"><span class="keywordsign">'</span>a</code>, producing
    elements of type <code class="code"><span class="keywordsign">'</span>b</code>, with user-defined states
-   of type <code class="code"><span class="keywordsign">'</span>c</code>.<br>
+   of type <code class="code"><span class="keywordsign">'</span>c</code>.</p>
+</div>
 </div>
 
 
 <pre><span id="VALeof"><span class="keyword">val</span> eof</span> : <code class="type">('a, unit, 'b) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-Accept the end of an enumeration.<br>
+<div class="info-desc">
+<p>Accept the end of an enumeration.</p>
+</div>
 </div>
 
 <pre><span id="VALeither"><span class="keyword">val</span> either</span> : <code class="type">('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> list -> ('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-Accept one of several parsers.<br>
+<div class="info-desc">
+<p>Accept one of several parsers.</p>
+</div>
 </div>
 
 <pre><span id="VAL(<|>)"><span class="keyword">val</span> (&lt;|&gt;)</span> : <code class="type">('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> -><br>       ('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> -> ('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-Accept one of two parsers<br>
+<div class="info-desc">
+<p>Accept one of two parsers</p>
+</div>
 </div>
 
 <pre><span id="VALmaybe"><span class="keyword">val</span> maybe</span> : <code class="type">('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> -> ('a, 'b option, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-Accept an optional argument.<br>
+<div class="info-desc">
+<p>Accept an optional argument.</p>
+</div>
 </div>
 
 <pre><span id="VAL(~?)"><span class="keyword">val</span> (~?)</span> : <code class="type">('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> -> ('a, 'b option, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-As <code class="code">maybe</code><br>
+<div class="info-desc">
+<p>As <code class="code">maybe</code></p>
+</div>
 </div>
 
 <pre><span id="VALbind"><span class="keyword">val</span> bind</span> : <code class="type">('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> -><br>       ('b -> ('a, 'd, 'c) <a href="BatParserCo.html#TYPEt">t</a>) -> ('a, 'd, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-Monadic-style combination:
-<p>
+<div class="info-desc">
+<p>Monadic-style combination:</p>
 
-   <code class="code">bind&nbsp;p&nbsp;f</code> results in a new parser which behaves as <code class="code">p</code>
-   then, in case of success, applies <code class="code">f</code> to the result.<br>
+<p><code class="code">bind&nbsp;p&nbsp;f</code> results in a new parser which behaves as <code class="code">p</code>
+   then, in case of success, applies <code class="code">f</code> to the result.</p>
+</div>
 </div>
 
 <pre><span id="VAL(>>=)"><span class="keyword">val</span> (&gt;&gt;=)</span> : <code class="type">('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> -><br>       ('b -> ('a, 'd, 'c) <a href="BatParserCo.html#TYPEt">t</a>) -> ('a, 'd, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-As <code class="code">bind</code><br>
+<div class="info-desc">
+<p>As <code class="code">bind</code></p>
+</div>
 </div>
 
 <pre><span id="VAL(>>>)"><span class="keyword">val</span> (&gt;&gt;&gt;)</span> : <code class="type">('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> -><br>       ('a, 'd, 'c) <a href="BatParserCo.html#TYPEt">t</a> -> ('a, 'd, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-As <code class="code">bind</code>, but ignoring the result<br>
+<div class="info-desc">
+<p>As <code class="code">bind</code>, but ignoring the result</p>
+</div>
 </div>
 
 <pre><span id="VALcons"><span class="keyword">val</span> cons</span> : <code class="type">('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> -><br>       ('a, 'b list, 'c) <a href="BatParserCo.html#TYPEt">t</a> -> ('a, 'b list, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">cons&nbsp;p&nbsp;q</code> applies parser <code class="code">p</code> then parser <code class="code">q</code> and
-    conses the results into a list.<br>
+<div class="info-desc">
+<p><code class="code">cons&nbsp;p&nbsp;q</code> applies parser <code class="code">p</code> then parser <code class="code">q</code> and
+    conses the results into a list.</p>
+</div>
 </div>
 
 <pre><span id="VAL(>::)"><span class="keyword">val</span> (&gt;::)</span> : <code class="type">('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> -><br>       ('a, 'b list, 'c) <a href="BatParserCo.html#TYPEt">t</a> -> ('a, 'b list, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-As <code class="code">cons</code><br>
+<div class="info-desc">
+<p>As <code class="code">cons</code></p>
+</div>
 </div>
 
 <pre><span id="VALlabel"><span class="keyword">val</span> label</span> : <code class="type">string -> ('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> -> ('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-Give a name to a parser, for debugging purposes.<br>
+<div class="info-desc">
+<p>Give a name to a parser, for debugging purposes.</p>
+</div>
 </div>
 
 <pre><span id="VALstate"><span class="keyword">val</span> state</span> : <code class="type">('a, 'b <a href="BatParserCo.html#TYPEstate">state</a>, 'b) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-Succeed and return the state of the parser<br>
+<div class="info-desc">
+<p>Succeed and return the state of the parser</p>
+</div>
 </div>
 
 <pre><span id="VALany"><span class="keyword">val</span> any</span> : <code class="type">('a, 'a, 'b) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-Accept any singleton value.<br>
+<div class="info-desc">
+<p>Accept any singleton value.</p>
+</div>
 </div>
 
 <pre><span id="VALreturn"><span class="keyword">val</span> return</span> : <code class="type">'b -> ('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-A parser which always succeds<br>
+<div class="info-desc">
+<p>A parser which always succeds</p>
+</div>
 </div>
 
 <pre><span id="VALsatisfy"><span class="keyword">val</span> satisfy</span> : <code class="type">('a -> bool) -> ('a, 'a, 'b) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">satisfy&nbsp;p</code> accepts one value <code class="code">p&nbsp;x</code> such that <code class="code">p&nbsp;x&nbsp;=&nbsp;<span class="keyword">true</span></code><br>
+<div class="info-desc">
+<p><code class="code">satisfy&nbsp;p</code> accepts one value <code class="code">p&nbsp;x</code> such that <code class="code">p&nbsp;x&nbsp;=&nbsp;<span class="keyword">true</span></code></p>
+</div>
 </div>
 
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('b -> bool) -> ('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> -> ('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">filter&nbsp;f&nbsp;p</code> is only accepts values <code class="code">x</code> such that <code class="code">p</code>
-   accepts <code class="code">x</code> and <code class="code">f&nbsp;(p&nbsp;x)</code> is <code class="code"><span class="keyword">true</span></code><br>
+<div class="info-desc">
+<p><code class="code">filter&nbsp;f&nbsp;p</code> is only accepts values <code class="code">x</code> such that <code class="code">p</code>
+   accepts <code class="code">x</code> and <code class="code">f&nbsp;(p&nbsp;x)</code> is <code class="code"><span class="keyword">true</span></code></p>
+</div>
 </div>
 
 <pre><span id="VALsuspend"><span class="keyword">val</span> suspend</span> : <code class="type">('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> -><br>       ('a, unit -> ('b, 'c <a href="BatParserCo.html#TYPEreport">report</a>) <a href="BatPervasives.html#TYPEresult">BatPervasives.result</a>, 'c)<br>       <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">suspend&nbsp;s</code> returns the state of the parser in a form that can be
+<div class="info-desc">
+<p><code class="code">suspend&nbsp;s</code> returns the state of the parser in a form that can be
    resumed by calling the returned function. evaluation will resume
-   from parser s<br>
+   from parser s</p>
+</div>
 </div>
 
 <pre><span id="VALrun"><span class="keyword">val</span> run</span> : <code class="type">('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> -><br>       ('a, 'c) <a href="BatParserCo.Source.html#TYPEt">Source.t</a> -><br>       ('b, 'c <a href="BatParserCo.html#TYPEreport">report</a>) <a href="BatPervasives.html#TYPEresult">BatPervasives.result</a></code></pre><div class="info ">
-<code class="code">run&nbsp;p&nbsp;s</code> executes parser <code class="code">p</code> on source <code class="code">s</code>. In case of
+<div class="info-desc">
+<p><code class="code">run&nbsp;p&nbsp;s</code> executes parser <code class="code">p</code> on source <code class="code">s</code>. In case of
    success, returns <code class="code"><span class="constructor">Ok</span>&nbsp;v</code>, where <code class="code">v</code> is the return value of <code class="code">p</code>.
    In case of failure, returns <code class="code"><span class="constructor">Bad</span>&nbsp;f</code>, with <code class="code">f</code> containing
-   details on the parsing error.<br>
+   details on the parsing error.</p>
+</div>
 </div>
 
 <pre><span id="VALfail"><span class="keyword">val</span> fail</span> : <code class="type">('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-Always fail, without consuming anything.<br>
+<div class="info-desc">
+<p>Always fail, without consuming anything.</p>
+</div>
 </div>
 
 <pre><span id="VALfatal"><span class="keyword">val</span> fatal</span> : <code class="type">('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre>
 <pre><span id="VALlookahead"><span class="keyword">val</span> lookahead</span> : <code class="type">('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> -> ('a, 'b option, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">lookahead&nbsp;p</code> behaves as <code class="code">maybe&nbsp;p</code> but without consuming anything<br>
+<div class="info-desc">
+<p><code class="code">lookahead&nbsp;p</code> behaves as <code class="code">maybe&nbsp;p</code> but without consuming anything</p>
 </div>
-<br>
-<h6 id="6_Utilities">Utilities</h6><br>
-<br>
-<div class="h7" id="7_Singletons">Singletons</div><br>
-
+</div>
+<h7 id="6_Utilities">Utilities</h7><div class="h8" id="7_Singletons">Singletons</div>
 <pre><span id="VALexactly"><span class="keyword">val</span> exactly</span> : <code class="type">'a -> ('a, 'a, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-Accept exactly one singleton.<br>
+<div class="info-desc">
+<p>Accept exactly one singleton.</p>
+</div>
 </div>
 
 <pre><span id="VALone_of"><span class="keyword">val</span> one_of</span> : <code class="type">'a list -> ('a, 'a, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-Accept one of several values.
-   Faster and more convenient than combining <code class="code">satisfy</code> and <code class="code">either</code>.<br>
+<div class="info-desc">
+<p>Accept one of several values.
+   Faster and more convenient than combining <code class="code">satisfy</code> and <code class="code">either</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALnone_of"><span class="keyword">val</span> none_of</span> : <code class="type">'a list -> ('a, 'a, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-Accept any value not in a list
-   Faster and more convenient than combining <code class="code">satisfy</code> and <code class="code">either</code>.<br>
+<div class="info-desc">
+<p>Accept any value not in a list
+   Faster and more convenient than combining <code class="code">satisfy</code> and <code class="code">either</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALrange"><span class="keyword">val</span> range</span> : <code class="type">'a -> 'a -> ('a, 'a, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-Accept any element from a given range.<br>
+<div class="info-desc">
+<p>Accept any element from a given range.</p>
 </div>
-<br>
-<div class="h7" id="7_Repetitions">Repetitions</div><br>
-
+</div>
+<div class="h8" id="7_Repetitions">Repetitions</div>
 <pre><span id="VALzero_plus"><span class="keyword">val</span> zero_plus</span> : <code class="type">?sep:('a, 'd, 'c) <a href="BatParserCo.html#TYPEt">t</a> -><br>       ('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> -> ('a, 'b list, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-Accept a (possibly empty) list of expressions.<br>
+<div class="info-desc">
+<p>Accept a (possibly empty) list of expressions.</p>
+</div>
 </div>
 
 <pre><span id="VALignore_zero_plus"><span class="keyword">val</span> ignore_zero_plus</span> : <code class="type">?sep:('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> -><br>       ('a, 'd, 'c) <a href="BatParserCo.html#TYPEt">t</a> -> ('a, unit, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-Ignore a (possibly empty) list of expressions.
+<div class="info-desc">
+<p>Ignore a (possibly empty) list of expressions.
    Optimized version of <code class="code">zero_plus</code>, for use when the
-   list of expressions is unimportant.<br>
+   list of expressions is unimportant.</p>
+</div>
 </div>
 
 <pre><span id="VAL( ~* )"><span class="keyword">val</span> ( ~* )</span> : <code class="type">('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> -> ('a, 'b list, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-As <code class="code">zero_plus</code> without arguments.<br>
+<div class="info-desc">
+<p>As <code class="code">zero_plus</code> without arguments.</p>
+</div>
 </div>
 
 <pre><span id="VALone_plus"><span class="keyword">val</span> one_plus</span> : <code class="type">?sep:('a, 'd, 'c) <a href="BatParserCo.html#TYPEt">t</a> -><br>       ('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> -> ('a, 'b list, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-Accept a (non-empty) list of expressions<br>
+<div class="info-desc">
+<p>Accept a (non-empty) list of expressions</p>
+</div>
 </div>
 
 <pre><span id="VALignore_one_plus"><span class="keyword">val</span> ignore_one_plus</span> : <code class="type">?sep:('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> -><br>       ('a, 'd, 'c) <a href="BatParserCo.html#TYPEt">t</a> -> ('a, unit, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-Ignore a (non-empty) list of expressions.
+<div class="info-desc">
+<p>Ignore a (non-empty) list of expressions.
    Optimized version of <code class="code">one_plus</code>, for use when the
-   list of expressions is unimportant.<br>
+   list of expressions is unimportant.</p>
+</div>
 </div>
 
 <pre><span id="VAL(~+)"><span class="keyword">val</span> (~+)</span> : <code class="type">('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> -> ('a, 'b list, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-As <code class="code">one_plus</code><br>
+<div class="info-desc">
+<p>As <code class="code">one_plus</code></p>
+</div>
 </div>
 
 <pre><span id="VALtimes"><span class="keyword">val</span> times</span> : <code class="type">int -> ('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> -> ('a, 'b list, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">times&nbsp;n&nbsp;p</code> accepts a list of <code class="code">n</code> expressions accepted by <code class="code">p</code><br>
+<div class="info-desc">
+<p><code class="code">times&nbsp;n&nbsp;p</code> accepts a list of <code class="code">n</code> expressions accepted by <code class="code">p</code></p>
+</div>
 </div>
 
 <pre><span id="VAL(^^)"><span class="keyword">val</span> (^^)</span> : <code class="type">('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> -> int -> ('a, 'b list, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">p&nbsp;^^&nbsp;n</code> is the same thing as <code class="code">times&nbsp;n&nbsp;p</code><br>
+<div class="info-desc">
+<p><code class="code">p&nbsp;^^&nbsp;n</code> is the same thing as <code class="code">times&nbsp;n&nbsp;p</code></p>
+</div>
 </div>
 
 <pre><span id="VALmust"><span class="keyword">val</span> must</span> : <code class="type">('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> -> ('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-Prevent backtracking.<br>
+<div class="info-desc">
+<p>Prevent backtracking.</p>
+</div>
 </div>
 
 <pre><span id="VALshould"><span class="keyword">val</span> should</span> : <code class="type">('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> -> ('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-Prevent backtracking.<br>
+<div class="info-desc">
+<p>Prevent backtracking.</p>
 </div>
-<br>
-<div class="h7" id="7_Maps">Maps</div><br>
-
+</div>
+<div class="h8" id="7_Maps">Maps</div>
 <pre><span id="VALpost_map"><span class="keyword">val</span> post_map</span> : <code class="type">('b -> 'c) -> ('a, 'b, 'd) <a href="BatParserCo.html#TYPEt">t</a> -> ('a, 'c, 'd) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-Pass the (successful) result of some parser through a map.<br>
+<div class="info-desc">
+<p>Pass the (successful) result of some parser through a map.</p>
+</div>
 </div>
 
 <pre><span id="VALsource_map"><span class="keyword">val</span> source_map</span> : <code class="type">('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> -><br>       ('a, 'c) <a href="BatParserCo.Source.html#TYPEt">Source.t</a> -> ('b, 'c) <a href="BatParserCo.Source.html#TYPEt">Source.t</a></code></pre>
 <pre><span id="VALscan"><span class="keyword">val</span> scan</span> : <code class="type">('a, 'b, 'c) <a href="BatParserCo.html#TYPEt">t</a> -> ('a, 'a list, 'c) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-Use a parser to extract list of tokens, but return
+<div class="info-desc">
+<p>Use a parser to extract list of tokens, but return
    that list of tokens instead of whatever the original
-   parser returned.<br>
+   parser returned.</p>
 </div>
-<br>
-<div class="h7" id="7_Others">Others</div><br>
-
+</div>
+<div class="h8" id="7_Others">Others</div>
 <pre><span id="VALsat"><span class="keyword">val</span> sat</span> : <code class="type">('a -> bool) -> ('a, unit, 'b) <a href="BatParserCo.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">satisfy&nbsp;p</code> accepts one value <code class="code">p&nbsp;x</code> such that <code class="code">p&nbsp;x&nbsp;=&nbsp;<span class="keyword">true</span></code><br>
+<div class="info-desc">
+<p><code class="code">satisfy&nbsp;p</code> accepts one value <code class="code">p&nbsp;x</code> such that <code class="code">p&nbsp;x&nbsp;=&nbsp;<span class="keyword">true</span></code></p>
+</div>
 </div>
 
 <pre><span id="VALdebug_mode"><span class="keyword">val</span> debug_mode</span> : <code class="type">bool Pervasives.ref</code></pre><div class="info ">
-If set to <code class="code"><span class="keyword">true</span></code>, debugging information will be printed to the standard error.<br>
+<div class="info-desc">
+<p>If set to <code class="code"><span class="keyword">true</span></code>, debugging information will be printed to the standard error.</p>
+</div>
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatParserCo.Infix.html">Infix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatParserCo.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-Infix submodule regrouping all infix operators
+<pre><span id="MODULEInfix"><span class="keyword">module</span> <a href="BatParserCo.Infix.html">Infix</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatParserCo.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>Infix submodule regrouping all infix operators</p>
+
 </div>
 </body></html>

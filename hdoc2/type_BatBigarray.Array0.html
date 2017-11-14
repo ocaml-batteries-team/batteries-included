@@ -20,6 +20,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -118,6 +119,9 @@
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;layout&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c)&nbsp;<span class="constructor">BatBigarray</span>.<span class="constructor">Array0</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>c&nbsp;<span class="constructor">BatBigarray</span>.layout<br>
 &nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;<span class="string">"caml_ba_layout"</span><br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;change_layout&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c)&nbsp;<span class="constructor">BatBigarray</span>.<span class="constructor">Array0</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">'</span>d&nbsp;<span class="constructor">BatBigarray</span>.layout&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>d)&nbsp;<span class="constructor">BatBigarray</span>.<span class="constructor">Array0</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;size_in_bytes&nbsp;:&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c)&nbsp;<span class="constructor">BatBigarray</span>.<span class="constructor">Array0</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get&nbsp;:&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c)&nbsp;<span class="constructor">BatBigarray</span>.<span class="constructor">Array0</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;set&nbsp;:&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c)&nbsp;<span class="constructor">BatBigarray</span>.<span class="constructor">Array0</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>

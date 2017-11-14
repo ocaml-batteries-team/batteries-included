@@ -24,6 +24,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -116,26 +117,33 @@
 &nbsp;</div>
 <h1>Module type <a href="type_BatInterfaces.Monad.html">BatInterfaces.Monad</a></h1>
 
-<pre><span class="keyword">module type</span> Monad = <code class="code"><span class="keyword">sig</span></code> <a href="BatInterfaces.Monad.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info modtype top">
-Signature for monads<br>
+<pre><span id="MODULETYPEMonad"><span class="keyword">module type</span> Monad</span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatInterfaces.Monad.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info modtype top">
+<div class="info-desc">
+<p>Signature for monads</p>
+</div>
 </div>
 <hr width="100%">
 
 <pre><span id="TYPEm"><span class="keyword">type</span> <code class="type">'a</code> m</span> </pre>
 <div class="info ">
-The type of a monad producing values of type <code class="code"><span class="keywordsign">'</span>a</code>.<br>
+<div class="info-desc">
+<p>The type of a monad producing values of type <code class="code"><span class="keywordsign">'</span>a</code>.</p>
+</div>
 </div>
 
 
 <pre><span id="VALbind"><span class="keyword">val</span> bind</span> : <code class="type">'a <a href="BatInterfaces.Monad.html#TYPEm">m</a> -><br>       ('a -> 'b <a href="BatInterfaces.Monad.html#TYPEm">m</a>) -> 'b <a href="BatInterfaces.Monad.html#TYPEm">m</a></code></pre><div class="info ">
-Monadic binding.
-<p>
+<div class="info-desc">
+<p>Monadic binding.</p>
 
-      <code class="code">bind&nbsp;m&nbsp;f</code> executes first <code class="code">m</code> then <code class="code">f</code>, using the
-      result of <code class="code">m</code>.<br>
+<p><code class="code">bind&nbsp;m&nbsp;f</code> executes first <code class="code">m</code> then <code class="code">f</code>, using the
+      result of <code class="code">m</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALreturn"><span class="keyword">val</span> return</span> : <code class="type">'a -> 'a <a href="BatInterfaces.Monad.html#TYPEm">m</a></code></pre><div class="info ">
-Return a value, that is, put a value in the monad.<br>
+<div class="info-desc">
+<p>Return a value, that is, put a value in the monad.</p>
+</div>
 </div>
 </body></html>

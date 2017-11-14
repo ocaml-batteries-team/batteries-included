@@ -23,6 +23,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -114,7 +115,7 @@
 &nbsp;</div>
 <h1>Module type <a href="type_BatGenlex.Languages.Definition.html">BatGenlex.Languages.Definition</a></h1>
 
-<pre><span class="keyword">module type</span> Definition = <code class="code"><span class="keyword">sig</span></code> <a href="BatGenlex.Languages.Definition.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
+<pre><span id="MODULETYPEDefinition"><span class="keyword">module type</span> Definition</span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatGenlex.Languages.Definition.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 
 <pre><span id="VALcomment_delimiters"><span class="keyword">val</span> comment_delimiters</span> : <code class="type">(string * string) option</code></pre>
 <pre><span id="VALline_comment_start"><span class="keyword">val</span> line_comment_start</span> : <code class="type">string option</code></pre>
@@ -125,8 +126,10 @@
 <pre><span id="VALop_letter"><span class="keyword">val</span> op_letter</span> : <code class="type">(char, char, <a href="BatCharParser.html#TYPEposition">BatCharParser.position</a>) <a href="BatParserCo.html#TYPEt">BatParserCo.t</a></code></pre>
 <pre><span id="VALreserved_names"><span class="keyword">val</span> reserved_names</span> : <code class="type">string list</code></pre>
 <pre><span id="VALcase_sensitive"><span class="keyword">val</span> case_sensitive</span> : <code class="type">bool</code></pre><div class="info ">
-<code class="code"><span class="keyword">true</span></code> if the language is case-sensitive, <code class="code"><span class="keyword">false</span></code> otherwise.
+<div class="info-desc">
+<p><code class="code"><span class="keyword">true</span></code> if the language is case-sensitive, <code class="code"><span class="keyword">false</span></code> otherwise.
        If the language is not case-sensitive, every identifier is returned
-       as lower-case.<br>
+       as lower-case.</p>
+</div>
 </div>
 </body></html>

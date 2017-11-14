@@ -25,6 +25,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -128,194 +129,244 @@
 </div>
 <h1>Module <a href="type_Batteries.Hashtbl.html">Batteries.Hashtbl</a></h1>
 
-<pre><span class="keyword">module</span> Hashtbl: <code class="type"><a href="BatHashtbl.html">BatHashtbl</a></code></pre><hr width="100%">
-<br>
-Operations over hashtables.
-<p>
+<pre><span id="MODULEHashtbl"><span class="keyword">module</span> Hashtbl</span>: <code class="type"><a href="BatHashtbl.html">BatHashtbl</a></code></pre><hr width="100%">
+<p>Operations over hashtables.</p>
 
-    This module replaces Stdlib's
+<p>This module replaces Stdlib's
     <a href="http://caml.inria.fr/pub/docs/manual-ocaml/libref/Hashtbl.html">Hashtbl</a>
-    module.  All functions and types are provided here.<br>
+    module.  All functions and types are provided here.</p>
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b)</code> t</span> = <code class="type">('a, 'b) Hashtbl.t</code> </pre>
 <div class="info ">
-A Hashtable wth keys of type 'a and values 'b<br>
+<div class="info-desc">
+<p>A Hashtable wth keys of type 'a and values 'b</p>
+</div>
 </div>
 
-<br>
-<h6 id="6_Baseoperations">Base operations</h6><br>
-
+<h7 id="6_Baseoperations">Base operations</h7>
 <pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -> ('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code"><span class="constructor">Hashtbl</span>.create&nbsp;n</code> creates a new, empty hash table, with
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Hashtbl</span>.create&nbsp;n</code> creates a new, empty hash table, with
     initial size <code class="code">n</code>.  For best results, <code class="code">n</code> should be on the
     order of the expected number of elements that will be in
     the table.  The table grows as needed, so <code class="code">n</code> is just an
-    initial guess.<br>
+    initial guess.</p>
+</div>
 </div>
 
 <pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type">('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> int</code></pre><div class="info ">
-<code class="code"><span class="constructor">Hashtbl</span>.length&nbsp;tbl</code> returns the number of bindings in <code class="code">tbl</code>.
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Hashtbl</span>.length&nbsp;tbl</code> returns the number of bindings in <code class="code">tbl</code>.
     Multiple bindings are counted multiply, so <code class="code"><span class="constructor">Hashtbl</span>.length</code>
-    gives the number of times <code class="code"><span class="constructor">Hashtbl</span>.iter</code> calls its first argument.<br>
+    gives the number of times <code class="code"><span class="constructor">Hashtbl</span>.iter</code> calls its first argument.</p>
+</div>
 </div>
 
 <pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-<code class="code"><span class="constructor">Hashtbl</span>.is_empty&nbsp;tbl</code> returns <code class="code"><span class="keyword">true</span></code> if there are no bindings
-    in <code class="code">tbl</code>, false otherwise.<br>
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Hashtbl</span>.is_empty&nbsp;tbl</code> returns <code class="code"><span class="keyword">true</span></code> if there are no bindings
+    in <code class="code">tbl</code>, false otherwise.</p>
+</div>
 </div>
 
 <pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> 'a -> 'b -> unit</code></pre><div class="info ">
-<code class="code"><span class="constructor">Hashtbl</span>.add&nbsp;tbl&nbsp;x&nbsp;y</code> adds a binding of <code class="code">x</code> to <code class="code">y</code> in table <code class="code">tbl</code>.
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Hashtbl</span>.add&nbsp;tbl&nbsp;x&nbsp;y</code> adds a binding of <code class="code">x</code> to <code class="code">y</code> in table <code class="code">tbl</code>.
     Previous bindings for <code class="code">x</code> are not removed, but simply
     hidden. That is, after performing <code class="code"><span class="constructor">Hashtbl</span>.remove</code><code class="code">&nbsp;tbl&nbsp;x</code>,
     the previous binding for <code class="code">x</code>, if any, is restored.
-    (Same behavior as with association lists.)<br>
+    (Same behavior as with association lists.)</p>
+</div>
 </div>
 
 <pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> 'a -> unit</code></pre><div class="info ">
-<code class="code"><span class="constructor">Hashtbl</span>.remove&nbsp;tbl&nbsp;x</code> removes the current binding of <code class="code">x</code> in <code class="code">tbl</code>,
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Hashtbl</span>.remove&nbsp;tbl&nbsp;x</code> removes the current binding of <code class="code">x</code> in <code class="code">tbl</code>,
     restoring the previous binding if it exists.
-    It does nothing if <code class="code">x</code> is not bound in <code class="code">tbl</code>.<br>
+    It does nothing if <code class="code">x</code> is not bound in <code class="code">tbl</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALremove_all"><span class="keyword">val</span> remove_all</span> : <code class="type">('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> 'a -> unit</code></pre><div class="info ">
-Remove all bindings for the given key<br>
+<div class="info-desc">
+<p>Remove all bindings for the given key</p>
+</div>
 </div>
 
 <pre><span id="VALreplace"><span class="keyword">val</span> replace</span> : <code class="type">('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> 'a -> 'b -> unit</code></pre><div class="info ">
-<code class="code"><span class="constructor">Hashtbl</span>.replace&nbsp;tbl&nbsp;x&nbsp;y</code> replaces the current binding of <code class="code">x</code>
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Hashtbl</span>.replace&nbsp;tbl&nbsp;x&nbsp;y</code> replaces the current binding of <code class="code">x</code>
     in <code class="code">tbl</code> by a binding of <code class="code">x</code> to <code class="code">y</code>.  If <code class="code">x</code> is unbound in <code class="code">tbl</code>,
     a binding of <code class="code">x</code> to <code class="code">y</code> is added to <code class="code">tbl</code>.
     This is functionally equivalent to <code class="code"><span class="constructor">Hashtbl</span>.remove</code><code class="code">&nbsp;tbl&nbsp;x</code>
-    followed by <code class="code"><span class="constructor">Hashtbl</span>.add</code><code class="code">&nbsp;tbl&nbsp;x&nbsp;y</code>.<br>
+    followed by <code class="code"><span class="constructor">Hashtbl</span>.add</code><code class="code">&nbsp;tbl&nbsp;x&nbsp;y</code>.</p>
+</div>
 </div>
 
 <pre><span id="VALmodify"><span class="keyword">val</span> modify</span> : <code class="type">'a -> ('b -> 'b) -> ('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code"><span class="constructor">Hashtbl</span>.modify&nbsp;k&nbsp;f&nbsp;tbl</code> replaces the first binding for <code class="code">k</code> in <code class="code">tbl</code>
-    with <code class="code">f</code> applied to that value.<br>
-<b>Since</b> 2.1<br>
-<b>Raises</b> <code>Not_found</code> if <code class="code">k</code> is unbound in <code class="code">tbl</code>.<br>
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Hashtbl</span>.modify&nbsp;k&nbsp;f&nbsp;tbl</code> replaces the first binding for <code class="code">k</code> in <code class="code">tbl</code>
+    with <code class="code">f</code> applied to that value.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.1</li>
+<li><b>Raises</b> <code>Not_found</code> if <code class="code">k</code> is unbound in <code class="code">tbl</code>.</li>
+</ul>
 </div>
 
 <pre><span id="VALmodify_def"><span class="keyword">val</span> modify_def</span> : <code class="type">'b -> 'a -> ('b -> 'b) -> ('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code"><span class="constructor">Hashtbl</span>.modify_def&nbsp;v&nbsp;k&nbsp;f&nbsp;tbl</code> does the same as <code class="code"><span class="constructor">Hashtbl</span>.modify&nbsp;k&nbsp;f&nbsp;tbl</code>
-    but <code class="code">f&nbsp;v</code> is inserted in <code class="code">tbl</code> if <code class="code">k</code> was unbound.<br>
-<b>Since</b> 2.1<br>
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Hashtbl</span>.modify_def&nbsp;v&nbsp;k&nbsp;f&nbsp;tbl</code> does the same as <code class="code"><span class="constructor">Hashtbl</span>.modify&nbsp;k&nbsp;f&nbsp;tbl</code>
+    but <code class="code">f&nbsp;v</code> is inserted in <code class="code">tbl</code> if <code class="code">k</code> was unbound.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.1</li>
+</ul>
 </div>
 
 <pre><span id="VALmodify_opt"><span class="keyword">val</span> modify_opt</span> : <code class="type">'a -> ('b option -> 'b option) -> ('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code"><span class="constructor">Hashtbl</span>.modify_opt&nbsp;k&nbsp;f&nbsp;tbl</code> allows to remove, modify or add a binding for
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Hashtbl</span>.modify_opt&nbsp;k&nbsp;f&nbsp;tbl</code> allows to remove, modify or add a binding for
     <code class="code">k</code> in <code class="code">tbl</code>. <code class="code">f</code> will be called with <code class="code"><span class="constructor">None</span></code> if <code class="code">k</code> was unbound.
     first previous binding of <code class="code">k</code> in <code class="code">tbl</code> will be deleted if <code class="code">f</code> returns <code class="code"><span class="constructor">None</span></code>.
-    Otherwise, the previous binding is replaced by the value produced by <code class="code">f</code>.<br>
-<b>Since</b> 2.1<br>
+    Otherwise, the previous binding is replaced by the value produced by <code class="code">f</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.1</li>
+</ul>
 </div>
 
 <pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> ('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a></code></pre><div class="info ">
-Return a copy of the given hashtable.<br>
+<div class="info-desc">
+<p>Return a copy of the given hashtable.</p>
+</div>
 </div>
 
 <pre><span id="VALclear"><span class="keyword">val</span> clear</span> : <code class="type">('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-Empty a hash table.<br>
+<div class="info-desc">
+<p>Empty a hash table.</p>
 </div>
-<br>
-<h6 id="6_Enumerations">Enumerations</h6><br>
-
+</div>
+<h7 id="6_Enumerations">Enumerations</h7>
 <pre><span id="VALkeys"><span class="keyword">val</span> keys</span> : <code class="type">('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-Return an enumeration of all the keys of a hashtable.
+<div class="info-desc">
+<p>Return an enumeration of all the keys of a hashtable.
     If the key is in the Hashtable multiple times, all occurrences
-    will be returned.<br>
+    will be returned.</p>
+</div>
 </div>
 
 <pre><span id="VALvalues"><span class="keyword">val</span> values</span> : <code class="type">('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-Return an enumeration of all the values of a hashtable.<br>
+<div class="info-desc">
+<p>Return an enumeration of all the values of a hashtable.</p>
+</div>
 </div>
 
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> ('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
-Return an enumeration of (key,value) pairs of a hashtable.<br>
+<div class="info-desc">
+<p>Return an enumeration of (key,value) pairs of a hashtable.</p>
+</div>
 </div>
 
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> ('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a></code></pre><div class="info ">
-Create a hashtable from a (key,value) enumeration.<br>
+<div class="info-desc">
+<p>Create a hashtable from a (key,value) enumeration.</p>
 </div>
-<br>
-<h6 id="6_Lists">Lists</h6><br>
-
+</div>
+<h7 id="6_Lists">Lists</h7>
 <pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">('a * 'b) list -> ('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a></code></pre><div class="info ">
-Create a hashtable from a list of (key,value) pairs.<br>
-<b>Since</b> 2.6.0<br>
+<div class="info-desc">
+<p>Create a hashtable from a list of (key,value) pairs.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.6.0</li>
+</ul>
 </div>
 
 <pre><span id="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type">('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> ('a * 'b) list</code></pre><div class="info ">
-Return the list of (key,value) pairs.<br>
-<b>Since</b> 2.6.0<br>
+<div class="info-desc">
+<p>Return the list of (key,value) pairs.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.6.0</li>
+</ul>
 </div>
 
 <pre><span id="VALbindings"><span class="keyword">val</span> bindings</span> : <code class="type">('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> ('a * 'b) list</code></pre><div class="info ">
-Alias for <code class="code">to_list</code>.<br>
-<b>Since</b> 2.6.0<br>
+<div class="info-desc">
+<p>Alias for <code class="code">to_list</code>.</p>
 </div>
-<br>
-<h6 id="6_Searching">Searching</h6><br>
-
+<ul class="info-attributes">
+<li><b>Since</b> 2.6.0</li>
+</ul>
+</div>
+<h7 id="6_Searching">Searching</h7>
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> 'a -> 'b</code></pre><div class="info ">
-<code class="code"><span class="constructor">Hashtbl</span>.find&nbsp;tbl&nbsp;x</code> returns the current binding of <code class="code">x</code> in <code class="code">tbl</code>,
-    or raises <code class="code"><span class="constructor">Not_found</span></code> if no such binding exists.<br>
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Hashtbl</span>.find&nbsp;tbl&nbsp;x</code> returns the current binding of <code class="code">x</code> in <code class="code">tbl</code>,
+    or raises <code class="code"><span class="constructor">Not_found</span></code> if no such binding exists.</p>
+</div>
 </div>
 
 <pre><span id="VALfind_all"><span class="keyword">val</span> find_all</span> : <code class="type">('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> 'a -> 'b list</code></pre><div class="info ">
-<code class="code"><span class="constructor">Hashtbl</span>.find_all&nbsp;tbl&nbsp;x</code> returns the list of all data
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Hashtbl</span>.find_all&nbsp;tbl&nbsp;x</code> returns the list of all data
     associated with <code class="code">x</code> in <code class="code">tbl</code>.
     The current binding is returned first, then the previous
-    bindings, in reverse order of introduction in the table.<br>
+    bindings, in reverse order of introduction in the table.</p>
+</div>
 </div>
 
 <pre><span id="VALfind_default"><span class="keyword">val</span> find_default</span> : <code class="type">('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> 'a -> 'b -> 'b</code></pre><div class="info ">
-Find a binding for the key, and return a default
-    value if not found<br>
+<div class="info-desc">
+<p>Find a binding for the key, and return a default
+    value if not found</p>
+</div>
 </div>
 
 <pre><span id="VALfind_option"><span class="keyword">val</span> find_option</span> : <code class="type">('a, 'b) Hashtbl.t -> 'a -> 'b option</code></pre><div class="info ">
-Find a binding for the key, or return <code class="code"><span class="constructor">None</span></code> if no
-    value is found<br>
+<div class="info-desc">
+<p>Find a binding for the key, or return <code class="code"><span class="constructor">None</span></code> if no
+    value is found</p>
+</div>
 </div>
 
 <pre><span id="VALmem"><span class="keyword">val</span> mem</span> : <code class="type">('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> 'a -> bool</code></pre><div class="info ">
-<code class="code"><span class="constructor">Hashtbl</span>.mem&nbsp;tbl&nbsp;x</code> checks if <code class="code">x</code> is bound in <code class="code">tbl</code>.<br>
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Hashtbl</span>.mem&nbsp;tbl&nbsp;x</code> checks if <code class="code">x</code> is bound in <code class="code">tbl</code>.</p>
 </div>
-<br>
-<h6 id="6_Traversing">Traversing</h6>
-<p>
-
-   A number of higher-order functions are provided to allow
+</div>
+<h7 id="6_Traversing">Traversing</h7>
+<p>A number of higher-order functions are provided to allow
    purely functional traversal or transformation of hashtables.
    These functions are similar to their counterparts in module
-   <a href="BatEnum.html"><code class="code"><span class="constructor">BatEnum</span></code></a>.
-<p>
+   <a href="BatEnum.html"><code class="code"><span class="constructor">BatEnum</span></code></a>.</p>
 
-   Whenever you wish to traverse or transfor a hashtable, you have the
+<p>Whenever you wish to traverse or transfor a hashtable, you have the
    choice between using the more general functions of <a href="BatEnum.html"><code class="code"><span class="constructor">BatEnum</span></code></a>, with
    <a href="BatHashtbl.html#VALkeys"><code class="code"><span class="constructor">BatHashtbl</span>.keys</code></a>, <a href="BatHashtbl.html#VALvalues"><code class="code"><span class="constructor">BatHashtbl</span>.values</code></a>, <a href="BatHashtbl.html#VALenum"><code class="code"><span class="constructor">BatHashtbl</span>.enum</code></a> and <a href="BatHashtbl.html#VALof_enum"><code class="code"><span class="constructor">BatHashtbl</span>.of_enum</code></a>, or the more optimized
-   functions of this section.
-<p>
+   functions of this section.</p>
 
-   If you are new to OCaml or unsure about data structure, using the
+<p>If you are new to OCaml or unsure about data structure, using the
    functions of <a href="BatEnum.html"><code class="code"><span class="constructor">BatEnum</span></code></a> is a safe bet. Should you wish to improve
    performance at the cost of generality, you will always be able to
-   rewrite your code to make use of the functions of this section.<br>
+   rewrite your code to make use of the functions of this section.</p>
 
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> 'b -> unit) -> ('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code"><span class="constructor">Hashtbl</span>.iter&nbsp;f&nbsp;tbl</code> applies <code class="code">f</code> to all bindings in table <code class="code">tbl</code>.
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Hashtbl</span>.iter&nbsp;f&nbsp;tbl</code> applies <code class="code">f</code> to all bindings in table <code class="code">tbl</code>.
     <code class="code">f</code> receives the key as first argument, and the associated value
     as second argument. Each binding is presented exactly once to <code class="code">f</code>.
     The order in which the bindings are passed to <code class="code">f</code> is unspecified.
     However, if the table contains several bindings for the same key,
     they are passed to <code class="code">f</code> in reverse order of introduction, that is,
-    the most recent binding is passed first.<br>
+    the most recent binding is passed first.</p>
+</div>
 </div>
 
 <pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -> 'b -> 'c -> 'c) -> ('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> 'c -> 'c</code></pre><div class="info ">
-<code class="code"><span class="constructor">Hashtbl</span>.fold&nbsp;f&nbsp;tbl&nbsp;init</code> computes
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Hashtbl</span>.fold&nbsp;f&nbsp;tbl&nbsp;init</code> computes
     <code class="code">(f&nbsp;kN&nbsp;dN&nbsp;...&nbsp;(f&nbsp;k1&nbsp;d1&nbsp;(f&nbsp;k0&nbsp;d0&nbsp;init))...)</code>,
     where <code class="code">k0,k1..kN</code> are the keys of all bindings in <code class="code">tbl</code>,
     and <code class="code">d0,d1..dN</code> are the associated values.
@@ -323,69 +374,93 @@ Find a binding for the key, or return <code class="code"><span class="constructo
     The order in which the bindings are passed to <code class="code">f</code> is unspecified.
     However, if the table contains several bindings for the same key,
     they are passed to <code class="code">f</code> in reverse order of introduction, that is,
-    the most recent binding is passed first.<br>
+    the most recent binding is passed first.</p>
+</div>
 </div>
 
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b -> 'c) -> ('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> ('a, 'c) <a href="BatHashtbl.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">map&nbsp;f&nbsp;x</code> creates a new hashtable with the same
+<div class="info-desc">
+<p><code class="code">map&nbsp;f&nbsp;x</code> creates a new hashtable with the same
     keys as <code class="code">x</code>, but with the function <code class="code">f</code> applied to
-    all the values<br>
+    all the values</p>
+</div>
 </div>
 
 <pre><span id="VALmap_inplace"><span class="keyword">val</span> map_inplace</span> : <code class="type">('a -> 'b -> 'b) -> ('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">map_inplace&nbsp;f&nbsp;x</code> replace all values currently bound in <code class="code">x</code>
-    by <code class="code">f</code> applied to each value.<br>
-<b>Since</b> 2.1<br>
+<div class="info-desc">
+<p><code class="code">map_inplace&nbsp;f&nbsp;x</code> replace all values currently bound in <code class="code">x</code>
+    by <code class="code">f</code> applied to each value.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.1</li>
+</ul>
 </div>
 
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('a -> bool) -> ('key, 'a) <a href="BatHashtbl.html#TYPEt">t</a> -> ('key, 'a) <a href="BatHashtbl.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">filter&nbsp;f&nbsp;m</code> returns a new hashtable where only the values <code class="code">a</code> of <code class="code">m</code>
-    such that <code class="code">f&nbsp;a&nbsp;=&nbsp;<span class="keyword">true</span></code> remain.<br>
+<div class="info-desc">
+<p><code class="code">filter&nbsp;f&nbsp;m</code> returns a new hashtable where only the values <code class="code">a</code> of <code class="code">m</code>
+    such that <code class="code">f&nbsp;a&nbsp;=&nbsp;<span class="keyword">true</span></code> remain.</p>
+</div>
 </div>
 
 <pre><span id="VALfilter_inplace"><span class="keyword">val</span> filter_inplace</span> : <code class="type">('a -> bool) -> ('key, 'a) <a href="BatHashtbl.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">filter_inplace&nbsp;f&nbsp;m</code> removes from <code class="code">m</code> all bindings that does not
-    satisfy the predicate f.<br>
-<b>Since</b> 2.1<br>
+<div class="info-desc">
+<p><code class="code">filter_inplace&nbsp;f&nbsp;m</code> removes from <code class="code">m</code> all bindings that does not
+    satisfy the predicate f.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.1</li>
+</ul>
 </div>
 
 <pre><span id="VALfilteri"><span class="keyword">val</span> filteri</span> : <code class="type">('key -> 'a -> bool) -> ('key, 'a) <a href="BatHashtbl.html#TYPEt">t</a> -> ('key, 'a) <a href="BatHashtbl.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">filteri&nbsp;f&nbsp;m</code> returns a hashtbl where only the key, values pairs
-    <code class="code">key</code>, <code class="code">a</code> of <code class="code">m</code> such that <code class="code">f&nbsp;key&nbsp;a&nbsp;=&nbsp;<span class="keyword">true</span></code> remain.<br>
+<div class="info-desc">
+<p><code class="code">filteri&nbsp;f&nbsp;m</code> returns a hashtbl where only the key, values pairs
+    <code class="code">key</code>, <code class="code">a</code> of <code class="code">m</code> such that <code class="code">f&nbsp;key&nbsp;a&nbsp;=&nbsp;<span class="keyword">true</span></code> remain.</p>
+</div>
 </div>
 
 <pre><span id="VALfilteri_inplace"><span class="keyword">val</span> filteri_inplace</span> : <code class="type">('key -> 'a -> bool) -> ('key, 'a) <a href="BatHashtbl.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">filteri_inplace&nbsp;f&nbsp;m</code> performs as filter_inplace but <code class="code">f</code>
-    receive the value in additiuon to the key.<br>
-<b>Since</b> 2.1<br>
+<div class="info-desc">
+<p><code class="code">filteri_inplace&nbsp;f&nbsp;m</code> performs as filter_inplace but <code class="code">f</code>
+    receive the value in additiuon to the key.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.1</li>
+</ul>
 </div>
 
 <pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">('key -> 'a -> 'b option) -><br>       ('key, 'a) <a href="BatHashtbl.html#TYPEt">t</a> -> ('key, 'b) <a href="BatHashtbl.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">filter_map&nbsp;f&nbsp;m</code> combines the features of <code class="code">filteri</code> and <code class="code">map</code>.  It
+<div class="info-desc">
+<p><code class="code">filter_map&nbsp;f&nbsp;m</code> combines the features of <code class="code">filteri</code> and <code class="code">map</code>.  It
     calls <code class="code">f&nbsp;key0&nbsp;a0</code>, <code class="code">f&nbsp;key1&nbsp;a1</code>, <code class="code">f&nbsp;keyn&nbsp;an</code> where <code class="code">a0,a1..an</code> are
     the elements of <code class="code">m</code> and <code class="code">key0..keyn</code> the corresponding keys. It
     returns a hashtbl with associations <code class="code">keyi</code>,<code class="code">bi</code> where <code class="code">f&nbsp;keyi&nbsp;ai&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Some</span>&nbsp;bi</code>.  When <code class="code">f</code> returns <code class="code"><span class="constructor">None</span></code>, the corresponding element of
-    <code class="code">m</code> is discarded.<br>
+    <code class="code">m</code> is discarded.</p>
+</div>
 </div>
 
 <pre><span id="VALfilter_map_inplace"><span class="keyword">val</span> filter_map_inplace</span> : <code class="type">('key -> 'a -> 'a option) -> ('key, 'a) <a href="BatHashtbl.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
-<code class="code">filter_map_inplace&nbsp;f&nbsp;m</code> performs like filter_map but modify <code class="code">m</code>
-    inplace instead of creating a new Hashtbl.<br>
+<div class="info-desc">
+<p><code class="code">filter_map_inplace&nbsp;f&nbsp;m</code> performs like filter_map but modify <code class="code">m</code>
+    inplace instead of creating a new Hashtbl.</p>
 </div>
-<br>
-<h6 id="6_Thepolymorphichashprimitive">The polymorphic hash primitive</h6><br>
-
+</div>
+<h7 id="6_Thepolymorphichashprimitive">The polymorphic hash primitive</h7>
 <pre><span id="VALhash"><span class="keyword">val</span> hash</span> : <code class="type">'a -> int</code></pre><div class="info ">
-<code class="code"><span class="constructor">Hashtbl</span>.hash&nbsp;x</code> associates a positive integer to any value of
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Hashtbl</span>.hash&nbsp;x</code> associates a positive integer to any value of
     any type. It is guaranteed that
     if <code class="code">x&nbsp;=&nbsp;y</code> or <code class="code"><span class="constructor">Pervasives</span>.compare&nbsp;x&nbsp;y&nbsp;=&nbsp;0</code>, then <code class="code">hash&nbsp;x&nbsp;=&nbsp;hash&nbsp;y</code>.
     Moreover, <code class="code">hash</code> always terminates, even on cyclic
-    structures.<br>
+    structures.</p>
+</div>
 </div>
 
 <pre><span id="VALhash_param"><span class="keyword">val</span> hash_param</span> : <code class="type">int -> int -> 'a -> int</code></pre><div class="info ">
-<code class="code"><span class="constructor">Hashtbl</span>.hash_param&nbsp;n&nbsp;m&nbsp;x</code> computes a hash value for <code class="code">x</code>, with the
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Hashtbl</span>.hash_param&nbsp;n&nbsp;m&nbsp;x</code> computes a hash value for <code class="code">x</code>, with the
     same properties as for <code class="code">hash</code>. The two extra parameters <code class="code">n</code> and
     <code class="code">m</code> give more precise control over hashing. Hashing performs a
     depth-first, right-to-left traversal of the structure <code class="code">x</code>, stopping
@@ -396,44 +471,42 @@ Find a binding for the key, or return <code class="code"><span class="constructo
     nodes are taken into account to compute the final hash
     value, and therefore collisions are less likely to happen.
     However, hashing takes longer. The parameters <code class="code">m</code> and <code class="code">n</code>
-    govern the tradeoff between accuracy and speed.<br>
+    govern the tradeoff between accuracy and speed.</p>
 </div>
-<br>
-<h6 id="6_Boilerplatecode">Boilerplate code</h6><br>
-<br>
-<div class="h7" id="7_Printing">Printing</div><br>
-
-<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ?kvsep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'c -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> ('b, 'c) <a href="BatHashtbl.html#TYPEt">t</a> -> unit</code></pre><br>
-<h6 id="6_Overridemodules">Override modules</h6><br>
-<br>
-The following modules replace functions defined in <code class="code"><span class="constructor">Hashtbl</span></code> with functions
+</div>
+<h7 id="6_Boilerplatecode">Boilerplate code</h7><div class="h8" id="7_Printing">Printing</div>
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ?kvsep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'c -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> ('b, 'c) <a href="BatHashtbl.html#TYPEt">t</a> -> unit</code></pre><h7 id="6_Overridemodules">Override modules</h7><p>The following modules replace functions defined in <code class="code"><span class="constructor">Hashtbl</span></code> with functions
    behaving slightly differently but having the same name. This is by design:
-   the functions meant to override the corresponding functions of <code class="code"><span class="constructor">Hashtbl</span></code>.<br>
+   the functions meant to override the corresponding functions of <code class="code"><span class="constructor">Hashtbl</span></code>.</p>
 
-<pre><span class="keyword">module</span> <a href="BatHashtbl.Exceptionless.html">Exceptionless</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-Operations on <code class="code"><span class="constructor">Hashtbl</span></code> without exceptions.
+<pre><span id="MODULEExceptionless"><span class="keyword">module</span> <a href="BatHashtbl.Exceptionless.html">Exceptionless</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.Exceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>Operations on <code class="code"><span class="constructor">Hashtbl</span></code> without exceptions.</p>
+
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatHashtbl.Infix.html">Infix</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-Infix operators over a <a href="BatHashtbl.html"><code class="code"><span class="constructor">BatHashtbl</span></code></a>
+<pre><span id="MODULEInfix"><span class="keyword">module</span> <a href="BatHashtbl.Infix.html">Infix</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>Infix operators over a <a href="BatHashtbl.html"><code class="code"><span class="constructor">BatHashtbl</span></code></a></p>
+
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatHashtbl.Labels.html">Labels</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.Labels.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-Operations on <code class="code"><span class="constructor">Hashtbl</span></code> with labels.
-</div>
-<br>
-<h6 id="6_Functorialinterface">Functorial interface</h6><br>
+<pre><span id="MODULELabels"><span class="keyword">module</span> <a href="BatHashtbl.Labels.html">Labels</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.Labels.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>Operations on <code class="code"><span class="constructor">Hashtbl</span></code> with labels.</p>
 
-<pre><span class="keyword">module type</span> <a href="BatHashtbl.HashedType.html">HashedType</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.HashedType.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
-<pre><span class="keyword">module type</span> <a href="BatHashtbl.S.html">S</a> = <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.S.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-The output signature of the functor <code class="code"><span class="constructor">Hashtbl</span>.<span class="constructor">Make</span></code>.
 </div>
+<h7 id="6_Functorialinterface">Functorial interface</h7>
+<pre><span id="MODULETYPEHashedType"><span class="keyword">module type</span> <a href="BatHashtbl.HashedType.html">HashedType</a></span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.HashedType.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span id="MODULETYPES"><span class="keyword">module type</span> <a href="BatHashtbl.S.html">S</a></span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.S.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>The output signature of the functor <code class="code"><span class="constructor">Hashtbl</span>.<span class="constructor">Make</span></code>.</p>
 
-<pre><span class="keyword">module</span> <a href="BatHashtbl.Make.html">Make</a>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">H</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatHashtbl.HashedType.html">HashedType</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatHashtbl.S.html">S</a></code><code class="type">  with type key = H.t</code></div></pre><div class="info">
-Functor building an implementation of the hashtable structure.
 </div>
 
-<pre><span class="keyword">module</span> <a href="BatHashtbl.Cap.html">Cap</a>: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.Cap.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-Capabilities for hashtables.
+<pre><span id="MODULEMake"><span class="keyword">module</span> <a href="BatHashtbl.Make.html">Make</a></span>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">H</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatHashtbl.HashedType.html">HashedType</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatHashtbl.S.html">S</a></code><code class="type">  with type key = H.t</code></div></pre><div class="info">
+<p>Functor building an implementation of the hashtable structure.</p>
+
+</div>
+
+<pre><span id="MODULECap"><span class="keyword">module</span> <a href="BatHashtbl.Cap.html">Cap</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.Cap.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p>Capabilities for hashtables.</p>
+
 </div>
 </body></html>

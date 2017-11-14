@@ -20,6 +20,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -229,7 +230,7 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;base_power_big_int&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatBig_int</span>.big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatBig_int</span>.big_int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sys_big_int_of_string&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatBig_int</span>.big_int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;round_futur_last_digit&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;round_futur_last_digit&nbsp;:&nbsp;<span class="constructor">Bytes</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;approx_big_int&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatBig_int</span>.big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;round_big_int_to_float&nbsp;:&nbsp;<span class="constructor">BatBig_int</span>.big_int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;zero_big_int&nbsp;:&nbsp;<span class="constructor">BatBig_int</span>.big_int<br>

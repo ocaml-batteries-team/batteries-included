@@ -24,6 +24,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -116,20 +117,25 @@
 </div>
 <h1>Module type <a href="type_BatHashtbl.HashedType.html">BatHashtbl.HashedType</a></h1>
 
-<pre><span class="keyword">module type</span> HashedType = <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.HashedType.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
+<pre><span id="MODULETYPEHashedType"><span class="keyword">module type</span> HashedType</span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatHashtbl.HashedType.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> </pre>
 <div class="info ">
-The type of the hashtable keys.<br>
+<div class="info-desc">
+<p>The type of the hashtable keys.</p>
+</div>
 </div>
 
 
 <pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="BatHashtbl.HashedType.html#TYPEt">t</a> -> <a href="BatHashtbl.HashedType.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-The equality predicate used to compare keys.<br>
+<div class="info-desc">
+<p>The equality predicate used to compare keys.</p>
+</div>
 </div>
 
 <pre><span id="VALhash"><span class="keyword">val</span> hash</span> : <code class="type"><a href="BatHashtbl.HashedType.html#TYPEt">t</a> -> int</code></pre><div class="info ">
-A hashing function on keys. It must be such that if two keys are
+<div class="info-desc">
+<p>A hashing function on keys. It must be such that if two keys are
         equal according to <code class="code">equal</code>, then they have identical hash values
         as computed by <code class="code">hash</code>.
         Examples: suitable (<code class="code">equal</code>, <code class="code">hash</code>) pairs for arbitrary key
@@ -139,6 +145,7 @@ A hashing function on keys. It must be such that if two keys are
         for comparing objects by structure and handling <code class="code"><span class="constructor">Pervasives</span>.nan</code>
         correctly, and
         (<code class="code">(==)</code>, <code class="code"><span class="constructor">Hashtbl</span>.hash</code>) for comparing objects by addresses
-        (e.g. for cyclic keys).<br>
+        (e.g. for cyclic keys).</p>
+</div>
 </div>
 </body></html>

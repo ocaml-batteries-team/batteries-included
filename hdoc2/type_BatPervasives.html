@@ -20,6 +20,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -136,7 +137,8 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;flush&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_char&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_string&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Bytes</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_substring&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_byte&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_binary_int&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_binary_float&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
@@ -151,8 +153,8 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_in_gen&nbsp;:&nbsp;<span class="constructor">Pervasives</span>.open_flag&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatIO</span>.input<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_char&nbsp;:&nbsp;<span class="constructor">BatIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_line&nbsp;:&nbsp;<span class="constructor">BatIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input&nbsp;:&nbsp;<span class="constructor">BatIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;really_input&nbsp;:&nbsp;<span class="constructor">BatIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input&nbsp;:&nbsp;<span class="constructor">BatIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Bytes</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;really_input&nbsp;:&nbsp;<span class="constructor">BatIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Bytes</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_byte&nbsp;:&nbsp;<span class="constructor">BatIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_binary_int&nbsp;:&nbsp;<span class="constructor">BatIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_binary_float&nbsp;:&nbsp;<span class="constructor">BatIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float<br>

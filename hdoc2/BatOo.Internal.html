@@ -23,6 +23,7 @@
 <link title="BatBounded" rel="Chapter" href="BatBounded.html">
 <link title="BatBuffer" rel="Chapter" href="BatBuffer.html">
 <link title="BatBytes" rel="Chapter" href="BatBytes.html">
+<link title="BatBytesCompat" rel="Chapter" href="BatBytesCompat.html">
 <link title="BatCache" rel="Chapter" href="BatCache.html">
 <link title="BatChar" rel="Chapter" href="BatChar.html">
 <link title="BatCharParser" rel="Chapter" href="BatCharParser.html">
@@ -120,14 +121,11 @@
 &nbsp;</div>
 <h1>Module <a href="type_BatOo.Internal.html">BatOo.Internal</a></h1>
 
-<pre><span class="keyword">module</span> Internal: <code class="code"><span class="keyword">sig</span></code> <a href="BatOo.Internal.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
-<br>
-Run-time support for objects and classes.
+<pre><span id="MODULEInternal"><span class="keyword">module</span> Internal</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatOo.Internal.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
+<p>Run-time support for objects and classes.
       All functions in this module are for system use only, not for the
-      casual user.<br>
-<br>
-<h6 id="6_Classes">Classes</h6><br>
-
+      casual user.</p>
+<h7 id="6_Classes">Classes</h7>
 <pre><span id="TYPEtag"><span class="keyword">type</span> <code class="type"></code>tag</span> = <code class="type">CamlinternalOO.tag</code> </pre>
 
 
@@ -136,7 +134,9 @@ Run-time support for objects and classes.
 
 <pre><span id="TYPEtable"><span class="keyword">type</span> <code class="type"></code>table</span> = <code class="type">CamlinternalOO.table</code> </pre>
 <div class="info ">
-Internal representation of the vtable, i.e. the table of virtual methods.<br>
+<div class="info-desc">
+<p>Internal representation of the vtable, i.e. the table of virtual methods.</p>
+</div>
 </div>
 
 
@@ -148,13 +148,17 @@ Internal representation of the vtable, i.e. the table of virtual methods.<br>
 
 <pre><span id="TYPEobj"><span class="keyword">type</span> <code class="type"></code>obj</span> = <code class="type">CamlinternalOO.obj</code> </pre>
 <div class="info ">
-Internal representation of an object.<br>
+<div class="info-desc">
+<p>Internal representation of an object.</p>
+</div>
 </div>
 
 
 <pre><span id="TYPEclosure"><span class="keyword">type</span> <code class="type"></code>closure</span> = <code class="type">CamlinternalOO.closure</code> </pre>
 <div class="info ">
-Internal representation of a method.<br>
+<div class="info-desc">
+<p>Internal representation of a method.</p>
+</div>
 </div>
 
 
@@ -181,9 +185,7 @@ Internal representation of a method.<br>
 
 
 <pre><span id="VALmake_class_store"><span class="keyword">val</span> make_class_store</span> : <code class="type">string array -><br>       (<a href="BatOo.Internal.html#TYPEtable">table</a> -> <a href="BatOo.Internal.html#TYPEt">t</a>) -><br>       <a href="BatOo.Internal.html#TYPEinit_table">init_table</a> -> unit</code></pre>
-<pre><span id="VALdummy_class"><span class="keyword">val</span> dummy_class</span> : <code class="type">string * int * int -><br>       <a href="BatOo.Internal.html#TYPEt">t</a> * (<a href="BatOo.Internal.html#TYPEtable">table</a> -> Obj.t -> <a href="BatOo.Internal.html#TYPEt">t</a>) *<br>       (Obj.t -> <a href="BatOo.Internal.html#TYPEt">t</a>) * Obj.t</code></pre><br>
-<h6 id="6_Objects">Objects</h6><br>
-
+<pre><span id="VALdummy_class"><span class="keyword">val</span> dummy_class</span> : <code class="type">string * int * int -><br>       <a href="BatOo.Internal.html#TYPEt">t</a> * (<a href="BatOo.Internal.html#TYPEtable">table</a> -> Obj.t -> <a href="BatOo.Internal.html#TYPEt">t</a>) *<br>       (Obj.t -> <a href="BatOo.Internal.html#TYPEt">t</a>) * Obj.t</code></pre><h7 id="6_Objects">Objects</h7>
 <pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">(< .. > as 'a) -> 'a</code></pre>
 <pre><span id="VALcreate_object"><span class="keyword">val</span> create_object</span> : <code class="type"><a href="BatOo.Internal.html#TYPEtable">table</a> -> <a href="BatOo.Internal.html#TYPEobj">obj</a></code></pre>
 <pre><span id="VALcreate_object_opt"><span class="keyword">val</span> create_object_opt</span> : <code class="type"><a href="BatOo.Internal.html#TYPEobj">obj</a> -> <a href="BatOo.Internal.html#TYPEtable">table</a> -> <a href="BatOo.Internal.html#TYPEobj">obj</a></code></pre>
@@ -193,15 +195,11 @@ Internal representation of a method.<br>
 <pre><span id="VALsend"><span class="keyword">val</span> send</span> : <code class="type"><a href="BatOo.Internal.html#TYPEobj">obj</a> -> <a href="BatOo.Internal.html#TYPEtag">tag</a> -> <a href="BatOo.Internal.html#TYPEt">t</a></code></pre>
 <pre><span id="VALsendcache"><span class="keyword">val</span> sendcache</span> : <code class="type"><a href="BatOo.Internal.html#TYPEobj">obj</a> -><br>       <a href="BatOo.Internal.html#TYPEtag">tag</a> -> <a href="BatOo.Internal.html#TYPEt">t</a> -> int -> <a href="BatOo.Internal.html#TYPEt">t</a></code></pre>
 <pre><span id="VALsendself"><span class="keyword">val</span> sendself</span> : <code class="type"><a href="BatOo.Internal.html#TYPEobj">obj</a> -> <a href="BatOo.Internal.html#TYPElabel">label</a> -> <a href="BatOo.Internal.html#TYPEt">t</a></code></pre>
-<pre><span id="VALget_public_method"><span class="keyword">val</span> get_public_method</span> : <code class="type"><a href="BatOo.Internal.html#TYPEobj">obj</a> -> <a href="BatOo.Internal.html#TYPEtag">tag</a> -> <a href="BatOo.Internal.html#TYPEclosure">closure</a></code></pre><br>
-<h6 id="6_Tablecache">Table cache</h6><br>
-
+<pre><span id="VALget_public_method"><span class="keyword">val</span> get_public_method</span> : <code class="type"><a href="BatOo.Internal.html#TYPEobj">obj</a> -> <a href="BatOo.Internal.html#TYPEtag">tag</a> -> <a href="BatOo.Internal.html#TYPEclosure">closure</a></code></pre><h7 id="6_Tablecache">Table cache</h7>
 <pre><span id="TYPEtables"><span class="keyword">type</span> <code class="type"></code>tables</span> = <code class="type">CamlinternalOO.tables</code> </pre>
 
 
-<pre><span id="VALlookup_tables"><span class="keyword">val</span> lookup_tables</span> : <code class="type"><a href="BatOo.Internal.html#TYPEtables">tables</a> -><br>       <a href="BatOo.Internal.html#TYPEclosure">closure</a> array -> <a href="BatOo.Internal.html#TYPEtables">tables</a></code></pre><br>
-<h6 id="6_Builtinstoreducecodesize">Builtins to reduce code size</h6><br>
-
+<pre><span id="VALlookup_tables"><span class="keyword">val</span> lookup_tables</span> : <code class="type"><a href="BatOo.Internal.html#TYPEtables">tables</a> -><br>       <a href="BatOo.Internal.html#TYPEclosure">closure</a> array -> <a href="BatOo.Internal.html#TYPEtables">tables</a></code></pre><h7 id="6_Builtinstoreducecodesize">Builtins to reduce code size</h7>
 <pre><span id="TYPEimpl"><span class="keyword">type</span> <code class="type"></code>impl</span> = <code class="type">CamlinternalOO.impl</code> = </pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
@@ -380,9 +378,7 @@ Internal representation of a method.<br>
 </tr></table>
 
 
-<br>
-<h6 id="6_Parameters">Parameters</h6><br>
-
+<h7 id="6_Parameters">Parameters</h7>
 <pre><span id="TYPEparams"><span class="keyword">type</span> <code class="type"></code>params</span> = <code class="type">CamlinternalOO.params</code> = {</pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
@@ -422,13 +418,13 @@ Internal representation of a method.<br>
 }
 
 <div class="info ">
-currently disabled<br>
+<div class="info-desc">
+<p>currently disabled</p>
+</div>
 </div>
 
 
-<pre><span id="VALparams"><span class="keyword">val</span> params</span> : <code class="type"><a href="BatOo.Internal.html#TYPEparams">params</a></code></pre><br>
-<h6 id="6_Statistics">Statistics</h6><br>
-
+<pre><span id="VALparams"><span class="keyword">val</span> params</span> : <code class="type"><a href="BatOo.Internal.html#TYPEparams">params</a></code></pre><h7 id="6_Statistics">Statistics</h7>
 <pre><span id="TYPEstats"><span class="keyword">type</span> <code class="type"></code>stats</span> = <code class="type">CamlinternalOO.stats</code> = {</pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
