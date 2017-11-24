@@ -100,7 +100,9 @@ val nwrite : 'a output -> string -> unit
 (** Write a string to an output. *)
 
 val nwrite_bytes : 'a output -> Bytes.t -> unit
-(** Write a byte sequence to an output. *)
+(** Write a byte sequence to an output.
+
+    @since 2.8.0 *)
 
 val output : 'a output -> Bytes.t -> int -> int -> int
 (** [output o s p len] writes up to [len] characters from byte
@@ -110,7 +112,9 @@ val output : 'a output -> Bytes.t -> int -> int -> int
 
 val output_substring : 'a output -> string -> int -> int -> int
 (** like [output] above, but outputs from a substring instead of
-    a subsequence of bytes *)
+    a subsequence of bytes
+
+    @since 2.8.0 *)
 
 val really_output : 'a output -> Bytes.t -> int -> int -> int
 (** [really_output o s p len] writes exactly [len] characters from
@@ -121,7 +125,9 @@ val really_output : 'a output -> Bytes.t -> int -> int -> int
 
 val really_output_substring : 'a output -> string -> int -> int -> int
 (** like [really_output] above, but outputs from a substring instead
-    of a subsequence of bytes *)
+    of a subsequence of bytes
+
+    @since 2.8.0 *)
 
 val flush : 'a output -> unit
 (** Flush an output. *)

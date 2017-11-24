@@ -111,6 +111,7 @@ practices.
 
 # Post-release work
 
-- create a Changelog section for NEXT_RELEASE
+- create a Changelog section for NEXT_RELEASE,
+  use NEXT_RELEASE in the _oasis version field
 
 - once the new opam package is merged, announce on the mailing-list.

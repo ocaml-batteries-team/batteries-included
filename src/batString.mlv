@@ -952,10 +952,10 @@ let numeric_compare s1 s2 =
  *)
 
 ##V<4.3##let map_first_char f s =
-##V<4.3##  let r = copy s in
-##V<4.3##  if length s > 0 then
-##V<4.3##    unsafe_set r 0 (f(unsafe_get s 0));
-##V<4.3##  r
+##V<4.3##  let r = Bytes.of_string s in
+##V<4.3##  if Bytes.length r > 0 then
+##V<4.3##    Bytes.unsafe_set r 0 (f (unsafe_get s 0));
+##V<4.3##  Bytes.unsafe_to_string r
 
 ##V<4.3##let capitalize_ascii s = map_first_char BatChar.uppercase_ascii s
 ##V<4.3##let uncapitalize_ascii s = map_first_char BatChar.lowercase_ascii s

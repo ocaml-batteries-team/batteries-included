@@ -247,7 +247,9 @@ val output : 'a output -> Bytes.t -> int -> int -> int
 
 val output_substring : 'a output -> string -> int -> int -> int
 (** like [output] above, but outputs from a substring instead of
-    a subsequence of bytes *)
+    a subsequence of bytes
+
+    @since 2.8.0 *)
 
 val really_output : 'a output -> Bytes.t -> int -> int -> int
 (** [really_output o s p len] writes exactly [len] characters from
@@ -264,7 +266,9 @@ val really_output : 'a output -> Bytes.t -> int -> int -> int
 
 val really_output_substring : 'a output -> string -> int -> int -> int
 (** like [really_output] above, but outputs from a substring instead
-    of a subsequence of bytes *)
+    of a subsequence of bytes
+
+    @since 2.8.0 *)
 
 val flush : 'a output -> unit
 (** Flush an output.

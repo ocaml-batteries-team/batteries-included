@@ -1,15 +1,17 @@
 Changelog
 ---------
 
+## NEXT_RELEASE
+
+- add `BatString.count_string: string -> string -> int`
+  #799
+  (Francois Berenger)
+
 ## v2.8.0 (minor release)
 
 This minor release supports the -safe-string mode for OCaml
 compilation, enforcing a type-level separation between (immutable)
 strings and mutable byte sequences.
-
-- add `BatString.count_string: string -> string -> int`
-  #799
-  (Francois Berenger)
 
 - support -safe-string compilation
   #673
