@@ -564,16 +564,25 @@ val for_all2 : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
     different lengths. *)
 
 val equal : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
-(** [equal eq s1 s2] compares elements of [s1] and [s2] pairwise using [eq],
-    and returns true if all elements pass the test and the lists are the same 
+(** [equal eq s1 s2] compares elements of [s1] and [s2] pairwise using [eq]
+    and returns true if all elements pass the test and the lists have the same 
     length; otherwise it returns false.  Examples:
 
       {[
         equal (=) (range 0 4) (range 0 4) (* true *)
 
-        let make_range_list n = init n (range 0)  (* make list of lists *)
-        equal (equal (=)) (make_range_list 5) (make_range_list 5) (* true *)
+        (* Make lazy lists of lazy lists: *)
+        let s1 = init 5 (range 0) 
+        let s2 = init 5 (range 0) 
+        equal (equal (=)) s1 s2 (* true *)
       ]}
+
+      (Calling [=] directly on a pair of lazy lists may succeed but is not
+      guaranteed to behave consistently.)
+
+      Note that on lists of equal length, [equal] and [for_all2] can perform
+      the same function; their intended uses differ, however, as signaled by
+      behavior on lists of different lengths.
 *)
 
 val exists2 : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
