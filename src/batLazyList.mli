@@ -564,8 +564,8 @@ val for_all2 : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
     different lengths. *)
 
 val equal : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
-(** [equal eq s1 s2] compares elements of [s1] and [s2] pairwise using [eq] 
-    and returns true all elements pass the test and the lists are the same 
+(** [equal eq s1 s2] compares elements of [s1] and [s2] pairwise using [eq],
+    and returns true if all elements pass the test and the lists are the same 
     length; otherwise it returns false.  Examples:
 
       {[
