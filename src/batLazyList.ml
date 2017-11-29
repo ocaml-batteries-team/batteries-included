@@ -619,6 +619,14 @@ let for_all2 p l1 l2 =
     | (Cons _, Nil) | (Nil, Cons _) -> raise (Different_list_size "LazyList.for_all2")
   in aux l1 l2
 
+let equal eq l1 l2 =
+  let rec aux l1 l2 =
+    match (next l1, next l2) with
+    | (Cons (h1, t1), Cons(h2, t2)) -> eq h1 h2 && (aux t1 t2)
+    | (Nil, Nil)                    -> true
+    | (Cons _, Nil) | (Nil, Cons _) -> false
+  in aux l1 l2
+
 let exists2 p l1 l2 =
   let rec aux l1 l2 =
     match (next l1, next l2) with

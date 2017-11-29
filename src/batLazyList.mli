@@ -563,6 +563,19 @@ val for_all2 : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
     @raise Different_list_size if the two lists have
     different lengths. *)
 
+val equal : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
+(** [equal eq s1 s2] compares elements of [s1] and [s2] pairwise using [eq] 
+    and returns true all elements pass the test and the lists are the same 
+    length; otherwise it returns false.  Examples:
+
+      {[
+        equal (=) (range 0 4) (range 0 4) (* true *)
+
+        let make_range_list n = init n (range 0)  (* make list of lists *)
+        equal (equal (=)) (make_range_list 5) (make_range_list 5) (* true *)
+      ]}
+*)
+
 val exists2 : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
 (** Same as {!exists}, but for a two-argument predicate.
     @raise Different_list_size if the two lists have
