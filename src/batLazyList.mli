@@ -288,7 +288,7 @@ val rindex_ofq : 'a -> 'a t -> int option
 
 val next : 'a t -> 'a node_t
 (** Compute and return the first node from the list as a [Cons].  This 
-    differs from [hd], which returns first element (the first component of 
+    differs from [hd], which returns the first element (the first component of 
     the first node). *)
 
 val length : 'a t -> int
