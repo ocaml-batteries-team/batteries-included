@@ -119,16 +119,15 @@ val unfold: 'b -> ('b -> ('a * 'b) option) -> 'a t
    result, etc. The list ends whenever [next] returns [None].  The function 
    [next] should return a pair [option] whose first element will be the
    current value of the sequence; the second element will be passed 
-   (lazily) to [next] in order to compute the following element.  One use 
-   of [unfold] is to make each element of the resulting sequence to depend 
-   on the previous two elements, as in this Fibonacci sequence definition:
-
+   (lazily) to [next] in order to compute the following element.  One example
+   of a use of [unfold] is to make each element of the resulting sequence to 
+   depend on the previous two elements, as in this Fibonacci sequence 
+   definition:
    {[
      let data = (1, 1)
      let next (x, y) = Some (x, (y, x + y))
      let fib = unfold data next
    ]}
-
    The first element [x] of the pair within [Some] will be the current 
    value of the sequence; the next value of the sequence, and the one after
    that, are recorded as [y] and [x + y] respectively. *)
@@ -137,22 +136,8 @@ val from_loop: 'b -> ('b -> ('a * 'b)) -> 'a t
 (**[from_loop data next] creates a (possibly infinite) lazy list from
    the successive results of applying [next] to [data], then to the
    result, etc.  The list ends whenever the function raises
-   {!LazyList.No_more_elements}.  The function [next] should return a pair 
-   whose first element will be the current value of the sequence; the second 
-   element will be passed (lazily) to [next] in order to compute the following
-   element.  One use of [unfold] is to make each element of the resulting sequence 
-   to depend on the previous two elements, as in this definition of a Fibonacci 
-   sequence:
-
-   {[
-     let data = (1, 1)
-     let next (x, y) = (x, (y, x + y))
-     let fib = unfold data next
-   ]}
-
-   The first element [x] of the result of [next] will be the current 
-   value of the sequence; the next value of the sequence, and the one after
-   that, are recorded as [y] and [x + y] respectively. *)
+   {!LazyList.No_more_elements}.  (For further information see [unfold];
+   ignore references to [option] and [Some].) *)
 
 val init : int -> (int -> 'a) -> 'a t
 (** Similar to [Array.init], [init n f] returns the lazy list
