@@ -6,6 +6,9 @@ Changelog
 - add `BatString.count_string: string -> string -> int`
   #799
   (Francois Berenger)
+- Int: optimized implementation of Safe_int.mul
+  #808
+  (Max Mouratov)
 
 ## v2.8.0 (minor release)
 

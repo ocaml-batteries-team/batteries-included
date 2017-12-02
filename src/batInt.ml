@@ -255,7 +255,7 @@ module BaseSafeInt = struct
 
   let mul (a: int) (b: int) : int =
     let open Pervasives in
-    if ((abs a) lor (abs b)) asr mul_shift_bits <> 0
+    if (a lor b) asr mul_shift_bits <> 0
     then begin match (a > 0, b > 0) with
       | (true, true) when a > (max_int / b) ->
           raise BatNumber.Overflow
