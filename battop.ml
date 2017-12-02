@@ -63,8 +63,10 @@ open Batteries;;
 #install_printer BatteriesPrint.print_uchar;;
 #install_printer BatteriesPrint.print_ustring;;
 #install_printer BatteriesPrint.print_rope;;
+(*
 #install_printer BatteriesPrint.print_string_cap_rw;;
 #install_printer BatteriesPrint.print_string_cap_ro;;
+ *)
 #install_printer BatteriesPrint.string_dynarray;;
 #install_printer BatteriesPrint.int_dynarray;;
 #install_printer BatteriesPrint.char_dynarray;;
