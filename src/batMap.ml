@@ -1080,6 +1080,12 @@ let union m1 m2 =
   let comp = Pervasives.compare in
   Concrete.union comp m1 comp m2
 
+(*$T union
+  let m1 = empty |> add 1 1 |> add 2 2 in \
+  let m2 = empty |> add 2 20 |> add 3 30 in \
+  (union m1 m2 |> find 2 = 20) && (union m2 m1 |> find 2 = 2)
+*)
+
 let diff m1 m2 =
   let comp = Pervasives.compare in
   Concrete.diff comp m1 comp m2
