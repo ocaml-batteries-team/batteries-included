@@ -683,7 +683,7 @@ module Concrete = struct
   let union cmp1 m1 cmp2 m2 =
     if compatible_cmp cmp1 m1 cmp2 m2 then
       let merge_fun _k a b = if a <> None then a else b in
-      merge merge_fun cmp2 m1 m2
+      merge merge_fun cmp2 m2 m1
     else
       foldi (fun k v m -> add k v cmp1 m) m2 m1
 
