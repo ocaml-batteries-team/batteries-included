@@ -459,6 +459,11 @@ val filter : ('a -> bool) -> 'a list -> 'a list
     that satisfy the predicate [p].  The order of the elements
     in the input list is preserved.  *)
 
+val filter_count : ('a -> bool) -> 'a list -> int
+(** [filter_count p l] returns the number of elements in [l]
+    that satisfy [p]. Semantically equivalent but faster than
+    [length (filter p l)]. *)
+
 val filteri : (int -> 'a -> bool) -> 'a list -> 'a list
 (** [filteri p [a0; a1; ...; an]] returns all the elements [ai] of index [i]
     that satisfy the predicate [p i ai].  The order of the elements
