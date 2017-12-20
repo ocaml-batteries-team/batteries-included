@@ -334,6 +334,60 @@ let print ?(first="[") ?(last="]") ?(sep="; ") print_a out s = match s () with
       iter (BatPrintf.fprintf out "%s%a" sep print_a) s;
       BatInnerIO.nwrite out last
 
+let to_buffer ?(first="[") ?(last="]") ?(sep=";") to_str buff s =
+  match s () with
+  | Nil -> (Buffer.add_string buff first;
+            Buffer.add_string buff last)
+  | Cons(e, s) ->
+    match s () with
+    | Nil -> (Buffer.add_string buff first;
+              Buffer.add_string buff (to_str e);
+              Buffer.add_string buff last)
+    | _ ->
+      Buffer.add_string buff first;
+      Buffer.add_string buff (to_str e);
+      iter (fun e ->
+          Buffer.add_string buff sep;
+          Buffer.add_string buff (to_str e)
+        ) s;
+      Buffer.add_string buff last
+
+let to_string ?(first="[") ?(last="]") ?(sep=";") to_str s =
+  let buff = Buffer.create 80 in
+  to_buffer ~first ~last ~sep to_str buff s;
+  Buffer.contents buff
+
+(*$T to_string
+  to_string string_of_int (of_list [1;2;3]) = "[1;2;3]"
+  to_string ~first:"{" ~sep:"," ~last:"}" string_of_int (of_list [1;2;3]) = "{1,2,3}"
+  to_string string_of_int (of_list []) = "[]"
+*)
+
+exception Wrong_prefix of string
+exception Wrong_suffix of string
+
+let of_string ?(first="[") ?(last="]") ?(sep=";") of_str s =
+  if not (BatString.starts_with s first) then
+    raise (Wrong_prefix (first ^ " not prefix of " ^ s));
+  if not (BatString.ends_with s last) then
+    raise (Wrong_suffix (last ^ " not suffix of " ^ s));
+  let prfx_len = String.length first in
+  let sufx_len = String.length last in
+  let n = String.length s in
+  if n = prfx_len + sufx_len then nil
+  else
+    let body = BatString.chop ~l:prfx_len ~r:sufx_len s in
+    let strings = BatString.nsplit ~by:sep body in
+    of_list (BatList.map of_str strings)
+
+(*$T of_string
+  equal (of_string int_of_string "[1;2;3]") (of_list [1;2;3])
+  equal (of_string int_of_string "[]") (of_list [])
+  equal (of_string ~first:"{" ~sep:"," ~last:"}" int_of_string "{1,2,3}") (of_list [1;2;3])
+  try equal (of_string ~first:"{" int_of_string "[1;2;3]") (of_list []) with (Wrong_prefix _) -> true
+  try equal (of_string ~last:"}" int_of_string "[1;2;3]") (of_list []) with (Wrong_suffix _) -> true
+*)
+
 module Infix = struct
   (** Infix operators matching those provided by {!BatEnum.Infix} *)
 
