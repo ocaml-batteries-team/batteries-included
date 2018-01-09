@@ -136,6 +136,7 @@ sig
   (** [extract k m] removes the current binding of [k] from [m],
       returning the value [k] was bound to and the updated [m].
 
+      @raise Not_found if [k] is unbound in [m]
       @since 1.4.0
   *)
 
