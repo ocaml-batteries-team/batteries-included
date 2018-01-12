@@ -74,13 +74,11 @@ let seq data next cond =
     else              Nil
   in lazy (aux data)
 
-
 let unfold (data:'b) (next: 'b -> ('a * 'b) option) =
   let rec aux data = match next data with
     | Some(a,b) -> Cons(a, lazy (aux b))
     | None      -> Nil
   in lazy (aux data)
-
 
 let from_loop (data:'b) (next:'b -> ('a * 'b)) : 'a t=
   let f' data =
