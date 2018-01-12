@@ -3,6 +3,9 @@ Changelog
 
 ## NEXT_RELEASE
 
+- add `BatArray.split: ('a * 'b) array -> 'a array * 'b array`
+  #826
+  (Francois Berenger)
 - add `BatString.count_string: string -> string -> int`
   #799
   (Francois Berenger)
