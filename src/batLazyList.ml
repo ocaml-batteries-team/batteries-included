@@ -622,10 +622,17 @@ let for_all2 p l1 l2 =
 let equal eq l1 l2 =
   let rec aux l1 l2 =
     match (next l1, next l2) with
-    | (Cons (h1, t1), Cons(h2, t2)) -> eq h1 h2 && (aux t1 t2)
+    | (Cons (h1, t1), Cons (h2, t2)) -> eq h1 h2 && (aux t1 t2)
     | (Nil, Nil)                    -> true
     | (Cons _, Nil) | (Nil, Cons _) -> false
   in aux l1 l2
+
+(*$T equal
+  equal (equal (=)) (init 3 (range 0)) (init 3 (range 0))
+  not (equal (equal (=)) (of_list [(of_list [0; 1; 2])]) (of_list [(of_list [0; 42; 2])]))
+  not (equal (=) (range 0 2) (range 0 3))
+  not (equal (=) (range 0 3) (range 0 2))
+*)
 
 let exists2 p l1 l2 =
   let rec aux l1 l2 =
