@@ -39,7 +39,7 @@ val is_empty : ('a, 'b) t -> bool
 (** returns true if the map is empty. *)
 
 val create : ('a -> 'a -> int) -> ('b -> 'b -> int) -> ('a, 'b) t
-(** [create kcomp vcomp] creates a new empty map, using the kcomp for key comparison and vcomp for values comparison.*)
+(** [create kcomp vcomp] creates a new empty map, using the kcomp for key comparison and vcomp for value comparison.*)
 
 val add : 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
 (** [add x y m] returns a map containing the same bindings as
@@ -76,8 +76,8 @@ val map : ('b BatSet.PSet.t -> 'c BatSet.PSet.t) -> (('b -> 'b -> int) -> ('c ->
     replaced by the result of the application of [f] to [a].
     The order in which the associated values are passed to [f]
     is unspecified.
-    [vcompgen] will use the vcomp function provided to [m] as a 
-    parameter to generate a new values' comparison function.
+    [vcompgen] will use the vcomp function provided to [m] as an 
+    argument to generate a new value comparison function.
  *)
 
 val mapi : ('a -> 'b BatSet.PSet.t -> 'c BatSet.PSet.t) -> (('b -> 'b -> int) -> ('c -> 'c -> int)) -> ('a, 'b) t -> ('a, 'c) t
