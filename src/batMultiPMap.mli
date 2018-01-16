@@ -39,7 +39,8 @@ val is_empty : ('a, 'b) t -> bool
 (** returns true if the map is empty. *)
 
 val create : ('a -> 'a -> int) -> ('b -> 'b -> int) -> ('a, 'b) t
-(** [create kcomp vcomp] creates a new empty map, using the kcomp for key comparison and vcomp for value comparison.*)
+(** [create kcomp vcomp] creates a new empty map, 
+    using kcomp for key comparison and vcomp for value comparison.*)
 
 val add : 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
 (** [add x y m] returns a map containing the same bindings as
