@@ -39,7 +39,7 @@ val is_empty : ('a, 'b) t -> bool
 (** returns true if the map is empty. *)
 
 val create : ('a -> 'a -> int) -> ('b -> 'b -> int) -> ('a, 'b) t
-(** creates a new empty map, using the provided function for key comparison.*)
+(** [create kcomp vcomp] creates a new empty map, using the kcomp for key comparison and vcomp for values comparison.*)
 
 val add : 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
 (** [add x y m] returns a map containing the same bindings as
@@ -71,11 +71,14 @@ val iter : ('a -> 'b BatSet.PSet.t-> unit) -> ('a, 'b) t -> unit
     bindings hidden by more recent bindings are not passed to [f]. *)
 
 val map : ('b BatSet.PSet.t -> 'c BatSet.PSet.t) -> (('b -> 'b -> int) -> ('c -> 'c -> int)) -> ('a, 'b) t -> ('a, 'c) t
-(** [map f m] returns a map with same domain as [m], where the
+(** [map f vcmpgen m] returns a map with same domain as [m], where the
     associated value [a] of all bindings of [m] has been
     replaced by the result of the application of [f] to [a].
     The order in which the associated values are passed to [f]
-    is unspecified. *)
+    is unspecified.
+    [vcmpgen] will use the vcmp function provided to [m] as a parameter
+    to generate a new values comparison function.
+ *)
 
 val mapi : ('a -> 'b BatSet.PSet.t -> 'c BatSet.PSet.t) -> (('b -> 'b -> int) -> ('c -> 'c -> int)) -> ('a, 'b) t -> ('a, 'c) t
 (** Same as [map], but the function receives as arguments both the
