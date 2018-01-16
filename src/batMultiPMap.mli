@@ -33,7 +33,7 @@
 type ('a, 'b) t
 
 val empty : ('a, 'b) t
-(** The empty map, using [compare] as key comparison function. *)
+(** The empty map, using [compare] as comparison function for both keys and values. *)
 
 val is_empty : ('a, 'b) t -> bool
 (** returns true if the map is empty. *)
