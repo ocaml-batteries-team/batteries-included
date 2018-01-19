@@ -1,2 +1,2 @@
-<bench_set.ml*>: pkg_benchmark
+<bench_set.ml*>: package(benchmark)
 <sequence.ml>: rectypes
