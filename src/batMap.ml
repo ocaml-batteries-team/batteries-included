@@ -683,7 +683,7 @@ module Concrete = struct
   let union cmp1 m1 cmp2 m2 =
     if compatible_cmp cmp1 m1 cmp2 m2 then
       let merge_fun _k a b = if a <> None then a else b in
-      merge merge_fun cmp2 m1 m2
+      merge merge_fun cmp2 m2 m1
     else
       foldi (fun k v m -> add k v cmp1 m) m2 m1
 
@@ -1079,6 +1079,12 @@ let split k m = Concrete.split k Pervasives.compare m
 let union m1 m2 =
   let comp = Pervasives.compare in
   Concrete.union comp m1 comp m2
+
+(*$T union
+  let m1 = empty |> add 1 1 |> add 2 2 in \
+  let m2 = empty |> add 2 20 |> add 3 30 in \
+  (union m1 m2 |> find 2 = 20) && (union m2 m1 |> find 2 = 2)
+*)
 
 let diff m1 m2 =
   let comp = Pervasives.compare in

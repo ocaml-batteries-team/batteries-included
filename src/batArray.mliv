@@ -166,6 +166,9 @@ val blit : 'a array -> int -> 'a array -> int -> int -> unit
 val to_list : 'a array -> 'a list
 (** [Array.to_list a] returns the list of all the elements of [a]. *)
 
+val split : ('a * 'b) array -> 'a array * 'b array
+(** [Array.split a] converts the array of pairs [a] into a pair of arrays. *)
+
 val of_list : 'a list -> 'a array
 (** [Array.of_list l] returns a fresh array containing the elements
     of [l]. *)
@@ -741,6 +744,7 @@ sig
   val backwards : ('a, [> `Read]) t -> 'a BatEnum.t
   val of_backwards : 'a BatEnum.t -> ('a, _) t
   val to_list : ('a, [> `Read]) t -> 'a list
+  val split : ('a * 'b, [> `Read]) t -> ('a, _) t * ('b, _) t
   val of_list : 'a list -> ('a, _) t
 
   (** {6 Utilities} *)
