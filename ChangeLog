@@ -3,6 +3,9 @@ Changelog
 
 ## NEXT_RELEASE
 
+- faster BatArray.partition
+  #829
+  (Francois Berenger, Gabriel Scherer)
 - add `BatArray.split: ('a * 'b) array -> 'a array * 'b array`
   #826
   (Francois Berenger)
