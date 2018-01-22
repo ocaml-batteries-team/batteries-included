@@ -285,9 +285,6 @@ val to_string : ?first:string -> ?last:string -> ?sep:string -> ('a -> string) -
     @since NEXT_RELEASE
 *)
 
-exception Wrong_prefix of string
-exception Wrong_suffix of string
-
 val of_string : ?first:string -> ?last:string -> ?sep:string -> (string -> 'a) -> string -> 'a t
 (** Create a sequence by parsing a string.
     @raise Wrong_prefix if the string is not prefixed by [first].

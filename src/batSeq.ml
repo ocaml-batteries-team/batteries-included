@@ -363,14 +363,15 @@ let to_string ?(first="[") ?(last="]") ?(sep=";") to_str s =
   to_string string_of_int (of_list []) = "[]"
 *)
 
-exception Wrong_prefix of string
-exception Wrong_suffix of string
-
 let of_string ?(first="[") ?(last="]") ?(sep=";") of_str s =
   if not (BatString.starts_with s first) then
-    raise (Wrong_prefix (first ^ " not prefix of " ^ s));
+    raise
+      (Invalid_argument
+         ("Seq.of_string: wrong prefix: " ^ first ^ " not prefix of " ^ s));
   if not (BatString.ends_with s last) then
-    raise (Wrong_suffix (last ^ " not suffix of " ^ s));
+    raise
+      (Invalid_argument
+         ("Seq.of_string: wrong suffix: " ^ last ^ " not suffix of " ^ s));
   let prfx_len = String.length first in
   let sufx_len = String.length last in
   let n = String.length s in
@@ -384,8 +385,8 @@ let of_string ?(first="[") ?(last="]") ?(sep=";") of_str s =
   equal (of_string int_of_string "[1;2;3]") (of_list [1;2;3])
   equal (of_string int_of_string "[]") (of_list [])
   equal (of_string ~first:"{" ~sep:"," ~last:"}" int_of_string "{1,2,3}") (of_list [1;2;3])
-  try equal (of_string ~first:"{" int_of_string "[1;2;3]") (of_list []) with (Wrong_prefix _) -> true
-  try equal (of_string ~last:"}" int_of_string "[1;2;3]") (of_list []) with (Wrong_suffix _) -> true
+  try equal (of_string ~first:"{" int_of_string "[1;2;3]") (of_list []) with (Invalid_argument _) -> true
+  try equal (of_string ~last:"}" int_of_string "[1;2;3]") (of_list []) with (Invalid_argument _) -> true
 *)
 
 module Infix = struct
