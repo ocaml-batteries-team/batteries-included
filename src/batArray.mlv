@@ -253,28 +253,28 @@ let partition p a =
   let n = length a in
   if n = 0 then ([||], [||])
   else
-    let mask = make n false in
     let ok_count = ref 0 in
-    iteri (fun i x ->
-        if p x then
-          (unsafe_set mask i true;
-           incr ok_count)
-      ) a;
+    let mask =
+      init n (fun i ->
+          let pi = p (unsafe_get a i) in
+          if pi then incr ok_count;
+          pi) in
     let ko_count = n - !ok_count in
     let init = unsafe_get a 0 in
     let ok = make !ok_count init in
     let ko = make ko_count init in
     let j = ref 0 in
     let k = ref 0 in
-    iteri (fun i px ->
-        let x = unsafe_get a i in
-        if px then
-          (unsafe_set ok !j x;
-           incr j)
-        else
-          (unsafe_set ko !k x;
-           incr k)
-      ) mask;
+    for i = 0 to n - 1 do
+      let x = unsafe_get a i in
+      let px = unsafe_get mask i in
+      if px then
+        (unsafe_set ok !j x;
+         incr j)
+      else
+        (unsafe_set ko !k x;
+         incr k)
+    done;
     (ok, ko)
 (*$Q partition
   (Q.pair (Q.array Q.small_int) (Q.fun1 Q.Observable.int Q.bool)) (fun (a, Q.Fun(_,f)) -> \
