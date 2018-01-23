@@ -287,8 +287,8 @@ val to_string : ?first:string -> ?last:string -> ?sep:string -> ('a -> string) -
 
 val of_string : ?first:string -> ?last:string -> ?sep:string -> (string -> 'a) -> string -> 'a t
 (** Create a sequence by parsing a string.
-    @raise Wrong_prefix if the string is not prefixed by [first].
-    @raise Wrong_suffix if the string is not suffixed by [last].
+    @raise Invalid_argument if the string is not prefixed by [first].
+    @raise Invalid_argument if the string is not suffixed by [last].
     @since NEXT_RELEASE
 *)
 
