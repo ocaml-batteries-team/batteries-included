@@ -150,9 +150,22 @@ module Concrete = struct
       if c = 0 then merge l r else
       if c < 0 then bal (remove cmp x l) v r else bal l v (remove cmp x r)
 
+  (* A variant of [remove] that throws [Not_found] on failure *)
+  let rec remove_exn cmp x = function
+    | Empty ->
+        raise Not_found
+    | Node (l, v, r, _) ->
+        let c = cmp x v in
+        if c = 0 then
+          merge l r
+        else if c < 0 then
+          bal (remove_exn cmp x l) v r
+        else
+          bal l v (remove_exn cmp x r)
+
   let update cmp x y s =
     if cmp x y <> 0 then
-      add cmp y (remove cmp x s)
+      add cmp y (remove_exn cmp x s)
     else
       let rec loop = function
         | Empty -> raise Not_found
@@ -1067,6 +1080,8 @@ let disjoint s1 s2 = Concrete.disjoint Pervasives.compare s1 s2
   TestSet.update (2,0) (2,1)  ts = TestSet.of_list [(1,0);(2,1);(3,0)]
   TestSet.update (3,0) (3,1)  ts = TestSet.of_list [(1,0);(2,0);(3,1)]
   TestSet.update (3,0) (-1,0) ts = TestSet.of_list [(1,0);(2,0);(-1,0)]
+  try ignore (TestSet.update (4,0) (44,00) ts); false with Not_found -> true
+
 *)
 
 module Infix = struct

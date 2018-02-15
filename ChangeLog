@@ -26,6 +26,10 @@ Changelog
   in [m], as stated in documentation.
   #833
   (Max Mouratov)
+- Fix: [Set.update x y s] should throw [Not_found] if [x] is not in [s],
+  as stated in documentation.
+  #833
+  (Max Mouratov)
 
 ## v2.8.0 (minor release)
 
