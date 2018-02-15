@@ -195,7 +195,7 @@ module Concrete = struct
       let rec loop = function
         | Empty -> raise Not_found
         | Node(l, k, v, r, h) ->
-          let c = cmp k k1 in
+          let c = cmp k1 k in
           if c = 0 then
             Node(l, k2, v2, r, h)
           else if c < 0 then
@@ -1171,6 +1171,7 @@ module PMap = struct (*$< PMap *)
     add 1 false empty |> update 1 1 true |> find 1
     add 1 false empty |> update 1 2 true |> find 2
     try ignore (update 1 1 false empty); false with Not_found -> true
+    empty |> add 1 11 |> add 2 22 |> update 2 2 222 |> find 2 = 222
   *)
 
   (*$Q find ; add

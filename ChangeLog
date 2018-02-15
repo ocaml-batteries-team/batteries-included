@@ -19,6 +19,9 @@ Changelog
   prefer the value from [m2], as stated in documentation.
   #814
   (Max Mouratov)
+- Fix: [Map.update k1 k2 v m] did not work correctly when [k1 = k2].
+  #833
+  (Max Mouratov)
 
 ## v2.8.0 (minor release)
 
