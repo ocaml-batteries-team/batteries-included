@@ -22,6 +22,10 @@ Changelog
 - Fix: [Map.update k1 k2 v m] did not work correctly when [k1 = k2].
   #833
   (Max Mouratov)
+- Fix: [Map.update k1 k2 v m] should throw [Not_found] if [k1] is not bound
+  in [m], as stated in documentation.
+  #833
+  (Max Mouratov)
 
 ## v2.8.0 (minor release)
 
