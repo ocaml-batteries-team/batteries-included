@@ -188,14 +188,30 @@ module Concrete = struct
       | Empty -> Empty in
     loop map
 
+  (* A variant of [remove] that throws [Not_found] on failure *)
+  let remove_exn x cmp map =
+    let rec loop = function
+      | Empty ->
+          raise Not_found
+      | Node (l, k, v, r, _) ->
+          let c = cmp x k in
+          if c = 0 then
+            merge l r
+          else if c < 0 then
+            bal (loop l) k v r
+          else
+            bal l k v (loop r)
+    in
+    loop map
+
   let update k1 k2 v2 cmp map =
     if cmp k1 k2 <> 0 then
-      add k2 v2 cmp (remove k1 cmp map)
+      add k2 v2 cmp (remove_exn k1 cmp map)
     else
       let rec loop = function
         | Empty -> raise Not_found
         | Node(l, k, v, r, h) ->
-          let c = cmp k k1 in
+          let c = cmp k1 k in
           if c = 0 then
             Node(l, k2, v2, r, h)
           else if c < 0 then
@@ -1171,6 +1187,9 @@ module PMap = struct (*$< PMap *)
     add 1 false empty |> update 1 1 true |> find 1
     add 1 false empty |> update 1 2 true |> find 2
     try ignore (update 1 1 false empty); false with Not_found -> true
+    empty |> add 1 11 |> add 2 22 |> update 2 2 222 |> find 2 = 222
+    let m = empty |> add 1 11 |> add 2 22 in \
+    try ignore (m |> update 3 4 555); false with Not_found -> true
   *)
 
   (*$Q find ; add
