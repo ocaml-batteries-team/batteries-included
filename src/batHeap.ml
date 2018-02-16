@@ -108,7 +108,7 @@ let find_min bh = match bh.mind with
 
 
 let rec find_min_tree ts k = match ts with
-  | [] -> failwith "find_min_tree"
+  | [] -> invalid_arg "del_min"
   | [t] -> k t
   | t :: ts ->
     find_min_tree ts begin
@@ -285,7 +285,7 @@ module Make (Ord : BatInterfaces.OrderedType) = struct
     | Some d -> d
 
   let rec find_min_tree ts k = match ts with
-    | [] -> failwith "find_min_tree"
+    | [] -> invalid_arg "del_min"
     | [t] -> k t
     | t :: ts ->
       find_min_tree ts begin

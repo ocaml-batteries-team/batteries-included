@@ -138,7 +138,7 @@ module BaseBig_int = struct
 
   let of_float f =
     try of_string (Printf.sprintf "%.0f" f)
-    with Failure _ -> invalid_arg "batBig_int.of_float"
+    with Failure _ -> invalid_arg "Big_int.of_float"
   (*$T of_float
     to_int (of_float 4.46) = 4
     to_int (of_float 4.56) = 5

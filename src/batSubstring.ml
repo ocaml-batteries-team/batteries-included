@@ -153,7 +153,7 @@ let triml k (str,off,len) =
 *)
 
 let trimr k (str,off,len) =
-  if k < 0 then invalid_arg "Substring.triml: negative trim not allowed";
+  if k < 0 then invalid_arg "Substring.trimr: negative trim not allowed";
   if k > len then (str, off, 0) else (str, off, len-k)
 
 (*$T trimr

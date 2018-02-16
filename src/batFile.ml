@@ -45,8 +45,8 @@ let perm l =
     ~f:(fun acc x -> acc lor x)
 
 let unix_perm i =
-  if 0<= i && i <= 511 then i
-  else raise (Invalid_argument (Printf.sprintf "Unix permission %o " i))
+  if 0 <= i && i <= 511 then i
+  else Printf.ksprintf invalid_arg "File.unix_perm: Unix permission %o" i
 
 (* Opening *)
 type open_in_flag =

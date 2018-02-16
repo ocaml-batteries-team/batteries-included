@@ -173,7 +173,7 @@ let bal_if_needed l r =
   if height r < max_height then r else balance r
 
 let concat_str l = function
-  | Empty | Concat(_,_,_,_,_) -> invalid_arg "concat_str"
+  | Empty | Concat(_,_,_,_,_) -> invalid_arg "Text.concat_str"
   | Leaf (lenr, rs) as r ->
     match l with
     | Empty -> r
@@ -917,7 +917,7 @@ let rsplit (r:t) sep =
     avoid a call to [List.rev].  *)
 let nsplit str sep =
   if is_empty str then []
-  else if is_empty sep then invalid_arg "nsplit: empty sep not allowed"
+  else if is_empty sep then invalid_arg "Text.nsplit: empty sep not allowed"
   else
     (* str is not empty *)
     let seplen = length sep in

@@ -1171,7 +1171,8 @@ let reverse t = Generic.reverse ~monoid:nat_plus_monoid ~measure:size_measurer t
 
 let split f t = Generic.split ~monoid:nat_plus_monoid ~measure:size_measurer f t
 let split_at t i =
-  if i < 0 || i >= size t then invalid_arg "Index out of bounds";
+  if i < 0 || i >= size t then
+    invalid_arg "FingerTree.split_at: Index out of bounds";
   split (fun index -> i < index) t
 (*$T split_at
   let n = 50 in \
@@ -1185,7 +1186,8 @@ let split_at t i =
 
 let lookup f t = Generic.lookup ~monoid:nat_plus_monoid ~measure:size_measurer f t
 let get t i =
-  if i < 0 || i >= size t then invalid_arg "Index out of bounds";
+  if i < 0 || i >= size t then
+    invalid_arg "FingerTree.get: Index out of bounds";
   lookup (fun index -> i < index) t
 (*$T get
   let n = 50 in \
@@ -1198,7 +1200,8 @@ let get t i =
 *)
 
 let set t i v =
-  if i < 0 || i >= size t then invalid_arg "Index out of bounds";
+  if i < 0 || i >= size t then
+    invalid_arg "FingerTree.set: Index out of bounds";
   let left, right = split_at t i in
   append (snoc left v) (tail_exn right)
 (*$T set

@@ -83,7 +83,7 @@ let ends_with str p =
 let find_from str pos sub =
   let len = length str in
   let sublen = length sub in
-  if pos < 0 || pos > len then raise (Invalid_argument "String.find_from");
+  if pos < 0 || pos > len then invalid_arg "String.find_from";
   if sublen = 0 then pos else
     let rec find ~str ~sub i =
       if i > len - sublen then raise Not_found
@@ -125,7 +125,7 @@ let find str sub = find_from str 0 sub
 let rfind_from str pos sub =
   let sublen = length sub
   and len = length str in
-  if pos + 1 < 0 || pos + 1 > len then raise (Invalid_argument "String.rfind_from");
+  if pos + 1 < 0 || pos + 1 > len then invalid_arg "String.rfind_from";
   if sublen = 0 then pos + 1 else
     let rec find ~str ~sub i =
       if i < 0 then raise Not_found
@@ -203,7 +203,7 @@ let find_all str sub =
 *)
 
 let count_string str sub =
-  if sub = "" then raise (Invalid_argument "String.count_string");
+  if sub = "" then invalid_arg "String.count_string";
   let m = length str in
   let n = length sub in
   let rec loop acc i =
@@ -336,7 +336,7 @@ let rsplit str ~by:sep =
 *)
 let nsplit str ~by:sep =
   if str = "" then []
-  else if sep = "" then invalid_arg "nsplit: empty sep not allowed"
+  else if sep = "" then invalid_arg "String.nsplit: empty sep not allowed"
   else
     (* str is non empty *)
     let seplen = String.length sep in
@@ -417,7 +417,7 @@ let slice ?(first = 0) ?(last = Sys.max_string_length) s =
 
 let lchop ?(n = 1) s =
   if n < 0 then
-    invalid_arg "lchop: number of characters to chop is negative"
+    invalid_arg "String.lchop: number of characters to chop is negative"
   else
     let slen = length s in
     if slen <= n then "" else sub s n (slen - n)
@@ -432,7 +432,7 @@ let lchop ?(n = 1) s =
 
 let rchop ?(n = 1) s =
   if n < 0 then
-    invalid_arg "rchop: number of characters to chop is negative"
+    invalid_arg "String.rchop: number of characters to chop is negative"
   else
     let slen = length s in
     if slen <= n then "" else sub s 0 (slen - n)
@@ -446,9 +446,9 @@ let rchop ?(n = 1) s =
 
 let chop ?(l = 1) ?(r = 1) s =
   if l < 0 then
-    invalid_arg "chop: number of characters to chop on the left is negative";
+    invalid_arg "String.chop: number of characters to chop on the left is negative";
   if r < 0 then
-    invalid_arg "chop: number of characters to chop on the right is negative";
+    invalid_arg "String.chop: number of characters to chop on the right is negative";
   let slen = length s in
   if slen < l + r then ""
   else sub s l (slen - l - r)
@@ -769,7 +769,8 @@ let replace ~str ~sub ~by =
 
 
 let nreplace ~str ~sub ~by =
-  if sub = "" then invalid_arg "nreplace: cannot replace all empty substrings" ;
+  if sub = "" then
+    invalid_arg "String.nreplace: cannot replace all empty substrings" ;
   let strlen = length str in
   let sublen = length sub in
   let bylen = length by in

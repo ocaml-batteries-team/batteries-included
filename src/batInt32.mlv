@@ -102,9 +102,9 @@ let unpack str pos =
 
 let unpack_big str pos =
   if Bytes.length str < pos + 4 then
-    invalid_arg "Int32.unpack: pos + 4 not within string";
+    invalid_arg "Int32.unpack_big: pos + 4 not within string";
   if pos < 0 then
-    invalid_arg "Int32.unpack: pos negative";
+    invalid_arg "Int32.unpack_big: pos negative";
   let shift n = Int32.shift_left n 8
   and add b n = Int32.add (of_byte b) n in
   of_byte (Bytes.unsafe_get str pos) |> shift

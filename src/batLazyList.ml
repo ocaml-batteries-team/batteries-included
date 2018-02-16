@@ -90,14 +90,14 @@ let init n f =
   let rec aux i =
     if i < n then lazy (Cons (f i, aux ( i + 1 ) ) )
     else          nil
-  in if n < 0 then raise (Invalid_argument "LazyList.init")
+  in if n < 0 then invalid_arg "LazyList.init"
   else          aux 0
 
 let make n x =
   let rec aux i =
     if i < n then lazy (Cons (x, aux ( i + 1 ) ) )
     else          nil
-  in if n < 0 then raise (Invalid_argument "LazyList.make")
+  in if n < 0 then invalid_arg "LazyList.make"
   else          aux 0
 
 (**

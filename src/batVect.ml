@@ -622,7 +622,7 @@ let destructive_set v i x =
 let of_list l = of_array (Array.of_list l)
 
 let init n f =
-  if n < 0 || n > max_length then raise (Invalid_argument "Vect.init");
+  if n < 0 || n > max_length then invalid_arg "Vect.init";
   (* Create as many arrays as we need to store all the data *)
   let rec aux off acc =
     if off >= n then acc
@@ -1284,7 +1284,7 @@ struct
   let of_list l = of_array (Array.of_list l)
 
   let init n f =
-    if n < 0 || n > max_length then raise (Invalid_argument "Vect.init");
+    if n < 0 || n > max_length then invalid_arg "Vect.init";
     (* Create as many arrays as we need to store all the data *)
     let rec aux off acc =
       if off >= n then acc
