@@ -70,6 +70,9 @@ Changelog
 - Fix erroneous mentions of [Different_list_size] in List.mli.
   #857, #744
   (Max Mouratov, reported by Christoph Höger)
+- DynArray now uses less magic in implementation.
+  #847
+  (Max Mouratov)
 
 ## v2.8.0 (minor release)
 

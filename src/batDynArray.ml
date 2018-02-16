@@ -23,21 +23,22 @@
 
 type resizer_t = currslots:int -> oldlength:int -> newlength:int -> int
 
-type 'a intern
+(* A polymorphic placeholder that is never accessed by the user *)
+let dummy_for_gc = Obj.magic 0
 
-external ilen : 'a intern -> int = "%obj_size"
-let idup (x : 'a intern) : 'a intern = Obj.magic (Obj.dup (Obj.repr x))
-let imake len = (Obj.magic (Obj.new_block 0 len) : 'a intern)
-external iget : 'a intern -> int -> 'a = "%obj_field"
-external iset : 'a intern -> int -> 'a -> unit = "%obj_set_field"
+let ilen = Array.length
+let imake n = Array.make n dummy_for_gc
+let iget = Array.unsafe_get
+let iset = Array.unsafe_set
+external isub: 'a array -> int -> int -> 'a array = "caml_array_sub"
+
 
 type 'a t = {
-  mutable arr : 'a intern;
-  mutable len : int;
+  mutable arr: 'a array;
+  mutable len: int;
   mutable resize: resizer_t;
 }
 
-let dummy_for_gc = Obj.magic 0
 let bool_invariants t =
   t.len >= 0 &&
   t.len <= ilen t.arr &&
@@ -351,16 +352,7 @@ let to_list d =
   loop (d.len - 1) []
 
 let to_array d =
-  if d.len = 0 then begin
-    (* since the empty array is an atom, we don't care if float or not *)
-    [||]
-  end else begin
-    let arr = Array.make d.len (iget d.arr 0) in
-    for i = 1 to d.len - 1 do
-      Array.unsafe_set arr i (iget d.arr i)
-    done;
-    arr;
-  end
+  isub d.arr 0 d.len
 
 let of_list lst =
   let size = List.length lst in
@@ -377,29 +369,17 @@ let of_list lst =
   }
 
 let of_array src =
-  let size = Array.length src in
-  let is_float = Obj.tag (Obj.repr src) = Obj.double_array_tag in
-  let arr = (if is_float then begin
-      let arr = imake size in
-      for i = 0 to size - 1 do
-        iset arr i (Array.unsafe_get src i);
-      done;
-      arr
-    end else
-      (* copy the fields *)
-      idup (Obj.magic src : 'a intern))
-  in
   {
     resize = default_resizer;
-    len = size;
-    arr = arr;
+    len = Array.length src;
+    arr = Array.copy src;
   }
 
 let copy src =
   {
     resize = src.resize;
     len = src.len;
-    arr = idup src.arr;
+    arr = Array.copy src.arr;
   }
 
 (*$T
@@ -410,14 +390,10 @@ let copy src =
 let sub src start len =
   if len < 0 then invalid_arg len "sub" "len";
   if start < 0 || start + len > src.len then invalid_arg start "sub" "start";
-  let arr = imake len in
-  for i = 0 to len - 1 do
-    iset arr i (iget src.arr (i+start));
-  done;
   {
     resize = src.resize;
     len = len;
-    arr = arr;
+    arr = isub src.arr start len;
   }
 
 (*$T
