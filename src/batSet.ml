@@ -419,16 +419,15 @@ module Concrete = struct
     | (t, Empty) -> t
     | (_, _) -> join t1 (min_elt t2) (remove_min_elt t2)
 
-  let cartesian_product a b =
-    let rec product a b = match a with
-      | Empty -> Empty
+  let rec cartesian_product a b =
+    match a with
+      | Empty ->
+          Empty
       | Node (la, xa, ra, _) ->
-        let lab = product la b in
-        let xab = op_map (fun xb -> (xa,xb)) b in
-        let rab = product ra b in
-        concat lab (concat xab rab)
-    in
-    product a b
+          let lab = cartesian_product la b in
+          let xab = op_map (fun xb -> (xa, xb)) b in
+          let rab = cartesian_product ra b in
+          concat lab (concat xab rab)
 
   let rec union cmp12 s1 s2 =
     match (s1, s2) with
