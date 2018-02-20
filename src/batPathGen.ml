@@ -1,6 +1,6 @@
 (*
  * Path - Path and directory manipulation
- * Copyright (C) 2008 Dawid Towon
+ * Copyright (C) 2008 Dawid Toton
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
