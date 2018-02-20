@@ -771,10 +771,10 @@ val to_input_channel : input -> in_channel
 
 (** {6 Generic BatIO Object Wrappers}
 
-    Theses OO Wrappers have been written to provide easy support of
+    These OO Wrappers have been written to provide easy support of
     BatIO by external librairies. If you want your library to support
     BatIO without actually requiring Batteries to compile, you can
-    should implement the classes [in_channel], [out_channel],
+    implement the classes [in_channel], [out_channel],
     [poly_in_channel] and/or [poly_out_channel] which are the common
     BatIO specifications established for ExtLib, OCamlNet and
     Camomile.
