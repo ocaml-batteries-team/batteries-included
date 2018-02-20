@@ -41,10 +41,13 @@ let starts_with str p =
   let len = length p in
   if length str < len then false
   else
+    (* length str >= length p *)
     let rec loop str p i =
       if i = len then true
-      else if unsafe_get str i <> unsafe_get p i then false
-      else loop str p (i + 1)
+      else
+        (* 0 <= i < length p *)
+        if unsafe_get str i <> unsafe_get p i then false
+        else loop str p (i + 1)
     in loop str p 0
 (*$T starts_with
   starts_with "foobarbaz" "foob"
@@ -62,12 +65,17 @@ let ends_with str p =
   let el = length p
   and sl = length str in
   let diff = sl - el in
+  (* diff = length str - length p *)
   if diff < 0 then false (*string is too short*)
   else
+    (* diff >= 0 *)
     let rec loop str p diff i =
       if i = el then true
-      else if unsafe_get str (diff + i) <> unsafe_get p i then false
-      else loop str p diff (i + 1)
+      else
+        (* 0 <= i < length p *)
+        (* diff = length str - length p  ==>  diff <= i + diff < length str *)
+        if unsafe_get str (diff + i) <> unsafe_get p i then false
+        else loop str p diff (i + 1)
     in loop str p diff 0
 (*$T ends_with
   ends_with "foobarbaz" "rbaz"
@@ -88,10 +96,15 @@ let find_from str pos sub =
     let rec find ~str ~sub i =
       if i > len - sublen then raise Not_found
       else
+        (* 0 <= i <= length str - length sub *)
         let rec loop ~str ~sub i j =
           if j = sublen then i
-          else if unsafe_get str (i + j) <> unsafe_get sub j then find ~str ~sub (i + 1)
-          else loop ~str ~sub i (j + 1)
+          else
+            (* 0 <= j < length sub *)
+            (* ==>  0 <= i + j < length str *)
+            if unsafe_get str (i + j) <> unsafe_get sub j
+            then find ~str ~sub (i + 1)
+            else loop ~str ~sub i (j + 1)
         in loop ~str ~sub i 0
     in find ~str ~sub pos
 (*$Q find_from
@@ -126,14 +139,22 @@ let rfind_from str pos sub =
   let sublen = length sub
   and len = length str in
   if pos + 1 < 0 || pos + 1 > len then invalid_arg "String.rfind_from";
+  (* 0 <= pos + 1 <= length str *)
   if sublen = 0 then pos + 1 else
+    (* length sub > 0 *)
+    (* (pos + 1 - sublen) <= length str - length sub < length str *)
     let rec find ~str ~sub i =
       if i < 0 then raise Not_found
       else
+        (* 0 <= i <= length str - length sub < length str *)
         let rec loop ~str ~sub i j =
           if j = sublen then i
-          else if unsafe_get str (i + j) <> unsafe_get sub j then find ~str ~sub (i - 1)
-          else loop ~str ~sub i (j + 1)
+          else
+            (* 0 <= j < length sub *)
+            (* ==> 0 <= i + j < length str *)
+            if unsafe_get str (i + j) <> unsafe_get sub j
+            then find ~str ~sub (i - 1)
+            else loop ~str ~sub i (j + 1)
         in loop ~str ~sub i 0
     in find ~str ~sub (pos - sublen + 1)
 (*$Q rfind_from
