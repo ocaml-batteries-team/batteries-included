@@ -74,7 +74,7 @@ val cons : 'a -> 'a list -> 'a list
 (** [cons h t] returns the list starting with [h] and continuing as [t]. *)
 
 val first : 'a list -> 'a
-(** Returns the first element of the list, or @raise Empty_list if
+(** Returns the first element of the list, or @raise Failure if 
     the list is empty (similar to [hd]). *)
 
 val hd : 'a list -> 'a
@@ -85,7 +85,7 @@ val tl : 'a list -> 'a list
     @raise Failure if the list is empty. *)
 
 val last : 'a list -> 'a
-(** Returns the last element of the list, or @raise Empty_list if
+(** Returns the last element of the list, or @raise Invalid_argument if
     the list is empty. This function takes linear time. *)
 
 val length : 'a list -> int
