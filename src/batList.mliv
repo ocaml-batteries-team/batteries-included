@@ -79,7 +79,7 @@ val hd : 'a list -> 'a
 
 
 val first : 'a list -> 'a
-(** Alea to hd *)
+(** Alias to hd *)
 
 val tl : 'a list -> 'a list
 (** Return the given list without its first element.
