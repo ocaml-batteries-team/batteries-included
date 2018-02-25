@@ -73,12 +73,13 @@ val is_empty : 'a list -> bool
 val cons : 'a -> 'a list -> 'a list
 (** [cons h t] returns the list starting with [h] and continuing as [t]. *)
 
-val first : 'a list -> 'a
-(** Returns the first element of the list, or @raise Failure if 
-    the list is empty (similar to [hd]). *)
-
 val hd : 'a list -> 'a
-(** Similar to [first], but @raise Failure if the list is empty. *)
+(** Returns the first element of the list, or @raise Failure if 
+    the list is empty. *)
+
+
+val first : 'a list -> 'a
+(** Alea to hd *)
 
 val tl : 'a list -> 'a list
 (** Return the given list without its first element.
