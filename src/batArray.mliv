@@ -516,7 +516,10 @@ val range : 'a array -> int BatEnum.t
 val insert : 'a array -> 'a -> int -> 'a array
 (** [insert xs x i] returns a copy of [xs] except the value [x] is
     inserted in position [i] (and all later indices are shifted to the
-    right). *)
+    right).
+
+    @raise Invalid_argument
+    if [i < 0 || i > Array.length xs]. *)
 
 (** {6 Boilerplate code}*)
 
