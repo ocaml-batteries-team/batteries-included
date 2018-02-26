@@ -30,6 +30,14 @@ Changelog
   as stated in documentation.
   #833
   (Max Mouratov)
+- Fix: [Array.insert] now throws a more relevant message on invalid indices
+  instead of the generic [invalid_arg "index out of bounds].
+  The assertion is now documented.
+  #841
+  (Max Mouratov)
+- Implementation of Array.insert now uses [unsafe_get] and [unsafe_set].
+  #841
+  (Max Mouratov)
 
 ## v2.8.0 (minor release)
 

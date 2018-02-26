@@ -703,8 +703,16 @@ let bsearch cmp arr x =
 *)
 
 let insert xs x i =
-  if i > Array.length xs then invalid_arg "Array.insert: offset out of range";
-  Array.init (Array.length xs + 1) (fun j -> if j < i then xs.(j) else if j > i then xs.(j-1) else x)
+  let len = Array.length xs in
+  if i < 0 || i > len then
+    invalid_arg "Array.insert: offset out of range";
+  Array.init (len+1) (fun j ->
+    if j < i then
+      unsafe_get xs j
+    else if j > i then
+      unsafe_get xs (j-1)
+    else
+      x)
 
 (*$T insert
    insert [|1;2;3|] 4 0 = [|4;1;2;3|]
