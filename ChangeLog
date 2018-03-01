@@ -30,7 +30,11 @@ Changelog
   as stated in documentation.
   #833
   (Max Mouratov)
-
+- Fix: documentation of BatList.{hd,last} to match implementation w.r.t
+  raised exceptions
+  #840, #754
+  (FkHina)
+  
 ## v2.8.0 (minor release)
 
 This minor release supports the -safe-string mode for OCaml
