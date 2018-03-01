@@ -28,7 +28,6 @@ You will need the following libraries:
 * [OUnit][] to build and run the tests (optional)
 * [qtest][] >= 2.0.1 to build and run the tests (optional)
 * [ocaml-benchmark][] to build and run the performance tests (optional)
-* [bisect][] to compute the coverage of the test suite (optional)
 
 [Findlib]: http://projects.camlcity.org/projects/findlib.html/
 [OCaml]: http://caml.inria.fr/ocaml/release.en.html
@@ -36,7 +35,6 @@ You will need the following libraries:
 [Camomile]: http://camomile.sourceforge.net/
 [OUnit]: http://ounit.forge.ocamlcore.org/
 [ocaml-benchmark]: http://ocaml-benchmark.forge.ocamlcore.org/
-[bisect]: http://bisect.x9c.fr/
 
 ### Configuration and Installation
 

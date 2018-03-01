@@ -164,7 +164,7 @@ let splice node1 node2 =
   next.prev <- prev;
   prev.next <- next
 
-let set node data = node.data <- data (*BISECT-VISIT*)
+let set node data = node.data <- data
 
 let get node = node.data
 

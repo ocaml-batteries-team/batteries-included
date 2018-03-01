@@ -179,7 +179,7 @@ let bal_if_needed l r =
   if height r < max_height then r else balance r
 
 let concat_str l = function
-  | Empty | Concat _ -> assert false (*BISECT-VISIT*)
+  | Empty | Concat _ -> assert false
   | Leaf rs as r ->
     let lenr = STRING.length rs in
     match l with
@@ -857,7 +857,7 @@ struct
     if height r < max_height then r else balance r
 
   let concat_str l = function
-    | Empty | Concat _ -> assert false (*BISECT-VISIT*)
+    | Empty | Concat _ -> assert false
     | Leaf rs as r ->
       let lenr = STRING.length rs in
       match l with

@@ -152,7 +152,6 @@ struct
   (*---------------------------------*)
   (*          debug printing         *)
   (*---------------------------------*)
-  (*BISECT-IGNORE-BEGIN*)
   let pp_debug_digit pp_measure pp_a f = function
     | One (m, a) ->
       Format.fprintf f "@[@[<2>One (@,%a,@ %a@])@]" pp_measure m pp_a a
@@ -193,7 +192,6 @@ struct
       Format.fprintf f "[%a" pp_a h;
       List.iter (fun a -> Format.fprintf f "; %a" pp_a a) t;
       Format.fprintf f "]"
-  (*BISECT-IGNORE-END*)
 
   (*---------------------------------*)
   (*     measurement functions       *)
@@ -316,26 +314,26 @@ struct
     | One (v, a) -> Two (monoid.combine (measure_node x) v, x, a)
     | Two (v, a, b) -> Three (monoid.combine (measure_node x) v, x, a, b)
     | Three (v, a, b, c) -> Four (monoid.combine (measure_node x) v, x, a, b, c)
-    | Four _ -> assert false (*BISECT-VISIT*)
+    | Four _ -> assert false
   let cons_digit ~monoid ~measure d x =
     match d with
     | One (v, a) -> Two (monoid.combine (measure x) v, x, a)
     | Two (v, a, b) -> Three (monoid.combine (measure x) v, x, a, b)
     | Three (v, a, b, c) -> Four (monoid.combine (measure x) v, x, a, b, c)
-    | Four _ -> assert false (*BISECT-VISIT*)
+    | Four _ -> assert false
 
   let snoc_digit_node ~monoid d x =
     match d with
     | One (v, a) -> Two (monoid.combine v (measure_node x), a, x)
     | Two (v, a, b) -> Three (monoid.combine v (measure_node x), a, b, x)
     | Three (v, a, b, c) -> Four (monoid.combine v (measure_node x), a, b, c, x)
-    | Four _ -> assert false (*BISECT-VISIT*)
+    | Four _ -> assert false
   let snoc_digit ~monoid ~measure d x =
     match d with
     | One (v, a) -> Two (monoid.combine v (measure x), a, x)
     | Two (v, a, b) -> Three (monoid.combine v (measure x), a, b, x)
     | Three (v, a, b, c) -> Four (monoid.combine v (measure x), a, b, c, x)
-    | Four _ -> assert false (*BISECT-VISIT*)
+    | Four _ -> assert false
 
   let rec cons_aux : 'a 'm.
         monoid:'m monoid -> (('a, 'm) node, 'm) fg -> ('a, 'm) node -> (('a, 'm) node, 'm) fg =
@@ -404,7 +402,7 @@ struct
     | [a; b] -> deep ~monoid (one ~measure a) Nil (one ~measure b)
     | [a; b; c] -> deep ~monoid (two ~monoid ~measure a b) Nil (one ~measure c)
     | [a; b; c; d] -> deep ~monoid (three ~monoid ~measure a b c) Nil (one ~measure d)
-    | _ -> assert false (*BISECT-VISIT*)
+    | _ -> assert false
 
   let to_digit_node = function
     | Node2 (v, a, b) -> Two (v, a, b)
@@ -414,13 +412,13 @@ struct
     | [a; b] -> two ~monoid ~measure a b
     | [a; b; c] -> three ~monoid ~measure a b c
     | [a; b; c; d] -> four ~monoid ~measure a b c d
-    | _ -> assert false (*BISECT-VISIT*)
+    | _ -> assert false
   let to_digit_list_node ~monoid = function
     | [a] -> one_node a
     | [a; b] -> two_node ~monoid a b
     | [a; b; c] -> three_node ~monoid a b c
     | [a; b; c; d] -> four_node ~monoid a b c d
-    | _ -> assert false (*BISECT-VISIT*)
+    | _ -> assert false
 
   (*---------------------------------*)
   (*     front / rear / etc.         *)
@@ -436,22 +434,22 @@ struct
     | Three (_, _, _, a)
     | Four (_, _, _, _, a) -> a
   let tail_digit_node ~monoid = function
-    | One _ -> assert false (*BISECT-VISIT*)
+    | One _ -> assert false
     | Two (_, _, a) -> one_node a
     | Three (_, _, a, b) -> two_node ~monoid a b
     | Four (_, _, a, b, c) -> three_node ~monoid a b c
   let tail_digit ~monoid ~measure = function
-    | One _ -> assert false (*BISECT-VISIT*)
+    | One _ -> assert false
     | Two (_, _, a) -> one ~measure a
     | Three (_, _, a, b) -> two ~monoid ~measure a b
     | Four (_, _, a, b, c) -> three ~monoid ~measure a b c
   let init_digit_node ~monoid = function
-    | One _ -> assert false (*BISECT-VISIT*)
+    | One _ -> assert false
     | Two (_, a, _) -> one_node a
     | Three (_, a, b, _) -> two_node ~monoid a b
     | Four (_, a, b, c, _) -> three_node ~monoid a b c
   let init_digit ~monoid ~measure = function
-    | One _ -> assert false (*BISECT-VISIT*)
+    | One _ -> assert false
     | Two (_, a, _) -> one ~measure a
     | Three (_, a, b, _) -> two ~monoid ~measure a b
     | Four (_, a, b, c, _) -> three ~monoid ~measure a b c
@@ -581,7 +579,7 @@ struct
 
     let rec nodes_aux ~monoid ~measure ts sf2 = (* no idea if this should be tail rec *)
       match ts, sf2 with
-      | [], One _ -> assert false (*BISECT-VISIT*)
+      | [], One _ -> assert false
       | [], Two (_, a, b)
       | [a], One (_, b) -> [node2 ~monoid ~measure a b]
       | [], Three (_, a, b, c)

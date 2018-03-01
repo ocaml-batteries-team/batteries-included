@@ -23,7 +23,7 @@ module BaseComplex = struct
   include Complex
 
   let modulo _ _ =
-    failwith "BatComplex.modulo is meaningless" (*BISECT-VISIT*)
+    failwith "BatComplex.modulo is meaningless"
 
   let to_string x =
     ( string_of_float x.re ) ^ " + i " ^ ( string_of_float x.im )
