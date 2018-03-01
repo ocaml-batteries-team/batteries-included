@@ -39,13 +39,13 @@ let uref x = ref (Ranked (x, 0))
 
 let uget ur =
   match !(find ur) with
-  | Ptr _ -> assert false (*BISECT-VISIT*)
+  | Ptr _ -> assert false
   | Ranked (x, _) -> x
 
 let uset ur x =
   let ur = find ur in
   match !ur with
-  | Ptr _ -> assert false (*BISECT-VISIT*)
+  | Ptr _ -> assert false
   | Ranked (_, r) -> ur := Ranked (x, r)
 
 let equal ur vr =
@@ -68,14 +68,14 @@ let unite ?sel ur vr =
          For example, [unite ~sel:(fun _ _ -> v) r r] would fail
          to set the content of [r] to [v] otherwise. *)
       match !ur with
-      | Ptr _ -> assert false (*BISECT-VISIT*)
+      | Ptr _ -> assert false
       | Ranked (x, r) ->
         let x' = sel x x in
         ur := Ranked(x', r)
   end
   else
     match !ur, !vr with
-    | _, Ptr _ | Ptr _, _ -> assert false (*BISECT-VISIT*)
+    | _, Ptr _ | Ptr _, _ -> assert false
     | Ranked (x, xr), Ranked (y, yr) ->
       let z = match sel with
         | None -> x (* in the default case, pick x *)
@@ -93,7 +93,7 @@ let unite ?sel ur vr =
 
 let print elepr out ur =
   match !(find ur) with
-  | Ptr _ -> assert false (*BISECT-VISIT*)
+  | Ptr _ -> assert false
   | Ranked (x, _) ->
     BatInnerIO.nwrite out "uref " ;
     elepr out x

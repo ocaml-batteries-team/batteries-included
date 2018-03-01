@@ -18,7 +18,6 @@ depends: [
   "ocamlbuild" {build}
   "qtest" {test & >= "2.5"}
   "qcheck" {test & >= "0.6"}
-  "bisect" {test}
   "num"
 ]
 available: [ocaml-version >= "3.12.1"]

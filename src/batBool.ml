@@ -46,7 +46,6 @@ module BaseBool = struct
   let add    = ( || )
   let mul    = ( && )
   let sub _  = not (*Weird extrapolation*)
-  (*BISECT-IGNORE-BEGIN*)
   let div _ _=
     raise (Invalid_argument "Bool.div")
 
@@ -55,7 +54,6 @@ module BaseBool = struct
 
   let pow _ _ =
     raise (Invalid_argument "Bool.pow")
-  (*BISECT-IGNORE-END*)
 
   let compare = compare
 
