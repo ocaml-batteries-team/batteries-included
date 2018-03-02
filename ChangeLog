@@ -30,6 +30,10 @@ Changelog
   as stated in documentation.
   #833
   (Max Mouratov)
+- Fix: documentation of BatList.{hd,last} to match implementation w.r.t
+  raised exceptions
+  #840, #754
+  (FkHina)
 - Fix: [Array.insert] now throws a more relevant message on invalid indices
   instead of the generic [invalid_arg "index out of bounds].
   The assertion is now documented.
