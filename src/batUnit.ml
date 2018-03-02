@@ -18,8 +18,6 @@
  * Foundation, Inc.
  *)
 
-(*BISECT-IGNORE-BEGIN*)
-
 let unit_string = "()"
 
 type t = unit
@@ -31,5 +29,3 @@ let compare () () = 0
 let ord () () = BatOrd.Eq
 let equal () () = true
 let print out () = BatInnerIO.nwrite out unit_string
-
-  (*BISECT-IGNORE-END*)

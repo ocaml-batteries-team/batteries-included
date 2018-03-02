@@ -214,7 +214,7 @@ let filter p xs =
       | Some i -> j := i+1; xs.(i)
       | None ->
         (* not enough 1 bits - incorrect count? *)
-        assert false (*BISECT-VISIT*)
+        assert false
     )
 (*$Q filter
   (Q.pair (Q.array Q.small_int) (Q.fun1 Q.Observable.int Q.bool)) (fun (a, Q.Fun(_,f)) -> \
@@ -239,7 +239,7 @@ let filteri p xs =
       | Some i -> j := i+1; xs.(i)
       | None ->
         (* not enough 1 bits - incorrect count? *)
-        assert false (*BISECT-VISIT*)
+        assert false
     )
 
 (*$T filteri
@@ -356,7 +356,7 @@ let of_enum e =
     (fun _i ->
       match BatEnum.get e with
       | Some x -> x
-      | None -> assert false (*BISECT-VISIT*))
+      | None -> assert false)
 
 let of_backwards e =
   of_list (BatList.of_backwards e)
@@ -703,8 +703,16 @@ let bsearch cmp arr x =
 *)
 
 let insert xs x i =
-  if i > Array.length xs then invalid_arg "Array.insert: offset out of range";
-  Array.init (Array.length xs + 1) (fun j -> if j < i then xs.(j) else if j > i then xs.(j-1) else x)
+  let len = Array.length xs in
+  if i < 0 || i > len then
+    invalid_arg "Array.insert: offset out of range";
+  Array.init (len+1) (fun j ->
+    if j < i then
+      unsafe_get xs j
+    else if j > i then
+      unsafe_get xs (j-1)
+    else
+      x)
 
 (*$T insert
    insert [|1;2;3|] 4 0 = [|4;1;2;3|]
@@ -898,7 +906,6 @@ struct
   external unsafe_get : ('a, [> `Read]) t -> int -> 'a = "%array_unsafe_get"
   external unsafe_set : ('a, [> `Write])t -> int -> 'a -> unit = "%array_unsafe_set"
 
-  (*BISECT-IGNORE-BEGIN*)
   module Labels =
   struct
     let init i ~f = init i f
@@ -939,10 +946,8 @@ struct
       try Some (findi f e)
       with Not_found -> None
   end
-  (*BISECT-IGNORE-END*)
 end
 
-(*BISECT-IGNORE-BEGIN*)
 module Exceptionless =
 struct
   let find f e =
@@ -989,4 +994,3 @@ struct
     let findi ~f e = findi f e
   end
 end
-(*BISECT-IGNORE-END*)

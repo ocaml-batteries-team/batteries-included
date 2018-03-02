@@ -294,7 +294,7 @@ module Safe_float = struct
   let ceil = safe1 ceil
   let floor = safe1 floor
   let modf x = let (_, z) as result = modf x in if_safe z; result
-  let frexp x = let (f, _) as result = frexp x in if_safe f; result (*BISECT-VISIT*)
+  let frexp x = let (f, _) as result = frexp x in if_safe f; result
   let ldexp = safe2 ldexp
 
   type bounded = t

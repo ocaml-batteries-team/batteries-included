@@ -46,7 +46,7 @@ let make ~next ~count ~clone =
   }
 
 (** {6 Internal utilities}*)
-let _dummy () = assert false (*BISECT-VISIT*)
+let _dummy () = assert false
 
 (* raised by 'count' functions, may go outside the API *)
 exception Infinite_enum
