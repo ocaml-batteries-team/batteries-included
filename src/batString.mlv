@@ -398,6 +398,7 @@ let split_on_char sep str =
     (* str is non empty *)
     let rec loop acc ofs limit =
       if ofs < 0 then sub str 0 limit :: acc
+      (* ofs >= 0 && ofs < length str *)
       else if unsafe_get str ofs <> sep then loop acc (ofs - 1) limit
       else loop (sub str (ofs + 1) (limit - ofs - 1) :: acc) (ofs - 1) ofs
     in
@@ -652,6 +653,7 @@ let fold_lefti f init str =
   let n = String.length str in
   let rec loop i result =
     if i = n then result
+    (* i >= 0 && i < len str *)
     else loop (i + 1) (f result i (unsafe_get str i))
   in loop 0 init
 (*$T fold_lefti
@@ -665,7 +667,9 @@ let fold_right f str init =
   let rec loop i result =
     if i = 0 then result
     else
+      (* i > 0 && i <= len str *)
       let i' = i - 1 in
+      (* i' >= 0 && i' < len str *)
       loop i' (f (unsafe_get str i') result)
   in
   loop n init
@@ -679,7 +683,9 @@ let fold_righti f str init =
   let rec loop i result =
     if i = 0 then result
     else
+      (* i > 0 && i <= len str *)
       let i' = i - 1 in
+      (* i' >= 0 && i' < len str *)
       loop i' (f i' (unsafe_get str i') result)
   in loop n init
 (*$T fold_righti
@@ -688,8 +694,9 @@ let fold_righti f str init =
 *)
 
 let iteri f str =
-  for i = 0 to (String.length str) - 1 do f i (unsafe_get str i) done
-
+  for i = 0 to String.length str - 1 do
+    f i (unsafe_get str i)
+  done
 (*$R iteri
   let letter_positions word =
     let positions = Array.make 256 [] in
@@ -707,9 +714,14 @@ let iteri f str =
 
 (* explode and implode from the OCaml Expert FAQ. *)
 let explode s =
-  let rec exp i l =
-    if i < 0 then l else exp (i - 1) (unsafe_get s i :: l) in
-  exp (String.length s - 1) []
+  let rec loop i l =
+    if i < 0 then
+      l
+    else
+      (* i >= 0 && i < length s *)
+      loop (i - 1) (unsafe_get s i :: l)
+  in
+  loop (String.length s - 1) []
 (*$T explode
    explode "foo" = ['f'; 'o'; 'o']
    explode "" = []
@@ -1020,7 +1032,9 @@ let edit_distance s1 s2 =
 
       (* try add/delete/replace operations *)
       for j = 0 to String.length s2 - 1 do
-        let cost = if (unsafe_get s1 i) = (unsafe_get s2 j) then 0 else 1 in
+        (* i >= 0 && i < length s1 *)
+        (* j >= 0 && j < length s2 *)
+        let cost = if unsafe_get s1 i = unsafe_get s2 j then 0 else 1 in
         v1.(j+1) <- min (v1.(j) + 1) (min (v0.(j+1) + 1) (v0.(j) + cost));
       done;
 
