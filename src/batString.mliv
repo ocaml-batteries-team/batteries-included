@@ -256,6 +256,17 @@ val rindex_from_opt: string -> int -> char -> int option
     @since 2.7.0
 *)
 
+val index_after_n :  char -> int -> string -> int
+(** [index_after_n chr n str] returns the index of the character that
+    comes immediately after the [n]-th occurrence of [chr] in [str], {b
+    starting at 1}.
+
+    If [n] equals [0], returns [0]. If the [n]-th occurrence of [chr]
+    is the last character of [str], returns the length of [str].
+
+    @raise [Invalid_argument] if [n] is negative.
+*)
+
 val contains : string -> char -> bool
 (** [String.contains s c] tests if character [c]
     appears in the string [s]. *)
