@@ -39,9 +39,12 @@ Changelog
   The assertion is now documented.
   #841
   (Max Mouratov)
-- Implementation of Array.insert now uses [unsafe_get] and [unsafe_set].
+- Implementation of [Array.insert] now uses [unsafe_get] and [unsafe_set].
   #841
   (Max Mouratov)
+- Fix documentation of [String.right].
+  #849, #844
+  (Max Mouratov, reported by Thibault Suzanne)
 
 ## v2.8.0 (minor release)
 
