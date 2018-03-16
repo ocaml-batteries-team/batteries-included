@@ -766,6 +766,32 @@ val nsplit : string -> by:string -> string list
     Example: [String.nsplit "abcabcabc" "bc" = ["a"; "a"; "a"; ""]]
 *)
 
+val cut : char -> int -> string -> string
+(**
+ Similar to Unix [cut]. [cut chr n str] returns the substring of
+ [str] located strictly between the [n]-th occurrence of [chr] and
+ the [n+1]-th one. {b Occurrences are numbered starting from 1}.
+
+ Corner cases:
+  {ul
+   {- If [n] equals [0] and [chr] is present in [str], returns the
+   substring from the beginning of [str] to the first occurrence of
+   [chr].}
+   {- If there are only [n] occurrences of [chr] in [str], returns the
+   substring between the last occurrence of [chr] and the end of [str]}
+   {- If there are strictly less than [n] occurrences of [chr] in [str], raise Not_found}
+   {- If [chr] is absent from [str], the behaviour is consistent with the preceding rules: {ul
+       {- If [n] equals [0], returns the full [str]}
+       {- Otherwise, @raise Not_found}
+      }
+   }
+   {- If [n < 0], @raise Invalid_argument}
+   }
+
+ {b Remark:} [cut] can return the empty string. Examples of this
+ behaviour are [cut ',' 1 "foo,,bar"] and [cut ',' 0 ",foo"].
+*)
+
 val join : string -> string list -> string
 (** Same as {!concat} *)
 
