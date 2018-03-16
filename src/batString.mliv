@@ -264,7 +264,7 @@ val index_after_n :  char -> int -> string -> int
     If [n] equals [0], returns [0]. If the [n]-th occurrence of [chr]
     is the last character of [str], returns the length of [str].
 
-    @raise [Invalid_argument] if [n] is negative.
+    @raise Invalid_argument if [n] is negative.
 *)
 
 val contains : string -> char -> bool
