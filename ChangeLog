@@ -3,6 +3,8 @@ Changelog
 
 ## NEXT_RELEASE
 
+- add `BatString.index_after_n : char -> int -> string -> int`
+  (Kahina Fekir)
 - faster BatArray.partition
   #829
   (Francois Berenger, Gabriel Scherer)
