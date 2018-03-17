@@ -473,10 +473,10 @@ let unique ?(eq = ( = )) l =
 *)
 
 let unique_cmp ?(cmp = Pervasives.compare) l =
-  let set      = ref (BatMap.PMap.create cmp) in
+  let set = ref (BatSet.PSet.create cmp) in
   let should_keep x =
-    if BatMap.PMap.mem x !set then false
-    else ( set := BatMap.PMap.add x true !set; true )
+    if BatSet.PSet.mem x !set then false
+    else ( set := BatSet.PSet.add x !set; true )
   in
   (* use a stateful filter to remove duplicate elements *)
   List.filter should_keep l
