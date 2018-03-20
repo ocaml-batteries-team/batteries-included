@@ -57,7 +57,7 @@ module BaseInt = struct
 
   let pow a b =
     if b < 0
-    then raise (Invalid_argument "Int.pow")
+    then invalid_arg "Int.pow"
     else
       let div_two n = n / 2
       and mod_two n = n mod 2
@@ -271,7 +271,7 @@ module BaseSafeInt = struct
 
   let pow a b =
     if b < 0
-    then raise (Invalid_argument "Safe_int.pow")
+    then invalid_arg "Int.Safe_int.pow"
     else
       let div_two n = n / 2
       and mod_two n = n mod 2

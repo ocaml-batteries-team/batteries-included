@@ -47,13 +47,13 @@ module BaseBool = struct
   let mul    = ( && )
   let sub _  = not (*Weird extrapolation*)
   let div _ _=
-    raise (Invalid_argument "Bool.div")
+    invalid_arg "Bool.div"
 
   let modulo _ _ =
-    raise (Invalid_argument "Bool.modulo")
+    invalid_arg "Bool.modulo"
 
   let pow _ _ =
-    raise (Invalid_argument "Bool.pow")
+    invalid_arg "Bool.pow"
 
   let compare = compare
 
@@ -74,7 +74,7 @@ module BaseBool = struct
   let of_string = function
     | "true" | "tt" | "1" -> true
     | "false"| "ff" | "0" -> false
-    | _                   -> raise (Invalid_argument "Bool.of_string")
+    | _                   -> invalid_arg "Bool.of_string"
 
   let to_string = string_of_bool
 end

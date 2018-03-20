@@ -132,8 +132,8 @@ let is_empty = function
   not (is_empty [1])
 *)
 
-let at_negative_index_msg = "Negative index not allowed"
-let at_after_end_msg = "Index past end of list"
+let at_negative_index_msg = "List: Negative index not allowed"
+let at_after_end_msg = "List: Index past end of list"
 
 let nth l index =
   if index < 0 then invalid_arg at_negative_index_msg;
@@ -282,7 +282,7 @@ let takedrop n l =
 *)
 
 let ntake n l =
-  if n < 1 then invalid_arg "BatList.ntake";
+  if n < 1 then invalid_arg "List.ntake";
   let took, left = takedrop n l in
   let acc = Acc.create took in
   let rec loop dst = function
@@ -573,7 +573,7 @@ let map2 f l1 l2 =
     | [], [] -> ()
     | h1 :: t1, h2 :: t2 ->
       loop (Acc.accum dst (f h1 h2)) t1 t2
-    | _ -> invalid_arg "map2: Different_list_size"
+    | _ -> invalid_arg "List.map2: Different_list_size"
   in
   let dummy = Acc.dummy () in
   loop dummy l1 l2;
@@ -585,7 +585,7 @@ let map2i f l1 l2 =
     | [], [] -> ()
     | h1 :: t1, h2 :: t2 ->
       loop (succ i) (Acc.accum dst (f i h1 h2)) t1 t2
-    | _ -> invalid_arg "map2i: Different_list_size"
+    | _ -> invalid_arg "List.map2i: Different_list_size"
   in
   let dummy = Acc.dummy () in
   loop 0 dummy l1 l2;
@@ -606,14 +606,14 @@ let rec iter2 f l1 l2 =
   match l1, l2 with
   | [], [] -> ()
   | h1 :: t1, h2 :: t2 -> f h1 h2; iter2 f t1 t2
-  | _ -> invalid_arg "iter2: Different_list_size"
+  | _ -> invalid_arg "List.iter2: Different_list_size"
 
 let iter2i f l1 l2 =
   let rec loop i l1 l2 =
     match l1, l2 with
     | [], [] -> ()
     | h1 :: t1, h2 :: t2 -> f i h1 h2; loop (succ i) t1 t2
-    | _ -> invalid_arg "iter2: Different_list_size"
+    | _ -> invalid_arg "List.iter2i: Different_list_size"
   in loop 0 l1 l2
 
 (*$T iter2i
@@ -633,14 +633,14 @@ let rec fold_left2 f accum l1 l2 =
   match l1, l2 with
   | [], [] -> accum
   | h1 :: t1, h2 :: t2 -> fold_left2 f (f accum h1 h2) t1 t2
-  | _ -> invalid_arg "fold_left2: Different_list_size"
+  | _ -> invalid_arg "List.fold_left2: Different_list_size"
 
 let fold_right2 f l1 l2 init =
   let rec tail_loop acc l1 l2 =
     match l1, l2 with
     | [] , [] -> acc
     | h1 :: t1 , h2 :: t2 -> tail_loop (f h1 h2 acc) t1 t2
-    | _ -> invalid_arg "fold_left2: Different_list_size"
+    | _ -> invalid_arg "List.fold_right2: Different_list_size"
   in
   let rec loop n l1 l2 =
     match l1, l2 with
@@ -650,7 +650,7 @@ let fold_right2 f l1 l2 init =
         f h1 h2 (loop (n+1) t1 t2)
       else
         f h1 h2 (tail_loop init (rev t1) (rev t2))
-    | _ -> invalid_arg "fold_right2: Different_list_size"
+    | _ -> invalid_arg "List.fold_right2: Different_list_size"
   in
   loop 0 l1 l2
 
@@ -659,7 +659,7 @@ let for_all2 p l1 l2 =
     match l1, l2 with
     | [], [] -> true
     | h1 :: t1, h2 :: t2 -> if p h1 h2 then loop t1 t2 else false
-    | _ -> invalid_arg "for_all2: Different_list_size"
+    | _ -> invalid_arg "List.for_all2: Different_list_size"
   in
   loop l1 l2
 
@@ -668,7 +668,7 @@ let exists2 p l1 l2 =
     match l1, l2 with
     | [], [] -> false
     | h1 :: t1, h2 :: t2 -> if p h1 h2 then true else loop t1 t2
-    | _ -> invalid_arg "exists2: Different_list_size"
+    | _ -> invalid_arg "List.exists2: Different_list_size"
   in
   loop l1 l2
 
@@ -700,7 +700,7 @@ let remove_assq x lst =
 
 let remove_at i lst =
   let rec loop dst i = function
-    | [] -> invalid_arg "BatList.remove_at"
+    | [] -> invalid_arg "List.remove_at"
     | x :: xs ->
       if i = 0 then
         dst.tl <- xs
@@ -708,7 +708,7 @@ let remove_at i lst =
         loop (Acc.accum dst x) (i - 1) xs
   in
   if i < 0 then
-    invalid_arg "BatList.remove_at"
+    invalid_arg "List.remove_at"
   else
     let dummy = Acc.dummy () in
     loop dummy i lst;
@@ -1342,8 +1342,11 @@ let print ?(first="[") ?(last="]") ?(sep="; ") print_a  out = function
 
 let t_printer a_printer _paren out x = print (a_printer false) out x
 
-let reduce f = function [] -> invalid_arg "Empty List"
-                      | h::t -> fold_left f h t
+let reduce f = function
+  | [] ->
+      invalid_arg "List.reduce: Empty List"
+  | h :: t ->
+      fold_left f h t
 
 let min l = reduce Pervasives.min l
 let max l = reduce Pervasives.max l

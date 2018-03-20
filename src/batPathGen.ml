@@ -597,7 +597,7 @@ module Make = functor (S : StringType) -> struct
   let concat basepath relpath =
     let simple_concat () =
       if is_relative relpath then relpath @ basepath
-      else raise (Invalid_argument "Path.concat")
+      else invalid_arg "PathGen.concat"
     in
     if windows then
       begin
@@ -606,7 +606,7 @@ module Make = functor (S : StringType) -> struct
           (* special rules *)
           begin
             match relpath with
-            | nm :: _ when isnul nm -> raise (Invalid_argument "Path.concat")
+            | nm :: _ when isnul nm -> invalid_arg "PathGen.concat"
             | _ -> relpath @ basepath (* allow drive-letter inside the path *)
           end
         | _ -> simple_concat ()
@@ -650,8 +650,8 @@ module Make = functor (S : StringType) -> struct
 
   let parent path =
     match path with
-    | [] -> raise (Invalid_argument "Path.parent")
-    | [rt] when isroot rt -> raise (Invalid_argument "Path.parent")
+    | [] -> invalid_arg "PathGen.parent"
+    | [rt] when isroot rt -> invalid_arg "PathGen.parent"
     | _ :: par -> par
 
   let belongs base sub =
@@ -670,8 +670,8 @@ module Make = functor (S : StringType) -> struct
     match rbase, rsub with
     | hb::_, hs::_ when hb = hs -> fold rbase rsub
     | hb::_, hs::_ -> false
-    | rt::_, _ when isroot rt -> raise (Invalid_argument "Path.belongs")
-    | _, rt::_ when isroot rt -> raise (Invalid_argument "Path.belongs")
+    | rt::_, _ when isroot rt -> invalid_arg "PathGen.belongs"
+    | _, rt::_ when isroot rt -> invalid_arg "PathGen.belongs"
     | _, _ -> fold rbase rsub
 
   let gen_relative_to parent_only base sub =
@@ -688,8 +688,8 @@ module Make = functor (S : StringType) -> struct
     let rsub = List.rev sub in
     let rrel = match rbase, rsub with
       | hb::_, hs::_ when hb = hs -> fold rbase rsub
-      | rt::_, _ when isroot rt -> raise (Invalid_argument "Path.relative_to_*")
-      | _, rt::_ when isroot rt -> raise (Invalid_argument "Path.relative_to_*")
+      | rt::_, _ when isroot rt -> invalid_arg "PathGen.relative_to_*"
+      | _, rt::_ when isroot rt -> invalid_arg "PathGen.relative_to_*"
       | _, _ -> fold rbase rsub
     in
     List.rev rrel
@@ -745,8 +745,8 @@ module Make = functor (S : StringType) -> struct
 
   let with_nonempty path fu =
     match path with
-    | [] -> raise (Invalid_argument "Path.parent")
-    | [rt] when isroot rt -> raise (Invalid_argument "Path.parent")
+    | [] -> invalid_arg "PathGen.name"
+    | [rt] when isroot rt -> invalid_arg "PathGen.name"
     | name :: parent -> (fu name parent)
 
   let name path = with_nonempty path
@@ -811,7 +811,7 @@ module Make = functor (S : StringType) -> struct
     match List.rev abs with
     | nul :: _ when isnul nul -> None
     | drv :: _ when is_win_disk_letter drv -> Some (S.get drv 0)
-    | _ -> raise (Invalid_argument "Path.drive_letter")
+    | _ -> invalid_arg "PathGen.drive_letter"
 
 end
 
