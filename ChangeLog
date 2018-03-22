@@ -52,6 +52,9 @@ Changelog
 - More uniform and correct [Invalid_argument] messages.
   #850
   (Max Mouratov)
+- Optimization of List.unique_cmp (using Set instead of Map).
+  #852
+  (Max Mouratov)
 
 ## v2.8.0 (minor release)
 
