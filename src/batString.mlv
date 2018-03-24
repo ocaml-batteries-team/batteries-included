@@ -41,10 +41,13 @@ let starts_with str p =
   let len = length p in
   if length str < len then false
   else
+    (* length str >= length p *)
     let rec loop str p i =
       if i = len then true
-      else if unsafe_get str i <> unsafe_get p i then false
-      else loop str p (i + 1)
+      else
+        (* 0 <= i < length p *)
+        if unsafe_get str i <> unsafe_get p i then false
+        else loop str p (i + 1)
     in loop str p 0
 (*$T starts_with
   starts_with "foobarbaz" "foob"
@@ -62,12 +65,17 @@ let ends_with str p =
   let el = length p
   and sl = length str in
   let diff = sl - el in
+  (* diff = length str - length p *)
   if diff < 0 then false (*string is too short*)
   else
+    (* diff >= 0 *)
     let rec loop str p diff i =
       if i = el then true
-      else if get str (diff + i) <> get p i then false
-      else loop str p diff (i + 1)
+      else
+        (* 0 <= i < length p *)
+        (* diff = length str - length p  ==>  diff <= i + diff < length str *)
+        if unsafe_get str (diff + i) <> unsafe_get p i then false
+        else loop str p diff (i + 1)
     in loop str p diff 0
 (*$T ends_with
   ends_with "foobarbaz" "rbaz"
@@ -88,10 +96,15 @@ let find_from str pos sub =
     let rec find ~str ~sub i =
       if i > len - sublen then raise Not_found
       else
+        (* 0 <= i <= length str - length sub *)
         let rec loop ~str ~sub i j =
           if j = sublen then i
-          else if unsafe_get str (i + j) <> unsafe_get sub j then find ~str ~sub (i + 1)
-          else loop ~str ~sub i (j + 1)
+          else
+            (* 0 <= j < length sub *)
+            (* ==>  0 <= i + j < length str *)
+            if unsafe_get str (i + j) <> unsafe_get sub j
+            then find ~str ~sub (i + 1)
+            else loop ~str ~sub i (j + 1)
         in loop ~str ~sub i 0
     in find ~str ~sub pos
 (*$Q find_from
@@ -126,14 +139,22 @@ let rfind_from str pos sub =
   let sublen = length sub
   and len = length str in
   if pos + 1 < 0 || pos + 1 > len then invalid_arg "String.rfind_from";
+  (* 0 <= pos + 1 <= length str *)
   if sublen = 0 then pos + 1 else
+    (* length sub > 0 *)
+    (* (pos + 1 - sublen) <= length str - length sub < length str *)
     let rec find ~str ~sub i =
       if i < 0 then raise Not_found
       else
+        (* 0 <= i <= length str - length sub < length str *)
         let rec loop ~str ~sub i j =
           if j = sublen then i
-          else if unsafe_get str (i + j) <> unsafe_get sub j then find ~str ~sub (i - 1)
-          else loop ~str ~sub i (j + 1)
+          else
+            (* 0 <= j < length sub *)
+            (* ==> 0 <= i + j < length str *)
+            if unsafe_get str (i + j) <> unsafe_get sub j
+            then find ~str ~sub (i - 1)
+            else loop ~str ~sub i (j + 1)
         in loop ~str ~sub i 0
     in find ~str ~sub (pos - sublen + 1)
 (*$Q rfind_from
@@ -377,7 +398,8 @@ let split_on_char sep str =
     (* str is non empty *)
     let rec loop acc ofs limit =
       if ofs < 0 then sub str 0 limit :: acc
-      else if str.[ofs] <> sep then loop acc (ofs - 1) limit
+      (* ofs >= 0 && ofs < length str *)
+      else if unsafe_get str ofs <> sep then loop acc (ofs - 1) limit
       else loop (sub str (ofs + 1) (limit - ofs - 1) :: acc) (ofs - 1) ofs
     in
     let len = length str in loop [] (len - 1) len
@@ -619,7 +641,7 @@ let fold_left f init str =
   let n = String.length str in
   let rec loop i result =
     if i = n then result
-    else loop (i + 1) (f result str.[i])
+    else loop (i + 1) (f result (unsafe_get str i))
   in
   loop 0 init
 (*$T fold_left
@@ -631,7 +653,8 @@ let fold_lefti f init str =
   let n = String.length str in
   let rec loop i result =
     if i = n then result
-    else loop (i + 1) (f result i str.[i])
+    (* i >= 0 && i < len str *)
+    else loop (i + 1) (f result i (unsafe_get str i))
   in loop 0 init
 (*$T fold_lefti
    fold_lefti (fun a i c->(i,c)::a) [] "foo"=[(2,'o');(1,'o');(0,'f')]
@@ -644,8 +667,10 @@ let fold_right f str init =
   let rec loop i result =
     if i = 0 then result
     else
+      (* i > 0 && i <= len str *)
       let i' = i - 1 in
-      loop i' (f str.[i'] result)
+      (* i' >= 0 && i' < len str *)
+      loop i' (f (unsafe_get str i') result)
   in
   loop n init
 (*$T fold_right
@@ -658,8 +683,10 @@ let fold_righti f str init =
   let rec loop i result =
     if i = 0 then result
     else
+      (* i > 0 && i <= len str *)
       let i' = i - 1 in
-      loop i' (f i' str.[i'] result)
+      (* i' >= 0 && i' < len str *)
+      loop i' (f i' (unsafe_get str i') result)
   in loop n init
 (*$T fold_righti
    fold_righti (fun i c a->(i,c)::a) "foo" []=[(0,'f');(1,'o');(2,'o')]
@@ -667,8 +694,9 @@ let fold_righti f str init =
 *)
 
 let iteri f str =
-  for i = 0 to (String.length str) - 1 do f i str.[i] done
-
+  for i = 0 to String.length str - 1 do
+    f i (unsafe_get str i)
+  done
 (*$R iteri
   let letter_positions word =
     let positions = Array.make 256 [] in
@@ -686,9 +714,14 @@ let iteri f str =
 
 (* explode and implode from the OCaml Expert FAQ. *)
 let explode s =
-  let rec exp i l =
-    if i < 0 then l else exp (i - 1) (s.[i] :: l) in
-  exp (String.length s - 1) []
+  let rec loop i l =
+    if i < 0 then
+      l
+    else
+      (* i >= 0 && i < length s *)
+      loop (i - 1) (unsafe_get s i :: l)
+  in
+  loop (String.length s - 1) []
 (*$T explode
    explode "foo" = ['f'; 'o'; 'o']
    explode "" = []
@@ -833,7 +866,7 @@ let rev s =
   let len = String.length s in
   let reversed = Bytes.create len in
   for i = 0 to len - 1 do
-    Bytes.unsafe_set reversed (len - i - 1) (String.unsafe_get s i)
+    Bytes.unsafe_set reversed (len - i - 1) (unsafe_get s i)
   done;
   Bytes.unsafe_to_string reversed
 
@@ -999,7 +1032,9 @@ let edit_distance s1 s2 =
 
       (* try add/delete/replace operations *)
       for j = 0 to String.length s2 - 1 do
-        let cost = if s1.[i] = s2.[j] then 0 else 1 in
+        (* i >= 0 && i < length s1 *)
+        (* j >= 0 && j < length s2 *)
+        let cost = if unsafe_get s1 i = unsafe_get s2 j then 0 else 1 in
         v1.(j+1) <- min (v1.(j) + 1) (min (v0.(j+1) + 1) (v0.(j) + cost));
       done;
 

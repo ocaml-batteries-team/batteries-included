@@ -59,6 +59,9 @@ Changelog
   estimates of stack usage.
   #854
   (Max Mouratov)
+- Implementation of String should use unsafe versions of [set] and [get].
+  #836
+  (Max Mouratov, review by Gabriel Scherer)
 
 ## v2.8.0 (minor release)
 
