@@ -74,7 +74,7 @@ val cons : 'a -> 'a list -> 'a list
 (** [cons h t] returns the list starting with [h] and continuing as [t]. *)
 
 val hd : 'a list -> 'a
-(** Returns the first element of the list, or @raise Failure if 
+(** Returns the first element of the list, or @raise Failure if
     the list is empty. *)
 
 
@@ -132,8 +132,9 @@ val shuffle : ?state:Random.State.t -> 'a list -> 'a list
  *)
 
 val append : 'a list -> 'a list -> 'a list
-(** Catenate two lists.  Same function as the infix operator [@].
-    Tail-recursive O(length of the first argument).*)
+(** [append l1 l2] is a concatenation of [l1] and [l2].
+    Same function as the infix operator [@].
+    Tail-recursive. This function takes O([length l1]) time. *)
 
 val rev_append : 'a list -> 'a list -> 'a list
 (** [List.rev_append l1 l2] reverses [l1] and concatenates it to [l2]. *)
@@ -141,8 +142,7 @@ val rev_append : 'a list -> 'a list -> 'a list
 val concat : 'a list list -> 'a list
 (** Concatenate a list of lists.  The elements of the argument are all
     concatenated together (in the same order) to give the result.
-    Tail-recursive
-    (length of the argument + length of the longest sub-list). *)
+    Tail-recursive. *)
 
 val flatten : 'a list list -> 'a list
 (** Same as [concat]. *)

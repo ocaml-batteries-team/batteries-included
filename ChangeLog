@@ -55,6 +55,10 @@ Changelog
 - Optimization of List.unique_cmp (using Set instead of Map).
   #852
   (Max Mouratov)
+- Documentation of List.append and List.concat should not include invalid
+  estimates of stack usage.
+  #854
+  (Max Mouratov)
 
 ## v2.8.0 (minor release)
 
