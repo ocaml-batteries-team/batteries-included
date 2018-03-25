@@ -61,8 +61,7 @@
     grouped into large writing operations, as these are generally
     faster and induce less wear on the hardware. Occasionally, you
     may wish to force all waiting operations to take place {e now}.
-    For this purpose, you may either function {!flush} or function
-    I    {!flush_out}.
+    For this purpose, you may call function {!flush}.
 
     Once you have finished using your {!type: input} or your {!type:
     output}, chances are that you will want to close it. This is not a
