@@ -166,7 +166,6 @@ let rfind str sub = rfind_from str (String.length str - 1) sub
   try ignore (rfind "foo" "barr"); false with Not_found -> true
 *)
 
-
 let index_after_n chr n str =
   if n < 0
   then raise (Invalid_argument "index out of bounds")
