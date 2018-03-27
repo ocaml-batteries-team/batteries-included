@@ -5,7 +5,7 @@ Changelog
 
 - add `BatString.cut : char -> int -> string -> string`
   (Kahina Fekir, Thibault Suzanne, request by François Bérenger)
-  #807
+  #807, #856
 - add `BatString.index_after_n : char -> int -> string -> int`
   (Kahina Fekir)
 - faster BatArray.partition
