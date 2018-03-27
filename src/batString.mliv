@@ -258,13 +258,18 @@ val rindex_from_opt: string -> int -> char -> int option
 
 val index_after_n :  char -> int -> string -> int
 (** [index_after_n chr n str] returns the index of the character that
-    comes immediately after the [n]-th occurrence of [chr] in [str], {b
-    starting at 1}.
+    comes immediately after the [n]-th occurrence of [chr] in [str].
+    {b n starts from 1}.
 
-    If [n] equals [0], returns [0]. If the [n]-th occurrence of [chr]
-    is the last character of [str], returns the length of [str].
+    - If [n = 0], always returns [0].
+    - If the [n]-th occurrence of [chr] is the last character of
+      [str], returns the length of [str].
 
-    @raise Invalid_argument if [n] is negative.
+    @raise Invalid_argument if [n < 0].
+    @raise Not_found if there are strictly less than [n] occurrences of [chr]
+    in [str].
+
+    @since NEXT_RELEASE
 *)
 
 val contains : string -> char -> bool
@@ -768,28 +773,24 @@ val nsplit : string -> by:string -> string list
 
 val cut : char -> int -> string -> string
 (**
- Similar to Unix [cut]. [cut chr n str] returns the substring of
- [str] located strictly between the [n]-th occurrence of [chr] and
- the [n+1]-th one. {b Occurrences are numbered starting from 1}.
+   Similar to Unix [cut]. [cut chr n str] returns the substring of
+   [str] located strictly between the [n]-th occurrence of [chr] and
+   the [n+1]-th one. {b n starts from 1}.
 
- Corner cases:
-  {ul
-   {- If [n] equals [0] and [chr] is present in [str], returns the
-   substring from the beginning of [str] to the first occurrence of
-   [chr].}
-   {- If there are only [n] occurrences of [chr] in [str], returns the
-   substring between the last occurrence of [chr] and the end of [str]}
-   {- If there are strictly less than [n] occurrences of [chr] in [str], raise Not_found}
-   {- If [chr] is absent from [str], the behaviour is consistent with the preceding rules: {ul
-       {- If [n] equals [0], returns the full [str]}
-       {- Otherwise, @raise Not_found}
-      }
-   }
-   {- If [n < 0], @raise Invalid_argument}
-   }
+   - If [n = 0], returns the substring from the beginning of
+     [str] to the first occurrence of [chr].
+   - If there are exactly [n] occurrences of [chr] in [str], returns the
+     substring between the last occurrence of [chr] and the end of [str].
+   - These behaviours cumulate: if [n] equals [0] and [chr] is
+     absent from [str], returns the full string [str].
 
- {b Remark:} [cut] can return the empty string. Examples of this
- behaviour are [cut ',' 1 "foo,,bar"] and [cut ',' 0 ",foo"].
+   {b Remark:} [cut] can return the empty string. Examples of this
+   behaviour are [cut ',' 1 "foo,,bar"] and [cut ',' 0 ",foo"].
+
+   @raise Not_found if there are strictly less than [n] occurences of [chr] in str.
+   @raise Invalid_argument if [n < 0].
+
+   @since NEXT_RELEASE
 *)
 
 val join : string -> string list -> string
