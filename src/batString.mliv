@@ -259,9 +259,11 @@ val rindex_from_opt: string -> int -> char -> int option
 val index_after_n :  char -> int -> string -> int
 (** [index_after_n chr n str] returns the index of the character that
     comes immediately after the [n]-th occurrence of [chr] in [str].
-    {b n starts from 1}.
 
-    - If [n = 0], always returns [0].
+    - {b Occurences are numbered from 1}: [n] = 1 returns the index of
+      the character located immediately after the first occurence of
+      [chr].
+    - [n] = 0 always returns [0].
     - If the [n]-th occurrence of [chr] is the last character of
       [str], returns the length of [str].
 
@@ -775,8 +777,9 @@ val cut : char -> int -> string -> string
 (**
    Similar to Unix [cut]. [cut chr n str] returns the substring of
    [str] located strictly between the [n]-th occurrence of [chr] and
-   the [n+1]-th one. {b n starts from 1}.
+   the [n+1]-th one.
 
+   - {b Occurrences of [chr] are numbered from 1}.
    - If [n = 0], returns the substring from the beginning of
      [str] to the first occurrence of [chr].
    - If there are exactly [n] occurrences of [chr] in [str], returns the
