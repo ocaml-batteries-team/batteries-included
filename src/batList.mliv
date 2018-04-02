@@ -332,26 +332,24 @@ val min_max : ?cmp:('a -> 'a -> int) -> 'a list -> 'a * 'a
 val iter2 : ('a -> 'b -> unit) -> 'a list -> 'b list -> unit
 (** [List.iter2 f [a0; a1; ...; an] [b0; b1; ...; bn]] calls in turn
     [f a0 b0; f a1 b1; ...; f an bn].
-    @raise Different_list_size if the two lists have
-    different lengths. *)
+    @raise Invalid_argument if two lists have different lengths. *)
 
 val iter2i : (int -> 'a -> 'b -> unit) -> 'a list -> 'b list -> unit
 (** [List.iter2i f [a0; a1; ...; an] [b0; b1; ...; bn]] calls in turn
     [f 0 a0 b0; f 1 a1 b1; ...; f n an bn].
-    @raise Different_list_size or Invalid_argument if the two lists
-    have different lengths. *)
+    @raise Invalid_argument if two lists have different lengths. *)
 
 val map2 : ('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list
 (** [List.map2 f [a0; a1; ...; an] [b0; b1; ...; bn]] is
     [[f a0 b0; f a1 b1; ...; f an bn]].
-    @raise Different_list_size if the two lists have
-    different lengths.  Tail-recursive. *)
+    @raise Invalid_argument if two lists have different lengths.
+    Tail-recursive. *)
 
 val map2i : (int -> 'a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list
 (** [List.map2i f [a0; a1; ...; an] [b0; b1; ...; bn]] is
     [[f 0 a0 b0; f 1 a1 b1; ...; f n an bn]].
-    @raise Different_list_size or Invalid_argument if the two lists
-    have different lengths. Tail-recursive. *)
+    @raise Invalid_argument if two lists have different lengths.
+    Tail-recursive. *)
 
 val rev_map2 : ('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list
 (** [List.rev_map2 f l1 l2] gives the same result as
@@ -361,15 +359,13 @@ val rev_map2 : ('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list
 val fold_left2 : ('a -> 'b -> 'c -> 'a) -> 'a -> 'b list -> 'c list -> 'a
 (** [List.fold_left2 f a [b0; b1; ...; bn] [c0; c1; ...; cn]] is
     [f (... (f (f a b0 c0) b1 c1) ...) bn cn].
-    @raise Different_list_size if the two lists have
-    different lengths. *)
+    @raise Invalid_argument if two lists have different lengths. *)
 
 val fold_right2 : ('a -> 'b -> 'c -> 'c) -> 'a list -> 'b list -> 'c -> 'c
 (** [List.fold_right2 f [a0; a1; ...; an] [b0; b1; ...; bn] c] is
     [f a0 b0 (f a1 b1 (... (f an bn c) ...))].
-
-    @raise Different_list_size if the two lists have
-    different lengths.  Tail-recursive. *)
+    @raise Invalid_argument if two lists have different lengths.
+    Tail-recursive. *)
 
 
 (**{6 List scanning}*)
@@ -404,14 +400,12 @@ val exists : ('a -> bool) -> 'a list -> bool
 val for_all2 : ('a -> 'b -> bool) -> 'a list -> 'b list -> bool
 (** Same as {!List.for_all}, but for a two-argument predicate.
 
-    @raise Invalid_argument if the two lists have
-    different lengths. *)
+    @raise Invalid_argument if two lists have different lengths. *)
 
 val exists2 : ('a -> 'b -> bool) -> 'a list -> 'b list -> bool
 (** Same as {!List.exists}, but for a two-argument predicate.
 
-    @raise Invalid_argument if the two lists have
-    different lengths. *)
+    @raise Invalid_argument if two lists have different lengths. *)
 
 val subset : ('a -> 'b -> int) -> 'a list -> 'b list -> bool
 (** [subset cmp l l'] check if all elements of the list [l]
@@ -786,8 +780,8 @@ val combine : 'a list -> 'b list -> ('a * 'b) list
 (** Transform a pair of lists into a list of pairs:
     [combine [a0; a1; ...; an] [b0; b1; ...; bn]] is
     [[(a0,b0); (a1,b1); ...; (an,bn)]].
-    @raise Different_list_size if the two lists
-    have different lengths.  Tail-recursive. *)
+    @raise Invalid_argument if two lists have different lengths.
+    Tail-recursive. *)
 
 
 (** {6 Sorting}*)
