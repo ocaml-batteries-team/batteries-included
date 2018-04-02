@@ -62,6 +62,9 @@ Changelog
 - Implementation of String should use unsafe versions of [set] and [get].
   #836
   (Max Mouratov, review by Gabriel Scherer)
+- Fix erroneous mentions of [Different_list_size] in List.mli.
+  #857, #744
+  (Max Mouratov, reported by Christoph Höger)
 
 ## v2.8.0 (minor release)
 
