@@ -573,7 +573,7 @@ let map2 f l1 l2 =
     | [], [] -> ()
     | h1 :: t1, h2 :: t2 ->
       loop (Acc.accum dst (f h1 h2)) t1 t2
-    | _ -> invalid_arg "List.map2: Different_list_size"
+    | _ -> invalid_arg "List.map2: list lengths differ"
   in
   let dummy = Acc.dummy () in
   loop dummy l1 l2;
@@ -585,7 +585,7 @@ let map2i f l1 l2 =
     | [], [] -> ()
     | h1 :: t1, h2 :: t2 ->
       loop (succ i) (Acc.accum dst (f i h1 h2)) t1 t2
-    | _ -> invalid_arg "List.map2i: Different_list_size"
+    | _ -> invalid_arg "List.map2i: list lengths differ"
   in
   let dummy = Acc.dummy () in
   loop 0 dummy l1 l2;
@@ -606,14 +606,14 @@ let rec iter2 f l1 l2 =
   match l1, l2 with
   | [], [] -> ()
   | h1 :: t1, h2 :: t2 -> f h1 h2; iter2 f t1 t2
-  | _ -> invalid_arg "List.iter2: Different_list_size"
+  | _ -> invalid_arg "List.iter2: list lengths differ"
 
 let iter2i f l1 l2 =
   let rec loop i l1 l2 =
     match l1, l2 with
     | [], [] -> ()
     | h1 :: t1, h2 :: t2 -> f i h1 h2; loop (succ i) t1 t2
-    | _ -> invalid_arg "List.iter2i: Different_list_size"
+    | _ -> invalid_arg "List.iter2i: list lengths differ"
   in loop 0 l1 l2
 
 (*$T iter2i
@@ -633,14 +633,14 @@ let rec fold_left2 f accum l1 l2 =
   match l1, l2 with
   | [], [] -> accum
   | h1 :: t1, h2 :: t2 -> fold_left2 f (f accum h1 h2) t1 t2
-  | _ -> invalid_arg "List.fold_left2: Different_list_size"
+  | _ -> invalid_arg "List.fold_left2: list lengths differ"
 
 let fold_right2 f l1 l2 init =
   let rec tail_loop acc l1 l2 =
     match l1, l2 with
     | [] , [] -> acc
     | h1 :: t1 , h2 :: t2 -> tail_loop (f h1 h2 acc) t1 t2
-    | _ -> invalid_arg "List.fold_right2: Different_list_size"
+    | _ -> invalid_arg "List.fold_right2: list lengths differ"
   in
   let rec loop n l1 l2 =
     match l1, l2 with
@@ -650,7 +650,7 @@ let fold_right2 f l1 l2 init =
         f h1 h2 (loop (n+1) t1 t2)
       else
         f h1 h2 (tail_loop init (rev t1) (rev t2))
-    | _ -> invalid_arg "List.fold_right2: Different_list_size"
+    | _ -> invalid_arg "List.fold_right2: list lengths differ"
   in
   loop 0 l1 l2
 
@@ -659,7 +659,7 @@ let for_all2 p l1 l2 =
     match l1, l2 with
     | [], [] -> true
     | h1 :: t1, h2 :: t2 -> if p h1 h2 then loop t1 t2 else false
-    | _ -> invalid_arg "List.for_all2: Different_list_size"
+    | _ -> invalid_arg "List.for_all2: list lengths differ"
   in
   loop l1 l2
 
@@ -668,7 +668,7 @@ let exists2 p l1 l2 =
     match l1, l2 with
     | [], [] -> false
     | h1 :: t1, h2 :: t2 -> if p h1 h2 then true else loop t1 t2
-    | _ -> invalid_arg "List.exists2: Different_list_size"
+    | _ -> invalid_arg "List.exists2: list lengths differ"
   in
   loop l1 l2
 
@@ -817,7 +817,6 @@ let split lst =
   adummy.tl, bdummy.tl
 
 let combine l1 l2 =
-  let list_sizes_differ = Invalid_argument "combine: Different_list_size" in
   match l1, l2 with
     | [], [] -> []
     | x :: xs, y :: ys ->
@@ -825,9 +824,9 @@ let combine l1 l2 =
       let rec loop dst l1 l2 = match l1, l2 with
         | [], [] -> inj acc
         | h1 :: t1, h2 :: t2 -> loop (Acc.accum dst (h1, h2)) t1 t2
-        | _, _ -> raise list_sizes_differ
+        | _, _ -> invalid_arg "List.combine: list lengths differ"
       in loop acc xs ys
-    | _, _ -> raise list_sizes_differ
+    | _, _ -> invalid_arg "List.combine: list lengths differ"
 
 (*$T combine
   combine []     []     = []
