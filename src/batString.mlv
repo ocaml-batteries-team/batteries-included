@@ -417,7 +417,7 @@ let split_on_char sep str =
   split_on_char '/' "/a/b/c//" = [""; "a"; "b"; "c"; ""; ""]
 *)
 
-let cut chr pos str =
+let cut_on_char chr pos str =
   let i = index_after_n chr pos str in
   let j =
     match index_from_opt str i chr with
@@ -426,18 +426,18 @@ let cut chr pos str =
   in
   sub str i (j - i)
 
-(*$T cut
-  cut ',' 0 "aa,bb,cc" = "aa"
-  cut ',' 1 "aa,bb,cc" = "bb"
-  cut ',' 2 "aa,bb,cc" = "cc"
-  cut '-' 0 "aa,bb,cc" = "aa,bb,cc"
-  cut ',' 0 "" = ""
-  try ignore (cut ',' (-1) "aa,bb,cc"); false with Invalid_argument _ -> true
-  try ignore (cut ',' 3 "aa,bb,cc"); false with Not_found -> true
-  try ignore (cut '-' 1 "aa,bb,cc"); false with Not_found -> true
-  cut ',' 0 ",ab" = ""
-  cut ',' 1 "a,,b" = ""
-  cut ',' 1 "a," = ""
+(*$T cut_on_char
+  cut_on_char ',' 0 "aa,bb,cc" = "aa"
+  cut_on_char ',' 1 "aa,bb,cc" = "bb"
+  cut_on_char ',' 2 "aa,bb,cc" = "cc"
+  cut_on_char '-' 0 "aa,bb,cc" = "aa,bb,cc"
+  cut_on_char ',' 0 "" = ""
+  try ignore (cut_on_char ',' (-1) "aa,bb,cc"); false with Invalid_argument _ -> true
+  try ignore (cut_on_char ',' 3 "aa,bb,cc"); false with Not_found -> true
+  try ignore (cut_on_char '-' 1 "aa,bb,cc"); false with Not_found -> true
+  cut_on_char ',' 0 ",ab" = ""
+  cut_on_char ',' 1 "a,,b" = ""
+  cut_on_char ',' 1 "a," = ""
 *)
 
 let join = concat

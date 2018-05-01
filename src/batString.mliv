@@ -773,9 +773,9 @@ val nsplit : string -> by:string -> string list
     Example: [String.nsplit "abcabcabc" "bc" = ["a"; "a"; "a"; ""]]
 *)
 
-val cut : char -> int -> string -> string
+val cut_on_char : char -> int -> string -> string
 (**
-   Similar to Unix [cut]. [cut chr n str] returns the substring of
+   Similar to Unix [cut]. [cut_on_char chr n str] returns the substring of
    [str] located strictly between the [n]-th occurrence of [chr] and
    the [n+1]-th one.
 
@@ -787,8 +787,8 @@ val cut : char -> int -> string -> string
    - These behaviours cumulate: if [n] equals [0] and [chr] is
      absent from [str], returns the full string [str].
 
-   {b Remark:} [cut] can return the empty string. Examples of this
-   behaviour are [cut ',' 1 "foo,,bar"] and [cut ',' 0 ",foo"].
+   {b Remark:} [cut_on_char] can return the empty string. Examples of this
+   behaviour are [cut_on_char ',' 1 "foo,,bar"] and [cut_on_char ',' 0 ",foo"].
 
    @raise Not_found if there are strictly less than [n] occurences of [chr] in str.
    @raise Invalid_argument if [n < 0].
