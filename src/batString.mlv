@@ -187,6 +187,34 @@ let rfind str sub = rfind_from str (String.length str - 1) sub
   try ignore (rfind "foo" "barr"); false with Not_found -> true
 *)
 
+let index_after_n chr n str =
+  if n < 0
+  then raise (Invalid_argument "index out of bounds")
+  else
+    let rec loop n i =
+      if n = 0
+      then i
+      else
+        let i = String.index_from str i chr in
+        loop (n - 1) (i + 1)
+    in loop n 0
+
+(*$T index_after_n
+  index_after_n ',' 0 "aa,bb,cc" = 0
+  index_after_n ',' 1 "aa,bb,cc" = 3
+  index_after_n ',' 2 "aa,bb,cc" = 6
+  index_after_n ',' 0 "" = 0
+  index_after_n '-' 0 "aa,bb,cc" = 0
+  try ignore (index_after_n ',' (-1) "aa,bb,cc"); false with Invalid_argument _ -> true
+  try ignore (index_after_n ',' 3 "aa,bb,cc"); false with Not_found -> true
+  try ignore (index_after_n '-' 1 "aa,bb,cc"); false with Not_found -> true
+  index_after_n ',' 0 ",ab" = 0
+  index_after_n ',' 1 ",ab" = 1
+  index_after_n ',' 1 "a,,b" = 2
+  index_after_n ',' 2 "a,,b" = 3
+  index_after_n ',' 1 "a," = 2
+*)
+
 let find_all str sub =
   (* enumerator *)
   let rec next r () =
@@ -409,6 +437,29 @@ let split_on_char sep str =
   split_on_char 'x' "" = []
   split_on_char '/' "a/b/c" = ["a"; "b"; "c"]
   split_on_char '/' "/a/b/c//" = [""; "a"; "b"; "c"; ""; ""]
+*)
+
+let cut_on_char chr pos str =
+  let i = index_after_n chr pos str in
+  let j =
+    match index_from_opt str i chr with
+    | None -> length str
+    | Some valid_index -> valid_index
+  in
+  sub str i (j - i)
+
+(*$T cut_on_char
+  cut_on_char ',' 0 "aa,bb,cc" = "aa"
+  cut_on_char ',' 1 "aa,bb,cc" = "bb"
+  cut_on_char ',' 2 "aa,bb,cc" = "cc"
+  cut_on_char '-' 0 "aa,bb,cc" = "aa,bb,cc"
+  cut_on_char ',' 0 "" = ""
+  try ignore (cut_on_char ',' (-1) "aa,bb,cc"); false with Invalid_argument _ -> true
+  try ignore (cut_on_char ',' 3 "aa,bb,cc"); false with Not_found -> true
+  try ignore (cut_on_char '-' 1 "aa,bb,cc"); false with Not_found -> true
+  cut_on_char ',' 0 ",ab" = ""
+  cut_on_char ',' 1 "a,,b" = ""
+  cut_on_char ',' 1 "a," = ""
 *)
 
 let join = concat
