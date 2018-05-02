@@ -146,8 +146,8 @@ val find_all : ('a, 'b) t -> 'a -> 'b list
     bindings, in reverse order of introduction in the table. *)
 
 val find_default : ('a,'b) t -> 'a -> 'b -> 'b
-(** [Hashtbl.find_default tbl key def] find a binding for [key],
-    and return default [def] if [key] is unbound in [tbl]. *)
+(** [Hashtbl.find_default tbl key default] finds a binding for [key],
+    or return [default] if [key] is unbound in [tbl]. *)
 
 val find_option : ('a,'b) Hashtbl.t -> 'a -> 'b option
 (** Find a binding for the key, or return [None] if no
