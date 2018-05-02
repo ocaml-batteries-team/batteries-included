@@ -188,16 +188,15 @@ let rfind str sub = rfind_from str (String.length str - 1) sub
 *)
 
 let index_after_n chr n str =
-  if n < 0
-  then raise (Invalid_argument "index out of bounds")
+  if n < 0 then raise (Invalid_argument "String.index_after_n: n < 0")
   else
     let rec loop n i =
-      if n = 0
-      then i
+      if n = 0 then i
       else
         let i = String.index_from str i chr in
         loop (n - 1) (i + 1)
-    in loop n 0
+    in
+    loop n 0
 
 (*$T index_after_n
   index_after_n ',' 0 "aa,bb,cc" = 0
@@ -441,8 +440,7 @@ let split_on_char sep str =
 
 let cut_on_char chr pos str =
   let i = index_after_n chr pos str in
-  let j =
-    match index_from_opt str i chr with
+  let j = match index_from_opt str i chr with
     | None -> length str
     | Some valid_index -> valid_index
   in
