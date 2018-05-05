@@ -440,10 +440,7 @@ let split_on_char sep str =
 
 let cut_on_char chr pos str =
   let i = index_after_n chr pos str in
-  let j = match index_from_opt str i chr with
-    | None -> length str
-    | Some valid_index -> valid_index
-  in
+  let j = try index_from str i chr with Not_found -> length str in
   sub str i (j - i)
 
 (*$T cut_on_char
