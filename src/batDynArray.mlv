@@ -23,8 +23,12 @@
 
 type resizer_t = currslots:int -> oldlength:int -> newlength:int -> int
 
-(* A polymorphic placeholder that is never accessed by the user *)
-let dummy_for_gc = Obj.magic 0
+(* A polymorphic placeholder that is never accessed by the user.
+   With Flambda, it is important to use Sys.opaque_identity to
+   prevent the optimizer from reasoning about weird values.
+*)
+##V>=4.3##let dummy_for_gc = Sys.opaque_identity (Obj.magic 0)
+##V<4.3##let dummy_for_gc = Obj.magic 0
 
 let ilen = Array.length
 let imake n = Array.make n dummy_for_gc
