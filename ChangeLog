@@ -18,7 +18,7 @@ Changelog
   #799
   (Francois Berenger)
 - Int: optimized implementation of Safe_int.mul
-  #808
+  #808, #851
   (Max Mouratov)
 - Fix: in case of conflicted bindings, [Map.union m1 m2] should
   prefer the value from [m2], as stated in documentation.
