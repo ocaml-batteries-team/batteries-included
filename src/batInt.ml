@@ -258,7 +258,8 @@ module BaseSafeInt = struct
   let mul (a: int) (b: int) : int =
     let open Pervasives in
     let c = a * b in
-    if (a lor b) asr mul_shift_bits = 0 || b = 0 || c / b = a then
+    if (a lor b) asr mul_shift_bits = 0
+    || not ((a = min_int && b < 0) || (b <> 0 && c / b <> a)) then
       c
     else
       raise BatNumber.Overflow
