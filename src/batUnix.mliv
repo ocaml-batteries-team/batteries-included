@@ -1692,6 +1692,10 @@ val restart_on_EINTR : ('a -> 'b) -> 'a -> 'b
 (** [restart_on_EINTR f x] invokes [f] on [x] repetedly until the function returns
     a value or raises another exception than EINTR. *)
 
+val time_it: (unit -> 'a) -> float * 'a
+(** [dt, res = time_it f] will return [dt], the time elapsed (in seconds)
+    by the execution of [f ()], along with [res], the result of calling [f ()].
+    The measure is performed via two calls to [Unix.gettimeofday]. *)
 
 (**
    {6 Thread-safety internals}

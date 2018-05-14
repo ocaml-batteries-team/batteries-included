@@ -212,3 +212,9 @@ let is_directory fn = (lstat fn).st_kind = S_DIR
 let rec restart_on_EINTR f x =
   try f x
   with Unix_error(EINTR, _, _) -> restart_on_EINTR f x
+
+let time_it f =
+  let start = gettimeofday () in
+  let res = f () in
+  let stop = gettimeofday () in
+  (stop -. start, res)
