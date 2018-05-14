@@ -218,3 +218,8 @@ let time_it f =
   let res = f () in
   let stop = gettimeofday () in
   (stop -. start, res)
+(*$T time_it
+  let delay, epsilon = 0.01, 0.0005 in \
+  let dt, res = time_it (fun () -> sleepf delay; 42) in \
+  (BatFloat.approx_equal ~epsilon dt delay && res = 42)
+*)
