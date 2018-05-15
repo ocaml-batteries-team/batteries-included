@@ -213,13 +213,27 @@ let rec restart_on_EINTR f x =
   try f x
   with Unix_error(EINTR, _, _) -> restart_on_EINTR f x
 
-let time_it f =
-  let start = gettimeofday () in
-  let res = f () in
-  let stop = gettimeofday () in
-  (stop -. start, res)
+let time_it ?(n = 1) f =
+  if n <= 0 then
+    invalid_arg "Unix.time_it: ~n <= 0"
+  else if n = 1 then
+    let start = gettimeofday () in
+    let res = f () in
+    let stop = gettimeofday () in
+    (stop -. start, res)
+  else (* n > 1 *)
+    let start = gettimeofday () in
+    let res = f () in
+    for i = 2 to n do
+      ignore(f ())
+    done;
+    let stop = gettimeofday () in
+    (stop -. start, res)
+
 (*$T time_it
   let delay, epsilon = 0.01, 0.0005 in \
   let dt, res = time_it (fun () -> sleepf delay; 42) in \
-  (BatFloat.approx_equal ~epsilon dt delay && res = 42)
+  let dt2, res2 = time_it ~n:2 (fun () -> sleepf (delay /. 2.0); 42) in \
+  (BatFloat.approx_equal ~epsilon dt delay && res = 42 && \
+   BatFloat.approx_equal ~epsilon dt2 delay && res2 = 42)
 *)

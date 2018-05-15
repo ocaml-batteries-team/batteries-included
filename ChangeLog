@@ -3,6 +3,9 @@ Changelog
 
 ## NEXT_RELEASE
 
+- add Unix.time_it: ?n:int -> (unit -> 'a) -> float * 'a
+  #863
+  (Francois Berenger, review by Gabriel Scherer)
 - add `BatString.cut_on_char : char -> int -> string -> string`
   (Kahina Fekir, Thibault Suzanne, request by François Bérenger)
   #807, #856
