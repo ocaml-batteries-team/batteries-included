@@ -217,7 +217,7 @@ val rindex_opt: string -> char -> int option
 
 val index_from : string -> int -> char -> int
 (** [String.index_from s i c] returns the character number of the
-    first occurrence of character [c] in string [s] after position [i].
+    first occurrence of character [c] in string [s] after or at position [i].
     [String.index s c] is equivalent to [String.index_from s 0 c].
 
     @raise Invalid_argument if [i] is not a valid position in [s].
