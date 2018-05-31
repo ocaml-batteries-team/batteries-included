@@ -70,6 +70,9 @@ Changelog
 - Fix erroneous mentions of [Different_list_size] in List.mli.
   #857, #744
   (Max Mouratov, reported by Christoph Höger)
+- fix Map.equal (for polymorphic maps) with custom equality function
+  #865
+  (Ralf Vogler)
 
 ## v2.8.0 (minor release)
 
