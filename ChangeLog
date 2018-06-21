@@ -2,7 +2,9 @@ Changelog
 ---------
 
 ## NEXT_RELEASE
-
+- ocamlfind plugin support in META file
+  (Arlen Cox)
+  #867
 - add `BatString.cut_on_char : char -> int -> string -> string`
   (Kahina Fekir, Thibault Suzanne, request by François Bérenger)
   #807, #856
