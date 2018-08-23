@@ -81,7 +81,7 @@ ExtLib Compatibility
 --------------------
 
 If your project currently uses [ExtLib][], most likely you can just change
-`-package extlib` to `-package batteries` and add `open Extlibcompat`
+`-package extlib` to `-package batteries` and add `open Extlib`
 to the top of any extlib-using modules.  Batteries' modules are all
 named BatFoo to differentiate them from extlib's modules, so one can
 use Batteries and ExtLib in the same project.
