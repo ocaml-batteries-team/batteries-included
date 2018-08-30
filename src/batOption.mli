@@ -87,6 +87,8 @@ val default_delayed : (unit -> 'a) -> 'a option -> 'a
 
     @since 2.1 *)
 
+val equal : ?eq:('a -> 'a -> bool) -> 'a option -> 'a option -> bool
+
 val map_default : ('a -> 'b) -> 'b -> 'a option -> 'b
 (** [map_default f x (Some v)] returns [f v] and [map_default f x None]
     returns [x]. *)

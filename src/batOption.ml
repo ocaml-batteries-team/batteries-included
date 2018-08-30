@@ -75,6 +75,12 @@ let default_delayed l = function
   default_delayed (fun () -> assert false) (Some 4) = 4
 *)
 
+let equal ?eq:(eq0=Pervasives.(=)) x y =
+  match (x, y) with
+  | None, None -> true
+  | Some x, Some y -> eq0 x y
+  | _ -> false
+
 let is_some = function
   | None -> false
   | _ -> true

@@ -27,6 +27,7 @@ let all_tests =
     Test_hashcons.tests;
     Test_mapfunctors.tests;
     Test_optparse.tests;
+    Test_option.tests;
     Test_uref.tests;
     Test_bitset.tests;
     Test_container.tests;
