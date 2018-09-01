@@ -516,7 +516,7 @@ val destructive_set : 'a t -> int -> 'a -> unit
     sharing the modified leaf with [v]. Use with caution. *)
 
 val sub : 'a t -> int -> int -> 'a t
-(** [sub m n r] returns a sub-vect of [r] containing all the elements
+(** [sub r m n] returns a sub-vect of [r] containing all the elements
     whose indexes range from [m] to [m + n - 1] (included).
     @raise Out_of_bounds in the same cases as Array.sub.
     Operates in worst-case [O(log size)] time.  *)
