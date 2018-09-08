@@ -523,10 +523,14 @@ end
 
 ##V>=4.6##(** {6 Mapping files into memory} *)
 ##V>=4.6##
-##V>=4.6##val map_file :
-##V>=4.6##  file_descr -> ?pos:int64 -> ('a, 'b) CamlinternalBigarray.kind ->
-##V>=4.6##  'c CamlinternalBigarray.layout -> bool -> int array ->
-##V>=4.6##  ('a, 'b, 'c) CamlinternalBigarray.genarray
+##V=4.6##val map_file :
+##V=4.6##  file_descr -> ?pos:int64 -> ('a, 'b) CamlinternalBigarray.kind ->
+##V=4.6##  'c CamlinternalBigarray.layout -> bool -> int array ->
+##V=4.6##  ('a, 'b, 'c) CamlinternalBigarray.genarray
+##V>4.6##val map_file :
+##V>4.6##  file_descr -> ?pos:int64 -> ('a, 'b) Bigarray.kind ->
+##V>4.6##  'c Bigarray.layout -> bool -> int array ->
+##V>4.6##  ('a, 'b, 'c) Bigarray.Genarray.t
 ##V>=4.6##(** Memory mapping of a file as a big array.
 ##V>=4.6##  [map_file fd kind layout shared dims]
 ##V>=4.6##  returns a big array of kind [kind], layout [layout],
