@@ -5,6 +5,8 @@ Make a release
 
 - `make test` on a 64 bits machine
 - `make test` on a 32 bits machine
+  (in practice, we have a hard time finding 32 bits machine these
+  days, so it's okay to skip this test)
 
 - `make test` with the oldest ocaml compiler version we are supporting
   (for example, in an opam 3.12.1 switch)
