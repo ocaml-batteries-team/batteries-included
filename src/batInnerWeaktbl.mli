@@ -101,8 +101,41 @@ val length : ('a, 'b) t -> int
 
 (** {6 Functorial interface} *)
 
+module type HashedType = sig
+  type t
 
-module Make (H : Hashtbl.HashedType) : Hashtbl.S with type key = H.t
+  val equal : t -> t -> bool
+
+  val hash : t -> int
+end
+
+module type S = sig
+  type key
+  type 'a t
+  val create : int -> 'a t
+  val clear : 'a t -> unit
+  val reset : 'a t -> unit
+
+  val copy : 'a t -> 'a t
+  val add : 'a t -> key -> 'a -> unit
+  val remove : 'a t -> key -> unit
+  val find : 'a t -> key -> 'a
+  val find_opt : 'a t -> key -> 'a option
+
+  val find_all : 'a t -> key -> 'a list
+  val replace : 'a t -> key -> 'a -> unit
+  val mem : 'a t -> key -> bool
+  val iter : (key -> 'a -> unit) -> 'a t -> unit
+  val filter_map_inplace: (key -> 'a -> 'a option) -> 'a t -> unit
+
+  val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+  val length : 'a t -> int
+  val stats: 'a t -> Hashtbl.statistics
+end
+(** This is a subset of Hashtbl.S, kept as a separate interface to
+   avoid compatibility issues when Hashtbl.S evolves. *)
+
+module Make (H : HashedType) : S with type key = H.t
   (** Functor building an implementation of the hashtable structure.
       The functor [Weaktbl.Make] returns a structure containing
       a type [key] of keys and a type ['a t] of hash tables
