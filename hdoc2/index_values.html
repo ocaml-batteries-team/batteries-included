@@ -491,7 +491,7 @@
 </td></tr>
 <tr><td><a href="BatMap.Infix.html#VAL(-->)">(--&gt;)</a> [<a href="BatMap.Infix.html">BatMap.Infix</a>]</td>
 <td><div class="info">
-<p><code class="code">map--&gt;key</code> returns the current binding of <code class="code">key</code> in <code class="code">map</code>,
+<p><code class="code">map&nbsp;--&gt;&nbsp;key</code> returns the current binding of <code class="code">key</code> in <code class="code">map</code>,
       or raises <code class="code"><span class="constructor">Not_found</span></code>.</p>
 
 </div>
@@ -732,8 +732,8 @@
 </td></tr>
 <tr><td><a href="BatMap.PMap.Infix.html#VAL(<--)">(&lt;--)</a> [<a href="BatMap.PMap.Infix.html">BatMap.PMap.Infix</a>]</td>
 <td><div class="info">
-<p><code class="code">map&lt;--(key,&nbsp;value)</code> returns a map containing the same bindings as
-          <code class="code">map</code>, plus a binding of <code class="code">key</code> to <code class="code">value</code>.</p>
+<p><code class="code">map&nbsp;&lt;--&nbsp;(key,&nbsp;value)</code> returns a map containing the same bindings as
+        <code class="code">map</code>, plus a binding of <code class="code">key</code> to <code class="code">value</code>.</p>
 
 </div>
 </td></tr>
@@ -741,15 +741,15 @@
 <td></td></tr>
 <tr><td><a href="BatMap.Infix.html#VAL(<--)">(&lt;--)</a> [<a href="BatMap.Infix.html">BatMap.Infix</a>]</td>
 <td><div class="info">
-<p><code class="code">map&lt;--(key,&nbsp;value)</code> returns a map containing the same bindings as
-        <code class="code">map</code>, plus a binding of <code class="code">key</code> to <code class="code">value</code>.</p>
+<p><code class="code">map&nbsp;&lt;--&nbsp;(key,&nbsp;value)</code> returns a map containing the same bindings as
+      <code class="code">map</code>, plus a binding of <code class="code">key</code> to <code class="code">value</code>.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="BatMap.S.Infix.html#VAL(<--)">(&lt;--)</a> [<a href="BatMap.S.Infix.html">BatMap.S.Infix</a>]</td>
 <td><div class="info">
-<p><code class="code">map&lt;--(key,&nbsp;value)</code> returns a map containing the same bindings as
-          <code class="code">map</code>, plus a binding of <code class="code">key</code> to <code class="code">value</code>.</p>
+<p><code class="code">map&nbsp;&lt;--&nbsp;(key,&nbsp;value)</code> returns a map containing the same bindings as
+        <code class="code">map</code>, plus a binding of <code class="code">key</code> to <code class="code">value</code>.</p>
 
 </div>
 </td></tr>
@@ -1337,6 +1337,8 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatInnerWeaktbl.S.html#VALadd">add</a> [<a href="BatInnerWeaktbl.S.html">BatInnerWeaktbl.S</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatInnerWeaktbl.html#VALadd">add</a> [<a href="BatInnerWeaktbl.html">BatInnerWeaktbl</a>]</td>
 <td><div class="info">
 <p><code class="code"><span class="constructor">Weaktbl</span>.add&nbsp;tbl&nbsp;x&nbsp;y</code> adds a binding of <code class="code">x</code> to <code class="code">y</code> in table <code class="code">tbl</code>.</p>
@@ -1443,13 +1445,15 @@
 </td></tr>
 <tr><td><a href="BatMap.PMap.html#VALadd_carry">add_carry</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
 <td><div class="info">
-<p><code class="code">add_carry&nbsp;k&nbsp;v&nbsp;m</code> adds the binding <code class="code">(k,v)</code> to <code class="code">m</code>, returning the new map and optionally the previous value bound to <code class="code">k</code>.</p>
+<p><code class="code">add_carry&nbsp;k&nbsp;v&nbsp;m</code> adds the binding <code class="code">(k,&nbsp;v)</code> to <code class="code">m</code>, returning the new
+      map and optionally the previous value bound to <code class="code">k</code>.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="BatMap.html#VALadd_carry">add_carry</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td><div class="info">
-<p><code class="code">add_carry&nbsp;k&nbsp;v&nbsp;m</code> adds the binding <code class="code">(k,v)</code> to <code class="code">m</code>, returning the new map and optionally the previous value bound to <code class="code">k</code>.</p>
+<p><code class="code">add_carry&nbsp;k&nbsp;v&nbsp;m</code> adds the binding <code class="code">(k,&nbsp;v)</code> to <code class="code">m</code>, returning the new
+    map and optionally the previous value bound to <code class="code">k</code>.</p>
 
 </div>
 </td></tr>
@@ -1712,7 +1716,7 @@
 </td></tr>
 <tr><td><a href="BatList.html#VALappend">append</a> [<a href="BatList.html">BatList</a>]</td>
 <td><div class="info">
-<p>Catenate two lists.</p>
+<p><code class="code">append&nbsp;l1&nbsp;l2</code> is a concatenation of <code class="code">l1</code> and <code class="code">l2</code>.</p>
 
 </div>
 </td></tr>
@@ -2212,19 +2216,21 @@
 </td></tr>
 <tr><td><a href="BatMap.PMap.html#VALbackwards">backwards</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
 <td><div class="info">
-<p>creates an enumeration for this map, enumerating key,value pairs with the keys in decreasing order.</p>
+<p>Creates an enumeration for this map, enumerating <code class="code">(key,&nbsp;value)</code> pairs
+      with the keys in decreasing order.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="BatMap.S.html#VALbackwards">backwards</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
 <td><div class="info">
-<p>Return an enumeration of (key, value) pairs of a map.</p>
+<p>Return an enumeration of <code class="code">(key,&nbsp;value)</code> pairs of a map.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="BatMap.html#VALbackwards">backwards</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td><div class="info">
-<p>creates an enumeration for this map, enumerating key,value pairs with the keys in decreasing order.</p>
+<p>Creates an enumeration for this map, enumerating <code class="code">(key,&nbsp;value)</code> pairs
+    with the keys in decreasing order.</p>
 
 </div>
 </td></tr>
@@ -3158,6 +3164,8 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatInnerWeaktbl.S.html#VALclear">clear</a> [<a href="BatInnerWeaktbl.S.html">BatInnerWeaktbl.S</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatInnerWeaktbl.html#VALclear">clear</a> [<a href="BatInnerWeaktbl.html">BatInnerWeaktbl</a>]</td>
 <td><div class="info">
 <p>Empty a hash table.</p>
@@ -4058,6 +4066,8 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatInnerWeaktbl.S.html#VALcopy">copy</a> [<a href="BatInnerWeaktbl.S.html">BatInnerWeaktbl.S</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatInnerWeaktbl.html#VALcopy">copy</a> [<a href="BatInnerWeaktbl.html">BatInnerWeaktbl</a>]</td>
 <td><div class="info">
 <p>Return a copy of the given hashtable.</p>
@@ -4199,6 +4209,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatString.html#VALcount_string">count_string</a> [<a href="BatString.html">BatString</a>]</td>
+<td><div class="info">
+<p><code class="code">count_string&nbsp;s&nbsp;x</code> count how many times <code class="code">x</code> is found in <code class="code">s</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatGc.html#VALcounters">counters</a> [<a href="BatGc.html">BatGc</a>]</td>
 <td><div class="info">
 <p>Return <code class="code">(minor_words,&nbsp;promoted_words,&nbsp;major_words)</code>.</p>
@@ -4247,16 +4263,19 @@
 </td></tr>
 <tr><td><a href="BatMultiPMap.html#VALcreate">create</a> [<a href="BatMultiPMap.html">BatMultiPMap</a>]</td>
 <td><div class="info">
-<p>creates a new empty map, using the provided function for key comparison.</p>
+<p><code class="code">create&nbsp;kcomp&nbsp;vcomp</code> creates a new empty map, 
+    using kcomp for key comparison and vcomp for value comparison.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="BatMap.PMap.html#VALcreate">create</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
 <td><div class="info">
-<p>creates a new empty map, using the provided function for key comparison.</p>
+<p>Creates a new empty map, using the provided function for key comparison.</p>
 
 </div>
 </td></tr>
+<tr><td><a href="BatInnerWeaktbl.S.html#VALcreate">create</a> [<a href="BatInnerWeaktbl.S.html">BatInnerWeaktbl.S</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatInnerWeaktbl.html#VALcreate">create</a> [<a href="BatInnerWeaktbl.html">BatInnerWeaktbl</a>]</td>
 <td><div class="info">
 <p><code class="code"><span class="constructor">Weaktbl</span>.create&nbsp;n</code> creates a new, empty hash table, with
@@ -4476,6 +4495,12 @@
 </td></tr>
 <tr><td><a href="BatInnerPervasives.html#VALcurry">curry</a> [<a href="BatInnerPervasives.html">BatInnerPervasives</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatString.html#VALcut_on_char">cut_on_char</a> [<a href="BatString.html">BatString</a>]</td>
+<td><div class="info">
+<p>Similar to Unix <code class="code">cut</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatEnum.html#VALcycle">cycle</a> [<a href="BatEnum.html">BatEnum</a>]</td>
 <td><div class="info">
 <p><code class="code">cycle</code> is similar to <code class="code">repeat</code>, except that the content to fill is a
@@ -5185,7 +5210,7 @@
 </td></tr>
 <tr><td><a href="BatMultiPMap.html#VALempty">empty</a> [<a href="BatMultiPMap.html">BatMultiPMap</a>]</td>
 <td><div class="info">
-<p>The empty map, using <code class="code">compare</code> as key comparison function.</p>
+<p>The empty map, using <code class="code">compare</code> as comparison function for both keys and values.</p>
 
 </div>
 </td></tr>
@@ -5433,19 +5458,21 @@
 </td></tr>
 <tr><td><a href="BatMap.PMap.html#VALenum">enum</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
 <td><div class="info">
-<p>creates an enumeration for this map, enumerating key,value pairs with the keys in increasing order.</p>
+<p>Creates an enumeration for this map, enumerating <code class="code">(key,&nbsp;value)</code> pairs
+      with the keys in increasing order.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="BatMap.S.html#VALenum">enum</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
 <td><div class="info">
-<p>Return an enumeration of (key, value) pairs of a map.</p>
+<p>Return an enumeration of <code class="code">(key,&nbsp;value)</code> pairs of a map.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="BatMap.html#VALenum">enum</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td><div class="info">
-<p>creates an enumeration for this map, enumerating key,value pairs with the keys in increasing order.</p>
+<p>Creates an enumeration for this map, enumerating <code class="code">(key,&nbsp;value)</code> pairs
+    with the keys in increasing order.</p>
 
 </div>
 </td></tr>
@@ -5890,6 +5917,8 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatInnerWeaktbl.HashedType.html#VALequal">equal</a> [<a href="BatInnerWeaktbl.HashedType.html">BatInnerWeaktbl.HashedType</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatInnerIO.Output.html#VALequal">equal</a> [<a href="BatInnerIO.Output.html">BatInnerIO.Output</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatInnerIO.Input.html#VALequal">equal</a> [<a href="BatInnerIO.Input.html">BatInnerIO.Input</a>]</td>
@@ -6139,7 +6168,7 @@
 </td></tr>
 <tr><td><a href="BatMap.PMap.html#VALexists">exists</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
 <td><div class="info">
-<p>Tests whether some key value pair satisfies some predicate function</p>
+<p>Tests whether some <code class="code">(key,&nbsp;value)</code> pair satisfies a predicate function.</p>
 
 </div>
 </td></tr>
@@ -6152,7 +6181,7 @@
 </td></tr>
 <tr><td><a href="BatMap.html#VALexists">exists</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td><div class="info">
-<p>Tests whether some key value pair satisfies some predicate function</p>
+<p>Tests whether some <code class="code">(key,&nbsp;value)</code> pair satisfies a predicate function.</p>
 
 </div>
 </td></tr>
@@ -6656,7 +6685,7 @@
 </td></tr>
 <tr><td><a href="BatMap.PMap.html#VALfilter">filter</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
 <td><div class="info">
-<p><code class="code">filter&nbsp;f&nbsp;m</code> returns a map where only the (key, value) pairs
+<p><code class="code">filter&nbsp;f&nbsp;m</code> returns a map where only the <code class="code">(key,&nbsp;value)</code> pairs
      <code class="code">key</code>, <code class="code">a</code> of <code class="code">m</code> such that <code class="code">f&nbsp;key&nbsp;a&nbsp;=&nbsp;<span class="keyword">true</span></code> remain.</p>
 
 </div>
@@ -6665,14 +6694,14 @@
 <td></td></tr>
 <tr><td><a href="BatMap.S.html#VALfilter">filter</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
 <td><div class="info">
-<p><code class="code">filter&nbsp;f&nbsp;m</code> returns a map where only the key, values pairs
-     <code class="code">key</code>, <code class="code">a</code> of <code class="code">m</code> such that <code class="code">f&nbsp;key&nbsp;a&nbsp;=&nbsp;<span class="keyword">true</span></code> remain.</p>
+<p><code class="code">filter&nbsp;f&nbsp;m</code> returns a map where only the <code class="code">(key,&nbsp;value)</code> pairs of <code class="code">m</code>
+      such that <code class="code">f&nbsp;key&nbsp;value&nbsp;=&nbsp;<span class="keyword">true</span></code> remain.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="BatMap.html#VALfilter">filter</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td><div class="info">
-<p><code class="code">filter&nbsp;f&nbsp;m</code> returns a map where only the (key, value) pairs
+<p><code class="code">filter&nbsp;f&nbsp;m</code> returns a map where only the <code class="code">(key,&nbsp;value)</code> pairs
    <code class="code">key</code>, <code class="code">a</code> of <code class="code">m</code> such that <code class="code">f&nbsp;key&nbsp;a&nbsp;=&nbsp;<span class="keyword">true</span></code> remain.</p>
 
 </div>
@@ -6953,6 +6982,8 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatInnerWeaktbl.S.html#VALfilter_map_inplace">filter_map_inplace</a> [<a href="BatInnerWeaktbl.S.html">BatInnerWeaktbl.S</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatHashtbl.Cap.Labels.html#VALfilter_map_inplace">filter_map_inplace</a> [<a href="BatHashtbl.Cap.Labels.html">BatHashtbl.Cap.Labels</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatHashtbl.Cap.html#VALfilter_map_inplace">filter_map_inplace</a> [<a href="BatHashtbl.Cap.html">BatHashtbl.Cap</a>]</td>
@@ -7036,7 +7067,7 @@
 <tr><td><a href="BatMap.S.html#VALfilterv">filterv</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
 <td><div class="info">
 <p><code class="code">filterv&nbsp;f&nbsp;m</code> returns a map where only the values <code class="code">a</code> of <code class="code">m</code>
-     such that <code class="code">f&nbsp;a&nbsp;=&nbsp;<span class="keyword">true</span></code> remain.</p>
+      such that <code class="code">f&nbsp;a&nbsp;=&nbsp;<span class="keyword">true</span></code> remain.</p>
 
 </div>
 </td></tr>
@@ -7240,6 +7271,8 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatInnerWeaktbl.S.html#VALfind">find</a> [<a href="BatInnerWeaktbl.S.html">BatInnerWeaktbl.S</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatInnerWeaktbl.html#VALfind">find</a> [<a href="BatInnerWeaktbl.html">BatInnerWeaktbl</a>]</td>
 <td><div class="info">
 <p><code class="code"><span class="constructor">Weaktbl</span>.find&nbsp;tbl&nbsp;x</code> returns the current binding of <code class="code">x</code> in <code class="code">tbl</code>,
@@ -7361,6 +7394,8 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatInnerWeaktbl.S.html#VALfind_all">find_all</a> [<a href="BatInnerWeaktbl.S.html">BatInnerWeaktbl.S</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatInnerWeaktbl.html#VALfind_all">find_all</a> [<a href="BatInnerWeaktbl.html">BatInnerWeaktbl</a>]</td>
 <td><div class="info">
 <p><code class="code"><span class="constructor">Weaktbl</span>.find_all&nbsp;tbl&nbsp;x</code> returns the list of all data
@@ -7404,7 +7439,7 @@
 <tr><td><a href="BatMap.html#VALfind_default">find_default</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td><div class="info">
 <p><code class="code">find_default&nbsp;d&nbsp;x&nbsp;m</code> returns the current binding of <code class="code">x</code> in <code class="code">m</code>,
-     or the default value <code class="code">d</code> if no such binding exists.</p>
+    or the default value <code class="code">d</code> if no such binding exists.</p>
 
 </div>
 </td></tr>
@@ -7414,8 +7449,8 @@
 <td></td></tr>
 <tr><td><a href="BatHashtbl.html#VALfind_default">find_default</a> [<a href="BatHashtbl.html">BatHashtbl</a>]</td>
 <td><div class="info">
-<p>Find a binding for the key, and return a default
-    value if not found</p>
+<p><code class="code"><span class="constructor">Hashtbl</span>.find_default&nbsp;tbl&nbsp;key&nbsp;default</code> finds a binding for <code class="code">key</code>,
+    or return <code class="code">default</code> if <code class="code">key</code> is unbound in <code class="code">tbl</code>.</p>
 
 </div>
 </td></tr>
@@ -7533,6 +7568,8 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatInnerWeaktbl.S.html#VALfind_opt">find_opt</a> [<a href="BatInnerWeaktbl.S.html">BatInnerWeaktbl.S</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatHashtbl.Cap.html#VALfind_option">find_option</a> [<a href="BatHashtbl.Cap.html">BatHashtbl.Cap</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatHashtbl.S.html#VALfind_option">find_option</a> [<a href="BatHashtbl.S.html">BatHashtbl.S</a>]</td>
@@ -7670,7 +7707,7 @@
 </td></tr>
 <tr><td><a href="BatList.html#VALfirst">first</a> [<a href="BatList.html">BatList</a>]</td>
 <td><div class="info">
-<p>Returns the first element of the list, or</p>
+<p>Alias to hd</p>
 
 </div>
 </td></tr>
@@ -7984,6 +8021,8 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatInnerWeaktbl.S.html#VALfold">fold</a> [<a href="BatInnerWeaktbl.S.html">BatInnerWeaktbl.S</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatInnerWeaktbl.html#VALfold">fold</a> [<a href="BatInnerWeaktbl.html">BatInnerWeaktbl</a>]</td>
 <td><div class="info">
 <p><code class="code"><span class="constructor">Weaktbl</span>.fold&nbsp;f&nbsp;tbl&nbsp;init</code> computes
@@ -8510,7 +8549,7 @@
 </td></tr>
 <tr><td><a href="BatMap.PMap.html#VALfor_all">for_all</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
 <td><div class="info">
-<p>Tests whether all key value pairs satisfy some predicate function</p>
+<p>Tests whether all <code class="code">(key,&nbsp;value)</code> pairs satisfy a predicate function.</p>
 
 </div>
 </td></tr>
@@ -8523,7 +8562,7 @@
 </td></tr>
 <tr><td><a href="BatMap.html#VALfor_all">for_all</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td><div class="info">
-<p>Tests whether all key value pairs satisfy some predicate function</p>
+<p>Tests whether all <code class="code">(key,&nbsp;value)</code> pairs satisfy a predicate function.</p>
 
 </div>
 </td></tr>
@@ -9282,7 +9321,7 @@
 </td></tr>
 <tr><td><a href="BatMap.PMap.html#VALget_cmp">get_cmp</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
 <td><div class="info">
-<p>returns the comparison function of the given map</p>
+<p>Returns the comparison function of the given map.</p>
 
 </div>
 </td></tr>
@@ -9730,6 +9769,8 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatInnerWeaktbl.HashedType.html#VALhash">hash</a> [<a href="BatInnerWeaktbl.HashedType.html">BatInnerWeaktbl.HashedType</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatInnerIO.Output.html#VALhash">hash</a> [<a href="BatInnerIO.Output.html">BatInnerIO.Output</a>]</td>
 <td><div class="info">
 <p>A hash function for outputs</p>
@@ -9824,7 +9865,7 @@
 </td></tr>
 <tr><td><a href="BatList.html#VALhd">hd</a> [<a href="BatList.html">BatList</a>]</td>
 <td><div class="info">
-<p>Similar to <code class="code">first</code>, but</p>
+<p>Returns the first element of the list, or</p>
 
 </div>
 </td></tr>
@@ -10130,6 +10171,13 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatString.html#VALindex_after_n">index_after_n</a> [<a href="BatString.html">BatString</a>]</td>
+<td><div class="info">
+<p><code class="code">index_after_n&nbsp;chr&nbsp;n&nbsp;str</code> returns the index of the character that
+    comes immediately after the <code class="code">n</code>-th occurrence of <code class="code">chr</code> in <code class="code">str</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatText.html#VALindex_from">index_from</a> [<a href="BatText.html">BatText</a>]</td>
 <td><div class="info">
 <p><code class="code">index_from&nbsp;r&nbsp;i&nbsp;c</code> returns the character number of the
@@ -10158,7 +10206,7 @@
 <tr><td><a href="BatString.html#VALindex_from">index_from</a> [<a href="BatString.html">BatString</a>]</td>
 <td><div class="info">
 <p><code class="code"><span class="constructor">String</span>.index_from&nbsp;s&nbsp;i&nbsp;c</code> returns the character number of the
-    first occurrence of character <code class="code">c</code> in string <code class="code">s</code> after position <code class="code">i</code>.</p>
+    first occurrence of character <code class="code">c</code> in string <code class="code">s</code> after or at position <code class="code">i</code>.</p>
 
 </div>
 </td></tr>
@@ -11061,7 +11109,7 @@
 </td></tr>
 <tr><td><a href="BatMap.PMap.html#VALis_empty">is_empty</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
 <td><div class="info">
-<p>returns true if the map is empty.</p>
+<p>Returns <code class="code"><span class="keyword">true</span></code> if the map is empty.</p>
 
 </div>
 </td></tr>
@@ -11073,7 +11121,7 @@
 </td></tr>
 <tr><td><a href="BatMap.html#VALis_empty">is_empty</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td><div class="info">
-<p>returns true if the map is empty.</p>
+<p>Returns <code class="code"><span class="keyword">true</span></code> if the map is empty.</p>
 
 </div>
 </td></tr>
@@ -11462,6 +11510,8 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatInnerWeaktbl.S.html#VALiter">iter</a> [<a href="BatInnerWeaktbl.S.html">BatInnerWeaktbl.S</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatInnerWeaktbl.html#VALiter">iter</a> [<a href="BatInnerWeaktbl.html">BatInnerWeaktbl</a>]</td>
 <td><div class="info">
 <p><code class="code"><span class="constructor">Weaktbl</span>.iter&nbsp;f&nbsp;tbl</code> applies <code class="code">f</code> to all bindings in table <code class="code">tbl</code>.</p>
@@ -12254,6 +12304,8 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatInnerWeaktbl.S.html#VALlength">length</a> [<a href="BatInnerWeaktbl.S.html">BatInnerWeaktbl.S</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatInnerWeaktbl.html#VALlength">length</a> [<a href="BatInnerWeaktbl.html">BatInnerWeaktbl</a>]</td>
 <td><div class="info">
 <p><code class="code"><span class="constructor">Weaktbl</span>.length&nbsp;tbl</code> returns the number of bindings in <code class="code">tbl</code>.</p>
@@ -13161,7 +13213,7 @@
 </td></tr>
 <tr><td><a href="BatMultiPMap.html#VALmap">map</a> [<a href="BatMultiPMap.html">BatMultiPMap</a>]</td>
 <td><div class="info">
-<p><code class="code">map&nbsp;f&nbsp;m</code> returns a map with same domain as <code class="code">m</code>, where the
+<p><code class="code">map&nbsp;f&nbsp;vcompgen&nbsp;m</code> returns a map with same domain as <code class="code">m</code>, where the
     associated value <code class="code">a</code> of all bindings of <code class="code">m</code> has been
     replaced by the result of the application of <code class="code">f</code> to <code class="code">a</code>.</p>
 
@@ -13831,19 +13883,19 @@
 </td></tr>
 <tr><td><a href="BatMap.PMap.html#VALmax_binding">max_binding</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
 <td><div class="info">
-<p>returns the binding with the largest key</p>
+<p>Returns the binding with the largest key.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="BatMap.S.html#VALmax_binding">max_binding</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
 <td><div class="info">
-<p>return the <code class="code">(key,value)</code> pair with the largest key</p>
+<p>Return the <code class="code">(key,&nbsp;value)</code> pair with the largest key.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="BatMap.html#VALmax_binding">max_binding</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td><div class="info">
-<p>returns the binding with the largest key</p>
+<p>Returns the binding with the largest key.</p>
 
 </div>
 </td></tr>
@@ -14060,6 +14112,8 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatInnerWeaktbl.S.html#VALmem">mem</a> [<a href="BatInnerWeaktbl.S.html">BatInnerWeaktbl.S</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatInnerWeaktbl.html#VALmem">mem</a> [<a href="BatInnerWeaktbl.html">BatInnerWeaktbl</a>]</td>
 <td><div class="info">
 <p><code class="code"><span class="constructor">Weaktbl</span>.mem&nbsp;tbl&nbsp;x</code> checks if <code class="code">x</code> is bound in <code class="code">tbl</code>.</p>
@@ -14298,19 +14352,19 @@
 </td></tr>
 <tr><td><a href="BatMap.PMap.html#VALmin_binding">min_binding</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
 <td><div class="info">
-<p>returns the binding with the smallest key</p>
+<p>Returns the binding with the smallest key.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="BatMap.S.html#VALmin_binding">min_binding</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
 <td><div class="info">
-<p>return the (<code class="code">key,value</code>) pair with the smallest key</p>
+<p>Return the <code class="code">(key,&nbsp;value)</code> pair with the smallest key.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="BatMap.html#VALmin_binding">min_binding</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td><div class="info">
-<p>returns the binding with the smallest key</p>
+<p>Returns the binding with the smallest key.</p>
 
 </div>
 </td></tr>
@@ -15135,7 +15189,7 @@
 </td></tr>
 <tr><td><a href="BatLazyList.html#VALnext">next</a> [<a href="BatLazyList.html">BatLazyList</a>]</td>
 <td><div class="info">
-<p>Compute and return the next value of the list</p>
+<p>Compute and return the first node from the list as a <code class="code"><span class="constructor">Cons</span></code>.</p>
 
 </div>
 </td></tr>
@@ -15707,7 +15761,7 @@
 </td></tr>
 <tr><td><a href="BatMap.html#VALof_enum">of_enum</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td><div class="info">
-<p>Creates a map from an enumeration</p>
+<p>Creates a map from an enumeration.</p>
 
 </div>
 </td></tr>
@@ -17321,20 +17375,20 @@
 </td></tr>
 <tr><td><a href="BatMap.PMap.html#VALpop_max_binding">pop_max_binding</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
 <td><div class="info">
-<p>return the binding with the largest key along with the rest of the map</p>
+<p>Return the binding with the largest key along with the rest of the map.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="BatMap.S.html#VALpop_max_binding">pop_max_binding</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
 <td><div class="info">
-<p>return the (<code class="code">key,value</code>) pair with the largest key
-      along with the rest of the map</p>
+<p>Return the (<code class="code">key,&nbsp;value</code>) pair with the largest key
+      along with the rest of the map.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="BatMap.html#VALpop_max_binding">pop_max_binding</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td><div class="info">
-<p>returns the binding with the largest key along with the rest of the map</p>
+<p>Returns the binding with the largest key along with the rest of the map.</p>
 
 </div>
 </td></tr>
@@ -17361,20 +17415,20 @@
 </td></tr>
 <tr><td><a href="BatMap.PMap.html#VALpop_min_binding">pop_min_binding</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
 <td><div class="info">
-<p>return the binding with the smallest key along with the rest of the map</p>
+<p>Return the binding with the smallest key along with the rest of the map.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="BatMap.S.html#VALpop_min_binding">pop_min_binding</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
 <td><div class="info">
-<p>return the (<code class="code">key,value</code>) pair with the smallest key
-      along with the rest of the map</p>
+<p>Return the <code class="code">(key,&nbsp;value)</code> pair with the smallest key
+      along with the rest of the map.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="BatMap.html#VALpop_min_binding">pop_min_binding</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td><div class="info">
-<p>returns the binding with the smallest key along with the rest of the map</p>
+<p>Returns the binding with the smallest key along with the rest of the map.</p>
 
 </div>
 </td></tr>
@@ -19044,6 +19098,8 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatInnerWeaktbl.S.html#VALremove">remove</a> [<a href="BatInnerWeaktbl.S.html">BatInnerWeaktbl.S</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatInnerWeaktbl.html#VALremove">remove</a> [<a href="BatInnerWeaktbl.html">BatInnerWeaktbl</a>]</td>
 <td><div class="info">
 <p><code class="code"><span class="constructor">Weaktbl</span>.remove&nbsp;tbl&nbsp;x</code> removes the current binding of <code class="code">x</code> in <code class="code">tbl</code>,
@@ -19250,6 +19306,8 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatInnerWeaktbl.S.html#VALreplace">replace</a> [<a href="BatInnerWeaktbl.S.html">BatInnerWeaktbl.S</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatInnerWeaktbl.html#VALreplace">replace</a> [<a href="BatInnerWeaktbl.html">BatInnerWeaktbl</a>]</td>
 <td><div class="info">
 <p><code class="code"><span class="constructor">Weaktbl</span>.replace&nbsp;tbl&nbsp;x&nbsp;y</code> replaces the current binding of <code class="code">x</code>
@@ -19291,6 +19349,8 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatInnerWeaktbl.S.html#VALreset">reset</a> [<a href="BatInnerWeaktbl.S.html">BatInnerWeaktbl.S</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatBuffer.html#VALreset">reset</a> [<a href="BatBuffer.html">BatBuffer</a>]</td>
 <td><div class="info">
 <p>Empty the buffer and deallocate the internal string holding the
@@ -19640,7 +19700,7 @@
 <td></td></tr>
 <tr><td><a href="BatString.html#VALright">right</a> [<a href="BatString.html">BatString</a>]</td>
 <td><div class="info">
-<p><code class="code">left&nbsp;r&nbsp;len</code> returns the string containing the <code class="code">len</code> last characters of <code class="code">r</code>.</p>
+<p><code class="code">right&nbsp;r&nbsp;len</code> returns the string containing the <code class="code">len</code> last characters of <code class="code">r</code>.</p>
 
 </div>
 </td></tr>
@@ -20065,9 +20125,8 @@
 </td></tr>
 <tr><td><a href="BatLazyList.html#VALseq">seq</a> [<a href="BatLazyList.html">BatLazyList</a>]</td>
 <td><div class="info">
-<p><code class="code">seq&nbsp;init&nbsp;step&nbsp;cond</code> creates a sequence of data, which starts
-    from <code class="code">init</code>,  extends by <code class="code">step</code>,  until the condition <code class="code">cond</code>
-    fails.</p>
+<p><code class="code">seq&nbsp;data&nbsp;next&nbsp;cond</code> creates a lazy list from the successive results
+   of applying <code class="code">next</code> to <code class="code">data</code>, then to the result, etc.</p>
 
 </div>
 </td></tr>
@@ -20828,7 +20887,7 @@
 </td></tr>
 <tr><td><a href="BatMap.PMap.html#VALsingleton">singleton</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
 <td><div class="info">
-<p>creates a new map with a single binding</p>
+<p>Creates a new map with a single binding.</p>
 
 </div>
 </td></tr>
@@ -20841,7 +20900,7 @@
 </td></tr>
 <tr><td><a href="BatMap.html#VALsingleton">singleton</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td><div class="info">
-<p>creates a new map with a single binding</p>
+<p>Creates a new map with a single binding.</p>
 
 </div>
 </td></tr>
@@ -21371,6 +21430,14 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatArray.Cap.html#VALsplit">split</a> [<a href="BatArray.Cap.html">BatArray.Cap</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatArray.html#VALsplit">split</a> [<a href="BatArray.html">BatArray</a>]</td>
+<td><div class="info">
+<p><code class="code"><span class="constructor">Array</span>.split&nbsp;a</code> converts the array of pairs <code class="code">a</code> into a pair of arrays.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatSubstring.html#VALsplit_at">split_at</a> [<a href="BatSubstring.html">BatSubstring</a>]</td>
 <td><div class="info">
 <p><code class="code">split_at&nbsp;sus&nbsp;k</code> returns the pair <code class="code">(sus1,&nbsp;sus2)</code> of substrings,
@@ -21695,6 +21762,8 @@
 </td></tr>
 <tr><td><a href="BatOo.Internal.html#VALstats">stats</a> [<a href="BatOo.Internal.html">BatOo.Internal</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatInnerWeaktbl.S.html#VALstats">stats</a> [<a href="BatInnerWeaktbl.S.html">BatInnerWeaktbl.S</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatFormat.html#VALstd_formatter">std_formatter</a> [<a href="BatFormat.html">BatFormat</a>]</td>
 <td><div class="info">
 <p>The standard formatter used by the formatting functions
@@ -21963,7 +22032,7 @@
 <td></td></tr>
 <tr><td><a href="BatVect.Make.html#VALsub">sub</a> [<a href="BatVect.Make.html">BatVect.Make</a>]</td>
 <td><div class="info">
-<p><code class="code">sub&nbsp;m&nbsp;n&nbsp;r</code> returns a sub-vect of <code class="code">r</code> containing all the elements
+<p><code class="code">sub&nbsp;r&nbsp;m&nbsp;n</code> returns a sub-vect of <code class="code">r</code> containing all the elements
     whose indexes range from <code class="code">m</code> to <code class="code">m&nbsp;+&nbsp;n&nbsp;-&nbsp;1</code> (included).</p>
 
 </div>
@@ -24055,19 +24124,19 @@
 </td></tr>
 <tr><td><a href="BatMap.PMap.html#VALvalues">values</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
 <td><div class="info">
-<p>Return an enumeration of al the values of a map.</p>
+<p>Return an enumeration of all the values of a map.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="BatMap.S.html#VALvalues">values</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
 <td><div class="info">
-<p>Return an enumeration of al the values of a map.</p>
+<p>Return an enumeration of all the values of a map.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="BatMap.html#VALvalues">values</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td><div class="info">
-<p>Return an enumeration of al the values of a map.</p>
+<p>Return an enumeration of all the values of a map.</p>
 
 </div>
 </td></tr>

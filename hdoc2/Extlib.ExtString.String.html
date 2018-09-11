@@ -163,7 +163,7 @@
 </ul>
 </div>
 
-<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">Bytes.t -> int -> char -> unit</code></pre><div class="info ">
+<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">Stdlib.Bytes.t -> int -> char -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code"><span class="constructor">String</span>.set&nbsp;s&nbsp;n&nbsp;c</code> modifies string <code class="code">s</code> in place,
     replacing the character number <code class="code">n</code> by <code class="code">c</code>.
@@ -174,7 +174,7 @@
 </ul>
 </div>
 
-<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -> Bytes.t</code></pre><div class="info ">
+<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -> Stdlib.Bytes.t</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code"><span class="constructor">String</span>.create&nbsp;n</code> returns a fresh string of length <code class="code">n</code>.
     The string initially contains arbitrary characters.</p>
@@ -212,7 +212,7 @@
 </ul>
 </div>
 
-<pre><span id="VALfill"><span class="keyword">val</span> fill</span> : <code class="type">Bytes.t -> int -> int -> char -> unit</code></pre><div class="info ">
+<pre><span id="VALfill"><span class="keyword">val</span> fill</span> : <code class="type">Stdlib.Bytes.t -> int -> int -> char -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code"><span class="constructor">String</span>.fill&nbsp;s&nbsp;start&nbsp;len&nbsp;c</code> modifies the byte sequence <code class="code">s</code> in
     place, replacing <code class="code">len</code> characters by <code class="code">c</code>, starting at <code class="code">start</code>.</p>
@@ -223,7 +223,7 @@
 </ul>
 </div>
 
-<pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type">string -> int -> Bytes.t -> int -> int -> unit</code></pre><div class="info ">
+<pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type">string -> int -> Stdlib.Bytes.t -> int -> int -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code"><span class="constructor">String</span>.blit&nbsp;src&nbsp;srcoff&nbsp;dst&nbsp;dstoff&nbsp;len</code> copies <code class="code">len</code> characters
     from string <code class="code">src</code>, starting at character number <code class="code">srcoff</code>, to the
@@ -352,7 +352,7 @@
 <pre><span id="VALindex_from"><span class="keyword">val</span> index_from</span> : <code class="type">string -> int -> char -> int</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code"><span class="constructor">String</span>.index_from&nbsp;s&nbsp;i&nbsp;c</code> returns the character number of the
-    first occurrence of character <code class="code">c</code> in string <code class="code">s</code> after position <code class="code">i</code>.
+    first occurrence of character <code class="code">c</code> in string <code class="code">s</code> after or at position <code class="code">i</code>.
     <code class="code"><span class="constructor">String</span>.index&nbsp;s&nbsp;c</code> is equivalent to <code class="code"><span class="constructor">String</span>.index_from&nbsp;s&nbsp;0&nbsp;c</code>.</p>
 </div>
 <ul class="info-attributes">
@@ -403,6 +403,29 @@
 </div>
 <ul class="info-attributes">
 <li><b>Since</b> 2.7.0</li>
+</ul>
+</div>
+
+<pre><span id="VALindex_after_n"><span class="keyword">val</span> index_after_n</span> : <code class="type">char -> int -> string -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">index_after_n&nbsp;chr&nbsp;n&nbsp;str</code> returns the index of the character that
+    comes immediately after the <code class="code">n</code>-th occurrence of <code class="code">chr</code> in <code class="code">str</code>.</p>
+
+<ul>
+<li><b>Occurences are numbered from 1</b>: <code class="code">n</code> = 1 returns the index of
+      the character located immediately after the first occurence of
+      <code class="code">chr</code>.</li>
+<li><code class="code">n</code> = 0 always returns <code class="code">0</code>.</li>
+<li>If the <code class="code">n</code>-th occurrence of <code class="code">chr</code> is the last character of
+      <code class="code">str</code>, returns the length of <code class="code">str</code>.</li>
+</ul>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.9.0</li>
+<li><b>Raises</b><ul><li><code>Invalid_argument</code> if <code class="code">n&nbsp;&lt;&nbsp;0</code>.</li>
+<li><code>Not_found</code> if there are strictly less than <code class="code">n</code> occurrences of <code class="code">chr</code>
+    in <code class="code">str</code>.</li>
+</ul></li>
 </ul>
 </div>
 
@@ -796,6 +819,15 @@
 </ul>
 </div>
 
+<pre><span id="VALcount_string"><span class="keyword">val</span> count_string</span> : <code class="type">string -> string -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">count_string&nbsp;s&nbsp;x</code> count how many times <code class="code">x</code> is found in <code class="code">s</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.9.0</li>
+</ul>
+</div>
+
 <pre><span id="VALends_with"><span class="keyword">val</span> ends_with</span> : <code class="type">string -> string -> bool</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">ends_with&nbsp;s&nbsp;x</code> returns <code class="code"><span class="keyword">true</span></code> if the string <code class="code">s</code> is ending with <code class="code">x</code>, <code class="code"><span class="keyword">false</span></code> otherwise.</p>
@@ -912,7 +944,7 @@
 
 <pre><span id="VALright"><span class="keyword">val</span> right</span> : <code class="type">string -> int -> string</code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">left&nbsp;r&nbsp;len</code> returns the string containing the <code class="code">len</code> last characters of <code class="code">r</code>.
+<p><code class="code">right&nbsp;r&nbsp;len</code> returns the string containing the <code class="code">len</code> last characters of <code class="code">r</code>.
    If <code class="code">r</code> contains less than <code class="code">len</code> characters, it returns <code class="code">r</code>.</p>
 
 <p>Example: <code class="code"><span class="constructor">String</span>.right&nbsp;<span class="string">"Weeble"</span>&nbsp;4&nbsp;=&nbsp;<span class="string">"eble"</span></code></p>
@@ -991,7 +1023,7 @@
 </ul>
 </div>
 <h7 id="6_InPlaceTransformations">In-Place Transformations</h7>
-<pre><span id="VALrev_in_place"><span class="keyword">val</span> rev_in_place</span> : <code class="type">Bytes.t -> unit</code></pre><div class="info ">
+<pre><span id="VALrev_in_place"><span class="keyword">val</span> rev_in_place</span> : <code class="type">Stdlib.Bytes.t -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">rev_in_place&nbsp;s</code> mutates the byte sequence <code class="code">s</code>, so that its new value is
     the mirror of its old one: for instance if s contained <code class="code"><span class="string">"Example!"</span></code>, after
@@ -999,7 +1031,7 @@
 </div>
 </div>
 
-<pre><span id="VALin_place_mirror"><span class="keyword">val</span> in_place_mirror</span> : <code class="type">Bytes.t -> unit</code></pre><div class="info ">
+<pre><span id="VALin_place_mirror"><span class="keyword">val</span> in_place_mirror</span> : <code class="type">Stdlib.Bytes.t -> unit</code></pre><div class="info ">
 <div class="info-deprecated">
 <span class="warning">Deprecated.</span>Use <code class="code"><span class="constructor">String</span>.rev_in_place</code> instead</div>
 </div>
@@ -1060,6 +1092,32 @@
 
 <p>Example: <code class="code"><span class="constructor">String</span>.nsplit&nbsp;<span class="string">"abcabcabc"</span>&nbsp;<span class="string">"bc"</span>&nbsp;=&nbsp;[<span class="string">"a"</span>;&nbsp;<span class="string">"a"</span>;&nbsp;<span class="string">"a"</span>;&nbsp;<span class="string">""</span>]</code></p>
 </div>
+</div>
+
+<pre><span id="VALcut_on_char"><span class="keyword">val</span> cut_on_char</span> : <code class="type">char -> int -> string -> string</code></pre><div class="info ">
+<div class="info-desc">
+<p>Similar to Unix <code class="code">cut</code>. <code class="code">cut_on_char&nbsp;chr&nbsp;n&nbsp;str</code> returns the substring of
+   <code class="code">str</code> located strictly between the <code class="code">n</code>-th occurrence of <code class="code">chr</code> and
+   the <code class="code">n+1</code>-th one.</p>
+
+<ul>
+<li><b>Occurrences of <code class="code">chr</code> are numbered from 1</b>.</li>
+<li>If <code class="code">n&nbsp;=&nbsp;0</code>, returns the substring from the beginning of
+     <code class="code">str</code> to the first occurrence of <code class="code">chr</code>.</li>
+<li>If there are exactly <code class="code">n</code> occurrences of <code class="code">chr</code> in <code class="code">str</code>, returns the
+     substring between the last occurrence of <code class="code">chr</code> and the end of <code class="code">str</code>.</li>
+<li>These behaviours cumulate: if <code class="code">n</code> equals <code class="code">0</code> and <code class="code">chr</code> is
+     absent from <code class="code">str</code>, returns the full string <code class="code">str</code>.</li>
+</ul>
+<p><b>Remark:</b> <code class="code">cut_on_char</code> can return the empty string. Examples of this
+   behaviour are <code class="code">cut_on_char&nbsp;<span class="string">','</span>&nbsp;1&nbsp;<span class="string">"foo,,bar"</span></code> and <code class="code">cut_on_char&nbsp;<span class="string">','</span>&nbsp;0&nbsp;<span class="string">",foo"</span></code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.9.0</li>
+<li><b>Raises</b><ul><li><code>Not_found</code> if there are strictly less than <code class="code">n</code> occurences of <code class="code">chr</code> in str.</li>
+<li><code>Invalid_argument</code> if <code class="code">n&nbsp;&lt;&nbsp;0</code>.</li>
+</ul></li>
+</ul>
 </div>
 
 <pre><span id="VALjoin"><span class="keyword">val</span> join</span> : <code class="type">string -> string list -> string</code></pre><div class="info ">

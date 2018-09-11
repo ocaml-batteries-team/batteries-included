@@ -201,7 +201,7 @@
 <p><b>Note</b> The types are kept concrete so as to allow pattern-matching.
    However, it is generally easier to manipulate <a href="BatLazyList.html#VALnil"><code class="code"><span class="constructor">BatLazyList</span>.nil</code></a> and <a href="BatLazyList.html#VALcons"><code class="code"><span class="constructor">BatLazyList</span>.cons</code></a>.</p>
 
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a <a href="BatLazyList.html#TYPEnode_t">node_t</a> Lazy.t</code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a <a href="BatLazyList.html#TYPEnode_t">node_t</a> Stdlib.Lazy.t</code> </pre>
 <div class="info ">
 <div class="info-desc">
 <p>The type of a lazy list.</p>
@@ -284,21 +284,14 @@
 </div>
 </div>
 
-<pre><span id="VALfrom_loop"><span class="keyword">val</span> from_loop</span> : <code class="type">'b -> ('b -> 'a * 'b) -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info ">
-<div class="info-desc">
-<p><code class="code">from_loop&nbsp;data&nbsp;next</code> creates a (possibly infinite) lazy list from
-   the successive results of applying <code class="code">next</code> to <code class="code">data</code>, then to the
-   result, etc. The list ends whenever the function raises
-   <code class="code"><span class="constructor">LazyList</span>.<span class="constructor">No_more_elements</span></code>.</p>
-</div>
-</div>
-
 <pre><span id="VALseq"><span class="keyword">val</span> seq</span> : <code class="type">'a -> ('a -> 'a) -> ('a -> bool) -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">seq&nbsp;init&nbsp;step&nbsp;cond</code> creates a sequence of data, which starts
-    from <code class="code">init</code>,  extends by <code class="code">step</code>,  until the condition <code class="code">cond</code>
-    fails. E.g. <code class="code">seq&nbsp;1&nbsp;((+)&nbsp;1)&nbsp;((&gt;)&nbsp;100)</code> returns <code class="code">[^1,&nbsp;2,&nbsp;...&nbsp;99^]</code>. If <code class="code">cond<br>
-&nbsp;&nbsp;&nbsp;&nbsp;init</code> is false, the result is empty.</p>
+<p><code class="code">seq&nbsp;data&nbsp;next&nbsp;cond</code> creates a lazy list from the successive results
+   of applying <code class="code">next</code> to <code class="code">data</code>, then to the result, etc.  The list
+   continues until the condition <code class="code">cond</code> fails.  For example, 
+   <code class="code">seq&nbsp;1&nbsp;((+)&nbsp;1)&nbsp;((&gt;)&nbsp;100)</code> returns <code class="code">[^1,&nbsp;2,&nbsp;...&nbsp;99^]</code>.  If <code class="code">cond&nbsp;init</code> 
+   is false, the result is empty.  To create an infinite lazy list, pass 
+   <code class="code">(<span class="keyword">fun</span>&nbsp;_&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keyword">true</span>)</code> as <code class="code">cond</code>.</p>
 </div>
 </div>
 
@@ -306,7 +299,29 @@
 <div class="info-desc">
 <p><code class="code">unfold&nbsp;data&nbsp;next</code> creates a (possibly infinite) lazy list from
    the successive results of applying <code class="code">next</code> to <code class="code">data</code>, then to the
-   result, etc. The list ends whenever the function returns <code class="code"><span class="constructor">None</span></code></p>
+   result, etc. The list ends whenever <code class="code">next</code> returns <code class="code"><span class="constructor">None</span></code>.  The function 
+   <code class="code">next</code> should return a pair <code class="code">option</code> whose first element will be the
+   current value of the sequence; the second element will be passed 
+   (lazily) to <code class="code">next</code> in order to compute the following element.  One example
+   of a use of <code class="code">unfold</code> is to make each element of the resulting sequence to 
+   depend on the previous two elements, as in this Fibonacci sequence 
+   definition:</p>
+<pre class="codepre"><code class="code">     <span class="keyword">let</span> data = (1, 1)
+     <span class="keyword">let</span> next (x, y) = <span class="constructor">Some</span> (x, (y, x + y))
+     <span class="keyword">let</span> fib = unfold data next
+   </code></pre><p>The first element <code class="code">x</code> of the pair within <code class="code"><span class="constructor">Some</span></code> will be the current 
+   value of the sequence; the next value of the sequence, and the one after
+   that, are recorded as <code class="code">y</code> and <code class="code">x&nbsp;+&nbsp;y</code> respectively.</p>
+</div>
+</div>
+
+<pre><span id="VALfrom_loop"><span class="keyword">val</span> from_loop</span> : <code class="type">'b -> ('b -> 'a * 'b) -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">from_loop&nbsp;data&nbsp;next</code> creates a (possibly infinite) lazy list from
+   the successive results of applying <code class="code">next</code> to <code class="code">data</code>, then to the
+   result, etc.  The list ends whenever the function raises
+   <code class="code"><span class="constructor">LazyList</span>.<span class="constructor">No_more_elements</span></code>.  (For further information see <code class="code">unfold</code>;
+   ignore references to <code class="code">option</code> and <code class="code"><span class="constructor">Some</span></code>.)</p>
 </div>
 </div>
 
@@ -424,7 +439,7 @@
 </div>
 </div>
 
-<pre><span id="VALlazy_fold_right"><span class="keyword">val</span> lazy_fold_right</span> : <code class="type">('a -> 'b Lazy.t -> 'b) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'b Lazy.t -> 'b Lazy.t</code></pre><div class="info ">
+<pre><span id="VALlazy_fold_right"><span class="keyword">val</span> lazy_fold_right</span> : <code class="type">('a -> 'b Stdlib.Lazy.t -> 'b) -><br>       'a <a href="BatLazyList.html#TYPEt">t</a> -> 'b Stdlib.Lazy.t -> 'b Stdlib.Lazy.t</code></pre><div class="info ">
 <div class="info-desc">
 <p>Lazy fold_right
    <code class="code">lazy_fold_right&nbsp;f&nbsp;(<span class="constructor">Cons</span>&nbsp;(a0,&nbsp;<span class="constructor">Cons</span>&nbsp;(a1,&nbsp;<span class="constructor">Cons</span>&nbsp;(a2,&nbsp;nil))))&nbsp;b</code> is
@@ -537,7 +552,9 @@
 <h7 id="6_Commonfunctions"> Common functions</h7>
 <pre><span id="VALnext"><span class="keyword">val</span> next</span> : <code class="type">'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a <a href="BatLazyList.html#TYPEnode_t">node_t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p>Compute and return the next value of the list</p>
+<p>Compute and return the first node from the list as a <code class="code"><span class="constructor">Cons</span></code>.  This 
+    differs from <code class="code">hd</code>, which returns the first element (the first component of 
+    the first node).</p>
 </div>
 </div>
 
@@ -803,7 +820,7 @@
 </div>
 </div>
 
-<pre><span id="VALto_stream"><span class="keyword">val</span> to_stream</span> : <code class="type">'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a Stream.t</code></pre><div class="info ">
+<pre><span id="VALto_stream"><span class="keyword">val</span> to_stream</span> : <code class="type">'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a Stdlib.Stream.t</code></pre><div class="info ">
 <div class="info-desc">
 <p>Lazy conversion to stream.</p>
 </div>
@@ -832,7 +849,7 @@
 </div>
 </div>
 
-<pre><span id="VALof_stream"><span class="keyword">val</span> of_stream</span> : <code class="type">'a Stream.t -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info ">
+<pre><span id="VALof_stream"><span class="keyword">val</span> of_stream</span> : <code class="type">'a Stdlib.Stream.t -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Lazy conversion from stream.</p>
 </div>

@@ -129,7 +129,7 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;compare&nbsp;:&nbsp;<span class="constructor">BatUTF8</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatUTF8</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Buf</span>&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">sig</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;buf&nbsp;=&nbsp;<span class="constructor">Buffer</span>.t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;buf&nbsp;=&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Buffer</span>.t<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;create&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatUTF8</span>.<span class="constructor">Buf</span>.buf<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;contents&nbsp;:&nbsp;<span class="constructor">BatUTF8</span>.<span class="constructor">Buf</span>.buf&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatUTF8</span>.t<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;clear&nbsp;:&nbsp;<span class="constructor">BatUTF8</span>.<span class="constructor">Buf</span>.buf&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>

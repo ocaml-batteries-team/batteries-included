@@ -159,13 +159,13 @@
 
 <pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
 <div class="info-desc">
-<p>returns true if the map is empty.</p>
+<p>Returns <code class="code"><span class="keyword">true</span></code> if the map is empty.</p>
 </div>
 </div>
 
 <pre><span id="VALsingleton"><span class="keyword">val</span> singleton</span> : <code class="type">'a -> 'b -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p>creates a new map with a single binding</p>
+<p>Creates a new map with a single binding.</p>
 </div>
 </div>
 
@@ -206,7 +206,7 @@
 <pre><span id="VALfind_default"><span class="keyword">val</span> find_default</span> : <code class="type">'b -> 'a -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> 'b</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">find_default&nbsp;d&nbsp;x&nbsp;m</code> returns the current binding of <code class="code">x</code> in <code class="code">m</code>,
-     or the default value <code class="code">d</code> if no such binding exists.</p>
+    or the default value <code class="code">d</code> if no such binding exists.</p>
 </div>
 </div>
 
@@ -295,7 +295,7 @@
 
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('key -> 'a -> bool) -> ('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('key, 'a) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">filter&nbsp;f&nbsp;m</code> returns a map where only the (key, value) pairs
+<p><code class="code">filter&nbsp;f&nbsp;m</code> returns a map where only the <code class="code">(key,&nbsp;value)</code> pairs
    <code class="code">key</code>, <code class="code">a</code> of <code class="code">m</code> such that <code class="code">f&nbsp;key&nbsp;a&nbsp;=&nbsp;<span class="keyword">true</span></code> remain. The
    bindings are passed to <code class="code">f</code> in increasing order with respect
    to the ordering over the type of the keys.</p>
@@ -308,7 +308,7 @@
     <code class="code">map</code>.  It calls calls <code class="code">f&nbsp;key0&nbsp;a0</code>, <code class="code">f&nbsp;key1&nbsp;a1</code>, <code class="code">f&nbsp;keyn&nbsp;an</code>
     where <code class="code">a0..an</code> are the elements of <code class="code">m</code> and <code class="code">key0..keyn</code> the
     respective corresponding keys. It returns the map of
-    pairs <code class="code">keyi</code>,<code class="code">bi</code> such as <code class="code">f&nbsp;keyi&nbsp;ai&nbsp;=&nbsp;<span class="constructor">Some</span>&nbsp;bi</code> (when <code class="code">f</code> returns
+    <code class="code">(keyi,&nbsp;bi)</code> pairs such as <code class="code">f&nbsp;keyi&nbsp;ai&nbsp;=&nbsp;<span class="constructor">Some</span>&nbsp;bi</code> (when <code class="code">f</code> returns
     <code class="code"><span class="constructor">None</span></code>, the corresponding element of <code class="code">m</code> is discarded).</p>
 </div>
 </div>
@@ -350,37 +350,39 @@
 
 <pre><span id="VALmin_binding"><span class="keyword">val</span> min_binding</span> : <code class="type">('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> 'key * 'a</code></pre><div class="info ">
 <div class="info-desc">
-<p>returns the binding with the smallest key</p>
+<p>Returns the binding with the smallest key.</p>
 </div>
 </div>
 
 <pre><span id="VALpop_min_binding"><span class="keyword">val</span> pop_min_binding</span> : <code class="type">('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('key * 'a) * ('key, 'a) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p>returns the binding with the smallest key along with the rest of the map</p>
+<p>Returns the binding with the smallest key along with the rest of the map.</p>
 </div>
 </div>
 
 <pre><span id="VALmax_binding"><span class="keyword">val</span> max_binding</span> : <code class="type">('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> 'key * 'a</code></pre><div class="info ">
 <div class="info-desc">
-<p>returns the binding with the largest key</p>
+<p>Returns the binding with the largest key.</p>
 </div>
 </div>
 
 <pre><span id="VALpop_max_binding"><span class="keyword">val</span> pop_max_binding</span> : <code class="type">('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('key * 'a) * ('key, 'a) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p>returns the binding with the largest key along with the rest of the map</p>
+<p>Returns the binding with the largest key along with the rest of the map.</p>
 </div>
 </div>
 
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p>creates an enumeration for this map, enumerating key,value pairs with the keys in increasing order.</p>
+<p>Creates an enumeration for this map, enumerating <code class="code">(key,&nbsp;value)</code> pairs
+    with the keys in increasing order.</p>
 </div>
 </div>
 
 <pre><span id="VALbackwards"><span class="keyword">val</span> backwards</span> : <code class="type">('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p>creates an enumeration for this map, enumerating key,value pairs with the keys in decreasing order.</p>
+<p>Creates an enumeration for this map, enumerating <code class="code">(key,&nbsp;value)</code> pairs
+    with the keys in decreasing order.</p>
 </div>
 </div>
 
@@ -392,25 +394,25 @@
 
 <pre><span id="VALvalues"><span class="keyword">val</span> values</span> : <code class="type">('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p>Return an enumeration of al the values of a map.</p>
+<p>Return an enumeration of all the values of a map.</p>
 </div>
 </div>
 
 <pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">('a * 'b) <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p>Creates a map from an enumeration</p>
+<p>Creates a map from an enumeration.</p>
 </div>
 </div>
 
 <pre><span id="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">('a -> 'b -> bool) -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
 <div class="info-desc">
-<p>Tests whether all key value pairs satisfy some predicate function</p>
+<p>Tests whether all <code class="code">(key,&nbsp;value)</code> pairs satisfy a predicate function.</p>
 </div>
 </div>
 
 <pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">('a -> 'b -> bool) -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
 <div class="info-desc">
-<p>Tests whether some key value pair satisfies some predicate function</p>
+<p>Tests whether some <code class="code">(key,&nbsp;value)</code> pair satisfies a predicate function.</p>
 </div>
 </div>
 
@@ -425,7 +427,8 @@
 
 <pre><span id="VALadd_carry"><span class="keyword">val</span> add_carry</span> : <code class="type">'a -> 'b -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> * 'b option</code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">add_carry&nbsp;k&nbsp;v&nbsp;m</code> adds the binding <code class="code">(k,v)</code> to <code class="code">m</code>, returning the new map and optionally the previous value bound to <code class="code">k</code>.</p>
+<p><code class="code">add_carry&nbsp;k&nbsp;v&nbsp;m</code> adds the binding <code class="code">(k,&nbsp;v)</code> to <code class="code">m</code>, returning the new
+    map and optionally the previous value bound to <code class="code">k</code>.</p>
 </div>
 </div>
 
@@ -490,7 +493,7 @@
 <div class="info-desc">
 <p><code class="code">diff&nbsp;m1&nbsp;m2</code> removes all bindings of keys found in <code class="code">m2</code> from <code class="code">m1</code>,
     using the comparison function of <code class="code">m1</code>. Equivalent to
-      <code class="code">foldi&nbsp;(<span class="keyword">fun</span>&nbsp;k&nbsp;_v&nbsp;m&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;remove&nbsp;k&nbsp;m)&nbsp;m2&nbsp;m1</code>
+    <code class="code">foldi&nbsp;(<span class="keyword">fun</span>&nbsp;k&nbsp;_v&nbsp;m&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;remove&nbsp;k&nbsp;m)&nbsp;m2&nbsp;m1</code>.
     The resulting map uses the comparison function of <code class="code">m1</code>.</p>
 </div>
 </div>

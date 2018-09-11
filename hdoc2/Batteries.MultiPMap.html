@@ -128,7 +128,7 @@
 
 <pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">('a, 'b) <a href="BatMultiPMap.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p>The empty map, using <code class="code">compare</code> as key comparison function.</p>
+<p>The empty map, using <code class="code">compare</code> as comparison function for both keys and values.</p>
 </div>
 </div>
 
@@ -140,7 +140,8 @@
 
 <pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">('a -> 'a -> int) -> ('b -> 'b -> int) -> ('a, 'b) <a href="BatMultiPMap.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p>creates a new empty map, using the provided function for key comparison.</p>
+<p><code class="code">create&nbsp;kcomp&nbsp;vcomp</code> creates a new empty map, 
+    using kcomp for key comparison and vcomp for value comparison.</p>
 </div>
 </div>
 
@@ -193,11 +194,13 @@
 
 <pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('b <a href="BatSet.PSet.html#TYPEt">BatSet.PSet.t</a> -> 'c <a href="BatSet.PSet.html#TYPEt">BatSet.PSet.t</a>) -><br>       (('b -> 'b -> int) -> 'c -> 'c -> int) -><br>       ('a, 'b) <a href="BatMultiPMap.html#TYPEt">t</a> -> ('a, 'c) <a href="BatMultiPMap.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">map&nbsp;f&nbsp;m</code> returns a map with same domain as <code class="code">m</code>, where the
+<p><code class="code">map&nbsp;f&nbsp;vcompgen&nbsp;m</code> returns a map with same domain as <code class="code">m</code>, where the
     associated value <code class="code">a</code> of all bindings of <code class="code">m</code> has been
     replaced by the result of the application of <code class="code">f</code> to <code class="code">a</code>.
     The order in which the associated values are passed to <code class="code">f</code>
-    is unspecified.</p>
+    is unspecified.
+    <code class="code">vcompgen</code> will use the vcomp function provided to <code class="code">m</code> as an 
+    argument to generate a new value comparison function.</p>
 </div>
 </div>
 

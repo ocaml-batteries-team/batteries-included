@@ -683,7 +683,7 @@
 </div>
 </div>
 <h7 id="6_Multipleformattedoutput">Multiple formatted output</h7>
-<pre><span id="TYPEformatter"><span class="keyword">type</span> <code class="type"></code>formatter</span> = <code class="type">Format.formatter</code> </pre>
+<pre><span id="TYPEformatter"><span class="keyword">type</span> <code class="type"></code>formatter</span> = <code class="type">Stdlib.Format.formatter</code> </pre>
 <div class="info ">
 <div class="info-desc">
 <p>Abstract data corresponding to a pretty-printer (also called a
@@ -727,7 +727,7 @@
 </div>
 </div>
 
-<pre><span id="VALformatter_of_buffer"><span class="keyword">val</span> formatter_of_buffer</span> : <code class="type">Buffer.t -> <a href="BatFormat.html#TYPEformatter">formatter</a></code></pre><div class="info ">
+<pre><span id="VALformatter_of_buffer"><span class="keyword">val</span> formatter_of_buffer</span> : <code class="type">Stdlib.Buffer.t -> <a href="BatFormat.html#TYPEformatter">formatter</a></code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">formatter_of_buffer&nbsp;b</code> returns a new formatter writing to
     buffer <code class="code">b</code>. As usual, the formatter has to be flushed at
@@ -736,7 +736,7 @@
 </div>
 </div>
 
-<pre><span id="VALstdbuf"><span class="keyword">val</span> stdbuf</span> : <code class="type">Buffer.t</code></pre><div class="info ">
+<pre><span id="VALstdbuf"><span class="keyword">val</span> stdbuf</span> : <code class="type">Stdlib.Buffer.t</code></pre><div class="info ">
 <div class="info-desc">
 <p>The string buffer in which <code class="code">str_formatter</code> writes.</p>
 </div>
@@ -844,7 +844,7 @@
 </ul>
 </div>
 <h7 id="6_printflikefunctionsforprettyprinting"><code class="code">printf</code> like functions for pretty-printing.</h7>
-<pre><span id="VALfprintf"><span class="keyword">val</span> fprintf</span> : <code class="type"><a href="BatFormat.html#TYPEformatter">formatter</a> -><br>       ('a, <a href="BatFormat.html#TYPEformatter">formatter</a>, unit) Pervasives.format -> 'a</code></pre><p><code class="code">fprintf&nbsp;ff&nbsp;fmt&nbsp;arg1&nbsp;...&nbsp;argN</code> formats the arguments <code class="code">arg1</code> to <code class="code">argN</code>
+<pre><span id="VALfprintf"><span class="keyword">val</span> fprintf</span> : <code class="type"><a href="BatFormat.html#TYPEformatter">formatter</a> -> ('a, <a href="BatFormat.html#TYPEformatter">formatter</a>, unit) Stdlib.format -> 'a</code></pre><p><code class="code">fprintf&nbsp;ff&nbsp;fmt&nbsp;arg1&nbsp;...&nbsp;argN</code> formats the arguments <code class="code">arg1</code> to <code class="code">argN</code>
     according to the format string <code class="code">fmt</code>, and outputs the resulting string on
     the formatter <code class="code">ff</code>.</p>
 
@@ -907,19 +907,19 @@
 &nbsp;&nbsp;&nbsp;&nbsp;print_int&nbsp;1;&nbsp;close_box&nbsp;();&nbsp;print_newline&nbsp;()</code>.
     It prints <code class="code">x&nbsp;=&nbsp;1</code> within a pretty-printing box.</p>
 
-<pre><span id="VALprintf"><span class="keyword">val</span> printf</span> : <code class="type">('a, <a href="BatFormat.html#TYPEformatter">formatter</a>, unit) Pervasives.format -> 'a</code></pre><div class="info ">
+<pre><span id="VALprintf"><span class="keyword">val</span> printf</span> : <code class="type">('a, <a href="BatFormat.html#TYPEformatter">formatter</a>, unit) Stdlib.format -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p>Same as <code class="code">fprintf</code> above, but output on <code class="code">std_formatter</code>.</p>
 </div>
 </div>
 
-<pre><span id="VALeprintf"><span class="keyword">val</span> eprintf</span> : <code class="type">('a, <a href="BatFormat.html#TYPEformatter">formatter</a>, unit) Pervasives.format -> 'a</code></pre><div class="info ">
+<pre><span id="VALeprintf"><span class="keyword">val</span> eprintf</span> : <code class="type">('a, <a href="BatFormat.html#TYPEformatter">formatter</a>, unit) Stdlib.format -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p>Same as <code class="code">fprintf</code> above, but output on <code class="code">err_formatter</code>.</p>
 </div>
 </div>
 
-<pre><span id="VALsprintf"><span class="keyword">val</span> sprintf</span> : <code class="type">('a, unit, string) Pervasives.format -> 'a</code></pre><div class="info ">
+<pre><span id="VALsprintf"><span class="keyword">val</span> sprintf</span> : <code class="type">('a, unit, string) Stdlib.format -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p>Same as <code class="code">printf</code> above, but instead of printing on a formatter,
     returns a string containing the result of formatting the arguments.
@@ -937,7 +937,7 @@
 </div>
 </div>
 
-<pre><span id="VALasprintf"><span class="keyword">val</span> asprintf</span> : <code class="type">('a, <a href="BatFormat.html#TYPEformatter">formatter</a>, unit, string) Pervasives.format4 -> 'a</code></pre><div class="info ">
+<pre><span id="VALasprintf"><span class="keyword">val</span> asprintf</span> : <code class="type">('a, <a href="BatFormat.html#TYPEformatter">formatter</a>, unit, string) Stdlib.format4 -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p>Same as <code class="code">printf</code> above, but instead of printing on a formatter, returns a
     string containing the result of formatting the arguments. The type of
@@ -948,7 +948,7 @@
 </ul>
 </div>
 
-<pre><span id="VALifprintf"><span class="keyword">val</span> ifprintf</span> : <code class="type"><a href="BatFormat.html#TYPEformatter">formatter</a> -><br>       ('a, <a href="BatFormat.html#TYPEformatter">formatter</a>, unit) Pervasives.format -> 'a</code></pre><div class="info ">
+<pre><span id="VALifprintf"><span class="keyword">val</span> ifprintf</span> : <code class="type"><a href="BatFormat.html#TYPEformatter">formatter</a> -> ('a, <a href="BatFormat.html#TYPEformatter">formatter</a>, unit) Stdlib.format -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p>Same as <code class="code">fprintf</code> above, but does not print anything.
     Useful to ignore some material when conditionally printing.</p>
@@ -959,14 +959,14 @@
 </div>
 <p>Formatted output functions with continuations.</p>
 
-<pre><span id="VALkfprintf"><span class="keyword">val</span> kfprintf</span> : <code class="type">(<a href="BatFormat.html#TYPEformatter">formatter</a> -> 'a) -><br>       <a href="BatFormat.html#TYPEformatter">formatter</a> -><br>       ('b, <a href="BatFormat.html#TYPEformatter">formatter</a>, unit, 'a) Pervasives.format4 -> 'b</code></pre><div class="info ">
+<pre><span id="VALkfprintf"><span class="keyword">val</span> kfprintf</span> : <code class="type">(<a href="BatFormat.html#TYPEformatter">formatter</a> -> 'a) -><br>       <a href="BatFormat.html#TYPEformatter">formatter</a> -><br>       ('b, <a href="BatFormat.html#TYPEformatter">formatter</a>, unit, 'a) Stdlib.format4 -> 'b</code></pre><div class="info ">
 <div class="info-desc">
 <p>Same as <code class="code">fprintf</code> above, but instead of returning immediately,
     passes the formatter to its first argument at the end of printing.</p>
 </div>
 </div>
 
-<pre><span id="VALikfprintf"><span class="keyword">val</span> ikfprintf</span> : <code class="type">(<a href="BatFormat.html#TYPEformatter">formatter</a> -> 'a) -><br>       <a href="BatFormat.html#TYPEformatter">formatter</a> -><br>       ('b, <a href="BatFormat.html#TYPEformatter">formatter</a>, unit, 'a) Pervasives.format4 -> 'b</code></pre><div class="info ">
+<pre><span id="VALikfprintf"><span class="keyword">val</span> ikfprintf</span> : <code class="type">(<a href="BatFormat.html#TYPEformatter">formatter</a> -> 'a) -><br>       <a href="BatFormat.html#TYPEformatter">formatter</a> -><br>       ('b, <a href="BatFormat.html#TYPEformatter">formatter</a>, unit, 'a) Stdlib.format4 -> 'b</code></pre><div class="info ">
 <div class="info-desc">
 <p>Same as <code class="code">kfprintf</code> above, but does not print anything.
     Useful to ignore some material when conditionally printing.</p>
@@ -976,14 +976,14 @@
 </ul>
 </div>
 
-<pre><span id="VALksprintf"><span class="keyword">val</span> ksprintf</span> : <code class="type">(string -> 'a) -> ('b, unit, string, 'a) Pervasives.format4 -> 'b</code></pre><div class="info ">
+<pre><span id="VALksprintf"><span class="keyword">val</span> ksprintf</span> : <code class="type">(string -> 'a) -> ('b, unit, string, 'a) Stdlib.format4 -> 'b</code></pre><div class="info ">
 <div class="info-desc">
 <p>Same as <code class="code">sprintf</code> above, but instead of returning the string,
     passes it to the first argument.</p>
 </div>
 </div>
 <h7 id="6_Deprecated">Deprecated</h7>
-<pre><span id="VALbprintf"><span class="keyword">val</span> bprintf</span> : <code class="type">Buffer.t -> ('a, <a href="BatFormat.html#TYPEformatter">formatter</a>, unit) Pervasives.format -> 'a</code></pre><div class="info ">
+<pre><span id="VALbprintf"><span class="keyword">val</span> bprintf</span> : <code class="type">Stdlib.Buffer.t -> ('a, <a href="BatFormat.html#TYPEformatter">formatter</a>, unit) Stdlib.format -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p>A deprecated and error prone function. Do not use it.</p>
 
@@ -993,7 +993,7 @@
 </div>
 </div>
 
-<pre><span id="VALkprintf"><span class="keyword">val</span> kprintf</span> : <code class="type">(string -> 'a) -> ('b, unit, string, 'a) Pervasives.format4 -> 'b</code></pre><div class="info ">
+<pre><span id="VALkprintf"><span class="keyword">val</span> kprintf</span> : <code class="type">(string -> 'a) -> ('b, unit, string, 'a) Stdlib.format4 -> 'b</code></pre><div class="info ">
 <div class="info-desc">
 <p>A deprecated synonym for <code class="code">ksprintf</code>.</p>
 </div>

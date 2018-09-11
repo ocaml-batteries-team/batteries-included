@@ -154,7 +154,7 @@
 </div>
 <hr width="100%">
 
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a Stream.t</code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a Stdlib.Stream.t</code> </pre>
 
 
 <pre><span class="keyword">include</span> <a href="BatEnum.Enumerable.html">BatEnum.Enumerable</a></pre>
@@ -201,7 +201,7 @@
 </div>
 </div>
 
-<pre><span id="VALof_bytes"><span class="keyword">val</span> of_bytes</span> : <code class="type">Bytes.t -> char <a href="BatStream.html#TYPEt">t</a></code></pre><div class="info ">
+<pre><span id="VALof_bytes"><span class="keyword">val</span> of_bytes</span> : <code class="type">Stdlib.Bytes.t -> char <a href="BatStream.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Return the stream of the characters of the bytes parameter.</p>
 </div>
@@ -210,7 +210,7 @@
 </ul>
 </div>
 
-<pre><span id="VALof_channel"><span class="keyword">val</span> of_channel</span> : <code class="type">Pervasives.in_channel -> char <a href="BatStream.html#TYPEt">t</a></code></pre><div class="info ">
+<pre><span id="VALof_channel"><span class="keyword">val</span> of_channel</span> : <code class="type">Stdlib.in_channel -> char <a href="BatStream.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Return the stream of the characters read from the input channel.</p>
 </div>
@@ -352,7 +352,7 @@
 </div>
 </div>
 
-<pre><span id="VALto_string_fmt"><span class="keyword">val</span> to_string_fmt</span> : <code class="type">('a -> string, unit, string) Pervasives.format -> 'a <a href="BatStream.html#TYPEt">t</a> -> string</code></pre><div class="info ">
+<pre><span id="VALto_string_fmt"><span class="keyword">val</span> to_string_fmt</span> : <code class="type">('a -> string, unit, string) Stdlib.format -> 'a <a href="BatStream.html#TYPEt">t</a> -> string</code></pre><div class="info ">
 <div class="info-desc">
 <p>convert stream to string, using Printf with given format</p>
 </div>

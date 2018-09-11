@@ -110,7 +110,7 @@
 <body>
 <code class="code"><span class="keyword">sig</span><br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;stat&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Gc</span>.stat&nbsp;=&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Gc</span>.stat&nbsp;=&nbsp;{<br>
 &nbsp;&nbsp;&nbsp;&nbsp;minor_words&nbsp;:&nbsp;float;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;promoted_words&nbsp;:&nbsp;float;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;major_words&nbsp;:&nbsp;float;<br>
@@ -129,7 +129,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;stack_size&nbsp;:&nbsp;int;<br>
 &nbsp;&nbsp;}<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;control&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Gc</span>.control&nbsp;=&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Gc</span>.control&nbsp;=&nbsp;{<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mutable</span>&nbsp;minor_heap_size&nbsp;:&nbsp;int;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mutable</span>&nbsp;major_heap_increment&nbsp;:&nbsp;int;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mutable</span>&nbsp;space_overhead&nbsp;:&nbsp;int;<br>
@@ -160,7 +160,7 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;finalise&nbsp;:&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;finalise_last&nbsp;:&nbsp;(unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;finalise_release&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;alarm&nbsp;=&nbsp;<span class="constructor">Gc</span>.alarm<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;alarm&nbsp;=&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Gc</span>.alarm<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;create_alarm&nbsp;:&nbsp;(unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatGc</span>.alarm<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;delete_alarm&nbsp;:&nbsp;<span class="constructor">BatGc</span>.alarm&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 <span class="keyword">end</span></code></body></html>

@@ -172,8 +172,7 @@
     grouped into large writing operations, as these are generally
     faster and induce less wear on the hardware. Occasionally, you
     may wish to force all waiting operations to take place <em>now</em>.
-    For this purpose, you may either function <a href="BatIO.html#VALflush"><code class="code"><span class="constructor">BatIO</span>.flush</code></a> or function
-    I    <code class="code">flush_out</code>.</p>
+    For this purpose, you may call function <a href="BatIO.html#VALflush"><code class="code"><span class="constructor">BatIO</span>.flush</code></a>.</p>
 
 <p>Once you have finished using your <a href="BatIO.html#TYPEinput"><code class="code"><span class="constructor">BatIO</span>.input</code></a> or your <a href="BatIO.html#TYPEoutput"><code class="code"><span class="constructor">BatIO</span>.output</code></a>, chances are that you will want to close it. This is not a
     strict necessity, as OCaml will eventually close it for you when
@@ -232,7 +231,7 @@
 </div>
 
 
-<pre><span id="TYPEf_printer"><span class="keyword">type</span> <code class="type">'a</code> f_printer</span> = <code class="type">Format.formatter -> 'a -> unit</code> </pre>
+<pre><span id="TYPEf_printer"><span class="keyword">type</span> <code class="type">'a</code> f_printer</span> = <code class="type">Stdlib.Format.formatter -> 'a -> unit</code> </pre>
 
 
 <pre><span id="EXCEPTIONNo_more_input"><span class="keyword">exception</span> No_more_input</span></pre>
@@ -337,7 +336,7 @@
 </ul>
 </div>
 
-<pre><span id="VALinput"><span class="keyword">val</span> input</span> : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> Bytes.t -> int -> int -> int</code></pre><div class="info ">
+<pre><span id="VALinput"><span class="keyword">val</span> input</span> : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> Stdlib.Bytes.t -> int -> int -> int</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">input&nbsp;i&nbsp;s&nbsp;p&nbsp;len</code> reads up to <code class="code">len</code> characters from the given input,
     storing them in byte sequence <code class="code">s</code>, starting at character number <code class="code">p</code>. It
@@ -355,7 +354,7 @@
 </div>
 </div>
 
-<pre><span id="VALreally_input"><span class="keyword">val</span> really_input</span> : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> Bytes.t -> int -> int -> int</code></pre><div class="info ">
+<pre><span id="VALreally_input"><span class="keyword">val</span> really_input</span> : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> Stdlib.Bytes.t -> int -> int -> int</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">really_input&nbsp;ic&nbsp;s&nbsp;p&nbsp;len</code> reads exactly <code class="code">len</code> characters from the
     input <code class="code">ic</code>, storing them in the string <code class="code">s</code>, starting at
@@ -397,7 +396,7 @@
 </div>
 </div>
 
-<pre><span id="VALoutput"><span class="keyword">val</span> output</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> Bytes.t -> int -> int -> int</code></pre><div class="info ">
+<pre><span id="VALoutput"><span class="keyword">val</span> output</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> Stdlib.Bytes.t -> int -> int -> int</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">output&nbsp;o&nbsp;s&nbsp;p&nbsp;len</code> writes up to <code class="code">len</code> characters from byte
     sequence <code class="code">s</code>, starting at offset <code class="code">p</code>. It returns the number of
@@ -420,7 +419,7 @@
 </ul>
 </div>
 
-<pre><span id="VALreally_output"><span class="keyword">val</span> really_output</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> Bytes.t -> int -> int -> int</code></pre><div class="info ">
+<pre><span id="VALreally_output"><span class="keyword">val</span> really_output</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">output</a> -> Stdlib.Bytes.t -> int -> int -> int</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">really_output&nbsp;o&nbsp;s&nbsp;p&nbsp;len</code> writes exactly <code class="code">len</code> characters from
     byte sequence <code class="code">s</code> onto the the output, starting with the character
@@ -801,7 +800,7 @@
 </div>
 </div>
 <h7 id="6_Creatingnewtypesofinputsoutputs">Creating new types of inputs/outputs</h7>
-<pre><span id="VALcreate_in"><span class="keyword">val</span> create_in</span> : <code class="type">read:(unit -> char) -><br>       input:(Bytes.t -> int -> int -> int) -> close:(unit -> unit) -> <a href="BatIO.html#TYPEinput">input</a></code></pre><div class="info ">
+<pre><span id="VALcreate_in"><span class="keyword">val</span> create_in</span> : <code class="type">read:(unit -> char) -><br>       input:(Stdlib.Bytes.t -> int -> int -> int) -><br>       close:(unit -> unit) -> <a href="BatIO.html#TYPEinput">input</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Fully create an input by giving all the needed functions.</p>
 
@@ -811,7 +810,7 @@
 </div>
 </div>
 
-<pre><span id="VALwrap_in"><span class="keyword">val</span> wrap_in</span> : <code class="type">read:(unit -> char) -><br>       input:(Bytes.t -> int -> int -> int) -><br>       close:(unit -> unit) -> underlying:<a href="BatIO.html#TYPEinput">input</a> list -> <a href="BatIO.html#TYPEinput">input</a></code></pre><div class="info ">
+<pre><span id="VALwrap_in"><span class="keyword">val</span> wrap_in</span> : <code class="type">read:(unit -> char) -><br>       input:(Stdlib.Bytes.t -> int -> int -> int) -><br>       close:(unit -> unit) -> underlying:<a href="BatIO.html#TYPEinput">input</a> list -> <a href="BatIO.html#TYPEinput">input</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Fully create an input reading from other inputs by giving all
     the needed functions.</p>
@@ -826,7 +825,7 @@
 </div>
 </div>
 
-<pre><span id="VALinherit_in"><span class="keyword">val</span> inherit_in</span> : <code class="type">?read:(unit -> char) -><br>       ?input:(Bytes.t -> int -> int -> int) -><br>       ?close:(unit -> unit) -> <a href="BatIO.html#TYPEinput">input</a> -> <a href="BatIO.html#TYPEinput">input</a></code></pre><div class="info ">
+<pre><span id="VALinherit_in"><span class="keyword">val</span> inherit_in</span> : <code class="type">?read:(unit -> char) -><br>       ?input:(Stdlib.Bytes.t -> int -> int -> int) -><br>       ?close:(unit -> unit) -> <a href="BatIO.html#TYPEinput">input</a> -> <a href="BatIO.html#TYPEinput">input</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Simplified and optimized version of <a href="BatIO.html#VALwrap_in"><code class="code"><span class="constructor">BatIO</span>.wrap_in</code></a> which may be used
     whenever only one input appears as dependency.</p>
@@ -839,7 +838,7 @@
 </div>
 </div>
 
-<pre><span id="VALcreate_out"><span class="keyword">val</span> create_out</span> : <code class="type">write:(char -> unit) -><br>       output:(Bytes.t -> int -> int -> int) -><br>       flush:(unit -> unit) -> close:(unit -> 'a) -> 'a <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info ">
+<pre><span id="VALcreate_out"><span class="keyword">val</span> create_out</span> : <code class="type">write:(char -> unit) -><br>       output:(Stdlib.Bytes.t -> int -> int -> int) -><br>       flush:(unit -> unit) -> close:(unit -> 'a) -> 'a <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Fully create an output by giving all the needed functions.</p>
 </div>
@@ -853,7 +852,7 @@
     <b>Note</b> Do <em>not</em> use this function for creating an output which
     writes to one or more underlying outputs. Rather, use <a href="BatIO.html#VALwrap_out"><code class="code"><span class="constructor">BatIO</span>.wrap_out</code></a>.</div>
 
-<pre><span id="VALwrap_out"><span class="keyword">val</span> wrap_out</span> : <code class="type">write:(char -> unit) -><br>       output:(Bytes.t -> int -> int -> int) -><br>       flush:(unit -> unit) -><br>       close:(unit -> 'a) -> underlying:'b <a href="BatIO.html#TYPEoutput">output</a> list -> 'a <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info ">
+<pre><span id="VALwrap_out"><span class="keyword">val</span> wrap_out</span> : <code class="type">write:(char -> unit) -><br>       output:(Stdlib.Bytes.t -> int -> int -> int) -><br>       flush:(unit -> unit) -><br>       close:(unit -> 'a) -> underlying:'b <a href="BatIO.html#TYPEoutput">output</a> list -> 'a <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Fully create an output that writes to one or more underlying outputs.</p>
 
@@ -900,7 +899,7 @@
    standard output to be closed while they are still being used by
    another part of the program.</div>
 
-<pre><span id="VALinherit_out"><span class="keyword">val</span> inherit_out</span> : <code class="type">?write:(char -> unit) -><br>       ?output:(Bytes.t -> int -> int -> int) -><br>       ?flush:(unit -> unit) -><br>       ?close:(unit -> unit) -> 'a <a href="BatIO.html#TYPEoutput">output</a> -> unit <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info ">
+<pre><span id="VALinherit_out"><span class="keyword">val</span> inherit_out</span> : <code class="type">?write:(char -> unit) -><br>       ?output:(Stdlib.Bytes.t -> int -> int -> int) -><br>       ?flush:(unit -> unit) -><br>       ?close:(unit -> unit) -> 'a <a href="BatIO.html#TYPEoutput">output</a> -> unit <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Simplified and optimized version of <a href="BatIO.html#VALwrap_out"><code class="code"><span class="constructor">BatIO</span>.wrap_out</code></a> whenever only
    one output appears as dependency.</p>
@@ -913,7 +912,7 @@
 </div>
 </div>
 <h7 id="6_Forcompatibilitypurposes">For compatibility purposes</h7>
-<pre><span id="VALinput_channel"><span class="keyword">val</span> input_channel</span> : <code class="type">?autoclose:bool -> ?cleanup:bool -> Pervasives.in_channel -> <a href="BatIO.html#TYPEinput">input</a></code></pre><div class="info ">
+<pre><span id="VALinput_channel"><span class="keyword">val</span> input_channel</span> : <code class="type">?autoclose:bool -> ?cleanup:bool -> Stdlib.in_channel -> <a href="BatIO.html#TYPEinput">input</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Create an input that will read from a channel.</p>
 </div>
@@ -925,7 +924,7 @@
     will be automatically closed when the <a href="BatIO.html#TYPEinput"><code class="code"><span class="constructor">BatIO</span>.input</code></a> is closed.
     Otherwise, you will need to close the channel manually.</div>
 
-<pre><span id="VALoutput_channel"><span class="keyword">val</span> output_channel</span> : <code class="type">?cleanup:bool -> Pervasives.out_channel -> unit <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info ">
+<pre><span id="VALoutput_channel"><span class="keyword">val</span> output_channel</span> : <code class="type">?cleanup:bool -> Stdlib.out_channel -> unit <a href="BatIO.html#TYPEoutput">output</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Create an output that will write into a channel.</p>
 </div>
@@ -934,7 +933,7 @@
     will be automatically closed when the <a href="BatIO.html#TYPEoutput"><code class="code"><span class="constructor">BatIO</span>.output</code></a> is closed.
     Otherwise, you will need to close the channel manually.</div>
 
-<pre><span id="VALto_input_channel"><span class="keyword">val</span> to_input_channel</span> : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> Pervasives.in_channel</code></pre><div class="info ">
+<pre><span id="VALto_input_channel"><span class="keyword">val</span> to_input_channel</span> : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> Stdlib.in_channel</code></pre><div class="info ">
 <div class="info-desc">
 <p>Create a channel that will read from an input.</p>
 
@@ -945,10 +944,10 @@
 </div>
 </div>
 <h7 id="6_GenericBatIOObjectWrappers">Generic BatIO Object Wrappers</h7>
-<p>Theses OO Wrappers have been written to provide easy support of
+<p>These OO Wrappers have been written to provide easy support of
     BatIO by external librairies. If you want your library to support
     BatIO without actually requiring Batteries to compile, you can
-    should implement the classes <code class="code">in_channel</code>, <code class="code">out_channel</code>,
+    implement the classes <code class="code">in_channel</code>, <code class="code">out_channel</code>,
     <code class="code">poly_in_channel</code> and/or <code class="code">poly_out_channel</code> which are the common
     BatIO specifications established for ExtLib, OCamlNet and
     Camomile.</p>
@@ -1098,7 +1097,7 @@
 <p>Unless you are attempting to adapt Batteries Included to a new model of
    concurrency, you probably won't need this.</p>
 
-<pre><span id="VALlock"><span class="keyword">val</span> lock</span> : <code class="type"><a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a> Pervasives.ref</code></pre><div class="info ">
+<pre><span id="VALlock"><span class="keyword">val</span> lock</span> : <code class="type"><a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a> Stdlib.ref</code></pre><div class="info ">
 <div class="info-desc">
 <p>A lock used to synchronize internal operations.</p>
 
@@ -1109,7 +1108,7 @@
 </div>
 </div>
 
-<pre><span id="VALlock_factory"><span class="keyword">val</span> lock_factory</span> : <code class="type">(unit -> <a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a>) Pervasives.ref</code></pre><div class="info ">
+<pre><span id="VALlock_factory"><span class="keyword">val</span> lock_factory</span> : <code class="type">(unit -> <a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a>) Stdlib.ref</code></pre><div class="info ">
 <div class="info-desc">
 <p>A factory used to create locks. This is used transparently by <a href="BatIO.html#VALsynchronize_in"><code class="code"><span class="constructor">BatIO</span>.synchronize_in</code></a>
    and <a href="BatIO.html#VALsynchronize_out"><code class="code"><span class="constructor">BatIO</span>.synchronize_out</code></a>.</p>

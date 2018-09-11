@@ -122,7 +122,7 @@
 
 <pre><span id="MODULEBuffer"><span class="keyword">module</span> Buffer</span>: <code class="type"><a href="BatBuffer.html">BatBuffer</a></code></pre><hr width="100%">
 
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">Buffer.t</code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">Stdlib.Buffer.t</code> </pre>
 <div class="info ">
 <div class="info-desc">
 <p>The abstract type of buffers.</p>
@@ -154,7 +154,7 @@
 </div>
 </div>
 
-<pre><span id="VALto_bytes"><span class="keyword">val</span> to_bytes</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Bytes.t</code></pre><div class="info ">
+<pre><span id="VALto_bytes"><span class="keyword">val</span> to_bytes</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Stdlib.Bytes.t</code></pre><div class="info ">
 <div class="info-desc">
 <p>Return a copy of the current contents of the buffer.
     The buffer itself is unchanged.</p>
@@ -174,7 +174,7 @@
 </div>
 </div>
 
-<pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int -> Bytes.t -> int -> int -> unit</code></pre><div class="info ">
+<pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int -> Stdlib.Bytes.t -> int -> int -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code"><span class="constructor">Buffer</span>.blit&nbsp;src&nbsp;srcoff&nbsp;dst&nbsp;dstoff&nbsp;len</code> copies <code class="code">len</code> characters from
     the current contents of the buffer <code class="code">src</code>, starting at offset <code class="code">srcoff</code>
@@ -232,7 +232,7 @@
 </div>
 </div>
 
-<pre><span id="VALadd_bytes"><span class="keyword">val</span> add_bytes</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Bytes.t -> unit</code></pre><div class="info ">
+<pre><span id="VALadd_bytes"><span class="keyword">val</span> add_bytes</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Stdlib.Bytes.t -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">add_bytes&nbsp;b&nbsp;s</code> appends the string <code class="code">s</code> at the end of the buffer <code class="code">b</code>.</p>
 </div>
@@ -248,7 +248,7 @@
 </div>
 </div>
 
-<pre><span id="VALadd_subbytes"><span class="keyword">val</span> add_subbytes</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Bytes.t -> int -> int -> unit</code></pre><div class="info ">
+<pre><span id="VALadd_subbytes"><span class="keyword">val</span> add_subbytes</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Stdlib.Bytes.t -> int -> int -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">add_subbytes&nbsp;b&nbsp;s&nbsp;ofs&nbsp;len</code> takes <code class="code">len</code> characters from offset
     <code class="code">ofs</code> in byte sequence <code class="code">s</code> and appends them at the end of the buffer <code class="code">b</code>.</p>
@@ -320,7 +320,7 @@
 </ul>
 </div>
 
-<pre><span id="VALadd_utf_8_uchar"><span class="keyword">val</span> add_utf_8_uchar</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Uchar.t -> unit</code></pre><div class="info ">
+<pre><span id="VALadd_utf_8_uchar"><span class="keyword">val</span> add_utf_8_uchar</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Stdlib.Uchar.t -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">add_utf_8_uchar&nbsp;b&nbsp;u</code> appends the <a href="https://tools.ietf.org/html/rfc3629">
     UTF-8</a> encoding of <code class="code">u</code> at the end of buffer <code class="code">b</code>.</p>
@@ -330,7 +330,7 @@
 </ul>
 </div>
 
-<pre><span id="VALadd_utf_16le_uchar"><span class="keyword">val</span> add_utf_16le_uchar</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Uchar.t -> unit</code></pre><div class="info ">
+<pre><span id="VALadd_utf_16le_uchar"><span class="keyword">val</span> add_utf_16le_uchar</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Stdlib.Uchar.t -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">add_utf_16le_uchar&nbsp;b&nbsp;u</code> appends the
     <a href="https://tools.ietf.org/html/rfc2781">UTF-16LE</a> encoding of <code class="code">u</code>
@@ -341,7 +341,7 @@
 </ul>
 </div>
 
-<pre><span id="VALadd_utf_16be_uchar"><span class="keyword">val</span> add_utf_16be_uchar</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Uchar.t -> unit</code></pre><div class="info ">
+<pre><span id="VALadd_utf_16be_uchar"><span class="keyword">val</span> add_utf_16be_uchar</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Stdlib.Uchar.t -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">add_utf_16be_uchar&nbsp;b&nbsp;u</code> appends the
     <a href="https://tools.ietf.org/html/rfc2781">UTF-16BE</a> encoding of <code class="code">u</code>

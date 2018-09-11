@@ -136,7 +136,7 @@
     <a href="http://caml.inria.fr/pub/docs/manual-ocaml/libref/Hashtbl.html">Hashtbl</a>
     module.  All functions and types are provided here.</p>
 
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b)</code> t</span> = <code class="type">('a, 'b) Hashtbl.t</code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b)</code> t</span> = <code class="type">('a, 'b) Stdlib.Hashtbl.t</code> </pre>
 <div class="info ">
 <div class="info-desc">
 <p>A Hashtable wth keys of type 'a and values 'b</p>
@@ -319,12 +319,12 @@
 
 <pre><span id="VALfind_default"><span class="keyword">val</span> find_default</span> : <code class="type">('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> 'a -> 'b -> 'b</code></pre><div class="info ">
 <div class="info-desc">
-<p>Find a binding for the key, and return a default
-    value if not found</p>
+<p><code class="code"><span class="constructor">Hashtbl</span>.find_default&nbsp;tbl&nbsp;key&nbsp;default</code> finds a binding for <code class="code">key</code>,
+    or return <code class="code">default</code> if <code class="code">key</code> is unbound in <code class="code">tbl</code>.</p>
 </div>
 </div>
 
-<pre><span id="VALfind_option"><span class="keyword">val</span> find_option</span> : <code class="type">('a, 'b) Hashtbl.t -> 'a -> 'b option</code></pre><div class="info ">
+<pre><span id="VALfind_option"><span class="keyword">val</span> find_option</span> : <code class="type">('a, 'b) Stdlib.Hashtbl.t -> 'a -> 'b option</code></pre><div class="info ">
 <div class="info-desc">
 <p>Find a binding for the key, or return <code class="code"><span class="constructor">None</span></code> if no
     value is found</p>

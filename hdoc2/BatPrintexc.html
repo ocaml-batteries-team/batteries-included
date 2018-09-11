@@ -221,7 +221,7 @@
 </div>
 </div>
 
-<pre><span id="VALraise_with_backtrace"><span class="keyword">val</span> raise_with_backtrace</span> : <code class="type">exn -> Printexc.raw_backtrace -> 'a</code></pre><div class="info ">
+<pre><span id="VALraise_with_backtrace"><span class="keyword">val</span> raise_with_backtrace</span> : <code class="type">exn -> Stdlib.Printexc.raw_backtrace -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p>Reraise the exception using the given raw_backtrace for the
     origin of the exception</p>
@@ -231,7 +231,7 @@
 </ul>
 </div>
 <h7 id="6_Rawbacktraces">Raw backtraces</h7>
-<pre><span id="TYPEraw_backtrace"><span class="keyword">type</span> <code class="type"></code>raw_backtrace</span> = <code class="type">Printexc.raw_backtrace</code> </pre>
+<pre><span id="TYPEraw_backtrace"><span class="keyword">type</span> <code class="type"></code>raw_backtrace</span> = <code class="type">Stdlib.Printexc.raw_backtrace</code> </pre>
 <div class="info ">
 <div class="info-desc">
 <p>The abstract type <code class="code">raw_backtrace</code> stores a backtrace in
@@ -263,7 +263,7 @@
 </ul>
 </div>
 
-<pre><span id="VALprint_raw_backtrace"><span class="keyword">val</span> print_raw_backtrace</span> : <code class="type">Pervasives.out_channel -> <a href="BatPrintexc.html#TYPEraw_backtrace">raw_backtrace</a> -> unit</code></pre><div class="info ">
+<pre><span id="VALprint_raw_backtrace"><span class="keyword">val</span> print_raw_backtrace</span> : <code class="type">Stdlib.out_channel -> <a href="BatPrintexc.html#TYPEraw_backtrace">raw_backtrace</a> -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p>Print a raw backtrace in the same format
     <code class="code"><span class="constructor">Printexc</span>.print_backtrace</code> uses.</p>
@@ -315,7 +315,7 @@
 <p>Those function allow to traverse the slots of a raw backtrace,
     extract information from them in a programmer-friendly format.</p>
 
-<pre><span id="TYPEbacktrace_slot"><span class="keyword">type</span> <code class="type"></code>backtrace_slot</span> = <code class="type">Printexc.backtrace_slot</code> </pre>
+<pre><span id="TYPEbacktrace_slot"><span class="keyword">type</span> <code class="type"></code>backtrace_slot</span> = <code class="type">Stdlib.Printexc.backtrace_slot</code> </pre>
 <div class="info ">
 <div class="info-desc">
 <p>The abstract type <code class="code">backtrace_slot</code> represents a single slot of
@@ -349,7 +349,7 @@
 </ul>
 </div>
 
-<pre><span id="TYPElocation"><span class="keyword">type</span> <code class="type"></code>location</span> = <code class="type">Printexc.location</code> = {</pre><table class="typetable">
+<pre><span id="TYPElocation"><span class="keyword">type</span> <code class="type"></code>location</span> = <code class="type">Stdlib.Printexc.location</code> = {</pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
@@ -393,7 +393,7 @@
 
 
 <pre><span id="MODULESlot"><span class="keyword">module</span> <a href="BatPrintexc.Slot.html">Slot</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatPrintexc.Slot.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><h7 id="6_Rawbacktraceslots">Raw backtrace slots</h7>
-<pre><span id="TYPEraw_backtrace_slot"><span class="keyword">type</span> <code class="type"></code>raw_backtrace_slot</span> = <code class="type">Printexc.raw_backtrace_slot</code> </pre>
+<pre><span id="TYPEraw_backtrace_slot"><span class="keyword">type</span> <code class="type"></code>raw_backtrace_slot</span> = <code class="type">Stdlib.Printexc.raw_backtrace_slot</code> </pre>
 <div class="info ">
 <div class="info-desc">
 <p>This type allows direct access to raw backtrace slots, without any

@@ -212,7 +212,7 @@
       metavars the option takes as arguments, and <code class="code">help</code> is the help
       string supplied by the user.</p>
 <h7 id="6_Standardformatters">Standard formatters</h7>
-<pre><span id="VALindented_formatter"><span class="keyword">val</span> indented_formatter</span> : <code class="type">?level:int Pervasives.ref -><br>       ?indent:int Pervasives.ref -><br>       ?indent_increment:int -><br>       ?max_help_position:int -><br>       ?width:int -> ?short_first:bool -> unit -> <a href="BatOptParse.Formatter.html#TYPEt">t</a></code></pre><div class="info ">
+<pre><span id="VALindented_formatter"><span class="keyword">val</span> indented_formatter</span> : <code class="type">?level:int Stdlib.ref -><br>       ?indent:int Stdlib.ref -><br>       ?indent_increment:int -><br>       ?max_help_position:int -><br>       ?width:int -> ?short_first:bool -> unit -> <a href="BatOptParse.Formatter.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Create an "indented" formatter with the given options.</p>
 </div>
@@ -228,7 +228,7 @@
 <div class="param_info"><code class="code">width</code> : Total with of the usage messages printed.</div>
 <div class="param_info"><code class="code">short_first</code> : List all the short option names first?</div>
 
-<pre><span id="VALtitled_formatter"><span class="keyword">val</span> titled_formatter</span> : <code class="type">?level:int Pervasives.ref -><br>       ?indent:int Pervasives.ref -><br>       ?indent_increment:int -><br>       ?max_help_position:int -><br>       ?width:int -> ?short_first:bool -> unit -> <a href="BatOptParse.Formatter.html#TYPEt">t</a></code></pre><div class="info ">
+<pre><span id="VALtitled_formatter"><span class="keyword">val</span> titled_formatter</span> : <code class="type">?level:int Stdlib.ref -><br>       ?indent:int Stdlib.ref -><br>       ?indent_increment:int -><br>       ?max_help_position:int -><br>       ?width:int -> ?short_first:bool -> unit -> <a href="BatOptParse.Formatter.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Creates a titled formatter which is quite similar to the
       indented formatter. See

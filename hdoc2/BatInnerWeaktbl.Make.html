@@ -115,7 +115,7 @@
 &nbsp;</div>
 <h1>Functor <a href="type_BatInnerWeaktbl.Make.html">BatInnerWeaktbl.Make</a></h1>
 
-<pre><span id="MODULEMake"><span class="keyword">module</span> Make</span>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">H</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type">Hashtbl.HashedType</code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type">Hashtbl.S</code><code class="type">  with type key = H.t</code></div></pre><div class="info module top">
+<pre><span id="MODULEMake"><span class="keyword">module</span> Make</span>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">H</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatInnerWeaktbl.HashedType.html">HashedType</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatInnerWeaktbl.S.html">S</a></code><code class="type">  with type key = H.t</code></div></pre><div class="info module top">
 <div class="info-desc">
 <p>Functor building an implementation of the hashtable structure.
       The functor <code class="code"><span class="constructor">Weaktbl</span>.<span class="constructor">Make</span></code> returns a structure containing
@@ -136,10 +136,32 @@
 <td align="center" valign="top" width="15%">
 <code>H</code></td>
 <td align="center" valign="top">:</td>
-<td><code class="type">Hashtbl.HashedType</code>
+<td><code class="type"><a href="BatInnerWeaktbl.HashedType.html">HashedType</a></code>
 </table>
 </td>
 </tr>
 </table>
 <hr width="100%">
-</body></html>
+
+<pre><span id="TYPEkey"><span class="keyword">type</span> <code class="type"></code>key</span> </pre>
+
+
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
+
+
+<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -> 'a <a href="BatInnerWeaktbl.S.html#TYPEt">t</a></code></pre>
+<pre><span id="VALclear"><span class="keyword">val</span> clear</span> : <code class="type">'a <a href="BatInnerWeaktbl.S.html#TYPEt">t</a> -> unit</code></pre>
+<pre><span id="VALreset"><span class="keyword">val</span> reset</span> : <code class="type">'a <a href="BatInnerWeaktbl.S.html#TYPEt">t</a> -> unit</code></pre>
+<pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">'a <a href="BatInnerWeaktbl.S.html#TYPEt">t</a> -> 'a <a href="BatInnerWeaktbl.S.html#TYPEt">t</a></code></pre>
+<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">'a <a href="BatInnerWeaktbl.S.html#TYPEt">t</a> -> <a href="BatInnerWeaktbl.S.html#TYPEkey">key</a> -> 'a -> unit</code></pre>
+<pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">'a <a href="BatInnerWeaktbl.S.html#TYPEt">t</a> -> <a href="BatInnerWeaktbl.S.html#TYPEkey">key</a> -> unit</code></pre>
+<pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">'a <a href="BatInnerWeaktbl.S.html#TYPEt">t</a> -> <a href="BatInnerWeaktbl.S.html#TYPEkey">key</a> -> 'a</code></pre>
+<pre><span id="VALfind_opt"><span class="keyword">val</span> find_opt</span> : <code class="type">'a <a href="BatInnerWeaktbl.S.html#TYPEt">t</a> -> <a href="BatInnerWeaktbl.S.html#TYPEkey">key</a> -> 'a option</code></pre>
+<pre><span id="VALfind_all"><span class="keyword">val</span> find_all</span> : <code class="type">'a <a href="BatInnerWeaktbl.S.html#TYPEt">t</a> -> <a href="BatInnerWeaktbl.S.html#TYPEkey">key</a> -> 'a list</code></pre>
+<pre><span id="VALreplace"><span class="keyword">val</span> replace</span> : <code class="type">'a <a href="BatInnerWeaktbl.S.html#TYPEt">t</a> -> <a href="BatInnerWeaktbl.S.html#TYPEkey">key</a> -> 'a -> unit</code></pre>
+<pre><span id="VALmem"><span class="keyword">val</span> mem</span> : <code class="type">'a <a href="BatInnerWeaktbl.S.html#TYPEt">t</a> -> <a href="BatInnerWeaktbl.S.html#TYPEkey">key</a> -> bool</code></pre>
+<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(<a href="BatInnerWeaktbl.S.html#TYPEkey">key</a> -> 'a -> unit) -> 'a <a href="BatInnerWeaktbl.S.html#TYPEt">t</a> -> unit</code></pre>
+<pre><span id="VALfilter_map_inplace"><span class="keyword">val</span> filter_map_inplace</span> : <code class="type">(<a href="BatInnerWeaktbl.S.html#TYPEkey">key</a> -> 'a -> 'a option) -> 'a <a href="BatInnerWeaktbl.S.html#TYPEt">t</a> -> unit</code></pre>
+<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">(<a href="BatInnerWeaktbl.S.html#TYPEkey">key</a> -> 'a -> 'b -> 'b) -><br>       'a <a href="BatInnerWeaktbl.S.html#TYPEt">t</a> -> 'b -> 'b</code></pre>
+<pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type">'a <a href="BatInnerWeaktbl.S.html#TYPEt">t</a> -> int</code></pre>
+<pre><span id="VALstats"><span class="keyword">val</span> stats</span> : <code class="type">'a <a href="BatInnerWeaktbl.S.html#TYPEt">t</a> -> Stdlib.Hashtbl.statistics</code></pre></body></html>

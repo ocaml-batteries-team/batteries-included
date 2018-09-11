@@ -122,7 +122,7 @@
 
 <pre><span id="MODULEGenlex"><span class="keyword">module</span> Genlex</span>: <code class="type"><a href="BatGenlex.html">BatGenlex</a></code></pre><hr width="100%">
 
-<pre><span id="TYPEtoken"><span class="keyword">type</span> <code class="type"></code>token</span> = <code class="type">Genlex.token</code> = </pre><table class="typetable">
+<pre><span id="TYPEtoken"><span class="keyword">type</span> <code class="type"></code>token</span> = <code class="type">Stdlib.Genlex.token</code> = </pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
@@ -180,7 +180,7 @@
 </div>
 
 
-<pre><span id="VALmake_lexer"><span class="keyword">val</span> make_lexer</span> : <code class="type">string list -> char Stream.t -> <a href="BatGenlex.html#TYPEtoken">token</a> Stream.t</code></pre><div class="info ">
+<pre><span id="VALmake_lexer"><span class="keyword">val</span> make_lexer</span> : <code class="type">string list -> char Stdlib.Stream.t -> <a href="BatGenlex.html#TYPEtoken">token</a> Stdlib.Stream.t</code></pre><div class="info ">
 <div class="info-desc">
 <p>Construct the lexer function. The first argument is the list of
     keywords. An identifier <code class="code">s</code> is returned as <code class="code"><span class="constructor">Kwd</span>&nbsp;s</code> if <code class="code">s</code>
@@ -241,7 +241,7 @@
 </div>
 </div>
 
-<pre><span id="VALto_stream_filter"><span class="keyword">val</span> to_stream_filter</span> : <code class="type"><a href="BatGenlex.html#TYPEt">t</a> -> char Stream.t -> <a href="BatGenlex.html#TYPEtoken">token</a> Stream.t</code></pre><div class="info ">
+<pre><span id="VALto_stream_filter"><span class="keyword">val</span> to_stream_filter</span> : <code class="type"><a href="BatGenlex.html#TYPEt">t</a> -> char Stdlib.Stream.t -> <a href="BatGenlex.html#TYPEtoken">token</a> Stdlib.Stream.t</code></pre><div class="info ">
 <div class="info-desc">
 <p>Apply the lexer to a stream.</p>
 </div>

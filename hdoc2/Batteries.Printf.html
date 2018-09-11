@@ -173,7 +173,7 @@
    the user's language. For more information, see the documentation
    of <code class="code">format</code> and the various functions.</p>
 <h7 id="6_Formats">Formats</h7>
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b, 'c)</code> t</span> = <code class="type">('a, 'b, 'c) Pervasives.format</code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b, 'c)</code> t</span> = <code class="type">('a, 'b, 'c) Stdlib.Pervasives.format</code> </pre>
 <div class="info ">
 <div class="info-desc">
 <p>The format to use for displaying the various arguments passed to the function.</p>
@@ -314,7 +314,7 @@
 </div>
 </div>
 
-<pre><span id="VALsprintf2"><span class="keyword">val</span> sprintf2</span> : <code class="type">('a, 'b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, string) Pervasives.format4 -> 'a</code></pre><div class="info ">
+<pre><span id="VALsprintf2"><span class="keyword">val</span> sprintf2</span> : <code class="type">('a, 'b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, string) Stdlib.format4 -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p>A function which doesn't print its result but returns it as a string. Useful
     for building messages, for translation purposes or for display in a window,
@@ -354,7 +354,7 @@
 </div>
 </div>
 
-<pre><span id="VALbprintf"><span class="keyword">val</span> bprintf</span> : <code class="type">Buffer.t -> ('a, Buffer.t, unit) <a href="BatPrintf.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
+<pre><span id="VALbprintf"><span class="keyword">val</span> bprintf</span> : <code class="type">Stdlib.Buffer.t -> ('a, Stdlib.Buffer.t, unit) <a href="BatPrintf.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p>As <a href="BatPrintf.html#VALfprintf"><code class="code"><span class="constructor">BatPrintf</span>.fprintf</code></a>, but with buffers instead of outputs.
    In particular, any unparser called with <code class="code">%a</code> should
@@ -362,7 +362,7 @@
 </div>
 </div>
 
-<pre><span id="VALbprintf2"><span class="keyword">val</span> bprintf2</span> : <code class="type">Buffer.t -> ('b, 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatPrintf.html#TYPEt">t</a> -> 'b</code></pre><div class="info ">
+<pre><span id="VALbprintf2"><span class="keyword">val</span> bprintf2</span> : <code class="type">Stdlib.Buffer.t -> ('b, 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit) <a href="BatPrintf.html#TYPEt">t</a> -> 'b</code></pre><div class="info ">
 <div class="info-desc">
 <p>As <a href="BatPrintf.html#VALprintf"><code class="code"><span class="constructor">BatPrintf</span>.printf</code></a> but writes to a buffer instead
    of printing to the output. By opposition to
@@ -371,42 +371,42 @@
 </div>
 </div>
 <h7 id="6_Functionswithcontinuations">Functions with continuations</h7>
-<pre><span id="VALkfprintf"><span class="keyword">val</span> kfprintf</span> : <code class="type">('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -><br>       ('c, 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, 'b) Pervasives.format4 -> 'c</code></pre><div class="info ">
+<pre><span id="VALkfprintf"><span class="keyword">val</span> kfprintf</span> : <code class="type">('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -><br>       ('c, 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, 'b) Stdlib.format4 -> 'c</code></pre><div class="info ">
 <div class="info-desc">
 <p>Same as <code class="code">fprintf</code>, but instead of returning immediately, passes the <code class="code">output</code> to its first
    argument at the end of printing.</p>
 </div>
 </div>
 
-<pre><span id="VALksprintf"><span class="keyword">val</span> ksprintf</span> : <code class="type">(string -> 'a) -> ('b, unit, string, 'a) Pervasives.format4 -> 'b</code></pre><div class="info ">
+<pre><span id="VALksprintf"><span class="keyword">val</span> ksprintf</span> : <code class="type">(string -> 'a) -> ('b, unit, string, 'a) Stdlib.format4 -> 'b</code></pre><div class="info ">
 <div class="info-desc">
 <p>Same as <code class="code">sprintf</code> above, but instead of returning the string,
     passes it to the first argument.</p>
 </div>
 </div>
 
-<pre><span id="VALksprintf2"><span class="keyword">val</span> ksprintf2</span> : <code class="type">(string -> 'b) -><br>       ('c, 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, 'b) Pervasives.format4 -> 'c</code></pre><div class="info ">
+<pre><span id="VALksprintf2"><span class="keyword">val</span> ksprintf2</span> : <code class="type">(string -> 'b) -> ('c, 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, 'b) Stdlib.format4 -> 'c</code></pre><div class="info ">
 <div class="info-desc">
 <p>Same as <code class="code">sprintf2</code> above, but instead of returning the string,
     passes it to the first argument.</p>
 </div>
 </div>
 
-<pre><span id="VALkbprintf"><span class="keyword">val</span> kbprintf</span> : <code class="type">(Buffer.t -> 'a) -><br>       Buffer.t -> ('b, Buffer.t, unit, 'a) Pervasives.format4 -> 'b</code></pre><div class="info ">
+<pre><span id="VALkbprintf"><span class="keyword">val</span> kbprintf</span> : <code class="type">(Stdlib.Buffer.t -> 'a) -><br>       Stdlib.Buffer.t -> ('b, Stdlib.Buffer.t, unit, 'a) Stdlib.format4 -> 'b</code></pre><div class="info ">
 <div class="info-desc">
 <p>Same as <code class="code">bprintf</code>, but instead of returning immediately,
     passes the buffer to its first argument at the end of printing.</p>
 </div>
 </div>
 
-<pre><span id="VALkbprintf2"><span class="keyword">val</span> kbprintf2</span> : <code class="type">(Buffer.t -> 'b) -><br>       Buffer.t -> ('c, 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, 'b) Pervasives.format4 -> 'c</code></pre><div class="info ">
+<pre><span id="VALkbprintf2"><span class="keyword">val</span> kbprintf2</span> : <code class="type">(Stdlib.Buffer.t -> 'b) -><br>       Stdlib.Buffer.t -> ('c, 'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a>, unit, 'b) Stdlib.format4 -> 'c</code></pre><div class="info ">
 <div class="info-desc">
 <p>Same as <code class="code">bprintf2</code>, but instead of returning immediately,
     passes the buffer to its first argument at the end of printing.</p>
 </div>
 </div>
 
-<pre><span id="VALkprintf"><span class="keyword">val</span> kprintf</span> : <code class="type">(string -> 'a) -> ('b, unit, string, 'a) Pervasives.format4 -> 'b</code></pre><div class="info ">
+<pre><span id="VALkprintf"><span class="keyword">val</span> kprintf</span> : <code class="type">(string -> 'a) -> ('b, unit, string, 'a) Stdlib.format4 -> 'b</code></pre><div class="info ">
 <div class="info-deprecated">
 <span class="warning">Deprecated.</span>This is a deprecated synonym for <code class="code">ksprintf</code>.</div>
 </div>

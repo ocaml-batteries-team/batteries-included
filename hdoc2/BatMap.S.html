@@ -237,6 +237,7 @@
 </div>
 <ul class="info-attributes">
 <li><b>Since</b> 1.4.0</li>
+<li><b>Raises</b> <code>Not_found</code> if <code class="code">k</code> is unbound in <code class="code">m</code></li>
 </ul>
 </div>
 
@@ -297,18 +298,18 @@
 <pre><span id="VALfilterv"><span class="keyword">val</span> filterv</span> : <code class="type">('a -> bool) -> 'a <a href="BatMap.S.html#TYPEt">t</a> -> 'a <a href="BatMap.S.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">filterv&nbsp;f&nbsp;m</code> returns a map where only the values <code class="code">a</code> of <code class="code">m</code>
-     such that <code class="code">f&nbsp;a&nbsp;=&nbsp;<span class="keyword">true</span></code> remain. The bindings are passed to <code class="code">f</code>
-     in increasing order with respect to the ordering over the
-     type of the keys.</p>
+      such that <code class="code">f&nbsp;a&nbsp;=&nbsp;<span class="keyword">true</span></code> remain. The bindings are passed to <code class="code">f</code>
+      in increasing order with respect to the ordering over the
+      type of the keys.</p>
 </div>
 </div>
 
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">(<a href="BatMap.S.html#TYPEkey">key</a> -> 'a -> bool) -> 'a <a href="BatMap.S.html#TYPEt">t</a> -> 'a <a href="BatMap.S.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">filter&nbsp;f&nbsp;m</code> returns a map where only the key, values pairs
-     <code class="code">key</code>, <code class="code">a</code> of <code class="code">m</code> such that <code class="code">f&nbsp;key&nbsp;a&nbsp;=&nbsp;<span class="keyword">true</span></code> remain. The
-     bindings are passed to <code class="code">f</code> in increasing order with respect
-     to the ordering over the type of the keys.</p>
+<p><code class="code">filter&nbsp;f&nbsp;m</code> returns a map where only the <code class="code">(key,&nbsp;value)</code> pairs of <code class="code">m</code>
+      such that <code class="code">f&nbsp;key&nbsp;value&nbsp;=&nbsp;<span class="keyword">true</span></code> remain. The bindings are passed to
+      <code class="code">f</code> in increasing order with respect to the ordering over the type
+      of the keys.</p>
 </div>
 </div>
 
@@ -318,7 +319,7 @@
       <code class="code">map</code>.  It calls calls <code class="code">f&nbsp;key0&nbsp;a0</code>, <code class="code">f&nbsp;key1&nbsp;a1</code>, <code class="code">f&nbsp;keyn&nbsp;an</code>
       where <code class="code">a0,a1..an</code> are the elements of <code class="code">m</code> and <code class="code">key0..keyn</code> the
       respective corresponding keys. It returns the map of
-      pairs <code class="code">keyi</code>,<code class="code">bi</code> such as <code class="code">f&nbsp;keyi&nbsp;ai&nbsp;=&nbsp;<span class="constructor">Some</span>&nbsp;bi</code> (when <code class="code">f</code> returns
+      pairs <code class="code">(keyi,&nbsp;bi)</code> such as <code class="code">f&nbsp;keyi&nbsp;ai&nbsp;=&nbsp;<span class="constructor">Some</span>&nbsp;bi</code> (when <code class="code">f</code> returns
       <code class="code"><span class="constructor">None</span></code>, the corresponding element of <code class="code">m</code> is discarded).</p>
 </div>
 </div>
@@ -341,39 +342,41 @@
 
 <pre><span id="VALkeys"><span class="keyword">val</span> keys</span> : <code class="type">'a <a href="BatMap.S.html#TYPEt">t</a> -> <a href="BatMap.S.html#TYPEkey">key</a> <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p>Return an enumeration of all the keys of a map.</p>
+<p>Return an enumeration of all the keys of a map.
+      The returned enumeration is sorted in increasing key order.</p>
 </div>
 </div>
 
 <pre><span id="VALvalues"><span class="keyword">val</span> values</span> : <code class="type">'a <a href="BatMap.S.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p>Return an enumeration of al the values of a map.</p>
+<p>Return an enumeration of all the values of a map.
+      The returned enumeration is sorted in increasing key order.</p>
 </div>
 </div>
 
 <pre><span id="VALmin_binding"><span class="keyword">val</span> min_binding</span> : <code class="type">'a <a href="BatMap.S.html#TYPEt">t</a> -> <a href="BatMap.S.html#TYPEkey">key</a> * 'a</code></pre><div class="info ">
 <div class="info-desc">
-<p>return the (<code class="code">key,value</code>) pair with the smallest key</p>
+<p>Return the <code class="code">(key,&nbsp;value)</code> pair with the smallest key.</p>
 </div>
 </div>
 
 <pre><span id="VALpop_min_binding"><span class="keyword">val</span> pop_min_binding</span> : <code class="type">'a <a href="BatMap.S.html#TYPEt">t</a> -> (<a href="BatMap.S.html#TYPEkey">key</a> * 'a) * 'a <a href="BatMap.S.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p>return the (<code class="code">key,value</code>) pair with the smallest key
-      along with the rest of the map</p>
+<p>Return the <code class="code">(key,&nbsp;value)</code> pair with the smallest key
+      along with the rest of the map.</p>
 </div>
 </div>
 
 <pre><span id="VALmax_binding"><span class="keyword">val</span> max_binding</span> : <code class="type">'a <a href="BatMap.S.html#TYPEt">t</a> -> <a href="BatMap.S.html#TYPEkey">key</a> * 'a</code></pre><div class="info ">
 <div class="info-desc">
-<p>return the <code class="code">(key,value)</code> pair with the largest key</p>
+<p>Return the <code class="code">(key,&nbsp;value)</code> pair with the largest key.</p>
 </div>
 </div>
 
 <pre><span id="VALpop_max_binding"><span class="keyword">val</span> pop_max_binding</span> : <code class="type">'a <a href="BatMap.S.html#TYPEt">t</a> -> (<a href="BatMap.S.html#TYPEkey">key</a> * 'a) * 'a <a href="BatMap.S.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p>return the (<code class="code">key,value</code>) pair with the largest key
-      along with the rest of the map</p>
+<p>Return the (<code class="code">key,&nbsp;value</code>) pair with the largest key
+      along with the rest of the map.</p>
 </div>
 </div>
 
@@ -442,7 +445,7 @@
 
 <pre><span id="VALenum"><span class="keyword">val</span> enum</span> : <code class="type">'a <a href="BatMap.S.html#TYPEt">t</a> -> (<a href="BatMap.S.html#TYPEkey">key</a> * 'a) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p>Return an enumeration of (key, value) pairs of a map.
+<p>Return an enumeration of <code class="code">(key,&nbsp;value)</code> pairs of a map.
       The returned enumeration is sorted in increasing order with respect
       to the ordering <code class="code"><span class="constructor">Ord</span>.compare</code>, where <code class="code"><span class="constructor">Ord</span></code> is the argument given to
       <code class="code"><span class="constructor">Map</span>.<span class="constructor">Make</span></code>.</p>
@@ -451,7 +454,7 @@
 
 <pre><span id="VALbackwards"><span class="keyword">val</span> backwards</span> : <code class="type">'a <a href="BatMap.S.html#TYPEt">t</a> -> (<a href="BatMap.S.html#TYPEkey">key</a> * 'a) <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p>Return an enumeration of (key, value) pairs of a map.
+<p>Return an enumeration of <code class="code">(key,&nbsp;value)</code> pairs of a map.
       The returned enumeration is sorted in decreasing order with respect
       to the ordering <code class="code"><span class="constructor">Ord</span>.compare</code>, where <code class="code"><span class="constructor">Ord</span></code> is the argument given to
       <code class="code"><span class="constructor">Map</span>.<span class="constructor">Make</span></code>.</p>

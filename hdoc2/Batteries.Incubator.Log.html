@@ -119,7 +119,7 @@
 
 <pre><span id="MODULELog"><span class="keyword">module</span> Log</span>: <code class="type"><a href="BatLog.html">BatLog</a></code></pre><hr width="100%">
 
-<pre><span id="VALoutput"><span class="keyword">val</span> output</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> Pervasives.ref</code></pre><div class="info ">
+<pre><span id="VALoutput"><span class="keyword">val</span> output</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> Stdlib.ref</code></pre><div class="info ">
 <div class="info-desc">
 <p>This ref holds the output channel for simple logging.  Defaults to
     <code class="code">stderr</code></p>
@@ -129,7 +129,7 @@
 </ul>
 </div>
 
-<pre><span id="VALprefix"><span class="keyword">val</span> prefix</span> : <code class="type">string Pervasives.ref</code></pre><div class="info ">
+<pre><span id="VALprefix"><span class="keyword">val</span> prefix</span> : <code class="type">string Stdlib.ref</code></pre><div class="info ">
 <div class="info-desc">
 <p>This ref holds the text printed before each log message.  Defaults to
     the empty string.</p>
@@ -142,7 +142,7 @@
 <pre><span id="TYPEflag"><span class="keyword">type</span> <code class="type"></code>flag</span> = <code class="type">[ `Custom of unit -> string | `Date | `Filepos | `Time ]</code> </pre>
 
 
-<pre><span id="VALflags"><span class="keyword">val</span> flags</span> : <code class="type"><a href="BatLog.html#TYPEflag">flag</a> list Pervasives.ref</code></pre><div class="info ">
+<pre><span id="VALflags"><span class="keyword">val</span> flags</span> : <code class="type"><a href="BatLog.html#TYPEflag">flag</a> list Stdlib.ref</code></pre><div class="info ">
 <div class="info-desc">
 <p>This ref holds the output flags.  These flags control how the log
     messages are output.  The default is <code class="code"><span class="keywordsign">`</span><span class="constructor">Date</span>;&nbsp;<span class="keywordsign">`</span><span class="constructor">Time</span></code> and log
@@ -164,7 +164,7 @@
 </ul>
 </div>
 
-<pre><span id="VALlogf"><span class="keyword">val</span> logf</span> : <code class="type">?fp:string -> ('a, unit <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit) Pervasives.format -> 'a</code></pre><div class="info ">
+<pre><span id="VALlogf"><span class="keyword">val</span> logf</span> : <code class="type">?fp:string -> ('a, unit <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit) Stdlib.Pervasives.format -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p>As <code class="code"><span class="constructor">Printf</span>.printf</code>, only the message is printed to the logging
     output and prefixed with status information per the current flags and
@@ -182,7 +182,7 @@
 </div>
 </div>
 
-<pre><span id="VALfatalf"><span class="keyword">val</span> fatalf</span> : <code class="type">?fp:string -> ('a, unit <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit) Pervasives.format -> 'a</code></pre><div class="info ">
+<pre><span id="VALfatalf"><span class="keyword">val</span> fatalf</span> : <code class="type">?fp:string -> ('a, unit <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit) Stdlib.Pervasives.format -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">fatalf</code> allows a format string (as <code class="code"><span class="constructor">Printf</span>.printf</code>)and the
     arguments to that format string to build the logging message.
@@ -200,7 +200,7 @@
     and flags.  These methods work like the corresponding functions in
     the BatLog module.</p>
 
-<pre><span id="VALmake_logger"><span class="keyword">val</span> make_logger</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -><br>       string -><br>       [< `Custom of unit -> string | `Date | `Filepos | `Time ] list -><br>       < fatal : ?fp:string -> string -> 'b;<br>         fatalf : ?fp:string -><br>                  ('c, 'a <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit, unit, unit, 'd) Pervasives.format6 -><br>                  'c;<br>         log : ?fp:string -> string -> unit;<br>         logf : ?fp:string -> ('e, 'a <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit) Pervasives.format -> 'e ></code></pre>
+<pre><span id="VALmake_logger"><span class="keyword">val</span> make_logger</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -><br>       string -><br>       [< `Custom of unit -> string | `Date | `Filepos | `Time ] list -><br>       < fatal : ?fp:string -> string -> 'b;<br>         fatalf : ?fp:string -><br>                  ('c, 'a <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit, unit, unit, 'd) Stdlib.format6 -> 'c;<br>         log : ?fp:string -> string -> unit;<br>         logf : ?fp:string -> ('e, 'a <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit) Stdlib.format -> 'e ></code></pre>
 <pre><span id="TYPEeasy_lev"><span class="keyword">type</span> <code class="type"></code>easy_lev</span> = <code class="type">[ `always | `debug | `error | `fatal | `info | `trace | `warn ]</code> </pre>
 <div class="info ">
 <div class="info-desc">

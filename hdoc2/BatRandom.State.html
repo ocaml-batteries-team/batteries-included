@@ -128,7 +128,7 @@
 </div>
 <hr width="100%">
 
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">Random.State.t</code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">Stdlib.Random.State.t</code> </pre>
 <div class="info ">
 <div class="info-desc">
 <p>The type of PRNG states.</p>
@@ -157,9 +157,9 @@
 
 <pre><span id="VALbits"><span class="keyword">val</span> bits</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> int</code></pre>
 <pre><span id="VALint"><span class="keyword">val</span> int</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> int -> int</code></pre>
-<pre><span id="VALint32"><span class="keyword">val</span> int32</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Int32.t -> Int32.t</code></pre>
-<pre><span id="VALnativeint"><span class="keyword">val</span> nativeint</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Nativeint.t -> Nativeint.t</code></pre>
-<pre><span id="VALint64"><span class="keyword">val</span> int64</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Int64.t -> Int64.t</code></pre>
+<pre><span id="VALint32"><span class="keyword">val</span> int32</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Stdlib.Int32.t -> Stdlib.Int32.t</code></pre>
+<pre><span id="VALnativeint"><span class="keyword">val</span> nativeint</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Stdlib.Nativeint.t -> Stdlib.Nativeint.t</code></pre>
+<pre><span id="VALint64"><span class="keyword">val</span> int64</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Stdlib.Int64.t -> Stdlib.Int64.t</code></pre>
 <pre><span id="VALfloat"><span class="keyword">val</span> float</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> float -> float</code></pre>
 <pre><span id="VALbool"><span class="keyword">val</span> bool</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> bool</code></pre>
 <pre><span id="VALchar"><span class="keyword">val</span> char</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> char</code></pre>
@@ -167,9 +167,9 @@
 <pre><span id="VALenum_int"><span class="keyword">val</span> enum_int</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> int -> int <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
 <pre><span id="VALenum_bool"><span class="keyword">val</span> enum_bool</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> unit -> bool <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
 <pre><span id="VALenum_float"><span class="keyword">val</span> enum_float</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> float -> float <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
-<pre><span id="VALenum_int32"><span class="keyword">val</span> enum_int32</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Int32.t -> Int32.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
-<pre><span id="VALenum_int64"><span class="keyword">val</span> enum_int64</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Int64.t -> Int64.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
-<pre><span id="VALenum_nativeint"><span class="keyword">val</span> enum_nativeint</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Nativeint.t -> Nativeint.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
+<pre><span id="VALenum_int32"><span class="keyword">val</span> enum_int32</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Stdlib.Int32.t -> Stdlib.Int32.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
+<pre><span id="VALenum_int64"><span class="keyword">val</span> enum_int64</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Stdlib.Int64.t -> Stdlib.Int64.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
+<pre><span id="VALenum_nativeint"><span class="keyword">val</span> enum_nativeint</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> Stdlib.Nativeint.t -> Stdlib.Nativeint.t <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
 <pre><span id="VALenum_char"><span class="keyword">val</span> enum_char</span> : <code class="type"><a href="BatRandom.State.html#TYPEt">t</a> -> unit -> char <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><p>These functions are the same as the basic functions, except that they
           use (and update) the given PRNG state instead of the default one.</p>
 </body></html>

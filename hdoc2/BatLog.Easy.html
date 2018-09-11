@@ -131,7 +131,7 @@
 </div>
 <hr width="100%">
 
-<pre><span id="VALlevel"><span class="keyword">val</span> level</span> : <code class="type"><a href="BatLog.html#TYPEeasy_lev">BatLog.easy_lev</a> Pervasives.ref</code></pre><div class="info ">
+<pre><span id="VALlevel"><span class="keyword">val</span> level</span> : <code class="type"><a href="BatLog.html#TYPEeasy_lev">BatLog.easy_lev</a> Stdlib.ref</code></pre><div class="info ">
 <div class="info-desc">
 <p>Set this ref to the lowest level of log you want logged.  For
       example, <code class="code"><span class="constructor">Easy</span>.level&nbsp;:=&nbsp;<span class="keywordsign">`</span>always</code> disables all logging except
@@ -144,7 +144,7 @@
 </div>
 </div>
 
-<pre><span id="VALoutput"><span class="keyword">val</span> output</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> Pervasives.ref</code></pre>
+<pre><span id="VALoutput"><span class="keyword">val</span> output</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> Stdlib.ref</code></pre>
 <pre><span id="VALlog"><span class="keyword">val</span> log</span> : <code class="type">?fp:string -> <a href="BatLog.html#TYPEeasy_lev">BatLog.easy_lev</a> -> string -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">log&nbsp;lev&nbsp;msg</code> logs the message <code class="code">msg</code> if the current logging
@@ -152,7 +152,7 @@
 </div>
 </div>
 
-<pre><span id="VALlogf"><span class="keyword">val</span> logf</span> : <code class="type">?fp:string -><br>       <a href="BatLog.html#TYPEeasy_lev">BatLog.easy_lev</a> -> ('a, unit <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit) Pervasives.format -> 'a</code></pre><div class="info ">
+<pre><span id="VALlogf"><span class="keyword">val</span> logf</span> : <code class="type">?fp:string -><br>       <a href="BatLog.html#TYPEeasy_lev">BatLog.easy_lev</a> -> ('a, unit <a href="BatIO.html#TYPEoutput">BatIO.output</a>, unit) Stdlib.format -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p>As <code class="code">log</code>, but instead of a string message, a printf format is
       allowed with whatever arguments are appropriate.</p>

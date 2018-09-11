@@ -325,6 +325,12 @@
 </div>
 </div>
 
+<pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type">('a * 'b) array -> 'a array * 'b array</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Array</span>.split&nbsp;a</code> converts the array of pairs <code class="code">a</code> into a pair of arrays.</p>
+</div>
+</div>
+
 <pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">'a list -> 'a array</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code"><span class="constructor">Array</span>.of_list&nbsp;l</code> returns a fresh array containing the elements
@@ -835,6 +841,9 @@
     inserted in position <code class="code">i</code> (and all later indices are shifted to the
     right).</p>
 </div>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Invalid_argument</code> if <code class="code">i&nbsp;&lt;&nbsp;0&nbsp;<span class="keywordsign">||</span>&nbsp;i&nbsp;&gt;&nbsp;<span class="constructor">Array</span>.length&nbsp;xs</code>.</li>
+</ul>
 </div>
 <h7 id="6_Boilerplatecode">Boilerplate code</h7>
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -> ('a, 'b) <a href="BatIO.html#TYPEprinter">BatIO.printer</a> -> ('a <a href="BatArray.html#TYPEt">t</a>, 'b) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info ">
@@ -866,7 +875,7 @@
 </div>
 </div>
 
-<pre><span id="VALshuffle"><span class="keyword">val</span> shuffle</span> : <code class="type">?state:Random.State.t -> 'a array -> unit</code></pre><div class="info ">
+<pre><span id="VALshuffle"><span class="keyword">val</span> shuffle</span> : <code class="type">?state:Stdlib.Random.State.t -> 'a array -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">shuffle&nbsp;~state:rs&nbsp;a</code> randomly shuffles in place the elements of <code class="code">a</code>.
     The optional random state <code class="code">rs</code> allows to control the random

@@ -164,23 +164,20 @@
 </div>
 </div>
 
-<pre><span id="VALfirst"><span class="keyword">val</span> first</span> : <code class="type">'a list -> 'a</code></pre><div class="info ">
+<pre><span id="VALhd"><span class="keyword">val</span> hd</span> : <code class="type">'a list -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p>Returns the first element of the list, or</p>
 </div>
 <ul class="info-attributes">
-<li><b>Raises</b> <code>Empty_list</code> if
-    the list is empty (similar to <code class="code">hd</code>).</li>
+<li><b>Raises</b> <code>Failure</code> if
+    the list is empty.</li>
 </ul>
 </div>
 
-<pre><span id="VALhd"><span class="keyword">val</span> hd</span> : <code class="type">'a list -> 'a</code></pre><div class="info ">
+<pre><span id="VALfirst"><span class="keyword">val</span> first</span> : <code class="type">'a list -> 'a</code></pre><div class="info ">
 <div class="info-desc">
-<p>Similar to <code class="code">first</code>, but</p>
+<p>Alias to hd</p>
 </div>
-<ul class="info-attributes">
-<li><b>Raises</b> <code>Failure</code> if the list is empty.</li>
-</ul>
 </div>
 
 <pre><span id="VALtl"><span class="keyword">val</span> tl</span> : <code class="type">'a list -> 'a list</code></pre><div class="info ">
@@ -197,7 +194,7 @@
 <p>Returns the last element of the list, or</p>
 </div>
 <ul class="info-attributes">
-<li><b>Raises</b> <code>Empty_list</code> if
+<li><b>Raises</b> <code>Invalid_argument</code> if
     the list is empty. This function takes linear time.</li>
 </ul>
 </div>
@@ -256,7 +253,7 @@
 </div>
 </div>
 
-<pre><span id="VALshuffle"><span class="keyword">val</span> shuffle</span> : <code class="type">?state:Random.State.t -> 'a list -> 'a list</code></pre><div class="info ">
+<pre><span id="VALshuffle"><span class="keyword">val</span> shuffle</span> : <code class="type">?state:Stdlib.Random.State.t -> 'a list -> 'a list</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">shuffle&nbsp;~state:rs&nbsp;l</code> randomly shuffles the elements of <code class="code">l</code>.
     The optional random state <code class="code">rs</code> allows to control the random
@@ -273,8 +270,9 @@
 
 <pre><span id="VALappend"><span class="keyword">val</span> append</span> : <code class="type">'a list -> 'a list -> 'a list</code></pre><div class="info ">
 <div class="info-desc">
-<p>Catenate two lists.  Same function as the infix operator <code class="code">@</code>.
-    Tail-recursive O(length of the first argument).</p>
+<p><code class="code">append&nbsp;l1&nbsp;l2</code> is a concatenation of <code class="code">l1</code> and <code class="code">l2</code>.
+    Same function as the infix operator <code class="code">@</code>.
+    Tail-recursive. This function takes O(<code class="code">length&nbsp;l1</code>) time.</p>
 </div>
 </div>
 
@@ -288,8 +286,7 @@
 <div class="info-desc">
 <p>Concatenate a list of lists.  The elements of the argument are all
     concatenated together (in the same order) to give the result.
-    Tail-recursive
-    (length of the argument + length of the longest sub-list).</p>
+    Tail-recursive.</p>
 </div>
 </div>
 
@@ -562,8 +559,7 @@
     <code class="code">f&nbsp;a0&nbsp;b0;&nbsp;f&nbsp;a1&nbsp;b1;&nbsp;...;&nbsp;f&nbsp;an&nbsp;bn</code>.</p>
 </div>
 <ul class="info-attributes">
-<li><b>Raises</b> <code>Different_list_size</code> if the two lists have
-    different lengths.</li>
+<li><b>Raises</b> <code>Invalid_argument</code> if two lists have different lengths.</li>
 </ul>
 </div>
 
@@ -573,8 +569,7 @@
     <code class="code">f&nbsp;0&nbsp;a0&nbsp;b0;&nbsp;f&nbsp;1&nbsp;a1&nbsp;b1;&nbsp;...;&nbsp;f&nbsp;n&nbsp;an&nbsp;bn</code>.</p>
 </div>
 <ul class="info-attributes">
-<li><b>Raises</b> <code>Different_list_size</code> or Invalid_argument if the two lists
-    have different lengths.</li>
+<li><b>Raises</b> <code>Invalid_argument</code> if two lists have different lengths.</li>
 </ul>
 </div>
 
@@ -584,8 +579,8 @@
     <code class="code">[f&nbsp;a0&nbsp;b0;&nbsp;f&nbsp;a1&nbsp;b1;&nbsp;...;&nbsp;f&nbsp;an&nbsp;bn]</code>.</p>
 </div>
 <ul class="info-attributes">
-<li><b>Raises</b> <code>Different_list_size</code> if the two lists have
-    different lengths.  Tail-recursive.</li>
+<li><b>Raises</b> <code>Invalid_argument</code> if two lists have different lengths.
+    Tail-recursive.</li>
 </ul>
 </div>
 
@@ -595,8 +590,8 @@
     <code class="code">[f&nbsp;0&nbsp;a0&nbsp;b0;&nbsp;f&nbsp;1&nbsp;a1&nbsp;b1;&nbsp;...;&nbsp;f&nbsp;n&nbsp;an&nbsp;bn]</code>.</p>
 </div>
 <ul class="info-attributes">
-<li><b>Raises</b> <code>Different_list_size</code> or Invalid_argument if the two lists
-    have different lengths. Tail-recursive.</li>
+<li><b>Raises</b> <code>Invalid_argument</code> if two lists have different lengths.
+    Tail-recursive.</li>
 </ul>
 </div>
 
@@ -614,8 +609,7 @@
     <code class="code">f&nbsp;(...&nbsp;(f&nbsp;(f&nbsp;a&nbsp;b0&nbsp;c0)&nbsp;b1&nbsp;c1)&nbsp;...)&nbsp;bn&nbsp;cn</code>.</p>
 </div>
 <ul class="info-attributes">
-<li><b>Raises</b> <code>Different_list_size</code> if the two lists have
-    different lengths.</li>
+<li><b>Raises</b> <code>Invalid_argument</code> if two lists have different lengths.</li>
 </ul>
 </div>
 
@@ -625,8 +619,8 @@
     <code class="code">f&nbsp;a0&nbsp;b0&nbsp;(f&nbsp;a1&nbsp;b1&nbsp;(...&nbsp;(f&nbsp;an&nbsp;bn&nbsp;c)&nbsp;...))</code>.</p>
 </div>
 <ul class="info-attributes">
-<li><b>Raises</b> <code>Different_list_size</code> if the two lists have
-    different lengths.  Tail-recursive.</li>
+<li><b>Raises</b> <code>Invalid_argument</code> if two lists have different lengths.
+    Tail-recursive.</li>
 </ul>
 </div>
 <h7 id="6_Listscanning">List scanning</h7>
@@ -675,8 +669,7 @@
 <p>Same as <code class="code"><span class="constructor">List</span>.for_all</code>, but for a two-argument predicate.</p>
 </div>
 <ul class="info-attributes">
-<li><b>Raises</b> <code>Invalid_argument</code> if the two lists have
-    different lengths.</li>
+<li><b>Raises</b> <code>Invalid_argument</code> if two lists have different lengths.</li>
 </ul>
 </div>
 
@@ -685,8 +678,7 @@
 <p>Same as <code class="code"><span class="constructor">List</span>.exists</code>, but for a two-argument predicate.</p>
 </div>
 <ul class="info-attributes">
-<li><b>Raises</b> <code>Invalid_argument</code> if the two lists have
-    different lengths.</li>
+<li><b>Raises</b> <code>Invalid_argument</code> if two lists have different lengths.</li>
 </ul>
 </div>
 
@@ -1250,8 +1242,8 @@
     <code class="code">[(a0,b0);&nbsp;(a1,b1);&nbsp;...;&nbsp;(an,bn)]</code>.</p>
 </div>
 <ul class="info-attributes">
-<li><b>Raises</b> <code>Different_list_size</code> if the two lists
-    have different lengths.  Tail-recursive.</li>
+<li><b>Raises</b> <code>Invalid_argument</code> if two lists have different lengths.
+    Tail-recursive.</li>
 </ul>
 </div>
 <h7 id="6_Sorting">Sorting</h7>
