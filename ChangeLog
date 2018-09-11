@@ -12,6 +12,20 @@ number of fixes, improvements and documentation clarification from our
 contributors. Thanks in particular to Max Mouratov for his varied
 contributions.
 
+This release is compatible with OCaml 4.07.0, but it is not complete
+with respect to the standard library of OCaml 4.07.0: this release saw
+a lot of changes to the standard library, which have not yet been made
+available in the corresponding Batteries module. This means that users
+of OCaml 4.07.0 (and Batteries 2.9.0) will have access to these
+functions, but users of older OCaml versions (and Batteries 2.9.0)
+will not. If you are looking for this kind of backward-compatibility
+of new functions, as provided by previous Batteries releases, we
+recommend trying the new 'stdcompat' library by Thierry Martinez:
+
+  https://github.com/thierry-martinez/stdcompat
+
+Full changelog:
+
 - add `BatString.cut_on_char : char -> int -> string -> string`
   (Kahina Fekir, Thibault Suzanne, request by François Bérenger)
   #807, #856
