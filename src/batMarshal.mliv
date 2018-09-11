@@ -88,8 +88,10 @@ val output: _ BatInnerIO.output -> ?sharing:bool -> ?closures:bool -> 'a -> unit
     un-marshaling time, using an MD5 digest of the code transmitted
     along with the code position.) *)
 
-external to_bytes :
-  'a -> extern_flags list -> Bytes.t = "caml_output_value_to_string"
+##V<4.7##external to_bytes :
+##V<4.7##  'a -> extern_flags list -> Bytes.t = "caml_output_value_to_string"
+##V>=4.7##external to_bytes :
+##V>=4.7##  'a -> extern_flags list -> Bytes.t = "caml_output_value_to_bytes"
 (** [Marshal.to_bytes v flags] returns a byte sequence containing
    the representation of [v].
    The [flags] argument has the same meaning as for

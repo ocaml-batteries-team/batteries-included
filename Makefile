@@ -277,7 +277,7 @@ release:
 	$(MAKE) release-cleaned
 
 # assumes irreproachably pristine working directory
-release-cleaned: setup.ml doc test
+release-cleaned: setup.ml doc test-native
 	git archive --format=tar --prefix=batteries-$(VERSION)/ HEAD \
 	  | gzip > batteries-$(VERSION).tar.gz
 

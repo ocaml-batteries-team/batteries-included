@@ -2,79 +2,110 @@ Changelog
 ---------
 
 ## NEXT_RELEASE
-- ocamlfind plugin support in META file
-  (Arlen Cox)
-  #867
+
+
+
+## v2.9.0 (minor release)
+
+This minor release adds support for OCaml 4.07.0, as well as a certain
+number of fixes, improvements and documentation clarification from our
+contributors. Thanks in particular to Max Mouratov for his varied
+contributions.
+
 - add `BatString.cut_on_char : char -> int -> string -> string`
   (Kahina Fekir, Thibault Suzanne, request by François Bérenger)
   #807, #856
+
 - add `BatString.index_after_n : char -> int -> string -> int`
   (Kahina Fekir)
+
 - faster BatArray.partition
   #829
   (Francois Berenger, Gabriel Scherer)
+
 - add `BatArray.split: ('a * 'b) array -> 'a array * 'b array`
   #826
   (Francois Berenger)
+
 - add `BatString.count_string: string -> string -> int`
   #799
   (Francois Berenger)
+
 - Int: optimized implementation of Safe_int.mul
   #808, #851
   (Max Mouratov)
+
 - Fix: in case of conflicted bindings, [Map.union m1 m2] should
   prefer the value from [m2], as stated in documentation.
   #814
   (Max Mouratov)
+
 - Fix: [Map.update k1 k2 v m] did not work correctly when [k1 = k2].
   #833
   (Max Mouratov)
+
 - Fix: [Map.update k1 k2 v m] should throw [Not_found] if [k1] is not bound
   in [m], as stated in documentation.
   #833
   (Max Mouratov)
+
 - Fix: [Set.update x y s] should throw [Not_found] if [x] is not in [s],
   as stated in documentation.
   #833
   (Max Mouratov)
+
 - Fix: documentation of BatList.{hd,last} to match implementation w.r.t
   raised exceptions
   #840, #754
   (FkHina)
+
 - Fix: [Array.insert] should throw a more relevant message on invalid indices
   instead of the generic [invalid_arg "index out of bounds].
   The assertion is now documented.
   #841
   (Max Mouratov)
+
 - Implementation of [Array.insert] now uses [unsafe_get] and [unsafe_set].
   #841
   (Max Mouratov)
+
 - Fix documentation of [String.right].
   #849, #844
   (Max Mouratov, reported by Thibault Suzanne)
+
 - Fix: [Heap.del_min] should throw [Invalid_argument] with the specified
   "del_min" message instead of "find_min_tree".
   #850
   (Max Mouratov)
+
 - More uniform and correct [Invalid_argument] messages.
   #850
   (Max Mouratov)
+
 - Optimization of List.unique_cmp (using Set instead of Map).
   #852
   (Max Mouratov)
+
 - Documentation of List.append and List.concat should not include invalid
   estimates of stack usage.
   #854
   (Max Mouratov)
+
 - Implementation of String should use unsafe versions of [set] and [get].
   #836
   (Max Mouratov, review by Gabriel Scherer)
+
 - Fix erroneous mentions of [Different_list_size] in List.mli.
   #857, #744
   (Max Mouratov, reported by Christoph Höger)
+
 - fix Map.equal (for polymorphic maps) with custom equality function
   #865
   (Ralf Vogler)
+
+- ocamlfind plugin support in META file
+  (Arlen Cox)
+  #867
 
 ## v2.8.0 (minor release)
 

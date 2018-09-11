@@ -62,8 +62,40 @@ module Stack = struct
     try iter (fun _ -> raise Not_found) s; true with Not_found -> false
 end
 
+module type HashedType = sig
+  type t
+
+  val equal : t -> t -> bool
+
+  val hash : t -> int
+end
+
+module type S = sig
+  type key
+  type 'a t
+  val create : int -> 'a t
+  val clear : 'a t -> unit
+  val reset : 'a t -> unit
+
+  val copy : 'a t -> 'a t
+  val add : 'a t -> key -> 'a -> unit
+  val remove : 'a t -> key -> unit
+  val find : 'a t -> key -> 'a
+  val find_opt : 'a t -> key -> 'a option
+
+  val find_all : 'a t -> key -> 'a list
+  val replace : 'a t -> key -> 'a -> unit
+  val mem : 'a t -> key -> bool
+  val iter : (key -> 'a -> unit) -> 'a t -> unit
+  val filter_map_inplace: (key -> 'a -> 'a option) -> 'a t -> unit
+
+  val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+  val length : 'a t -> int
+  val stats: 'a t -> Hashtbl.statistics
+end
+
 open Obj (* Recover polymorphism from standard monomorphic (Weak)Hashtbl *)
-module Make (H: Hashtbl.HashedType) : Hashtbl.S with type key = H.t = struct
+module Make (H: HashedType) : S with type key = H.t = struct
   type box = H.t Weak.t
   let enbox k = let w = Weak.create 1 in Weak.set w 0 (Some k); w
   let unbox bk = Weak.get bk 0
