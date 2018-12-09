@@ -173,14 +173,14 @@ let next node = node.next
 let prev node = node.prev
 
 let skip node idx =
-  let m = if idx > 0 then -1 else 1 in
+  let f = if idx > 0 then next else prev in
   let rec loop idx n =
     if idx == 0 then
       n
     else
-      loop (idx + m) n.next
+      loop (idx - 1) (f n)
   in
-  loop idx node
+loop (abs idx) node
 
 let rev node =
   let rec loop next n =
