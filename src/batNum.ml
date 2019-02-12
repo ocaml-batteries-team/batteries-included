@@ -108,10 +108,10 @@ let of_float_string a =
     else add ipart fpart
   with Not_found -> of_string a
 
-                    (**T
-                       of_float_string "2.5" = of_string "5/2"
-                       of_float_string "-2.5" = of_string "-5/2"
-                       of_float_string "-2.1" = of_string "-21/10"
-                       of_float_string "2." = of_string "2"
-                       of_float_string ".5" = of_string "1/2"
-                    *)
+(*$T
+   equal (of_float_string "2.5") (of_string "5/2")
+   equal (of_float_string "-2.5") (of_string "-5/2")
+   equal (of_float_string "-2.1") (of_string "-21/10")
+   equal (of_float_string "2.") (of_string "2")
+   equal (of_float_string ".5") (of_string "1/2")
+*)
