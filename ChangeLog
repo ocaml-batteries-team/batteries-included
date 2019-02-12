@@ -3,7 +3,10 @@ Changelog
 
 ## NEXT_RELEASE
 
-
+- fix `BatNum.of_float_string` on inputs between -1 and 0:
+  "-0.5" or "-.5" would be interpreted as "0.5" or ".5".
+  (Gabriel Scherer, report by Marcel Hark)
+  #886, #887
 
 ## v2.9.0 (minor release)
 
