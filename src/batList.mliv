@@ -703,6 +703,16 @@ val span : ('a -> bool) -> 'a list -> 'a list * 'a list
     @since 2.1
 *)
 
+val fold_while : ('a -> bool) -> ('b -> 'a -> 'b) -> 'b -> 'a list ->
+  'b * 'a list
+(** [fold_while p f init l], accumulates elements [x] of list [l] using
+    function [f], as long as predicate [p x] holds.
+    At the end, the accumulated value along with the remaining part
+    of the list are returned.
+
+    @since NEXT_RELEASE
+*)
+
 val nsplit : ('a -> bool) -> 'a list -> 'a list list
 (** [nsplit], applied to a predicate [p] and a list [xs], returns a
     list of lists. [xs] is split when [p x] is true and [x] is excluded

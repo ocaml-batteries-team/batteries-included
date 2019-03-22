@@ -348,6 +348,22 @@ let span p li =
   (span ((=) 2) [2; 2])       ([2; 2],[])
 *)
 
+let fold_while p f init li =
+  let rec loop acc = function
+    | [] -> (acc, [])
+    | (x :: xs) as l ->
+      if p x then loop (f acc x) xs
+      else (acc, l) in
+  loop init li
+
+(*$= fold_while
+  (fold_while ((=) 3) (fun acc x -> acc + x) 0 [3;3;4;3;3])  (6,[4;3;3])
+  (fold_while ((=) 3) (fun acc x -> acc + x) 0 [3])          (3,[])
+  (fold_while ((=) 3) (fun acc x -> acc + x) 0 [4])          (0,[4])
+  (fold_while ((=) 3) (fun acc x -> acc + x) 0 [])           (0,[])
+  (fold_while ((=) 2) (fun acc x -> acc + x) 0 [2; 2])       (4,[])
+*)
+
 let nsplit p = function
   | [] -> []
   (* note that returning [] on empty inputs is an arbitrary choice
