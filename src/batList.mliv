@@ -702,11 +702,9 @@ val span : ('a -> bool) -> 'a list -> 'a list * 'a list
 
     @since 2.1
 *)
-
-val fold_while : ('a -> bool) -> ('b -> 'a -> 'b) -> 'b -> 'a list ->
-  'b * 'a list
+val fold_while : ('acc -> 'a -> bool) -> ('acc -> 'a -> 'acc) -> 'acc -> 'a list -> 'acc * 'a list
 (** [fold_while p f init l], accumulates elements [x] of list [l] using
-    function [f], as long as predicate [p x] holds.
+    function [f], as long as predicate [p acc x] holds.
     At the end, the accumulated value along with the remaining part
     of the list are returned.
 
