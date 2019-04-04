@@ -3,6 +3,11 @@ Changelog
 
 ## NEXT_RELEASE
 
+- added BatList.fold_while : ('acc -> 'a -> bool) -> ('acc -> 'a -> 'acc) ->
+                             'acc -> 'a list -> 'acc * 'a list
+  #889
+  (Francois Berenger, Thibault Suzanne)
+
 - fix `BatNum.of_float_string` on inputs between -1 and 0:
   "-0.5" or "-.5" would be interpreted as "0.5" or ".5".
   (Gabriel Scherer, report by Marcel Hark)
