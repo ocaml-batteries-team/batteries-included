@@ -260,8 +260,8 @@ val index_after_n :  char -> int -> string -> int
 (** [index_after_n chr n str] returns the index of the character that
     comes immediately after the [n]-th occurrence of [chr] in [str].
 
-    - {b Occurences are numbered from 1}: [n] = 1 returns the index of
-      the character located immediately after the first occurence of
+    - {b Occurrences are numbered from 1}: [n] = 1 returns the index of
+      the character located immediately after the first occurrence of
       [chr].
     - [n] = 0 always returns [0].
     - If the [n]-th occurrence of [chr] is the last character of
@@ -691,7 +691,7 @@ val replace : str:string -> sub:string -> by:string -> bool * string
 (** [replace ~str ~sub ~by] returns a tuple consisting of a boolean
     and a string where the first occurrence of the string [sub]
     within [str] has been replaced by the string [by]. The boolean
-    is true if a subtitution has taken place.
+    is true if a substitution has taken place.
 
     Example: [String.replace "foobarbaz" "bar" "rab" = (true, "foorabbaz")]
 *)
@@ -790,7 +790,7 @@ val cut_on_char : char -> int -> string -> string
    {b Remark:} [cut_on_char] can return the empty string. Examples of this
    behaviour are [cut_on_char ',' 1 "foo,,bar"] and [cut_on_char ',' 0 ",foo"].
 
-   @raise Not_found if there are strictly less than [n] occurences of [chr] in str.
+   @raise Not_found if there are strictly less than [n] occurrences of [chr] in str.
    @raise Invalid_argument if [n < 0].
 
    @since 2.9.0
@@ -1001,7 +1001,7 @@ end (* String.Exceptionless *)
     Read-only strings may then be safely shared and distributed.
 
     @since 2.8.0 the interface and implementation of the Cap
-    module changed to accomodate the -safe-string transition. OCaml
+    module changed to accommodate the -safe-string transition. OCaml
     now uses two distinct types for mutable and immutable string,
     which is a good design but is not as expressive as the present Cap
     interface, and actually makes implementing Cap harder than it

@@ -57,7 +57,7 @@ val read_all : input -> string
 (** read all the contents of the input until [No_more_input] is raised. *)
 
 val pipe : unit -> input * unit output
-(** Create a pipe between an input and an ouput. Data written from
+(** Create a pipe between an input and an output. Data written from
     the output can be read from the input. *)
 
 val nread : input -> int -> string

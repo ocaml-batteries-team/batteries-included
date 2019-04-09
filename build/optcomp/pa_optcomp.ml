@@ -78,7 +78,7 @@ let add_include_dir dir = dirs := dir :: !dirs
 
 module String_set = Set.Make(String)
 
-(* All depencies of the file being parsed *)
+(* All dependencies of the file being parsed *)
 let dependencies = ref String_set.empty
 
 (* Where to write dependencies *)
@@ -302,7 +302,7 @@ let rec parse_eol stream =
     | _ ->
         Loc.raise loc (Stream.Error "end of line expected")
 
-(* Return wether a keyword can be interpreted as an identifier *)
+(* Return whether a keyword can be interpreted as an identifier *)
 let keyword_is_id str =
   let rec aux i =
     if i = String.length str then
@@ -516,13 +516,13 @@ type state = {
   (* Input stream *)
 
   mutable bol : bool;
-  (* Wether we are at the beginning of a line *)
+  (* Whether we are at the beginning of a line *)
 
   mutable stack : context list;
   (* Nested contexts *)
 
   on_eoi : Gram.Token.t * Loc.t -> Gram.Token.t * Loc.t;
-  (* Eoi handler, it is used to restore the previous sate on #include
+  (* Eoi handler, it is used to restore the previous state on #include
      directives *)
 }
 

@@ -85,7 +85,7 @@ struct
    *   It is slightly faster when benchmarking construction/deconstruction
    *   even with dummy annotations.
 
-   * In many places, it looks like functions are defined twice in slighly
+   * In many places, it looks like functions are defined twice in slightly
    * different versions. This is for performance reasons, to avoid higher
    * order calls (made everything 30% slower on my tests).
   *)
@@ -735,7 +735,7 @@ struct
   (*            lookup               *)
   (*---------------------------------*)
   (* This is a simplification of splitTree that avoids rebuilding the tree
-   * two trees aroud the elements being looked up
+   * two trees around the elements being looked up
    * But you can't just find the element, so instead these functions find the
    * element _and_ the measure of the elements of the current node that are on
    * the left of the element.

@@ -50,7 +50,7 @@
     As most data structures in Batteries can be enumerated and built
     from enumerations, these operations may be used also on lists,
     arrays, hashtables, etc. When designing a new data structure, it
-    is usuallly a good idea to allow enumeration and construction
+    is usually a good idea to allow enumeration and construction
     from an enumeration.
 
     {b Note} Enumerations are not thread-safe. You should not attempt
@@ -792,7 +792,7 @@ val compare : ('a -> 'a -> int) -> 'a t -> 'a t -> int
 *)
 
 val ord : ('a -> 'a -> BatOrd.order) -> 'a t -> 'a t -> BatOrd.order
-(** Same as [compare] but returning a {!BatOrd.order} instead of an interger. *)
+(** Same as [compare] but returning a {!BatOrd.order} instead of an integer. *)
 
 val equal : ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
 (** [equal eq a b] returns [true] when [a] and [b] contain

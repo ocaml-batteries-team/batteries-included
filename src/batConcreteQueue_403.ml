@@ -31,7 +31,7 @@ let filter_inplace f queue =
        loop (length + 1) cons next
   in
   let first = find_next queue.first in
-  (* returning a pair is unecessary, the writes could be made at the
+  (* returning a pair is unnecessary, the writes could be made at the
      end of 'loop', but the present style makes it obvious that all
      three writes are performed atomically, without allocation,
      function call or return (yield points) in between, guaranteeing

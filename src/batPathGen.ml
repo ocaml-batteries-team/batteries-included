@@ -316,7 +316,7 @@ module type PathType = sig
   (** = {!of_string} *)
 
   (** {6 Name related functions}
-      These funtions do not accept empty paths, i.e. [\[\]], [\[""\]] or [\["C:"\]].
+      These functions do not accept empty paths, i.e. [\[\]], [\[""\]] or [\["C:"\]].
   *)
 
   val name : t -> ustring
@@ -547,7 +547,7 @@ module Make = functor (S : StringType) -> struct
     let _, result = List.fold_left fold (S.length ss, []) !rev_separators in
     result
 
-  (* Returns true if windows and the arugment is letter-colon, false otherwise *)
+  (* Returns true if windows and the argument is letter-colon, false otherwise *)
   let is_win_disk_letter =
     if windows then
       let pars = BatParserCo.(>>>) S.Parse.letter (BatParserCo.exactly (S.lift_char ':')) in

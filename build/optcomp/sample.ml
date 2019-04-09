@@ -77,7 +77,7 @@ type t = private int
 type t
 #endif
 
-(* It is also possible to split the expression over multible lines by
+(* It is also possible to split the expression over multiple lines by
    using parentheses: *)
 
 #let ocaml_major_version = fst ocaml_version
@@ -101,7 +101,7 @@ let x = 1
    is what is allowed:
 
    - litterals booleans, integers, strings and characters:
-   - basic interger operations: +, -, /, *, mod
+   - basic integer operations: +, -, /, *, mod
    - value comparing: =, <>, <, >, <=, >=
    - maximum and minimum: max, min
    - basic boolean operations: or, ||, &&, not

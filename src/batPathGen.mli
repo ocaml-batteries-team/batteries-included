@@ -317,7 +317,7 @@ module type PathType = sig
   (** = {!of_string} *)
 
   (** {6 Name related functions}
-      These funtions do not accept empty paths, i.e. [\[\]], [\[""\]] or [\["C:"\]].
+      These functions do not accept empty paths, i.e. [\[\]], [\[""\]] or [\["C:"\]].
   *)
 
   val name : t -> ustring

@@ -3,7 +3,7 @@ open Gc
 
 let few_tests = 10
 let many_tests= 100000
-(* (*For comparaison, not part of Batteries.*)
+(* (*For comparison, not part of Batteries.*)
 let run_legacy number_of_runs =
 begin
   Gc.full_major ();

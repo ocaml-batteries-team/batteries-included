@@ -74,7 +74,7 @@ upstream opam repository curators may have made changes to the public
 opam files, to reflect new packaging best practices and policies. You
 should check for any change to the latest version's `opam` file; if
 there is any, it should probably be reproduced into our local `opam`
-file, and commited.
+file, and committed.
 
 Note that the local file may have changed during the release lifetime
 to reflect new dependencies or changes in packaging policies. These

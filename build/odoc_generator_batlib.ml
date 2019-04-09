@@ -102,7 +102,7 @@ let has_parent a ~parent:b =
 let roots = ["Batteries"]
 
 let merge_info_opt a b =
-  verbose ("Merging informations");
+  verbose ("Merging information");
   if a <> b then
     begin
       verbose ("1: "^(string_of_info_opt a));
