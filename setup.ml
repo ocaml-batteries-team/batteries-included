@@ -2653,7 +2653,7 @@ module OASISFindlib = struct
           (fun lib_name status mp ->
              match status with
                | `Solved _ ->
-                 (* Solved initialy, no need to go further *)
+                 (* Solved initially, no need to go further *)
                  mp
                | `Unsolved _ ->
                  let _, mp = solve SetString.empty mp lib_name "<none>" in

@@ -37,7 +37,7 @@
 open Hashtbl
 
 type ('a, 'b) t = ('a, 'b) Hashtbl.t
-(** A Hashtable wth keys of type 'a and values 'b *)
+(** A Hashtable with keys of type 'a and values 'b *)
 
 (**{6 Base operations}*)
 

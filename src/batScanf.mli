@@ -79,7 +79,7 @@
     However, it is also largely different, simpler, and yet more powerful:
     the formatted input functions are higher-order functionals and the
     parameter passing mechanism is just the regular function application not
-    the variable assigment based mechanism which is typical for formatted
+    the variable assignment based mechanism which is typical for formatted
     input in imperative languages; the OCaml format strings also feature
     useful additions to easily define complex tokens; as expected within a
     functional programming language, the formatted input functions also
@@ -224,7 +224,7 @@ val bscanf : Scanning.scanbuf -> ('a, 'b, 'c, 'd) scanner;;
 
     Matching {e any} amount of whitespace, a space in the format string
     also matches no amount of whitespace at all; hence, the call [bscanf ib
-    "Price = %d $" (fun p -> p)] succeds and returns [1] when reading an
+    "Price = %d $" (fun p -> p)] succeeds and returns [1] when reading an
     input with various whitespace in it, such as [Price = 1 $],
     [Price  =  1    $], or even [Price=1$]. *)
 
@@ -321,7 +321,7 @@ val bscanf : Scanning.scanbuf -> ('a, 'b, 'c, 'd) scanner;;
 
     Notes:
 
-    - as mentioned above, a [%s] convertion always succeeds, even if there is
+    - as mentioned above, a [%s] conversion always succeeds, even if there is
       nothing to read in the input: it simply returns [""].
 
     - in addition to the relevant digits, ['_'] characters may appear
@@ -415,7 +415,7 @@ val kscanf :
 val bscanf_format :
   Scanning.scanbuf -> ('a, 'b, 'c, 'd, 'e, 'f) format6 ->
   (('a, 'b, 'c, 'd, 'e, 'f) format6 -> 'g) -> 'g;;
-(** [bscanf_format ib fmt f] reads a format string token from the scannning
+(** [bscanf_format ib fmt f] reads a format string token from the scanning
     buffer [ib], according to the given format string [fmt], and applies [f] to
     the resulting format string value.
     @raise Scan_failure if the format string value read does not have the

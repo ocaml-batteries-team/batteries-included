@@ -525,7 +525,7 @@ val insert : 'a array -> 'a -> int -> 'a array
 
 val print : ?first:string -> ?last:string -> ?sep:string ->
   ('a, 'b) BatIO.printer -> ('a t, 'b) BatIO.printer
-(** Print the contents of an array, with [~first] preceeding the first
+(** Print the contents of an array, with [~first] preceding the first
     item (default: "\[|"), [~last] following the last item (default:
     "|\]") and [~sep] separating items (default: "; ").  A printing
     function must be provided to print the items in the array.

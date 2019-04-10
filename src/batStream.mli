@@ -117,7 +117,7 @@ val foldr : ('a -> 'b lazy_t -> 'b) -> 'b -> 'a t -> 'b
 (** [foldr f init stream] is a lazy fold_right. Unlike the normal fold_right,
     the accumulation parameter of [f elt accu] is lazy, hence it can decide
     not to force the evaluation of [accu] if the current element [elt] can
-    determin the result by itself. *)
+    determine the result by itself. *)
 
 val fold : ('a -> 'a -> 'a * bool option) -> 'a t -> 'a
 (** [fold] is [foldl] without initialization value, where the first

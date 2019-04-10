@@ -53,7 +53,7 @@ external code : t -> int = "%identity"
 
 (** [chr n] returns the Unicode character with the code number [n].
     If n does not lay in the valid range of Unicode or designates a
-    surrogate charactor, raises Out_of_range *)
+    surrogate character, raises Out_of_range *)
 val chr : int -> t
 
 (** Equality by code point comparison *)

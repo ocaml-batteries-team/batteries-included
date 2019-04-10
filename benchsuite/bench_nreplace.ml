@@ -117,7 +117,7 @@ let nreplace_thelema2 ~str ~sub ~by =
     loop_copy 0 0 idxes ;
     newstr
 
-(* Independantly, MadRoach implemented the same idea with less luck aparently *)
+(* Independently, MadRoach implemented the same idea with less luck apparently *)
 let nreplace_madroach ~str ~sub ~by =
   let strlen = String.length str
   and sublen = String.length sub

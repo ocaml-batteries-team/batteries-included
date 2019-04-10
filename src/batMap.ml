@@ -28,7 +28,7 @@
    operations (both providing their own way to access the ordering
    information, and to possibly pass it along with the result).
 
-   I tried to keep the interface mininal with respect to ordering
+   I tried to keep the interface minimal with respect to ordering
    information : function that do not need the ordering (they do not
    need to find the position of a specific key in the map) do not have
    a 'cmp' parameter.
@@ -408,7 +408,7 @@ module Concrete = struct
     library's version of [Map] easier to track, even if the
     result is a tad slower.*)
   (* [filter{,i,_map} f t cmp] do not use [cmp] on [t], but only to
-     build the result map. The unusual parameter order was choosed to
+     build the result map. The unusual parameter order was chosen to
      reflect this.  *)
   let filterv f t cmp =
     foldi (fun k a acc -> if f a then add k a cmp acc else acc) t empty

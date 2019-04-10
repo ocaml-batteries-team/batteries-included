@@ -121,7 +121,7 @@ val length : 'a t -> int
 val balance : 'a t -> 'a t
 (** [balance r] returns a balanced copy of the [r] vect. Note that vects are
     automatically rebalanced when their height exceeds a given threshold, but
-    [balance] allows to invoke that operation explicity. *)
+    [balance] allows to invoke that operation explicitly. *)
 
 val concat : 'a t -> 'a t -> 'a t
 (** [concat r u] concatenates the [r] and [u] vects. In general, it operates
@@ -475,7 +475,7 @@ val length : 'a t -> int
 val balance : 'a t -> 'a t
 (** [balance r] returns a balanced copy of the [r] vect. Note that vects are
     automatically rebalanced when their height exceeds a given threshold, but
-    [balance] allows to invoke that operation explicity. *)
+    [balance] allows to invoke that operation explicitly. *)
 
 val concat : 'a t -> 'a t -> 'a t
 (** [concat r u] concatenates the [r] and [u] vects. In general, it operates

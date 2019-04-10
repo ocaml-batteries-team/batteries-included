@@ -73,7 +73,7 @@ let test_equal () =
 let test_unite_shuffle () =
   (* testing the unification in all possible orders of n urefs
      unfornatunaly, since this is an imperative structure where
-     you can't undo operations, this is slighlty complicated *)
+     you can't undo operations, this is slightly complicated *)
 
   let pick_one n l f =
     assert (n <> 0);

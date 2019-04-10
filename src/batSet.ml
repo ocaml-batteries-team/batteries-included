@@ -648,7 +648,7 @@ struct
   let find x t = Concrete.find Ord.compare x (impl_of_t t)
   let exists f t = Concrete.exists f (impl_of_t t)
   let for_all f t = Concrete.for_all f (impl_of_t t)
-  let paritition f t =
+  let partition f t =
     let l, r = Concrete.partition Ord.compare f (impl_of_t t) in
     (t_of_impl l, t_of_impl r)
 

@@ -448,7 +448,7 @@ then it is only available under OCaml 4.03.0.
 - basic .merlin file for merlin users
 - BatDeque.eq function to compare Deques by content
 - BatteriesExceptionless
-- More explicit overridding of ocamlbuild rules, use batteries.mllib
+- More explicit overriding of ocamlbuild rules, use batteries.mllib
 - Add Kahan summation (numerically-accurate sum of floats) to List,Array,Enum
 - Add BatOption.some
 - (text) improve element indexing in BatList's mli documentation

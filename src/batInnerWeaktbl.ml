@@ -45,7 +45,7 @@ module Stack = struct
       let len = length s in
       if len >= s.length / 3 && len < s.length * 2 / 3 then push x s else
         let len' = min (len * 3 / 2 + 2) (Sys.max_array_length -1) in
-        if len' = len then failwith "Weaktbl.Stack.push: stack cannnot grow"
+        if len' = len then failwith "Weaktbl.Stack.push: stack cannot grow"
         else
           let data' = Weak.create len' in
           Weak.blit s.data 0 data' 0 s.cursor;

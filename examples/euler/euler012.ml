@@ -6,7 +6,7 @@ let num_div x =
     if x mod i = 0 then incr count
   done;
   count := !count * 2; (* every factor < max_test has a corresponding one > *)
-  if x mod max_test = 0 then decr count; (* dont double count root if x square *)
+  if x mod max_test = 0 then decr count; (* don't double count root if x square *)
   !count
 
 let rec loop i n =

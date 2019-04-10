@@ -383,7 +383,7 @@ val rest : string =
 Expanding Variables in User Input
 
 (* As far as I know there is no way to do this in OCaml due to
-   type-safety contraints built into the OCaml compiler -- it may be
+   type-safety constraints built into the OCaml compiler -- it may be
    feasible with *much* juju, but don't expect to see this anytime
    soon...
 
@@ -551,7 +551,7 @@ Escaping Characters
 ** interpreter or the compilers.
 **
 ** The "#load" line is only needed if you are running this in the
-** command interpretter.
+** command interpreter.
 **
 ** If you are using either of the ocaml compilers, you will need
 ** to remove the "#load" line and link in str.cmxa in the final

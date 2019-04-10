@@ -69,7 +69,7 @@ val succ : float -> float
     equal to [x], due to rounding.*)
 
 val pred : float -> float
-(** Substract [1.] from a floating number. Note that, as per
+(** Subtract [1.] from a floating number. Note that, as per
     IEEE 754, if [x] is a large enough float number, [pred x]
     might be equal to [x], due to rounding.*)
 
@@ -407,7 +407,7 @@ sig
       equal to [x], due to rounding.*)
 
   val pred : float -> float
-  (** Substract [1.] from a floating number. Note that, as per
+  (** Subtract [1.] from a floating number. Note that, as per
       IEEE 754, if [x] is a large enough float number, [pred x]
       might be equal to [x], due to rounding.*)
 
