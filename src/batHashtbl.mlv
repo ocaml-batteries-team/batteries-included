@@ -174,10 +174,15 @@ let map_inplace f h =
   in
   BatArray.modify loop (h_conv h).data
 
-(*$= map_inplace & ~printer:(IO.to_string (List.print Int.print))
+(* Helper functions to test hashtables which values are integers: *)
+(*$inject
+  let printer = IO.to_string (List.print Int.print)
+  let to_sorted_list h = values h |> List.of_enum |> List.sort Int.compare
+*)
+(*$= map_inplace & ~printer
   (let h = Enum.combine (1 -- 5, 1 -- 5) |> of_enum in \
    map_inplace (fun _ x -> x+1) h ; \
-   values h |> List.of_enum |> List.sort Int.compare) [2;3;4;5;6]
+   to_sorted_list h) [2;3;4;5;6]
 *)
 
 let remove_all h key =
@@ -320,10 +325,10 @@ let filteri_inplace f h =
       ) in
   BatArray.modify loop hc.data
 
-(*$= filteri_inplace & ~printer:(IO.to_string (List.print Int.print))
+(*$= filteri_inplace & ~printer
   (let h = Enum.combine (1 -- 5, 1 -- 5) |> of_enum in \
    filteri_inplace (fun _ x -> x>3) h ; \
-   values h |> List.of_enum |> List.sort Int.compare) [4; 5]
+   to_sorted_list h) [4; 5]
 *)
 
 
@@ -334,7 +339,7 @@ let filter_inplace f h = filteri_inplace (fun _k a -> f a) h
 (*$= filter_inplace & ~printer:(IO.to_string (List.print Int.print))
   (let h = Enum.combine (1 -- 5, 1 -- 5) |> of_enum in \
    filter_inplace (fun x -> x>3) h ; \
-   values h |> List.of_enum |> List.sort Int.compare) [4; 5]
+   to_sorted_list h) [4; 5]
 *)
 
 
@@ -357,10 +362,11 @@ let filter_map_inplace f h =
        | Some v' -> Cons (k, v', loop next)) in
   BatArray.modify loop hc.data
 
-(*$= filter_map_inplace & ~printer:(IO.to_string (List.print Int.print))
+(*$= filter_map_inplace & ~printer
   (let h = Enum.combine (1 -- 5, 1 -- 5) |> of_enum in \
    filter_map_inplace (fun _ x -> if x>3 then Some (x+1) else None) h ; \
-   values h |> List.of_enum |> List.sort Int.compare) [5; 6]
+   to_sorted_list h) [5; 6]
+*)
 *)
 
 
