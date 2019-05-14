@@ -46,6 +46,13 @@ val self_init : unit -> unit
 (** Initialize the generator with a more-or-less random seed chosen
     in a system-dependent way. *)
 
+val full_self_init : int -> unit
+(** [full_self_init n] initialize the generator with [full_init]
+    using [n] bytes read from /dev/urandom; each individual byte being
+    converted to an integer.
+    @raise Invalid_arg if [n] <= 0.
+    @raise Failure if /dev/urandom is not available on your system. *)
+
 val bits : unit -> int
 (** Return 30 random bits in a nonnegative integer. *)
 

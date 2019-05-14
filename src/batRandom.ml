@@ -33,6 +33,23 @@ let float     = Random.float
 let bool      = Random.bool
 let char ()   = Char.chr (int 256)
 
+let with_in_file fn f =
+  let input = open_in_bin fn in
+  let res = f input in
+  close_in input;
+  res
+
+let full_self_init n =
+  if n <= 0 then invalid_arg "BatRandom.full_self_init";
+  let prng_fn = "/dev/urandom" in
+  if not (Sys.file_exists prng_fn) then
+    failwith ("BatRandom.full_self_init: no such file: " ^ prng_fn);
+  let rand_ints =
+    with_in_file prng_fn (fun input ->
+        Array.init n (fun _ -> input_byte input)
+      ) in
+  full_init rand_ints
+
 let full_range_int =
   if Sys.word_size = 32 then (* need 31-bits of entropy, bits() gives 30 *)
     fun () -> if bool () then - (bits ())-1 else bits ()
