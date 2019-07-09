@@ -70,6 +70,8 @@ module Tuple2 = struct
     let comp = cmp1 a c in
     if comp <> 0 then comp else cmp2 b d
 
+  let split = BatList.split
+
   open BatOrd
   let eq eq1 eq2 =
     fun (t1, t2) (t1', t2') ->

@@ -120,6 +120,8 @@ module Tuple2 : sig
 
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ('a * 'b) -> ('a * 'b) -> int
 
+  val split : ('a * 'b) list -> 'a list * 'b list
+
   include BatEnum.Enumerable with type 'a enumerable = 'a * 'a
 
   open BatOrd
@@ -179,6 +181,8 @@ module Tuple3 : sig
     -> 'o BatIO.output -> ('a * 'a * 'a) -> unit
 
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ?cmp3:('c -> 'c -> int) -> ('a * 'b * 'c) -> ('a * 'b * 'c) -> int
+
+  val split : ('a * 'b * 'c) list -> 'a list * 'b list * 'c list
 
   include BatEnum.Enumerable with type 'a enumerable = 'a * 'a * 'a
 
@@ -251,6 +255,8 @@ module Tuple4 : sig
     -> 'o BatIO.output -> ('a * 'a * 'a * 'a) -> unit
 
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ?cmp3:('c -> 'c -> int) -> ?cmp4:('d -> 'd -> int) -> ('a * 'b * 'c * 'd) -> ('a * 'b * 'c * 'd) -> int
+
+  val split : ('a * 'b * 'c * 'd) list -> 'a list * 'b list * 'c list * 'd list
 
   include BatEnum.Enumerable with type 'a enumerable = 'a * 'a * 'a * 'a
 
@@ -342,6 +348,8 @@ module Tuple5 : sig
     -> 'o BatIO.output -> ('a * 'a * 'a * 'a * 'a) -> unit
 
   val compare : ?cmp1:('a -> 'a -> int) -> ?cmp2:('b -> 'b -> int) -> ?cmp3:('c -> 'c -> int) -> ?cmp4:('d -> 'd -> int) -> ?cmp5:('e -> 'e -> int) -> ('a * 'b * 'c * 'd * 'e) -> ('a * 'b * 'c * 'd * 'e) -> int
+
+  val split : ('a * 'b * 'c * 'd * 'f) list -> 'a list * 'b list * 'c list * 'd list * 'f list
 
   include BatEnum.Enumerable with type 'a enumerable = 'a * 'a * 'a * 'a * 'a
 
