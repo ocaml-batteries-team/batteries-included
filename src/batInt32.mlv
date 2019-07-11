@@ -159,8 +159,8 @@ external of_string : string -> int32 = "caml_int32_of_string"
 ##V<4.5##let of_string_opt n = try Some (Int32.of_string n) with _ -> None
 external of_int64 : int64 -> int32 = "%int64_to_int32"
 external to_int64 : int32 -> int64 = "%int64_of_int32"
-external of_nativeint : nativeint -> int32 = "%int32_of_nativeint"
-external to_nativeint : int32 -> nativeint = "%int32_to_nativeint"
+external of_nativeint : nativeint -> int32 = "%nativeint_to_int32"
+external to_nativeint : int32 -> nativeint = "%nativeint_of_int32"
 
 external bits_of_float : float -> int32 = "caml_int32_bits_of_float"
 ##V>=4.3## "caml_int32_bits_of_float_unboxed" [@@unboxed] [@@noalloc]

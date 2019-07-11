@@ -175,12 +175,12 @@ external to_int64 : int32 -> int64 = "%int64_of_int32"
 (** Convert the given 32-bit integer (type [int32])
     to a 64-bit integer (type [int64]). *)
 
-external of_nativeint : nativeint -> int32 = "%int32_of_nativeint"
+external of_nativeint : nativeint -> int32 = "%nativeint_to_int32"
 (** Convert the given native integer (type [nativeint])
     to a 32-bit integer (type [int32]). On 64-bits platform
     the top 32 bits are lost. *)
 
-external to_nativeint : int32 -> nativeint = "%int32_to_nativeint"
+external to_nativeint : int32 -> nativeint = "%nativeint_of_int32"
 (** Convert the given 32-bit integer (type [int32]) to a
     native integer. *)
 
