@@ -20,11 +20,11 @@
  *)
 
 
+include Array
+
 type 'a t = 'a array
 type 'a enumerable = 'a t
 type 'a mappable = 'a t
-
-include Array
 
 ##V<4.2##let create_float n = make n 0.
 ##V<4.2##let make_float = create_float
