@@ -153,6 +153,8 @@ module Genarray =
 struct
   include Bigarray.Genarray
 
+##V>=4.8##let map_file = Unix.map_file
+
   let ofs e = ofs_of_layout (layout e)
 
 ##V<4.3##  let size_in_bytes arr =
@@ -314,6 +316,10 @@ let array1_of_genarray = Bigarray.array1_of_genarray
 module Array1 = struct
   include Bigarray.Array1
 
+##V>=4.8##let map_file fd ?pos kind layout shared dim =
+##V>=4.8##  Bigarray.array1_of_genarray
+##V>=4.8##    (Unix.map_file fd ?pos kind layout shared [|dim|])
+
   let ofs e = ofs_of_layout (layout e)
 
 ##V<4.3##  let size_in_bytes arr =
@@ -371,6 +377,10 @@ end
 module Array2 = struct
   include Bigarray.Array2
 
+##V>=4.8##let map_file fd ?pos kind layout shared dim1 dim2 =
+##V>=4.8##  Bigarray.array2_of_genarray
+##V>=4.8##    (Unix.map_file fd ?pos kind layout shared [|dim1; dim2|])
+
   let ofs e = ofs_of_layout (layout e)
 
 ##V<4.3##  let size_in_bytes arr =
@@ -424,6 +434,10 @@ module Array2 = struct
 end
 module Array3 = struct
   include Bigarray.Array3
+
+##V>=4.8##let map_file fd ?pos kind layout shared dim1 dim2 dim3 =
+##V>=4.8##  Bigarray.array3_of_genarray
+##V>=4.8##    (Unix.map_file fd ?pos kind layout shared [|dim1; dim2; dim3|])
 
   let ofs e = ofs_of_layout (layout e)
 
