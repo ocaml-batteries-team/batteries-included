@@ -160,6 +160,41 @@ type control = Gc.control =
 ##V>=4.3##        1 and 50.
 ##V>=4.3##        Default: 1. @since 2.5.0 and OCaml 4.03.0 *)
 ##V>=4.3##
+
+##V>=4.8##    custom_major_ratio : int;
+##V>=4.8##    (** Target ratio of floating garbage to major heap size for
+##V>=4.8##        out-of-heap memory held by custom values located in the major
+##V>=4.8##        heap. The GC speed is adjusted to try to use this much memory
+##V>=4.8##        for dead values that are not yet collected. Expressed as a
+##V>=4.8##        percentage of major heap size. The default value keeps the
+##V>=4.8##        out-of-heap floating garbage about the same size as the
+##V>=4.8##        in-heap overhead.
+##V>=4.8##        Note: this only applies to values allocated with
+##V>=4.8##        [caml_alloc_custom_mem] (e.g. bigarrays).
+##V>=4.8##        Default: 44.
+##V>=4.8##        @since NEXT_RELEASE and OCaml 4.08.0 *)
+
+##V>=4.8##    custom_minor_ratio : int;
+##V>=4.8##    (** Bound on floating garbage for out-of-heap memory held by
+##V>=4.8##        custom values in the minor heap. A minor GC is triggered when
+##V>=4.8##        this much memory is held by custom values located in the minor
+##V>=4.8##        heap. Expressed as a percentage of minor heap size.
+##V>=4.8##        Note: this only applies to values allocated with
+##V>=4.8##        [caml_alloc_custom_mem] (e.g. bigarrays).
+##V>=4.8##        Default: 100.
+##V>=4.8##        @since NEXT_RELEASE and OCaml 4.08.0 *)
+
+##V>=4.8##    custom_minor_max_size : int;
+##V>=4.8##    (** Maximum amount of out-of-heap memory for each custom value
+##V>=4.8##        allocated in the minor heap. When a custom value is allocated
+##V>=4.8##        on the minor heap and holds more than this many bytes, only
+##V>=4.8##        this value is counted against [custom_minor_ratio] and the
+##V>=4.8##        rest is directly counted against [custom_major_ratio].
+##V>=4.8##        Note: this only applies to values allocated with
+##V>=4.8##        [caml_alloc_custom_mem] (e.g. bigarrays).
+##V>=4.8##        Default: 8192 bytes.
+##V>=4.8##        @since NEXT_RELEASE and OCaml 4.08.0 *)
+##V>=4.8##
   }
 (** The GC parameters are given as a [control] record.  Note that
     these parameters can also be initialised by setting the
