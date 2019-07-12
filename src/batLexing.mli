@@ -85,6 +85,10 @@ type lexbuf = Lexing.lexbuf =
     accurate, they must be initialised before the first use of the
     lexbuf, and updated by the relevant lexer actions (i.e. at each
     end of line -- see also [new_line]).
+
+    Note: Batteries does not currently support the ~with_positions:false
+    mode available since OCaml 4.08 to disable position tracking. If you
+    need this, please get in touch with the Batteries maintainers.
 *)
 
 val from_input   : BatIO.input   -> lexbuf

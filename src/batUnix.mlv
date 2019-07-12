@@ -22,6 +22,9 @@
 
 include Unix
 
+##V<4.8##external link : string -> string -> unit = "unix_link"
+##V>=4.8##external link : ?follow:bool -> string -> string -> unit = "unix_link"
+
 ##V<4.2##let write_substring = write
 ##V<4.2##let single_write_substring = single_write
 ##V<4.2##let send_substring = send

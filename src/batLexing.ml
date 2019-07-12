@@ -22,6 +22,10 @@
 
 open BatIO
 include Lexing
+
+let from_string s : lexbuf = Lexing.from_string s
+let from_function f : lexbuf = Lexing.from_function f
+
 let from_input inp =
   from_function (fun s n -> try input inp s 0 n with No_more_input -> 0)
 
