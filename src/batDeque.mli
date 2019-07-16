@@ -68,7 +68,7 @@ val rev : 'a dq -> 'a dq
 (** [rev dq] reverses [dq]. O(1) *)
 
 val is_empty : 'a dq -> bool
-(** [is_empty dq] returns [false] iff [dq] has no elements. O(1) *)
+(** [is_empty dq] returns [true] iff [dq] has no elements. O(1) *)
 
 val at : ?backwards:bool -> 'a dq -> int -> 'a option
 (** [at ~backwards dq k] returns the [k]th element of [dq], from
