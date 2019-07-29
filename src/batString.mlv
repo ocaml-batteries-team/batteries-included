@@ -612,12 +612,13 @@ let fold_left f init str =
 *)
 
 let count_char str char =
-  fold_left (fun acc c ->
-      if c = char then
-        acc + 1
-      else
-        acc
-    ) 0 str
+  let count = ref 0 in
+  let n = length str in
+  for i = 0 to n - 1 do
+    if (unsafe_get str i) = char then
+      incr count
+  done;
+  !count
 (*$T count_char
   count_char "abc" 'd' = 0
   count_char "" 'd' = 0
