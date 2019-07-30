@@ -581,6 +581,11 @@ val exists : string -> string -> bool
     Example: [String.exists "foobarbaz" "obar" = true]
 *)
 
+val count_char : string -> char -> int
+(** [count_char str c] returns the number of times [c] is used in [str].
+ *)
+
+
 (** {6 Transformations}*)
 
 val lchop : ?n:int -> string -> string
@@ -1181,6 +1186,8 @@ sig
   val starts_with : [> `Read] t -> [> `Read] t -> bool
 
   val exists : [> `Read] t -> [> `Read] t -> bool
+
+  val count_char : [> `Read] t -> char -> int
 
   (** {6 Transformations}*)
 
