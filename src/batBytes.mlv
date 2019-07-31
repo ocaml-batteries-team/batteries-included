@@ -80,3 +80,36 @@ include Bytes
 ##V<4.5##let rindex_opt b c = try Some (rindex b c) with _ -> None
 ##V<4.5##let index_from_opt b i c = try Some (index_from b i c) with _ -> None
 ##V<4.5##let rindex_from_opt b i c = try Some (rindex_from b i c) with _ -> None
+
+##V>=4.07##let to_seq = to_seq
+##V>=4.07##let to_seqi = to_seqi
+##V>=4.07##let of_seq = of_seq
+
+##V>=4.08##let get_uint8 = get_uint8
+##V>=4.08##let get_int8 = get_int8
+##V>=4.08##let get_uint16_ne = get_uint16_ne
+##V>=4.08##let get_uint16_be = get_uint16_be
+##V>=4.08##let get_uint16_le = get_uint16_le
+##V>=4.08##let get_int16_ne = get_int16_ne
+##V>=4.08##let get_int16_be = get_int16_be
+##V>=4.08##let get_int16_le = get_int16_le
+##V>=4.08##let get_int32_ne = get_int32_ne
+##V>=4.08##let get_int32_be = get_int32_be
+##V>=4.08##let get_int32_le = get_int32_le
+##V>=4.08##let get_int64_ne = get_int64_ne
+##V>=4.08##let get_int64_be = get_int64_be
+##V>=4.08##let get_int64_le = get_int64_le
+##V>=4.08##let set_uint8 = set_uint8
+##V>=4.08##let set_int8 = set_int8
+##V>=4.08##let set_uint16_ne = set_uint16_ne
+##V>=4.08##let set_uint16_be = set_uint16_be
+##V>=4.08##let set_uint16_le = set_uint16_le
+##V>=4.08##let set_int16_ne = set_int16_ne
+##V>=4.08##let set_int16_be = set_int16_be
+##V>=4.08##let set_int16_le = set_int16_le
+##V>=4.08##let set_int32_ne = set_int32_ne
+##V>=4.08##let set_int32_be = set_int32_be
+##V>=4.08##let set_int32_le = set_int32_le
+##V>=4.08##let set_int64_ne = set_int64_ne
+##V>=4.08##let set_int64_be = set_int64_be
+##V>=4.08##let set_int64_le = set_int64_le
