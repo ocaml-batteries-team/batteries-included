@@ -53,6 +53,8 @@ let memq = List.memq
 let mem_assq = List.mem_assq
 let mem_assoc = List.mem_assoc
 let rev_map2 = List.rev_map2
+##V>=4.07##let to_seq = List.to_seq
+##V>=4.07##let of_seq = List.of_seq
 (* ::VH:: END GLUE *)
 
 let rec compare_lengths la lb = match la, lb with
@@ -104,7 +106,8 @@ type 'a mut_list =  {
   mutable tl: 'a list
 }
 
-type 'a t = 'a list
+##V<4.08##type 'a t = 'a list
+##V>=4.08##type 'a t = 'a list = [] | (::) of 'a * 'a list
 type 'a enumerable = 'a t
 type 'a mappable = 'a t
 

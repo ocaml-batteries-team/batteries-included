@@ -57,7 +57,9 @@
     @author David Teller
 *)
 
-type 'a t = 'a list
+##V<4.08##type 'a t = 'a list
+##V>=4.08##type 'a t = 'a list = [] | (::) of 'a * 'a list
+
 (**The type of lists*)
 
 include BatEnum.Enumerable with type 'a enumerable = 'a t
@@ -324,7 +326,15 @@ val min_max : ?cmp:('a -> 'a -> int) -> 'a list -> 'a * 'a
     @raise Invalid_argument on an empty list.
 
     @since 2.1
- *)
+*)
+
+##V>=4.07##val to_seq : 'a list -> 'a Seq.t
+##V>=4.07##(** Iterate on the list
+##V>=4.07##    @since 4.07 *)
+
+##V>=4.07##val of_seq : 'a Seq.t -> 'a list
+##V>=4.07##(** Create a list from the iterator
+##V>=4.07##    @since 4.07 *)
 
 (** {6 Iterators on two lists} *)
 
@@ -1064,7 +1074,6 @@ module Labels : sig
     val assq : 'a -> ('a * 'b) list -> 'b option
   end
 end
-
 
 val ( @ ) : 'a list -> 'a list -> 'a list
   (** Tail recursive [List.append]. *)
