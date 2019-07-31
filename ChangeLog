@@ -3,6 +3,10 @@ Changelog
 
 ## NEXT_RELEASE
 
+- added LazyList.equal: ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
+  #811
+  (Marshall Abrams, review by Gabriel Scherer)
+
 - added BatList.fold_while : ('acc -> 'a -> bool) -> ('acc -> 'a -> 'acc) ->
                              'acc -> 'a list -> 'acc * 'a list
   #889
