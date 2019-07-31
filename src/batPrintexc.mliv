@@ -345,3 +345,6 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##
 ##V>=4.2##    @since 2.3.0 and OCaml 4.02.0
 ##V>=4.2##*)
+
+##V>=4.08##type t = exn = ..
+##V>=4.08##(** The type of exception values. *)
