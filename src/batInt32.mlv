@@ -168,8 +168,10 @@ external float_of_bits : int32 -> float = "caml_int32_float_of_bits"
 ##V>=4.3## "caml_int32_float_of_bits_unboxed" [@@unboxed] [@@noalloc]
 external format : string -> int32 -> string = "caml_int32_format"
 
-
-
+##V>=4.08##let unsigned_div = Int32.unsigned_div
+##V>=4.08##let unsigned_rem = Int32.unsigned_rem
+##V>=4.08##let unsigned_to_int = Int32.unsigned_to_int
+##V>=4.08##let unsigned_compare = Int32.unsigned_compare
 
 type bounded = t
 let min_num, max_num = min_int, max_int
