@@ -91,25 +91,54 @@ type lexbuf = Lexing.lexbuf =
     need this, please get in touch with the Batteries maintainers.
 *)
 
-val from_input   : BatIO.input   -> lexbuf
-(** Create a lexer buffer on the given input
-    [Lexing.from_input inp] returns a lexer buffer which reads
-    from the input [inp], at the current reading position. *)
+##V<4.08##val from_input   : BatIO.input   -> lexbuf
+##V<4.08##(** Create a lexer buffer on the given input
+##V<4.08##    [Lexing.from_input inp] returns a lexer buffer which reads
+##V<4.08##    from the input [inp], at the current reading position. *)
 
-val from_string : string -> lexbuf
-(** Create a lexer buffer which reads from
-    the given string. Reading starts from the first character in
-    the string. An end-of-input condition is generated when the
-    end of the string is reached. *)
+##V<4.08##val from_string : string -> lexbuf
+##V<4.08##(** Create a lexer buffer which reads from
+##V<4.08##    the given string. Reading starts from the first character in
+##V<4.08##    the string. An end-of-input condition is generated when the
+##V<4.08##    end of the string is reached. *)
 
-val from_function : (Bytes.t -> int -> int) -> lexbuf
-(** Create a lexer buffer with the given function as its reading method.
-    When the scanner needs more characters, it will call the given
-    function, giving it a byte sequence [s] and a byte
-    count [n]. The function should put [n] bytes or less in [s],
-    starting at byte number 0, and return the number of byte
-    provided. A return value of 0 means end of input. *)
+##V<4.08##val from_function : (Bytes.t -> int -> int) -> lexbuf
+##V<4.08##(** Create a lexer buffer with the given function as its reading method.
+##V<4.08##    When the scanner needs more characters, it will call the given
+##V<4.08##    function, giving it a byte sequence [s] and a byte
+##V<4.08##    count [n]. The function should put [n] bytes or less in [s],
+##V<4.08##    starting at byte number 0, and return the number of byte
+##V<4.08##    provided. A return value of 0 means end of input. *)
 
+##V>=4.08##val from_channel : ?with_positions:bool -> in_channel -> lexbuf
+##V>=4.08##(** Create a lexer buffer on the given input channel.
+##V>=4.08##   [Lexing.from_channel inchan] returns a lexer buffer which reads
+##V>=4.08##   from the input channel [inchan], at the current reading position. *)
+
+##V>=4.08##val from_string : ?with_positions:bool -> string -> lexbuf
+##V>=4.08##(** Create a lexer buffer which reads from
+##V>=4.08##   the given string. Reading starts from the first character in
+##V>=4.08##   the string. An end-of-input condition is generated when the
+##V>=4.08##   end of the string is reached. *)
+
+##V>=4.08##val from_function : ?with_positions:bool -> (bytes -> int -> int) -> lexbuf
+##V>=4.08##(** Create a lexer buffer with the given function as its reading method.
+##V>=4.08##   When the scanner needs more characters, it will call the given
+##V>=4.08##   function, giving it a byte sequence [s] and a byte
+##V>=4.08##   count [n]. The function should put [n] bytes or fewer in [s],
+##V>=4.08##   starting at index 0, and return the number of bytes
+##V>=4.08##   provided. A return value of 0 means end of input. *)
+
+##V>=4.08##val with_positions : lexbuf -> bool
+##V>=4.08##(** Tell whether the lexer buffer keeps track of position fields
+##V>=4.08##    [lex_curr_p] / [lex_start_p], as determined by the corresponding
+##V>=4.08##    optional argument for functions that create lexer buffers
+##V>=4.08##    (whose default value is [true]).
+##V>=4.08##
+##V>=4.08##    When [with_positions] is [false], lexer actions should not
+##V>=4.08##    modify position fields.  Doing it nevertheless could
+##V>=4.08##    re-enable the [with_position] mode and degrade performances.
+##V>=4.08##*)
 
 (** {6 Functions for lexer semantic actions} *)
 
