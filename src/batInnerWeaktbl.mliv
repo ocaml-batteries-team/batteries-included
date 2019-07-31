@@ -130,8 +130,9 @@ module type S = sig
 
   val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
   val length : 'a t -> int
-  val stats: 'a t -> Hashtbl.statistics
+##V>=4## val stats: 'a t -> Hashtbl.statistics
 end
+
 (** This is a subset of Hashtbl.S, kept as a separate interface to
    avoid compatibility issues when Hashtbl.S evolves. *)
 
