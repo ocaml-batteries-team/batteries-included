@@ -377,10 +377,8 @@ let merge f h1 h2 =
     may_add_res k (Some v1) (find_option h2 k)
   ) h1 ;
   iter (fun k v2 ->
-    match find h1 k with
-    | exception Not_found ->
+      if not (mem h1 k) then
         may_add_res k None (Some v2)
-    | _ -> () (* done above *)
   ) h2 ;
   res
 
@@ -857,17 +855,11 @@ struct
     let may_add_res k v1 v2 =
       BatOption.may (add res k) (f k v1 v2) in
     iter (fun k v1 ->
-      match find b k with
-      | exception Not_found ->
-          may_add_res k (Some v1) None
-      | v2 ->
-          may_add_res k (Some v1) (Some v2)
-    ) a ;
+        may_add_res k (Some v1) (find_option b k)
+      ) a ;
     iter (fun k v2 ->
-      match find a k with
-      | exception Not_found ->
+        if not (mem a k) then
           may_add_res k None (Some v2)
-      | _ -> () (* done above *)
     ) b ;
     res
 
