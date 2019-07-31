@@ -176,6 +176,7 @@ let map_inplace f h =
 
 (* Helper functions to test hashtables which values are integers: *)
 (*$inject
+  let (|>) x f = f x
   let printer = IO.to_string (List.print Int.print)
   let to_sorted_list h = values h |> List.of_enum |> List.sort Int.compare
 *)
@@ -444,7 +445,7 @@ let merge f h1 h2 =
 let merge_all f h1 h2 =
   let res = create (max (length h1) (length h2)) in
   let may_add_res k v1 v2 =
-    List.iter (add res k) (f k v1 v2 |> List.rev) in
+    List.iter (add res k) (List.rev (f k v1 v2)) in
   iter (fun k _ ->
     let l1 = find_all h1 k
     and l2 = find_all h2 k in
@@ -866,7 +867,7 @@ struct
   let merge_all f a b =
     let res = create (max (length a) (length b)) in
     let may_add_res k v1 v2 =
-      List.iter (add res k) (f k v1 v2 |> List.rev) in
+      List.iter (add res k) (List.rev (f k v1 v2)) in
     iter (fun k _ ->
       let l1 = find_all a k
       and l2 = find_all b k in
