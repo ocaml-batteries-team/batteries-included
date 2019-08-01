@@ -815,7 +815,7 @@ val open_process_full :
 ##V>=4.08##   The standard output of the command is redirected to a pipe, which can be read
 ##V>=4.08##   via the returned input channel.
 ##V>=4.08##
-##V>=4.08##    @since 4.08.0 *)
+##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08.0 *)
 
 ##V>=4.08##val open_process_args_out : string -> string array -> out_channel
 ##V>=4.08##(** Same as {!Unix.open_process_args_in}, but redirect the standard input of the
@@ -824,7 +824,7 @@ val open_process_full :
 ##V>=4.08##   buffered, hence be careful to call {!Stdlib.flush} at the right times to
 ##V>=4.08##   ensure correct synchronization.
 ##V>=4.08##
-##V>=4.08##    @since 4.08.0 *)
+##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08.0 *)
 
 ##V>=4.08##val open_process_args : string -> string array -> in_channel * out_channel
 ##V>=4.08##(** Same as {!Unix.open_process_args_out}, but redirects both the standard input
@@ -832,7 +832,7 @@ val open_process_full :
 ##V>=4.08##   channels.  The input channel is connected to the output of the command, and
 ##V>=4.08##   the output channel to the input of the command.
 ##V>=4.08##
-##V>=4.08##    @since 4.08.0 *)
+##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08.0 *)
 
 ##V>=4.08##val open_process_args_full :
 ##V>=4.08##  string -> string array -> string array ->
@@ -842,31 +842,31 @@ val open_process_full :
 ##V>=4.08##   connected respectively to the standard output, standard input, and standard
 ##V>=4.08##   error of the command.
 ##V>=4.08##
-##V>=4.08##    @since 4.08.0 *)
+##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08.0 *)
 
 ##V>=4.08##val process_in_pid : in_channel -> int
 ##V>=4.08##(** Return the pid of a process opened via {!Unix.open_process_in} or
 ##V>=4.08##   {!Unix.open_process_args_in}.
 ##V>=4.08##
-##V>=4.08##    @since 4.08.0 *)
+##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08.0 *)
 
 ##V>=4.08##val process_out_pid : out_channel -> int
 ##V>=4.08##(** Return the pid of a process opened via {!Unix.open_process_out} or
 ##V>=4.08##   {!Unix.open_process_args_out}.
 ##V>=4.08##
-##V>=4.08##    @since 4.08.0 *)
+##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08.0 *)
 
 ##V>=4.08##val process_pid : in_channel * out_channel -> int
 ##V>=4.08##(** Return the pid of a process opened via {!Unix.open_process} or
 ##V>=4.08##   {!Unix.open_process_args}.
 ##V>=4.08##
-##V>=4.08##    @since 4.08.0 *)
+##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08.0 *)
 
 ##V>=4.08##val process_full_pid : in_channel * out_channel * in_channel -> int
 ##V>=4.08##(** Return the pid of a process opened via {!Unix.open_process_full} or
 ##V>=4.08##   {!Unix.open_process_args_full}.
 ##V>=4.08##
-##V>=4.08##    @since 4.08.0 *)
+##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08.0 *)
 
 val close_process_in : BatInnerIO.input -> process_status
 (** Close {!type:input} opened by {!Unix.open_process_in},

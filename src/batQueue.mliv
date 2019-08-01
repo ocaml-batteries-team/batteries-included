@@ -51,7 +51,7 @@ val take : 'a t -> 'a
 ##V>=4.08##val take_opt : 'a t -> 'a option
 ##V>=4.08##(** [take_opt q] removes and returns the first element in queue [q],
 ##V>=4.08##   or returns [None] if the queue is empty.
-##V>=4.08##   @since 4.08 *)
+##V>=4.08##   @since NEXT_RELEASE and OCaml 4.08 *)
 
 val pop : 'a t -> 'a
 (** [pop] is a synonym for [take]. *)
@@ -63,7 +63,7 @@ val peek : 'a t -> 'a
 ##V>=4.08##val peek_opt : 'a t -> 'a option
 ##V>=4.08##(** [peek_opt q] returns the first element in queue [q], without removing
 ##V>=4.08##   it from the queue, or returns [None] if the queue is empty.
-##V>=4.08##   @since 4.08 *)
+##V>=4.08##   @since NEXT_RELEASE and OCaml 4.08 *)
 
 val top : 'a t -> 'a
 (** [top] is a synonym for [peek]. *)
@@ -147,15 +147,15 @@ val of_enum : 'a BatEnum.t -> 'a t
 ##V>=4.07##(** Iterate on the queue, in front-to-back order.
 ##V>=4.07##    The behavior is not defined if the queue is modified
 ##V>=4.07##    during the iteration.
-##V>=4.07##    @since 4.07 *)
+##V>=4.07##    @since NEXT_RELEASE and OCaml 4.07 *)
 
 ##V>=4.07##val add_seq : 'a t -> 'a Seq.t -> unit
 ##V>=4.07##(** Add the elements from the generator to the end of the queue
-##V>=4.07##    @since 4.07 *)
+##V>=4.07##    @since NEXT_RELEASE and OCaml 4.07 *)
 
 ##V>=4.07##val of_seq : 'a Seq.t -> 'a t
 ##V>=4.07##(** Create a queue from the generator
-##V>=4.07##    @since 4.07 *)
+##V>=4.07##    @since NEXT_RELEASE and OCaml 4.07 *)
 
 (** {6 Boilerplate code}*)
 

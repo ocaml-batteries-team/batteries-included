@@ -82,7 +82,7 @@ external div : nativeint -> nativeint -> nativeint = "%nativeint_div"
 ##V>=4.08##(** Same as {!div}, except that arguments and result are interpreted as {e
 ##V>=4.08##    unsigned} native integers.
 ##V>=4.08##
-##V>=4.08##    @since 4.08.0 *)
+##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08.0 *)
 
 external rem : nativeint -> nativeint -> nativeint = "%nativeint_mod"
 (** Integer remainder.  If [y] is not zero, the result
@@ -95,7 +95,7 @@ external rem : nativeint -> nativeint -> nativeint = "%nativeint_mod"
 ##V>=4.08##(** Same as {!rem}, except that arguments and result are interpreted as {e
 ##V>=4.08##    unsigned} native integers.
 ##V>=4.08##
-##V>=4.08##    @since 4.08.0 *)
+##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08.0 *)
 
 val succ : nativeint -> nativeint
 (** Successor.
@@ -180,7 +180,7 @@ external to_int : nativeint -> int = "%nativeint_to_int"
 ##V>=4.08##    Returns [None] if the unsigned value of the argument cannot fit into an
 ##V>=4.08##    [int].
 ##V>=4.08##
-##V>=4.08##    @since 4.08.0 *)
+##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08.0 *)
 
 external of_float : float -> nativeint = "caml_nativeint_of_float"
 ##V>=4.3## "caml_nativeint_of_float_unboxed" [@@unboxed] [@@noalloc]
@@ -242,7 +242,7 @@ val compare : t -> t -> int
 ##V>=4.08##(** Same as {!compare}, except that arguments are interpreted as {e unsigned}
 ##V>=4.08##    native integers.
 ##V>=4.08##
-##V>=4.08##    @since 4.08.0 *)
+##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08.0 *)
 
 val equal : t -> t -> bool
 (** Equality function for 64-bit integers, useful for {!HashedType}. *)

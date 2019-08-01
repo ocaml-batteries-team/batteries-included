@@ -330,11 +330,11 @@ val min_max : ?cmp:('a -> 'a -> int) -> 'a list -> 'a * 'a
 
 ##V>=4.07##val to_seq : 'a list -> 'a Seq.t
 ##V>=4.07##(** Iterate on the list
-##V>=4.07##    @since 4.07 *)
+##V>=4.07##    @since NEXT_RELEASE and OCaml 4.07 *)
 
 ##V>=4.07##val of_seq : 'a Seq.t -> 'a list
 ##V>=4.07##(** Create a list from the iterator
-##V>=4.07##    @since 4.07 *)
+##V>=4.07##    @since NEXT_RELEASE and OCaml 4.07 *)
 
 (** {6 Iterators on two lists} *)
 
