@@ -748,20 +748,20 @@ val split_on_char: char -> string -> string list
     @since 2.5.3
 *)
 
-##V>=4.08##(** {1 Iterators} *)
+##V>=4.07##(** {1 Iterators} *)
 
-##V>=4.08##val to_seq : t -> char Seq.t
-##V>=4.08##(** Iterate on the string, in increasing index order. Modifications of the
-##V>=4.08##    string during iteration will be reflected in the iterator.
-##V>=4.08##    @since 4.07 *)
+##V>=4.07##val to_seq : t -> char Seq.t
+##V>=4.07##(** Iterate on the string, in increasing index order. Modifications of the
+##V>=4.07##    string during iteration will be reflected in the iterator.
+##V>=4.07##    @since NEXT_RELEASE and OCaml 4.07 *)
 
-##V>=4.08##val to_seqi : t -> (int * char) Seq.t
-##V>=4.08##(** Iterate on the string, in increasing order, yielding indices along chars
-##V>=4.08##    @since 4.07 *)
+##V>=4.07##val to_seqi : t -> (int * char) Seq.t
+##V>=4.07##(** Iterate on the string, in increasing order, yielding indices along chars
+##V>=4.07##    @since NEXT_RELEASE and OCaml 4.07 *)
 
-##V>=4.08##val of_seq : char Seq.t -> t
-##V>=4.08##(** Create a string from the generator
-##V>=4.08##    @since 4.07 *)
+##V>=4.07##val of_seq : char Seq.t -> t
+##V>=4.07##(** Create a string from the generator
+##V>=4.07##    @since NEXT_RELEASE and OCaml 4.07 *)
 
 val split : string -> by:string -> string * string
 (** [split s sep] splits the string [s] between the first
