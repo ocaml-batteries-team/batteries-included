@@ -216,21 +216,25 @@ let rec restart_on_EINTR f x =
   try f x
   with Unix_error(EINTR, _, _) -> restart_on_EINTR f x
 
-(** {6 Locking} *)
+(**
+   {6 Locking}
+*)
 
-let with_file_lock ~kind filename f =
-  let lock_file = openfile filename [O_CREAT; O_WRONLY] 0o644 in
+let with_locked_file ~kind filename f =
+  let perms =
+    [O_CREAT ; match kind with `Read -> O_RDONLY | `Write -> O_RDWR] in
+  let lock_file = openfile filename perms 0o644 in
   let lock_action = match kind with
-    | `Read -> Unix.F_RLOCK
-    | `Write -> Unix.F_LOCK
+    | `Read -> F_RLOCK
+    | `Write -> F_LOCK
   in
   lockf lock_file lock_action 0;
-  try
-    let x = f () in
-    lockf lock_file F_ULOCK 0;
-    close lock_file;
-    x
-  with e ->
-    lockf lock_file F_ULOCK 0;
-    close lock_file;
-    raise e
+  BatInnerPervasives.finally
+    (fun () ->
+      (* Although the user might expect EINTR to interrupt locking, we must
+       * not allow such interrupt here since there is no way to restart the
+       * unlock: *)
+      restart_on_EINTR (lseek lock_file 0) SEEK_SET |> ignore;
+      restart_on_EINTR (lockf lock_file F_ULOCK) 0;
+      restart_on_EINTR close lock_file)
+    f lock_file
