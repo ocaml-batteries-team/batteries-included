@@ -330,11 +330,11 @@ val min_max : ?cmp:('a -> 'a -> int) -> 'a list -> 'a * 'a
 
 ##V>=4.07##val to_seq : 'a list -> 'a Seq.t
 ##V>=4.07##(** Iterate on the list
-##V>=4.07##    @since NEXT_RELEASE and OCaml 4.07 *)
+##V>=4.07##    @since 2.10.0 and OCaml 4.07 *)
 
 ##V>=4.07##val of_seq : 'a Seq.t -> 'a list
 ##V>=4.07##(** Create a list from the iterator
-##V>=4.07##    @since NEXT_RELEASE and OCaml 4.07 *)
+##V>=4.07##    @since 2.10.0 and OCaml 4.07 *)
 
 (** {6 Iterators on two lists} *)
 
@@ -718,7 +718,7 @@ val fold_while : ('acc -> 'a -> bool) -> ('acc -> 'a -> 'acc) -> 'acc -> 'a list
     At the end, the accumulated value along with the remaining part
     of the list are returned.
 
-    @since NEXT_RELEASE
+    @since 2.10.0
 *)
 
 val nsplit : ('a -> bool) -> 'a list -> 'a list list

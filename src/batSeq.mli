@@ -277,19 +277,19 @@ val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.outpu
 
 val to_buffer : ?first:string -> ?last:string -> ?sep:string -> ('a -> string) -> Buffer.t -> (unit -> 'a node) -> unit
 (** Convert a sequence to a string in the given buffer; eager.
-    @since NEXT_RELEASE
+    @since 2.10.0
 *)
 
 val to_string : ?first:string -> ?last:string -> ?sep:string -> ('a -> string) -> 'a t -> string
 (** Convert the sequence to a string; eager.
-    @since NEXT_RELEASE
+    @since 2.10.0
 *)
 
 val of_string : ?first:string -> ?last:string -> ?sep:string -> (string -> 'a) -> string -> 'a t
 (** Create a sequence by parsing a string.
     @raise Invalid_argument if the string is not prefixed by [first].
     @raise Invalid_argument if the string is not suffixed by [last].
-    @since NEXT_RELEASE
+    @since 2.10.0
 *)
 
 module Infix : sig

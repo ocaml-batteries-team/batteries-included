@@ -79,7 +79,7 @@ external div : int32 -> int32 -> int32 = "%int32_div"
 ##V>=4.08##(** Same as {!div}, except that arguments and result are interpreted as {e
 ##V>=4.08##    unsigned} 32-bit integers.
 ##V>=4.08##
-##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08.0 *)
+##V>=4.08##    @since 2.10.0 and OCaml 4.08.0 *)
 
 external rem : int32 -> int32 -> int32 = "%int32_mod"
 (** Integer remainder.  If [y] is not zero, the result
@@ -91,7 +91,7 @@ external rem : int32 -> int32 -> int32 = "%int32_mod"
 ##V>=4.08##(** Same as {!rem}, except that arguments and result are interpreted as {e
 ##V>=4.08##    unsigned} 32-bit integers.
 ##V>=4.08##
-##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08.0 *)
+##V>=4.08##    @since 2.10.0 and OCaml 4.08.0 *)
 
 val modulo : int32 -> int32 -> int32
 val pow  : int32 -> int32 -> int32
@@ -170,7 +170,7 @@ external to_int : int32 -> int = "%int32_to_int"
 ##V>=4.08##    Returns [None] if the unsigned value of the argument cannot fit into an
 ##V>=4.08##    [int].
 ##V>=4.08##
-##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08.0 *)
+##V>=4.08##    @since 2.10.0 and OCaml 4.08.0 *)
 
 external of_float : float -> int32 = "caml_int32_of_float"
 ##V>=4.3## "caml_int32_of_float_unboxed" [@@unboxed] [@@noalloc]
@@ -261,7 +261,7 @@ val compare : t -> t -> int
 ##V>=4.08##(** Same as {!compare}, except that arguments are interpreted as {e unsigned}
 ##V>=4.08##    32-bit integers.
 ##V>=4.08##
-##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08.0 *)
+##V>=4.08##    @since 2.10.0 and OCaml 4.08.0 *)
 
 val equal : t -> t -> bool
 (** Equality function for 32-bit integers, useful for {!HashedType}. *)

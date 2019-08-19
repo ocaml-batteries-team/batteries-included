@@ -81,7 +81,7 @@ external div : int64 -> int64 -> int64 = "%int64_div"
 ##V>=4.08##(** Same as {!div}, except that arguments and result are interpreted as {e
 ##V>=4.08##    unsigned} 64-bit integers.
 ##V>=4.08##
-##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08.0 *)
+##V>=4.08##    @since 2.10.0 and OCaml 4.08.0 *)
 
 external rem : int64 -> int64 -> int64 = "%int64_mod"
 (** Integer remainder.  If [y] is not zero, the result
@@ -93,7 +93,7 @@ external rem : int64 -> int64 -> int64 = "%int64_mod"
 ##V>=4.08##(** Same as {!rem}, except that arguments and result are interpreted as {e
 ##V>=4.08##    unsigned} 64-bit integers.
 ##V>=4.08##
-##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08.0 *)
+##V>=4.08##    @since 2.10.0 and OCaml 4.08.0 *)
 
 val succ : int64 -> int64
 (** Successor.  [Int64.succ x] is [Int64.add x Int64.one]. *)
@@ -167,7 +167,7 @@ external to_int : int64 -> int = "%int64_to_int"
 ##V>=4.08##    Returns [None] if the unsigned value of the argument cannot fit into an
 ##V>=4.08##    [int].
 ##V>=4.08##
-##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08.0 *)
+##V>=4.08##    @since 2.10.0 and OCaml 4.08.0 *)
 
 external of_float : float -> int64 = "caml_int64_of_float"
 ##V>=4.3## "caml_int64_of_float_unboxed" [@@unboxed] [@@noalloc]
@@ -243,7 +243,7 @@ val compare : t -> t -> int
 ##V>=4.08##(** Same as {!compare}, except that arguments are interpreted as {e unsigned}
 ##V>=4.08##    64-bit integers.
 ##V>=4.08##
-##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08.0 *)
+##V>=4.08##    @since 2.10.0 and OCaml 4.08.0 *)
 
 val equal : t -> t -> bool
 (** Equality function for 64-bit integers, useful for {!HashedType}. *)

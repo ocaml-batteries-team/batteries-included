@@ -1,7 +1,19 @@
 Changelog
 ---------
 
-## NEXT_RELEASE
+## v2.10.0 (minor release)
+
+This minor release adds support for OCaml 4.08.0.
+
+This release is compatible with OCaml 4.08.0, but it is not complete
+with respect to the standard library of OCaml 4.08.0: this release saw
+a lot of changes to the standard library, which have not yet been made
+available in the corresponding Batteries module. This means that users
+of OCaml 4.08.0 (and Batteries 2.10.0) will have access to these
+functions, but users of older OCaml versions (and Batteries 2.10.0)
+will not. If you are looking for this kind of backward-compatibility
+of new functions, as provided by previous Batteries releases, we
+recommend trying the 'stdcompat' library.
 
 - added LazyList.equal: ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
   #811
@@ -13,13 +25,13 @@ Changelog
   (Francois Berenger, Thibault Suzanne)
 
 - fix `BatNum.of_float_string` on inputs between -1 and 0:
-  "-0.5" or "-.5" would be interpreted as "0.5" or ".5".
-  (Gabriel Scherer, report by Marcel Hark)
+	"-0.5" or "-.5" would be interpreted as "0.5" or ".5".
   #886, #887
+  (Gabriel Scherer, report by Marcel Hark)
 
 - added BatHashtbl.merge and merge_all
-__#891
-__(Cedric Cellier, Francois Berenger, Gabriel Scherer)
+  #891
+  (Cedric Cellier, Francois Berenger, Gabriel Scherer)
 
 ## v2.9.0 (minor release)
 

@@ -250,7 +250,7 @@ val merge: ('a -> 'b option -> 'c option -> 'd option) ->
 
     It is assumed that each key is bound at most once in [a] and [b].
     See [merge_all] for a more general alternative if this is not the case.
-    @since NEXT_RELEASE
+    @since 2.10.0
 *)
 
 val merge_all: ('a -> 'b list -> 'c list -> 'd list) ->
@@ -261,7 +261,7 @@ val merge_all: ('a -> 'b list -> 'c list -> 'd list) ->
     that key should not be bound in the resulting hashtable). Those new
     bindings will be inserted in reverse, so that the head of the list will
     become the most recent binding in the merged hashtable.
-    @since NEXT_RELEASE
+    @since 2.10.0
 *)
 
 (** {6 The polymorphic hash primitive}*)

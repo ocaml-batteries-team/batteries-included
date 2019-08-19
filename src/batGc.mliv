@@ -172,7 +172,7 @@ type control = Gc.control =
 ##V>=4.8##        Note: this only applies to values allocated with
 ##V>=4.8##        [caml_alloc_custom_mem] (e.g. bigarrays).
 ##V>=4.8##        Default: 44.
-##V>=4.8##        @since NEXT_RELEASE and OCaml 4.08.0 *)
+##V>=4.8##        @since 2.10.0 and OCaml 4.08.0 *)
 
 ##V>=4.8##    custom_minor_ratio : int;
 ##V>=4.8##    (** Bound on floating garbage for out-of-heap memory held by
@@ -182,7 +182,7 @@ type control = Gc.control =
 ##V>=4.8##        Note: this only applies to values allocated with
 ##V>=4.8##        [caml_alloc_custom_mem] (e.g. bigarrays).
 ##V>=4.8##        Default: 100.
-##V>=4.8##        @since NEXT_RELEASE and OCaml 4.08.0 *)
+##V>=4.8##        @since 2.10.0 and OCaml 4.08.0 *)
 
 ##V>=4.8##    custom_minor_max_size : int;
 ##V>=4.8##    (** Maximum amount of out-of-heap memory for each custom value
@@ -193,7 +193,7 @@ type control = Gc.control =
 ##V>=4.8##        Note: this only applies to values allocated with
 ##V>=4.8##        [caml_alloc_custom_mem] (e.g. bigarrays).
 ##V>=4.8##        Default: 8192 bytes.
-##V>=4.8##        @since NEXT_RELEASE and OCaml 4.08.0 *)
+##V>=4.8##        @since 2.10.0 and OCaml 4.08.0 *)
 ##V>=4.8##
   }
 (** The GC parameters are given as a [control] record.  Note that
