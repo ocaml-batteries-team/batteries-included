@@ -154,7 +154,7 @@
 </div>
 </div>
 
-<pre><span id="VALcount_option"><span class="keyword">val</span> count_option</span> : <code class="type">?dest:int Stdlib.ref -> ?increment:int -> unit -> int <a href="BatOptParse.Opt.html#TYPEt">BatOptParse.Opt.t</a></code></pre><div class="info ">
+<pre><span id="VALcount_option"><span class="keyword">val</span> count_option</span> : <code class="type">?dest:int Pervasives.ref -> ?increment:int -> unit -> int <a href="BatOptParse.Opt.html#TYPEt">BatOptParse.Opt.t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Create a counting option which increments its value each time the
       option is encountered on the command line.</p>
@@ -168,13 +168,13 @@
 <div class="param_info"><code class="code">increment</code> : Increment to add to the option value each
       time the option is encountered.</div>
 
-<pre><span id="VALincr_option"><span class="keyword">val</span> incr_option</span> : <code class="type">?dest:int Stdlib.ref -> unit -> int <a href="BatOptParse.Opt.html#TYPEt">BatOptParse.Opt.t</a></code></pre><div class="info ">
+<pre><span id="VALincr_option"><span class="keyword">val</span> incr_option</span> : <code class="type">?dest:int Pervasives.ref -> unit -> int <a href="BatOptParse.Opt.html#TYPEt">BatOptParse.Opt.t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Exactly identical to <code class="code">count_option&nbsp;~dest:dest&nbsp;~increment:1&nbsp;()</code>.</p>
 </div>
 </div>
 
-<pre><span id="VALdecr_option"><span class="keyword">val</span> decr_option</span> : <code class="type">?dest:int Stdlib.ref -> unit -> int <a href="BatOptParse.Opt.html#TYPEt">BatOptParse.Opt.t</a></code></pre><div class="info ">
+<pre><span id="VALdecr_option"><span class="keyword">val</span> decr_option</span> : <code class="type">?dest:int Pervasives.ref -> unit -> int <a href="BatOptParse.Opt.html#TYPEt">BatOptParse.Opt.t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Exactly identical to <code class="code">count_option&nbsp;~dest:dest&nbsp;~increment:(-1)&nbsp;()</code>.</p>
 </div>

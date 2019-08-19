@@ -123,7 +123,7 @@
 <p>See the complete <code class="code"><span class="constructor">Stream</span></code> module for the function documentations.</p>
 
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">f:('a -> unit) -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a> -> unit</code></pre>
-<pre><span id="VALto_string_fmt"><span class="keyword">val</span> to_string_fmt</span> : <code class="type">fmt:('a -> string, unit, string) Stdlib.format -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a> -> string</code></pre>
+<pre><span id="VALto_string_fmt"><span class="keyword">val</span> to_string_fmt</span> : <code class="type">fmt:('a -> string, unit, string) Pervasives.format -><br>       'a <a href="BatStream.html#TYPEt">BatStream.t</a> -> string</code></pre>
 <pre><span id="VALto_string_fun"><span class="keyword">val</span> to_string_fun</span> : <code class="type">fn:('a -> string) -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a> -> string</code></pre>
 <pre><span id="VALfoldl"><span class="keyword">val</span> foldl</span> : <code class="type">f:('a -> 'b -> 'a * bool option) -> init:'a -> 'b <a href="BatStream.html#TYPEt">BatStream.t</a> -> 'a</code></pre>
 <pre><span id="VALfoldr"><span class="keyword">val</span> foldr</span> : <code class="type">f:('a -> 'b lazy_t -> 'b) -> init:'b -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a> -> 'b</code></pre>

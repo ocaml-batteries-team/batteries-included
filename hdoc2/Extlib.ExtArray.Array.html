@@ -823,7 +823,7 @@
 <h7 id="6_Boilerplatecode">Boilerplate code</h7>
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -> ('a, 'b) <a href="BatIO.html#TYPEprinter">BatIO.printer</a> -> ('a <a href="BatArray.html#TYPEt">t</a>, 'b) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info ">
 <div class="info-desc">
-<p>Print the contents of an array, with <code class="code">~first</code> preceeding the first
+<p>Print the contents of an array, with <code class="code">~first</code> preceding the first
     item (default: "[|"), <code class="code">~last</code> following the last item (default:
     "|]") and <code class="code">~sep</code> separating items (default: "; ").  A printing
     function must be provided to print the items in the array.</p>
@@ -850,7 +850,7 @@
 </div>
 </div>
 
-<pre><span id="VALshuffle"><span class="keyword">val</span> shuffle</span> : <code class="type">?state:Stdlib.Random.State.t -> 'a array -> unit</code></pre><div class="info ">
+<pre><span id="VALshuffle"><span class="keyword">val</span> shuffle</span> : <code class="type">?state:Random.State.t -> 'a array -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">shuffle&nbsp;~state:rs&nbsp;a</code> randomly shuffles in place the elements of <code class="code">a</code>.
     The optional random state <code class="code">rs</code> allows to control the random

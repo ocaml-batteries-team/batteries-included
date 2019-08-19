@@ -135,7 +135,7 @@
 </div>
 </div>
 
-<pre><span id="VALbytes"><span class="keyword">val</span> bytes</span> : <code class="type">Stdlib.Bytes.t -> <a href="BatDigest.html#TYPEt">t</a></code></pre><div class="info ">
+<pre><span id="VALbytes"><span class="keyword">val</span> bytes</span> : <code class="type">Bytes.t -> <a href="BatDigest.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Return the digest of the given byte sequence.</p>
 </div>
@@ -152,7 +152,7 @@
 </div>
 </div>
 
-<pre><span id="VALsubbytes"><span class="keyword">val</span> subbytes</span> : <code class="type">Stdlib.Bytes.t -> int -> int -> <a href="BatDigest.html#TYPEt">t</a></code></pre><div class="info ">
+<pre><span id="VALsubbytes"><span class="keyword">val</span> subbytes</span> : <code class="type">Bytes.t -> int -> int -> <a href="BatDigest.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code"><span class="constructor">Digest</span>.subbytes&nbsp;s&nbsp;ofs&nbsp;len</code> returns the digest of the subsequence
     of <code class="code">s</code> starting at index <code class="code">ofs</code> and containing <code class="code">len</code> bytes.</p>
@@ -185,7 +185,7 @@
 </ul>
 </div>
 
-<pre><span id="VALchannel"><span class="keyword">val</span> channel</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int -> Stdlib.Digest.t</code></pre><div class="info ">
+<pre><span id="VALchannel"><span class="keyword">val</span> channel</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> int -> Digest.t</code></pre><div class="info ">
 <div class="info-desc">
 <p>If <code class="code">len</code> is nonnegative, <code class="code"><span class="constructor">Digest</span>.channel&nbsp;ic&nbsp;len</code> reads <code class="code">len</code>
     characters from channel <code class="code">ic</code> and returns their digest, or</p>
@@ -208,13 +208,13 @@
 </div>
 </div>
 
-<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> Stdlib.Digest.t -> unit</code></pre><div class="info ">
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatIO.html#TYPEoutput">BatIO.output</a> -> Digest.t -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p>Write a digest on the given output in hexadecimal.</p>
 </div>
 </div>
 
-<pre><span id="VALinput"><span class="keyword">val</span> input</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> Stdlib.Digest.t</code></pre><div class="info ">
+<pre><span id="VALinput"><span class="keyword">val</span> input</span> : <code class="type"><a href="BatIO.html#TYPEinput">BatIO.input</a> -> Digest.t</code></pre><div class="info ">
 <div class="info-desc">
 <p>Read a digest from the given input.</p>
 </div>

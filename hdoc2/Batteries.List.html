@@ -141,12 +141,8 @@
 <p>List operations.</p>
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a list</code> </pre>
-<div class="info ">
-<div class="info-desc">
-<p>The type of lists</p>
-</div>
-</div>
 
+<p>The type of lists</p>
 
 <pre><span class="keyword">include</span> <a href="BatEnum.Enumerable.html">BatEnum.Enumerable</a></pre>
 
@@ -253,7 +249,7 @@
 </div>
 </div>
 
-<pre><span id="VALshuffle"><span class="keyword">val</span> shuffle</span> : <code class="type">?state:Stdlib.Random.State.t -> 'a list -> 'a list</code></pre><div class="info ">
+<pre><span id="VALshuffle"><span class="keyword">val</span> shuffle</span> : <code class="type">?state:Random.State.t -> 'a list -> 'a list</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">shuffle&nbsp;~state:rs&nbsp;l</code> randomly shuffles the elements of <code class="code">l</code>.
     The optional random state <code class="code">rs</code> allows to control the random
@@ -633,7 +629,7 @@
 
 <pre><span id="VALmem_cmp"><span class="keyword">val</span> mem_cmp</span> : <code class="type">('a -> 'a -> int) -> 'a -> 'a list -> bool</code></pre><div class="info ">
 <div class="info-desc">
-<p>Same as <code class="code"><span class="constructor">List</span>.mem</code>, but the comparator function is explicitely
+<p>Same as <code class="code"><span class="constructor">List</span>.mem</code>, but the comparator function is explicitly
     provided.</p>
 </div>
 <ul class="info-attributes">
@@ -1147,6 +1143,18 @@
 </ul>
 </div>
 
+<pre><span id="VALfold_while"><span class="keyword">val</span> fold_while</span> : <code class="type">('acc -> 'a -> bool) -><br>       ('acc -> 'a -> 'acc) -> 'acc -> 'a list -> 'acc * 'a list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">fold_while&nbsp;p&nbsp;f&nbsp;init&nbsp;l</code>, accumulates elements <code class="code">x</code> of list <code class="code">l</code> using
+    function <code class="code">f</code>, as long as predicate <code class="code">p&nbsp;acc&nbsp;x</code> holds.
+    At the end, the accumulated value along with the remaining part
+    of the list are returned.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0</li>
+</ul>
+</div>
+
 <pre><span id="VALnsplit"><span class="keyword">val</span> nsplit</span> : <code class="type">('a -> bool) -> 'a list -> 'a list list</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">nsplit</code>, applied to a predicate <code class="code">p</code> and a list <code class="code">xs</code>, returns a
@@ -1288,7 +1296,7 @@
 <p>Merge two lists:
     Assuming that <code class="code">l1</code> and <code class="code">l2</code> are sorted according to the
     comparison function <code class="code">cmp</code>, <code class="code">merge&nbsp;cmp&nbsp;l1&nbsp;l2</code> will return a
-    sorted list containting all the elements of <code class="code">l1</code> and <code class="code">l2</code>.
+    sorted list containing all the elements of <code class="code">l1</code> and <code class="code">l2</code>.
     If several elements compare equal, the elements of <code class="code">l1</code> will be
     before the elements of <code class="code">l2</code>.
     Not tail-recursive (sum of the lengths of the arguments).</p>

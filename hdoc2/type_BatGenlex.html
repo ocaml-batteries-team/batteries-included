@@ -110,15 +110,14 @@
 <body>
 <code class="code"><span class="keyword">sig</span><br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;token&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Genlex</span>.token&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Genlex</span>.token&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Kwd</span>&nbsp;<span class="keyword">of</span>&nbsp;string<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Ident</span>&nbsp;<span class="keyword">of</span>&nbsp;string<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Int</span>&nbsp;<span class="keyword">of</span>&nbsp;int<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Float</span>&nbsp;<span class="keyword">of</span>&nbsp;float<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">String</span>&nbsp;<span class="keyword">of</span>&nbsp;string<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Char</span>&nbsp;<span class="keyword">of</span>&nbsp;char<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;make_lexer&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Stream</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatGenlex</span>.token&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Stream</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;make_lexer&nbsp;:&nbsp;string&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char&nbsp;<span class="constructor">Stream</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatGenlex</span>.token&nbsp;<span class="constructor">Stream</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;lexer_error&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">IllegalCharacter</span>&nbsp;<span class="keyword">of</span>&nbsp;char<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">NotReallyAChar</span><br>
@@ -128,7 +127,7 @@
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;of_list&nbsp;:&nbsp;string&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatGenlex</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;to_stream_filter&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatGenlex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Stream</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatGenlex</span>.token&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Stream</span>.t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatGenlex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char&nbsp;<span class="constructor">Stream</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatGenlex</span>.token&nbsp;<span class="constructor">Stream</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;to_enum_filter&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatGenlex</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatGenlex</span>.token&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;to_lazy_list_filter&nbsp;:<br>

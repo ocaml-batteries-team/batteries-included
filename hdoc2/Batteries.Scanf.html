@@ -183,7 +183,7 @@
     However, it is also largely different, simpler, and yet more powerful:
     the formatted input functions are higher-order functionals and the
     parameter passing mechanism is just the regular function application not
-    the variable assigment based mechanism which is typical for formatted
+    the variable assignment based mechanism which is typical for formatted
     input in imperative languages; the OCaml format strings also feature
     useful additions to easily define complex tokens; as expected within a
     functional programming language, the formatted input functions also
@@ -196,7 +196,7 @@
 
 </div>
 <h7 id="6_Typeofformattedinputfunctions">Type of formatted input functions</h7>
-<pre><span id="TYPEscanner"><span class="keyword">type</span> <code class="type">('a, 'b, 'c, 'd)</code> scanner</span> = <code class="type">('a, <a href="BatScanf.Scanning.html#TYPEscanbuf">Scanning.scanbuf</a>, 'b, 'c, 'a -> 'd, 'd) Stdlib.format6 -> 'c</code> </pre>
+<pre><span id="TYPEscanner"><span class="keyword">type</span> <code class="type">('a, 'b, 'c, 'd)</code> scanner</span> = <code class="type">('a, <a href="BatScanf.Scanning.html#TYPEscanbuf">Scanning.scanbuf</a>, 'b, 'c, 'a -> 'd, 'd) Pervasives.format6 -><br>       'c</code> </pre>
 <div class="info ">
 <div class="info-desc">
 <p>The type of formatted input scanners: <code class="code">(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d)&nbsp;scanner</code> is the
@@ -261,7 +261,7 @@
 
 <p>Matching <em>any</em> amount of whitespace, a space in the format string
     also matches no amount of whitespace at all; hence, the call <code class="code">bscanf&nbsp;ib<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"Price&nbsp;=&nbsp;%d&nbsp;$"</span>&nbsp;(<span class="keyword">fun</span>&nbsp;p&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;p)</code> succeds and returns <code class="code">1</code> when reading an
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"Price&nbsp;=&nbsp;%d&nbsp;$"</span>&nbsp;(<span class="keyword">fun</span>&nbsp;p&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;p)</code> succeeds and returns <code class="code">1</code> when reading an
     input with various whitespace in it, such as <code class="code"><span class="constructor">Price</span>&nbsp;=&nbsp;1&nbsp;$</code>,
     <code class="code"><span class="constructor">Price</span>&nbsp;&nbsp;=&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;$</code>, or even <code class="code"><span class="constructor">Price</span>=1$</code>.</p>
 <div class="h8" id="7_Conversionspecificationsinformatstrings">Conversion specifications in format strings</div><p>Conversion specifications consist in the <code class="code">%</code> character, followed by
@@ -317,7 +317,7 @@
 
 <p>-</p>
 <h7 id="6_Specializedformattedinputfunctions">Specialized formatted input functions</h7>
-<pre><span id="VALfscanf"><span class="keyword">val</span> fscanf</span> : <code class="type">Stdlib.in_channel -> ('a, 'b, 'c, 'd) <a href="BatScanf.html#TYPEscanner">scanner</a></code></pre><div class="info ">
+<pre><span id="VALfscanf"><span class="keyword">val</span> fscanf</span> : <code class="type">Pervasives.in_channel -> ('a, 'b, 'c, 'd) <a href="BatScanf.html#TYPEscanner">scanner</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Same as <code class="code"><span class="constructor">Scanf</span>.bscanf</code>, but reads from the given channel.</p>
 
@@ -356,9 +356,9 @@
 </div>
 </div>
 <h7 id="6_Readingformatstringsfrominput">Reading format strings from input</h7>
-<pre><span id="VALbscanf_format"><span class="keyword">val</span> bscanf_format</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">Scanning.scanbuf</a> -><br>       ('a, 'b, 'c, 'd, 'e, 'f) Stdlib.format6 -><br>       (('a, 'b, 'c, 'd, 'e, 'f) Stdlib.format6 -> 'g) -> 'g</code></pre><div class="info ">
+<pre><span id="VALbscanf_format"><span class="keyword">val</span> bscanf_format</span> : <code class="type"><a href="BatScanf.Scanning.html#TYPEscanbuf">Scanning.scanbuf</a> -><br>       ('a, 'b, 'c, 'd, 'e, 'f) Pervasives.format6 -><br>       (('a, 'b, 'c, 'd, 'e, 'f) Pervasives.format6 -> 'g) -> 'g</code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">bscanf_format&nbsp;ib&nbsp;fmt&nbsp;f</code> reads a format string token from the scannning
+<p><code class="code">bscanf_format&nbsp;ib&nbsp;fmt&nbsp;f</code> reads a format string token from the scanning
     buffer <code class="code">ib</code>, according to the given format string <code class="code">fmt</code>, and applies <code class="code">f</code> to
     the resulting format string value.</p>
 </div>
@@ -368,13 +368,13 @@
 </ul>
 </div>
 
-<pre><span id="VALsscanf_format"><span class="keyword">val</span> sscanf_format</span> : <code class="type">string -><br>       ('a, 'b, 'c, 'd, 'e, 'f) Stdlib.format6 -><br>       (('a, 'b, 'c, 'd, 'e, 'f) Stdlib.format6 -> 'g) -> 'g</code></pre><div class="info ">
+<pre><span id="VALsscanf_format"><span class="keyword">val</span> sscanf_format</span> : <code class="type">string -><br>       ('a, 'b, 'c, 'd, 'e, 'f) Pervasives.format6 -><br>       (('a, 'b, 'c, 'd, 'e, 'f) Pervasives.format6 -> 'g) -> 'g</code></pre><div class="info ">
 <div class="info-desc">
 <p>Same as <code class="code"><span class="constructor">Scanf</span>.bscanf_format</code>, but reads from the given string.</p>
 </div>
 </div>
 
-<pre><span id="VALformat_from_string"><span class="keyword">val</span> format_from_string</span> : <code class="type">string -><br>       ('a, 'b, 'c, 'd, 'e, 'f) Stdlib.format6 -><br>       ('a, 'b, 'c, 'd, 'e, 'f) Stdlib.format6</code></pre><div class="info ">
+<pre><span id="VALformat_from_string"><span class="keyword">val</span> format_from_string</span> : <code class="type">string -><br>       ('a, 'b, 'c, 'd, 'e, 'f) Pervasives.format6 -><br>       ('a, 'b, 'c, 'd, 'e, 'f) Pervasives.format6</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">format_from_string&nbsp;s&nbsp;fmt</code> converts a string argument to a format string,
     according to the given format string <code class="code">fmt</code>.</p>

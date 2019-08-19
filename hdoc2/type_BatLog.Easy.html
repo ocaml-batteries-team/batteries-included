@@ -109,10 +109,10 @@
 </head>
 <body>
 <code class="code"><span class="keyword">sig</span><br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;level&nbsp;:&nbsp;<span class="constructor">BatLog</span>.easy_lev&nbsp;<span class="constructor">Stdlib</span>.ref<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="constructor">Stdlib</span>.ref<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;level&nbsp;:&nbsp;<span class="constructor">BatLog</span>.easy_lev&nbsp;<span class="constructor">Pervasives</span>.ref<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="constructor">Pervasives</span>.ref<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;log&nbsp;:&nbsp;?fp:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLog</span>.easy_lev&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;logf&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;?fp:string&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatLog</span>.easy_lev&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output,&nbsp;unit)&nbsp;<span class="constructor">Stdlib</span>.format&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatLog</span>.easy_lev&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output,&nbsp;unit)&nbsp;<span class="constructor">Pervasives</span>.format&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a<br>
 <span class="keyword">end</span></code></body></html>

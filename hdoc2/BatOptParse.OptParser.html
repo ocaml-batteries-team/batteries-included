@@ -191,7 +191,7 @@
 </div>
 <ul class="info-attributes">
 <li><b>Raises</b> <code>Option_conflict</code> if the short name(s) or long name(s)
-      have alread been used for some other option.</li>
+      have already been used for some other option.</li>
 </ul>
 </div>
 <div class="param_info"><code class="code">help</code> : Short help message describing the option (for the usage message).</div>
@@ -221,7 +221,7 @@
 <div class="param_info"><code class="code">parent</code> : is the parent group (if any).</div>
 <div class="param_info"><code class="code">description</code> : is a description of the group.</div>
 <h7 id="6_Outputanderrorhandling">Output and error handling</h7>
-<pre><span id="VALerror"><span class="keyword">val</span> error</span> : <code class="type"><a href="BatOptParse.OptParser.html#TYPEt">t</a> -><br>       ?chn:Stdlib.out_channel -> ?status:int -> string -> unit</code></pre><div class="info ">
+<pre><span id="VALerror"><span class="keyword">val</span> error</span> : <code class="type"><a href="BatOptParse.OptParser.html#TYPEt">t</a> -><br>       ?chn:Pervasives.out_channel -> ?status:int -> string -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p>Display an error message and exit the program. The error
       message is printed to the channel <code class="code">chn</code> (default is
@@ -230,7 +230,7 @@
 </div>
 </div>
 
-<pre><span id="VALusage"><span class="keyword">val</span> usage</span> : <code class="type"><a href="BatOptParse.OptParser.html#TYPEt">t</a> -> ?chn:Stdlib.out_channel -> unit -> unit</code></pre><div class="info ">
+<pre><span id="VALusage"><span class="keyword">val</span> usage</span> : <code class="type"><a href="BatOptParse.OptParser.html#TYPEt">t</a> -> ?chn:Pervasives.out_channel -> unit -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p>Display the usage message to the channel <code class="code">chn</code> (default is
       <code class="code"><span class="constructor">Pervasives</span>.stdout</code>) and return.</p>

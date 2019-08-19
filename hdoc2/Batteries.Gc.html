@@ -121,7 +121,7 @@
 
 <pre><span id="MODULEGc"><span class="keyword">module</span> Gc</span>: <code class="type"><a href="BatGc.html">BatGc</a></code></pre><hr width="100%">
 
-<pre><span id="TYPEstat"><span class="keyword">type</span> <code class="type"></code>stat</span> = <code class="type">Stdlib.Gc.stat</code> = {</pre><table class="typetable">
+<pre><span id="TYPEstat"><span class="keyword">type</span> <code class="type"></code>stat</span> = <code class="type">Gc.stat</code> = {</pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
@@ -341,7 +341,7 @@
 </div>
 
 
-<pre><span id="TYPEcontrol"><span class="keyword">type</span> <code class="type"></code>control</span> = <code class="type">Stdlib.Gc.control</code> = {</pre><table class="typetable">
+<pre><span id="TYPEcontrol"><span class="keyword">type</span> <code class="type"></code>control</span> = <code class="type">Gc.control</code> = {</pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
@@ -377,7 +377,7 @@
 <div class="info-desc">
 <p>The major GC speed is computed from this parameter.
         This is the memory that will be "wasted" because the GC does not
-        immediatly collect unreachable blocks.  It is expressed as a
+        immediately collect unreachable blocks.  It is expressed as a
         percentage of the memory used for live data.
         The GC will work more (use more CPU time and collect
         blocks more eagerly) if <code class="code">space_overhead</code> is smaller.
@@ -721,7 +721,7 @@
 </div>
 </div>
 
-<pre><span id="TYPEalarm"><span class="keyword">type</span> <code class="type"></code>alarm</span> = <code class="type">Stdlib.Gc.alarm</code> </pre>
+<pre><span id="TYPEalarm"><span class="keyword">type</span> <code class="type"></code>alarm</span> = <code class="type">Gc.alarm</code> </pre>
 <div class="info ">
 <div class="info-desc">
 <p>An alarm is a piece of data that calls a user function at the end of

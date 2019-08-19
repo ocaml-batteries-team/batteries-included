@@ -173,7 +173,7 @@
 <p><b>Note</b> The types are kept concrete so as to allow pattern-matching.
    However, it is generally easier to manipulate <a href="BatLazyList.html#VALnil"><code class="code"><span class="constructor">BatLazyList</span>.nil</code></a> and <a href="BatLazyList.html#VALcons"><code class="code"><span class="constructor">BatLazyList</span>.cons</code></a>.</p>
 
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a <a href="BatLazyList.html#TYPEnode_t">node_t</a> Stdlib.Lazy.t</code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a <a href="BatLazyList.html#TYPEnode_t">node_t</a> Lazy.t</code> </pre>
 <div class="info ">
 <div class="info-desc">
 <p>The type of a lazy list.</p>
@@ -411,7 +411,7 @@
 </div>
 </div>
 
-<pre><span id="VALlazy_fold_right"><span class="keyword">val</span> lazy_fold_right</span> : <code class="type">('a -> 'b Stdlib.Lazy.t -> 'b) -><br>       'a <a href="BatLazyList.html#TYPEt">t</a> -> 'b Stdlib.Lazy.t -> 'b Stdlib.Lazy.t</code></pre><div class="info ">
+<pre><span id="VALlazy_fold_right"><span class="keyword">val</span> lazy_fold_right</span> : <code class="type">('a -> 'b Lazy.t -> 'b) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'b Lazy.t -> 'b Lazy.t</code></pre><div class="info ">
 <div class="info-desc">
 <p>Lazy fold_right
    <code class="code">lazy_fold_right&nbsp;f&nbsp;(<span class="constructor">Cons</span>&nbsp;(a0,&nbsp;<span class="constructor">Cons</span>&nbsp;(a1,&nbsp;<span class="constructor">Cons</span>&nbsp;(a2,&nbsp;nil))))&nbsp;b</code> is
@@ -792,7 +792,7 @@
 </div>
 </div>
 
-<pre><span id="VALto_stream"><span class="keyword">val</span> to_stream</span> : <code class="type">'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a Stdlib.Stream.t</code></pre><div class="info ">
+<pre><span id="VALto_stream"><span class="keyword">val</span> to_stream</span> : <code class="type">'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a Stream.t</code></pre><div class="info ">
 <div class="info-desc">
 <p>Lazy conversion to stream.</p>
 </div>
@@ -821,7 +821,7 @@
 </div>
 </div>
 
-<pre><span id="VALof_stream"><span class="keyword">val</span> of_stream</span> : <code class="type">'a Stdlib.Stream.t -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info ">
+<pre><span id="VALof_stream"><span class="keyword">val</span> of_stream</span> : <code class="type">'a Stream.t -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Lazy conversion from stream.</p>
 </div>
@@ -959,6 +959,28 @@
 <li><b>Raises</b> <code>Different_list_size</code> if the two lists have
     different lengths.</li>
 </ul>
+</div>
+
+<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">('a -> 'b -> bool) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'b <a href="BatLazyList.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">equal&nbsp;eq&nbsp;s1&nbsp;s2</code> compares elements of <code class="code">s1</code> and <code class="code">s2</code> pairwise using <code class="code">eq</code>
+    and returns true if all elements pass the test and the lists have the same 
+    length; otherwise it returns false.  Examples:</p>
+
+<pre class="codepre"><code class="code">        equal (=) (range 0 4) (range 0 4) <span class="comment">(* true *)</span>
+
+        <span class="comment">(* Make lazy lists of lazy lists: *)</span>
+        <span class="keyword">let</span> s1 = init 5 (range 0) 
+        <span class="keyword">let</span> s2 = init 5 (range 0) 
+        equal (equal (=)) s1 s2 <span class="comment">(* true *)</span>
+      </code></pre>
+<p>(Calling <code class="code">=</code> directly on a pair of lazy lists may succeed but is not
+      guaranteed to behave consistently.)</p>
+
+<p>Note that on lists of equal length, <code class="code">equal</code> and <code class="code">for_all2</code> can perform
+      the same function; their intended uses differ, however, as signaled by
+      behavior on lists of different lengths.</p>
+</div>
 </div>
 
 <pre><span id="VALexists2"><span class="keyword">val</span> exists2</span> : <code class="type">('a -> 'b -> bool) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'b <a href="BatLazyList.html#TYPEt">t</a> -> bool</code></pre><div class="info ">

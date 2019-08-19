@@ -141,10 +141,10 @@
     <a href="http://caml.inria.fr/pub/docs/manual-ocaml/libref/Hashtbl.html">Hashtbl</a>
     module.  All functions and types are provided here.</p>
 
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b)</code> t</span> = <code class="type">('a, 'b) Stdlib.Hashtbl.t</code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b)</code> t</span> = <code class="type">('a, 'b) Hashtbl.t</code> </pre>
 <div class="info ">
 <div class="info-desc">
-<p>A Hashtable wth keys of type 'a and values 'b</p>
+<p>A Hashtable with keys of type 'a and values 'b</p>
 </div>
 </div>
 
@@ -329,7 +329,7 @@
 </div>
 </div>
 
-<pre><span id="VALfind_option"><span class="keyword">val</span> find_option</span> : <code class="type">('a, 'b) Stdlib.Hashtbl.t -> 'a -> 'b option</code></pre><div class="info ">
+<pre><span id="VALfind_option"><span class="keyword">val</span> find_option</span> : <code class="type">('a, 'b) Hashtbl.t -> 'a -> 'b option</code></pre><div class="info ">
 <div class="info-desc">
 <p>Find a binding for the key, or return <code class="code"><span class="constructor">None</span></code> if no
     value is found</p>
@@ -451,6 +451,35 @@
 <p><code class="code">filter_map_inplace&nbsp;f&nbsp;m</code> performs like filter_map but modify <code class="code">m</code>
     inplace instead of creating a new Hashtbl.</p>
 </div>
+</div>
+
+<pre><span id="VALmerge"><span class="keyword">val</span> merge</span> : <code class="type">('a -> 'b option -> 'c option -> 'd option) -><br>       ('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> ('a, 'c) <a href="BatHashtbl.html#TYPEt">t</a> -> ('a, 'd) <a href="BatHashtbl.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">merge&nbsp;f&nbsp;a&nbsp;b</code> returns a new Hashtbl which is build from the bindings of
+    <code class="code">a</code> and <code class="code">b</code> according to the function <code class="code">f</code>, that is given all defined keys
+    one by one, along with the value from <code class="code">a</code> (if defined) and the value from
+    <code class="code">b</code> (if defined), and has to return the (optional) resulting value.</p>
+
+<p>It is assumed that each key is bound at most once in <code class="code">a</code> and <code class="code">b</code>.
+    See <code class="code">merge_all</code> for a more general alternative if this is not the case.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0</li>
+</ul>
+</div>
+
+<pre><span id="VALmerge_all"><span class="keyword">val</span> merge_all</span> : <code class="type">('a -> 'b list -> 'c list -> 'd list) -><br>       ('a, 'b) <a href="BatHashtbl.html#TYPEt">t</a> -> ('a, 'c) <a href="BatHashtbl.html#TYPEt">t</a> -> ('a, 'd) <a href="BatHashtbl.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">merge_all&nbsp;f&nbsp;a&nbsp;b</code> is similar to <code class="code">merge</code>, but passes to <code class="code">f</code> all bindings
+    for a key (most recent first, as returned by <code class="code">find_all</code>). <code class="code">f</code> must then
+    return all the new bindings of the merged hashtable (or an empty list if
+    that key should not be bound in the resulting hashtable). Those new
+    bindings will be inserted in reverse, so that the head of the list will
+    become the most recent binding in the merged hashtable.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0</li>
+</ul>
 </div>
 <h7 id="6_Thepolymorphichashprimitive">The polymorphic hash primitive</h7>
 <pre><span id="VALhash"><span class="keyword">val</span> hash</span> : <code class="type">'a -> int</code></pre><div class="info ">

@@ -521,6 +521,36 @@
 </div>
 </div>
 
+<pre><span id="VALto_buffer"><span class="keyword">val</span> to_buffer</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -> ('a -> string) -> Buffer.t -> (unit -> 'a <a href="BatSeq.html#TYPEnode">node</a>) -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Convert a sequence to a string in the given buffer; eager.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0</li>
+</ul>
+</div>
+
+<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">?first:string -><br>       ?last:string -> ?sep:string -> ('a -> string) -> 'a <a href="BatSeq.html#TYPEt">t</a> -> string</code></pre><div class="info ">
+<div class="info-desc">
+<p>Convert the sequence to a string; eager.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0</li>
+</ul>
+</div>
+
+<pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">?first:string -><br>       ?last:string -> ?sep:string -> (string -> 'a) -> string -> 'a <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Create a sequence by parsing a string.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0</li>
+<li><b>Raises</b><ul><li><code>Invalid_argument</code> if the string is not prefixed by <code class="code">first</code>.</li>
+<li><code>Invalid_argument</code> if the string is not suffixed by <code class="code">last</code>.</li>
+</ul></li>
+</ul>
+</div>
+
 <pre><span id="MODULEInfix"><span class="keyword">module</span> <a href="BatSeq.Infix.html">Infix</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatSeq.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
 <pre><span class="keyword">include</span> <a href="BatSeq.Infix.html">BatSeq.Infix</a></pre>
 

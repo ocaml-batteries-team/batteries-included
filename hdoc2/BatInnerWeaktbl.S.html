@@ -117,13 +117,7 @@
 &nbsp;</div>
 <h1>Module type <a href="type_BatInnerWeaktbl.S.html">BatInnerWeaktbl.S</a></h1>
 
-<pre><span id="MODULETYPES"><span class="keyword">module type</span> S</span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatInnerWeaktbl.S.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info modtype top">
-<div class="info-desc">
-<p>This is a subset of Hashtbl.S, kept as a separate interface to
-   avoid compatibility issues when Hashtbl.S evolves.</p>
-</div>
-</div>
-<hr width="100%">
+<pre><span id="MODULETYPES"><span class="keyword">module type</span> S</span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatInnerWeaktbl.S.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 
 <pre><span id="TYPEkey"><span class="keyword">type</span> <code class="type"></code>key</span> </pre>
 
@@ -146,4 +140,4 @@
 <pre><span id="VALfilter_map_inplace"><span class="keyword">val</span> filter_map_inplace</span> : <code class="type">(<a href="BatInnerWeaktbl.S.html#TYPEkey">key</a> -> 'a -> 'a option) -> 'a <a href="BatInnerWeaktbl.S.html#TYPEt">t</a> -> unit</code></pre>
 <pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">(<a href="BatInnerWeaktbl.S.html#TYPEkey">key</a> -> 'a -> 'b -> 'b) -><br>       'a <a href="BatInnerWeaktbl.S.html#TYPEt">t</a> -> 'b -> 'b</code></pre>
 <pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type">'a <a href="BatInnerWeaktbl.S.html#TYPEt">t</a> -> int</code></pre>
-<pre><span id="VALstats"><span class="keyword">val</span> stats</span> : <code class="type">'a <a href="BatInnerWeaktbl.S.html#TYPEt">t</a> -> Stdlib.Hashtbl.statistics</code></pre></body></html>
+<pre><span id="VALstats"><span class="keyword">val</span> stats</span> : <code class="type">'a <a href="BatInnerWeaktbl.S.html#TYPEt">t</a> -> Hashtbl.statistics</code></pre></body></html>

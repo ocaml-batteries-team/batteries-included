@@ -136,9 +136,9 @@
 &nbsp;&nbsp;&nbsp;&nbsp;?description:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">OptParser</span>.group<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;error&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">OptParser</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;?chn:<span class="constructor">Stdlib</span>.out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?status:int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;?chn:<span class="constructor">Pervasives</span>.out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?status:int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;usage&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">OptParser</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?chn:<span class="constructor">Stdlib</span>.out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">OptParser</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?chn:<span class="constructor">Pervasives</span>.out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;parse&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatOptParse</span>.<span class="constructor">OptParser</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;?first:int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?last:int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;array&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;list<br>

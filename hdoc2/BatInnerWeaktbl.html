@@ -244,11 +244,8 @@
 </div>
 <h7 id="6_Functorialinterface">Functorial interface</h7>
 <pre><span id="MODULETYPEHashedType"><span class="keyword">module type</span> <a href="BatInnerWeaktbl.HashedType.html">HashedType</a></span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatInnerWeaktbl.HashedType.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
-<pre><span id="MODULETYPES"><span class="keyword">module type</span> <a href="BatInnerWeaktbl.S.html">S</a></span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatInnerWeaktbl.S.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
-<p>This is a subset of Hashtbl.S, kept as a separate interface to
+<pre><span id="MODULETYPES"><span class="keyword">module type</span> <a href="BatInnerWeaktbl.S.html">S</a></span> = <code class="code"><span class="keyword">sig</span></code> <a href="BatInnerWeaktbl.S.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><p>This is a subset of Hashtbl.S, kept as a separate interface to
    avoid compatibility issues when Hashtbl.S evolves.</p>
-
-</div>
 
 <pre><span id="MODULEMake"><span class="keyword">module</span> <a href="BatInnerWeaktbl.Make.html">Make</a></span>: <div class="sig_block"><code class="code"><span class="keyword">functor</span>&nbsp;(</code><code class="code"><span class="constructor">H</span></code><code class="code">&nbsp;:&nbsp;</code><code class="type"><a href="BatInnerWeaktbl.HashedType.html">HashedType</a></code><code class="code">)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;</code><code class="type"><a href="BatInnerWeaktbl.S.html">S</a></code><code class="type">  with type key = H.t</code></div></pre><div class="info">
 <p>Functor building an implementation of the hashtable structure.</p>

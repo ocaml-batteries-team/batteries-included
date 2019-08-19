@@ -160,7 +160,7 @@
 </div>
 <hr width="100%">
 
-<pre><span id="TYPEextern_flags"><span class="keyword">type</span> <code class="type"></code>extern_flags</span> = <code class="type">Stdlib.Marshal.extern_flags</code> = </pre><table class="typetable">
+<pre><span id="TYPEextern_flags"><span class="keyword">type</span> <code class="type"></code>extern_flags</span> = <code class="type">Marshal.extern_flags</code> = </pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
@@ -231,7 +231,7 @@
     un-marshaling time, using an MD5 digest of the code transmitted
     along with the code position.)</div>
 
-<pre><span id="VALto_bytes"><span class="keyword">val</span> to_bytes</span> : <code class="type">'a -> <a href="BatMarshal.html#TYPEextern_flags">extern_flags</a> list -> Stdlib.Bytes.t</code></pre><div class="info ">
+<pre><span id="VALto_bytes"><span class="keyword">val</span> to_bytes</span> : <code class="type">'a -> <a href="BatMarshal.html#TYPEextern_flags">extern_flags</a> list -> Bytes.t</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code"><span class="constructor">Marshal</span>.to_bytes&nbsp;v&nbsp;flags</code> returns a byte sequence containing
    the representation of <code class="code">v</code>.
@@ -250,7 +250,7 @@
 </div>
 </div>
 
-<pre><span id="VALto_buffer"><span class="keyword">val</span> to_buffer</span> : <code class="type">Stdlib.Bytes.t -> int -> int -> 'a -> <a href="BatMarshal.html#TYPEextern_flags">extern_flags</a> list -> int</code></pre><div class="info ">
+<pre><span id="VALto_buffer"><span class="keyword">val</span> to_buffer</span> : <code class="type">Bytes.t -> int -> int -> 'a -> <a href="BatMarshal.html#TYPEextern_flags">extern_flags</a> list -> int</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code"><span class="constructor">Marshal</span>.to_buffer&nbsp;buff&nbsp;ofs&nbsp;len&nbsp;v&nbsp;flags</code> marshals the value <code class="code">v</code>,
    storing its byte representation in the sequence <code class="code">buff</code>,
@@ -271,7 +271,7 @@
 </div>
 </div>
 
-<pre><span id="VALfrom_bytes"><span class="keyword">val</span> from_bytes</span> : <code class="type">Stdlib.Bytes.t -> int -> 'a</code></pre><div class="info ">
+<pre><span id="VALfrom_bytes"><span class="keyword">val</span> from_bytes</span> : <code class="type">Bytes.t -> int -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code"><span class="constructor">Marshal</span>.from_bytes&nbsp;buff&nbsp;ofs</code> unmarshals a structured value
    like <code class="code"><span class="constructor">Marshal</span>.from_channel</code> does, except that the byte
@@ -316,13 +316,13 @@
 </div>
 </div>
 
-<pre><span id="VALdata_size"><span class="keyword">val</span> data_size</span> : <code class="type">Stdlib.Bytes.t -> int -> int</code></pre><div class="info ">
+<pre><span id="VALdata_size"><span class="keyword">val</span> data_size</span> : <code class="type">Bytes.t -> int -> int</code></pre><div class="info ">
 <div class="info-desc">
 <p>See <code class="code"><span class="constructor">Marshal</span>.header_size</code>.</p>
 </div>
 </div>
 
-<pre><span id="VALtotal_size"><span class="keyword">val</span> total_size</span> : <code class="type">Stdlib.Bytes.t -> int -> int</code></pre><div class="info ">
+<pre><span id="VALtotal_size"><span class="keyword">val</span> total_size</span> : <code class="type">Bytes.t -> int -> int</code></pre><div class="info ">
 <div class="info-desc">
 <p>See <code class="code"><span class="constructor">Marshal</span>.header_size</code>.</p>
 </div>

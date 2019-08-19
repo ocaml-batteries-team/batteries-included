@@ -167,7 +167,7 @@
 </ul>
 </div>
 
-<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">Stdlib.Bytes.t -> int -> char -> unit</code></pre><div class="info ">
+<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">Bytes.t -> int -> char -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code"><span class="constructor">String</span>.set&nbsp;s&nbsp;n&nbsp;c</code> modifies string <code class="code">s</code> in place,
     replacing the character number <code class="code">n</code> by <code class="code">c</code>.
@@ -178,7 +178,7 @@
 </ul>
 </div>
 
-<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -> Stdlib.Bytes.t</code></pre><div class="info ">
+<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -> Bytes.t</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code"><span class="constructor">String</span>.create&nbsp;n</code> returns a fresh string of length <code class="code">n</code>.
     The string initially contains arbitrary characters.</p>
@@ -216,7 +216,7 @@
 </ul>
 </div>
 
-<pre><span id="VALfill"><span class="keyword">val</span> fill</span> : <code class="type">Stdlib.Bytes.t -> int -> int -> char -> unit</code></pre><div class="info ">
+<pre><span id="VALfill"><span class="keyword">val</span> fill</span> : <code class="type">Bytes.t -> int -> int -> char -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code"><span class="constructor">String</span>.fill&nbsp;s&nbsp;start&nbsp;len&nbsp;c</code> modifies the byte sequence <code class="code">s</code> in
     place, replacing <code class="code">len</code> characters by <code class="code">c</code>, starting at <code class="code">start</code>.</p>
@@ -227,7 +227,7 @@
 </ul>
 </div>
 
-<pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type">string -> int -> Stdlib.Bytes.t -> int -> int -> unit</code></pre><div class="info ">
+<pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type">string -> int -> Bytes.t -> int -> int -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code"><span class="constructor">String</span>.blit&nbsp;src&nbsp;srcoff&nbsp;dst&nbsp;dstoff&nbsp;len</code> copies <code class="code">len</code> characters
     from string <code class="code">src</code>, starting at character number <code class="code">srcoff</code>, to the
@@ -416,8 +416,8 @@
     comes immediately after the <code class="code">n</code>-th occurrence of <code class="code">chr</code> in <code class="code">str</code>.</p>
 
 <ul>
-<li><b>Occurences are numbered from 1</b>: <code class="code">n</code> = 1 returns the index of
-      the character located immediately after the first occurence of
+<li><b>Occurrences are numbered from 1</b>: <code class="code">n</code> = 1 returns the index of
+      the character located immediately after the first occurrence of
       <code class="code">chr</code>.</li>
 <li><code class="code">n</code> = 0 always returns <code class="code">0</code>.</li>
 <li>If the <code class="code">n</code>-th occurrence of <code class="code">chr</code> is the last character of
@@ -856,6 +856,12 @@
 <p>Example: <code class="code"><span class="constructor">String</span>.exists&nbsp;<span class="string">"foobarbaz"</span>&nbsp;<span class="string">"obar"</span>&nbsp;=&nbsp;<span class="keyword">true</span></code></p>
 </div>
 </div>
+
+<pre><span id="VALcount_char"><span class="keyword">val</span> count_char</span> : <code class="type">string -> char -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">count_char&nbsp;str&nbsp;c</code> returns the number of times <code class="code">c</code> is used in <code class="code">str</code>.</p>
+</div>
+</div>
 <h7 id="6_Transformations">Transformations</h7>
 <pre><span id="VALlchop"><span class="keyword">val</span> lchop</span> : <code class="type">?n:int -> string -> string</code></pre><div class="info ">
 <div class="info-desc">
@@ -994,7 +1000,7 @@
 <p><code class="code">replace&nbsp;~str&nbsp;~sub&nbsp;~by</code> returns a tuple consisting of a boolean
     and a string where the first occurrence of the string <code class="code">sub</code>
     within <code class="code">str</code> has been replaced by the string <code class="code">by</code>. The boolean
-    is true if a subtitution has taken place.</p>
+    is true if a substitution has taken place.</p>
 
 <p>Example: <code class="code"><span class="constructor">String</span>.replace&nbsp;<span class="string">"foobarbaz"</span>&nbsp;<span class="string">"bar"</span>&nbsp;<span class="string">"rab"</span>&nbsp;=&nbsp;(<span class="keyword">true</span>,&nbsp;<span class="string">"foorabbaz"</span>)</code></p>
 </div>
@@ -1027,7 +1033,7 @@
 </ul>
 </div>
 <h7 id="6_InPlaceTransformations">In-Place Transformations</h7>
-<pre><span id="VALrev_in_place"><span class="keyword">val</span> rev_in_place</span> : <code class="type">Stdlib.Bytes.t -> unit</code></pre><div class="info ">
+<pre><span id="VALrev_in_place"><span class="keyword">val</span> rev_in_place</span> : <code class="type">Bytes.t -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">rev_in_place&nbsp;s</code> mutates the byte sequence <code class="code">s</code>, so that its new value is
     the mirror of its old one: for instance if s contained <code class="code"><span class="string">"Example!"</span></code>, after
@@ -1035,7 +1041,7 @@
 </div>
 </div>
 
-<pre><span id="VALin_place_mirror"><span class="keyword">val</span> in_place_mirror</span> : <code class="type">Stdlib.Bytes.t -> unit</code></pre><div class="info ">
+<pre><span id="VALin_place_mirror"><span class="keyword">val</span> in_place_mirror</span> : <code class="type">Bytes.t -> unit</code></pre><div class="info ">
 <div class="info-deprecated">
 <span class="warning">Deprecated.</span>Use <code class="code"><span class="constructor">String</span>.rev_in_place</code> instead</div>
 </div>
@@ -1118,7 +1124,7 @@
 </div>
 <ul class="info-attributes">
 <li><b>Since</b> 2.9.0</li>
-<li><b>Raises</b><ul><li><code>Not_found</code> if there are strictly less than <code class="code">n</code> occurences of <code class="code">chr</code> in str.</li>
+<li><b>Raises</b><ul><li><code>Not_found</code> if there are strictly less than <code class="code">n</code> occurrences of <code class="code">chr</code> in str.</li>
 <li><code>Invalid_argument</code> if <code class="code">n&nbsp;&lt;&nbsp;0</code>.</li>
 </ul></li>
 </ul>
