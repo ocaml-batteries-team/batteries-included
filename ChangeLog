@@ -1,6 +1,10 @@
 Changelog
 ---------
 
+## NEXT_RELEASE
+
+... cool features to come.
+
 ## v2.10.0 (minor release)
 
 This minor release adds support for OCaml 4.08.0.
