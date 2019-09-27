@@ -55,7 +55,7 @@ These modules have base library equivalents.  When using [open Batteries], [BatF
 
 {!modules: BatArray BatBigarray BatBig_int BatBuffer BatComplex
 BatDigest BatFormat BatGc BatGenlex BatHashtbl BatLexing BatList
-BatMap BatMarshal BatNum BatOo BatPervasives BatPrintexc BatPrintf
+BatMap BatMarshal BatNum BatPervasives BatPrintexc BatPrintf
 BatQueue BatRandom BatScanf BatSet BatStack BatStream BatString
 BatSys BatUnix}
 
