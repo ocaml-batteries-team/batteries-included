@@ -322,5 +322,5 @@ module Exceptionless : sig
   val reduce : ('a -> 'a -> 'a) -> 'a t -> 'a option
   val max : 'a t -> 'a option
   val min : 'a t -> 'a option
-  val combine : 'a t -> 'b t -> ('a * 'b) t option
+  val combine : 'a t -> 'b t -> ('a * 'b) t
 end
