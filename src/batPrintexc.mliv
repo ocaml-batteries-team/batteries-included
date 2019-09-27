@@ -325,7 +325,7 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.4##    raw_backtrace_slot -> raw_backtrace_slot option
 ##V>=4.4##(** [get_raw_backtrace_next_slot slot] returns the next slot inlined, if any.
 ##V>=4.4##
-##V>=4.4##    @since NEXT_RELASE and OCaml 4.04
+##V>=4.4##    @since NEXT_RELEASE and OCaml 4.04
 ##V>=4.4##*)
 
 
