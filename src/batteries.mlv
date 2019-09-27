@@ -162,6 +162,7 @@ module Int = BatInt
 module Bool = BatBool
 module Unit = BatUnit
 (*module Int63 = BatInt63*)
+module Filename = BatFilename
 
 (* Modules in-progress, API stability not guaranteed *)
 module Incubator = struct
