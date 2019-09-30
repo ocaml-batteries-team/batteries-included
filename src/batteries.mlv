@@ -47,6 +47,7 @@ module Legacy = struct
   module Big_int = Big_int
   module Bigarray = Bigarray
   module Str = Str
+##V>=4.8## module Result = Result
 end
 
 (* stdlib modules *)
