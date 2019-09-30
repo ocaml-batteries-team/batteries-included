@@ -429,6 +429,7 @@ end
 include Infix
 
 module Exceptionless = struct
+  (*$< Exceptionless *)
   (* This function could be used to eliminate a lot of duplicate code below...
      let exceptionless_arg f s e =
      try Some (f s)
@@ -477,11 +478,18 @@ module Exceptionless = struct
     try Some (min s)
     with Invalid_argument _ -> None
 
-  let combine s1 s2 =
-    try Some (combine s1 s2)
-    with Invalid_argument _ -> None
+  let rec combine s1 s2 () = match s1 (), s2 () with
+  | Nil, Nil ->
+    Nil
+  | Cons(e1, s1), Cons(e2, s2) ->
+    Cons((e1, e2), combine s1 s2)
+  | _ ->
+    Nil
 
   (*$T combine
-    equal (combine (of_list [1;2]) (of_list ["a";"b"])) (of_list [1,"a"; 2,"b"])
+    equal (combine (of_list [1;2]) (of_list ["a";"b"]))     (of_list [1,"a"; 2,"b"])
+    equal (combine (of_list [1;2]) (of_list ["a";"b";"c"])) (of_list [1,"a"; 2,"b"])
+    equal (combine (of_list [1;2;3]) (of_list ["a";"b"]))   (of_list [1,"a"; 2,"b"])
   *)
+  (*$>*)
 end
