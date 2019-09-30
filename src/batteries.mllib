@@ -33,7 +33,6 @@ BatInnerPervasives
   BatMarshal
   BatNativeint
   BatNum
-  BatOo
   BatPervasives
   BatPrintexc
   BatPrintf

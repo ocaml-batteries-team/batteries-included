@@ -82,7 +82,6 @@ module Map = BatMap
 module Marshal = BatMarshal
 (* MoreLabels *)
 module Nativeint = BatNativeint
-module Oo = BatOo
 (* Parsing *)
 module Printexc = BatPrintexc
 module Printf = BatPrintf (* UNTESTED FOR BACKWARDS COMPATIBILITY *)
