@@ -13,6 +13,7 @@ BatInnerPervasives
   BatDeque
   BatDigest
   BatEnum
+  BatFilename
   BatFingerTree
   BatFloat
   BatFormat

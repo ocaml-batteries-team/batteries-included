@@ -34,3 +34,4 @@ src/batPrintf.mli
 src/batFormat.mli
 src/batSys.mli
 src/batBigarray.mli
+src/batFilename.mli
