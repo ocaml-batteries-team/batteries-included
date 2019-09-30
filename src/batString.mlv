@@ -383,7 +383,7 @@ let rsplit str ~by:sep =
    of substrings from the end to the beginning, so as to avoid a call to [List.rev].
 *)
 let nsplit str ~by:sep =
-  if str = "" then []
+  if str = "" then [""]
   else if sep = "" then invalid_arg "String.nsplit: empty sep not allowed"
   else
     (* str is non empty *)
@@ -412,7 +412,7 @@ let nsplit str ~by:sep =
 
 (*$T nsplit
   nsplit "a;b;c" ~by:";" = ["a"; "b"; "c"]
-  nsplit "" ~by:"x" = []
+  nsplit "" ~by:"x" = [""]
   try nsplit "abc" ~by:"" = ["a"; "b"; "c"] with Invalid_argument _ -> true
   nsplit "a/b/c" ~by:"/" = ["a"; "b"; "c"]
   nsplit "/a/b/c//" ~by:"/" = [""; "a"; "b"; "c"; ""; ""]
@@ -420,7 +420,7 @@ let nsplit str ~by:sep =
 *)
 
 let split_on_char sep str =
-  if str = "" then []
+  if str = "" then [""]
   else
     (* str is non empty *)
     let rec loop acc ofs limit =
@@ -433,7 +433,7 @@ let split_on_char sep str =
 
 (*$T split_on_char
   split_on_char ';' "a;b;c" = ["a"; "b"; "c"]
-  split_on_char 'x' "" = []
+  split_on_char 'x' "" = [""]
   split_on_char '/' "a/b/c" = ["a"; "b"; "c"]
   split_on_char '/' "/a/b/c//" = [""; "a"; "b"; "c"; ""; ""]
 *)

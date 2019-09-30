@@ -745,6 +745,7 @@ val split_on_char: char -> string -> string list
       (String.split_on_char sep s) = s]).
     - No string in the result contains the [sep] character.
 
+    Note: prior to NEXT_RELEASE [split_on_char _ ""] used to return an empty list.
     @since 2.5.3
 *)
 
@@ -788,7 +789,8 @@ val rsplit : string -> by:string -> string * string
 val nsplit : string -> by:string -> string list
 (** [nsplit s sep] splits the string [s] into a list of strings
     which are separated by [sep] (excluded).
-    [nsplit "" _] returns the empty list.
+    [nsplit "" _] returns a single empty string.
+    Note: prior to NEXT_RELEASE [nsplit "" _] used to return an empty list.
 
     Example: [String.nsplit "abcabcabc" "bc" = ["a"; "a"; "a"; ""]]
 *)
