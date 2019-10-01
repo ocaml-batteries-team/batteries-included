@@ -1,9 +1,51 @@
 Changelog
 ---------
 
-## NEXT_RELEASE
+## NEXT_RELEASE (major release)
 
-... cool features to come.
+- BatList and BatArray: sum of an empty container now return 0 rather than
+  raising an exception.
+  #519
+  (Cedric Cellier, report by Simon Cruanes, review by François Berenger)
+- BatString: split_on_char and nsplit now return a sigle empty string (rather
+  than an empty list) on empty strings.
+  #845, #846
+  (Cedric Cellier, report by Thibault Suzanne, review by François Berenger)
+- BatSeq: change Exceptionless.combine signature to make it really
+  exceptionless.
+  #418
+  (Cedric Cellier, report by Hezekiah M. Carty, review by François Berenger)
+- BatOo: This module was unwelcomed and has been removed
+  #848
+  (Cedric Cellier, report by Max Mouratov, review by François Berenger)
+- BatFilename: Added to Batteries from the stdlib, with the addition of
+  split_extension.
+  #445
+  (Cedric Cellier, report and review by François Berenger)
+- BatSet: the Infix module is no more, as it was incompatible with
+  metaocaml
+  #908
+  (Cedric Cellier, review by Gabriel Scherer and François Berenger)
+- BatIO: make the ?cleanup parameter of BatIO.input_channel true by default:
+  closing the returned input will close the underlying input channel
+  #109, #489
+  (Simon Cruanes, report by Michael Ekstrand)
+- BatArray: add split : 'a BatOrd.ord -> 'a array -> 'a -> int * int
+  search for the range equal to a given element in a sorted array
+  #443, #470
+  (Simon Cruanes, Gabriel Scherer, request by François Berenger)
+- BatEnum: BatEnum.combine is now curried, just like List.combine,
+  its signature changes from:
+    val combine: 'a t * 'b t -> ('a * 'b) t
+  to
+    val combine: 'a t -> 'b t -> ('a * 'b) t
+  #578
+  (François Berenger)
+- PSet: add a ?cmp argument to every function that creates a PSet:
+    of_enum, of_list, of_array
+  are changed. The default value is Pervasives.compare.
+  #679
+  (Cedric Cellier)
 
 ## v2.10.0 (minor release)
 

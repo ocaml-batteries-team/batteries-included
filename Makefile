@@ -297,4 +297,5 @@ upload-docs:
 	git add hdoc2/*.html && \
 	git commit hdoc2 -m "Update ocamldoc to latest release" && \
 	git push \
-	git@github.com:ocaml-batteries-team/batteries-included.git gh-pages
+	git@github.com:ocaml-batteries-team/batteries-included.git gh-pages \
+	git checkout master

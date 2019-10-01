@@ -824,10 +824,10 @@ module PSet = struct (*$< PSet *)
 
   let max_elt s = Concrete.max_elt s.set
   let enum s = Concrete.enum s.set
-  let of_enum e = { cmp = compare; set = Concrete.of_enum compare e }
+  let of_enum ?(cmp = compare) e = { cmp; set = Concrete.of_enum compare e }
   let of_enum_cmp ~cmp t = { cmp = cmp; set = Concrete.of_enum cmp t }
-  let of_list l = { cmp = compare; set = Concrete.of_list compare l }
-  let of_array a = { cmp = compare; set = Concrete.of_array compare a }
+  let of_list ?(cmp = compare) l = { cmp; set = Concrete.of_list compare l }
+  let of_array ?(cmp = compare) a = { cmp; set = Concrete.of_array compare a }
   let print ?first ?last ?sep print_elt out s =
     Concrete.print ?first ?last ?sep print_elt out s.set
   let for_all f s = Concrete.for_all f s.set

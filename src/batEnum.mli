@@ -559,10 +559,12 @@ val dup : 'a t -> 'a t * 'a t
     that stream is a destructive data structure, the point of [dup] is to
     return two streams can be used independently. *)
 
-val combine : 'a t * 'b t -> ('a * 'b) t
-(** [combine] transform a pair of stream into a stream of pairs of corresponding
-    elements. If one stream is short, excess elements of the longer stream are
-    ignored. *)
+val combine : 'a t -> 'b t -> ('a * 'b) t
+(** [combine] transform two streams into a stream of pairs of corresponding
+    elements. If one stream is shorter, excess elements of the longer stream are
+    ignored.
+    Curried @since 3.0
+ *)
 
 val uncombine : ('a * 'b) t -> 'a t * 'b t
 (** [uncombine] is the opposite of [combine] *)
