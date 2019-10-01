@@ -703,7 +703,7 @@ let bsearch cmp arr x =
   bsearch BatInt.ord [| |] 3 = `Empty
 *)
 
-let split cmp arr x =
+let pivot_split cmp arr x =
   let open BatOrd in
   let n = length arr in
   (* find left edge between i and j *)
@@ -739,14 +739,14 @@ let split cmp arr x =
   in
   (search_left 0 (n-1), search_right 0 (n-1))
 
-(*$T split
-  split BatInt.ord [| |] 1 = (0, 0)
-  split BatInt.ord [|1;2;2;3;3;4;5|] 3 = (3,5)
-  split BatInt.ord [|1;1;1;2;3;3;4;5|] 1 = (0,3)
-  split BatInt.ord [|1;2;2;3;3;4;5|] 10 = (7,7)
-  split BatInt.ord [|1;2;2;3;3;4;5|] 0 = (0,0)
-  split BatInt.ord [|2;2;2|] 2 = (0,3)
-  split BatInt.ord [|1;2;2;4;5|] 3 = (3,3)
+(*$T pivot_split
+  pivot_split BatInt.ord [| |] 1 = (0, 0)
+  pivot_split BatInt.ord [|1;2;2;3;3;4;5|] 3 = (3,5)
+  pivot_split BatInt.ord [|1;1;1;2;3;3;4;5|] 1 = (0,3)
+  pivot_split BatInt.ord [|1;2;2;3;3;4;5|] 10 = (7,7)
+  pivot_split BatInt.ord [|1;2;2;3;3;4;5|] 0 = (0,0)
+  pivot_split BatInt.ord [|2;2;2|] 2 = (0,3)
+  pivot_split BatInt.ord [|1;2;2;4;5|] 3 = (3,3)
 *)
 
 let insert xs x i =
@@ -942,6 +942,7 @@ struct
   let of_backwards = of_backwards
   let to_list      = to_list
   let split        = split
+  let pivot_split  = pivot_split
   let of_list      = of_list
   let sort         = sort
   let stable_sort  = stable_sort
