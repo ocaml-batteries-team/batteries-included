@@ -1369,11 +1369,15 @@ let reduce f = function
 
 let min l = reduce Pervasives.min l
 let max l = reduce Pervasives.max l
-let sum l = reduce (+) l
+let sum l = fold_left (+) 0 l
+(*$= sum & ~printer:string_of_int
+  2 (sum [1;1])
+  0 (sum [])
+*)
 
 let fsum l =
   match l with
-  | [] -> invalid_arg "List.fsum: Empty List"
+  | [] -> 0.
   | x::xs ->
     let acc = ref x in
     let rem = ref xs in
@@ -1386,9 +1390,9 @@ let fsum l =
         rem := xs
     done;
     !acc
-(*$T fsum
-  try let _ = fsum [] in false with Invalid_argument _ -> true
-  fsum [1.;2.;3.] = 6.
+(*$= fsum & ~printer:string_of_float
+  0. (fsum [])
+  6. (fsum [1.;2.;3.])
 *)
 
 let favg l =
