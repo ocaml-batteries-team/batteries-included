@@ -275,6 +275,23 @@ val combine : 'a t -> 'b t -> ('a * 'b) t
 val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
 (**Print the contents of a sequence*)
 
+val to_buffer : ?first:string -> ?last:string -> ?sep:string -> ('a -> string) -> Buffer.t -> (unit -> 'a node) -> unit
+(** Convert a sequence to a string in the given buffer; eager.
+    @since 2.10.0
+*)
+
+val to_string : ?first:string -> ?last:string -> ?sep:string -> ('a -> string) -> 'a t -> string
+(** Convert the sequence to a string; eager.
+    @since 2.10.0
+*)
+
+val of_string : ?first:string -> ?last:string -> ?sep:string -> (string -> 'a) -> string -> 'a t
+(** Create a sequence by parsing a string.
+    @raise Invalid_argument if the string is not prefixed by [first].
+    @raise Invalid_argument if the string is not suffixed by [last].
+    @since 2.10.0
+*)
+
 module Infix : sig
   (** Infix operators matching those provided by {!BatEnum.Infix} *)
 
@@ -305,5 +322,5 @@ module Exceptionless : sig
   val reduce : ('a -> 'a -> 'a) -> 'a t -> 'a option
   val max : 'a t -> 'a option
   val min : 'a t -> 'a option
-  val combine : 'a t -> 'b t -> ('a * 'b) t option
+  val combine : 'a t -> 'b t -> ('a * 'b) t
 end

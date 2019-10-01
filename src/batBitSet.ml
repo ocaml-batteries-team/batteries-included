@@ -37,17 +37,18 @@ let print_array =
   Array.init 256 print_bchar
 
 let print out t =
-  for i = 0 to (String.length !t) - 1 do
+  let buf = !t in
+  for i = 0 to (Bytes.length buf) - 1 do
     BatInnerIO.nwrite out
-      (Array.unsafe_get print_array (Char.code (Bytes.unsafe_get !t i)))
+      (Array.unsafe_get print_array (Char.code (Bytes.unsafe_get buf i)))
   done
 
 let capacity t = (Bytes.length !t) * 8
 
-let empty () = ref ""
+let empty () = ref (Bytes.create 0)
 
 let create_ sfun c n = (* n is in bits *)
-  if n < 0 then invalid_arg ("BitSet."^sfun^": negative size");
+  if n < 0 then invalid_arg ("BitSet." ^ sfun ^ ": negative size");
   let size = n / 8 + (if n mod 8 = 0 then 0 else 1) in
   ref (Bytes.make size c)
 
@@ -70,7 +71,7 @@ type bit_op =
 let rec apply_bit_op sfun op t x =
   let pos = x / 8 in
   if pos < 0 then
-    invalid_arg ("BitSet."^sfun^": negative index")
+    invalid_arg ("BitSet." ^ sfun ^ ": negative index")
   else if pos < Bytes.length !t then
     let delta = x mod 8 in
     let c = Char.code (Bytes.unsafe_get !t pos) in
@@ -104,7 +105,7 @@ let toggle t x = apply_bit_op "toggle" Toggle t x
 let mem t x =
   let pos = x / 8 in
   if pos < 0 then
-    invalid_arg ("BitSet.mem: negative index")
+    invalid_arg "BitSet.mem: negative index"
   else if pos < Bytes.length !t then
     let delta = x mod 8 in
     let c = Char.code (Bytes.unsafe_get !t pos) in

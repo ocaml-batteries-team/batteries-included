@@ -21,14 +21,9 @@
 
 include Digest
 
-open BatIO
-
 (*Imported from [Digest.input] -- the functions used take advantage of
   [BatIO.input] rather than [in_channel]*)
-let input inp =
-  let digest = Bytes.create 16 in
-  let _ = really_input inp digest 0 16 in
-  digest
+let input inp = BatIO.really_nread inp 16
 (*$T
   let digest = Digest.string "azerty" in \
   input (BatIO.input_string digest) = digest
@@ -38,10 +33,8 @@ let output = BatIO.nwrite
 let print oc t = BatIO.nwrite oc (to_hex t)
 
 let channel inp len = (*TODO: Make efficient*)
-  if len >= 0 then
-    let buf = Bytes.create len in
-    let _  = BatIO.really_input inp buf 0 len in
-    Digest.string buf
+  if len >= 0
+  then Digest.string (BatIO.really_nread inp len)
   else Digest.channel (BatIO.to_input_channel inp) len
 (*$T
   let digest = Digest.string "azerty" in \
@@ -69,20 +62,16 @@ let channel inp len = (*TODO: Make efficient*)
 *)
 
 let from_hex s =
-  if String.length s <> 32 then raise (Invalid_argument "Digest.from_hex");
+  if String.length s <> 32 then invalid_arg "Digest.from_hex";
   let digit c =
     match c with
     | '0'..'9' -> Char.code c - Char.code '0'
     | 'A'..'F' -> Char.code c - Char.code 'A' + 10
     | 'a'..'f' -> Char.code c - Char.code 'a' + 10
-    | _ -> raise (Invalid_argument "Digest.from_hex")
+    | _ -> invalid_arg "Digest.from_hex"
   in
   let byte i = digit s.[i] lsl 4 + digit s.[i+1] in
-  let result = Bytes.create 16 in
-  for i = 0 to 15 do
-    Bytes.set result i (Char.chr (byte (2 * i)));
-  done;
-  result
+  BatBytesCompat.string_init 16 (fun i -> Char.chr (byte (2 * i)))
 
 (*$Q
   Q.string (fun s -> \
@@ -98,7 +87,7 @@ let compare = String.compare
 (*$T
   equal (string "foo") (string "foo")
   equal (string "") (string "")
-  not <| equal (string "foo") (string "bar")
-  not <| equal (string "foo") (string "foo\0")
-  not <| equal (string "foo") (string "")
+  not @@ equal (string "foo") (string "bar")
+  not @@ equal (string "foo") (string "foo\000")
+  not @@ equal (string "foo") (string "")
  *)

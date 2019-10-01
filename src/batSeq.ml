@@ -49,15 +49,15 @@ let rec enum_of_ref r =
 let enum s = enum_of_ref (ref s)
 
 let hd s = match s () with
-  | Nil -> raise (Invalid_argument "Seq.hd")
+  | Nil -> invalid_arg "Seq.hd"
   | Cons(e, _s) -> e
 
 let tl s = match s () with
-  | Nil -> raise (Invalid_argument "Seq.tl")
+  | Nil -> invalid_arg "Seq.tl"
   | Cons(_e, s) -> s
 
 let first s = match s () with
-  | Nil -> raise (Invalid_argument "Seq.first")
+  | Nil -> invalid_arg "Seq.first"
   | Cons(e, _s) -> e
 
 let last s =
@@ -66,7 +66,7 @@ let last s =
     | Cons(e, s) -> aux e s
   in
   match s () with
-  | Nil -> raise (Invalid_argument "Seq.last")
+  | Nil -> invalid_arg "Seq.last"
   | Cons(e, s) -> aux e s
 
 let is_empty s = s () = Nil
@@ -74,7 +74,7 @@ let is_empty s = s () = Nil
 let at s n =
   let rec aux s n =
     match s () with
-    | Nil -> raise (Invalid_argument "Seq.at")
+    | Nil -> invalid_arg "Seq.at"
     | Cons(e, s) ->
       if n = 0 then
         e
@@ -197,15 +197,15 @@ let rec fold_right f s acc = match s () with
   | Cons(e, s) -> f e (fold_right f s acc)
 
 let reduce f s = match s () with
-  | Nil -> raise (Invalid_argument "Seq.reduce")
+  | Nil -> invalid_arg "Seq.reduce"
   | Cons(e, s) -> fold_left f e s
 
 let max s = match s () with
-  | Nil -> raise (Invalid_argument "Seq.max")
+  | Nil -> invalid_arg "Seq.max"
   | Cons(e, s) -> fold_left Pervasives.max e s
 
 let min s = match s () with
-  | Nil -> raise (Invalid_argument "Seq.min")
+  | Nil -> invalid_arg "Seq.min"
   | Cons(e, s) -> fold_left Pervasives.min e s
 
 let equal ?(eq=(=)) s1 s2 =
@@ -318,7 +318,7 @@ let rec combine s1 s2 () = match s1 (), s2 () with
   | Cons(e1, s1), Cons(e2, s2) ->
     Cons((e1, e2), combine s1 s2)
   | _ ->
-    raise (Invalid_argument "Seq.combine")
+    invalid_arg "Seq.combine"
 
 let print ?(first="[") ?(last="]") ?(sep="; ") print_a out s = match s () with
   | Nil ->
@@ -333,6 +333,61 @@ let print ?(first="[") ?(last="]") ?(sep="; ") print_a out s = match s () with
       print_a out e;
       iter (BatPrintf.fprintf out "%s%a" sep print_a) s;
       BatInnerIO.nwrite out last
+
+let to_buffer ?(first="[") ?(last="]") ?(sep=";") to_str buff s =
+  match s () with
+  | Nil -> (Buffer.add_string buff first;
+            Buffer.add_string buff last)
+  | Cons(e, s) ->
+    match s () with
+    | Nil -> (Buffer.add_string buff first;
+              Buffer.add_string buff (to_str e);
+              Buffer.add_string buff last)
+    | _ ->
+      Buffer.add_string buff first;
+      Buffer.add_string buff (to_str e);
+      iter (fun e ->
+          Buffer.add_string buff sep;
+          Buffer.add_string buff (to_str e)
+        ) s;
+      Buffer.add_string buff last
+
+let to_string ?(first="[") ?(last="]") ?(sep=";") to_str s =
+  let buff = Buffer.create 80 in
+  to_buffer ~first ~last ~sep to_str buff s;
+  Buffer.contents buff
+
+(*$T to_string
+  to_string string_of_int (of_list [1;2;3]) = "[1;2;3]"
+  to_string ~first:"{" ~sep:"," ~last:"}" string_of_int (of_list [1;2;3]) = "{1,2,3}"
+  to_string string_of_int (of_list []) = "[]"
+*)
+
+let of_string ?(first="[") ?(last="]") ?(sep=";") of_str s =
+  if not (BatString.starts_with s first) then
+    raise
+      (Invalid_argument
+         ("Seq.of_string: wrong prefix: " ^ first ^ " not prefix of " ^ s));
+  if not (BatString.ends_with s last) then
+    raise
+      (Invalid_argument
+         ("Seq.of_string: wrong suffix: " ^ last ^ " not suffix of " ^ s));
+  let prfx_len = String.length first in
+  let sufx_len = String.length last in
+  let n = String.length s in
+  if n = prfx_len + sufx_len then nil
+  else
+    let body = BatString.chop ~l:prfx_len ~r:sufx_len s in
+    let strings = BatString.nsplit ~by:sep body in
+    of_list (BatList.map of_str strings)
+
+(*$T of_string
+  equal (of_string int_of_string "[1;2;3]") (of_list [1;2;3])
+  equal (of_string int_of_string "[]") (of_list [])
+  equal (of_string ~first:"{" ~sep:"," ~last:"}" int_of_string "{1,2,3}") (of_list [1;2;3])
+  try equal (of_string ~first:"{" int_of_string "[1;2;3]") (of_list []) with (Invalid_argument _) -> true
+  try equal (of_string ~last:"}" int_of_string "[1;2;3]") (of_list []) with (Invalid_argument _) -> true
+*)
 
 module Infix = struct
   (** Infix operators matching those provided by {!BatEnum.Infix} *)
@@ -374,6 +429,7 @@ end
 include Infix
 
 module Exceptionless = struct
+  (*$< Exceptionless *)
   (* This function could be used to eliminate a lot of duplicate code below...
      let exceptionless_arg f s e =
      try Some (f s)
@@ -422,11 +478,18 @@ module Exceptionless = struct
     try Some (min s)
     with Invalid_argument _ -> None
 
-  let combine s1 s2 =
-    try Some (combine s1 s2)
-    with Invalid_argument _ -> None
+  let rec combine s1 s2 () = match s1 (), s2 () with
+  | Nil, Nil ->
+    Nil
+  | Cons(e1, s1), Cons(e2, s2) ->
+    Cons((e1, e2), combine s1 s2)
+  | _ ->
+    Nil
 
   (*$T combine
-    equal (combine (of_list [1;2]) (of_list ["a";"b"])) (of_list [1,"a"; 2,"b"])
+    equal (combine (of_list [1;2]) (of_list ["a";"b"]))     (of_list [1,"a"; 2,"b"])
+    equal (combine (of_list [1;2]) (of_list ["a";"b";"c"])) (of_list [1,"a"; 2,"b"])
+    equal (combine (of_list [1;2;3]) (of_list ["a";"b"]))   (of_list [1,"a"; 2,"b"])
   *)
+  (*$>*)
 end

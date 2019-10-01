@@ -22,6 +22,10 @@
 
 include Marshal
 
+##V<4.2##let from_bytes = from_string
+##V<4.2##external to_bytes :
+##V<4.2##  'a -> extern_flags list -> Bytes.t = "caml_output_value_to_string"
+
 let output out ?(sharing=true) ?(closures=false) v =
   let flags = match sharing, closures with
     | true, false -> []
@@ -33,15 +37,18 @@ let output out ?(sharing=true) ?(closures=false) v =
   BatInnerIO.nwrite out buf
 
 let input inp =
-  let header = BatInnerIO.really_nread inp header_size in
-  let size   = data_size header 0                   in
-  from_string (header ^ (BatInnerIO.really_nread inp size)) 0
+  let header = Bytes.create header_size in
+  let read = BatInnerIO.really_input inp header 0 header_size in
+  assert (read = header_size);
+  let data_size = data_size header 0 in
+  let buf = Bytes.extend header 0 data_size in
+  let read = BatInnerIO.really_input inp buf header_size data_size in
+  assert (read = data_size);
+  from_bytes buf 0
+
+let from_channel = input
 
 let to_channel out v flags =
   BatInnerIO.nwrite out (to_string v flags)
 
-let from_channel = input
 
-##V<4.2##let from_bytes = from_string
-##V<4.2##external to_bytes :
-##V<4.2##  'a -> extern_flags list -> Bytes.t = "caml_output_value_to_string"

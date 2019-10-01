@@ -14,22 +14,6 @@ let packs = "bigarray,num,str"
 let doc_intro = "build/intro.text"
 let mkconf = "build/mkconf.byte"
 let compiler_libs = if Sys.ocaml_version.[0] = '4' then [A"-I"; A"+compiler-libs"] else []
-(* removes the trailing newlines in the stdout of s *)
-let run_and_read s =
-  let res = run_and_read s in
-  String.chomp res
-
-(* Throws exception if bisect not installed - ignore this exception *)
-let bisect_dir = try run_and_read "ocamlfind query bisect" with _ -> "."
-let bisect_pp = Pathname.concat bisect_dir "bisect_pp.cmo"
-
-let src_bat_ml =
-  let l = Array.to_list (Pathname.readdir "src") in
-  let l =
-    List.filter (fun filename ->
-      String.is_prefix "bat" filename && String.is_suffix filename ".ml"
-    ) l in
-  List.map (fun filename -> Pathname.concat "src" filename) l
 
 let _ = dispatch begin function
   | Before_options ->
@@ -65,33 +49,7 @@ let _ = dispatch begin function
         ~deps:["META.in"; mkconf]
         begin fun env build ->
           Cmd(S[A"ocamlrun"; P mkconf; P"META.in"; P"META"])
-        end;
-
-      rule "code coverage"
-        ~prod:"coverage/index.html"
-        ~deps:src_bat_ml
-        begin fun env build ->
-          List.iter (fun filename ->
-            tag_file filename ["with_pa_bisect"; "syntax_camlp4o"; "use_bisect"];
-          ) src_bat_ml;
-          let test_exes = [
-            "testsuite/main.native";
-            "qtest/all_tests.native";
-          ] in
-          List.iter (fun exe -> tag_file exe ["use_bisect"]) test_exes;
-          List.iter Outcome.ignore_good (build (
-            List.map (fun exe -> [exe]) test_exes
-          ));
-          Seq ([
-            Cmd(S[Sh"rm -f bisect*.out"]);
-          ] @
-            List.map (fun exe -> Cmd(S[A exe])) test_exes
-          @ [
-            Cmd(S[Sh"bisect-report -html coverage bisect*.out"]);
-          ])
-        end;
-
-    ()
+        end
 
   | After_rules ->
 
@@ -111,17 +69,22 @@ let _ = dispatch begin function
      prefilter_rule "ml";
      prefilter_rule "mli";
 
-     begin (* BatConcreteQueue is either BatConcreteQueue_40x *)
-       let major, minor =
-         try Scanf.sscanf Sys.ocaml_version "%d.%d" (fun m n -> (m, n))
-         with _ -> (* an arbitrary choice is better than failing here *)
-           (4, 0) in
+
+     let ocaml_version =
+       try Scanf.sscanf Sys.ocaml_version "%d.%d" (fun m n -> (m, n))
+       with _ -> (* an arbitrary choice is better than failing here *)
+         (4, 0)
+     in
+
+     begin
+       (* BatConcreteQueue is either BatConcreteQueue_40x *)
        let queue_implementation =
+         let major, minor = ocaml_version in
          if major < 4 || major = 4 && minor <= 2
          then "src/batConcreteQueue_402.ml"
          else "src/batConcreteQueue_403.ml" in
        copy_rule "queue implementation"
-         queue_implementation "src/BatConcreteQueue.ml";
+         queue_implementation "src/batConcreteQueue.ml";
      end;
 
      (* Rules to create libraries from .mllib instead of .cmo.
@@ -193,15 +156,6 @@ let _ = dispatch begin function
       flag ["ocaml"; "ocamldep"; "syntax_camlp4o"] &
         S[A"-syntax"; A"camlp4o"; A"-package"; A"camlp4"];
 
-      let flags_pa_bisect =
-        S[A"-ppopt"; P"str.cma"; A"-ppopt"; P bisect_pp;
-          A"-ppopt"; A"-disable"; A"-ppopt"; A"b"] in
-      (* bisect screws up polymorphic recursion without -disable b *)
-      flag ["ocaml"; "compile";  "with_pa_bisect"] & flags_pa_bisect;
-      flag ["ocaml"; "ocamldep";  "with_pa_bisect"] & flags_pa_bisect;
-
-      ocaml_lib ~extern:true ~dir:bisect_dir "bisect";
-
       ocaml_lib "src/batteries";
       ocaml_lib "src/batteriesThread";
 
@@ -209,8 +163,13 @@ let _ = dispatch begin function
       flag ["ocaml"; "link"; "compiler-libs"] & S compiler_libs;
       flag ["ocaml"; "ocamldep"; "compiler-libs"] & S compiler_libs;
 
-
       flag ["ocaml"; "link"; "linkall"] & S[A"-linkall"];
+
+      if ocaml_version = (4, 0) then begin
+        (* OCaml 4.00 has -bin-annot but no ocamlbuild flag *)
+        flag ["ocaml"; "bin_annot"; "compile"] (A "-bin-annot");
+        flag ["ocaml"; "bin_annot"; "pack"] (A "-bin-annot");
+      end;
 (*
       dep ["ocaml"; "link"; "include_tests"; "byte"] &
 	[Pathname.mk "qtest/test_mods.cma"];

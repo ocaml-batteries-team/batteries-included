@@ -1,5 +1,5 @@
 (*
- * Top - An interpreted preambule for the toplevel
+ * Top - An interpreted preamble for the toplevel
  * Copyright (C) 2009 David Rajchenbach-Teller, LIFO, Universite d'Orleans
  *
  * This library is free software; you can redistribute it and/or
@@ -63,13 +63,19 @@ open Batteries;;
 #install_printer BatteriesPrint.print_uchar;;
 #install_printer BatteriesPrint.print_ustring;;
 #install_printer BatteriesPrint.print_rope;;
+(*
 #install_printer BatteriesPrint.print_string_cap_rw;;
 #install_printer BatteriesPrint.print_string_cap_ro;;
+ *)
 #install_printer BatteriesPrint.string_dynarray;;
 #install_printer BatteriesPrint.int_dynarray;;
 #install_printer BatteriesPrint.char_dynarray;;
 #install_printer BatteriesPrint.float_dynarray;;
 #install_printer BatteriesPrint.int_set;;
+#install_printer BatteriesPrint.int32_set;;
+#install_printer BatteriesPrint.int64_set;;
+#install_printer BatteriesPrint.natint_set;;
+#install_printer BatteriesPrint.float_set;;
 #install_printer BatteriesPrint.string_set;;
 #install_printer BatteriesPrint.int_pset;;
 #install_printer BatteriesPrint.string_pset;;

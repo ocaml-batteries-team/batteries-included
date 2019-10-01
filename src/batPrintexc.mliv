@@ -106,8 +106,15 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V=4.1##val get_raw_backtrace: unit -> raw_backtrace
 ##V=4.1##val print_raw_backtrace: out_channel -> raw_backtrace -> unit
 ##V=4.1##val raw_backtrace_to_string: raw_backtrace -> string
-##V=4.1##
-##V=4.1##
+
+##V>=4.5##external raise_with_backtrace: exn -> Printexc.raw_backtrace -> 'a
+##V>=4.5##  = "%raise_with_backtrace"
+##V>=4.5##(** Reraise the exception using the given raw_backtrace for the
+##V>=4.5##    origin of the exception
+##V>=4.5##
+##V>=4.5##    @since 2.7.0 and OCaml 4.05.0
+##V>=4.5##*)
+
 ##V=4.1##(** {6 Current call stack} *)
 ##V=4.1##
 ##V=4.1##val get_callstack: int -> raw_backtrace
@@ -301,7 +308,7 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##*)
 ##V>=4.2##
 ##V>=4.2##val get_raw_backtrace_slot : raw_backtrace -> int -> raw_backtrace_slot
-##V>=4.2##(** [get_slot bckt pos] returns the slot in position [pos] in the
+##V>=4.2##(** [get_raw_backtrace_slot bckt pos] returns the slot in position [pos] in the
 ##V>=4.2##    backtrace [bckt].
 ##V>=4.2##
 ##V>=4.2##    @since 2.3.0 and OCaml 4.02
@@ -318,7 +325,7 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.4##    raw_backtrace_slot -> raw_backtrace_slot option
 ##V>=4.4##(** [get_raw_backtrace_next_slot slot] returns the next slot inlined, if any.
 ##V>=4.4##
-##V>=4.4##    @since NEXT_RELASE and OCaml 4.04
+##V>=4.4##    @since NEXT_RELEASE and OCaml 4.04
 ##V>=4.4##*)
 
 
@@ -333,8 +340,11 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##*)
 ##V>=4.2##
 ##V>=4.2##val exn_slot_name: exn -> string
-##V>=4.2##(** [Printexc.exn_slot_id exn] returns the internal name of the constructor
+##V>=4.2##(** [Printexc.exn_slot_name exn] returns the internal name of the constructor
 ##V>=4.2##    used to create the exception value [exn].
 ##V>=4.2##
 ##V>=4.2##    @since 2.3.0 and OCaml 4.02.0
 ##V>=4.2##*)
+
+##V>=4.08##type t = exn = ..
+##V>=4.08##(** The type of exception values. *)

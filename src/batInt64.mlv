@@ -56,12 +56,18 @@ external to_int32 : int64 -> int32 = "%int64_to_int32"
 external of_nativeint : nativeint -> int64 = "%int64_of_nativeint"
 external to_nativeint : int64 -> nativeint = "%int64_to_nativeint"
 external of_string : string -> int64 = "caml_int64_of_string"
+##V>=4.5##let of_string_opt = Int64.of_string_opt
+##V<4.5##let of_string_opt n = try Some (Int64.of_string n) with _ -> None
 external bits_of_float : float -> int64 = "caml_int64_bits_of_float"
 ##V>=4.3## "caml_int64_bits_of_float_unboxed" [@@unboxed] [@@noalloc]
 external float_of_bits : int64 -> float = "caml_int64_float_of_bits"
 ##V>=4.3## "caml_int64_float_of_bits_unboxed" [@@unboxed] [@@noalloc]
 external format : string -> int64 -> string = "caml_int64_format"
 
+##V>=4.08##let unsigned_compare = Int64.unsigned_compare
+##V>=4.08##let unsigned_to_int = Int64.unsigned_to_int
+##V>=4.08##let unsigned_rem = Int64.unsigned_rem
+##V>=4.08##let unsigned_div = Int64.unsigned_div
 
 let print out t = BatInnerIO.nwrite out (to_string t)
 let print_hex out t = BatPrintf.fprintf out "%Lx" t

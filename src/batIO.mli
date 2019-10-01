@@ -61,8 +61,7 @@
     grouped into large writing operations, as these are generally
     faster and induce less wear on the hardware. Occasionally, you
     may wish to force all waiting operations to take place {e now}.
-    For this purpose, you may either function {!flush} or function
-    I    {!flush_out}.
+    For this purpose, you may call function {!flush}.
 
     Once you have finished using your {!type: input} or your {!type:
     output}, chances are that you will want to close it. This is not a
@@ -189,13 +188,13 @@ val really_nread : input -> int -> string
     Example: [let read_md5 ch = really_nread ch 32]
 *)
 
-val input : input -> string -> int -> int -> int
-(** [input i s p l] reads up to [l] characters from the given input,
-    storing them in string [s], starting at character number [p]. It
+val input : input -> Bytes.t -> int -> int -> int
+(** [input i s p len] reads up to [len] characters from the given input,
+    storing them in byte sequence [s], starting at character number [p]. It
     returns the actual number of characters read (which may be 0) or
     raise [No_more_input] if no character can be read. It will raise
-    [Invalid_argument] if [p] and [l] do not designate a valid
-    substring of [s].
+    [Invalid_argument] if [p] and [len] do not designate a valid
+    subsequence of [s].
 
     Example: [let map_ch f ?(block_size=100) =
     let b = String.create block_size in
@@ -205,16 +204,15 @@ val input : input -> string -> int -> int -> int
     done with No_more_input -> ()]
 *)
 
-val really_input : input -> string -> int -> int -> int
-(** [really_input i s p l] reads exactly [l] characters from the
-    given input, storing them in the string [s], starting at
+val really_input : input -> Bytes.t -> int -> int -> int
+(** [really_input ic s p len] reads exactly [len] characters from the
+    input [ic], storing them in the string [s], starting at
     position [p]. For consistency with {!BatIO.input} it returns
-    [l]. @raise No_more_input if at [l] characters are not
-    available. @raise Invalid_argument if [p] and [l] do not
+    [len]. @raise No_more_input if at [len] characters are not
+    available. @raise Invalid_argument if [p] and [len] do not
     designate a valid substring of [s].
 
     Example: [let _ = really_input stdin b 0 3]
-
 *)
 
 val close_in : input -> unit
@@ -235,27 +233,41 @@ val nwrite : (string, _) printer
     Example: [nwrite stdout "Enter your name: ";]
 *)
 
-val output : 'a output -> string -> int -> int -> int
-(** [output o s p l] writes up to [l] characters from string [s], starting at
-    offset [p]. It returns the number of characters written. It will raise
-    [Invalid_argument] if [p] and [l] do not designate a valid substring of [s].
+val output : 'a output -> Bytes.t -> int -> int -> int
+(** [output o s p len] writes up to [len] characters from byte
+    sequence [s], starting at offset [p]. It returns the number of
+    characters written. It will raise [Invalid_argument] if [p] and
+    [len] do not designate a valid subsequence of [s].
 
-    Example: [let str = "Foo Bar Baz" in let written = output stdout str 2 4;]
+    Example: [let written = output stdout (Bytes.to_string "Foo Bar Baz") 2 4]
 
-    This writes "o Ba" to stdout.
-*)
+    This writes "o Ba" to stdout, and returns 4.
+ *)
 
-val really_output : 'a output -> string -> int -> int -> int
-(** [really_output o s p l] writes exactly [l] characters from string [s] onto
-    the the output, starting with the character at offset [p]. For consistency with
-    {!BatIO.output} it returns [l]. @raise Invalid_argument if [p] and [l] do not
-    designate a valid substring of [s].
+val output_substring : 'a output -> string -> int -> int -> int
+(** like [output] above, but outputs from a substring instead of
+    a subsequence of bytes
+
+    @since 2.8.0 *)
+
+val really_output : 'a output -> Bytes.t -> int -> int -> int
+(** [really_output o s p len] writes exactly [len] characters from
+    byte sequence [s] onto the the output, starting with the character
+    at offset [p]. For consistency with {!BatIO.output} it returns
+    [len]. @raise Invalid_argument if [p] and [len] do not designate
+    a valid subsequence of [s].
 
     This function is useful for networking situations where the output
     buffer might fill resulting in not the entire substring being
     readied for transmission.  Uses [output] internally, and will
     raise [Sys_blocked_io] in the case that any call returns 0.
-*)
+ *)
+
+val really_output_substring : 'a output -> string -> int -> int -> int
+(** like [really_output] above, but outputs from a substring instead
+    of a subsequence of bytes
+
+    @since 2.8.0 *)
 
 val flush : 'a output -> unit
 (** Flush an output.
@@ -352,7 +364,7 @@ val read_all : input -> string
 (** read all the contents of the input until [No_more_input] is raised. *)
 
 val pipe : unit -> input * unit output
-(** Create a pipe between an input and an ouput. Data written from
+(** Create a pipe between an input and an output. Data written from
     the output can be read from the input.
 *)
 
@@ -369,7 +381,7 @@ val pos_in : input -> input * (unit -> int)
 
 val progress_in : input -> (unit -> unit) -> input
 (** [progress_in inp f] create an input that calls [f ()]
-    whenever some content is succesfully read from it.*)
+    whenever some content is successfully read from it.*)
 
 val pos_out : 'a output -> unit output * (unit -> int)
 (** Create an output that provide a count function of the number of bytes
@@ -377,7 +389,7 @@ val pos_out : 'a output -> unit output * (unit -> int)
 
 val progress_out : 'a output -> (unit -> unit) -> unit output
 (** [progress_out out f] create an output that calls [f ()]
-    whenever some content is succesfully written to it.*)
+    whenever some content is successfully written to it.*)
 
 external cast_output : 'a output -> unit output = "%identity"
 (** You can safely transform any output to an unit output in a safe way
@@ -593,7 +605,7 @@ val drop_bits : in_bits -> unit
 
 val create_in :
   read:(unit -> char) ->
-  input:(string -> int -> int -> int) ->
+  input:(Bytes.t -> int -> int -> int) ->
   close:(unit -> unit) -> input
 (** Fully create an input by giving all the needed functions.
 
@@ -604,7 +616,7 @@ val create_in :
 
 val wrap_in :
   read:(unit -> char) ->
-  input:(string -> int -> int -> int) ->
+  input:(Bytes.t -> int -> int -> int) ->
   close:(unit -> unit) ->
   underlying:(input list) ->
   input
@@ -622,7 +634,7 @@ val wrap_in :
 
 val inherit_in:
   ?read:(unit -> char) ->
-  ?input:(string -> int -> int -> int) ->
+  ?input:(Bytes.t -> int -> int -> int) ->
   ?close:(unit -> unit) ->
   input -> input
 (** Simplified and optimized version of {!wrap_in} which may be used
@@ -638,7 +650,7 @@ val inherit_in:
 
 val create_out :
   write:(char -> unit) ->
-  output:(string -> int -> int -> int) ->
+  output:(Bytes.t -> int -> int -> int) ->
   flush:(unit -> unit) ->
   close:(unit -> 'a) ->
   'a output
@@ -657,7 +669,7 @@ val create_out :
 
 val wrap_out :
   write:(char -> unit)         ->
-  output:(string -> int -> int -> int) ->
+  output:(Bytes.t -> int -> int -> int) ->
   flush:(unit -> unit)         ->
   close:(unit -> 'a)           ->
   underlying:('b output list)  ->
@@ -708,7 +720,7 @@ val wrap_out :
 
 val inherit_out:
   ?write:(char -> unit) ->
-  ?output:(string -> int -> int -> int) ->
+  ?output:(Bytes.t -> int -> int -> int) ->
   ?flush:(unit -> unit) ->
   ?close:(unit -> unit) ->
   'a output -> unit output
@@ -758,10 +770,10 @@ val to_input_channel : input -> in_channel
 
 (** {6 Generic BatIO Object Wrappers}
 
-    Theses OO Wrappers have been written to provide easy support of
-    BatIO by external librairies. If you want your library to support
+    These OO Wrappers have been written to provide easy support of
+    BatIO by external libraries. If you want your library to support
     BatIO without actually requiring Batteries to compile, you can
-    should implement the classes [in_channel], [out_channel],
+    implement the classes [in_channel], [out_channel],
     [poly_in_channel] and/or [poly_out_channel] which are the common
     BatIO specifications established for ExtLib, OCamlNet and
     Camomile.
@@ -774,13 +786,13 @@ val to_input_channel : input -> in_channel
 
 class in_channel : input ->
   object
-    method input : string -> int -> int -> int
+    method input : Bytes.t -> int -> int -> int
     method close_in : unit -> unit
   end
 
 class out_channel : 'a output ->
   object
-    method output : string -> int -> int -> int
+    method output : Bytes.t -> int -> int -> int
     method flush : unit -> unit
     method close_out : unit -> unit
   end
@@ -868,7 +880,7 @@ val synchronize_in : ?lock:BatConcurrent.lock -> input  -> input
    wreak havoc otherwise
 
    @param lock An optional lock. If none is provided, the lock will be specific
-   to this [input]. Specifiying a custom lock may be useful to associate one
+   to this [input]. Specifying a custom lock may be useful to associate one
    common lock for several inputs and/or outputs, for instance in the case
    of pipes.
 *)
@@ -880,7 +892,7 @@ val synchronize_out: ?lock:BatConcurrent.lock -> _ output -> unit output
    wreak havoc otherwise
 
    @param lock An optional lock. If none is provided, the lock will be specific
-   to this [output]. Specifiying a custom lock may be useful to associate one
+   to this [output]. Specifying a custom lock may be useful to associate one
    common lock for several inputs and/or outputs, for instance in the case
    of pipes.
 *)
@@ -940,7 +952,7 @@ module Incubator : sig
       ?sep:string ->
       ?indent:int ->
       (Format.formatter -> 'a -> 'b) -> Format.formatter -> 'a array -> unit
-      (** Print the contents of an array, with [first] preceeding the first item
+      (** Print the contents of an array, with [first] preceding the first item
           (default: ["\[|"]), [last] following the last item (default: ["|\]"])
           and [sep] separating items (default: ["; "]). A printing function must
           be provided to print the items in the array. The [flush] parameter
@@ -961,7 +973,7 @@ module Incubator : sig
       ?sep:string ->
       ?indent:int ->
       (Format.formatter -> 'a -> 'b) -> Format.formatter -> 'a BatEnum.t -> unit
-      (** Print the contents of an enum, with [first] preceeding the first item
+      (** Print the contents of an enum, with [first] preceding the first item
           (default: [""]), [last] following the last item (default: [""])
           and [sep] separating items (default: [" "]). A printing function must
           be provided to print the items in the enum. The [flush] parameter
@@ -981,7 +993,7 @@ module Incubator : sig
       ?sep:string ->
       ?indent:int ->
       (Format.formatter -> 'a -> 'b) -> Format.formatter -> 'a list -> unit
-      (** Print the contents of a list, with [first] preceeding the first item
+      (** Print the contents of a list, with [first] preceding the first item
           (default: ["\["]), [last] following the last item (default: ["\]"])
           and [sep] separating items (default: ["; "]). A printing function must
           be provided to print the items in the list. The [flush] parameter

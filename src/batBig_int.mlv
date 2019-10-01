@@ -20,11 +20,15 @@
  *)
 
 let big_int_base_default_symbols =
-  let s = Bytes.create (10 + 26*2) in
-  let set off c k = Bytes.set s k (char_of_int (k - off + (int_of_char c))) in
-  for k = 0 to String.length s - 1 do
-    if k < 10 then set  0 '0' k else if k < 36 then set 10 'a' k else set 36 'A' k
-  done; s
+  let symbol offset base k =
+    char_of_int (k - offset + (int_of_char base)) in
+  BatBytesCompat.string_init (10 + 26*2) (fun k ->
+    if k < 10
+    then symbol 0 '0' k
+    else if k < 36
+    then symbol 10 'a' k
+    else symbol 36 'A' k
+  )
 
 
 let to_string_in_custom_base
@@ -64,7 +68,7 @@ let to_string_in_custom_base
   done;
   addchar symbols.[int_of_big_int !n];
   if isnegative then addchar '-';
-  String.sub buff (!curr + 1) !count
+  Bytes.sub_string buff (!curr + 1) !count
 
 let to_string_in_base b n =
   if b <= 1 || b > 36 then invalid_arg
@@ -134,7 +138,7 @@ module BaseBig_int = struct
 
   let of_float f =
     try of_string (Printf.sprintf "%.0f" f)
-    with Failure _ -> invalid_arg "batBig_int.of_float"
+    with Failure _ -> invalid_arg "Big_int.of_float"
   (*$T of_float
     to_int (of_float 4.46) = 4
     to_int (of_float 4.56) = 5
@@ -172,3 +176,10 @@ let print out t = BatIO.nwrite out (to_string t)
     ((of_int 3 --- of_int 1) /@ to_int |> List.of_enum) [3; 2; 1]
   *)
   (*$>*)
+
+
+##V<4.5##let big_int_of_string_opt s = try Some (big_int_of_string s) with _ -> None
+##V<4.5##let int_of_big_int_opt n = try Some (int_of_big_int n) with _ -> None
+##V<4.5##let int32_of_big_int_opt n = try Some (int32_of_big_int n) with _ -> None
+##V<4.5##let int64_of_big_int_opt n = try Some (int64_of_big_int n) with _ -> None
+##V<4.5##let nativeint_of_big_int_opt n = try Some (nativeint_of_big_int n) with _ -> None

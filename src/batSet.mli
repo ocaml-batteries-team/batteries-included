@@ -250,9 +250,17 @@ sig
       given set. *)
 
   val choose: t -> elt
-  (** Return one element of the given set, or raise [Not_found] if
-      the set is empty. Which element is chosen is unspecified,
-      but equal elements will be chosen for equal sets. *)
+  (** Return one element of the given set.
+      Which element is chosen is unspecified, but equal elements will be
+      chosen for equal sets.
+      @raise Not_found if the set is empty. *)
+
+  val any: t -> elt
+  (** Return one element of the given set.
+      The difference with choose is that there is no guarantee that equals
+      elements will be picked for equal sets.
+      This merely returns the quickest element to get (O(1)).
+      @raise Not_found if the set is empty. *)
 
   val pop : t -> elt * t
   (** returns one element of the set and the set without that element.
@@ -293,19 +301,6 @@ sig
     ('a BatInnerIO.output -> elt -> unit) ->
     'a BatInnerIO.output -> t -> unit
 
-  (** {7 Infix operators} *)
-
-  module Infix : sig
-    val (<--) : t -> elt -> t (** insertion *)
-    val (<.) : t -> t -> bool  (** strict subset *)
-    val (>.) : t -> t -> bool  (** strict superset *)
-    val (<=.) : t -> t -> bool (** subset *)
-    val (>=.) : t -> t -> bool (** superset *)
-    val (-.) : t -> t -> t     (** difference *)
-    val (&&.) : t -> t -> t   (** intersection *)
-    val (||.) : t -> t -> t   (** union *)
-  end
-
   (** {6 Override modules}*)
 
   (**
@@ -319,6 +314,7 @@ sig
     val min_elt: t -> elt option
     val max_elt: t -> elt option
     val choose:  t -> elt option
+    val any:     t -> elt option
     val find: elt -> t -> elt option
   end
 
@@ -375,7 +371,17 @@ module Make2(O1 : OrderedType) (O2 : OrderedType) : sig
   (** cartesian product of the two sets *)
 end
 
-(** {6 Polymorphic sets}
+(** {6 Common instantiations} *)
+
+module Int : S with type elt = int
+module Int32 : S with type elt = int32
+module Int64 : S with type elt = int64
+module Nativeint : S with type elt = nativeint
+module Float : S with type elt = float
+module Char : S with type elt = char
+module String : S with type elt = string
+
+(** {4 Polymorphic sets}
 
     The definitions below describe the polymorphic set interface.
 
@@ -573,7 +579,7 @@ val to_array: 'a t -> 'a array
 
 val min_elt : 'a t -> 'a
 (** returns the smallest element of the set.
-    @raise Invalid_argument if given an empty set. *)
+    @raise Not_found if given an empty set. *)
 
 val pop_min: 'a t -> 'a * 'a t
 (** Returns the smallest element of the given set
@@ -597,11 +603,18 @@ val pop_max: 'a t -> 'a * 'a t
 
 val max_elt : 'a t -> 'a
 (** returns the largest element of the set.
-    @raise Invalid_argument if given an empty set.*)
+    @raise Not_found if given an empty set.*)
 
 val choose : 'a t -> 'a
 (** returns an arbitrary (but deterministic) element of the given set.
-    @raise Invalid_argument if given an empty set. *)
+    @raise Not_found if given an empty set. *)
+
+val any: 'a t -> 'a
+(** Return one element of the given set.
+    The difference with choose is that there is no guarantee that equals
+    elements will be picked for equal sets.
+    This merely returns the quickest element to get (O(1)).
+    @raise Not_found if the set is empty. *)
 
 val pop : 'a t -> 'a * 'a t
 (** returns one element of the set and the set without that element.
@@ -640,19 +653,6 @@ val of_array: 'a array -> 'a t
 val print :  ?first:string -> ?last:string -> ?sep:string ->
   ('a BatInnerIO.output -> 'c -> unit) ->
   'a BatInnerIO.output -> 'c t -> unit
-
-(** {7 Infix operators} *)
-
-module Infix : sig
-  val (<--) : 'a t -> 'a -> 'a t (** insertion *)
-  val (<.) : 'a t -> 'a t -> bool  (** strict subset *)
-  val (>.) : 'a t -> 'a t -> bool  (** strict superset *)
-  val (<=.) : 'a t -> 'a t -> bool (** subset *)
-  val (>=.) : 'a t -> 'a t -> bool (** superset *)
-  val (-.) : 'a t -> 'a t -> 'a t     (** difference *)
-  val (&&.) : 'a t -> 'a t -> 'a t   (** intersection *)
-  val (||.) : 'a t -> 'a t -> 'a t   (** union *)
-end
 
 (** {6 Incubator} *)
 module Incubator : sig
@@ -864,7 +864,7 @@ module PSet : sig
 
   val min_elt : 'a t -> 'a
   (** returns the smallest element of the set.
-      @raise Invalid_argument if given an empty set. *)
+      @raise Not_found if given an empty set. *)
 
   val pop_min: 'a t -> 'a * 'a t
   (** Returns the smallest element of the given set
@@ -888,11 +888,19 @@ module PSet : sig
 
   val max_elt : 'a t -> 'a
   (** returns the largest element of the set.
-      @raise Invalid_argument if given an empty set.*)
+      @raise Not_found if given an empty set.*)
 
   val choose : 'a t -> 'a
   (** returns an arbitrary (but deterministic) element of the given set.
-      @raise Invalid_argument if given an empty set. *)
+      @raise Not_found if given an empty set. *)
+
+  val any: 'a t -> 'a
+  (** Return one element of the given set.
+      The difference with choose is that there is no guarantee that equals
+      elements will be picked for equal sets.
+      This merely returns the quickest element to get (O(1)).
+      @raise Not_found if the set is empty. *)
+
 
   val pop : 'a t -> 'a * 'a t
   (** returns one element of the set and the set without that element.
@@ -922,19 +930,6 @@ module PSet : sig
   val print :  ?first:string -> ?last:string -> ?sep:string ->
     ('a BatInnerIO.output -> 'c -> unit) ->
     'a BatInnerIO.output -> 'c t -> unit
-
-  (** {7 Infix operators} *)
-
-  module Infix : sig
-    val (<--) : 'a t -> 'a -> 'a t (** insertion *)
-    val (<.) : 'a t -> 'a t -> bool  (** strict subset *)
-    val (>.) : 'a t -> 'a t -> bool  (** strict superset *)
-    val (<=.) : 'a t -> 'a t -> bool (** subset *)
-    val (>=.) : 'a t -> 'a t -> bool (** superset *)
-    val (-.) : 'a t -> 'a t -> 'a t     (** difference *)
-    val (&&.) : 'a t -> 'a t -> 'a t   (** intersection *)
-    val (||.) : 'a t -> 'a t -> 'a t   (** union *)
-  end
 
   (** get the comparison function used for a polymorphic map *)
   val get_cmp : 'a t -> ('a -> 'a -> int)

@@ -22,7 +22,7 @@ val add : int -> 'a -> 'a t -> 'a t
 (** [add x y t] adds a binding from [x] to [y] in [t], returning a new map. *)
 
 val add_range : int -> int -> 'a -> 'a t -> 'a t
-(** [add lo hi y t] adds bindings to [y] for all values in the range
+(** [add_range lo hi y t] adds bindings to [y] for all values in the range
     [lo,hi], returning a new map *)
 
 val find : int -> 'a t -> 'a

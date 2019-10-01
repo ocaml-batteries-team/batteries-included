@@ -110,7 +110,7 @@ type control = Gc.control =
     mutable space_overhead : int;
     (** The major GC speed is computed from this parameter.
         This is the memory that will be "wasted" because the GC does not
-        immediatly collect unreachable blocks.  It is expressed as a
+        immediately collect unreachable blocks.  It is expressed as a
         percentage of the memory used for live data.
         The GC will work more (use more CPU time and collect
         blocks more eagerly) if [space_overhead] is smaller.
@@ -160,6 +160,41 @@ type control = Gc.control =
 ##V>=4.3##        1 and 50.
 ##V>=4.3##        Default: 1. @since 2.5.0 and OCaml 4.03.0 *)
 ##V>=4.3##
+
+##V>=4.8##    custom_major_ratio : int;
+##V>=4.8##    (** Target ratio of floating garbage to major heap size for
+##V>=4.8##        out-of-heap memory held by custom values located in the major
+##V>=4.8##        heap. The GC speed is adjusted to try to use this much memory
+##V>=4.8##        for dead values that are not yet collected. Expressed as a
+##V>=4.8##        percentage of major heap size. The default value keeps the
+##V>=4.8##        out-of-heap floating garbage about the same size as the
+##V>=4.8##        in-heap overhead.
+##V>=4.8##        Note: this only applies to values allocated with
+##V>=4.8##        [caml_alloc_custom_mem] (e.g. bigarrays).
+##V>=4.8##        Default: 44.
+##V>=4.8##        @since 2.10.0 and OCaml 4.08.0 *)
+
+##V>=4.8##    custom_minor_ratio : int;
+##V>=4.8##    (** Bound on floating garbage for out-of-heap memory held by
+##V>=4.8##        custom values in the minor heap. A minor GC is triggered when
+##V>=4.8##        this much memory is held by custom values located in the minor
+##V>=4.8##        heap. Expressed as a percentage of minor heap size.
+##V>=4.8##        Note: this only applies to values allocated with
+##V>=4.8##        [caml_alloc_custom_mem] (e.g. bigarrays).
+##V>=4.8##        Default: 100.
+##V>=4.8##        @since 2.10.0 and OCaml 4.08.0 *)
+
+##V>=4.8##    custom_minor_max_size : int;
+##V>=4.8##    (** Maximum amount of out-of-heap memory for each custom value
+##V>=4.8##        allocated in the minor heap. When a custom value is allocated
+##V>=4.8##        on the minor heap and holds more than this many bytes, only
+##V>=4.8##        this value is counted against [custom_minor_ratio] and the
+##V>=4.8##        rest is directly counted against [custom_major_ratio].
+##V>=4.8##        Note: this only applies to values allocated with
+##V>=4.8##        [caml_alloc_custom_mem] (e.g. bigarrays).
+##V>=4.8##        Default: 8192 bytes.
+##V>=4.8##        @since 2.10.0 and OCaml 4.08.0 *)
+##V>=4.8##
   }
 (** The GC parameters are given as a [control] record.  Note that
     these parameters can also be initialised by setting the
@@ -182,7 +217,8 @@ external counters : unit -> float * float * float = "caml_gc_counters"
     is as fast at [quick_stat]. *)
 
 ##V>=4.4##external minor_words : unit -> (float [@unboxed])
-##V>=4.4##  = "caml_gc_minor_words" "caml_gc_minor_words_unboxed" [@@noalloc]
+##V>=4.4##  = "caml_gc_minor_words" "caml_gc_minor_words_unboxed"
+##V=4.4##     [@@noalloc]
 ##V>=4.4##(** Number of words allocated in the minor heap since the program was
 ##V>=4.4##    started. This number is accurate in byte-code programs, but only an
 ##V>=4.4##    approximation in programs compiled to native code.
@@ -227,7 +263,9 @@ val allocated_bytes : unit -> float
     started.  It is returned as a [float] to avoid overflow problems
     with [int] on 32-bit machines. *)
 
-##V>=4.3##external get_minor_free : unit -> int = "caml_get_minor_free" [@@noalloc]
+##V>=4.3##external get_minor_free : unit -> int = "caml_get_minor_free"
+##V=4.3##          [@@noalloc]
+##V=4.4##          [@@noalloc]
 (** Return the current size of the free space inside the minor heap.
     @since 2.5.0 and OCaml 4.03.0 *)
 
@@ -318,7 +356,7 @@ val finalise : ('a -> unit) -> 'a -> unit
 ##V>=4.4##    finalisation function attached with `GC.finalise` are always
 ##V>=4.4##    called before the finalisation function attached with `GC.finalise_last`.
 ##V>=4.4##
-##V>=4.4##    @since NEXT_RELASE and OCaml 4.04
+##V>=4.4##    @since NEXT_RELEASE and OCaml 4.04
 ##V>=4.4##*)
 
 val finalise_release : unit -> unit;;

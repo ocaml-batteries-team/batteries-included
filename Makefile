@@ -37,8 +37,23 @@ INSTALL_FILES = _build/META _build/src/*.cma \
 	battop.ml _build/src/*.cmi _build/src/*.mli \
 	_build/src/batteriesHelp.cmo _build/src/batteriesConfig.cmo _build/src/batteriesPrint.cmo \
 	ocamlinit build/ocaml
+# the bin_annot flag in _tags is not handled by versions of ocamlbuild < 4.01.0
+# hence we only install *.cmt{i} files if they were produced
+ifneq ($(wildcard _build/src/*.cmt),)
+	INSTALL_FILES += _build/src/*.cmt
+endif
+ifneq ($(wildcard _build/src/*.cmti),)
+	INSTALL_FILES += _build/src/*.cmti
+endif
+
 OPT_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa \
 	_build/src/*.cmxs _build/src/*.lib
+
+ifneq ($(QTEST_SEED),)
+	QTEST_SEED_FLAG = --seed $(QTEST_SEED)
+else
+	QTEST_SEED_FLAG =
+endif
 
 # What to build
 TARGETS  = src/batteries.cma
@@ -71,7 +86,7 @@ else
 endif
 endif
 
-.PHONY: all clean doc install uninstall reinstall test qtest qtest-clean camfail camfailunk coverage man
+.PHONY: all clean doc install uninstall reinstall test qtest qtest-clean camfail camfailunk man test_install
 
 all:
 	@echo "Build mode:" $(MODE)
@@ -97,6 +112,9 @@ man: all batteries.odocl
 install: all uninstall_packages
 	ocamlfind install $(NAME) $(INSTALL_FILES) \
 		-optional $(OPT_INSTALL_FILES)
+
+test_install:
+	./scripts/test_install.sh
 
 uninstall_packages:
 	ocamlfind remove $(NAME)
@@ -139,10 +157,25 @@ clean-prefilter:
 
 ### List of source files that it's okay to try to test
 
+# TESTABLE contains the source files as the user sees them,
+# as a mix of .ml and .mlv files in the src/ directory
+
+# TESTDEPS represents the file whose changes Makefile should watch to
+# decide to reprocess the test results. It is identical to TESTABLE.
+
+# TESTFILES contains the OCaml source files as `qtest` wants to see
+# them, that is after preprocessing. We ask ocamlbuild to build the
+# $(TESTFILES) from $(TESTABLE), and pass them to qtest from the
+# `_build` directory.
+
 DONTTEST=src/batteriesHelp.ml \
+	 src/batteries_compattest.ml \
 	 src/batConcreteQueue_402.ml src/batConcreteQueue_403.ml
-TESTABLE ?= $(filter-out $(DONTTEST), $(wildcard src/*.ml))
+TESTABLE ?= $(filter-out $(DONTTEST),\
+   $(wildcard src/*.ml) $(wildcard src/*.mlv))
 TESTDEPS = $(TESTABLE)
+
+TESTFILES = $(TESTABLE:.mlv=.ml)
 
 ### Test suite: "offline" unit tests
 ##############################################
@@ -158,7 +191,10 @@ _build/testsuite/main.native: $(TESTDEPS) $(wildcard testsuite/*.ml)
 
 # extract all qtest unit tests into a single ml file
 $(QTESTDIR)/all_tests.ml: $(TESTABLE)
-	qtest -o $@ --shuffle --preamble-file qtest/qtest_preamble.ml extract $(TESTABLE)
+	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) $(TESTFILES)
+	(cd _build; qtest -o ../$@ --shuffle \
+	  --preamble-file ../qtest/qtest_preamble.ml \
+	  extract $(TESTFILES))
 
 _build/$(QTESTDIR)/all_tests.byte: $(QTESTDIR)/all_tests.ml
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) -cflags -warn-error,+26\
@@ -178,21 +214,22 @@ qtest-byte-clean:
 	@${MAKE} _build/$(QTESTDIR)/all_tests.byte
 
 qtest-byte: qtest-byte-clean
-	@_build/$(QTESTDIR)/all_tests.byte
+	@_build/$(QTESTDIR)/all_tests.byte $(QTEST_SEED_FLAG)
 
 qtest-native-clean:
 	@${RM} $(QTESTDIR)/all_tests.ml
-	@${MAKE} _build/$(QTESTDIR)/all_tests.native
+	@${MAKE} _build/$(QTESTDIR)/all_tests.native $(QTEST_SEED_FLAG)
 
 qtest-native: prefilter qtest-native-clean
-	@_build/$(QTESTDIR)/all_tests.native
+	@_build/$(QTESTDIR)/all_tests.native $(QTEST_SEED_FLAG)
 
 qtest-clean:
 	@${RM} $(QTESTDIR)/all_tests.ml
 	@${MAKE} _build/$(QTESTDIR)/all_tests.$(EXT)
 
 qtest: qtest-clean
-	@_build/$(QTESTDIR)/all_tests.$(EXT)
+	@_build/$(QTESTDIR)/all_tests.$(EXT) $(QTEST_SEED_FLAG)
+
 
 ### run all unit tests
 ##############################################
@@ -240,7 +277,7 @@ release:
 	$(MAKE) release-cleaned
 
 # assumes irreproachably pristine working directory
-release-cleaned: setup.ml doc test
+release-cleaned: setup.ml doc test-native
 	git archive --format=tar --prefix=batteries-$(VERSION)/ HEAD \
 	  | gzip > batteries-$(VERSION).tar.gz
 
@@ -251,13 +288,14 @@ setup.ml: _oasis
 
 # uploads the current documentation to github hdoc2/ directory
 upload-docs:
-	make doc && git checkout gh-pages && rm -f hdoc2/*.html && cp _build/batteries.docdir/*.html hdoc2/ && git add hdoc2/*.html && git commit -a -m"Update to latest documentation" && git push origin gh-pages && git checkout master
-
-###############################################################################
-#	CODE COVERAGE REPORTS
-###############################################################################
-
-coverage/index.html: $(TESTDEPS) $(QTESTDIR)/all_tests.ml
-	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) coverage/index.html
-
-coverage: coverage/index.html
+	make doc && \
+	rm -rf /tmp/batteries.docdir && \
+	cp -a _build/batteries.docdir /tmp/ && \
+	git checkout gh-pages && \
+	rm -f hdoc2/*.html && \
+	cp /tmp/batteries.docdir/*.html hdoc2/ && \
+	git add hdoc2/*.html && \
+	git commit hdoc2 -m "Update ocamldoc to latest release" && \
+	git push \
+	git@github.com:ocaml-batteries-team/batteries-included.git gh-pages \
+	git checkout master

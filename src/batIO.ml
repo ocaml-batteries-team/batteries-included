@@ -133,7 +133,7 @@ let output_enum() =
       Buffer.add_char b x
     )
     ~output:(fun s p l ->
-      Buffer.add_substring b s p l;
+      BatBytesCompat.buffer_add_subbytes b s p l;
       l
     )
     ~close:(fun () ->
@@ -401,7 +401,7 @@ let from_in_channel ch =
   let read() =
     try
       if ch#input cbuf 0 1 = 0 then raise Sys_blocked_io;
-      String.unsafe_get cbuf 0
+      Bytes.unsafe_get cbuf 0
     with
       End_of_file -> raise No_more_input
   in
@@ -449,7 +449,7 @@ let from_in_chars ch =
 let from_out_chars ch =
   let output s p l =
     for i = p to p + l - 1 do
-      ch#put (String.unsafe_get s i)
+      ch#put (Bytes.unsafe_get s i)
     done;
     l
   in
@@ -498,20 +498,25 @@ let lines_of2 ic =
   let find_eol () =
     let rec find_loop pos =
       if pos >= !end_pos then !read_pos - pos
-      else if buf.[pos] = '\n' then 1 + pos - !read_pos (* TODO: HANDLE CRLF *)
+      else if Bytes.get buf pos = '\n'
+      then 1 + pos - !read_pos (* TODO: HANDLE CRLF *)
       else find_loop (pos+1)
     in
     find_loop !read_pos
   in
-  let rec join_strings buf pos = function
-    | [] -> buf
+  let join_strings total_len accu =
+    let rec loop buf pos = function
+    | [] -> ()
     | h::t ->
-      let len = String.length h in
-      String.blit h 0 buf (pos-len) len;
-      join_strings buf (pos-len) t
+      let len = Bytes.length h in
+      Bytes.blit h 0 buf (pos-len) len;
+      loop buf (pos-len) t in
+    let buf = Bytes.create total_len in
+    loop buf total_len accu;
+    Bytes.unsafe_to_string buf
   in
   let input_buf s o l =
-    String.blit buf !read_pos s o l;
+    Bytes.blit buf !read_pos s o l;
     read_pos := !read_pos + l;
     if !end_pos = !read_pos then
       try
@@ -529,15 +534,15 @@ let lines_of2 ic =
       let n = find_eol () in
       if n = 0 then match accu with  (* EOF *)
         | [] -> close_in ic; raise BatEnum.No_more_elements
-        | _ -> join_strings (Bytes.create len) len accu
+        | _ -> join_strings len accu
       else if n > 0 then (* newline found *)
         let res = Bytes.create (n-1) in
         input_buf res 0 (n-1);
-        input_buf " " 0 1; (* throw away EOL *)
+        input_buf (Bytes.of_string " ") 0 1; (* throw away EOL *)
         match accu with
-        | [] -> res
+        | [] -> Bytes.unsafe_to_string res
         | _ -> let len = len + n-1 in
-          join_strings (Bytes.create len) len (res :: accu)
+          join_strings len (res :: accu)
       else (* n < 0 ; no newline found *)
         let piece = Bytes.create (-n) in
         input_buf piece 0 (-n);
@@ -564,17 +569,18 @@ let tab_out ?(tab=' ') n out =
       write out c;
       if is_newline c then nwrite out spaces;
     )
-    ~output:(fun s p l -> (*Replace each newline within the segment with newline^spaces*) (*FIXME?: performance - instead output each line and a newline between each char? *)
-      let length = String.length s                 in
-      let buffer = Buffer.create (String.length s) in
+    ~output:(fun s p l ->
+      (*Replace each newline within the segment with newline^spaces*)
+      let length = Bytes.length s in
+      let buffer = Buffer.create length in
       for i = p to min (length - 1) l do
-        let c = String.unsafe_get s i in
+        let c = Bytes.unsafe_get s i in
         Buffer.add_char buffer c;
         if is_newline c then
           Buffer.add_string buffer spaces
       done;
-      let s' = Buffer.contents buffer                  in
-      output out s' 0 (String.length s'))
+      let s' = BatBytesCompat.buffer_to_bytes buffer in
+      really_output out s' 0 (Bytes.length s'))
     ~flush:noop
     ~close:noop
     ~underlying:[out]

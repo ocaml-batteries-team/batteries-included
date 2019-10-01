@@ -123,7 +123,7 @@ val height : t -> int
 val balance : t -> t
 (** [balance r] returns a balanced copy of the [r] rope. Note that ropes are
     automatically rebalanced when their height exceeds a given threshold, but
-    [balance] allows to invoke that operation explicity. *)
+    [balance] allows to invoke that operation explicitly. *)
 
 (** {6 Operations } *)
 
@@ -195,10 +195,10 @@ val iteri : ?base:int -> (int -> BatUChar.t -> unit) -> t -> unit
     to the given function. *)
 
 val range_iter : (BatUChar.t -> unit) -> int -> int -> t -> unit
-(** [rangeiter f m n r] applies [f] to all the characters whose
+(** [range_iter f m n r] applies [f] to all the characters whose
     indices [k] satisfy [m] <= [k] < [m + n].
     It is thus equivalent to [iter f (sub m n r)], but does not
-    create an intermediary rope. [rangeiter] operates in worst-case
+    create an intermediary rope. [range_iter] operates in worst-case
     [O(n + log m)] time, which improves on the [O(n log m)] bound
     from an explicit loop using [get].
 
@@ -283,13 +283,13 @@ val contains_from : t -> int -> BatUChar.t -> bool
 (** [contains_from s start c] tests if character [c] appears in
     the subrope of [s] starting from [start] to the end of [s].
 
-    @raise Invalid_argument if [start] is not a valid index of [s]. *)
+    @raise Out_of_bounds if [start] is not a valid index of [s]. *)
 
 val rcontains_from : t -> int -> BatUChar.t -> bool
 (** [rcontains_from s stop c] tests if character [c]
     appears in the subrope of [s] starting from the beginning
-    of [s] to index [stop].
-    @raise Invalid_argument if [stop] is not a valid index of [s]. *)
+    of [s] to index [stop] (included).
+    @raise Out_of_bounds if [stop] is not a valid index of [s]. *)
 
 val find : t -> t -> int
 (** [find s x] returns the starting index of the first occurrence of
@@ -430,7 +430,7 @@ val nsplit : t -> t -> t list
     [nsplit "" _] returns the empty list.
     If the separator is not found, it returns a list of
     the rope [s].
-    If two occurences of the separator are consecutive (with nothing
+    If two occurrences of the separator are consecutive (with nothing
     in between), the empty rope is added in the sequence. For example,
     [nsplit "a//b/" "/"] is ["a"; ""; "b"; ""].
 

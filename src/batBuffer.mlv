@@ -72,10 +72,16 @@ let add_input t inp n =
   (Q.string) (fun s -> let b = create 10 in add_input b (BatIO.input_string s) (String.length s); contents b = s)
 *)
 
+let add_channel = add_input
+
+##V<4.2##let add_bytes = add_string
+##V<4.2##let add_subbytes = add_substring
+##V<4.2##let to_bytes = contents
+
 let output_buffer buf =
   BatInnerIO.create_out
     ~write: (add_char buf)
-    ~output:(fun s p l -> add_substring buf s p l; l)
+    ~output:(fun s p l -> add_subbytes buf s p l; l)
     ~close: (fun () -> contents buf)
     ~flush: BatInnerIO.noop
 
@@ -83,8 +89,22 @@ let output_buffer buf =
   (Q.string) (fun s -> let b = create 10 in let oc = output_buffer b in IO.nwrite oc s; IO.close_out oc = s)
 *)
 
-let add_channel = add_input
+##V>=4.07##let to_seq = to_seq
+##V>=4.07##let to_seqi = to_seqi
+##V>=4.07##let add_seq = add_seq
+##V>=4.07##let of_seq = of_seq
 
-##V<4.2##let add_bytes = add_string
-##V<4.2##let add_subbytes = add_substring
-##V<4.2##let to_bytes = contents
+##V>=4.08##let add_uint8 = add_uint8
+##V>=4.08##let add_int8 = add_int8
+##V>=4.08##let add_uint16_ne = add_uint16_ne
+##V>=4.08##let add_uint16_be = add_uint16_be
+##V>=4.08##let add_uint16_le = add_uint16_le
+##V>=4.08##let add_int16_ne = add_int16_ne
+##V>=4.08##let add_int16_be = add_int16_be
+##V>=4.08##let add_int16_le = add_int16_le
+##V>=4.08##let add_int32_ne = add_int32_ne
+##V>=4.08##let add_int32_be = add_int32_be
+##V>=4.08##let add_int32_le = add_int32_le
+##V>=4.08##let add_int64_ne = add_int64_ne
+##V>=4.08##let add_int64_be = add_int64_be
+##V>=4.08##let add_int64_le = add_int64_le

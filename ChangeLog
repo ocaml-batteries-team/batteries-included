@@ -3,6 +3,29 @@ Changelog
 
 ## NEXT_RELEASE (major release)
 
+- BatList and BatArray: sum of an empty container now return 0 rather than
+  raising an exception.
+  #519
+  (Cedric Cellier, report by Simon Cruanes, review by François Berenger)
+- BatString: split_on_char and nsplit now return a sigle empty string (rather
+  than an empty list) on empty strings.
+  #845, #846
+  (Cedric Cellier, report by Thibault Suzanne, review by François Berenger)
+- BatSeq: change Exceptionless.combine signature to make it really
+  exceptionless.
+  #418
+  (Cedric Cellier, report by Hezekiah M. Carty, review by François Berenger)
+- BatOo: This module was unwelcomed and has been removed
+  #848
+  (Cedric Cellier, report by Max Mouratov, review by François Berenger)
+- BatFilename: Added to Batteries from the stdlib, with the addition of
+  split_extension.
+  #445
+  (Cedric Cellier, report and review by François Berenger)
+- BatSet: the Infix module is no more, as it was incompatible with
+  metaocaml
+  #908
+  (Cedric Cellier, review by Gabriel Scherer and François Berenger)
 - BatIO: make the ?cleanup parameter of BatIO.input_channel true by default:
   closing the returned input will close the underlying input channel
   #109, #489
@@ -24,7 +47,250 @@ Changelog
   #679
   (Cedric Cellier)
 
-## NEXT_RELEASE (minor release)
+## v2.10.0 (minor release)
+
+This minor release adds support for OCaml 4.08.0.
+
+This release is compatible with OCaml 4.08.0, but it is not complete
+with respect to the standard library of OCaml 4.08.0: this release saw
+a lot of changes to the standard library, which have not yet been made
+available in the corresponding Batteries module. This means that users
+of OCaml 4.08.0 (and Batteries 2.10.0) will have access to these
+functions, but users of older OCaml versions (and Batteries 2.10.0)
+will not. If you are looking for this kind of backward-compatibility
+of new functions, as provided by previous Batteries releases, we
+recommend trying the 'stdcompat' library.
+
+- added LazyList.equal: ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
+  #811
+  (Marshall Abrams, review by Gabriel Scherer)
+
+- added BatList.fold_while : ('acc -> 'a -> bool) -> ('acc -> 'a -> 'acc) ->
+                             'acc -> 'a list -> 'acc * 'a list
+  #889
+  (Francois Berenger, Thibault Suzanne)
+
+- fix `BatNum.of_float_string` on inputs between -1 and 0:
+	"-0.5" or "-.5" would be interpreted as "0.5" or ".5".
+  #886, #887
+  (Gabriel Scherer, report by Marcel Hark)
+
+- added BatHashtbl.merge and merge_all
+  #891
+  (Cedric Cellier, Francois Berenger, Gabriel Scherer)
+
+## v2.9.0 (minor release)
+
+This minor release adds support for OCaml 4.07.0, as well as a certain
+number of fixes, improvements and documentation clarification from our
+contributors. Thanks in particular to Max Mouratov for his varied
+contributions.
+
+This release is compatible with OCaml 4.07.0, but it is not complete
+with respect to the standard library of OCaml 4.07.0: this release saw
+a lot of changes to the standard library, which have not yet been made
+available in the corresponding Batteries module. This means that users
+of OCaml 4.07.0 (and Batteries 2.9.0) will have access to these
+functions, but users of older OCaml versions (and Batteries 2.9.0)
+will not. If you are looking for this kind of backward-compatibility
+of new functions, as provided by previous Batteries releases, we
+recommend trying the new 'stdcompat' library by Thierry Martinez:
+
+  https://github.com/thierry-martinez/stdcompat
+
+Full changelog:
+
+- add `BatString.cut_on_char : char -> int -> string -> string`
+  (Kahina Fekir, Thibault Suzanne, request by François Bérenger)
+  #807, #856
+
+- add `BatString.index_after_n : char -> int -> string -> int`
+  (Kahina Fekir)
+
+- faster BatArray.partition
+  #829
+  (Francois Berenger, Gabriel Scherer)
+
+- add `BatArray.split: ('a * 'b) array -> 'a array * 'b array`
+  #826
+  (Francois Berenger)
+
+- add `BatString.count_string: string -> string -> int`
+  #799
+  (Francois Berenger)
+
+- Int: optimized implementation of Safe_int.mul
+  #808, #851
+  (Max Mouratov)
+
+- Fix: in case of conflicted bindings, [Map.union m1 m2] should
+  prefer the value from [m2], as stated in documentation.
+  #814
+  (Max Mouratov)
+
+- Fix: [Map.update k1 k2 v m] did not work correctly when [k1 = k2].
+  #833
+  (Max Mouratov)
+
+- Fix: [Map.update k1 k2 v m] should throw [Not_found] if [k1] is not bound
+  in [m], as stated in documentation.
+  #833
+  (Max Mouratov)
+
+- Fix: [Set.update x y s] should throw [Not_found] if [x] is not in [s],
+  as stated in documentation.
+  #833
+  (Max Mouratov)
+
+- Fix: documentation of BatList.{hd,last} to match implementation w.r.t
+  raised exceptions
+  #840, #754
+  (FkHina)
+
+- Fix: [Array.insert] should throw a more relevant message on invalid indices
+  instead of the generic [invalid_arg "index out of bounds].
+  The assertion is now documented.
+  #841
+  (Max Mouratov)
+
+- Implementation of [Array.insert] now uses [unsafe_get] and [unsafe_set].
+  #841
+  (Max Mouratov)
+
+- Fix documentation of [String.right].
+  #849, #844
+  (Max Mouratov, reported by Thibault Suzanne)
+
+- Fix: [Heap.del_min] should throw [Invalid_argument] with the specified
+  "del_min" message instead of "find_min_tree".
+  #850
+  (Max Mouratov)
+
+- More uniform and correct [Invalid_argument] messages.
+  #850
+  (Max Mouratov)
+
+- Optimization of List.unique_cmp (using Set instead of Map).
+  #852
+  (Max Mouratov)
+
+- Documentation of List.append and List.concat should not include invalid
+  estimates of stack usage.
+  #854
+  (Max Mouratov)
+
+- Implementation of String should use unsafe versions of [set] and [get].
+  #836
+  (Max Mouratov, review by Gabriel Scherer)
+
+- Fix erroneous mentions of [Different_list_size] in List.mli.
+  #857, #744
+  (Max Mouratov, reported by Christoph Höger)
+
+- fix Map.equal (for polymorphic maps) with custom equality function
+  #865
+  (Ralf Vogler)
+
+- ocamlfind plugin support in META file
+  (Arlen Cox)
+  #867
+
+## v2.8.0 (minor release)
+
+This minor release supports the -safe-string mode for OCaml
+compilation, enforcing a type-level separation between (immutable)
+strings and mutable byte sequences.
+
+- support -safe-string compilation
+  #673
+  (Gabriel Scherer)
+
+- Support for the upcoming OCaml release 4.06
+  (Gabriel Scherer)
+
+## v2.7.0 (minor release)
+
+This minor release is the first to support OCaml 4.05.0. As with
+previous OCaml versions, we backported new 4.05.0 convenience function
+from the compiler stdlib, allowing Batteries user to use them with
+older OCaml versions, and thus write backward-compatible code. In
+particular, the new *_opt functions returning option values instead of
+exceptions are all backported.
+
+- BatNum: fix of_float_string to handle negative numbers properly
+  #780
+  (Anton Yabchinskiy)
+
+- added BatArray.min_max
+  #757
+  (Francois Berenger)
+
+- added a Label module to BatVect
+  #763
+  (Varun Gandhi, review by Francois Berenger, Gabriel Scherer, Thibault Suzanne)
+
+- fix documentation of BatVect.insert to match (correct) implementation
+  #766, #767
+  (Gabriel Scherer, report by Varun Gandhi)
+
+- avoid using exceptions for internal control-flow
+  #768, #769
+    This purely internal change should improve performances when using
+    js_of_ocaml, which generates much slower code for local exceptions
+    raising/catching than the native OCaml backend.
+    Internal exceptions (trough the BatReturn label) have been removed
+    from the modules BatString, BatSubstring and BatVect.
+  (Gabriel Scherer, request and review by Clément Pit-Claudel)
+
+- added `BatVect.find_opt : ('a -> bool) -> 'a t -> 'a option`
+  and BatVect.Make.find_opt
+  #769
+  (Gabriel Scherer)
+
+- Documents exceptions for List.(min, max)
+  #770
+  (Varun Gandhi)
+
+- BatText: bugfixes in `rindex{,_from}` and `rcontains_from`
+  #775
+  (Gabriel Scherer)
+
+- Support for the new OCaml release 4.05
+  the `*_opt` functions and List.compare_lengths, compare_length_with
+  are also backported to older OCaml releases, so code using them from
+  Batteries should be backwards-compatible
+  #777, #779
+  (Tej Chajed, Gabriel Scherer)
+
+## v2.6.0 (minor release)
+
+- added Bat{Set,Map,Splay}.any and fixed Bat{Map,Splay}.choose
+  #751
+  (Cedric Cellier)
+
+- added BatList.favg and faster BatList.fsum
+  #746
+  (Gabriel Scherer, Francois Berenger)
+
+- install .cmt and .cmti files
+  #740
+  (Francois Berenger, Gabriel Scherer)
+
+- BatMap: added find_default
+  #730
+  (Francois Berenger)
+
+- added scripts/test_install.sh
+  #743
+  (Francois Berenger)
+
+- BatHashtbl: added {to|of}_list, bindings
+  #728
+  (Francois Berenger, Thibault Suzanne)
+
+- added {BatList|BatArray}.shuffle
+  #702, #707
+  (Francois Berenger, Gabriel Scherer)
 
 - Clarification and improvements to the documentation
   #682, #685, #693
@@ -44,6 +310,29 @@ Changelog
 - Added `Result.{map,map_both}`
   #705
   (Ifaz Kabir)
+
+- Add {BatSet,BatMap}.{Int,Int32,Int64,Nativeint,Float,Char,String} as
+  common instantions of the respective `Make` functor.
+  #709, #712
+  (Thibault Suzanne, François Bérenger)
+
+- BatString: add `chop : ?l:int -> ?r:int -> string -> string`
+  #714, #716
+  (Gabriel Scherer, request by François Bérenger)
+
+- BatSet: make `to_array` allocate the resulting array at first
+  instead of using Dynarray (faster, uses less memory).
+  #724
+  (Thibault Suzanne)
+
+- BatList: add `fold_left_map : ('a -> 'b -> 'a * 'c) -> 'a -> 'b list -> 'a * 'c list`
+  #734
+  (Thibault Suzanne, review by Gabriel Scherer, request by Oscar Gauthier)
+
+- add ``BatList.frange : float -> [< `To | `Downto ] -> float -> int -> float list``
+  ``frange 0. `To 1. 3`` is `[0.; 0.5; 1.]`.
+  #745
+  (François Bérenger)
 
 ## v2.5.3
 
@@ -128,8 +417,8 @@ then it is only available under OCaml 4.03.0.
 - BatHashtbl: more efficient modify_opt and modify_def
   (Anders Fugmann)
 - BatFormat: add pp_print_list: ?pp_sep:(formatter -> unit -> unit) ->
-	                        (formatter -> 'a -> unit) ->
-	                        (formatter -> 'a list -> unit)
+				(formatter -> 'a -> unit) ->
+				(formatter -> 'a list -> unit)
 	     and pp_print_text: formatter -> string -> unit
   (Christoph Höger)
 - BatEnum: add uniq_by: ('a -> 'a -> bool) -> 'a t -> 'a t
@@ -225,7 +514,7 @@ then it is only available under OCaml 4.03.0.
 - basic .merlin file for merlin users
 - BatDeque.eq function to compare Deques by content
 - BatteriesExceptionless
-- More explicit overridding of ocamlbuild rules, use batteries.mllib
+- More explicit overriding of ocamlbuild rules, use batteries.mllib
 - Add Kahan summation (numerically-accurate sum of floats) to List,Array,Enum
 - Add BatOption.some
 - (text) improve element indexing in BatList's mli documentation

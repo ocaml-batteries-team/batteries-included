@@ -58,13 +58,13 @@ let input_all ic =
     if n = 0 then
       let res = Bytes.create total in
       let pos = total - ofs in
-      let _ = String.blit buf 0 res pos ofs in
+      let _ = Bytes.blit buf 0 res pos ofs in
       let coll pos buf =
         let new_pos = pos - buf_len in
-        String.blit buf 0 res new_pos buf_len;
+        Bytes.blit buf 0 res new_pos buf_len;
         new_pos in
       let _ = List.fold_left coll pos acc in
-      res
+      Bytes.unsafe_to_string res
     else
       let new_ofs = ofs + n in
       let new_total = total + n in
@@ -213,6 +213,8 @@ let output_char       = BatChar.print
 let output_string     = BatString.print
 let output oc buf pos len =
   ignore (BatIO.output oc buf pos len)
+let output_substring oc buf pos len =
+  ignore (BatIO.output_substring oc buf pos len)
 let output_byte       = BatIO.write_byte
 let output_binary_int = BatIO.write_i32
 let output_binary_float out v= BatIO.write_i64 out (BatInt64.bits_of_float v)

@@ -46,7 +46,7 @@ let make ~next ~count ~clone =
   }
 
 (** {6 Internal utilities}*)
-let _dummy () = assert false (*BISECT-VISIT*)
+let _dummy () = assert false
 
 (* raised by 'count' functions, may go outside the API *)
 exception Infinite_enum
@@ -189,7 +189,7 @@ let from2 next clone =
   e
 
 let init n f = (*Experimental fix for init*)
-  if n < 0 then invalid_arg "BatEnum.init";
+  if n < 0 then invalid_arg "Enum.init";
   let count = ref n in
   let f' () =
     match !count with
@@ -1148,7 +1148,7 @@ let unfold data next =
 
 let arg_min f enum =
   match get enum with
-    None -> invalid_arg "arg_min: Empty enum"
+    None -> invalid_arg "Enum.arg_min: Empty enum"
   | Some v ->
     let item, eval = ref v, ref (f v) in
     iter (fun v -> let fv = f v in
@@ -1157,7 +1157,7 @@ let arg_min f enum =
 
 let arg_max f enum =
   match get enum with
-    None -> invalid_arg "arg_max: Empty enum"
+    None -> invalid_arg "Enum.arg_max: Empty enum"
   | Some v ->
     let item, eval = ref v, ref (f v) in
     iter (fun v -> let fv = f v in
@@ -1349,7 +1349,7 @@ let print ?(first="") ?(last="") ?(sep=" ") print_a  out e =
   _print_common ~first ~last ~sep ~limit:max_int print_a out e
 
 let print_at_most ?(first="") ?(last="") ?(sep=" ") ~limit print_a out e =
-  if limit <= 0 then raise (Invalid_argument "enum.print_at_most");
+  if limit <= 0 then invalid_arg "Enum.print_at_most";
   _print_common ~first ~last ~sep ~limit print_a out e
 
 (*$T print_at_most

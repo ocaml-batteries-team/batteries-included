@@ -44,10 +44,11 @@ let splice s1 off len s2 =
   let len  = int_min (len1 - off) len                 in
   let out_len = len1 - len + len2                     in
   let s = Bytes.create out_len in
-  String.blit s1 0 s 0 off; (* s1 before splice point *)
-  String.blit s2 0 s off len2; (* s2 at splice point *)
-  String.blit s1 (off+len) s (off+len2) (len1 - (off+len)); (* s1 after off+len *)
-  s
+  Bytes.blit_string s1 0 s 0 off; (* s1 before splice point *)
+  Bytes.blit_string s2 0 s off len2; (* s2 at splice point *)
+  Bytes.blit_string (* s1 after off+len *)
+    s1 (off+len) s (off+len2) (len1 - (off+len));
+  Bytes.unsafe_to_string s
 
 type t =
     Empty                             (**An empty rope*)
@@ -172,7 +173,7 @@ let bal_if_needed l r =
   if height r < max_height then r else balance r
 
 let concat_str l = function
-  | Empty | Concat(_,_,_,_,_) -> invalid_arg "concat_str"
+  | Empty | Concat(_,_,_,_,_) -> invalid_arg "Text.concat_str"
   | Leaf (lenr, rs) as r ->
     match l with
     | Empty -> r
@@ -492,7 +493,7 @@ let rec iteri ?(base=0) f = function
 
 let rec bulk_iteri_backwards ~top f = function
   | Empty -> ()
-  | Leaf (lens,s) -> f (top-lens) s (* gives f the base position, not the top *)
+  | Leaf (lens,s) -> f top s
   | Concat(l,_,r,cr,_) ->
     bulk_iteri_backwards ~top f r;
     bulk_iteri_backwards ~top:(top-cr) f l
@@ -670,12 +671,23 @@ let rindex r char =
         Return.return label (p+i)
       with Not_found -> ()
     in
-    bulk_iteri_backwards ~top:(length r) index_aux r;
+    bulk_iteri_backwards ~top:(length r - 1) index_aux r;
     raise Not_found)
+(*$T rindex
+  rindex (of_string "batteries") (BatUChar.of_char 't') = 3
+  rindex (of_string "batt") (BatUChar.of_char 't') = 3
+  try ignore (rindex (of_string "batteries") (BatUChar.of_char 'y')); false with Not_found -> true
+*)
 
 let rindex_from r start char =
-  let rsub = left r start in
+  let rsub = left r (start + 1) in
   (rindex rsub char)
+(*$T rindex_from
+  let s = "batteries" in rindex_from (of_string s) (String.length s - 1) (BatUChar.of_char 't') = 3
+  let s = "batteries" in rindex_from (of_string s) 2 (BatUChar.of_char 't') = 2
+  try ignore (rindex_from (of_string "batteries") 4 (BatUChar.of_char 'y')); false with Not_found -> true
+  try ignore (rindex_from (of_string "batteries") 20 (BatUChar.of_char 'y')); false with Out_of_bounds -> true
+*)
 
 let contains r char =
   Return.with_label (fun label ->
@@ -684,14 +696,42 @@ let contains r char =
     in
     bulk_iter contains_aux r;
     false)
+(*$T contains
+  contains empty (BatUChar.of_char 't') = false
+  contains (of_string "") (BatUChar.of_char 't') = false
+  contains (of_string "batteries") (BatUChar.of_char 't') = true
+  contains (of_string "batteries") (BatUChar.of_char 'y') = false
+*)
 
 let contains_from r start char =
   Return.with_label (fun label ->
     let contains_aux c = if c = char then Return.return label true in
     range_iter contains_aux start (length r - start) r;
     false)
+(*$T contains_from
+  try ignore (contains_from empty 4 (BatUChar.of_char 't')); false with Out_of_bounds -> true
+  try ignore (contains_from (of_string "") 4 (BatUChar.of_char 't')); false with Out_of_bounds -> true
+  contains_from (of_string "batteries") 4 (BatUChar.of_char 't') = false
+  contains_from (of_string "batteries") 3 (BatUChar.of_char 't') = true
+  contains_from (of_string "batteries") 2 (BatUChar.of_char 't') = true
+  contains_from (of_string "batteries") 1 (BatUChar.of_char 't') = true
+  contains_from (of_string "batteries") 4 (BatUChar.of_char 'y') = false
+*)
 
-let rcontains_from = contains_from
+let rcontains_from r stop char =
+  Return.with_label (fun label ->
+    let contains_aux c = if c = char then Return.return label true in
+    range_iter contains_aux 0 (stop + 1) r;
+    false)
+(*$T rcontains_from
+  try ignore (rcontains_from empty 4 (BatUChar.of_char 't')); false with Out_of_bounds -> true
+  try ignore (rcontains_from (of_string "") 4 (BatUChar.of_char 't')); false with Out_of_bounds -> true
+  rcontains_from (of_string "batteries") 4 (BatUChar.of_char 't') = true
+  rcontains_from (of_string "batteries") 3 (BatUChar.of_char 't') = true
+  rcontains_from (of_string "batteries") 2 (BatUChar.of_char 't') = true
+  rcontains_from (of_string "batteries") 1 (BatUChar.of_char 't') = false
+  rcontains_from (of_string "batteries") 4 (BatUChar.of_char 'y') = false
+*)
 
 let equal r1 r2 = compare r1 r2 = 0
 
@@ -831,13 +871,12 @@ let fill r start len char =
 let blit rsrc offsrc rdst offdst len =
   splice rdst offdst len (sub rsrc offsrc len)
 
-
-let list_reduce f = function [] -> invalid_arg "Empty List"
-                           | h::t -> List.fold_left f h t
-
 let concat sep r_list =
-  if r_list = [] then empty else
-    list_reduce (fun r1 r2 -> append r1 (append sep r2)) r_list
+  match r_list with
+    | [] ->
+        empty
+    | h :: t ->
+        List.fold_left (fun r1 r2 -> append r1 (append sep r2)) h t
 
 (**T concat
    Text.concat (Text.of_string "xyz") [] = Text.empty
@@ -878,7 +917,7 @@ let rsplit (r:t) sep =
     avoid a call to [List.rev].  *)
 let nsplit str sep =
   if is_empty str then []
-  else if is_empty sep then invalid_arg "nsplit: empty sep not allowed"
+  else if is_empty sep then invalid_arg "Text.nsplit: empty sep not allowed"
   else
     (* str is not empty *)
     let seplen = length sep in
@@ -983,7 +1022,9 @@ let read_char i =
   else
     let s = Bytes.create len in
     Bytes.set s 0 n0;
-    ignore(really_input i s 1 ( len - 1));
+    let n = really_input i s 1 (len - 1) in
+    assert (n = len - 1);
+    let s = Bytes.unsafe_to_string s in
     UTF8.get s 0
 
 

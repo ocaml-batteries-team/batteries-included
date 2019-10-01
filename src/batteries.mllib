@@ -1,16 +1,19 @@
 BatInnerPervasives
+  BatInnerShuffle
   BatArray
   BatBigarray
   BatBig_int
   BatBool
   BatBounded
   BatBuffer
+  BatBytesCompat
   BatBytes
   BatChar
   BatComplex
   BatDeque
   BatDigest
   BatEnum
+  BatFilename
   BatFingerTree
   BatFloat
   BatFormat
@@ -30,7 +33,6 @@ BatInnerPervasives
   BatMarshal
   BatNativeint
   BatNum
-  BatOo
   BatPervasives
   BatPrintexc
   BatPrintf

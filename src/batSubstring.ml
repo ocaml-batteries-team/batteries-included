@@ -54,14 +54,17 @@ let create len = String.make len '\000', 0, len
 
 let equal (s1,o1,l1) (s2,o2,l2) =
   if l1 <> l2 then false
-  else BatReturn.label (fun label ->
-      for i = 0 to l1-1 do
-        if s1.[i+o1] <> s1.[i+o2] then BatReturn.return label false
-      done; true)
+  else
+    let rec loop i =
+      if i = l1 then true
+      else if s1.[i+o1] <> s2.[i+o2] then false
+      else loop (i + 1)
+    in loop 0
 (*$T equal
    equal (of_string "abc") (of_string "abc") = true
    equal (substring "aba" 0 1) (substring "aba" 2 1) = true
    equal (substring "aba" 1 1) (substring "aba" 2 1) = false
+   equal (substring "abc" 0 2) (substring "cab" 1 2) = true
 *)
 
 (*
@@ -82,7 +85,7 @@ let of_input inp =
   and tmp = Bytes.create tempsize in
   let n = ref 0 in
   while n := BatIO.input inp tmp 0 tempsize; !n > 0 do
-    Buffer.add_substring buf tmp 0 !n;
+    BatBytesCompat.buffer_add_subbytes buf tmp 0 !n;
   done;
   Buffer.contents buf, 0, Buffer.length buf
 
@@ -150,7 +153,7 @@ let triml k (str,off,len) =
 *)
 
 let trimr k (str,off,len) =
-  if k < 0 then invalid_arg "Substring.triml: negative trim not allowed";
+  if k < 0 then invalid_arg "Substring.trimr: negative trim not allowed";
   if k > len then (str, off, 0) else (str, off, len-k)
 
 (*$T trimr
@@ -194,10 +197,10 @@ let concat ssl =
   let item = Bytes.create len in
   let write =
     let pos = ref 0 in
-    fun (s,o,len) -> String.unsafe_blit s o item !pos len; pos := !pos + len
+    fun (s,o,len) -> Bytes.blit_string s o item !pos len; pos := !pos + len
   in
   List.iter write ssl;
-  item
+  Bytes.unsafe_to_string item
 (*$T concat
    concat [empty ()] = ""
    concat [substring "foobar" 1 3; empty ()] = "oob"

@@ -15,12 +15,12 @@ type ('a, 'b) t = ('a, 'b) BatPervasives.result = Ok of 'a | Bad of 'b
 *)
 val catch: ('a -> 'b) -> 'a -> ('b, exn) t
 
-(** As [catch] but two paramaters.  This saves a closure construction
+(** As [catch] but two parameters.  This saves a closure construction
     @since 2.0
 *)
 val catch2: ('a -> 'b -> 'c) -> 'a -> 'b -> ('c, exn) t
 
-(** As [catch] but three paramaters.  This saves a closure construction
+(** As [catch] but three parameters.  This saves a closure construction
     @since 2.0
 *)
 val catch3: ('a -> 'b -> 'c -> 'd) -> 'a -> 'b -> 'c -> ('d, exn) t
@@ -39,12 +39,12 @@ val get : ('a, exn) t -> 'a
 val default: 'a -> ('a, _) t -> 'a
 
 (** [map f (Ok x)] returns [Ok (f x)] and [map f (Bad e)] returns [Bad e].
-    @since NEXT_RELEASE
+    @since 2.6.0
 *)
 val map : ('a -> 'b) -> ('a, 'c) t -> ('b, 'c) t
 
 (** [map_both f g (Ok x)] returns [Ok (f x)] and [map_both f g (Bad e)] returns [Bad (g e)].
-    @since NEXT_RELEASE
+    @since 2.6.0
 *)
 val map_both : ('a1 -> 'a2) -> ('b1 -> 'b2) -> ('a1, 'b1) t -> ('a2, 'b2) t
 

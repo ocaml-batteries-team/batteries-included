@@ -74,13 +74,11 @@ let seq data next cond =
     else              Nil
   in lazy (aux data)
 
-
 let unfold (data:'b) (next: 'b -> ('a * 'b) option) =
   let rec aux data = match next data with
     | Some(a,b) -> Cons(a, lazy (aux b))
     | None      -> Nil
   in lazy (aux data)
-
 
 let from_loop (data:'b) (next:'b -> ('a * 'b)) : 'a t=
   let f' data =
@@ -92,14 +90,14 @@ let init n f =
   let rec aux i =
     if i < n then lazy (Cons (f i, aux ( i + 1 ) ) )
     else          nil
-  in if n < 0 then raise (Invalid_argument "LazyList.init")
+  in if n < 0 then invalid_arg "LazyList.init"
   else          aux 0
 
 let make n x =
   let rec aux i =
     if i < n then lazy (Cons (x, aux ( i + 1 ) ) )
     else          nil
-  in if n < 0 then raise (Invalid_argument "LazyList.make")
+  in if n < 0 then invalid_arg "LazyList.make"
   else          aux 0
 
 (**
@@ -618,6 +616,21 @@ let for_all2 p l1 l2 =
     | (Nil, Nil)                    -> true
     | (Cons _, Nil) | (Nil, Cons _) -> raise (Different_list_size "LazyList.for_all2")
   in aux l1 l2
+
+let equal eq l1 l2 =
+  let rec aux l1 l2 =
+    match (next l1, next l2) with
+    | (Cons (h1, t1), Cons (h2, t2)) -> eq h1 h2 && (aux t1 t2)
+    | (Nil, Nil)                    -> true
+    | (Cons _, Nil) | (Nil, Cons _) -> false
+  in aux l1 l2
+
+(*$T equal
+  equal (equal (=)) (init 3 (range 0)) (init 3 (range 0))
+  not (equal (equal (=)) (of_list [(of_list [0; 1; 2])]) (of_list [(of_list [0; 42; 2])]))
+  not (equal (=) (range 0 2) (range 0 3))
+  not (equal (=) (range 0 3) (range 0 2))
+*)
 
 let exists2 p l1 l2 =
   let rec aux l1 l2 =

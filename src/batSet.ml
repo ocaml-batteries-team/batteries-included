@@ -119,7 +119,7 @@ module Concrete = struct
       Empty -> invalid_arg "Set.remove_min_elt"
     | Node(Empty, v, r, _) -> r
     | Node(l, v, r, _) -> bal (remove_min_elt l) v r
-    
+
   (* Merge two trees l and r into one.
      All elements of l must precede the elements of r.
      Assume | height l - height r | <= 2. *)
@@ -150,9 +150,22 @@ module Concrete = struct
       if c = 0 then merge l r else
       if c < 0 then bal (remove cmp x l) v r else bal l v (remove cmp x r)
 
+  (* A variant of [remove] that throws [Not_found] on failure *)
+  let rec remove_exn cmp x = function
+    | Empty ->
+        raise Not_found
+    | Node (l, v, r, _) ->
+        let c = cmp x v in
+        if c = 0 then
+          merge l r
+        else if c < 0 then
+          bal (remove_exn cmp x l) v r
+        else
+          bal l v (remove_exn cmp x r)
+
   let update cmp x y s =
     if cmp x y <> 0 then
-      add cmp y (remove cmp x s)
+      add cmp y (remove_exn cmp x s)
     else
       let rec loop = function
         | Empty -> raise Not_found
@@ -182,10 +195,6 @@ module Concrete = struct
   let rec iter f = function
       Empty -> ()
     | Node(l, v, r, _) -> iter f l; f v; iter f r
-
-  let get_root = function
-    | Empty -> raise Not_found
-    | Node(l, v, r, _) -> v
 
   let rec fold f s accu =
     match s with
@@ -332,9 +341,13 @@ module Concrete = struct
   let to_list = elements
 
   let to_array s =
-    let acc = BatDynArray.create () in
-    iter (BatDynArray.add acc) s;
-    BatDynArray.to_array acc
+    match s with
+    | Empty -> [||]
+    | Node (_, e, _, _) ->
+      let arr = Array.make (cardinal s) e in
+      let i = ref 0 in
+      iter (fun x -> Array.unsafe_set arr (!i) x; incr i) s;
+      arr
 
   let rec cons_iter s t = match s with
       Empty -> t
@@ -387,6 +400,16 @@ module Concrete = struct
   let filter_map cmp f e = fold (fun x acc -> match f x with Some v -> add cmp v acc | _ -> acc) e empty
 
   let choose = min_elt (* I'd rather this chose the root, but okay *)
+  (*$= choose
+    42 (empty |> add 42 |> choose)
+    (empty |> add 0 |> add 1 |> choose) (empty |> add 1 |> add 0 |> choose)
+  *)
+
+  let any = get_root
+  (*$T any
+    empty |> add 42 |> any = 42
+    try empty |> any |> ignore ; false with Not_found -> true
+  *)
 
   let rec for_all p = function
       Empty -> true
@@ -409,16 +432,15 @@ module Concrete = struct
     | (t, Empty) -> t
     | (_, _) -> join t1 (min_elt t2) (remove_min_elt t2)
 
-  let cartesian_product a b =
-    let rec product a b = match a with
-      | Empty -> Empty
+  let rec cartesian_product a b =
+    match a with
+      | Empty ->
+          Empty
       | Node (la, xa, ra, _) ->
-        let lab = product la b in
-        let xab = op_map (fun xb -> (xa,xb)) b in
-        let rab = product ra b in
-        concat lab (concat xab rab)
-    in
-    product a b
+          let lab = cartesian_product la b in
+          let xab = op_map (fun xb -> (xa, xb)) b in
+          let rab = cartesian_product ra b in
+          concat lab (concat xab rab)
 
   let rec union cmp12 s1 s2 =
     match (s1, s2) with
@@ -554,6 +576,7 @@ sig
   val pop_max: t -> elt * t
   val max_elt: t -> elt
   val choose: t -> elt
+  val any: t -> elt
   val pop: t -> elt * t
   val enum: t -> elt BatEnum.t
   val backwards: t -> elt BatEnum.t
@@ -563,21 +586,12 @@ sig
   val print :  ?first:string -> ?last:string -> ?sep:string ->
     ('a BatInnerIO.output -> elt -> unit) ->
     'a BatInnerIO.output -> t -> unit
-  module Infix : sig
-    val (<--) : t -> elt -> t (** insertion *)
-    val (<.) : t -> t -> bool  (** strict subset *)
-    val (>.) : t -> t -> bool  (** strict superset *)
-    val (<=.) : t -> t -> bool (** subset *)
-    val (>=.) : t -> t -> bool (** superset *)
-    val (-.) : t -> t -> t     (** difference *)
-    val (&&.) : t -> t -> t   (** intersection *)
-    val (||.) : t -> t -> t   (** union *)
-  end
   (** Operations on {!Set} without exceptions.*)
   module Exceptionless : sig
     val min_elt: t -> elt option
     val max_elt: t -> elt option
     val choose:  t -> elt option
+    val any:     t -> elt option
     val find: elt -> t -> elt option
   end
   (** Operations on {!Set} with labels. *)
@@ -624,7 +638,7 @@ struct
   let find x t = Concrete.find Ord.compare x (impl_of_t t)
   let exists f t = Concrete.exists f (impl_of_t t)
   let for_all f t = Concrete.for_all f (impl_of_t t)
-  let paritition f t =
+  let partition f t =
     let l, r = Concrete.partition Ord.compare f (impl_of_t t) in
     (t_of_impl l, t_of_impl r)
 
@@ -638,6 +652,7 @@ struct
 
   let max_elt t = Concrete.max_elt (impl_of_t t)
   let choose t = Concrete.choose (impl_of_t t)
+  let any t = Concrete.any (impl_of_t t)
   let pop t =
     let e, t = Concrete.pop (impl_of_t t) in
     e, t_of_impl t
@@ -702,22 +717,12 @@ struct
   let print ?first ?last ?sep print_elt out t =
     Concrete.print ?first ?last ?sep print_elt out (impl_of_t t)
 
-  module Infix = struct
-    let (<--) s x = add x s
-    let (<.) a b = not (equal a b) && subset a b
-    let (>.) a b = not (equal a b) && subset b a
-    let (<=.) = subset
-    let (>=.) a b = subset b a
-    let (-.) = diff
-    let (&&.) = inter
-    let (||.) = union
-  end
-
   module Exceptionless =
   struct
     let min_elt t = try Some (min_elt t) with Not_found -> None
     let max_elt t = try Some (max_elt t) with Not_found -> None
     let choose  t = try Some (choose t)  with Not_found -> None
+    let any     t = try Some (any t)     with Not_found -> None
     let find  e t = try Some (find e t)  with Not_found -> None
   end
 
@@ -733,6 +738,14 @@ struct
     let partition ~f t  = partition f t
   end
 end
+
+module Int = Make (BatInt)
+module Int32 = Make (BatInt32)
+module Int64 = Make (BatInt64)
+module Nativeint = Make (BatNativeint)
+module Float = Make (BatFloat)
+module Char = Make (BatChar)
+module String = Make (BatString)
 
 module Make2(O1 : OrderedType)(O2 : OrderedType) = struct
   module Set1 = Make(O1)
@@ -751,9 +764,9 @@ module Make2(O1 : OrderedType)(O2 : OrderedType) = struct
 end
 
 (*$T
-  let module S1 = Make(Int) in \
-  let module S2 = Make(String) in \
-  let module P = Make2(Int)(String) in \
+  let module S1 = Make(BatInt) in \
+  let module S2 = Make(BatString) in \
+  let module P = Make2(BatInt)(BatString) in \
   P.cartesian_product \
     (List.fold_right S1.add [1;2;3] S1.empty) \
     (List.fold_right S2.add ["a";"b"] S2.empty) \
@@ -775,7 +788,7 @@ module PSet = struct (*$< PSet *)
   let get_cmp {cmp} = cmp
 
   (*$T get_cmp
-    get_cmp (create Int.compare) == Int.compare
+    get_cmp (create BatInt.compare) == BatInt.compare
   *)
 
 
@@ -800,6 +813,7 @@ module PSet = struct (*$< PSet *)
   let to_list = elements
   let to_array s = Concrete.to_array s.set
   let choose s = Concrete.choose s.set
+  let any s = Concrete.any s.set
   let min_elt s = Concrete.min_elt s.set
   let pop_min s =
     let mini, others = Concrete.pop_min s.set in
@@ -847,17 +861,6 @@ module PSet = struct (*$< PSet *)
   let equal s1 s2 = Concrete.equal s1.cmp s1.set s2.set
   let subset s1 s2 = Concrete.subset s1.cmp s1.set s2.set
   let disjoint s1 s2 = Concrete.disjoint s1.cmp s1.set s2.set
-
-  module Infix = struct
-    let (<--) s x = add x s
-    let (<.) a b = not (equal a b) && subset a b
-    let (>.) a b = not (equal a b) && subset b a
-    let (<=.) = subset
-    let (>=.) a b = subset b a
-    let (-.) = diff
-    let (&&.) = intersect
-    let (||.) = union
-  end
 end (*$>*)
 
 type 'a t = 'a Concrete.set
@@ -927,6 +930,7 @@ let to_list = elements
 let to_array s = Concrete.to_array s
 
 let choose s = Concrete.choose s
+let any s = Concrete.any s
 
 let min_elt s = Concrete.min_elt s
 
@@ -1043,18 +1047,9 @@ let disjoint s1 s2 = Concrete.disjoint Pervasives.compare s1 s2
   TestSet.update (2,0) (2,1)  ts = TestSet.of_list [(1,0);(2,1);(3,0)]
   TestSet.update (3,0) (3,1)  ts = TestSet.of_list [(1,0);(2,0);(3,1)]
   TestSet.update (3,0) (-1,0) ts = TestSet.of_list [(1,0);(2,0);(-1,0)]
-*)
+  try ignore (TestSet.update (4,0) (44,00) ts); false with Not_found -> true
 
-module Infix = struct
-  let (<--) s x = add x s
-  let (<.) a b = not (equal a b) && subset a b
-  let (>.) a b = not (equal a b) && subset b a
-  let (<=.) = subset
-  let (>=.) a b = subset b a
-  let (-.) = diff
-  let (&&.) = intersect
-  let (||.) = union
-end
+*)
 
 module Incubator = struct (*$< Incubator *)
   let op_map f s = Concrete.op_map f s

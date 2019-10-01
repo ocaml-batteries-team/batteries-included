@@ -121,7 +121,7 @@ val length : 'a t -> int
 val balance : 'a t -> 'a t
 (** [balance r] returns a balanced copy of the [r] vect. Note that vects are
     automatically rebalanced when their height exceeds a given threshold, but
-    [balance] allows to invoke that operation explicity. *)
+    [balance] allows to invoke that operation explicitly. *)
 
 val concat : 'a t -> 'a t -> 'a t
 (** [concat r u] concatenates the [r] and [u] vects. In general, it operates
@@ -157,8 +157,8 @@ val modify : 'a t -> int -> ('a -> 'a) -> 'a t
 
 
 val destructive_set : 'a t -> int -> 'a -> unit
-(** [destructive_set n e v] sets the element of index [n] in the [v] vect
-    to [e]. {b This operation is destructive}, and will also affect vects
+(** [destructive_set v n c] sets the element of index [n] in the [v] vect
+    to [c]. {b This operation is destructive}, and will also affect vects
     sharing the modified leaf with [v]. Use with caution. *)
 
 val sub : 'a t -> int -> int -> 'a t
@@ -169,9 +169,9 @@ val sub : 'a t -> int -> int -> 'a t
 
 val insert : int -> 'a t -> 'a t -> 'a t
 (** [insert n r u] returns a copy of the [u] vect where [r] has been
-    inserted between the elements with index [n] and [n + 1] in the
-    original vect. The length of the new vect is
-    [length u + length r].
+    inserted between the elements with index [n - 1] and [n] in the
+    original vect; after insertion, the first element of [r] (if any)
+    is at index [n]. The length of the new vect is [length u + length r].
     Operates in amortized [O(log(size r) + log(size u))] time. *)
 
 val remove : int -> int -> 'a t -> 'a t
@@ -216,18 +216,18 @@ val rangeiter : ('a -> unit) -> int -> int -> 'a t -> unit
     from an explicit loop using [get].
     @raise Out_of_bounds in the same cases as [sub]. *)
 
-val fold_left : ('b -> 'a -> 'b ) -> 'b -> 'a t -> 'b
+val fold_left : ('b -> 'a -> 'b) -> 'b -> 'a t -> 'b
 (** [fold_left f a r] computes [ f (... (f (f a r0) r1)...) rN-1 ]
     where [rn = Vect.get n r ] and [N = length r]. *)
 
-val fold : ('b -> 'a -> 'b ) -> 'b -> 'a t -> 'b
+val fold : ('b -> 'a -> 'b) -> 'b -> 'a t -> 'b
 (** An alias for {!fold_left} *)
 
 val reduce : ('a -> 'a -> 'a) -> 'a t -> 'a
 (** as {!fold_left}, but no initial value - just applies reducing
     function to elements from left to right. *)
 
-val fold_right : ('a -> 'b -> 'b ) -> 'a t -> 'b -> 'b
+val fold_right : ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
 (** [fold_right f r a] computes [ f (r0 ... (f rN-2 (f rN-1 a)) ...)) ]
     where [rn = Vect.get n r ] and [N = length r]. *)
 
@@ -269,32 +269,39 @@ val exists : ('a -> bool) -> 'a t -> bool
     [ (p a0) || (p a1) || ... || (p an)]. *)
 
 val find : ('a -> bool) -> 'a t -> 'a
-(** [find p a] returns the first element of vect [a]
+(** [find p v] returns the first element of vect [v]
     that satisfies the predicate [p].
     @raise Not_found if there is no value that satisfies [p] in the
-    vect [a]. *)
+    vect [v]. *)
+
+val find_opt : ('a -> bool) -> 'a t -> 'a option
+(** [find_opt p v] returns [Some a], where [a] is the first element
+    of vect [v] that satisfies the predicate [p], or [None]
+    if no such element exists.
+
+    @since 2.7.0 *)
 
 val mem : 'a -> 'a t -> bool
-(** [mem m a] is true if and only if [m] is equal to an element of [a]. *)
+(** [mem a v] is true if and only if [a] is equal to an element of [v]. *)
 
 val memq : 'a -> 'a t -> bool
 (** Same as {!Vect.mem} but uses physical equality instead of
     structural equality to compare vect elements.  *)
 
 val findi : ('a -> bool) -> 'a t -> int
-(** [findi p a] returns the index of the first element of vect [a]
+(** [findi p v] returns the index of the first element of vect [v]
     that satisfies the predicate [p].
     @raise Not_found if there is no value that satisfies [p] in the
-    vect [a].  *)
+    vect [v].  *)
 
 val filter : ('a -> bool) -> 'a t -> 'a t
-(** [filter f v] returns a vect with the elements [x] from [v] such that
-    [f x] returns [true]. Operates in [O(n)] time. *)
+(** [filter f v] returns a vect with the elements [a] from [v] such that
+    [f a] returns [true]. Operates in [O(n)] time. *)
 
 val filter_map : ('a -> 'b option) -> 'a t -> 'b t
-(** [filter_map f e] returns a vect consisting of all elements
-    [x] such that [f y] returns [Some x] , where [y] is an element
-    of [e]. *)
+(** [filter_map f v] returns a vect consisting of all elements
+    [b] such that [f a] returns [Some b] , where [a] is an element
+    of [v]. *)
 
 val find_all : ('a -> bool) -> 'a t -> 'a t
 (** [find_all] is another name for {!Vect.filter}. *)
@@ -327,6 +334,48 @@ val ord : 'a BatOrd.ord -> 'a t BatOrd.ord
 (**/**)
 val invariants : _ t -> unit
 (**/**)
+
+(** {6 Override modules}*)
+
+(** Operations on {!BatVect} with labels.
+
+    This module overrides a number of functions of {!BatVect} by
+    functions in which some arguments require labels. These labels are
+    there to improve readability and safety and to let you change the
+    order of arguments to functions. In every case, the behavior of the
+    function is identical to that of the corresponding function of {!BatVect}.
+*)
+module Labels : sig
+  val init : int -> f:(int -> 'a) -> 'a t
+  val get : 'a t -> n:int -> 'a
+  val at : 'a t -> n:int -> 'a
+  val set : 'a t -> n:int -> elem:'a -> 'a t
+  val modify : 'a t -> n:int -> f:('a -> 'a) -> 'a t
+  val destructive_set : 'a t -> n:int -> elem:'a -> unit
+  val sub : 'a t -> m:int -> n:int -> 'a t
+  val insert : n:int -> sub:'a t -> 'a t -> 'a t
+  val remove : m:int -> n:int -> 'a t -> 'a t
+  val iter : f:('a -> unit) -> 'a t -> unit
+  val iteri : f:(int -> 'a -> unit) -> 'a t -> unit
+  val rangeiter : f:('a -> unit) -> m:int -> n:int -> 'a t -> unit
+  val fold_left : f:('b -> 'a -> 'b) -> init:'b -> 'a t -> 'b
+  val fold : f:('b -> 'a -> 'b) -> init:'b -> 'a t -> 'b
+  val reduce : f:('a -> 'a -> 'a) -> 'a t -> 'a
+  val fold_right : f:('a -> 'b -> 'b) -> 'a t -> init:'b -> 'b
+  val foldi : f:(int -> 'b -> 'a -> 'b) -> init:'b -> 'a t -> 'b
+  val map : f:('a -> 'b) -> 'a t -> 'b t
+  val mapi : f:(int -> 'a -> 'b) -> 'a t -> 'b t
+  val for_all : f:('a -> bool) -> 'a t -> bool
+  val exists : f:('a -> bool) -> 'a t -> bool
+  val find : f:('a -> bool) -> 'a t -> 'a
+  val mem : elem:'a -> 'a t -> bool
+  val memq : elem:'a -> 'a t -> bool
+  val findi : f:('a -> bool) -> 'a t -> int
+  val filter : f:('a -> bool) -> 'a t -> 'a t
+  val filter_map : f:('a -> 'b option) -> 'a t -> 'b t
+  val find_all : f:('a -> bool) -> 'a t -> 'a t
+  val partition : f:('a -> bool) -> 'a t -> 'a t * 'a t
+end
 
 (** {6 Functorial interface} *)
 
@@ -426,7 +475,7 @@ val length : 'a t -> int
 val balance : 'a t -> 'a t
 (** [balance r] returns a balanced copy of the [r] vect. Note that vects are
     automatically rebalanced when their height exceeds a given threshold, but
-    [balance] allows to invoke that operation explicity. *)
+    [balance] allows to invoke that operation explicitly. *)
 
 val concat : 'a t -> 'a t -> 'a t
 (** [concat r u] concatenates the [r] and [u] vects. In general, it operates
@@ -462,12 +511,12 @@ val modify : 'a t -> int -> ('a -> 'a) -> 'a t
 
 
 val destructive_set : 'a t -> int -> 'a -> unit
-(** [destructive_set n e v] sets the element of index [n] in the [v] vect
-    to [e]. {b This operation is destructive}, and will also affect vects
+(** [destructive_set v n c] sets the element of index [n] in the [v] vect
+    to [c]. {b This operation is destructive}, and will also affect vects
     sharing the modified leaf with [v]. Use with caution. *)
 
 val sub : 'a t -> int -> int -> 'a t
-(** [sub m n r] returns a sub-vect of [r] containing all the elements
+(** [sub r m n] returns a sub-vect of [r] containing all the elements
     whose indexes range from [m] to [m + n - 1] (included).
     @raise Out_of_bounds in the same cases as Array.sub.
     Operates in worst-case [O(log size)] time.  *)
@@ -579,6 +628,14 @@ val find : ('a -> bool) -> 'a t -> 'a
     @raise Not_found if there is no value that satisfies [p] in the
     vect [a]. *)
 
+val find_opt : ('a -> bool) -> 'a t -> 'a option
+(** [find_opt p a] returns [Some x], where [x] is the first element
+    of vect [a] that satisfies the predicate [p], or [None]
+    if no such element exists.
+
+    @since 2.7.0
+*)
+
 val mem : 'a -> 'a t -> bool
 (** [mem m a] is true if and only if [m] is equal to an element of [a]. *)
 
@@ -622,6 +679,48 @@ val pop : 'a t -> 'a * 'a t
 (** Return the last element of a vector and its first [n-1] elements. *)
 
 (** {6 Boilerplate code}*)
+
+(** {6 Override modules}*)
+
+  (** Operations on {!BatVect} with labels.
+
+      This module overrides a number of functions of {!BatVect} by
+      functions in which some arguments require labels. These labels are
+      there to improve readability and safety and to let you change the
+      order of arguments to functions. In every case, the behavior of the
+      function is identical to that of the corresponding function of {!BatVect}.
+  *)
+  module Labels : sig
+    val init : int -> f:(int -> 'a) -> 'a t
+    val get : 'a t -> n:int -> 'a
+    val at : 'a t -> n:int -> 'a
+    val set : 'a t -> n:int -> elem:'a -> 'a t
+    val modify : 'a t -> n:int -> f:('a -> 'a) -> 'a t
+    val destructive_set : 'a t -> n:int -> elem:'a -> unit
+    val sub : 'a t -> m:int -> n:int -> 'a t
+    val insert : n:int -> sub:'a t -> 'a t -> 'a t
+    val remove : m:int -> n:int -> 'a t -> 'a t
+    val iter : f:('a -> unit) -> 'a t -> unit
+    val iteri : f:(int -> 'a -> unit) -> 'a t -> unit
+    val rangeiter : f:('a -> unit) -> m:int -> n:int -> 'a t -> unit
+    val fold_left : f:('b -> 'a -> 'b) -> init:'b -> 'a t -> 'b
+    val fold : f:('b -> 'a -> 'b) -> init:'b -> 'a t -> 'b
+    val reduce : f:('a -> 'a -> 'a) -> 'a t -> 'a
+    val fold_right : f:('a -> 'b -> 'b) -> 'a t -> init:'b -> 'b
+    val foldi : f:(int -> 'b -> 'a -> 'b) -> init:'b -> 'a t -> 'b
+    val map : f:('a -> 'b) -> 'a t -> 'b t
+    val mapi : f:(int -> 'a -> 'b) -> 'a t -> 'b t
+    val for_all : f:('a -> bool) -> 'a t -> bool
+    val exists : f:('a -> bool) -> 'a t -> bool
+    val find : f:('a -> bool) -> 'a t -> 'a
+    val mem : elem:'a -> 'a t -> bool
+    val memq : elem:'a -> 'a t -> bool
+    val findi : f:('a -> bool) -> 'a t -> int
+    val filter : f:('a -> bool) -> 'a t -> 'a t
+    val filter_map : f:('a -> 'b option) -> 'a t -> 'b t
+    val find_all : f:('a -> bool) -> 'a t -> 'a t
+    val partition : f:('a -> bool) -> 'a t -> 'a t * 'a t
+  end
 
 (** {7 Printing}*)
 

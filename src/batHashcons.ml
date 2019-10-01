@@ -27,7 +27,7 @@
 module Int = BatInt
 module Sys = BatSys
 module Hashtbl = BatHashtbl
-module Array = struct include Array include BatArray end
+module Array = BatArray
 
 type 'a hobj = {
   obj   : 'a ;

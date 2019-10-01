@@ -1,7 +1,7 @@
 (*
- * BatString - Additional functions for string manipulations.
- * Copyright (C) 1996 Xavier Leroy, INRIA Rocquencourt
- * Copyright (C) 2009 David Teller, LIFO, Universite d'Orleans
+ * BatFilename - Extended Filename module
+ * Copyright (C) 1996 Xavier Leroy
+ *               2008 David Teller, LIFO, Universite d'Orleans
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,10 +19,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+include Filename
 
-open BatIO
-include Lexing
-let from_input inp =
-  from_function (fun s n -> try input inp s 0 n with No_more_input -> 0)
+let split_extension s =
+  remove_extension s, extension s
 
-let from_channel = from_input
+(*$= split_extension & ~printer:(IO.to_string (Tuple2.print String.print String.print))
+  ("/foo/bar", ".baz") (split_extension "/foo/bar.baz")
+  ("/foo/bar", "")    (split_extension "/foo/bar")
+  ("/foo/bar", ".")   (split_extension "/foo/bar.")
+  ("/foo/.rc", "")    (split_extension "/foo/.rc")
+  ("", "")            (split_extension "")
+*)

@@ -419,7 +419,7 @@ sig
   (** Add an option to the option parser.
 
       @raise Option_conflict if the short name(s) or long name(s)
-      have alread been used for some other option.
+      have already been used for some other option.
 
       @param help Short help message describing the option (for the usage message).
 

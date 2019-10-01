@@ -57,7 +57,7 @@ module BaseInt = struct
 
   let pow a b =
     if b < 0
-    then raise (Invalid_argument "Int.pow")
+    then invalid_arg "Int.pow"
     else
       let div_two n = n / 2
       and mod_two n = n mod 2
@@ -253,25 +253,20 @@ module BaseSafeInt = struct
       | 32 -> 15                (* 32 = sign bit + 15*2 + tag bit *)
       | _  -> 0
 
+  (* Uses a formula taken from Hacker's Delight, chapter "Overflow Detection",
+     plus a fast-path check (see comment above) *)
   let mul (a: int) (b: int) : int =
     let open Pervasives in
-    if ((abs a) lor (abs b)) asr mul_shift_bits <> 0
-    then begin match (a > 0, b > 0) with
-      | (true, true) when a > (max_int / b) ->
-          raise BatNumber.Overflow
-      | (true, false) when b < (min_int / a) ->
-          raise BatNumber.Overflow
-      | (false, true) when a < (min_int / b) ->
-          raise BatNumber.Overflow
-      | (false, false) when a <> 0 && (b < (max_int / a)) ->
-          raise BatNumber.Overflow
-      | _ -> ()
-    end;
-    a * b
+    let c = a * b in
+    if (a lor b) asr mul_shift_bits = 0
+    || not ((a = min_int && b < 0) || (b <> 0 && c / b <> a)) then
+      c
+    else
+      raise BatNumber.Overflow
 
   let pow a b =
     if b < 0
-    then raise (Invalid_argument "Safe_int.pow")
+    then invalid_arg "Int.Safe_int.pow"
     else
       let div_two n = n / 2
       and mod_two n = n mod 2

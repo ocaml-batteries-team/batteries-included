@@ -27,6 +27,7 @@ let print_rope fmt t =
 let print_ustring fmt t =
   Format.fprintf fmt "u%S" t
 
+(*
 let string_of_cap t = BatString.Cap.to_string (BatString.Cap.copy t)
 
 let print_string_cap_rw fmt t =
@@ -34,20 +35,20 @@ let print_string_cap_rw fmt t =
 
 let print_string_cap_ro fmt t =
   Format.fprintf fmt "ro%S" (string_of_cap t)
+ *)
 
 let string_dynarray = BatIO.to_f_printer (BatDynArray.print BatString.print)
 let int_dynarray = BatIO.to_f_printer (BatDynArray.print BatInt.print)
 let char_dynarray = BatIO.to_f_printer (BatDynArray.print BatChar.print)
 let float_dynarray = BatIO.to_f_printer (BatDynArray.print BatFloat.print)
 
-module IntSet = BatSet.Make(BatInt)
-let int_set = BatIO.to_f_printer (IntSet.print BatInt.print)
-module StringSet = BatSet.Make(String)
-let string_set = BatIO.to_f_printer (StringSet.print BatString.print)
-module TextSet = BatSet.Make(BatText)
-let text_set = BatIO.to_f_printer (TextSet.print BatText.print)
-(*module CharSet = BatSet.Make(BatChar)
-  let char_set = BatIO.to_f_printer (CharSet.print BatChar.print) *)
+let int_set = BatIO.to_f_printer (BatSet.Int.print BatInt.print)
+let int32_set = BatIO.to_f_printer (BatSet.Int32.print BatInt32.print)
+let int64_set = BatIO.to_f_printer (BatSet.Int64.print BatInt64.print)
+let natint_set = BatIO.to_f_printer (BatSet.Nativeint.print BatNativeint.print)
+let float_set = BatIO.to_f_printer (BatSet.Float.print BatFloat.print)
+let char_set = BatIO.to_f_printer (BatSet.Char.print BatChar.print)
+let string_set = BatIO.to_f_printer (BatSet.String.print BatString.print)
 
 let int_pset = BatIO.to_f_printer (BatSet.print BatInt.print)
 let string_pset = BatIO.to_f_printer (BatSet.print BatString.print)

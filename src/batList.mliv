@@ -57,7 +57,9 @@
     @author David Teller
 *)
 
-type 'a t = 'a list
+##V<4.08##type 'a t = 'a list
+##V>=4.08##type 'a t = 'a list = [] | (::) of 'a * 'a list
+
 (**The type of lists*)
 
 include BatEnum.Enumerable with type 'a enumerable = 'a t
@@ -71,36 +73,70 @@ val is_empty : 'a list -> bool
 (** [is_empty e] returns true if [e] does not contains any element. *)
 
 val cons : 'a -> 'a list -> 'a list
-(** [cons h t] returns the list starting with [h] and continuing as [t] *)
-
-val first : 'a list -> 'a
-(** Returns the first element of the list, or @raise Empty_list if
-    the list is empty (similar to [hd]). *)
+(** [cons h t] returns the list starting with [h] and continuing as [t]. *)
 
 val hd : 'a list -> 'a
-(** Similar to [first], but @raise Failure if the list is empty. *)
+(** Returns the first element of the list, or @raise Failure if
+    the list is empty. *)
+
+
+val first : 'a list -> 'a
+(** Alias to hd *)
 
 val tl : 'a list -> 'a list
 (** Return the given list without its first element.
     @raise Failure if the list is empty. *)
 
 val last : 'a list -> 'a
-(** Returns the last element of the list, or @raise Empty_list if
+(** Returns the last element of the list, or @raise Invalid_argument if
     the list is empty. This function takes linear time. *)
 
 val length : 'a list -> int
 (** Return the length (number of elements) of the given list. *)
 
+val compare_lengths : 'a list -> 'b list -> int
+(** Compare the lengths of two lists. [compare_lengths l1 l2] is
+   equivalent to [compare (length l1) (length l2)], except that
+   the computation stops after itering on the shortest list.
+   @since 2.7.0
+ *)
+
+val compare_length_with : 'a list -> int -> int
+(** Compare the length of a list to an integer. [compare_length_with l n] is
+   equivalent to [compare (length l) n], except that
+   the computation stops after at most [n] iterations on the list.
+   @since 2.7.0
+*)
+
 val at : 'a list -> int -> 'a
 (** [at l n] returns the n-th element of the list [l] or
     @raise Invalid_argument if the index is outside of [l] bounds.  O(l) *)
 
+val at_opt : 'a list -> int -> 'a option
+(** [at_opt] returns the n-th element of the list [l] or None if the index is
+    beyond the length of [l].
+    @since 2.7.0
+    @raise Invalid_argument if the index is negative *)
+
 val rev : 'a list -> 'a list
 (** List reversal. *)
 
+val shuffle : ?state:Random.State.t -> 'a list -> 'a list
+(** [shuffle ~state:rs l] randomly shuffles the elements of [l].
+    The optional random state [rs] allows to control the random
+    numbers being used during shuffling (for reproducibility).
+
+    Shuffling is implemented using the Fisher-Yates
+    algorithm on an array and works in O(n), where n is the number
+    of elements of [l].
+
+    @since 2.6.0
+ *)
+
 val append : 'a list -> 'a list -> 'a list
-(** Catenate two lists.  Same function as the infix operator [@].
-    Tail-recursive O(length of the first argument).*)
+(** [append l1 l2] is a concatenation of [l1] and [l2].
+    Same function as the infix operator [@].
+    Tail-recursive. This function takes O([length l1]) time. *)
 
 val rev_append : 'a list -> 'a list -> 'a list
 (** [List.rev_append l1 l2] reverses [l1] and concatenates it to [l2]. *)
@@ -108,8 +144,7 @@ val rev_append : 'a list -> 'a list -> 'a list
 val concat : 'a list list -> 'a list
 (** Concatenate a list of lists.  The elements of the argument are all
     concatenated together (in the same order) to give the result.
-    Tail-recursive
-    (length of the argument + length of the longest sub-list). *)
+    Tail-recursive. *)
 
 val flatten : 'a list list -> 'a list
 (** Same as [concat]. *)
@@ -134,6 +169,19 @@ val range : int -> [< `To | `Downto ] -> int -> int list
     @raise Invalid_argument in ([range i `To j]) if (i > j).
     @raise Invalid_argument in ([range i `Downto j]) if (i < j).
     @since 2.2.0 *)
+
+val frange : float -> [< `To | `Downto ] -> float -> int -> float list
+(** [frange start `To stop n] generates (without accumulating
+    floating point errors) [n] floats in the range [[start..stop]].
+    [n] must be >= 2.
+    At each step, floats in an increasing (resp. decreasing) range increase
+    (resp. decrease) by approximately (stop - start) / (n - 1).
+    @raise Invalid_argument in ([frange i _ j n]) if (n < 2).
+    @raise Invalid_argument in ([frange i `To j _]) if (i >= j).
+    @raise Invalid_argument in ([frange i `Downto j _]) if (i <= j).
+    Examples: [frange 1.0 `To 3.0 3] = [[1.0; 2.0; 3.0]].
+    [frange 3.0 `Downto 1.0 3] = [[3.0; 2.0; 1.0]].
+    @since 2.6.0 *)
 
 val init : int -> (int -> 'a) -> 'a list
 (** Similar to [Array.init], [init n f] returns the list containing
@@ -219,22 +267,51 @@ val reduce : ('a -> 'a -> 'a) -> 'a list -> 'a
 
     @raise Invalid_argument on empty list. *)
 
+val fold_left_map : ('a -> 'b -> 'a * 'c) -> 'a -> 'b list -> 'a * 'c list
+(** Combines [fold_left] and [map]. Tail-recursive.
+
+    More precisely :
+
+    {[
+    fold_left_map f acc [] = (acc, [])
+
+    fold_left_map f acc (x :: xs) =
+      let (acc', y) = f acc x in
+      let (res, ys) = fold_left_map acc' xs in
+      (res, y :: ys)
+    ]}
+
+    @since 2.6.0
+*)
+
 val max : 'a list -> 'a
 (** [max l] returns the largest value in [l] as judged by
-    [Pervasives.compare] *)
+    [Pervasives.compare].
+    @raise Invalid_argument on an empty list.
+*)
 
 val min : 'a list -> 'a
 (** [min l] returns the smallest value in [l] as judged by
-    [Pervasives.compare] *)
+    [Pervasives.compare].
+    @raise Invalid_argument on an empty list.
+*)
 
 val sum : int list -> int
-(** [sum l] returns the sum of the integers of [l]
-    @raise Invalid_argument on the empty list.
+(** [sum l] returns the sum of the integers of [l].
+    Returns [0] on the empty list.
+    Note: prior to NEXT_RELEASE, used to raise Invalid_argument on the empty list.
  *)
 
 val fsum : float list -> float
-(** [fsum l] returns the sum of the floats of [l]
+(** [fsum l] returns the sum of the floats of [l].
+    Returns [0.] on the empty list.
+    Note: prior to NEXT_RELEASE, used to raise Invalid_argument on the empty list.
+ *)
+
+val favg : float list -> float
+(** [favg l] returns the average of the floats of [l]
     @raise Invalid_argument on the empty list.
+    @since 2.6.0
  *)
 
 val kahan_sum : float list -> float
@@ -251,7 +328,15 @@ val min_max : ?cmp:('a -> 'a -> int) -> 'a list -> 'a * 'a
     @raise Invalid_argument on an empty list.
 
     @since 2.1
- *)
+*)
+
+##V>=4.07##val to_seq : 'a list -> 'a Seq.t
+##V>=4.07##(** Iterate on the list
+##V>=4.07##    @since 2.10.0 and OCaml 4.07 *)
+
+##V>=4.07##val of_seq : 'a Seq.t -> 'a list
+##V>=4.07##(** Create a list from the iterator
+##V>=4.07##    @since 2.10.0 and OCaml 4.07 *)
 
 (** {6 Iterators on two lists} *)
 
@@ -259,26 +344,24 @@ val min_max : ?cmp:('a -> 'a -> int) -> 'a list -> 'a * 'a
 val iter2 : ('a -> 'b -> unit) -> 'a list -> 'b list -> unit
 (** [List.iter2 f [a0; a1; ...; an] [b0; b1; ...; bn]] calls in turn
     [f a0 b0; f a1 b1; ...; f an bn].
-    @raise Different_list_size if the two lists have
-    different lengths. *)
+    @raise Invalid_argument if two lists have different lengths. *)
 
 val iter2i : (int -> 'a -> 'b -> unit) -> 'a list -> 'b list -> unit
 (** [List.iter2i f [a0; a1; ...; an] [b0; b1; ...; bn]] calls in turn
     [f 0 a0 b0; f 1 a1 b1; ...; f n an bn].
-    @raise Different_list_size or Invalid_argument if the two lists
-    have different lengths. *)
+    @raise Invalid_argument if two lists have different lengths. *)
 
 val map2 : ('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list
 (** [List.map2 f [a0; a1; ...; an] [b0; b1; ...; bn]] is
     [[f a0 b0; f a1 b1; ...; f an bn]].
-    @raise Different_list_size if the two lists have
-    different lengths.  Tail-recursive. *)
+    @raise Invalid_argument if two lists have different lengths.
+    Tail-recursive. *)
 
 val map2i : (int -> 'a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list
 (** [List.map2i f [a0; a1; ...; an] [b0; b1; ...; bn]] is
     [[f 0 a0 b0; f 1 a1 b1; ...; f n an bn]].
-    @raise Different_list_size or Invalid_argument if the two lists
-    have different lengths. Tail-recursive. *)
+    @raise Invalid_argument if two lists have different lengths.
+    Tail-recursive. *)
 
 val rev_map2 : ('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list
 (** [List.rev_map2 f l1 l2] gives the same result as
@@ -288,15 +371,13 @@ val rev_map2 : ('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list
 val fold_left2 : ('a -> 'b -> 'c -> 'a) -> 'a -> 'b list -> 'c list -> 'a
 (** [List.fold_left2 f a [b0; b1; ...; bn] [c0; c1; ...; cn]] is
     [f (... (f (f a b0 c0) b1 c1) ...) bn cn].
-    @raise Different_list_size if the two lists have
-    different lengths. *)
+    @raise Invalid_argument if two lists have different lengths. *)
 
 val fold_right2 : ('a -> 'b -> 'c -> 'c) -> 'a list -> 'b list -> 'c -> 'c
 (** [List.fold_right2 f [a0; a1; ...; an] [b0; b1; ...; bn] c] is
     [f a0 b0 (f a1 b1 (... (f an bn c) ...))].
-
-    @raise Different_list_size if the two lists have
-    different lengths.  Tail-recursive. *)
+    @raise Invalid_argument if two lists have different lengths.
+    Tail-recursive. *)
 
 
 (**{6 List scanning}*)
@@ -306,7 +387,7 @@ val mem : 'a -> 'a list -> bool
     to an element of [l]. *)
 
 val mem_cmp : ('a -> 'a -> int) -> 'a -> 'a list -> bool
-(** Same as {!List.mem}, but the comparator function is explicitely
+(** Same as {!List.mem}, but the comparator function is explicitly
     provided.
     @since 2.2.0 *)
 
@@ -331,14 +412,12 @@ val exists : ('a -> bool) -> 'a list -> bool
 val for_all2 : ('a -> 'b -> bool) -> 'a list -> 'b list -> bool
 (** Same as {!List.for_all}, but for a two-argument predicate.
 
-    @raise Invalid_argument if the two lists have
-    different lengths. *)
+    @raise Invalid_argument if two lists have different lengths. *)
 
 val exists2 : ('a -> 'b -> bool) -> 'a list -> 'b list -> bool
 (** Same as {!List.exists}, but for a two-argument predicate.
 
-    @raise Invalid_argument if the two lists have
-    different lengths. *)
+    @raise Invalid_argument if two lists have different lengths. *)
 
 val subset : ('a -> 'b -> int) -> 'a list -> 'b list -> bool
 (** [subset cmp l l'] check if all elements of the list [l]
@@ -355,6 +434,12 @@ val find : ('a -> bool) -> 'a list -> 'a
     that satisfies the predicate [p].
     @raise Not_found if there is no value that satisfies [p] in the
     list [l]. *)
+
+val find_opt: ('a -> bool) -> 'a list -> 'a option
+(** [find_opt p l] returns the first element of the list [l] that
+    satisfies the predicate [p], or [None] if there is no value that
+    satisfies [p] in the list [l].
+    @since 2.7.0 *)
 
 val find_exn : ('a -> bool) -> exn -> 'a list -> 'a
 (** [find_exn p e l] returns the first element of [l] such as [p x]
@@ -382,7 +467,7 @@ val filter : ('a -> bool) -> 'a list -> 'a list
     in the input list is preserved.  *)
 
 val filteri : (int -> 'a -> bool) -> 'a list -> 'a list
-(** [filter p [a0; a1; ...; an]] returns all the elements [ai] of index [i]
+(** [filteri p [a0; a1; ...; an]] returns all the elements [ai] of index [i]
     that satisfy the predicate [p i ai].  The order of the elements
     in the input list is preserved.
 
@@ -396,7 +481,7 @@ val filter_map : ('a -> 'b option) -> 'a list -> 'b list
     [l] is discarded). *)
 
 val filteri_map : (int -> 'a -> 'b option) -> 'a list -> 'b list
-(** [filter_map f l] calls [(f 0 a0) (f 1 a1).... (f n an)] where [a0,a1..an] are
+(** [filteri_map f l] calls [(f 0 a0) (f 1 a1).... (f n an)] where [a0,a1..an] are
     the elements of [l]. It returns the list of elements [bi] such as
     [f ai = Some bi] (when [f] returns [None], the corresponding element of
     [l] is discarded).
@@ -478,6 +563,15 @@ val assoc : 'a -> ('a * 'b) list -> 'b
     @raise Not_found if there is no value associated with [a] in the
     list [l]. *)
 
+val assoc_opt: 'a -> ('a * 'b) list -> 'b option
+(** [assoc_opt a l] returns the value associated with key [a] in the list of
+   pairs [l]. That is,
+   [assoc_opt a [ ...; (a,b); ...] = b]
+   if [(a,b)] is the leftmost binding of [a] in list [l].
+   Returns [None] if there is no value associated with [a] in the
+   list [l].
+   @since 2.7.0 *)
+
 val assoc_inv : 'b -> ('a * 'b) list -> 'a
 (** [assoc_inv b l] returns the key associated with value [b] in the list of
     pairs [l]. That is, [assoc b [ ...; (a,b); ...] = a]
@@ -497,6 +591,11 @@ val mem_assoc : 'a -> ('a * 'b) list -> bool
 val assq : 'a -> ('a * 'b) list -> 'b
 (** Same as {!List.assoc}, but uses physical equality instead of structural
     equality to compare keys. *)
+
+val assq_opt : 'a -> ('a * 'b) list -> 'b option
+(** Same as {!List.assoc_opt}, but uses physical equality instead of structural
+    equality to compare keys.
+    @since 2.7.0 *)
 
 val assq_inv : 'b -> ('a * 'b) list -> 'a
 (** Same as {!List.assoc_inv}, but uses physical equality instead of structural
@@ -539,7 +638,7 @@ val modify_at : int -> ('a -> 'a) -> 'a list -> 'a list
     @since 2.3.0 *)
 
 val modify_opt_at : int -> ('a -> 'a option) -> 'a list -> 'a list
-(** [modify_at_opt n f l] returns the same list as [l] but with
+(** [modify_opt_at n f l] returns the same list as [l] but with
     nth-value [a] removed if [f a] is [None], and replaced by [v] if
     it is [Some v].
 
@@ -594,7 +693,7 @@ val drop : int -> 'a list -> 'a list
     list if [l] have less than [n] elements. *)
 
 val takedrop : int -> 'a list -> 'a list * 'a list
-(** [take_drop n l] is equivalent to [(take n l, drop n l)]
+(** [takedrop n l] is equivalent to [(take n l, drop n l)]
     but is done in one pass.
     @since 2.2.0 *)
 
@@ -614,6 +713,14 @@ val span : ('a -> bool) -> 'a list -> 'a list * 'a list
     but is done in one pass.
 
     @since 2.1
+*)
+val fold_while : ('acc -> 'a -> bool) -> ('acc -> 'a -> 'acc) -> 'acc -> 'a list -> 'acc * 'a list
+(** [fold_while p f init l], accumulates elements [x] of list [l] using
+    function [f], as long as predicate [p acc x] holds.
+    At the end, the accumulated value along with the remaining part
+    of the list are returned.
+
+    @since 2.10.0
 *)
 
 val nsplit : ('a -> bool) -> 'a list -> 'a list list
@@ -650,7 +757,7 @@ val group_consecutive : ('a -> 'a -> bool) -> 'a list -> 'a list list
 
 val interleave : ?first:'a -> ?last:'a -> 'a -> 'a list -> 'a list
 (** [interleave ~first ~last sep [a0;a1;a2;...;an]] returns
-    [first; a0; sep; a1; sep; a2; sep; ...; sep; an; last] *)
+    [first; a0; sep; a1; sep; a2; sep; ...; sep; an; last]. *)
 
 
 (** {6 BatEnum functions}
@@ -661,7 +768,7 @@ val interleave : ?first:'a -> ?last:'a -> 'a -> 'a list -> 'a list
 val enum : 'a list -> 'a BatEnum.t
 (** Returns an enumeration of the elements of a list. This enumeration may
     be used to visit elements of the list in forward order (i.e. from the
-    first element to the last one)*)
+    first element to the last one). *)
 
 val of_enum : 'a BatEnum.t -> 'a list
 (** Build a list from an enumeration. In the result, elements appear in the
@@ -670,7 +777,7 @@ val of_enum : 'a BatEnum.t -> 'a list
 val backwards : 'a list -> 'a BatEnum.t
 (** Returns an enumeration of the elements of a list. This enumeration may
     be used to visit elements of the list in backwards order (i.e. from the
-    last element to the first one)*)
+    last element to the first one). *)
 
 val of_backwards : 'a BatEnum.t -> 'a list
 (** Build a list from an enumeration. The first element of the enumeration
@@ -693,8 +800,8 @@ val combine : 'a list -> 'b list -> ('a * 'b) list
 (** Transform a pair of lists into a list of pairs:
     [combine [a0; a1; ...; an] [b0; b1; ...; bn]] is
     [[(a0,b0); (a1,b1); ...; (an,bn)]].
-    @raise Different_list_size if the two lists
-    have different lengths.  Tail-recursive. *)
+    @raise Invalid_argument if two lists have different lengths.
+    Tail-recursive. *)
 
 
 (** {6 Sorting}*)
@@ -733,7 +840,7 @@ val merge : ('a -> 'a -> int) -> 'a list -> 'a list -> 'a list
 (** Merge two lists:
     Assuming that [l1] and [l2] are sorted according to the
     comparison function [cmp], [merge cmp l1 l2] will return a
-    sorted list containting all the elements of [l1] and [l2].
+    sorted list containing all the elements of [l1] and [l2].
     If several elements compare equal, the elements of [l1] will be
     before the elements of [l2].
     Not tail-recursive (sum of the lengths of the arguments).
@@ -764,7 +871,7 @@ val group : ('a -> 'a -> int) -> 'a list -> 'a list list
 
     For example [group cmp [f;c;b;e;d;a]] can give [[[a;b];[c];[d;e;f]]] if
     following conditions are met:
-    [cmp a b = 0], [cmp b c = -1], [cmp c d = -1], [cmp d e = 0],...
+    [cmp a b = 0], [cmp b c = -1], [cmp c d = -1], [cmp d e = 0], ...
 
     See the note on [group_consecutive].
 *)
@@ -816,6 +923,14 @@ module Comp (T : Comp) : Comp with type t = T.t list
 val nth : 'a list -> int -> 'a
 (** Obsolete. As [at]. *)
 
+val nth_opt: 'a list -> int -> 'a option
+(** Return the [n]-th element of the given list.
+    The first element (head of the list) is at position 0.
+    Return [None] if the list is too short.
+    Raise [Invalid_argument "List.nth"] if [n] is negative.
+    @since 2.7.0
+*)
+
 val takewhile :  ('a -> bool) -> 'a list -> 'a list
 (** obsolete, as {!take_while} *)
 
@@ -828,7 +943,7 @@ val dropwhile : ('a -> bool) -> 'a list -> 'a list
    The following modules replace functions defined in {!List} with functions
    behaving slightly differently but having the same name. This is by
    design:
-   the functions meant to override the corresponding functions of {!List}.
+   the functions are meant to override the corresponding functions of {!List}.
 
 *)
 
@@ -855,7 +970,7 @@ module Exceptionless : sig
                                     `Invalid_argument of string]
   (** Whenever [n] is inside of [l] size bounds, [split_at n l] returns
       [Ok(l1,l2)], where [l1] contains the first [n] elements of [l] and [l2]
-      contains the others. Otherwise, returns [`Invalid_argument n] *)
+      contains the others. Otherwise, returns [`Invalid_argument n]. *)
 
   val at : 'a list -> int -> [`Ok of 'a | `Invalid_argument of string]
   (** If [n] is inside the bounds of [l], [at l n] returns [Ok x], where
@@ -896,7 +1011,7 @@ module Exceptionless : sig
   val tl : ('a list -> 'a list option)
   (** [tl l] returns [Some x] such that [x] is the given list [l] without its
       first element.
-      Returns [None] if list [l] is empty *)
+      Returns [None] if list [l] is empty. *)
 
   val last : 'a list -> 'a option
     (** [last l] returns either [Some x] where [x] is the last element of the list, or [None] if
@@ -961,7 +1076,6 @@ module Labels : sig
     val assq : 'a -> ('a * 'b) list -> 'b option
   end
 end
-
 
 val ( @ ) : 'a list -> 'a list -> 'a list
   (** Tail recursive [List.append]. *)

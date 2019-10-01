@@ -105,22 +105,39 @@ val from_while: (unit -> 'a option) -> 'a t
    results of [next].
    The list ends whenever [next] returns [None]. *)
 
-val from_loop: 'b -> ('b -> ('a * 'b)) -> 'a t
-(**[from_loop data next] creates a (possibly infinite) lazy list from
-   the successive results of applying [next] to [data], then to the
-   result, etc. The list ends whenever the function raises
-   {!LazyList.No_more_elements}.*)
-
 val seq: 'a -> ('a -> 'a) -> ('a -> bool) -> 'a t
-(** [seq init step cond] creates a sequence of data, which starts
-    from [init],  extends by [step],  until the condition [cond]
-    fails. E.g. [seq 1 ((+) 1) ((>) 100)] returns [[^1, 2, ... 99^]]. If [cond
-    init] is false, the result is empty. *)
+(**[seq data next cond] creates a lazy list from the successive results
+   of applying [next] to [data], then to the result, etc.  The list
+   continues until the condition [cond] fails.  For example, 
+   [seq 1 ((+) 1) ((>) 100)] returns [[^1, 2, ... 99^]].  If [cond init] 
+   is false, the result is empty.  To create an infinite lazy list, pass 
+   [(fun _ -> true)] as [cond]. *)
 
 val unfold: 'b -> ('b -> ('a * 'b) option) -> 'a t
 (**[unfold data next] creates a (possibly infinite) lazy list from
    the successive results of applying [next] to [data], then to the
-   result, etc. The list ends whenever the function returns [None]*)
+   result, etc. The list ends whenever [next] returns [None].  The function 
+   [next] should return a pair [option] whose first element will be the
+   current value of the sequence; the second element will be passed 
+   (lazily) to [next] in order to compute the following element.  One example
+   of a use of [unfold] is to make each element of the resulting sequence to 
+   depend on the previous two elements, as in this Fibonacci sequence 
+   definition:
+   {[
+     let data = (1, 1)
+     let next (x, y) = Some (x, (y, x + y))
+     let fib = unfold data next
+   ]}
+   The first element [x] of the pair within [Some] will be the current 
+   value of the sequence; the next value of the sequence, and the one after
+   that, are recorded as [y] and [x + y] respectively. *)
+
+val from_loop: 'b -> ('b -> ('a * 'b)) -> 'a t
+(**[from_loop data next] creates a (possibly infinite) lazy list from
+   the successive results of applying [next] to [data], then to the
+   result, etc.  The list ends whenever the function raises
+   {!LazyList.No_more_elements}.  (For further information see [unfold];
+   ignore references to [option] and [Some].) *)
 
 val init : int -> (int -> 'a) -> 'a t
 (** Similar to [Array.init], [init n f] returns the lazy list
@@ -253,7 +270,7 @@ val find_exn : ('a -> bool) -> exn -> 'a t -> 'a
     returns [true] or raises [e] if such an element has not been found. *)
 
 val rfind_exn : ('a -> bool) -> exn -> 'a t -> 'a
-(** [find_exn p e l] returns the last element of [l] such as [p x]
+(** [rfind_exn p e l] returns the last element of [l] such as [p x]
     returns [true] or raises [e] if such an element has not been found. *)
 
 val findi : (int -> 'a -> bool) -> 'a t -> (int * 'a)
@@ -262,7 +279,7 @@ val findi : (int -> 'a -> bool) -> 'a t -> (int * 'a)
     @raise Not_found if no such element has been found. *)
 
 val rfindi : (int -> 'a -> bool) -> 'a t -> (int * 'a)
-(** [findi p e l] returns the last element [ai] of [l] along with its
+(** [rfindi p e l] returns the last element [ai] of [l] along with its
     index [i] such that [p i ai] is true.
     @raise Not_found if no such element has been found. *)
 
@@ -287,7 +304,9 @@ val rindex_ofq : 'a -> 'a t -> int option
 *)
 
 val next : 'a t -> 'a node_t
-(**Compute and return the next value of the list*)
+(** Compute and return the first node from the list as a [Cons].  This 
+    differs from [hd], which returns the first element (the first component of 
+    the first node). *)
 
 val length : 'a t -> int
 (**Return the length (number of elements) of the given list.
@@ -563,6 +582,28 @@ val for_all2 : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
     @raise Different_list_size if the two lists have
     different lengths. *)
 
+val equal : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
+(** [equal eq s1 s2] compares elements of [s1] and [s2] pairwise using [eq]
+    and returns true if all elements pass the test and the lists have the same 
+    length; otherwise it returns false.  Examples:
+
+      {[
+        equal (=) (range 0 4) (range 0 4) (* true *)
+
+        (* Make lazy lists of lazy lists: *)
+        let s1 = init 5 (range 0) 
+        let s2 = init 5 (range 0) 
+        equal (equal (=)) s1 s2 (* true *)
+      ]}
+
+      (Calling [=] directly on a pair of lazy lists may succeed but is not
+      guaranteed to behave consistently.)
+
+      Note that on lists of equal length, [equal] and [for_all2] can perform
+      the same function; their intended uses differ, however, as signaled by
+      behavior on lists of different lengths.
+*)
+
 val exists2 : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
 (** Same as {!exists}, but for a two-argument predicate.
     @raise Different_list_size if the two lists have
@@ -604,7 +645,7 @@ val print : ?first:string -> ?last:string -> ?sep:string ->('a BatInnerIO.output
 module Exceptionless : sig
 
   val find : ('a -> bool) -> 'a t -> 'a option
-  (** [rfind p l] returns [Some x] where [x] is the first element of [l] such
+  (** [find p l] returns [Some x] where [x] is the first element of [l] such
     that [p x] returns [true] or [None] if such element as not been found. *)
 
   val rfind : ('a -> bool) -> 'a t -> 'a option
@@ -617,7 +658,7 @@ module Exceptionless : sig
     or [None] if no such element has been found. *)
 
   val rfindi : (int -> 'a -> bool) -> 'a t -> (int * 'a) option
-  (** [findi p e l] returns [Some (i, ai)] where [ai] and [i] are respectively the
+  (** [rfindi p e l] returns [Some (i, ai)] where [ai] and [i] are respectively the
     last element of [l] and its index, such that [p i ai] is true,
     or [None] if no such element has been found. *)
 

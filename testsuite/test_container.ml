@@ -106,7 +106,6 @@ module DllistContainer : Container = struct
 end
 
 module ArrayContainer : Container = struct
-  include Array
   include BatArray
   let map_right = ni2
   let iter_right = ni2

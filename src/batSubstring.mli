@@ -63,7 +63,7 @@ val base : t -> string * int * int
     n)]. *)
 
 val is_empty : t -> bool
-(** [isEmpty (s, i, n)] true if the substring is empty (that is,
+(** [is_empty (s, i, n)] true if the substring is empty (that is,
     [n = 0]). *)
 
 val getc : t -> (char * t) option
@@ -90,7 +90,7 @@ val trimr : int -> t -> t
 *)
 
 val get : t -> int -> char
-(** [sub sus k] returns the k'th character of the substring; that
+(** [get sus k] returns the k'th character of the substring; that
     is, s(i+k) where sus = (s, i, n).  @raise Invalid_argument if
     [k<0] or [k>=n].  *)
 
@@ -137,20 +137,20 @@ val compare : t -> t -> int
 *)
 
 val index : t -> char -> int
-(** [index sus c] returns the index of the first occurence of [c] in [sus] or
+(** [index sus c] returns the index of the first occurrence of [c] in [sus] or
     @raise Not_found otherwise. *)
 
 val index_from : t -> int -> char -> int
-(** [index_from sus i c] returns the index of the first occurence of [c] in
+(** [index_from sus i c] returns the index of the first occurrence of [c] in
     [sus] after the index [i] or @raise Not_found otherwise. If [i] is beyond
     the range of [sus], @raise Invalid_argument. It is equivalent to [i + index (triml i sus) c]. *)
 
 val rindex : t -> char -> int
-(** [rindex sus c] returns the index of the last occurence of [c] in [sus] or
+(** [rindex sus c] returns the index of the last occurrence of [c] in [sus] or
     @raise Not_found otherwise. *)
 
 val rindex_from : t -> int -> char -> int
-(** [index_from sus i c] returns the index of the last occurence of [c] in [sus]
+(** [index_from sus i c] returns the index of the last occurrence of [c] in [sus]
     before the index [i] or @raise Not_found otherwise. If [i] is beyond the
     range of [sus], @raise Invalid_argument. It is equivalent to [rindex (trimr i sus) c]. *)
 
@@ -278,7 +278,7 @@ val fields : (char -> bool) -> t -> t list
 *)
 
 val fold_left : ('a -> char -> 'a) -> 'a -> t -> 'a
-(** [foldl f e sus] folds [f] over [sus] from left to right.  That is,
+(** [fold_left f e sus] folds [f] over [sus] from left to right.  That is,
     evaluates [f s.[i+n-1] (f ... (f s.[i+1] (f s.[i] e)) ...)]
     tail-recursively, where [sus = (s, i, n)].  Equivalent to
     [List.fold_left f e (explode sus)].  *)
@@ -290,7 +290,7 @@ val fold_lefti : ('a -> int -> char -> 'a) -> 'a -> t -> 'a
 *)
 
 val fold_right : (char -> 'a -> 'a) -> t -> 'a -> 'a
-(** [foldr f e sus] folds [f] over [sus] from right to left.  That is,
+(** [fold_right f e sus] folds [f] over [sus] from right to left.  That is,
     evaluates [f s.[i] (f s.[i+1] (f ... (f s.[i+n-1] e) ...))]
     tail-recursively, where [sus = (s, i, n)].  Equivalent to
     [List.fold_right f e (explode sus)].

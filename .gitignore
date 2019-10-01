@@ -21,7 +21,6 @@ bench.log
 qtest/all_tests.ml
 qtest2/all_tests.ml
 qtest.targets.log
-coverage
 setup.data
 setup.log
 src/batUnix.mli
@@ -35,3 +34,4 @@ src/batPrintf.mli
 src/batFormat.mli
 src/batSys.mli
 src/batBigarray.mli
+src/batFilename.mli

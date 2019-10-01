@@ -32,7 +32,7 @@ module STRING : sig
   val fold_right : ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
   val append : 'a t -> 'a t -> 'a t
   val concat : 'a t list -> 'a t
-end = struct include Array include BatArray end
+end = BatArray
 
 type 'a t =
   | Empty
@@ -179,7 +179,7 @@ let bal_if_needed l r =
   if height r < max_height then r else balance r
 
 let concat_str l = function
-  | Empty | Concat _ -> assert false (*BISECT-VISIT*)
+  | Empty | Concat _ -> assert false
   | Leaf rs as r ->
     let lenr = STRING.length rs in
     match l with
@@ -318,8 +318,30 @@ let sub v s l = sub s l v
 let insert start rope r =
   concat (concat (sub r 0 start) rope) (sub r start (length r - start))
 
+(*$T insert
+(of_list [0;1;2;3] |> insert 0 (singleton 10) |> to_list) = [10;0;1;2;3]
+(of_list [0;1;2;3] |> insert 1 (singleton 10) |> to_list) = [0;10;1;2;3]
+(of_list [0;1;2;3] |> insert 2 (singleton 10) |> to_list) = [0;1;10;2;3]
+(of_list [0;1;2;3] |> insert 3 (singleton 10) |> to_list) = [0;1;2;10;3]
+(of_list [0;1;2;3] |> insert 4 (singleton 10) |> to_list) = [0;1;2;3;10]
+try of_list [0;1;2;3] |> insert (-1) (singleton 10) |> to_list |> ignore; false; with _ -> true
+try of_list [0;1;2;3] |> insert 5 (singleton 10) |> to_list |> ignore; false; with _ -> true
+(of_list [] |> insert 0 (singleton 1) |> to_list) = [1]
+(of_list [0] |> insert 0 (singleton 1) |> to_list) = [1; 0]
+(of_list [0] |> insert 1 (singleton 1) |> to_list) = [0; 1]
+*)
+
 let remove start len r =
   concat (sub r 0 start) (sub r (start + len) (length r - start - len))
+
+(*$Q remove
+(Q.pair (Q.pair Q.small_int Q.small_int) (Q.small_int)) \
+(fun ((n1, n2), lr) -> \
+  let init len = of_list (BatList.init len (fun i -> i)) in \
+  let n, lu = min n1 n2, max n1 n2 in \
+  let u, r = init lu, init lr in \
+  equal (=) u (u |> insert n r |> remove n (length r)))
+*)
 
 let to_string r =
   let rec strings l = function
@@ -486,35 +508,68 @@ let mapi f v =
   let off = ref 0 in
   map (fun x -> f (BatRef.post_incr off) x) v
 
-let exists f v =
-  BatReturn.label (fun label ->
-    let rec aux = function
-      | Empty -> ()
-      | Leaf a -> if BatArray.exists f a then BatReturn.return label true else ()
-      | Concat (l, _, r, _, _) -> aux l; aux r in
-    aux v;
-    false
-  )
+let rec exists f = function
+  | Empty -> false
+  | Leaf a -> BatArray.exists f a
+  | Concat (l, _, r, _, _) -> exists f l || exists f r
 
-let for_all f v =
-  BatReturn.label (fun label ->
-    let rec aux = function
-      | Empty -> ()
-      | Leaf a -> if not (BatArray.for_all f a) then BatReturn.return label false else ()
-      | Concat (l, _, r, _, _) -> aux l; aux r in
-    aux v;
-    true
-  )
+(*$T exists
+  exists (fun x -> x = 2) empty = false
+  exists (fun x -> x = 2) (singleton 2) = true
+  exists (fun x -> x = 2) (singleton 3) = false
+  exists (fun x -> x = 2) (of_array [|1; 3|]) = false
+  exists (fun x -> x = 2) (of_array [|2; 3|]) = true
+  exists (fun x -> x = 2) (concat (singleton 1) (singleton 3)) = false
+  exists (fun x -> x = 2) (concat (singleton 1) (of_array [|2|])) = true
+  exists (fun x -> x = 2) (concat (singleton 2) (singleton 3)) = true
+*)
+(*$Q exists
+  (Q.list Q.small_int) (fun li -> let p i = (i mod 4 = 0) in List.exists p li = exists p (of_list li))
+*)
+
+let rec for_all f = function
+  | Empty -> true
+  | Leaf a -> BatArray.for_all f a
+  | Concat (l, _, r, _, _) -> for_all f l && for_all f r
+(*$T for_all
+  for_all (fun x -> x = 2) empty = true
+  for_all (fun x -> x = 2) (singleton 2) = true
+  for_all (fun x -> x = 2) (singleton 3) = false
+  for_all (fun x -> x = 2) (of_array [|2; 3|]) = false
+  for_all (fun x -> x = 2) (of_array [|2; 2|]) = true
+  for_all (fun x -> x = 2) (concat (singleton 1) (singleton 2)) = false
+  for_all (fun x -> x = 2) (concat (singleton 2) (of_array [|2|])) = true
+  for_all (fun x -> x = 2) (concat (singleton 2) (singleton 3)) = false
+*)
+(*$Q for_all
+  (Q.list Q.small_int) (fun li -> let p i = (i mod 4 > 0) in List.for_all p li = for_all p (of_list li))
+*)
+
+let rec find_opt f = function
+  | Empty -> None
+  | Leaf a -> BatArray.Exceptionless.find f a
+  | Concat (l, _, r, _, _) ->
+    begin match find_opt f l with
+      | Some _ as result -> result
+      | None -> find_opt f r
+    end
+(*$T find_opt
+  [0;1;2;3] |> of_list |> find_opt ((=) 2) = Some 2
+  [0;1;2;3] |> of_list |> find_opt ((=) 4) = None
+  [] |> of_list |> find_opt ((=) 2) = None
+  concat (of_list [0; 1]) (of_list ([2; 3])) |> find_opt (fun n -> n > 0) = Some 1
+*)
 
 let find f v =
-  BatReturn.label (fun label ->
-    let rec aux = function
-      | Empty -> ()
-      | Leaf a -> (try BatReturn.return label (BatArray.find f a) with Not_found -> ())
-      | Concat (l, _, r, _, _) -> aux l; aux r in
-    aux v;
-    raise Not_found
-  )
+  match find_opt f v with
+  | None -> raise Not_found
+  | Some x -> x
+(*$T find
+  [0;1;2;3] |> of_list |> find ((=) 2) = 2
+  try [0;1;2;3] |> of_list |> find ((=) 4) |> ignore; false with Not_found -> true
+  try [] |> of_list |> find ((=) 2) |> ignore; false with Not_found -> true
+  concat (of_list [0; 1]) (of_list ([2; 3])) |> find (fun n -> n > 0) = 1
+*)
 
 let findi f v =
   let off = ref (-1) in
@@ -567,7 +622,7 @@ let destructive_set v i x =
 let of_list l = of_array (Array.of_list l)
 
 let init n f =
-  if n < 0 || n > max_length then raise (Invalid_argument "Vect.init");
+  if n < 0 || n > max_length then invalid_arg "Vect.init";
   (* Create as many arrays as we need to store all the data *)
   let rec aux off acc =
     if off >= n then acc
@@ -591,6 +646,39 @@ let equal eq_val v1 v2 = BatEnum.equal eq_val (enum v1) (enum v2)
 let ord ord_val v1 v2 =
   let cmp_val = BatOrd.comp ord_val in
   BatOrd.ord0 (BatEnum.compare cmp_val (enum v1) (enum v2))
+
+module Labels =
+struct
+  let init n ~f      = init n f
+  let get v ~n       = get v n
+  let at v ~n        = at v n
+  let set v ~n ~elem = set v n elem
+  let modify v ~n ~f = modify v n f
+  let sub v ~m ~n    = sub v m n
+  let insert ~n ~sub = insert n sub
+  let remove ~m ~n   = remove m n
+  let iter ~f        = iter f
+  let iteri ~f       = iteri f
+  let map ~f         = map f
+  let mapi ~f        = mapi f
+  let for_all ~f     = for_all f
+  let exists ~f      = exists f
+  let find ~f        = find f
+  let mem ~elem      = mem elem
+  let memq ~elem     = memq elem
+  let findi ~f       = findi f
+  let filter ~f      = filter f
+  let filter_map ~f  = filter_map f
+  let find_all ~f    = find_all f
+  let partition ~f   = partition f
+  let destructive_set v ~n ~elem = destructive_set v n elem
+  let rangeiter ~f ~m ~n    = rangeiter f m n
+  let fold_left ~f ~init    = fold_left f init
+  let fold ~f ~init         = fold f init
+  let reduce ~f             = reduce f
+  let fold_right ~f v ~init = fold_right f v init
+  let foldi ~f ~init        = foldi f init
+end
 
 (* Functorial interface *)
 
@@ -624,6 +712,15 @@ module Make(RANDOMACCESS : RANDOMACCESS)
      end)=
 struct
   module STRING = RANDOMACCESS
+  (*$inject module Test_functor = struct
+    module STRING = struct
+      include BatArray
+      let empty = [||]
+    end
+    module PARAM = struct let max_height = 256 let leaf_size = 256 end
+    module Instance = Make(STRING)(PARAM)
+    open Instance
+  *)
 
   type 'a t =
     | Empty
@@ -760,7 +857,7 @@ struct
     if height r < max_height then r else balance r
 
   let concat_str l = function
-    | Empty | Concat _ -> assert false (*BISECT-VISIT*)
+    | Empty | Concat _ -> assert false
     | Leaf rs as r ->
       let lenr = STRING.length rs in
       match l with
@@ -1069,35 +1166,72 @@ struct
     let off = ref 0 in
     map (fun x -> f (BatRef.post_incr off) x) v
 
-  let exists f v =
-    BatReturn.label (fun label ->
-      let rec aux = function
-        | Empty -> ()
-        | Leaf a -> STRING.iter (fun x -> if f x then BatReturn.return label true) a
-        | Concat (l, _, r, _, _) -> aux l; aux r in
-      aux v;
-      false
-    )
+  let rec exists f = function
+    | Empty -> false
+    | Leaf a ->
+      let rec aux f a len i =
+        (i < len)
+        && (f (STRING.unsafe_get a i) || aux f a len (i + 1)) in
+      aux f a (STRING.length a) 0
+    | Concat (l, _, r, _, _) -> exists f l || exists f r
 
-  let for_all f v =
-    BatReturn.label (fun label ->
-      let rec aux = function
-        | Empty -> ()
-        | Leaf a -> STRING.iter (fun x -> if not (f x) then BatReturn.return label false) a
-        | Concat (l, _, r, _, _) -> aux l; aux r in
-      aux v;
-      true
-    )
+  (*$T exists
+    exists (fun x -> true) empty = false
+    exists (fun x -> false) (of_array [|0;1;2|]) = false
+    exists (fun x -> x mod 2 <> 0) (of_array [|0;1;2|]) = true
+    exists (fun x -> x mod 2 <> 0) (of_array [|0;2|]) = false
+  *)
 
-  let find f v =
-    BatReturn.label (fun label ->
-      let rec aux = function
-        | Empty -> ()
-        | Leaf a -> STRING.iter (fun x -> if (f x) then BatReturn.return label x) a
-        | Concat (l, _, r, _, _) -> aux l; aux r in
-      aux v;
-      raise Not_found
-    )
+  let rec for_all f = function
+    | Empty -> true
+    | Leaf a ->
+      let rec aux f a len i =
+        (i >= len)
+        || (f (STRING.unsafe_get a i) && aux f a len (i + 1)) in
+      aux f a (STRING.length a) 0
+    | Concat (l, _, r, _, _) -> for_all f l && for_all f r
+
+  (*$T for_all
+    for_all (fun x -> true) empty = true
+    for_all (fun x -> true) (of_array [|0;1;2|]) = true
+    for_all (fun x -> x mod 2 = 0) (of_array [|0;1;2|]) = false
+    for_all (fun x -> x mod 2 = 0) (of_array [|0;2|]) = true
+  *)
+
+  let rec find_opt f = function
+    | Empty -> None
+    | Leaf a ->
+      let rec aux f a len i =
+        if i >= len then None
+        else begin
+          let x = STRING.unsafe_get a i in
+          if f x then Some x
+          else aux f a len (i + 1)
+        end in
+      aux f a (STRING.length a) 0
+    | Concat (l, _, r, _, _) ->
+      begin match find_opt f l with
+        | Some _ as res -> res
+        | None -> find_opt f r
+      end
+
+  (*$T find_opt
+    find_opt (fun x -> true) empty = None
+    find_opt (fun x -> true) (of_array [|0;1;2|]) = Some 0
+    find_opt (fun x -> x mod 2 <> 0) (of_array [|0;1;2|]) = Some 1
+    find_opt (fun x -> x mod 2 <> 0) (of_array [|0;2|]) = None
+  *)
+
+  let find f v = match find_opt f v with
+    | None -> raise Not_found
+    | Some a -> a
+
+  (*$T find
+    try ignore (find (fun x -> true) empty); false with Not_found -> true
+    find (fun x -> true) (of_array [|0;1;2|]) = 0
+    find (fun x -> x mod 2 <> 0) (of_array [|0;1;2|]) = 1
+    try ignore (find (fun x -> x mod 2 <> 0) (of_array [|0;2|])); false with Not_found -> true
+  *)
 
   let findi f v =
     let off = ref (-1) in
@@ -1150,7 +1284,7 @@ struct
   let of_list l = of_array (Array.of_list l)
 
   let init n f =
-    if n < 0 || n > max_length then raise (Invalid_argument "Vect.init");
+    if n < 0 || n > max_length then invalid_arg "Vect.init";
     (* Create as many arrays as we need to store all the data *)
     let rec aux off acc =
       if off >= n then acc
@@ -1165,4 +1299,38 @@ struct
   let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a out t =
     BatEnum.print ~first ~last ~sep print_a out (enum t)
 
+  module Labels =
+  struct
+    let init n ~f      = init n f
+    let get v ~n       = get v n
+    let at v ~n        = at v n
+    let set v ~n ~elem = set v n elem
+    let modify v ~n ~f = modify v n f
+    let sub v ~m ~n    = sub v m n
+    let insert ~n ~sub = insert n sub
+    let remove ~m ~n   = remove m n
+    let iter ~f        = iter f
+    let iteri ~f       = iteri f
+    let map ~f         = map f
+    let mapi ~f        = mapi f
+    let for_all ~f     = for_all f
+    let exists ~f      = exists f
+    let find ~f        = find f
+    let mem ~elem      = mem elem
+    let memq ~elem     = memq elem
+    let findi ~f       = findi f
+    let filter ~f      = filter f
+    let filter_map ~f  = filter_map f
+    let find_all ~f    = find_all f
+    let partition ~f   = partition f
+    let destructive_set v ~n ~elem = destructive_set v n elem
+    let rangeiter ~f ~m ~n    = rangeiter f m n
+    let fold_left ~f ~init    = fold_left f init
+    let fold ~f ~init         = fold f init
+    let reduce ~f             = reduce f
+    let fold_right ~f v ~init = fold_right f v init
+    let foldi ~f ~init        = foldi f init
+  end
+
+(*$inject end *)
 end

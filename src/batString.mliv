@@ -102,14 +102,14 @@ external get : string -> int -> char = "%string_safe_get"
     @raise Invalid_argument if [n] not a valid character number in [s]. *)
 
 
-external set : string -> int -> char -> unit = "%string_safe_set"
+external set : Bytes.t -> int -> char -> unit = "%string_safe_set"
 (** [String.set s n c] modifies string [s] in place,
     replacing the character number [n] by [c].
     You can also write [s.[n] <- c] instead of [String.set s n c].
 
     @raise Invalid_argument if [n] is not a valid character number in [s]. *)
 
-external create : int -> string = "caml_create_string"
+external create : int -> Bytes.t = "caml_create_string"
 (** [String.create n] returns a fresh string of length [n].
     The string initially contains arbitrary characters.
 
@@ -132,19 +132,17 @@ val sub : string -> int -> int -> string
     @raise Invalid_argument if [start] and [len] do not
     designate a valid substring of [s]. *)
 
-val fill : string -> int -> int -> char -> unit
-(** [String.fill s start len c] modifies string [s] in place,
-    replacing [len] characters by [c], starting at [start].
+val fill : Bytes.t -> int -> int -> char -> unit
+(** [String.fill s start len c] modifies the byte sequence [s] in
+    place, replacing [len] characters by [c], starting at [start].
 
     @raise Invalid_argument if [start] and [len] do not
     designate a valid substring of [s]. *)
 
-val blit : string -> int -> string -> int -> int -> unit
+val blit : string -> int -> Bytes.t -> int -> int -> unit
 (** [String.blit src srcoff dst dstoff len] copies [len] characters
-    from string [src], starting at character number [srcoff], to
-    string [dst], starting at character number [dstoff]. It works
-    correctly even if [src] and [dst] are the same string,
-    and the source and destination intervals overlap.
+    from string [src], starting at character number [srcoff], to the
+    byte sequence [dst], starting at character number [dstoff].
 
     @raise Invalid_argument if [srcoff] and [len] do not
     designate a valid substring of [src], or if [dstoff] and [len]
@@ -199,19 +197,42 @@ val index : string -> char -> int
 
     @raise Not_found if [c] does not occur in [s]. *)
 
+val index_opt: string -> char -> int option
+(** [String.index_opt s c] returns the index of the first
+    occurrence of character [c] in string [s], or
+    [None] if [c] does not occur in [s].
+    @since 2.7.0 *)
+
 val rindex : string -> char -> int
 (** [String.rindex s c] returns the character number of the last
     occurrence of character [c] in string [s].
 
     @raise Not_found if [c] does not occur in [s]. *)
 
+val rindex_opt: string -> char -> int option
+(** [String.rindex_opt s c] returns the index of the last occurrence
+    of character [c] in string [s], or [None] if [c] does not occur in
+    [s].
+    @since 2.7.0 *)
+
 val index_from : string -> int -> char -> int
 (** [String.index_from s i c] returns the character number of the
-    first occurrence of character [c] in string [s] after position [i].
+    first occurrence of character [c] in string [s] after or at position [i].
     [String.index s c] is equivalent to [String.index_from s 0 c].
 
     @raise Invalid_argument if [i] is not a valid position in [s].
     @raise Not_found if [c] does not occur in [s] after position [i]. *)
+
+val index_from_opt: string -> int -> char -> int option
+(** [String.index_from_opt s i c] returns the index of the
+    first occurrence of character [c] in string [s] after position [i]
+    or [None] if [c] does not occur in [s] after position [i].
+
+    [String.index_opt s c] is equivalent to [String.index_from_opt s 0 c].
+    Raise [Invalid_argument] if [i] is not a valid position in [s].
+
+    @since 2.7.0
+*)
 
 val rindex_from : string -> int -> char -> int
 (** [String.rindex_from s i c] returns the character number of the
@@ -221,6 +242,37 @@ val rindex_from : string -> int -> char -> int
 
     @raise Invalid_argument if [i+1] is not a valid position in [s].
     @raise Not_found if [c] does not occur in [s] before position [i+1]. *)
+
+val rindex_from_opt: string -> int -> char -> int option
+(** [String.rindex_from_opt s i c] returns the index of the
+   last occurrence of character [c] in string [s] before position [i+1]
+   or [None] if [c] does not occur in [s] before position [i+1].
+
+   [String.rindex_opt s c] is equivalent to
+   [String.rindex_from_opt s (String.length s - 1) c].
+
+   Raise [Invalid_argument] if [i+1] is not a valid position in [s].
+
+    @since 2.7.0
+*)
+
+val index_after_n :  char -> int -> string -> int
+(** [index_after_n chr n str] returns the index of the character that
+    comes immediately after the [n]-th occurrence of [chr] in [str].
+
+    - {b Occurrences are numbered from 1}: [n] = 1 returns the index of
+      the character located immediately after the first occurrence of
+      [chr].
+    - [n] = 0 always returns [0].
+    - If the [n]-th occurrence of [chr] is the last character of
+      [str], returns the length of [str].
+
+    @raise Invalid_argument if [n < 0].
+    @raise Not_found if there are strictly less than [n] occurrences of [chr]
+    in [str].
+
+    @since 2.9.0
+*)
 
 val contains : string -> char -> bool
 (** [String.contains s c] tests if character [c]
@@ -506,6 +558,10 @@ val find_all : string -> string -> int BatEnum.t
     the list [[1; 4]].
     @since 2.2.0 *)
 
+val count_string : string -> string -> int
+(** [count_string s x] count how many times [x] is found in [s].
+    @since 2.9.0 *)
+
 val ends_with : string -> string -> bool
 (** [ends_with s x] returns [true] if the string [s] is ending with [x], [false] otherwise.
 
@@ -524,6 +580,11 @@ val exists : string -> string -> bool
 
     Example: [String.exists "foobarbaz" "obar" = true]
 *)
+
+val count_char : string -> char -> int
+(** [count_char str c] returns the number of times [c] is used in [str].
+ *)
+
 
 (** {6 Transformations}*)
 
@@ -549,6 +610,20 @@ val rchop : ?n:int -> string -> string
       [String.rchop "Weeble" = "Weebl"]
       [String.rchop ~n:3 "Weeble" = "Wee"]
       [String.rchop ~n:1000 "Weeble" = ""]
+*)
+
+val chop : ?l:int -> ?r:int -> string -> string
+(** Returns the same string but with the first [l] characters
+    on the left and the first [r] characters on the right removed.
+    By default, [l] and [r] are both 1.
+
+    [chop ~l ~r s] is equivalent to [lchop ~n:l (rchop ~n:r s)].
+
+    @raise Invalid_argument if either [l] or [r] is less than zero.
+
+    Examples:
+    [String.chop "\"Weeble\"" = "Weeble"]
+    [String.chop ~l:2 ~r:3 "01234567" = "234"]
 *)
 
 val trim : string -> string
@@ -586,7 +661,7 @@ val left : string -> int -> string
 *)
 
 val right : string -> int -> string
-(**[left r len] returns the string containing the [len] last characters of [r].
+(**[right r len] returns the string containing the [len] last characters of [r].
    If [r] contains less than [len] characters, it returns [r].
 
    Example: [String.right "Weeble" 4 = "eble"]
@@ -621,7 +696,7 @@ val replace : str:string -> sub:string -> by:string -> bool * string
 (** [replace ~str ~sub ~by] returns a tuple consisting of a boolean
     and a string where the first occurrence of the string [sub]
     within [str] has been replaced by the string [by]. The boolean
-    is true if a subtitution has taken place.
+    is true if a substitution has taken place.
 
     Example: [String.replace "foobarbaz" "bar" "rab" = (true, "foorabbaz")]
 *)
@@ -641,19 +716,19 @@ val repeat: string -> int -> string
 *)
 
 val rev : string -> string
-(** [string s] returns the reverse of string [s]
+(** [rev s] returns the reverse of string [s]
 
     @since 2.1
 *)
 
 (** {6 In-Place Transformations}*)
 
-val rev_in_place : string -> unit
-(** [rev_in_place s] mutates the string [s], so that its new value is
+val rev_in_place : Bytes.t -> unit
+(** [rev_in_place s] mutates the byte sequence [s], so that its new value is
     the mirror of its old one: for instance if s contained ["Example!"], after
     the mutation it will contain ["!elpmaxE"]. *)
 
-val in_place_mirror : string -> unit
+val in_place_mirror : Bytes.t -> unit
 (** @deprecated Use {!String.rev_in_place} instead *)
 
 (** {6 Splitting around}*)
@@ -670,13 +745,29 @@ val split_on_char: char -> string -> string list
       (String.split_on_char sep s) = s]).
     - No string in the result contains the [sep] character.
 
+    Note: prior to NEXT_RELEASE [split_on_char _ ""] used to return an empty list.
     @since 2.5.3
 *)
+
+##V>=4.07##(** {1 Iterators} *)
+
+##V>=4.07##val to_seq : t -> char Seq.t
+##V>=4.07##(** Iterate on the string, in increasing index order. Modifications of the
+##V>=4.07##    string during iteration will be reflected in the iterator.
+##V>=4.07##    @since 2.10.0 and OCaml 4.07 *)
+
+##V>=4.07##val to_seqi : t -> (int * char) Seq.t
+##V>=4.07##(** Iterate on the string, in increasing order, yielding indices along chars
+##V>=4.07##    @since 2.10.0 and OCaml 4.07 *)
+
+##V>=4.07##val of_seq : char Seq.t -> t
+##V>=4.07##(** Create a string from the generator
+##V>=4.07##    @since 2.10.0 and OCaml 4.07 *)
 
 val split : string -> by:string -> string * string
 (** [split s sep] splits the string [s] between the first
     occurrence of [sep], and returns the two parts before
-    and after the occurence (excluded).
+    and after the occurrence (excluded).
 
     @raise Not_found if the separator is not found.
 
@@ -688,7 +779,7 @@ val split : string -> by:string -> string * string
 val rsplit : string -> by:string -> string * string
 (** [rsplit s sep] splits the string [s] between the last occurrence
     of [sep], and returns the two parts before and after the
-    occurence (excluded).
+    occurrence (excluded).
 
     @raise Not_found if the separator is not found.
 
@@ -698,9 +789,33 @@ val rsplit : string -> by:string -> string * string
 val nsplit : string -> by:string -> string list
 (** [nsplit s sep] splits the string [s] into a list of strings
     which are separated by [sep] (excluded).
-    [nsplit "" _] returns the empty list.
+    [nsplit "" _] returns a single empty string.
+    Note: prior to NEXT_RELEASE [nsplit "" _] used to return an empty list.
 
     Example: [String.nsplit "abcabcabc" "bc" = ["a"; "a"; "a"; ""]]
+*)
+
+val cut_on_char : char -> int -> string -> string
+(**
+   Similar to Unix [cut]. [cut_on_char chr n str] returns the substring of
+   [str] located strictly between the [n]-th occurrence of [chr] and
+   the [n+1]-th one.
+
+   - {b Occurrences of [chr] are numbered from 1}.
+   - If [n = 0], returns the substring from the beginning of
+     [str] to the first occurrence of [chr].
+   - If there are exactly [n] occurrences of [chr] in [str], returns the
+     substring between the last occurrence of [chr] and the end of [str].
+   - These behaviours cumulate: if [n] equals [0] and [chr] is
+     absent from [str], returns the full string [str].
+
+   {b Remark:} [cut_on_char] can return the empty string. Examples of this
+   behaviour are [cut_on_char ',' 1 "foo,,bar"] and [cut_on_char ',' 0 ",foo"].
+
+   @raise Not_found if there are strictly less than [n] occurrences of [chr] in str.
+   @raise Invalid_argument if [n < 0].
+
+   @since 2.9.0
 *)
 
 val join : string -> string list -> string
@@ -907,7 +1022,15 @@ end (* String.Exceptionless *)
     with the added twist that strings can be made read-only or write-only.
     Read-only strings may then be safely shared and distributed.
 
-    There is no loss of performance involved. *)
+    @since 2.8.0 the interface and implementation of the Cap
+    module changed to accommodate the -safe-string transition. OCaml
+    now uses two distinct types for mutable and immutable string,
+    which is a good design but is not as expressive as the present Cap
+    interface, and actually makes implementing Cap harder than it
+    previously was. We are aware that current state is not optimal for
+    heavy Cap users; if you are one of them, please get in touch (on
+    the Batteries issue tracker for example) so that we can discuss
+    code refactoring and improvements for this sub-module.  *)
 module Cap:
 sig
 
@@ -938,11 +1061,66 @@ sig
 
   (** {6 Constructors}*)
 
-  external of_string : string -> _ t                = "%identity"
-  (**Adopt a regular string.*)
+  external of_string : Bytes.t -> _ t = "%identity"
+##V>=4.2##    [@@ocaml.deprecated "Use Cap.of_bytes instead"]
+  (**Adopt a regular byte sequence.
 
-  external to_string : [`Read | `Write] t -> string = "%identity"
-  (** Return a capability string as a regular string.*)
+     One could give a perfectly safe semantics to
+     an [of_string : string -> _ t] function, but this
+     requires making a copy of the string. Previous
+     versions of this interface advertised the absence
+     of performance overhead, so it's better to warn
+     the user and let them decide (through the use of
+     either Bytes.of_string or Bytes.unsafe_of_string)
+     whether they can safely avoid a copy or need to
+     insert one.
+   *)
+
+  val of_bytes : Bytes.t -> _ t
+  (** Adopt a regular byte sequence.
+
+      Note that adopting a byte sequence, even at the restrictive
+      [`Read] type, does not make a copy. Having a [`Read] string
+      prevents you (and anyone you pass it to) from writing it, but
+      your parent may have knowledge of the string at a more permissive
+      type and perform writes on it.
+
+      If you want to use a [`Read] string and assume it will not get
+      written to, you should either properly "adopt" it by ensuring
+      unique ownership (this cannot be guaranteed by the type system),
+      or make a copy of it at adoption time: [Cap.of_bytes
+      (Bytes.copy buf)].
+
+      @since 2.8.0
+  *)
+
+  external to_string : [`Read | `Write] t -> Bytes.t = "%identity"
+##V>=4.2##    [@@ocaml.deprecated "Use Cap.to_bytes instead"]
+  (** Return a capability string as a regular byte sequence.
+
+      We cannot return a [string] here, and it would be incorrect to
+      do so even if we required [[< `Read] t] as input. Indeed, one
+      can start from a writeable byte sequence, and then use the
+      [read_only] function below to cast it into a [[`Read]
+      t]. Capabilities are used to enforce local protocol (only reads,
+      only writes, both reads and writes...), they don't guarantee
+      that other users of the same (shared) value all follow the same
+      protocol. To safely reason about mutability one needs stronger
+      ownership guarantees.
+
+      If you want to obtain an immutable [string] out of a capability
+      string, you should first convert it to a mutable byte sequence
+      and then copy it into an immutable string. If you have extra
+      knowledge about the ownership of the value, you may use unsafe
+      conversion functions to avoid the copy, see the documentation of
+      unsafe conversion functions.
+   *)
+
+  external to_bytes : [`Read | `Write] t -> Bytes.t = "%identity"
+  (** Return a capability string as a regular byte sequence.
+
+      @since 2.8.0
+  *)
 
   external read_only : [> `Read] t -> [`Read] t     = "%identity"
   (** Drop capabilities to read only.*)
@@ -1026,11 +1204,15 @@ sig
 
   val exists : [> `Read] t -> [> `Read] t -> bool
 
+  val count_char : [> `Read] t -> char -> int
+
   (** {6 Transformations}*)
 
   val lchop : ?n:int -> [> `Read] t -> _ t
 
   val rchop : ?n:int -> [> `Read] t -> _ t
+
+  val chop : ?l:int -> ?r:int -> [> `Read] t -> _ t
 
   val trim : [> `Read] t -> _ t
 
@@ -1077,11 +1259,11 @@ sig
   (** {6 Splitting around}*)
   val split : [> `Read] t -> by:[> `Read] t -> _ t * _ t
 
-  val rsplit : [> `Read] t -> by:string -> string * string
+  val rsplit : [> `Read] t -> by:[> `Read] t -> _ t * _ t
 
   val nsplit : [> `Read] t -> by:[> `Read] t -> _ t list
 
-  val splice: [ `Read | `Write] t  -> int -> int -> [> `Read] t -> string
+  val splice: [ `Read | `Write] t  -> int -> int -> [> `Read] t -> _ t
 
   val join : [> `Read] t -> [> `Read] t list -> _ t
 
@@ -1140,10 +1322,8 @@ sig
 
     val rfind_from: [> `Read] t -> int -> [> `Read] t -> int option
 
-    (* val split : string -> string -> (string * string) option TODO *)
     val split : [> `Read] t -> by:[> `Read] t -> (_ t * _ t) option
 
-    (*   val rsplit : string -> string -> (string * string) option TODO *)
     val rsplit : [> `Read] t -> by:[> `Read] t -> (_ t * _ t) option
 
   end (* String.Cap.Exceptionless *)
@@ -1155,9 +1335,10 @@ end
 (* The following is for system use only. Do not call directly. *)
 
 external unsafe_get : string -> int -> char = "%string_unsafe_get"
-external unsafe_set : string -> int -> char -> unit = "%string_unsafe_set"
+external unsafe_set : Bytes.t -> int -> char -> unit = "%string_unsafe_set"
 external unsafe_blit :
-  string -> int -> string -> int -> int -> unit = "caml_blit_string" "noalloc"
-external unsafe_fill : string -> int -> int -> char -> unit = "caml_fill_string" "noalloc"
+  string -> int -> Bytes.t -> int -> int -> unit = "caml_blit_string" "noalloc"
+external unsafe_fill :
+  Bytes.t -> int -> int -> char -> unit = "caml_fill_string" "noalloc"
 
   (**/**)

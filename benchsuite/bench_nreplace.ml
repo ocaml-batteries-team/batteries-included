@@ -117,7 +117,7 @@ let nreplace_thelema2 ~str ~sub ~by =
     loop_copy 0 0 idxes ;
     newstr
 
-(* Independantly, MadRoach implemented the same idea with less luck aparently *)
+(* Independently, MadRoach implemented the same idea with less luck apparently *)
 let nreplace_madroach ~str ~sub ~by =
   let strlen = String.length str
   and sublen = String.length sub
@@ -132,7 +132,7 @@ let nreplace_madroach ~str ~sub ~by =
     BatEnum.from (fun () -> let i = find !nexti in nexti := i+1; i) in
 
   (* collect all positions where we need to replace,
-   * skipping overlapping occurences *)
+   * skipping overlapping occurrences *)
   let todo =
     let skip_unto = ref 0 in
     find_simple sub str |>

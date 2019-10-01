@@ -24,25 +24,24 @@ You will need the following libraries:
 
 * [OCaml][] >= 3.12.1
 * [Findlib][] >= 1.5.3
-* [qtest][] >= 2.0.1
 * GNU make
 * [OUnit][] to build and run the tests (optional)
+* [qtest][] >= 2.0.1 to build and run the tests (optional)
 * [ocaml-benchmark][] to build and run the performance tests (optional)
-* [bisect][] to compute the coverage of the test suite (optional)
 
 [Findlib]: http://projects.camlcity.org/projects/findlib.html/
 [OCaml]: http://caml.inria.fr/ocaml/release.en.html
+[qtest]: http://batteries.vhugot.com/qtest/
 [Camomile]: http://camomile.sourceforge.net/
 [OUnit]: http://ounit.forge.ocamlcore.org/
 [ocaml-benchmark]: http://ocaml-benchmark.forge.ocamlcore.org/
-[bisect]: http://bisect.x9c.fr/
 
 ### Configuration and Installation
 
 To install the full version of Batteries, execute
 
     $ make all
-    $ make test test          [ optional ]
+    $ make test               [ optional ]
     $ sudo make install
 
     $ make doc                [ optional ]
@@ -82,7 +81,7 @@ ExtLib Compatibility
 --------------------
 
 If your project currently uses [ExtLib][], most likely you can just change
-`-package extlib` to `-package batteries` and add `open Extlibcompat`
+`-package extlib` to `-package batteries` and add `open Extlib`
 to the top of any extlib-using modules.  Batteries' modules are all
 named BatFoo to differentiate them from extlib's modules, so one can
 use Batteries and ExtLib in the same project.
@@ -96,9 +95,9 @@ have a corresponding module in batteries at the moment.
 Extending Batteries
 -------------------
 
-See doc/batteries/GUIDELINES and the [guidelines wiki page][batwiki-dev].
+See the [guidelines wiki page][batwiki-dev].
 
 [batwiki-dev]: https://github.com/ocaml-batteries-team/batteries-included/wiki/Developers-guidelines
 
-If you use emacs, the file `batteries_dev.el` has extra highlighting to support writing quicktests.
+If you use emacs, the file [`batteries_dev.el`](/batteries_dev.el) has extra highlighting to support writing quicktests.
 

@@ -37,7 +37,7 @@
 open Hashtbl
 
 type ('a, 'b) t = ('a, 'b) Hashtbl.t
-(** A Hashtable wth keys of type 'a and values 'b *)
+(** A Hashtable with keys of type 'a and values 'b *)
 
 (**{6 Base operations}*)
 
@@ -119,6 +119,19 @@ val enum : ('a, 'b) t -> ('a * 'b) BatEnum.t
 val of_enum : ('a * 'b) BatEnum.t -> ('a, 'b) t
 (** Create a hashtable from a (key,value) enumeration. *)
 
+(**{6 Lists}*)
+
+val of_list : ('a * 'b) list -> ('a, 'b) t
+(** Create a hashtable from a list of (key,value) pairs.
+    @since 2.6.0 *)
+
+val to_list : ('a, 'b) t -> ('a * 'b) list
+(** Return the list of (key,value) pairs.
+    @since 2.6.0 *)
+
+val bindings : ('a, 'b) t -> ('a * 'b) list
+(** Alias for [to_list].
+    @since 2.6.0 *)
 
 (**{6 Searching}*)
 
@@ -133,8 +146,8 @@ val find_all : ('a, 'b) t -> 'a -> 'b list
     bindings, in reverse order of introduction in the table. *)
 
 val find_default : ('a,'b) t -> 'a -> 'b -> 'b
-(** Find a binding for the key, and return a default
-    value if not found *)
+(** [Hashtbl.find_default tbl key default] finds a binding for [key],
+    or return [default] if [key] is unbound in [tbl]. *)
 
 val find_option : ('a,'b) Hashtbl.t -> 'a -> 'b option
 (** Find a binding for the key, or return [None] if no
@@ -207,7 +220,7 @@ val filter_inplace : ('a -> bool) -> ('key,'a) t -> unit
     @since 2.1 *)
 
 val filteri: ('key -> 'a -> bool) -> ('key, 'a) t -> ('key, 'a) t
-(** [filter f m] returns a hashtbl where only the key, values pairs
+(** [filteri f m] returns a hashtbl where only the key, values pairs
     [key], [a] of [m] such that [f key a = true] remain. *)
 
 val filteri_inplace : ('key -> 'a -> bool) -> ('key, 'a) t -> unit
@@ -227,6 +240,29 @@ val filter_map: ('key -> 'a -> 'b option) -> ('key, 'a) t -> ('key, 'b) t
 val filter_map_inplace: ('key -> 'a -> 'a option) -> ('key, 'a) t -> unit
 (** [filter_map_inplace f m] performs like filter_map but modify [m]
     inplace instead of creating a new Hashtbl. *)
+
+val merge: ('a -> 'b option -> 'c option -> 'd option) ->
+           ('a, 'b) t -> ('a, 'c) t -> ('a, 'd) t
+(** [merge f a b] returns a new Hashtbl which is build from the bindings of
+    [a] and [b] according to the function [f], that is given all defined keys
+    one by one, along with the value from [a] (if defined) and the value from
+    [b] (if defined), and has to return the (optional) resulting value.
+
+    It is assumed that each key is bound at most once in [a] and [b].
+    See [merge_all] for a more general alternative if this is not the case.
+    @since 2.10.0
+*)
+
+val merge_all: ('a -> 'b list -> 'c list -> 'd list) ->
+               ('a, 'b) t -> ('a, 'c) t -> ('a, 'd) t
+(** [merge_all f a b] is similar to [merge], but passes to [f] all bindings
+    for a key (most recent first, as returned by [find_all]). [f] must then
+    return all the new bindings of the merged hashtable (or an empty list if
+    that key should not be bound in the resulting hashtable). Those new
+    bindings will be inserted in reverse, so that the head of the list will
+    become the most recent binding in the merged hashtable.
+    @since 2.10.0
+*)
 
 (** {6 The polymorphic hash primitive}*)
 
@@ -323,6 +359,10 @@ sig
   val modify : key:'a -> f:('b -> 'b) -> ('a, 'b) t -> unit
   val modify_def : default:'b -> key:'a -> f:('b -> 'b) -> ('a, 'b) t -> unit
   val modify_opt : key:'a -> f:('b option -> 'b option) -> ('a, 'b) t -> unit
+  val merge: f:('a -> 'b option -> 'c option -> 'd option) ->
+             left:('a, 'b) t -> right:('a, 'c) t -> ('a, 'd) t
+  val merge_all: f:('a -> 'b list -> 'c list -> 'd list) ->
+                 left:('a, 'b) t -> right:('a, 'c) t -> ('a, 'd) t
 end
 
 (** {6 Functorial interface} *)
@@ -379,10 +419,16 @@ sig
   val modify : key -> ('a -> 'a) -> 'a t -> unit
   val modify_def : 'a -> key -> ('a -> 'a) -> 'a t -> unit
   val modify_opt : key -> ('a option -> 'a option) -> 'a t -> unit
+  val merge : (key -> 'a option -> 'b option -> 'c option) ->
+             'a t -> 'b t -> 'c t
+  val merge_all : (key -> 'a list -> 'b list -> 'c list) ->
+                  'a t -> 'b t -> 'c t
   val keys : 'a t -> key BatEnum.t
   val values : 'a t -> 'a BatEnum.t
   val enum : 'a t -> (key * 'a) BatEnum.t
+  val to_list : 'a t -> (key * 'a) list
   val of_enum : (key * 'a) BatEnum.t -> 'a t
+  val of_list : (key * 'a) list -> 'a t
   val print :  ?first:string -> ?last:string -> ?sep:string ->
     ('a BatInnerIO.output -> key -> unit) ->
     ('a BatInnerIO.output -> 'b -> unit) ->
@@ -449,6 +495,10 @@ sig
     val modify : key:key -> f:('a -> 'a) -> 'a t -> unit
     val modify_def : default:'a -> key:key -> f:('a -> 'a) -> 'a t -> unit
     val modify_opt : key:key -> f:('a option -> 'a option) -> 'a t -> unit
+    val merge : f:(key -> 'a option -> 'b option -> 'c option) ->
+               left:'a t -> right:'b t -> 'c t
+    val merge_all : f:(key -> 'a list -> 'b list -> 'c list) ->
+                    left:'a t -> right:'b t -> 'c t
   end
 
 end
@@ -539,6 +589,10 @@ sig
   val filteri_inplace : ('key -> 'a -> bool) -> ('key, 'a, [>`Write]) t -> unit
   val filter_map : ('key -> 'a -> 'b option) -> ('key, 'a, [>`Read]) t -> ('key, 'b, _) t
   val filter_map_inplace : ('key -> 'a -> 'a option) -> ('key, 'a, [>`Write]) t -> unit
+  val merge : ('key -> 'a option -> 'b option -> 'c option) ->
+              ('key, 'a, [>`Read]) t -> ('key, 'b, [>`Read]) t -> ('key, 'c, _) t
+  val merge_all : ('key -> 'a list -> 'b list -> 'c list) ->
+                  ('key, 'a, [>`Read]) t -> ('key, 'b, [>`Read]) t -> ('key, 'c, _) t
 
   (**{6 Conversions}*)
 
@@ -546,6 +600,8 @@ sig
   val values : ('a, 'b, [>`Read]) t -> 'b BatEnum.t
   val enum : ('a, 'b, [>`Read]) t -> ('a * 'b) BatEnum.t
   val of_enum : ('a * 'b) BatEnum.t -> ('a, 'b, _) t
+  val to_list : ('a, 'b, [>`Read]) t -> ('a * 'b) list
+  val of_list : ('a * 'b) list -> ('a, 'b, _) t
 
   (** {6 Boilerplate code}*)
 
@@ -580,6 +636,11 @@ sig
     val filter_map : f:(key:'key -> data:'a -> 'b option) -> ('key, 'a, [>`Read]) t -> ('key, 'b, _) t
     val filter_map_inplace : f:(key:'key -> data:'a -> 'a option) -> ('key, 'a, [>`Write]) t -> unit
     val fold : f:(key:'a -> data:'b -> 'c -> 'c) -> ('a, 'b, [>`Read]) t -> init:'c -> 'c
+    val merge : f:('key -> 'a option -> 'b option -> 'c option) ->
+                left:('key, 'a, [>`Read]) t -> right:('key, 'b, [>`Read]) t -> ('key, 'c, _) t
+    val merge_all : f:('key -> 'a list -> 'b list -> 'c list) ->
+                    left:('key, 'a, [>`Read]) t -> right:('key, 'b, [>`Read]) t -> ('key, 'c, _) t
+
   end
 
 end (* Cap module *)

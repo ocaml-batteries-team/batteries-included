@@ -262,10 +262,10 @@ module Safe_int : sig
   (** Addition. *)
 
   val sub : t -> t -> t
-  (** Substraction. *)
+  (** Subtraction. *)
 
   val ( - ) : t -> t -> t
-  (** Substraction. *)
+  (** Subtraction. *)
 
   val mul : t -> t -> t
   (** Multiplication. *)
@@ -307,23 +307,23 @@ module Safe_int : sig
   (** [a ** b] computes a{^b}*)
 
   val ( <> ) : t -> t -> bool
-  (** Comparaison: [a <> b] is true if and only if [a] and [b] have
+  (** Comparison: [a <> b] is true if and only if [a] and [b] have
       different values. *)
 
   val ( > )  : t -> t -> bool
-  (** Comparaison: [a > b] is true if and only if [a] is strictly greater than [b].*)
+  (** Comparison: [a > b] is true if and only if [a] is strictly greater than [b].*)
 
   val ( < )  : t -> t -> bool
-  (** Comparaison: [a < b] is true if and only if [a] is strictly smaller than [b].*)
+  (** Comparison: [a < b] is true if and only if [a] is strictly smaller than [b].*)
 
   val ( >= ) : t -> t -> bool
-  (** Comparaison: [a >= b] is true if and only if [a] is greater or equal to [b].*)
+  (** Comparison: [a >= b] is true if and only if [a] is greater or equal to [b].*)
 
   val ( <= ) : t -> t -> bool
-  (** Comparaison: [a <= b] is true if and only if [a] is smaller or equalto [b].*)
+  (** Comparison: [a <= b] is true if and only if [a] is smaller or equalto [b].*)
 
   val ( = )  : t -> t -> bool
-  (** Comparaison: [a = b] if and only if [a] and [b] have the same value.*)
+  (** Comparison: [a = b] if and only if [a] and [b] have the same value.*)
 
   val max_num : t
   (** The greatest representable integer, which is either 2{^30}-1 or 2{^62}-1. *)
