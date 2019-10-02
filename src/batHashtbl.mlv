@@ -181,7 +181,7 @@ let map_inplace f h =
   let to_sorted_list h = values h |> List.of_enum |> List.sort Int.compare
 *)
 (*$= map_inplace & ~printer
-  (let h = Enum.combine (1 -- 5, 1 -- 5) |> of_enum in \
+  (let h = Enum.combine (1 -- 5) (1 -- 5) |> of_enum in \
    map_inplace (fun _ x -> x+1) h ; \
    to_sorted_list h) [2;3;4;5;6]
 *)
@@ -327,7 +327,7 @@ let filteri_inplace f h =
   BatArray.modify loop hc.data
 
 (*$= filteri_inplace & ~printer
-  (let h = Enum.combine (1 -- 5, 1 -- 5) |> of_enum in \
+  (let h = Enum.combine (1 -- 5) (1 -- 5) |> of_enum in \
    filteri_inplace (fun _ x -> x>3) h ; \
    to_sorted_list h) [4; 5]
 *)
@@ -338,7 +338,7 @@ let filter f t = filteri (fun _k a -> f a) t
 let filter_inplace f h = filteri_inplace (fun _k a -> f a) h
 
 (*$= filter_inplace & ~printer:(IO.to_string (List.print Int.print))
-  (let h = Enum.combine (1 -- 5, 1 -- 5) |> of_enum in \
+  (let h = Enum.combine (1 -- 5) (1 -- 5) |> of_enum in \
    filter_inplace (fun x -> x>3) h ; \
    to_sorted_list h) [4; 5]
 *)
@@ -364,7 +364,7 @@ let filter_map_inplace f h =
   BatArray.modify loop hc.data
 
 (*$= filter_map_inplace & ~printer
-  (let h = Enum.combine (1 -- 5, 1 -- 5) |> of_enum in \
+  (let h = Enum.combine (1 -- 5) (1 -- 5) |> of_enum in \
    filter_map_inplace (fun _ x -> if x>3 then Some (x+1) else None) h ; \
    to_sorted_list h) [5; 6]
 *)
@@ -388,9 +388,9 @@ let merge f h1 h2 =
   let inter = merge (fun _ l r -> if l = None then l else r)
   let equal h1 h2 = to_sorted_list h1 = to_sorted_list h2
   let empty = create 0
-  let h_1_5 = Enum.combine (1 -- 5, 1 -- 5) |> of_enum
-  let h_1_3 = Enum.combine (1 -- 3, 1 -- 3) |> of_enum
-  let h_3_5 = Enum.combine (3 -- 5, 3 -- 5) |> of_enum
+  let h_1_5 = Enum.combine (1 -- 5) (1 -- 5) |> of_enum
+  let h_1_3 = Enum.combine (1 -- 3) (1 -- 3) |> of_enum
+  let h_3_5 = Enum.combine (3 -- 5) (3 -- 5) |> of_enum
   let of_uniq_list l = List.unique l |> List.map (fun i -> i, i) |> of_list
 *)
 (*$= merge & ~printer
@@ -405,10 +405,10 @@ let merge f h1 h2 =
   [1; 2; 3; 4; 5] \
     (merge (fun _ _ r -> r) empty h_1_5 |> to_sorted_list)
   [1; 2; 3] \
-    (let h = Enum.combine (3 -- 6, 13 -- 15) |> of_enum in \
+    (let h = Enum.combine (3 -- 6) (13 -- 15) |> of_enum in \
      merge (fun _ l _ -> l) h_1_3 h |> to_sorted_list)
   [13; 14; 15] \
-    (let h = Enum.combine (3 -- 5, 13 -- 15) |> of_enum in \
+    (let h = Enum.combine (3 -- 5) (13 -- 15) |> of_enum in \
      merge (fun _ _ r -> r) h_1_3 h |> to_sorted_list)
   [] \
     (merge (fun _ _ _ -> None) h_1_3 h_3_5 |> to_sorted_list)
@@ -477,10 +477,10 @@ let merge_all f h1 h2 =
     (let h = create 0 in \
      merge_all (fun _ _ r -> r) h h_1_5 |> to_sorted_list)
   [1; 2; 3] \
-    (let h = Enum.combine (3 -- 6, 13 -- 15) |> of_enum in \
+    (let h = Enum.combine (3 -- 6) (13 -- 15) |> of_enum in \
      merge_all (fun _ l _ -> l) h_1_3 h |> to_sorted_list)
   [13; 14; 15] \
-    (let h = Enum.combine (3 -- 5, 13 -- 15) |> of_enum in \
+    (let h = Enum.combine (3 -- 5) (13 -- 15) |> of_enum in \
      merge_all (fun _ _ r -> r) h_1_3 h |> to_sorted_list)
   [] \
     (merge_all (fun _ _ _ -> []) h_1_3 h_3_5 |> to_sorted_list)
