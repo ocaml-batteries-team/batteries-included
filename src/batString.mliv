@@ -787,12 +787,23 @@ val rsplit : string -> by:string -> string * string
 *)
 
 val nsplit : string -> by:string -> string list
+##V>=4.2##  [@@ocaml.deprecated "Use split_on_string instead."]
 (** [nsplit s sep] splits the string [s] into a list of strings
     which are separated by [sep] (excluded).
-    [nsplit "" _] returns a single empty string.
-    Note: prior to NEXT_RELEASE [nsplit "" _] used to return an empty list.
+    [nsplit "" _] returns an empty string.
 
     Example: [String.nsplit "abcabcabc" "bc" = ["a"; "a"; "a"; ""]]
+
+    @deprecated use {!split_on_string}
+*)
+
+val split_on_string : by:string -> string -> string list
+(** [split_on_string sep s] splits the string [s] into a list of strings
+    which are separated by [sep] (excluded).
+    [split_on_string _ ""] returns a single empty string.
+    Note: [split_on_string sep s] is identical to [nsplit s sep] but for empty strings.
+
+    Example: [String.split_on_string "bc" "abcabcabc" = ["a"; "a"; "a"; ""]]
 *)
 
 val cut_on_char : char -> int -> string -> string
