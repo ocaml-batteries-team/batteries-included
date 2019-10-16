@@ -377,14 +377,14 @@ let rsplit str ~by:sep =
 *)
 
 (*
-   An implementation of [nsplit] in one pass.
+   An implementation of [split_on_string] in one pass.
 
    This implementation traverses the string backwards, hence building the list
    of substrings from the end to the beginning, so as to avoid a call to [List.rev].
 *)
-let nsplit str ~by:sep =
-  if str = "" then [""]
-  else if sep = "" then invalid_arg "String.nsplit: empty sep not allowed"
+let split_on_string_comp ?(on_empty=[""]) ~by:sep str =
+  if str = "" then on_empty
+  else if sep = "" then invalid_arg "String.split_on_string: empty sep not allowed"
   else
     (* str is non empty *)
     let seplen = String.length sep in
@@ -410,13 +410,17 @@ let nsplit str ~by:sep =
     in
     aux [] (length str - 1 )
 
-(*$T nsplit
-  nsplit "a;b;c" ~by:";" = ["a"; "b"; "c"]
-  nsplit "" ~by:"x" = [""]
-  try nsplit "abc" ~by:"" = ["a"; "b"; "c"] with Invalid_argument _ -> true
-  nsplit "a/b/c" ~by:"/" = ["a"; "b"; "c"]
-  nsplit "/a/b/c//" ~by:"/" = [""; "a"; "b"; "c"; ""; ""]
-  nsplit "FOOaFOObFOOcFOOFOO" ~by:"FOO" = [""; "a"; "b"; "c"; ""; ""]
+let nsplit str ~by = split_on_string_comp ~on_empty:[] ~by str
+
+let split_on_string ~by str = split_on_string_comp ~by str
+
+(*$T split_on_string
+  split_on_string ~by:";" "a;b;c" = ["a"; "b"; "c"]
+  split_on_string ~by:"x" "" = [""]
+  try split_on_string ~by:"" "abc" = ["a"; "b"; "c"] with Invalid_argument _ -> true
+  split_on_string ~by:"/" "a/b/c" = ["a"; "b"; "c"]
+  split_on_string ~by:"/" "/a/b/c//" = [""; "a"; "b"; "c"; ""; ""]
+  split_on_string ~by:"FOO" "FOOaFOObFOOcFOOFOO" = [""; "a"; "b"; "c"; ""; ""]
 *)
 
 let split_on_char sep str =
@@ -1271,6 +1275,7 @@ struct
     let (a, b) = rsplit (usob b) ~by:(usob by) in
     (ubos a, ubos b)
   let nsplit b ~by  = List.map ubos (nsplit (usob b) ~by:(usob by))
+  let split_on_string ~by b = List.map ubos (split_on_string ~by:(usob by) (usob b))
   let join          = Bytes.concat
   let slice ?first ?last b = ubos (slice ?first ?last (usob b))
   let explode b     = explode (usob b)
