@@ -106,7 +106,7 @@ let make n x =
 
 let iter f l =
   let rec aux l = match next l with
-    | Cons (x, t) -> (f x; aux t)
+    | Cons (x, t) -> (ignore (f x); aux t)
     | Nil -> ()
   in aux l
 
