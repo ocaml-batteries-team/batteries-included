@@ -1041,6 +1041,16 @@ val lockf : file_descr -> lock_command -> int -> unit
     acquired on the specified region, without actually putting a lock.
     It returns immediately if successful, or fails otherwise. *)
 
+val with_locked_file : kind:[`Read|`Write] -> string -> (file_descr -> 'a) -> 'a
+(** [with_locked_file ~kind filename f] puts a lock (using lockf) on the whole
+    file named [filename], calls [f] with the file descriptor, and returns
+    its result after the file is unlocked.
+    The file is opened with permissions matching [kind], and created if it
+    does not exist yet.
+    If [f ()] raises an exception the exception is re-raised after the file
+    is unlocked.
+
+    @param kind specifies whether the lock is read-only or read-write. *)
 
 (** {6 Signals}
     Note: installation of signal handlers is performed via
