@@ -58,7 +58,7 @@ let ok = function
 
 let wrap f x = try Ok (f x) with ex -> Bad ex
 
-let forever f x = ignore (while true do f x done)
+let forever f x = ignore (while true do ignore (f x) done)
 
 let ignore_exceptions f x = try ignore (f x) with _ -> ()
 
