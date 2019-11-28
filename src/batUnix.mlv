@@ -30,6 +30,27 @@ include Unix
 ##V<4.2##let send_substring = send
 ##V<4.2##let sendto_substring = sendto
 
+##V<4.3##let sleepf (timeout: float): unit =
+##V<4.3##  let _, _, _ = select [] [] [] timeout in
+##V<4.3##  ()
+
+(* chronometer is useful to test sleepf *)
+(*$inject
+let chronometer f =
+  let start = gettimeofday () in
+  let res = f () in
+  let stop = gettimeofday () in
+  let dt = stop -. start in
+  (dt, res) ;;
+*)
+
+(* do not underestimate the imprecission of sleepf
+   and so don't be too harsh when testing it *)
+(*$T sleepf
+let dt, _ = chronometer (fun () -> sleepf 0.002) in \
+0.001 <= dt && dt <= 0.003
+*)
+
 let run_and_read cmd =
   (* This code is before the open of BatInnerIO
      to avoid using batteries' wrapped IOs *)
