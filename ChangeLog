@@ -3,7 +3,9 @@ Changelog
 
 ## NEXT_RELEASE
 
-... cool features to come.
+- Unix.sleepf is provided across all OCaml versions
+  #930
+  (Francois Berenger, review by Cedric Cellier)
 
 ## v2.10.0 (minor release)
 
