@@ -3,7 +3,8 @@ Changelog
 
 ## NEXT_RELEASE
 
-- Unix.sleepf is provided across all OCaml versions
+- Unix.sleepf is provided across all OCaml versions;
+  previously it was only for OCaml >= 4.03.0
   #930
   (Francois Berenger, review by Cedric Cellier)
 
