@@ -31,7 +31,17 @@ include Unix
 ##V<4.2##let sendto_substring = sendto
 
 ##V<4.3##let sleepf (timeout: float): unit =
-##V<4.3##  let _, _, _ = select [] [] [] timeout in
+##V<4.3##  let elapsed = ref 0.0 in
+##V<4.3##  while !elapsed < timeout do
+##V<4.3##    let start = gettimeofday () in
+##V<4.3##    begin
+##V<4.3##      try ignore(select [] [] [] (timeout -. !elapsed))
+##V<4.3##      with Unix_error(EINTR, _, _) -> ()
+##V<4.3##    end;
+##V<4.3##    let stop = gettimeofday () in
+##V<4.3##    let dt = stop -. start in
+##V<4.3##    elapsed := !elapsed +. dt
+##V<4.3##  done;
 ##V<4.3##  ()
 
 (* chronometer is useful to test sleepf *)
