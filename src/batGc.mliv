@@ -356,7 +356,7 @@ val finalise : ('a -> unit) -> 'a -> unit
 ##V>=4.4##    finalisation function attached with `GC.finalise` are always
 ##V>=4.4##    called before the finalisation function attached with `GC.finalise_last`.
 ##V>=4.4##
-##V>=4.4##    @since NEXT_RELEASE and OCaml 4.04
+##V>=4.4##    @since 2.11.0 and OCaml 4.04
 ##V>=4.4##*)
 
 val finalise_release : unit -> unit;;

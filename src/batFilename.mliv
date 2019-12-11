@@ -30,7 +30,7 @@ val parent_dir_name : string
 
 val dir_sep : string
 (** The directory separator (e.g. [/] in Unix).
-   @since NEXT_RELEASE and OCaml 3.11.2 *)
+   @since 2.11.0 and OCaml 3.11.2 *)
 
 val concat : string -> string -> string
 (** [concat dir file] returns a file name that designates file
@@ -73,7 +73,7 @@ val chop_suffix : string -> string -> string
 ##V>=4.8##    this does not match exactly the interpretation of case-insensitive
 ##V>=4.8##    filename equivalence from Windows.
 ##V>=4.8##
-##V>=4.8##    @since NEXT_RELEASE and OCaml 4.08
+##V>=4.8##    @since 2.11.0 and OCaml 4.08
 ##V>=4.8##*)
 
 
@@ -89,7 +89,7 @@ val chop_suffix : string -> string -> string
 ##V>=4.4##    If such a suffix does not exist, [extension name] is the empty
 ##V>=4.4##    string.
 ##V>=4.4##
-##V>=4.4##    @since NEXT_RELEASE and OCaml 4.04
+##V>=4.4##    @since 2.11.0 and OCaml 4.04
 ##V>=4.4##*)
 
 ##V>=4.4##val remove_extension : string -> string
@@ -101,7 +101,7 @@ val chop_suffix : string -> string -> string
 ##V>=4.4##
 ##V>=4.4##    [remove_extension s ^ extension s = s]
 ##V>=4.4##
-##V>=4.4##    @since NEXT_RELEASE and OCaml 4.04
+##V>=4.4##    @since 2.11.0 and OCaml 4.04
 ##V>=4.4##*)
 
 val chop_extension : string -> string
@@ -166,13 +166,13 @@ val open_temp_file :
 ##V>=4.0##    Under Windows, the value of the [TEMP] environment variable, or "."
 ##V>=4.0##    if the variable is not set.
 ##V>=4.0##    The temporary directory can be changed with {!Filename.set_temp_dir_name}.
-##V>=4.0##    @since NEXT_RELEASE and OCaml 4.00.0
+##V>=4.0##    @since 2.11.0 and OCaml 4.00.0
 ##V>=4.0##*)
 
 ##V>=4.0##val set_temp_dir_name : string -> unit
 ##V>=4.0##(** Change the temporary directory returned by {!Filename.get_temp_dir_name}
 ##V>=4.0##    and used by {!Filename.temp_file} and {!Filename.open_temp_file}.
-##V>=4.0##    @since NEXT_RELEASE and OCaml 4.00.0
+##V>=4.0##    @since 2.11.0 and OCaml 4.00.0
 ##V>=4.0##*)
 
 val temp_dir_name : string
@@ -183,7 +183,7 @@ val temp_dir_name : string
     Under Windows, the value of the [TEMP] environment variable, or "."
     if the variable is not set.
     @deprecated You should use {!Filename.get_temp_dir_name} instead.
-    @since NEXT_RELEASE and OCaml 3.09.1
+    @since 2.11.0 and OCaml 3.09.1
 *)
 
 val quote : string -> string
@@ -234,18 +234,18 @@ val quote : string -> string
 ##V<4.4## - ext is preceded by at least one non-period character in name0.
 ##V<4.4## If such a suffix does not exist, extension name is the empty string.
 ##V<4.4##
-##V<4.4##   @since NEXT_RELEASE *)
+##V<4.4##   @since 2.11.0 *)
 
 ##V<4.4## val remove_extension : string -> string
 ##V<4.4##(* Return the given file name without its extension, as defined in
 ##V<4.4##   Filename.extension. If the extension is empty, the function returns
 ##V<4.4##   the given file name.
 ##V<4.4##
-##V<4.4##   @since NEXT_RELEASE *)
+##V<4.4##   @since 2.11.0 *)
 
 val split_extension : string -> string * string
 (** [split_extension s] returns both the filename [s] without its extension
     and its extension in two distinct strings.
     For instance, [split_extension "foo.bar"] returns the pair ["foo",".bar"].
 
-    @since NEXT_RELEASE *)
+    @since 2.11.0 *)
