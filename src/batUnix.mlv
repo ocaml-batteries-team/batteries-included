@@ -265,7 +265,7 @@ let with_locked_file ~kind filename f =
       (* Although the user might expect EINTR to interrupt locking, we must
        * not allow such interrupt here since there is no way to restart the
        * unlock: *)
-      restart_on_EINTR (lseek lock_file 0) SEEK_SET |> ignore;
+      ignore (restart_on_EINTR (lseek lock_file 0) SEEK_SET);
       restart_on_EINTR (lockf lock_file F_ULOCK) 0;
       restart_on_EINTR close lock_file)
     f lock_file
