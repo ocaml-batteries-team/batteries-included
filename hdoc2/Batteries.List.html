@@ -38,6 +38,7 @@
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFilename" rel="Chapter" href="BatFilename.html">
 <link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
@@ -71,7 +72,6 @@
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
-<link title="BatOo" rel="Chapter" href="BatOo.html">
 <link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
@@ -140,7 +140,22 @@
 <pre><span id="MODULEList"><span class="keyword">module</span> List</span>: <code class="type"><a href="BatList.html">BatList</a></code></pre><hr width="100%">
 <p>List operations.</p>
 
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a list</code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a list</code> = </pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTt.[]"><span class="constructor">[]</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTt.::"><span class="constructor">::</span></span> <span class="keyword">of</span> <code class="type">'a * 'a list</code></code></td>
+
+</tr></table>
+
 
 <p>The type of lists</p>
 
@@ -249,7 +264,7 @@
 </div>
 </div>
 
-<pre><span id="VALshuffle"><span class="keyword">val</span> shuffle</span> : <code class="type">?state:Random.State.t -> 'a list -> 'a list</code></pre><div class="info ">
+<pre><span id="VALshuffle"><span class="keyword">val</span> shuffle</span> : <code class="type">?state:Stdlib.Random.State.t -> 'a list -> 'a list</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">shuffle&nbsp;~state:rs&nbsp;l</code> randomly shuffles the elements of <code class="code">l</code>.
     The optional random state <code class="code">rs</code> allows to control the random
@@ -501,20 +516,18 @@
 
 <pre><span id="VALsum"><span class="keyword">val</span> sum</span> : <code class="type">int list -> int</code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">sum&nbsp;l</code> returns the sum of the integers of <code class="code">l</code>.</p>
+<p><code class="code">sum&nbsp;l</code> returns the sum of the integers of <code class="code">l</code>.
+    Returns <code class="code">0</code> on the empty list.
+    Note: prior to 2.11.0, used to raise Invalid_argument on the empty list.</p>
 </div>
-<ul class="info-attributes">
-<li><b>Raises</b> <code>Invalid_argument</code> on the empty list.</li>
-</ul>
 </div>
 
 <pre><span id="VALfsum"><span class="keyword">val</span> fsum</span> : <code class="type">float list -> float</code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">fsum&nbsp;l</code> returns the sum of the floats of <code class="code">l</code>.</p>
+<p><code class="code">fsum&nbsp;l</code> returns the sum of the floats of <code class="code">l</code>.
+    Returns <code class="code">0.</code> on the empty list.
+    Note: prior to 2.11.0, used to raise Invalid_argument on the empty list.</p>
 </div>
-<ul class="info-attributes">
-<li><b>Raises</b> <code>Invalid_argument</code> on the empty list.</li>
-</ul>
 </div>
 
 <pre><span id="VALfavg"><span class="keyword">val</span> favg</span> : <code class="type">float list -> float</code></pre><div class="info ">
@@ -546,6 +559,24 @@
 <ul class="info-attributes">
 <li><b>Since</b> 2.1</li>
 <li><b>Raises</b> <code>Invalid_argument</code> on an empty list.</li>
+</ul>
+</div>
+
+<pre><span id="VALto_seq"><span class="keyword">val</span> to_seq</span> : <code class="type">'a list -> 'a Stdlib.Seq.t</code></pre><div class="info ">
+<div class="info-desc">
+<p>Iterate on the list</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.07</li>
+</ul>
+</div>
+
+<pre><span id="VALof_seq"><span class="keyword">val</span> of_seq</span> : <code class="type">'a Stdlib.Seq.t -> 'a list</code></pre><div class="info ">
+<div class="info-desc">
+<p>Create a list from the iterator</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.07</li>
 </ul>
 </div>
 <h7 id="6_Iteratorsontwolists">Iterators on two lists</h7>

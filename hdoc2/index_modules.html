@@ -34,6 +34,7 @@
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFilename" rel="Chapter" href="BatFilename.html">
 <link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
@@ -67,7 +68,6 @@
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
-<link title="BatOo" rel="Chapter" href="BatOo.html">
 <link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
@@ -285,6 +285,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatFilename.html">BatFilename</a> </td>
+<td><div class="info">
+<p>Operations on file names.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatFingerTree.html">BatFingerTree</a> </td>
 <td><div class="info">
 <p>This module implements a generic finger tree datastructure
@@ -472,12 +478,6 @@
 <tr><td><a href="BatNumber.html">BatNumber</a> </td>
 <td><div class="info">
 <p>A common interface for numbers.</p>
-
-</div>
-</td></tr>
-<tr><td><a href="BatOo.html">BatOo</a> </td>
-<td><div class="info">
-<p>Operations on objects</p>
 
 </div>
 </td></tr>
@@ -941,6 +941,8 @@
 <tr><td align="left"><div>F</div></td></tr>
 <tr><td><a href="Batteries.File.html">File</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
+<tr><td><a href="Batteries.Filename.html">Filename</a> [<a href="Batteries.html">Batteries</a>]</td>
+<td></td></tr>
 <tr><td><a href="Batteries.Legacy.Filename.html">Filename</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.FingerTree.html">FingerTree</a> [<a href="Batteries.html">Batteries</a>]</td>
@@ -1040,12 +1042,6 @@
 
 </div>
 </td></tr>
-<tr><td><a href="BatSet.PSet.Infix.html">Infix</a> [<a href="BatSet.PSet.html">BatSet.PSet</a>]</td>
-<td></td></tr>
-<tr><td><a href="BatSet.Infix.html">Infix</a> [<a href="BatSet.html">BatSet</a>]</td>
-<td></td></tr>
-<tr><td><a href="BatSet.S.Infix.html">Infix</a> [<a href="BatSet.S.html">BatSet.S</a>]</td>
-<td></td></tr>
 <tr><td><a href="BatSeq.Infix.html">Infix</a> [<a href="BatSeq.html">BatSeq</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatResult.Infix.html">Infix</a> [<a href="BatResult.html">BatResult</a>]</td>
@@ -1184,11 +1180,7 @@
 <td></td></tr>
 <tr><td><a href="BatMap.Int64.html">Int64</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td></td></tr>
-<tr><td><a href="BatteriesPrint.IntSet.html">IntSet</a> [<a href="BatteriesPrint.html">BatteriesPrint</a>]</td>
-<td></td></tr>
 <tr><td><a href="Batteries.Interfaces.html">Interfaces</a> [<a href="Batteries.html">Batteries</a>]</td>
-<td></td></tr>
-<tr><td><a href="BatOo.Internal.html">Internal</a> [<a href="BatOo.html">BatOo</a>]</td>
 <td></td></tr>
 <tr><td align="left"><div>L</div></td></tr>
 <tr><td><a href="BatList.Labels.LExceptionless.html">LExceptionless</a> [<a href="BatList.Labels.html">BatList.Labels</a>]</td>
@@ -1458,8 +1450,6 @@
 
 </div>
 </td></tr>
-<tr><td><a href="Batteries.Oo.html">Oo</a> [<a href="Batteries.html">Batteries</a>]</td>
-<td></td></tr>
 <tr><td><a href="Batteries.Legacy.Oo.html">Oo</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatPathGen.PathType.OperatorLift.html">OperatorLift</a> [<a href="BatPathGen.PathType.html">BatPathGen.PathType</a>]</td>
@@ -1562,6 +1552,8 @@
 <td></td></tr>
 <tr><td><a href="Batteries.Result.html">Result</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
+<tr><td><a href="Batteries.Legacy.Result.html">Result</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
+<td></td></tr>
 <tr><td><a href="Batteries.Return.html">Return</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatOrd.Rev.html">Rev</a> [<a href="BatOrd.html">BatOrd</a>]</td>
@@ -1603,8 +1595,6 @@
 <tr><td><a href="Batteries.Legacy.Set.html">Set</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatPrintexc.Slot.html">Slot</a> [<a href="BatPrintexc.html">BatPrintexc</a>]</td>
-<td></td></tr>
-<tr><td><a href="Batteries.Legacy.Sort.html">Sort</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatParserCo.Source.html">Source</a> [<a href="BatParserCo.html">BatParserCo</a>]</td>
 <td><div class="info">
@@ -1662,8 +1652,6 @@
 <td></td></tr>
 <tr><td><a href="Batteries.Legacy.StringLabels.html">StringLabels</a> [<a href="Batteries.Legacy.html">Batteries.Legacy</a>]</td>
 <td></td></tr>
-<tr><td><a href="BatteriesPrint.StringSet.html">StringSet</a> [<a href="BatteriesPrint.html">BatteriesPrint</a>]</td>
-<td></td></tr>
 <tr><td><a href="Batteries.Substring.html">Substring</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Sys.html">Sys</a> [<a href="Batteries.html">Batteries</a>]</td>
@@ -1674,8 +1662,6 @@
 <tr><td><a href="BatNum.TaggedInfix.html">TaggedInfix</a> [<a href="BatNum.html">BatNum</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Text.html">Text</a> [<a href="Batteries.html">Batteries</a>]</td>
-<td></td></tr>
-<tr><td><a href="BatteriesPrint.TextSet.html">TextSet</a> [<a href="BatteriesPrint.html">BatteriesPrint</a>]</td>
 <td></td></tr>
 <tr><td><a href="Batteries.Tuple.html">Tuple</a> [<a href="Batteries.html">Batteries</a>]</td>
 <td></td></tr>

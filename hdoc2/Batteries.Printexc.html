@@ -5,7 +5,7 @@
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
-<link rel="previous" href="Batteries.Oo.html">
+<link rel="previous" href="Batteries.Nativeint.html">
 <link rel="next" href="Batteries.Printf.html">
 <link rel="Up" href="Batteries.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
@@ -38,6 +38,7 @@
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFilename" rel="Chapter" href="BatFilename.html">
 <link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
@@ -71,7 +72,6 @@
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
-<link title="BatOo" rel="Chapter" href="BatOo.html">
 <link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
@@ -119,7 +119,7 @@
 <title>Batteries user guide : Batteries.Printexc</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="Batteries.Oo.html" title="Batteries.Oo">Previous</a>
+<div class="navbar"><a class="pre" href="Batteries.Nativeint.html" title="Batteries.Nativeint">Previous</a>
 &nbsp;<a class="up" href="Batteries.html" title="Batteries">Up</a>
 &nbsp;<a class="post" href="Batteries.Printf.html" title="Batteries.Printf">Next</a>
 </div>
@@ -213,7 +213,7 @@
 </div>
 </div>
 
-<pre><span id="VALraise_with_backtrace"><span class="keyword">val</span> raise_with_backtrace</span> : <code class="type">exn -> Printexc.raw_backtrace -> 'a</code></pre><div class="info ">
+<pre><span id="VALraise_with_backtrace"><span class="keyword">val</span> raise_with_backtrace</span> : <code class="type">exn -> Stdlib.Printexc.raw_backtrace -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p>Reraise the exception using the given raw_backtrace for the
     origin of the exception</p>
@@ -223,7 +223,7 @@
 </ul>
 </div>
 <h7 id="6_Rawbacktraces">Raw backtraces</h7>
-<pre><span id="TYPEraw_backtrace"><span class="keyword">type</span> <code class="type"></code>raw_backtrace</span> = <code class="type">Printexc.raw_backtrace</code> </pre>
+<pre><span id="TYPEraw_backtrace"><span class="keyword">type</span> <code class="type"></code>raw_backtrace</span> = <code class="type">Stdlib.Printexc.raw_backtrace</code> </pre>
 <div class="info ">
 <div class="info-desc">
 <p>The abstract type <code class="code">raw_backtrace</code> stores a backtrace in
@@ -255,7 +255,7 @@
 </ul>
 </div>
 
-<pre><span id="VALprint_raw_backtrace"><span class="keyword">val</span> print_raw_backtrace</span> : <code class="type">Pervasives.out_channel -> <a href="BatPrintexc.html#TYPEraw_backtrace">raw_backtrace</a> -> unit</code></pre><div class="info ">
+<pre><span id="VALprint_raw_backtrace"><span class="keyword">val</span> print_raw_backtrace</span> : <code class="type">Stdlib.out_channel -> <a href="BatPrintexc.html#TYPEraw_backtrace">raw_backtrace</a> -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p>Print a raw backtrace in the same format
     <code class="code"><span class="constructor">Printexc</span>.print_backtrace</code> uses.</p>
@@ -307,7 +307,7 @@
 <p>Those function allow to traverse the slots of a raw backtrace,
     extract information from them in a programmer-friendly format.</p>
 
-<pre><span id="TYPEbacktrace_slot"><span class="keyword">type</span> <code class="type"></code>backtrace_slot</span> = <code class="type">Printexc.backtrace_slot</code> </pre>
+<pre><span id="TYPEbacktrace_slot"><span class="keyword">type</span> <code class="type"></code>backtrace_slot</span> = <code class="type">Stdlib.Printexc.backtrace_slot</code> </pre>
 <div class="info ">
 <div class="info-desc">
 <p>The abstract type <code class="code">backtrace_slot</code> represents a single slot of
@@ -341,7 +341,7 @@
 </ul>
 </div>
 
-<pre><span id="TYPElocation"><span class="keyword">type</span> <code class="type"></code>location</span> = <code class="type">Printexc.location</code> = {</pre><table class="typetable">
+<pre><span id="TYPElocation"><span class="keyword">type</span> <code class="type"></code>location</span> = <code class="type">Stdlib.Printexc.location</code> = {</pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
@@ -385,7 +385,7 @@
 
 
 <pre><span id="MODULESlot"><span class="keyword">module</span> <a href="BatPrintexc.Slot.html">Slot</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatPrintexc.Slot.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><h7 id="6_Rawbacktraceslots">Raw backtrace slots</h7>
-<pre><span id="TYPEraw_backtrace_slot"><span class="keyword">type</span> <code class="type"></code>raw_backtrace_slot</span> = <code class="type">Printexc.raw_backtrace_slot</code> </pre>
+<pre><span id="TYPEraw_backtrace_slot"><span class="keyword">type</span> <code class="type"></code>raw_backtrace_slot</span> = <code class="type">Stdlib.Printexc.raw_backtrace_slot</code> </pre>
 <div class="info ">
 <div class="info-desc">
 <p>This type allows direct access to raw backtrace slots, without any
@@ -438,7 +438,7 @@
 <p><code class="code">get_raw_backtrace_next_slot&nbsp;slot</code> returns the next slot inlined, if any.</p>
 </div>
 <ul class="info-attributes">
-<li><b>Since</b> NEXT_RELASE and OCaml 4.04</li>
+<li><b>Since</b> 2.11.0 and OCaml 4.04</li>
 </ul>
 </div>
 <h7 id="6_Exceptionslots">Exception slots</h7>
@@ -462,4 +462,12 @@
 <li><b>Since</b> 2.3.0 and OCaml 4.02.0</li>
 </ul>
 </div>
+
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">exn</code> = ..</pre>
+<div class="info ">
+<div class="info-desc">
+<p>The type of exception values.</p>
+</div>
+</div>
+
 </body></html>

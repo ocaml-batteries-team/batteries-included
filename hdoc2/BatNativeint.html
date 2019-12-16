@@ -38,6 +38,7 @@
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFilename" rel="Chapter" href="BatFilename.html">
 <link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
@@ -71,7 +72,6 @@
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
-<link title="BatOo" rel="Chapter" href="BatOo.html">
 <link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
@@ -215,6 +215,15 @@
 </ul>
 </div>
 
+<pre><span id="VALunsigned_div"><span class="keyword">val</span> unsigned_div</span> : <code class="type">nativeint -> nativeint -> nativeint</code></pre><div class="info ">
+<div class="info-desc">
+<p>Same as <a href="BatNativeint.html#VALdiv"><code class="code"><span class="constructor">BatNativeint</span>.div</code></a>, except that arguments and result are interpreted as <em>    unsigned</em> native integers.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08.0</li>
+</ul>
+</div>
+
 <pre><span id="VALrem"><span class="keyword">val</span> rem</span> : <code class="type">nativeint -> nativeint -> nativeint</code></pre><div class="info ">
 <div class="info-desc">
 <p>Integer remainder.  If <code class="code">y</code> is not zero, the result
@@ -223,6 +232,15 @@
     <code class="code">x&nbsp;=&nbsp;<span class="constructor">Nativeint</span>.add&nbsp;(<span class="constructor">Nativeint</span>.mul&nbsp;(<span class="constructor">Nativeint</span>.div&nbsp;x&nbsp;y)&nbsp;y)&nbsp;(<span class="constructor">Nativeint</span>.rem&nbsp;x&nbsp;y)</code>.
     If <code class="code">y&nbsp;=&nbsp;0</code>, <code class="code"><span class="constructor">Nativeint</span>.rem&nbsp;x&nbsp;y</code> raises <code class="code"><span class="constructor">Division_by_zero</span></code>.</p>
 </div>
+</div>
+
+<pre><span id="VALunsigned_rem"><span class="keyword">val</span> unsigned_rem</span> : <code class="type">nativeint -> nativeint -> nativeint</code></pre><div class="info ">
+<div class="info-desc">
+<p>Same as <a href="BatNativeint.html#VALrem"><code class="code"><span class="constructor">BatNativeint</span>.rem</code></a>, except that arguments and result are interpreted as <em>    unsigned</em> native integers.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08.0</li>
+</ul>
 </div>
 
 <pre><span id="VALsucc"><span class="keyword">val</span> succ</span> : <code class="type">nativeint -> nativeint</code></pre><div class="info ">
@@ -353,6 +371,17 @@
 </div>
 </div>
 
+<pre><span id="VALunsigned_to_int"><span class="keyword">val</span> unsigned_to_int</span> : <code class="type">nativeint -> int option</code></pre><div class="info ">
+<div class="info-desc">
+<p>Same as <a href="BatNativeint.html#VALto_int"><code class="code"><span class="constructor">BatNativeint</span>.to_int</code></a>, but interprets the argument as an <em>unsigned</em> integer.
+    Returns <code class="code"><span class="constructor">None</span></code> if the unsigned value of the argument cannot fit into an
+    <code class="code">int</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08.0</li>
+</ul>
+</div>
+
 <pre><span id="VALof_float"><span class="keyword">val</span> of_float</span> : <code class="type">float -> nativeint</code></pre><div class="info ">
 <div class="info-desc">
 <p>Convert the given floating-point number to a native integer,
@@ -437,6 +466,16 @@
     allows the module <code class="code"><span class="constructor">Nativeint</span></code> to be passed as argument to the functors
     <code class="code"><span class="constructor">Set</span>.<span class="constructor">Make</span></code> and <code class="code"><span class="constructor">Map</span>.<span class="constructor">Make</span></code>.</p>
 </div>
+</div>
+
+<pre><span id="VALunsigned_compare"><span class="keyword">val</span> unsigned_compare</span> : <code class="type"><a href="BatNativeint.html#TYPEt">t</a> -> <a href="BatNativeint.html#TYPEt">t</a> -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p>Same as <a href="BatNativeint.html#VALcompare"><code class="code"><span class="constructor">BatNativeint</span>.compare</code></a>, except that arguments are interpreted as <em>unsigned</em>
+    native integers.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08.0</li>
+</ul>
 </div>
 
 <pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="BatNativeint.html#TYPEt">t</a> -> <a href="BatNativeint.html#TYPEt">t</a> -> bool</code></pre><div class="info ">

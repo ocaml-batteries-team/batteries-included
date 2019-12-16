@@ -37,6 +37,7 @@
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFilename" rel="Chapter" href="BatFilename.html">
 <link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
@@ -70,7 +71,6 @@
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
-<link title="BatOo" rel="Chapter" href="BatOo.html">
 <link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
@@ -112,7 +112,6 @@
 <link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
 <link title="Override modules" rel="Section" href="#6_Overridemodules">
 <link title="Printing" rel="Subsection" href="#7_Printing">
-<link title="Infix operators" rel="Subsection" href="#7_Infixoperators">
 <title>Batteries user guide : BatSet.Make</title>
 </head>
 <body>
@@ -551,8 +550,7 @@
 </ul>
 </div>
 <h7 id="6_Boilerplatecode">Boilerplate code</h7><div class="h8" id="7_Printing">Printing</div>
-<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatSet.S.html#TYPEelt">elt</a> -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatSet.S.html#TYPEt">t</a> -> unit</code></pre><div class="h8" id="7_Infixoperators">Infix operators</div>
-<pre><span id="MODULEInfix"><span class="keyword">module</span> <a href="BatSet.S.Infix.html">Infix</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatSet.S.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><h7 id="6_Overridemodules">Override modules</h7><p>The following modules replace functions defined in <code class="code"><span class="constructor">Set</span></code> with functions
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatSet.S.html#TYPEelt">elt</a> -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatSet.S.html#TYPEt">t</a> -> unit</code></pre><h7 id="6_Overridemodules">Override modules</h7><p>The following modules replace functions defined in <code class="code"><span class="constructor">Set</span></code> with functions
      behaving slightly differently but having the same name. This is by design:
      the functions meant to override the corresponding functions of <code class="code"><span class="constructor">Set</span></code>.</p>
 

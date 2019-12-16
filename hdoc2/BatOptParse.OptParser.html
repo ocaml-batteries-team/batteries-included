@@ -37,6 +37,7 @@
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFilename" rel="Chapter" href="BatFilename.html">
 <link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
@@ -70,7 +71,6 @@
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
-<link title="BatOo" rel="Chapter" href="BatOo.html">
 <link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
@@ -221,7 +221,7 @@
 <div class="param_info"><code class="code">parent</code> : is the parent group (if any).</div>
 <div class="param_info"><code class="code">description</code> : is a description of the group.</div>
 <h7 id="6_Outputanderrorhandling">Output and error handling</h7>
-<pre><span id="VALerror"><span class="keyword">val</span> error</span> : <code class="type"><a href="BatOptParse.OptParser.html#TYPEt">t</a> -><br>       ?chn:Pervasives.out_channel -> ?status:int -> string -> unit</code></pre><div class="info ">
+<pre><span id="VALerror"><span class="keyword">val</span> error</span> : <code class="type"><a href="BatOptParse.OptParser.html#TYPEt">t</a> -><br>       ?chn:Stdlib.out_channel -> ?status:int -> string -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p>Display an error message and exit the program. The error
       message is printed to the channel <code class="code">chn</code> (default is
@@ -230,7 +230,7 @@
 </div>
 </div>
 
-<pre><span id="VALusage"><span class="keyword">val</span> usage</span> : <code class="type"><a href="BatOptParse.OptParser.html#TYPEt">t</a> -> ?chn:Pervasives.out_channel -> unit -> unit</code></pre><div class="info ">
+<pre><span id="VALusage"><span class="keyword">val</span> usage</span> : <code class="type"><a href="BatOptParse.OptParser.html#TYPEt">t</a> -> ?chn:Stdlib.out_channel -> unit -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p>Display the usage message to the channel <code class="code">chn</code> (default is
       <code class="code"><span class="constructor">Pervasives</span>.stdout</code>) and return.</p>

@@ -38,6 +38,7 @@
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFilename" rel="Chapter" href="BatFilename.html">
 <link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
@@ -71,7 +72,6 @@
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
-<link title="BatOo" rel="Chapter" href="BatOo.html">
 <link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
@@ -110,8 +110,8 @@
 <link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
-<link title="Printing" rel="Subsection" href="#7_Printing">
+<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Iterators" rel="Section" href="#1_Iterators">
+<link title="Boilerplate code" rel="Subsection" href="#6_Boilerplatecode">
 <title>Batteries user guide : BatQueue</title>
 </head>
 <body>
@@ -133,7 +133,7 @@
 </div>
 <hr width="100%">
 
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a Queue.t</code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a Stdlib.Queue.t</code> </pre>
 <div class="info ">
 <div class="info-desc">
 <p>The type of queues containing elements of type <code class="code"><span class="keywordsign">'</span>a</code>.</p>
@@ -173,6 +173,16 @@
 </div>
 </div>
 
+<pre><span id="VALtake_opt"><span class="keyword">val</span> take_opt</span> : <code class="type">'a <a href="BatQueue.html#TYPEt">t</a> -> 'a option</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">take_opt&nbsp;q</code> removes and returns the first element in queue <code class="code">q</code>,
+   or returns <code class="code"><span class="constructor">None</span></code> if the queue is empty.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
 <pre><span id="VALpop"><span class="keyword">val</span> pop</span> : <code class="type">'a <a href="BatQueue.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">pop</code> is a synonym for <code class="code">take</code>.</p>
@@ -184,6 +194,16 @@
 <p><code class="code">peek&nbsp;q</code> returns the first element in queue <code class="code">q</code>, without removing
     it from the queue, or raises <code class="code"><span class="constructor">Empty</span></code> if the queue is empty.</p>
 </div>
+</div>
+
+<pre><span id="VALpeek_opt"><span class="keyword">val</span> peek_opt</span> : <code class="type">'a <a href="BatQueue.html#TYPEt">t</a> -> 'a option</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">peek_opt&nbsp;q</code> returns the first element in queue <code class="code">q</code>, without removing
+   it from the queue, or returns <code class="code"><span class="constructor">None</span></code> if the queue is empty.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
 </div>
 
 <pre><span id="VALtop"><span class="keyword">val</span> top</span> : <code class="type">'a <a href="BatQueue.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
@@ -302,6 +322,35 @@
     This is equivalent to calling <code class="code">push</code> with the first element of the
     enumeration, then with the second, etc.</p>
 </div>
+</div>
+<h2 id="1_Iterators">Iterators</h2>
+<pre><span id="VALto_seq"><span class="keyword">val</span> to_seq</span> : <code class="type">'a <a href="BatQueue.html#TYPEt">t</a> -> 'a Stdlib.Seq.t</code></pre><div class="info ">
+<div class="info-desc">
+<p>Iterate on the queue, in front-to-back order.
+    The behavior is not defined if the queue is modified
+    during the iteration.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.07</li>
+</ul>
+</div>
+
+<pre><span id="VALadd_seq"><span class="keyword">val</span> add_seq</span> : <code class="type">'a <a href="BatQueue.html#TYPEt">t</a> -> 'a Stdlib.Seq.t -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Add the elements from the generator to the end of the queue</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.07</li>
+</ul>
+</div>
+
+<pre><span id="VALof_seq"><span class="keyword">val</span> of_seq</span> : <code class="type">'a Stdlib.Seq.t -> 'a <a href="BatQueue.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Create a queue from the generator</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.07</li>
+</ul>
 </div>
 <h7 id="6_Boilerplatecode">Boilerplate code</h7><div class="h8" id="7_Printing">Printing</div>
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'b <a href="BatQueue.html#TYPEt">t</a> -> unit</code></pre>

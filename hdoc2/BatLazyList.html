@@ -38,6 +38,7 @@
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFilename" rel="Chapter" href="BatFilename.html">
 <link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
@@ -71,7 +72,6 @@
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
-<link title="BatOo" rel="Chapter" href="BatOo.html">
 <link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
@@ -201,7 +201,7 @@
 <p><b>Note</b> The types are kept concrete so as to allow pattern-matching.
    However, it is generally easier to manipulate <a href="BatLazyList.html#VALnil"><code class="code"><span class="constructor">BatLazyList</span>.nil</code></a> and <a href="BatLazyList.html#VALcons"><code class="code"><span class="constructor">BatLazyList</span>.cons</code></a>.</p>
 
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a <a href="BatLazyList.html#TYPEnode_t">node_t</a> Lazy.t</code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a <a href="BatLazyList.html#TYPEnode_t">node_t</a> Stdlib.Lazy.t</code> </pre>
 <div class="info ">
 <div class="info-desc">
 <p>The type of a lazy list.</p>
@@ -439,7 +439,7 @@
 </div>
 </div>
 
-<pre><span id="VALlazy_fold_right"><span class="keyword">val</span> lazy_fold_right</span> : <code class="type">('a -> 'b Lazy.t -> 'b) -> 'a <a href="BatLazyList.html#TYPEt">t</a> -> 'b Lazy.t -> 'b Lazy.t</code></pre><div class="info ">
+<pre><span id="VALlazy_fold_right"><span class="keyword">val</span> lazy_fold_right</span> : <code class="type">('a -> 'b Stdlib.Lazy.t -> 'b) -><br>       'a <a href="BatLazyList.html#TYPEt">t</a> -> 'b Stdlib.Lazy.t -> 'b Stdlib.Lazy.t</code></pre><div class="info ">
 <div class="info-desc">
 <p>Lazy fold_right
    <code class="code">lazy_fold_right&nbsp;f&nbsp;(<span class="constructor">Cons</span>&nbsp;(a0,&nbsp;<span class="constructor">Cons</span>&nbsp;(a1,&nbsp;<span class="constructor">Cons</span>&nbsp;(a2,&nbsp;nil))))&nbsp;b</code> is
@@ -820,7 +820,7 @@
 </div>
 </div>
 
-<pre><span id="VALto_stream"><span class="keyword">val</span> to_stream</span> : <code class="type">'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a Stream.t</code></pre><div class="info ">
+<pre><span id="VALto_stream"><span class="keyword">val</span> to_stream</span> : <code class="type">'a <a href="BatLazyList.html#TYPEt">t</a> -> 'a Stdlib.Stream.t</code></pre><div class="info ">
 <div class="info-desc">
 <p>Lazy conversion to stream.</p>
 </div>
@@ -849,7 +849,7 @@
 </div>
 </div>
 
-<pre><span id="VALof_stream"><span class="keyword">val</span> of_stream</span> : <code class="type">'a Stream.t -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info ">
+<pre><span id="VALof_stream"><span class="keyword">val</span> of_stream</span> : <code class="type">'a Stdlib.Stream.t -> 'a <a href="BatLazyList.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Lazy conversion from stream.</p>
 </div>

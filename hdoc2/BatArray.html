@@ -37,6 +37,7 @@
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFilename" rel="Chapter" href="BatFilename.html">
 <link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
@@ -70,7 +71,6 @@
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
-<link title="BatOo" rel="Chapter" href="BatOo.html">
 <link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
@@ -219,6 +219,9 @@
 </ul>
 </div>
 
+<pre><span id="VALof_seq"><span class="keyword">val</span> of_seq</span> : <code class="type">'a Stdlib.Seq.t -> 'a array</code></pre>
+<pre><span id="VALto_seq"><span class="keyword">val</span> to_seq</span> : <code class="type">'a array -> 'a Stdlib.Seq.t</code></pre>
+<pre><span id="VALto_seqi"><span class="keyword">val</span> to_seqi</span> : <code class="type">'a array -> (int * 'a) Stdlib.Seq.t</code></pre>
 <pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -> 'a -> 'a array</code></pre><div class="info ">
 <div class="info-deprecated">
 <span class="warning">Deprecated.</span><code class="code"><span class="constructor">Array</span>.create</code> is an alias for <code class="code"><span class="constructor">Array</span>.make</code>.</div>
@@ -875,7 +878,7 @@
 </div>
 </div>
 
-<pre><span id="VALshuffle"><span class="keyword">val</span> shuffle</span> : <code class="type">?state:Random.State.t -> 'a array -> unit</code></pre><div class="info ">
+<pre><span id="VALshuffle"><span class="keyword">val</span> shuffle</span> : <code class="type">?state:Stdlib.Random.State.t -> 'a array -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">shuffle&nbsp;~state:rs&nbsp;a</code> randomly shuffles in place the elements of <code class="code">a</code>.
     The optional random state <code class="code">rs</code> allows to control the random

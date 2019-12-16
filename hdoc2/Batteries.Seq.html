@@ -38,6 +38,7 @@
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFilename" rel="Chapter" href="BatFilename.html">
 <link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
@@ -71,7 +72,6 @@
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
-<link title="BatOo" rel="Chapter" href="BatOo.html">
 <link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
@@ -521,7 +521,7 @@
 </div>
 </div>
 
-<pre><span id="VALto_buffer"><span class="keyword">val</span> to_buffer</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -> ('a -> string) -> Buffer.t -> (unit -> 'a <a href="BatSeq.html#TYPEnode">node</a>) -> unit</code></pre><div class="info ">
+<pre><span id="VALto_buffer"><span class="keyword">val</span> to_buffer</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a -> string) -> Stdlib.Buffer.t -> (unit -> 'a <a href="BatSeq.html#TYPEnode">node</a>) -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p>Convert a sequence to a string in the given buffer; eager.</p>
 </div>

@@ -33,6 +33,7 @@
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFilename" rel="Chapter" href="BatFilename.html">
 <link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
@@ -66,7 +67,6 @@
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
-<link title="BatOo" rel="Chapter" href="BatOo.html">
 <link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
@@ -110,7 +110,7 @@
 <body>
 <code class="code"><span class="keyword">sig</span><br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;position&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Lexing</span>.position&nbsp;=&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Lexing</span>.position&nbsp;=&nbsp;{<br>
 &nbsp;&nbsp;&nbsp;&nbsp;pos_fname&nbsp;:&nbsp;string;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;pos_lnum&nbsp;:&nbsp;int;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;pos_bol&nbsp;:&nbsp;int;<br>
@@ -118,9 +118,9 @@
 &nbsp;&nbsp;}<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;dummy_pos&nbsp;:&nbsp;<span class="constructor">BatLexing</span>.position<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;lexbuf&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Lexing</span>.lexbuf&nbsp;=&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Lexing</span>.lexbuf&nbsp;=&nbsp;{<br>
 &nbsp;&nbsp;&nbsp;&nbsp;refill_buff&nbsp;:&nbsp;<span class="constructor">BatLexing</span>.lexbuf&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mutable</span>&nbsp;lex_buffer&nbsp;:&nbsp;<span class="constructor">Bytes</span>.t;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mutable</span>&nbsp;lex_buffer&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Bytes</span>.t;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mutable</span>&nbsp;lex_buffer_len&nbsp;:&nbsp;int;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mutable</span>&nbsp;lex_abs_pos&nbsp;:&nbsp;int;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mutable</span>&nbsp;lex_start_pos&nbsp;:&nbsp;int;<br>
@@ -132,9 +132,10 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mutable</span>&nbsp;lex_start_p&nbsp;:&nbsp;<span class="constructor">BatLexing</span>.position;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mutable</span>&nbsp;lex_curr_p&nbsp;:&nbsp;<span class="constructor">BatLexing</span>.position;<br>
 &nbsp;&nbsp;}<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;from_input&nbsp;:&nbsp;<span class="constructor">BatIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLexing</span>.lexbuf<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;from_string&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLexing</span>.lexbuf<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;from_function&nbsp;:&nbsp;(<span class="constructor">Bytes</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLexing</span>.lexbuf<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;from_string&nbsp;:&nbsp;?with_positions:bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLexing</span>.lexbuf<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;from_function&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;?with_positions:bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(bytes&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatLexing</span>.lexbuf<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;with_positions&nbsp;:&nbsp;<span class="constructor">BatLexing</span>.lexbuf&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lexeme&nbsp;:&nbsp;<span class="constructor">BatLexing</span>.lexbuf&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lexeme_char&nbsp;:&nbsp;<span class="constructor">BatLexing</span>.lexbuf&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lexeme_start&nbsp;:&nbsp;<span class="constructor">BatLexing</span>.lexbuf&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
@@ -148,7 +149,7 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sub_lexeme_char&nbsp;:&nbsp;<span class="constructor">BatLexing</span>.lexbuf&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sub_lexeme_char_opt&nbsp;:&nbsp;<span class="constructor">BatLexing</span>.lexbuf&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char&nbsp;option<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;lex_tables&nbsp;=<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Lexing</span>.lex_tables&nbsp;=&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Lexing</span>.lex_tables&nbsp;=&nbsp;{<br>
 &nbsp;&nbsp;&nbsp;&nbsp;lex_base&nbsp;:&nbsp;string;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;lex_backtrk&nbsp;:&nbsp;string;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;lex_default&nbsp;:&nbsp;string;<br>

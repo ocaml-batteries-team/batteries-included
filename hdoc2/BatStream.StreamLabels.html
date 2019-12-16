@@ -36,6 +36,7 @@
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFilename" rel="Chapter" href="BatFilename.html">
 <link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
@@ -69,7 +70,6 @@
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
-<link title="BatOo" rel="Chapter" href="BatOo.html">
 <link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
@@ -123,7 +123,7 @@
 <p>See the complete <code class="code"><span class="constructor">Stream</span></code> module for the function documentations.</p>
 
 <pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">f:('a -> unit) -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a> -> unit</code></pre>
-<pre><span id="VALto_string_fmt"><span class="keyword">val</span> to_string_fmt</span> : <code class="type">fmt:('a -> string, unit, string) Pervasives.format -><br>       'a <a href="BatStream.html#TYPEt">BatStream.t</a> -> string</code></pre>
+<pre><span id="VALto_string_fmt"><span class="keyword">val</span> to_string_fmt</span> : <code class="type">fmt:('a -> string, unit, string) Stdlib.format -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a> -> string</code></pre>
 <pre><span id="VALto_string_fun"><span class="keyword">val</span> to_string_fun</span> : <code class="type">fn:('a -> string) -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a> -> string</code></pre>
 <pre><span id="VALfoldl"><span class="keyword">val</span> foldl</span> : <code class="type">f:('a -> 'b -> 'a * bool option) -> init:'a -> 'b <a href="BatStream.html#TYPEt">BatStream.t</a> -> 'a</code></pre>
 <pre><span id="VALfoldr"><span class="keyword">val</span> foldr</span> : <code class="type">f:('a -> 'b lazy_t -> 'b) -> init:'b -> 'a <a href="BatStream.html#TYPEt">BatStream.t</a> -> 'b</code></pre>

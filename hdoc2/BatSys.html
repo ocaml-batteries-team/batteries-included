@@ -38,6 +38,7 @@
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFilename" rel="Chapter" href="BatFilename.html">
 <link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
@@ -71,7 +72,6 @@
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
-<link title="BatOo" rel="Chapter" href="BatOo.html">
 <link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
@@ -240,7 +240,7 @@
 </div>
 </div>
 
-<pre><span id="VALinteractive"><span class="keyword">val</span> interactive</span> : <code class="type">bool Pervasives.ref</code></pre><div class="info ">
+<pre><span id="VALinteractive"><span class="keyword">val</span> interactive</span> : <code class="type">bool Stdlib.ref</code></pre><div class="info ">
 <div class="info-desc">
 <p>This reference is initially set to <code class="code"><span class="keyword">false</span></code> in standalone
     programs and to <code class="code"><span class="keyword">true</span></code> if the code is being executed under
@@ -259,7 +259,7 @@
 </div>
 </div>
 
-<pre><span id="TYPEbackend_type"><span class="keyword">type</span> <code class="type"></code>backend_type</span> = <code class="type">Sys.backend_type</code> = </pre><table class="typetable">
+<pre><span id="TYPEbackend_type"><span class="keyword">type</span> <code class="type"></code>backend_type</span> = <code class="type">Stdlib.Sys.backend_type</code> = </pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
@@ -370,6 +370,14 @@
 </div>
 </div>
 
+<pre><span id="VALmax_floatarray_length"><span class="keyword">val</span> max_floatarray_length</span> : <code class="type">int</code></pre><div class="info ">
+<div class="info-desc">
+<p>Maximum length of a floatarray. This is also the maximum length of
+    a <code class="code">float&nbsp;array</code> when OCaml is configured with
+    <code class="code">--enable-flat-float-array</code>.</p>
+</div>
+</div>
+
 <pre><span id="VALruntime_variant"><span class="keyword">val</span> runtime_variant</span> : <code class="type">unit -> string</code></pre><div class="info ">
 <div class="info-desc">
 <p>Return the name of the runtime variant the program is running on.
@@ -391,7 +399,7 @@
 </ul>
 </div>
 <h7 id="6_Signalhandling">Signal handling</h7>
-<pre><span id="TYPEsignal_behavior"><span class="keyword">type</span> <code class="type"></code>signal_behavior</span> = <code class="type">Sys.signal_behavior</code> = </pre><table class="typetable">
+<pre><span id="TYPEsignal_behavior"><span class="keyword">type</span> <code class="type"></code>signal_behavior</span> = <code class="type">Stdlib.Sys.signal_behavior</code> = </pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>

@@ -37,6 +37,7 @@
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFilename" rel="Chapter" href="BatFilename.html">
 <link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
@@ -70,7 +71,6 @@
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
-<link title="BatOo" rel="Chapter" href="BatOo.html">
 <link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
@@ -141,7 +141,7 @@
 
 <h7 id="6_Constructors">Constructors</h7>
 <pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">int -> ('a, 'b, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre>
-<pre><span id="VALof_table"><span class="keyword">val</span> of_table</span> : <code class="type">('a, 'b) Hashtbl.t -> ('a, 'b, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre><div class="info ">
+<pre><span id="VALof_table"><span class="keyword">val</span> of_table</span> : <code class="type">('a, 'b) Stdlib.Hashtbl.t -> ('a, 'b, [< `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Adopt a regular hashtable as a capability hashtble, allowing
       to decrease capabilities if necessary.</p>
@@ -152,7 +152,7 @@
 </div>
 </div>
 
-<pre><span id="VALto_table"><span class="keyword">val</span> to_table</span> : <code class="type">('a, 'b, [ `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> ('a, 'b) Hashtbl.t</code></pre><div class="info ">
+<pre><span id="VALto_table"><span class="keyword">val</span> to_table</span> : <code class="type">('a, 'b, [ `Read | `Write ]) <a href="BatHashtbl.Cap.html#TYPEt">t</a> -> ('a, 'b) Stdlib.Hashtbl.t</code></pre><div class="info ">
 <div class="info-desc">
 <p>Return a capability hashtable as a regular hashtable.</p>
 

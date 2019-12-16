@@ -33,6 +33,7 @@
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFilename" rel="Chapter" href="BatFilename.html">
 <link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
@@ -66,7 +67,6 @@
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
-<link title="BatOo" rel="Chapter" href="BatOo.html">
 <link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
@@ -118,7 +118,9 @@
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;sub&nbsp;:&nbsp;nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;nativeint&nbsp;=&nbsp;<span class="string">"%nativeint_sub"</span><br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;mul&nbsp;:&nbsp;nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;nativeint&nbsp;=&nbsp;<span class="string">"%nativeint_mul"</span><br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;div&nbsp;:&nbsp;nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;nativeint&nbsp;=&nbsp;<span class="string">"%nativeint_div"</span><br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unsigned_div&nbsp;:&nbsp;nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;nativeint<br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;rem&nbsp;:&nbsp;nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;nativeint&nbsp;=&nbsp;<span class="string">"%nativeint_mod"</span><br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unsigned_rem&nbsp;:&nbsp;nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;nativeint<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;succ&nbsp;:&nbsp;nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;nativeint<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;pred&nbsp;:&nbsp;nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;nativeint<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;abs&nbsp;:&nbsp;nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;nativeint<br>
@@ -137,6 +139,7 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;---&nbsp;)&nbsp;:&nbsp;<span class="constructor">BatNativeint</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatNativeint</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatNativeint</span>.t&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;of_int&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;nativeint&nbsp;=&nbsp;<span class="string">"%nativeint_of_int"</span><br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;to_int&nbsp;:&nbsp;nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;=&nbsp;<span class="string">"%nativeint_to_int"</span><br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unsigned_to_int&nbsp;:&nbsp;nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;option<br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;of_float&nbsp;:&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;nativeint&nbsp;=&nbsp;<span class="string">"caml_nativeint_of_float"</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"caml_nativeint_of_float_unboxed"</span>&nbsp;[@@unboxed]&nbsp;[@@noalloc]<br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;to_float&nbsp;:&nbsp;nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;=&nbsp;<span class="string">"caml_nativeint_to_float"</span><br>
@@ -149,6 +152,7 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;of_string_opt&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;nativeint&nbsp;option<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;to_string&nbsp;:&nbsp;nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;compare&nbsp;:&nbsp;<span class="constructor">BatNativeint</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatNativeint</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unsigned_compare&nbsp;:&nbsp;<span class="constructor">BatNativeint</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatNativeint</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;equal&nbsp;:&nbsp;<span class="constructor">BatNativeint</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatNativeint</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;ord&nbsp;:&nbsp;<span class="constructor">BatNativeint</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatNativeint</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatOrd</span>.order<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;modulo&nbsp;:&nbsp;nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;nativeint&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;nativeint<br>

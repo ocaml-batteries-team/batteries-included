@@ -38,6 +38,7 @@
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFilename" rel="Chapter" href="BatFilename.html">
 <link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
@@ -71,7 +72,6 @@
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
-<link title="BatOo" rel="Chapter" href="BatOo.html">
 <link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
@@ -1506,7 +1506,13 @@
 </div>
 </div>
 
-<pre><span id="VALread"><span class="keyword">val</span> read</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> Bytes.t -> int -> int -> int</code></pre><div class="info ">
+<pre><span id="VALfsync"><span class="keyword">val</span> fsync</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Flush file buffers to disk.</p>
+</div>
+</div>
+
+<pre><span id="VALread"><span class="keyword">val</span> read</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> Stdlib.Bytes.t -> int -> int -> int</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">read&nbsp;fd&nbsp;buff&nbsp;ofs&nbsp;len</code> reads <code class="code">len</code> characters from descriptor
     <code class="code">fd</code>, storing them in string <code class="code">buff</code>, starting at position <code class="code">ofs</code>
@@ -1514,7 +1520,7 @@
 </div>
 </div>
 
-<pre><span id="VALwrite"><span class="keyword">val</span> write</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> Bytes.t -> int -> int -> int</code></pre><div class="info ">
+<pre><span id="VALwrite"><span class="keyword">val</span> write</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> Stdlib.Bytes.t -> int -> int -> int</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">write&nbsp;fd&nbsp;buff&nbsp;ofs&nbsp;len</code> writes <code class="code">len</code> characters to descriptor
     <code class="code">fd</code>, taking them from string <code class="code">buff</code>, starting at position <code class="code">ofs</code>
@@ -1524,7 +1530,7 @@
 </div>
 </div>
 
-<pre><span id="VALsingle_write"><span class="keyword">val</span> single_write</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> Bytes.t -> int -> int -> int</code></pre><div class="info ">
+<pre><span id="VALsingle_write"><span class="keyword">val</span> single_write</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> Stdlib.Bytes.t -> int -> int -> int</code></pre><div class="info ">
 <div class="info-desc">
 <p>Same as <code class="code">write</code>, but attempts to write only once.
     Thus, if an error occurs, <code class="code">single_write</code> guarantees that no data
@@ -1973,7 +1979,7 @@
 
 </div>
 <h7 id="6_Mappingfilesintomemory">Mapping files into memory</h7>
-<pre><span id="VALmap_file"><span class="keyword">val</span> map_file</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -><br>       ?pos:int64 -><br>       ('a, 'b) CamlinternalBigarray.kind -><br>       'c CamlinternalBigarray.layout -><br>       bool -> int array -> ('a, 'b, 'c) CamlinternalBigarray.genarray</code></pre><div class="info ">
+<pre><span id="VALmap_file"><span class="keyword">val</span> map_file</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -><br>       ?pos:int64 -><br>       ('a, 'b) Bigarray.kind -><br>       'c Bigarray.layout -> bool -> int array -> ('a, 'b, 'c) Bigarray.Genarray.t</code></pre><div class="info ">
 <div class="info-desc">
 <p>Memory mapping of a file as a big array.
   <code class="code">map_file&nbsp;fd&nbsp;kind&nbsp;layout&nbsp;shared&nbsp;dims</code>
@@ -2038,12 +2044,23 @@
 </div>
 </div>
 
-<pre><span id="VALlink"><span class="keyword">val</span> link</span> : <code class="type">string -> string -> unit</code></pre><div class="info ">
+<pre><span id="VALlink"><span class="keyword">val</span> link</span> : <code class="type">?follow:bool -> string -> string -> unit</code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">link&nbsp;source&nbsp;dest</code> creates a hard link named <code class="code">dest</code> to the file
-    named <code class="code">source</code>.</p>
+<p><code class="code">link&nbsp;?follow&nbsp;source&nbsp;dest</code> creates a hard link named <code class="code">dest</code> to the file
+   named <code class="code">source</code>.</p>
 </div>
+<ul class="info-attributes">
+<li><b>Raises</b><ul><li><code>ENOSYS</code> On <em>Unix</em> if <code class="code">~follow:_</code> is requested, but linkat is
+                 unavailable.</li>
+<li><code>ENOSYS</code> On <em>Windows</em> if <code class="code">~follow:<span class="keyword">false</span></code> is requested.</li>
+</ul></li>
+</ul>
 </div>
+<div class="param_info"><code class="code">follow</code> : indicates whether a <code class="code">source</code> symlink is followed or a
+   hardlink to <code class="code">source</code> itself will be created. On <em>Unix</em> systems this is
+   done using the <code class="code">linkat(2)</code> function. If <code class="code">?follow</code> is not provided, then the
+   <code class="code">link(2)</code> function is used whose behaviour is OS-dependent, but more widely
+   available.</div>
 <h7 id="6_Filepermissionsandownership">File permissions and ownership</h7>
 <pre><span id="TYPEaccess_permission"><span class="keyword">type</span> <code class="type"></code>access_permission</span> = <code class="type">Unix.access_permission</code> = </pre><table class="typetable">
 <tr>
@@ -2342,6 +2359,96 @@
     do nothing, in which case you will need to close
     the process yourself to ensure proper cleanup.</div>
 
+<pre><span id="VALopen_process_args_in"><span class="keyword">val</span> open_process_args_in</span> : <code class="type">string -> string array -> Stdlib.in_channel</code></pre><div class="info ">
+<div class="info-desc">
+<p>High-level pipe and process management. The first argument specifies the
+   command to run, and the second argument specifies the argument array passed
+   to the command.  This function runs the command in parallel with the program.
+   The standard output of the command is redirected to a pipe, which can be read
+   via the returned input channel.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08.0</li>
+</ul>
+</div>
+
+<pre><span id="VALopen_process_args_out"><span class="keyword">val</span> open_process_args_out</span> : <code class="type">string -> string array -> Stdlib.out_channel</code></pre><div class="info ">
+<div class="info-desc">
+<p>Same as <code class="code"><span class="constructor">Unix</span>.open_process_args_in</code>, but redirect the standard input of the
+   command to a pipe.  Data written to the returned output channel is sent to
+   the standard input of the command.  Warning: writes on output channels are
+   buffered, hence be careful to call <code class="code"><span class="constructor">Stdlib</span>.flush</code> at the right times to
+   ensure correct synchronization.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08.0</li>
+</ul>
+</div>
+
+<pre><span id="VALopen_process_args"><span class="keyword">val</span> open_process_args</span> : <code class="type">string -> string array -> Stdlib.in_channel * Stdlib.out_channel</code></pre><div class="info ">
+<div class="info-desc">
+<p>Same as <code class="code"><span class="constructor">Unix</span>.open_process_args_out</code>, but redirects both the standard input
+   and standard output of the command to pipes connected to the two returned
+   channels.  The input channel is connected to the output of the command, and
+   the output channel to the input of the command.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08.0</li>
+</ul>
+</div>
+
+<pre><span id="VALopen_process_args_full"><span class="keyword">val</span> open_process_args_full</span> : <code class="type">string -><br>       string array -><br>       string array -> Stdlib.in_channel * Stdlib.out_channel * Stdlib.in_channel</code></pre><div class="info ">
+<div class="info-desc">
+<p>Similar to <code class="code"><span class="constructor">Unix</span>.open_process_args</code>, but the third argument specifies the
+   environment passed to the command.  The result is a triple of channels
+   connected respectively to the standard output, standard input, and standard
+   error of the command.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08.0</li>
+</ul>
+</div>
+
+<pre><span id="VALprocess_in_pid"><span class="keyword">val</span> process_in_pid</span> : <code class="type">Stdlib.in_channel -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p>Return the pid of a process opened via <code class="code"><span class="constructor">Unix</span>.open_process_in</code> or
+   <code class="code"><span class="constructor">Unix</span>.open_process_args_in</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08.0</li>
+</ul>
+</div>
+
+<pre><span id="VALprocess_out_pid"><span class="keyword">val</span> process_out_pid</span> : <code class="type">Stdlib.out_channel -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p>Return the pid of a process opened via <code class="code"><span class="constructor">Unix</span>.open_process_out</code> or
+   <code class="code"><span class="constructor">Unix</span>.open_process_args_out</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08.0</li>
+</ul>
+</div>
+
+<pre><span id="VALprocess_pid"><span class="keyword">val</span> process_pid</span> : <code class="type">Stdlib.in_channel * Stdlib.out_channel -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p>Return the pid of a process opened via <code class="code"><span class="constructor">Unix</span>.open_process</code> or
+   <code class="code"><span class="constructor">Unix</span>.open_process_args</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08.0</li>
+</ul>
+</div>
+
+<pre><span id="VALprocess_full_pid"><span class="keyword">val</span> process_full_pid</span> : <code class="type">Stdlib.in_channel * Stdlib.out_channel * Stdlib.in_channel -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p>Return the pid of a process opened via <code class="code"><span class="constructor">Unix</span>.open_process_full</code> or
+   <code class="code"><span class="constructor">Unix</span>.open_process_args_full</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08.0</li>
+</ul>
+</div>
+
 <pre><span id="VALclose_process_in"><span class="keyword">val</span> close_process_in</span> : <code class="type"><a href="BatInnerIO.html#TYPEinput">BatInnerIO.input</a> -> <a href="BatUnix.html#TYPEprocess_status">process_status</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Close <code class="code">input</code> opened by <code class="code"><span class="constructor">Unix</span>.open_process_in</code>,
@@ -2602,6 +2709,19 @@
     It returns immediately if successful, or fails otherwise.</p>
 </div>
 </div>
+
+<pre><span id="VALwith_locked_file"><span class="keyword">val</span> with_locked_file</span> : <code class="type">kind:[ `Read | `Write ] -> string -> (<a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> 'a) -> 'a</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">with_locked_file&nbsp;~kind&nbsp;filename&nbsp;f</code> puts a lock (using lockf) on the whole
+    file named <code class="code">filename</code>, calls <code class="code">f</code> with the file descriptor, and returns
+    its result after the file is unlocked.
+    The file is opened with permissions matching <code class="code">kind</code>, and created if it
+    does not exist yet.
+    If <code class="code">f&nbsp;()</code> raises an exception the exception is re-raised after the file
+    is unlocked.</p>
+</div>
+</div>
+<div class="param_info"><code class="code">kind</code> : specifies whether the lock is read-only or read-write.</div>
 <h7 id="6_Signals">Signals</h7><p>Note: installation of signal handlers is performed via
     the functions <code class="code"><span class="constructor">Sys</span>.signal</code> and <code class="code"><span class="constructor">Sys</span>.set_signal</code>.</p>
 
@@ -2904,7 +3024,7 @@
     but fractions of seconds are supported.</p>
 </div>
 <ul class="info-attributes">
-<li><b>Since</b> 2.5.0 and OCaml 4.03</li>
+<li><b>Since</b> 2.5.0</li>
 </ul>
 </div>
 
@@ -3555,19 +3675,19 @@
 
 
 
-<pre><span id="VALrecv"><span class="keyword">val</span> recv</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> Bytes.t -> int -> int -> <a href="BatUnix.html#TYPEmsg_flag">msg_flag</a> list -> int</code></pre><div class="info ">
+<pre><span id="VALrecv"><span class="keyword">val</span> recv</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -><br>       Stdlib.Bytes.t -> int -> int -> <a href="BatUnix.html#TYPEmsg_flag">msg_flag</a> list -> int</code></pre><div class="info ">
 <div class="info-desc">
 <p>Receive data from a connected socket.</p>
 </div>
 </div>
 
-<pre><span id="VALrecvfrom"><span class="keyword">val</span> recvfrom</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -><br>       Bytes.t -> int -> int -> <a href="BatUnix.html#TYPEmsg_flag">msg_flag</a> list -> int * <a href="BatUnix.html#TYPEsockaddr">sockaddr</a></code></pre><div class="info ">
+<pre><span id="VALrecvfrom"><span class="keyword">val</span> recvfrom</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -><br>       Stdlib.Bytes.t -><br>       int -> int -> <a href="BatUnix.html#TYPEmsg_flag">msg_flag</a> list -> int * <a href="BatUnix.html#TYPEsockaddr">sockaddr</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Receive data from an unconnected socket.</p>
 </div>
 </div>
 
-<pre><span id="VALsend"><span class="keyword">val</span> send</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -> Bytes.t -> int -> int -> <a href="BatUnix.html#TYPEmsg_flag">msg_flag</a> list -> int</code></pre><div class="info ">
+<pre><span id="VALsend"><span class="keyword">val</span> send</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -><br>       Stdlib.Bytes.t -> int -> int -> <a href="BatUnix.html#TYPEmsg_flag">msg_flag</a> list -> int</code></pre><div class="info ">
 <div class="info-desc">
 <p>Send data over a connected socket.</p>
 </div>
@@ -3583,7 +3703,7 @@
 </ul>
 </div>
 
-<pre><span id="VALsendto"><span class="keyword">val</span> sendto</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -><br>       Bytes.t -> int -> int -> <a href="BatUnix.html#TYPEmsg_flag">msg_flag</a> list -> <a href="BatUnix.html#TYPEsockaddr">sockaddr</a> -> int</code></pre><div class="info ">
+<pre><span id="VALsendto"><span class="keyword">val</span> sendto</span> : <code class="type"><a href="BatUnix.html#TYPEfile_descr">file_descr</a> -><br>       Stdlib.Bytes.t -><br>       int -> int -> <a href="BatUnix.html#TYPEmsg_flag">msg_flag</a> list -> <a href="BatUnix.html#TYPEsockaddr">sockaddr</a> -> int</code></pre><div class="info ">
 <div class="info-desc">
 <p>Send data over an unconnected socket.</p>
 </div>
@@ -5054,7 +5174,7 @@
 <p>Unless you are attempting to adapt Batteries Included to a new model of
    concurrency, you probably won't need this.</p>
 
-<pre><span id="VALlock"><span class="keyword">val</span> lock</span> : <code class="type"><a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a> Pervasives.ref</code></pre><div class="info ">
+<pre><span id="VALlock"><span class="keyword">val</span> lock</span> : <code class="type"><a href="BatConcurrent.html#TYPElock">BatConcurrent.lock</a> Stdlib.ref</code></pre><div class="info ">
 <div class="info-desc">
 <p>A lock used to synchronize internal operations.</p>
 

@@ -33,6 +33,7 @@
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFilename" rel="Chapter" href="BatFilename.html">
 <link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
@@ -66,7 +67,6 @@
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
-<link title="BatOo" rel="Chapter" href="BatOo.html">
 <link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
@@ -109,10 +109,10 @@
 </head>
 <body>
 <code class="code"><span class="keyword">sig</span><br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_lines&nbsp;:&nbsp;<span class="constructor">Pervasives</span>.in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="constructor">BatEnum</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_chars&nbsp;:&nbsp;<span class="constructor">Pervasives</span>.in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char&nbsp;<span class="constructor">BatEnum</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_list&nbsp;:&nbsp;<span class="constructor">Pervasives</span>.in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;list<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_all&nbsp;:&nbsp;<span class="constructor">Pervasives</span>.in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_lines&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Pervasives</span>.in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="constructor">BatEnum</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_chars&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Pervasives</span>.in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char&nbsp;<span class="constructor">BatEnum</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_list&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Pervasives</span>.in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;list<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_all&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Pervasives</span>.in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;dump&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;print_any&nbsp;:&nbsp;<span class="keywordsign">'</span>b&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;@&nbsp;)&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;list<br>
@@ -133,11 +133,11 @@
 &nbsp;&nbsp;&nbsp;&nbsp;?perm:<span class="constructor">BatFile</span>.permission&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_out_bin&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_out_gen&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Pervasives</span>.open_flag&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stdlib</span>.open_flag&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;flush&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_char&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_string&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Bytes</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Bytes</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_substring&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_byte&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_binary_int&nbsp;:&nbsp;unit&nbsp;<span class="constructor">BatIO</span>.output&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
@@ -150,11 +150,11 @@
 &nbsp;&nbsp;&nbsp;&nbsp;?mode:<span class="constructor">BatFile</span>.open_in_flag&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;?perm:<span class="constructor">BatFile</span>.permission&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatIO</span>.input<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_in_bin&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatIO</span>.input<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_in_gen&nbsp;:&nbsp;<span class="constructor">Pervasives</span>.open_flag&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatIO</span>.input<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_in_gen&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.open_flag&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatIO</span>.input<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_char&nbsp;:&nbsp;<span class="constructor">BatIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_line&nbsp;:&nbsp;<span class="constructor">BatIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input&nbsp;:&nbsp;<span class="constructor">BatIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Bytes</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;really_input&nbsp;:&nbsp;<span class="constructor">BatIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Bytes</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input&nbsp;:&nbsp;<span class="constructor">BatIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Bytes</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;really_input&nbsp;:&nbsp;<span class="constructor">BatIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Bytes</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_byte&nbsp;:&nbsp;<span class="constructor">BatIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_binary_int&nbsp;:&nbsp;<span class="constructor">BatIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_binary_float&nbsp;:&nbsp;<span class="constructor">BatIO</span>.input&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float<br>
@@ -182,7 +182,7 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;ignore_exceptions&nbsp;:&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;verify_arg&nbsp;:&nbsp;bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;args&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="constructor">BatEnum</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;invisible_args&nbsp;:&nbsp;int&nbsp;<span class="constructor">Pervasives</span>.ref<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;invisible_args&nbsp;:&nbsp;int&nbsp;<span class="constructor">Stdlib</span>.ref<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;exe&nbsp;:&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;foreach&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;iter&nbsp;:&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">BatEnum</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
@@ -223,5 +223,5 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;ignore_ok&nbsp;:&nbsp;(<span class="keywordsign">'</span>a,&nbsp;exn)&nbsp;<span class="constructor">BatPervasives</span>.result&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;ok&nbsp;:&nbsp;(<span class="keywordsign">'</span>a,&nbsp;exn)&nbsp;<span class="constructor">BatPervasives</span>.result&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;wrap&nbsp;:&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>b,&nbsp;exn)&nbsp;<span class="constructor">BatPervasives</span>.result<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lock&nbsp;:&nbsp;<span class="constructor">BatConcurrent</span>.lock&nbsp;<span class="constructor">Pervasives</span>.ref<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lock&nbsp;:&nbsp;<span class="constructor">BatConcurrent</span>.lock&nbsp;<span class="constructor">Stdlib</span>.ref<br>
 <span class="keyword">end</span></code></body></html>

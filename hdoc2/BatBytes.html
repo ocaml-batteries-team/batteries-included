@@ -38,6 +38,7 @@
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFilename" rel="Chapter" href="BatFilename.html">
 <link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
@@ -71,7 +72,6 @@
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
-<link title="BatOo" rel="Chapter" href="BatOo.html">
 <link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
@@ -110,7 +110,9 @@
 <link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Unsafe conversions (for advanced users)" rel="Section" href="#4_Unsafeconversionsforadvancedusers">
+<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Iterators" rel="Section" href="#1_Iterators">
+<link title="Binary encoding/decoding of integers" rel="Section" href="#1_Binaryencodingdecodingofintegers">
+<link title="Unsafe conversions (for advanced users)" rel="Subsection" href="#4_Unsafeconversionsforadvancedusers">
 <title>Batteries user guide : BatBytes</title>
 </head>
 <body>
@@ -701,5 +703,338 @@
     (for example <code class="code"><span class="constructor">Marshal</span>.from_bytes</code>) and previously used the
     <code class="code">string</code> type for this purpose.</p>
 </div>
+</div>
+<h2 id="1_Iterators">Iterators</h2>
+<pre><span id="VALto_seq"><span class="keyword">val</span> to_seq</span> : <code class="type"><a href="BatBytes.html#TYPEt">t</a> -> char Stdlib.Seq.t</code></pre><div class="info ">
+<div class="info-desc">
+<p>Iterate on the string, in increasing index order. Modifications of the
+    string during iteration will be reflected in the iterator.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.07</li>
+</ul>
+</div>
+
+<pre><span id="VALto_seqi"><span class="keyword">val</span> to_seqi</span> : <code class="type"><a href="BatBytes.html#TYPEt">t</a> -> (int * char) Stdlib.Seq.t</code></pre><div class="info ">
+<div class="info-desc">
+<p>Iterate on the string, in increasing order, yielding indices along chars</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.07</li>
+</ul>
+</div>
+
+<pre><span id="VALof_seq"><span class="keyword">val</span> of_seq</span> : <code class="type">char Stdlib.Seq.t -> <a href="BatBytes.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Create a string from the generator</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.07</li>
+</ul>
+</div>
+<h2 id="1_Binaryencodingdecodingofintegers">Binary encoding/decoding of integers</h2><p>The functions in this section binary encode and decode integers to
+    and from byte sequences.</p>
+
+<p>All following functions raise <code class="code"><span class="constructor">Invalid_argument</span></code> if the space
+    needed at index <code class="code">i</code> to decode or encode the integer is not
+    available.</p>
+
+<p>Little-endian (resp. big-endian) encoding means that least
+    (resp. most) significant bytes are stored first.  Big-endian is
+    also known as network byte order.  Native-endian encoding is
+    either little-endian or big-endian depending on <code class="code"><span class="constructor">Sys</span>.big_endian</code>.</p>
+
+<p>32-bit and 64-bit integers are represented by the <code class="code">int32</code> and
+    <code class="code">int64</code> types, which can be interpreted either as signed or
+    unsigned numbers.</p>
+
+<p>8-bit and 16-bit integers are represented by the <code class="code">int</code> type,
+    which has more bits than the binary encoding.  These extra bits
+    are handled as follows:</p>
+<ul>
+<li>Functions that decode signed (resp. unsigned) 8-bit or 16-bit
+    integers represented by <code class="code">int</code> values sign-extend
+    (resp. zero-extend) their result.</li>
+<li>Functions that encode 8-bit or 16-bit integers represented by
+    <code class="code">int</code> values truncate their input to their least significant
+    bytes.</li>
+</ul>
+
+<pre><span id="VALget_uint8"><span class="keyword">val</span> get_uint8</span> : <code class="type">bytes -> int -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_uint8&nbsp;b&nbsp;i</code> is <code class="code">b</code>'s unsigned 8-bit integer starting at byte index <code class="code">i</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALget_int8"><span class="keyword">val</span> get_int8</span> : <code class="type">bytes -> int -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_int8&nbsp;b&nbsp;i</code> is <code class="code">b</code>'s signed 8-bit integer starting at byte index <code class="code">i</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALget_uint16_ne"><span class="keyword">val</span> get_uint16_ne</span> : <code class="type">bytes -> int -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_uint16_ne&nbsp;b&nbsp;i</code> is <code class="code">b</code>'s native-endian unsigned 16-bit integer
+    starting at byte index <code class="code">i</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALget_uint16_be"><span class="keyword">val</span> get_uint16_be</span> : <code class="type">bytes -> int -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_uint16_be&nbsp;b&nbsp;i</code> is <code class="code">b</code>'s big-endian unsigned 16-bit integer
+    starting at byte index <code class="code">i</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALget_uint16_le"><span class="keyword">val</span> get_uint16_le</span> : <code class="type">bytes -> int -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_uint16_le&nbsp;b&nbsp;i</code> is <code class="code">b</code>'s little-endian unsigned 16-bit integer
+    starting at byte index <code class="code">i</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALget_int16_ne"><span class="keyword">val</span> get_int16_ne</span> : <code class="type">bytes -> int -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_int16_ne&nbsp;b&nbsp;i</code> is <code class="code">b</code>'s native-endian signed 16-bit integer
+    starting at byte index <code class="code">i</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALget_int16_be"><span class="keyword">val</span> get_int16_be</span> : <code class="type">bytes -> int -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_int16_be&nbsp;b&nbsp;i</code> is <code class="code">b</code>'s big-endian signed 16-bit integer
+    starting at byte index <code class="code">i</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALget_int16_le"><span class="keyword">val</span> get_int16_le</span> : <code class="type">bytes -> int -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_int16_le&nbsp;b&nbsp;i</code> is <code class="code">b</code>'s little-endian signed 16-bit integer
+    starting at byte index <code class="code">i</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALget_int32_ne"><span class="keyword">val</span> get_int32_ne</span> : <code class="type">bytes -> int -> int32</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_int32_ne&nbsp;b&nbsp;i</code> is <code class="code">b</code>'s native-endian 32-bit integer
+    starting at byte index <code class="code">i</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALget_int32_be"><span class="keyword">val</span> get_int32_be</span> : <code class="type">bytes -> int -> int32</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_int32_be&nbsp;b&nbsp;i</code> is <code class="code">b</code>'s big-endian 32-bit integer
+    starting at byte index <code class="code">i</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALget_int32_le"><span class="keyword">val</span> get_int32_le</span> : <code class="type">bytes -> int -> int32</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_int32_le&nbsp;b&nbsp;i</code> is <code class="code">b</code>'s little-endian 32-bit integer
+    starting at byte index <code class="code">i</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALget_int64_ne"><span class="keyword">val</span> get_int64_ne</span> : <code class="type">bytes -> int -> int64</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_int64_ne&nbsp;b&nbsp;i</code> is <code class="code">b</code>'s native-endian 64-bit integer
+    starting at byte index <code class="code">i</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALget_int64_be"><span class="keyword">val</span> get_int64_be</span> : <code class="type">bytes -> int -> int64</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_int64_be&nbsp;b&nbsp;i</code> is <code class="code">b</code>'s big-endian 64-bit integer
+    starting at byte index <code class="code">i</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALget_int64_le"><span class="keyword">val</span> get_int64_le</span> : <code class="type">bytes -> int -> int64</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_int64_le&nbsp;b&nbsp;i</code> is <code class="code">b</code>'s little-endian 64-bit integer
+    starting at byte index <code class="code">i</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALset_uint8"><span class="keyword">val</span> set_uint8</span> : <code class="type">bytes -> int -> int -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">set_uint8&nbsp;b&nbsp;i&nbsp;v</code> sets <code class="code">b</code>'s unsigned 8-bit integer starting at byte index
+    <code class="code">i</code> to <code class="code">v</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALset_int8"><span class="keyword">val</span> set_int8</span> : <code class="type">bytes -> int -> int -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">set_int8&nbsp;b&nbsp;i&nbsp;v</code> sets <code class="code">b</code>'s signed 8-bit integer starting at byte index
+    <code class="code">i</code> to <code class="code">v</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALset_uint16_ne"><span class="keyword">val</span> set_uint16_ne</span> : <code class="type">bytes -> int -> int -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">set_uint16_ne&nbsp;b&nbsp;i&nbsp;v</code> sets <code class="code">b</code>'s native-endian unsigned 16-bit integer
+    starting at byte index <code class="code">i</code> to <code class="code">v</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALset_uint16_be"><span class="keyword">val</span> set_uint16_be</span> : <code class="type">bytes -> int -> int -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">set_uint16_be&nbsp;b&nbsp;i&nbsp;v</code> sets <code class="code">b</code>'s big-endian unsigned 16-bit integer
+    starting at byte index <code class="code">i</code> to <code class="code">v</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALset_uint16_le"><span class="keyword">val</span> set_uint16_le</span> : <code class="type">bytes -> int -> int -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">set_uint16_le&nbsp;b&nbsp;i&nbsp;v</code> sets <code class="code">b</code>'s little-endian unsigned 16-bit integer
+    starting at byte index <code class="code">i</code> to <code class="code">v</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALset_int16_ne"><span class="keyword">val</span> set_int16_ne</span> : <code class="type">bytes -> int -> int -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">set_int16_ne&nbsp;b&nbsp;i&nbsp;v</code> sets <code class="code">b</code>'s native-endian signed 16-bit integer
+    starting at byte index <code class="code">i</code> to <code class="code">v</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALset_int16_be"><span class="keyword">val</span> set_int16_be</span> : <code class="type">bytes -> int -> int -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">set_int16_be&nbsp;b&nbsp;i&nbsp;v</code> sets <code class="code">b</code>'s big-endian signed 16-bit integer
+    starting at byte index <code class="code">i</code> to <code class="code">v</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALset_int16_le"><span class="keyword">val</span> set_int16_le</span> : <code class="type">bytes -> int -> int -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">set_int16_le&nbsp;b&nbsp;i&nbsp;v</code> sets <code class="code">b</code>'s little-endian signed 16-bit integer
+    starting at byte index <code class="code">i</code> to <code class="code">v</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALset_int32_ne"><span class="keyword">val</span> set_int32_ne</span> : <code class="type">bytes -> int -> int32 -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">set_int32_ne&nbsp;b&nbsp;i&nbsp;v</code> sets <code class="code">b</code>'s native-endian 32-bit integer
+    starting at byte index <code class="code">i</code> to <code class="code">v</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALset_int32_be"><span class="keyword">val</span> set_int32_be</span> : <code class="type">bytes -> int -> int32 -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">set_int32_be&nbsp;b&nbsp;i&nbsp;v</code> sets <code class="code">b</code>'s big-endian 32-bit integer
+    starting at byte index <code class="code">i</code> to <code class="code">v</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALset_int32_le"><span class="keyword">val</span> set_int32_le</span> : <code class="type">bytes -> int -> int32 -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">set_int32_le&nbsp;b&nbsp;i&nbsp;v</code> sets <code class="code">b</code>'s little-endian 32-bit integer
+    starting at byte index <code class="code">i</code> to <code class="code">v</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALset_int64_ne"><span class="keyword">val</span> set_int64_ne</span> : <code class="type">bytes -> int -> int64 -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">set_int64_ne&nbsp;b&nbsp;i&nbsp;v</code> sets <code class="code">b</code>'s native-endian 64-bit integer
+    starting at byte index <code class="code">i</code> to <code class="code">v</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALset_int64_be"><span class="keyword">val</span> set_int64_be</span> : <code class="type">bytes -> int -> int64 -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">set_int64_be&nbsp;b&nbsp;i&nbsp;v</code> sets <code class="code">b</code>'s big-endian 64-bit integer
+    starting at byte index <code class="code">i</code> to <code class="code">v</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALset_int64_le"><span class="keyword">val</span> set_int64_le</span> : <code class="type">bytes -> int -> int64 -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">set_int64_le&nbsp;b&nbsp;i&nbsp;v</code> sets <code class="code">b</code>'s little-endian 64-bit integer
+    starting at byte index <code class="code">i</code> to <code class="code">v</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
 </div>
 </body></html>

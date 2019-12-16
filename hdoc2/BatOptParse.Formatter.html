@@ -38,6 +38,7 @@
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFilename" rel="Chapter" href="BatFilename.html">
 <link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
@@ -71,7 +72,6 @@
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
-<link title="BatOo" rel="Chapter" href="BatOo.html">
 <link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
@@ -212,7 +212,7 @@
       metavars the option takes as arguments, and <code class="code">help</code> is the help
       string supplied by the user.</p>
 <h7 id="6_Standardformatters">Standard formatters</h7>
-<pre><span id="VALindented_formatter"><span class="keyword">val</span> indented_formatter</span> : <code class="type">?level:int Pervasives.ref -><br>       ?indent:int Pervasives.ref -><br>       ?indent_increment:int -><br>       ?max_help_position:int -><br>       ?width:int -> ?short_first:bool -> unit -> <a href="BatOptParse.Formatter.html#TYPEt">t</a></code></pre><div class="info ">
+<pre><span id="VALindented_formatter"><span class="keyword">val</span> indented_formatter</span> : <code class="type">?level:int Stdlib.ref -><br>       ?indent:int Stdlib.ref -><br>       ?indent_increment:int -><br>       ?max_help_position:int -><br>       ?width:int -> ?short_first:bool -> unit -> <a href="BatOptParse.Formatter.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Create an "indented" formatter with the given options.</p>
 </div>
@@ -228,7 +228,7 @@
 <div class="param_info"><code class="code">width</code> : Total with of the usage messages printed.</div>
 <div class="param_info"><code class="code">short_first</code> : List all the short option names first?</div>
 
-<pre><span id="VALtitled_formatter"><span class="keyword">val</span> titled_formatter</span> : <code class="type">?level:int Pervasives.ref -><br>       ?indent:int Pervasives.ref -><br>       ?indent_increment:int -><br>       ?max_help_position:int -><br>       ?width:int -> ?short_first:bool -> unit -> <a href="BatOptParse.Formatter.html#TYPEt">t</a></code></pre><div class="info ">
+<pre><span id="VALtitled_formatter"><span class="keyword">val</span> titled_formatter</span> : <code class="type">?level:int Stdlib.ref -><br>       ?indent:int Stdlib.ref -><br>       ?indent_increment:int -><br>       ?max_help_position:int -><br>       ?width:int -> ?short_first:bool -> unit -> <a href="BatOptParse.Formatter.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Creates a titled formatter which is quite similar to the
       indented formatter. See

@@ -38,6 +38,7 @@
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFilename" rel="Chapter" href="BatFilename.html">
 <link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
@@ -71,7 +72,6 @@
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
-<link title="BatOo" rel="Chapter" href="BatOo.html">
 <link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
@@ -137,7 +137,7 @@
 </div>
 <hr width="100%">
 
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a Pervasives.ref</code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a Stdlib.ref</code> </pre>
 <div class="info ">
 <div class="info-desc">
 <p>The type of references.</p>
@@ -145,46 +145,46 @@
 </div>
 
 
-<pre><span id="VALref"><span class="keyword">val</span> ref</span> : <code class="type">'a -> 'a Pervasives.ref</code></pre><div class="info ">
+<pre><span id="VALref"><span class="keyword">val</span> ref</span> : <code class="type">'a -> 'a Stdlib.ref</code></pre><div class="info ">
 <div class="info-desc">
 <p>Return a fresh reference containing the given value.</p>
 </div>
 </div>
 
-<pre><span id="VAL(!)"><span class="keyword">val</span> (!)</span> : <code class="type">'a Pervasives.ref -> 'a</code></pre><div class="info ">
+<pre><span id="VAL(!)"><span class="keyword">val</span> (!)</span> : <code class="type">'a Stdlib.ref -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">!r</code> returns the current contents of reference <code class="code">r</code>.
     Equivalent to <code class="code"><span class="keyword">fun</span>&nbsp;r&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;r.contents</code>.</p>
 </div>
 </div>
 
-<pre><span id="VAL(:=)"><span class="keyword">val</span> (:=)</span> : <code class="type">'a Pervasives.ref -> 'a -> unit</code></pre><div class="info ">
+<pre><span id="VAL(:=)"><span class="keyword">val</span> (:=)</span> : <code class="type">'a Stdlib.ref -> 'a -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">r&nbsp;:=&nbsp;a</code> stores the value of <code class="code">a</code> in reference <code class="code">r</code>.
     Equivalent to <code class="code"><span class="keyword">fun</span>&nbsp;r&nbsp;v&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;r.contents&nbsp;&lt;-&nbsp;v</code>.</p>
 </div>
 </div>
 
-<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">'a Pervasives.ref -> 'a -> unit</code></pre><div class="info ">
+<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">'a Stdlib.ref -> 'a -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p>As <code class="code">&nbsp;:=&nbsp;</code></p>
 </div>
 </div>
 
-<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a Pervasives.ref -> 'a</code></pre><div class="info ">
+<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a Stdlib.ref -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p>As <code class="code">&nbsp;!&nbsp;</code></p>
 </div>
 </div>
 
-<pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">'a Pervasives.ref -> 'a Pervasives.ref</code></pre><div class="info ">
+<pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">'a Stdlib.ref -> 'a Stdlib.ref</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">copy&nbsp;r</code> returns a new reference with the same initial
     content as <code class="code">r</code>.</p>
 </div>
 </div>
 
-<pre><span id="VALpre"><span class="keyword">val</span> pre</span> : <code class="type">'a Pervasives.ref -> ('a -> 'a) -> 'a</code></pre><div class="info ">
+<pre><span id="VALpre"><span class="keyword">val</span> pre</span> : <code class="type">'a Stdlib.ref -> ('a -> 'a) -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p>Perform an operation on a reference and return the
     new value of that reference.</p>
@@ -194,7 +194,7 @@
 </div>
 </div>
 
-<pre><span id="VALpost"><span class="keyword">val</span> post</span> : <code class="type">'a Pervasives.ref -> ('a -> 'a) -> 'a</code></pre><div class="info ">
+<pre><span id="VALpost"><span class="keyword">val</span> post</span> : <code class="type">'a Stdlib.ref -> ('a -> 'a) -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p>Perform an operation on a reference and return the
     previous value of that reference.</p>
@@ -204,13 +204,13 @@
 </div>
 </div>
 
-<pre><span id="VALswap"><span class="keyword">val</span> swap</span> : <code class="type">'a Pervasives.ref -> 'a Pervasives.ref -> unit</code></pre><div class="info ">
+<pre><span id="VALswap"><span class="keyword">val</span> swap</span> : <code class="type">'a Stdlib.ref -> 'a Stdlib.ref -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">swap&nbsp;a&nbsp;b</code> puts <code class="code">!b</code> in <code class="code">a</code> and <code class="code">!a</code> in <code class="code">b</code></p>
 </div>
 </div>
 
-<pre><span id="VALpost_incr"><span class="keyword">val</span> post_incr</span> : <code class="type">int Pervasives.ref -> int</code></pre><div class="info ">
+<pre><span id="VALpost_incr"><span class="keyword">val</span> post_incr</span> : <code class="type">int Stdlib.ref -> int</code></pre><div class="info ">
 <div class="info-desc">
 <p>Increment an integer, return the old value.</p>
 
@@ -218,7 +218,7 @@
 </div>
 </div>
 
-<pre><span id="VALpost_decr"><span class="keyword">val</span> post_decr</span> : <code class="type">int Pervasives.ref -> int</code></pre><div class="info ">
+<pre><span id="VALpost_decr"><span class="keyword">val</span> post_decr</span> : <code class="type">int Stdlib.ref -> int</code></pre><div class="info ">
 <div class="info-desc">
 <p>Decrement an integer, return the old value.</p>
 
@@ -226,7 +226,7 @@
 </div>
 </div>
 
-<pre><span id="VALpre_incr"><span class="keyword">val</span> pre_incr</span> : <code class="type">int Pervasives.ref -> int</code></pre><div class="info ">
+<pre><span id="VALpre_incr"><span class="keyword">val</span> pre_incr</span> : <code class="type">int Stdlib.ref -> int</code></pre><div class="info ">
 <div class="info-desc">
 <p>Increment an integer, return the new value.</p>
 
@@ -234,7 +234,7 @@
 </div>
 </div>
 
-<pre><span id="VALpre_decr"><span class="keyword">val</span> pre_decr</span> : <code class="type">int Pervasives.ref -> int</code></pre><div class="info ">
+<pre><span id="VALpre_decr"><span class="keyword">val</span> pre_decr</span> : <code class="type">int Stdlib.ref -> int</code></pre><div class="info ">
 <div class="info-desc">
 <p>Increment an integer, return the new value.</p>
 
@@ -242,7 +242,7 @@
 </div>
 </div>
 
-<pre><span id="VALprotect"><span class="keyword">val</span> protect</span> : <code class="type">'a Pervasives.ref -> 'a -> (unit -> 'b) -> 'b</code></pre><div class="info ">
+<pre><span id="VALprotect"><span class="keyword">val</span> protect</span> : <code class="type">'a Stdlib.ref -> 'a -> (unit -> 'b) -> 'b</code></pre><div class="info ">
 <div class="info-desc">
 <p>Assign a reference temporarily.</p>
 
@@ -253,19 +253,19 @@
 </div>
 </div>
 
-<pre><span id="VALtoggle"><span class="keyword">val</span> toggle</span> : <code class="type">bool Pervasives.ref -> unit</code></pre><div class="info ">
+<pre><span id="VALtoggle"><span class="keyword">val</span> toggle</span> : <code class="type">bool Stdlib.ref -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p>Invert the boolean stored in the reference</p>
 </div>
 </div>
 
-<pre><span id="VALoset"><span class="keyword">val</span> oset</span> : <code class="type">'a option Pervasives.ref -> 'a -> unit</code></pre><div class="info ">
+<pre><span id="VALoset"><span class="keyword">val</span> oset</span> : <code class="type">'a option Stdlib.ref -> 'a -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p>Set the given option ref to <code class="code"><span class="constructor">Some</span>&nbsp;x</code></p>
 </div>
 </div>
 
-<pre><span id="VALoget_exn"><span class="keyword">val</span> oget_exn</span> : <code class="type">'a option Pervasives.ref -> 'a</code></pre><div class="info ">
+<pre><span id="VALoget_exn"><span class="keyword">val</span> oget_exn</span> : <code class="type">'a option Stdlib.ref -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p>Get a value from an option ref;</p>
 </div>
@@ -279,7 +279,7 @@
 
 <p>Example: <code class="code"><span class="constructor">IO</span>.to_string&nbsp;(<span class="constructor">Ref</span>.print&nbsp;<span class="constructor">Int</span>.print)&nbsp;(ref&nbsp;20)&nbsp;=&nbsp;<span class="string">"20"</span></code></p>
 
-<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a> -> 'a Pervasives.ref <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a></code></pre><div class="info ">
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">'a <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a> -> 'a Stdlib.ref <a href="BatOrd.html#TYPEcomp">BatOrd.comp</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Given a comparison function, produce a comparison function for refs
     of that type.</p>
@@ -288,9 +288,9 @@
 </div>
 </div>
 
-<pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">BatOrd.ord</a> -> 'a Pervasives.ref <a href="BatOrd.html#TYPEord">BatOrd.ord</a></code></pre><p>Given an ordering function, produce an ordering function for refs
+<pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">BatOrd.ord</a> -> 'a Stdlib.ref <a href="BatOrd.html#TYPEord">BatOrd.ord</a></code></pre><p>Given an ordering function, produce an ordering function for refs
     of that type.</p>
 
 <p>Example: <code class="code"><span class="keyword">let</span>&nbsp;a&nbsp;=&nbsp;ref&nbsp;10&nbsp;<span class="keyword">and</span>&nbsp;b&nbsp;=&nbsp;ref&nbsp;20&nbsp;<span class="keyword">in</span>&nbsp;<span class="constructor">Ref</span>.ord&nbsp;<span class="constructor">Int</span>.ord&nbsp;a&nbsp;b&nbsp;=&nbsp;<span class="constructor">Ord</span>.<span class="constructor">Lt</span></code></p>
 
-<pre><span id="VALeq"><span class="keyword">val</span> eq</span> : <code class="type">'a <a href="BatOrd.html#TYPEeq">BatOrd.eq</a> -> 'a Pervasives.ref <a href="BatOrd.html#TYPEeq">BatOrd.eq</a></code></pre></body></html>
+<pre><span id="VALeq"><span class="keyword">val</span> eq</span> : <code class="type">'a <a href="BatOrd.html#TYPEeq">BatOrd.eq</a> -> 'a Stdlib.ref <a href="BatOrd.html#TYPEeq">BatOrd.eq</a></code></pre></body></html>

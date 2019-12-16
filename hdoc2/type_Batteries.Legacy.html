@@ -33,6 +33,7 @@
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFilename" rel="Chapter" href="BatFilename.html">
 <link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
@@ -66,7 +67,6 @@
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
-<link title="BatOo" rel="Chapter" href="BatOo.html">
 <link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
@@ -225,7 +225,7 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;max_float&nbsp;:&nbsp;float<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;min_float&nbsp;:&nbsp;float<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;epsilon_float&nbsp;:&nbsp;float<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;fpclass&nbsp;=<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;nonrec&nbsp;fpclass&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;fpclass&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">FP_normal</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">FP_subnormal</span><br>
@@ -250,11 +250,11 @@
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;fst&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;*&nbsp;<span class="keywordsign">'</span>b&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;=&nbsp;<span class="string">"%field0"</span><br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;snd&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;*&nbsp;<span class="keywordsign">'</span>b&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b&nbsp;=&nbsp;<span class="string">"%field1"</span><br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;@&nbsp;)&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;list<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;in_channel&nbsp;=&nbsp;in_channel<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;out_channel&nbsp;=&nbsp;out_channel<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;stdin&nbsp;:&nbsp;in_channel<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;stdout&nbsp;:&nbsp;out_channel<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;stderr&nbsp;:&nbsp;out_channel<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;nonrec&nbsp;in_channel&nbsp;=&nbsp;in_channel<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;nonrec&nbsp;out_channel&nbsp;=&nbsp;out_channel<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;stdin&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.in_channel<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;stdout&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.out_channel<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;stderr&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.out_channel<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;print_char&nbsp;:&nbsp;char&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;print_string&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;print_bytes&nbsp;:&nbsp;bytes&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
@@ -274,7 +274,7 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;read_int_opt&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;option<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;read_float&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;read_float_opt&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;option<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;open_flag&nbsp;=<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;nonrec&nbsp;open_flag&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;open_flag&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Open_rdonly</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Open_wronly</span><br>
@@ -285,65 +285,67 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Open_binary</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Open_text</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Open_nonblock</span><br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_out&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;out_channel<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_out_bin&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;out_channel<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_out_gen&nbsp;:&nbsp;open_flag&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;out_channel<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;flush&nbsp;:&nbsp;out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_out&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stdlib</span>.out_channel<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_out_bin&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stdlib</span>.out_channel<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_out_gen&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stdlib</span>.open_flag&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stdlib</span>.out_channel<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;flush&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;flush_all&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_char&nbsp;:&nbsp;out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_string&nbsp;:&nbsp;out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_bytes&nbsp;:&nbsp;out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bytes&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output&nbsp;:&nbsp;out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bytes&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_substring&nbsp;:&nbsp;out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_byte&nbsp;:&nbsp;out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_binary_int&nbsp;:&nbsp;out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_value&nbsp;:&nbsp;out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;seek_out&nbsp;:&nbsp;out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;pos_out&nbsp;:&nbsp;out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;out_channel_length&nbsp;:&nbsp;out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;close_out&nbsp;:&nbsp;out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;close_out_noerr&nbsp;:&nbsp;out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;set_binary_mode_out&nbsp;:&nbsp;out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_in&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;in_channel<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_in_bin&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;in_channel<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_in_gen&nbsp;:&nbsp;open_flag&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;in_channel<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_char&nbsp;:&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_line&nbsp;:&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input&nbsp;:&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bytes&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;really_input&nbsp;:&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bytes&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;really_input_string&nbsp;:&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_byte&nbsp;:&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_binary_int&nbsp;:&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_value&nbsp;:&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;seek_in&nbsp;:&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;pos_in&nbsp;:&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;in_channel_length&nbsp;:&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;close_in&nbsp;:&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;close_in_noerr&nbsp;:&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;set_binary_mode_in&nbsp;:&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_char&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_string&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_bytes&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bytes&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bytes&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_substring&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_byte&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_binary_int&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;output_value&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;seek_out&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;pos_out&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;out_channel_length&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;close_out&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;close_out_noerr&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;set_binary_mode_out&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_in&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stdlib</span>.in_channel<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_in_bin&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stdlib</span>.in_channel<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;open_in_gen&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stdlib</span>.open_flag&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stdlib</span>.in_channel<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_char&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_line&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bytes&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;really_input&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bytes&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;really_input_string&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_byte&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_binary_int&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;input_value&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;seek_in&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;pos_in&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;in_channel_length&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;close_in&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;close_in_noerr&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;set_binary_mode_in&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">LargeFile</span>&nbsp;=&nbsp;<span class="constructor">LargeFile</span><br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;ref&nbsp;=&nbsp;<span class="keywordsign">'</span>a&nbsp;ref&nbsp;=&nbsp;{&nbsp;<span class="keyword">mutable</span>&nbsp;contents&nbsp;:&nbsp;<span class="keywordsign">'</span>a;&nbsp;}<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;nonrec&nbsp;<span class="keywordsign">'</span>a&nbsp;ref&nbsp;=&nbsp;<span class="keywordsign">'</span>a&nbsp;ref&nbsp;=&nbsp;{&nbsp;<span class="keyword">mutable</span>&nbsp;contents&nbsp;:&nbsp;<span class="keywordsign">'</span>a;&nbsp;}<br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;ref&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;ref&nbsp;=&nbsp;<span class="string">"%makemutable"</span><br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;(&nbsp;!&nbsp;)&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;ref&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;=&nbsp;<span class="string">"%field0"</span><br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;(&nbsp;:=&nbsp;)&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;ref&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;=&nbsp;<span class="string">"%setfield0"</span><br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;incr&nbsp;:&nbsp;int&nbsp;ref&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;=&nbsp;<span class="string">"%incr"</span><br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;decr&nbsp;:&nbsp;int&nbsp;ref&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;=&nbsp;<span class="string">"%decr"</span><br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;result&nbsp;=&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;result&nbsp;=&nbsp;<span class="constructor">Ok</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Error</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="keywordsign">'</span>b<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;nonrec&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;result&nbsp;=&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b)&nbsp;result&nbsp;=&nbsp;<span class="constructor">Ok</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Error</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="keywordsign">'</span>b<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d,&nbsp;<span class="keywordsign">'</span>e,&nbsp;<span class="keywordsign">'</span>f)&nbsp;format6&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d,&nbsp;<span class="keywordsign">'</span>e,&nbsp;<span class="keywordsign">'</span>f)&nbsp;<span class="constructor">CamlinternalFormatBasics</span>.format6<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d)&nbsp;format4&nbsp;=&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d)&nbsp;format6<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c)&nbsp;format&nbsp;=&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>c)&nbsp;format4<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;string_of_format&nbsp;:&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d,&nbsp;<span class="keywordsign">'</span>e,&nbsp;<span class="keywordsign">'</span>f)&nbsp;format6&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;string_of_format&nbsp;:&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d,&nbsp;<span class="keywordsign">'</span>e,&nbsp;<span class="keywordsign">'</span>f)&nbsp;<span class="constructor">Stdlib</span>.format6&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;format_of_string&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d,&nbsp;<span class="keywordsign">'</span>e,&nbsp;<span class="keywordsign">'</span>f)&nbsp;format6&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d,&nbsp;<span class="keywordsign">'</span>e,&nbsp;<span class="keywordsign">'</span>f)&nbsp;format6<br>
 &nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;<span class="string">"%identity"</span><br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;^^&nbsp;)&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d,&nbsp;<span class="keywordsign">'</span>e,&nbsp;<span class="keywordsign">'</span>f)&nbsp;format6&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>f,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>e,&nbsp;<span class="keywordsign">'</span>g,&nbsp;<span class="keywordsign">'</span>h)&nbsp;format6&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d,&nbsp;<span class="keywordsign">'</span>g,&nbsp;<span class="keywordsign">'</span>h)&nbsp;format6<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d,&nbsp;<span class="keywordsign">'</span>e,&nbsp;<span class="keywordsign">'</span>f)&nbsp;<span class="constructor">Stdlib</span>.format6&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>f,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>e,&nbsp;<span class="keywordsign">'</span>g,&nbsp;<span class="keywordsign">'</span>h)&nbsp;<span class="constructor">Stdlib</span>.format6&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a,&nbsp;<span class="keywordsign">'</span>b,&nbsp;<span class="keywordsign">'</span>c,&nbsp;<span class="keywordsign">'</span>d,&nbsp;<span class="keywordsign">'</span>g,&nbsp;<span class="keywordsign">'</span>h)&nbsp;<span class="constructor">Stdlib</span>.format6<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;exit&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;at_exit&nbsp;:&nbsp;(unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;valid_float_lexem&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unsafe_really_input&nbsp;:&nbsp;in_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bytes&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;do_at_exit&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Arg</span>&nbsp;=&nbsp;<span class="constructor">Arg</span><br>
 &nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Array</span>&nbsp;=&nbsp;<span class="constructor">Array</span><br>
@@ -377,7 +379,6 @@
 &nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Random</span>&nbsp;=&nbsp;<span class="constructor">Random</span><br>
 &nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Scanf</span>&nbsp;=&nbsp;<span class="constructor">Scanf</span><br>
 &nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Set</span>&nbsp;=&nbsp;<span class="constructor">Set</span><br>
-&nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Sort</span>&nbsp;=&nbsp;<span class="constructor">Sort</span><br>
 &nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Stack</span>&nbsp;=&nbsp;<span class="constructor">Stack</span><br>
 &nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">StdLabels</span>&nbsp;=&nbsp;<span class="constructor">StdLabels</span><br>
 &nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Stream</span>&nbsp;=&nbsp;<span class="constructor">Stream</span><br>
@@ -390,4 +391,5 @@
 &nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Big_int</span>&nbsp;=&nbsp;<span class="constructor">Big_int</span><br>
 &nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Bigarray</span>&nbsp;=&nbsp;<span class="constructor">Bigarray</span><br>
 &nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Str</span>&nbsp;=&nbsp;<span class="constructor">Str</span><br>
+&nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Result</span>&nbsp;=&nbsp;<span class="constructor">Result</span><br>
 <span class="keyword">end</span></code></body></html>

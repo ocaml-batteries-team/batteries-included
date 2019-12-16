@@ -33,6 +33,7 @@
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFilename" rel="Chapter" href="BatFilename.html">
 <link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
@@ -66,7 +67,6 @@
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
-<link title="BatOo" rel="Chapter" href="BatOo.html">
 <link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
@@ -111,7 +111,7 @@
 <code class="code"><span class="keyword">sig</span><br>
 &nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">State</span>&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">sig</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;t&nbsp;=&nbsp;<span class="constructor">Random</span>.<span class="constructor">State</span>.t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;t&nbsp;=&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Random</span>.<span class="constructor">State</span>.t<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;make&nbsp;:&nbsp;int&nbsp;array&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatRandom</span>.<span class="constructor">Incubator</span>.<span class="constructor">Private_state_enums</span>.<span class="constructor">State</span>.t<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;make_self_init&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatRandom</span>.<span class="constructor">Incubator</span>.<span class="constructor">Private_state_enums</span>.<span class="constructor">State</span>.t<br>
@@ -121,12 +121,14 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;bits&nbsp;:&nbsp;<span class="constructor">BatRandom</span>.<span class="constructor">Incubator</span>.<span class="constructor">Private_state_enums</span>.<span class="constructor">State</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;int&nbsp;:&nbsp;<span class="constructor">BatRandom</span>.<span class="constructor">Incubator</span>.<span class="constructor">Private_state_enums</span>.<span class="constructor">State</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;int32&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatRandom</span>.<span class="constructor">Incubator</span>.<span class="constructor">Private_state_enums</span>.<span class="constructor">State</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Int32</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Int32</span>.t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatRandom</span>.<span class="constructor">Incubator</span>.<span class="constructor">Private_state_enums</span>.<span class="constructor">State</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Int32</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Int32</span>.t<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;nativeint&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatRandom</span>.<span class="constructor">Incubator</span>.<span class="constructor">Private_state_enums</span>.<span class="constructor">State</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Nativeint</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Nativeint</span>.t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Nativeint</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Nativeint</span>.t<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;int64&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatRandom</span>.<span class="constructor">Incubator</span>.<span class="constructor">Private_state_enums</span>.<span class="constructor">State</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Int64</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Int64</span>.t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatRandom</span>.<span class="constructor">Incubator</span>.<span class="constructor">Private_state_enums</span>.<span class="constructor">State</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Int64</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Int64</span>.t<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;float&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatRandom</span>.<span class="constructor">Incubator</span>.<span class="constructor">Private_state_enums</span>.<span class="constructor">State</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;bool&nbsp;:&nbsp;<span class="constructor">BatRandom</span>.<span class="constructor">Incubator</span>.<span class="constructor">Private_state_enums</span>.<span class="constructor">State</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
@@ -145,13 +147,13 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;enum_int32&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatRandom</span>.<span class="constructor">Incubator</span>.<span class="constructor">Private_state_enums</span>.<span class="constructor">State</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Int32</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Int32</span>.t&nbsp;<span class="constructor">BatEnum</span>.t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Int32</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Int32</span>.t&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;enum_int64&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatRandom</span>.<span class="constructor">Incubator</span>.<span class="constructor">Private_state_enums</span>.<span class="constructor">State</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Int64</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Int64</span>.t&nbsp;<span class="constructor">BatEnum</span>.t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Int64</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Int64</span>.t&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;enum_nativeint&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatRandom</span>.<span class="constructor">Incubator</span>.<span class="constructor">Private_state_enums</span>.<span class="constructor">State</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Nativeint</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Nativeint</span>.t&nbsp;<span class="constructor">BatEnum</span>.t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Nativeint</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Nativeint</span>.t&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;enum_char&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">BatRandom</span>.<span class="constructor">Incubator</span>.<span class="constructor">Private_state_enums</span>.<span class="constructor">State</span>.t&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char&nbsp;<span class="constructor">BatEnum</span>.t<br>
@@ -163,8 +165,8 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;enum_int&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;enum_bool&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;enum_float&nbsp;:&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;<span class="constructor">BatEnum</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;enum_int32&nbsp;:&nbsp;<span class="constructor">Int32</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Int32</span>.t&nbsp;<span class="constructor">BatEnum</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;enum_int64&nbsp;:&nbsp;<span class="constructor">Int64</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Int64</span>.t&nbsp;<span class="constructor">BatEnum</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;enum_nativeint&nbsp;:&nbsp;<span class="constructor">Nativeint</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Nativeint</span>.t&nbsp;<span class="constructor">BatEnum</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;enum_int32&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Int32</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Int32</span>.t&nbsp;<span class="constructor">BatEnum</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;enum_int64&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Int64</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Int64</span>.t&nbsp;<span class="constructor">BatEnum</span>.t<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;enum_nativeint&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Nativeint</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Nativeint</span>.t&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;enum_char&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char&nbsp;<span class="constructor">BatEnum</span>.t<br>
 <span class="keyword">end</span></code></body></html>

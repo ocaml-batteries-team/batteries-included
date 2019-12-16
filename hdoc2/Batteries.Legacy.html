@@ -37,6 +37,7 @@
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFilename" rel="Chapter" href="BatFilename.html">
 <link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
@@ -70,7 +71,6 @@
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
-<link title="BatOo" rel="Chapter" href="BatOo.html">
 <link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
@@ -119,50 +119,50 @@
 
 <pre><span id="MODULELegacy"><span class="keyword">module</span> Legacy</span>: <code class="code"><span class="keyword">sig</span></code> <a href="Batteries.Legacy.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 
-<pre><span class="keyword">include</span> Pervasives</pre>
+<pre><span class="keyword">include</span> Stdlib.Pervasives</pre>
 
-<pre><span id="MODULEArg"><span class="keyword">module</span> <a href="Batteries.Legacy.Arg.html">Arg</a></span>: <code class="type">Arg</code></pre>
-<pre><span id="MODULEArray"><span class="keyword">module</span> <a href="Batteries.Legacy.Array.html">Array</a></span>: <code class="type">Array</code></pre>
-<pre><span id="MODULEArrayLabels"><span class="keyword">module</span> <a href="Batteries.Legacy.ArrayLabels.html">ArrayLabels</a></span>: <code class="type">ArrayLabels</code></pre>
-<pre><span id="MODULEBuffer"><span class="keyword">module</span> <a href="Batteries.Legacy.Buffer.html">Buffer</a></span>: <code class="type">Buffer</code></pre>
-<pre><span id="MODULEBytes"><span class="keyword">module</span> <a href="Batteries.Legacy.Bytes.html">Bytes</a></span>: <code class="type">Bytes</code></pre>
-<pre><span id="MODULECallback"><span class="keyword">module</span> <a href="Batteries.Legacy.Callback.html">Callback</a></span>: <code class="type">Callback</code></pre>
-<pre><span id="MODULEChar"><span class="keyword">module</span> <a href="Batteries.Legacy.Char.html">Char</a></span>: <code class="type">Char</code></pre>
-<pre><span id="MODULEComplex"><span class="keyword">module</span> <a href="Batteries.Legacy.Complex.html">Complex</a></span>: <code class="type">Complex</code></pre>
-<pre><span id="MODULEDigest"><span class="keyword">module</span> <a href="Batteries.Legacy.Digest.html">Digest</a></span>: <code class="type">Digest</code></pre>
-<pre><span id="MODULEFilename"><span class="keyword">module</span> <a href="Batteries.Legacy.Filename.html">Filename</a></span>: <code class="type">Filename</code></pre>
-<pre><span id="MODULEFormat"><span class="keyword">module</span> <a href="Batteries.Legacy.Format.html">Format</a></span>: <code class="type">Format</code></pre>
-<pre><span id="MODULEGc"><span class="keyword">module</span> <a href="Batteries.Legacy.Gc.html">Gc</a></span>: <code class="type">Gc</code></pre>
-<pre><span id="MODULEGenlex"><span class="keyword">module</span> <a href="Batteries.Legacy.Genlex.html">Genlex</a></span>: <code class="type">Genlex</code></pre>
-<pre><span id="MODULEHashtbl"><span class="keyword">module</span> <a href="Batteries.Legacy.Hashtbl.html">Hashtbl</a></span>: <code class="type">Hashtbl</code></pre>
-<pre><span id="MODULEInt32"><span class="keyword">module</span> <a href="Batteries.Legacy.Int32.html">Int32</a></span>: <code class="type">Int32</code></pre>
-<pre><span id="MODULEInt64"><span class="keyword">module</span> <a href="Batteries.Legacy.Int64.html">Int64</a></span>: <code class="type">Int64</code></pre>
-<pre><span id="MODULELazy"><span class="keyword">module</span> <a href="Batteries.Legacy.Lazy.html">Lazy</a></span>: <code class="type">Lazy</code></pre>
-<pre><span id="MODULELexing"><span class="keyword">module</span> <a href="Batteries.Legacy.Lexing.html">Lexing</a></span>: <code class="type">Lexing</code></pre>
-<pre><span id="MODULEList"><span class="keyword">module</span> <a href="Batteries.Legacy.List.html">List</a></span>: <code class="type">List</code></pre>
-<pre><span id="MODULEListLabels"><span class="keyword">module</span> <a href="Batteries.Legacy.ListLabels.html">ListLabels</a></span>: <code class="type">ListLabels</code></pre>
-<pre><span id="MODULEMap"><span class="keyword">module</span> <a href="Batteries.Legacy.Map.html">Map</a></span>: <code class="type">Map</code></pre>
-<pre><span id="MODULEMarshal"><span class="keyword">module</span> <a href="Batteries.Legacy.Marshal.html">Marshal</a></span>: <code class="type">Marshal</code></pre>
-<pre><span id="MODULEMoreLabels"><span class="keyword">module</span> <a href="Batteries.Legacy.MoreLabels.html">MoreLabels</a></span>: <code class="type">MoreLabels</code></pre>
-<pre><span id="MODULENativeint"><span class="keyword">module</span> <a href="Batteries.Legacy.Nativeint.html">Nativeint</a></span>: <code class="type">Nativeint</code></pre>
-<pre><span id="MODULEOo"><span class="keyword">module</span> <a href="Batteries.Legacy.Oo.html">Oo</a></span>: <code class="type">Oo</code></pre>
-<pre><span id="MODULEParsing"><span class="keyword">module</span> <a href="Batteries.Legacy.Parsing.html">Parsing</a></span>: <code class="type">Parsing</code></pre>
-<pre><span id="MODULEPrintexc"><span class="keyword">module</span> <a href="Batteries.Legacy.Printexc.html">Printexc</a></span>: <code class="type">Printexc</code></pre>
-<pre><span id="MODULEPrintf"><span class="keyword">module</span> <a href="Batteries.Legacy.Printf.html">Printf</a></span>: <code class="type">Printf</code></pre>
-<pre><span id="MODULEQueue"><span class="keyword">module</span> <a href="Batteries.Legacy.Queue.html">Queue</a></span>: <code class="type">Queue</code></pre>
-<pre><span id="MODULERandom"><span class="keyword">module</span> <a href="Batteries.Legacy.Random.html">Random</a></span>: <code class="type">Random</code></pre>
-<pre><span id="MODULEScanf"><span class="keyword">module</span> <a href="Batteries.Legacy.Scanf.html">Scanf</a></span>: <code class="type">Scanf</code></pre>
-<pre><span id="MODULESet"><span class="keyword">module</span> <a href="Batteries.Legacy.Set.html">Set</a></span>: <code class="type">Set</code></pre>
-<pre><span id="MODULESort"><span class="keyword">module</span> <a href="Batteries.Legacy.Sort.html">Sort</a></span>: <code class="type">Sort</code></pre>
-<pre><span id="MODULEStack"><span class="keyword">module</span> <a href="Batteries.Legacy.Stack.html">Stack</a></span>: <code class="type">Stack</code></pre>
-<pre><span id="MODULEStdLabels"><span class="keyword">module</span> <a href="Batteries.Legacy.StdLabels.html">StdLabels</a></span>: <code class="type">StdLabels</code></pre>
-<pre><span id="MODULEStream"><span class="keyword">module</span> <a href="Batteries.Legacy.Stream.html">Stream</a></span>: <code class="type">Stream</code></pre>
-<pre><span id="MODULEString"><span class="keyword">module</span> <a href="Batteries.Legacy.String.html">String</a></span>: <code class="type">String</code></pre>
-<pre><span id="MODULEStringLabels"><span class="keyword">module</span> <a href="Batteries.Legacy.StringLabels.html">StringLabels</a></span>: <code class="type">StringLabels</code></pre>
-<pre><span id="MODULESys"><span class="keyword">module</span> <a href="Batteries.Legacy.Sys.html">Sys</a></span>: <code class="type">Sys</code></pre>
-<pre><span id="MODULEWeak"><span class="keyword">module</span> <a href="Batteries.Legacy.Weak.html">Weak</a></span>: <code class="type">Weak</code></pre>
+<pre><span id="MODULEArg"><span class="keyword">module</span> <a href="Batteries.Legacy.Arg.html">Arg</a></span>: <code class="type">Stdlib.Arg</code></pre>
+<pre><span id="MODULEArray"><span class="keyword">module</span> <a href="Batteries.Legacy.Array.html">Array</a></span>: <code class="type">Stdlib.Array</code></pre>
+<pre><span id="MODULEArrayLabels"><span class="keyword">module</span> <a href="Batteries.Legacy.ArrayLabels.html">ArrayLabels</a></span>: <code class="type">Stdlib.ArrayLabels</code></pre>
+<pre><span id="MODULEBuffer"><span class="keyword">module</span> <a href="Batteries.Legacy.Buffer.html">Buffer</a></span>: <code class="type">Stdlib.Buffer</code></pre>
+<pre><span id="MODULEBytes"><span class="keyword">module</span> <a href="Batteries.Legacy.Bytes.html">Bytes</a></span>: <code class="type">Stdlib.Bytes</code></pre>
+<pre><span id="MODULECallback"><span class="keyword">module</span> <a href="Batteries.Legacy.Callback.html">Callback</a></span>: <code class="type">Stdlib.Callback</code></pre>
+<pre><span id="MODULEChar"><span class="keyword">module</span> <a href="Batteries.Legacy.Char.html">Char</a></span>: <code class="type">Stdlib.Char</code></pre>
+<pre><span id="MODULEComplex"><span class="keyword">module</span> <a href="Batteries.Legacy.Complex.html">Complex</a></span>: <code class="type">Stdlib.Complex</code></pre>
+<pre><span id="MODULEDigest"><span class="keyword">module</span> <a href="Batteries.Legacy.Digest.html">Digest</a></span>: <code class="type">Stdlib.Digest</code></pre>
+<pre><span id="MODULEFilename"><span class="keyword">module</span> <a href="Batteries.Legacy.Filename.html">Filename</a></span>: <code class="type">Stdlib.Filename</code></pre>
+<pre><span id="MODULEFormat"><span class="keyword">module</span> <a href="Batteries.Legacy.Format.html">Format</a></span>: <code class="type">Stdlib.Format</code></pre>
+<pre><span id="MODULEGc"><span class="keyword">module</span> <a href="Batteries.Legacy.Gc.html">Gc</a></span>: <code class="type">Stdlib.Gc</code></pre>
+<pre><span id="MODULEGenlex"><span class="keyword">module</span> <a href="Batteries.Legacy.Genlex.html">Genlex</a></span>: <code class="type">Stdlib.Genlex</code></pre>
+<pre><span id="MODULEHashtbl"><span class="keyword">module</span> <a href="Batteries.Legacy.Hashtbl.html">Hashtbl</a></span>: <code class="type">Stdlib.Hashtbl</code></pre>
+<pre><span id="MODULEInt32"><span class="keyword">module</span> <a href="Batteries.Legacy.Int32.html">Int32</a></span>: <code class="type">Stdlib.Int32</code></pre>
+<pre><span id="MODULEInt64"><span class="keyword">module</span> <a href="Batteries.Legacy.Int64.html">Int64</a></span>: <code class="type">Stdlib.Int64</code></pre>
+<pre><span id="MODULELazy"><span class="keyword">module</span> <a href="Batteries.Legacy.Lazy.html">Lazy</a></span>: <code class="type">Stdlib.Lazy</code></pre>
+<pre><span id="MODULELexing"><span class="keyword">module</span> <a href="Batteries.Legacy.Lexing.html">Lexing</a></span>: <code class="type">Stdlib.Lexing</code></pre>
+<pre><span id="MODULEList"><span class="keyword">module</span> <a href="Batteries.Legacy.List.html">List</a></span>: <code class="type">Stdlib.List</code></pre>
+<pre><span id="MODULEListLabels"><span class="keyword">module</span> <a href="Batteries.Legacy.ListLabels.html">ListLabels</a></span>: <code class="type">Stdlib.ListLabels</code></pre>
+<pre><span id="MODULEMap"><span class="keyword">module</span> <a href="Batteries.Legacy.Map.html">Map</a></span>: <code class="type">Stdlib.Map</code></pre>
+<pre><span id="MODULEMarshal"><span class="keyword">module</span> <a href="Batteries.Legacy.Marshal.html">Marshal</a></span>: <code class="type">Stdlib.Marshal</code></pre>
+<pre><span id="MODULEMoreLabels"><span class="keyword">module</span> <a href="Batteries.Legacy.MoreLabels.html">MoreLabels</a></span>: <code class="type">Stdlib.MoreLabels</code></pre>
+<pre><span id="MODULENativeint"><span class="keyword">module</span> <a href="Batteries.Legacy.Nativeint.html">Nativeint</a></span>: <code class="type">Stdlib.Nativeint</code></pre>
+<pre><span id="MODULEOo"><span class="keyword">module</span> <a href="Batteries.Legacy.Oo.html">Oo</a></span>: <code class="type">Stdlib.Oo</code></pre>
+<pre><span id="MODULEParsing"><span class="keyword">module</span> <a href="Batteries.Legacy.Parsing.html">Parsing</a></span>: <code class="type">Stdlib.Parsing</code></pre>
+<pre><span id="MODULEPrintexc"><span class="keyword">module</span> <a href="Batteries.Legacy.Printexc.html">Printexc</a></span>: <code class="type">Stdlib.Printexc</code></pre>
+<pre><span id="MODULEPrintf"><span class="keyword">module</span> <a href="Batteries.Legacy.Printf.html">Printf</a></span>: <code class="type">Stdlib.Printf</code></pre>
+<pre><span id="MODULEQueue"><span class="keyword">module</span> <a href="Batteries.Legacy.Queue.html">Queue</a></span>: <code class="type">Stdlib.Queue</code></pre>
+<pre><span id="MODULERandom"><span class="keyword">module</span> <a href="Batteries.Legacy.Random.html">Random</a></span>: <code class="type">Stdlib.Random</code></pre>
+<pre><span id="MODULEScanf"><span class="keyword">module</span> <a href="Batteries.Legacy.Scanf.html">Scanf</a></span>: <code class="type">Stdlib.Scanf</code></pre>
+<pre><span id="MODULESet"><span class="keyword">module</span> <a href="Batteries.Legacy.Set.html">Set</a></span>: <code class="type">Stdlib.Set</code></pre>
+<pre><span id="MODULEStack"><span class="keyword">module</span> <a href="Batteries.Legacy.Stack.html">Stack</a></span>: <code class="type">Stdlib.Stack</code></pre>
+<pre><span id="MODULEStdLabels"><span class="keyword">module</span> <a href="Batteries.Legacy.StdLabels.html">StdLabels</a></span>: <code class="type">Stdlib.StdLabels</code></pre>
+<pre><span id="MODULEStream"><span class="keyword">module</span> <a href="Batteries.Legacy.Stream.html">Stream</a></span>: <code class="type">Stdlib.Stream</code></pre>
+<pre><span id="MODULEString"><span class="keyword">module</span> <a href="Batteries.Legacy.String.html">String</a></span>: <code class="type">Stdlib.String</code></pre>
+<pre><span id="MODULEStringLabels"><span class="keyword">module</span> <a href="Batteries.Legacy.StringLabels.html">StringLabels</a></span>: <code class="type">Stdlib.StringLabels</code></pre>
+<pre><span id="MODULESys"><span class="keyword">module</span> <a href="Batteries.Legacy.Sys.html">Sys</a></span>: <code class="type">Stdlib.Sys</code></pre>
+<pre><span id="MODULEWeak"><span class="keyword">module</span> <a href="Batteries.Legacy.Weak.html">Weak</a></span>: <code class="type">Stdlib.Weak</code></pre>
 <pre><span id="MODULEUnix"><span class="keyword">module</span> <a href="Batteries.Legacy.Unix.html">Unix</a></span>: <code class="type">Unix</code></pre>
 <pre><span id="MODULENum"><span class="keyword">module</span> <a href="Batteries.Legacy.Num.html">Num</a></span>: <code class="type">Num</code></pre>
 <pre><span id="MODULEBig_int"><span class="keyword">module</span> <a href="Batteries.Legacy.Big_int.html">Big_int</a></span>: <code class="type">Big_int</code></pre>
 <pre><span id="MODULEBigarray"><span class="keyword">module</span> <a href="Batteries.Legacy.Bigarray.html">Bigarray</a></span>: <code class="type">Bigarray</code></pre>
-<pre><span id="MODULEStr"><span class="keyword">module</span> <a href="Batteries.Legacy.Str.html">Str</a></span>: <code class="type">Str</code></pre></body></html>
+<pre><span id="MODULEStr"><span class="keyword">module</span> <a href="Batteries.Legacy.Str.html">Str</a></span>: <code class="type">Str</code></pre>
+<pre><span id="MODULEResult"><span class="keyword">module</span> <a href="Batteries.Legacy.Result.html">Result</a></span>: <code class="type">Stdlib.Result</code></pre></body></html>

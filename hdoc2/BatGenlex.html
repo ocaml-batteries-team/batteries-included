@@ -38,6 +38,7 @@
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFilename" rel="Chapter" href="BatFilename.html">
 <link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
@@ -71,7 +72,6 @@
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
-<link title="BatOo" rel="Chapter" href="BatOo.html">
 <link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
@@ -148,7 +148,7 @@
 </div>
 <hr width="100%">
 
-<pre><span id="TYPEtoken"><span class="keyword">type</span> <code class="type"></code>token</span> = <code class="type">Genlex.token</code> = </pre><table class="typetable">
+<pre><span id="TYPEtoken"><span class="keyword">type</span> <code class="type"></code>token</span> = <code class="type">Stdlib.Genlex.token</code> = </pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
@@ -206,7 +206,7 @@
 </div>
 
 
-<pre><span id="VALmake_lexer"><span class="keyword">val</span> make_lexer</span> : <code class="type">string list -> char Stream.t -> <a href="BatGenlex.html#TYPEtoken">token</a> Stream.t</code></pre><div class="info ">
+<pre><span id="VALmake_lexer"><span class="keyword">val</span> make_lexer</span> : <code class="type">string list -> char Stdlib.Stream.t -> <a href="BatGenlex.html#TYPEtoken">token</a> Stdlib.Stream.t</code></pre><div class="info ">
 <div class="info-desc">
 <p>Construct the lexer function. The first argument is the list of
     keywords. An identifier <code class="code">s</code> is returned as <code class="code"><span class="constructor">Kwd</span>&nbsp;s</code> if <code class="code">s</code>
@@ -267,7 +267,7 @@
 </div>
 </div>
 
-<pre><span id="VALto_stream_filter"><span class="keyword">val</span> to_stream_filter</span> : <code class="type"><a href="BatGenlex.html#TYPEt">t</a> -> char Stream.t -> <a href="BatGenlex.html#TYPEtoken">token</a> Stream.t</code></pre><div class="info ">
+<pre><span id="VALto_stream_filter"><span class="keyword">val</span> to_stream_filter</span> : <code class="type"><a href="BatGenlex.html#TYPEt">t</a> -> char Stdlib.Stream.t -> <a href="BatGenlex.html#TYPEtoken">token</a> Stdlib.Stream.t</code></pre><div class="info ">
 <div class="info-desc">
 <p>Apply the lexer to a stream.</p>
 </div>

@@ -33,6 +33,7 @@
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFilename" rel="Chapter" href="BatFilename.html">
 <link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
@@ -66,7 +67,6 @@
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
-<link title="BatOo" rel="Chapter" href="BatOo.html">
 <link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
@@ -118,7 +118,9 @@
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;sub&nbsp;:&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;=&nbsp;<span class="string">"%int32_sub"</span><br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;mul&nbsp;:&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;=&nbsp;<span class="string">"%int32_mul"</span><br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;div&nbsp;:&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;=&nbsp;<span class="string">"%int32_div"</span><br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unsigned_div&nbsp;:&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32<br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;rem&nbsp;:&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;=&nbsp;<span class="string">"%int32_mod"</span><br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unsigned_rem&nbsp;:&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;modulo&nbsp;:&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;pow&nbsp;:&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;min_num&nbsp;:&nbsp;int32<br>
@@ -139,6 +141,7 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;---&nbsp;)&nbsp;:&nbsp;<span class="constructor">BatInt32</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatInt32</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatInt32</span>.t&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;of_int&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;=&nbsp;<span class="string">"%int32_of_int"</span><br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;to_int&nbsp;:&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;=&nbsp;<span class="string">"%int32_to_int"</span><br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unsigned_to_int&nbsp;:&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;option<br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;of_float&nbsp;:&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;=&nbsp;<span class="string">"caml_int32_of_float"</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"caml_int32_of_float_unboxed"</span>&nbsp;[@@unboxed]&nbsp;[@@noalloc]<br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;to_float&nbsp;:&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;=&nbsp;<span class="string">"caml_int32_to_float"</span><br>
@@ -156,11 +159,12 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"caml_int32_float_of_bits_unboxed"</span>&nbsp;[@@unboxed]&nbsp;[@@noalloc]<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;of_byte&nbsp;:&nbsp;char&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;to_byte&nbsp;:&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;char<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;pack&nbsp;:&nbsp;<span class="constructor">Bytes</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;pack_big&nbsp;:&nbsp;<span class="constructor">Bytes</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unpack&nbsp;:&nbsp;<span class="constructor">Bytes</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unpack_big&nbsp;:&nbsp;<span class="constructor">Bytes</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;pack&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Bytes</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;pack_big&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Bytes</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unpack&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Bytes</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unpack_big&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Bytes</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;compare&nbsp;:&nbsp;<span class="constructor">BatInt32</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatInt32</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unsigned_compare&nbsp;:&nbsp;<span class="constructor">BatInt32</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatInt32</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;equal&nbsp;:&nbsp;<span class="constructor">BatInt32</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatInt32</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;ord&nbsp;:&nbsp;<span class="constructor">BatInt32</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatInt32</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatOrd</span>.order<br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;format&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int32&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;=&nbsp;<span class="string">"caml_int32_format"</span><br>

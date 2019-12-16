@@ -38,6 +38,7 @@
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
+<link title="BatFilename" rel="Chapter" href="BatFilename.html">
 <link title="BatFingerTree" rel="Chapter" href="BatFingerTree.html">
 <link title="BatFloat" rel="Chapter" href="BatFloat.html">
 <link title="BatFormat" rel="Chapter" href="BatFormat.html">
@@ -71,7 +72,6 @@
 <link title="BatNativeint" rel="Chapter" href="BatNativeint.html">
 <link title="BatNum" rel="Chapter" href="BatNum.html">
 <link title="BatNumber" rel="Chapter" href="BatNumber.html">
-<link title="BatOo" rel="Chapter" href="BatOo.html">
 <link title="BatOpaqueInnerSys" rel="Chapter" href="BatOpaqueInnerSys.html">
 <link title="BatOptParse" rel="Chapter" href="BatOptParse.html">
 <link title="BatOption" rel="Chapter" href="BatOption.html">
@@ -110,7 +110,9 @@
 <link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
+<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Iterators" rel="Section" href="#1_Iterators">
+<link title="Binary encoding of integers" rel="Section" href="#1_Binaryencodingofintegers">
+<link title="Boilerplate code" rel="Subsection" href="#6_Boilerplatecode">
 <title>Batteries user guide : BatBuffer</title>
 </head>
 <body>
@@ -135,7 +137,7 @@
 </div>
 <hr width="100%">
 
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">Buffer.t</code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">Stdlib.Buffer.t</code> </pre>
 <div class="info ">
 <div class="info-desc">
 <p>The abstract type of buffers.</p>
@@ -167,7 +169,7 @@
 </div>
 </div>
 
-<pre><span id="VALto_bytes"><span class="keyword">val</span> to_bytes</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Bytes.t</code></pre><div class="info ">
+<pre><span id="VALto_bytes"><span class="keyword">val</span> to_bytes</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Stdlib.Bytes.t</code></pre><div class="info ">
 <div class="info-desc">
 <p>Return a copy of the current contents of the buffer.
     The buffer itself is unchanged.</p>
@@ -187,7 +189,7 @@
 </div>
 </div>
 
-<pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int -> Bytes.t -> int -> int -> unit</code></pre><div class="info ">
+<pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int -> Stdlib.Bytes.t -> int -> int -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code"><span class="constructor">Buffer</span>.blit&nbsp;src&nbsp;srcoff&nbsp;dst&nbsp;dstoff&nbsp;len</code> copies <code class="code">len</code> characters from
     the current contents of the buffer <code class="code">src</code>, starting at offset <code class="code">srcoff</code>
@@ -245,7 +247,7 @@
 </div>
 </div>
 
-<pre><span id="VALadd_bytes"><span class="keyword">val</span> add_bytes</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Bytes.t -> unit</code></pre><div class="info ">
+<pre><span id="VALadd_bytes"><span class="keyword">val</span> add_bytes</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Stdlib.Bytes.t -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">add_bytes&nbsp;b&nbsp;s</code> appends the string <code class="code">s</code> at the end of the buffer <code class="code">b</code>.</p>
 </div>
@@ -261,7 +263,7 @@
 </div>
 </div>
 
-<pre><span id="VALadd_subbytes"><span class="keyword">val</span> add_subbytes</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Bytes.t -> int -> int -> unit</code></pre><div class="info ">
+<pre><span id="VALadd_subbytes"><span class="keyword">val</span> add_subbytes</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Stdlib.Bytes.t -> int -> int -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">add_subbytes&nbsp;b&nbsp;s&nbsp;ofs&nbsp;len</code> takes <code class="code">len</code> characters from offset
     <code class="code">ofs</code> in byte sequence <code class="code">s</code> and appends them at the end of the buffer <code class="code">b</code>.</p>
@@ -333,7 +335,7 @@
 </ul>
 </div>
 
-<pre><span id="VALadd_utf_8_uchar"><span class="keyword">val</span> add_utf_8_uchar</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Uchar.t -> unit</code></pre><div class="info ">
+<pre><span id="VALadd_utf_8_uchar"><span class="keyword">val</span> add_utf_8_uchar</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Stdlib.Uchar.t -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">add_utf_8_uchar&nbsp;b&nbsp;u</code> appends the <a href="https://tools.ietf.org/html/rfc3629">
     UTF-8</a> encoding of <code class="code">u</code> at the end of buffer <code class="code">b</code>.</p>
@@ -343,7 +345,7 @@
 </ul>
 </div>
 
-<pre><span id="VALadd_utf_16le_uchar"><span class="keyword">val</span> add_utf_16le_uchar</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Uchar.t -> unit</code></pre><div class="info ">
+<pre><span id="VALadd_utf_16le_uchar"><span class="keyword">val</span> add_utf_16le_uchar</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Stdlib.Uchar.t -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">add_utf_16le_uchar&nbsp;b&nbsp;u</code> appends the
     <a href="https://tools.ietf.org/html/rfc2781">UTF-16LE</a> encoding of <code class="code">u</code>
@@ -354,7 +356,7 @@
 </ul>
 </div>
 
-<pre><span id="VALadd_utf_16be_uchar"><span class="keyword">val</span> add_utf_16be_uchar</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Uchar.t -> unit</code></pre><div class="info ">
+<pre><span id="VALadd_utf_16be_uchar"><span class="keyword">val</span> add_utf_16be_uchar</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> Stdlib.Uchar.t -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">add_utf_16be_uchar&nbsp;b&nbsp;u</code> appends the
     <a href="https://tools.ietf.org/html/rfc2781">UTF-16BE</a> encoding of <code class="code">u</code>
@@ -380,4 +382,198 @@
 </div>
 </div>
 
-<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatBuffer.html#TYPEt">t</a> -> unit</code></pre></body></html>
+<pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> <a href="BatBuffer.html#TYPEt">t</a> -> unit</code></pre><h2 id="1_Iterators">Iterators</h2>
+<pre><span id="VALto_seq"><span class="keyword">val</span> to_seq</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> char Stdlib.Seq.t</code></pre><div class="info ">
+<div class="info-desc">
+<p>Iterate on the buffer, in increasing order.
+    Modification of the buffer during iteration is undefined behavior.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.07</li>
+</ul>
+</div>
+
+<pre><span id="VALto_seqi"><span class="keyword">val</span> to_seqi</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> (int * char) Stdlib.Seq.t</code></pre><div class="info ">
+<div class="info-desc">
+<p>Iterate on the buffer, in increasing order, yielding indices along chars.
+    Modification of the buffer during iteration is undefined behavior.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.07</li>
+</ul>
+</div>
+
+<pre><span id="VALadd_seq"><span class="keyword">val</span> add_seq</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> char Stdlib.Seq.t -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Add chars to the buffer</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.07</li>
+</ul>
+</div>
+
+<pre><span id="VALof_seq"><span class="keyword">val</span> of_seq</span> : <code class="type">char Stdlib.Seq.t -> <a href="BatBuffer.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Create a buffer from the generator</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.07</li>
+</ul>
+</div>
+<h2 id="1_Binaryencodingofintegers">Binary encoding of integers</h2><p>The functions in this section append binary encodings of integers
+    to buffers.</p>
+
+<p>Little-endian (resp. big-endian) encoding means that least
+    (resp. most) significant bytes are stored first.  Big-endian is
+    also known as network byte order.  Native-endian encoding is
+    either little-endian or big-endian depending on <code class="code"><span class="constructor">Sys</span>.big_endian</code>.</p>
+
+<p>32-bit and 64-bit integers are represented by the <code class="code">int32</code> and
+    <code class="code">int64</code> types, which can be interpreted either as signed or
+    unsigned numbers.</p>
+
+<p>8-bit and 16-bit integers are represented by the <code class="code">int</code> type,
+    which has more bits than the binary encoding.  Functions that
+    encode these values truncate their inputs to their least
+    significant bytes.</p>
+
+<pre><span id="VALadd_uint8"><span class="keyword">val</span> add_uint8</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">add_uint8&nbsp;b&nbsp;i</code> appends a binary unsigned 8-bit integer <code class="code">i</code> to
+    <code class="code">b</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALadd_int8"><span class="keyword">val</span> add_int8</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">add_int8&nbsp;b&nbsp;i</code> appends a binary signed 8-bit integer <code class="code">i</code> to
+    <code class="code">b</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALadd_uint16_ne"><span class="keyword">val</span> add_uint16_ne</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">add_uint16_ne&nbsp;b&nbsp;i</code> appends a binary native-endian unsigned 16-bit
+    integer <code class="code">i</code> to <code class="code">b</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALadd_uint16_be"><span class="keyword">val</span> add_uint16_be</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">add_uint16_be&nbsp;b&nbsp;i</code> appends a binary big-endian unsigned 16-bit
+    integer <code class="code">i</code> to <code class="code">b</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALadd_uint16_le"><span class="keyword">val</span> add_uint16_le</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">add_uint16_le&nbsp;b&nbsp;i</code> appends a binary little-endian unsigned 16-bit
+    integer <code class="code">i</code> to <code class="code">b</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALadd_int16_ne"><span class="keyword">val</span> add_int16_ne</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">add_int16_ne&nbsp;b&nbsp;i</code> appends a binary native-endian signed 16-bit
+    integer <code class="code">i</code> to <code class="code">b</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALadd_int16_be"><span class="keyword">val</span> add_int16_be</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">add_int16_be&nbsp;b&nbsp;i</code> appends a binary big-endian signed 16-bit
+    integer <code class="code">i</code> to <code class="code">b</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALadd_int16_le"><span class="keyword">val</span> add_int16_le</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">add_int16_le&nbsp;b&nbsp;i</code> appends a binary little-endian signed 16-bit
+    integer <code class="code">i</code> to <code class="code">b</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALadd_int32_ne"><span class="keyword">val</span> add_int32_ne</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int32 -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">add_int32_ne&nbsp;b&nbsp;i</code> appends a binary native-endian 32-bit integer
+    <code class="code">i</code> to <code class="code">b</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALadd_int32_be"><span class="keyword">val</span> add_int32_be</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int32 -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">add_int32_be&nbsp;b&nbsp;i</code> appends a binary big-endian 32-bit integer
+    <code class="code">i</code> to <code class="code">b</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALadd_int32_le"><span class="keyword">val</span> add_int32_le</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int32 -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">add_int32_le&nbsp;b&nbsp;i</code> appends a binary little-endian 32-bit integer
+    <code class="code">i</code> to <code class="code">b</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALadd_int64_ne"><span class="keyword">val</span> add_int64_ne</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int64 -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">add_int64_ne&nbsp;b&nbsp;i</code> appends a binary native-endian 64-bit integer
+    <code class="code">i</code> to <code class="code">b</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALadd_int64_be"><span class="keyword">val</span> add_int64_be</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int64 -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">add_int64_be&nbsp;b&nbsp;i</code> appends a binary big-endian 64-bit integer
+    <code class="code">i</code> to <code class="code">b</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+
+<pre><span id="VALadd_int64_le"><span class="keyword">val</span> add_int64_le</span> : <code class="type"><a href="BatBuffer.html#TYPEt">t</a> -> int64 -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">add_int64_ne&nbsp;b&nbsp;i</code> appends a binary little-endian 64-bit integer
+    <code class="code">i</code> to <code class="code">b</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.08</li>
+</ul>
+</div>
+</body></html>
