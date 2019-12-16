@@ -1,6 +1,10 @@
 Changelog
 ---------
 
+## v3.0.0 (major release)
+
+TODO
+
 ## v2.11.0 (minor release)
 
 This minor release fixes a few bugs or interface mismatch with OCaml stdlib,
