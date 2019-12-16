@@ -35,6 +35,10 @@ Notable changes:
   #909
   (Cedric Cellier, review by Francois Berenger and Gabriel Scherer)
 
+- Unix.sleepf is provided across all OCaml versions;
+  previously it was only for OCaml >= 4.03.0
+  #930
+  (Francois Berenger, review by Cedric Cellier)
 
 ## v2.10.0 (minor release)
 

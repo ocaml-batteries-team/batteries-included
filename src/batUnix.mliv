@@ -1144,10 +1144,10 @@ val alarm : int -> int
 val sleep : int -> unit
 (** Stop execution for the given number of seconds. *)
 
-##V>=4.3##val sleepf : float -> unit
-##V>=4.3##(** Stop execution for the given number of seconds.  Like [sleep],
-##V>=4.3##    but fractions of seconds are supported.
-##V>=4.3##    @since 2.5.0 and OCaml 4.03 *)
+val sleepf : float -> unit
+(** Stop execution for the given number of seconds.  Like [sleep],
+    but fractions of seconds are supported.
+    @since 2.5.0 *)
 
 val times : unit -> process_times
 (** Return the execution times of the process. *)
