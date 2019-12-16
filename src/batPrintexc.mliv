@@ -348,3 +348,17 @@ val print : _ BatInnerIO.output -> exn -> unit
 
 ##V>=4.08##type t = exn = ..
 ##V>=4.08##(** The type of exception values. *)
+
+##V>=4.09##val use_printers: exn -> string option
+##V>=4.09##(** [Printexc.use_printers e] returns [None] if there are no registered
+##V>=4.09##    printers and [Some s] with else as the resulting string otherwise.
+##V>=4.09##
+##V>=4.09##    @since 2.11.0 and OCaml 4.09
+##V>=4.09##*)
+
+##V>=4.09##val to_string_default: exn -> string
+##V>=4.09##(** [Printexc.to_string_default e] returns a string representation of the
+##V>=4.09##    exception [e], ignoring all registered exception printers.
+##V>=4.09##
+##V>=4.09##    @since 2.11.0 and OCaml 4.09
+##V>=4.09##*)
