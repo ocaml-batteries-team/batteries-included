@@ -299,13 +299,13 @@ val min : 'a list -> 'a
 val sum : int list -> int
 (** [sum l] returns the sum of the integers of [l].
     Returns [0] on the empty list.
-    Note: prior to NEXT_RELEASE, used to raise Invalid_argument on the empty list.
+    Note: prior to 2.11.0, used to raise Invalid_argument on the empty list.
  *)
 
 val fsum : float list -> float
 (** [fsum l] returns the sum of the floats of [l].
     Returns [0.] on the empty list.
-    Note: prior to NEXT_RELEASE, used to raise Invalid_argument on the empty list.
+    Note: prior to 2.11.0, used to raise Invalid_argument on the empty list.
  *)
 
 val favg : float list -> float

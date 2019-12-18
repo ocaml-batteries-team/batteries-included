@@ -1041,6 +1041,16 @@ val lockf : file_descr -> lock_command -> int -> unit
     acquired on the specified region, without actually putting a lock.
     It returns immediately if successful, or fails otherwise. *)
 
+val with_locked_file : kind:[`Read|`Write] -> string -> (file_descr -> 'a) -> 'a
+(** [with_locked_file ~kind filename f] puts a lock (using lockf) on the whole
+    file named [filename], calls [f] with the file descriptor, and returns
+    its result after the file is unlocked.
+    The file is opened with permissions matching [kind], and created if it
+    does not exist yet.
+    If [f ()] raises an exception the exception is re-raised after the file
+    is unlocked.
+
+    @param kind specifies whether the lock is read-only or read-write. *)
 
 (** {6 Signals}
     Note: installation of signal handlers is performed via
@@ -1134,10 +1144,10 @@ val alarm : int -> int
 val sleep : int -> unit
 (** Stop execution for the given number of seconds. *)
 
-##V>=4.3##val sleepf : float -> unit
-##V>=4.3##(** Stop execution for the given number of seconds.  Like [sleep],
-##V>=4.3##    but fractions of seconds are supported.
-##V>=4.3##    @since 2.5.0 and OCaml 4.03 *)
+val sleepf : float -> unit
+(** Stop execution for the given number of seconds.  Like [sleep],
+    but fractions of seconds are supported.
+    @since 2.5.0 *)
 
 val times : unit -> process_times
 (** Return the execution times of the process. *)

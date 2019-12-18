@@ -47,6 +47,45 @@ Changelog
   #679
   (Cedric Cellier)
 
+## v2.11.0 (minor release)
+
+This minor release fixes a few bugs or interface mismatch with OCaml stdlib,
+and is compatible with BER MetaOCaml.
+
+This is the last planned release of the v2 series.
+Next planned release (v3.0.0) will introduce some API changes.
+
+Notable changes:
+
+- Add Unix.with_locked_file
+  #904
+  (Simon Cruanes, Cedric Cellier, review by Francois Berenger)
+
+- Build with -strict-sequence
+  #927
+  (Armaël Guéneau, review by Francois Berenger)
+
+- Add Legacy.Result for OCaml >= 4.8.0
+  #913
+  (Cedric Cellier, review by Francois Berenger)
+
+- Remove BatOo
+  #915
+  (Cedric Cellier, review by Francois Berenger)
+
+- Add BatFilename
+  #910
+  (Cedric Cellier, review by Francois Berenger)
+
+- Make batteries usable with BER MetaOCaml
+  #909
+  (Cedric Cellier, review by Francois Berenger and Gabriel Scherer)
+
+- Unix.sleepf is provided across all OCaml versions;
+  previously it was only for OCaml >= 4.03.0
+  #930
+  (Francois Berenger, review by Cedric Cellier)
+
 ## v2.10.0 (minor release)
 
 This minor release adds support for OCaml 4.08.0.
@@ -78,6 +117,10 @@ recommend trying the 'stdcompat' library.
 - added BatHashtbl.merge and merge_all
   #891
   (Cedric Cellier, Francois Berenger, Gabriel Scherer)
+
+- added Unix.with_locked_file
+  #904
+  (Cedric Cellier, Francois Berenger)
 
 ## v2.9.0 (minor release)
 

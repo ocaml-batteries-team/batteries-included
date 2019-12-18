@@ -29,7 +29,8 @@
     @author David Teller
 *)
 
-val argv : string array
+##V>=4.09##external argv : string array = "%sys_argv"
+##V<4.09##val argv : string array
 (** The command line arguments given to the process.
     The first element is the command name used to invoke the program.
     The following elements are the command-line arguments

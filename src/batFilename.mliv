@@ -30,7 +30,7 @@ val parent_dir_name : string
 
 val dir_sep : string
 (** The directory separator (e.g. [/] in Unix).
-   @since NEXT_RELEASE and OCaml 3.11.2 *)
+   @since 2.11.0 and OCaml 3.11.2 *)
 
 val concat : string -> string -> string
 (** [concat dir file] returns a file name that designates file
@@ -73,7 +73,7 @@ val chop_suffix : string -> string -> string
 ##V>=4.8##    this does not match exactly the interpretation of case-insensitive
 ##V>=4.8##    filename equivalence from Windows.
 ##V>=4.8##
-##V>=4.8##    @since NEXT_RELEASE and OCaml 4.08
+##V>=4.8##    @since 2.11.0 and OCaml 4.08
 ##V>=4.8##*)
 
 
@@ -89,7 +89,7 @@ val chop_suffix : string -> string -> string
 ##V>=4.4##    If such a suffix does not exist, [extension name] is the empty
 ##V>=4.4##    string.
 ##V>=4.4##
-##V>=4.4##    @since NEXT_RELEASE and OCaml 4.04
+##V>=4.4##    @since 2.11.0 and OCaml 4.04
 ##V>=4.4##*)
 
 ##V>=4.4##val remove_extension : string -> string
@@ -101,7 +101,7 @@ val chop_suffix : string -> string -> string
 ##V>=4.4##
 ##V>=4.4##    [remove_extension s ^ extension s = s]
 ##V>=4.4##
-##V>=4.4##    @since NEXT_RELEASE and OCaml 4.04
+##V>=4.4##    @since 2.11.0 and OCaml 4.04
 ##V>=4.4##*)
 
 val chop_extension : string -> string
@@ -141,8 +141,10 @@ val temp_file : ?temp_dir: string -> string -> string -> string
 *)
 
 val open_temp_file :
-      ?mode: open_flag list -> ?perms: int -> ?temp_dir: string -> string ->
-      string -> string * out_channel
+          ?mode: open_flag list ->
+##V>4.2## ?perms: int ->
+          ?temp_dir: string -> string ->
+          string -> string * out_channel
 (** Same as {!Filename.temp_file}, but returns both the name of a fresh
    temporary file, and an output channel opened (atomically) on
    this file.  This function is more secure than [temp_file]: there
@@ -150,13 +152,11 @@ val open_temp_file :
    by a symbolic link) before the program opens it.  The optional argument
    [mode] is a list of additional flags to control the opening of the file.
    It can contain one or several of [Open_append], [Open_binary],
-   and [Open_text].  The default is [[Open_text]] (open in text mode). The
-   file is created with permissions [perms] (defaults to readable and
-   writable only by the file owner, [0o600]).
+   and [Open_text].  The default is [[Open_text]] (open in text mode).
+##V>4.2## The file is created with permissions [perms] (defaults to readable and
+##V>4.2## writable only by the file owner, [0o600]).
 
    @raise Sys_error if the file could not be opened.
-   @before 4.03.0 no ?perms optional argument
-   @before 3.11.2 no ?temp_dir optional argument
 *)
 
 ##V>=4.0##val get_temp_dir_name : unit -> string
@@ -166,24 +166,24 @@ val open_temp_file :
 ##V>=4.0##    Under Windows, the value of the [TEMP] environment variable, or "."
 ##V>=4.0##    if the variable is not set.
 ##V>=4.0##    The temporary directory can be changed with {!Filename.set_temp_dir_name}.
-##V>=4.0##    @since NEXT_RELEASE and OCaml 4.00.0
+##V>=4.0##    @since 2.11.0 and OCaml 4.00.0
 ##V>=4.0##*)
 
 ##V>=4.0##val set_temp_dir_name : string -> unit
 ##V>=4.0##(** Change the temporary directory returned by {!Filename.get_temp_dir_name}
 ##V>=4.0##    and used by {!Filename.temp_file} and {!Filename.open_temp_file}.
-##V>=4.0##    @since NEXT_RELEASE and OCaml 4.00.0
+##V>=4.0##    @since 2.11.0 and OCaml 4.00.0
 ##V>=4.0##*)
 
 val temp_dir_name : string
-  [@@ocaml.deprecated "Use Filename.get_temp_dir_name instead"]
+##V>=4.2##  [@@ocaml.deprecated "Use Filename.get_temp_dir_name instead"]
 (** The name of the initial temporary directory:
     Under Unix, the value of the [TMPDIR] environment variable, or "/tmp"
     if the variable is not set.
     Under Windows, the value of the [TEMP] environment variable, or "."
     if the variable is not set.
     @deprecated You should use {!Filename.get_temp_dir_name} instead.
-    @since NEXT_RELEASE and OCaml 3.09.1
+    @since 2.11.0 and OCaml 3.09.1
 *)
 
 val quote : string -> string
@@ -226,9 +226,26 @@ val quote : string -> string
 ##V>4.9##    Raise [Failure] if the command cannot be escaped on the current platform.
 ##V>4.9##*)
 
+##V<4.4## val extension : string -> string
+##V<4.4##(* extension name is the shortest suffix ext of name0 where:
+##V<4.4##
+##V<4.4## - name0 is the longest suffix of name that does not contain a directory separator;
+##V<4.4## - ext starts with a period;
+##V<4.4## - ext is preceded by at least one non-period character in name0.
+##V<4.4## If such a suffix does not exist, extension name is the empty string.
+##V<4.4##
+##V<4.4##   @since 2.11.0 *)
+
+##V<4.4## val remove_extension : string -> string
+##V<4.4##(* Return the given file name without its extension, as defined in
+##V<4.4##   Filename.extension. If the extension is empty, the function returns
+##V<4.4##   the given file name.
+##V<4.4##
+##V<4.4##   @since 2.11.0 *)
+
 val split_extension : string -> string * string
 (** [split_extension s] returns both the filename [s] without its extension
     and its extension in two distinct strings.
     For instance, [split_extension "foo.bar"] returns the pair ["foo",".bar"].
 
-    @since NEXT_RELEASE *)
+    @since 2.11.0 *)

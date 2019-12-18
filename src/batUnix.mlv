@@ -30,6 +30,37 @@ include Unix
 ##V<4.2##let send_substring = send
 ##V<4.2##let sendto_substring = sendto
 
+##V<4.3##let sleepf (timeout: float): unit =
+##V<4.3##  let elapsed = ref 0.0 in
+##V<4.3##  while !elapsed < timeout do
+##V<4.3##    let start = gettimeofday () in
+##V<4.3##    begin
+##V<4.3##      try ignore(select [] [] [] (timeout -. !elapsed))
+##V<4.3##      with Unix_error(EINTR, _, _) -> ()
+##V<4.3##    end;
+##V<4.3##    let stop = gettimeofday () in
+##V<4.3##    let dt = stop -. start in
+##V<4.3##    elapsed := !elapsed +. dt
+##V<4.3##  done;
+##V<4.3##  ()
+
+(* chronometer is useful to test sleepf *)
+(*$inject
+let chronometer f =
+  let start = gettimeofday () in
+  let res = f () in
+  let stop = gettimeofday () in
+  let dt = stop -. start in
+  (dt, res) ;;
+*)
+
+(* do not underestimate the imprecission of sleepf
+   and so don't be too harsh when testing it *)
+(*$T sleepf
+let dt, _ = chronometer (fun () -> sleepf 0.002) in \
+0.001 <= dt && dt <= 0.003
+*)
+
 let run_and_read cmd =
   (* This code is before the open of BatInnerIO
      to avoid using batteries' wrapped IOs *)
@@ -215,3 +246,26 @@ let is_directory fn = (lstat fn).st_kind = S_DIR
 let rec restart_on_EINTR f x =
   try f x
   with Unix_error(EINTR, _, _) -> restart_on_EINTR f x
+
+(**
+   {6 Locking}
+*)
+
+let with_locked_file ~kind filename f =
+  let perms =
+    [O_CREAT ; match kind with `Read -> O_RDONLY | `Write -> O_RDWR] in
+  let lock_file = openfile filename perms 0o644 in
+  let lock_action = match kind with
+    | `Read -> F_RLOCK
+    | `Write -> F_LOCK
+  in
+  lockf lock_file lock_action 0;
+  BatInnerPervasives.finally
+    (fun () ->
+      (* Although the user might expect EINTR to interrupt locking, we must
+       * not allow such interrupt here since there is no way to restart the
+       * unlock: *)
+      ignore (restart_on_EINTR (lseek lock_file 0) SEEK_SET);
+      restart_on_EINTR (lockf lock_file F_ULOCK) 0;
+      restart_on_EINTR close lock_file)
+    f lock_file

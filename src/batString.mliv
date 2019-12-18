@@ -745,7 +745,7 @@ val split_on_char: char -> string -> string list
       (String.split_on_char sep s) = s]).
     - No string in the result contains the [sep] character.
 
-    Note: prior to NEXT_RELEASE [split_on_char _ ""] used to return an empty list.
+    Note: prior to 2.11.0 [split_on_char _ ""] used to return an empty list.
     @since 2.5.3
 *)
 
@@ -790,7 +790,8 @@ val nsplit : string -> by:string -> string list
 ##V>=4.2##  [@@ocaml.deprecated "Use split_on_string instead."]
 (** [nsplit s sep] splits the string [s] into a list of strings
     which are separated by [sep] (excluded).
-    [nsplit "" _] returns an empty string.
+    [nsplit "" _] returns a single empty string.
+    Note: prior to 2.11.0 [nsplit "" _] used to return an empty list.
 
     Example: [String.nsplit "abcabcabc" "bc" = ["a"; "a"; "a"; ""]]
 
@@ -804,6 +805,29 @@ val split_on_string : by:string -> string -> string list
     Note: [split_on_string sep s] is identical to [nsplit s sep] but for empty strings.
 
     Example: [String.split_on_string "bc" "abcabcabc" = ["a"; "a"; "a"; ""]]
+*)
+
+val cut_on_char : char -> int -> string -> string
+(**
+   Similar to Unix [cut]. [cut_on_char chr n str] returns the substring of
+   [str] located strictly between the [n]-th occurrence of [chr] and
+   the [n+1]-th one.
+
+   - {b Occurrences of [chr] are numbered from 1}.
+   - If [n = 0], returns the substring from the beginning of
+     [str] to the first occurrence of [chr].
+   - If there are exactly [n] occurrences of [chr] in [str], returns the
+     substring between the last occurrence of [chr] and the end of [str].
+   - These behaviours cumulate: if [n] equals [0] and [chr] is
+     absent from [str], returns the full string [str].
+
+   {b Remark:} [cut_on_char] can return the empty string. Examples of this
+   behaviour are [cut_on_char ',' 1 "foo,,bar"] and [cut_on_char ',' 0 ",foo"].
+
+   @raise Not_found if there are strictly less than [n] occurrences of [chr] in str.
+   @raise Invalid_argument if [n < 0].
+
+   @since 2.9.0
 *)
 
 val cut_on_char : char -> int -> string -> string

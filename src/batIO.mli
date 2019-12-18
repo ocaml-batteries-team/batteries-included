@@ -951,7 +951,7 @@ module Incubator : sig
       ?last:string ->
       ?sep:string ->
       ?indent:int ->
-      (Format.formatter -> 'a -> 'b) -> Format.formatter -> 'a array -> unit
+      (Format.formatter -> 'a -> unit) -> Format.formatter -> 'a array -> unit
       (** Print the contents of an array, with [first] preceding the first item
           (default: ["\[|"]), [last] following the last item (default: ["|\]"])
           and [sep] separating items (default: ["; "]). A printing function must
@@ -972,7 +972,7 @@ module Incubator : sig
       ?last:string ->
       ?sep:string ->
       ?indent:int ->
-      (Format.formatter -> 'a -> 'b) -> Format.formatter -> 'a BatEnum.t -> unit
+      (Format.formatter -> 'a -> unit) -> Format.formatter -> 'a BatEnum.t -> unit
       (** Print the contents of an enum, with [first] preceding the first item
           (default: [""]), [last] following the last item (default: [""])
           and [sep] separating items (default: [" "]). A printing function must
@@ -992,7 +992,7 @@ module Incubator : sig
       ?last:string ->
       ?sep:string ->
       ?indent:int ->
-      (Format.formatter -> 'a -> 'b) -> Format.formatter -> 'a list -> unit
+      (Format.formatter -> 'a -> unit) -> Format.formatter -> 'a list -> unit
       (** Print the contents of a list, with [first] preceding the first item
           (default: ["\["]), [last] following the last item (default: ["\]"])
           and [sep] separating items (default: ["; "]). A printing function must
