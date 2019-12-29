@@ -441,6 +441,14 @@ val find_opt: ('a -> bool) -> 'a list -> 'a option
     satisfies [p] in the list [l].
     @since 2.7.0 *)
 
+##V>=4.10##val find_map_opt: ('a -> 'b option) -> 'a list -> 'b option
+##V>=4.10##(** [find_map f l] applies [f] to the elements of [l] in order,
+##V>=4.10##    and returns the first result of the form [Some v], or [None]
+##V>=4.10##    if none exist.
+##V>=4.10##
+##V>=4.10##    @since 2.12.0 and OCaml 4.10
+##V>=4.10##*)
+
 val find_exn : ('a -> bool) -> exn -> 'a list -> 'a
 (** [find_exn p e l] returns the first element of [l] such as [p x]
     returns [true] or raises [e] if such an element has not been found. *)
@@ -456,6 +464,12 @@ val find_map : ('a -> 'b option) -> 'a list -> 'b
     once found or @raise Not_found if no element matches the
     predicate.  See also {!filter_map}. *)
 
+##V>=4.10##val concat_map : ('a -> 'b list) -> 'a list -> 'b list
+##V>=4.10##(** [List.concat_map f l] gives the same result as
+##V>=4.10##    {!List.concat}[ (]{!List.map}[ f l)]. Tail-recursive.
+##V>=4.10##
+##V>=4.10##    @since 2.12.0 and OCaml 4.10
+##V>=4.10##*)
 
 val rfind : ('a -> bool) -> 'a list -> 'a
 (** [rfind p l] returns the last element [x] of [l] such as [p x] returns
@@ -1052,10 +1066,12 @@ module Labels : sig
   val subset : cmp:('a -> 'b -> int) -> 'a list -> 'b list -> bool
   val find : f:('a -> bool) -> 'a list -> 'a
   val find_exn : f:('a -> bool) -> exn -> 'a list -> 'a
+##V>=4.10##val find_map_opt: f:('a -> 'b option) -> 'a list -> 'b option
   val findi : f:(int -> 'a -> bool) -> 'a list -> (int * 'a)
   val rfind : f:('a -> bool) -> 'a list -> 'a
   val filter : f:('a -> bool) -> 'a list -> 'a list
   val filter_map : f:('a -> 'b option) -> 'a list -> 'b list
+##V>=4.10##val concat_map : f:('a -> 'b list) -> 'a list -> 'b list
   val find_all : f:('a -> bool) -> 'a list -> 'a list
   val partition : f:('a -> bool) -> 'a list -> 'a list * 'a list
   val remove_if : f:('a -> bool) -> 'a list -> 'a list

@@ -55,6 +55,8 @@ let mem_assoc = List.mem_assoc
 let rev_map2 = List.rev_map2
 ##V>=4.07##let to_seq = List.to_seq
 ##V>=4.07##let of_seq = List.of_seq
+##V>=4.10##let concat_map = List.concat_map
+##V>=4.10##let find_map_opt = List.find_map
 (* ::VH:: END GLUE *)
 
 let rec compare_lengths la lb = match la, lb with
@@ -1570,6 +1572,7 @@ module Labels = struct
   let find ~f l     = find f l
   let findi ~f      = findi f
   let find_exn ~f   = find_exn f
+##V>=4.10##let find_map_opt ~f = find_map_opt f
   let filter_map ~f = filter_map f
   let remove_if ~f  = remove_if f
   let take_while ~f = take_while f
@@ -1582,6 +1585,7 @@ module Labels = struct
   let fold_left2  ~f ~init       = fold_left2 f init
   let fold_right2 ~f l1 l2 ~init = fold_right2 f l1 l2 init
   let filter ~f     = filter f
+##V>=4.10##let concat_map ~f = List.concat_map f
   let find_all ~f   = find_all f
   let partition ~f  = partition f
   let rev_map ~f    = rev_map f
