@@ -54,6 +54,7 @@ module Stdlib_verifications = struct
   (*  module Printf = (Printf: module type of Legacy.Printf)*)
   module Queue = (Queue: module type of Legacy.Queue)
   module Random = (Random: module type of Legacy.Random)
+  module Result = (Result: module type of Legacy.Result)
   (*  module Scanf = (Scanf : module type of Legacy.Scanf)*)
   (*  module Set = (Set: module type of Legacy.Set)*)
   (* FAILS BECAUSE OF Stack.Empty not being present because

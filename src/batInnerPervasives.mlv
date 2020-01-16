@@ -43,7 +43,7 @@ let unique ()     =
    Q.unit (fun () -> unique () <> unique ())
 *)
 
-type ('a, 'b) result =
+type ('a, 'b) result = ('a, 'b) Stdlib.result =
   | Ok  of 'a
   | Error of 'b
 

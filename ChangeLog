@@ -46,6 +46,10 @@ Changelog
   are changed. The default value is Pervasives.compare.
   #679
   (Cedric Cellier)
+- BatResult: BatPervasives.result is now equal to Stdlib.result
+  instead of sharing constructors without being the same type
+  #938
+  (Clément Busschaert)
 
 ## v2.11.0 (minor release)
 
