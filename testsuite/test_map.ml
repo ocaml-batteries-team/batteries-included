@@ -84,6 +84,7 @@ module TestMap
     val is_empty : _ m -> bool
     val singleton : key -> 'a -> 'a m
     val find : key -> 'a m -> 'a
+    val find_opt : key -> 'a m -> 'a option
     val add : key -> 'a -> 'a m -> 'a m
     val remove : key -> 'a m -> 'a m
     val mem : key -> _ m -> bool
@@ -192,6 +193,19 @@ module TestMap
     "find 3 t = 4" @? (M.find 3 t = 4);
     "find 4 t -> Not_found" @!
       (Not_found, fun () -> M.find 6 t);
+    let test_cardinal k v t =
+      "cardinal (add k v t) = cardinal t + (mem k t ? 0 : 1)" @?
+        (M.cardinal (M.add k v t) =
+            M.cardinal t + if M.mem k t then 0 else 1) in
+    test_cardinal 3 0 t;
+    test_cardinal 57 0 t;
+    ()
+
+  let test_find_opt () =
+    let t = il [(3,4); (5, 6)] in
+    "find_opt 3 t = Some 4" @? (M.find_opt 3 t = Some 4);
+    "find_opt 4 t -> None" @?
+      (M.find_opt 6 t = None);
     let test_cardinal k v t =
       "cardinal (add k v t) = cardinal t + (mem k t ? 0 : 1)" @?
         (M.cardinal (M.add k v t) =
