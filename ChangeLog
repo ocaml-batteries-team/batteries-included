@@ -3,6 +3,9 @@ Changelog
 
 ## NEXT_RELEASE (major release)
 
+- added BatSplay.find_opt and BatMap.find_opt
+  #941
+  (nicoTolly, review by Francois Berenger)
 - BatList and BatArray: sum of an empty container now return 0 rather than
   raising an exception.
   #519
