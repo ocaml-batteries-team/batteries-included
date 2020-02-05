@@ -964,7 +964,6 @@ let add x d m = Concrete.add x d Pervasives.compare m
 let update k1 k2 v2 m = Concrete.update k1 k2 v2 Pervasives.compare m
 
 let find x m = Concrete.find x Pervasives.compare m
-let find_opt x m = Concrete.find_option x Pervasives.compare m
 
 (*$T add; find
   empty |> add 1 true |> add 2 false |> find 1
@@ -973,6 +972,13 @@ let find_opt x m = Concrete.find_option x Pervasives.compare m
   empty |> add 1 true |> add 2 false |> find 2 |> not
   empty |> add 2 'y' |> add 1 'x' |> find 1 = 'x'
   empty |> add 2 'y' |> add 1 'x' |> find 2 = 'y'
+*)
+
+let find_opt x m = Concrete.find_option x Pervasives.compare m
+
+(*$T find_opt
+    find_opt  4 (add 1 2 empty) = None
+    find_opt 1 (add 1 2 empty) = Some 2
 *)
 
 let find_default def x m =
