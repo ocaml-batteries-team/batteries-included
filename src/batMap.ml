@@ -742,6 +742,7 @@ sig
   val add: key -> 'a -> 'a t -> 'a t
   val update: key -> key -> 'a -> 'a t -> 'a t
   val find: key -> 'a t -> 'a
+  val find_opt: key -> 'a t -> 'a option
   val find_default: 'a -> key -> 'a t -> 'a
   val remove: key -> 'a t -> 'a t
   val modify: key -> ('a -> 'a) -> 'a t -> 'a t
@@ -973,6 +974,13 @@ let find x m = Concrete.find x Pervasives.compare m
   empty |> add 2 'y' |> add 1 'x' |> find 2 = 'y'
 *)
 
+let find_opt x m = Concrete.find_option x Pervasives.compare m
+
+(*$T find_opt
+    find_opt  4 (add 1 2 empty) = None
+    find_opt 1 (add 1 2 empty) = Some 2
+*)
+
 let find_default def x m =
   Concrete.find_default def x Pervasives.compare m
 
@@ -1165,6 +1173,9 @@ module PMap = struct (*$< PMap *)
 
   let find x m =
     Concrete.find x m.cmp m.map
+
+  let find_opt x m =
+    Concrete.find_option x m.cmp m.map
 
   let find_default def x m =
     Concrete.find_default def x m.cmp m.map

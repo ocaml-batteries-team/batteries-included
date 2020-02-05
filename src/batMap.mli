@@ -102,6 +102,10 @@ sig
   (** [find x m] returns the current binding of [x] in [m],
       or raises [Not_found] if no such binding exists. *)
 
+  val find_opt: key -> 'a t -> 'a option
+  (** [find_opt x m] returns Some b where b is the current binding
+   * of [x] in [m], or None if no such binding exists. *)
+
   val find_default: 'a -> key -> 'a t -> 'a
   (** [find_default d x m] returns the current binding of [x] in [m],
       or the default value [d] if no such binding exists. *)
@@ -429,6 +433,10 @@ val update: 'a -> 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
 val find : 'a -> ('a, 'b) t -> 'b
 (** [find x m] returns the current binding of [x] in [m],
     or raises [Not_found] if no such binding exists. *)
+
+val find_opt : 'a -> ('a, 'b) t -> 'b option
+(** [find_opt x m] returns Some b where b is the current binding
+ * of [x] in [m], or None if no such binding exists. *)
 
 val find_default : 'b -> 'a -> ('a, 'b) t -> 'b
 (** [find_default d x m] returns the current binding of [x] in [m],
