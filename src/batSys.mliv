@@ -349,3 +349,28 @@ val files_of: string -> string BatEnum.t
 
     @since 2.5.0 and OCaml 4.02
  *)
+
+##V>=4.10##module Immediate64 : sig
+##V>=4.10##  (** This module allows to define a type [t] with the [immediate64]
+##V>=4.10##      attribute. This attribute means that the type is immediate on 64
+##V>=4.10##      bit architectures. On other architectures, it might or might not
+##V>=4.10##      be immediate.
+##V>=4.10##
+##V>=4.10##      @since 2.12.0 and OCaml 4.10
+##V>=4.10##  *)
+##V>=4.10##
+##V>=4.10##  module type Non_immediate = sig
+##V>=4.10##    type t
+##V>=4.10##  end
+##V>=4.10##  module type Immediate = sig
+##V>=4.10##    type t [@@immediate]
+##V>=4.10##  end
+##V>=4.10##
+##V>=4.10##  module Make(Immediate : Immediate)(Non_immediate : Non_immediate) : sig
+##V>=4.10##    type t [@@immediate64]
+##V>=4.10##    type 'a repr =
+##V>=4.10##      | Immediate : Immediate.t repr
+##V>=4.10##      | Non_immediate : Non_immediate.t repr
+##V>=4.10##    val repr : t repr
+##V>=4.10##  end
+##V>=4.10##end

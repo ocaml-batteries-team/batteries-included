@@ -125,6 +125,13 @@ val dirname : string -> string
    This function conforms to the specification of POSIX.1-2008 for the
    [dirname] utility. *)
 
+##V>=4.10##val null : string
+##V>=4.10##(** [null] is ["/dev/null"] on POSIX and ["NUL"] on Windows. It represents a
+##V>=4.10##    file on the OS that discards all writes and returns end of file on reads.
+##V>=4.10##
+##V>=4.10##    @since 2.12.0 and OCaml 4.10
+##V>=4.10##*)
+
 val temp_file : ?temp_dir: string -> string -> string -> string
 (** [temp_file prefix suffix] returns the name of a
    fresh temporary file in the temporary directory.
@@ -194,37 +201,39 @@ val quote : string -> string
     conventions.
  *)
 
-##V>4.9##val quote_command :
-##V>4.9##       string -> ?stdin:string -> ?stdout:string -> ?stderr:string
-##V>4.9##              -> string list -> string
-##V>4.9##(** [quote_command cmd args] returns a quoted command line, suitable
-##V>4.9##    for use as an argument to {!Sys.command}, {!Unix.system}, and the
-##V>4.9##    {!Unix.open_process} functions.
-##V>4.9##
-##V>4.9##    The string [cmd] is the command to call.  The list [args] is
-##V>4.9##    the list of arguments to pass to this command.  It can be empty.
-##V>4.9##
-##V>4.9##    The optional arguments [?stdin] and [?stdout] and [?stderr] are
-##V>4.9##    file names used to redirect the standard input, the standard
-##V>4.9##    output, or the standard error of the command.
-##V>4.9##    If [~stdin:f] is given, a redirection [< f] is performed and the
-##V>4.9##    standard input of the command reads from file [f].
-##V>4.9##    If [~stdout:f] is given, a redirection [> f] is performed and the
-##V>4.9##    standard output of the command is written to file [f].
-##V>4.9##    If [~stderr:f] is given, a redirection [2> f] is performed and the
-##V>4.9##    standard error of the command is written to file [f].
-##V>4.9##    If both [~stdout:f] and [~stderr:f] are given, with the exact
-##V>4.9##    same file name [f], a [2>&1] redirection is performed so that the
-##V>4.9##    standard output and the standard error of the command are interleaved
-##V>4.9##    and redirected to the same file [f].
-##V>4.9##
-##V>4.9##    Under Unix and Cygwin, the command, the arguments, and the redirections
-##V>4.9##    if any are quoted using {!Filename.quote}, then concatenated.
-##V>4.9##    Under Win32, additional quoting is performed as required by the
-##V>4.9##    [cmd.exe] shell that is called by {!Sys.command}.
-##V>4.9##
-##V>4.9##    Raise [Failure] if the command cannot be escaped on the current platform.
-##V>4.9##*)
+##V>=4.10##val quote_command :
+##V>=4.10##       string -> ?stdin:string -> ?stdout:string -> ?stderr:string
+##V>=4.10##              -> string list -> string
+##V>=4.10##(** [quote_command cmd args] returns a quoted command line, suitable
+##V>=4.10##    for use as an argument to {!Sys.command}, {!Unix.system}, and the
+##V>=4.10##    {!Unix.open_process} functions.
+##V>=4.10##
+##V>=4.10##    The string [cmd] is the command to call.  The list [args] is
+##V>=4.10##    the list of arguments to pass to this command.  It can be empty.
+##V>=4.10##
+##V>=4.10##    The optional arguments [?stdin] and [?stdout] and [?stderr] are
+##V>=4.10##    file names used to redirect the standard input, the standard
+##V>=4.10##    output, or the standard error of the command.
+##V>=4.10##    If [~stdin:f] is given, a redirection [< f] is performed and the
+##V>=4.10##    standard input of the command reads from file [f].
+##V>=4.10##    If [~stdout:f] is given, a redirection [> f] is performed and the
+##V>=4.10##    standard output of the command is written to file [f].
+##V>=4.10##    If [~stderr:f] is given, a redirection [2> f] is performed and the
+##V>=4.10##    standard error of the command is written to file [f].
+##V>=4.10##    If both [~stdout:f] and [~stderr:f] are given, with the exact
+##V>=4.10##    same file name [f], a [2>&1] redirection is performed so that the
+##V>=4.10##    standard output and the standard error of the command are interleaved
+##V>=4.10##    and redirected to the same file [f].
+##V>=4.10##
+##V>=4.10##    Under Unix and Cygwin, the command, the arguments, and the redirections
+##V>=4.10##    if any are quoted using {!Filename.quote}, then concatenated.
+##V>=4.10##    Under Win32, additional quoting is performed as required by the
+##V>=4.10##    [cmd.exe] shell that is called by {!Sys.command}.
+##V>=4.10##
+##V>=4.10##    Raise [Failure] if the command cannot be escaped on the current platform.
+##V>=4.10##
+##V>=4.10##    @since 2.12.0 and OCaml 4.10
+##V>=4.10##*)
 
 ##V<4.4## val extension : string -> string
 ##V<4.4##(* extension name is the shortest suffix ext of name0 where:
