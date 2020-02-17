@@ -817,7 +817,7 @@ struct
   include Map.Make(Ord)
 
   (* We break the abstraction of stdlib's Map module by exposing
-     it's underlyding datatype, which is exactly ((key, 'a)
+     it's underlying datatype, which is exactly ((key, 'a)
      Concrete.map). We therefore have O(1) conversion to and from
      Concrete, which allow us to add new features to the Map
      module while reusing stdlib's implementation (and, in fact,
