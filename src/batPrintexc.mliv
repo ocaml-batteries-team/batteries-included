@@ -170,6 +170,7 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##(** {6 Current call stack} *)
 ##V>=4.2##
 ##V>=4.2##val get_callstack: int -> raw_backtrace
+##V>=4.10##external get_callstack : int -> raw_backtrace = "caml_get_current_callstack"
 ##V>=4.2##(** [Printexc.get_callstack n] returns a description of the top of the
 ##V>=4.2##    call stack on the current program point (for the current thread),
 ##V>=4.2##    with at most [n] entries.  (Note: this function is not related to
