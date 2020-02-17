@@ -56,7 +56,6 @@ let rev_map2 = List.rev_map2
 ##V>=4.07##let to_seq = List.to_seq
 ##V>=4.07##let of_seq = List.of_seq
 ##V>=4.10##let concat_map = List.concat_map
-##V>=4.10##let find_map_opt = List.find_map
 (* ::VH:: END GLUE *)
 
 let rec compare_lengths la lb = match la, lb with
@@ -566,10 +565,10 @@ let filteri_map f l =
 *)
 
 let rec find_map f = function
-  | [] -> raise Not_found
+  | [] -> None
   | x :: xs ->
     match f x with
-    | Some y -> y
+    | Some y -> Some y
     | None -> find_map f xs
 
 let fold_right_max = 1000
@@ -1540,10 +1539,6 @@ module Exceptionless = struct
     try Some (assoc_inv e l)
     with Not_found -> None
 
-  let find_map f l =
-    try Some(find_map f l)
-    with Not_found -> None
-
   let hd l =
     try Some (hd l)
     with Failure _ -> None
@@ -1572,7 +1567,6 @@ module Labels = struct
   let find ~f l     = find f l
   let findi ~f      = findi f
   let find_exn ~f   = find_exn f
-##V>=4.10##let find_map_opt ~f = find_map_opt f
   let filter_map ~f = filter_map f
   let remove_if ~f  = remove_if f
   let take_while ~f = take_while f

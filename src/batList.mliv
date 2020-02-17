@@ -441,14 +441,6 @@ val find_opt: ('a -> bool) -> 'a list -> 'a option
     satisfies [p] in the list [l].
     @since 2.7.0 *)
 
-##V>=4.10##val find_map_opt: ('a -> 'b option) -> 'a list -> 'b option
-##V>=4.10##(** [find_map f l] applies [f] to the elements of [l] in order,
-##V>=4.10##    and returns the first result of the form [Some v], or [None]
-##V>=4.10##    if none exist.
-##V>=4.10##
-##V>=4.10##    @since 2.12.0 and OCaml 4.10
-##V>=4.10##*)
-
 val find_exn : ('a -> bool) -> exn -> 'a list -> 'a
 (** [find_exn p e l] returns the first element of [l] such as [p x]
     returns [true] or raises [e] if such an element has not been found. *)
@@ -458,11 +450,10 @@ val findi : (int -> 'a -> bool) -> 'a list -> (int * 'a)
     index [i] such that [p i ai] is true, or @raise Not_found if no
     such element has been found. *)
 
-val find_map : ('a -> 'b option) -> 'a list -> 'b
+val find_map : ('a -> 'b option) -> 'a list -> 'b option
 (** [find_map pred list] finds the first element of [list] for which
-    [pred element] returns [Some r].  It returns [r] immediately
-    once found or @raise Not_found if no element matches the
-    predicate.  See also {!filter_map}. *)
+    [pred element] returns [Some r].  It returns [Some r] once found
+    or [None] if no element matches the predicate.  See also {!filter_map}. *)
 
 ##V>=4.10##val concat_map : ('a -> 'b list) -> 'a list -> 'b list
 ##V>=4.10##(** [List.concat_map f l] gives the same result as
@@ -1012,11 +1003,6 @@ module Exceptionless : sig
   val assq : 'a -> ('a * 'b) list -> 'b option
   (** As {!assoc} but with physical equality. *)
 
-  val find_map : ('a -> 'b option) -> 'a list -> 'b option
-  (** [find_map f xs] returns [Some y] such that [x] is the first
-      element of the list where [f x] returns [Some y].  It returns [None]
-      if no such element exists. *)
-
   val hd : ('a list -> 'a option)
   (** [hd l] returns [Some x] such that [x] is the first element of the given
       list [l].
@@ -1066,7 +1052,6 @@ module Labels : sig
   val subset : cmp:('a -> 'b -> int) -> 'a list -> 'b list -> bool
   val find : f:('a -> bool) -> 'a list -> 'a
   val find_exn : f:('a -> bool) -> exn -> 'a list -> 'a
-##V>=4.10##val find_map_opt: f:('a -> 'b option) -> 'a list -> 'b option
   val findi : f:(int -> 'a -> bool) -> 'a list -> (int * 'a)
   val rfind : f:('a -> bool) -> 'a list -> 'a
   val filter : f:('a -> bool) -> 'a list -> 'a list
