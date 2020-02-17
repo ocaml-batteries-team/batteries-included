@@ -35,7 +35,11 @@ module Stdlib_verifications = struct
        include module type of Legacy.Lexing
        val from_channel : BatIO.input -> Lexing.lexbuf
      end)
-  module List = (List: module type of Legacy.List)
+  module List =
+    (List: sig
+       include module type of Legacy.List
+       val find_map : ('a -> 'b option) -> 'a list -> 'b
+     end)
   (*  module Map = (Map : module type of Legacy.Map)*)
   module Marshal =
     (Marshal: sig
