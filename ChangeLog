@@ -1,7 +1,9 @@
 Changelog
 ---------
 
-## NEXT_RELEASE (major release)
+## NEXT_RELEASE (minor release)
+
+## v3.0.0 (major release)
 
 - added BatSplay.find_opt and BatMap.find_opt
   #941

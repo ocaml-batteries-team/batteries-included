@@ -817,7 +817,7 @@ struct
   include Map.Make(Ord)
 
   (* We break the abstraction of stdlib's Map module by exposing
-     it's underlyding datatype, which is exactly ((key, 'a)
+     it's underlying datatype, which is exactly ((key, 'a)
      Concrete.map). We therefore have O(1) conversion to and from
      Concrete, which allow us to add new features to the Map
      module while reusing stdlib's implementation (and, in fact,
@@ -842,6 +842,7 @@ struct
   let values t = Concrete.values (impl_of_t t)
   let update k1 k2 v2 t = t_of_impl (Concrete.update k1 k2 v2 Ord.compare (impl_of_t t))
   let find_default d k t = Concrete.find_default d k Ord.compare (impl_of_t t)
+  let find_opt k t = Concrete.find_option k Ord.compare (impl_of_t t)
 
   let of_enum e = t_of_impl (Concrete.of_enum Ord.compare e)
 

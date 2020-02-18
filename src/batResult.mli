@@ -10,15 +10,15 @@ type ('a, 'e) t = ('a, 'e) BatPervasives.result = Ok of 'a | Error of 'e
 
 val ok : 'a -> ('a, 'b) t
 (** [ok v] is [Ok v].
-    @since NEXT_RELEASE *)
+    @since 3.0.0 *)
 
 val error : 'e -> ('a, 'e) t
 (** [error e] is [Error e].
-    @since NEXT_RELEASE *)
+    @since 3.0.0 *)
 
 val value : ('a, 'e) t -> default:'a -> 'a
 (** [value r ~default] is [v] if [r] is [Ok v] and [default] otherwise.
-    @since NEXT_RELEASE *)
+    @since 3.0.0 *)
 
 val default: 'a -> ('a, _) t -> 'a
 (** [default d r] evaluates to [d] if [r] is [Error] else [x] when [r] is
@@ -29,12 +29,12 @@ val default: 'a -> ('a, _) t -> 'a
 val get_ok : ('a, 'e) t -> 'a
 (** [get_ok r] is [v] if [r] is [Ok v] and @raise Invalid_argument
     otherwise.
-    @since NEXT_RELEASE *)
+    @since 3.0.0 *)
 
 val get_error : ('a, 'e) t -> 'e
 (** [get_error r] is [e] if [r] is [Error e] and @raise Invalid_argument
     otherwise.
-    @since NEXT_RELEASE *)
+    @since 3.0.0 *)
 
 val get : ('a, exn) t -> 'a
 (** [get (Ok x)] returns [x], and [get (Error e)] raises [e].  This
@@ -57,20 +57,20 @@ val catch3: ('a -> 'b -> 'c -> 'd) -> 'a -> 'b -> 'c -> ('d, exn) t
 
 val bind : ('a, 'e) t -> ('a -> ('b, 'e) t) -> ('b, 'e) t
 (** [bind r f] is [f v] if [r] is [Ok v] and [r] if [r] is [Error _].
-    @since NEXT_RELEASE *)
+    @since 3.0.0 *)
 
 val join : (('a, 'e) t, 'e) t -> ('a, 'e) t
 (** [join rr] is [r] if [rr] is [Ok r] and [rr] if [rr] is [Error _].
-    @since NEXT_RELEASE *)
+    @since 3.0.0 *)
 
 val map : ('a -> 'b) -> ('a, 'e) t -> ('b, 'e) t
 (** [map f r] is [Ok (f v)] if [r] is [Ok v] and [r] if [r] is [Error _].
-    @since NEXT_RELEASE *)
+    @since 3.0.0 *)
 
 val map_error : ('e -> 'f) -> ('a, 'e) t -> ('a, 'f) t
 (** [map_error f r] is [Error (f e)] if [r] is [Error e] and [r] if
     [r] is [Ok _].
-    @since NEXT_RELEASE *)
+    @since 3.0.0 *)
 
 val map_both : ('a1 -> 'a2) -> ('b1 -> 'b2) -> ('a1, 'b1) t -> ('a2, 'b2) t
 (** [map_both f g (Ok x)] returns [Ok (f x)] and [map_both f g (Error e)] returns [Error (g e)].
@@ -84,15 +84,15 @@ val map_default : 'b -> ('a -> 'b) -> ('a, _) t -> 'b
 val fold : ok:('a -> 'c) -> error:('e -> 'c) -> ('a, 'e) t -> 'c
 (** [fold ~ok ~error r] is [ok v] if [r] is [Ok v] and [error e] if [r]
     is [Error e].
-    @since NEXT_RELEASE *)
+    @since 3.0.0 *)
 
 val iter : ('a -> unit) -> ('a, 'e) t -> unit
 (** [iter f r] is [f v] if [r] is [Ok v] and [()] otherwise.
-    @since NEXT_RELEASE *)
+    @since 3.0.0 *)
 
 val iter_error : ('e -> unit) -> ('a, 'e) t -> unit
 (** [iter_error f r] is [f e] if [r] is [Error e] and [()] otherwise.
-    @since NEXT_RELEASE *)
+    @since 3.0.0 *)
 
 (** {1:preds Predicates and comparisons} *)
 
@@ -102,7 +102,7 @@ val is_ok : ('a, 'e) t -> bool
 
 val is_error : ('a, 'e) t -> bool
 (** [is_error r] is [true] iff [r] is [Error _].
-    @since NEXT_RELEASE *)
+    @since 3.0.0 *)
 
 val is_bad : ('a, 'e) t -> bool
 (** Same as [is_error].
@@ -117,7 +117,7 @@ val equal :
 (** [equal ~ok ~error r0 r1] tests equality of [r0] and [r1] using [ok]
     and [error] to respectively compare values wrapped by [Ok _] and
     [Error _].
-    @since NEXT_RELEASE *)
+    @since 3.0.0 *)
 
 val compare :
   ok:('a -> 'a -> int) -> error:('e -> 'e -> int) -> ('a, 'e) t ->
@@ -125,7 +125,7 @@ val compare :
 (** [compare ~ok ~error r0 r1] totally orders [r0] and [r1] using [ok] and
     [error] to respectively compare values wrapped by [Ok _ ] and [Error _].
     [Ok _] values are smaller than [Error _] values.
-    @since NEXT_RELEASE *)
+    @since 3.0.0 *)
 
 (** {1:convert Converting} *)
 
@@ -140,12 +140,12 @@ val of_option: 'a option -> ('a, unit) t
 
 val to_list : ('a, 'e) t -> 'a list
 (** [to_list r] is [[v]] if [r] is [Ok v] and [[]] otherwise.
-    @since NEXT_RELEASE *)
+    @since 3.0.0 *)
 
 val to_seq : ('a, 'e) t -> 'a BatSeq.t
 (** [to_seq r] is [r] as a sequence. [Ok v] is the singleton sequence
     containing [v] and [Error _] is the empty sequence.
-    @since NEXT_RELEASE *)
+    @since 3.0.0 *)
 
 (** {6 The Result Monad} *)
 

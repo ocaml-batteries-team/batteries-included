@@ -885,7 +885,7 @@ let find x s = Concrete.find Pervasives.compare x s
   let x = "abc" in (find "abc" (singleton x)) == x
   let x = (1,1) in (find (1,1) (singleton x)) == x
   let x,y = (1,1),(1,1) in find x (singleton y) == y
-  let x,y = "a","a" in find x (singleton y) != x
+  let x,y = [|0|],[|0|] in find x (singleton y) != x
   try ignore (find (1,2) (singleton (1,1))); false with Not_found -> true
 *)
 
