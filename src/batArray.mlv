@@ -84,9 +84,12 @@ let rev_in_place xs =
   let n = length xs in
   let j = ref (n-1) in
   for i = 0 to n/2-1 do
-    let c = xs.(i) in
-    xs.(i) <- xs.(!j);
-    xs.(!j) <- c;
+    (* let c = xs.(i) in *)
+    let c = unsafe_get xs i in
+    (* xs.(i) <- xs.(!j); *)
+    unsafe_set xs i (unsafe_get xs !j);
+    (* xs.(!j) <- c; *)
+    unsafe_set xs !j c;
     decr j
   done
 
