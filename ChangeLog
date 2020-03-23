@@ -3,6 +3,10 @@ Changelog
 
 ## NEXT_RELEASE (minor release)
 
+- BatArray: use unsage_get and unsafe_set more often
+  #947
+  (Francois Berenger, review by Cedric Cellier)
+
 ## v3.0.0 (major release)
 
 - added BatSplay.find_opt and BatMap.find_opt
