@@ -521,7 +521,7 @@ let config = { verbose = true;
                resamples = 1_000;
                confidence_interval = 0.95;
                gc_between_tests= false;
-(*	       output = [summarize ~alpha:0.05];*)
+(*               output = [summarize ~alpha:0.05];*)
                output = [print_times "times.flat"; summarize ~alpha:0.05];
                min_iters = 1;
              }
@@ -541,7 +541,7 @@ let init_environment () =
       let times = Array.init (i+1) (fun _ -> M.timer()) in
       let pos_diffs =
         Array.init i (fun i -> times.(i+1) -. times.(i))
-	           |> Array.to_list |> List.filter is_positive |> Array.of_list
+                   |> Array.to_list |> List.filter is_positive |> Array.of_list
       in
       pos_diffs
     in
@@ -600,7 +600,7 @@ let run_benchmark (f: int -> 'a) =
   Array.init config.samples (fun _ ->
     if config.gc_between_tests then Gc.compact ();
     M.time_ f iters_int)
-		   |> Array.map (fun t -> (t -. env.clock_cost) /. iters)
+                   |> Array.map (fun t -> (t -. env.clock_cost) /. iters)
 
 (** Run a benchmark and analyze the results, printing a simple summary to stdout *)
 let run_and_analyze desc f =

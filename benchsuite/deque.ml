@@ -70,8 +70,8 @@ struct
   let snoc ({len_front = len_front; front = front; len_rear = len_rear; rear = rear} as t) x =
     if len_front >= len_rear + 1 then {
       t with
-	rear = Lazy.lazy_from_val (Cons (x, rear));
-	len_rear = len_rear + 1;
+        rear = Lazy.lazy_from_val (Cons (x, rear));
+        len_rear = len_rear + 1;
     }
     else {
       front = append front (rev (Lazy.lazy_from_val (Cons (x, rear))));
@@ -85,20 +85,20 @@ struct
       match front with
       | lazy Nil -> assert false
       | lazy (Cons (hd, tl)) ->
-	Some (hd, {t with
-	  len_front = len_front - 1;
-	  front = tl;
-	})
+        Some (hd, {t with
+          len_front = len_front - 1;
+          front = tl;
+        })
     ) else
       match front with
       | lazy Nil -> None
       | lazy (Cons (hd, tl)) ->
-	  Some (hd, {
-	    len_front = len_front - 1 + len_rear;
-	    front = append tl (rev rear);
-	    rear = nil;
-	    len_rear = 0;
-	  })
+          Some (hd, {
+            len_front = len_front - 1 + len_rear;
+            front = append tl (rev rear);
+            rear = nil;
+            len_rear = 0;
+          })
 end
 
 module type Queue = sig
@@ -113,13 +113,13 @@ let test q grow_size =
   fun n ->
     for i = 0 to n do
       let rec loop q = function
-	| 0 -> q
-	| j -> loop (Q.snoc q j) (j - 1) in
+        | 0 -> q
+        | j -> loop (Q.snoc q j) (j - 1) in
       let q = loop Q.empty grow_size in
       let rec loop q =
-	match Q.front q with
-	  | None -> ()
-	  | Some (_, q) -> loop q in
+        match Q.front q with
+          | None -> ()
+          | Some (_, q) -> loop q in
       loop q
     done
 

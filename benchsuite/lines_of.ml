@@ -77,7 +77,7 @@ let read_line2 =
       let nread = input.in_input buff 0 buff_len in
       let rec loop i =
         if i = nread then None
-	else
+        else
           if Bytes.get buff i = '\n' then Some i
           else loop (i + 1) in
       match loop 0 with
@@ -159,7 +159,7 @@ let read_line3 =
       let nread = input.in_input buff 0 buff_len in
       let rec loop i =
         if i = nread then None
-	else
+        else
           if Bytes.get buff i = '\n' then Some i
           else loop (i + 1) in
       match loop 0 with
@@ -182,12 +182,12 @@ let rfb5 fn = BatList.of_enum (make_enum read_line3 (BatFile.open_in fn))
 let () =
   Bench.config.Bench.samples <- 300;
   let funs = [ "readfile", readfile;
-	       "readfile_batteries", readfile_batteries;
-	       "file_lines_of", rfb2;
-	       "lines_of2", rfb3;
-	       "push_lines_of", rfb4;
-	       "push_lines_of2", rfb5;
-	     ] in
+               "readfile_batteries", readfile_batteries;
+               "file_lines_of", rfb2;
+               "lines_of2", rfb3;
+               "push_lines_of", rfb4;
+               "push_lines_of2", rfb5;
+             ] in
   let results = Bench.bench_funs funs "setup.ml" in
   print_endline "For reading setup.ml into a list, ";
   Bench.summarize results
