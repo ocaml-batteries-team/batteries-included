@@ -61,8 +61,8 @@ Changelog
   (Cedric Cellier)
 - BatResult: BatPervasives.result is now equal to Stdlib.result
   instead of sharing constructors without being the same type
-  #938
-  (Clément Busschaert)
+  #939, #957
+  (Clément Busschaert, Cedric Cellier)
 
 ## v2.11.0 (minor release)
 

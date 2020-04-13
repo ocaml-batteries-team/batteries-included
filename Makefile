@@ -169,7 +169,7 @@ clean-prefilter:
 # `_build` directory.
 
 DONTTEST=src/batteriesHelp.ml \
-	 src/batteries_compattest.ml \
+	 src/batteries_compattest.mlv \
 	 src/batConcreteQueue_402.ml src/batConcreteQueue_403.ml
 TESTABLE ?= $(filter-out $(DONTTEST),\
    $(wildcard src/*.ml) $(wildcard src/*.mlv))
@@ -247,6 +247,13 @@ test-byte: qtest-byte testsuite-only-byte
 test-native: qtest-native testsuite-only-native
 
 full-test: $(TEST_TARGET)
+
+PREFILTER_BIN = _build/build/prefilter.byte
+# FIXME: Not sure what actually produces this binary:
+$(PREFILTER_BIN): all
+# FIXME: Should probably be done by ocamlbuild somehow:
+src/batteries_compattest.ml: src/batteries_compattest.mlv $(PREFILTER_BIN)
+	$(PREFILTER_BIN) < $< > $@
 
 test-compat: src/batteries_compattest.ml
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) src/batteries_compattest.byte

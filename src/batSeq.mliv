@@ -35,10 +35,12 @@
     @author Jeremie Dimino
 *)
 
-type 'a t = unit -> 'a node
+##V<4.7## type 'a t = unit -> 'a node
+##V>=4.7## type 'a t = 'a Stdlib.Seq.t
 (** A sequence is a computation which returns a list-like node *)
 
 and 'a node =
+##V>=4.7## 'a Stdlib.Seq.node =
   | Nil
   | Cons of 'a * 'a t
 

@@ -43,7 +43,8 @@ let unique ()     =
    Q.unit (fun () -> unique () <> unique ())
 *)
 
-type ('a, 'b) result = ('a, 'b) Stdlib.result =
+type ('a, 'b) result =
+##V>=4.8## ('a, 'b) Stdlib.result =
   | Ok  of 'a
   | Error of 'b
 
