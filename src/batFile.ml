@@ -18,6 +18,23 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+(* this code is purposedly before any module open directive *)
+let count_lines (fn: string): int =
+  let count = ref 0 in
+  let input = open_in fn in
+  (try
+     while true do
+       let _line = input_line input in
+       incr count
+     done
+   with End_of_file -> close_in input);
+  !count
+
+(*$T count_lines
+  (Sys.file_exists "/dev/null") && (count_lines "/dev/null" = 0)
+  (Sys.file_exists "/etc/services") && (count_lines "/etc/services" > 0)
+*)
+
 open BatIO
 open ListLabels
 open Unix

@@ -3,6 +3,10 @@ Changelog
 
 ## NEXT_RELEASE (minor release)
 
+- BatFile: added count_lines
+  #XXX
+  (Francois Berenger, review by YYY)
+
 - BatArray: use unsage_get and unsafe_set more often
   #947
   (Francois Berenger, review by Cedric Cellier)
