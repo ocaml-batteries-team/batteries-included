@@ -58,7 +58,7 @@ let chronometer f =
    and so don't be too harsh when testing it *)
 (*$T sleepf
 let dt, _ = chronometer (fun () -> sleepf 0.002) in \
-0.001 <= dt && dt <= 0.003
+dt >= 0.002
 *)
 
 let run_and_read cmd =
