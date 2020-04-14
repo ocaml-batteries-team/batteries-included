@@ -48,6 +48,6 @@ let m10 = fun x -> x mod 10 = 0
 let () =
   Bench.config.Bench.samples <- 100;
   Bench.bench_2d ["list_filter", (fun a -> list_filter a m4);
-		  "old_filter", (fun a -> old_filter a m4);
-		  "new_filter", (fun a -> new_filter a m4);
-		 ] ~input_gen (1000, 1_000_000) |> Bench.print_2d "filter.bdata"
+                  "old_filter", (fun a -> old_filter a m4);
+                  "new_filter", (fun a -> new_filter a m4);
+                 ] ~input_gen (1000, 1_000_000) |> Bench.print_2d "filter.bdata"
