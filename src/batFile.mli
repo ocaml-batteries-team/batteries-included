@@ -34,6 +34,11 @@ val lines_of : string -> string BatEnum.t
     The file is automatically closed once the last line has been reached or the
     enumeration is garbage-collected. *)
 
+val count_lines: string -> int
+(** [count_lines filename] count the number of lines in given file.
+    Lines are read by the stdlib's input_line function.
+    @since NEXT_RELEASE *)
+
 val write_lines: string -> string BatEnum.t -> unit
 (** [write_lines name lines] writes strings given by [lines] to file [name] with newline character appended to each line. *)
 
