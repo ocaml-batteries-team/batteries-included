@@ -3,9 +3,13 @@ Changelog
 
 ## NEXT_RELEASE (minor release)
 
+- BatEnum: added combination
+  #518
+  (Chimrod, review by hcarty)
+
 - BatFile: added count_lines
   #953
-  (Francois Berenger, review by YYY)
+  (Francois Berenger, review by Cedric Cellier)
 
 - BatArray: use unsage_get and unsafe_set more often
   #947
