@@ -18,10 +18,12 @@
  *)
 
 type 'a node =
+##V>=4.7## 'a Stdlib.Seq.node =
   | Nil
   | Cons of 'a * 'a t
 
-and 'a t = unit -> 'a node
+##V<4.7## and 'a t = unit -> 'a node
+##V>=4.7## and 'a t = 'a Stdlib.Seq.t
 
 type 'a mappable = 'a t
 

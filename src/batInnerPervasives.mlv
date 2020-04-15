@@ -44,6 +44,7 @@ let unique ()     =
 *)
 
 type ('a, 'b) result =
+##V>=4.8## ('a, 'b) Stdlib.result =
   | Ok  of 'a
   | Error of 'b
 
