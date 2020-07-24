@@ -433,15 +433,16 @@ let iter2i f a1 a2 =
     with Invalid_argument _ -> true
 *)
 
-let for_all2 p xs ys =
-  let n = length xs in
-  if length ys <> n then invalid_arg "Array.for_all2";
-  let rec loop i =
-    if i = n then true
-    else if p (unsafe_get xs i) (unsafe_get ys i) then loop (succ i)
-    else false
-  in
-  loop 0
+##V>=4.11##let for_all2 = Array.for_all2
+##V<4.11##let for_all2 p xs ys =
+##V<4.11##  let n = length xs in
+##V<4.11##  if length ys <> n then invalid_arg "Array.for_all2";
+##V<4.11##  let rec loop i =
+##V<4.11##    if i = n then true
+##V<4.11##    else if p (unsafe_get xs i) (unsafe_get ys i) then loop (succ i)
+##V<4.11##    else false
+##V<4.11##  in
+##V<4.11##  loop 0
 
 (*$T for_all2
    for_all2 (=) [|1;2;3|] [|3;2;1|] = false
@@ -453,15 +454,16 @@ let for_all2 p xs ys =
      with Invalid_argument _ -> true
 *)
 
-let exists2 p xs ys =
-  let n = length xs in
-  if length ys <> n then invalid_arg "Array.exists2";
-  let rec loop i =
-    if i = n then false
-    else if p (unsafe_get xs i) (unsafe_get ys i) then true
-    else loop (succ i)
-  in
-  loop 0
+##V>=4.11##let exists2 = Array.exists2
+##V<4.11##let exists2 p xs ys =
+##V<4.11##  let n = length xs in
+##V<4.11##  if length ys <> n then invalid_arg "Array.exists2";
+##V<4.11##  let rec loop i =
+##V<4.11##    if i = n then false
+##V<4.11##    else if p (unsafe_get xs i) (unsafe_get ys i) then true
+##V<4.11##    else loop (succ i)
+##V<4.11##  in
+##V<4.11##  loop 0
 
 (*$T exists2
    exists2 (=) [|1;2;3|] [|3;2;1|]

@@ -129,6 +129,16 @@ type lexbuf = Lexing.lexbuf =
 ##V>=4.08##   starting at index 0, and return the number of bytes
 ##V>=4.08##   provided. A return value of 0 means end of input. *)
 
+##V>=4.11##val set_position : lexbuf -> position -> unit
+##V>=4.11##(** Set the initial tracked input position for [lexbuf] to a custom value.
+##V>=4.11##   Ignores [pos_fname]. See {!set_filename} for changing this field.
+##V>=4.11##   @since 4.11 *)
+##V>=4.11##
+##V>=4.11##val set_filename: lexbuf -> string -> unit
+##V>=4.11##(** Set filename in the initial tracked position to [file] in
+##V>=4.11##   [lexbuf].
+##V>=4.11##   @since 4.11 *)
+
 ##V>=4.08##val with_positions : lexbuf -> bool
 ##V>=4.08##(** Tell whether the lexer buffer keeps track of position fields
 ##V>=4.08##    [lex_curr_p] / [lex_start_p], as determined by the corresponding
