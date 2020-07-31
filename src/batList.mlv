@@ -798,13 +798,14 @@ let rec rindex_ofq e l =
 
 let filter = find_all
 
-let filteri f =
-  let rec aux i = function
-    | [] -> []
-    | x::xs when f i x -> x :: aux (succ i) xs
-    | x::xs -> aux (succ i) xs
-  in
-  aux 0
+##V>=4.11##let filteri = List.filteri
+##V<4.11##let filteri f =
+##V<4.11##  let rec aux i = function
+##V<4.11##    | [] -> []
+##V<4.11##    | x::xs when f i x -> x :: aux (succ i) xs
+##V<4.11##    | x::xs -> aux (succ i) xs
+##V<4.11##  in
+##V<4.11##  aux 0
 (*$T filteri
   (let r = ref (-1) in filteri (fun i _ -> incr r; i = !r) [5; 4; 8] = [5; 4; 8])
   filteri (fun _ x -> x > 4) [5; 4; 8] = [5; 8]
@@ -1017,19 +1018,20 @@ let fold_righti f l init =
   fold_righti (fun i x acc -> (i, x) :: acc) [0.; 1.] [] = [(0, 0.); (1, 1.)]
 *)
 
-let fold_left_map f acc = function
-  | [] -> acc, []
-  | h :: t ->
-    let rec loop acc dst = function
-      | [] -> acc
-      | h :: t ->
-        let acc', t' = f acc h in
-        loop acc' (Acc.accum dst t') t
-    in
-    let acc', h' = f acc h in
-    let r = Acc.create h' in
-    let res = loop acc' r t in
-    res, inj r
+##V>=4.11##let fold_left_map = List.fold_left_map
+##V<4.11##let fold_left_map f acc = function
+##V<4.11##  | [] -> acc, []
+##V<4.11##  | h :: t ->
+##V<4.11##    let rec loop acc dst = function
+##V<4.11##      | [] -> acc
+##V<4.11##      | h :: t ->
+##V<4.11##        let acc', t' = f acc h in
+##V<4.11##        loop acc' (Acc.accum dst t') t
+##V<4.11##    in
+##V<4.11##    let acc', h' = f acc h in
+##V<4.11##    let r = Acc.create h' in
+##V<4.11##    let res = loop acc' r t in
+##V<4.11##    res, inj r
 
 (*$T fold_left_map
   fold_left_map (fun acc x -> assert false) 0 [] = (0, [])
