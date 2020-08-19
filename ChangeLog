@@ -3,6 +3,10 @@ Changelog
 
 ## NEXT_RELEASE (minor release)
 
+- Compatibility fixes for OCaml-4.11
+  #962
+  (Jerome Vouillon)
+
 - BatEnum: added combination
   #518
   (Chimrod, review by hcarty)
