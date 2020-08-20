@@ -18,6 +18,11 @@ Changelog
 - BatArray: use unsage_get and unsafe_set more often
   #947
   (Francois Berenger, review by Cedric Cellier)
+  
+- BatResult: BatPervasives.result is now equal to Stdlib.result
+  instead of sharing constructors without being the same type
+  #939, #957
+  (Clément Busschaert, Cedric Cellier).
 
 ## v3.0.0 (major release)
 
@@ -67,10 +72,6 @@ Changelog
   are changed. The default value is Pervasives.compare.
   #679
   (Cedric Cellier)
-- BatResult: BatPervasives.result is now equal to Stdlib.result
-  instead of sharing constructors without being the same type
-  #939, #957
-  (Clément Busschaert, Cedric Cellier)
 
 ## v2.11.0 (minor release)
 
