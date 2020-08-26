@@ -7,6 +7,8 @@ Not started yet.
 
 ## v3.1.0 (minor release)
 
+This minor release adds support for OCaml 4.11.
+
 - Compatibility fixes for OCaml-4.11
   #962
   (Jerome Vouillon)
@@ -15,6 +17,10 @@ Not started yet.
   #518
   (Chimrod, review by hcarty)
 
+- fix benchmarks
+  #956
+  (Cedric Cellier)
+
 - BatFile: added count_lines
   #953
   (Francois Berenger, review by Cedric Cellier)
@@ -22,6 +28,10 @@ Not started yet.
 - BatArray: use unsafe_get and unsafe_set more often
   #947
   (Francois Berenger, review by Cedric Cellier)
+
+- fix some tests for ocaml-4.10.0
+  #944
+  (kit-ty-kate)
 
 - BatResult: BatPervasives.result is now equal to Stdlib.result
   instead of sharing constructors without being the same type
