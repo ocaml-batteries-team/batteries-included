@@ -125,7 +125,8 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;print_raw_backtrace&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stdlib</span>.out_channel&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatPrintexc</span>.raw_backtrace&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;raw_backtrace_to_string&nbsp;:&nbsp;<span class="constructor">BatPrintexc</span>.raw_backtrace&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_callstack&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatPrintexc</span>.raw_backtrace<br>
+&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;get_callstack&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatPrintexc</span>.raw_backtrace<br>
+&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;<span class="string">"caml_get_current_callstack"</span><br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;set_uncaught_exception_handler&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;(exn&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatPrintexc</span>.raw_backtrace&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;backtrace_slot&nbsp;=&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Printexc</span>.backtrace_slot<br>
@@ -157,4 +158,6 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;exn_slot_id&nbsp;:&nbsp;exn&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;exn_slot_name&nbsp;:&nbsp;exn&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;t&nbsp;=&nbsp;exn&nbsp;=&nbsp;..<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;use_printers&nbsp;:&nbsp;exn&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;option<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;to_string_default&nbsp;:&nbsp;exn&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 <span class="keyword">end</span></code></body></html>

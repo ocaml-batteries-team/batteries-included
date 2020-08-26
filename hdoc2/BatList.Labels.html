@@ -150,10 +150,12 @@
 <pre><span id="VALsubset"><span class="keyword">val</span> subset</span> : <code class="type">cmp:('a -> 'b -> int) -> 'a list -> 'b list -> bool</code></pre>
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a</code></pre>
 <pre><span id="VALfind_exn"><span class="keyword">val</span> find_exn</span> : <code class="type">f:('a -> bool) -> exn -> 'a list -> 'a</code></pre>
+<pre><span id="VALfind_map_opt"><span class="keyword">val</span> find_map_opt</span> : <code class="type">f:('a -> 'b option) -> 'a list -> 'b option</code></pre>
 <pre><span id="VALfindi"><span class="keyword">val</span> findi</span> : <code class="type">f:(int -> 'a -> bool) -> 'a list -> int * 'a</code></pre>
 <pre><span id="VALrfind"><span class="keyword">val</span> rfind</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a</code></pre>
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a list</code></pre>
 <pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">f:('a -> 'b option) -> 'a list -> 'b list</code></pre>
+<pre><span id="VALconcat_map"><span class="keyword">val</span> concat_map</span> : <code class="type">f:('a -> 'b list) -> 'a list -> 'b list</code></pre>
 <pre><span id="VALfind_all"><span class="keyword">val</span> find_all</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a list</code></pre>
 <pre><span id="VALpartition"><span class="keyword">val</span> partition</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a list * 'a list</code></pre>
 <pre><span id="VALremove_if"><span class="keyword">val</span> remove_if</span> : <code class="type">f:('a -> bool) -> 'a list -> 'a list</code></pre>

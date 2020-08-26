@@ -283,6 +283,7 @@
 </ul>
 </div>
 <h7 id="6_Currentcallstack">Current call stack</h7>
+<pre><span id="VALget_callstack"><span class="keyword">val</span> get_callstack</span> : <code class="type">int -> <a href="BatPrintexc.html#TYPEraw_backtrace">raw_backtrace</a></code></pre>
 <pre><span id="VALget_callstack"><span class="keyword">val</span> get_callstack</span> : <code class="type">int -> <a href="BatPrintexc.html#TYPEraw_backtrace">raw_backtrace</a></code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code"><span class="constructor">Printexc</span>.get_callstack&nbsp;n</code> returns a description of the top of the
@@ -378,7 +379,7 @@
 <code><span id="TYPEELTlocation.end_char">end_char</span>&nbsp;: <code class="type">int</code>;</code></td>
 
 </tr></table>
-}
+<code>}</code>
 
 <div class="info ">
 <div class="info-desc">
@@ -478,4 +479,24 @@
 </div>
 </div>
 
+
+<pre><span id="VALuse_printers"><span class="keyword">val</span> use_printers</span> : <code class="type">exn -> string option</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Printexc</span>.use_printers&nbsp;e</code> returns <code class="code"><span class="constructor">None</span></code> if there are no registered
+    printers and <code class="code"><span class="constructor">Some</span>&nbsp;s</code> with else as the resulting string otherwise.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.11.0 and OCaml 4.09</li>
+</ul>
+</div>
+
+<pre><span id="VALto_string_default"><span class="keyword">val</span> to_string_default</span> : <code class="type">exn -> string</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Printexc</span>.to_string_default&nbsp;e</code> returns a string representation of the
+    exception <code class="code">e</code>, ignoring all registered exception printers.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.11.0 and OCaml 4.09</li>
+</ul>
+</div>
 </body></html>

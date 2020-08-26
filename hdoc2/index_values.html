@@ -2371,6 +2371,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatResult.html#VALbind">bind</a> [<a href="BatResult.html">BatResult</a>]</td>
+<td><div class="info">
+<p><code class="code">bind&nbsp;r&nbsp;f</code> is <code class="code">f&nbsp;v</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;v</code> and <code class="code">r</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Error</span>&nbsp;_</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatParserCo.html#VALbind">bind</a> [<a href="BatParserCo.html">BatParserCo</a>]</td>
 <td><div class="info">
 <p>Monadic-style combination:</p>
@@ -3362,6 +3368,13 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatEnum.html#VALcombination">combination</a> [<a href="BatEnum.html">BatEnum</a>]</td>
+<td><div class="info">
+<p><code class="code">combination&nbsp;n&nbsp;k</code> returns an enumeration over combination of <code class="code">k</code> elements
+    between <code class="code">n</code> distincts elements.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatSeq.Exceptionless.html#VALcombine">combine</a> [<a href="BatSeq.Exceptionless.html">BatSeq.Exceptionless</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatSeq.html#VALcombine">combine</a> [<a href="BatSeq.html">BatSeq</a>]</td>
@@ -3395,7 +3408,7 @@
 </td></tr>
 <tr><td><a href="BatEnum.html#VALcombine">combine</a> [<a href="BatEnum.html">BatEnum</a>]</td>
 <td><div class="info">
-<p><code class="code">combine</code> transform a pair of stream into a stream of pairs of corresponding
+<p><code class="code">combine</code> transform two streams into a stream of pairs of corresponding
     elements.</p>
 
 </div>
@@ -3513,6 +3526,13 @@
 <tr><td><a href="BatSet.html#VALcompare">compare</a> [<a href="BatSet.html">BatSet</a>]</td>
 <td><div class="info">
 <p>Total ordering between sets.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatResult.html#VALcompare">compare</a> [<a href="BatResult.html">BatResult</a>]</td>
+<td><div class="info">
+<p><code class="code">compare&nbsp;~ok&nbsp;~error&nbsp;r0&nbsp;r1</code> totally orders <code class="code">r0</code> and <code class="code">r1</code> using <code class="code">ok</code> and
+    <code class="code">error</code> to respectively compare values wrapped by <code class="code"><span class="constructor">Ok</span>&nbsp;_&nbsp;</code> and <code class="code"><span class="constructor">Error</span>&nbsp;_</code>.</p>
 
 </div>
 </td></tr>
@@ -3866,6 +3886,15 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatList.Labels.html#VALconcat_map">concat_map</a> [<a href="BatList.Labels.html">BatList.Labels</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatList.html#VALconcat_map">concat_map</a> [<a href="BatList.html">BatList</a>]</td>
+<td><div class="info">
+<p><code class="code"><span class="constructor">List</span>.concat_map&nbsp;f&nbsp;l</code> gives the same result as
+    <code class="code"><span class="constructor">List</span>.concat</code><code class="code">&nbsp;(</code><code class="code"><span class="constructor">List</span>.map</code><code class="code">&nbsp;f&nbsp;l)</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatEnum.html#VALconcat_map">concat_map</a> [<a href="BatEnum.html">BatEnum</a>]</td>
 <td><div class="info">
 <p>Synonym of <a href="BatEnum.Monad.html#VALbind"><code class="code"><span class="constructor">BatEnum</span>.<span class="constructor">Monad</span>.bind</code></a>, with flipped arguments.</p>
@@ -4206,6 +4235,12 @@
 <tr><td><a href="BatString.html#VALcount_char">count_char</a> [<a href="BatString.html">BatString</a>]</td>
 <td><div class="info">
 <p><code class="code">count_char&nbsp;str&nbsp;c</code> returns the number of times <code class="code">c</code> is used in <code class="code">str</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatFile.html#VALcount_lines">count_lines</a> [<a href="BatFile.html">BatFile</a>]</td>
+<td><div class="info">
+<p><code class="code">count_lines&nbsp;filename</code> count the number of lines in given file.</p>
 
 </div>
 </td></tr>
@@ -4568,8 +4603,8 @@
 </td></tr>
 <tr><td><a href="BatResult.html#VALdefault">default</a> [<a href="BatResult.html">BatResult</a>]</td>
 <td><div class="info">
-<p><code class="code">default&nbsp;d&nbsp;r</code> evaluates to <code class="code">d</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Bad</span></code> else <code class="code">x</code> when <code class="code">r</code> is
-    <code class="code"><span class="constructor">Ok</span>&nbsp;x</code></p>
+<p><code class="code">default&nbsp;d&nbsp;r</code> evaluates to <code class="code">d</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Error</span></code> else <code class="code">x</code> when <code class="code">r</code> is
+    <code class="code"><span class="constructor">Ok</span>&nbsp;x</code>.</p>
 
 </div>
 </td></tr>
@@ -5870,6 +5905,14 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatResult.html#VALequal">equal</a> [<a href="BatResult.html">BatResult</a>]</td>
+<td><div class="info">
+<p><code class="code">equal&nbsp;~ok&nbsp;~error&nbsp;r0&nbsp;r1</code> tests equality of <code class="code">r0</code> and <code class="code">r1</code> using <code class="code">ok</code>
+    and <code class="code">error</code> to respectively compare values wrapped by <code class="code"><span class="constructor">Ok</span>&nbsp;_</code> and
+    <code class="code"><span class="constructor">Error</span>&nbsp;_</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatQueue.html#VALequal">equal</a> [<a href="BatQueue.html">BatQueue</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatNumber.Numeric.html#VALequal">equal</a> [<a href="BatNumber.Numeric.html">BatNumber.Numeric</a>]</td>
@@ -6011,6 +6054,12 @@
 <td><div class="info">
 <p>A formatter to use with formatting functions below for
     output to standard error.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatResult.html#VALerror">error</a> [<a href="BatResult.html">BatResult</a>]</td>
+<td><div class="info">
+<p><code class="code">error&nbsp;e</code> is <code class="code"><span class="constructor">Error</span>&nbsp;e</code>.</p>
 
 </div>
 </td></tr>
@@ -7559,6 +7608,16 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatList.Labels.html#VALfind_map_opt">find_map_opt</a> [<a href="BatList.Labels.html">BatList.Labels</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatList.html#VALfind_map_opt">find_map_opt</a> [<a href="BatList.html">BatList</a>]</td>
+<td><div class="info">
+<p><code class="code">find_map_opt&nbsp;f&nbsp;l</code> applies <code class="code">f</code> to the elements of <code class="code">l</code> in order,
+    and returns the first result of the form <code class="code"><span class="constructor">Some</span>&nbsp;v</code>, or <code class="code"><span class="constructor">None</span></code>
+    if none exist.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatHeap.H.html#VALfind_min">find_min</a> [<a href="BatHeap.H.html">BatHeap.H</a>]</td>
 <td><div class="info">
 <p>See <a href="BatHeap.html#VALfind_min"><code class="code"><span class="constructor">BatHeap</span>.find_min</code></a>.</p>
@@ -7584,6 +7643,20 @@
 <p><code class="code">find_opt&nbsp;p&nbsp;v</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;a</code>, where <code class="code">a</code> is the first element
     of vect <code class="code">v</code> that satisfies the predicate <code class="code">p</code>, or <code class="code"><span class="constructor">None</span></code>
     if no such element exists.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.S.html#VALfind_opt">find_opt</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
+<td><div class="info">
+<p><code class="code">find_opt&nbsp;x&nbsp;m</code> returns Some b where b is the current binding
+   * of <code class="code">x</code> in <code class="code">m</code>, or None if no such binding exists.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.html#VALfind_opt">find_opt</a> [<a href="BatMap.html">BatMap</a>]</td>
+<td><div class="info">
+<p><code class="code">find_opt&nbsp;x&nbsp;m</code> returns Some b where b is the current binding
+ * of <code class="code">x</code> in <code class="code">m</code>, or None if no such binding exists.</p>
 
 </div>
 </td></tr>
@@ -7991,6 +8064,13 @@
 <td><div class="info">
 <p><code class="code">fold&nbsp;f&nbsp;s&nbsp;a</code> computes <code class="code">(f&nbsp;xN&nbsp;...&nbsp;(f&nbsp;x1&nbsp;(f&nbsp;x0&nbsp;a))...)</code>,
     where <code class="code">x0,x1..xN</code> are the elements of <code class="code">s</code>, in increasing order.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatResult.html#VALfold">fold</a> [<a href="BatResult.html">BatResult</a>]</td>
+<td><div class="info">
+<p><code class="code">fold&nbsp;~ok&nbsp;~error&nbsp;r</code> is <code class="code">ok&nbsp;v</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;v</code> and <code class="code">error&nbsp;e</code> if <code class="code">r</code>
+    is <code class="code"><span class="constructor">Error</span>&nbsp;e</code>.</p>
 
 </div>
 </td></tr>
@@ -9122,7 +9202,7 @@
 </td></tr>
 <tr><td><a href="BatResult.html#VALget">get</a> [<a href="BatResult.html">BatResult</a>]</td>
 <td><div class="info">
-<p><code class="code">get&nbsp;(<span class="constructor">Ok</span>&nbsp;x)</code> returns <code class="code">x</code>, and <code class="code">get&nbsp;(<span class="constructor">Bad</span>&nbsp;e)</code> raises <code class="code">e</code>.</p>
+<p><code class="code">get&nbsp;(<span class="constructor">Ok</span>&nbsp;x)</code> returns <code class="code">x</code>, and <code class="code">get&nbsp;(<span class="constructor">Error</span>&nbsp;e)</code> raises <code class="code">e</code>.</p>
 
 </div>
 </td></tr>
@@ -9346,13 +9426,7 @@
 </div>
 </td></tr>
 <tr><td><a href="BatPrintexc.html#VALget_callstack">get_callstack</a> [<a href="BatPrintexc.html">BatPrintexc</a>]</td>
-<td><div class="info">
-<p><code class="code"><span class="constructor">Printexc</span>.get_callstack&nbsp;n</code> returns a description of the top of the
-    call stack on the current program point (for the current thread),
-    with at most <code class="code">n</code> entries.</p>
-
-</div>
-</td></tr>
+<td></td></tr>
 <tr><td><a href="BatSet.PSet.html#VALget_cmp">get_cmp</a> [<a href="BatSet.PSet.html">BatSet.PSet</a>]</td>
 <td><div class="info">
 <p>get the comparison function used for a polymorphic map</p>
@@ -9381,6 +9455,12 @@
 <tr><td><a href="BatFormat.html#VALget_ellipsis_text">get_ellipsis_text</a> [<a href="BatFormat.html">BatFormat</a>]</td>
 <td><div class="info">
 <p>Return the text of the ellipsis.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatResult.html#VALget_error">get_error</a> [<a href="BatResult.html">BatResult</a>]</td>
+<td><div class="info">
+<p><code class="code">get_error&nbsp;r</code> is <code class="code">e</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Error</span>&nbsp;e</code> and</p>
 
 </div>
 </td></tr>
@@ -9511,6 +9591,12 @@
 <tr><td><a href="BatGc.html#VALget_minor_free">get_minor_free</a> [<a href="BatGc.html">BatGc</a>]</td>
 <td><div class="info">
 <p>Return the current size of the free space inside the minor heap.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatResult.html#VALget_ok">get_ok</a> [<a href="BatResult.html">BatResult</a>]</td>
+<td><div class="info">
+<p><code class="code">get_ok&nbsp;r</code> is <code class="code">v</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;v</code> and</p>
 
 </div>
 </td></tr>
@@ -10185,7 +10271,7 @@
 <tr><td><a href="BatPervasives.html#VALignore_ok">ignore_ok</a> [<a href="BatPervasives.html">BatPervasives</a>]</td>
 <td><div class="info">
 <p><code class="code">ignore_ok&nbsp;(f&nbsp;x)</code> ignores the result of <code class="code">f&nbsp;x</code> if it's ok, but
-    throws the exception contained if <code class="code"><span class="constructor">Bad</span></code> is returned.</p>
+    throws the exception contained if <code class="code"><span class="constructor">Error</span></code> is returned.</p>
 
 </div>
 </td></tr>
@@ -11114,7 +11200,7 @@
 </td></tr>
 <tr><td><a href="BatResult.html#VALis_bad">is_bad</a> [<a href="BatResult.html">BatResult</a>]</td>
 <td><div class="info">
-<p><code class="code">is_bad&nbsp;(<span class="constructor">Bad</span>&nbsp;_)</code> is <code class="code"><span class="keyword">true</span></code>, otherwise <code class="code"><span class="keyword">false</span></code></p>
+<p>Same as <code class="code">is_error</code>.</p>
 
 </div>
 </td></tr>
@@ -11305,9 +11391,15 @@
 </td></tr>
 <tr><td><a href="BatAvlTree.html#VALis_empty">is_empty</a> [<a href="BatAvlTree.html">BatAvlTree</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatResult.html#VALis_error">is_error</a> [<a href="BatResult.html">BatResult</a>]</td>
+<td><div class="info">
+<p><code class="code">is_error&nbsp;r</code> is <code class="code"><span class="keyword">true</span></code> iff <code class="code">r</code> is <code class="code"><span class="constructor">Error</span>&nbsp;_</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatResult.html#VALis_exn">is_exn</a> [<a href="BatResult.html">BatResult</a>]</td>
 <td><div class="info">
-<p><code class="code">is_exn&nbsp;e1&nbsp;r</code> is <code class="code"><span class="keyword">true</span></code> iff <code class="code">r</code> is <code class="code"><span class="constructor">Bad</span>&nbsp;e2</code> with <code class="code">e1=e2</code></p>
+<p><code class="code">is_exn&nbsp;e1&nbsp;r</code> is <code class="code"><span class="keyword">true</span></code> iff <code class="code">r</code> is <code class="code"><span class="constructor">Error</span>&nbsp;e2</code> with <code class="code">e1=e2</code></p>
 
 </div>
 </td></tr>
@@ -11580,6 +11672,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatResult.html#VALiter">iter</a> [<a href="BatResult.html">BatResult</a>]</td>
+<td><div class="info">
+<p><code class="code">iter&nbsp;f&nbsp;r</code> is <code class="code">f&nbsp;v</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;v</code> and <code class="code">()</code> otherwise.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatRefList.html#VALiter">iter</a> [<a href="BatRefList.html">BatRefList</a>]</td>
 <td><div class="info">
 <p>Apply the given function to all elements of the
@@ -11826,6 +11924,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatResult.html#VALiter_error">iter_error</a> [<a href="BatResult.html">BatResult</a>]</td>
+<td><div class="info">
+<p><code class="code">iter_error&nbsp;f&nbsp;r</code> is <code class="code">f&nbsp;e</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Error</span>&nbsp;e</code> and <code class="code">()</code> otherwise.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatISet.html#VALiter_range">iter_range</a> [<a href="BatISet.html">BatISet</a>]</td>
 <td><div class="info">
 <p><code class="code">iter_range&nbsp;f&nbsp;t</code> calls <code class="code">f</code> once for each contiguous range of <code class="code">t</code>.</p>
@@ -11969,6 +12073,12 @@
 <tr><td><a href="BatString.html#VALjoin">join</a> [<a href="BatString.html">BatString</a>]</td>
 <td><div class="info">
 <p>Same as <a href="BatString.html#VALconcat"><code class="code"><span class="constructor">BatString</span>.concat</code></a></p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatResult.html#VALjoin">join</a> [<a href="BatResult.html">BatResult</a>]</td>
+<td><div class="info">
+<p><code class="code">join&nbsp;rr</code> is <code class="code">r</code> if <code class="code">rr</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;r</code> and <code class="code">rr</code> if <code class="code">rr</code> is <code class="code"><span class="constructor">Error</span>&nbsp;_</code>.</p>
 
 </div>
 </td></tr>
@@ -13306,7 +13416,7 @@
 </td></tr>
 <tr><td><a href="BatResult.html#VALmap">map</a> [<a href="BatResult.html">BatResult</a>]</td>
 <td><div class="info">
-<p><code class="code">map&nbsp;f&nbsp;(<span class="constructor">Ok</span>&nbsp;x)</code> returns <code class="code"><span class="constructor">Ok</span>&nbsp;(f&nbsp;x)</code> and <code class="code">map&nbsp;f&nbsp;(<span class="constructor">Bad</span>&nbsp;e)</code> returns <code class="code"><span class="constructor">Bad</span>&nbsp;e</code>.</p>
+<p><code class="code">map&nbsp;f&nbsp;r</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;(f&nbsp;v)</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;v</code> and <code class="code">r</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Error</span>&nbsp;_</code>.</p>
 
 </div>
 </td></tr>
@@ -13627,7 +13737,7 @@
 <td></td></tr>
 <tr><td><a href="BatResult.html#VALmap_both">map_both</a> [<a href="BatResult.html">BatResult</a>]</td>
 <td><div class="info">
-<p><code class="code">map_both&nbsp;f&nbsp;g&nbsp;(<span class="constructor">Ok</span>&nbsp;x)</code> returns <code class="code"><span class="constructor">Ok</span>&nbsp;(f&nbsp;x)</code> and <code class="code">map_both&nbsp;f&nbsp;g&nbsp;(<span class="constructor">Bad</span>&nbsp;e)</code> returns <code class="code"><span class="constructor">Bad</span>&nbsp;(g&nbsp;e)</code>.</p>
+<p><code class="code">map_both&nbsp;f&nbsp;g&nbsp;(<span class="constructor">Ok</span>&nbsp;x)</code> returns <code class="code"><span class="constructor">Ok</span>&nbsp;(f&nbsp;x)</code> and <code class="code">map_both&nbsp;f&nbsp;g&nbsp;(<span class="constructor">Error</span>&nbsp;e)</code> returns <code class="code"><span class="constructor">Error</span>&nbsp;(g&nbsp;e)</code>.</p>
 
 </div>
 </td></tr>
@@ -13635,7 +13745,7 @@
 <td></td></tr>
 <tr><td><a href="BatResult.html#VALmap_default">map_default</a> [<a href="BatResult.html">BatResult</a>]</td>
 <td><div class="info">
-<p><code class="code">map_default&nbsp;d&nbsp;f&nbsp;r</code> evaluates to <code class="code">d</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Bad</span></code> else <code class="code">f&nbsp;x</code>
+<p><code class="code">map_default&nbsp;d&nbsp;f&nbsp;r</code> evaluates to <code class="code">d</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Error</span></code> else <code class="code">f&nbsp;x</code>
     when <code class="code">r</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;x</code></p>
 
 </div>
@@ -13658,6 +13768,13 @@
 </td></tr>
 <tr><td><a href="BatOrd.html#VALmap_eq">map_eq</a> [<a href="BatOrd.html">BatOrd</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatResult.html#VALmap_error">map_error</a> [<a href="BatResult.html">BatResult</a>]</td>
+<td><div class="info">
+<p><code class="code">map_error&nbsp;f&nbsp;r</code> is <code class="code"><span class="constructor">Error</span>&nbsp;(f&nbsp;e)</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Error</span>&nbsp;e</code> and <code class="code">r</code> if
+    <code class="code">r</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;_</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatBounded.S.html#VALmap_exn">map_exn</a> [<a href="BatBounded.S.html">BatBounded.S</a>]</td>
 <td><div class="info">
 <p><code class="code">map_exn&nbsp;f&nbsp;x</code> applies <code class="code">f</code> to <code class="code">x</code>.</p>
@@ -15513,10 +15630,10 @@
 <td></td></tr>
 <tr><td><a href="BatString.html#VALnsplit">nsplit</a> [<a href="BatString.html">BatString</a>]</td>
 <td><div class="info">
-<p><code class="code">nsplit&nbsp;s&nbsp;sep</code> splits the string <code class="code">s</code> into a list of strings
+<span class="deprecated"><p><code class="code">nsplit&nbsp;s&nbsp;sep</code> splits the string <code class="code">s</code> into a list of strings
     which are separated by <code class="code">sep</code> (excluded).</p>
 
-</div>
+</span></div>
 </td></tr>
 <tr><td><a href="BatList.html#VALnsplit">nsplit</a> [<a href="BatList.html">BatList</a>]</td>
 <td><div class="info">
@@ -15565,6 +15682,12 @@
 <tr><td><a href="BatList.html#VALnth_opt">nth_opt</a> [<a href="BatList.html">BatList</a>]</td>
 <td><div class="info">
 <p>Return the <code class="code">n</code>-th element of the given list.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatFilename.html#VALnull">null</a> [<a href="BatFilename.html">BatFilename</a>]</td>
+<td><div class="info">
+<p><code class="code">null</code> is <code class="code"><span class="string">"/dev/null"</span></code> on POSIX and <code class="code"><span class="string">"NUL"</span></code> on Windows.</p>
 
 </div>
 </td></tr>
@@ -15658,8 +15781,7 @@
 </td></tr>
 <tr><td><a href="BatSet.PSet.html#VALof_array">of_array</a> [<a href="BatSet.PSet.html">BatSet.PSet</a>]</td>
 <td><div class="info">
-<p>builds a set from the given array, using the default comparison
-      function</p>
+<p>builds a set from the given array and comparison function</p>
 
 </div>
 </td></tr>
@@ -16577,10 +16699,16 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatResult.html#VALok">ok</a> [<a href="BatResult.html">BatResult</a>]</td>
+<td><div class="info">
+<p><code class="code">ok&nbsp;v</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;v</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatPervasives.html#VALok">ok</a> [<a href="BatPervasives.html">BatPervasives</a>]</td>
 <td><div class="info">
 <p><code class="code">f&nbsp;x&nbsp;|&gt;&nbsp;ok</code> unwraps the <code class="code"><span class="constructor">Ok</span></code> result of <code class="code">f&nbsp;x</code> and returns it, or
-    throws the exception contained if <code class="code"><span class="constructor">Bad</span></code> is returned.</p>
+    throws the exception contained if <code class="code"><span class="constructor">Error</span></code> is returned.</p>
 
 </div>
 </td></tr>
@@ -17516,6 +17644,15 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatArray.Cap.html#VALpivot_split">pivot_split</a> [<a href="BatArray.Cap.html">BatArray.Cap</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatArray.html#VALpivot_split">pivot_split</a> [<a href="BatArray.html">BatArray</a>]</td>
+<td><div class="info">
+<p><code class="code">pivot_split&nbsp;cmp&nbsp;arr&nbsp;x</code> assumes that <code class="code">arr</code> is <b>sorted</b> w.r.t
+    <code class="code">cmp</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatComplex.html#VALpolar">polar</a> [<a href="BatComplex.html">BatComplex</a>]</td>
 <td><div class="info">
 <p><code class="code">polar&nbsp;norm&nbsp;arg</code> returns the complex having norm <code class="code">norm</code>
@@ -18132,7 +18269,7 @@
 </td></tr>
 <tr><td><a href="BatResult.html#VALprint">print</a> [<a href="BatResult.html">BatResult</a>]</td>
 <td><div class="info">
-<p>Print a result as Ok(x) or Bad(exn)</p>
+<p>Print a result as Ok(x) or Error(exn)</p>
 
 </div>
 </td></tr>
@@ -18621,6 +18758,14 @@
 <td><div class="info">
 <p>Return a quoted version of a file name, suitable for use as
     one argument in a command line, escaping all meta-characters.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatFilename.html#VALquote_command">quote_command</a> [<a href="BatFilename.html">BatFilename</a>]</td>
+<td><div class="info">
+<p><code class="code">quote_command&nbsp;cmd&nbsp;args</code> returns a quoted command line, suitable
+    for use as an argument to <code class="code"><span class="constructor">Sys</span>.command</code>, <code class="code"><span class="constructor">Unix</span>.system</code>, and the
+    <code class="code"><span class="constructor">Unix</span>.open_process</code> functions.</p>
 
 </div>
 </td></tr>
@@ -21965,6 +22110,13 @@
 <td></td></tr>
 <tr><td><a href="BatSubstring.html#VALsplit_on_slash">split_on_slash</a> [<a href="BatSubstring.html">BatSubstring</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatString.html#VALsplit_on_string">split_on_string</a> [<a href="BatString.html">BatString</a>]</td>
+<td><div class="info">
+<p><code class="code">split_on_string&nbsp;sep&nbsp;s</code> splits the string <code class="code">s</code> into a list of strings
+    which are separated by <code class="code">sep</code> (excluded).</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatSet.PSet.html#VALsplit_opt">split_opt</a> [<a href="BatSet.PSet.html">BatSet.PSet</a>]</td>
 <td><div class="info">
 <p><code class="code">split_opt&nbsp;x&nbsp;s</code> returns a triple <code class="code">(l,&nbsp;maybe_v,&nbsp;r)</code>, where
@@ -23550,6 +23702,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatResult.html#VALto_list">to_list</a> [<a href="BatResult.html">BatResult</a>]</td>
+<td><div class="info">
+<p><code class="code">to_list&nbsp;r</code> is <code class="code">[v]</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;v</code> and <code class="code">[]</code> otherwise.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatRefList.html#VALto_list">to_list</a> [<a href="BatRefList.html">BatRefList</a>]</td>
 <td><div class="info">
 <p>Returns the current elements as a list - O(1)</p>
@@ -23644,13 +23802,20 @@
 </td></tr>
 <tr><td><a href="BatResult.html#VALto_option">to_option</a> [<a href="BatResult.html">BatResult</a>]</td>
 <td><div class="info">
-<p>Convert a <code class="code">result</code> to an <code class="code">option</code></p>
+<p><code class="code">to_option&nbsp;r</code> is <code class="code">r</code> as an option, mapping <code class="code"><span class="constructor">Ok</span>&nbsp;v</code> to <code class="code"><span class="constructor">Some</span>&nbsp;v</code> and
+    <code class="code"><span class="constructor">Error</span>&nbsp;_</code> to <code class="code"><span class="constructor">None</span></code>.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="BatString.html#VALto_seq">to_seq</a> [<a href="BatString.html">BatString</a>]</td>
 <td><div class="info">
 <p>Iterate on the string, in increasing index order.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatResult.html#VALto_seq">to_seq</a> [<a href="BatResult.html">BatResult</a>]</td>
+<td><div class="info">
+<p><code class="code">to_seq&nbsp;r</code> is <code class="code">r</code> as a sequence.</p>
 
 </div>
 </td></tr>
@@ -23832,6 +23997,13 @@
 <td></td></tr>
 <tr><td><a href="BatBig_int.html#VALto_string">to_string</a> [<a href="BatBig_int.html">BatBig_int</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatPrintexc.html#VALto_string_default">to_string_default</a> [<a href="BatPrintexc.html">BatPrintexc</a>]</td>
+<td><div class="info">
+<p><code class="code"><span class="constructor">Printexc</span>.to_string_default&nbsp;e</code> returns a string representation of the
+    exception <code class="code">e</code>, ignoring all registered exception printers.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatStream.StreamLabels.html#VALto_string_fmt">to_string_fmt</a> [<a href="BatStream.StreamLabels.html">BatStream.StreamLabels</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatStream.html#VALto_string_fmt">to_string_fmt</a> [<a href="BatStream.html">BatStream</a>]</td>
@@ -24629,6 +24801,13 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatPrintexc.html#VALuse_printers">use_printers</a> [<a href="BatPrintexc.html">BatPrintexc</a>]</td>
+<td><div class="info">
+<p><code class="code"><span class="constructor">Printexc</span>.use_printers&nbsp;e</code> returns <code class="code"><span class="constructor">None</span></code> if there are no registered
+    printers and <code class="code"><span class="constructor">Some</span>&nbsp;s</code> with else as the resulting string otherwise.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatFile.html#VALuser_exec">user_exec</a> [<a href="BatFile.html">BatFile</a>]</td>
 <td><div class="info">
 <p>Give the current user permission to execute the file.</p>
@@ -24665,6 +24844,12 @@
 <td><div class="info">
 <p><code class="code">validate&nbsp;s</code>
     successes if s is valid UTF-8, otherwise raises Malformed_code.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatResult.html#VALvalue">value</a> [<a href="BatResult.html">BatResult</a>]</td>
+<td><div class="info">
+<p><code class="code">value&nbsp;r&nbsp;~default</code> is <code class="code">v</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;v</code> and <code class="code">default</code> otherwise.</p>
 
 </div>
 </td></tr>
@@ -24838,7 +25023,7 @@
 <td><div class="info">
 <p><code class="code">wrap&nbsp;f&nbsp;x</code> wraps a function that would normally throw an exception
     on failure such that it now returns a result with either the <code class="code"><span class="constructor">Ok</span></code>
-    return value or the <code class="code"><span class="constructor">Bad</span></code> exception.</p>
+    return value or the <code class="code"><span class="constructor">Error</span></code> exception.</p>
 
 </div>
 </td></tr>

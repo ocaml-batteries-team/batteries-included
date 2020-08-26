@@ -142,7 +142,7 @@
 <p>Note that if you want a ``consumable sequence'', you should prefer
     using enumerations (from module <a href="BatEnum.html"><code class="code"><span class="constructor">BatEnum</span></code></a>).</p>
 
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">unit -> 'a <a href="BatSeq.html#TYPEnode">node</a></code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a Stdlib.Seq.t</code> </pre>
 <div class="info ">
 <div class="info-desc">
 <p>A sequence is a computation which returns a list-like node</p>
@@ -150,7 +150,7 @@
 </div>
 
 
-<pre><code><span id="TYPEnode"><span class="keyword">type</span> <code class="type">'a</code> node</span> = </code></pre><table class="typetable">
+<pre><span id="TYPEnode"><span class="keyword">type</span> <code class="type">'a</code> node</span> = <code class="type">'a Stdlib.Seq.node</code> = </pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>

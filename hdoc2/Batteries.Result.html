@@ -110,8 +110,10 @@
 <link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="The Result Monad" rel="Section" href="#6_TheResultMonad">
-<link title="Infix" rel="Section" href="#6_Infix">
+<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Predicates and comparisons" rel="Section" href="#preds">
+<link title="Converting" rel="Section" href="#convert">
+<link title="The Result Monad" rel="Subsection" href="#6_TheResultMonad">
+<link title="Infix" rel="Subsection" href="#6_Infix">
 <title>Batteries user guide : Batteries.Result</title>
 </head>
 <body>
@@ -123,7 +125,7 @@
 
 <pre><span id="MODULEResult"><span class="keyword">module</span> Result</span>: <code class="type"><a href="BatResult.html">BatResult</a></code></pre><hr width="100%">
 
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b)</code> t</span> = <code class="type">('a, 'b) <a href="BatPervasives.html#TYPEresult">BatPervasives.result</a></code> = </pre><table class="typetable">
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'e)</code> t</span> = <code class="type">('a, 'e) <a href="BatPervasives.html#TYPEresult">BatPervasives.result</a></code> = </pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
@@ -135,14 +137,14 @@
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTt.Bad"><span class="constructor">Bad</span></span> <span class="keyword">of</span> <code class="type">'b</code></code></td>
+<code><span id="TYPEELTt.Error"><span class="constructor">Error</span></span> <span class="keyword">of</span> <code class="type">'e</code></code></td>
 
 </tr></table>
 
 <div class="info ">
 <div class="info-desc">
 <p>The type of a result.  A result is either <code class="code"><span class="constructor">Ok</span>&nbsp;x</code> carrying the
-    normal return value <code class="code">x</code> or is <code class="code"><span class="constructor">Bad</span>&nbsp;e</code> carrying some indication of an
+    normal return value <code class="code">x</code> or is <code class="code"><span class="constructor">Error</span>&nbsp;e</code> carrying some indication of an
     error.  The value associated with a bad result is usually an exception
     (<code class="code">exn</code>) that can be raised.</p>
 </div>
@@ -152,7 +154,75 @@
 </div>
 
 
-<pre><span id="VALcatch"><span class="keyword">val</span> catch</span> : <code class="type">('a -> 'b) -> 'a -> ('b, exn) <a href="BatResult.html#TYPEt">t</a></code></pre><div class="info ">
+<pre><span id="VALok"><span class="keyword">val</span> ok</span> : <code class="type">'a -> ('a, 'b) <a href="BatResult.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">ok&nbsp;v</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;v</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.0.0</li>
+</ul>
+</div>
+
+<pre><span id="VALerror"><span class="keyword">val</span> error</span> : <code class="type">'e -> ('a, 'e) <a href="BatResult.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">error&nbsp;e</code> is <code class="code"><span class="constructor">Error</span>&nbsp;e</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.0.0</li>
+</ul>
+</div>
+
+<pre><span id="VALvalue"><span class="keyword">val</span> value</span> : <code class="type">('a, 'e) <a href="BatResult.html#TYPEt">t</a> -> default:'a -> 'a</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">value&nbsp;r&nbsp;~default</code> is <code class="code">v</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;v</code> and <code class="code">default</code> otherwise.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.0.0</li>
+</ul>
+</div>
+
+<pre><span id="VALdefault"><span class="keyword">val</span> default</span> : <code class="type">'a -> ('a, 'b) <a href="BatResult.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">default&nbsp;d&nbsp;r</code> evaluates to <code class="code">d</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Error</span></code> else <code class="code">x</code> when <code class="code">r</code> is
+    <code class="code"><span class="constructor">Ok</span>&nbsp;x</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.0</li>
+<li><b>See also</b> <code class="code">value</code> or a slightly different signature.</li>
+</ul>
+</div>
+
+<pre><span id="VALget_ok"><span class="keyword">val</span> get_ok</span> : <code class="type">('a, 'e) <a href="BatResult.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_ok&nbsp;r</code> is <code class="code">v</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;v</code> and</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.0.0</li>
+<li><b>Raises</b> <code>Invalid_argument</code> otherwise.</li>
+</ul>
+</div>
+
+<pre><span id="VALget_error"><span class="keyword">val</span> get_error</span> : <code class="type">('a, 'e) <a href="BatResult.html#TYPEt">t</a> -> 'e</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_error&nbsp;r</code> is <code class="code">e</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Error</span>&nbsp;e</code> and</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.0.0</li>
+<li><b>Raises</b> <code>Invalid_argument</code> otherwise.</li>
+</ul>
+</div>
+
+<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">('a, exn) <a href="BatResult.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get&nbsp;(<span class="constructor">Ok</span>&nbsp;x)</code> returns <code class="code">x</code>, and <code class="code">get&nbsp;(<span class="constructor">Error</span>&nbsp;e)</code> raises <code class="code">e</code>.  This
+    function is, in a way, the opposite of the <code class="code">catch</code> function</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.0</li>
+</ul>
+</div>
+
+<pre><span id="VALcatch"><span class="keyword">val</span> catch</span> : <code class="type">('a -> 'e) -> 'a -> ('e, exn) <a href="BatResult.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Execute a function and catch any exception as a result.  This
     function encapsulates code that could throw an exception and returns
@@ -181,38 +251,46 @@
 </ul>
 </div>
 
-<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">('a, exn) <a href="BatResult.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
+<pre><span id="VALbind"><span class="keyword">val</span> bind</span> : <code class="type">('a, 'e) <a href="BatResult.html#TYPEt">t</a> -> ('a -> ('b, 'e) <a href="BatResult.html#TYPEt">t</a>) -> ('b, 'e) <a href="BatResult.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">get&nbsp;(<span class="constructor">Ok</span>&nbsp;x)</code> returns <code class="code">x</code>, and <code class="code">get&nbsp;(<span class="constructor">Bad</span>&nbsp;e)</code> raises <code class="code">e</code>.  This
-    function is, in a way, the opposite of the <code class="code">catch</code> function</p>
+<p><code class="code">bind&nbsp;r&nbsp;f</code> is <code class="code">f&nbsp;v</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;v</code> and <code class="code">r</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Error</span>&nbsp;_</code>.</p>
 </div>
 <ul class="info-attributes">
-<li><b>Since</b> 2.0</li>
+<li><b>Since</b> 3.0.0</li>
 </ul>
 </div>
 
-<pre><span id="VALdefault"><span class="keyword">val</span> default</span> : <code class="type">'a -> ('a, 'b) <a href="BatResult.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
+<pre><span id="VALjoin"><span class="keyword">val</span> join</span> : <code class="type">(('a, 'e) <a href="BatResult.html#TYPEt">t</a>, 'e) <a href="BatResult.html#TYPEt">t</a> -> ('a, 'e) <a href="BatResult.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">default&nbsp;d&nbsp;r</code> evaluates to <code class="code">d</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Bad</span></code> else <code class="code">x</code> when <code class="code">r</code> is
-    <code class="code"><span class="constructor">Ok</span>&nbsp;x</code></p>
+<p><code class="code">join&nbsp;rr</code> is <code class="code">r</code> if <code class="code">rr</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;r</code> and <code class="code">rr</code> if <code class="code">rr</code> is <code class="code"><span class="constructor">Error</span>&nbsp;_</code>.</p>
 </div>
 <ul class="info-attributes">
-<li><b>Since</b> 2.0</li>
+<li><b>Since</b> 3.0.0</li>
 </ul>
 </div>
 
-<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> ('a, 'c) <a href="BatResult.html#TYPEt">t</a> -> ('b, 'c) <a href="BatResult.html#TYPEt">t</a></code></pre><div class="info ">
+<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> ('a, 'e) <a href="BatResult.html#TYPEt">t</a> -> ('b, 'e) <a href="BatResult.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">map&nbsp;f&nbsp;(<span class="constructor">Ok</span>&nbsp;x)</code> returns <code class="code"><span class="constructor">Ok</span>&nbsp;(f&nbsp;x)</code> and <code class="code">map&nbsp;f&nbsp;(<span class="constructor">Bad</span>&nbsp;e)</code> returns <code class="code"><span class="constructor">Bad</span>&nbsp;e</code>.</p>
+<p><code class="code">map&nbsp;f&nbsp;r</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;(f&nbsp;v)</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;v</code> and <code class="code">r</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Error</span>&nbsp;_</code>.</p>
 </div>
 <ul class="info-attributes">
-<li><b>Since</b> 2.6.0</li>
+<li><b>Since</b> 3.0.0</li>
+</ul>
+</div>
+
+<pre><span id="VALmap_error"><span class="keyword">val</span> map_error</span> : <code class="type">('e -> 'f) -> ('a, 'e) <a href="BatResult.html#TYPEt">t</a> -> ('a, 'f) <a href="BatResult.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">map_error&nbsp;f&nbsp;r</code> is <code class="code"><span class="constructor">Error</span>&nbsp;(f&nbsp;e)</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Error</span>&nbsp;e</code> and <code class="code">r</code> if
+    <code class="code">r</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;_</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.0.0</li>
 </ul>
 </div>
 
 <pre><span id="VALmap_both"><span class="keyword">val</span> map_both</span> : <code class="type">('a1 -> 'a2) -><br>       ('b1 -> 'b2) -> ('a1, 'b1) <a href="BatResult.html#TYPEt">t</a> -> ('a2, 'b2) <a href="BatResult.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">map_both&nbsp;f&nbsp;g&nbsp;(<span class="constructor">Ok</span>&nbsp;x)</code> returns <code class="code"><span class="constructor">Ok</span>&nbsp;(f&nbsp;x)</code> and <code class="code">map_both&nbsp;f&nbsp;g&nbsp;(<span class="constructor">Bad</span>&nbsp;e)</code> returns <code class="code"><span class="constructor">Bad</span>&nbsp;(g&nbsp;e)</code>.</p>
+<p><code class="code">map_both&nbsp;f&nbsp;g&nbsp;(<span class="constructor">Ok</span>&nbsp;x)</code> returns <code class="code"><span class="constructor">Ok</span>&nbsp;(f&nbsp;x)</code> and <code class="code">map_both&nbsp;f&nbsp;g&nbsp;(<span class="constructor">Error</span>&nbsp;e)</code> returns <code class="code"><span class="constructor">Error</span>&nbsp;(g&nbsp;e)</code>.</p>
 </div>
 <ul class="info-attributes">
 <li><b>Since</b> 2.6.0</li>
@@ -221,7 +299,7 @@
 
 <pre><span id="VALmap_default"><span class="keyword">val</span> map_default</span> : <code class="type">'b -> ('a -> 'b) -> ('a, 'c) <a href="BatResult.html#TYPEt">t</a> -> 'b</code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">map_default&nbsp;d&nbsp;f&nbsp;r</code> evaluates to <code class="code">d</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Bad</span></code> else <code class="code">f&nbsp;x</code>
+<p><code class="code">map_default&nbsp;d&nbsp;f&nbsp;r</code> evaluates to <code class="code">d</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Error</span></code> else <code class="code">f&nbsp;x</code>
     when <code class="code">r</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;x</code></p>
 </div>
 <ul class="info-attributes">
@@ -229,7 +307,35 @@
 </ul>
 </div>
 
-<pre><span id="VALis_ok"><span class="keyword">val</span> is_ok</span> : <code class="type">('a, 'b) <a href="BatResult.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
+<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">ok:('a -> 'c) -> error:('e -> 'c) -> ('a, 'e) <a href="BatResult.html#TYPEt">t</a> -> 'c</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">fold&nbsp;~ok&nbsp;~error&nbsp;r</code> is <code class="code">ok&nbsp;v</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;v</code> and <code class="code">error&nbsp;e</code> if <code class="code">r</code>
+    is <code class="code"><span class="constructor">Error</span>&nbsp;e</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.0.0</li>
+</ul>
+</div>
+
+<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> ('a, 'e) <a href="BatResult.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">iter&nbsp;f&nbsp;r</code> is <code class="code">f&nbsp;v</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;v</code> and <code class="code">()</code> otherwise.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.0.0</li>
+</ul>
+</div>
+
+<pre><span id="VALiter_error"><span class="keyword">val</span> iter_error</span> : <code class="type">('e -> unit) -> ('a, 'e) <a href="BatResult.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">iter_error&nbsp;f&nbsp;r</code> is <code class="code">f&nbsp;e</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Error</span>&nbsp;e</code> and <code class="code">()</code> otherwise.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.0.0</li>
+</ul>
+</div>
+<h2 id="preds">Predicates and comparisons</h2>
+<pre><span id="VALis_ok"><span class="keyword">val</span> is_ok</span> : <code class="type">('a, 'e) <a href="BatResult.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">is_ok&nbsp;(<span class="constructor">Ok</span>&nbsp;_)</code> is <code class="code"><span class="keyword">true</span></code>, otherwise <code class="code"><span class="keyword">false</span></code>.</p>
 </div>
@@ -238,9 +344,18 @@
 </ul>
 </div>
 
-<pre><span id="VALis_bad"><span class="keyword">val</span> is_bad</span> : <code class="type">('a, 'b) <a href="BatResult.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
+<pre><span id="VALis_error"><span class="keyword">val</span> is_error</span> : <code class="type">('a, 'e) <a href="BatResult.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">is_bad&nbsp;(<span class="constructor">Bad</span>&nbsp;_)</code> is <code class="code"><span class="keyword">true</span></code>, otherwise <code class="code"><span class="keyword">false</span></code></p>
+<p><code class="code">is_error&nbsp;r</code> is <code class="code"><span class="keyword">true</span></code> iff <code class="code">r</code> is <code class="code"><span class="constructor">Error</span>&nbsp;_</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.0.0</li>
+</ul>
+</div>
+
+<pre><span id="VALis_bad"><span class="keyword">val</span> is_bad</span> : <code class="type">('a, 'e) <a href="BatResult.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p>Same as <code class="code">is_error</code>.</p>
 </div>
 <ul class="info-attributes">
 <li><b>Since</b> 2.0</li>
@@ -249,8 +364,40 @@
 
 <pre><span id="VALis_exn"><span class="keyword">val</span> is_exn</span> : <code class="type">exn -> ('a, exn) <a href="BatResult.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">is_exn&nbsp;e1&nbsp;r</code> is <code class="code"><span class="keyword">true</span></code> iff <code class="code">r</code> is <code class="code"><span class="constructor">Bad</span>&nbsp;e2</code> with <code class="code">e1=e2</code></p>
+<p><code class="code">is_exn&nbsp;e1&nbsp;r</code> is <code class="code"><span class="keyword">true</span></code> iff <code class="code">r</code> is <code class="code"><span class="constructor">Error</span>&nbsp;e2</code> with <code class="code">e1=e2</code></p>
 </div>
+</div>
+
+<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">ok:('a -> 'a -> bool) -><br>       error:('e -> 'e -> bool) -><br>       ('a, 'e) <a href="BatResult.html#TYPEt">t</a> -> ('a, 'e) <a href="BatResult.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">equal&nbsp;~ok&nbsp;~error&nbsp;r0&nbsp;r1</code> tests equality of <code class="code">r0</code> and <code class="code">r1</code> using <code class="code">ok</code>
+    and <code class="code">error</code> to respectively compare values wrapped by <code class="code"><span class="constructor">Ok</span>&nbsp;_</code> and
+    <code class="code"><span class="constructor">Error</span>&nbsp;_</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.0.0</li>
+</ul>
+</div>
+
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">ok:('a -> 'a -> int) -><br>       error:('e -> 'e -> int) -><br>       ('a, 'e) <a href="BatResult.html#TYPEt">t</a> -> ('a, 'e) <a href="BatResult.html#TYPEt">t</a> -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">compare&nbsp;~ok&nbsp;~error&nbsp;r0&nbsp;r1</code> totally orders <code class="code">r0</code> and <code class="code">r1</code> using <code class="code">ok</code> and
+    <code class="code">error</code> to respectively compare values wrapped by <code class="code"><span class="constructor">Ok</span>&nbsp;_&nbsp;</code> and <code class="code"><span class="constructor">Error</span>&nbsp;_</code>.
+    <code class="code"><span class="constructor">Ok</span>&nbsp;_</code> values are smaller than <code class="code"><span class="constructor">Error</span>&nbsp;_</code> values.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.0.0</li>
+</ul>
+</div>
+<h2 id="convert">Converting</h2>
+<pre><span id="VALto_option"><span class="keyword">val</span> to_option</span> : <code class="type">('a, 'b) <a href="BatResult.html#TYPEt">t</a> -> 'a option</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">to_option&nbsp;r</code> is <code class="code">r</code> as an option, mapping <code class="code"><span class="constructor">Ok</span>&nbsp;v</code> to <code class="code"><span class="constructor">Some</span>&nbsp;v</code> and
+    <code class="code"><span class="constructor">Error</span>&nbsp;_</code> to <code class="code"><span class="constructor">None</span></code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 1.0</li>
+</ul>
 </div>
 
 <pre><span id="VALof_option"><span class="keyword">val</span> of_option</span> : <code class="type">'a option -> ('a, unit) <a href="BatResult.html#TYPEt">t</a></code></pre><div class="info ">
@@ -262,12 +409,22 @@
 </ul>
 </div>
 
-<pre><span id="VALto_option"><span class="keyword">val</span> to_option</span> : <code class="type">('a, 'b) <a href="BatResult.html#TYPEt">t</a> -> 'a option</code></pre><div class="info ">
+<pre><span id="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type">('a, 'e) <a href="BatResult.html#TYPEt">t</a> -> 'a list</code></pre><div class="info ">
 <div class="info-desc">
-<p>Convert a <code class="code">result</code> to an <code class="code">option</code></p>
+<p><code class="code">to_list&nbsp;r</code> is <code class="code">[v]</code> if <code class="code">r</code> is <code class="code"><span class="constructor">Ok</span>&nbsp;v</code> and <code class="code">[]</code> otherwise.</p>
 </div>
 <ul class="info-attributes">
-<li><b>Since</b> 1.0</li>
+<li><b>Since</b> 3.0.0</li>
+</ul>
+</div>
+
+<pre><span id="VALto_seq"><span class="keyword">val</span> to_seq</span> : <code class="type">('a, 'e) <a href="BatResult.html#TYPEt">t</a> -> 'a <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">to_seq&nbsp;r</code> is <code class="code">r</code> as a sequence. <code class="code"><span class="constructor">Ok</span>&nbsp;v</code> is the singleton sequence
+    containing <code class="code">v</code> and <code class="code"><span class="constructor">Error</span>&nbsp;_</code> is the empty sequence.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.0.0</li>
 </ul>
 </div>
 <h7 id="6_TheResultMonad">The Result Monad</h7><p>This monad is very similar to the option monad, but instead of
@@ -282,7 +439,7 @@
 
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">('b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'a -> unit) -><br>       'b <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> ('a, exn) <a href="BatResult.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 <div class="info-desc">
-<p>Print a result as Ok(x) or Bad(exn)</p>
+<p>Print a result as Ok(x) or Error(exn)</p>
 </div>
 </div>
 </body></html>

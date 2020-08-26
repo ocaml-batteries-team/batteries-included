@@ -743,6 +743,16 @@
 <p>identity : added for consistency with the other data structures</p>
 </div>
 </div>
+
+<pre><span id="VALcombination"><span class="keyword">val</span> combination</span> : <code class="type">?repeat:bool -> int -> int -> int list <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">combination&nbsp;n&nbsp;k</code> returns an enumeration over combination of <code class="code">k</code> elements
+    between <code class="code">n</code> distincts elements.</p>
+
+<p>If <code class="code">repeat</code> is true, the combination may contain the same elements many
+    times.</p>
+</div>
+</div>
 <h7 id="6_Counting">Counting</h7>
 <pre><span id="VALcount"><span class="keyword">val</span> count</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 <div class="info-desc">
@@ -793,12 +803,16 @@
 </div>
 </div>
 
-<pre><span id="VALcombine"><span class="keyword">val</span> combine</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> * 'b <a href="BatEnum.html#TYPEt">t</a> -> ('a * 'b) <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
+<pre><span id="VALcombine"><span class="keyword">val</span> combine</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">t</a> -> 'b <a href="BatEnum.html#TYPEt">t</a> -> ('a * 'b) <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">combine</code> transform a pair of stream into a stream of pairs of corresponding
-    elements. If one stream is short, excess elements of the longer stream are
-    ignored.</p>
+<p><code class="code">combine</code> transform two streams into a stream of pairs of corresponding
+    elements. If one stream is shorter, excess elements of the longer stream are
+    ignored.
+    Curried</p>
 </div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.0</li>
+</ul>
 </div>
 
 <pre><span id="VALuncombine"><span class="keyword">val</span> uncombine</span> : <code class="type">('a * 'b) <a href="BatEnum.html#TYPEt">t</a> -> 'a <a href="BatEnum.html#TYPEt">t</a> * 'b <a href="BatEnum.html#TYPEt">t</a></code></pre><div class="info ">

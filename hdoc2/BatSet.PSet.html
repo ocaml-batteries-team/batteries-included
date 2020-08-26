@@ -500,19 +500,18 @@
 </div>
 </div>
 
-<pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatSet.PSet.html#TYPEt">t</a></code></pre>
+<pre><span id="VALof_enum"><span class="keyword">val</span> of_enum</span> : <code class="type">?cmp:('a -> 'a -> int) -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatSet.PSet.html#TYPEt">t</a></code></pre>
 <pre><span id="VALof_enum_cmp"><span class="keyword">val</span> of_enum_cmp</span> : <code class="type">cmp:('a -> 'a -> int) -> 'a <a href="BatEnum.html#TYPEt">BatEnum.t</a> -> 'a <a href="BatSet.PSet.html#TYPEt">t</a></code></pre>
-<pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">'a list -> 'a <a href="BatSet.PSet.html#TYPEt">t</a></code></pre><div class="info ">
+<pre><span id="VALof_list"><span class="keyword">val</span> of_list</span> : <code class="type">?cmp:('a -> 'a -> int) -> 'a list -> 'a <a href="BatSet.PSet.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>builds a set from the given list, using the default comparison
       function</p>
 </div>
 </div>
 
-<pre><span id="VALof_array"><span class="keyword">val</span> of_array</span> : <code class="type">'a array -> 'a <a href="BatSet.PSet.html#TYPEt">t</a></code></pre><div class="info ">
+<pre><span id="VALof_array"><span class="keyword">val</span> of_array</span> : <code class="type">?cmp:('a -> 'a -> int) -> 'a array -> 'a <a href="BatSet.PSet.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p>builds a set from the given array, using the default comparison
-      function</p>
+<p>builds a set from the given array and comparison function</p>
 </div>
 </div>
 <h7 id="6_Boilerplatecode">Boilerplate code</h7><div class="h8" id="7_Printing">Printing</div>

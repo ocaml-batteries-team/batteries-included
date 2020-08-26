@@ -766,6 +766,17 @@
 </ul>
 </div>
 
+<pre><span id="VALfind_map_opt"><span class="keyword">val</span> find_map_opt</span> : <code class="type">('a -> 'b option) -> 'a list -> 'b option</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">find_map_opt&nbsp;f&nbsp;l</code> applies <code class="code">f</code> to the elements of <code class="code">l</code> in order,
+    and returns the first result of the form <code class="code"><span class="constructor">Some</span>&nbsp;v</code>, or <code class="code"><span class="constructor">None</span></code>
+    if none exist.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.12.0 and OCaml 4.10</li>
+</ul>
+</div>
+
 <pre><span id="VALfind_exn"><span class="keyword">val</span> find_exn</span> : <code class="type">('a -> bool) -> exn -> 'a list -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">find_exn&nbsp;p&nbsp;e&nbsp;l</code> returns the first element of <code class="code">l</code> such as <code class="code">p&nbsp;x</code>
@@ -793,6 +804,16 @@
 <ul class="info-attributes">
 <li><b>Raises</b> <code>Not_found</code> if no element matches the
     predicate.  See also <a href="BatList.html#VALfilter_map"><code class="code"><span class="constructor">BatList</span>.filter_map</code></a>.</li>
+</ul>
+</div>
+
+<pre><span id="VALconcat_map"><span class="keyword">val</span> concat_map</span> : <code class="type">('a -> 'b list) -> 'a list -> 'b list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code"><span class="constructor">List</span>.concat_map&nbsp;f&nbsp;l</code> gives the same result as
+    <code class="code"><span class="constructor">List</span>.concat</code><code class="code">&nbsp;(</code><code class="code"><span class="constructor">List</span>.map</code><code class="code">&nbsp;f&nbsp;l)</code>. Tail-recursive.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.12.0 and OCaml 4.10</li>
 </ul>
 </div>
 

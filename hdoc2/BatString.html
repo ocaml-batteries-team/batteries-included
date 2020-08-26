@@ -1174,6 +1174,8 @@
 </div>
 
 <pre><span id="VALnsplit"><span class="keyword">val</span> nsplit</span> : <code class="type">string -> by:string -> string list</code></pre><div class="info ">
+<div class="info-deprecated">
+<span class="warning">Deprecated.</span>use <a href="BatString.html#VALsplit_on_string"><code class="code"><span class="constructor">BatString</span>.split_on_string</code></a></div>
 <div class="info-desc">
 <p><code class="code">nsplit&nbsp;s&nbsp;sep</code> splits the string <code class="code">s</code> into a list of strings
     which are separated by <code class="code">sep</code> (excluded).
@@ -1182,6 +1184,43 @@
 
 <p>Example: <code class="code"><span class="constructor">String</span>.nsplit&nbsp;<span class="string">"abcabcabc"</span>&nbsp;<span class="string">"bc"</span>&nbsp;=&nbsp;[<span class="string">"a"</span>;&nbsp;<span class="string">"a"</span>;&nbsp;<span class="string">"a"</span>;&nbsp;<span class="string">""</span>]</code></p>
 </div>
+</div>
+
+<pre><span id="VALsplit_on_string"><span class="keyword">val</span> split_on_string</span> : <code class="type">by:string -> string -> string list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">split_on_string&nbsp;sep&nbsp;s</code> splits the string <code class="code">s</code> into a list of strings
+    which are separated by <code class="code">sep</code> (excluded).
+    <code class="code">split_on_string&nbsp;_&nbsp;<span class="string">""</span></code> returns a single empty string.
+    Note: <code class="code">split_on_string&nbsp;sep&nbsp;s</code> is identical to <code class="code">nsplit&nbsp;s&nbsp;sep</code> but for empty strings.</p>
+
+<p>Example: <code class="code"><span class="constructor">String</span>.split_on_string&nbsp;<span class="string">"bc"</span>&nbsp;<span class="string">"abcabcabc"</span>&nbsp;=&nbsp;[<span class="string">"a"</span>;&nbsp;<span class="string">"a"</span>;&nbsp;<span class="string">"a"</span>;&nbsp;<span class="string">""</span>]</code></p>
+</div>
+</div>
+
+<pre><span id="VALcut_on_char"><span class="keyword">val</span> cut_on_char</span> : <code class="type">char -> int -> string -> string</code></pre><div class="info ">
+<div class="info-desc">
+<p>Similar to Unix <code class="code">cut</code>. <code class="code">cut_on_char&nbsp;chr&nbsp;n&nbsp;str</code> returns the substring of
+   <code class="code">str</code> located strictly between the <code class="code">n</code>-th occurrence of <code class="code">chr</code> and
+   the <code class="code">n+1</code>-th one.</p>
+
+<ul>
+<li><b>Occurrences of <code class="code">chr</code> are numbered from 1</b>.</li>
+<li>If <code class="code">n&nbsp;=&nbsp;0</code>, returns the substring from the beginning of
+     <code class="code">str</code> to the first occurrence of <code class="code">chr</code>.</li>
+<li>If there are exactly <code class="code">n</code> occurrences of <code class="code">chr</code> in <code class="code">str</code>, returns the
+     substring between the last occurrence of <code class="code">chr</code> and the end of <code class="code">str</code>.</li>
+<li>These behaviours cumulate: if <code class="code">n</code> equals <code class="code">0</code> and <code class="code">chr</code> is
+     absent from <code class="code">str</code>, returns the full string <code class="code">str</code>.</li>
+</ul>
+<p><b>Remark:</b> <code class="code">cut_on_char</code> can return the empty string. Examples of this
+   behaviour are <code class="code">cut_on_char&nbsp;<span class="string">','</span>&nbsp;1&nbsp;<span class="string">"foo,,bar"</span></code> and <code class="code">cut_on_char&nbsp;<span class="string">','</span>&nbsp;0&nbsp;<span class="string">",foo"</span></code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.9.0</li>
+<li><b>Raises</b><ul><li><code>Not_found</code> if there are strictly less than <code class="code">n</code> occurrences of <code class="code">chr</code> in str.</li>
+<li><code>Invalid_argument</code> if <code class="code">n&nbsp;&lt;&nbsp;0</code>.</li>
+</ul></li>
+</ul>
 </div>
 
 <pre><span id="VALcut_on_char"><span class="keyword">val</span> cut_on_char</span> : <code class="type">char -> int -> string -> string</code></pre><div class="info ">

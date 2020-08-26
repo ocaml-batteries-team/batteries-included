@@ -272,6 +272,16 @@
 </div>
 </div>
 
+<pre><span id="VALnull"><span class="keyword">val</span> null</span> : <code class="type">string</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">null</code> is <code class="code"><span class="string">"/dev/null"</span></code> on POSIX and <code class="code"><span class="string">"NUL"</span></code> on Windows. It represents a
+    file on the OS that discards all writes and returns end of file on reads.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.12.0 and OCaml 4.10</li>
+</ul>
+</div>
+
 <pre><span id="VALtemp_file"><span class="keyword">val</span> temp_file</span> : <code class="type">?temp_dir:string -> string -> string -> string</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">temp_file&nbsp;prefix&nbsp;suffix</code> returns the name of a
@@ -356,6 +366,41 @@
     with programs that follow the standard Windows quoting
     conventions.</p>
 </div>
+</div>
+
+<pre><span id="VALquote_command"><span class="keyword">val</span> quote_command</span> : <code class="type">string -><br>       ?stdin:string -> ?stdout:string -> ?stderr:string -> string list -> string</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">quote_command&nbsp;cmd&nbsp;args</code> returns a quoted command line, suitable
+    for use as an argument to <code class="code"><span class="constructor">Sys</span>.command</code>, <code class="code"><span class="constructor">Unix</span>.system</code>, and the
+    <code class="code"><span class="constructor">Unix</span>.open_process</code> functions.</p>
+
+<p>The string <code class="code">cmd</code> is the command to call.  The list <code class="code">args</code> is
+    the list of arguments to pass to this command.  It can be empty.</p>
+
+<p>The optional arguments <code class="code">?stdin</code> and <code class="code">?stdout</code> and <code class="code">?stderr</code> are
+    file names used to redirect the standard input, the standard
+    output, or the standard error of the command.
+    If <code class="code">~stdin:f</code> is given, a redirection <code class="code">&lt;&nbsp;f</code> is performed and the
+    standard input of the command reads from file <code class="code">f</code>.
+    If <code class="code">~stdout:f</code> is given, a redirection <code class="code">&gt;&nbsp;f</code> is performed and the
+    standard output of the command is written to file <code class="code">f</code>.
+    If <code class="code">~stderr:f</code> is given, a redirection <code class="code">2&gt;&nbsp;f</code> is performed and the
+    standard error of the command is written to file <code class="code">f</code>.
+    If both <code class="code">~stdout:f</code> and <code class="code">~stderr:f</code> are given, with the exact
+    same file name <code class="code">f</code>, a <code class="code">2&gt;&amp;1</code> redirection is performed so that the
+    standard output and the standard error of the command are interleaved
+    and redirected to the same file <code class="code">f</code>.</p>
+
+<p>Under Unix and Cygwin, the command, the arguments, and the redirections
+    if any are quoted using <code class="code"><span class="constructor">Filename</span>.quote</code>, then concatenated.
+    Under Win32, additional quoting is performed as required by the
+    <code class="code">cmd.exe</code> shell that is called by <code class="code"><span class="constructor">Sys</span>.command</code>.</p>
+
+<p>Raise <code class="code"><span class="constructor">Failure</span></code> if the command cannot be escaped on the current platform.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.12.0 and OCaml 4.10</li>
+</ul>
 </div>
 
 <pre><span id="VALsplit_extension"><span class="keyword">val</span> split_extension</span> : <code class="type">string -> string * string</code></pre><div class="info ">

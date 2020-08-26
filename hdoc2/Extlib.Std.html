@@ -1151,7 +1151,7 @@
 </div>
 </div>
 <h7 id="6_Results">Results</h7>
-<pre><span id="TYPEresult"><span class="keyword">type</span> <code class="type">('a, 'b)</code> result</span> = <code class="type">('a, 'b) <a href="BatInnerPervasives.html#TYPEresult">BatInnerPervasives.result</a></code> = </pre><table class="typetable">
+<pre><span id="TYPEresult"><span class="keyword">type</span> <code class="type">('a, 'e)</code> result</span> = <code class="type">('a, 'e) <a href="BatInnerPervasives.html#TYPEresult">BatInnerPervasives.result</a></code> = </pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
@@ -1163,11 +1163,11 @@
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTresult.Bad"><span class="constructor">Bad</span></span> <span class="keyword">of</span> <code class="type">'b</code></code></td>
+<code><span id="TYPEELTresult.Error"><span class="constructor">Error</span></span> <span class="keyword">of</span> <code class="type">'e</code></code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
 <div class="info-desc">
 <p>The result of a computation - either an <code class="code"><span class="constructor">Ok</span></code> with the normal
-      result or a <code class="code"><span class="constructor">Bad</span></code> with some value (often an exception) containing
+      result or a <code class="code"><span class="constructor">Error</span></code> with some value (often an exception) containing
       failure information</p>
 </div>
 </div>
@@ -1179,7 +1179,7 @@
 <p>This type represents the outcome of a function which has the
     possibility of failure.  Normal results of type <code class="code"><span class="keywordsign">'</span>a</code> are marked
     with <code class="code"><span class="constructor">Ok</span></code>, while failure values of type <code class="code"><span class="keywordsign">'</span>b</code> are marked with
-    <code class="code"><span class="constructor">Bad</span></code>.</p>
+    <code class="code"><span class="constructor">Error</span></code>.</p>
 
 <p>This is intended to be a safer alternative to functions raising
     exceptions to signal failure.  It is safer in that the possibility
@@ -1194,14 +1194,14 @@
 <pre><span id="VALignore_ok"><span class="keyword">val</span> ignore_ok</span> : <code class="type">('a, exn) <a href="BatPervasives.html#TYPEresult">result</a> -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">ignore_ok&nbsp;(f&nbsp;x)</code> ignores the result of <code class="code">f&nbsp;x</code> if it's ok, but
-    throws the exception contained if <code class="code"><span class="constructor">Bad</span></code> is returned.</p>
+    throws the exception contained if <code class="code"><span class="constructor">Error</span></code> is returned.</p>
 </div>
 </div>
 
 <pre><span id="VALok"><span class="keyword">val</span> ok</span> : <code class="type">('a, exn) <a href="BatPervasives.html#TYPEresult">result</a> -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">f&nbsp;x&nbsp;|&gt;&nbsp;ok</code> unwraps the <code class="code"><span class="constructor">Ok</span></code> result of <code class="code">f&nbsp;x</code> and returns it, or
-    throws the exception contained if <code class="code"><span class="constructor">Bad</span></code> is returned.</p>
+    throws the exception contained if <code class="code"><span class="constructor">Error</span></code> is returned.</p>
 </div>
 </div>
 
@@ -1209,7 +1209,7 @@
 <div class="info-desc">
 <p><code class="code">wrap&nbsp;f&nbsp;x</code> wraps a function that would normally throw an exception
     on failure such that it now returns a result with either the <code class="code"><span class="constructor">Ok</span></code>
-    return value or the <code class="code"><span class="constructor">Bad</span></code> exception.</p>
+    return value or the <code class="code"><span class="constructor">Error</span></code> exception.</p>
 </div>
 </div>
 <h7 id="6_Threadsafetyinternals">Thread-safety internals</h7>

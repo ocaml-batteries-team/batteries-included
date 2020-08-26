@@ -109,7 +109,7 @@
 </head>
 <body>
 <code class="code"><span class="keyword">sig</span><br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;argv&nbsp;:&nbsp;string&nbsp;array<br>
+&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;argv&nbsp;:&nbsp;string&nbsp;array&nbsp;=&nbsp;<span class="string">"%sys_argv"</span><br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;executable_name&nbsp;:&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;file_exists&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool&nbsp;=&nbsp;<span class="string">"caml_sys_file_exists"</span><br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;is_directory&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool&nbsp;=&nbsp;<span class="string">"caml_sys_is_directory"</span><br>
@@ -185,4 +185,5 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;enable_runtime_warnings&nbsp;:&nbsp;bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;runtime_warnings_enabled&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
 &nbsp;&nbsp;<span class="keyword">external</span>&nbsp;opaque_identity&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;=&nbsp;<span class="string">"%opaque"</span><br>
+&nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Immediate64</span>&nbsp;=&nbsp;<span class="constructor">Sys</span>.<span class="constructor">Immediate64</span><br>
 <span class="keyword">end</span></code></body></html>

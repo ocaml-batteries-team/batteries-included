@@ -644,6 +644,29 @@
 </li>
 </ul>
 </div>
+
+<pre><span id="VALpivot_split"><span class="keyword">val</span> pivot_split</span> : <code class="type">'a <a href="BatOrd.html#TYPEord">BatOrd.ord</a> -> 'a array -> 'a -> int * int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">pivot_split&nbsp;cmp&nbsp;arr&nbsp;x</code> assumes that <code class="code">arr</code> is <b>sorted</b> w.r.t
+    <code class="code">cmp</code>. It splits an array <code class="code">arr</code> of length <code class="code">len</code> into three parts,
+    by returning a couple (i,j) such as:</p>
+<ul>
+<li>all elements with indices 0..i-1 (<code class="code">sub&nbsp;arr&nbsp;0&nbsp;i</code>) are lower than <code class="code">x</code></li>
+<li>all elements with indices i..j-1 (<code class="code">sub&nbsp;arr&nbsp;i&nbsp;(j-i)</code>) are equal to <code class="code">x</code></li>
+<li>all elements with indices j..len-1 (<code class="code">sub&nbsp;arr&nbsp;j&nbsp;(len-j)</code>) are bigger than <code class="code">x</code></li>
+</ul>
+<p>In particular, it returns:</p>
+<ul>
+<li>(0, 0) if all elements of <code class="code">arr</code> are bigger than <code class="code">x</code></li>
+<li>(len, len) if all elements are lower than <code class="code">x</code></li>
+<li>(0, len) if all elements are equal to <code class="code">x</code></li>
+</ul>
+<p>Complexity: logarithmic in the size of the array</p>
+</div>
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Invalid_argument</code> if the array is found not to be sorted</li>
+</ul>
+</div>
 <h7 id="6_Operationsontwoarrays">Operations on two arrays</h7>
 <pre><span id="VALiter2"><span class="keyword">val</span> iter2</span> : <code class="type">('a -> 'b -> unit) -> 'a array -> 'b array -> unit</code></pre><div class="info ">
 <div class="info-desc">
