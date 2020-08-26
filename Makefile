@@ -303,6 +303,5 @@ upload-docs:
 	cp /tmp/batteries.docdir/*.html hdoc2/ && \
 	git add hdoc2/*.html && \
 	git commit hdoc2 -m "Update ocamldoc to latest release" && \
-	git push \
-	git@github.com:ocaml-batteries-team/batteries-included.git gh-pages \
+	git push origin gh-pages && \
 	git checkout master
