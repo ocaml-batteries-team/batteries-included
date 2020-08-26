@@ -3,6 +3,10 @@ Changelog
 
 ## NEXT_RELEASE (minor release)
 
+Not started yet.
+
+## v3.1.0 (minor release)
+
 - Compatibility fixes for OCaml-4.11
   #962
   (Jerome Vouillon)
@@ -15,10 +19,10 @@ Changelog
   #953
   (Francois Berenger, review by Cedric Cellier)
 
-- BatArray: use unsage_get and unsafe_set more often
+- BatArray: use unsafe_get and unsafe_set more often
   #947
   (Francois Berenger, review by Cedric Cellier)
-  
+
 - BatResult: BatPervasives.result is now equal to Stdlib.result
   instead of sharing constructors without being the same type
   #939, #957

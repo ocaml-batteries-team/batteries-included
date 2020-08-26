@@ -37,7 +37,7 @@ val lines_of : string -> string BatEnum.t
 val count_lines: string -> int
 (** [count_lines filename] count the number of lines in given file.
     Lines are read by the stdlib's input_line function.
-    @since NEXT_RELEASE *)
+    @since 3.1.0 *)
 
 val write_lines: string -> string BatEnum.t -> unit
 (** [write_lines name lines] writes strings given by [lines] to file [name] with newline character appended to each line. *)
