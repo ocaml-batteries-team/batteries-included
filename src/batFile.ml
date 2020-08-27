@@ -31,8 +31,7 @@ let count_lines (fn: string): int =
   !count
 
 (*$T count_lines
-  (Sys.file_exists "/dev/null") && (count_lines "/dev/null" = 0)
-  (Sys.file_exists "/etc/services") && (count_lines "/etc/services" > 0)
+  (Sys.file_exists __FILE__) && (count_lines __FILE__ > 0)
 *)
 
 open BatIO
