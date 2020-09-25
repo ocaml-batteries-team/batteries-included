@@ -557,7 +557,7 @@ struct
   }
 
   let unprogify optparser s =
-    (snd (BatString.replace ~str:s ~sub:"%prog" ~by:optparser.op_prog))
+    BatString.nreplace ~str:s ~sub:"%prog" ~by:optparser.op_prog
 
   let add optparser ?(group = optparser.op_groups) ?help ?(hide = false)
       ?short_name ?(short_names = []) ?long_name ?(long_names = []) opt =
