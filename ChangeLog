@@ -7,6 +7,12 @@ Changelog
   #967
   (Francois Berenger)
 
+- BatOptParse.unprogify: bug fix (issue #965)
+  '%prog' was replaced only once, now it is always replaced
+  (in accordance with the documentation)
+  #966
+  (Francois Berenger, report by OnkV)
+
 ## v3.1.0 (minor release)
 
 This minor release adds support for OCaml 4.11.
