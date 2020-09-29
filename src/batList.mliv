@@ -454,7 +454,7 @@ val find_exn : ('a -> bool) -> exn -> 'a list -> 'a
     returns [true] or raises [e] if such an element has not been found. *)
 
 val findi : (int -> 'a -> bool) -> 'a list -> (int * 'a)
-(** [findi p e l] returns the first element [ai] of [l] along with its
+(** [findi p l] returns the first element [ai] of [l] along with its
     index [i] such that [p i ai] is true, or @raise Not_found if no
     such element has been found. *)
 
@@ -975,7 +975,7 @@ module Exceptionless : sig
       that [p x] returns [true] or [None] if such element as not been found. *)
 
   val findi : (int -> 'a -> bool) -> 'a list -> (int * 'a) option
-  (** [findi p e l] returns [Some (i, ai)] where [ai] and [i] are
+  (** [findi p l] returns [Some (i, ai)] where [ai] and [i] are
       respectively the
       first element of [l] and its index, such that [p i ai] is true,
       or [None] if no  such element has been found. *)
