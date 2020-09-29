@@ -3,7 +3,9 @@ Changelog
 
 ## NEXT_RELEASE (minor release)
 
-Not started yet.
+- BatList.findi: correct documentation
+  #967
+  (Francois Berenger)
 
 ## v3.1.0 (minor release)
 
