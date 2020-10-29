@@ -798,17 +798,17 @@ let rec rindex_ofq e l =
 
 let filter = find_all
 
-let filter_count p l =
+let count_matching p l =
   fold_left (fun count x ->
       if p x then count + 1
       else count
     ) 0 l
 
-(*$T filter_count
-  filter_count (fun _ -> true) [] = 0
-  filter_count (fun _ -> true) [1] = 1
-  filter_count (fun _ -> true) [1;2] = 2
-  filter_count (fun x -> x mod 2 = 1) [1;2;3;4;5;6] = 3
+(*$T count_matching
+  count_matching (fun _ -> true) [] = 0
+  count_matching (fun _ -> true) [1] = 1
+  count_matching (fun _ -> true) [1;2] = 2
+  count_matching (fun x -> x mod 2 = 1) [1;2;3;4;5;6] = 3
 *)
 
 ##V>=4.11##let filteri = List.filteri
