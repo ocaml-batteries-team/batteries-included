@@ -34,7 +34,7 @@ module Legacy = struct
   module Random = Random
   module Scanf = Scanf
   module Set = Set
-  module Sort = Sort
+##V<4.8## module Sort = Sort
   module Stack = Stack
   module StdLabels = StdLabels
   module Stream = Stream
@@ -47,6 +47,7 @@ module Legacy = struct
   module Big_int = Big_int
   module Bigarray = Bigarray
   module Str = Str
+##V>=4.8## module Result = Result
 end
 
 (* stdlib modules *)
@@ -82,7 +83,6 @@ module Map = BatMap
 module Marshal = BatMarshal
 (* MoreLabels *)
 module Nativeint = BatNativeint
-module Oo = BatOo
 (* Parsing *)
 module Printexc = BatPrintexc
 module Printf = BatPrintf (* UNTESTED FOR BACKWARDS COMPATIBILITY *)
@@ -162,6 +162,7 @@ module Int = BatInt
 module Bool = BatBool
 module Unit = BatUnit
 (*module Int63 = BatInt63*)
+module Filename = BatFilename
 
 (* Modules in-progress, API stability not guaranteed *)
 module Incubator = struct

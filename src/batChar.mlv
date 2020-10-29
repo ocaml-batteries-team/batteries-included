@@ -19,7 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(*BISECT-IGNORE-BEGIN*)
 include Char
 
 ##V<4.3##let lowercase_ascii = function
@@ -78,7 +77,6 @@ let is_letter c =
 
 external unsafe_int : char-> int  = "%identity"
 external unsafe_chr : int -> char = "%identity"
-(*BISECT-IGNORE-END*)
 
 let of_digit i =
   if i >= 0 && i < 10 then
@@ -103,10 +101,8 @@ let ( -- ) from last =
   let e = Char.chr 12 -- Char.chr 52 in for i = 12 to 52 do assert (Char.chr i = BatEnum.get_exn e) done; BatEnum.is_empty e
 *)
 
-(*BISECT-IGNORE-BEGIN*)
 let range ?until:(last = unsafe_chr 255) from =
   from -- last
-(*BISECT-IGNORE-END*)
 
 module Infix = struct
   let (--) = (--)
@@ -118,14 +114,12 @@ let print out t = BatInnerIO.write out t
   BatIO.to_string print '\n' = "\n"
 *)
 
-(*BISECT-IGNORE-BEGIN*)
 let ord (x:char) y =
   if x > y then BatOrd.Gt
   else if y > x then BatOrd.Lt
   else BatOrd.Eq
 let equal (x:char) y = x == y (* safe because int-like value *)
 let hash = code
-(*BISECT-IGNORE-END*)
 
 module Incubator = struct
   module Comp = struct

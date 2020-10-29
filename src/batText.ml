@@ -173,7 +173,7 @@ let bal_if_needed l r =
   if height r < max_height then r else balance r
 
 let concat_str l = function
-  | Empty | Concat(_,_,_,_,_) -> invalid_arg "concat_str"
+  | Empty | Concat(_,_,_,_,_) -> invalid_arg "Text.concat_str"
   | Leaf (lenr, rs) as r ->
     match l with
     | Empty -> r
@@ -871,13 +871,12 @@ let fill r start len char =
 let blit rsrc offsrc rdst offdst len =
   splice rdst offdst len (sub rsrc offsrc len)
 
-
-let list_reduce f = function [] -> invalid_arg "Empty List"
-                           | h::t -> List.fold_left f h t
-
 let concat sep r_list =
-  if r_list = [] then empty else
-    list_reduce (fun r1 r2 -> append r1 (append sep r2)) r_list
+  match r_list with
+    | [] ->
+        empty
+    | h :: t ->
+        List.fold_left (fun r1 r2 -> append r1 (append sep r2)) h t
 
 (**T concat
    Text.concat (Text.of_string "xyz") [] = Text.empty
@@ -918,7 +917,7 @@ let rsplit (r:t) sep =
     avoid a call to [List.rev].  *)
 let nsplit str sep =
   if is_empty str then []
-  else if is_empty sep then invalid_arg "nsplit: empty sep not allowed"
+  else if is_empty sep then invalid_arg "Text.nsplit: empty sep not allowed"
   else
     (* str is not empty *)
     let seplen = length sep in

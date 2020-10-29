@@ -86,7 +86,7 @@ else
 endif
 endif
 
-.PHONY: all clean doc install uninstall reinstall test qtest qtest-clean camfail camfailunk coverage man test_install
+.PHONY: all clean doc install uninstall reinstall test qtest qtest-clean camfail camfailunk man test_install
 
 all:
 	@echo "Build mode:" $(MODE)
@@ -169,7 +169,7 @@ clean-prefilter:
 # `_build` directory.
 
 DONTTEST=src/batteriesHelp.ml \
-	 src/batteries_compattest.ml \
+	 src/batteries_compattest.mlv \
 	 src/batConcreteQueue_402.ml src/batConcreteQueue_403.ml
 TESTABLE ?= $(filter-out $(DONTTEST),\
    $(wildcard src/*.ml) $(wildcard src/*.mlv))
@@ -248,6 +248,13 @@ test-native: qtest-native testsuite-only-native
 
 full-test: $(TEST_TARGET)
 
+PREFILTER_BIN = _build/build/prefilter.byte
+# FIXME: Not sure what actually produces this binary:
+$(PREFILTER_BIN): all
+# FIXME: Should probably be done by ocamlbuild somehow:
+src/batteries_compattest.ml: src/batteries_compattest.mlv $(PREFILTER_BIN)
+	$(PREFILTER_BIN) < $< > $@
+
 test-compat: src/batteries_compattest.ml
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) src/batteries_compattest.byte
 
@@ -277,7 +284,7 @@ release:
 	$(MAKE) release-cleaned
 
 # assumes irreproachably pristine working directory
-release-cleaned: setup.ml doc test
+release-cleaned: setup.ml doc test-native
 	git archive --format=tar --prefix=batteries-$(VERSION)/ HEAD \
 	  | gzip > batteries-$(VERSION).tar.gz
 
@@ -288,13 +295,13 @@ setup.ml: _oasis
 
 # uploads the current documentation to github hdoc2/ directory
 upload-docs:
-	make doc && git checkout gh-pages && rm -f hdoc2/*.html && cp _build/batteries.docdir/*.html hdoc2/ && git add hdoc2/*.html && git commit -a -m"Update to latest documentation" && git push github gh-pages
-
-###############################################################################
-#	CODE COVERAGE REPORTS
-###############################################################################
-
-coverage/index.html: $(TESTDEPS) $(QTESTDIR)/all_tests.ml
-	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) coverage/index.html
-
-coverage: coverage/index.html
+	make doc && \
+	rm -rf /tmp/batteries.docdir && \
+	cp -a _build/batteries.docdir /tmp/ && \
+	git checkout gh-pages && \
+	rm -f hdoc2/*.html && \
+	cp /tmp/batteries.docdir/*.html hdoc2/ && \
+	git add hdoc2/*.html && \
+	git commit hdoc2 -m "Update ocamldoc to latest release" && \
+	git push origin gh-pages && \
+	git checkout master

@@ -102,9 +102,9 @@ let unpack str pos =
 
 let unpack_big str pos =
   if Bytes.length str < pos + 4 then
-    invalid_arg "Int32.unpack: pos + 4 not within string";
+    invalid_arg "Int32.unpack_big: pos + 4 not within string";
   if pos < 0 then
-    invalid_arg "Int32.unpack: pos negative";
+    invalid_arg "Int32.unpack_big: pos negative";
   let shift n = Int32.shift_left n 8
   and add b n = Int32.add (of_byte b) n in
   of_byte (Bytes.unsafe_get str pos) |> shift
@@ -159,8 +159,8 @@ external of_string : string -> int32 = "caml_int32_of_string"
 ##V<4.5##let of_string_opt n = try Some (Int32.of_string n) with _ -> None
 external of_int64 : int64 -> int32 = "%int64_to_int32"
 external to_int64 : int32 -> int64 = "%int64_of_int32"
-external of_nativeint : nativeint -> int32 = "%int32_of_nativeint"
-external to_nativeint : int32 -> nativeint = "%int32_to_nativeint"
+external of_nativeint : nativeint -> int32 = "%nativeint_to_int32"
+external to_nativeint : int32 -> nativeint = "%nativeint_of_int32"
 
 external bits_of_float : float -> int32 = "caml_int32_bits_of_float"
 ##V>=4.3## "caml_int32_bits_of_float_unboxed" [@@unboxed] [@@noalloc]
@@ -168,8 +168,10 @@ external float_of_bits : int32 -> float = "caml_int32_float_of_bits"
 ##V>=4.3## "caml_int32_float_of_bits_unboxed" [@@unboxed] [@@noalloc]
 external format : string -> int32 -> string = "caml_int32_format"
 
-
-
+##V>=4.08##let unsigned_div = Int32.unsigned_div
+##V>=4.08##let unsigned_rem = Int32.unsigned_rem
+##V>=4.08##let unsigned_to_int = Int32.unsigned_to_int
+##V>=4.08##let unsigned_compare = Int32.unsigned_compare
 
 type bounded = t
 let min_num, max_num = min_int, max_int

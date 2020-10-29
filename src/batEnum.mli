@@ -50,7 +50,7 @@
     As most data structures in Batteries can be enumerated and built
     from enumerations, these operations may be used also on lists,
     arrays, hashtables, etc. When designing a new data structure, it
-    is usuallly a good idea to allow enumeration and construction
+    is usually a good idea to allow enumeration and construction
     from an enumeration.
 
     {b Note} Enumerations are not thread-safe. You should not attempt
@@ -519,6 +519,13 @@ val enum : 'a t -> 'a t
 val of_enum : 'a t -> 'a t
 (** identity : added for consistency with the other data structures *)
 
+val combination : ?repeat:bool -> int -> int -> int list t
+(** [combination n k] returns an enumeration over combination of [k] elements
+    between [n] distincts elements.
+    
+    If [repeat] is true, the combination may contain the same elements many
+    times.*)
+
 (** {6 Counting} *)
 
 val count : 'a t -> int
@@ -559,10 +566,12 @@ val dup : 'a t -> 'a t * 'a t
     that stream is a destructive data structure, the point of [dup] is to
     return two streams can be used independently. *)
 
-val combine : 'a t * 'b t -> ('a * 'b) t
-(** [combine] transform a pair of stream into a stream of pairs of corresponding
-    elements. If one stream is short, excess elements of the longer stream are
-    ignored. *)
+val combine : 'a t -> 'b t -> ('a * 'b) t
+(** [combine] transform two streams into a stream of pairs of corresponding
+    elements. If one stream is shorter, excess elements of the longer stream are
+    ignored.
+    Curried @since 3.0
+ *)
 
 val uncombine : ('a * 'b) t -> 'a t * 'b t
 (** [uncombine] is the opposite of [combine] *)
@@ -792,7 +801,7 @@ val compare : ('a -> 'a -> int) -> 'a t -> 'a t -> int
 *)
 
 val ord : ('a -> 'a -> BatOrd.order) -> 'a t -> 'a t -> BatOrd.order
-(** Same as [compare] but returning a {!BatOrd.order} instead of an interger. *)
+(** Same as [compare] but returning a {!BatOrd.order} instead of an integer. *)
 
 val equal : ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
 (** [equal eq a b] returns [true] when [a] and [b] contain

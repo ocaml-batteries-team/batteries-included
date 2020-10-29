@@ -110,7 +110,7 @@ type control = Gc.control =
     mutable space_overhead : int;
     (** The major GC speed is computed from this parameter.
         This is the memory that will be "wasted" because the GC does not
-        immediatly collect unreachable blocks.  It is expressed as a
+        immediately collect unreachable blocks.  It is expressed as a
         percentage of the memory used for live data.
         The GC will work more (use more CPU time and collect
         blocks more eagerly) if [space_overhead] is smaller.
@@ -160,6 +160,41 @@ type control = Gc.control =
 ##V>=4.3##        1 and 50.
 ##V>=4.3##        Default: 1. @since 2.5.0 and OCaml 4.03.0 *)
 ##V>=4.3##
+
+##V>=4.8##    custom_major_ratio : int;
+##V>=4.8##    (** Target ratio of floating garbage to major heap size for
+##V>=4.8##        out-of-heap memory held by custom values located in the major
+##V>=4.8##        heap. The GC speed is adjusted to try to use this much memory
+##V>=4.8##        for dead values that are not yet collected. Expressed as a
+##V>=4.8##        percentage of major heap size. The default value keeps the
+##V>=4.8##        out-of-heap floating garbage about the same size as the
+##V>=4.8##        in-heap overhead.
+##V>=4.8##        Note: this only applies to values allocated with
+##V>=4.8##        [caml_alloc_custom_mem] (e.g. bigarrays).
+##V>=4.8##        Default: 44.
+##V>=4.8##        @since 2.10.0 and OCaml 4.08.0 *)
+
+##V>=4.8##    custom_minor_ratio : int;
+##V>=4.8##    (** Bound on floating garbage for out-of-heap memory held by
+##V>=4.8##        custom values in the minor heap. A minor GC is triggered when
+##V>=4.8##        this much memory is held by custom values located in the minor
+##V>=4.8##        heap. Expressed as a percentage of minor heap size.
+##V>=4.8##        Note: this only applies to values allocated with
+##V>=4.8##        [caml_alloc_custom_mem] (e.g. bigarrays).
+##V>=4.8##        Default: 100.
+##V>=4.8##        @since 2.10.0 and OCaml 4.08.0 *)
+
+##V>=4.8##    custom_minor_max_size : int;
+##V>=4.8##    (** Maximum amount of out-of-heap memory for each custom value
+##V>=4.8##        allocated in the minor heap. When a custom value is allocated
+##V>=4.8##        on the minor heap and holds more than this many bytes, only
+##V>=4.8##        this value is counted against [custom_minor_ratio] and the
+##V>=4.8##        rest is directly counted against [custom_major_ratio].
+##V>=4.8##        Note: this only applies to values allocated with
+##V>=4.8##        [caml_alloc_custom_mem] (e.g. bigarrays).
+##V>=4.8##        Default: 8192 bytes.
+##V>=4.8##        @since 2.10.0 and OCaml 4.08.0 *)
+##V>=4.8##
   }
 (** The GC parameters are given as a [control] record.  Note that
     these parameters can also be initialised by setting the
@@ -321,7 +356,7 @@ val finalise : ('a -> unit) -> 'a -> unit
 ##V>=4.4##    finalisation function attached with `GC.finalise` are always
 ##V>=4.4##    called before the finalisation function attached with `GC.finalise_last`.
 ##V>=4.4##
-##V>=4.4##    @since NEXT_RELASE and OCaml 4.04
+##V>=4.4##    @since 2.11.0 and OCaml 4.04
 ##V>=4.4##*)
 
 val finalise_release : unit -> unit;;
@@ -343,3 +378,124 @@ val create_alarm : (unit -> unit) -> alarm
 val delete_alarm : alarm -> unit
   (** [delete_alarm a] will stop the calls to the function associated
       to [a].  Calling [delete_alarm a] again has no effect. *)
+
+##V>=4.11##external eventlog_pause : unit -> unit = "caml_eventlog_pause"
+##V>=4.11##(** [eventlog_pause ()] will pause the collection of traces in the
+##V>=4.11##   runtime.
+##V>=4.11##   Traces are collected if the program is linked to the instrumented runtime
+##V>=4.11##   and started with the environment variable OCAML_EVENTLOG_ENABLED.
+##V>=4.11##   Events are flushed to disk after pausing, and no new events will be
+##V>=4.11##   recorded until [eventlog_resume] is called. *)
+##V>=4.11##
+##V>=4.11##external eventlog_resume : unit -> unit = "caml_eventlog_resume"
+##V>=4.11##(** [eventlog_resume ()] will resume the collection of traces in the
+##V>=4.11##   runtime.
+##V>=4.11##   Traces are collected if the program is linked to the instrumented runtime
+##V>=4.11##   and started with the environment variable OCAML_EVENTLOG_ENABLED.
+##V>=4.11##   This call can be used after calling [eventlog_pause], or if the program
+##V>=4.11##   was started with OCAML_EVENTLOG_ENABLED=p. (which pauses the collection of
+##V>=4.11##   traces before the first event.) *)
+##V>=4.11##
+##V>=4.11##
+##V>=4.11##(** [Memprof] is a sampling engine for allocated memory words. Every
+##V>=4.11##   allocated word has a probability of being sampled equal to a
+##V>=4.11##   configurable sampling rate. Once a block is sampled, it becomes
+##V>=4.11##   tracked. A tracked block triggers a user-defined callback as soon
+##V>=4.11##   as it is allocated, promoted or deallocated.
+##V>=4.11##
+##V>=4.11##   Since blocks are composed of several words, a block can potentially
+##V>=4.11##   be sampled several times. If a block is sampled several times, then
+##V>=4.11##   each of the callback is called once for each event of this block:
+##V>=4.11##   the multiplicity is given in the [n_samples] field of the
+##V>=4.11##   [allocation] structure.
+##V>=4.11##
+##V>=4.11##   This engine makes it possible to implement a low-overhead memory
+##V>=4.11##   profiler as an OCaml library.
+##V>=4.11##
+##V>=4.11##   Note: this API is EXPERIMENTAL. It may change without prior
+##V>=4.11##   notice. *)
+##V>=4.11##module Memprof :
+##V>=4.11##  sig
+##V>=4.11##    type allocation = Gc.Memprof.allocation = private
+##V>=4.11##      { n_samples : int;
+##V>=4.11##        (** The number of samples in this block (>= 1). *)
+##V>=4.11##
+##V>=4.11##        size : int;
+##V>=4.11##        (** The size of the block, in words, excluding the header. *)
+##V>=4.11##
+##V>=4.11##        unmarshalled : bool;
+##V>=4.11##        (** Whether the block comes from unmarshalling. *)
+##V>=4.11##
+##V>=4.11##        callstack : Printexc.raw_backtrace
+##V>=4.11##        (** The callstack for the allocation. *)
+##V>=4.11##      }
+##V>=4.11##    (** The type of metadata associated with allocations. This is the
+##V>=4.11##       type of records passed to the callback triggered by the
+##V>=4.11##       sampling of an allocation. *)
+##V>=4.11##
+##V>=4.11##    type ('minor, 'major) tracker =
+##V>=4.11##        ('minor, 'major) Gc.Memprof.tracker = {
+##V>=4.11##      alloc_minor: allocation -> 'minor option;
+##V>=4.11##      alloc_major: allocation -> 'major option;
+##V>=4.11##      promote: 'minor -> 'major option;
+##V>=4.11##      dealloc_minor: 'minor -> unit;
+##V>=4.11##      dealloc_major: 'major -> unit;
+##V>=4.11##    }
+##V>=4.11##    (**
+##V>=4.11##       A [('minor, 'major) tracker] describes how memprof should track
+##V>=4.11##       sampled blocks over their lifetime, keeping a user-defined piece
+##V>=4.11##       of metadata for each of them: ['minor] is the type of metadata
+##V>=4.11##       to keep for minor blocks, and ['major] the type of metadata
+##V>=4.11##       for major blocks.
+##V>=4.11##
+##V>=4.11##       If an allocation-tracking or promotion-tracking function returns [None],
+##V>=4.11##       memprof stops tracking the corresponding value.
+##V>=4.11##     *)
+##V>=4.11##
+##V>=4.11##    val null_tracker: ('minor, 'major) tracker
+##V>=4.11##    (** Default callbacks simply return [None] or [()] *)
+##V>=4.11##
+##V>=4.11##    val start :
+##V>=4.11##      sampling_rate:float ->
+##V>=4.11##      ?callstack_size:int ->
+##V>=4.11##      ('minor, 'major) tracker ->
+##V>=4.11##      unit
+##V>=4.11##    (** Start the sampling with the given parameters. Fails if
+##V>=4.11##       sampling is already active.
+##V>=4.11##
+##V>=4.11##       The parameter [sampling_rate] is the sampling rate in samples
+##V>=4.11##       per word (including headers). Usually, with cheap callbacks, a
+##V>=4.11##       rate of 1e-4 has no visible effect on performance, and 1e-3
+##V>=4.11##       causes the program to run a few percent slower
+##V>=4.11##
+##V>=4.11##       The parameter [callstack_size] is the length of the callstack
+##V>=4.11##       recorded at every sample. Its default is [max_int].
+##V>=4.11##
+##V>=4.11##       The parameter [tracker] determines how to track sampled blocks
+##V>=4.11##       over their lifetime in the minor and major heap.
+##V>=4.11##
+##V>=4.11##       Sampling is temporarily disabled when calling a callback
+##V>=4.11##       for the current thread. So they do not need to be reentrant if
+##V>=4.11##       the program is single-threaded. However, if threads are used,
+##V>=4.11##       it is possible that a context switch occurs during a callback,
+##V>=4.11##       in this case the callback functions must be reentrant.
+##V>=4.11##
+##V>=4.11##       Note that the callback can be postponed slightly after the
+##V>=4.11##       actual event. The callstack passed to the callback is always
+##V>=4.11##       accurate, but the program state may have evolved.
+##V>=4.11##
+##V>=4.11##       Calling [Thread.exit] in a callback is currently unsafe and can
+##V>=4.11##       result in undefined behavior. *)
+##V>=4.11##
+##V>=4.11##    val stop : unit -> unit
+##V>=4.11##    (** Stop the sampling. Fails if sampling is not active.
+##V>=4.11##
+##V>=4.11##        This function does not allocate memory, but tries to run the
+##V>=4.11##        postponed callbacks for already allocated memory blocks (of
+##V>=4.11##        course, these callbacks may allocate).
+##V>=4.11##
+##V>=4.11##        All the already tracked blocks are discarded.
+##V>=4.11##
+##V>=4.11##        Calling [stop] when a callback is running can lead to
+##V>=4.11##        callbacks not being called even though some events happened. *)
+##V>=4.11##end

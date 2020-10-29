@@ -64,6 +64,10 @@ external float_of_bits : int64 -> float = "caml_int64_float_of_bits"
 ##V>=4.3## "caml_int64_float_of_bits_unboxed" [@@unboxed] [@@noalloc]
 external format : string -> int64 -> string = "caml_int64_format"
 
+##V>=4.08##let unsigned_compare = Int64.unsigned_compare
+##V>=4.08##let unsigned_to_int = Int64.unsigned_to_int
+##V>=4.08##let unsigned_rem = Int64.unsigned_rem
+##V>=4.08##let unsigned_div = Int64.unsigned_div
 
 let print out t = BatInnerIO.nwrite out (to_string t)
 let print_hex out t = BatPrintf.fprintf out "%Lx" t

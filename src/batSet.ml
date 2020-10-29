@@ -150,9 +150,22 @@ module Concrete = struct
       if c = 0 then merge l r else
       if c < 0 then bal (remove cmp x l) v r else bal l v (remove cmp x r)
 
+  (* A variant of [remove] that throws [Not_found] on failure *)
+  let rec remove_exn cmp x = function
+    | Empty ->
+        raise Not_found
+    | Node (l, v, r, _) ->
+        let c = cmp x v in
+        if c = 0 then
+          merge l r
+        else if c < 0 then
+          bal (remove_exn cmp x l) v r
+        else
+          bal l v (remove_exn cmp x r)
+
   let update cmp x y s =
     if cmp x y <> 0 then
-      add cmp y (remove cmp x s)
+      add cmp y (remove_exn cmp x s)
     else
       let rec loop = function
         | Empty -> raise Not_found
@@ -419,16 +432,15 @@ module Concrete = struct
     | (t, Empty) -> t
     | (_, _) -> join t1 (min_elt t2) (remove_min_elt t2)
 
-  let cartesian_product a b =
-    let rec product a b = match a with
-      | Empty -> Empty
+  let rec cartesian_product a b =
+    match a with
+      | Empty ->
+          Empty
       | Node (la, xa, ra, _) ->
-        let lab = product la b in
-        let xab = op_map (fun xb -> (xa,xb)) b in
-        let rab = product ra b in
-        concat lab (concat xab rab)
-    in
-    product a b
+          let lab = cartesian_product la b in
+          let xab = op_map (fun xb -> (xa, xb)) b in
+          let rab = cartesian_product ra b in
+          concat lab (concat xab rab)
 
   let rec union cmp12 s1 s2 =
     match (s1, s2) with
@@ -574,16 +586,6 @@ sig
   val print :  ?first:string -> ?last:string -> ?sep:string ->
     ('a BatInnerIO.output -> elt -> unit) ->
     'a BatInnerIO.output -> t -> unit
-  module Infix : sig
-    val (<--) : t -> elt -> t (** insertion *)
-    val (<.) : t -> t -> bool  (** strict subset *)
-    val (>.) : t -> t -> bool  (** strict superset *)
-    val (<=.) : t -> t -> bool (** subset *)
-    val (>=.) : t -> t -> bool (** superset *)
-    val (-.) : t -> t -> t     (** difference *)
-    val (&&.) : t -> t -> t   (** intersection *)
-    val (||.) : t -> t -> t   (** union *)
-  end
   (** Operations on {!Set} without exceptions.*)
   module Exceptionless : sig
     val min_elt: t -> elt option
@@ -636,7 +638,7 @@ struct
   let find x t = Concrete.find Ord.compare x (impl_of_t t)
   let exists f t = Concrete.exists f (impl_of_t t)
   let for_all f t = Concrete.for_all f (impl_of_t t)
-  let paritition f t =
+  let partition f t =
     let l, r = Concrete.partition Ord.compare f (impl_of_t t) in
     (t_of_impl l, t_of_impl r)
 
@@ -714,17 +716,6 @@ struct
 
   let print ?first ?last ?sep print_elt out t =
     Concrete.print ?first ?last ?sep print_elt out (impl_of_t t)
-
-  module Infix = struct
-    let (<--) s x = add x s
-    let (<.) a b = not (equal a b) && subset a b
-    let (>.) a b = not (equal a b) && subset b a
-    let (<=.) = subset
-    let (>=.) a b = subset b a
-    let (-.) = diff
-    let (&&.) = inter
-    let (||.) = union
-  end
 
   module Exceptionless =
   struct
@@ -833,10 +824,10 @@ module PSet = struct (*$< PSet *)
 
   let max_elt s = Concrete.max_elt s.set
   let enum s = Concrete.enum s.set
-  let of_enum e = { cmp = compare; set = Concrete.of_enum compare e }
+  let of_enum ?(cmp = compare) e = { cmp; set = Concrete.of_enum compare e }
   let of_enum_cmp ~cmp t = { cmp = cmp; set = Concrete.of_enum cmp t }
-  let of_list l = { cmp = compare; set = Concrete.of_list compare l }
-  let of_array a = { cmp = compare; set = Concrete.of_array compare a }
+  let of_list ?(cmp = compare) l = { cmp; set = Concrete.of_list compare l }
+  let of_array ?(cmp = compare) a = { cmp; set = Concrete.of_array compare a }
   let print ?first ?last ?sep print_elt out s =
     Concrete.print ?first ?last ?sep print_elt out s.set
   let for_all f s = Concrete.for_all f s.set
@@ -870,17 +861,6 @@ module PSet = struct (*$< PSet *)
   let equal s1 s2 = Concrete.equal s1.cmp s1.set s2.set
   let subset s1 s2 = Concrete.subset s1.cmp s1.set s2.set
   let disjoint s1 s2 = Concrete.disjoint s1.cmp s1.set s2.set
-
-  module Infix = struct
-    let (<--) s x = add x s
-    let (<.) a b = not (equal a b) && subset a b
-    let (>.) a b = not (equal a b) && subset b a
-    let (<=.) = subset
-    let (>=.) a b = subset b a
-    let (-.) = diff
-    let (&&.) = intersect
-    let (||.) = union
-  end
 end (*$>*)
 
 type 'a t = 'a Concrete.set
@@ -905,7 +885,7 @@ let find x s = Concrete.find Pervasives.compare x s
   let x = "abc" in (find "abc" (singleton x)) == x
   let x = (1,1) in (find (1,1) (singleton x)) == x
   let x,y = (1,1),(1,1) in find x (singleton y) == y
-  let x,y = "a","a" in find x (singleton y) != x
+  let x,y = [|0|],[|0|] in find x (singleton y) != x
   try ignore (find (1,2) (singleton (1,1))); false with Not_found -> true
 *)
 
@@ -1067,18 +1047,9 @@ let disjoint s1 s2 = Concrete.disjoint Pervasives.compare s1 s2
   TestSet.update (2,0) (2,1)  ts = TestSet.of_list [(1,0);(2,1);(3,0)]
   TestSet.update (3,0) (3,1)  ts = TestSet.of_list [(1,0);(2,0);(3,1)]
   TestSet.update (3,0) (-1,0) ts = TestSet.of_list [(1,0);(2,0);(-1,0)]
-*)
+  try ignore (TestSet.update (4,0) (44,00) ts); false with Not_found -> true
 
-module Infix = struct
-  let (<--) s x = add x s
-  let (<.) a b = not (equal a b) && subset a b
-  let (>.) a b = not (equal a b) && subset b a
-  let (<=.) = subset
-  let (>=.) a b = subset b a
-  let (-.) = diff
-  let (&&.) = intersect
-  let (||.) = union
-end
+*)
 
 module Incubator = struct (*$< Incubator *)
   let op_map f s = Concrete.op_map f s

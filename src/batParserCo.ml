@@ -274,7 +274,7 @@ let lookahead p e = match apply p e with
   | Failure _ as result              -> result
 
 let interpret_result = function
-  | Setback f | Failure f                -> BatInnerPervasives.Bad f
+  | Setback f | Failure f                -> BatInnerPervasives.Error f
   | Success (r, _) | Backtrack (r, _, _) -> BatInnerPervasives.Ok r
 
 let suspend : ('a, 'b, 'c) t -> ('a, (unit -> ('b, 'c report) BatInnerPervasives.result), 'c) t = fun s e ->

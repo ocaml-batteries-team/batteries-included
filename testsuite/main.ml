@@ -1,5 +1,3 @@
-module X = Test_interface
-
 open OUnit
 
 let all_tests =

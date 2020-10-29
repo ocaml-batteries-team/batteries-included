@@ -118,7 +118,7 @@ val bin_comp : 'a comp -> 'a -> 'a -> 'b comp -> 'b -> 'b -> int
 val bin_ord : 'a ord -> 'a -> 'a -> 'b ord -> 'b -> 'b -> order
 (** binary lifting of the comparison function, using lexicographic order:
     [bin_ord ord1 v1 v1' ord2 v2 v2'] is [ord2 v2 v2'] if [ord1 v1 v1' = Eq],
-    and [ord1 v1 v1'] otherwhise.
+    and [ord1 v1 v1'] otherwise.
 *)
 val bin_eq : 'a eq -> 'a -> 'a -> 'b eq -> 'b -> 'b -> bool
 

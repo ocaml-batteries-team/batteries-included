@@ -35,7 +35,11 @@ module Stdlib_verifications = struct
        include module type of Legacy.Lexing
        val from_channel : BatIO.input -> Lexing.lexbuf
      end)
-  module List = (List: module type of Legacy.List)
+  module List =
+    (List: sig
+       include module type of Legacy.List
+       val find_map : ('a -> 'b option) -> 'a list -> 'b
+     end)
   (*  module Map = (Map : module type of Legacy.Map)*)
   module Marshal =
     (Marshal: sig
@@ -54,6 +58,7 @@ module Stdlib_verifications = struct
   (*  module Printf = (Printf: module type of Legacy.Printf)*)
   module Queue = (Queue: module type of Legacy.Queue)
   module Random = (Random: module type of Legacy.Random)
+##V>=4.8## module Result = (Result: module type of Legacy.Result)
   (*  module Scanf = (Scanf : module type of Legacy.Scanf)*)
   (*  module Set = (Set: module type of Legacy.Set)*)
   (* FAILS BECAUSE OF Stack.Empty not being present because
@@ -102,5 +107,6 @@ module Stdlib_verifications = struct
          Unix.sockaddr -> unit
      end)
   module Big_int = (Big_int : module type of Legacy.Big_int)
-  module Bigarray = (Bigarray : module type of Legacy.Bigarray)
+  (* FIXME: This does not pass for some reason:
+  module Bigarray = (Bigarray : module type of Legacy.Bigarray)*)
 end

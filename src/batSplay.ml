@@ -306,6 +306,10 @@ struct
       v
     | _ -> raise Not_found
 
+  let find_opt k m =
+    try Some (find k m)
+    with Not_found -> None
+
   let find_default def k m =
     try find k m
     with Not_found -> def
@@ -553,7 +557,7 @@ struct
   end
 
   module Exceptionless = struct
-    let find k m = try Some (find k m) with Not_found -> None
+    let find k m = find_opt k m
     let choose m = try Some (choose m) with Not_found -> None
     let any m = try Some (any m) with Not_found -> None
   end

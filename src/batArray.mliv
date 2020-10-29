@@ -96,6 +96,10 @@ external make : int -> 'a -> 'a array = "caml_make_vect"
    @since 2.3.0
 *)
 
+##V>=4.07##val of_seq: 'a Seq.t -> 'a array
+##V>=4.07##val to_seq: 'a array -> 'a Seq.t
+##V>=4.07##val to_seqi: 'a array -> (int * 'a) Seq.t
+
 external create : int -> 'a -> 'a array = "caml_make_vect"
 (** @deprecated [Array.create] is an alias for {!Array.make}. *)
 
@@ -165,6 +169,9 @@ val blit : 'a array -> int -> 'a array -> int -> int -> unit
 
 val to_list : 'a array -> 'a list
 (** [Array.to_list a] returns the list of all the elements of [a]. *)
+
+val split : ('a * 'b) array -> 'a array * 'b array
+(** [Array.split a] converts the array of pairs [a] into a pair of arrays. *)
 
 val of_list : 'a list -> 'a array
 (** [Array.of_list l] returns a fresh array containing the elements
@@ -388,6 +395,24 @@ val bsearch : 'a BatOrd.ord -> 'a array -> 'a ->
     @raise Invalid_argument if the array is found to be unsorted w.r.t [cmp]
     @since 2.2.0 *)
 
+val pivot_split : 'a BatOrd.ord -> 'a array -> 'a -> int * int
+(** [pivot_split cmp arr x] assumes that [arr] is {b sorted} w.r.t
+    [cmp]. It splits an array [arr] of length [len] into three parts,
+    by returning a couple (i,j) such as:
+    - all elements with indices 0..i-1 ([sub arr 0 i]) are lower than [x]
+    - all elements with indices i..j-1 ([sub arr i (j-i)]) are equal to [x]
+    - all elements with indices j..len-1 ([sub arr j (len-j)]) are bigger than [x]
+
+    In particular, it returns:
+    - (0, 0) if all elements of [arr] are bigger than [x]
+    - (len, len) if all elements are lower than [x]
+    - (0, len) if all elements are equal to [x]
+
+    Complexity: logarithmic in the size of the array
+    @raise Invalid_argument if the array is found not to be sorted
+*)
+
+
 (**{6 Operations on two arrays}*)
 
 val iter2 : ('a -> 'b -> unit) -> 'a array -> 'b array -> unit
@@ -513,13 +538,16 @@ val range : 'a array -> int BatEnum.t
 val insert : 'a array -> 'a -> int -> 'a array
 (** [insert xs x i] returns a copy of [xs] except the value [x] is
     inserted in position [i] (and all later indices are shifted to the
-    right). *)
+    right).
+
+    @raise Invalid_argument
+    if [i < 0 || i > Array.length xs]. *)
 
 (** {6 Boilerplate code}*)
 
 val print : ?first:string -> ?last:string -> ?sep:string ->
   ('a, 'b) BatIO.printer -> ('a t, 'b) BatIO.printer
-(** Print the contents of an array, with [~first] preceeding the first
+(** Print the contents of an array, with [~first] preceding the first
     item (default: "\[|"), [~last] following the last item (default:
     "|\]") and [~sep] separating items (default: "; ").  A printing
     function must be provided to print the items in the array.
@@ -741,6 +769,8 @@ sig
   val backwards : ('a, [> `Read]) t -> 'a BatEnum.t
   val of_backwards : 'a BatEnum.t -> ('a, _) t
   val to_list : ('a, [> `Read]) t -> 'a list
+  val split : ('a * 'b, [> `Read]) t -> ('a, _) t * ('b, _) t
+  val pivot_split : 'a BatOrd.ord -> ('a, [> `Read]) t -> 'a -> int * int
   val of_list : 'a list -> ('a, _) t
 
   (** {6 Utilities} *)

@@ -217,7 +217,7 @@ val rindex_opt: string -> char -> int option
 
 val index_from : string -> int -> char -> int
 (** [String.index_from s i c] returns the character number of the
-    first occurrence of character [c] in string [s] after position [i].
+    first occurrence of character [c] in string [s] after or at position [i].
     [String.index s c] is equivalent to [String.index_from s 0 c].
 
     @raise Invalid_argument if [i] is not a valid position in [s].
@@ -254,6 +254,24 @@ val rindex_from_opt: string -> int -> char -> int option
    Raise [Invalid_argument] if [i+1] is not a valid position in [s].
 
     @since 2.7.0
+*)
+
+val index_after_n :  char -> int -> string -> int
+(** [index_after_n chr n str] returns the index of the character that
+    comes immediately after the [n]-th occurrence of [chr] in [str].
+
+    - {b Occurrences are numbered from 1}: [n] = 1 returns the index of
+      the character located immediately after the first occurrence of
+      [chr].
+    - [n] = 0 always returns [0].
+    - If the [n]-th occurrence of [chr] is the last character of
+      [str], returns the length of [str].
+
+    @raise Invalid_argument if [n < 0].
+    @raise Not_found if there are strictly less than [n] occurrences of [chr]
+    in [str].
+
+    @since 2.9.0
 *)
 
 val contains : string -> char -> bool
@@ -542,7 +560,7 @@ val find_all : string -> string -> int BatEnum.t
 
 val count_string : string -> string -> int
 (** [count_string s x] count how many times [x] is found in [s].
-    @since NEXT_RELEASE *)
+    @since 2.9.0 *)
 
 val ends_with : string -> string -> bool
 (** [ends_with s x] returns [true] if the string [s] is ending with [x], [false] otherwise.
@@ -562,6 +580,11 @@ val exists : string -> string -> bool
 
     Example: [String.exists "foobarbaz" "obar" = true]
 *)
+
+val count_char : string -> char -> int
+(** [count_char str c] returns the number of times [c] is used in [str].
+ *)
+
 
 (** {6 Transformations}*)
 
@@ -638,7 +661,7 @@ val left : string -> int -> string
 *)
 
 val right : string -> int -> string
-(**[left r len] returns the string containing the [len] last characters of [r].
+(**[right r len] returns the string containing the [len] last characters of [r].
    If [r] contains less than [len] characters, it returns [r].
 
    Example: [String.right "Weeble" 4 = "eble"]
@@ -673,7 +696,7 @@ val replace : str:string -> sub:string -> by:string -> bool * string
 (** [replace ~str ~sub ~by] returns a tuple consisting of a boolean
     and a string where the first occurrence of the string [sub]
     within [str] has been replaced by the string [by]. The boolean
-    is true if a subtitution has taken place.
+    is true if a substitution has taken place.
 
     Example: [String.replace "foobarbaz" "bar" "rab" = (true, "foorabbaz")]
 *)
@@ -722,6 +745,7 @@ val split_on_char: char -> string -> string list
       (String.split_on_char sep s) = s]).
     - No string in the result contains the [sep] character.
 
+    Note: prior to 2.11.0 [split_on_char _ ""] used to return an empty list.
     @since 2.5.3
 *)
 
@@ -748,11 +772,70 @@ val rsplit : string -> by:string -> string * string
 *)
 
 val nsplit : string -> by:string -> string list
+##V>=4.2##  [@@ocaml.deprecated "Use split_on_string instead."]
 (** [nsplit s sep] splits the string [s] into a list of strings
     which are separated by [sep] (excluded).
-    [nsplit "" _] returns the empty list.
+    [nsplit "" _] returns a single empty string.
+    Note: prior to 2.11.0 [nsplit "" _] used to return an empty list.
 
     Example: [String.nsplit "abcabcabc" "bc" = ["a"; "a"; "a"; ""]]
+
+    @deprecated use {!split_on_string}
+*)
+
+val split_on_string : by:string -> string -> string list
+(** [split_on_string sep s] splits the string [s] into a list of strings
+    which are separated by [sep] (excluded).
+    [split_on_string _ ""] returns a single empty string.
+    Note: [split_on_string sep s] is identical to [nsplit s sep] but for empty strings.
+
+    Example: [String.split_on_string "bc" "abcabcabc" = ["a"; "a"; "a"; ""]]
+*)
+
+val cut_on_char : char -> int -> string -> string
+(**
+   Similar to Unix [cut]. [cut_on_char chr n str] returns the substring of
+   [str] located strictly between the [n]-th occurrence of [chr] and
+   the [n+1]-th one.
+
+   - {b Occurrences of [chr] are numbered from 1}.
+   - If [n = 0], returns the substring from the beginning of
+     [str] to the first occurrence of [chr].
+   - If there are exactly [n] occurrences of [chr] in [str], returns the
+     substring between the last occurrence of [chr] and the end of [str].
+   - These behaviours cumulate: if [n] equals [0] and [chr] is
+     absent from [str], returns the full string [str].
+
+   {b Remark:} [cut_on_char] can return the empty string. Examples of this
+   behaviour are [cut_on_char ',' 1 "foo,,bar"] and [cut_on_char ',' 0 ",foo"].
+
+   @raise Not_found if there are strictly less than [n] occurrences of [chr] in str.
+   @raise Invalid_argument if [n < 0].
+
+   @since 2.9.0
+*)
+
+val cut_on_char : char -> int -> string -> string
+(**
+   Similar to Unix [cut]. [cut_on_char chr n str] returns the substring of
+   [str] located strictly between the [n]-th occurrence of [chr] and
+   the [n+1]-th one.
+
+   - {b Occurrences of [chr] are numbered from 1}.
+   - If [n = 0], returns the substring from the beginning of
+     [str] to the first occurrence of [chr].
+   - If there are exactly [n] occurrences of [chr] in [str], returns the
+     substring between the last occurrence of [chr] and the end of [str].
+   - These behaviours cumulate: if [n] equals [0] and [chr] is
+     absent from [str], returns the full string [str].
+
+   {b Remark:} [cut_on_char] can return the empty string. Examples of this
+   behaviour are [cut_on_char ',' 1 "foo,,bar"] and [cut_on_char ',' 0 ",foo"].
+
+   @raise Not_found if there are strictly less than [n] occurrences of [chr] in str.
+   @raise Invalid_argument if [n < 0].
+
+   @since 2.9.0
 *)
 
 val join : string -> string list -> string
@@ -805,6 +888,21 @@ val implode : char list -> string
 
     Example: [String.implode ['b'; 'a'; 'r'] = "bar"]
 *)
+
+##V>=4.07##(** {6 Iterators} *)
+
+##V>=4.07##val to_seq : t -> char Seq.t
+##V>=4.07##(** Iterate on the string, in increasing index order. Modifications of the
+##V>=4.07##    string during iteration will be reflected in the iterator.
+##V>=4.07##    @since 2.10.0 and OCaml 4.07 *)
+
+##V>=4.07##val to_seqi : t -> (int * char) Seq.t
+##V>=4.07##(** Iterate on the string, in increasing order, yielding indices along chars
+##V>=4.07##    @since 2.10.0 and OCaml 4.07 *)
+
+##V>=4.07##val of_seq : char Seq.t -> t
+##V>=4.07##(** Create a string from the generator
+##V>=4.07##    @since 2.10.0 and OCaml 4.07 *)
 
 (** {6 Comparisons}*)
 
@@ -960,7 +1058,7 @@ end (* String.Exceptionless *)
     Read-only strings may then be safely shared and distributed.
 
     @since 2.8.0 the interface and implementation of the Cap
-    module changed to accomodate the -safe-string transition. OCaml
+    module changed to accommodate the -safe-string transition. OCaml
     now uses two distinct types for mutable and immutable string,
     which is a good design but is not as expressive as the present Cap
     interface, and actually makes implementing Cap harder than it
@@ -1140,6 +1238,8 @@ sig
   val starts_with : [> `Read] t -> [> `Read] t -> bool
 
   val exists : [> `Read] t -> [> `Read] t -> bool
+
+  val count_char : [> `Read] t -> char -> int
 
   (** {6 Transformations}*)
 

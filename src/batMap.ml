@@ -28,7 +28,7 @@
    operations (both providing their own way to access the ordering
    information, and to possibly pass it along with the result).
 
-   I tried to keep the interface mininal with respect to ordering
+   I tried to keep the interface minimal with respect to ordering
    information : function that do not need the ordering (they do not
    need to find the position of a specific key in the map) do not have
    a 'cmp' parameter.
@@ -188,14 +188,30 @@ module Concrete = struct
       | Empty -> Empty in
     loop map
 
+  (* A variant of [remove] that throws [Not_found] on failure *)
+  let remove_exn x cmp map =
+    let rec loop = function
+      | Empty ->
+          raise Not_found
+      | Node (l, k, v, r, _) ->
+          let c = cmp x k in
+          if c = 0 then
+            merge l r
+          else if c < 0 then
+            bal (loop l) k v r
+          else
+            bal l k v (loop r)
+    in
+    loop map
+
   let update k1 k2 v2 cmp map =
     if cmp k1 k2 <> 0 then
-      add k2 v2 cmp (remove k1 cmp map)
+      add k2 v2 cmp (remove_exn k1 cmp map)
     else
       let rec loop = function
         | Empty -> raise Not_found
         | Node(l, k, v, r, h) ->
-          let c = cmp k k1 in
+          let c = cmp k1 k in
           if c = 0 then
             Node(l, k2, v2, r, h)
           else if c < 0 then
@@ -392,7 +408,7 @@ module Concrete = struct
     library's version of [Map] easier to track, even if the
     result is a tad slower.*)
   (* [filter{,i,_map} f t cmp] do not use [cmp] on [t], but only to
-     build the result map. The unusual parameter order was choosed to
+     build the result map. The unusual parameter order was chosen to
      reflect this.  *)
   let filterv f t cmp =
     foldi (fun k a acc -> if f a then add k a cmp acc else acc) t empty
@@ -726,6 +742,7 @@ sig
   val add: key -> 'a -> 'a t -> 'a t
   val update: key -> key -> 'a -> 'a t -> 'a t
   val find: key -> 'a t -> 'a
+  val find_opt: key -> 'a t -> 'a option
   val find_default: 'a -> key -> 'a t -> 'a
   val remove: key -> 'a t -> 'a t
   val modify: key -> ('a -> 'a) -> 'a t -> 'a t
@@ -800,7 +817,7 @@ struct
   include Map.Make(Ord)
 
   (* We break the abstraction of stdlib's Map module by exposing
-     it's underlyding datatype, which is exactly ((key, 'a)
+     it's underlying datatype, which is exactly ((key, 'a)
      Concrete.map). We therefore have O(1) conversion to and from
      Concrete, which allow us to add new features to the Map
      module while reusing stdlib's implementation (and, in fact,
@@ -825,6 +842,7 @@ struct
   let values t = Concrete.values (impl_of_t t)
   let update k1 k2 v2 t = t_of_impl (Concrete.update k1 k2 v2 Ord.compare (impl_of_t t))
   let find_default d k t = Concrete.find_default d k Ord.compare (impl_of_t t)
+  let find_opt k t = Concrete.find_option k Ord.compare (impl_of_t t)
 
   let of_enum e = t_of_impl (Concrete.of_enum Ord.compare e)
 
@@ -955,6 +973,13 @@ let find x m = Concrete.find x Pervasives.compare m
   empty |> add 1 true |> add 2 false |> find 2 |> not
   empty |> add 2 'y' |> add 1 'x' |> find 1 = 'x'
   empty |> add 2 'y' |> add 1 'x' |> find 2 = 'y'
+*)
+
+let find_opt x m = Concrete.find_option x Pervasives.compare m
+
+(*$T find_opt
+    find_opt  4 (add 1 2 empty) = None
+    find_opt 1 (add 1 2 empty) = Some 2
 *)
 
 let find_default def x m =
@@ -1102,7 +1127,7 @@ let bindings = Concrete.bindings
 let compare cmp_val m1 m2 =
   Concrete.compare Pervasives.compare Pervasives.compare m1 m2
 
-let equal eq_val m1 m2 = Concrete.equal Pervasives.compare (=) m1 m2
+let equal eq_val m1 m2 = Concrete.equal Pervasives.compare eq_val m1 m2
 
 module Exceptionless =
 struct
@@ -1150,6 +1175,9 @@ module PMap = struct (*$< PMap *)
   let find x m =
     Concrete.find x m.cmp m.map
 
+  let find_opt x m =
+    Concrete.find_option x m.cmp m.map
+
   let find_default def x m =
     Concrete.find_default def x m.cmp m.map
 
@@ -1171,6 +1199,9 @@ module PMap = struct (*$< PMap *)
     add 1 false empty |> update 1 1 true |> find 1
     add 1 false empty |> update 1 2 true |> find 2
     try ignore (update 1 1 false empty); false with Not_found -> true
+    empty |> add 1 11 |> add 2 22 |> update 2 2 222 |> find 2 = 222
+    let m = empty |> add 1 11 |> add 2 22 in \
+    try ignore (m |> update 3 4 555); false with Not_found -> true
   *)
 
   (*$Q find ; add

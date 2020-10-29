@@ -75,12 +75,23 @@ external div : int32 -> int32 -> int32 = "%int32_div"
     its arguments towards zero, as specified for {!Pervasives.(/)}.
     @raise Division_by_zero if the second argument is zero. *)
 
+##V>=4.08##val unsigned_div : int32 -> int32 -> int32
+##V>=4.08##(** Same as {!div}, except that arguments and result are interpreted as {e
+##V>=4.08##    unsigned} 32-bit integers.
+##V>=4.08##
+##V>=4.08##    @since 2.10.0 and OCaml 4.08.0 *)
+
 external rem : int32 -> int32 -> int32 = "%int32_mod"
 (** Integer remainder.  If [y] is not zero, the result
     of [Int32.rem x y] satisfies the following property:
     [x = Int32.add (Int32.mul (Int32.div x y) y) (Int32.rem x y)].
     @raise Division_by_zero if the second argument is zero. *)
 
+##V>=4.08##val unsigned_rem : int32 -> int32 -> int32
+##V>=4.08##(** Same as {!rem}, except that arguments and result are interpreted as {e
+##V>=4.08##    unsigned} 32-bit integers.
+##V>=4.08##
+##V>=4.08##    @since 2.10.0 and OCaml 4.08.0 *)
 
 val modulo : int32 -> int32 -> int32
 val pow  : int32 -> int32 -> int32
@@ -154,6 +165,13 @@ external to_int : int32 -> int = "%int32_to_int"
     during the conversion.  On 64-bit platforms, the conversion
     is exact. *)
 
+##V>=4.08##val unsigned_to_int : int32 -> int option
+##V>=4.08##(** Same as {!to_int}, but interprets the argument as an {e unsigned} integer.
+##V>=4.08##    Returns [None] if the unsigned value of the argument cannot fit into an
+##V>=4.08##    [int].
+##V>=4.08##
+##V>=4.08##    @since 2.10.0 and OCaml 4.08.0 *)
+
 external of_float : float -> int32 = "caml_int32_of_float"
 ##V>=4.3## "caml_int32_of_float_unboxed" [@@unboxed] [@@noalloc]
 (** Convert the given floating-point number to a 32-bit integer,
@@ -175,12 +193,12 @@ external to_int64 : int32 -> int64 = "%int64_of_int32"
 (** Convert the given 32-bit integer (type [int32])
     to a 64-bit integer (type [int64]). *)
 
-external of_nativeint : nativeint -> int32 = "%int32_of_nativeint"
+external of_nativeint : nativeint -> int32 = "%nativeint_to_int32"
 (** Convert the given native integer (type [nativeint])
     to a 32-bit integer (type [int32]). On 64-bits platform
     the top 32 bits are lost. *)
 
-external to_nativeint : int32 -> nativeint = "%int32_to_nativeint"
+external to_nativeint : int32 -> nativeint = "%nativeint_of_int32"
 (** Convert the given 32-bit integer (type [int32]) to a
     native integer. *)
 
@@ -238,6 +256,12 @@ val compare : t -> t -> int
     {!Pervasives.compare}.  Along with the type [t], this function [compare]
     allows the module [Int32] to be passed as argument to the functors
     {!Set.Make} and {!Map.Make}. *)
+
+##V>=4.08##val unsigned_compare: t -> t -> int
+##V>=4.08##(** Same as {!compare}, except that arguments are interpreted as {e unsigned}
+##V>=4.08##    32-bit integers.
+##V>=4.08##
+##V>=4.08##    @since 2.10.0 and OCaml 4.08.0 *)
 
 val equal : t -> t -> bool
 (** Equality function for 32-bit integers, useful for {!HashedType}. *)

@@ -85,7 +85,7 @@ struct
    *   It is slightly faster when benchmarking construction/deconstruction
    *   even with dummy annotations.
 
-   * In many places, it looks like functions are defined twice in slighly
+   * In many places, it looks like functions are defined twice in slightly
    * different versions. This is for performance reasons, to avoid higher
    * order calls (made everything 30% slower on my tests).
   *)
@@ -152,7 +152,6 @@ struct
   (*---------------------------------*)
   (*          debug printing         *)
   (*---------------------------------*)
-  (*BISECT-IGNORE-BEGIN*)
   let pp_debug_digit pp_measure pp_a f = function
     | One (m, a) ->
       Format.fprintf f "@[@[<2>One (@,%a,@ %a@])@]" pp_measure m pp_a a
@@ -193,7 +192,6 @@ struct
       Format.fprintf f "[%a" pp_a h;
       List.iter (fun a -> Format.fprintf f "; %a" pp_a a) t;
       Format.fprintf f "]"
-  (*BISECT-IGNORE-END*)
 
   (*---------------------------------*)
   (*     measurement functions       *)
@@ -316,26 +314,26 @@ struct
     | One (v, a) -> Two (monoid.combine (measure_node x) v, x, a)
     | Two (v, a, b) -> Three (monoid.combine (measure_node x) v, x, a, b)
     | Three (v, a, b, c) -> Four (monoid.combine (measure_node x) v, x, a, b, c)
-    | Four _ -> assert false (*BISECT-VISIT*)
+    | Four _ -> assert false
   let cons_digit ~monoid ~measure d x =
     match d with
     | One (v, a) -> Two (monoid.combine (measure x) v, x, a)
     | Two (v, a, b) -> Three (monoid.combine (measure x) v, x, a, b)
     | Three (v, a, b, c) -> Four (monoid.combine (measure x) v, x, a, b, c)
-    | Four _ -> assert false (*BISECT-VISIT*)
+    | Four _ -> assert false
 
   let snoc_digit_node ~monoid d x =
     match d with
     | One (v, a) -> Two (monoid.combine v (measure_node x), a, x)
     | Two (v, a, b) -> Three (monoid.combine v (measure_node x), a, b, x)
     | Three (v, a, b, c) -> Four (monoid.combine v (measure_node x), a, b, c, x)
-    | Four _ -> assert false (*BISECT-VISIT*)
+    | Four _ -> assert false
   let snoc_digit ~monoid ~measure d x =
     match d with
     | One (v, a) -> Two (monoid.combine v (measure x), a, x)
     | Two (v, a, b) -> Three (monoid.combine v (measure x), a, b, x)
     | Three (v, a, b, c) -> Four (monoid.combine v (measure x), a, b, c, x)
-    | Four _ -> assert false (*BISECT-VISIT*)
+    | Four _ -> assert false
 
   let rec cons_aux : 'a 'm.
         monoid:'m monoid -> (('a, 'm) node, 'm) fg -> ('a, 'm) node -> (('a, 'm) node, 'm) fg =
@@ -404,7 +402,7 @@ struct
     | [a; b] -> deep ~monoid (one ~measure a) Nil (one ~measure b)
     | [a; b; c] -> deep ~monoid (two ~monoid ~measure a b) Nil (one ~measure c)
     | [a; b; c; d] -> deep ~monoid (three ~monoid ~measure a b c) Nil (one ~measure d)
-    | _ -> assert false (*BISECT-VISIT*)
+    | _ -> assert false
 
   let to_digit_node = function
     | Node2 (v, a, b) -> Two (v, a, b)
@@ -414,13 +412,13 @@ struct
     | [a; b] -> two ~monoid ~measure a b
     | [a; b; c] -> three ~monoid ~measure a b c
     | [a; b; c; d] -> four ~monoid ~measure a b c d
-    | _ -> assert false (*BISECT-VISIT*)
+    | _ -> assert false
   let to_digit_list_node ~monoid = function
     | [a] -> one_node a
     | [a; b] -> two_node ~monoid a b
     | [a; b; c] -> three_node ~monoid a b c
     | [a; b; c; d] -> four_node ~monoid a b c d
-    | _ -> assert false (*BISECT-VISIT*)
+    | _ -> assert false
 
   (*---------------------------------*)
   (*     front / rear / etc.         *)
@@ -436,22 +434,22 @@ struct
     | Three (_, _, _, a)
     | Four (_, _, _, _, a) -> a
   let tail_digit_node ~monoid = function
-    | One _ -> assert false (*BISECT-VISIT*)
+    | One _ -> assert false
     | Two (_, _, a) -> one_node a
     | Three (_, _, a, b) -> two_node ~monoid a b
     | Four (_, _, a, b, c) -> three_node ~monoid a b c
   let tail_digit ~monoid ~measure = function
-    | One _ -> assert false (*BISECT-VISIT*)
+    | One _ -> assert false
     | Two (_, _, a) -> one ~measure a
     | Three (_, _, a, b) -> two ~monoid ~measure a b
     | Four (_, _, a, b, c) -> three ~monoid ~measure a b c
   let init_digit_node ~monoid = function
-    | One _ -> assert false (*BISECT-VISIT*)
+    | One _ -> assert false
     | Two (_, a, _) -> one_node a
     | Three (_, a, b, _) -> two_node ~monoid a b
     | Four (_, a, b, c, _) -> three_node ~monoid a b c
   let init_digit ~monoid ~measure = function
-    | One _ -> assert false (*BISECT-VISIT*)
+    | One _ -> assert false
     | Two (_, a, _) -> one ~measure a
     | Three (_, a, b, _) -> two ~monoid ~measure a b
     | Four (_, a, b, c, _) -> three ~monoid ~measure a b c
@@ -581,7 +579,7 @@ struct
 
     let rec nodes_aux ~monoid ~measure ts sf2 = (* no idea if this should be tail rec *)
       match ts, sf2 with
-      | [], One _ -> assert false (*BISECT-VISIT*)
+      | [], One _ -> assert false
       | [], Two (_, a, b)
       | [a], One (_, b) -> [node2 ~monoid ~measure a b]
       | [], Three (_, a, b, c)
@@ -737,7 +735,7 @@ struct
   (*            lookup               *)
   (*---------------------------------*)
   (* This is a simplification of splitTree that avoids rebuilding the tree
-   * two trees aroud the elements being looked up
+   * two trees around the elements being looked up
    * But you can't just find the element, so instead these functions find the
    * element _and_ the measure of the elements of the current node that are on
    * the left of the element.
@@ -1173,7 +1171,8 @@ let reverse t = Generic.reverse ~monoid:nat_plus_monoid ~measure:size_measurer t
 
 let split f t = Generic.split ~monoid:nat_plus_monoid ~measure:size_measurer f t
 let split_at t i =
-  if i < 0 || i >= size t then invalid_arg "Index out of bounds";
+  if i < 0 || i >= size t then
+    invalid_arg "FingerTree.split_at: Index out of bounds";
   split (fun index -> i < index) t
 (*$T split_at
   let n = 50 in \
@@ -1187,7 +1186,8 @@ let split_at t i =
 
 let lookup f t = Generic.lookup ~monoid:nat_plus_monoid ~measure:size_measurer f t
 let get t i =
-  if i < 0 || i >= size t then invalid_arg "Index out of bounds";
+  if i < 0 || i >= size t then
+    invalid_arg "FingerTree.get: Index out of bounds";
   lookup (fun index -> i < index) t
 (*$T get
   let n = 50 in \
@@ -1200,7 +1200,8 @@ let get t i =
 *)
 
 let set t i v =
-  if i < 0 || i >= size t then invalid_arg "Index out of bounds";
+  if i < 0 || i >= size t then
+    invalid_arg "FingerTree.set: Index out of bounds";
   let left, right = split_at t i in
   append (snoc left v) (tail_exn right)
 (*$T set

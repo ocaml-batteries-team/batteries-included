@@ -57,7 +57,9 @@
     @author David Teller
 *)
 
-type 'a t = 'a list
+##V<4.08##type 'a t = 'a list
+##V>=4.08##type 'a t = 'a list = [] | (::) of 'a * 'a list
+
 (**The type of lists*)
 
 include BatEnum.Enumerable with type 'a enumerable = 'a t
@@ -73,19 +75,20 @@ val is_empty : 'a list -> bool
 val cons : 'a -> 'a list -> 'a list
 (** [cons h t] returns the list starting with [h] and continuing as [t]. *)
 
-val first : 'a list -> 'a
-(** Returns the first element of the list, or @raise Empty_list if
-    the list is empty (similar to [hd]). *)
-
 val hd : 'a list -> 'a
-(** Similar to [first], but @raise Failure if the list is empty. *)
+(** Returns the first element of the list, or @raise Failure if
+    the list is empty. *)
+
+
+val first : 'a list -> 'a
+(** Alias to hd *)
 
 val tl : 'a list -> 'a list
 (** Return the given list without its first element.
     @raise Failure if the list is empty. *)
 
 val last : 'a list -> 'a
-(** Returns the last element of the list, or @raise Empty_list if
+(** Returns the last element of the list, or @raise Invalid_argument if
     the list is empty. This function takes linear time. *)
 
 val length : 'a list -> int
@@ -131,8 +134,9 @@ val shuffle : ?state:Random.State.t -> 'a list -> 'a list
  *)
 
 val append : 'a list -> 'a list -> 'a list
-(** Catenate two lists.  Same function as the infix operator [@].
-    Tail-recursive O(length of the first argument).*)
+(** [append l1 l2] is a concatenation of [l1] and [l2].
+    Same function as the infix operator [@].
+    Tail-recursive. This function takes O([length l1]) time. *)
 
 val rev_append : 'a list -> 'a list -> 'a list
 (** [List.rev_append l1 l2] reverses [l1] and concatenates it to [l2]. *)
@@ -140,8 +144,7 @@ val rev_append : 'a list -> 'a list -> 'a list
 val concat : 'a list list -> 'a list
 (** Concatenate a list of lists.  The elements of the argument are all
     concatenated together (in the same order) to give the result.
-    Tail-recursive
-    (length of the argument + length of the longest sub-list). *)
+    Tail-recursive. *)
 
 val flatten : 'a list list -> 'a list
 (** Same as [concat]. *)
@@ -295,12 +298,14 @@ val min : 'a list -> 'a
 
 val sum : int list -> int
 (** [sum l] returns the sum of the integers of [l].
-    @raise Invalid_argument on the empty list.
+    Returns [0] on the empty list.
+    Note: prior to 2.11.0, used to raise Invalid_argument on the empty list.
  *)
 
 val fsum : float list -> float
 (** [fsum l] returns the sum of the floats of [l].
-    @raise Invalid_argument on the empty list.
+    Returns [0.] on the empty list.
+    Note: prior to 2.11.0, used to raise Invalid_argument on the empty list.
  *)
 
 val favg : float list -> float
@@ -323,7 +328,15 @@ val min_max : ?cmp:('a -> 'a -> int) -> 'a list -> 'a * 'a
     @raise Invalid_argument on an empty list.
 
     @since 2.1
- *)
+*)
+
+##V>=4.07##val to_seq : 'a list -> 'a Seq.t
+##V>=4.07##(** Iterate on the list
+##V>=4.07##    @since 2.10.0 and OCaml 4.07 *)
+
+##V>=4.07##val of_seq : 'a Seq.t -> 'a list
+##V>=4.07##(** Create a list from the iterator
+##V>=4.07##    @since 2.10.0 and OCaml 4.07 *)
 
 (** {6 Iterators on two lists} *)
 
@@ -331,26 +344,24 @@ val min_max : ?cmp:('a -> 'a -> int) -> 'a list -> 'a * 'a
 val iter2 : ('a -> 'b -> unit) -> 'a list -> 'b list -> unit
 (** [List.iter2 f [a0; a1; ...; an] [b0; b1; ...; bn]] calls in turn
     [f a0 b0; f a1 b1; ...; f an bn].
-    @raise Different_list_size if the two lists have
-    different lengths. *)
+    @raise Invalid_argument if two lists have different lengths. *)
 
 val iter2i : (int -> 'a -> 'b -> unit) -> 'a list -> 'b list -> unit
 (** [List.iter2i f [a0; a1; ...; an] [b0; b1; ...; bn]] calls in turn
     [f 0 a0 b0; f 1 a1 b1; ...; f n an bn].
-    @raise Different_list_size or Invalid_argument if the two lists
-    have different lengths. *)
+    @raise Invalid_argument if two lists have different lengths. *)
 
 val map2 : ('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list
 (** [List.map2 f [a0; a1; ...; an] [b0; b1; ...; bn]] is
     [[f a0 b0; f a1 b1; ...; f an bn]].
-    @raise Different_list_size if the two lists have
-    different lengths.  Tail-recursive. *)
+    @raise Invalid_argument if two lists have different lengths.
+    Tail-recursive. *)
 
 val map2i : (int -> 'a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list
 (** [List.map2i f [a0; a1; ...; an] [b0; b1; ...; bn]] is
     [[f 0 a0 b0; f 1 a1 b1; ...; f n an bn]].
-    @raise Different_list_size or Invalid_argument if the two lists
-    have different lengths. Tail-recursive. *)
+    @raise Invalid_argument if two lists have different lengths.
+    Tail-recursive. *)
 
 val rev_map2 : ('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list
 (** [List.rev_map2 f l1 l2] gives the same result as
@@ -360,15 +371,13 @@ val rev_map2 : ('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list
 val fold_left2 : ('a -> 'b -> 'c -> 'a) -> 'a -> 'b list -> 'c list -> 'a
 (** [List.fold_left2 f a [b0; b1; ...; bn] [c0; c1; ...; cn]] is
     [f (... (f (f a b0 c0) b1 c1) ...) bn cn].
-    @raise Different_list_size if the two lists have
-    different lengths. *)
+    @raise Invalid_argument if two lists have different lengths. *)
 
 val fold_right2 : ('a -> 'b -> 'c -> 'c) -> 'a list -> 'b list -> 'c -> 'c
 (** [List.fold_right2 f [a0; a1; ...; an] [b0; b1; ...; bn] c] is
     [f a0 b0 (f a1 b1 (... (f an bn c) ...))].
-
-    @raise Different_list_size if the two lists have
-    different lengths.  Tail-recursive. *)
+    @raise Invalid_argument if two lists have different lengths.
+    Tail-recursive. *)
 
 
 (**{6 List scanning}*)
@@ -378,7 +387,7 @@ val mem : 'a -> 'a list -> bool
     to an element of [l]. *)
 
 val mem_cmp : ('a -> 'a -> int) -> 'a -> 'a list -> bool
-(** Same as {!List.mem}, but the comparator function is explicitely
+(** Same as {!List.mem}, but the comparator function is explicitly
     provided.
     @since 2.2.0 *)
 
@@ -403,14 +412,12 @@ val exists : ('a -> bool) -> 'a list -> bool
 val for_all2 : ('a -> 'b -> bool) -> 'a list -> 'b list -> bool
 (** Same as {!List.for_all}, but for a two-argument predicate.
 
-    @raise Invalid_argument if the two lists have
-    different lengths. *)
+    @raise Invalid_argument if two lists have different lengths. *)
 
 val exists2 : ('a -> 'b -> bool) -> 'a list -> 'b list -> bool
 (** Same as {!List.exists}, but for a two-argument predicate.
 
-    @raise Invalid_argument if the two lists have
-    different lengths. *)
+    @raise Invalid_argument if two lists have different lengths. *)
 
 val subset : ('a -> 'b -> int) -> 'a list -> 'b list -> bool
 (** [subset cmp l l'] check if all elements of the list [l]
@@ -434,12 +441,20 @@ val find_opt: ('a -> bool) -> 'a list -> 'a option
     satisfies [p] in the list [l].
     @since 2.7.0 *)
 
+##V>=4.10##val find_map_opt: ('a -> 'b option) -> 'a list -> 'b option
+##V>=4.10##(** [find_map_opt f l] applies [f] to the elements of [l] in order,
+##V>=4.10##    and returns the first result of the form [Some v], or [None]
+##V>=4.10##    if none exist.
+##V>=4.10##
+##V>=4.10##    @since 2.12.0 and OCaml 4.10
+##V>=4.10##*)
+
 val find_exn : ('a -> bool) -> exn -> 'a list -> 'a
 (** [find_exn p e l] returns the first element of [l] such as [p x]
     returns [true] or raises [e] if such an element has not been found. *)
 
 val findi : (int -> 'a -> bool) -> 'a list -> (int * 'a)
-(** [findi p e l] returns the first element [ai] of [l] along with its
+(** [findi p l] returns the first element [ai] of [l] along with its
     index [i] such that [p i ai] is true, or @raise Not_found if no
     such element has been found. *)
 
@@ -449,6 +464,12 @@ val find_map : ('a -> 'b option) -> 'a list -> 'b
     once found or @raise Not_found if no element matches the
     predicate.  See also {!filter_map}. *)
 
+##V>=4.10##val concat_map : ('a -> 'b list) -> 'a list -> 'b list
+##V>=4.10##(** [List.concat_map f l] gives the same result as
+##V>=4.10##    {!List.concat}[ (]{!List.map}[ f l)]. Tail-recursive.
+##V>=4.10##
+##V>=4.10##    @since 2.12.0 and OCaml 4.10
+##V>=4.10##*)
 
 val rfind : ('a -> bool) -> 'a list -> 'a
 (** [rfind p l] returns the last element [x] of [l] such as [p x] returns
@@ -712,6 +733,14 @@ val span : ('a -> bool) -> 'a list -> 'a list * 'a list
 
     @since 2.1
 *)
+val fold_while : ('acc -> 'a -> bool) -> ('acc -> 'a -> 'acc) -> 'acc -> 'a list -> 'acc * 'a list
+(** [fold_while p f init l], accumulates elements [x] of list [l] using
+    function [f], as long as predicate [p acc x] holds.
+    At the end, the accumulated value along with the remaining part
+    of the list are returned.
+
+    @since 2.10.0
+*)
 
 val nsplit : ('a -> bool) -> 'a list -> 'a list list
 (** [nsplit], applied to a predicate [p] and a list [xs], returns a
@@ -790,8 +819,8 @@ val combine : 'a list -> 'b list -> ('a * 'b) list
 (** Transform a pair of lists into a list of pairs:
     [combine [a0; a1; ...; an] [b0; b1; ...; bn]] is
     [[(a0,b0); (a1,b1); ...; (an,bn)]].
-    @raise Different_list_size if the two lists
-    have different lengths.  Tail-recursive. *)
+    @raise Invalid_argument if two lists have different lengths.
+    Tail-recursive. *)
 
 
 (** {6 Sorting}*)
@@ -830,7 +859,7 @@ val merge : ('a -> 'a -> int) -> 'a list -> 'a list -> 'a list
 (** Merge two lists:
     Assuming that [l1] and [l2] are sorted according to the
     comparison function [cmp], [merge cmp l1 l2] will return a
-    sorted list containting all the elements of [l1] and [l2].
+    sorted list containing all the elements of [l1] and [l2].
     If several elements compare equal, the elements of [l1] will be
     before the elements of [l2].
     Not tail-recursive (sum of the lengths of the arguments).
@@ -951,7 +980,7 @@ module Exceptionless : sig
       that [p x] returns [true] or [None] if such element as not been found. *)
 
   val findi : (int -> 'a -> bool) -> 'a list -> (int * 'a) option
-  (** [findi p e l] returns [Some (i, ai)] where [ai] and [i] are
+  (** [findi p l] returns [Some (i, ai)] where [ai] and [i] are
       respectively the
       first element of [l] and its index, such that [p i ai] is true,
       or [None] if no  such element has been found. *)
@@ -1042,10 +1071,12 @@ module Labels : sig
   val subset : cmp:('a -> 'b -> int) -> 'a list -> 'b list -> bool
   val find : f:('a -> bool) -> 'a list -> 'a
   val find_exn : f:('a -> bool) -> exn -> 'a list -> 'a
+##V>=4.10##val find_map_opt: f:('a -> 'b option) -> 'a list -> 'b option
   val findi : f:(int -> 'a -> bool) -> 'a list -> (int * 'a)
   val rfind : f:('a -> bool) -> 'a list -> 'a
   val filter : f:('a -> bool) -> 'a list -> 'a list
   val filter_map : f:('a -> 'b option) -> 'a list -> 'b list
+##V>=4.10##val concat_map : f:('a -> 'b list) -> 'a list -> 'b list
   val find_all : f:('a -> bool) -> 'a list -> 'a list
   val partition : f:('a -> bool) -> 'a list -> 'a list * 'a list
   val remove_if : f:('a -> bool) -> 'a list -> 'a list
@@ -1066,7 +1097,6 @@ module Labels : sig
     val assq : 'a -> ('a * 'b) list -> 'b option
   end
 end
-
 
 val ( @ ) : 'a list -> 'a list -> 'a list
   (** Tail recursive [List.append]. *)
