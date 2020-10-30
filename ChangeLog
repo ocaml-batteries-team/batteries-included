@@ -3,6 +3,10 @@ Changelog
 
 ## NEXT_RELEASE (minor release)
 
+- BatArray.count_matching: ('a -> bool) -> 'a array -> int
+  #972
+  (Francois Berenger)
+
 - BatList.count_matching: ('a -> bool) -> 'a list -> int
   #816
   (Francois Berenger)
