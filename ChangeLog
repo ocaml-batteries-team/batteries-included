@@ -3,6 +3,15 @@ Changelog
 
 ## NEXT_RELEASE (minor release)
 
+- BatList.count_matching: ('a -> bool) -> 'a list -> int
+  #816
+  (Francois Berenger)
+
+- Provide an explicitly unthreaded package
+  For Dune, provide an alternative batteries.unthreaded package
+  #970
+  (Jerome Vouillon)
+
 - BatList.findi: correct documentation
   #967
   (Francois Berenger)
