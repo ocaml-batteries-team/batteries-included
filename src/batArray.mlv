@@ -227,6 +227,21 @@ let filter p xs =
   )
 *)
 
+let count_matching p xs =
+  let n = length xs in
+  let count = ref 0 in
+  for i = 0 to n - 1 do
+    if p (unsafe_get xs i) then
+      incr count
+  done;
+  !count
+
+(*$T count_matching
+  count_matching (fun _ -> true) [||] = 0
+  count_matching (fun x -> x = -1) [|-1|] = 1
+  count_matching (fun x -> x = -1) [|-1;0;-1|] = 2
+*)
+
 let filteri p xs =
   let n = length xs in
   (* Use a bitset to store which elements will be in the final array. *)
@@ -922,6 +937,7 @@ struct
   let map          = map
   let filter       = filter
   let filter_map   = filter_map
+  let count_matching = count_matching
   let iteri        = iteri
   let mapi         = mapi
   let modify       = modify
@@ -992,6 +1008,7 @@ struct
     let find ~f a = find f a
     let filter ~f a = filter f a
     let filter_map ~f a = filter_map f a
+    let count_matching ~f a = count_matching f a
   end
 
   module Exceptionless =
@@ -1046,6 +1063,7 @@ struct
   let findi ~f e = findi f e
   let filter ~f a = filter f a
   let filter_map ~f a = filter_map f a
+  let count_matching ~f a = count_matching f a
   module LExceptionless = struct
     include Exceptionless
     let find ~f e = find f e
