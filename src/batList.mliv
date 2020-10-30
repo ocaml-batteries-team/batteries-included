@@ -1076,6 +1076,7 @@ module Labels : sig
   val rfind : f:('a -> bool) -> 'a list -> 'a
   val filter : f:('a -> bool) -> 'a list -> 'a list
   val filter_map : f:('a -> 'b option) -> 'a list -> 'b list
+  val count_matching : f:('a -> bool) -> 'a list -> int
 ##V>=4.10##val concat_map : f:('a -> 'b list) -> 'a list -> 'b list
   val find_all : f:('a -> bool) -> 'a list -> 'a list
   val partition : f:('a -> bool) -> 'a list -> 'a list * 'a list
