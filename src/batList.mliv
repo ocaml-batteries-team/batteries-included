@@ -244,6 +244,9 @@ val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b list -> 'a
 (** [List.fold_left f a [b0; b1; ...; bn]] is
     [f (... (f (f a b0) b1) ...) bn]. *)
 
+val fold : ('a -> 'b -> 'a) -> 'a -> 'b list -> 'a
+(** Alias for [fold_left]. *)
+
 val fold_lefti : ('a -> int -> 'b -> 'a) -> 'a -> 'b list -> 'a
 (** As [fold_left], but with the index of the element, from [0] to
     [length li - 1], as additional argument.
@@ -1058,6 +1061,7 @@ module Labels : sig
   val mapi : f:(int -> 'a -> 'b) -> 'a list -> 'b list
   val rev_map : f:('a -> 'b) -> 'a list -> 'b list
   val fold_left : f:('a -> 'b -> 'a) -> init:'a -> 'b list -> 'a
+  val fold :      f:('a -> 'b -> 'a) -> init:'a -> 'b list -> 'a
   val fold_right : f:('a -> 'b -> 'b) -> 'a list -> init:'b -> 'b
   val iter2 : f:('a -> 'b -> unit) -> 'a list -> 'b list -> unit
   val map2 : f:('a -> 'b -> 'c) -> 'a list -> 'b list -> 'c list
