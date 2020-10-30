@@ -284,6 +284,14 @@ val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b array -> 'a
     [f (... (f (f x a.(0)) a.(1)) ...) a.(n-1)],
     where [n] is the length of the array [a]. *)
 
+val fold_while : ('acc -> 'a -> bool) -> ('acc -> 'a -> 'acc) -> 'acc -> 'a array -> ('acc * int)
+(** [fold_while p f init a], accumulates elements [x] of array [a] using
+    function [f], as long as the predicate [p acc x] holds.
+    At the end, the accumulated value along with the first index i
+    where [p acc a.(i)] does not hold is returned.
+    If the returned index is equal to [length a], the whole array
+    was folded. *)
+
 val fold_right : ('b -> 'a -> 'a) -> 'b array -> 'a -> 'a
 (** [Array.fold_right f a x] computes
     [f a.(0) (f a.(1) ( ... (f a.(n-1) x) ...))],
@@ -635,6 +643,7 @@ module Labels : sig
   val modifyi :    f:(int -> 'a -> 'a) -> 'a array -> unit
   val fold_left :  f:('a -> 'b -> 'a) -> init:'a -> 'b array -> 'a
   val fold_right : f:('b -> 'a -> 'a) -> 'b array -> init:'a -> 'a
+  val fold_while : p:('acc -> 'a -> bool) -> f:('acc -> 'a -> 'acc) -> init:'acc -> 'a array -> ('acc * int)
   val sort :        cmp:('a -> 'a -> int) -> 'a array -> unit
   val stable_sort : cmp:('a -> 'a -> int) -> 'a array -> unit
   val fast_sort :   cmp:('a -> 'a -> int) -> 'a array -> unit
@@ -737,6 +746,7 @@ sig
   val modifyi : (int -> 'a -> 'a) -> ('a, [`Read | `Write]) t -> unit
   val fold_left : ('a -> 'b -> 'a) -> 'a -> ('b, [> `Read]) t -> 'a
   val fold_right : ('b -> 'a -> 'a) -> ('b, [> `Read]) t -> 'a -> 'a
+  val fold_while : ('acc -> 'a -> bool) -> ('acc -> 'a -> 'acc) -> 'acc -> ('a, [> `Read]) t -> ('acc * int)
 
   (**{6 Operations on two arrays}*)
 
@@ -820,6 +830,7 @@ sig
     val modifyi : f:(int -> 'a -> 'a) -> ('a, [`Read | `Write]) t -> unit
     val fold_left : f:('a -> 'b -> 'a) -> init:'a ->  ('b, [> `Read]) t -> 'a
     val fold_right : f:('b -> 'a -> 'a) -> ('b, [> `Read]) t -> init:'a -> 'a
+    val fold_while : p:('acc -> 'a -> bool) -> f:('acc -> 'a -> 'acc) -> init:'acc -> 'a array -> ('acc * int)
     val sort : cmp:('a -> 'a -> int) -> ('a, [> `Read | `Write]) t -> unit
     val stable_sort : cmp:('a -> 'a -> int) -> ('a, [ `Read | `Write]) t -> unit
     val fast_sort : cmp:('a -> 'a -> int) -> ('a, [`Read | `Write]) t -> unit

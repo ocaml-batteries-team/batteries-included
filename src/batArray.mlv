@@ -100,7 +100,7 @@ let rev_in_place xs =
 *)
 
 let rev xs =
-  let ys = Array.copy xs in
+  let ys = copy xs in
   rev_in_place ys;
   ys
 
@@ -221,10 +221,34 @@ let filter p xs =
     )
 (*$Q filter
   (Q.pair (Q.array Q.small_int) (Q.fun1 Q.Observable.int Q.bool)) (fun (a, Q.Fun(_,f)) -> \
-    let b = Array.to_list (filter f a) in \
-    let b' = List.filter f (Array.to_list a) in \
+    let b = to_list (filter f a) in \
+    let b' = List.filter f (to_list a) in \
     List.for_all (fun (x,y) -> x = y) (List.combine b b') \
   )
+*)
+
+exception End of int
+
+let fold_while p f init xs =
+  let acc = ref init in
+  try
+    let n = length xs in
+    for i = 0 to n - 1 do
+      let x = unsafe_get xs i in
+      if p !acc x then
+        acc := f !acc x
+      else
+        raise (End i)
+    done;
+    (!acc, n)
+  with End i -> (!acc, i)
+
+(*$T fold_while
+  fold_while (fun _ x -> x mod 2 = 0) (+) 0 [|1;2|] = (0, 0)
+  fold_while (fun _ x -> x mod 2 = 1) (+) 0 [|1;2|] = (1, 1)
+  fold_while (fun _ x -> x < 4) (+) 0 [|1;2;3;4|] = (6, 3)
+  fold_while (fun _ x -> x < 4) (+) 0 [|1;2;3|] = (6, 3)
+  fold_while (fun _ x -> x < 4) (+) 0 [||] = (0, 0)
 *)
 
 let count_matching p xs =
@@ -297,8 +321,8 @@ let partition p a =
 (*$Q partition
   (Q.pair (Q.array Q.small_int) (Q.fun1 Q.Observable.int Q.bool)) (fun (a, Q.Fun(_,f)) -> \
     let b1, b2 = partition f a in \
-    let b1, b2 = Array.to_list b1, Array.to_list b2 in \
-    let b1', b2' = List.partition f (Array.to_list a) in \
+    let b1, b2 = to_list b1, to_list b2 in \
+    let b1', b2' = List.partition f (to_list a) in \
     List.for_all (fun (x,y) -> x = y) (List.combine b1 b1') && \
     List.for_all (fun (x,y) -> x = y) (List.combine b2 b2') \
   )
@@ -323,12 +347,12 @@ let enum xs =
 (*$Q enum
   (Q.array Q.small_int) (fun a -> \
     let e = enum a in \
-    for i = 0 to Array.length a / 2 - 1 do\
+    for i = 0 to length a / 2 - 1 do\
       assert (a.(i) = BatEnum.get_exn e)\
     done; \
     let e' = BatEnum.clone e in \
     assert (BatEnum.count e = BatEnum.count e'); \
-    for i = Array.length a / 2 to Array.length a - 1 do \
+    for i = length a / 2 to length a - 1 do \
       assert (a.(i) = BatEnum.get_exn e && a.(i) = BatEnum.get_exn e') \
     done; \
     BatEnum.is_empty e && BatEnum.is_empty e' \
@@ -353,13 +377,13 @@ let backwards xs =
 (*$Q backwards
   (Q.array Q.small_int) (fun a -> \
     let e = backwards a in \
-    let n = Array.length a in \
-    for i = 0 to Array.length a / 2 - 1 do\
+    let n = length a in \
+    for i = 0 to length a / 2 - 1 do\
       assert (a.(n - 1 - i) = BatEnum.get_exn e)\
     done; \
     let e' = BatEnum.clone e in \
     assert (BatEnum.count e = BatEnum.count e'); \
-    for i = Array.length a / 2 to Array.length a - 1 do \
+    for i = length a / 2 to length a - 1 do \
       assert (a.(n - 1 - i) = BatEnum.get_exn e && \
               a.(n - 1 - i) = BatEnum.get_exn e') \
     done; \
@@ -370,7 +394,7 @@ let backwards xs =
 let of_enum e =
   let n = BatEnum.count e in
   (* This assumes, reasonably, that init traverses the array in order. *)
-  Array.init n
+  init n
     (fun _i ->
       match BatEnum.get e with
       | Some x -> x
@@ -379,11 +403,11 @@ let of_enum e =
 let of_backwards e =
   of_list (BatList.of_backwards e)
 
-let range xs = BatEnum.(--^) 0 (Array.length xs)
+let range xs = BatEnum.(--^) 0 (length xs)
 (*$Q range
   (Q.array Q.small_int) (fun a -> \
     BatEnum.equal (=) (range a) \
-     (enum (Array.init (Array.length a) (fun i -> i))))
+     (enum (init (length a) (fun i -> i))))
 *)
 
 let filter_map p xs =
@@ -399,19 +423,19 @@ let filter_map p xs =
 *)
 
 let iter2 f a1 a2 =
-  if Array.length a1 <> Array.length a2
+  if length a1 <> length a2
   then invalid_arg "Array.iter2";
-  for i = 0 to Array.length a1 - 1 do
+  for i = 0 to length a1 - 1 do
     (* f a1.(i) a2.(i) *)
     f (unsafe_get a1 i) (unsafe_get a2 i)
   done
 (*$Q iter2
   (Q.array Q.small_int) (fun a -> \
-    let a' = Array.map (fun a -> a + 1) a in \
+    let a' = map (fun a -> a + 1) a in \
     let i = ref (-1) in \
-    let b = Array.make (Array.length a) (max_int, max_int) in \
+    let b = make (length a) (max_int, max_int) in \
     let f x1 x2 = incr i; b.(!i) <- (x1, x2) in \
-    let b' = Array.map (fun a -> (a, a + 1)) a in \
+    let b' = map (fun a -> (a, a + 1)) a in \
     iter2 f a a'; \
     b = b' \
   )
@@ -424,19 +448,19 @@ let iter2 f a1 a2 =
 *)
 
 let iter2i f a1 a2 =
-  if Array.length a1 <> Array.length a2
+  if length a1 <> length a2
   then invalid_arg "Array.iter2i";
-  for i = 0 to Array.length a1 - 1 do
+  for i = 0 to length a1 - 1 do
     (* f i a1.(i) a2.(i) *)
     f i (unsafe_get a1 i) (unsafe_get a2 i)
   done
 (*$Q iter2i
   (Q.array Q.small_int) (fun a -> \
-    let a' = Array.map (fun a -> a + 1) a in \
+    let a' = map (fun a -> a + 1) a in \
     let i = ref (-1) in \
-    let b = Array.make (Array.length a) (max_int, max_int) in \
+    let b = make (length a) (max_int, max_int) in \
     let f idx x1 x2 = incr i; assert (!i = idx); b.(!i) <- (x1, x2) in \
-    let b' = Array.map (fun a -> (a, a + 1)) a in \
+    let b' = map (fun a -> (a, a + 1)) a in \
     iter2i f a a'; \
     b = b' \
   )
@@ -490,7 +514,7 @@ let iter2i f a1 a2 =
 let map2 f xs ys =
   let n = length xs in
   if length ys <> n then invalid_arg "Array.map2";
-  Array.init n (fun i -> f (unsafe_get xs i) (unsafe_get ys i))
+  init n (fun i -> f (unsafe_get xs i) (unsafe_get ys i))
 
 (*$T map2
    map2 (-) [|1;2;3|] [|6;3;1|] = [|-5;-1;2|]
@@ -523,8 +547,8 @@ let cartesian_product a b =
 *)
 
 let compare cmp a b =
-  let length_a = Array.length a in
-  let length_b = Array.length b in
+  let length_a = length a in
+  let length_b = length b in
   let length   = BatInt.min length_a length_b in
   let rec aux i =
     if i < length then
@@ -571,11 +595,11 @@ let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
 
 
 let reduce f a =
-  if Array.length a = 0 then
+  if length a = 0 then
     invalid_arg "Array.reduce: empty array"
   else
     let acc = ref (unsafe_get a 0) in
-    for i = 1 to Array.length a - 1 do
+    for i = 1 to length a - 1 do
       acc := f !acc (unsafe_get a i)
     done;
     !acc
@@ -599,7 +623,7 @@ let max a = reduce Pervasives.max a
   *)
 
 let min_max a =
-  let n = Array.length a in
+  let n = length a in
   if n = 0 then
     invalid_arg "Array.min_max: empty array"
   else
@@ -631,7 +655,7 @@ let fsum = fold_left (+.) 0.
 let kahan_sum arr =
   let sum = ref 0. in
   let err = ref 0. in
-  for i = 0 to Array.length arr - 1 do
+  for i = 0 to length arr - 1 do
     let x = (unsafe_get arr i) -. !err in
     let new_sum = !sum +. x in
     err := (new_sum -. !sum) -. x;
@@ -648,7 +672,7 @@ let kahan_sum arr =
    kahan_sum [| 1.; 2. |] = 3.
    let n, x = 1_000, 1.1 in \
      Float.approx_equal (float n *. x) \
-                        (kahan_sum (Array.make n x))
+                        (kahan_sum (make n x))
 *)
 
 let flength a =
@@ -672,7 +696,7 @@ let favg a =
    or not failing early *)
 let is_sorted_by f xs =
   let ok = ref true in
-  for i = 0 to Array.length xs - 2 do
+  for i = 0 to length xs - 2 do
     ok := !ok && (f (unsafe_get xs i)) <= (f (unsafe_get xs (i + 1)))
   done;
   !ok
@@ -775,10 +799,10 @@ let pivot_split cmp arr x =
 *)
 
 let insert xs x i =
-  let len = Array.length xs in
+  let len = length xs in
   if i < 0 || i > len then
     invalid_arg "Array.insert: offset out of range";
-  Array.init (len+1) (fun j ->
+  init (len+1) (fun j ->
     if j < i then
       unsafe_get xs j
     else if j > i then
@@ -884,23 +908,23 @@ let head a pos = left a pos
 let tail a pos = let alen = length a in
   if pos >= alen then [||] else sub a pos (alen - pos)
 
-(*$= left & ~printer:(IO.to_string (Array.print Int.print))
+(*$= left & ~printer:(IO.to_string (print Int.print))
   (left [|1;2;3|] 1) [|1|]
   (left [|1;2|] 3) [|1;2|]
   (left [|1;2;3|] 3) [|1;2;3|]
   (left [|1;2;3|] 10)[|1;2;3|]
   (left [|1;2;3|] 0) [||]
-*) (*$= right & ~printer:(IO.to_string (Array.print Int.print))
+*) (*$= right & ~printer:(IO.to_string (print Int.print))
      (right [|1;2;3|] 1) [|3|]
      (right [|1;2|] 3) [|1;2|]
      (right [|1;2;3|] 3) [|1;2;3|]
      (right [|1;2;3|] 10) [|1;2;3|]
      (right [|1;2;3|] 0) [||]
-   *) (*$= tail & ~printer:(IO.to_string (Array.print Int.print))
+   *) (*$= tail & ~printer:(IO.to_string (print Int.print))
         (tail [|1;2;3|] 1) [|2;3|]
         [||] (tail [|1;2;3|] 10)
         (tail [|1;2;3|] 0) [|1;2;3|]
-      *) (*$= head & ~printer:(IO.to_string (Array.print Int.print))
+      *) (*$= head & ~printer:(IO.to_string (print Int.print))
         (head [|1;2;3|] 1) [|1|]
         (head [|1;2;3|] 10) [|1;2;3|]
         (head [|1;2;3|] 0) [||]
@@ -944,6 +968,7 @@ struct
   let modifyi      = modifyi
   let fold_left    = fold_left
   let fold_right   = fold_right
+  let fold_while   = fold_while
   let iter2        = iter2
   let iter2i       = iter2i
   let for_all      = for_all
@@ -998,6 +1023,7 @@ struct
     let modifyi ~f a = modifyi f a
     let fold_left ~f ~init a = fold_left f init a
     let fold_right ~f a ~init= fold_right f a init
+    let fold_while ~p ~f ~init a = fold_while p f init a
     let sort ~cmp a = sort cmp a
     let stable_sort ~cmp a = stable_sort cmp a
     let fast_sort ~cmp a = fast_sort cmp a
@@ -1052,6 +1078,7 @@ struct
   let modifyi ~f a = modifyi f a
   let fold_left ~f ~init a = fold_left f init a
   let fold_right ~f a ~init= fold_right f a init
+  let fold_while ~p ~f ~init a = fold_while p f init a
   let sort ~cmp a = sort cmp a
   let stable_sort ~cmp a = stable_sort cmp a
   let fast_sort ~cmp a = fast_sort cmp a
