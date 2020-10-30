@@ -494,6 +494,10 @@ val filter_map : ('a -> 'b option) -> 'a array -> 'b array
     [x] such that [f y] returns [Some x] , where [y] is an element
     of [e]. *)
 
+val count_matching : ('a -> bool) -> 'a array -> int
+(** [count_matching p a] returns the number of elements of [a]
+    satisfying predicate [p]. *)
+
 val find_all : ('a -> bool) -> 'a array -> 'a array
 (** [find_all] is another name for {!Array.filter}. *)
 
@@ -644,6 +648,7 @@ module Labels : sig
   val mapi:       f:(int -> 'a -> 'b) -> 'a t -> 'b t
   val filter:     f:('a -> bool) -> 'a t -> 'a t
   val filter_map: f:('a -> 'b option) -> 'a t -> 'b t
+  val count_matching: f:('a -> bool) -> 'a t -> int
   module LExceptionless : sig
     val find:       f:('a -> bool) -> 'a t -> 'a option
     val findi:      f:('a -> bool) -> 'a t -> int option
@@ -748,6 +753,7 @@ sig
   val findi : ('a -> bool) -> ('a, [> `Read]) t -> int
   val filter : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t
   val filter_map : ('a -> 'b option) -> ('a, [> `Read]) t -> ('b, _) t
+  val count_matching: ('a -> bool) -> ('a, [> `Read]) t -> int
   val find_all : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t
   val partition : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t * ('a, _)t
 
@@ -826,6 +832,7 @@ sig
     val mapi:       f:(int -> 'a -> 'b) -> ('a, [>`Read]) t -> ('b, _) t
     val filter:     f:('a -> bool) -> ('a, [>`Read]) t -> ('a, _) t
     val filter_map: f:('a -> 'b option) -> ('a, [>`Read]) t -> ('b, _) t
+    val count_matching: f:('a -> bool) -> ('a, [>`Read]) t -> int
   end
   (**/**)
   (** {6 Undocumented functions} *)
