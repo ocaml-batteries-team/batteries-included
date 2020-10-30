@@ -284,6 +284,9 @@ val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b array -> 'a
     [f (... (f (f x a.(0)) a.(1)) ...) a.(n-1)],
     where [n] is the length of the array [a]. *)
 
+val fold : ('a -> 'b -> 'a) -> 'a -> 'b array -> 'a
+(** Alias for [fold_left]. *)
+
 val fold_right : ('b -> 'a -> 'a) -> 'b array -> 'a -> 'a
 (** [Array.fold_right f a x] computes
     [f a.(0) (f a.(1) ( ... (f a.(n-1) x) ...))],
@@ -634,6 +637,7 @@ module Labels : sig
   val modify :     f:('a -> 'a) -> 'a array -> unit
   val modifyi :    f:(int -> 'a -> 'a) -> 'a array -> unit
   val fold_left :  f:('a -> 'b -> 'a) -> init:'a -> 'b array -> 'a
+  val fold      :  f:('a -> 'b -> 'a) -> init:'a -> 'b array -> 'a
   val fold_right : f:('b -> 'a -> 'a) -> 'b array -> init:'a -> 'a
   val sort :        cmp:('a -> 'a -> int) -> 'a array -> unit
   val stable_sort : cmp:('a -> 'a -> int) -> 'a array -> unit
@@ -736,6 +740,7 @@ sig
   val modify : ('a -> 'a) -> ('a, [`Read | `Write]) t -> unit
   val modifyi : (int -> 'a -> 'a) -> ('a, [`Read | `Write]) t -> unit
   val fold_left : ('a -> 'b -> 'a) -> 'a -> ('b, [> `Read]) t -> 'a
+  val fold      : ('a -> 'b -> 'a) -> 'a -> ('b, [> `Read]) t -> 'a
   val fold_right : ('b -> 'a -> 'a) -> ('b, [> `Read]) t -> 'a -> 'a
 
   (**{6 Operations on two arrays}*)
@@ -819,6 +824,7 @@ sig
     val modify : f:('a -> 'a) -> ('a, [`Read | `Write]) t -> unit
     val modifyi : f:(int -> 'a -> 'a) -> ('a, [`Read | `Write]) t -> unit
     val fold_left : f:('a -> 'b -> 'a) -> init:'a ->  ('b, [> `Read]) t -> 'a
+    val fold      : f:('a -> 'b -> 'a) -> init:'a ->  ('b, [> `Read]) t -> 'a
     val fold_right : f:('b -> 'a -> 'a) -> ('b, [> `Read]) t -> init:'a -> 'a
     val sort : cmp:('a -> 'a -> int) -> ('a, [> `Read | `Write]) t -> unit
     val stable_sort : cmp:('a -> 'a -> int) -> ('a, [ `Read | `Write]) t -> unit
