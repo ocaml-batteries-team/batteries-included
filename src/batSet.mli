@@ -83,6 +83,12 @@ sig
   (** [remove x s] returns a set containing all elements of [s],
       except [x]. If [x] was not in [s], [s] is returned unchanged. *)
 
+  val remove_exn: elt -> t -> t
+  (** [remove_exn x s] behaves like [remove x s] except that it raises
+      an exception if [x] is not in [s].
+      @raise Not_found if [x] is not in [s].
+      @since NEXT_RELEASE *)
+
   val update: elt -> elt -> t -> t
   (** [update x y s] replace [x] by [y] in [s].
       [update] is faster when [x] compares equal to [y] according
@@ -430,6 +436,12 @@ val remove: 'a -> 'a t -> 'a t
 (** [remove x s] returns a set containing all elements of [s],
     except [x]. If [x] was not in [s], [s] is returned unchanged. *)
 
+val remove_exn: 'a -> 'a t -> 'a t
+(** [remove_exn x s] behaves like [remove x s] except that it raises
+    an exception if [x] is not in [s].
+    @raise Not_found if [x] is not in [s].
+    @since NEXT_RELEASE *)
+
 val update: 'a -> 'a -> 'a t -> 'a t
 (** [update x y s] replace [x] by [y] in [s].
     [update] is faster when [x] compares equal to [y] according
@@ -720,6 +732,12 @@ module PSet : sig
   val remove: 'a -> 'a t -> 'a t
   (** [remove x s] returns a set containing all elements of [s],
       except [x]. If [x] was not in [s], [s] is returned unchanged. *)
+
+  val remove_exn: 'a -> 'a t -> 'a t
+  (** [remove_exn x s] behaves like [remove x s] except that it raises
+      an exception if [x] is not in [s].
+      @raise Not_found if [x] is not in [s].
+      @since NEXT_RELEASE *)
 
   val update: 'a -> 'a -> 'a t -> 'a t
   (** [update x y s] replace [x] by [y] in [s].

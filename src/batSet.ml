@@ -544,6 +544,7 @@ sig
   val find: elt -> t -> elt
   val add: elt -> t -> t
   val remove: elt -> t -> t
+  val remove_exn: elt -> t -> t
   val update: elt -> elt -> t -> t
   val union: t -> t -> t
   val inter: t -> t -> t
@@ -624,6 +625,8 @@ struct
   let backwards t = Concrete.backwards (impl_of_t t)
 
   let remove e t = t_of_impl (Concrete.remove Ord.compare e (impl_of_t t))
+  let remove_exn e t =
+    t_of_impl (Concrete.remove_exn Ord.compare e (impl_of_t t))
   let update e1 e2 t =
     t_of_impl (Concrete.update Ord.compare e1 e2 (impl_of_t t))
   let add e t = t_of_impl (Concrete.add Ord.compare e (impl_of_t t))
@@ -798,6 +801,7 @@ module PSet = struct (*$< PSet *)
   let find x s = Concrete.find s.cmp x s.set
   let add x s  = { s with set = Concrete.add s.cmp x s.set }
   let remove x s = { s with set = Concrete.remove s.cmp x s.set }
+  let remove_exn x s = { s with set = Concrete.remove_exn s.cmp x s.set }
   let update x y s = { s with set = Concrete.update s.cmp x y s.set }
   let iter f s = Concrete.iter f s.set
   let at_rank_exn i s = Concrete.at_rank_exn i s.set
@@ -892,6 +896,8 @@ let find x s = Concrete.find Pervasives.compare x s
 let add x s  = Concrete.add Pervasives.compare x s
 
 let remove x s = Concrete.remove Pervasives.compare x s
+
+let remove_exn x s = Concrete.remove_exn Pervasives.compare x s
 
 let update x y s = Concrete.update Pervasives.compare x y s
 
