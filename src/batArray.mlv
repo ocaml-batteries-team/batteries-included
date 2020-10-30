@@ -56,6 +56,8 @@ let modifyi f a =
     let a = [|3;2;1|] in modifyi (fun i x -> i * x) a; a = [|0;2;2|]
   *)
 
+let fold = fold_left
+
 let fold_lefti f x a =
   let r = ref x in
   for i = 0 to length a - 1 do
@@ -967,6 +969,7 @@ struct
   let modify       = modify
   let modifyi      = modifyi
   let fold_left    = fold_left
+  let fold         = fold_left
   let fold_right   = fold_right
   let fold_while   = fold_while
   let iter2        = iter2
@@ -1022,6 +1025,7 @@ struct
     let modify ~f a = modify f a
     let modifyi ~f a = modifyi f a
     let fold_left ~f ~init a = fold_left f init a
+    let fold = fold_left
     let fold_right ~f a ~init= fold_right f a init
     let fold_while ~p ~f ~init a = fold_while p f init a
     let sort ~cmp a = sort cmp a
@@ -1077,6 +1081,7 @@ struct
   let modify ~f a = modify f a
   let modifyi ~f a = modifyi f a
   let fold_left ~f ~init a = fold_left f init a
+  let fold = fold_left
   let fold_right ~f a ~init= fold_right f a init
   let fold_while ~p ~f ~init a = fold_while p f init a
   let sort ~cmp a = sort cmp a

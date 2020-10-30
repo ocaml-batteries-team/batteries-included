@@ -292,6 +292,9 @@ val fold_while : ('acc -> 'a -> bool) -> ('acc -> 'a -> 'acc) -> 'acc -> 'a arra
     If the returned index is equal to [length a], the whole array
     was folded. *)
 
+val fold : ('a -> 'b -> 'a) -> 'a -> 'b array -> 'a
+(** Alias for [fold_left]. *)
+
 val fold_right : ('b -> 'a -> 'a) -> 'b array -> 'a -> 'a
 (** [Array.fold_right f a x] computes
     [f a.(0) (f a.(1) ( ... (f a.(n-1) x) ...))],
@@ -642,6 +645,7 @@ module Labels : sig
   val modify :     f:('a -> 'a) -> 'a array -> unit
   val modifyi :    f:(int -> 'a -> 'a) -> 'a array -> unit
   val fold_left :  f:('a -> 'b -> 'a) -> init:'a -> 'b array -> 'a
+  val fold      :  f:('a -> 'b -> 'a) -> init:'a -> 'b array -> 'a
   val fold_right : f:('b -> 'a -> 'a) -> 'b array -> init:'a -> 'a
   val fold_while : p:('acc -> 'a -> bool) -> f:('acc -> 'a -> 'acc) -> init:'acc -> 'a array -> ('acc * int)
   val sort :        cmp:('a -> 'a -> int) -> 'a array -> unit
@@ -745,6 +749,7 @@ sig
   val modify : ('a -> 'a) -> ('a, [`Read | `Write]) t -> unit
   val modifyi : (int -> 'a -> 'a) -> ('a, [`Read | `Write]) t -> unit
   val fold_left : ('a -> 'b -> 'a) -> 'a -> ('b, [> `Read]) t -> 'a
+  val fold      : ('a -> 'b -> 'a) -> 'a -> ('b, [> `Read]) t -> 'a
   val fold_right : ('b -> 'a -> 'a) -> ('b, [> `Read]) t -> 'a -> 'a
   val fold_while : ('acc -> 'a -> bool) -> ('acc -> 'a -> 'acc) -> 'acc -> ('a, [> `Read]) t -> ('acc * int)
 
@@ -829,6 +834,7 @@ sig
     val modify : f:('a -> 'a) -> ('a, [`Read | `Write]) t -> unit
     val modifyi : f:(int -> 'a -> 'a) -> ('a, [`Read | `Write]) t -> unit
     val fold_left : f:('a -> 'b -> 'a) -> init:'a ->  ('b, [> `Read]) t -> 'a
+    val fold      : f:('a -> 'b -> 'a) -> init:'a ->  ('b, [> `Read]) t -> 'a
     val fold_right : f:('b -> 'a -> 'a) -> ('b, [> `Read]) t -> init:'a -> 'a
     val fold_while : p:('acc -> 'a -> bool) -> f:('acc -> 'a -> 'acc) -> init:'acc -> 'a array -> ('acc * int)
     val sort : cmp:('a -> 'a -> int) -> ('a, [> `Read | `Write]) t -> unit
