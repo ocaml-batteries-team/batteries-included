@@ -325,6 +325,19 @@ struct
     let tr = top (cchange replace (cfind ~sel:(ksel k) tr)) in
     sref tr
 
+  let remove_exn k tr =
+    let tr = sget tr in
+    let replace = function
+      | Empty -> raise Not_found
+      | Node (l, _, r) -> bst_append l r
+    in
+    let tr = top (cchange replace (cfind ~sel:(ksel k) tr)) in
+    sref tr
+
+  (*$T remove_exn
+    try remove_exn 1 empty |> ignore ; false with Not_found -> true
+  *)
+
   let update k1 k2 v2 tr =
     if Ord.compare k1 k2 <> 0 then
       add k2 v2 (remove k1 tr)

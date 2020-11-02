@@ -26,6 +26,10 @@ Changelog
   #966
   (Francois Berenger, report by OnkV)
 
+- Expose Map.remove_exn and Set.remove_exn
+  #954
+  (Cedric Cellier)
+
 ## v3.1.0 (minor release)
 
 This minor release adds support for OCaml 4.11.

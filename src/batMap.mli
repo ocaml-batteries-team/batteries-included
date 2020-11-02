@@ -112,7 +112,15 @@ sig
 
   val remove: key -> 'a t -> 'a t
   (** [remove x m] returns a map containing the same bindings as
-      [m], except for [x] which is unbound in the returned map. *)
+      [m], except for [x] which is unbound in the returned map.
+      The returned map compares equal to the passed one if [x] was
+      already unbound. *)
+
+  val remove_exn: key -> 'a t -> 'a t
+  (** [remove_exn x m] behaves like [remove x m] except that it raises
+      an exception if [x] is unbound in [m].
+      @raise Not_found if [x] is unbound in [m]
+      @since NEXT_RELEASE *)
 
   val modify: key -> ('a -> 'a) -> 'a t -> 'a t
   (** [modify k f m] replaces the previous binding for [k] with [f] applied to
@@ -444,7 +452,15 @@ val find_default : 'b -> 'a -> ('a, 'b) t -> 'b
 
 val remove : 'a -> ('a, 'b) t -> ('a, 'b) t
 (** [remove x m] returns a map containing the same bindings as
-    [m], except for [x] which is unbound in the returned map. *)
+    [m], except for [x] which is unbound in the returned map.
+    The returned map compares equal to the passed one if [x] was
+    already unbound. *)
+
+val remove_exn: 'a -> ('a, 'b) t -> ('a, 'b) t
+(** [remove_exn x m] behaves like [remove x m] except that it raises
+    an exception if [x] is unbound in [m].
+    @raise Not_found if [x] is unbound in [m]
+    @since NEXT_RELEASE *)
 
 val mem : 'a -> ('a, 'b) t -> bool
 (** [mem x m] returns [true] if [m] contains a binding for [x],
@@ -755,6 +771,12 @@ module PMap : sig
   val remove : 'a -> ('a, 'b) t -> ('a, 'b) t
   (** [remove x m] returns a map containing the same bindings as
       [m], except for [x] which is unbound in the returned map. *)
+
+  val remove_exn : 'a -> ('a, 'b) t -> ('a, 'b) t
+  (** [remove_exn x m] behaves like [remove x m] except that it raises
+      an exception if [x] is unbound in [m].
+      @raise Not_found if [x] is unbound in [m]
+      @since NEXT_RELEASE *)
 
   val mem : 'a -> ('a, 'b) t -> bool
   (** [mem x m] returns [true] if [m] contains a binding for [x],

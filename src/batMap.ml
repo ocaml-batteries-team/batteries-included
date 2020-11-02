@@ -745,6 +745,7 @@ sig
   val find_opt: key -> 'a t -> 'a option
   val find_default: 'a -> key -> 'a t -> 'a
   val remove: key -> 'a t -> 'a t
+  val remove_exn: key -> 'a t -> 'a t
   val modify: key -> ('a -> 'a) -> 'a t -> 'a t
   val modify_def: 'a -> key -> ('a -> 'a) -> 'a t -> 'a t
   val modify_opt: key -> ('a option -> 'a option) -> 'a t -> 'a t
@@ -892,6 +893,9 @@ struct
     let l, r = Concrete.partition p Ord.compare (impl_of_t t) in
     (t_of_impl l, t_of_impl r)
 
+  let remove_exn x m =
+    t_of_impl (Concrete.remove_exn x Ord.compare (impl_of_t m))
+
   let modify x f m = t_of_impl (Concrete.modify x f Ord.compare (impl_of_t m))
 
   let modify_def v0 x f m =
@@ -1017,6 +1021,18 @@ let remove x m = Concrete.remove x Pervasives.compare m
   (Q.list Q.small_int) (fun xs -> \
   let of_list xs y m0 = List.fold_left (fun acc x -> add x y acc) m0 xs in \
   List.fold_left (fun acc x -> remove x acc) (of_list xs true empty) xs |> is_empty)
+*)
+
+let remove_exn x m = Concrete.remove_exn x Pervasives.compare m
+
+(*$Q add ; remove_exn
+  (Q.list Q.small_int) (fun xs -> \
+  let xs = List.unique xs in \
+  let of_list xs y m0 = List.fold_left (fun acc x -> add x y acc) m0 xs in \
+  List.fold_left (fun acc x -> remove_exn x acc) (of_list xs true empty) xs |> is_empty)
+*)
+(*$T remove_exn
+  try remove_exn 1 empty |> ignore ; false with Not_found -> true
 *)
 
 let mem x m = Concrete.mem x Pervasives.compare m
@@ -1218,6 +1234,19 @@ module PMap = struct (*$< PMap *)
     (Q.list Q.small_int) (fun xs -> \
     let of_list xs y m0 = List.fold_left (fun acc x -> add x y acc) m0 xs in \
     List.fold_left (fun acc x -> remove x acc) (of_list xs true empty) xs |> is_empty)
+  *)
+  let remove_exn x m =
+    { m with map = Concrete.remove_exn x m.cmp m.map }
+
+  (*$Q add ; remove_exn
+    (Q.list Q.small_int) (fun xs -> \
+    let xs = List.unique xs in \
+    let of_list xs y m0 = List.fold_left (fun acc x -> add x y acc) m0 xs in \
+    List.fold_left (fun acc x -> remove_exn x acc) (of_list xs true empty) xs |> is_empty)
+  *)
+  (*$T remove_exn
+    add 1 false empty |> remove_exn 1 |> mem 1 |> not
+    try remove_exn 1 empty |> ignore ; false with Not_found -> true
   *)
 
   let mem x m =
