@@ -883,7 +883,7 @@ let init size f =
     loop r 1;
     inj r
 
-let unfold_exc f =
+let unfold_exn f =
   let rec loop dst =
     loop (Acc.accum dst (f ()))
   in
@@ -892,16 +892,18 @@ let unfold_exc f =
     loop acc
   with exn -> (acc.tl, exn)
 
-(*$T unfold_exc
+(*$T unfold_exn
   let exc () = raise End_of_file in \
-  unfold_exc exc = ([], End_of_file)
+  unfold_exn exc = ([], End_of_file)
   let state = ref 0 in \
   let just_zero () = \
     if !state = 1 then raise End_of_file \
     else let _ = incr state in 0 \
   in \
-  unfold_exc just_zero = ([0], End_of_file)
+  unfold_exn just_zero = ([0], End_of_file)
 *)
+
+let unfold_exc = unfold_exn
 
 let make i x =
   if i < 0 then invalid_arg "List.make";

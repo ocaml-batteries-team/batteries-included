@@ -135,9 +135,14 @@ val rfind : ('a -> bool) -> 'a t -> 'a
     the specified predicate
     raise [Not_found] if no element is found *)
 
-val find_exc : ('a -> bool) -> exn -> 'a t -> 'a
+val find_exn : ('a -> bool) -> exn -> 'a t -> 'a
 (** Same as find but takes an exception to be raised when
-    no element is found as additional parameter *)
+    no element is found as additional parameter.
+    @since NEXT_RELEASE *)
+
+val find_exc : ('a -> bool) -> exn -> 'a t -> 'a
+(** Alias for [find_exn].
+    @deprecated use {!find_exn} *)
 
 val exists : ('a -> bool) -> 'a t -> bool
 (** Return [true] if an element matches the specified

@@ -49,7 +49,8 @@ let transform f rl = rl := BatList.map f !rl
 let map_list f rl = BatList.map f !rl
 let find f rl = List.find f !rl
 let rev rl = rl := List.rev !rl
-let find_exc f exn rl = try List.find f !rl with _ -> raise exn
+let find_exn f exn rl = try List.find f !rl with _ -> raise exn
+let find_exc = find_exn
 let exists f rl = List.exists f !rl
 let sort ~cmp rl = rl := List.sort cmp !rl
 
