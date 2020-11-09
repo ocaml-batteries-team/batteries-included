@@ -146,7 +146,9 @@
 <pre><span id="VALmodify"><span class="keyword">val</span> modify</span> : <code class="type">f:('a -> 'a) -> 'a array -> unit</code></pre>
 <pre><span id="VALmodifyi"><span class="keyword">val</span> modifyi</span> : <code class="type">f:(int -> 'a -> 'a) -> 'a array -> unit</code></pre>
 <pre><span id="VALfold_left"><span class="keyword">val</span> fold_left</span> : <code class="type">f:('a -> 'b -> 'a) -> init:'a -> 'b array -> 'a</code></pre>
+<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">f:('a -> 'b -> 'a) -> init:'a -> 'b array -> 'a</code></pre>
 <pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">f:('b -> 'a -> 'a) -> 'b array -> init:'a -> 'a</code></pre>
+<pre><span id="VALfold_while"><span class="keyword">val</span> fold_while</span> : <code class="type">p:('acc -> 'a -> bool) -><br>       f:('acc -> 'a -> 'acc) -> init:'acc -> 'a array -> 'acc * int</code></pre>
 <pre><span id="VALsort"><span class="keyword">val</span> sort</span> : <code class="type">cmp:('a -> 'a -> int) -> 'a array -> unit</code></pre>
 <pre><span id="VALstable_sort"><span class="keyword">val</span> stable_sort</span> : <code class="type">cmp:('a -> 'a -> int) -> 'a array -> unit</code></pre>
 <pre><span id="VALfast_sort"><span class="keyword">val</span> fast_sort</span> : <code class="type">cmp:('a -> 'a -> int) -> 'a array -> unit</code></pre>
@@ -160,4 +162,5 @@
 <pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">f:(int -> 'a -> 'b) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> 'b <a href="BatArray.html#TYPEt">BatArray.t</a></code></pre>
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">f:('a -> bool) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a></code></pre>
 <pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">f:('a -> 'b option) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> 'b <a href="BatArray.html#TYPEt">BatArray.t</a></code></pre>
+<pre><span id="VALcount_matching"><span class="keyword">val</span> count_matching</span> : <code class="type">f:('a -> bool) -> 'a <a href="BatArray.html#TYPEt">BatArray.t</a> -> int</code></pre>
 <pre><span id="MODULELExceptionless"><span class="keyword">module</span> <a href="BatArray.Labels.LExceptionless.html">LExceptionless</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatArray.Labels.LExceptionless.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>

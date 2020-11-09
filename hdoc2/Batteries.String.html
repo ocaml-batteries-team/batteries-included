@@ -110,15 +110,16 @@
 <link title="BatteriesExceptionless" rel="Chapter" href="BatteriesExceptionless.html">
 <link title="BatteriesPrint" rel="Chapter" href="BatteriesPrint.html">
 <link title="BatteriesThread" rel="Chapter" href="BatteriesThread.html">
-<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Iterators" rel="Section" href="#1_Iterators">
-<link title="Conversions" rel="Subsection" href="#6_Conversions">
-<link title="String traversals" rel="Subsection" href="#6_Stringtraversals">
-<link title="Finding" rel="Subsection" href="#6_Finding">
-<link title="Transformations" rel="Subsection" href="#6_Transformations">
-<link title="In-Place Transformations" rel="Subsection" href="#6_InPlaceTransformations">
-<link title="Splitting around" rel="Subsection" href="#6_Splittingaround">
-<link title="Comparisons" rel="Subsection" href="#6_Comparisons">
-<link title="Boilerplate code" rel="Subsection" href="#6_Boilerplatecode">
+<link title="Extlib" rel="Chapter" href="Extlib.html"><link title="Conversions" rel="Section" href="#6_Conversions">
+<link title="String traversals" rel="Section" href="#6_Stringtraversals">
+<link title="Finding" rel="Section" href="#6_Finding">
+<link title="Transformations" rel="Section" href="#6_Transformations">
+<link title="In-Place Transformations" rel="Section" href="#6_InPlaceTransformations">
+<link title="Splitting around" rel="Section" href="#6_Splittingaround">
+<link title="Iterators" rel="Section" href="#6_Iterators">
+<link title="Comparisons" rel="Section" href="#6_Comparisons">
+<link title="Boilerplate code" rel="Section" href="#6_Boilerplatecode">
+<link title="Printing" rel="Subsection" href="#7_Printing">
 <title>Batteries user guide : Batteries.String</title>
 </head>
 <body>
@@ -1066,34 +1067,6 @@
 <li><b>Since</b> 2.5.3</li>
 </ul>
 </div>
-<h2 id="1_Iterators">Iterators</h2>
-<pre><span id="VALto_seq"><span class="keyword">val</span> to_seq</span> : <code class="type"><a href="BatString.html#TYPEt">t</a> -> char Stdlib.Seq.t</code></pre><div class="info ">
-<div class="info-desc">
-<p>Iterate on the string, in increasing index order. Modifications of the
-    string during iteration will be reflected in the iterator.</p>
-</div>
-<ul class="info-attributes">
-<li><b>Since</b> 2.10.0 and OCaml 4.07</li>
-</ul>
-</div>
-
-<pre><span id="VALto_seqi"><span class="keyword">val</span> to_seqi</span> : <code class="type"><a href="BatString.html#TYPEt">t</a> -> (int * char) Stdlib.Seq.t</code></pre><div class="info ">
-<div class="info-desc">
-<p>Iterate on the string, in increasing order, yielding indices along chars</p>
-</div>
-<ul class="info-attributes">
-<li><b>Since</b> 2.10.0 and OCaml 4.07</li>
-</ul>
-</div>
-
-<pre><span id="VALof_seq"><span class="keyword">val</span> of_seq</span> : <code class="type">char Stdlib.Seq.t -> <a href="BatString.html#TYPEt">t</a></code></pre><div class="info ">
-<div class="info-desc">
-<p>Create a string from the generator</p>
-</div>
-<ul class="info-attributes">
-<li><b>Since</b> 2.10.0 and OCaml 4.07</li>
-</ul>
-</div>
 
 <pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type">string -> by:string -> string * string</code></pre><div class="info ">
 <div class="info-desc">
@@ -1259,6 +1232,34 @@
 
 <p>Example: <code class="code"><span class="constructor">String</span>.implode&nbsp;[<span class="string">'b'</span>;&nbsp;<span class="string">'a'</span>;&nbsp;<span class="string">'r'</span>]&nbsp;=&nbsp;<span class="string">"bar"</span></code></p>
 </div>
+</div>
+<h7 id="6_Iterators">Iterators</h7>
+<pre><span id="VALto_seq"><span class="keyword">val</span> to_seq</span> : <code class="type"><a href="BatString.html#TYPEt">t</a> -> char Stdlib.Seq.t</code></pre><div class="info ">
+<div class="info-desc">
+<p>Iterate on the string, in increasing index order. Modifications of the
+    string during iteration will be reflected in the iterator.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.07</li>
+</ul>
+</div>
+
+<pre><span id="VALto_seqi"><span class="keyword">val</span> to_seqi</span> : <code class="type"><a href="BatString.html#TYPEt">t</a> -> (int * char) Stdlib.Seq.t</code></pre><div class="info ">
+<div class="info-desc">
+<p>Iterate on the string, in increasing order, yielding indices along chars</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.07</li>
+</ul>
+</div>
+
+<pre><span id="VALof_seq"><span class="keyword">val</span> of_seq</span> : <code class="type">char Stdlib.Seq.t -> <a href="BatString.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Create a string from the generator</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 2.10.0 and OCaml 4.07</li>
+</ul>
 </div>
 <h7 id="6_Comparisons">Comparisons</h7>
 <pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type"><a href="BatString.html#TYPEt">t</a> -> <a href="BatString.html#TYPEt">t</a> -> bool</code></pre><div class="info ">

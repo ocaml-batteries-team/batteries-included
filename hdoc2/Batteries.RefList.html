@@ -316,10 +316,21 @@
 </div>
 </div>
 
-<pre><span id="VALfind_exc"><span class="keyword">val</span> find_exc</span> : <code class="type">('a -> bool) -> exn -> 'a <a href="BatRefList.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
+<pre><span id="VALfind_exn"><span class="keyword">val</span> find_exn</span> : <code class="type">('a -> bool) -> exn -> 'a <a href="BatRefList.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p>Same as find but takes an exception to be raised when
-    no element is found as additional parameter</p>
+    no element is found as additional parameter.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.2.0</li>
+</ul>
+</div>
+
+<pre><span id="VALfind_exc"><span class="keyword">val</span> find_exc</span> : <code class="type">('a -> bool) -> exn -> 'a <a href="BatRefList.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
+<div class="info-deprecated">
+<span class="warning">Deprecated.</span>use <a href="BatRefList.html#VALfind_exn"><code class="code"><span class="constructor">BatRefList</span>.find_exn</code></a></div>
+<div class="info-desc">
+<p>Alias for <code class="code">find_exn</code>.</p>
 </div>
 </div>
 

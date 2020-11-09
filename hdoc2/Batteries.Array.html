@@ -477,6 +477,23 @@
 </div>
 </div>
 
+<pre><span id="VALfold_while"><span class="keyword">val</span> fold_while</span> : <code class="type">('acc -> 'a -> bool) -><br>       ('acc -> 'a -> 'acc) -> 'acc -> 'a array -> 'acc * int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">fold_while&nbsp;p&nbsp;f&nbsp;init&nbsp;a</code>, accumulates elements <code class="code">x</code> of array <code class="code">a</code> using
+    function <code class="code">f</code>, as long as the predicate <code class="code">p&nbsp;acc&nbsp;x</code> holds.
+    At the end, the accumulated value along with the first index i
+    where <code class="code">p&nbsp;acc&nbsp;a.(i)</code> does not hold is returned.
+    If the returned index is equal to <code class="code">length&nbsp;a</code>, the whole array
+    was folded.</p>
+</div>
+</div>
+
+<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b array -> 'a</code></pre><div class="info ">
+<div class="info-desc">
+<p>Alias for <code class="code">fold_left</code>.</p>
+</div>
+</div>
+
 <pre><span id="VALfold_right"><span class="keyword">val</span> fold_right</span> : <code class="type">('b -> 'a -> 'a) -> 'b array -> 'a -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code"><span class="constructor">Array</span>.fold_right&nbsp;f&nbsp;a&nbsp;x</code> computes
@@ -775,6 +792,13 @@
 <p><code class="code">filter_map&nbsp;f&nbsp;e</code> returns an array consisting of all elements
     <code class="code">x</code> such that <code class="code">f&nbsp;y</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;x</code> , where <code class="code">y</code> is an element
     of <code class="code">e</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALcount_matching"><span class="keyword">val</span> count_matching</span> : <code class="type">('a -> bool) -> 'a array -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">count_matching&nbsp;p&nbsp;a</code> returns the number of elements of <code class="code">a</code>
+    satisfying predicate <code class="code">p</code>.</p>
 </div>
 </div>
 

@@ -187,6 +187,17 @@
 </div>
 </div>
 
+<pre><span id="VALremove_exn"><span class="keyword">val</span> remove_exn</span> : <code class="type"><a href="BatSet.S.html#TYPEelt">elt</a> -> <a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">remove_exn&nbsp;x&nbsp;s</code> behaves like <code class="code">remove&nbsp;x&nbsp;s</code> except that it raises
+      an exception if <code class="code">x</code> is not in <code class="code">s</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.2.0</li>
+<li><b>Raises</b> <code>Not_found</code> if <code class="code">x</code> is not in <code class="code">s</code>.</li>
+</ul>
+</div>
+
 <pre><span id="VALupdate"><span class="keyword">val</span> update</span> : <code class="type"><a href="BatSet.S.html#TYPEelt">elt</a> -> <a href="BatSet.S.html#TYPEelt">elt</a> -> <a href="BatSet.S.html#TYPEt">t</a> -> <a href="BatSet.S.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">update&nbsp;x&nbsp;y&nbsp;s</code> replace <code class="code">x</code> by <code class="code">y</code> in <code class="code">s</code>.

@@ -203,8 +203,21 @@
 <pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type"><a href="BatMap.S.html#TYPEkey">key</a> -> 'a <a href="BatMap.S.html#TYPEt">t</a> -> 'a <a href="BatMap.S.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">remove&nbsp;x&nbsp;m</code> returns a map containing the same bindings as
-      <code class="code">m</code>, except for <code class="code">x</code> which is unbound in the returned map.</p>
+      <code class="code">m</code>, except for <code class="code">x</code> which is unbound in the returned map.
+      The returned map compares equal to the passed one if <code class="code">x</code> was
+      already unbound.</p>
 </div>
+</div>
+
+<pre><span id="VALremove_exn"><span class="keyword">val</span> remove_exn</span> : <code class="type"><a href="BatMap.S.html#TYPEkey">key</a> -> 'a <a href="BatMap.S.html#TYPEt">t</a> -> 'a <a href="BatMap.S.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">remove_exn&nbsp;x&nbsp;m</code> behaves like <code class="code">remove&nbsp;x&nbsp;m</code> except that it raises
+      an exception if <code class="code">x</code> is unbound in <code class="code">m</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.2.0</li>
+<li><b>Raises</b> <code>Not_found</code> if <code class="code">x</code> is unbound in <code class="code">m</code></li>
+</ul>
 </div>
 
 <pre><span id="VALmodify"><span class="keyword">val</span> modify</span> : <code class="type"><a href="BatMap.S.html#TYPEkey">key</a> -> ('a -> 'a) -> 'a <a href="BatMap.S.html#TYPEt">t</a> -> 'a <a href="BatMap.S.html#TYPEt">t</a></code></pre><div class="info ">

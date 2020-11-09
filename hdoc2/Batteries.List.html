@@ -381,14 +381,25 @@
 </ul>
 </div>
 
-<pre><span id="VALunfold_exc"><span class="keyword">val</span> unfold_exc</span> : <code class="type">(unit -> 'a) -> 'a list * exn</code></pre><div class="info ">
+<pre><span id="VALunfold_exn"><span class="keyword">val</span> unfold_exn</span> : <code class="type">(unit -> 'a) -> 'a list * exn</code></pre><div class="info ">
 <div class="info-desc">
 <p>Creates a list containing the results of sequential calls
     to <code class="code">f()</code>. <code class="code">f()</code> is called repeatedly until it throws an exception.
     Both the results list, as well as the exception
     thrown are returned in a <code class="code">(results_list,&nbsp;exn)</code> pair.
-    Warning: if calls to <code class="code">f()</code> never throw an exception, unfold_exc
+    Warning: if calls to <code class="code">f()</code> never throw an exception, unfold_exn
     is an infinite loop.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.2.0</li>
+</ul>
+</div>
+
+<pre><span id="VALunfold_exc"><span class="keyword">val</span> unfold_exc</span> : <code class="type">(unit -> 'a) -> 'a list * exn</code></pre><div class="info ">
+<div class="info-deprecated">
+<span class="warning">Deprecated.</span>use <a href="BatList.html#VALunfold_exn"><code class="code"><span class="constructor">BatList</span>.unfold_exn</code></a></div>
+<div class="info-desc">
+<p>Alias for <code class="code">unfold_exn</code>.</p>
 </div>
 <ul class="info-attributes">
 <li><b>Since</b> 2.3.0</li>
@@ -437,6 +448,12 @@
 <div class="info-desc">
 <p><code class="code"><span class="constructor">List</span>.fold_left&nbsp;f&nbsp;a&nbsp;[b0;&nbsp;b1;&nbsp;...;&nbsp;bn]</code> is
     <code class="code">f&nbsp;(...&nbsp;(f&nbsp;(f&nbsp;a&nbsp;b0)&nbsp;b1)&nbsp;...)&nbsp;bn</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b list -> 'a</code></pre><div class="info ">
+<div class="info-desc">
+<p>Alias for <code class="code">fold_left</code>.</p>
 </div>
 </div>
 
@@ -761,7 +778,7 @@
 
 <pre><span id="VALfindi"><span class="keyword">val</span> findi</span> : <code class="type">(int -> 'a -> bool) -> 'a list -> int * 'a</code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">findi&nbsp;p&nbsp;e&nbsp;l</code> returns the first element <code class="code">ai</code> of <code class="code">l</code> along with its
+<p><code class="code">findi&nbsp;p&nbsp;l</code> returns the first element <code class="code">ai</code> of <code class="code">l</code> along with its
     index <code class="code">i</code> such that <code class="code">p&nbsp;i&nbsp;ai</code> is true, or</p>
 </div>
 <ul class="info-attributes">
@@ -807,6 +824,14 @@
 <p><code class="code">filter&nbsp;p&nbsp;l</code> returns all the elements of the list <code class="code">l</code>
     that satisfy the predicate <code class="code">p</code>.  The order of the elements
     in the input list is preserved.</p>
+</div>
+</div>
+
+<pre><span id="VALcount_matching"><span class="keyword">val</span> count_matching</span> : <code class="type">('a -> bool) -> 'a list -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">count_matching&nbsp;p&nbsp;l</code> returns the number of elements in <code class="code">l</code>
+    that satisfy <code class="code">p</code>. Semantically equivalent but faster than
+    <code class="code">length&nbsp;(filter&nbsp;p&nbsp;l)</code>.</p>
 </div>
 </div>
 
