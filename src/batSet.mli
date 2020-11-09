@@ -87,7 +87,7 @@ sig
   (** [remove_exn x s] behaves like [remove x s] except that it raises
       an exception if [x] is not in [s].
       @raise Not_found if [x] is not in [s].
-      @since NEXT_RELEASE *)
+      @since 3.2.0 *)
 
   val update: elt -> elt -> t -> t
   (** [update x y s] replace [x] by [y] in [s].
@@ -440,7 +440,7 @@ val remove_exn: 'a -> 'a t -> 'a t
 (** [remove_exn x s] behaves like [remove x s] except that it raises
     an exception if [x] is not in [s].
     @raise Not_found if [x] is not in [s].
-    @since NEXT_RELEASE *)
+    @since 3.2.0 *)
 
 val update: 'a -> 'a -> 'a t -> 'a t
 (** [update x y s] replace [x] by [y] in [s].
@@ -737,7 +737,7 @@ module PSet : sig
   (** [remove_exn x s] behaves like [remove x s] except that it raises
       an exception if [x] is not in [s].
       @raise Not_found if [x] is not in [s].
-      @since NEXT_RELEASE *)
+      @since 3.2.0 *)
 
   val update: 'a -> 'a -> 'a t -> 'a t
   (** [update x y s] replace [x] by [y] in [s].

@@ -209,7 +209,7 @@ val unfold_exn : (unit -> 'a) -> 'a list * exn
     Warning: if calls to [f()] never throw an exception, unfold_exn
     is an infinite loop.
 
-    @since NEXT_RELEASE
+    @since 3.2.0
 *)
 
 val unfold_exc : (unit -> 'a) -> 'a list * exn

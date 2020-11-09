@@ -120,7 +120,7 @@ sig
   (** [remove_exn x m] behaves like [remove x m] except that it raises
       an exception if [x] is unbound in [m].
       @raise Not_found if [x] is unbound in [m]
-      @since NEXT_RELEASE *)
+      @since 3.2.0 *)
 
   val modify: key -> ('a -> 'a) -> 'a t -> 'a t
   (** [modify k f m] replaces the previous binding for [k] with [f] applied to
@@ -460,7 +460,7 @@ val remove_exn: 'a -> ('a, 'b) t -> ('a, 'b) t
 (** [remove_exn x m] behaves like [remove x m] except that it raises
     an exception if [x] is unbound in [m].
     @raise Not_found if [x] is unbound in [m]
-    @since NEXT_RELEASE *)
+    @since 3.2.0 *)
 
 val mem : 'a -> ('a, 'b) t -> bool
 (** [mem x m] returns [true] if [m] contains a binding for [x],
@@ -776,7 +776,7 @@ module PMap : sig
   (** [remove_exn x m] behaves like [remove x m] except that it raises
       an exception if [x] is unbound in [m].
       @raise Not_found if [x] is unbound in [m]
-      @since NEXT_RELEASE *)
+      @since 3.2.0 *)
 
   val mem : 'a -> ('a, 'b) t -> bool
   (** [mem x m] returns [true] if [m] contains a binding for [x],

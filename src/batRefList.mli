@@ -138,7 +138,7 @@ val rfind : ('a -> bool) -> 'a t -> 'a
 val find_exn : ('a -> bool) -> exn -> 'a t -> 'a
 (** Same as find but takes an exception to be raised when
     no element is found as additional parameter.
-    @since NEXT_RELEASE *)
+    @since 3.2.0 *)
 
 val find_exc : ('a -> bool) -> exn -> 'a t -> 'a
 (** Alias for [find_exn].
