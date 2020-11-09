@@ -273,20 +273,6 @@ val hash : 'a -> int
     Moreover, [hash] always terminates, even on cyclic
     structures. *)
 
-external hash_param : int -> int -> 'a -> int = "caml_hash_univ_param" "noalloc"
-(** [Hashtbl.hash_param n m x] computes a hash value for [x], with the
-    same properties as for [hash]. The two extra parameters [n] and
-    [m] give more precise control over hashing. Hashing performs a
-    depth-first, right-to-left traversal of the structure [x], stopping
-    after [n] meaningful nodes were encountered, or [m] nodes,
-    meaningful or not, were encountered. Meaningful nodes are: integers;
-    floating-point numbers; strings; characters; booleans; and constant
-    constructors. Larger values of [m] and [n] means that more
-    nodes are taken into account to compute the final hash
-    value, and therefore collisions are less likely to happen.
-    However, hashing takes longer. The parameters [m] and [n]
-    govern the tradeoff between accuracy and speed. *)
-
 
 (** {6 Boilerplate code}*)
 

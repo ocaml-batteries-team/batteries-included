@@ -39,7 +39,6 @@ let replace  = Hashtbl.replace
 let iter     = Hashtbl.iter
 let fold     = Hashtbl.fold
 let hash     = Hashtbl.hash
-external hash_param : int -> int -> 'a -> int = "caml_hash_univ_param" "noalloc"
 
 type ('a, 'b) h_bucketlist =
   | Empty
