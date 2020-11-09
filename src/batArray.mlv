@@ -229,6 +229,30 @@ let filter p xs =
   )
 *)
 
+exception End of int
+
+let fold_while p f init xs =
+  let acc = ref init in
+  try
+    let n = length xs in
+    for i = 0 to n - 1 do
+      let x = unsafe_get xs i in
+      if p !acc x then
+        acc := f !acc x
+      else
+        raise (End i)
+    done;
+    (!acc, n)
+  with End i -> (!acc, i)
+
+(*$T fold_while
+  fold_while (fun _ x -> x mod 2 = 0) (+) 0 [|1;2|] = (0, 0)
+  fold_while (fun _ x -> x mod 2 = 1) (+) 0 [|1;2|] = (1, 1)
+  fold_while (fun _ x -> x < 4) (+) 0 [|1;2;3;4|] = (6, 3)
+  fold_while (fun _ x -> x < 4) (+) 0 [|1;2;3|] = (6, 3)
+  fold_while (fun _ x -> x < 4) (+) 0 [||] = (0, 0)
+*)
+
 let count_matching p xs =
   let n = length xs in
   let count = ref 0 in
@@ -947,6 +971,7 @@ struct
   let fold_left    = fold_left
   let fold         = fold_left
   let fold_right   = fold_right
+  let fold_while   = fold_while
   let iter2        = iter2
   let iter2i       = iter2i
   let for_all      = for_all
@@ -1002,6 +1027,7 @@ struct
     let fold_left ~f ~init a = fold_left f init a
     let fold = fold_left
     let fold_right ~f a ~init= fold_right f a init
+    let fold_while ~p ~f ~init a = fold_while p f init a
     let sort ~cmp a = sort cmp a
     let stable_sort ~cmp a = stable_sort cmp a
     let fast_sort ~cmp a = fast_sort cmp a
@@ -1057,6 +1083,7 @@ struct
   let fold_left ~f ~init a = fold_left f init a
   let fold = fold_left
   let fold_right ~f a ~init= fold_right f a init
+  let fold_while ~p ~f ~init a = fold_while p f init a
   let sort ~cmp a = sort cmp a
   let stable_sort ~cmp a = stable_sort cmp a
   let fast_sort ~cmp a = fast_sort cmp a
