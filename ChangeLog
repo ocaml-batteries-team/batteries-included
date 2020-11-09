@@ -3,6 +3,25 @@ Changelog
 
 ## NEXT_RELEASE (minor release)
 
+## v3.2.0 (minor release)
+
+- BatArray.fold_while: ('acc -> 'a -> bool) -> ('acc -> 'a -> 'acc) ->
+                       'acc -> 'a array -> 'acc * int
+  #974
+  (Francois Berenger, review by Cedric Cellier)
+
+- Support for OCaml 4.12
+  #980
+  (kit-ty-kate)
+
+- BatArray.fold is an alias for fold_left
+  #976
+  (Francois Berenger)
+
+- BatList.fold is an alias for fold_left
+  #975
+  (Francois Berenger)
+
 - BatArray.count_matching: ('a -> bool) -> 'a array -> int
   #972
   (Francois Berenger)
@@ -26,7 +45,7 @@ Changelog
   #966
   (Francois Berenger, report by OnkV)
 
-- Expose Map.remove_exn and Set.remove_exn
+- Expose Map.remove_exn and Set.remove_exn: 'a -> 'a t -> 'a t
   #954
   (Cedric Cellier)
 
