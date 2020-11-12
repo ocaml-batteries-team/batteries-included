@@ -178,10 +178,10 @@ val mapi : (int -> char -> char) -> string -> string
 
 val trim : string -> string
 (** Return a copy of the argument, without leading and trailing
-    whitespace.  The characters regarded as whitespace are: [' '],
-    ['\012'], ['\n'], ['\r'], and ['\t'].  If there is no leading nor
-    trailing whitespace character in the argument, return the original
-    string itself, not a copy.
+    whitespace (according to {!BatChar.is_whitespace}).
+    The characters regarded as whitespace are: [' '], ['\n'], ['\r'], ['\t'],
+    ['\012'] and ['\026'].  If there is no leading nor trailing whitespace
+    character in the argument, return the original string itself, not a copy.
     @since 4.00.0 *)
 
 val escaped : string -> string
