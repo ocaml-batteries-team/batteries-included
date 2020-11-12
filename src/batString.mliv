@@ -626,13 +626,6 @@ val chop : ?l:int -> ?r:int -> string -> string
     [String.chop ~l:2 ~r:3 "01234567" = "234"]
 *)
 
-val trim : string -> string
-(** Returns the same string but without the leading and trailing
-    whitespaces (according to {!BatChar.is_whitespace}).
-
-    Example: [String.trim " \t foo\n  " = "foo"]
-*)
-
 val quote : string -> string
 (** Add quotes around a string and escape any quote or escape
     appearing in that string.  This function is used typically when
