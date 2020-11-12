@@ -35,30 +35,6 @@
     substring of [s] if [len >= 0] and [start] and [start+len] are
     valid positions in [s].
 
-    OCaml strings can be modified in place, for instance via the
-    {!String.set} and {!String.blit} functions described below.  This
-    possibility should be used rarely and with much care, however, since
-    both the OCaml compiler and most OCaml libraries share strings as if
-    they were immutable, rather than copying them.  In particular,
-    string literals are shared: a single copy of the string is created
-    at program loading time and returned by all evaluations of the
-    string literal.  Consider for example:
-
-    {[
-      # let f () = "foo";;
-      val f : unit -> string = <fun>
-          # (f ()).[0] <- 'b';;
-      -: unit = ()
-        # f ();;
-      -: string = "boo"
-    ]}
-
-    Likewise, many functions from the standard library can return string
-    literals or one of their string arguments.  Therefore, the returned strings
-    must not be modified directly.  If mutation is absolutely necessary,
-    it should be performed on a fresh copy of the string, as produced by
-    {!String.copy}.
-
     This module replaces Stdlib's
     {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/String.html}String}
     module.
