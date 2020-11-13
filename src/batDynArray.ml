@@ -574,7 +574,7 @@ let split a =
 
 let combine a1 a2 =
   if a1.len <> a2.len then
-    Pervasives.invalid_arg "DynArray.iter2i";
+    invalid_arg "DynArray.iter2i";
   let arr = imake a1.len in
   for i = 0 to a1.len - 1 do
     iset arr i (iget a1.arr i, iget a2.arr i)
@@ -1151,7 +1151,7 @@ let fold_righti f a x =
 
 let reduce f a =
   if a.len = 0 then
-    Pervasives.invalid_arg "DynArray.reduce: empty array"
+    invalid_arg "DynArray.reduce: empty array"
   else (
     let acc = ref (iget a.arr 0) in
     for i = 1 to a.len-1 do 
@@ -1222,7 +1222,7 @@ let min a = reduce Pervasives.min a
 let min_max a =
   let n = a.len in
   if n = 0 then
-    Pervasives.invalid_arg "DynArray.min_max: empty array"
+    invalid_arg "DynArray.min_max: empty array"
   else
     let mini = ref @@ iget a.arr 0 in
     let maxi = ref @@ iget a.arr 0 in
@@ -1292,7 +1292,7 @@ let favg a =
 
 let iter2 f a1 a2 =
   if a1.len <> a2.len then 
-    Pervasives.invalid_arg "DynArray.iter2";
+    invalid_arg "DynArray.iter2";
   for i = 0 to a1.len - 1 do
     f (iget a1.arr i) (iget a2.arr i);
   done
@@ -1308,7 +1308,7 @@ let iter2 f a1 a2 =
 
 let iter2i f a1 a2 =
   if a1.len <> a2.len then
-    Pervasives.invalid_arg "DynArray.iter2i";
+    invalid_arg "DynArray.iter2i";
   for i = 0 to a1.len - 1 do
     f i (iget a1.arr i) (iget a2.arr i);
   done
@@ -1325,7 +1325,7 @@ let iter2i f a1 a2 =
 let for_all2 p a1 a2 =
   let n = a1.len in
   if a2.len <> n then 
-    Pervasives.invalid_arg "DynArray.for_all2";
+    invalid_arg "DynArray.for_all2";
   let rec loop i =
     if i = n then
       true
@@ -1349,7 +1349,7 @@ let for_all2 p a1 a2 =
 let exists2 p a1 a2 =
   let n = a1.len in
   if a2.len <> n then 
-    Pervasives.invalid_arg "DynArray.exists2";
+    invalid_arg "DynArray.exists2";
   let rec loop i =
     if i = n then
       false
@@ -1370,7 +1370,7 @@ let exists2 p a1 a2 =
 let map2 f a1 a2 =
   let n = a1.len in
   if a2.len <> n then 
-    Pervasives.invalid_arg "DynArray.map2";
+    invalid_arg "DynArray.map2";
   init n (fun i -> f (iget a1.arr i) (iget a2.arr i))
 
 (*$T map2
@@ -1385,7 +1385,7 @@ let map2 f a1 a2 =
 let map2i f a1 a2 =
   let n = a1.len in
   if a2.len <> n then 
-    Pervasives.invalid_arg "DynArray.map2i";
+    invalid_arg "DynArray.map2i";
   init n (fun i -> f i (iget a1.arr i) (iget a2.arr i))
 
 (*$T map2i
