@@ -1162,7 +1162,7 @@ let reduce f a =
    reduce (+) (of_list [1;2;3]) = 6
    reduce (fun _ -> assert false) (of_list [1]) = 1
    try reduce (fun _ _ -> ()) (create()); false \
-     with Invalid_argument _ -> true
+     with Failure _ -> true
 *)
 
 let rev a = 
@@ -1206,7 +1206,7 @@ let max a = reduce Pervasives.max a
   max (of_list [1;2;3]) = 3
   max (of_list [2;3;1]) = 3
   try ignore (max (create())); false \
-    with Invalid_argument _ -> true
+    with Failure _ -> true
  *)
 
 let min a = reduce Pervasives.min a
@@ -1214,7 +1214,7 @@ let min a = reduce Pervasives.min a
   min (of_list [1;2;3]) = 1
   min (of_list [2;3;1]) = 1
   try ignore (min (create())); false \
-    with Invalid_argument _ -> true
+    with Failure _ -> true
  *)
 
 let min_max a =
@@ -1233,7 +1233,7 @@ let min_max a =
     min_max (of_list [1]) = (1, 1)
     min_max (of_list [1;-2;10;3]) = (-2, 10)
     try ignore (min_max (create())); false \
-      with Invalid_argument _ -> true
+      with Failure _ -> true
 *)
 
 let sum = fold_left (+) 0
@@ -1298,9 +1298,9 @@ let iter2 f a1 a2 =
     iter2 (fun a b -> x := !x + a*b) (of_list [1;2;3]) (of_list [4;-5;6]); \
     !x = 12
   try iter2 (fun _ _ -> ()) (of_list [1]) (of_list [1;2;3]); false \
-    with Invalid_argument _ -> true
+    with Failure _ -> true
   try iter2 (fun _ _ -> ()) (of_list [1]) (of_list []); false \
-    with Invalid_argument _ -> true
+    with Failure _ -> true
 *)
 
 let iter2i f a1 a2 =
@@ -1314,9 +1314,9 @@ let iter2i f a1 a2 =
     iter2i (fun i a b -> x := !x + a*b + i) (of_list [1;2;3]) (of_list [4;-5;6]); \
     !x = 15
   try iter2i (fun _ _ _ -> ()) (of_list [1]) (of_list [1;2;3]); false \
-    with Invalid_argument _ -> true
+    with Failure _ -> true
   try iter2i (fun _ _ _ -> ()) (of_list [1]) (of_list []); false \
-    with Invalid_argument _ -> true
+    with Failure _ -> true
 *)
 
 let for_all2 p a1 a2 =
@@ -1338,9 +1338,9 @@ let for_all2 p a1 a2 =
    for_all2 (=) (of_list [1;2;3]) (of_list [1;2;3]) = true
    for_all2 (<>) (of_list [1;2;3]) (of_list [3;2;1]) = false
    try ignore (for_all2 (=) (of_list [1;2;3]) (of_list [1;2;3;4])); false \
-     with Invalid_argument _ -> true
+     with Failure _ -> true
    try ignore (for_all2 (=) (of_list [1;2]) (of_list [])); false \
-     with Invalid_argument _ -> true
+     with Failure _ -> true
 *)
 
 let exists2 p a1 a2 =
@@ -1361,7 +1361,7 @@ let exists2 p a1 a2 =
    exists2 (=) (of_list [1;2;3]) (of_list [3;2;1])
    exists2 (<>) (of_list [1;2;3]) (of_list [1;2;3]) = false
    try ignore (exists2 (=) (of_list [1;2]) (of_list [3])); false \
-     with Invalid_argument _ -> true
+     with Failure _ -> true
 *)
 
 let map2 f a1 a2 =
@@ -1374,9 +1374,9 @@ let map2 f a1 a2 =
    let v = map2 (-) (of_list [1;2;3]) (of_list [6;3;1]) in to_list v = [-5;-1;2]
    let v = map2 (-) (of_list [2;4;6]) (of_list [1;2;3]) in to_list v = [1;2;3]
    try ignore (map2 (-) (of_list [2;4]) (of_list [1;2;3])); false \
-     with Invalid_argument _ -> true
+     with Failure _ -> true
    try ignore (map2 (-) (of_list [2;4]) (of_list [3])); false \
-     with Invalid_argument _ -> true
+     with Failure _ -> true
 *)
 
 let map2i f a1 a2 =
@@ -1389,9 +1389,9 @@ let map2i f a1 a2 =
    let v = map2i (fun i a b -> a-b + i) (of_list [1;2;3]) (of_list [6;3;1]) in to_list v = [-5;0;4]
    let v = map2i (fun i a b -> a-b + i) (of_list [2;4;6]) (of_list [1;2;3]) in to_list v = [1;3;5]
    try ignore (map2i (fun i a b -> a-b + i) (of_list [2;4]) (of_list [1;2;3])); false \
-     with Invalid_argument _ -> true
+     with Failure _ -> true
    try ignore (map2i (fun i a b -> a-b + i) (of_list [2;4]) (of_list [3])); false \
-     with Invalid_argument _ -> true
+     with Failure _ -> true
 *)
 
 let cartesian_product a1 a2 =
