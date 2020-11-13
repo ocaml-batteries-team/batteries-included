@@ -574,7 +574,7 @@ let split a =
 
 let combine a1 a2 =
   if a1.len <> a2.len then
-    invalid_arg "DynArray.iter2i";
+    failwith "DynArray.combine: array lengths differ";
   let arr = imake a1.len in
   for i = 0 to a1.len - 1 do
     iset arr i (iget a1.arr i, iget a2.arr i)
@@ -1151,14 +1151,12 @@ let fold_righti f a x =
 
 let reduce f a =
   if a.len = 0 then
-    invalid_arg "DynArray.reduce: empty array"
-  else (
-    let acc = ref (iget a.arr 0) in
-    for i = 1 to a.len-1 do 
-      acc := f !acc (iget a.arr i)
-    done;
-    !acc
-  )
+    failwith "DynArray.reduce: empty array";
+  let acc = ref (iget a.arr 0) in
+  for i = 1 to a.len-1 do 
+    acc := f !acc (iget a.arr i)
+  done;
+  !acc
 
 (*$T reduce
    reduce (+) (of_list [1;2;3]) = 6
@@ -1222,16 +1220,15 @@ let min a = reduce Pervasives.min a
 let min_max a =
   let n = a.len in
   if n = 0 then
-    invalid_arg "DynArray.min_max: empty array"
-  else
-    let mini = ref @@ iget a.arr 0 in
-    let maxi = ref @@ iget a.arr 0 in
-    for i = 1 to n-1 do
-      let x = iget a.arr i in
-      if x > !maxi then maxi := x;
-      if x < !mini then mini := x
-    done;
-    (!mini, !maxi)
+    failwith "DynArray.min_max: empty array";
+  let mini = ref @@ iget a.arr 0 in
+  let maxi = ref @@ iget a.arr 0 in
+  for i = 1 to n-1 do
+    let x = iget a.arr i in
+    if x > !maxi then maxi := x;
+    if x < !mini then mini := x
+  done;
+  (!mini, !maxi)
 (*$T min_max
     min_max (of_list [1]) = (1, 1)
     min_max (of_list [1;-2;10;3]) = (-2, 10)
@@ -1292,7 +1289,7 @@ let favg a =
 
 let iter2 f a1 a2 =
   if a1.len <> a2.len then 
-    invalid_arg "DynArray.iter2";
+    failwith "DynArray.iter2: array lengths differ";
   for i = 0 to a1.len - 1 do
     f (iget a1.arr i) (iget a2.arr i);
   done
@@ -1308,7 +1305,7 @@ let iter2 f a1 a2 =
 
 let iter2i f a1 a2 =
   if a1.len <> a2.len then
-    invalid_arg "DynArray.iter2i";
+    failwith "DynArray.iter2i: array lengths differ";
   for i = 0 to a1.len - 1 do
     f i (iget a1.arr i) (iget a2.arr i);
   done
@@ -1325,7 +1322,7 @@ let iter2i f a1 a2 =
 let for_all2 p a1 a2 =
   let n = a1.len in
   if a2.len <> n then 
-    invalid_arg "DynArray.for_all2";
+    failwith "DynArray.for_all2: array lengths differ";
   let rec loop i =
     if i = n then
       true
@@ -1349,7 +1346,7 @@ let for_all2 p a1 a2 =
 let exists2 p a1 a2 =
   let n = a1.len in
   if a2.len <> n then 
-    invalid_arg "DynArray.exists2";
+    failwith "DynArray.exists2: array lengths differ";
   let rec loop i =
     if i = n then
       false
@@ -1370,7 +1367,7 @@ let exists2 p a1 a2 =
 let map2 f a1 a2 =
   let n = a1.len in
   if a2.len <> n then 
-    invalid_arg "DynArray.map2";
+    failwith "DynArray.map2: array lengths differ";
   init n (fun i -> f (iget a1.arr i) (iget a2.arr i))
 
 (*$T map2
@@ -1385,7 +1382,7 @@ let map2 f a1 a2 =
 let map2i f a1 a2 =
   let n = a1.len in
   if a2.len <> n then 
-    invalid_arg "DynArray.map2i";
+    failwith "DynArray.map2i: array lengths differ";
   init n (fun i -> f i (iget a1.arr i) (iget a2.arr i))
 
 (*$T map2i
