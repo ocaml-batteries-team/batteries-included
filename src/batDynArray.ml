@@ -1239,13 +1239,13 @@ let min_max a =
       with Invalid_argument _ -> true
 *)
 
-let sum = reduce (+)
+let sum = fold_left (+) 0
 (*$T sum
   sum (of_list [1;2;3]) = 6
   sum (of_list [0]) = 0
  *)
 
-let fsum = reduce (+.)
+let fsum = fold_left (+.) 0.
 (*$T fsum
   fsum (of_list [1.0;2.0;3.0]) = 6.0
   fsum (of_list [0.0]) = 0.0
