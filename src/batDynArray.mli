@@ -32,6 +32,7 @@
     @author Brian Hurt
     @author Nicolas Cannasse
     @author David Teller (boilerplate code)
+    @author andrepd
 *)
 
 type 'a t
@@ -60,7 +61,8 @@ val init : int -> (int -> 'a) -> 'a t
     returned by [f 0 , f 1, ... f (n-1)]. *)
 
 val singleton : 'a -> 'a t
-(** Create an array consisting of exactly one element. *)
+(** Create an array consisting of exactly one element.
+    @since NEXT_RELEASE *)
 
 (** {6 Array manipulation functions} *)
 
@@ -74,7 +76,8 @@ val set : 'a t -> int -> 'a -> unit
 
 val upd : 'a t -> int -> ('a -> 'a) -> unit
 (** [upd darr idx f] sets the element of [darr] at index [idx] to value
-    [f (get darr idx)]). The previous value is overwritten *) 
+    [f (get darr idx)]).  The previous value is overwritten.
+    @since NEXT_RELEASE *)
 
 val length : 'a t -> int
 (** Return the number of elements in the array. *)
@@ -83,25 +86,29 @@ val empty : 'a t -> bool
 (** Return true if the number of elements in the array is 0. *)
 
 val first : 'a t -> 'a
-(** [first darr] returns the first element of [darr]. *)
+(** [first darr] returns the first element of [darr].
+    @since NEXT_RELEASE *)
 
 val last : 'a t -> 'a
 (** [last darr] returns the last element of [darr]. *)
 
 val left : 'a t -> int -> 'a t
-(**[left r len] returns the array containing the [len] first
-   characters of [r]. If [r] contains less than [len] characters, it
-   returns [r]. *)
+(** [left r len] returns the array containing the [len] first characters of [r].
+    If [r] contains less than [len] characters, it returns [r].
+    @since NEXT_RELEASE *)
 
 val right : 'a t -> int -> 'a t
-(**[left r len] returns the array containing the [len] last characters of [r].
-   If [r] contains less than [len] characters, it returns [r]. *)
+(** [right r len] returns the array containing the [len] last characters of [r].
+    If [r] contains less than [len] characters, it returns [r].
+    @since NEXT_RELEASE *)
 
 val head : 'a t -> int -> 'a t
-(**as {!left}*)
+(** Alias for {!left}
+    @since NEXT_RELEASE *)
 
 val tail : 'a t -> int -> 'a t
-(**[tail r pos] returns the array containing all but the [pos] first characters of [r] *)
+(** [tail r pos] returns the array containing all but the [pos] first characters of [r].
+    @since NEXT_RELEASE *)
 
 val insert : 'a t -> int -> 'a -> unit
 (** [insert darr idx v] inserts [v] into [darr] at index [idx].  All elements
@@ -161,7 +168,8 @@ val of_backwards : 'a BatEnum.t -> 'a array
 
 val range : 'a t -> int BatEnum.t
 (** [range a] returns an enumeration of all valid indices of the given
-    array, that is, [range a = 0 --^ length a] *)
+    array, that is, [range a = 0 --^ length a]
+    @since NEXT_RELEASE *)
 
 val to_list : 'a t -> 'a list
 (** [to_list darr] returns the elements of [darr] in order as a list. *)
@@ -180,7 +188,7 @@ val of_array : 'a array -> 'a t
 val copy : 'a t -> 'a t
 (** [copy a] returns a fresh copy of [a], such that no modification of
     [a] affects the copy, or vice versa (all new memory is allocated for
-    the copy).   *)
+    the copy). *)
 
 val sub : 'a t -> int -> int -> 'a t
 (** [sub a start len] returns an array holding the subset of [len]
@@ -195,16 +203,21 @@ val fill : 'a t -> int -> int -> 'a -> unit
     storing [x] in elements number [start] to [start + len - 1].
 
     @raise Invalid_arg if [start] and [len] do not
-    designate a valid subarray of [a]. *)
+    designate a valid subarray of [a].
+    @since NEXT_RELEASE *)
 
 val split : ('a * 'b) t -> 'a t * 'b t
-(** [split a] converts the array of pairs [a] into a pair of arrays. *)
+(** [split a] converts the array of pairs [a] into a pair of arrays.
+    @since NEXT_RELEASE *)
 
 val combine : 'a t -> 'b t -> ('a * 'b) t
 (** [combine a b] converts arrays [[a0,...aN] [b0,...,bN]] into 
     an array of pairs [[(a0,b0),...,(aN,bN)]]. 
 
-    @raise Invalid_argument if the two arrays have different lengths. *)
+    @raise Invalid_argument if the two arrays have different lengths.
+    @since NEXT_RELEASE *)
+
+
 
 (** {6 Array functional support} *)
 
@@ -228,12 +241,14 @@ val mapi : (int -> 'a -> 'b) -> 'a t -> 'b t
     [Array.mapi]. *)
 
 val modify : ('a -> 'a) -> 'a t -> unit
-(** [modify f a] replaces every element [x] of [a] with [f x]. *)
+(** [modify f a] replaces every element [x] of [a] with [f x].
+    @since NEXT_RELEASE *)
 
 val modifyi : (int -> 'a -> 'a) -> 'a t -> unit
 (** Same as {!modify}, but the function is applied to the index of
     the element as the first argument, and the element itself as
-    the second argument. *)
+    the second argument.
+    @since NEXT_RELEASE *)
 
 val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
 (** [fold_left f x darr] computes [f ( ... ( f ( f a0 x) a1) ) ... )
@@ -245,17 +260,20 @@ val fold_right : ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
     [darr]. *)
 
 val fold_lefti : ('a -> int -> 'b -> 'a) -> 'a -> 'b t -> 'a
-(** As [fold_left], but with the index of the element as additional argument *)
+(** As [fold_left], but with the index of the element as additional argument.
+    @since NEXT_RELEASE *)
 
 val fold_righti : (int -> 'b -> 'a -> 'a) -> 'b t -> 'a -> 'a
-(** As [fold_right], but with the index of the element as additional argument *)
+(** As [fold_right], but with the index of the element as additional argument.
+    @since NEXT_RELEASE *)
 
 val reduce : ('a -> 'a -> 'a) -> 'a t -> 'a
 (** [reduce f a] is [fold_left f a0 [a1, ... aN]].  This
     is useful for merging a group of things that have no
     reasonable default value to return if the group is empty.
 
-    @raise Invalid_argument on empty arrays. *)
+    @raise Invalid_argument on empty arrays.
+    @since NEXT_RELEASE *)
 
 val keep : ('a -> bool) -> 'a t -> unit
 (** [keep p darr] removes in place all the element [x] of [darr]
@@ -278,10 +296,12 @@ val filter : ('a -> bool) -> 'a t -> 'a t
 *)
 
 val find_all : ('a -> bool) -> 'a t -> 'a t
-(** [find_all] is another name for [filter]. *)
+(** [find_all] is another name for [filter].
+    @since NEXT_RELEASE *)
 
 val filteri : (int -> 'a -> bool) -> 'a t -> 'a t
-(** As [filter] but with the index passed to the predicate. *)
+(** As [filter] but with the index passed to the predicate.
+    @since NEXT_RELEASE *)
 
 val filter_map : ('a -> 'b option) -> 'a t -> 'b t
 (** [filter_map f e] returns an array consisting of all elements
@@ -293,71 +313,86 @@ val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
     [a1] is the array of all the elements of [a] that
     satisfy the predicate [p], and [a2] is the array of all the
     elements of [a] that do not satisfy [p].
-    The order of the elements in the input array is preserved. *)
+    The order of the elements in the input array is preserved.
+
+    @since NEXT_RELEASE *)
 
 val for_all : ('a -> bool) -> 'a t -> bool
 (** [for_all p [a0; a1; ...; an]] checks if all elements of the
     array satisfy the predicate [p].  That is, it returns [ (p a0)
-    && (p a1) && ... && (p an)]. *)
+    && (p a1) && ... && (p an)].
+    @since NEXT_RELEASE *)
 
 val exists : ('a -> bool) -> 'a t -> bool
 (** [exists p [a0; a1; ...; an]] checks if at least one element of
     the array satisfies the predicate [p].  That is, it returns [(p
-    a0) || (p a1) || ... || (p an)]. *)
+    a0) || (p a1) || ... || (p an)].
+    @since NEXT_RELEASE *)
 
 val find : ('a -> bool) -> 'a t -> 'a
 (** [find p a] returns the first element of array [a] that
     satisfies the predicate [p].
 
     @raise Not_found if there is no value that satisfies [p] in
-    the array [a]. *)
+    the array [a].
+    @since NEXT_RELEASE *)
 
 val findi : ('a -> bool) -> 'a t -> int
 (** [findi p a] returns the index of the first element of array [a]
     that satisfies the predicate [p].
 
     @raise Not_found if there is no value that satisfies [p] in the
-    array [a].  *)
+    array [a].
+    @since NEXT_RELEASE *)
 
 val index_of : ('a -> bool) -> 'a t -> int
-(** Alias for findi *)
+(** Alias for {!findi} *)
 
 val mem : 'a -> 'a t -> bool
-(** [mem m a] is true if and only if [m] is equal to an element of [a]. *)
+(** [mem m a] is true if and only if [m] is equal to an element of [a].
+    @since NEXT_RELEASE *)
 
 val memq : 'a -> 'a t -> bool
 (** Same as {!mem} but uses physical equality instead of
-    structural equality to compare array elements.  *)
+    structural equality to compare array elements.
+    @since NEXT_RELEASE *)
 
 val rev : 'a t -> 'a t
-(** Array reversal.*)
+(** Array reversal.
+    @since NEXT_RELEASE *)
 
 val rev_in_place : 'a t -> unit
-(** In-place array reversal.  The given array is updated. *)
+(** In-place array reversal.  The given array is updated.
+    @since NEXT_RELEASE *)
 
 val max : 'a t -> 'a
 (** [max a] returns the largest value in [a] as judged by
     [Pervasives.compare]
 
-    @raise Invalid_argument on empty input *)
+    @raise Invalid_argument on empty input
+    @since NEXT_RELEASE *)
 
 val min : 'a t -> 'a
 (** [min a] returns the smallest value in [a] as judged by
     [Pervasives.compare]
 
-    @raise Invalid_argument on empty input *)
+    @raise Invalid_argument on empty input
+    @since NEXT_RELEASE *)
 
 val min_max : 'a t -> 'a * 'a
 (** [min_max a] returns the (smallest, largest) pair of values from [a]
     as judged by [Pervasives.compare]
 
-    @raise Invalid_argument on empty input *)
+    @raise Invalid_argument on empty input
+    @since NEXT_RELEASE *)
 
 val sum : int t -> int
-(** [sum l] returns the sum of the integers of [l] *)
+(** [sum l] returns the sum of the integers of [l].
+    @since NEXT_RELEASE *)
 
 val fsum : float t -> float
-(** [fsum l] returns the sum of the floats of [l] *)
+(** [fsum l] returns the sum of the floats of [l].
+    @since NEXT_RELEASE *)
 
 val kahan_sum : float t -> float
 (** [kahan_sum l] returns a numerically-accurate
@@ -374,56 +409,65 @@ val kahan_sum : float t -> float
     floating-point operations instead of one. See
     {{: https://en.wikipedia.org/wiki/Kahan_summation_algorithm }
     the wikipedia article} on Kahan summation for more details.
+
+    @since NEXT_RELEASE
 *)
 
 val avg : int t -> float
-(** [avg l] returns the average of [l] *)
+(** [avg l] returns the average of [l]
+    @since NEXT_RELEASE *)
 
 val favg : float t -> float
-(** [favg l] returns the average of [l] *)
+(** [favg l] returns the average of [l]
+    @since NEXT_RELEASE *)
 
 
 
 
-(**{6 Operations on two arrays}*)
+(** {6 Operations on two arrays} *)
 
 val iter2 : ('a -> 'b -> unit) -> 'a t -> 'b t -> unit
 (** [iter2 f [a0, a1, ..., an] [b0, b1, ..., bn]]
     performs calls [f a0 b0, f a1 b1, ..., f an bn] in that order.
 
-    @raise Invalid_argument if the two arrays have different lengths. *)
+    @raise Invalid_argument if the two arrays have different lengths.
+    @since NEXT_RELEASE *)
 
 val iter2i : (int -> 'a -> 'b -> unit) -> 'a t -> 'b t -> unit
 (** [iter2i f [a0, a1, ..., an] [b0, b1, ..., bn]]
     performs calls [f 0 a0 b0, f 1 a1 b1, ..., f n an bn] in that
     order.
 
-    @raise Invalid_argument if the two arrays have different
-    lengths. *)
+    @raise Invalid_argument if the two arrays have different lengths.
+    @since NEXT_RELEASE *)
 
 val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
 (** As {!map} but on two arrays.
 
-    @raise Invalid_argument if the two arrays have different lengths. *)
+    @raise Invalid_argument if the two arrays have different lengths.
+    @since NEXT_RELEASE *)
 
 val map2i : (int -> 'a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
 (** As {!mapi} but on two arrays.
 
-    @raise Invalid_argument if the two arrays have different lengths. *)
+    @raise Invalid_argument if the two arrays have different lengths.
+    @since NEXT_RELEASE *)
 
 val for_all2 : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
 (** As {!for_all} but on two arrays.
 
-    @raise Invalid_argument if the two arrays have different lengths.*)
+    @raise Invalid_argument if the two arrays have different lengths.
+    @since NEXT_RELEASE *)
 
 val exists2 : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
 (** As {!exists} but on two arrays.
 
-    @raise Invalid_argument if the two arrays have different lengths. *)
+    @raise Invalid_argument if the two arrays have different lengths.
+    @since NEXT_RELEASE *)
 
 val cartesian_product : 'a t -> 'b t -> ('a * 'b) t
 (** Cartesian product of the two arrays.
-    @since 2.2.0 *)
+    @since NEXT_RELEASE *)
 
 
 
@@ -537,33 +581,37 @@ val create_with : resizer_t -> 'a t
     @since 2.3.0
 *)
 
+
 (** {6 Unsafe operations} **)
 
 val unsafe_get : 'a t -> int -> 'a
 val unsafe_set : 'a t -> int -> 'a -> unit
 val unsafe_upd : 'a t -> int -> ('a -> 'a) -> unit
+(** @since NEXT_RELEASE *)
 
 
-(** {6 Boilerplate code}*)
+(** {6 Boilerplate code} *)
 
-(** {7 Printing}*)
+(** {7 Printing} *)
 
 val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> 'b t -> unit
 
-(** Operations on {!DynArray} without exceptions.*)
+(** Operations on {!DynArray} without exceptions. *)
 module Exceptionless : sig
   val find : ('a -> bool) -> 'a t -> 'a option
   (** [find p a] returns [Some x], where [x] is the first element of
-    array [a] that satisfies the predicate [p], or [None] if there
-    is no such element.*)
+      array [a] that satisfies the predicate [p], or [None] if there
+      is no such element.
+      @since NEXT_RELEASE *)
 
   val findi : ('a -> bool) -> 'a t -> int option
-    (** [findi p a] returns [Some n], where [n] is the index of the
-        first element of array [a] that satisfies the predicate [p],
-        or [None] if there is no such element.*)
+  (** [findi p a] returns [Some n], where [n] is the index of the
+      first element of array [a] that satisfies the predicate [p],
+      or [None] if there is no such element.
+      @since NEXT_RELEASE *)
 end
 
 (**/**)
 val invariants : _ t -> unit
 val bool_invariants : _ t -> bool
-  (**/**)
+(**/**)
