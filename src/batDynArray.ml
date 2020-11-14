@@ -232,7 +232,7 @@ let last d =
 *)
 
 let left a n =
-  if n > a.len then invalid_arg n "left" "len";
+  if n < 0 || n > a.len then invalid_arg n "left" "len";
   let arr = imake n in
   for i = 0 to n - 1 do
     iset arr i (iget a.arr i)
@@ -244,7 +244,7 @@ let left a n =
   }
 
 let right a n =
-  if n > a.len then invalid_arg n "right" "len";
+  if n < 0 || n > a.len then invalid_arg n "right" "len";
   let arr = imake n in
   (* for i = a.len - n to a.len - 1 do *)
   let i = ref 0 in
@@ -270,8 +270,8 @@ let right a n =
 let head = left
 
 let tail a n =
+  if n < 0 || n > a.len then invalid_arg n "tail" "pos";
   let len = a.len - n in
-  if len < 0 then invalid_arg n "tail" "pos";
   let arr = imake len in
   (* for i = n to a.len - 1 do *)
   let i = ref 0 in
