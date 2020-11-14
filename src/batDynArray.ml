@@ -232,6 +232,7 @@ let last d =
 *)
 
 let left a n =
+  if n > a.len then invalid_arg n "left" "len";
   let arr = imake n in
   for i = 0 to n - 1 do
     iset arr i (iget a.arr i)
@@ -243,6 +244,7 @@ let left a n =
   }
 
 let right a n =
+  if n > a.len then invalid_arg n "right" "len";
   let arr = imake n in
   (* for i = a.len - n to a.len - 1 do *)
   let i = ref 0 in
@@ -260,12 +262,16 @@ let right a n =
 (*$T
   let v = left  (of_list [1;2;3;4;5;6;7;8]) 3 in to_list v = [1;2;3]
   let v = right (of_list [1;2;3;4;5;6;7;8]) 3 in to_list v = [6;7;8]
+
+  try let v = left  (of_list [1;2;3]) 9 in ignore v; false with Invalid_arg _ -> true
+  try let v = right (of_list [1;2;3]) 9 in ignore v; false with Invalid_arg _ -> true
 *)
 
 let head = left
 
 let tail a n =
   let len = a.len - n in
+  if len < 0 then invalid_arg n "tail" "pos";
   let arr = imake len in
   (* for i = n to a.len - 1 do *)
   let i = ref 0 in
@@ -283,6 +289,8 @@ let tail a n =
 (*$T
   let v = head (of_list [1;2;3;4;5;6;7;8]) 3 in to_list v = [1;2;3]
   let v = tail (of_list [1;2;3;4;5;6;7;8]) 3 in to_list v = [4;5;6;7;8]
+
+  try let v = tail (of_list [1;2;3]) 9 in ignore v; false with Invalid_arg _ -> true
 *)
 
 let insert d idx v =
