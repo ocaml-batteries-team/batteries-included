@@ -265,6 +265,9 @@ let right a n =
 
   try let v = left  (of_list [1;2;3]) 9 in ignore v; false with Invalid_arg _ -> true
   try let v = right (of_list [1;2;3]) 9 in ignore v; false with Invalid_arg _ -> true
+
+  try let v = left  (of_list [1;2;3]) (-1) in ignore v; false with Invalid_arg _ -> true
+  try let v = right (of_list [1;2;3]) (-1) in ignore v; false with Invalid_arg _ -> true
 *)
 
 let head = left
@@ -291,6 +294,7 @@ let tail a n =
   let v = tail (of_list [1;2;3;4;5;6;7;8]) 3 in to_list v = [4;5;6;7;8]
 
   try let v = tail (of_list [1;2;3]) 9 in ignore v; false with Invalid_arg _ -> true
+  try let v = tail (of_list [1;2;3]) (-1) in ignore v; false with Invalid_arg _ -> true
 *)
 
 let insert d idx v =
