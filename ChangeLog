@@ -3,6 +3,12 @@ Changelog
 
 ## NEXT_RELEASE (minor release)
 
+- BatDynArray: almost feature parity between DynArray and Array
+  Added new functions to BatDynArray so that it contains almost the same
+  function set as BatArray
+  #872
+  (andrepd, review by Florent Monnier and Francois Berenger)
+
 ## v3.2.0 (minor release)
 
 - BatArray.fold_while: ('acc -> 'a -> bool) -> ('acc -> 'a -> 'acc) ->
