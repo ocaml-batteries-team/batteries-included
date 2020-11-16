@@ -3,9 +3,9 @@ Changelog
 
 ## NEXT_RELEASE (minor release)
 
-- BatDynArray: Feature parity of DynArray and Array
-  Added new functions to BatDynArray so that it contains the same
-  function set than BatArray
+- BatDynArray: almost feature parity between DynArray and Array
+  Added new functions to BatDynArray so that it contains almost the same
+  function set as BatArray
   #872
   (andrepd, review by Florent Monnier and Francois Berenger)
 
