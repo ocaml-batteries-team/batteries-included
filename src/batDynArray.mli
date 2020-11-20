@@ -246,7 +246,7 @@ val combine : 'a t -> 'b t -> ('a * 'b) t
 (** [combine a b] converts arrays [[a0,...aN] [b0,...,bN]] into 
     an array of pairs [[(a0,b0),...,(aN,bN)]]. 
 
-    @raise Pervasives.Invalid_argument if the two arrays have different lengths.
+    @raise DynArray.Invalid_arg  if the two arrays have different lengths.
     @since NEXT_RELEASE *)
 
 
@@ -304,7 +304,7 @@ val reduce : ('a -> 'a -> 'a) -> 'a t -> 'a
     is useful for merging a group of things that have no
     reasonable default value to return if the group is empty.
 
-    @raise Invalid_argument on empty arrays.
+    @raise DynArray.Invalid_arg  on empty arrays.
     @since NEXT_RELEASE *)
 
 val keep : ('a -> bool) -> 'a t -> unit
@@ -401,21 +401,21 @@ val max : 'a t -> 'a
 (** [max a] returns the largest value in [a] as judged by
     [Pervasives.compare]
 
-    @raise Pervasives.Invalid_argument on empty input
+    @raise DynArray.Invalid_arg  on empty input.
     @since NEXT_RELEASE *)
 
 val min : 'a t -> 'a
 (** [min a] returns the smallest value in [a] as judged by
     [Pervasives.compare]
 
-    @raise Pervasives.Invalid_argument on empty input
+    @raise DynArray.Invalid_arg  on empty input.
     @since NEXT_RELEASE *)
 
 val min_max : 'a t -> 'a * 'a
 (** [min_max a] returns the (smallest, largest) pair of values from [a]
     as judged by [Pervasives.compare]
 
-    @raise Pervasives.Invalid_argument on empty input
+    @raise DynArray.Invalid_arg  on empty input.
     @since NEXT_RELEASE *)
 
 val sum : int t -> int
@@ -462,7 +462,7 @@ val iter2 : ('a -> 'b -> unit) -> 'a t -> 'b t -> unit
 (** [iter2 f [a0, a1, ..., an] [b0, b1, ..., bn]]
     performs calls [f a0 b0, f a1 b1, ..., f an bn] in that order.
 
-    @raise Pervasives.Invalid_argument if the two arrays have different lengths.
+    @raise DynArray.Invalid_arg  if the two arrays have different lengths.
     @since NEXT_RELEASE *)
 
 val iter2i : (int -> 'a -> 'b -> unit) -> 'a t -> 'b t -> unit
@@ -470,31 +470,31 @@ val iter2i : (int -> 'a -> 'b -> unit) -> 'a t -> 'b t -> unit
     performs calls [f 0 a0 b0, f 1 a1 b1, ..., f n an bn] in that
     order.
 
-    @raise Pervasives.Invalid_argument if the two arrays have different lengths.
+    @raise DynArray.Invalid_arg  if the two arrays have different lengths.
     @since NEXT_RELEASE *)
 
 val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
 (** As {!map} but on two arrays.
 
-    @raise Pervasives.Invalid_argument if the two arrays have different lengths.
+    @raise DynArray.Invalid_arg  if the two arrays have different lengths.
     @since NEXT_RELEASE *)
 
 val map2i : (int -> 'a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
 (** As {!mapi} but on two arrays.
 
-    @raise Pervasives.Invalid_argument if the two arrays have different lengths.
+    @raise DynArray.Invalid_arg  if the two arrays have different lengths.
     @since NEXT_RELEASE *)
 
 val for_all2 : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
 (** As {!for_all} but on two arrays.
 
-    @raise Pervasives.Invalid_argument if the two arrays have different lengths.
+    @raise DynArray.Invalid_arg  if the two arrays have different lengths.
     @since NEXT_RELEASE *)
 
 val exists2 : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
 (** As {!exists} but on two arrays.
 
-    @raise Pervasives.Invalid_argument if the two arrays have different lengths.
+    @raise DynArray.Invalid_arg  if the two arrays have different lengths.
     @since NEXT_RELEASE *)
 
 val cartesian_product : 'a t -> 'b t -> ('a * 'b) t
