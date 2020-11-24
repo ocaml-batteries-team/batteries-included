@@ -54,11 +54,15 @@ val create : unit -> 'a t
 
 val make : int -> 'a t
 (** [make count] returns an array with some memory already allocated so
-    up to [count] elements can be stored into it without resizing. *)
+    up to [count] elements can be stored into it without resizing.
+
+    @raise DynArray.Invalid_arg if make is called with a negative argument. *)
 
 val init : int -> (int -> 'a) -> 'a t
 (** [init n f] returns an array of [n] elements filled with values
-    returned by [f 0 , f 1, ... f (n-1)]. *)
+    returned by [f 0 , f 1, ... f (n-1)].
+
+    @raise DynArray.Invalid_arg if init is called with a negative argument. *)
 
 val singleton : 'a -> 'a t
 (** Create an array consisting of exactly one element.
@@ -68,15 +72,21 @@ val singleton : 'a -> 'a t
 
 val get : 'a t -> int -> 'a
 (** [get darr idx] gets the element in [darr] at index [idx]. If [darr] has
-    [len] elements in it, then the valid indexes range from [0] to [len-1]. *)
+    [len] elements in it, then the valid indexes range from [0] to [len-1].
+
+    @raise DynArray.Invalid_arg if called with an invalid index. *)
 
 val set : 'a t -> int -> 'a -> unit
 (** [set darr idx v] sets the element of [darr] at index [idx] to value
-    [v].  The previous value is overwritten. *)
+    [v].  The previous value is overwritten.
+
+    @raise DynArray.Invalid_arg if called with an invalid index. *)
 
 val upd : 'a t -> int -> ('a -> 'a) -> unit
 (** [upd darr idx f] sets the element of [darr] at index [idx] to value
     [f (get darr idx)]).  The previous value is overwritten.
+
+    @raise DynArray.Invalid_arg if called with an invalid index.
     @since NEXT_RELEASE *)
 
 val length : 'a t -> int
@@ -87,19 +97,27 @@ val empty : 'a t -> bool
 
 val first : 'a t -> 'a
 (** [first darr] returns the first element of [darr].
+
+    @raise DynArray.Invalid_arg if length of the array is 0.
     @since NEXT_RELEASE *)
 
 val last : 'a t -> 'a
-(** [last darr] returns the last element of [darr]. *)
+(** [last darr] returns the last element of [darr].
+
+    @raise DynArray.Invalid_arg if length of the array is 0. *)
 
 val left : 'a t -> int -> 'a t
 (** [left r len] returns the array containing the [len] first characters of [r].
     If [r] contains less than [len] characters, it returns [r].
+
+    @raise DynArray.Invalid_arg if called with an invalid index.
     @since NEXT_RELEASE *)
 
 val right : 'a t -> int -> 'a t
 (** [right r len] returns the array containing the [len] last characters of [r].
     If [r] contains less than [len] characters, it returns [r].
+
+    @raise DynArray.Invalid_arg if called with an invalid index.
     @since NEXT_RELEASE *)
 
 val head : 'a t -> int -> 'a t
@@ -108,13 +126,17 @@ val head : 'a t -> int -> 'a t
 
 val tail : 'a t -> int -> 'a t
 (** [tail r pos] returns the array containing all but the [pos] first characters of [r].
+
+    @raise DynArray.Invalid_arg if called with an invalid index.
     @since NEXT_RELEASE *)
 
 val insert : 'a t -> int -> 'a -> unit
 (** [insert darr idx v] inserts [v] into [darr] at index [idx].  All elements
     of [darr] with an index greater than or equal to [idx] have their
     index incremented (are moved up one place) to make room for the new
-    element. *)
+    element.
+
+    @raise DynArray.Invalid_arg if called with an invalid index. *)
 
 val add : 'a t -> 'a -> unit
 (** [add darr v] appends [v] onto the end of [darr].  [v] becomes the new
@@ -129,26 +151,36 @@ val append : 'a t -> 'a t -> unit
 val delete : 'a t -> int -> unit
 (** [delete darr idx] deletes the element of [darr] at [idx].  All elements
     with an index greater than [idx] have their index decremented (are
-    moved down one place) to fill in the hole. *)
+    moved down one place) to fill in the hole.
+
+    @raise DynArray.Invalid_arg if called with an invalid index. *)
 
 val delete_last : 'a t -> unit
 (** [delete_last darr] deletes the last element of [darr]. This is equivalent
-    of doing [delete darr ((length darr) - 1)]. *)
+    of doing [delete darr ((length darr) - 1)].
+
+    @raise DynArray.Invalid_arg if length of the array is 0. *)
 
 val delete_range : 'a t -> int -> int -> unit
 (** [delete_range darr idx len] deletes [len] elements starting at index [idx].
     All elements with an index greater than [idx+len] are moved to fill
-    in the hole. *)
+    in the hole.
+
+    @raise DynArray.Invalid_arg if called with an invalid length or index. *)
 
 val clear : 'a t -> unit
 (** remove all elements from the array and resize it to 0. *)
 
 val blit : 'a t -> int -> 'a t -> int -> int -> unit
 (** [blit src srcidx dst dstidx len] copies [len] elements from [src]
-    starting with index [srcidx] to [dst] starting at [dstidx]. *)
+    starting with index [srcidx] to [dst] starting at [dstidx].
+
+    @raise DynArray.Invalid_arg if called with an invalid length or indices. *)
 
 val compact : 'a t -> unit
-(** [compact darr] ensures that the space allocated by the array is minimal.*)
+(** [compact darr] ensures that the space allocated by the array is minimal. *)
+
+
 
 (** {6 Array copy and conversion} *)
 
@@ -194,7 +226,7 @@ val sub : 'a t -> int -> int -> 'a t
 (** [sub a start len] returns an array holding the subset of [len]
     elements from [a] starting with the element at index [idx]. 
 
-    @raise Invalid_arg if [start] and [len] do not
+    @raise DynArray.Invalid_arg if [start] and [len] do not
     designate a valid subarray of [a]; that is, if
     [start < 0], or [len < 0], or [start + len > Array.length a]. *)
 
@@ -202,7 +234,7 @@ val fill : 'a t -> int -> int -> 'a -> unit
 (** [fill a start len x] modifies the array [a] in place,
     storing [x] in elements number [start] to [start + len - 1].
 
-    @raise Invalid_arg if [start] and [len] do not
+    @raise DynArray.Invalid_arg if [start] and [len] do not
     designate a valid subarray of [a].
     @since NEXT_RELEASE *)
 
@@ -214,7 +246,7 @@ val combine : 'a t -> 'b t -> ('a * 'b) t
 (** [combine a b] converts arrays [[a0,...aN] [b0,...,bN]] into 
     an array of pairs [[(a0,b0),...,(aN,bN)]]. 
 
-    @raise Invalid_argument if the two arrays have different lengths.
+    @raise DynArray.Invalid_arg  if the two arrays have different lengths.
     @since NEXT_RELEASE *)
 
 
@@ -272,7 +304,7 @@ val reduce : ('a -> 'a -> 'a) -> 'a t -> 'a
     is useful for merging a group of things that have no
     reasonable default value to return if the group is empty.
 
-    @raise Invalid_argument on empty arrays.
+    @raise DynArray.Invalid_arg  on empty arrays.
     @since NEXT_RELEASE *)
 
 val keep : ('a -> bool) -> 'a t -> unit
@@ -369,21 +401,21 @@ val max : 'a t -> 'a
 (** [max a] returns the largest value in [a] as judged by
     [Pervasives.compare]
 
-    @raise Invalid_argument on empty input
+    @raise DynArray.Invalid_arg  on empty input.
     @since NEXT_RELEASE *)
 
 val min : 'a t -> 'a
 (** [min a] returns the smallest value in [a] as judged by
     [Pervasives.compare]
 
-    @raise Invalid_argument on empty input
+    @raise DynArray.Invalid_arg  on empty input.
     @since NEXT_RELEASE *)
 
 val min_max : 'a t -> 'a * 'a
 (** [min_max a] returns the (smallest, largest) pair of values from [a]
     as judged by [Pervasives.compare]
 
-    @raise Invalid_argument on empty input
+    @raise DynArray.Invalid_arg  on empty input.
     @since NEXT_RELEASE *)
 
 val sum : int t -> int
@@ -430,7 +462,7 @@ val iter2 : ('a -> 'b -> unit) -> 'a t -> 'b t -> unit
 (** [iter2 f [a0, a1, ..., an] [b0, b1, ..., bn]]
     performs calls [f a0 b0, f a1 b1, ..., f an bn] in that order.
 
-    @raise Invalid_argument if the two arrays have different lengths.
+    @raise DynArray.Invalid_arg  if the two arrays have different lengths.
     @since NEXT_RELEASE *)
 
 val iter2i : (int -> 'a -> 'b -> unit) -> 'a t -> 'b t -> unit
@@ -438,31 +470,31 @@ val iter2i : (int -> 'a -> 'b -> unit) -> 'a t -> 'b t -> unit
     performs calls [f 0 a0 b0, f 1 a1 b1, ..., f n an bn] in that
     order.
 
-    @raise Invalid_argument if the two arrays have different lengths.
+    @raise DynArray.Invalid_arg  if the two arrays have different lengths.
     @since NEXT_RELEASE *)
 
 val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
 (** As {!map} but on two arrays.
 
-    @raise Invalid_argument if the two arrays have different lengths.
+    @raise DynArray.Invalid_arg  if the two arrays have different lengths.
     @since NEXT_RELEASE *)
 
 val map2i : (int -> 'a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
 (** As {!mapi} but on two arrays.
 
-    @raise Invalid_argument if the two arrays have different lengths.
+    @raise DynArray.Invalid_arg  if the two arrays have different lengths.
     @since NEXT_RELEASE *)
 
 val for_all2 : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
 (** As {!for_all} but on two arrays.
 
-    @raise Invalid_argument if the two arrays have different lengths.
+    @raise DynArray.Invalid_arg  if the two arrays have different lengths.
     @since NEXT_RELEASE *)
 
 val exists2 : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
 (** As {!exists} but on two arrays.
 
-    @raise Invalid_argument if the two arrays have different lengths.
+    @raise DynArray.Invalid_arg  if the two arrays have different lengths.
     @since NEXT_RELEASE *)
 
 val cartesian_product : 'a t -> 'b t -> ('a * 'b) t
