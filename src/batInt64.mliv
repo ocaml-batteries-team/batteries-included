@@ -270,6 +270,7 @@ external format : string -> int64 -> string = "caml_int64_format"
 (**/**)
 val modulo : int64 -> int64 -> int64
 val pow : int64 -> int64 -> int64
+(** @raise Invalid_argument if the exponent is negative. *)
 
 val ( + ) : t -> t -> t
 val ( - ) : t -> t -> t

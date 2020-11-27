@@ -9,6 +9,11 @@ Changelog
   #872
   (andrepd, review by Florent Monnier and Francois Berenger)
 
+- Fix stack overflow on Int32/64.pow withh negative exponent
+  #989
+  (Cedric Cellier, review by Francois Berenger)
+
+
 ## v3.2.0 (minor release)
 
 - BatArray.fold_while: ('acc -> 'a -> bool) -> ('acc -> 'a -> 'acc) ->
