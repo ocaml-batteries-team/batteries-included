@@ -9,10 +9,9 @@ Changelog
   #872
   (andrepd, review by Florent Monnier and Francois Berenger)
 
-- Fix stack overflow on Int32/64.pow withh negative exponent
-  #989
+- Fix stack overflow on Int32/64.pow withh negative exponent (issue #989)
+  #990 
   (Cedric Cellier, review by Francois Berenger)
-
 
 ## v3.2.0 (minor release)
 
