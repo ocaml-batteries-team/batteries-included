@@ -271,14 +271,18 @@ end
 (**
    A generic implementation of fast exponentiation
 *)
-let generic_pow ~zero ~one ~div_two ~mod_two ~mul:( * ) =
+let generic_pow ~zero ~one ~div_two ~mod_two ~mul:( * ) a n =
   let rec pow a n =
     if      n = zero then one
     else if n = one  then a
     else
       let b = pow a (div_two n) in
       b * b * (if mod_two n = zero then one else a)
-  in pow
+  in
+  if n < zero then
+    invalid_arg "pow"
+  else
+    pow a n
 
 exception Overflow
 exception NaN

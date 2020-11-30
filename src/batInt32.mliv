@@ -95,6 +95,7 @@ external rem : int32 -> int32 -> int32 = "%int32_mod"
 
 val modulo : int32 -> int32 -> int32
 val pow  : int32 -> int32 -> int32
+(** @raise Invalid_argument if the exponent is negative. *)
 val min_num : int32
 val max_num : int32
 

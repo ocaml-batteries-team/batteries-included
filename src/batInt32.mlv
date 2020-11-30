@@ -128,6 +128,17 @@ module BaseInt32 = struct
 
   let modulo = rem
   let pow = generic_pow ~zero ~one ~div_two:(fun n -> shift_right n 1) ~mod_two:(logand one) ~mul:mul
+
+  (*$T pow
+     pow one one = one
+     pow one zero = one
+     pow zero one = zero
+     pow zero zero = one
+     pow one one = one
+     pow (neg one) one = neg one
+     try ignore (pow one (of_int ~-1)) ; false \
+     with Invalid_argument _ -> true | _ -> false
+  *)
 end
 
 include BatNumber.MakeNumeric(BaseInt32)
