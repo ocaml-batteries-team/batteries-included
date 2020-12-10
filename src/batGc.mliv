@@ -420,6 +420,7 @@ val delete_alarm : alarm -> unit
 ##V>=4.11##   notice. *)
 ##V>=4.11##module Memprof :
 ##V>=4.11##  sig
+##V>=4.12##    type allocation_source = Gc.Memprof.allocation_source = Normal | Marshal | Custom
 ##V>=4.11##    type allocation = Gc.Memprof.allocation = private
 ##V>=4.11##      { n_samples : int;
 ##V>=4.11##        (** The number of samples in this block (>= 1). *)
@@ -427,8 +428,10 @@ val delete_alarm : alarm -> unit
 ##V>=4.11##        size : int;
 ##V>=4.11##        (** The size of the block, in words, excluding the header. *)
 ##V>=4.11##
-##V>=4.11##        unmarshalled : bool;
-##V>=4.11##        (** Whether the block comes from unmarshalling. *)
+##V>=4.11####V<4.12##        unmarshalled : bool;
+##V>=4.11####V<4.12##        (** Whether the block comes from unmarshalling. *)
+##V>=4.12##        source : allocation_source;
+##V>=4.12##        (** The type of the allocation. *)
 ##V>=4.11##
 ##V>=4.11##        callstack : Printexc.raw_backtrace
 ##V>=4.11##        (** The callstack for the allocation. *)
