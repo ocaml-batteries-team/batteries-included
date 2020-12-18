@@ -558,6 +558,12 @@ val insert : 'a array -> 'a -> int -> 'a array
     @raise Invalid_argument
     if [i < 0 || i > Array.length xs]. *)
 
+val remove_at : int -> 'a array -> 'a array
+(** [remove_at i a] returns the array [a] without the element at index [i].
+
+    @raise Invalid_argument if [i] is outside of [a] bounds.
+    @since NEXT_RELEASE *)
+
 (** {6 Boilerplate code}*)
 
 val print : ?first:string -> ?last:string -> ?sep:string ->
