@@ -3,6 +3,10 @@ Changelog
 
 ## NEXT_RELEASE (minor release)
 
+- BatArray.remove_at: int -> 'a array -> 'a array
+  #996
+  (Francois Berenger)
+
 - BatDynArray: almost feature parity between DynArray and Array
   Added new functions to BatDynArray so that it contains almost the same
   function set as BatArray
