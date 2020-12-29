@@ -1344,7 +1344,14 @@ let group cmp lst =
 *)
 
 let cartesian_product l1 l2 =
-  List.concat (List.map (fun i -> List.map (fun j -> (i,j)) l2) l1)
+  let l1 = List.rev l1 in
+  let l2 = List.rev l2 in
+  List.fold_left
+    (fun acc a ->
+       List.fold_left
+         (fun acc b -> (a, b)::acc)
+         acc l2)
+    [] l1
 
 (*$T cartesian_product as cp
   cp [1;2;3] ['x';'y'] = [1,'x';1,'y';2,'x';2,'y';3,'x';3,'y']
