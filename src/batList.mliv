@@ -911,6 +911,12 @@ val cartesian_product : 'a list -> 'b list -> ('a * 'b) list
     [(a0,b0);(a0,b1); ...; (a0,bn); (a1,b0); ..; (a1, bn);
     ...; (an,bn)]].  The lists can be of unequal size. *)
 
+val cartesian_product_rev : 'a list -> 'b list -> ('a * 'b) list
+(** Same than [cartesian_product], but returns its output in reversed
+    order than [cartesian_product].
+    If you don't mind about the order of the output list, this function
+    is just a little bit faster while it doesn't reverse the input lists. *)
+
 val n_cartesian_product : 'a list list -> 'a list list
 (** Given n lists, return the n-way cartesian product of
     these lists.  Given [[a;b];[c];[d;e;f]], returns
