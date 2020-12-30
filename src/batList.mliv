@@ -915,7 +915,9 @@ val cartesian_product_rev : 'a list -> 'b list -> ('a * 'b) list
 (** Same than [cartesian_product], but returns its output in reversed
     order than [cartesian_product].
     If you don't mind about the order of the output list, this function
-    is just a little bit faster while it doesn't reverse the input lists. *)
+    is just a little bit faster while it doesn't reverse the input lists.
+
+    @since NEXT_RELEASE *)
 
 val n_cartesian_product : 'a list list -> 'a list list
 (** Given n lists, return the n-way cartesian product of
