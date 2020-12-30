@@ -919,6 +919,20 @@ val cartesian_product_rev : 'a list -> 'b list -> ('a * 'b) list
 
     @since NEXT_RELEASE *)
 
+val cartesian_product_iter : ('a * 'b -> unit) -> 'a list -> 'b list -> unit
+(** [cartesian_product_iter f l1 l2] passes to the function [f] every possible
+    pairs from elements from the two input lists.
+
+    @since NEXT_RELEASE *)
+
+val cartesian_product_fold : ('c -> 'a * 'b -> 'c) -> 'c -> 'a list -> 'b list -> 'c
+(** [cartesian_product_fold f init l1 l2] is similar than [List.fold_left]
+    but passes to the function [f] every possible pairs of elements from the
+    two input lists [l1] and [l2], and using an accumulator initialised with
+    [init]. Tail-recursive.
+
+    @since NEXT_RELEASE *)
+
 val n_cartesian_product : 'a list list -> 'a list list
 (** Given n lists, return the n-way cartesian product of
     these lists.  Given [[a;b];[c];[d;e;f]], returns

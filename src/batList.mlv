@@ -1369,6 +1369,29 @@ let cartesian_product_rev l1 l2 =
   cp [1;2;3] ['x';'y'] = [3,'y';3,'x';2,'y';2,'x';1,'y';1,'x']
 *)
 
+let cartesian_product_iter f l1 l2 =
+  List.iter (fun a ->
+    List.iter (fun b -> f (a, b)) l2
+  ) l1
+
+(*$T cartesian_product_iter as cpi
+  let acc = ref [] in cpi (fun pair -> acc := pair :: !acc) [1;2;3] ['x';'y']; \
+    !acc = [3,'y';3,'x';2,'y';2,'x';1,'y';1,'x']
+*)
+
+let cartesian_product_fold f init l1 l2 =
+  List.fold_left
+    (fun acc a ->
+       List.fold_left
+         (fun acc b -> f acc (a, b))
+         acc l2)
+    init l1
+
+(*$T cartesian_product_fold as cpf
+  cpf (fun acc pair -> pair::acc) [] [1;2;3] ['x';'y'] = \
+    [3,'y';3,'x';2,'y';2,'x';1,'y';1,'x']
+*)
+
 let rec n_cartesian_product = function
   | [] -> [[]]
   | h :: t ->
