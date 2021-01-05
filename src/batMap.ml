@@ -171,6 +171,36 @@ module Concrete = struct
       | Empty -> raise Not_found in
     loop map
 
+  let find_first_opt f map =
+    let rec loop found tree =
+      match tree with 
+      | Node(l, k, v, r, _) ->
+         if f k
+         then loop (Some (k, v)) l
+         else loop found r
+      | Empty -> found in
+    loop None map
+
+  let find_first f map =
+    match find_first_opt f map with
+    | Some x -> x
+    | None -> raise Not_found
+
+  let find_last_opt f map =
+    let rec loop found tree =
+      match tree with
+      | Node(l, k, v, r, _) ->
+         if f k
+         then loop (Some (k, v)) r
+         else loop found l
+      | Empty -> found in
+    loop None map
+            
+  let find_last f map =
+    match find_last_opt f map with
+    | Some x -> x
+    | None -> raise Not_found
+
   let find_option x cmp map =
     try Some (find x cmp map)
     with Not_found -> None
@@ -744,6 +774,10 @@ sig
   val find: key -> 'a t -> 'a
   val find_opt: key -> 'a t -> 'a option
   val find_default: 'a -> key -> 'a t -> 'a
+  val find_first: (key -> bool) -> 'a t -> key * 'a
+  val find_first_opt: (key -> bool) -> 'a t -> (key * 'a) option
+  val find_last: (key -> bool) -> 'a t -> key * 'a
+  val find_last_opt: (key -> bool) -> 'a t -> (key * 'a) option
   val remove: key -> 'a t -> 'a t
   val remove_exn: key -> 'a t -> 'a t
   val modify: key -> ('a -> 'a) -> 'a t -> 'a t
@@ -844,6 +878,10 @@ struct
   let update k1 k2 v2 t = t_of_impl (Concrete.update k1 k2 v2 Ord.compare (impl_of_t t))
   let find_default d k t = Concrete.find_default d k Ord.compare (impl_of_t t)
   let find_opt k t = Concrete.find_option k Ord.compare (impl_of_t t)
+  let find_first     f t = Concrete.find_first     f (impl_of_t t)
+  let find_first_opt f t = Concrete.find_first_opt f (impl_of_t t)
+  let find_last      f t = Concrete.find_last      f (impl_of_t t)
+  let find_last_opt  f t = Concrete.find_last_opt  f (impl_of_t t)
 
   let of_enum e = t_of_impl (Concrete.of_enum Ord.compare e)
 

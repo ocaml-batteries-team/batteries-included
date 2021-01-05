@@ -314,6 +314,70 @@ struct
     try find k m
     with Not_found -> def
 
+  (* option 1: simple implementation, dummy "find" invocation to perform rebalancing *)
+  let find_first_opt f (map : 'a t) =
+    let rec loop found tr =
+      match tr with
+      | Node(l, (k, v), r)
+        -> if f k
+           then loop (Some (k, v)) l
+           else loop found r
+      | Empty -> found in
+    let ret = loop None (sget map) in
+    (* dummy find to rebalance the tree *)
+    if Option.is_some ret
+    then ignore(find (fst (Option.get ret)) map);
+    ret
+
+  (* option 2: no unneccessary "find" invocation (saves several comparisons),
+     but implementation is rather complicated *)
+  let find_first f map =
+    let tr = sget map in
+    let sel (k, _) = if f k
+                     then -1
+                     else 1 in
+    let find_result = cfind ~sel:sel tr in
+    let rec find_last_left = function
+      | Left (entry, tree) :: _ as x -> x 
+      | Right(_) :: rest -> find_last_left rest
+      | [] -> raise Not_found in
+    let last_left = match find_result with
+      | C (list, Empty) -> find_last_left list
+      | _ -> raise Not_found in
+    let rec construct_new_cursor ?(cx=[]) tr steplist : (key * 'a) cursor =
+      let l, r = match tr with
+        | Node (l, _, r) -> l, r
+        | _ -> raise Not_found in
+      match steplist with
+      | [Left(_)] -> C (cx, tr)
+      | [] -> raise Not_found
+      | (Left(_)  as step) :: xs -> construct_new_cursor ~cx:(step :: cx) l xs
+      | (Right(_) as step) :: xs -> construct_new_cursor ~cx:(step :: cx) r xs in
+    let new_cursor = construct_new_cursor tr (List.rev last_left) in
+    let tr = csplay new_cursor in
+    match tr with
+    | Node (_, x, _) ->
+      rebalance map tr;
+      x
+    | _ -> raise Not_found
+
+  (* option 3: simple & fast implementation, no dummy invocation of "find",
+     but no rebalancing *)
+  let find_last_opt f (map : 'a t) =
+    let rec loop found tr =
+      match tr with 
+      | Node(l, (k, v), r)
+        -> if f k
+           then loop (Some (k, v)) r
+           else loop found l
+      | Empty -> found in
+    loop None (sget map)
+            
+  let find_last f map =
+    match find_last_opt f map with
+    | Some x -> x
+    | None -> raise Not_found
+
   let cchange fn (C (cx, t)) = C (cx, fn t)
 
   let remove k tr =
