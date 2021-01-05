@@ -181,6 +181,15 @@ module Concrete = struct
       | Empty -> found in
     loop None map
 
+  (*$T find_first_opt
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first_opt (fun x -> x >= 0)) = (Some (1, 11))
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first_opt (fun x -> x >= 1)) = (Some (1, 11))
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first_opt (fun x -> x >= 2)) = (Some (2, 12))
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first_opt (fun x -> x >= 3)) = (Some (3, 13))
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first_opt (fun x -> x >= 4)) = (None)
+    (empty |>                                     find_first_opt (fun x -> x >= 3)) = (None)
+  *)
+
   let find_first f map =
     match find_first_opt f map with
     | Some x -> x
@@ -196,6 +205,15 @@ module Concrete = struct
       | Empty -> found in
     loop None map
             
+  (*$T find_last_opt
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last_opt (fun x -> x <= 0)) = None
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last_opt (fun x -> x <= 1)) = Some (1, 11)
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last_opt (fun x -> x <= 2)) = Some (2, 12)
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last_opt (fun x -> x <= 3)) = Some (3, 13)
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last_opt (fun x -> x <= 4)) = Some (3, 13)
+    (empty |>                                     find_last_opt (fun x -> x <= 3)) = None
+  *)
+
   let find_last f map =
     match find_last_opt f map with
     | Some x -> x
@@ -1030,7 +1048,12 @@ let find_default def x m =
 (*$T find_default
     find_default 3 4 (add 1 2 empty) = 3
     find_default 3 1 (add 1 2 empty) = 2
-*)
+ *)
+
+let find_first f map = Concrete.find_first f map
+let find_first_opt f map = Concrete.find_first_opt f map
+let find_last f map = Concrete.find_last f map
+let find_last_opt f map = Concrete.find_last_opt f map
 
 (*$T pop_min_binding
   (empty |> add 1 true |> pop_min_binding) = ((1, true), empty)
@@ -1249,6 +1272,12 @@ module PMap = struct (*$< PMap *)
     find_default 3 1 (add 1 2 empty) = 2
   *)
 
+  let find_first f map = Concrete.find_first f map.map
+  let find_first_opt f map = Concrete.find_first_opt f map.map
+  let find_last f map = Concrete.find_last f map.map
+  let find_last_opt f map = Concrete.find_last_opt f map.map
+
+    
   (*$T update
     add 1 false empty |> update 1 1 true |> find 1
     add 1 false empty |> update 1 2 true |> find 2
