@@ -171,15 +171,50 @@ module Concrete = struct
       | Empty -> raise Not_found in
     loop map
 
-  let find_first_opt f map =
-    let rec loop found tree =
-      match tree with 
-      | Node(l, k, v, r, _) ->
-         if f k
-         then loop (Some (k, v)) l
-         else loop found r
-      | Empty -> found in
-    loop None map
+  let rec find_first_aux k0 v0 f = function
+    | Empty -> (k0, v0)
+    | Node (l, k, v, r, _) ->
+       if f k
+       then find_first_aux k v f l
+       else find_first_aux k0 v0 f r
+
+  let rec find_first f = function
+    | Empty -> raise Not_found
+    | Node (l, k, v, r, _) ->
+       if f k
+       then find_first_aux k v f l
+       else find_first f r
+
+  let rec find_first_opt f m =
+    try Some (find_first f m)
+    with Not_found -> None
+                    
+  let rec find_last_aux k0 v0 f = function
+    | Empty -> (k0, v0)
+    | Node (l, k, v, r, _) ->
+       if f k
+       then find_last_aux k v f r
+       else find_last_aux k0 v0 f l
+
+  let rec find_last f = function
+    | Empty -> raise Not_found
+    | Node (l, k, v, r, _) ->
+       if f k
+       then find_last_aux k v f r
+       else find_last f l
+
+  let rec find_last_opt f m =
+    try Some (find_last f m)
+    with Not_found -> None
+
+  (*$T find_first
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first (fun x -> x >= 0)) = ((1, 11))
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first (fun x -> x >= 1)) = ((1, 11))
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first (fun x -> x >= 2)) = ((2, 12))
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first (fun x -> x >= 3)) = ((3, 13))
+    try ignore(empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first (fun x -> x >= 4)); false with Not_found -> true
+    try ignore(empty |>                                     find_first (fun x -> x >= 3)); false with Not_found -> true
+  *)
 
   (*$T find_first_opt
     (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first_opt (fun x -> x >= 0)) = (Some (1, 11))
@@ -190,21 +225,15 @@ module Concrete = struct
     (empty |>                                     find_first_opt (fun x -> x >= 3)) = (None)
   *)
 
-  let find_first f map =
-    match find_first_opt f map with
-    | Some x -> x
-    | None -> raise Not_found
+  (*$T find_last
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last (fun x -> x <= 1)) = (1, 11)
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last (fun x -> x <= 2)) = (2, 12)
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last (fun x -> x <= 3)) = (3, 13)
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last (fun x -> x <= 4)) = (3, 13)
+    try ignore(empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last (fun x -> x <= 0)); false with Not_found -> true
+    try ignore(empty |>                                     find_last (fun x -> x <= 3)); false with Not_found -> true
+  *)
 
-  let find_last_opt f map =
-    let rec loop found tree =
-      match tree with
-      | Node(l, k, v, r, _) ->
-         if f k
-         then loop (Some (k, v)) r
-         else loop found l
-      | Empty -> found in
-    loop None map
-            
   (*$T find_last_opt
     (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last_opt (fun x -> x <= 0)) = None
     (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last_opt (fun x -> x <= 1)) = Some (1, 11)
@@ -213,11 +242,6 @@ module Concrete = struct
     (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last_opt (fun x -> x <= 4)) = Some (3, 13)
     (empty |>                                     find_last_opt (fun x -> x <= 3)) = None
   *)
-
-  let find_last f map =
-    match find_last_opt f map with
-    | Some x -> x
-    | None -> raise Not_found
 
   let find_option x cmp map =
     try Some (find x cmp map)
