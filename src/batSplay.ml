@@ -314,19 +314,58 @@ struct
     try find k m
     with Not_found -> def
 
-  let find_first_opt f (map : 'a t) =
-    let rec loop found tr =
-      match tr with
-      | Node(l, (k, v), r)
-        -> if f k
-           then loop (Some (k, v)) l
-           else loop found r
-      | Empty -> found in
-    let ret = loop None (sget map) in
+  let find_first f (map : 'a t) =
+    let rec loop_found f kv = function
+      | Node (l, (k, v), r) ->
+         if f k
+         then loop_found f (k, v) l
+         else loop_found f kv r
+      | Empty -> kv in
+    let rec loop_notfound f = function
+      | Node(l, (k, v), r) ->
+         if f k
+         then loop_found f (k, v) l
+         else loop_notfound f r
+      | Empty -> raise Not_found in
+    let ret = loop_notfound f (sget map) in
     (* dummy find to rebalance the tree *)
-    if Option.is_some ret
-    then ignore(find (fst (Option.get ret)) map);
+    ignore(find (fst ret) map);
     ret
+
+  let find_first_opt f map =
+    try Some (find_first f map)
+    with Not_found -> None
+
+  let find_last f (map : 'a t) =
+    let rec loop_found f kv = function
+      | Node (l, (k, v), r) ->
+         if f k
+         then loop_found f (k, v) r
+         else loop_found f kv l
+      | Empty -> kv in
+    let rec loop_notfound f = function
+      | Node(l, (k, v), r) ->
+         if f k
+         then loop_found f (k, v) r
+         else loop_notfound f l
+      | Empty -> raise Not_found in
+    let ret = loop_notfound f (sget map) in
+    (* dummy find to rebalance the tree *)
+    ignore(find (fst ret) map);
+    ret
+
+  let find_last_opt f map =
+    try Some (find_last f map)
+    with Not_found -> None
+                    
+  (*$T find_first
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first (fun x -> x >= 0)) = ((1, 11))
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first (fun x -> x >= 1)) = ((1, 11))
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first (fun x -> x >= 2)) = ((2, 12))
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first (fun x -> x >= 3)) = ((3, 13))
+    try ignore(empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first (fun x -> x >= 4)); false with Not_found -> true
+    try ignore(empty |>                                     find_first (fun x -> x >= 3)); false with Not_found -> true
+  *)
 
   (*$T find_first_opt
     (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first_opt (fun x -> x >= 0)) = (Some (1, 11))
@@ -337,24 +376,14 @@ struct
     (empty |>                                     find_first_opt (fun x -> x >= 3)) = (None)
   *)
 
-  let find_first f map =
-    match find_first_opt f map with
-    | Some x -> x
-    | None -> raise Not_found
-
-  let find_last_opt f (map : 'a t) =
-    let rec loop found tr =
-      match tr with 
-      | Node(l, (k, v), r)
-        -> if f k
-           then loop (Some (k, v)) r
-           else loop found l
-      | Empty -> found in
-    let ret = loop None (sget map) in
-    (* dummy find to rebalance the tree *)
-    if Option.is_some ret
-    then ignore(find (fst (Option.get ret)) map);
-    ret
+  (*$T find_last
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last (fun x -> x <= 1)) = (1, 11)
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last (fun x -> x <= 2)) = (2, 12)
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last (fun x -> x <= 3)) = (3, 13)
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last (fun x -> x <= 4)) = (3, 13)
+    try ignore(empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last (fun x -> x <= 0)); false with Not_found -> true
+    try ignore(empty |>                                     find_last (fun x -> x <= 3)); false with Not_found -> true
+  *)
 
   (*$T find_last_opt
     (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last_opt (fun x -> x <= 0)) = None
@@ -364,11 +393,6 @@ struct
     (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last_opt (fun x -> x <= 4)) = Some (3, 13)
     (empty |>                                     find_last_opt (fun x -> x <= 3)) = None
   *)
-            
-  let find_last f map =
-    match find_last_opt f map with
-    | Some x -> x
-    | None -> raise Not_found
 
   let cchange fn (C (cx, t)) = C (cx, fn t)
 
