@@ -171,41 +171,62 @@ module Concrete = struct
       | Empty -> raise Not_found in
     loop map
 
-  let rec find_first_aux k0 v0 f = function
-    | Empty -> (k0, v0)
-    | Node (l, k, v, r, _) ->
-       if f k
-       then find_first_aux k v f l
-       else find_first_aux k0 v0 f r
 
-  let rec find_first f = function
+  let rec find_first f m =
+    let rec loop_found k0 v0 f = function
+      | Empty -> (k0, v0)
+      | Node (l, k, v, r, _) ->
+         if f k
+         then loop_found k v f l
+         else loop_found k0 v0 f r in
+    match m with
     | Empty -> raise Not_found
     | Node (l, k, v, r, _) ->
        if f k
-       then find_first_aux k v f l
+       then loop_found k v f l
        else find_first f r
 
   let rec find_first_opt f m =
-    try Some (find_first f m)
-    with Not_found -> None
-                    
-  let rec find_last_aux k0 v0 f = function
-    | Empty -> (k0, v0)
+    let rec loop_found k0 v0 f = function
+      | Empty -> Some (k0, v0)
+      | Node (l, k, v, r, _) ->
+         if f k
+         then loop_found k v f l
+         else loop_found k0 v0 f r in
+    match m with
+    | Empty -> None
     | Node (l, k, v, r, _) ->
        if f k
-       then find_last_aux k v f r
-       else find_last_aux k0 v0 f l
-
-  let rec find_last f = function
+       then loop_found k v f l
+       else find_first_opt f r
+                    
+  let rec find_last f m =
+    let rec loop_found k0 v0 f = function
+      | Empty -> (k0, v0)
+      | Node (l, k, v, r, _) ->
+         if f k
+         then loop_found k v f r
+         else loop_found k0 v0 f l in
+    match m with 
     | Empty -> raise Not_found
     | Node (l, k, v, r, _) ->
        if f k
-       then find_last_aux k v f r
+       then loop_found k v f r
        else find_last f l
 
   let rec find_last_opt f m =
-    try Some (find_last f m)
-    with Not_found -> None
+    let rec loop_found k0 v0 f = function
+      | Empty -> Some (k0, v0)
+      | Node (l, k, v, r, _) ->
+         if f k
+         then loop_found k v f r
+         else loop_found k0 v0 f l in
+    match m with 
+    | Empty -> None
+    | Node (l, k, v, r, _) ->
+       if f k
+       then loop_found k v f r
+       else find_last_opt f l
 
   (*$T find_first
               (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first (fun x -> x >= 0)) = ((1, 11))

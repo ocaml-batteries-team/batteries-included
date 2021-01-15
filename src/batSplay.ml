@@ -333,8 +333,23 @@ struct
     ret
 
   let find_first_opt f map =
-    try Some (find_first f map)
-    with Not_found -> None
+    let rec loop_found f kv = function
+      | Node (l, (k, v), r) ->
+         if f k
+         then loop_found f (k, v) l
+         else loop_found f kv r
+      | Empty -> begin
+          (* dummy find to rebalance the tree *)
+          ignore(find (fst kv) map);
+          Some kv
+        end in
+    let rec loop_notfound f = function
+      | Node(l, (k, v), r) ->
+         if f k
+         then loop_found f (k, v) l
+         else loop_notfound f r
+      | Empty -> None in
+    loop_notfound f (sget map)
 
   let find_last f (map : 'a t) =
     let rec loop_found f kv = function
@@ -355,8 +370,23 @@ struct
     ret
 
   let find_last_opt f map =
-    try Some (find_last f map)
-    with Not_found -> None
+    let rec loop_found f kv = function
+      | Node (l, (k, v), r) ->
+         if f k
+         then loop_found f (k, v) r
+         else loop_found f kv l
+      | Empty -> begin
+          (* dummy find to rebalance the tree *)
+          ignore(find (fst kv) map);
+          Some kv
+        end in
+    let rec loop_notfound f = function
+      | Node(l, (k, v), r) ->
+         if f k
+         then loop_found f (k, v) r
+         else loop_notfound f l
+      | Empty -> None in
+    loop_notfound f (sget map)
                     
   (*$T find_first
               (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first (fun x -> x >= 0)) = ((1, 11))
