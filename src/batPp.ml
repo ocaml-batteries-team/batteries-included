@@ -13,7 +13,7 @@ man ocamlc:
     for an implementation (.ml) file.
    [...]
 
-It must support the following line directives which are used by batteries:
+BatPp must support the following line directives which are used by batteries:
 ^##V(>|>=|=|<|<=)%d[.%d[.%d]]## ... rest of the line ... $
 *)
 
@@ -23,11 +23,11 @@ module A = Array
 module S = String
 
 type version = int * int * int
-type operation = Veq of version (* ^##V=...  *)
-               | Vlt of version (* ^##V<...  *)
-               | Vle of version (* ^##V<=... *)
-               | Vgt of version (* ^##V>...  *)
-               | Vge of version (* ^##V>=... *)
+type operation = Veq of version (* ^##V=  ... *)
+               | Vlt of version (* ^##V<  ... *)
+               | Vle of version (* ^##V<= ... *)
+               | Vgt of version (* ^##V>  ... *)
+               | Vge of version (* ^##V>= ... *)
 
 let discard_additional_info version_str =
   try
@@ -57,42 +57,47 @@ let op_of_string s =
   | '>', _   -> Vgt (parse_version_string (S.sub s 1 (n - 1)))
   | other -> failwith ("BatPp.op_of_string: cannot parse: " ^ s)
 
-let string_of_version_striplet = function
+let string_of_version_triplet = function
   | (x, 0, 0) -> sprintf "%d" x
   | (x, y, 0) -> sprintf "%d.%d" x y
   | (x, y, z) -> sprintf "%d.%d.%d" x y z
 
 (* for debug *)
 let string_of_op = function
-  | Vle xyz -> sprintf "##V<=%s##" (string_of_version_striplet xyz)
-  | Vge xyz -> sprintf "##V>=%s##" (string_of_version_striplet xyz)
-  | Vlt xyz -> sprintf "##V<%s##"  (string_of_version_striplet xyz)
-  | Veq xyz -> sprintf "##V=%s##"  (string_of_version_striplet xyz)
-  | Vgt xyz -> sprintf "##V>%s##"  (string_of_version_striplet xyz)
+  | Vle xyz -> sprintf "##V<=%s##" (string_of_version_triplet xyz)
+  | Vge xyz -> sprintf "##V>=%s##" (string_of_version_triplet xyz)
+  | Vlt xyz -> sprintf "##V<%s##"  (string_of_version_triplet xyz)
+  | Veq xyz -> sprintf "##V=%s##"  (string_of_version_triplet xyz)
+  | Vgt xyz -> sprintf "##V>%s##"  (string_of_version_triplet xyz)
 
 (* should we output the current line? *)
 let process_op curr_ver pp_dir = match pp_dir with
+  (* we rely on the polymorphic compare to do the right thing... *)
   | Vle required -> (curr_ver <= required)
   | Vge required -> (curr_ver >= required)
   | Vlt required -> (curr_ver <  required)
   | Veq required -> (curr_ver =  required)
   | Vgt required -> (curr_ver >  required)
 
-let min_pp_dir_len = S.length "##V=1##"
 let current_version = parse_version_string Sys.ocaml_version
 
 let process_line debug l =
-  let n = S.length l in
-  if n > min_pp_dir_len then
-    try Scanf.sscanf l "##V%s@##%s@!" (fun op_str code_str ->
+  try
+    Scanf.sscanf l "##V%s@##%s@!" (fun op_str code_str ->
         let pp_dir = op_of_string op_str in
-        let prfx = if debug then string_of_op pp_dir else "" in
         if process_op current_version pp_dir then
-          printf "%s%s\n" prfx code_str
-        else (if debug then printf "%s\n" prfx)
+          if debug then
+            let prfx = string_of_op pp_dir in
+            printf "%s%s\n" prfx code_str
+          else
+            printf "%s\n" code_str
+        else
+        if debug then
+          let prfx = string_of_op pp_dir in
+          printf "%s\n" prfx
       )
-    with _ -> printf "%s\n" l (* no pp directive: output line as is *)
-  else
+  with _ ->
+    (* no pp line-prefix directive found: output line as is *)
     printf "%s\n" l
 
 let with_in_file fn f =
