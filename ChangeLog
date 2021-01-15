@@ -3,6 +3,11 @@ Changelog
 
 ## NEXT_RELEASE (minor release)
 
+- BatMap, BatSplay: find_first, find_first_opt, find_last, find_last_opt
+  for compatibility with stdlib
+  #1000
+  (Jakob Krainz)
+
 - BatArray.remove_at: int -> 'a array -> 'a array
   #996
   (Francois Berenger)
