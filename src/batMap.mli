@@ -110,6 +110,38 @@ sig
   (** [find_default d x m] returns the current binding of [x] in [m],
       or the default value [d] if no such binding exists. *)
 
+  val find_first: (key -> bool) -> 'a t -> key * 'a
+  (** [find_first f m] returns the first binding [(k, v)] for which [f k] is true
+      or raises [Not_found] if there is no such binding.
+      [f] must be monotonically increasing,
+      i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true. 
+    
+      @since NEXT_RELEASE *)
+
+  val find_first_opt: (key -> bool) -> 'a t -> (key * 'a) option
+  (** [find_first_opt f m] returns [Some (k, v)] for the first binding [(k, v)]
+      for which [f k] is true or returns [None] if there is no such binding.
+      [f] must be monotonically increasing,
+      i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true. 
+    
+      @since NEXT_RELEASE *)
+
+  val find_last: (key -> bool) -> 'a t -> key * 'a
+  (** [find_last f m] returns the last binding [(k, v)] for which [f k] is true
+      or raises [Not_found] if there is no such binding.
+      [f] must be monotonically decreasing,
+      i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true.  
+    
+      @since NEXT_RELEASE*)
+
+  val find_last_opt: (key -> bool) -> 'a t -> (key * 'a) option
+  (** [find_last_opt f m] returns [Some (k, v)] for the last binding [(k, v)]
+      for which [f k] is true or returns [None] if there is no such binding.
+      [f] must be monotonically decreasing,
+      i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true. 
+    
+      @since NEXT_RELEASE *)
+
   val remove: key -> 'a t -> 'a t
   (** [remove x m] returns a map containing the same bindings as
       [m], except for [x] which is unbound in the returned map.
@@ -450,6 +482,38 @@ val find_default : 'b -> 'a -> ('a, 'b) t -> 'b
 (** [find_default d x m] returns the current binding of [x] in [m],
     or the default value [d] if no such binding exists. *)
 
+val find_first: ('a -> bool) -> ('a, 'b) t -> 'a * 'b
+(** [find_first f m] returns the first binding [(k, v)] for which [f k] is true
+    or raises [Not_found] if there is no such binding.
+    [f] must be monotonically increasing,
+    i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true. 
+    
+    @since NEXT_RELEASE *)
+
+val find_first_opt: ('a -> bool) -> ('a, 'b) t -> ('a * 'b) option
+(** [find_first_opt f m] returns [Some (k, v)] for the first binding [(k, v)]
+    for which [f k] is true or returns [None] if there is no such binding.
+    [f] must be monotonically increasing,
+    i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true.  
+    
+    @since NEXT_RELEASE *)
+
+val find_last: ('a -> bool) -> ('a, 'b) t -> 'a * 'b
+(** [find_last f m] returns the last binding [(k, v)] for which [f k] is true
+    or raises [Not_found] if there is no such binding.
+    [f] must be monotonically decreasing,
+    i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true. 
+    
+    @since NEXT_RELEASE *)
+
+val find_last_opt: ('a -> bool) -> ('a, 'b) t -> ('a * 'b) option
+(** [find_last_opt f m] returns [Some (k, v)] for the last binding [(k, v)]
+    for which [f k] is true or returns [None] if there is no such binding.
+    [f] must be monotonically decreasing,
+    i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true. 
+    
+    @since NEXT_RELEASE *)
+
 val remove : 'a -> ('a, 'b) t -> ('a, 'b) t
 (** [remove x m] returns a map containing the same bindings as
     [m], except for [x] which is unbound in the returned map.
@@ -767,6 +831,38 @@ module PMap : sig
   val find_default : 'b -> 'a -> ('a, 'b) t -> 'b
   (** [find_default d x m] returns the current binding of [x] in [m],
       or the default value [d] if no such binding exists. *)
+
+  val find_first: ('a -> bool) -> ('a, 'b) t -> 'a * 'b
+  (** [find_first f m] returns the first binding [(k, v)] for which [f k] is true
+      or raises [Not_found] if there is no such binding.
+      [f] must be monotonically increasing,
+      i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true. 
+    
+      @since NEXT_RELEASE *)
+
+  val find_first_opt: ('a -> bool) -> ('a, 'b) t -> ('a * 'b) option
+  (** [find_first_opt f m] returns [Some (k, v)] for the first binding [(k, v)]
+      for which [f k] is true or returns [None] if there is no such binding.
+      [f] must be monotonically increasing,
+      i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true. 
+    
+      @since NEXT_RELEASE *)
+
+  val find_last: ('a -> bool) -> ('a, 'b) t -> 'a * 'b
+  (** [find_last f m] returns the last binding [(k, v)] for which [f k] is true
+      or raises [Not_found] if there is no such binding.
+      [f] must be monotonically decreasing,
+      i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true. 
+    
+      @since NEXT_RELEASE *)
+
+  val find_last_opt: ('a -> bool) -> ('a, 'b) t -> ('a * 'b) option
+  (** [find_last_opt f m] returns [Some (k, v)] for the last binding [(k, v)]
+      for which [f k] is true or returns [None] if there is no such binding.
+      [f] must be monotonically decreasing,
+      i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true. 
+    
+      @since NEXT_RELEASE *)
 
   val remove : 'a -> ('a, 'b) t -> ('a, 'b) t
   (** [remove x m] returns a map containing the same bindings as

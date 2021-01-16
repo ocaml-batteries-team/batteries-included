@@ -314,6 +314,98 @@ struct
     try find k m
     with Not_found -> def
 
+  let rec find_first_helper_found f kv map = function
+    | Node (l, (k, v), r) ->
+       if f k
+       then find_first_helper_found f (k, v) map l
+       else find_first_helper_found f kv map r
+    | Empty -> 
+       (* dummy find to rebalance the tree *)
+       ignore(find (fst kv) map);
+       kv
+             
+  let find_first f (map : 'a t) =
+    let rec loop_notfound f = function
+      | Node(l, (k, v), r) ->
+         if f k
+         then find_first_helper_found f (k, v) map l
+         else loop_notfound f r
+      | Empty -> raise Not_found in
+    loop_notfound f (sget map)
+
+  let find_first_opt f map =
+    let rec loop_notfound f = function
+      | Node(l, (k, v), r) ->
+         if f k
+         then Some (find_first_helper_found f (k, v) map l)
+         else loop_notfound f r
+      | Empty -> None in
+    loop_notfound f (sget map)
+
+  let rec find_last_helper_found f kv map = function
+    | Node (l, (k, v), r) ->
+       if f k
+       then find_last_helper_found f (k, v) map r
+       else find_last_helper_found f kv map l
+    | Empty ->
+       (* dummy find to rebalance the tree *)
+       ignore(find (fst kv) map);
+       kv
+    
+  let find_last f (map : 'a t) =
+    let rec loop_notfound f = function
+      | Node(l, (k, v), r) ->
+         if f k
+         then find_last_helper_found f (k, v) map r
+         else loop_notfound f l
+      | Empty -> raise Not_found in
+    loop_notfound f (sget map)
+
+  let find_last_opt f map =
+    let rec loop_notfound f = function
+      | Node(l, (k, v), r) ->
+         if f k
+         then Some (find_last_helper_found f (k, v) map r)
+         else loop_notfound f l
+      | Empty -> None in
+    loop_notfound f (sget map)
+                    
+  (*$T find_first
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first (fun x -> x >= 0)) = ((1, 11))
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first (fun x -> x >= 1)) = ((1, 11))
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first (fun x -> x >= 2)) = ((2, 12))
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first (fun x -> x >= 3)) = ((3, 13))
+    try ignore(empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first (fun x -> x >= 4)); false with Not_found -> true
+    try ignore(empty |>                                     find_first (fun x -> x >= 3)); false with Not_found -> true
+  *)
+
+  (*$T find_first_opt
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first_opt (fun x -> x >= 0)) = (Some (1, 11))
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first_opt (fun x -> x >= 1)) = (Some (1, 11))
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first_opt (fun x -> x >= 2)) = (Some (2, 12))
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first_opt (fun x -> x >= 3)) = (Some (3, 13))
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first_opt (fun x -> x >= 4)) = (None)
+    (empty |>                                     find_first_opt (fun x -> x >= 3)) = (None)
+  *)
+
+  (*$T find_last
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last (fun x -> x <= 1)) = (1, 11)
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last (fun x -> x <= 2)) = (2, 12)
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last (fun x -> x <= 3)) = (3, 13)
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last (fun x -> x <= 4)) = (3, 13)
+    try ignore(empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last (fun x -> x <= 0)); false with Not_found -> true
+    try ignore(empty |>                                     find_last (fun x -> x <= 3)); false with Not_found -> true
+  *)
+
+  (*$T find_last_opt
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last_opt (fun x -> x <= 0)) = None
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last_opt (fun x -> x <= 1)) = Some (1, 11)
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last_opt (fun x -> x <= 2)) = Some (2, 12)
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last_opt (fun x -> x <= 3)) = Some (3, 13)
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last_opt (fun x -> x <= 4)) = Some (3, 13)
+    (empty |>                                     find_last_opt (fun x -> x <= 3)) = None
+  *)
+
   let cchange fn (C (cx, t)) = C (cx, fn t)
 
   let remove k tr =

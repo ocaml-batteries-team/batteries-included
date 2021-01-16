@@ -171,6 +171,88 @@ module Concrete = struct
       | Empty -> raise Not_found in
     loop map
 
+  let rec find_first_helper_found k0 v0 f = function
+    | Empty -> (k0, v0)
+    | Node (l, k, v, r, _) ->
+       if f k
+       then find_first_helper_found k v f l
+       else find_first_helper_found k0 v0 f r
+
+  let rec find_first f m =
+    match m with
+    | Empty -> raise Not_found
+    | Node (l, k, v, r, _) ->
+       if f k
+       then find_first_helper_found k v f l
+       else find_first f r
+
+  let rec find_first_opt f m =
+    match m with
+    | Empty -> None
+    | Node (l, k, v, r, _) ->
+       if f k
+       then Some (find_first_helper_found k v f l)
+       else find_first_opt f r
+
+  let rec find_last_helper_found k0 v0 f = function
+    | Empty -> (k0, v0)
+    | Node (l, k, v, r, _) ->
+       if f k
+       then find_last_helper_found k v f r
+       else find_last_helper_found k0 v0 f l
+
+  let rec find_last f m =
+    match m with 
+    | Empty -> raise Not_found
+    | Node (l, k, v, r, _) ->
+       if f k
+       then find_last_helper_found k v f r
+       else find_last f l
+
+  let rec find_last_opt f m =
+    match m with 
+    | Empty -> None
+    | Node (l, k, v, r, _) ->
+       if f k
+       then Some (find_last_helper_found k v f r)
+       else find_last_opt f l
+
+  (*$T find_first
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first (fun x -> x >= 0)) = ((1, 11))
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first (fun x -> x >= 1)) = ((1, 11))
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first (fun x -> x >= 2)) = ((2, 12))
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first (fun x -> x >= 3)) = ((3, 13))
+    try ignore(empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first (fun x -> x >= 4)); false with Not_found -> true
+    try ignore(empty |>                                     find_first (fun x -> x >= 3)); false with Not_found -> true
+  *)
+
+  (*$T find_first_opt
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first_opt (fun x -> x >= 0)) = (Some (1, 11))
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first_opt (fun x -> x >= 1)) = (Some (1, 11))
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first_opt (fun x -> x >= 2)) = (Some (2, 12))
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first_opt (fun x -> x >= 3)) = (Some (3, 13))
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_first_opt (fun x -> x >= 4)) = (None)
+    (empty |>                                     find_first_opt (fun x -> x >= 3)) = (None)
+  *)
+
+  (*$T find_last
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last (fun x -> x <= 1)) = (1, 11)
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last (fun x -> x <= 2)) = (2, 12)
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last (fun x -> x <= 3)) = (3, 13)
+              (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last (fun x -> x <= 4)) = (3, 13)
+    try ignore(empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last (fun x -> x <= 0)); false with Not_found -> true
+    try ignore(empty |>                                     find_last (fun x -> x <= 3)); false with Not_found -> true
+  *)
+
+  (*$T find_last_opt
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last_opt (fun x -> x <= 0)) = None
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last_opt (fun x -> x <= 1)) = Some (1, 11)
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last_opt (fun x -> x <= 2)) = Some (2, 12)
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last_opt (fun x -> x <= 3)) = Some (3, 13)
+    (empty |> add 1 11 |> add 2 12 |> add 3 13 |> find_last_opt (fun x -> x <= 4)) = Some (3, 13)
+    (empty |>                                     find_last_opt (fun x -> x <= 3)) = None
+  *)
+
   let find_option x cmp map =
     try Some (find x cmp map)
     with Not_found -> None
@@ -744,6 +826,10 @@ sig
   val find: key -> 'a t -> 'a
   val find_opt: key -> 'a t -> 'a option
   val find_default: 'a -> key -> 'a t -> 'a
+  val find_first: (key -> bool) -> 'a t -> key * 'a
+  val find_first_opt: (key -> bool) -> 'a t -> (key * 'a) option
+  val find_last: (key -> bool) -> 'a t -> key * 'a
+  val find_last_opt: (key -> bool) -> 'a t -> (key * 'a) option
   val remove: key -> 'a t -> 'a t
   val remove_exn: key -> 'a t -> 'a t
   val modify: key -> ('a -> 'a) -> 'a t -> 'a t
@@ -844,6 +930,10 @@ struct
   let update k1 k2 v2 t = t_of_impl (Concrete.update k1 k2 v2 Ord.compare (impl_of_t t))
   let find_default d k t = Concrete.find_default d k Ord.compare (impl_of_t t)
   let find_opt k t = Concrete.find_option k Ord.compare (impl_of_t t)
+  let find_first     f t = Concrete.find_first     f (impl_of_t t)
+  let find_first_opt f t = Concrete.find_first_opt f (impl_of_t t)
+  let find_last      f t = Concrete.find_last      f (impl_of_t t)
+  let find_last_opt  f t = Concrete.find_last_opt  f (impl_of_t t)
 
   let of_enum e = t_of_impl (Concrete.of_enum Ord.compare e)
 
@@ -992,7 +1082,12 @@ let find_default def x m =
 (*$T find_default
     find_default 3 4 (add 1 2 empty) = 3
     find_default 3 1 (add 1 2 empty) = 2
-*)
+ *)
+
+let find_first f map = Concrete.find_first f map
+let find_first_opt f map = Concrete.find_first_opt f map
+let find_last f map = Concrete.find_last f map
+let find_last_opt f map = Concrete.find_last_opt f map
 
 (*$T pop_min_binding
   (empty |> add 1 true |> pop_min_binding) = ((1, true), empty)
@@ -1211,6 +1306,12 @@ module PMap = struct (*$< PMap *)
     find_default 3 1 (add 1 2 empty) = 2
   *)
 
+  let find_first f map = Concrete.find_first f map.map
+  let find_first_opt f map = Concrete.find_first_opt f map.map
+  let find_last f map = Concrete.find_last f map.map
+  let find_last_opt f map = Concrete.find_last_opt f map.map
+
+    
   (*$T update
     add 1 false empty |> update 1 1 true |> find 1
     add 1 false empty |> update 1 2 true |> find 2
