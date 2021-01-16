@@ -171,61 +171,50 @@ module Concrete = struct
       | Empty -> raise Not_found in
     loop map
 
+  let rec find_first_helper_found k0 v0 f = function
+    | Empty -> (k0, v0)
+    | Node (l, k, v, r, _) ->
+       if f k
+       then find_first_helper_found k v f l
+       else find_first_helper_found k0 v0 f r
 
   let rec find_first f m =
-    let rec loop_found k0 v0 f = function
-      | Empty -> (k0, v0)
-      | Node (l, k, v, r, _) ->
-         if f k
-         then loop_found k v f l
-         else loop_found k0 v0 f r in
     match m with
     | Empty -> raise Not_found
     | Node (l, k, v, r, _) ->
        if f k
-       then loop_found k v f l
+       then find_first_helper_found k v f l
        else find_first f r
 
   let rec find_first_opt f m =
-    let rec loop_found k0 v0 f = function
-      | Empty -> Some (k0, v0)
-      | Node (l, k, v, r, _) ->
-         if f k
-         then loop_found k v f l
-         else loop_found k0 v0 f r in
     match m with
     | Empty -> None
     | Node (l, k, v, r, _) ->
        if f k
-       then loop_found k v f l
+       then Some (find_first_helper_found k v f l)
        else find_first_opt f r
-                    
+
+  let rec find_last_helper_found k0 v0 f = function
+    | Empty -> (k0, v0)
+    | Node (l, k, v, r, _) ->
+       if f k
+       then find_last_helper_found k v f r
+       else find_last_helper_found k0 v0 f l
+
   let rec find_last f m =
-    let rec loop_found k0 v0 f = function
-      | Empty -> (k0, v0)
-      | Node (l, k, v, r, _) ->
-         if f k
-         then loop_found k v f r
-         else loop_found k0 v0 f l in
     match m with 
     | Empty -> raise Not_found
     | Node (l, k, v, r, _) ->
        if f k
-       then loop_found k v f r
+       then find_last_helper_found k v f r
        else find_last f l
 
   let rec find_last_opt f m =
-    let rec loop_found k0 v0 f = function
-      | Empty -> Some (k0, v0)
-      | Node (l, k, v, r, _) ->
-         if f k
-         then loop_found k v f r
-         else loop_found k0 v0 f l in
     match m with 
     | Empty -> None
     | Node (l, k, v, r, _) ->
        if f k
-       then loop_found k v f r
+       then Some (find_last_helper_found k v f r)
        else find_last_opt f l
 
   (*$T find_first

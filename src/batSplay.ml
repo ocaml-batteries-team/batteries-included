@@ -314,76 +314,58 @@ struct
     try find k m
     with Not_found -> def
 
+  let rec find_first_helper_found f kv map = function
+    | Node (l, (k, v), r) ->
+       if f k
+       then find_first_helper_found f (k, v) map l
+       else find_first_helper_found f kv map r
+    | Empty -> 
+       (* dummy find to rebalance the tree *)
+       ignore(find (fst kv) map);
+       kv
+             
   let find_first f (map : 'a t) =
-    let rec loop_found f kv = function
-      | Node (l, (k, v), r) ->
-         if f k
-         then loop_found f (k, v) l
-         else loop_found f kv r
-      | Empty -> kv in
     let rec loop_notfound f = function
       | Node(l, (k, v), r) ->
          if f k
-         then loop_found f (k, v) l
+         then find_first_helper_found f (k, v) map l
          else loop_notfound f r
       | Empty -> raise Not_found in
-    let ret = loop_notfound f (sget map) in
-    (* dummy find to rebalance the tree *)
-    ignore(find (fst ret) map);
-    ret
+    loop_notfound f (sget map)
 
   let find_first_opt f map =
-    let rec loop_found f kv = function
-      | Node (l, (k, v), r) ->
-         if f k
-         then loop_found f (k, v) l
-         else loop_found f kv r
-      | Empty -> begin
-          (* dummy find to rebalance the tree *)
-          ignore(find (fst kv) map);
-          Some kv
-        end in
     let rec loop_notfound f = function
       | Node(l, (k, v), r) ->
          if f k
-         then loop_found f (k, v) l
+         then Some (find_first_helper_found f (k, v) map l)
          else loop_notfound f r
       | Empty -> None in
     loop_notfound f (sget map)
 
+  let rec find_last_helper_found f kv map = function
+    | Node (l, (k, v), r) ->
+       if f k
+       then find_last_helper_found f (k, v) map r
+       else find_last_helper_found f kv map l
+    | Empty ->
+       (* dummy find to rebalance the tree *)
+       ignore(find (fst kv) map);
+       kv
+    
   let find_last f (map : 'a t) =
-    let rec loop_found f kv = function
-      | Node (l, (k, v), r) ->
-         if f k
-         then loop_found f (k, v) r
-         else loop_found f kv l
-      | Empty -> kv in
     let rec loop_notfound f = function
       | Node(l, (k, v), r) ->
          if f k
-         then loop_found f (k, v) r
+         then find_last_helper_found f (k, v) map r
          else loop_notfound f l
       | Empty -> raise Not_found in
-    let ret = loop_notfound f (sget map) in
-    (* dummy find to rebalance the tree *)
-    ignore(find (fst ret) map);
-    ret
+    loop_notfound f (sget map)
 
   let find_last_opt f map =
-    let rec loop_found f kv = function
-      | Node (l, (k, v), r) ->
-         if f k
-         then loop_found f (k, v) r
-         else loop_found f kv l
-      | Empty -> begin
-          (* dummy find to rebalance the tree *)
-          ignore(find (fst kv) map);
-          Some kv
-        end in
     let rec loop_notfound f = function
       | Node(l, (k, v), r) ->
          if f k
-         then loop_found f (k, v) r
+         then Some (find_last_helper_found f (k, v) map r)
          else loop_notfound f l
       | Empty -> None in
     loop_notfound f (sget map)
