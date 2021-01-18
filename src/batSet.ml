@@ -85,6 +85,11 @@ module Concrete = struct
     | Node(Empty, v, r, _) -> v
     | Node(l, v, r, _) -> min_elt l
 
+  let rec min_elt_opt = function
+      Empty -> None
+    | Node(Empty, v, r, _) -> Some v
+    | Node(l, v, r, _) -> min_elt_opt l
+
   let get_root = function
     | Empty -> raise Not_found
     | Node(_l, v, _r, _) -> v
@@ -114,6 +119,11 @@ module Concrete = struct
     | Node(l, v, Empty, _) -> v
     | Node(l, v, r, _) -> max_elt r
 
+  let rec max_elt_opt = function
+      Empty -> None
+    | Node(l, v, Empty, _) -> Some v
+    | Node(l, v, r, _) -> max_elt_opt r
+
   (* Remove the smallest element of the given set *)
   let rec remove_min_elt = function
       Empty -> invalid_arg "Set.remove_min_elt"
@@ -137,18 +147,42 @@ module Concrete = struct
 
   (* Insertion of one element *)
   let rec add cmp x = function
-      Empty -> Node(Empty, x, Empty, 1)
+    | Empty -> Node(Empty, x, Empty, 1)
     | Node(l, v, r, _) as t ->
       let c = cmp x v in
-      if c = 0 then t else
-      if c < 0 then bal (add cmp x l) v r else bal l v (add cmp x r)
-
+      if c = 0 then
+        t
+      else if c < 0 then
+        let nl = add cmp x l in
+        if nl == l then
+          t
+        else
+          bal nl v r
+      else
+        let nr = add cmp x r in
+        if nr == r then
+          t
+        else 
+          bal l v nr
+        
   let rec remove cmp x = function
-      Empty -> Empty
-    | Node(l, v, r, _) ->
+    | Empty as t -> t
+    | Node(l, v, r, _) as t ->
       let c = cmp x v in
-      if c = 0 then merge l r else
-      if c < 0 then bal (remove cmp x l) v r else bal l v (remove cmp x r)
+      if c = 0 then
+        merge l r
+      else if c < 0 then
+        let nl = remove cmp x l in
+        if nl == l then
+          t
+        else 
+          bal nl v r
+      else
+        let nr = remove cmp x r in
+        if nr == r then
+          t
+        else
+          bal l v nr
 
   (* A variant of [remove] that throws [Not_found] on failure *)
   let rec remove_exn cmp x = function
@@ -169,14 +203,25 @@ module Concrete = struct
     else
       let rec loop = function
         | Empty -> raise Not_found
-        | Node(l, v, r, h) ->
-          let c = cmp x v in
-          if c = 0 then
-            Node(l, y, r, h)
-          else if c < 0 then
-            Node(loop l, v, r, h)
-          else
-            Node(l, v, loop r, h)
+        | Node(l, v, r, h) as t ->
+           let c = cmp x v in
+           if c = 0 then
+             if v == y then
+               t
+             else 
+               Node(l, y, r, h)
+           else if c < 0 then
+             let nl = loop l in
+             if nl == l then
+               t
+             else 
+               Node(nl, v, r, h)
+           else
+             let nr = loop r in
+             if nr == r then
+               t
+             else                       
+               Node(l, v, nr, h)
       in
       loop s
 
@@ -191,6 +236,58 @@ module Concrete = struct
     | Node(l, v, r, _) ->
       let c = cmp x v in
       if c = 0 then v else  find cmp x (if c < 0 then l else r)
+
+  let rec find_opt cmp x = function
+      Empty -> None
+    | Node(l, v, r, _) ->
+      let c = cmp x v in
+      if c = 0 then Some v else find_opt cmp x (if c < 0 then l else r)
+
+  let rec find_first_helper_found k0 f = function
+    | Empty -> k0
+    | Node (l, k, r, _) ->
+       if f k
+       then find_first_helper_found k f l
+       else find_first_helper_found k0 f r
+
+  let rec find_first f m =
+    match m with
+    | Empty -> raise Not_found
+    | Node (l, k, r, _) ->
+       if f k
+       then find_first_helper_found k f l
+       else find_first f r
+
+  let rec find_first_opt f m =
+    match m with
+    | Empty -> None
+    | Node (l, k, r, _) ->
+       if f k
+       then Some (find_first_helper_found k f l)
+       else find_first_opt f r
+
+  let rec find_last_helper_found k0 f = function
+    | Empty -> k0
+    | Node (l, k, r, _) ->
+       if f k
+       then find_last_helper_found k f r
+       else find_last_helper_found k0 f l
+
+  let rec find_last f m =
+    match m with 
+    | Empty -> raise Not_found
+    | Node (l, k, r, _) ->
+       if f k
+       then find_last_helper_found k f r
+       else find_last f l
+
+  let rec find_last_opt f m =
+    match m with 
+    | Empty -> None
+    | Node (l, k, r, _) ->
+       if f k
+       then Some (find_last_helper_found k f r)
+       else find_last_opt f l
 
   let rec iter f = function
       Empty -> ()
@@ -395,15 +492,15 @@ module Concrete = struct
   let print ?(first="{") ?(last="}") ?(sep=",") print_elt out t =
     BatEnum.print ~first ~last ~sep (fun out e -> BatPrintf.fprintf out "%a" print_elt e) out (enum t)
 
-  let filter cmp f e = fold (fun x acc -> if f x then add cmp x acc else acc) e empty
-
   let filter_map cmp f e = fold (fun x acc -> match f x with Some v -> add cmp v acc | _ -> acc) e empty
 
-  let choose = min_elt (* I'd rather this chose the root, but okay *)
+   let choose = min_elt (* I'd rather this chose the root, but okay *)
   (*$= choose
     42 (empty |> add 42 |> choose)
     (empty |> add 0 |> add 1 |> choose) (empty |> add 1 |> add 0 |> choose)
-  *)
+   *)
+
+  let choose_opt = min_elt_opt
 
   let any = get_root
   (*$T any
@@ -457,6 +554,57 @@ module Concrete = struct
         let (l1, _, r1) = split cmp12 v2 s1 in
         join (union cmp12 l1 l2) v2 (union cmp12 r1 r2)
       end
+
+  let rec filter p = function
+      Empty -> Empty
+    | (Node(l,v,r,_)) as t ->
+       (* call [p] in the expected left-to-right order *)
+       let l' = filter p l in
+       let pv = p v in
+       let r' = filter p r in
+       if pv then
+         if l==l' && r==r' then t else join l' v r'
+       else concat l' r'
+                       
+  let try_join cmp l v r =
+    (* [join l v r] can only be called when (elements of l < v <
+         elements of r); use [try_join l v r] when this property may
+         not hold, but you hope it does hold in the common case *)
+    if (l = Empty || cmp (max_elt l) v < 0)
+       && (r = Empty || cmp v (min_elt r) < 0)
+    then join l v r
+    else union cmp l (add cmp v r)
+
+  let rec map_stdlib cmp f = function
+    | Empty -> Empty
+    | Node(l, v, r, _) as t ->
+       (* enforce left-to-right evaluation order *)
+       let l' = map_stdlib cmp f l in
+       let v' = f v in
+       let r' = map_stdlib cmp f r in
+       if l == l' && v == v' && r == r' then t
+       else try_join cmp l' v' r'
+
+  let try_concat cmp t1 t2 =
+    match (t1, t2) with
+      (Empty, t) -> t
+    | (t, Empty) -> t
+    | (_, _) -> try_join cmp t1 (min_elt t2) (remove_min_elt t2)
+
+  let rec filter_map_stdlib cmp f = function
+    | Empty -> Empty
+    | Node(l, v, r, _) as t ->
+       (* enforce left-to-right evaluation order *)
+       let l' = filter_map_stdlib cmp f l in
+       let v' = f v in
+       let r' = filter_map_stdlib cmp f r in
+       begin match v' with
+       | Some v' ->
+          if l == l' && v == v' && r == r' then t
+          else try_join cmp l' v' r'
+       | None ->
+          try_concat cmp l' r'
+       end
 
   let rec sym_diff cmp12 s1 s2 =
     match (s1, s2) with
@@ -531,6 +679,28 @@ module Concrete = struct
         subset cmp (Node (l1, v1, Empty, 0)) l2 && subset cmp r1 t2
       else
         subset cmp (Node (Empty, v1, r1, 0)) r2 && subset cmp l1 t2
+
+  let add_seq cmp s m =
+    Seq.fold_left (fun m e -> add cmp e m) m s
+    
+  let of_seq cmp s =
+    add_seq cmp s empty
+    
+  let rec to_seq m =
+    match m with
+    | Empty -> Seq.empty
+    | Node(l, v, r, _) -> 
+       Seq.append (to_seq l) (Seq.cons v (to_seq r))
+    
+  let rec to_seq_from cmp k m =
+    match m with
+    | Empty -> Seq.empty
+    | Node(l, v, r, _) ->
+       if cmp k v <= 0 then
+         Seq.append (to_seq_from cmp k l) (Seq.cons v (to_seq r))
+       else
+         to_seq r
+  
 end
 
 module type S =
@@ -542,6 +712,11 @@ sig
   val singleton: elt -> t
   val mem: elt -> t -> bool
   val find: elt -> t -> elt
+  val find_opt: elt -> t -> elt option
+  val find_first : (elt -> bool) -> t -> elt
+  val find_first_opt : (elt -> bool) -> t -> elt option
+  val find_last : (elt -> bool) -> t -> elt
+  val find_last_opt : (elt -> bool) -> t -> elt option
   val add: elt -> t -> t
   val remove: elt -> t -> t
   val remove_exn: elt -> t -> t
@@ -573,10 +748,13 @@ sig
   val to_list: t -> elt list
   val to_array: t -> elt array
   val min_elt: t -> elt
+  val min_elt_opt: t -> elt option
   val pop_min: t -> elt * t
   val pop_max: t -> elt * t
   val max_elt: t -> elt
+  val max_elt_opt: t -> elt option
   val choose: t -> elt
+  val choose_opt: t -> elt option
   val any: t -> elt
   val pop: t -> elt * t
   val enum: t -> elt BatEnum.t
@@ -584,6 +762,10 @@ sig
   val of_enum: elt BatEnum.t -> t
   val of_list: elt list -> t
   val of_array: elt array -> t
+  val to_seq : t -> elt Seq.t
+  val to_seq_from :  elt -> t -> elt Seq.t
+  val add_seq : elt Seq.t -> t -> t
+  val of_seq : elt Seq.t -> t
   val print :  ?first:string -> ?last:string -> ?sep:string ->
     ('a BatInnerIO.output -> elt -> unit) ->
     'a BatInnerIO.output -> t -> unit
@@ -612,7 +794,6 @@ end
 module Make (Ord : OrderedType) =
 struct
   include Set.Make(Ord)
-
   (*Breaking the abstraction*)
 
   type implementation = elt Concrete.set
@@ -633,12 +814,17 @@ struct
 
   let iter f t = Concrete.iter f (impl_of_t t)
   let at_rank_exn i t = Concrete.at_rank_exn i (impl_of_t t)
-  let map f t = t_of_impl (Concrete.map Ord.compare f (impl_of_t t))
+  let map f t = t_of_impl (Concrete.map_stdlib Ord.compare f (impl_of_t t))
   let fold f t acc = Concrete.fold f (impl_of_t t) acc
-  let filter f t = t_of_impl (Concrete.filter Ord.compare f (impl_of_t t))
-  let filter_map f t = t_of_impl (Concrete.filter_map Ord.compare f (impl_of_t t))
+  let filter f t = t_of_impl (Concrete.filter f (impl_of_t t))
+  let filter_map f t = t_of_impl (Concrete.filter_map_stdlib Ord.compare f (impl_of_t t))
 
   let find x t = Concrete.find Ord.compare x (impl_of_t t)
+  let find_opt x t = Concrete.find_opt Ord.compare x (impl_of_t t)
+  let find_first f t = Concrete.find_first f (impl_of_t t)
+  let find_first_opt f t = Concrete.find_first_opt f (impl_of_t t)
+  let find_last f t = Concrete.find_last f (impl_of_t t)
+  let find_last_opt f t = Concrete.find_last_opt f (impl_of_t t)
   let exists f t = Concrete.exists f (impl_of_t t)
   let for_all f t = Concrete.for_all f (impl_of_t t)
   let partition f t =
@@ -646,6 +832,7 @@ struct
     (t_of_impl l, t_of_impl r)
 
   let min_elt t = Concrete.min_elt (impl_of_t t)
+  let min_elt_opt t = Concrete.min_elt_opt (impl_of_t t)
   let pop_min t =
     let mini, others = Concrete.pop_min (impl_of_t t) in
     (mini, t_of_impl others)
@@ -654,7 +841,9 @@ struct
     (maxi, t_of_impl others)
 
   let max_elt t = Concrete.max_elt (impl_of_t t)
+  let max_elt_opt t = Concrete.max_elt_opt (impl_of_t t)
   let choose t = Concrete.choose (impl_of_t t)
+  let choose_opt t = Concrete.choose_opt (impl_of_t t)
   let any t = Concrete.any (impl_of_t t)
   let pop t =
     let e, t = Concrete.pop (impl_of_t t) in
@@ -694,6 +883,18 @@ struct
   let equal t1 t2 = Concrete.equal Ord.compare (impl_of_t t1) (impl_of_t t2)
   let subset t1 t2 = Concrete.subset Ord.compare (impl_of_t t1) (impl_of_t t2)
   let disjoint t1 t2 = Concrete.disjoint Ord.compare (impl_of_t t1) (impl_of_t t2)
+
+  let add_seq s t =
+    t_of_impl (Concrete.add_seq Ord.compare s (impl_of_t t))
+    
+  let of_seq s =
+    t_of_impl (Concrete.of_seq Ord.compare s)
+    
+  let to_seq t =
+    Concrete.to_seq (impl_of_t t)
+    
+  let to_seq_from k t =
+    Concrete.to_seq_from Ord.compare k (impl_of_t t)
 
   let rec compare_subset s1 s2 =
     match (s1, impl_of_t s2) with
@@ -794,11 +995,16 @@ module PSet = struct (*$< PSet *)
     get_cmp (create BatInt.compare) == BatInt.compare
   *)
 
-
+  (* TODO: ensure phys. equality for add remove update map_stdlib filter filter_map_stdlib *)
   let singleton ?(cmp = compare) x = { cmp = cmp; set = Concrete.singleton x }
   let is_empty s = Concrete.is_empty s.set
   let mem x s = Concrete.mem s.cmp x s.set
   let find x s = Concrete.find s.cmp x s.set
+  let find_opt x s = Concrete.find_opt s.cmp x s.set
+  let find_first f s =  Concrete.find_first f s.set
+  let find_first_opt f s =  Concrete.find_first_opt f s.set
+  let find_last f s =  Concrete.find_last f s.set
+  let find_last_opt f s =  Concrete.find_last_opt f s.set
   let add x s  = { s with set = Concrete.add s.cmp x s.set }
   let remove x s = { s with set = Concrete.remove s.cmp x s.set }
   let remove_exn x s = { s with set = Concrete.remove_exn s.cmp x s.set }
@@ -808,17 +1014,24 @@ module PSet = struct (*$< PSet *)
   let fold f s acc = Concrete.fold f s.set acc
   let map f s =
     { cmp = Pervasives.compare; set = Concrete.map Pervasives.compare f s.set }
-  let filter f s = { s with set = Concrete.filter s.cmp f s.set }
+  let map_stdlib f s =
+    let newset = Concrete.map_stdlib Pervasives.compare f s.set in
+    { cmp = s.cmp; set = newset }
+  let filter f s = { s with set = Concrete.filter f s.set }
   let filter_map f s =
     { cmp = compare; set = Concrete.filter_map compare f s.set }
+  let filter_map_stdlib f s =
+    { cmp = s.cmp; set = Concrete.filter_map_stdlib compare f s.set }
   let exists f s = Concrete.exists f s.set
   let cardinal s = fold (fun _ acc -> acc + 1) s 0
   let elements s = Concrete.elements s.set
   let to_list = elements
   let to_array s = Concrete.to_array s.set
   let choose s = Concrete.choose s.set
+  let choose_opt s = Concrete.choose_opt s.set
   let any s = Concrete.any s.set
   let min_elt s = Concrete.min_elt s.set
+  let min_elt_opt s = Concrete.min_elt_opt s.set
   let pop_min s =
     let mini, others = Concrete.pop_min s.set in
     (mini, { s with set = others })
@@ -827,6 +1040,7 @@ module PSet = struct (*$< PSet *)
     (maxi, { s with set = others })
 
   let max_elt s = Concrete.max_elt s.set
+  let max_elt_opt s = Concrete.max_elt_opt s.set
   let enum s = Concrete.enum s.set
   let of_enum ?(cmp = compare) e = { cmp; set = Concrete.of_enum compare e }
   let of_enum_cmp ~cmp t = { cmp = cmp; set = Concrete.of_enum cmp t }
@@ -865,6 +1079,20 @@ module PSet = struct (*$< PSet *)
   let equal s1 s2 = Concrete.equal s1.cmp s1.set s2.set
   let subset s1 s2 = Concrete.subset s1.cmp s1.set s2.set
   let disjoint s1 s2 = Concrete.disjoint s1.cmp s1.set s2.set
+
+                     
+  let add_seq s t =
+    { t with set = Concrete.add_seq t.cmp s t.set }
+    
+  let of_seq  ?(cmp = Pervasives.compare) s =
+    {set = Concrete.of_seq cmp s; cmp = cmp }
+    
+  let to_seq t =
+    Concrete.to_seq t.set
+    
+  let to_seq_from k t =
+    Concrete.to_seq_from t.cmp k t.set
+
 end (*$>*)
 
 type 'a t = 'a Concrete.set
@@ -882,6 +1110,13 @@ let mem x s = Concrete.mem Pervasives.compare x s
 
 let find x s = Concrete.find Pervasives.compare x s
 
+let find_opt x s = Concrete.find_opt Pervasives.compare x s
+
+let find_first f s = Concrete.find_first f s
+let find_last  f s = Concrete.find_last  f s
+let find_first_opt f s = Concrete.find_first_opt f s
+let find_last_opt  f s = Concrete.find_last_opt  f s
+                 
 (*$T find
   (find 1 (of_list [1;2;3;4;5;6;7;8])) == 1
   (find 8 (of_list [1;2;3;4;5;6;7;8])) == 8
@@ -891,6 +1126,48 @@ let find x s = Concrete.find Pervasives.compare x s
   let x,y = (1,1),(1,1) in find x (singleton y) == y
   let x,y = [|0|],[|0|] in find x (singleton y) != x
   try ignore (find (1,2) (singleton (1,1))); false with Not_found -> true
+ *)
+
+(*$T find_opt
+  (find_opt 1 (of_list [1;2;3;4;5;6;7;8])) = Some 1
+  (find_opt 8 (of_list [1;2;3;4;5;6;7;8])) = Some 8
+  (find_opt (1,2) (singleton (1,1))) = None
+*)
+
+(*$T find_first
+            (empty |> add 1 |> add 2 |> add 3 |> find_first (fun x -> x >= 0)) = 1
+            (empty |> add 1 |> add 2 |> add 3 |> find_first (fun x -> x >= 1)) = 1
+            (empty |> add 1 |> add 2 |> add 3 |> find_first (fun x -> x >= 2)) = 2
+            (empty |> add 1 |> add 2 |> add 3 |> find_first (fun x -> x >= 3)) = 3
+  try ignore(empty |> add 1 |> add 2 |> add 3 |> find_first (fun x -> x >= 4)); false with Not_found -> true
+  try ignore(empty |>                            find_first (fun x -> x >= 3)); false with Not_found -> true
+*)
+
+(*$T find_first_opt
+  (empty |> add 1 |> add 2 |> add 3 |> find_first_opt (fun x -> x >= 0)) = (Some 1)
+  (empty |> add 1 |> add 2 |> add 3 |> find_first_opt (fun x -> x >= 1)) = (Some 1)
+  (empty |> add 1 |> add 2 |> add 3 |> find_first_opt (fun x -> x >= 2)) = (Some 2)
+  (empty |> add 1 |> add 2 |> add 3 |> find_first_opt (fun x -> x >= 3)) = (Some 3)
+  (empty |> add 1 |> add 2 |> add 3 |> find_first_opt (fun x -> x >= 4)) = (None)
+  (empty |>                            find_first_opt (fun x -> x >= 3)) = (None)
+*)
+
+(*$T find_last
+            (empty |> add 1 |> add 2 |> add 3 |> find_last (fun x -> x <= 1)) = 1
+            (empty |> add 1 |> add 2 |> add 3 |> find_last (fun x -> x <= 2)) = 2
+            (empty |> add 1 |> add 2 |> add 3 |> find_last (fun x -> x <= 3)) = 3
+            (empty |> add 1 |> add 2 |> add 3 |> find_last (fun x -> x <= 4)) = 3
+  try ignore(empty |> add 1 |> add 2 |> add 3 |> find_last (fun x -> x <= 0)); false with Not_found -> true
+  try ignore(empty |>                            find_last (fun x -> x <= 3)); false with Not_found -> true
+*)
+
+(*$T find_last_opt
+  (empty |> add 1 |> add 2 |> add 3 |> find_last_opt (fun x -> x <= 0)) = None
+  (empty |> add 1 |> add 2 |> add 3 |> find_last_opt (fun x -> x <= 1)) = Some 1
+  (empty |> add 1 |> add 2 |> add 3 |> find_last_opt (fun x -> x <= 2)) = Some 2
+  (empty |> add 1 |> add 2 |> add 3 |> find_last_opt (fun x -> x <= 3)) = Some 3
+  (empty |> add 1 |> add 2 |> add 3 |> find_last_opt (fun x -> x <= 4)) = Some 3
+  (empty |>                            find_last_opt (fun x -> x <= 3)) = None
 *)
 
 let add x s  = Concrete.add Pervasives.compare x s
@@ -918,14 +1195,16 @@ let at_rank_exn i s = Concrete.at_rank_exn i s
 let fold f s acc = Concrete.fold f s acc
 
 let map f s = Concrete.map Pervasives.compare f s
+let map_stdlib f s = Concrete.map_stdlib Pervasives.compare f s
 
 (*$T map
   map (fun _x -> 1) (of_list [1;2;3]) |> cardinal = 1
 *)
 
-let filter f s = Concrete.filter Pervasives.compare f s
+let filter f s = Concrete.filter f s
 
 let filter_map f s = Concrete.filter_map Pervasives.compare f s
+let filter_map_stdlib f s = Concrete.filter_map_stdlib Pervasives.compare f s
 
 let exists f s = Concrete.exists f s
 
@@ -936,9 +1215,18 @@ let to_list = elements
 let to_array s = Concrete.to_array s
 
 let choose s = Concrete.choose s
+let choose_opt s = Concrete.choose_opt s
+
+(*$T choose_opt
+  choose_opt (of_list [1]) = Some 1
+  choose_opt (empty) = None
+  choose_opt (of_list []) = None
+*)
+
 let any s = Concrete.any s
 
 let min_elt s = Concrete.min_elt s
+let min_elt_opt s = Concrete.min_elt_opt s
 
 (*$Q min_elt
   (Q.list Q.small_int) (fun l -> l = [] || \
@@ -952,6 +1240,12 @@ let min_elt s = Concrete.min_elt s
     done; \
     for_all (fun (x,_) -> x <> 0) !s \
   )
+*)
+
+(*$T min_elt_opt
+  min_elt_opt (of_list [1;2;3]) = Some 1
+  min_elt_opt (empty) = None
+  min_elt_opt (of_list []) = None
 *)
 
 let pop_min s = Concrete.pop_min s
@@ -974,6 +1268,14 @@ let pop_max s = Concrete.pop_max s
 *)
 
 let max_elt s = Concrete.max_elt s
+
+let max_elt_opt s = Concrete.max_elt_opt s
+
+(*$T max_elt_opt
+  max_elt_opt (of_list [1;2;3]) = Some 3
+  max_elt_opt (empty) = None
+  max_elt_opt (of_list []) = None
+*)
 
 let enum s = Concrete.enum s
 
@@ -1012,6 +1314,42 @@ let compare s1 s2 = Concrete.compare Pervasives.compare s1 s2
 let equal s1 s2 = Concrete.equal Pervasives.compare s1 s2
 let subset s1 s2 = Concrete.subset Pervasives.compare s1 s2
 let disjoint s1 s2 = Concrete.disjoint Pervasives.compare s1 s2
+
+
+let add_seq s t =
+  Concrete.add_seq Pervasives.compare s t
+  
+let of_seq s =
+  Concrete.of_seq Pervasives.compare s
+  
+let to_seq t =
+  Concrete.to_seq t
+  
+let to_seq_from k t =
+  Concrete.to_seq_from Pervasives.compare k t
+
+(*$T add_seq
+  equal (of_list [1;2;3;4]) (add_seq (BatSeq.of_list [1;2]) (of_list [3;4]))
+  equal (of_list [3;4]) (add_seq (BatSeq.of_list []) (of_list [3;4]))
+  equal (of_list [1;2]) (add_seq (BatSeq.of_list [1;2]) (of_list []))
+ *)
+
+(*$T of_seq
+  equal (of_list [1;2;3;4]) (of_seq (BatSeq.of_list [1;2;4;3]))
+  equal (of_list []) (of_seq (BatSeq.of_list []))
+ *)
+
+(*$T to_seq
+  BatSeq.equal (BatSeq.of_list [1;2;3;4]) (to_seq (of_list [4;1;3;2]))
+  BatSeq.equal (BatSeq.of_list []) (to_seq (of_list []))
+ *)
+
+(*$T to_seq_from
+  BatSeq.equal (BatSeq.of_list [1;2;3;4]) (to_seq_from 0 (of_list [4;1;3;2]))
+  BatSeq.equal (BatSeq.of_list [3;4]) (to_seq_from 3 (of_list [4;1;3;2]))
+  BatSeq.equal (BatSeq.of_list []) (to_seq_from 5 (of_list [4;1;3;2]))
+  BatSeq.equal (BatSeq.of_list []) (to_seq_from 5 (of_list []))
+ *)
 
 (*$T subset
    subset (of_list [1;2;3]) (of_list [1;2;3;4])
