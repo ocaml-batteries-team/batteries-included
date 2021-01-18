@@ -98,6 +98,16 @@ val flatten : 'a t t -> 'a t
 val nil : 'a t
 (** [nil = fun () -> Nil] *)
 
+val empty : 'a t
+(** the empty sequence, containing no elements
+
+    @since NEXT_RELEASE *)
+
+val return : 'a -> 'a t
+(** the singleton sequence, containing only the given element
+
+    @since NEXT_RELEASE *)
+
 val cons : 'a -> 'a t -> 'a t
 (** [cons e s = fun () -> Cons(e, s)] *)
 
@@ -112,6 +122,23 @@ val init : int -> (int -> 'a) -> 'a t
 val of_list : 'a list -> 'a t
 (** Convenience function to build a seq from a list.
     @since 2.2.0 *)
+
+val unfold : ('b -> ('a * 'b) option) -> 'b -> 'a t
+(** Build a sequence from a step function and an initial value.
+    [unfold f u] returns [empty] if [f u] returns [None],
+    or [fun () -> Cons (x, unfold f y)] if [f u] returns [Some (x, y)].
+
+    For example, [unfold (function [] -> None | h::t -> Some (h,t)) l]
+    is equivalent to [List.to_seq l].
+
+    @since NEXT_RELEASE *)
+
+val flat_map : ('a -> 'b t) -> 'a t -> 'b t
+(** Map each element to a subsequence, then return each element of this
+    sub-sequence in turn. This transformation is lazy, it only applies
+    when the result is traversed.
+
+    @since NEXT_RELEASE *)
 
 (** {6 Iterators} *)
 
