@@ -398,10 +398,6 @@ let to_string ?(first="[") ?(last="]") ?(sep=";") to_str s =
 *)
 
 let of_string ?(first="[") ?(last="]") ?(sep=";") of_str s =
-  let rec map f = function
-  | [] -> []
-  | h :: t -> (f h) :: (map f t) in
-
   if not (BatString.starts_with s first) then
     raise
       (Invalid_argument
@@ -417,7 +413,7 @@ let of_string ?(first="[") ?(last="]") ?(sep=";") of_str s =
   else
     let body = BatString.chop ~l:prfx_len ~r:sufx_len s in
     let strings = BatString.nsplit ~by:sep body in
-    of_list (map of_str strings)
+    of_list (BatList.map of_str strings)
 
 (*$T of_string
   equal (of_string int_of_string "[1;2;3]") (of_list [1;2;3])
