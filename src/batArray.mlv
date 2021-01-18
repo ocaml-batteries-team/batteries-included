@@ -825,7 +825,7 @@ let insert xs x i =
 let remove_at i src =
   let n = length src in
   let dst = sub src 0 (n - 1) in
-  blit src (i + 1) dst i (n - i - 1);
+  (if i <> n - 1 then blit src (i + 1) dst i (n - i - 1));
   dst
 (*$T remove_at
     try remove_at 0 [||] = [|1|] \
