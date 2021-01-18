@@ -823,10 +823,8 @@ let insert xs x i =
 *)
 
 let remove_at i src =
-  let x = src.(i) in (* keep the bound check in there *)
   let n = length src in
-  let dst = make (n - 1) x in
-  blit src 0 dst 0 i;
+  let dst = sub src 0 (n - 1) in
   blit src (i + 1) dst i (n - i - 1);
   dst
 (*$T remove_at
