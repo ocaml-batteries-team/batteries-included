@@ -155,7 +155,7 @@ let return x =
 
 let rec unfold f u =
   match f u with
-  | Some(v, r) -> (fun _ -> Cons(v, unfold f r))
+  | Some(v, r) -> (fun () -> Cons(v, unfold f r))
   | None -> nil
 
 (*$T unfold
