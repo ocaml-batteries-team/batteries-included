@@ -3,10 +3,15 @@ Changelog
 
 ## NEXT_RELEASE (minor release)
 
+- BatSeq: compatibility with stdlib.Seq
+  #1005
+  (Jakob Krainz, review by Gabriel Scherer)
+
 - BatMap, BatSplay: find_first, find_first_opt, find_last, find_last_opt
 	for compatibility with stdlib.
-	The implementation in BatMap was adapted from stdlib; authors of the original
-	implementation are Albin Coquereau and Garbiel de Perthuis.
+	The implementation in BatMap was adapted from stdlib;
+	authors of the original implementation are Albin Coquereau
+	and Garbiel de Perthuis.
   #1000
   (Jakob Krainz)
 
