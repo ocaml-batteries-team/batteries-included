@@ -1005,10 +1005,19 @@ module PSet = struct (*$< PSet *)
   let find_first_opt f s =  Concrete.find_first_opt f s.set
   let find_last f s =  Concrete.find_last f s.set
   let find_last_opt f s =  Concrete.find_last_opt f s.set
-  let add x s  = { s with set = Concrete.add s.cmp x s.set }
-  let remove x s = { s with set = Concrete.remove s.cmp x s.set }
+  let add x s  =
+    let newset = Concrete.add s.cmp x s.set in
+    if newset == s.set then s
+    else { s with set = newset }
+  let remove x s =
+    let newset = Concrete.remove s.cmp x s.set in 
+    if newset == s.set then s
+    else { s with set = newset }
   let remove_exn x s = { s with set = Concrete.remove_exn s.cmp x s.set }
-  let update x y s = { s with set = Concrete.update s.cmp x y s.set }
+  let update x y s =
+    let newset = Concrete.update s.cmp x y s.set in 
+    if newset == s.set then s
+    else { s with set =  newset }
   let iter f s = Concrete.iter f s.set
   let at_rank_exn i s = Concrete.at_rank_exn i s.set
   let fold f s acc = Concrete.fold f s.set acc
@@ -1016,12 +1025,18 @@ module PSet = struct (*$< PSet *)
     { cmp = Pervasives.compare; set = Concrete.map Pervasives.compare f s.set }
   let map_stdlib f s =
     let newset = Concrete.map_stdlib Pervasives.compare f s.set in
-    { cmp = s.cmp; set = newset }
-  let filter f s = { s with set = Concrete.filter f s.set }
+    if s.set == newset then s
+    else { cmp = s.cmp; set = newset }
+  let filter f s =
+    let newset = Concrete.filter f s.set in
+    if newset == s.set then s
+    else { s with set = newset }
   let filter_map f s =
     { cmp = compare; set = Concrete.filter_map compare f s.set }
   let filter_map_stdlib f s =
-    { cmp = s.cmp; set = Concrete.filter_map_stdlib compare f s.set }
+    let newset = Concrete.filter_map_stdlib compare f s.set in
+    if newset == s.set then s
+    else { cmp = s.cmp; set = newset }
   let exists f s = Concrete.exists f s.set
   let cardinal s = fold (fun _ acc -> acc + 1) s 0
   let elements s = Concrete.elements s.set
@@ -1172,11 +1187,24 @@ let find_last_opt  f s = Concrete.find_last_opt  f s
 
 let add x s  = Concrete.add Pervasives.compare x s
 
+(*$T add
+  let s = of_list [1;2;3] in s == (add 2 s) 
+ *)
+
 let remove x s = Concrete.remove Pervasives.compare x s
+
+(*$T remove
+  let s = of_list [1;2;3] in s == (remove 4 s) 
+  let s = empty in s == (remove 4 s) 
+ *)
 
 let remove_exn x s = Concrete.remove_exn Pervasives.compare x s
 
 let update x y s = Concrete.update Pervasives.compare x y s
+
+(*$T update
+  let s = of_list [1;2;3] in s == (update 2 2 s) 
+ *)
 
 let iter f s = Concrete.iter f s
 
@@ -1199,12 +1227,26 @@ let map_stdlib f s = Concrete.map_stdlib Pervasives.compare f s
 
 (*$T map
   map (fun _x -> 1) (of_list [1;2;3]) |> cardinal = 1
+ *)
+                   
+(*$T map_stdlib
+  let s = of_list [1;2;3] in s == (map_stdlib (fun x -> x) s)
+  let s = empty in s == (map_stdlib (fun x -> x+1) s) 
 *)
 
 let filter f s = Concrete.filter f s
+(*$T filter
+  let s = of_list [1;2;3] in s == (filter (fun x -> x < 10) s)
+  let s = empty in s == (filter (fun x -> x > 10) s)
+*)
 
 let filter_map f s = Concrete.filter_map Pervasives.compare f s
 let filter_map_stdlib f s = Concrete.filter_map_stdlib Pervasives.compare f s
+
+(*$T filter_map_stdlib
+  let s = of_list [1;2;3] in s == (filter_map_stdlib (fun x -> Some x) s)
+  let s = empty in s == (filter_map_stdlib (fun x -> Some x) s)
+*)
 
 let exists f s = Concrete.exists f s
 

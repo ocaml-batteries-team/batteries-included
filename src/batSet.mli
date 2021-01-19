@@ -116,11 +116,17 @@ sig
 
   val add: elt -> t -> t
   (** [add x s] returns a set containing all elements of [s],
-      plus [x]. If [x] was already in [s], [s] is returned unchanged. *)
+      plus [x]. If [x] was already in [s], [s] is returned unchanged.
+
+      @before NEXT_RELEASE Physical equality was not ensured.
+      *)
 
   val remove: elt -> t -> t
   (** [remove x s] returns a set containing all elements of [s],
-      except [x]. If [x] was not in [s], [s] is returned unchanged. *)
+      except [x]. If [x] was not in [s], [s] is returned unchanged.
+
+      @before NEXT_RELEASE Physical equality was not ensured.
+   *)
 
   val remove_exn: elt -> t -> t
   (** [remove_exn x s] behaves like [remove x s] except that it raises
@@ -132,7 +138,10 @@ sig
   (** [update x y s] replace [x] by [y] in [s].
       [update] is faster when [x] compares equal to [y] according
       to the comparison function used by your set.
+      When [x] and [y] are physically equal, [m] is returned unchanged.
       @raise Not_found if [x] is not in [s].
+
+      @before NEXT_RELEASE Physical equality was not ensured.
       @since 2.4 *)
 
   val union: t -> t -> t
@@ -184,18 +193,30 @@ sig
   val map: (elt -> elt) -> t -> t
   (** [map f x] creates a new set with elements [f a0],
       [f a1]... [f aN], where [a0],[a1]..[aN] are the
-      values contained in [x]*)
+      values contained in [x]
+
+      if [f] returns all elements unmodified then [x] is returned unmodified.
+      @before NEXT_RELEASE Physical equality was not ensured.
+*)
 
   val filter: (elt -> bool) -> t -> t
   (** [filter p s] returns the set of all elements in [s]
-      that satisfy predicate [p]. *)
+      that satisfy predicate [p]. 
+
+      if [p] returns [true] for all elements then [s] is returned unmodified.
+      @before NEXT_RELEASE Physical equality was not ensured.
+   *)
 
   val filter_map: (elt -> elt option) -> t -> t
   (** [filter_map f m] combines the features of [filter] and
-      [map].  It calls calls [f a0], [f a1], [f aN] where [a0],[a1]..[aN]
-      are the elements of [m] and returns the set of pairs [bi]
+      [map].  It calls [f a0], [f a1], [f aN] where [a0],[a1]..[aN]
+      are the elements of [m] and returns the set of elements [bi]
       such as [f ai = Some bi] (when [f] returns [None], the
-      corresponding element of [m] is discarded). *)
+      corresponding element of [m] is discarded).
+
+      if [f] returns [true] for all elements then [s] is returned unmodified.
+      @before NEXT_RELEASE Physical equality was not ensured.
+ *)
 
   val fold: (elt -> 'a -> 'a) -> t -> 'a -> 'a
   (** [fold f s a] computes [(f xN ... (f x1 (f x0 a))...)],
@@ -553,11 +574,17 @@ val find_last_opt : ('a -> bool) -> 'a t -> 'a option
 
 val add: 'a -> 'a t -> 'a t
 (** [add x s] returns a set containing all elements of [s],
-    plus [x]. If [x] was already in [s], [s] is returned unchanged. *)
+    plus [x]. If [x] was already in [s], [s] is returned unchanged.
+
+    @before NEXT_RELEASE Physical equality was not ensured.
+ *)
 
 val remove: 'a -> 'a t -> 'a t
 (** [remove x s] returns a set containing all elements of [s],
-    except [x]. If [x] was not in [s], [s] is returned unchanged. *)
+    except [x]. If [x] was not in [s], [s] is returned unchanged. 
+
+    @before NEXT_RELEASE Physical equality was not ensured.
+*)
 
 val remove_exn: 'a -> 'a t -> 'a t
 (** [remove_exn x s] behaves like [remove x s] except that it raises
@@ -569,8 +596,12 @@ val update: 'a -> 'a -> 'a t -> 'a t
 (** [update x y s] replace [x] by [y] in [s].
     [update] is faster when [x] compares equal to [y] according
     to the comparison function used by your set.
+    When [x] and [y] are physically equal, [m] is returned unchanged.
     @raise Not_found if [x] is not in [s].
-    @since 2.4 *)
+    @since 2.4 
+
+    @before NEXT_RELEASE Physical equality was not ensured.
+*)
 
 val union: 'a t -> 'a t -> 'a t
 (** [union s t] returns the union of [s] and [t] - the set containing
@@ -650,7 +681,11 @@ val map_stdlib: ('a -> 'a) -> 'a t -> 'a t
 
 val filter: ('a -> bool) -> 'a t -> 'a t
 (** [filter p s] returns the set of all elements in [s]
-    that satisfy predicate [p]. *)
+    that satisfy predicate [p]. 
+
+    if [p] returns [true] for all elements then [s] is returned unmodified.
+    @before NEXT_RELEASE Physical equality was not ensured.
+ *)
 
 (* as under-specified as 'map' *)
 val filter_map: ('a -> 'b option) -> 'a t -> 'b t
@@ -961,11 +996,17 @@ module PSet : sig
 
   val add: 'a -> 'a t -> 'a t
   (** [add x s] returns a set containing all elements of [s],
-      plus [x]. If [x] was already in [s], [s] is returned unchanged. *)
+      plus [x]. If [x] was already in [s], [s] is returned unchanged. 
+
+      @before NEXT_RELEASE Physical equality was not ensured.
+   *)
 
   val remove: 'a -> 'a t -> 'a t
   (** [remove x s] returns a set containing all elements of [s],
-      except [x]. If [x] was not in [s], [s] is returned unchanged. *)
+      except [x]. If [x] was not in [s], [s] is returned unchanged.
+
+      @before NEXT_RELEASE Physical equality was not ensured.
+   *)
 
   val remove_exn: 'a -> 'a t -> 'a t
   (** [remove_exn x s] behaves like [remove x s] except that it raises
@@ -977,7 +1018,9 @@ module PSet : sig
   (** [update x y s] replace [x] by [y] in [s].
       [update] is faster when [x] compares equal to [y] according
       to the comparison function used by your set.
+      When [x] and [y] are physically equal, [m] is returned unchanged.
       @raise Not_found if [x] is not in [s].
+      @before NEXT_RELEASE Physical equality was not ensured.
       @since 2.4 *)
 
   val union: 'a t -> 'a t -> 'a t
@@ -1049,11 +1092,16 @@ module PSet : sig
 
       If [f] returns physically equal values for all elements 
       in [m] then the resulting map will be physically equal to [m].
+      @since NEXT_RELEASE
   *)
 
   val filter: ('a -> bool) -> 'a t -> 'a t
   (** [filter p s] returns the set of all elements in [s]
-      that satisfy predicate [p]. *)
+      that satisfy predicate [p]. 
+
+      if [p] returns [true] for all elements then [s] is returned unmodified.
+      @before NEXT_RELEASE Physical equality was not ensured.
+   *)
 
   (* as under-specified as 'map' *)
   val filter_map: ('a -> 'b option) -> 'a t -> 'b t
@@ -1079,6 +1127,7 @@ module PSet : sig
   
       if the filter function [f] returns [true] for all elements in [m],
       the resulting map is physically equal to [m].
+      @since NEXT_RELEASE
   *)
 
   val fold: ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
