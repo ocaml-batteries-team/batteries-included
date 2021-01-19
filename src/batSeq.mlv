@@ -138,6 +138,31 @@ let of_list l =
   in
   aux l
 
+let empty = nil
+
+(*$T empty
+   length empty = 0
+ *)
+
+let return x =
+    cons x empty
+
+(*$T return
+  length (return 123) = 1
+  at (return 123) 0 = 123
+  equal (return 123) (of_list [123])
+ *)
+
+let rec unfold f u =
+  match f u with
+  | Some(v, r) -> (fun _ -> Cons(v, unfold f r))
+  | None -> nil
+
+(*$T unfold
+   equal (unfold (fun x -> if x = 0 then None else Some (x, x-1)) 5) (of_list [5;4;3;2;1])
+   fold_left (fun a b -> b :: a) [] (unfold (fun x -> if x = 0 then None else Some (x, x-1)) 5) = [1;2;3;4;5]
+ *)
+
 let rec iter f s = match s () with
   | Nil -> ()
   | Cons(e, s) -> f e; iter f s
@@ -167,6 +192,13 @@ let rec iter2 f s1 s2 = match s1 (), s2 () with
 let rec map f s () = match s () with
   | Nil -> Nil
   | Cons(x, s) -> Cons(f x, map f s)
+
+let flat_map f s = 
+    flatten (map f s)
+    
+(*$T flat_map
+  equal (flat_map of_list (of_list [[1;2;3];[4;5;6]])) (of_list [1;2;3;4;5;6])
+*)
 
 let mapi f s =
   let rec mapi f i s () = match s () with
