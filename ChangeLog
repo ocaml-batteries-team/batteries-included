@@ -3,6 +3,13 @@ Changelog
 
 ## NEXT_RELEASE (minor release)
 
+- BatSet: added several missing methods for compatibility with stdlib.
+	The implementation of filter, map and filter_map was adapted from
+	stdlib, authors of the original implementation are Xavier Leroy,
+	Albin Coquereau and Gabriel Scherer
+  #1003 (??)
+  (Jakob Krainz)
+
 - BatMap, BatSplay: find_first, find_first_opt, find_last, find_last_opt
 	for compatibility with stdlib.
 	The implementation in BatMap was adapted from stdlib; authors of the original
