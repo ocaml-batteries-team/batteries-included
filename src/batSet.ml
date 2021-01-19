@@ -699,7 +699,7 @@ module Concrete = struct
        if cmp k v <= 0 then
          Seq.append (to_seq_from cmp k l) (Seq.cons v (to_seq r))
        else
-         to_seq r
+         to_seq_from cmp k r
   
 end
 
