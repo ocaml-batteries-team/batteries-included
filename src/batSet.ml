@@ -1142,68 +1142,13 @@ let find_last_opt  f s = Concrete.find_last_opt  f s
   try ignore (find (1,2) (singleton (1,1))); false with Not_found -> true
  *)
 
-(*$T find_opt
-  (find_opt 1 (of_list [1;2;3;4;5;6;7;8])) = Some 1
-  (find_opt 8 (of_list [1;2;3;4;5;6;7;8])) = Some 8
-  (find_opt (1,2) (singleton (1,1))) = None
-*)
-
-(*$T find_first
-            (empty |> add 1 |> add 2 |> add 3 |> find_first (fun x -> x >= 0)) = 1
-            (empty |> add 1 |> add 2 |> add 3 |> find_first (fun x -> x >= 1)) = 1
-            (empty |> add 1 |> add 2 |> add 3 |> find_first (fun x -> x >= 2)) = 2
-            (empty |> add 1 |> add 2 |> add 3 |> find_first (fun x -> x >= 3)) = 3
-  try ignore(empty |> add 1 |> add 2 |> add 3 |> find_first (fun x -> x >= 4)); false with Not_found -> true
-  try ignore(empty |>                            find_first (fun x -> x >= 3)); false with Not_found -> true
-*)
-
-(*$T find_first_opt
-  (empty |> add 1 |> add 2 |> add 3 |> find_first_opt (fun x -> x >= 0)) = (Some 1)
-  (empty |> add 1 |> add 2 |> add 3 |> find_first_opt (fun x -> x >= 1)) = (Some 1)
-  (empty |> add 1 |> add 2 |> add 3 |> find_first_opt (fun x -> x >= 2)) = (Some 2)
-  (empty |> add 1 |> add 2 |> add 3 |> find_first_opt (fun x -> x >= 3)) = (Some 3)
-  (empty |> add 1 |> add 2 |> add 3 |> find_first_opt (fun x -> x >= 4)) = (None)
-  (empty |>                            find_first_opt (fun x -> x >= 3)) = (None)
-*)
-
-(*$T find_last
-            (empty |> add 1 |> add 2 |> add 3 |> find_last (fun x -> x <= 1)) = 1
-            (empty |> add 1 |> add 2 |> add 3 |> find_last (fun x -> x <= 2)) = 2
-            (empty |> add 1 |> add 2 |> add 3 |> find_last (fun x -> x <= 3)) = 3
-            (empty |> add 1 |> add 2 |> add 3 |> find_last (fun x -> x <= 4)) = 3
-  try ignore(empty |> add 1 |> add 2 |> add 3 |> find_last (fun x -> x <= 0)); false with Not_found -> true
-  try ignore(empty |>                            find_last (fun x -> x <= 3)); false with Not_found -> true
-*)
-
-(*$T find_last_opt
-  (empty |> add 1 |> add 2 |> add 3 |> find_last_opt (fun x -> x <= 0)) = None
-  (empty |> add 1 |> add 2 |> add 3 |> find_last_opt (fun x -> x <= 1)) = Some 1
-  (empty |> add 1 |> add 2 |> add 3 |> find_last_opt (fun x -> x <= 2)) = Some 2
-  (empty |> add 1 |> add 2 |> add 3 |> find_last_opt (fun x -> x <= 3)) = Some 3
-  (empty |> add 1 |> add 2 |> add 3 |> find_last_opt (fun x -> x <= 4)) = Some 3
-  (empty |>                            find_last_opt (fun x -> x <= 3)) = None
-*)
-
 let add x s  = Concrete.add Pervasives.compare x s
 
-(*$T add
-  let s = of_list [1;2;3] in s == (add 2 s) 
- *)
-
 let remove x s = Concrete.remove Pervasives.compare x s
-
-(*$T remove
-  let s = of_list [1;2;3] in s == (remove 4 s) 
-  let s = empty in s == (remove 4 s) 
- *)
 
 let remove_exn x s = Concrete.remove_exn Pervasives.compare x s
 
 let update x y s = Concrete.update Pervasives.compare x y s
-
-(*$T update
-  let s = of_list [1;2;3] in s == (update 2 2 s) 
- *)
 
 let iter f s = Concrete.iter f s
 
