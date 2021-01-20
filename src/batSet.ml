@@ -494,7 +494,7 @@ module Concrete = struct
 
   let filter_map cmp f e = fold (fun x acc -> match f x with Some v -> add cmp v acc | _ -> acc) e empty
 
-   let choose = min_elt (* I'd rather this chose the root, but okay *)
+  let choose = min_elt (* I'd rather this chose the root, but okay *)
   (*$= choose
     42 (empty |> add 42 |> choose)
     (empty |> add 0 |> add 1 |> choose) (empty |> add 1 |> add 0 |> choose)
@@ -995,7 +995,6 @@ module PSet = struct (*$< PSet *)
     get_cmp (create BatInt.compare) == BatInt.compare
   *)
 
-  (* TODO: ensure phys. equality for add remove update map_stdlib filter filter_map_stdlib *)
   let singleton ?(cmp = compare) x = { cmp = cmp; set = Concrete.singleton x }
   let is_empty s = Concrete.is_empty s.set
   let mem x s = Concrete.mem s.cmp x s.set
