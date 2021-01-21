@@ -316,9 +316,6 @@ module Concrete = struct
       invalid_arg "Set.at_rank_exn i s: i >= (Set.cardinal s)"
     with Found -> !res
 
-  let map cmp f s =
-    fold (fun v acc -> add cmp (f v) acc) s empty
-
   let rec op_map f = function
     | Empty -> Empty
     | Node (l,x,r,h) -> Node (op_map f l, f x, op_map f r, h)
@@ -492,9 +489,8 @@ module Concrete = struct
   let print ?(first="{") ?(last="}") ?(sep=",") print_elt out t =
     BatEnum.print ~first ~last ~sep (fun out e -> BatPrintf.fprintf out "%a" print_elt e) out (enum t)
 
-  let filter_map cmp f e = fold (fun x acc -> match f x with Some v -> add cmp v acc | _ -> acc) e empty
-
   let choose = min_elt (* I'd rather this chose the root, but okay *)
+
   (*$= choose
     42 (empty |> add 42 |> choose)
     (empty |> add 0 |> add 1 |> choose) (empty |> add 1 |> add 0 |> choose)
@@ -585,6 +581,15 @@ module Concrete = struct
        if l == l' && v == v' && r == r' then t
        else try_join cmp l' v' r'
 
+  let rec map cmp f = function
+    | Empty -> Empty
+    | Node(l, v, r, _) ->
+       (* enforce left-to-right evaluation order *)
+       let l' = map cmp f l in
+       let v' = f v in
+       let r' = map cmp f r in
+       try_join cmp l' v' r'
+
   let try_concat cmp t1 t2 =
     match (t1, t2) with
       (Empty, t) -> t
@@ -602,6 +607,20 @@ module Concrete = struct
        | Some v' ->
           if l == l' && v == v' && r == r' then t
           else try_join cmp l' v' r'
+       | None ->
+          try_concat cmp l' r'
+       end
+
+  let rec filter_map cmp f = function
+    | Empty -> Empty
+    | Node(l, v, r, _) ->
+       (* enforce left-to-right evaluation order *)
+       let l' = filter_map cmp f l in
+       let v' = f v in
+       let r' = filter_map cmp f r in
+       begin match v' with
+       | Some v' ->
+          try_join cmp l' v' r'
        | None ->
           try_concat cmp l' r'
        end
