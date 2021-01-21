@@ -1316,29 +1316,6 @@ let to_seq t =
 let to_seq_from k t =
   Concrete.to_seq_from Pervasives.compare k t
 
-(*$T add_seq
-  equal (of_list [1;2;3;4]) (add_seq (BatSeq.of_list [1;2]) (of_list [3;4]))
-  equal (of_list [3;4]) (add_seq (BatSeq.of_list []) (of_list [3;4]))
-  equal (of_list [1;2]) (add_seq (BatSeq.of_list [1;2]) (of_list []))
- *)
-
-(*$T of_seq
-  equal (of_list [1;2;3;4]) (of_seq (BatSeq.of_list [1;2;4;3]))
-  equal (of_list []) (of_seq (BatSeq.of_list []))
- *)
-
-(*$T to_seq
-  BatSeq.equal (BatSeq.of_list [1;2;3;4]) (to_seq (of_list [4;1;3;2]))
-  BatSeq.equal (BatSeq.of_list []) (to_seq (of_list []))
- *)
-
-(*$T to_seq_from
-  BatSeq.equal (BatSeq.of_list [1;2;3;4]) (to_seq_from 0 (of_list [4;1;3;2]))
-  BatSeq.equal (BatSeq.of_list [3;4]) (to_seq_from 3 (of_list [4;1;3;2]))
-  BatSeq.equal (BatSeq.of_list []) (to_seq_from 5 (of_list [4;1;3;2]))
-  BatSeq.equal (BatSeq.of_list []) (to_seq_from 5 (of_list []))
- *)
-
 (*$T subset
    subset (of_list [1;2;3]) (of_list [1;2;3;4])
    not (subset (of_list [1;2;3;5]) (of_list [1;2;3;4]))
