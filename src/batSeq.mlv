@@ -413,7 +413,7 @@ let of_string ?(first="[") ?(last="]") ?(sep=";") of_str s =
   else
     let body = BatString.chop ~l:prfx_len ~r:sufx_len s in
     let strings = BatString.nsplit ~by:sep body in
-    of_list (BatList.map of_str strings)
+    of_list (List.map of_str strings)
 
 (*$T of_string
   equal (of_string int_of_string "[1;2;3]") (of_list [1;2;3])

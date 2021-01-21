@@ -681,25 +681,27 @@ module Concrete = struct
         subset cmp (Node (Empty, v1, r1, 0)) r2 && subset cmp l1 t2
 
   let add_seq cmp s m =
-    Seq.fold_left (fun m e -> add cmp e m) m s
+    BatSeq.fold_left (fun m e -> add cmp e m) m s
     
   let of_seq cmp s =
     add_seq cmp s empty
     
   let rec to_seq m =
+    fun () ->
     match m with
-    | Empty -> Seq.empty
-    | Node(l, v, r, _) -> 
-       Seq.append (to_seq l) (Seq.cons v (to_seq r))
+    | Empty -> BatSeq.Nil
+    | Node(l, v, r, _) ->
+       BatSeq.append (to_seq l) (fun () -> BatSeq.Cons (v, to_seq r)) ()
     
   let rec to_seq_from cmp k m =
+    fun () ->
     match m with
-    | Empty -> Seq.empty
+    | Empty -> BatSeq.Nil
     | Node(l, v, r, _) ->
        if cmp k v <= 0 then
-         Seq.append (to_seq_from cmp k l) (Seq.cons v (to_seq r))
+         BatSeq.append (to_seq_from cmp k l) (fun () -> BatSeq.Cons (v, to_seq r)) ()
        else
-         to_seq_from cmp k r
+         to_seq_from cmp k r ()
   
 end
 
