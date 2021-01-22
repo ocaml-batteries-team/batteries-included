@@ -163,7 +163,7 @@ module Concrete = struct
       | Node (l, k, v, r, h) as node ->
         let c = cmp x k in
         if c = 0 then
-          if x == k && d == v then
+          if d == v then
             node
           else
             Node (l, x, d, r, h)
@@ -347,11 +347,33 @@ module Concrete = struct
       in
       loop map
 
-  let update_stdlib k f cmp m =
-    let findresult = (find_option k cmp m) in
-    match f findresult with
-    | Some x -> add k x cmp m
-    | None -> remove k cmp m
+  let rec update_stdlib x f cmp = function
+    |  Empty ->
+        begin match f None with
+        | None -> Empty
+        | Some data -> Node(Empty, x, data, Empty, 1)
+        end
+    | Node (l, v, d, r, h) as m ->
+       let c = cmp x v in
+       if c = 0 then
+         begin
+           match f (Some d) with
+           | None -> merge l r
+           | Some data ->
+              if d == data
+              then m
+              else Node(l, x, data, r, h)
+         end
+       else if c < 0 then
+         let ll = update_stdlib x f cmp l in
+         if l == ll
+         then m
+         else bal ll v d r
+       else
+         let rr = update_stdlib x f cmp r in
+         if r == rr
+         then m
+         else bal l v d rr
 
   let mem x cmp map =
     let rec loop = function
@@ -861,19 +883,31 @@ module Concrete = struct
         m1 empty
 
   let add_seq cmp s m =
-    Seq.fold_left
+    BatSeq.fold_left
       (fun m (k, v) -> add k v cmp m)
       m
       s
     
   let of_seq cmp s =
     add_seq cmp s empty
-    
-  let to_seq m =
-    BatSeq.of_list (bindings m) (* TODO: optimize *)
-    
-  let to_seq_from (cmp : 'a -> 'a -> int) k m =
-    to_seq (filter (fun k2 _ -> cmp k k2 >= 0) m cmp)
+
+  let rec to_seq m =
+    fun () ->
+    match m with
+    | Empty -> BatSeq.Nil
+    | Node(l, k, v, r, _) ->
+       BatSeq.append (to_seq l) (fun () -> BatSeq.Cons ((k, v), to_seq r)) ()
+
+  let rec to_seq_from cmp k m =
+    fun () ->
+    match m with
+    | Empty -> BatSeq.Nil
+    | Node(l, k, v, r, _) ->
+       if cmp k v <= 0 then
+         BatSeq.append (to_seq_from cmp k l) (fun () -> BatSeq.Cons ((k,v), to_seq r)) ()
+       else
+         to_seq_from cmp k r ()
+
     
   let union_stdlib cmp f m1 m2 =
     foldi
