@@ -76,7 +76,7 @@ sig
   *)
 
   val find_opt : elt -> t -> elt option
-  (** [find x s] returns [Some k] for the element [k] in [s] that
+  (** [find_opt x s] returns [Some k] for the element [k] in [s] that
       tests equal to [x] under its comparison function.
       If no element is equal, return [None]
 
@@ -534,7 +534,7 @@ val find: 'a -> 'a t -> 'a
 *)
 
 val find_opt : 'a -> 'a t -> 'a option
-(** [find x s] returns [Some k] for the element [k] in [s] that
+(** [find_opt x s] returns [Some k] for the element [k] in [s] that
     tests equal to [x] under its comparison function.
     If no element is equal, return [None]
 
@@ -956,7 +956,7 @@ module PSet : sig
   *)
 
   val find_opt : 'a -> 'a t -> 'a option
-  (** [find x s] returns [Some k] for the element [k] in [s] that
+  (** [find_opt x s] returns [Some k] for the element [k] in [s] that
       tests equal to [x] under its comparison function.
       If no element is equal, return [None]
 
