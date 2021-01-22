@@ -3,6 +3,13 @@ Changelog
 
 ## NEXT_RELEASE (minor release)
 
+- BatSet: added several missing methods for compatibility with stdlib.
+	The implementation of filter, map and filter_map was adapted from
+	stdlib, authors of the original implementation are Xavier Leroy,
+	Albin Coquereau and Gabriel Scherer
+  #1006
+  (Jakob Krainz)
+
 - BatSeq: compatibility with stdlib.Seq
   #1005
   (Jakob Krainz, review by Gabriel Scherer)
