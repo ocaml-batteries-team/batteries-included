@@ -441,7 +441,12 @@ struct
           | C (cx, Node (l, _kv, r)) -> C (cx, Node (l, (k2, v2), r))
           | C (cx, Empty) -> raise Not_found
         end
-      end
+        end
+
+  let update_stdlib k f m =
+    match f (find_opt k m) with
+    | Some x -> add k x m
+    | None -> remove k m
 
   let mem k m =
     try ignore (find k m) ; true with Not_found -> false
@@ -477,6 +482,11 @@ struct
     in
     bfind tr
 
+  let min_binding_opt tr =
+    try Some(min_binding tr)
+    with Not_found -> None
+        
+
   let choose = min_binding
   (*$= choose
     (empty |> add 0 1 |> add 1 1 |> choose) \
@@ -485,7 +495,8 @@ struct
   (*$T choose
     try ignore (choose empty) ; false with Not_found -> true
   *)
-
+  let choose_opt  = min_binding_opt
+                  
   let any tr = match sget tr with
     | Empty -> raise Not_found
     | Node (_, kv, _) -> kv
@@ -511,6 +522,10 @@ struct
     in
     bfind tr
 
+  let max_binding_opt tr =
+    try Some(max_binding tr)
+    with Not_found -> None
+        
   let pop_max_binding tr =
     let maxi = ref (choose tr) in
     let rec bfind = function
@@ -769,6 +784,12 @@ struct
     | Empty -> raise Not_found
     | Node (l, kv, r) -> kv, sref (bst_append l r)
 
+  let to_seq _ = failwith "unimplemented"
+  let of_seq _ = failwith "unimplemented"
+  let add_seq _ = failwith "unimplemented"
+  let to_seq_from _ _ = failwith "unimplemented"
+  let union _f _m1 _m2 = failwith "unimplemented"
+                       
   let extract k tr =
     let tr = sget tr in
     (* the reference here is a tad ugly but allows to reuse `cfind`
@@ -787,3 +808,5 @@ struct
     | Some v -> v, sref tr
   (*$>*)
 end
+  
+

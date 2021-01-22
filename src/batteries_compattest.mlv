@@ -40,7 +40,6 @@ module Stdlib_verifications = struct
        include module type of Legacy.List
        val find_map : ('a -> 'b option) -> 'a list -> 'b
      end)
-  (*  module Map = (Map : module type of Legacy.Map)*)
   module Seq = (Seq : module type of Legacy.Seq)
   module Marshal =
     (Marshal: sig
@@ -110,4 +109,14 @@ module Stdlib_verifications = struct
   module Big_int = (Big_int : module type of Legacy.Big_int)
   (* FIXME: This does not pass for some reason:
   module Bigarray = (Bigarray : module type of Legacy.Bigarray)*)
+   
+  (* test compatibility of BatMap.S with Legacy.Map.S *)
+  let sort_map (type s) (module Map : Legacy.Map.S with type key = s) l =
+      Map.bindings (List.fold_right (fun x m -> Map.add x x m) l Map.empty)
+  module IntMap = struct
+     include BatMap.Int
+     let update = update_stdlib
+  end 
+  let _ = assert ([1,1;2,2;3,3;] = (sort_map (module IntMap) [3; 1; 2;]))
+ 
 end
