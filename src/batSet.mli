@@ -380,23 +380,23 @@ sig
    *)
 
 
-  val to_seq : t -> elt Seq.t
+  val to_seq : t -> elt BatSeq.t
   (** Iterate on the whole set, in ascending order.
 
       @since NEXT_RELEASE  *)
     
-  val to_seq_from :  elt -> t -> elt Seq.t
+  val to_seq_from :  elt -> t -> elt BatSeq.t
   (** [to_seq_from x s] iterates on a subset of the elements in [s], 
       namely those greater or equal to [x], in ascending order.
     
       @since NEXT_RELEASE *)
     
-  val add_seq : elt Seq.t -> t -> t
+  val add_seq : elt BatSeq.t -> t -> t
   (** add the given elements to the set, in order. 
     
       @since NEXT_RELEASE  *)
     
-  val of_seq : elt Seq.t -> t
+  val of_seq : elt BatSeq.t -> t
   (** build a set from the given elements 
     
       @since NEXT_RELEASE *)
@@ -866,23 +866,23 @@ val of_array: 'a array -> 'a t
     function *)
 
   
-val to_seq : 'a t -> 'a Seq.t
+val to_seq : 'a t -> 'a BatSeq.t
 (** Iterate on the whole set, in ascending order.
 
     @since NEXT_RELEASE  *)
   
-val to_seq_from :  'a -> 'a t -> 'a Seq.t
+val to_seq_from :  'a -> 'a t -> 'a BatSeq.t
 (** [to_seq_from x s] iterates on a subset of the elements in [s], 
     namely those greater or equal to [x], in ascending order.
   
     @since NEXT_RELEASE *)
   
-val add_seq : 'a Seq.t -> 'a t -> 'a t
+val add_seq : 'a BatSeq.t -> 'a t -> 'a t
 (** add the given elements to the set, in order. 
   
     @since NEXT_RELEASE  *)
   
-val of_seq : 'a Seq.t -> 'a t
+val of_seq : 'a BatSeq.t -> 'a t
 (** build a set from the given elements 
   
     @since NEXT_RELEASE *)
@@ -1271,23 +1271,23 @@ module PSet : sig
   (** builds a set from the given array and comparison function *)
 
       
-  val to_seq : 'a t -> 'a Seq.t
+  val to_seq : 'a t -> 'a BatSeq.t
   (** Iterate on the whole set, in ascending order.
   
       @since NEXT_RELEASE  *)
     
-  val to_seq_from :  'a -> 'a t -> 'a Seq.t
+  val to_seq_from :  'a -> 'a t -> 'a BatSeq.t
   (** [to_seq_from x s] iterates on a subset of the elements in [s], 
       namely those greater or equal to [x], in ascending order.
     
       @since NEXT_RELEASE *)
     
-  val add_seq : 'a Seq.t -> 'a t -> 'a t
+  val add_seq : 'a BatSeq.t -> 'a t -> 'a t
   (** add the given elements to the set, in order. 
     
       @since NEXT_RELEASE  *)
     
-  val of_seq : ?cmp:('a -> 'a -> int) -> 'a Seq.t -> 'a t
+  val of_seq : ?cmp:('a -> 'a -> int) -> 'a BatSeq.t -> 'a t
   (** build a set from the given elements 
     
       @since NEXT_RELEASE *)

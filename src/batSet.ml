@@ -783,10 +783,10 @@ sig
   val of_enum: elt BatEnum.t -> t
   val of_list: elt list -> t
   val of_array: elt array -> t
-  val to_seq : t -> elt Seq.t
-  val to_seq_from :  elt -> t -> elt Seq.t
-  val add_seq : elt Seq.t -> t -> t
-  val of_seq : elt Seq.t -> t
+  val to_seq : t -> elt BatSeq.t
+  val to_seq_from :  elt -> t -> elt BatSeq.t
+  val add_seq : elt BatSeq.t -> t -> t
+  val of_seq : elt BatSeq.t -> t
   val print :  ?first:string -> ?last:string -> ?sep:string ->
     ('a BatInnerIO.output -> elt -> unit) ->
     'a BatInnerIO.output -> t -> unit
