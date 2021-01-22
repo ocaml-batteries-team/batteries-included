@@ -571,13 +571,13 @@ module Concrete = struct
     then join l v r
     else union cmp l (add cmp v r)
 
-  let rec map_stdlib cmp f = function
+  let rec map_endo cmp f = function
     | Empty -> Empty
     | Node(l, v, r, _) as t ->
        (* enforce left-to-right evaluation order *)
-       let l' = map_stdlib cmp f l in
+       let l' = map_endo cmp f l in
        let v' = f v in
-       let r' = map_stdlib cmp f r in
+       let r' = map_endo cmp f r in
        if l == l' && v == v' && r == r' then t
        else try_join cmp l' v' r'
 
@@ -596,13 +596,13 @@ module Concrete = struct
     | (t, Empty) -> t
     | (_, _) -> try_join cmp t1 (min_elt t2) (remove_min_elt t2)
 
-  let rec filter_map_stdlib cmp f = function
+  let rec filter_map_endo cmp f = function
     | Empty -> Empty
     | Node(l, v, r, _) as t ->
        (* enforce left-to-right evaluation order *)
-       let l' = filter_map_stdlib cmp f l in
+       let l' = filter_map_endo cmp f l in
        let v' = f v in
-       let r' = filter_map_stdlib cmp f r in
+       let r' = filter_map_endo cmp f r in
        begin match v' with
        | Some v' ->
           if l == l' && v == v' && r == r' then t
@@ -835,10 +835,10 @@ struct
 
   let iter f t = Concrete.iter f (impl_of_t t)
   let at_rank_exn i t = Concrete.at_rank_exn i (impl_of_t t)
-  let map f t = t_of_impl (Concrete.map_stdlib Ord.compare f (impl_of_t t))
+  let map f t = t_of_impl (Concrete.map_endo Ord.compare f (impl_of_t t))
   let fold f t acc = Concrete.fold f (impl_of_t t) acc
   let filter f t = t_of_impl (Concrete.filter f (impl_of_t t))
-  let filter_map f t = t_of_impl (Concrete.filter_map_stdlib Ord.compare f (impl_of_t t))
+  let filter_map f t = t_of_impl (Concrete.filter_map_endo Ord.compare f (impl_of_t t))
 
   let find x t = Concrete.find Ord.compare x (impl_of_t t)
   let find_opt x t = Concrete.find_opt Ord.compare x (impl_of_t t)
@@ -1043,8 +1043,8 @@ module PSet = struct (*$< PSet *)
   let fold f s acc = Concrete.fold f s.set acc
   let map f s =
     { cmp = Pervasives.compare; set = Concrete.map Pervasives.compare f s.set }
-  let map_stdlib f s =
-    let newset = Concrete.map_stdlib Pervasives.compare f s.set in
+  let map_endo f s =
+    let newset = Concrete.map_endo Pervasives.compare f s.set in
     if s.set == newset then s
     else { cmp = s.cmp; set = newset }
   let filter f s =
@@ -1053,8 +1053,8 @@ module PSet = struct (*$< PSet *)
     else { s with set = newset }
   let filter_map f s =
     { cmp = compare; set = Concrete.filter_map compare f s.set }
-  let filter_map_stdlib f s =
-    let newset = Concrete.filter_map_stdlib compare f s.set in
+  let filter_map_endo f s =
+    let newset = Concrete.filter_map_endo compare f s.set in
     if newset == s.set then s
     else { cmp = s.cmp; set = newset }
   let exists f s = Concrete.exists f s.set
@@ -1188,15 +1188,15 @@ let at_rank_exn i s = Concrete.at_rank_exn i s
 let fold f s acc = Concrete.fold f s acc
 
 let map f s = Concrete.map Pervasives.compare f s
-let map_stdlib f s = Concrete.map_stdlib Pervasives.compare f s
+let map_endo f s = Concrete.map_endo Pervasives.compare f s
 
 (*$T map
   map (fun _x -> 1) (of_list [1;2;3]) |> cardinal = 1
  *)
                    
-(*$T map_stdlib
-  let s = of_list [1;2;3] in s == (map_stdlib (fun x -> x) s)
-  let s = empty in s == (map_stdlib (fun x -> x+1) s) 
+(*$T map_endo
+  let s = of_list [1;2;3] in s == (map_endo (fun x -> x) s)
+  let s = empty in s == (map_endo (fun x -> x+1) s) 
 *)
 
 let filter f s = Concrete.filter f s
@@ -1206,11 +1206,11 @@ let filter f s = Concrete.filter f s
 *)
 
 let filter_map f s = Concrete.filter_map Pervasives.compare f s
-let filter_map_stdlib f s = Concrete.filter_map_stdlib Pervasives.compare f s
+let filter_map_endo f s = Concrete.filter_map_endo Pervasives.compare f s
 
-(*$T filter_map_stdlib
-  let s = of_list [1;2;3] in s == (filter_map_stdlib (fun x -> Some x) s)
-  let s = empty in s == (filter_map_stdlib (fun x -> Some x) s)
+(*$T filter_map_endo
+  let s = of_list [1;2;3] in s == (filter_map_endo (fun x -> Some x) s)
+  let s = empty in s == (filter_map_endo (fun x -> Some x) s)
 *)
 
 let exists f s = Concrete.exists f s

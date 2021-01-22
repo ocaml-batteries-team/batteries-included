@@ -664,16 +664,17 @@ val map: ('a -> 'b) -> 'a t -> 'b t
     [Incubator.op_map] may be more efficient.
 *)
 
-val map_stdlib: ('a -> 'a) -> 'a t -> 'a t
-(** [map f x] creates a new set with elements [f a0],
+val map_endo: ('a -> 'a) -> 'a t -> 'a t
+(** [map_endo f x] creates a new set with elements [f a0],
     [f a1]... [f aN], where [a0], [a1], ..., [aN] are the
     elements of [x].
 
-    This function places no restriction on [f]; it can map multiple
-    input values to the same output value, in which case the
-    resulting set will have smaller cardinality than the input.  [f]
-    does not need to be order preserving, although if it is, then
-    [Incubator.op_map] may be more efficient.
+    This function places no restriction on [f] (beyond the type 
+    signature being more restricted than for [map] above); it can
+    map multiple input values to the same output value, in which
+    case the resulting set will have smaller cardinality than the
+    input.  [f]  does not need to be order preserving, although if
+    it is, then [Incubator.op_map] may be more efficient.
 
     This version of map will result in a physically equal map if [f]
     returns physically equal keys.
@@ -699,8 +700,8 @@ val filter_map: ('a -> 'b option) -> 'a t -> 'b t
     order elements.
 *)
 
-val filter_map_stdlib: ('a -> 'a option) -> 'a t -> 'a t
-(** [filter_map f m] combines the features of [filter] and
+val filter_map_endo: ('a -> 'a option) -> 'a t -> 'a t
+(** [filter_map_endo f m] combines the features of [filter] and
     [map].  It calls calls [f a0], [f a1], [f aN] where [a0,a1..an]
     are the elements of [m] and returns the set of pairs [bi]
     such as [f ai = Some bi] (when [f] returns [None], the
@@ -709,9 +710,8 @@ val filter_map_stdlib: ('a -> 'a option) -> 'a t -> 'a t
     The resulting map uses the polymorphic [compare] function to
     order elements.
 
-    if the filter function [f] returns [true] for all elements in [m],
-    the resulting map is physically equal to [m].
-*)
+    If the filter function [f] returns [true] for all elements in [m],
+    the resulting map is physically equal to [m]. *)
 
 val fold: ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
 (** [fold f s a] computes [(f xN ... (f x1 (f x0 a))...)],
@@ -1082,7 +1082,7 @@ module PSet : sig
       order elements.
   *)
 
-  val map_stdlib: ('a -> 'a) -> 'a t -> 'a t
+  val map_endo: ('a -> 'a) -> 'a t -> 'a t
   (** [map f x] creates a new set with elements [f a0],
       [f a1]... [f aN], where [a0], [a1], ..., [aN] are the
       values contained in [x]
@@ -1115,15 +1115,15 @@ module PSet : sig
       order elements.
   *)
 
-  val filter_map_stdlib: ('a -> 'a option) -> 'a t -> 'a t
-  (** [filter_map f m] combines the features of [filter] and
+  val filter_map_endo: ('a -> 'a option) -> 'a t -> 'a t
+  (** [filter_map_endo f m] combines the features of [filter] and
       [map].  It calls calls [f a0], [f a1], [f aN] where [a0,a1..an]
       are the elements of [m] and returns the set of pairs [bi]
       such as [f ai = Some bi] (when [f] returns [None], the
       corresponding element of [m] is discarded).
   
-      The resulting map uses the polymorphic [compare] function to
-      order elements.
+      The resulting map uses the same [compare] function to
+      order elements as used for [m].
   
       if the filter function [f] returns [true] for all elements in [m],
       the resulting map is physically equal to [m].

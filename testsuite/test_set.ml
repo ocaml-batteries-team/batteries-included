@@ -82,25 +82,16 @@ module TestSet
     val find_last : (elt -> bool) -> s -> elt
     val find_last_opt : (elt -> bool) -> s -> elt option
     val choose_opt : s -> elt option
-    val filter_map_stdlib : (elt -> elt option) -> s -> s
-    val map_stdlib : (elt -> elt) -> s -> s
+    val map : (elt -> elt) -> s -> s
+    val map_endo : (elt -> elt) -> s -> s
+    val filter_map : (elt -> elt option) -> s -> s
+    val filter_map_endo : (elt -> elt option) -> s -> s
     val add_seq : elt BatSeq.t -> s -> s
     val of_seq : elt BatSeq.t -> s
     val to_seq : s -> elt BatSeq.t
     val to_seq_from : elt -> s -> elt BatSeq.t
     val elements : s -> elt list
-      
-    (* TODO: newly added methods here
-       min_elt_opt
-       max_elt_opt
-       add (phys eq)
-       remove (phys eq)
-       update (phys eq)
-       map_stdlib (needs patching for Make.Set, same as map + phys eq)
-       filter_map_stdlib (needs patching for Make.Set, same as filter_map + phys eq)
-       filter (phys eq)       
- *)
-      
+          
     val print :
       ?first:string -> ?last:string -> ?sep:string ->
       ('a BatInnerIO.output -> elt -> unit) ->
@@ -487,13 +478,24 @@ module TestSet
 
   let test_map () =
     "map (x -> 1) [1;2;3] == [1]" @=
-      (S.map_stdlib (fun _x -> 1) (il [1;2;3]), il [1]);
+      (S.map (fun _x -> 1) (il [1;2;3]), il [1]);
     "map (x -> x+5) [1;2;3] == [6;7;8]" @=
-      (S.map_stdlib (fun x -> x+5) (il [1;2;3]), il [6;7;8]);
-    "map (x->x) [1;2;3] == [1;2;3] (test phys eq)" @?
-      (let s = il [1;2;3] in s == (S.map_stdlib (fun x -> x) s));
-    "map (x->x) [1;2;3] == [1;2;3] (test phys eq)" @?
-      (let s = S.empty in s == (S.map_stdlib (fun x -> x+1) s));
+      (S.map (fun x -> x+5) (il [1;2;3]), il [6;7;8]);
+    "map (x->x) [1;2;3] == [1;2;3]" @=
+      (S.map (fun x -> x) (il [1;2;3]), il [1;2;3]);
+    "map (x->x) [] == []" @=
+      (S.map (fun x -> x+1) S.empty, S.empty);
+    ()
+
+  let test_map_endo () =
+    "map_endo (x -> 1) [1;2;3] == [1]" @=
+      (S.map_endo (fun _x -> 1) (il [1;2;3]), il [1]);
+    "map_endo (x -> x+5) [1;2;3] == [6;7;8]" @=
+      (S.map_endo (fun x -> x+5) (il [1;2;3]), il [6;7;8]);
+    "map_endo (x->x) [1;2;3] == [1;2;3] (test phys eq)" @?
+      (let s = il [1;2;3] in s == (S.map_endo (fun x -> x) s));
+    "map_endo (x->x) [1;2;3] == [1;2;3] (test phys eq)" @?
+      (let s = S.empty in s == (S.map_endo (fun x -> x+1) s));
     ()
 
   let test_filter () =
@@ -506,12 +508,21 @@ module TestSet
     ()
 
   let test_filter_map () =
-    "filter_map (fun x -> Some x) [1;2;3] (phys eq)" @?
-      (let s = il [1;2;3] in s == (S.filter_map_stdlib (fun x -> Some x) s));
-    "filter_map (fun x -> Some x) [] (phys eq)" @?
-      (let s = S.empty    in s == (S.filter_map_stdlib (fun x -> Some x) s));
+    "filter_map (fun x -> Some x) [1;2;3]" @=
+      (il [1;2;3], S.filter_map (fun x -> Some x) (il [1;2;3]));
+    "filter_map (fun x -> Some x) [] (phys eq)" @=
+      (S.empty, S.filter_map (fun x -> Some x) S.empty);
     "filter_map (fun x -> if x < 3 then Some (-x) else None) [1;2;3;4] = [-1;-2]" @=
-      (S.filter_map_stdlib (fun x -> if x < 3 then Some (-x) else None) (il [1;2;3;4]), il [-1;-2]);
+      (S.filter_map (fun x -> if x < 3 then Some (-x) else None) (il [1;2;3;4]), il [-1;-2]);
+    ()
+
+  let test_filter_map_endo () =
+    "filter_map_endo (fun x -> Some x) [1;2;3] (phys eq)" @?
+      (let s = il [1;2;3] in s == (S.filter_map_endo (fun x -> Some x) s));
+    "filter_map_endo (fun x -> Some x) [] (phys eq)" @?
+      (let s = S.empty    in s == (S.filter_map_endo (fun x -> Some x) s));
+    "filter_map_endo (fun x -> if x < 3 then Some (-x) else None) [1;2;3;4] = [-1;-2]" @=
+      (S.filter_map_endo (fun x -> if x < 3 then Some (-x) else None) (il [1;2;3;4]), il [-1;-2]);
     ()
 
   let test_iterators () =
@@ -590,7 +601,8 @@ module TestSet
     "test_to_seq" >:: test_to_seq;
     "test_to_seq_from" >:: test_to_seq_from;
     "test_map" >:: test_map;
-    "test_filter_map" >:: test_filter_map;
+    "test_map_endo" >:: test_map_endo;
+    "test_filter_map_endo" >:: test_filter_map_endo;
     "test_filter" >:: test_filter;
   ]
 end
@@ -598,8 +610,8 @@ end
 module S = struct
   include BatSet.Make(BatInt)
   type s = t
-  let map_stdlib = map
-  let filter_map_stdlib = filter_map
+  let map_endo = map
+  let filter_map_endo = filter_map
 end
 
 module P = struct
