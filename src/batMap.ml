@@ -902,21 +902,21 @@ module Concrete = struct
     fun () ->
     match m with
     | Empty -> BatSeq.Nil
-    | Node(l, k, v, r, _) ->
-       if cmp k v <= 0 then
+    | Node(l, k2, v, r, _) ->
+       if cmp k k2 <= 0 then
          BatSeq.append (to_seq_from cmp k l) (fun () -> BatSeq.Cons ((k,v), to_seq r)) ()
        else
          to_seq_from cmp k r ()
-
     
   let union_stdlib cmp f m1 m2 =
     foldi
       (fun k v m ->
-        if mem k cmp m
-        then match f k v (find k cmp m) with
-             | Some v2 -> add k v2 cmp m
-             | None -> m
-        else add k v cmp m)
+        match find_option k cmp m with
+        | Some v1 ->
+           (match f k v v1 with
+            | Some vmerged -> add k vmerged cmp m
+            | None -> m)
+        | None -> add k v cmp m)
       m1
       m2
     
@@ -1514,13 +1514,22 @@ module PMap = struct (*$< PMap *)
   let is_empty x = x.map = Concrete.Empty
 
   let add x d m =
-    { m with map = Concrete.add x d m.cmp m.map }
+    let newmap = Concrete.add x d m.cmp m.map in
+    if newmap == m.map
+    then m
+    else { m with map = newmap }
 
   let update k1 k2 v2 m =
-    { m with map = Concrete.update k1 k2 v2 m.cmp m.map }
+    let newmap = Concrete.update k1 k2 v2 m.cmp m.map in
+    if newmap == m.map
+    then m
+    else { m with map = newmap }
 
   let update_stdlib k f m =
-    { m with map = Concrete.update_stdlib k f m.cmp m.map }
+    let newmap = Concrete.update_stdlib k f m.cmp m.map in
+    if newmap == m.map
+    then m
+    else { m with map = newmap }
 
   let find x m =
     Concrete.find x m.cmp m.map
@@ -1637,8 +1646,12 @@ module PMap = struct (*$< PMap *)
     Concrete.print ?first ?last ?sep ?kvsep print_k print_v out t.map
 
   let filterv  f t = { t with map = Concrete.filterv f t.map t.cmp }
-  let filter f t = { t with map = Concrete.filter f t.map t.cmp }
   let filter_map f t = { t with map = Concrete.filter_map f t.map t.cmp }
+  let filter f t =
+    let newmap =  Concrete.filter f t.map t.cmp in
+    if newmap == t.map
+    then t
+    else { t with map = newmap }
 
   let max_binding t = Concrete.max_binding t.map
   let min_binding t = Concrete.min_binding t.map

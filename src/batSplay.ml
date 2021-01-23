@@ -784,12 +784,37 @@ struct
     | Empty -> raise Not_found
     | Node (l, kv, r) -> kv, sref (bst_append l r)
 
-  let to_seq _ = failwith "unimplemented"
-  let of_seq _ = failwith "unimplemented"
-  let add_seq _ = failwith "unimplemented"
-  let to_seq_from _ _ = failwith "unimplemented"
-  let union _f _m1 _m2 = failwith "unimplemented"
-                       
+
+  let add_seq s m =
+    BatSeq.fold_left
+      (fun m (k, v) -> add k v m)
+      m
+      s
+    
+  let of_seq s =
+    add_seq s empty
+
+  let rec to_seq m =
+    fun () ->
+    (* since the tree can change shape arbitrarily, fetch all bindings and turn them into a seq. *)
+    BatSeq.of_list (bindings m) ()
+    
+  let rec to_seq_from k m =
+    fun () ->
+    BatSeq.filter (fun (k2, _) -> Ord.compare k k2 <= 0) (to_seq m) ()
+    
+  let union_stdlib f m1 m2 =
+    fold
+     (fun k v m ->
+        match find_opt k m with
+        | Some v1 ->
+           (match f k v v1 with
+            | Some vmerged -> add k vmerged m
+            | None -> m)
+        | None -> add k v m)
+      m1
+      m2
+                         
   let extract k tr =
     let tr = sget tr in
     (* the reference here is a tad ugly but allows to reuse `cfind`
