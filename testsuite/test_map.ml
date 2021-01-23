@@ -79,6 +79,9 @@ module TestMap
 
     val equal : ('a -> 'a -> bool) -> 'a m -> 'a m -> bool
 
+    (* true if add, remove, update_stdlib and filter support physical equality *)
+    val supports_phys_equality : bool
+
     (* tested functions *)
     val empty : 'a m
     val is_empty : _ m -> bool
@@ -90,6 +93,10 @@ module TestMap
     val cardinal : _ m -> int
     val min_binding : 'a m -> (key * 'a)
     val max_binding : 'a m -> (key * 'a)
+    val pop_min_binding : 'a m -> (key * 'a) * 'a m
+    val pop_max_binding : 'a m -> (key * 'a) * 'a m
+    val min_binding_opt : 'a m -> (key * 'a) option
+    val max_binding_opt : 'a m -> (key * 'a) option
     val modify : key -> ('a -> 'a) -> 'a m -> 'a m
     val modify_def : 'a -> key -> ('a -> 'a) -> 'a m -> 'a m
     val modify_opt : key -> ('a option -> 'a option) -> 'a m -> 'a m
@@ -171,7 +178,11 @@ module TestMap
     "add k v (add k v' t) = add k v t" @=
       (M.add k v (M.add k v' t), M.add k v t);
     "add 4 8 [3,4; 5,6] = [3,4; 4,8; 5,6]" @=
-        (M.add 4 8 t, il [(3,4); (4,8); (5,6)]);
+      (M.add 4 8 t, il [(3,4); (4,8); (5,6)]);
+    if M.supports_phys_equality then begin
+        "add 3,4 [3,4; 5,6] == [3,4; 5,6]" @?
+          (t == M.add 3 4 t);        
+      end;
     ()
 
   let test_cardinal () =
@@ -212,7 +223,98 @@ module TestMap
             M.cardinal t - if M.mem k t then 1 else 0) in
     test_cardinal 3 t;
     test_cardinal 57 t;
+    if M.supports_phys_equality then begin
+        "remove 12 [3,4; 5,6] == [3,4; 5,6]" @?
+          (t == M.remove 12 t);
+        "remove 12 [] == []" @?
+          (M.empty == M.remove 12 M.empty);
+      end;
     ()
+
+  let test_update () =
+    (* TODO write some tests *)
+    (*
+   let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
+  equal cmp (update_stdlib 1 (fun x -> assert(x = Some 1); Some 3) (of_list [1,1; 2,2]))    (of_list [1,3;2,2])
+  let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
+  equal cmp (update_stdlib 3 (fun x -> assert(x = None);   Some 3) (of_list [1,1; 2,2]))    (of_list [1,1;2,2;3,3])
+  let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
+  equal cmp (update_stdlib 1 (fun x -> assert(x = Some 1); None)   (of_list [1,1; 2,2]))    (of_list [2,2])
+  let of_list l = of_enum (BatList.enum l) in \
+  let s = (of_list [1,1; 2,2]) in (update_stdlib 3 (fun x -> assert(x = None  ); None  ) s) == s
+  let of_list l = of_enum (BatList.enum l) in \
+  let s = (of_list [1,1; 2,2]) in (update_stdlib 1 (fun x -> assert(x = Some 1); Some 1) s) == s
+
+    let t = il [(3,4); (5, 6)] in*)
+    ();
+    if M.supports_phys_equality then begin
+        ()
+      end;
+    ()
+
+  let test_update_stdlib () =
+    (* TODO write some tests *)
+   (*   let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
+  equal cmp (update_stdlib 1 (fun x -> assert(x = Some 1); Some 3) (of_list [1,1; 2,2]))    (of_list [1,3;2,2])
+  let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
+  equal cmp (update_stdlib 3 (fun x -> assert(x = None);   Some 3) (of_list [1,1; 2,2]))    (of_list [1,1;2,2;3,3])
+  let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
+  equal cmp (update_stdlib 1 (fun x -> assert(x = Some 1); None)   (of_list [1,1; 2,2]))    (of_list [2,2])
+  let of_list l = of_enum (BatList.enum l) in \
+  let s = (of_list [1,1; 2,2]) in (update_stdlib 3 (fun x -> assert(x = None  ); None  ) s) == s
+  let of_list l = of_enum (BatList.enum l) in \
+  let s = (of_list [1,1; 2,2]) in (update_stdlib 1 (fun x -> assert(x = Some 1); Some 1) s) == s
+    *)
+    let t = il [(3,4); (5, 6)] in
+    ();
+    if M.supports_phys_equality then begin
+        ()
+      end;
+    ()
+
+  let test_filter () =
+    (* TODO write some tests *)
+    let t = il [(3,4); (5, 6)] in
+    ();
+    if M.supports_phys_equality then begin
+        (*
+          let s = empty |> add 1 1 |> add 2 2 in \
+  s == (filter (fun _ _ -> true) s)
+         *)
+        ()
+      end;
+    ()
+
+  let test_union_stdlib () =
+    (* TODO write some tests *)
+    (*$T union_stdlib
+  let cmp = Pervasives.( = ) in \
+  equal cmp (union_stdlib (fun _ -> failwith "must not be called") empty empty) empty
+  let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
+  equal cmp (union_stdlib (fun _ -> failwith "must not be called") (of_list [1,1;2,2]) empty) (of_list [1,1;2,2])
+  let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
+  equal cmp (union_stdlib (fun _ -> failwith "must not be called") empty (of_list [1,1;2,2])) (of_list [1,1;2,2])
+  let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
+  equal cmp (union_stdlib (fun _ -> failwith "must not be called") (of_list [3,3;4,4]) (of_list [1,1;2,2])) (of_list [1,1;2,2;3,3;4,4])
+ *)
+    ()
+
+  let test_add_seq () =
+    (* TODO write some tests *)
+    ()
+
+  let test_of_seq () =
+    (* TODO write some tests *)
+    ()
+
+  let test_to_seq () =
+    (* TODO write some tests *)
+    ()
+
+  let test_to_seq_from () =
+    (* TODO write some tests *)
+    ()
+
 
   let test_mem () =
     let k, k', v = 1, 2, () in
@@ -224,14 +326,52 @@ module TestMap
     let t = il [(2, 0); (1,2); (3, 4); (2, 0)] in
     "min_binding [(2, 0); (1,2); (3, 4); (2, 0)] = (1, 2)" @?
       (M.min_binding t = (1, 2));
+    "min_binding [] -> Not_found" @?
+      (try ignore(M.min_binding M.empty); false with Not_found -> true);
     ()
 
   let test_max_binding () =
     let t = il [(2, 0); (1,2); (3, 4); (2, 0)] in
     "max_binding [(2, 0); (1,2); (3, 4); (2, 0)] = (3, 4)" @?
       (M.max_binding t = (3, 4));
+    "max_binding [] -> Not_found" @?
+      (try ignore(M.max_binding M.empty); false with Not_found -> true);
     ()
 
+  let test_min_binding_opt () =
+    let t = il [(2, 0); (1,2); (3, 4); (2, 0)] in
+    "min_binding_opt [(2, 0); (1,2); (3, 4); (2, 0)] = (1, 2)" @?
+      (M.min_binding_opt t = Some (1, 2));
+    "min_binding_opt [] = None" @?
+      (M.min_binding_opt t = None);
+    ()
+
+  let test_max_binding_opt () =
+    let t = il [(2, 0); (1,2); (3, 4); (2, 0)] in
+    "max_binding_opt [(2, 0); (1,2); (3, 4); (2, 0)] = (3, 4)" @?
+      (M.max_binding_opt t = Some (3, 4));
+    "max_binding_opt [] = None" @?
+      (M.max_binding_opt t = None);
+    ()
+
+  let test_pop_min_binding () =
+    let t = il [(2, 0); (1,2); (3, 4); (2, 0)] in
+    let t2 = il [(2, 0); (3, 4); (2, 0)] in
+    "pop_min_binding [(2, 0); (1,2); (3, 4); (2, 0)] = (1, 2), ..." @?
+      (M.pop_min_binding t = ((1, 2), t2));
+    "pop_min_binding [] -> Not_found" @?
+      (try ignore(M.pop_min_binding M.empty); false with Not_found -> true);
+    ()
+
+  let test_pop_max_binding () =
+    let t = il [(2, 0); (1,2); (3, 4); (2, 0)] in
+    let t2 = il [1,2; (2, 0)] in
+    "pop_max_binding [(2, 0); (1,2); (3, 4); (2, 0)] = (1, 2), ..." @?
+      (M.pop_max_binding t = ((3, 4), t2));
+    "pop_max_binding [] -> Not_found" @?
+      (try ignore(M.pop_max_binding M.empty); false with Not_found -> true);
+    ()
+    
   let test_modify () =
     let k, k', f, t = 1, 2, ((+) 1), il [(1,2); (3, 4)] in
     "mem k t => find k (modify k f t) = f (find k t)" @?
@@ -579,7 +719,18 @@ module TestMap
     "test_iterators" >:: test_iterators;
     "test_pop" >:: test_pop;
     "test_extract" >:: test_extract;
-  ]
+    "test_update" >:: test_update;
+    "test_update_stdlib" >:: test_update_stdlib;
+    "test_filter" >:: test_filter;
+    "test_add_seq" >:: test_add_seq;
+    "test_of_seq" >:: test_of_seq;
+    "test_to_seq" >:: test_to_seq;
+    "test_to_seq_from" >:: test_to_seq_from;
+    "test_min_binding_opt" >:: test_min_binding_opt;
+    "test_max_binding_opt" >:: test_max_binding_opt;
+    "test_pop_min_binding" >:: test_pop_min_binding;
+    "test_pop_max_binding" >:: test_pop_max_binding;
+    ]
 end
 
 module M = struct
@@ -594,6 +745,8 @@ module M = struct
   let iteri = M.iter
 
   let filterv_map f = M.filter_map (fun _ -> f)
+
+  let supports_phys_equality = true
 end
 
 module P = struct
@@ -607,6 +760,7 @@ module P = struct
   let iteri = M.iter
 
   let filterv_map f = M.filter_map (fun _ -> f)
+  let supports_phys_equality = true
 end
 
 module S = struct
@@ -621,6 +775,7 @@ module S = struct
 
   let fold f = M.fold (fun _ -> f)
   let foldi = M.fold
+  let supports_phys_equality = false
 end
 
 module TM = TestMap(M)
