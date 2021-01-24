@@ -906,7 +906,7 @@ module Concrete = struct
     | Empty -> BatSeq.Nil
     | Node(l, k2, v, r, _) ->
        if cmp k k2 <= 0 then
-         BatSeq.append (to_seq_from cmp k l) (fun () -> BatSeq.Cons ((k,v), to_seq r)) ()
+         BatSeq.append (to_seq_from cmp k l) (fun () -> BatSeq.Cons ((k2,v), to_seq r)) ()
        else
          to_seq_from cmp k r ()
     
