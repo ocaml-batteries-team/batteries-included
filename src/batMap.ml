@@ -108,9 +108,10 @@ module Concrete = struct
     | Node (l, _, _, _, _) -> min_binding l
     | Empty -> raise Not_found
 
-  let min_binding_opt m =
-    try Some (min_binding m)
-    with Not_found -> None
+  let rec min_binding_opt = function
+    | Node (Empty, k, v, _, _) -> Some (k, v)
+    | Node (l, _, _, _, _) -> min_binding_opt l
+    | Empty -> None
 
   let get_root = function
     | Empty -> raise Not_found
@@ -131,9 +132,10 @@ module Concrete = struct
     | Node (_, _, _, r, _) -> max_binding r
     | Empty -> raise Not_found
 
-  let max_binding_opt m =
-    try Some (max_binding m)
-    with Not_found -> None
+  let rec max_binding_opt = function
+    | Node (_, k, v, Empty, _) -> Some (k, v)
+    | Node (_, _, _, r, _) -> max_binding_opt r
+    | Empty -> None
 
   let pop_max_binding s =
     let maxi = ref (get_root s) in

@@ -483,8 +483,13 @@ struct
     bfind tr
 
   let min_binding_opt tr =
-    try Some(min_binding tr)
-    with Not_found -> None
+    let tr = sget tr in
+    let rec bfind = function
+      | Node (Empty, kv, _) -> Some kv
+      | Node (l, _, _) -> bfind l
+      | Empty -> None
+    in
+    bfind tr
         
 
   let choose = min_binding
@@ -509,7 +514,7 @@ struct
     let rec bfind = function
       | Node (Empty, kv, r) -> mini := kv; r
       | Node (l, kv, r) -> Node (bfind l, kv, r)
-      | Empty -> assert(false)
+      | Empty -> raise Not_found
     in
     (!mini, sref (bfind (sget tr)))
 
@@ -523,15 +528,20 @@ struct
     bfind tr
 
   let max_binding_opt tr =
-    try Some(max_binding tr)
-    with Not_found -> None
+    let tr = sget tr in
+    let rec bfind = function
+      | Node (_, kv, Empty) -> Some kv
+      | Node (_, _, r) -> bfind r
+      | Empty -> None
+    in
+    bfind tr
         
   let pop_max_binding tr =
     let maxi = ref (choose tr) in
     let rec bfind = function
       | Node (l, kv, Empty) -> maxi := kv; l
       | Node (l, kv, r) -> Node (l, kv, bfind r)
-      | Empty -> assert(false)
+      | Empty -> raise Not_found
     in
     (!maxi, sref (bfind (sget tr)))
 
@@ -803,7 +813,7 @@ struct
     fun () ->
     BatSeq.filter (fun (k2, _) -> Ord.compare k k2 <= 0) (to_seq m) ()
     
-  let union_stdlib f m1 m2 =
+  let union f m1 m2 =
     fold
      (fun k v m ->
         match find_opt k m with
