@@ -60,7 +60,6 @@ module Stdlib_verifications = struct
   module Random = (Random: module type of Legacy.Random)
 ##V>=4.8## module Result = (Result: module type of Legacy.Result)
   (*  module Scanf = (Scanf : module type of Legacy.Scanf)*)
-  (*  module Set = (Set: module type of Legacy.Set)*)
   (* FAILS BECAUSE OF Stack.Empty not being present because
      module Stack = (Stack : module type of Legacy.Stack)
   *)
@@ -119,4 +118,11 @@ module Stdlib_verifications = struct
   end 
   let _ = assert ([1,1;2,2;3,3;] = (sort_map (module IntMap) [3; 1; 2;]))
  
+  (* test compatibility of BatSet.S with Legacy.Set.S *)
+  let sort (type s) (module Set : Legacy.Set.S with type elt = s) l =
+      Set.elements (List.fold_right Set.add l Set.empty)
+  module IntSet = struct
+      include BatSet.Int
+  end 
+  let _ = assert ([1;2;3] = (sort (module IntSet) [3; 1; 2;]))
 end
