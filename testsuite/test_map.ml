@@ -130,6 +130,11 @@ module TestMap
     val choose : 'a m -> (key * 'a)
     val split : key -> 'a m -> ('a m * 'a option * 'a m)
 
+    val add_seq : (key * 'a) BatSeq.t -> 'a m  -> 'a m
+    val of_seq : (key * 'a) BatSeq.t -> 'a m
+    val to_seq : 'a m -> (key * 'a) BatSeq.t
+    val to_seq_from : key -> 'a m -> (key * 'a) BatSeq.t
+
     val merge :
       (key -> 'a option -> 'b option -> 'c option)
       -> 'a m -> 'b m -> 'c m
@@ -315,19 +320,28 @@ module TestMap
     BatSeq.fold_right (fun x l -> x :: l) s []
 
   let test_add_seq () =
-    (* TODO write some tests *)
+    "add_seq [1,1;2,2;3,3] [3,3;4,4]" @= (il [1,1;2,2;3,3;4,4], M.add_seq (BatSeq.of_list [1,1;2,2;3,3]) (il [3,3;4,4]));
+    "add_seq [1,1;2,2]     [3,3;4,4]" @= (il [1,1;2,2;3,3;4,4], M.add_seq (BatSeq.of_list [1,1;2,2])     (il [3,3;4,4]));
+    "add_seq []            [3,3;4,4]" @= (il [3,3;4,4],         M.add_seq (BatSeq.of_list [])            (il [3,3;4,4]));
+    "add_seq [1,1;2,2]     []       " @= (il [1,1;2,2],         M.add_seq (BatSeq.of_list [1,1;2,2])     (il []));
+    "add_seq []            []       " @= (il [],                M.add_seq (BatSeq.of_list [])            (il []));
     ()
 
   let test_of_seq () =
-    (* TODO write some tests *)
+    "of_seq [1,1;2,2;3,3;4,4]" @= (il [1,1;2,2;3,3;4,4], M.of_seq (BatSeq.of_list [1,1;2,2;4,4;3,3]));
+    "of_seq []"                @= (il [               ], M.of_seq (BatSeq.of_list [               ]));
     ()
 
-  let test_to_seq () =
-    (* TODO write some tests *)
+  let test_to_seq () = 
+    "to_seq [1,1;2,2;3,3;4,4]" @? (BatSeq.equal (BatSeq.of_list [1,1;2,2;3,3;4,4]) (M.to_seq (il [4,4;1,1;3,3;2,2])));
+    "to_seq []"                @? (BatSeq.equal (BatSeq.of_list [               ]) (M.to_seq (il [               ])));
     ()
-
+ 
   let test_to_seq_from () =
-    (* TODO write some tests *)
+    "to_seq_from 5 []"                @? (BatSeq.equal (BatSeq.of_list [               ]) (M.to_seq_from 5 (il [               ])));
+    "to_seq_from 5 [1,1;2,2;3,3;4,4]" @? (BatSeq.equal (BatSeq.of_list [               ]) (M.to_seq_from 5 (il [4,4;1,1;3,3;2,2])));
+    "to_seq_from 3 [1,1;2,2;3,3;4,4]" @? (BatSeq.equal (BatSeq.of_list [3,3;4,4        ]) (M.to_seq_from 3 (il [4,4;1,1;3,3;2,2])));
+    "to_seq_from 0 [1,1;2,2;3,3;4,4]" @? (BatSeq.equal (BatSeq.of_list [1,1;2,2;3,3;4,4]) (M.to_seq_from 0 (il [4,4;1,1;3,3;2,2])));
     ()
 
 
