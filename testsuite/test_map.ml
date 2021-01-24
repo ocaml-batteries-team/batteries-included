@@ -91,6 +91,8 @@ module TestMap
     val remove : key -> 'a m -> 'a m
     val mem : key -> _ m -> bool
     val cardinal : _ m -> int
+    val update: key -> key -> 'a -> 'a m -> 'a m
+    val update_stdlib: key -> ('a option -> 'a option) -> 'a m -> 'a m
     val min_binding : 'a m -> (key * 'a)
     val max_binding : 'a m -> (key * 'a)
     val pop_min_binding : 'a m -> (key * 'a) * 'a m
@@ -131,6 +133,9 @@ module TestMap
     val merge :
       (key -> 'a option -> 'b option -> 'c option)
       -> 'a m -> 'b m -> 'c m
+      
+    val union_stdlib : 
+      (key -> 'a -> 'a -> 'a option) -> 'a m -> 'a m -> 'a m
 
     val print :
       ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
@@ -231,73 +236,83 @@ module TestMap
       end;
     ()
 
-  let test_update () =
-    (* TODO write some tests *)
-    (*
-   let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
-  equal cmp (update_stdlib 1 (fun x -> assert(x = Some 1); Some 3) (of_list [1,1; 2,2]))    (of_list [1,3;2,2])
-  let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
-  equal cmp (update_stdlib 3 (fun x -> assert(x = None);   Some 3) (of_list [1,1; 2,2]))    (of_list [1,1;2,2;3,3])
-  let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
-  equal cmp (update_stdlib 1 (fun x -> assert(x = Some 1); None)   (of_list [1,1; 2,2]))    (of_list [2,2])
-  let of_list l = of_enum (BatList.enum l) in \
-  let s = (of_list [1,1; 2,2]) in (update_stdlib 3 (fun x -> assert(x = None  ); None  ) s) == s
-  let of_list l = of_enum (BatList.enum l) in \
-  let s = (of_list [1,1; 2,2]) in (update_stdlib 1 (fun x -> assert(x = Some 1); Some 1) s) == s
-
-    let t = il [(3,4); (5, 6)] in*)
-    ();
+  let test_update_stdlib () =
+    let s = (il [1,1; 2,2]) in
+    "update_stdlib change [1,1;2,2] to [1,3;2,2]" @=
+      (M.update_stdlib 1 (fun x -> assert(x = Some 1); Some 3) s, il [1,3;2,2]);
+    "update_stdlib change [1,1;2,2] to [1,1;2,2;3,3]" @=
+      (M.update_stdlib 3 (fun x -> assert(x = None);   Some 3) s, il [1,1;2,2;3,3]);
+    "update_stdlib change [1,1;2,2] to [2,2]" @=
+      (M.update_stdlib 1 (fun x -> assert(x = Some 1); None)   s, il [2,2]);
+        "update_stdlib change [1,1;2,2] to [1,1;2,2] by not changing binding of 3 (phys eq)" @=
+          (M.update_stdlib 3 (fun x -> assert(x = None); None  ) s, s);
+        "update_stdlib change [1,1;2,2] to [1,1;2,2] by not changing binding of 1 (phys eq)" @=
+          (M.update_stdlib 1 (fun x -> assert(x = Some 1); Some 1) s, s);
+        "update_stdlib change [] to [] by not changing binding of 1 (phys eq)" @=
+          (M.update_stdlib 1 (fun x -> assert(x = None); None) M.empty, M.empty);
     if M.supports_phys_equality then begin
-        ()
+        "update_stdlib change [1,1;2,2] to [1,1;2,2] by not changing binding of 3 (phys eq)" @?
+          (M.update_stdlib 3 (fun x -> assert(x = None); None  ) s == s);
+        "update_stdlib change [1,1;2,2] to [1,1;2,2] by not changing binding of 1 (phys eq)" @?
+          (M.update_stdlib 1 (fun x -> assert(x = Some 1); Some 1) s == s);
+        "update_stdlib change [] to [] by not changing binding of 1 (phys eq)" @?
+          (M.update_stdlib 1 (fun x -> assert(x = None); None) M.empty == M.empty);
       end;
     ()
 
-  let test_update_stdlib () =
-    (* TODO write some tests *)
-   (*   let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
-  equal cmp (update_stdlib 1 (fun x -> assert(x = Some 1); Some 3) (of_list [1,1; 2,2]))    (of_list [1,3;2,2])
-  let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
-  equal cmp (update_stdlib 3 (fun x -> assert(x = None);   Some 3) (of_list [1,1; 2,2]))    (of_list [1,1;2,2;3,3])
-  let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
-  equal cmp (update_stdlib 1 (fun x -> assert(x = Some 1); None)   (of_list [1,1; 2,2]))    (of_list [2,2])
-  let of_list l = of_enum (BatList.enum l) in \
-  let s = (of_list [1,1; 2,2]) in (update_stdlib 3 (fun x -> assert(x = None  ); None  ) s) == s
-  let of_list l = of_enum (BatList.enum l) in \
-  let s = (of_list [1,1; 2,2]) in (update_stdlib 1 (fun x -> assert(x = Some 1); Some 1) s) == s
-    *)
-    let t = il [(3,4); (5, 6)] in
-    ();
+  let test_update () =
+    let s = (il [1,1; 2,2]) in
+    "update 1 1 3 [1,1;2,2]" @=
+      (M.update 1 1 3 s, il [1,3;2,2]);
+    "update 1 3 3 [1,1;2,2]" @=
+      (M.update 1 3 3 s, il [2,2;3,3]);
+    "update 1 2 3 [1,1;2,2]" @=
+      (M.update 1 2 3 s, il [2,3]);
+    "update 1 1 1 [1,1;2,2]" @=
+      (M.update 1 1 1 s, s);
     if M.supports_phys_equality then begin
-        ()
+        "update 1 1 1 [1,1;2,2] (phys eq)" @?
+          (M.update 1 1 1 s == s);
       end;
     ()
 
   let test_filter () =
-    (* TODO write some tests *)
-    let t = il [(3,4); (5, 6)] in
-    ();
+    let t = il [(3,4); (6, 5); (7,8); (10, 9)] in
+    "filter (_ -> false) t" @=
+      (M.filter (fun _ _ -> false) t, M.empty);
+    "filter (fun a b -> a > b) t" @=
+      (M.filter (fun a b -> a > b) t, il [6,5;10,9]);
+    "filter (_ -> true) t" @=
+      (M.filter (fun _ _ -> true) t, t);
+    "filter (_ -> true) empty" @=
+      (M.filter (fun _ _ -> true) M.empty, M.empty);
     if M.supports_phys_equality then begin
-        (*
-          let s = empty |> add 1 1 |> add 2 2 in \
-  s == (filter (fun _ _ -> true) s)
-         *)
-        ()
+        "filter (_ -> true) t (phys eq)" @?
+          (M.filter (fun _ _ -> true) t == t);
+        "filter (_ -> true) empty (phys eq)" @?
+          (M.filter (fun _ _ -> true) M.empty == M.empty);
       end;
     ()
 
   let test_union_stdlib () =
-    (* TODO write some tests *)
-    (*$T union_stdlib
-  let cmp = Pervasives.( = ) in \
-  equal cmp (union_stdlib (fun _ -> failwith "must not be called") empty empty) empty
-  let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
-  equal cmp (union_stdlib (fun _ -> failwith "must not be called") (of_list [1,1;2,2]) empty) (of_list [1,1;2,2])
-  let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
-  equal cmp (union_stdlib (fun _ -> failwith "must not be called") empty (of_list [1,1;2,2])) (of_list [1,1;2,2])
-  let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
-  equal cmp (union_stdlib (fun _ -> failwith "must not be called") (of_list [3,3;4,4]) (of_list [1,1;2,2])) (of_list [1,1;2,2;3,3;4,4])
- *)
+    "union_stdlib empty empty" @=
+      (M.union_stdlib (fun _ -> failwith "must not be called") M.empty M.empty, M.empty);
+    "union_stdlib [1,1;2,2] empty" @=
+      (M.union_stdlib (fun _ -> failwith "must not be called") (il [1,1;2,2]) M.empty, il [1,1;2,2]);
+    "union_stdlib empty [1,1;2,2]" @=
+      (M.union_stdlib (fun _ -> failwith "must not be called") M.empty (il [1,1;2,2]), il [1,1;2,2]);
+    "union_stdlib [1,1;2,2] [3,3;4,4]" @=
+      (M.union_stdlib (fun _ -> failwith "must not be called") (il [3,3;4,4]) (il [1,1;2,2]), il [1,1;2,2;3,3;4,4]);
+    "union_stdlib [1,1;2,2;3,10] [3,6;4,4]" @=
+      (M.union_stdlib (fun _k a b -> Some (a+b)) (il [3,6;4,4]) (il [1,1;2,2;3,10]), il [1,1;2,2;3,16;4,4]);
+    "union_stdlib [1,1;2,2;3,10] [3,6;4,4]" @=
+      (M.union_stdlib (fun _k a b -> None) (il [3,6;4,4]) (il [1,1;2,2;3,10]), il [1,1;2,2;4,4]);    
+    "union_stdlib [1,1;4,2;3,10] [3,6;4,4]" @=
+      (M.union_stdlib (fun k a b -> if k = 3 then Some (a+b) else None) (il [3,6;4,4]) (il [1,1;4,2;3,10]), il [1,1;2,2;3,16]);
     ()
+
+  let list_of_seq s =
+    BatSeq.fold_right (fun x l -> x :: l) s []
 
   let test_add_seq () =
     (* TODO write some tests *)
@@ -343,7 +358,7 @@ module TestMap
     "min_binding_opt [(2, 0); (1,2); (3, 4); (2, 0)] = (1, 2)" @?
       (M.min_binding_opt t = Some (1, 2));
     "min_binding_opt [] = None" @?
-      (M.min_binding_opt t = None);
+      (M.min_binding_opt M.empty = None);
     ()
 
   let test_max_binding_opt () =
@@ -351,23 +366,29 @@ module TestMap
     "max_binding_opt [(2, 0); (1,2); (3, 4); (2, 0)] = (3, 4)" @?
       (M.max_binding_opt t = Some (3, 4));
     "max_binding_opt [] = None" @?
-      (M.max_binding_opt t = None);
+      (M.max_binding_opt M.empty = None);
     ()
 
   let test_pop_min_binding () =
     let t = il [(2, 0); (1,2); (3, 4); (2, 0)] in
     let t2 = il [(2, 0); (3, 4); (2, 0)] in
+    let mb, rest = M.pop_min_binding t in
     "pop_min_binding [(2, 0); (1,2); (3, 4); (2, 0)] = (1, 2), ..." @?
-      (M.pop_min_binding t = ((1, 2), t2));
+      (mb  = (1, 2));
+    "pop_min_binding [(2, 0); (1,2); (3, 4); (2, 0)] = (1, 2), ..." @=
+      (rest, t2);
     "pop_min_binding [] -> Not_found" @?
       (try ignore(M.pop_min_binding M.empty); false with Not_found -> true);
     ()
 
   let test_pop_max_binding () =
-    let t = il [(2, 0); (1,2); (3, 4); (2, 0)] in
-    let t2 = il [1,2; (2, 0)] in
+    let t = il [(2, 6); (1,2); (3, 4); (2, 6)] in
+    let t2 = il [(1, 2); (2, 6)] in
+    let mb, rest = M.pop_max_binding t in
     "pop_max_binding [(2, 0); (1,2); (3, 4); (2, 0)] = (1, 2), ..." @?
-      (M.pop_max_binding t = ((3, 4), t2));
+      (mb = (3, 4));
+    "pop_max_binding [(2, 0); (1,2); (3, 4); (2, 0)] = (1, 2), ..." @=
+      (rest, t2);
     "pop_max_binding [] -> Not_found" @?
       (try ignore(M.pop_max_binding M.empty); false with Not_found -> true);
     ()
@@ -745,6 +766,7 @@ module M = struct
   let iteri = M.iter
 
   let filterv_map f = M.filter_map (fun _ -> f)
+  let union_stdlib = M.union
 
   let supports_phys_equality = true
 end
@@ -775,6 +797,7 @@ module S = struct
 
   let fold f = M.fold (fun _ -> f)
   let foldi = M.fold
+  let union_stdlib = M.union
   let supports_phys_equality = false
 end
 
