@@ -820,7 +820,7 @@ struct
         | Some v1 ->
            (match f k v v1 with
             | Some vmerged -> add k vmerged m
-            | None -> m)
+            | None -> remove k m)
         | None -> add k v m)
       m1
       m2

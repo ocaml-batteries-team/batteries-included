@@ -308,12 +308,12 @@ module TestMap
       (M.union_stdlib (fun _ -> failwith "must not be called") M.empty (il [1,1;2,2]), il [1,1;2,2]);
     "union_stdlib [1,1;2,2] [3,3;4,4]" @=
       (M.union_stdlib (fun _ -> failwith "must not be called") (il [3,3;4,4]) (il [1,1;2,2]), il [1,1;2,2;3,3;4,4]);
-    "union_stdlib [1,1;2,2;3,10] [3,6;4,4]" @=
+    "union_stdlib [1,1;2,2;3,10] [3,6;4,4] keep sum on conflict" @=
       (M.union_stdlib (fun _k a b -> Some (a+b)) (il [3,6;4,4]) (il [1,1;2,2;3,10]), il [1,1;2,2;3,16;4,4]);
-    "union_stdlib [1,1;2,2;3,10] [3,6;4,4]" @=
-      (M.union_stdlib (fun _k a b -> None) (il [3,6;4,4]) (il [1,1;2,2;3,10]), il [1,1;2,2;4,4]);    
-    "union_stdlib [1,1;4,2;3,10] [3,6;4,4]" @=
-      (M.union_stdlib (fun k a b -> if k = 3 then Some (a+b) else None) (il [3,6;4,4]) (il [1,1;4,2;3,10]), il [1,1;2,2;3,16]);
+    "union_stdlib [1,1;2,2;3,10] [3,6;4,4] drop on conflict" @=
+      (M.union_stdlib (fun _k a b -> None)       (il [3,6;4,4]) (il [1,1;2,2;3,10]), il [1,1;2,2;4,4]);    
+    "union_stdlib [1,1;4,2;3,10] [3,6;4,4] keep 3 w sum, drop 4" @=
+      (M.union_stdlib (fun k a b -> if k = 3 then Some (a+b) else None) (il [2,2;3,6;4,4]) (il [1,1;4,2;3,10]), il [1,1;2,2;3,16]);
     ()
 
   let list_of_seq s =
@@ -765,6 +765,7 @@ module TestMap
     "test_max_binding_opt" >:: test_max_binding_opt;
     "test_pop_min_binding" >:: test_pop_min_binding;
     "test_pop_max_binding" >:: test_pop_max_binding;
+    "test_union_stdlib" >:: test_union_stdlib;
     ]
 end
 

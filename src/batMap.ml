@@ -917,7 +917,7 @@ module Concrete = struct
         | Some v1 ->
            (match f k v v1 with
             | Some vmerged -> add k vmerged cmp m
-            | None -> m)
+            | None -> remove k cmp m)
         | None -> add k v cmp m)
       m1
       m2
