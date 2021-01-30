@@ -120,7 +120,7 @@ module Concrete = struct
   let pop_min_binding s =
     let mini = ref (get_root s) in
     let rec loop = function
-      | Empty -> raise Not_found
+      | Empty -> assert(false)  (* get_root already raises Not_found on empty map *)
       | Node(Empty, k, v, r, _) -> mini := (k, v); r
       | Node(l, k, v, r, _) -> bal (loop l) k v r
     in
@@ -140,7 +140,7 @@ module Concrete = struct
   let pop_max_binding s =
     let maxi = ref (get_root s) in
     let rec loop = function
-      | Empty -> raise Not_found
+      | Empty ->  assert(false)  (* get_root already raises Not_found on empty map *)
       | Node (l, k, v, Empty, _) -> maxi := (k, v); l
       | Node (l, k, v, r, _) -> bal l k v (loop r)
     in

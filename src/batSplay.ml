@@ -514,7 +514,7 @@ struct
     let rec bfind = function
       | Node (Empty, kv, r) -> mini := kv; r
       | Node (l, kv, r) -> Node (bfind l, kv, r)
-      | Empty -> raise Not_found
+      | Empty ->  assert(false)  (* choose already raises Not_found on empty map *)
     in
     (!mini, sref (bfind (sget tr)))
 
@@ -541,7 +541,7 @@ struct
     let rec bfind = function
       | Node (l, kv, Empty) -> maxi := kv; l
       | Node (l, kv, r) -> Node (l, kv, bfind r)
-      | Empty -> raise Not_found
+      | Empty ->  assert(false)  (* choose already raises Not_found on empty map *)
     in
     (!maxi, sref (bfind (sget tr)))
 
