@@ -805,28 +805,24 @@ struct
     add_seq s empty
 
   let rec to_seq_hlp m =
-    fun () ->
     match m with
-    | Empty -> BatSeq.Nil
-    | Node(l, kv, r) ->
-       BatSeq.append (to_seq_hlp l) (fun () -> BatSeq.Cons (kv, to_seq_hlp r)) ()
+    | End -> BatSeq.Nil
+    | More(k, v, r, e) ->
+       BatSeq.Cons ((k, v), fun () -> to_seq_hlp (cons_enum r e))
+      
+  let to_seq m () =
+    to_seq_hlp (cons_enum (sget m) End)
 
-  let to_seq m =
-    to_seq_hlp (sget m)
-
-  let to_seq_from k m =
-    let rec to_seq_from_hlp k m =
-      fun () ->
+  let to_seq_from k m () =
+    let rec cons_enum_from k2 m e =
       match m with
-      | Empty -> BatSeq.Nil
-      | Node(l, ((k2, _) as kv), r) ->
-         if Ord.compare k k2 <= 0 then
-           BatSeq.append (to_seq_from_hlp k l) (fun () -> BatSeq.Cons (kv, to_seq_hlp r)) ()
-         else
-           to_seq_from_hlp k r () in
-    to_seq_from_hlp k (sget m)
-
-    
+      | Empty -> e
+      | Node (l, (k, v), r) ->
+         if Ord.compare k2 k <= 0
+         then cons_enum_from k2 l (More (k, v, r, e))
+         else cons_enum_from k2 r e in
+    to_seq_hlp (cons_enum_from k (sget m) End)
+   
   let union f m1 m2 =
     fold
      (fun k v m ->

@@ -893,23 +893,25 @@ module Concrete = struct
   let of_seq cmp s =
     add_seq cmp s empty
 
-  let rec to_seq m =
-    fun () ->
+  let rec to_seq_hlp m =
     match m with
-    | Empty -> BatSeq.Nil
-    | Node(l, k, v, r, _) ->
-       BatSeq.append (to_seq l) (fun () -> BatSeq.Cons ((k, v), to_seq r)) ()
+    | E -> BatSeq.Nil
+    | C(k, v, r, e) ->
+       BatSeq.Cons ((k, v), fun () -> to_seq_hlp (cons_iter r e))
+      
+  let to_seq m () =
+    to_seq_hlp (cons_iter m E)
 
-  let rec to_seq_from cmp k m =
-    fun () ->
-    match m with
-    | Empty -> BatSeq.Nil
-    | Node(l, k2, v, r, _) ->
-       if cmp k k2 <= 0 then
-         BatSeq.append (to_seq_from cmp k l) (fun () -> BatSeq.Cons ((k2,v), to_seq r)) ()
-       else
-         to_seq_from cmp k r ()
-    
+  let to_seq_from cmp k m () =
+    let rec cons_enum_from k2 m e =
+      match m with
+      | Empty -> e
+      | Node (l, k, v, r, _) ->
+         if cmp k2 k <= 0
+         then cons_enum_from k2 l (C (k, v, r, e))
+         else cons_enum_from k2 r e in
+    to_seq_hlp (cons_enum_from k m E)
+
   let union_stdlib cmp f m1 m2 =
     foldi
       (fun k v m ->

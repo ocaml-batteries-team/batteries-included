@@ -341,7 +341,17 @@ module TestMap
     "to_seq_from 5 []"                @? (BatSeq.equal (BatSeq.of_list [               ]) (M.to_seq_from 5 (il [               ])));
     "to_seq_from 5 [1,1;2,2;3,3;4,4]" @? (BatSeq.equal (BatSeq.of_list [               ]) (M.to_seq_from 5 (il [4,4;1,1;3,3;2,2])));
     "to_seq_from 3 [1,1;2,2;3,3;4,4]" @? (BatSeq.equal (BatSeq.of_list [3,3;4,4        ]) (M.to_seq_from 3 (il [4,4;1,1;3,3;2,2])));
-    "to_seq_from 0 [1,1;2,2;3,3;4,4]" @? (BatSeq.equal (BatSeq.of_list [1,1;2,2;3,3;4,4]) (M.to_seq_from 0 (il [4,4;1,1;3,3;2,2])));
+    "to_seq_from 5 [1,1;2,2;3,3;4,4]" @? (BatSeq.equal (BatSeq.of_list [1,1;2,2;3,3;4,4]) (M.to_seq_from 0 (il [4,4;1,1;3,3;2,2])));
+    let l =  [0,0;1,1;2,2;3,3;4,4;5,5;6,6;7,7;8,8;9,9]
+    and l2 = [5,5;6,6;7,7;8,8;9,9] in
+    "to_seq_from 5 [1,1 -- 9,9]" @? (BatSeq.equal (BatSeq.of_list l2) (M.to_seq_from 5 (il l)));
+    "to_seq_from 0 [1,1 -- 9,9]" @? (BatSeq.equal (BatSeq.of_list l) (M.to_seq_from 0 (il l)));
+    let max = 40 in
+    let l = BatList.init max (fun i -> (i, i)) in
+    for i = 0 to max do
+      let subl = BatList.filter (fun (x, _) -> x >= i) l in
+      "to_seq_from N [1,1 -- M,M]" @? (BatSeq.equal (BatSeq.of_list subl) (M.to_seq_from i (il l)));
+    done;
     ()
 
 
