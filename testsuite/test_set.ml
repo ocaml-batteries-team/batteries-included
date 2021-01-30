@@ -417,7 +417,9 @@ module TestSet
  
   let test_to_seq_from () =
     "to_seq_from 0 [1;2;3;4]" @? (BatSeq.equal (BatSeq.of_list [1;2;3;4]) (S.to_seq_from 0 (il [4;1;3;2])));
-    "to_seq_from 3 [1;2;3;4]" @? (BatSeq.equal (BatSeq.of_list [3;4    ]) (S.to_seq_from 3 (il [4;1;3;2])));
+    "to_seq_from 2 [1;2;3;4]" @? (BatSeq.equal (BatSeq.of_list [  2;3;4]) (S.to_seq_from 2 (il [4;1;3;2])));
+    "to_seq_from 3 [1;2;3;4]" @? (BatSeq.equal (BatSeq.of_list [    3;4]) (S.to_seq_from 3 (il [4;1;3;2])));
+    "to_seq_from 4 [1;2;3;4]" @? (BatSeq.equal (BatSeq.of_list [      4]) (S.to_seq_from 4 (il [4;1;3;2])));
     "to_seq_from 5 [1;2;3;4]" @? (BatSeq.equal (BatSeq.of_list [       ]) (S.to_seq_from 5 (il [4;1;3;2])));
     "to_seq_from 5 []"        @? (BatSeq.equal (BatSeq.of_list [       ]) (S.to_seq_from 5 (il []       )));
     ()

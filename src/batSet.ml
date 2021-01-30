@@ -447,6 +447,13 @@ module Concrete = struct
       Empty -> t
     | Node (l, e, r, _) -> cons_iter l (C (e, r, t))
 
+  let rec cons_iter_from cmp k s t = match s with
+      Empty -> t
+    | Node (l, e, r, _) ->
+       if cmp e k < 0
+       then cons_iter_from cmp k r t
+       else cons_iter_from cmp k l (C (e, r, t))
+
   let rec rev_cons_iter s t = match s with
       Empty -> t
     | Node (l, e, r, _) -> rev_cons_iter r (C (e, l, t))
@@ -704,24 +711,18 @@ module Concrete = struct
     
   let of_seq cmp s =
     add_seq cmp s empty
-    
-  let rec to_seq m =
-    fun () ->
-    match m with
-    | Empty -> BatSeq.Nil
-    | Node(l, v, r, _) ->
-       BatSeq.append (to_seq l) (fun () -> BatSeq.Cons (v, to_seq r)) ()
-    
-  let rec to_seq_from cmp k m =
-    fun () ->
-    match m with
-    | Empty -> BatSeq.Nil
-    | Node(l, v, r, _) ->
-       if cmp k v <= 0 then
-         BatSeq.append (to_seq_from cmp k l) (fun () -> BatSeq.Cons (v, to_seq r)) ()
-       else
-         to_seq_from cmp k r ()
-  
+
+  let rec seq_of_iter iter = fun () ->
+    match iter with
+    | E -> BatSeq.Nil
+    | C (e, r, t) ->
+       BatSeq.Cons (e, seq_of_iter (cons_iter r t))
+
+  let to_seq s =
+    seq_of_iter (cons_iter s E)
+
+  let to_seq_from cmp k s =
+    seq_of_iter (cons_iter_from cmp k s E)
 end
 
 module type S =
