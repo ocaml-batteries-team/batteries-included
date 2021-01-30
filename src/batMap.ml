@@ -913,12 +913,11 @@ module Concrete = struct
   let union_stdlib cmp f m1 m2 =
     foldi
       (fun k v m ->
-        match find_option k cmp m with
-        | Some v1 ->
-           (match f k v v1 with
-            | Some vmerged -> add k vmerged cmp m
-            | None -> remove k cmp m)
-        | None -> add k v cmp m)
+        update_stdlib k
+          (fun v2opt ->
+            match v2opt with
+            | Some v2 -> f k v v2
+            | None -> Some v) cmp m)
       m1
       m2
     
