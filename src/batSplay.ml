@@ -804,14 +804,28 @@ struct
   let of_seq s =
     add_seq s empty
 
-  let rec to_seq m =
+  let rec to_seq_hlp m =
     fun () ->
-    (* since the tree can change shape arbitrarily, fetch all bindings and turn them into a seq. *)
-    BatSeq.of_list (bindings m) ()
-    
-  let rec to_seq_from k m =
-    fun () ->
-    BatSeq.filter (fun (k2, _) -> Ord.compare k k2 <= 0) (to_seq m) ()
+    match m with
+    | Empty -> BatSeq.Nil
+    | Node(l, kv, r) ->
+       BatSeq.append (to_seq_hlp l) (fun () -> BatSeq.Cons (kv, to_seq_hlp r)) ()
+
+  let to_seq m =
+    to_seq_hlp (sget m)
+
+  let to_seq_from k m =
+    let rec to_seq_from_hlp k m =
+      fun () ->
+      match m with
+      | Empty -> BatSeq.Nil
+      | Node(l, ((k2, _) as kv), r) ->
+         if Ord.compare k k2 <= 0 then
+           BatSeq.append (to_seq_from_hlp k l) (fun () -> BatSeq.Cons (kv, to_seq_hlp r)) ()
+         else
+           to_seq_from_hlp k r () in
+    to_seq_from_hlp k (sget m)
+
     
   let union f m1 m2 =
     fold
