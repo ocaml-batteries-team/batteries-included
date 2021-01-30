@@ -34,7 +34,7 @@ module Legacy = struct
   module Random = Random
   module Scanf = Scanf
   module Set = Set
-  module Seq = Seq
+##V>=4.7##  module Seq = Seq
 ##V<4.8## module Sort = Sort
   module Stack = Stack
   module StdLabels = StdLabels
