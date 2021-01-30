@@ -119,7 +119,7 @@ sig
       be physically equal to [m]
       @raise Not_found if [k1] is not bound in [m].
       @since 2.4.0 
-      @before NEXT_RELEASE physical equality was nor ensured.  *)
+      @before NEXT_RELEASE physical equality was not ensured.  *)
     
   val find: key -> 'a t -> 'a
   (** [find x m] returns the current binding of [x] in [m],
@@ -289,7 +289,7 @@ sig
 
   val min_binding : 'a t -> (key * 'a)
   (** Return the [(key, value)] pair with the smallest key.
-      Raises Not_found if the map is empty.  *)
+      @raise Not_found if the map is empty.  *)
     
   val min_binding_opt : 'a t -> (key * 'a) option
   (** Return [Some (key, value)] for the [key, value] pair with 
@@ -560,7 +560,7 @@ val update: 'a -> 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
     be physically equal to [m]
     @raise Not_found if [k1] is not bound in [m].
     @since 2.4.0 
-    @before NEXT_RELEASE physical equality was nor ensured. *)
+    @before NEXT_RELEASE physical equality was not ensured. *)
 
 val update_stdlib : 'a -> ('b option -> 'b option) -> ('a, 'b) t -> ('a, 'b) t
 (** [update_stdlib k f m] returns a map containing the same bindings as [m],
@@ -1001,7 +1001,7 @@ module PMap : sig
       be physically equal to [m]
       @raise Not_found if [k1] is not bound in [m].
       @since 2.4.0 
-      @before NEXT_RELEASE physical equality was nor ensured.  *)
+      @before NEXT_RELEASE physical equality was not ensured.  *)
 
   val update_stdlib : 'a -> ('b option -> 'b option) -> ('a, 'b) t -> ('a, 'b) t
   (** [update_stdlib k f m] returns a map containing the same bindings as [m],

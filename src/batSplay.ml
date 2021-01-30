@@ -441,7 +441,7 @@ struct
           | C (cx, Node (l, _kv, r)) -> C (cx, Node (l, (k2, v2), r))
           | C (cx, Empty) -> raise Not_found
         end
-        end
+      end
 
   let update_stdlib k f m =
     match f (find_opt k m) with
