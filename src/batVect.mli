@@ -318,8 +318,10 @@ val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
 val first : 'a t -> 'a
 val last : 'a t -> 'a
 (** These return the first and last values in the vector *)
+
 val shift : 'a t -> 'a * 'a t
 (** Return the first element of a vector and its last [n-1] elements. *)
+
 val pop : 'a t -> 'a * 'a t
 (** Return the last element of a vector and its first [n-1] elements. *)
 
@@ -671,10 +673,13 @@ val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
 (** {6 Convenience Functions} *)
 
 val first : 'a t -> 'a
+
 val last : 'a t -> 'a
 (** These return the first and last values in the vector *)
+
 val shift : 'a t -> 'a * 'a t
 (** Return the first element of a vector and its last [n-1] elements. *)
+
 val pop : 'a t -> 'a * 'a t
 (** Return the last element of a vector and its first [n-1] elements. *)
 

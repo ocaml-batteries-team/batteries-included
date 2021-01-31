@@ -89,32 +89,46 @@ module type H =
 sig
   type elem
   (** Type of elements of the heap *)
+
   type t
   (** Type of the heap *)
+
   val empty     : t
   (** See {!BatHeap.empty}. *)
+
   val size      : t -> int
   (** See {!BatHeap.size}. *)
+
   val insert    : t -> elem -> t
   (** See {!BatHeap.add}. *)
+
   val add       : elem -> t -> t
   (** See {!BatHeap.insert}. *)
+
   val merge     : t -> t -> t
   (** See {!BatHeap.merge}. *)
+
   val find_min  : t -> elem
   (** See {!BatHeap.find_min}. *)
+
   val del_min   : t -> t
   (** See {!BatHeap.del_min}. *)
+
   val of_list   : elem list -> t
   (** See {!BatHeap.of_list}. *)
+
   val to_list   : t -> elem list
   (** See {!BatHeap.to_list}. *)
+
   val elems     : t -> elem list
   (** @deprecated Same as [to_list]. *)
+
   val of_enum   : elem BatEnum.t -> t
   (** See {!BatHeap.of_enum}. *)
+
   val enum      : t -> elem BatEnum.t
   (** See {!BatHeap.enum}. *)
+
   val print     :  ?first:string -> ?last:string -> ?sep:string
     -> (elem, 'a) BatIO.printer -> (t, 'a) BatIO.printer
       (** See {!BatHeap.print}. *)

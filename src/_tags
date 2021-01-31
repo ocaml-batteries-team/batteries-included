@@ -1,4 +1,5 @@
 true: debug
+true: warn_error(-50)
 <{batMutex,batRMutex}.{ml,mli}>: threads
 <batteriesThread.*>: threads
 <{batMap,batVect,batFile,batPervasives,batParserCo,batSet,batLogger,batPathGen,batSplay}.ml>: warn_z

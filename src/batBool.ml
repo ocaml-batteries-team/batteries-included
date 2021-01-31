@@ -19,10 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-
-open BatNumber
-
-module BaseBool = struct
+module BaseBool : BatNumber.NUMERIC_BASE with type t = bool = struct
   type t = bool
   external not : bool -> bool = "%boolnot"
   (** The boolean negation. *)
@@ -36,6 +33,7 @@ module BaseBool = struct
   (** The boolean ``or''. Evaluation is sequential, left-to-right:
       in [e1 || e2], [e1] is evaluated first, and if it returns [true],
       [e2] is not evaluated at all. *)
+
   let zero, one = false, true
   let neg = not
 
@@ -56,10 +54,6 @@ module BaseBool = struct
     invalid_arg "Bool.pow"
 
   let compare = compare
-
-  let equal = (=)
-
-  let ord = BatOrd.ord compare
 
   let of_int = function
     | 0 -> false

@@ -5,8 +5,8 @@ include Bytes
 *)
 
 (*$T mapi
-   mapi (fun _ -> Char.uppercase) (of_string "Five") |> to_string = "FIVE"
-   mapi (fun _ -> Char.uppercase) (of_string "") |> to_string = ""
+   mapi (fun _ -> Char.uppercase_ascii) (of_string "Five") |> to_string = "FIVE"
+   mapi (fun _ -> Char.uppercase_ascii) (of_string "") |> to_string = ""
    mapi (fun _ -> String.of_char %> failwith) (of_string "") |> to_string = ""
    mapi (fun i _c -> "0123456789".[9-i]) (of_string "0123456789") |> to_string = "9876543210"
    ignore (let last = ref (-1) in mapi (fun i _c -> assert (i > !last); last := i; '0') (of_string "012345")); true
@@ -32,8 +32,8 @@ include Bytes
 ##V<4.0##  sc
 
 (*$T map
-   "Five" |> of_string |> map Char.uppercase |> to_string |> (=) "FIVE"
-   "" |> of_string |> map Char.uppercase |> to_string |> (=) ""
+   "Five" |> of_string |> map Char.uppercase_ascii |> to_string |> (=) "FIVE"
+   "" |> of_string |> map Char.uppercase_ascii |> to_string |> (=) ""
    "" |> of_string |> map (String.of_char %> failwith) |> to_string |> (=) ""
 *)
 

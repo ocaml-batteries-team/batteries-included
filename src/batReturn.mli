@@ -60,6 +60,7 @@ val label : ('a t -> 'a) -> 'a
     Calling [return x v] from outside scope [f]
     is a run-time error and causes termination
     of the program.*)
+
 val with_label  : ('a t -> 'a) -> 'a
 (**as [label]*)
 

@@ -19,8 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open BatConcurrent
-
 (** Low-level interface to the operating system (both Unix and Windows).
 
     This module only provides low-level functions and types. Unless you
@@ -346,8 +344,6 @@ val single_write_substring : file_descr -> string -> int -> int -> int
 *)
 
 (** {6 Interfacing with the standard input/output library} *)
-
-open BatInnerIO
 
 val in_channel_of_descr : file_descr -> in_channel
 (** Create an input channel reading from the given descriptor.
@@ -1641,9 +1637,10 @@ val getaddrinfo:
     to force a particular socket domain (e.g. IPv6 only or IPv4 only)
     or a particular socket type (e.g. TCP only or UDP only). *)
 
-type name_info = Unix.name_info =
-  { ni_hostname : string;               (** Name or IP address of host *)
-    ni_service : string }               (** Name of service or port number *)
+type name_info = Unix.name_info = {
+  ni_hostname : string;               (** Name or IP address of host *)
+  ni_service : string;                (** Name of service or port number *)
+}
 (** Host and service information returned by {!Unix.getnameinfo}. *)
 
 type getnameinfo_option = Unix.getnameinfo_option =

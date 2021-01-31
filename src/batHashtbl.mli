@@ -34,8 +34,6 @@
     @author David Teller
 *)
 
-open Hashtbl
-
 type ('a, 'b) t = ('a, 'b) Hashtbl.t
 (** A Hashtable with keys of type 'a and values 'b *)
 
@@ -357,8 +355,10 @@ module type HashedType =
 sig
   type t
   (** The type of the hashtable keys. *)
+
   val equal : t -> t -> bool
   (** The equality predicate used to compare keys. *)
+
   val hash : t -> int
     (** A hashing function on keys. It must be such that if two keys are
         equal according to [equal], then they have identical hash values
