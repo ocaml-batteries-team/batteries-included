@@ -74,7 +74,7 @@ let close e =
   e.count<- return_no_more_count;
   e.clone<- empty
 
-let force t =(** Transform [t] into a list *)
+let force t = (* Transform [t] into a list *)
   let rec clone enum count =
     let enum = ref !enum
     and count = ref !count in
@@ -265,7 +265,7 @@ let take n e =
   let r = ref [] in
   begin
     try
-      for i = 1 to n do
+      for _i = 1 to n do
         r := e.next () :: !r
       done
     with No_more_elements -> ()
@@ -740,7 +740,7 @@ let range ?until x =
 *)
 
 let drop n e =
-  for i = 1 to n do
+  for _i = 1 to n do
     junk e
   done
 
@@ -987,7 +987,7 @@ let clump clump_size add get e = (* convert a uchar enum into a ustring enum *)
       add x;
       junk e; (* don't get [x] twice *)
       (try
-        for i = 2 to clump_size do
+        for _i = 2 to clump_size do
           add (e.next ())
         done
       with No_more_elements -> ());

@@ -531,15 +531,15 @@ module Concrete = struct
        then cons_iter_from cmp k2 l (C (k, v, r, e))
        else cons_iter_from cmp k2 r e
 
-  let rec enum_next l () = match !l with
+  let enum_next l () = match !l with
       E -> raise BatEnum.No_more_elements
     | C (k, v, m, t) -> l := cons_iter m t; (k, v)
 
-  let rec enum_backwards_next l () = match !l with
+  let enum_backwards_next l () = match !l with
       E -> raise BatEnum.No_more_elements
     | C (k, v, m, t) -> l := rev_cons_iter m t; (k, v)
 
-  let rec enum_count l () =
+  let enum_count l () =
     let rec aux n = function
       | E -> n
       | C (_, _, m, t) -> aux (n + 1 + cardinal m) t
@@ -724,7 +724,7 @@ module Concrete = struct
     | Some d -> join t1 v d t2
     | None -> concat t1 t2
 
-  let rec merge f cmp12 s1 s2 =
+  let merge f cmp12 s1 s2 =
     let rec loop s1 s2 =
       match (s1, s2) with
       | (Empty, Empty) -> Empty
@@ -739,7 +739,7 @@ module Concrete = struct
         assert false in
     loop s1 s2
 
-  let rec merge_diverse f cmp1 s1 cmp2 s2 =
+  let merge_diverse f cmp1 s1 cmp2 s2 =
     (* This implementation does not presuppose that the comparison
        function of s1 and s2 are the same. It is necessary in the PMap
        case, were we can't enforce that the same comparison function is
@@ -827,7 +827,7 @@ module Concrete = struct
      the fast homogeneous implementation instead. This is the
      [heuristic_merge] function.
   *)
-  let rec ordered cmp s =
+  let ordered cmp s =
     if s = Empty then true else
       try
         ignore
@@ -842,7 +842,7 @@ module Concrete = struct
   (* Maps are considered compatible by their comparison function when either:
      - cmp1 and cmp2 are the *same* function (physical equality)
      - cmp1 is a correct ordering on m2 (see comment in [ordered]) *)
-  let compatible_cmp cmp1 m1 cmp2 m2 =
+  let compatible_cmp cmp1 _m1 cmp2 m2 =
     cmp1 == cmp2 || ordered cmp1 m2
 
   (* We first try to see if the comparison functions are compatible.
@@ -991,8 +991,9 @@ sig
   val to_seq_from :  key -> 'a t -> (key * 'a) BatSeq.t
   val add_seq : (key * 'a) BatSeq.t -> 'a t -> 'a t
   val of_seq : (key * 'a) BatSeq.t -> 'a t
-  (** {6 Boilerplate code}*)
+
   (** {7 Printing}*)
+
   val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
     ('a BatInnerIO.output -> key -> unit) ->
     ('a BatInnerIO.output -> 'c -> unit) ->
@@ -1044,8 +1045,6 @@ struct
 
   external t_of_impl: 'a implementation -> 'a t = "%identity"
   external impl_of_t: 'a t -> 'a implementation = "%identity"
-
-  type 'a iter = E | C of key * 'a * 'a implementation * 'a iter
 
   let cardinal t = Concrete.cardinal (impl_of_t t)
   let enum t = Concrete.enum (impl_of_t t)
@@ -1512,7 +1511,7 @@ module PMap = struct (*$< PMap *)
     }
 
   let create cmp = { cmp = cmp; map = Concrete.empty }
-  let get_cmp {cmp} = cmp
+  let get_cmp {cmp; _} = cmp
 
   (*$T get_cmp
     get_cmp (create BatInt.compare) == BatInt.compare

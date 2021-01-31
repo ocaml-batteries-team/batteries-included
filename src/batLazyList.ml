@@ -53,9 +53,9 @@ let get l = match next l with
 let peek l = match next l with
   | Nil         -> None
   | Cons (x, _) -> Some x
-(**
-   {6 Constructors}
-*)
+
+(** {6 Constructors} *)
+
 let from_while f =
   let rec aux () = lazy (
     match f () with
@@ -319,9 +319,8 @@ let concat lol =
   ignore (concat (lazy (Cons ((let () = failwith "foo" in nil), nil)))); true
 *)
 
-(**
-   {6  Conversions}
-*)
+(** {6  Conversions} *)
+
 (**
    Eager conversion to list.
 *)

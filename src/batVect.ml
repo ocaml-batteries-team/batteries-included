@@ -226,7 +226,7 @@ let rec get t i =
   | Leaf s ->
     if i >= 0 && i < STRING.length s then STRING.unsafe_get s i
     else raise Out_of_bounds
-  | Concat (l, cl, r, cr, _) ->
+  | Concat (l, cl, r, _cr, _) ->
     if i < cl then get l i
     else get r (i - cl)
 
@@ -240,7 +240,7 @@ let rec set t i x =
       STRING.unsafe_set s i x;
       Leaf s
     ) else raise Out_of_bounds
-  | Concat (l, cl, r, cr, _) ->
+  | Concat (l, cl, r, _cr, _) ->
     if i < cl then concat (set l i x) r
     else concat l (set r (i - cl) x)
 
@@ -256,7 +256,7 @@ let rec modify t i f =
       STRING.unsafe_set s i (f (STRING.unsafe_get s i));
       Leaf s
     ) else raise Out_of_bounds
-  | Concat (l, cl, r, cr, _) ->
+  | Concat (l, cl, r, _cr, _) ->
     if i < cl then concat (modify l i f) r
     else concat l (modify r (i - cl) f)
 
@@ -398,7 +398,7 @@ let enum_count l () =
 let rev_enum_count l () =
   let rec aux n = function
     | E -> n
-    | C (s, p, m, t) -> aux (n + (p + 1) + length m) t
+    | C (_s, p, m, t) -> aux (n + (p + 1) + length m) t
   in aux 0 !l
 
 let enum t =
@@ -614,7 +614,7 @@ let destructive_set v i x =
       if i >= 0 && i < STRING.length s then
         STRING.unsafe_set s i x
       else raise Out_of_bounds
-    | Concat (l, cl, r, cr, _) ->
+    | Concat (l, cl, r, _cr, _) ->
       if i < cl then aux i l
       else aux (i - cl) r in
   aux i v
@@ -904,7 +904,7 @@ struct
     | Leaf s ->
       if i >= 0 && i < STRING.length s then STRING.unsafe_get s i
       else raise Out_of_bounds
-    | Concat (l, cl, r, cr, _) ->
+    | Concat (l, cl, r, _cr, _) ->
       if i < cl then get l i
       else get r (i - cl)
 
@@ -918,7 +918,7 @@ struct
         STRING.unsafe_set s i x;
         Leaf s
       ) else raise Out_of_bounds
-    | Concat (l, cl, r, cr, _) ->
+    | Concat (l, cl, r, _cr, _) ->
       if i < cl then concat (set l i x) r
       else concat l (set r (i - cl) x)
 
@@ -934,7 +934,7 @@ struct
         STRING.unsafe_set s i (f (STRING.unsafe_get s i));
         Leaf s
       ) else raise Out_of_bounds
-    | Concat (l, cl, r, cr, _) ->
+    | Concat (l, cl, r, _cr, _) ->
       if i < cl then concat (modify l i f) r
       else concat l (modify r (i - cl) f)
 
@@ -1054,7 +1054,7 @@ struct
   let rev_enum_count l () =
     let rec aux n = function
       | E -> n
-      | C (s, p, m, t) -> aux (n + (p + 1) + length m) t
+      | C (_s, p, m, t) -> aux (n + (p + 1) + length m) t
     in aux 0 !l
 
   let enum t =
@@ -1276,7 +1276,7 @@ struct
         if i >= 0 && i < STRING.length s then
           STRING.unsafe_set s i x
         else raise Out_of_bounds
-      | Concat (l, cl, r, cr, _) ->
+      | Concat (l, cl, r, _cr, _) ->
         if i < cl then aux i l
         else aux (i - cl) r in
     aux i v

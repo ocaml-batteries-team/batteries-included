@@ -203,6 +203,7 @@ module type PathType = sig
 
      {e Windows:} If single dot is next to root, it is preserved.
   *)
+
   val normalize_in_graph : t -> t
   (** Another name for [normalize_filepath]. *)
 

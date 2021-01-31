@@ -490,7 +490,7 @@ let kbprintf2 k buf fmt =
   mkprintf (fun _out -> k buf) out fmt
 let sprintf2 fmt = ksprintf2 (identity) fmt
 let bprintf2 buf fmt = kbprintf2 ignore buf fmt
-(**
+(*
    Other possible implementation of [sprintf2],
    left as example:
 
@@ -500,7 +500,7 @@ let bprintf2 buf fmt = kbprintf2 ignore buf fmt
     mkprintf (fun out -> close_out out) out fmt
    ]
 *)
-(**
+(*
    Other possible implementation of [bprintf2],
    left as example:
    [

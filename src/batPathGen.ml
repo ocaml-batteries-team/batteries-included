@@ -204,6 +204,7 @@ module type PathType = sig
 
      {e Windows:} If single dot is next to root, it is preserved.
   *)
+
   val normalize_in_graph : t -> t
   (** Another name for {!normalize_filepath}. *)
 
@@ -632,13 +633,13 @@ module Make = functor (S : StringType) -> struct
       | 0,  [] -> []
       | nn, [] -> !!".." :: (doit (nn - 1) [])
       | 0,  [rt] when isroot rt -> path
-      | nn, [rt] when isroot rt -> raise Malformed_path
+      | _nn, [rt] when isroot rt -> raise Malformed_path
       | _,  dotdot :: rest  when can_dotdot && isdotdot dotdot -> doit (cback + 1) rest
       | 0,  [dot;nu] when windows && (isdot dot) && (isnul nu) -> path
-      | nn, [dot;nu] when windows && (isdot dot) && (isnul nu) -> raise Malformed_path
+      | _nn, [dot;nu] when windows && (isdot dot) && (isnul nu) -> raise Malformed_path
       | _,  dot :: rest when isdot dot -> doit cback rest
       | 0,  name :: rest -> name :: (doit 0 rest)
-      | nn, name :: rest -> doit (nn - 1) rest
+      | nn, _name :: rest -> doit (nn - 1) rest
     in
     doit 0 path
 
@@ -662,14 +663,14 @@ module Make = functor (S : StringType) -> struct
     let rec fold rbase rsub =
       match rbase, rsub with
       | bname::brest, sname::srest when bname = sname -> fold brest srest
-      | _::brest, _ -> false
+      | _::_brest, _ -> false
       | [], _ -> true
     in
     let rbase = List.rev base in
     let rsub = List.rev sub in
     match rbase, rsub with
     | hb::_, hs::_ when hb = hs -> fold rbase rsub
-    | hb::_, hs::_ -> false
+    | _hb::_, _hs::_ -> false
     | rt::_, _ when isroot rt -> invalid_arg "PathGen.belongs"
     | _, rt::_ when isroot rt -> invalid_arg "PathGen.belongs"
     | _, _ -> fold rbase rsub
