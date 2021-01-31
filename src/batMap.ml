@@ -523,6 +523,14 @@ module Concrete = struct
     | Empty -> t
     | Node (l, k, v, r, _) -> rev_cons_iter r (C (k, v, l, t))
 
+  let rec cons_iter_from cmp k2 m e =
+    match m with
+    | Empty -> e
+    | Node (l, k, v, r, _) ->
+       if cmp k2 k <= 0
+       then cons_iter_from cmp k2 l (C (k, v, r, e))
+       else cons_iter_from cmp k2 r e
+
   let rec enum_next l () = match !l with
       E -> raise BatEnum.No_more_elements
     | C (k, v, m, t) -> l := cons_iter m t; (k, v)
@@ -893,24 +901,17 @@ module Concrete = struct
   let of_seq cmp s =
     add_seq cmp s empty
 
-  let rec to_seq_hlp m =
+  let rec seq_of_iter m () =
     match m with
     | E -> BatSeq.Nil
     | C(k, v, r, e) ->
-       BatSeq.Cons ((k, v), fun () -> to_seq_hlp (cons_iter r e))
+       BatSeq.Cons ((k, v), seq_of_iter (cons_iter r e))
       
-  let to_seq m () =
-    to_seq_hlp (cons_iter m E)
-
-  let to_seq_from cmp k m () =
-    let rec cons_enum_from k2 m e =
-      match m with
-      | Empty -> e
-      | Node (l, k, v, r, _) ->
-         if cmp k2 k <= 0
-         then cons_enum_from k2 l (C (k, v, r, e))
-         else cons_enum_from k2 r e in
-    to_seq_hlp (cons_enum_from k m E)
+  let to_seq m =
+    seq_of_iter (cons_iter m E)
+      
+  let to_seq_from cmp k m = 
+    seq_of_iter (cons_iter_from cmp k m E)
 
   let union_stdlib cmp f m1 m2 =
     foldi

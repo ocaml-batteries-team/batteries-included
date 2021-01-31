@@ -609,6 +609,14 @@ struct
     | Node (l, (k, v), r) ->
       rev_cons_enum r (More (k, v, l, e))
 
+  let rec cons_enum_from k2 m e =
+    match m with
+    | Empty -> e
+    | Node (l, (k, v), r) ->
+       if Ord.compare k2 k <= 0
+       then cons_enum_from k2 l (More (k, v, r, e))
+       else cons_enum_from k2 r e
+
   let compare cmp tr1 tr2 =
     let tr1, tr2 = sget tr1, sget tr2 in
     let rec aux e1 e2 = match (e1, e2) with
@@ -804,24 +812,17 @@ struct
   let of_seq s =
     add_seq s empty
 
-  let rec to_seq_hlp m =
+  let rec seq_of_iter m () =
     match m with
     | End -> BatSeq.Nil
     | More(k, v, r, e) ->
-       BatSeq.Cons ((k, v), fun () -> to_seq_hlp (cons_enum r e))
+       BatSeq.Cons ((k, v), seq_of_iter (cons_enum r e))
       
-  let to_seq m () =
-    to_seq_hlp (cons_enum (sget m) End)
+  let to_seq m =
+    seq_of_iter (cons_enum (sget m) End)
 
-  let to_seq_from k m () =
-    let rec cons_enum_from k2 m e =
-      match m with
-      | Empty -> e
-      | Node (l, (k, v), r) ->
-         if Ord.compare k2 k <= 0
-         then cons_enum_from k2 l (More (k, v, r, e))
-         else cons_enum_from k2 r e in
-    to_seq_hlp (cons_enum_from k (sget m) End)
+  let to_seq_from k m =
+    seq_of_iter (cons_enum_from k (sget m) End)
    
   let union f m1 m2 =
     fold
