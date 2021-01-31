@@ -416,23 +416,23 @@ sig
     
       @since NEXT_RELEASE *)
 
-  val to_seq : 'a t -> (key * 'a) Seq.t
+  val to_seq : 'a t -> (key * 'a) BatSeq.t
   (** Iterate on the whole map, in ascending order of keys.
 
       @since NEXT_RELEASE  *)
     
-  val to_seq_from :  key -> 'a t -> (key * 'a) Seq.t
+  val to_seq_from :  key -> 'a t -> (key * 'a) BatSeq.t
   (** [to_seq_from k m] iterates on a subset of the bindings in [m], 
       namely those bindings greater or equal to [k], in ascending order. 
     
       @since NEXT_RELEASE *)
     
-  val add_seq : (key * 'a) Seq.t -> 'a t -> 'a t
+  val add_seq : (key * 'a) BatSeq.t -> 'a t -> 'a t
   (** add the given bindings to the map, in order. 
     
       @since NEXT_RELEASE  *)
     
-  val of_seq : (key * 'a) Seq.t -> 'a t
+  val of_seq : (key * 'a) BatSeq.t -> 'a t
   (** build a map from the given bindings 
     
       @since NEXT_RELEASE *)
@@ -846,23 +846,23 @@ val union_stdlib:
     
     @since NEXT_RELEASE *)
 
-val to_seq : ('key, 'a) t -> ('key * 'a) Seq.t
+val to_seq : ('key, 'a) t -> ('key * 'a) BatSeq.t
 (** Iterate on the whole map, in ascending order of keys.
     
     @since NEXT_RELEASE  *)
   
-val to_seq_from :  'key -> ('key, 'a) t -> ('key * 'a) Seq.t
+val to_seq_from :  'key -> ('key, 'a) t -> ('key * 'a) BatSeq.t
 (** [to_seq_from k m] iterates on a subset of the bindings in [m], 
     namely those bindings greater or equal to [k], in ascending order. 
     
     @since NEXT_RELEASE *)
   
-val add_seq : ('key * 'a) Seq.t -> ('key, 'a) t -> ('key, 'a) t
+val add_seq : ('key * 'a) BatSeq.t -> ('key, 'a) t -> ('key, 'a) t
 (** add the given bindings to the map, in order. 
     
     @since NEXT_RELEASE  *)
   
-val of_seq : ('key * 'a) Seq.t -> ('key, 'a) t
+val of_seq : ('key * 'a) BatSeq.t -> ('key, 'a) t
 (** build a map from the given bindings 
     
     @since NEXT_RELEASE *)
@@ -1307,23 +1307,23 @@ module PMap : sig
 
       @since NEXT_RELEASE *)
 
-  val to_seq : ('key, 'a) t -> ('key * 'a) Seq.t
+  val to_seq : ('key, 'a) t -> ('key * 'a) BatSeq.t
   (** Iterate on the whole map, in ascending order of keys.
 
       @since NEXT_RELEASE  *)
     
-  val to_seq_from : 'key -> ('key, 'a) t -> ('key * 'a) Seq.t
+  val to_seq_from : 'key -> ('key, 'a) t -> ('key * 'a) BatSeq.t
   (** [to_seq_from k m] iterates on a subset of the bindings in [m], 
       namely those bindings greater or equal to [k], in ascending order. 
     
       @since NEXT_RELEASE *)
     
-  val add_seq : ('key * 'a) Seq.t -> ('key, 'a) t -> ('key, 'a) t
+  val add_seq : ('key * 'a) BatSeq.t -> ('key, 'a) t -> ('key, 'a) t
   (** add the given bindings to the map, in order. 
     
       @since NEXT_RELEASE  *)
     
-  val of_seq : ?cmp:('key -> 'key -> int) -> ('key * 'a) Seq.t -> ('key, 'a) t
+  val of_seq : ?cmp:('key -> 'key -> int) -> ('key * 'a) BatSeq.t -> ('key, 'a) t
   (** build a map from the given bindings 
     
       @since NEXT_RELEASE *)

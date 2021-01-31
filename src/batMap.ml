@@ -990,10 +990,10 @@ sig
     (key -> 'a option -> 'b option -> 'c option) -> 'a t -> 'b t -> 'c t
   val union:
     (key -> 'a -> 'a -> 'a option) -> 'a t -> 'a t -> 'a t
-  val to_seq : 'a t -> (key * 'a) Seq.t
-  val to_seq_from :  key -> 'a t -> (key * 'a) Seq.t
-  val add_seq : (key * 'a) Seq.t -> 'a t -> 'a t
-  val of_seq : (key * 'a) Seq.t -> 'a t
+  val to_seq : 'a t -> (key * 'a) BatSeq.t
+  val to_seq_from :  key -> 'a t -> (key * 'a) BatSeq.t
+  val add_seq : (key * 'a) BatSeq.t -> 'a t -> 'a t
+  val of_seq : (key * 'a) BatSeq.t -> 'a t
   (** {6 Boilerplate code}*)
   (** {7 Printing}*)
   val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
@@ -1101,6 +1101,9 @@ struct
     let maxi, rest = Concrete.pop_max_binding (impl_of_t t) in
     (maxi, t_of_impl rest)
 
+  let max_binding_opt t = Concrete.max_binding_opt (impl_of_t t)
+  let min_binding_opt t = Concrete.min_binding_opt (impl_of_t t)
+
   let choose t = Concrete.choose (impl_of_t t)
   let choose_opt t = Concrete.choose_opt (impl_of_t t)
   let any t = Concrete.any (impl_of_t t)
@@ -1140,6 +1143,11 @@ struct
 
   let merge f t1 t2 =
     t_of_impl (Concrete.merge f Ord.compare (impl_of_t t1) (impl_of_t t2))
+
+  let of_seq s = t_of_impl (Concrete.of_seq Ord.compare s)
+  let add_seq s m = t_of_impl (Concrete.add_seq Ord.compare s (impl_of_t m))
+  let to_seq m = Concrete.to_seq (impl_of_t m)
+  let to_seq_from k m = Concrete.to_seq_from Ord.compare k (impl_of_t m)
 
   module Exceptionless =
   struct
