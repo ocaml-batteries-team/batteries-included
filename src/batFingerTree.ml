@@ -807,8 +807,6 @@ struct
   (* Here enumerations are implemented by iterating over the structure in cps
    * Each time an element is found, a pair consisting of this element and the
    * current continuation is returned.
-   * The flag rectypes is needed here because the continuations have type:
-   * (unit -> ('a, 'iter) as 'iter)
   *)
   let enum_digit enum_a d k =
     match d with
@@ -844,11 +842,11 @@ struct
     | Node3 (_, a, b, c) ->
       enum_a c (fun () -> enum_a b (fun () -> enum_a a k))
 
-  let enum_base a k = a, k
-
   type 'a iter = unit -> 'a ret
-  and 'a ret = 'a * 'a iter
+  and 'a ret = Next of 'a * 'a iter
   type ('input, 'output) iter_into = 'input -> 'output iter -> 'output ret
+
+  let enum_base a k = Next (a, k)
 
   let rec enum_aux : 'v 'a 'm. ('a, 'v) iter_into -> (('a, 'm) fg, 'v) iter_into =
     fun enum_a t k ->
@@ -882,11 +880,15 @@ struct
   let enum t =
     BatEnum.from_loop
       (fun () -> enum_cps t)
-      (fun k -> k ())
+      (fun k ->
+        match k () with
+        | Next (v, k) -> (v, k))
   let backwards t =
     BatEnum.from_loop
       (fun () -> enum_cps_backwards t)
-      (fun k -> k ())
+      (fun k ->
+        match k () with
+        | Next (v, k) -> (v, k))
 
   let of_enum ~monoid ~measure enum =
     BatEnum.fold (fun t elt -> snoc ~monoid ~measure t elt) empty enum
