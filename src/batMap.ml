@@ -1481,7 +1481,7 @@ let merge f m1 m2 = Concrete.merge f Pervasives.compare m1 m2
 let bindings = Concrete.bindings
 
 let compare cmp_val m1 m2 =
-  Concrete.compare Pervasives.compare Pervasives.compare m1 m2
+  Concrete.compare Pervasives.compare cmp_val m1 m2
 
 let equal eq_val m1 m2 = Concrete.equal Pervasives.compare eq_val m1 m2
 
