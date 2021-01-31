@@ -54,7 +54,7 @@ module Concrete = struct
   let empty = Empty
 
   let is_empty m =
-    m == Empty
+    m = Empty
 
   (* The create and bal functions are from stdlib's map.ml (3.12)
      differences from the old (extlib) implementation :
@@ -575,7 +575,7 @@ module Concrete = struct
      build the result map. The unusual parameter order was chosen to
      reflect this.  *)
   let filterv f t cmp =
-    foldi (fun k a acc -> if f a then add k a cmp acc else acc) t empty
+    foldi (fun k a acc -> if f a then acc else remove k cmp acc) t t
   let filter f t cmp =
     foldi (fun k a acc -> if f k a then acc else remove k cmp acc) t t
   let filter_map f t cmp =
@@ -913,16 +913,13 @@ module Concrete = struct
   let to_seq_from cmp k m = 
     seq_of_iter (cons_iter_from cmp k m E)
 
-  let union_stdlib cmp f m1 m2 =
-    foldi
-      (fun k v m ->
-        update_stdlib k
-          (fun v2opt ->
-            match v2opt with
-            | Some v2 -> f k v v2
-            | None -> Some v) cmp m)
-      m1
-      m2
+  let union_stdlib f cmp1 m1 cmp2 m2 =
+    let fwrap a b1 b2 =
+      match b1, b2 with
+      | Some b1, Some b2 -> f a b1 b2
+      | x, None
+        | None, x -> x in
+    heuristic_merge fwrap cmp1 m1 cmp2 m2
     
   let compare ckey cval m1 m2 =
     BatEnum.compare (fun (k1,v1) (k2,v2) -> BatOrd.bin_comp ckey k1 k2 cval v1 v2) (enum m1) (enum m2)
@@ -1139,7 +1136,7 @@ struct
 
   let bindings t = Concrete.bindings (impl_of_t t)
 
-  let union f m1 m2 = t_of_impl (Concrete.union_stdlib Ord.compare f (impl_of_t m1) (impl_of_t m2))
+  let union f m1 m2 = t_of_impl (Concrete.union_stdlib f Ord.compare (impl_of_t m1) Ord.compare (impl_of_t m2))
 
   let merge f t1 t2 =
     t_of_impl (Concrete.merge f Ord.compare (impl_of_t t1) (impl_of_t t2))
@@ -1408,7 +1405,7 @@ let to_seq = Concrete.to_seq
 let to_seq_from x m =
   Concrete.to_seq_from Pervasives.compare x m
 
-let union_stdlib f m1 m2 = Concrete.union_stdlib Pervasives.compare f m1 m2
+let union_stdlib f m1 m2 = Concrete.union_stdlib f Pervasives.compare m1 Pervasives.compare m2
 (*$T union_stdlib
   let cmp = Pervasives.( = ) in \
   equal cmp (union_stdlib (fun _ -> failwith "must not be called") empty empty) empty
@@ -1468,7 +1465,7 @@ let union m1 m2 =
  *)
 
 let union_stdlib f m1 m2 =
-  Concrete.union_stdlib Pervasives.compare f m1 m2
+  Concrete.union_stdlib f Pervasives.compare m1 Pervasives.compare m2
 
 let diff m1 m2 =
   let comp = Pervasives.compare in
@@ -1749,7 +1746,7 @@ module PMap = struct (*$< PMap *)
     { m with map = Concrete.add_seq m.cmp s m.map }
 
   let union_stdlib f m1 m2 =
-    { m1 with map = Concrete.union_stdlib m1.cmp f m1.map m2.map }
+    { m1 with map = Concrete.union_stdlib f m1.cmp m1.map m2.cmp m2.map }
 
   let bindings m =
     Concrete.bindings m.map
