@@ -7,7 +7,7 @@ maintainer: [
   "Thibault Suzanne <thi.suzanne@gmail.com>"
 ]
 authors: "OCaml batteries-included team"
-homepage: "http://batteries.forge.ocamlcore.org/"
+homepage: "https://github.com/ocaml-batteries-team/batteries-included"
 bug-reports: "https://github.com/ocaml-batteries-team/batteries-included/issues"
 dev-repo: "git://github.com/ocaml-batteries-team/batteries-included.git"
 license: "LGPL-2.1-or-later with OCaml-LGPL-linking-exception"
@@ -23,9 +23,6 @@ depends: [
   "ocamlbuild" {build}
   "qtest" {with-test & >= "2.5"}
   "qcheck" {with-test & >= "0.6" & < "0.14"}
+  "benchmark" {with-test & >= "1.6"}
   "num"
 ]
-#url {
-#  src: "https://github.com/ocaml-batteries-team/batteries-included/releases/download/vXXX/batteries-XXX.tar.gz"
-#  checksum: "md5=XXX"
-#}
