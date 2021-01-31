@@ -898,9 +898,26 @@ struct
     BatEnum.print ?first ?last ?sep f oc (enum x)
 
   let compare cmp t1 t2 =
-    BatEnum.compare cmp (enum t1) (enum t2)
+    let rec loop cmp iter1 iter2 =
+      match iter_next iter1, iter_next iter2 with
+      | None, None -> 0
+      | Some _, None -> 1
+      | None, Some _ -> -1
+      | Some (e1, iter1), Some (e2, iter2) ->
+         let c = cmp e1 e2 in
+         if c <> 0 then c
+         else loop cmp iter1 iter2
+    in loop cmp (to_iter t1 End) (to_iter t2 End)
+
   let equal eq t1 t2 =
-    BatEnum.equal eq (enum t1) (enum t2)
+    let rec loop eq iter1 iter2 =
+      match iter_next iter1, iter_next iter2 with
+      | None, None -> true
+      | Some _, None -> false
+      | None, Some _ -> false
+      | Some (e1, iter1), Some (e2, iter2) ->
+         eq e1 e2 && loop eq iter1 iter2
+    in loop eq (to_iter t1 End) (to_iter t2 End)
 
   (* this function does as of_list, but, by using concatenation,
    * it generates trees with some Node2 (which are never generated
