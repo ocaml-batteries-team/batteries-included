@@ -81,7 +81,7 @@ let test_dump () =
   let test_float x = test (string_of_float x) x in
   List.iter test_float
     [0.; 1.; -2.; max_float; min_float; epsilon_float; nan];
-  for i = 0 to 1000 do
+  for _i = 0 to 1000 do
     test_float (Random.float max_float);
     test_float (Random.float min_float);
   done;
