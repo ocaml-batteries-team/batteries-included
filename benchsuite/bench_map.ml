@@ -155,9 +155,9 @@ module MapBench (M : sig val input_length : int end) = struct
   (* compare fold-based and merge-based union, diff, intersect *)
   let pmap_union (m1, m2) = Map.union m1 m2
   let fold_union (m1, m2) =
-    Map.foldi Map.add m1 m2
+    Map.foldi Map.add m2 m1
   let merge_union (m1, m2) =
-    let merge_fun k a b = if a <> None then a else b in
+    let merge_fun k a b = if b <> None then b else a in
     Map.merge merge_fun m1 m2
 
   let union_input =
