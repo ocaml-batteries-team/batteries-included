@@ -443,6 +443,11 @@ struct
         end
       end
 
+  let update_stdlib k f m =
+    match f (find_opt k m) with
+    | Some x -> add k x m
+    | None -> remove k m
+
   let mem k m =
     try ignore (find k m) ; true with Not_found -> false
 
@@ -477,6 +482,16 @@ struct
     in
     bfind tr
 
+  let min_binding_opt tr =
+    let tr = sget tr in
+    let rec bfind = function
+      | Node (Empty, kv, _) -> Some kv
+      | Node (l, _, _) -> bfind l
+      | Empty -> None
+    in
+    bfind tr
+        
+
   let choose = min_binding
   (*$= choose
     (empty |> add 0 1 |> add 1 1 |> choose) \
@@ -485,7 +500,8 @@ struct
   (*$T choose
     try ignore (choose empty) ; false with Not_found -> true
   *)
-
+  let choose_opt  = min_binding_opt
+                  
   let any tr = match sget tr with
     | Empty -> raise Not_found
     | Node (_, kv, _) -> kv
@@ -498,7 +514,7 @@ struct
     let rec bfind = function
       | Node (Empty, kv, r) -> mini := kv; r
       | Node (l, kv, r) -> Node (bfind l, kv, r)
-      | Empty -> assert(false)
+      | Empty ->  assert(false)  (* choose already raises Not_found on empty map *)
     in
     (!mini, sref (bfind (sget tr)))
 
@@ -511,12 +527,21 @@ struct
     in
     bfind tr
 
+  let max_binding_opt tr =
+    let tr = sget tr in
+    let rec bfind = function
+      | Node (_, kv, Empty) -> Some kv
+      | Node (_, _, r) -> bfind r
+      | Empty -> None
+    in
+    bfind tr
+        
   let pop_max_binding tr =
     let maxi = ref (choose tr) in
     let rec bfind = function
       | Node (l, kv, Empty) -> maxi := kv; l
       | Node (l, kv, r) -> Node (l, kv, bfind r)
-      | Empty -> assert(false)
+      | Empty ->  assert(false)  (* choose already raises Not_found on empty map *)
     in
     (!maxi, sref (bfind (sget tr)))
 
@@ -583,6 +608,14 @@ struct
     | Empty -> e
     | Node (l, (k, v), r) ->
       rev_cons_enum r (More (k, v, l, e))
+
+  let rec cons_enum_from k2 m e =
+    match m with
+    | Empty -> e
+    | Node (l, (k, v), r) ->
+       if Ord.compare k2 k <= 0
+       then cons_enum_from k2 l (More (k, v, r, e))
+       else cons_enum_from k2 r e
 
   let compare cmp tr1 tr2 =
     let tr1, tr2 = sget tr1, sget tr2 in
@@ -769,6 +802,40 @@ struct
     | Empty -> raise Not_found
     | Node (l, kv, r) -> kv, sref (bst_append l r)
 
+
+  let add_seq s m =
+    BatSeq.fold_left
+      (fun m (k, v) -> add k v m)
+      m
+      s
+    
+  let of_seq s =
+    add_seq s empty
+
+  let rec seq_of_iter m () =
+    match m with
+    | End -> BatSeq.Nil
+    | More(k, v, r, e) ->
+       BatSeq.Cons ((k, v), seq_of_iter (cons_enum r e))
+      
+  let to_seq m =
+    seq_of_iter (cons_enum (sget m) End)
+
+  let to_seq_from k m =
+    seq_of_iter (cons_enum_from k (sget m) End)
+   
+  let union f m1 m2 =
+    fold
+     (fun k v m ->
+        match find_opt k m with
+        | Some v1 ->
+           (match f k v v1 with
+            | Some vmerged -> add k vmerged m
+            | None -> remove k m)
+        | None -> add k v m)
+      m1
+      m2
+                         
   let extract k tr =
     let tr = sget tr in
     (* the reference here is a tad ugly but allows to reuse `cfind`
@@ -787,3 +854,5 @@ struct
     | Some v -> v, sref tr
   (*$>*)
 end
+  
+
