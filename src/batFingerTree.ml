@@ -850,7 +850,7 @@ struct
     | Digit (Four (_, a, b, c, d), k) -> Some (d, Next (c, Next (b, Next (a, k))))
     | Fg (node_iter, k) ->
        match iter_next_backwards node_iter with
-       | None -> iter_next k
+       | None -> iter_next_backwards k
        | Some (Node2 (_, a, b), k_node) -> Some (b, Next (a, Fg (k_node, k)))
        | Some (Node3 (_, a, b, c), k_node) -> Some (c, Next (b, Next (a, Fg (k_node, k))))
 
