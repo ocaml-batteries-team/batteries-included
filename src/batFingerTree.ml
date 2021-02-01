@@ -804,89 +804,60 @@ struct
   (*---------------------------------*)
   (*          enumerations           *)
   (*---------------------------------*)
-  (* Here enumerations are implemented by iterating over the structure in cps
-   * Each time an element is found, a pair consisting of this element and the
-   * current continuation is returned.
-   * The flag rectypes is needed here because the continuations have type:
-   * (unit -> ('a, 'iter) as 'iter)
-  *)
-  let enum_digit enum_a d k =
-    match d with
-    | One (_, a) ->
-      enum_a a k
-    | Two (_, a, b) ->
-      enum_a a (fun () -> enum_a b k)
-    | Three (_, a, b, c) ->
-      enum_a a (fun () -> enum_a b (fun () -> enum_a c k))
-    | Four (_, a, b, c, d) ->
-      enum_a a (fun () -> enum_a b (fun () -> enum_a c (fun () -> enum_a d k)))
-  let enum_digit_backwards enum_a d k =
-    match d with
-    | One (_, a) ->
-      enum_a a k
-    | Two (_, a, b) ->
-      enum_a b (fun () -> enum_a a k)
-    | Three (_, a, b, c) ->
-      enum_a c (fun () -> enum_a b (fun () -> enum_a a k))
-    | Four (_, a, b, c, d) ->
-      enum_a d (fun () -> enum_a c (fun () -> enum_a b (fun () -> enum_a a k)))
 
-  let enum_node enum_a n k =
-    match n with
-    | Node2 (_, a, b) ->
-      enum_a a (fun () -> enum_a b k)
-    | Node3 (_, a, b, c) ->
-      enum_a a (fun () -> enum_a b (fun () -> enum_a c k))
-  let enum_node_backwards enum_a n k =
-    match n with
-    | Node2 (_, a, b) ->
-      enum_a b (fun () -> enum_a a k)
-    | Node3 (_, a, b, c) ->
-      enum_a c (fun () -> enum_a b (fun () -> enum_a a k))
+  type ('a, 'm) iter =
+    | End
+    | Next of 'a * ('a, 'm) iter
+    | Digit of ('a, 'm) digit * ('a, 'm) iter
+    | Fg of (('a, 'm) node, 'm) iter * ('a, 'm) iter
 
-  let enum_base a k = a, k
-
-  type 'a iter = unit -> 'a ret
-  and 'a ret = 'a * 'a iter
-  type ('input, 'output) iter_into = 'input -> 'output iter -> 'output ret
-
-  let rec enum_aux : 'v 'a 'm. ('a, 'v) iter_into -> (('a, 'm) fg, 'v) iter_into =
-    fun enum_a t k ->
+  let rec to_iter : 'a. ('a, 'm) fg -> ('a, 'm) iter -> ('a, 'm) iter =
+    fun t k ->
       match t with
-      | Nil -> k ()
-      | Single a -> enum_a a k
-      | Deep (_, pr, m, sf) ->
-        enum_digit enum_a pr (fun () ->
-          enum_aux (enum_node enum_a) m (fun () ->
-            enum_digit enum_a sf k
-          )
-        )
-  let enum_cps t = enum_aux enum_base t (fun () -> raise BatEnum.No_more_elements)
+      | Nil -> k
+      | Single a -> Next (a, k)
+      | Deep (_, pr, m, sf) -> Digit (pr, Fg (to_iter m End, Digit (sf, k)))
 
-  let rec enum_aux_backwards : 'v 'a 'm. ('a, 'v) iter_into -> (('a, 'm) fg, 'v) iter_into =
-    fun enum_a t k ->
+  let rec to_iter_backwards : 'a. ('a, 'm) fg -> ('a, 'm) iter -> ('a, 'm) iter =
+    fun t k ->
       match t with
-      | Nil -> k ()
-      | Single a -> enum_a a k
-      | Deep (_, pr, m, sf) ->
-        enum_digit_backwards enum_a sf (fun () ->
-          enum_aux_backwards (enum_node_backwards enum_a) m (fun () ->
-            enum_digit_backwards enum_a pr k
-          )
-        )
-  let enum_cps_backwards t = enum_aux_backwards enum_base t (fun () -> raise BatEnum.No_more_elements)
+      | Nil -> k
+      | Single a -> Next (a, k)
+      | Deep (_, pr, m, sf) -> Digit (sf, Fg (to_iter_backwards m End, Digit (pr, k)))
 
   (*---------------------------------*)
   (*           conversion            *)
   (*---------------------------------*)
+  let rec iter_next : 'a . ('a, 'm) iter -> ('a * ('a, 'm) iter) option = function
+    | End -> None
+    | Next (v, k) -> Some (v, k)
+    | Digit (One (_, a), k) -> Some (a, k)
+    | Digit (Two (_, a, b), k) -> Some (a, Next (b, k))
+    | Digit (Three (_, a, b, c), k) -> Some (a, Next (b, Next (c, k)))
+    | Digit (Four (_, a, b, c, d), k) -> Some (a, Next (b, Next (c, Next (d, k))))
+    | Fg (node_iter, k) ->
+       match iter_next node_iter with
+       | None -> iter_next k
+       | Some (Node2 (_, a, b), k_node) -> Some (a, Next (b, Fg (k_node, k)))
+       | Some (Node3 (_, a, b, c), k_node) -> Some (a, Next (b, Next (c, Fg (k_node, k))))
+
+  let rec iter_next_backwards : 'a . ('a, 'm) iter -> ('a * ('a, 'm) iter) option = function
+    | End -> None
+    | Next (v, k) -> Some (v, k)
+    | Digit (One (_, a), k) -> Some (a, k)
+    | Digit (Two (_, a, b), k) -> Some (b, Next (a, k))
+    | Digit (Three (_, a, b, c), k) -> Some (c, Next (b, Next (a, k)))
+    | Digit (Four (_, a, b, c, d), k) -> Some (d, Next (c, Next (b, Next (a, k))))
+    | Fg (node_iter, k) ->
+       match iter_next_backwards node_iter with
+       | None -> iter_next k
+       | Some (Node2 (_, a, b), k_node) -> Some (b, Next (a, Fg (k_node, k)))
+       | Some (Node3 (_, a, b, c), k_node) -> Some (c, Next (b, Next (a, Fg (k_node, k))))
+
   let enum t =
-    BatEnum.from_loop
-      (fun () -> enum_cps t)
-      (fun k -> k ())
+    BatEnum.unfold (to_iter t End) iter_next
   let backwards t =
-    BatEnum.from_loop
-      (fun () -> enum_cps_backwards t)
-      (fun k -> k ())
+    BatEnum.unfold  (to_iter_backwards t End) iter_next_backwards
 
   let of_enum ~monoid ~measure enum =
     BatEnum.fold (fun t elt -> snoc ~monoid ~measure t elt) empty enum
@@ -927,9 +898,26 @@ struct
     BatEnum.print ?first ?last ?sep f oc (enum x)
 
   let compare cmp t1 t2 =
-    BatEnum.compare cmp (enum t1) (enum t2)
+    let rec loop cmp iter1 iter2 =
+      match iter_next iter1, iter_next iter2 with
+      | None, None -> 0
+      | Some _, None -> 1
+      | None, Some _ -> -1
+      | Some (e1, iter1), Some (e2, iter2) ->
+         let c = cmp e1 e2 in
+         if c <> 0 then c
+         else loop cmp iter1 iter2
+    in loop cmp (to_iter t1 End) (to_iter t2 End)
+
   let equal eq t1 t2 =
-    BatEnum.equal eq (enum t1) (enum t2)
+    let rec loop eq iter1 iter2 =
+      match iter_next iter1, iter_next iter2 with
+      | None, None -> true
+      | Some _, None -> false
+      | None, Some _ -> false
+      | Some (e1, iter1), Some (e2, iter2) ->
+         eq e1 e2 && loop eq iter1 iter2
+    in loop eq (to_iter t1 End) (to_iter t2 End)
 
   (* this function does as of_list, but, by using concatenation,
    * it generates trees with some Node2 (which are never generated
