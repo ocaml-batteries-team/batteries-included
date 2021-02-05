@@ -364,8 +364,8 @@ module Outliers = struct
   let print_effect oc ov =
     if ov > 0.00001 then (
       let effect = effect_of_var ov |> effect_to_string in
-      printf "variance introduced by outliers: %.5f%%\n" (ov *. 100.);
-      printf "variance is %s by outliers\n" effect;
+      fprintf oc "variance introduced by outliers: %.5f%%\n" (ov *. 100.);
+      fprintf oc "variance is %s by outliers\n" effect;
     )
 
 end

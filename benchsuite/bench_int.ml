@@ -18,7 +18,7 @@ let test_compare () =
   let test cmp n =
     Array.iteri (fun i (x, y) ->
       assert (cmp x y = output.(i));
-      for i = 1 to n do
+      for _i = 1 to n do
         ignore (cmp x y);
       done)
       input in

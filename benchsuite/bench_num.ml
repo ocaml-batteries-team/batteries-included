@@ -4,7 +4,7 @@ let lt3 x y = BatInt.Compare.(<) x y
 
 let n = 100_000
 
-let test_array = Array.init n (fun _ -> BatRandom.full_range ())
+let test_array = Array.init n (fun _ -> BatRandom.full_range_int ())
 
 let test_f f niters =
   for j = 1 to niters do

@@ -5,8 +5,7 @@
 
 let total_length = 500_000
 
-let (-|) = BatStd.(-|)
-let (<|) = BatStd.(<|)
+let ( % ) = BatPervasives.( % )
 
 module SetBench (M : sig val input_length : int end) = struct
   let input_length = M.input_length
@@ -56,8 +55,8 @@ module SetBench (M : sig val input_length : int end) = struct
     assert (same_elts std_created_set poly_created_set)
 
   let samples_create = make_samples create_input
-    [ "stdset create", ignore -| create_std_set;
-      "pset create", ignore -| create_poly_set ]
+    [ "stdset create", ignore % create_std_set;
+      "pset create", ignore % create_poly_set ]
 
   (* A benchmark for fast import *)
   let import_std_set input =
@@ -76,8 +75,8 @@ module SetBench (M : sig val input_length : int end) = struct
     ()
 
   let samples_import = make_samples import_input
-    [ "stdset import", ignore -| import_std_set;
-      "pset import", ignore -| import_poly_set ]
+    [ "stdset import", ignore % import_std_set;
+      "pset import", ignore % import_poly_set ]
 
   (* A benchmark for key lookup *)
   let lookup_input =
@@ -117,8 +116,8 @@ module SetBench (M : sig val input_length : int end) = struct
               (remove_poly_set remove_input))
 
   let samples_remove = make_samples remove_input
-    [ "stdset remove", ignore -| remove_std_set;
-      "pset remove", ignore -| remove_poly_set ]
+    [ "stdset remove", ignore % remove_std_set;
+      "pset remove", ignore % remove_poly_set ]
 
 
   let () =
@@ -127,7 +126,7 @@ module SetBench (M : sig val input_length : int end) = struct
     let lookup = samples_lookup () in
     let remove = samples_remove () in
     List.iter
-      (print_newline -| Benchmark.tabulate)
+      (print_newline % Benchmark.tabulate)
       [
         create;
         import;

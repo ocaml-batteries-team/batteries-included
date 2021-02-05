@@ -16,7 +16,7 @@ let () =
   ()
 
 let test to_enum n =
-  for i = 1 to n do
+  for _i = 1 to n do
     let enum = to_enum test_input in
     BatEnum.iter ignore enum
   done
