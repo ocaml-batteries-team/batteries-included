@@ -16,20 +16,20 @@ struct
 
   let snoc t x =
     match t with
-    | {front = []; rear = rear} ->
+    | {front = []; rear = rear; _} ->
       assert (rear = []);
       {len_front = 1; front = [x]; len_rear = 0; rear = []}
-    | {rear = rear; len_rear = len_rear} ->
+    | {rear = rear; len_rear = len_rear; _} ->
       {t with rear = x :: rear; len_rear = len_rear + 1}
 
   let front t =
     match t with
-    | {front = []; rear = rear} ->
+    | {front = []; rear = rear; _} ->
       assert (rear = []);
       None
-    | {front = [hd]; rear = rear; len_rear = len_rear} ->
+    | {front = [hd]; rear = rear; len_rear = len_rear; _} ->
       Some (hd, {len_front = len_rear; front = List.rev rear; rear = []; len_rear = 0})
-    | {front = hd :: tl; len_front = len_front} ->
+    | {front = hd :: tl; len_front = len_front; _} ->
       Some (hd, {t with front = tl; len_front = len_front - 1})
 
 end
@@ -38,7 +38,7 @@ type 'a lazy_list = 'a lazy_cell Lazy.t
 and 'a lazy_cell =
   | Nil
   | Cons of 'a * 'a lazy_list
-let nil = Lazy.lazy_from_val Nil
+let nil = Lazy.from_val Nil
 let rec append x y =
   lazy (
     match x with

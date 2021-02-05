@@ -2,6 +2,9 @@
 
 
 external primitive_int_compare : int -> int -> int = "caml_int_compare" "noalloc"
+[@@warning "-3"]
+
+let std_compare = Pervasives.compare[@warning "-3"]
 
 let test_compare () =
 
@@ -10,7 +13,7 @@ let test_compare () =
   let input =
     Array.init length (fun _ -> BatRandom.(full_range_int (), full_range_int ())) in
 
-  let output = Array.map (fun (x, y) -> Pervasives.compare x y) input in
+  let output = Array.map (fun (x, y) -> std_compare x y) input in
 
   let test cmp n =
     Array.iteri (fun i (x, y) ->
@@ -35,7 +38,7 @@ let test_compare () =
   let samples = Bench.bench_n
     [
       "BatInt.compare", test BatInt.compare;
-      "stdlib's compare", test Pervasives.compare;
+      "stdlib's compare", test std_compare;
       "external compare", test primitive_int_compare;
       "mfp's compare", test mfp_compare;
       "naive compare", test naive_compare;
