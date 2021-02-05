@@ -1,0 +1,9 @@
+(executable
+ (name prefilter)
+ (modules prefilter)
+ (libraries str))
+
+(executable
+ (name mkconf)
+ (modules mkconf)
+ (libraries str))

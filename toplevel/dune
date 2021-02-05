@@ -1,0 +1,8 @@
+(library
+ (name batteries_toplevel)
+ (synopsis "Bytecode toplevel support for Batteries")
+ (libraries num threads str compiler-libs batteries)
+ (modules batteriesHelp)
+ (modes byte)
+ (wrapped false)
+)
