@@ -219,8 +219,8 @@ module Bootstrap = struct
         let n = Array.length res in
         let jack = jackknife est sample in
         let jackmean = mean jack in
-        let sum_cubes = Array.fold_left (fun acc x -> let d = jackmean -. x in d *. d *. d) 0. jack in
-        let sum_squares = Array.fold_left (fun acc x -> let d = jackmean -. x in d *. d) 0. jack in
+        let sum_cubes = Array.fold_left (fun acc x -> let d = jackmean -. x in acc +. d *. d *. d) 0. jack in
+        let sum_squares = Array.fold_left (fun acc x -> let d = jackmean -. x in acc +. d *. d) 0. jack in
         let accel = sum_cubes /. (6. *. (sum_squares ** 1.5)) in
         let cumn x = int_of_float ((Normal_dist.standard_cdf x) *. (float n)) in
         let probN = Array.fold_left (fun acc x -> if x < pt then acc+1 else acc) 0 res in
