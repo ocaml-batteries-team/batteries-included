@@ -7,7 +7,7 @@ let n = 100_000
 let test_array = Array.init n (fun _ -> BatRandom.full_range_int ())
 
 let test_f f niters =
-  for j = 1 to niters do
+  for _j = 1 to niters do
   for i = 1 to n-1 do
     let x = test_array.(i-1) in
     let y = test_array.(i) in
@@ -19,4 +19,4 @@ let () = Bench.bench_n [
   "Specialized", test_f lt1;
   "Polymorphic", test_f lt2;
   "BatInt.Compare", test_f lt3;
-]
+] |>  Bench.run_outputs

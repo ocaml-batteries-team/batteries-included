@@ -29,7 +29,7 @@ module SetBench (M : sig val input_length : int end) = struct
      have comparable performance results. *)
   module StdSet = BatSet.Make(struct type t = int let compare = compare end)
 
-  module PSet = BatPSet
+  module PSet = BatSet
 
   let same_elts stdset pset =
     BatList.of_enum (StdSet.enum stdset)
