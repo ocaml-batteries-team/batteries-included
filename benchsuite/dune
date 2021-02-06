@@ -1,0 +1,172 @@
+; note: try to keep the benchmark list in sorted order
+
+(executable
+ (name array_filter)
+ (modules array_filter)
+ (libraries batteries bench))
+(rule
+  (alias benchmarks)
+  (action (run %{exe:array_filter.exe})))
+
+(executable
+ (name bench_finger_tree_enum)
+ (modules bench_finger_tree_enum)
+ (libraries batteries bench))
+(rule
+  (alias benchmarks)
+  (action (run %{exe:bench_finger_tree_enum.exe})))
+
+(executable
+ (name bench_int)
+ (modules bench_int)
+ (libraries batteries bench))
+(rule
+  (alias benchmarks)
+  (action (run %{exe:bench_int.exe})))
+
+(executable
+ (name bench_kahan)
+ (modules bench_kahan)
+ (libraries batteries bench))
+(rule
+  (alias benchmarks)
+  (action (run %{exe:bench_kahan.exe})))
+
+(executable
+ (name bench_map)
+ (modules bench_map)
+ (libraries batteries bench))
+(rule
+  (alias benchmarks)
+  (action (run %{exe:bench_map.exe})))
+
+(executable
+ (name bench_nreplace)
+ (modules bench_nreplace)
+ (libraries batteries bench))
+(rule
+  (alias benchmarks)
+  (deps bench_nreplace.ml)
+  (action (run %{exe:bench_nreplace.exe})))
+
+(executable
+ (name bench_num)
+ (modules bench_num)
+ (libraries batteries bench))
+(rule
+  (alias benchmarks)
+  (action (run %{exe:bench_num.exe})))
+
+(executable
+ (name bench_set)
+ (modules bench_set)
+ (libraries batteries benchmark))
+(rule
+  (alias benchmarks)
+  (action (run %{exe:bench_set.exe})))
+
+(executable
+ (name bench_set_to_seq)
+ (modules bench_set_to_seq)
+ (libraries batteries bench))
+(rule
+  (alias benchmarks)
+  (action (run %{exe:bench_set_to_seq.exe})))
+
+(executable
+ (name bitset)
+ (modules bitset)
+ (libraries batteries bench))
+(rule
+  (alias benchmarks)
+  (action (run %{exe:bitset.exe})))
+
+(executable
+ (name deque)
+ (modules deque)
+ (libraries batteries bench))
+(rule
+  (alias benchmarks)
+  (action (run %{exe:deque.exe})))
+
+(executable
+ (name dynarray_iter)
+ (modules dynarray_iter)
+ (libraries batteries bench))
+(rule
+  (alias benchmarks)
+  (action (run %{exe:dynarray_iter.exe})))
+
+(executable
+ (name flip)
+ (modules flip)
+ (libraries batteries bench))
+(rule
+  (alias benchmarks)
+  (action (run %{exe:flip.exe})))
+
+(executable
+ (name fsum)
+ (modules fsum)
+ (libraries batteries bench))
+(rule
+  (alias benchmarks)
+  (action (run %{exe:fsum.exe})))
+
+(executable
+ (name grouping)
+ (modules grouping)
+ (libraries batteries bench))
+(rule
+  (alias benchmarks)
+  (action (run %{exe:grouping.exe})))
+
+(executable
+ (name lazylist)
+ (modules lazylist)
+ (libraries batteries bench))
+(rule
+  (alias benchmarks)
+  (action (run %{exe:lazylist.exe})))
+
+(executable
+ (name lines_of)
+ (modules lines_of)
+ (libraries batteries bench))
+(rule
+  (alias benchmarks)
+  (deps lines_of.ml)
+  (action (run %{exe:lines_of.exe})))
+
+(executable
+ (name mid)
+ (modules mid)
+ (libraries batteries bench))
+(rule
+  (alias benchmarks)
+  (action (run %{exe:mid.exe})))
+
+(executable
+ (name popcount)
+ (modules popcount)
+ (libraries batteries bench))
+(rule
+  (alias benchmarks)
+  (action (run %{exe:popcount.exe})))
+
+(executable
+ (name rand_choice)
+ (modules rand_choice)
+ (libraries batteries bench))
+(rule
+  (alias benchmarks)
+  (action (run %{exe:rand_choice.exe})))
+
+(executable
+ (name sequence)
+ (flags (:standard -rectypes))
+ (modules sequence)
+ (libraries batteries bench))
+(rule
+  (alias benchmarks)
+  (action (run %{exe:sequence.exe})))
