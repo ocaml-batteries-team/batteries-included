@@ -281,7 +281,7 @@ let nreplace_substring_enum ~str ~sub ~by =
  * realistic words by others. *)
 
 let long_text =
-  File.lines_of "benchsuite/bench.ml"
+  File.lines_of "bench_nreplace.ml"
   |> Enum.cycle ~times:100 |> List.of_enum |> concat ""
 
 let do_bench_for_len length name =
