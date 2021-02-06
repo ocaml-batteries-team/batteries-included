@@ -469,7 +469,7 @@ val curry : ('a * 'b -> 'c) -> 'a -> 'b -> 'c
     [curry f] is [fun x y -> f (x,y)]*)
 
 val uncurry : ('a -> 'b -> 'c) -> 'a * 'b -> 'c
-(** Convert a function which accepts a two arguments into a function
+(** Convert a function which accepts two arguments into a function
     which accepts a pair of arguments.
 
     [uncurry f] is [fun (x, y) -> f x y]*)
