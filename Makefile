@@ -100,7 +100,7 @@ else
 endif
 endif
 
-.PHONY: all clean doc install uninstall reinstall test qtest qtest-clean camfail camfailunk man test_install
+.PHONY: all clean deps doc install uninstall reinstall test qtest qtest-clean camfail camfailunk man test_install
 
 all:
 	@echo "Build mode:" $(MODE)
@@ -118,6 +118,12 @@ batteries.odocl: src/batteries.mllib src/batteriesThread.mllib
 
 doc: batteries.odocl
 	$(OCAMLBUILD) $(OCAMLBUILDFLAGS) batteries.docdir/index.html
+
+PREFILTER_BIN = _build/build/prefilter.byte
+# compute human-readable dependencies between modules
+deps: $(PREFILTER_BIN)
+	ocamldep -modules -all -one-line -ml-synonym .mlv -mli-synonym .mliv \
+	  -pp $(PREFILTER_BIN) src/*.ml src/*.mlv src/*.mliv src/*.mli > dependencies.txt
 
 man: all batteries.odocl
 	-mkdir man
@@ -261,9 +267,8 @@ test-native: qtest-native testsuite-only-native
 
 full-test: $(TEST_TARGET)
 
-PREFILTER_BIN = _build/build/prefilter.byte
-# FIXME: Not sure what actually produces this binary:
-$(PREFILTER_BIN): all
+$(PREFILTER_BIN): build/prefilter.ml
+	$(OCAMLBUILD) build/prefilter.byte
 # FIXME: Should probably be done by ocamlbuild somehow:
 src/batteries_compattest.ml: src/batteries_compattest.mlv $(PREFILTER_BIN)
 	$(PREFILTER_BIN) < $< > $@
