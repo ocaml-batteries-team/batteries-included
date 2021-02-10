@@ -280,7 +280,7 @@ let enum t =
   let rec make n cnt =
     let cur = ref n in
     let cnt = ref cnt in
-    let rec next () =
+    let next () =
       match next_set_bit t !cur with
         Some elem ->
         decr cnt;

@@ -279,7 +279,7 @@ module Iter = struct
 
   (* Advance the iterator to the next position, and return current
      character: *)
-  let rec next iter =
+  let next iter =
     if UTF8.ByteIndex.at_end iter.leaf iter.idx then
       (* We are at the end of the current leaf, find another one: *)
       match next_leaf iter.rest with
@@ -298,7 +298,7 @@ module Iter = struct
     end
 
   (* Same thing but map leafs: *)
-  let rec next_map f iter =
+  let next_map f iter =
     if UTF8.ByteIndex.at_end iter.leaf iter.idx then
       match next_leaf iter.rest with
       | None ->

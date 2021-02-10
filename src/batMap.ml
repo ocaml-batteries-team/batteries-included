@@ -531,15 +531,15 @@ module Concrete = struct
        then cons_iter_from cmp k2 l (C (k, v, r, e))
        else cons_iter_from cmp k2 r e
 
-  let rec enum_next l () = match !l with
+  let enum_next l () = match !l with
       E -> raise BatEnum.No_more_elements
     | C (k, v, m, t) -> l := cons_iter m t; (k, v)
 
-  let rec enum_backwards_next l () = match !l with
+  let enum_backwards_next l () = match !l with
       E -> raise BatEnum.No_more_elements
     | C (k, v, m, t) -> l := rev_cons_iter m t; (k, v)
 
-  let rec enum_count l () =
+  let enum_count l () =
     let rec aux n = function
       | E -> n
       | C (_, _, m, t) -> aux (n + 1 + cardinal m) t
@@ -724,7 +724,7 @@ module Concrete = struct
     | Some d -> join t1 v d t2
     | None -> concat t1 t2
 
-  let rec merge f cmp12 s1 s2 =
+  let merge f cmp12 s1 s2 =
     let rec loop s1 s2 =
       match (s1, s2) with
       | (Empty, Empty) -> Empty
@@ -739,7 +739,7 @@ module Concrete = struct
         assert false in
     loop s1 s2
 
-  let rec merge_diverse f cmp1 s1 cmp2 s2 =
+  let merge_diverse f cmp1 s1 cmp2 s2 =
     (* This implementation does not presuppose that the comparison
        function of s1 and s2 are the same. It is necessary in the PMap
        case, were we can't enforce that the same comparison function is
@@ -827,7 +827,7 @@ module Concrete = struct
      the fast homogeneous implementation instead. This is the
      [heuristic_merge] function.
   *)
-  let rec ordered cmp s =
+  let ordered cmp s =
     if s = Empty then true else
       try
         ignore
