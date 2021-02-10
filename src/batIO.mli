@@ -98,8 +98,6 @@
     @documents BatInnerIO
 *)
 
-open BatInnerIO
-
 type input = BatInnerIO.input
 (** The abstract input type. *)
 

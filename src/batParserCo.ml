@@ -1,5 +1,4 @@
 open BatList
-open BatString
 open List
 open BatLazyList
 open BatIO
@@ -32,12 +31,10 @@ struct
   let of_enum l =
     of_lazy_list (of_enum l)
 
-  open Lexing
-
   (**TODO: Handle EOF !*)
   let of_lexer _l = assert false
   (**    LazyList.of_enum (BatEnum.from (fun () ->
-
+             let open Lexing in
              l.refill_buff l;
                 (l.lex_buffer, (l.lex_start_p, l.lex_curr_p))))*)
 

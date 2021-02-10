@@ -307,7 +307,9 @@ struct
   module Make (M:Definition) =
   struct
     open M
+
     (** {6 Case management} *)
+
     let char =
       if case_sensitive then char
       else                   case_char
@@ -325,6 +327,7 @@ struct
       else BatString.icompare
 
     (** {6 Whitespace management} *)
+
     let line_comment =
       match line_comment_start with
       | None   -> fail
@@ -386,6 +389,7 @@ struct
       return r
 
     (** {6 Actual content} *)
+
     let identifier_content = either [ident_start >:: zero_plus ident_letter ;
                                      op_start    >:: zero_plus op_letter]
 
