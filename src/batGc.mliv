@@ -241,7 +241,7 @@ external set : control -> unit = "caml_gc_set"
 external minor : unit -> unit = "caml_gc_minor"
 (** Trigger a minor collection. *)
 
-external major_slice : int -> int = "caml_gc_major_slice";;
+external major_slice : int -> int = "caml_gc_major_slice"
 (** Do a minor collection and a slice of major collection.  The argument
     is the size of the slice, 0 to use the automatically-computed
     slice size.  In all cases, the result is the computed slice size. *)
@@ -363,7 +363,7 @@ val finalise : ('a -> unit) -> 'a -> unit
 ##V>=4.4##    @since 2.11.0 and OCaml 4.04
 ##V>=4.4##*)
 
-val finalise_release : unit -> unit;;
+val finalise_release : unit -> unit
 (** A finalisation function may call [finalise_release] to tell the
     GC that it can launch the next finalisation function without waiting
     for the current one to return. *)
