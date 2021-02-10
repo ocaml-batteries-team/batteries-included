@@ -27,7 +27,7 @@ let print_array =
   let print_bchar c =
     let rc = ref c in
     Buffer.clear buf;
-    for i = 1 to 8 do
+    for _i = 1 to 8 do
       Buffer.add_char buf
         (if !rc land 1 == 1 then '1' else '0');
       rc := !rc lsr 1

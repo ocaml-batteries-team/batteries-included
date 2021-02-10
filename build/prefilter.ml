@@ -23,11 +23,11 @@ let version_re =
  *)
 let mark_loc_stale = function
   | None -> ()
-  | Some (file, count, stale) -> stale := true
+  | Some (_file, _count, stale) -> stale := true
 
 let incr_loc = function
   | None -> ()
-  | Some (file, count, stale) -> incr count
+  | Some (_file, count, _stale) -> incr count
 
 let print_loc = function
   | None -> ()

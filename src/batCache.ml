@@ -62,7 +62,7 @@ let lru_cache ~gen ~cap =
     incr len;
     let n = BatDllist.create (k, v) in BatHashtbl.add auxentries k n; n
   in
-  let entry_find k dll =
+  let entry_find k _dll =
     try let n = BatHashtbl.find auxentries k in BatDllist.remove n; n
     with Not_found -> entry_gen k (gen k)
   in

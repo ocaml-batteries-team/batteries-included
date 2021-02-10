@@ -842,7 +842,7 @@ module Concrete = struct
   (* Maps are considered compatible by their comparison function when either:
      - cmp1 and cmp2 are the *same* function (physical equality)
      - cmp1 is a correct ordering on m2 (see comment in [ordered]) *)
-  let compatible_cmp cmp1 m1 cmp2 m2 =
+  let compatible_cmp cmp1 _m1 cmp2 m2 =
     cmp1 == cmp2 || ordered cmp1 m2
 
   (* We first try to see if the comparison functions are compatible.
@@ -1512,7 +1512,7 @@ module PMap = struct (*$< PMap *)
     }
 
   let create cmp = { cmp = cmp; map = Concrete.empty }
-  let get_cmp {cmp} = cmp
+  let get_cmp {cmp; _} = cmp
 
   (*$T get_cmp
     get_cmp (create BatInt.compare) == BatInt.compare
