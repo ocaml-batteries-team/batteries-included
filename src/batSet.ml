@@ -82,13 +82,13 @@ module Concrete = struct
   (* Smallest and greatest element of a set *)
   let rec min_elt = function
       Empty -> raise Not_found
-    | Node(Empty, v, r, _) -> v
-    | Node(l, v, r, _) -> min_elt l
+    | Node(Empty, v, _r, _) -> v
+    | Node(l, _v, _r, _) -> min_elt l
 
   let rec min_elt_opt = function
       Empty -> None
-    | Node(Empty, v, r, _) -> Some v
-    | Node(l, v, r, _) -> min_elt_opt l
+    | Node(Empty, v, _r, _) -> Some v
+    | Node(l, _v, _r, _) -> min_elt_opt l
 
   let get_root = function
     | Empty -> raise Not_found
@@ -116,18 +116,18 @@ module Concrete = struct
 
   let rec max_elt = function
       Empty -> raise Not_found
-    | Node(l, v, Empty, _) -> v
-    | Node(l, v, r, _) -> max_elt r
+    | Node(_l, v, Empty, _) -> v
+    | Node(_l, _v, r, _) -> max_elt r
 
   let rec max_elt_opt = function
       Empty -> None
-    | Node(l, v, Empty, _) -> Some v
-    | Node(l, v, r, _) -> max_elt_opt r
+    | Node(_l, v, Empty, _) -> Some v
+    | Node(_l, _v, r, _) -> max_elt_opt r
 
   (* Remove the smallest element of the given set *)
   let rec remove_min_elt = function
       Empty -> invalid_arg "Set.remove_min_elt"
-    | Node(Empty, v, r, _) -> r
+    | Node(Empty, _v, r, _) -> r
     | Node(l, v, r, _) -> bal (remove_min_elt l) v r
 
   (* Merge two trees l and r into one.
@@ -324,12 +324,12 @@ module Concrete = struct
 
   let rec add_min v = function
     | Empty -> singleton v
-    | Node (l, x, r, h) ->
+    | Node (l, x, r, _h) ->
       bal (add_min v l) x r
 
   let rec add_max v = function
     | Empty -> singleton v
-    | Node (l, x, r, h) ->
+    | Node (l, x, r, _h) ->
       bal l x (add_max v r)
 
   (* Same as create and bal, but no assumptions are made on the
@@ -425,7 +425,7 @@ module Concrete = struct
 
   let rec cardinal = function
       Empty -> 0
-    | Node(l, v, r, _) -> cardinal l + 1 + cardinal r
+    | Node(l, _v, r, _) -> cardinal l + 1 + cardinal r
 
   let rec elements_aux accu = function
       Empty -> accu
@@ -470,7 +470,7 @@ module Concrete = struct
   let enum_count l () =
     let rec aux n = function
         E -> n
-      | C (e, s, t) -> aux (n + 1 + cardinal s) t
+      | C (_e, s, t) -> aux (n + 1 + cardinal s) t
     in aux 0 !l
 
   let enum t =
@@ -646,8 +646,8 @@ module Concrete = struct
 
   let rec inter cmp12 s1 s2 =
     match (s1, s2) with
-      (Empty, t2) -> Empty
-    | (t1, Empty) -> Empty
+      (Empty, _t2) -> Empty
+    | (_t1, Empty) -> Empty
     | (Node(l1, v1, r1, _), t2) ->
       match split cmp12 v1 t2 with
         (l2, false, r2) ->
@@ -657,7 +657,7 @@ module Concrete = struct
 
   let rec diff cmp12 s1 s2 =
     match (s1, s2) with
-      (Empty, t2) -> Empty
+      (Empty, _t2) -> Empty
     | (t1, Empty) -> t1
     | (Node(l1, v1, r1, _), t2) ->
       match split cmp12 v1 t2 with
@@ -674,7 +674,7 @@ module Concrete = struct
       match split cmp12 v1 t2 with
         (l2, false, r2) ->
         disjoint cmp12 l1 l2 && disjoint cmp12 r1 r2
-      | (l2, true, r2) -> false
+      | (_l2, true, _r2) -> false
 
   let compare cmp s1 s2 =
     let rec compare_aux t1' t2' =
@@ -923,8 +923,8 @@ struct
   let rec compare_subset s1 s2 =
     match (s1, impl_of_t s2) with
       (Concrete.Empty, Concrete.Empty) -> 0
-    | (Concrete.Empty, t2) -> -1
-    | (t1, Concrete.Empty) -> 1
+    | (Concrete.Empty, _t2) -> -1
+    | (_t1, Concrete.Empty) -> 1
     | (Concrete.Node(l1, v1, r1, _), t2) ->
       match split v1 (t_of_impl t2) with
         (l2, true, r2) -> (* v1 in both s1 and s2 *)
@@ -1013,7 +1013,7 @@ module PSet = struct (*$< PSet *)
 
   let empty    = { cmp = compare; set = Concrete.empty }
   let create cmp  = { cmp = cmp; set = Concrete.empty }
-  let get_cmp {cmp} = cmp
+  let get_cmp {cmp; _} = cmp
 
   (*$T get_cmp
     get_cmp (create BatInt.compare) == BatInt.compare

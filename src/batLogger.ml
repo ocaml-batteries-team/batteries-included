@@ -118,14 +118,14 @@ let make_std_formatter oc lm lev (event_name, event_args) timestamp =
 
 let stderr_formatter = make_std_formatter BatIO.stderr
 
-let null_formatter lm lev event timestamp = ()
+let null_formatter _lm _lev _event _timestamp = ()
 
 let format_indent oc depth =
   for _i = 0 to depth do
     fprintf oc "| "
   done
 
-let make_dbg_formatter oc lm lev (event_name, event_args) timestamp =
+let make_dbg_formatter oc lm lev (event_name, event_args) _timestamp =
   let indent = try int_of_string (List.assoc "I" event_args) with _ -> 0 in
   let args = List.remove_assoc "I" event_args in
   fprintf oc "### %a%s.%s %a [%s]\n%!" format_indent indent
@@ -142,7 +142,7 @@ let log lm lev event_fun =
     let time = Unix.gettimeofday () in
     let event_name, event_args = event_fun () in
     let event = event_name, ("I", string_of_int !depth) :: event_args in
-    List.iter (fun (name, fmt) -> fmt lm lev event time) !formatters
+    List.iter (fun (_name, fmt) -> fmt lm lev event time) !formatters
 
 let with_log lm lev event_fun ?result body =
   if log_enabled lm lev then begin
@@ -186,7 +186,7 @@ let init_from_string name_level_string formatter =
     with Not_found -> try
       let level = level_of_name (BatSubstring.to_string ss) in
       default_level := int_of_level level;
-      Hashtbl.iter (fun name lm -> log_enable lm level) logs
+      Hashtbl.iter (fun _name lm -> log_enable lm level) logs
     with Failure _ ->
       failwith ("invalid log initialization: " ^ BatSubstring.to_string ss)
   in

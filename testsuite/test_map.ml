@@ -311,7 +311,7 @@ module TestMap
     "union_stdlib [1,1;2,2;3,10] [3,6;4,4] keep sum on conflict" @=
       (M.union_stdlib (fun _k a b -> Some (a+b)) (il [3,6;4,4]) (il [1,1;2,2;3,10]), il [1,1;2,2;3,16;4,4]);
     "union_stdlib [1,1;2,2;3,10] [3,6;4,4] drop on conflict" @=
-      (M.union_stdlib (fun _k a b -> None)       (il [3,6;4,4]) (il [1,1;2,2;3,10]), il [1,1;2,2;4,4]);    
+      (M.union_stdlib (fun _k _a _b -> None)       (il [3,6;4,4]) (il [1,1;2,2;3,10]), il [1,1;2,2;4,4]);
     "union_stdlib [1,1;4,2;3,10] [3,6;4,4] keep 3 w sum, drop 4" @=
       (M.union_stdlib (fun k a b -> if k = 3 then Some (a+b) else None) (il [2,2;3,6;4,4]) (il [1,1;4,2;3,10]), il [1,1;2,2;3,16]);
     ()

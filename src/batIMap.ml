@@ -313,7 +313,7 @@ let singleton ~eq x y = {m = Core.singleton x y; eq}
   try ignore(find 0 (singleton ~eq:(=) 1 'x')); false with Not_found -> true
 *)
 
-let is_empty {m} = Core.is_empty m
+let is_empty {m; _} = Core.is_empty m
 let add x y {m;eq} = {m=Core.add ~eq x y m; eq}
 
 (*$= add as a & ~cmp:(List.eq (Tuple3.eq Int.equal Int.equal Int.equal)) ~printer:(List.print (Tuple3.print Int.print Int.print Int.print) |> IO.to_string)
@@ -326,7 +326,7 @@ let add x y {m;eq} = {m=Core.add ~eq x y m; eq}
 
 
 let add_range lo hi y {m;eq} = {m=Core.add_range ~eq lo hi y m; eq}
-let find x {m} = Core.find x m
+let find x {m; _} = Core.find x m
 let modify x f {m;eq} = {m=Core.modify ~eq x f m; eq}
 
 (*$T modify
@@ -369,23 +369,23 @@ let from x {m;eq} = {m=Core.from x m; eq}
 let after x {m;eq} = {m=Core.after x m; eq}
 let until x {m;eq} = {m=Core.until x m; eq}
 let before x {m;eq} = {m=Core.before x m; eq}
-let mem x {m} = Core.mem x m
-let iter f {m} = Core.iter f m
-let iter_range f {m} = Core.iter_range f m
-let map ?(eq=(=)) f {m} = {m=Core.map ~eq f m; eq}
-let mapi ?(eq=(=)) f {m} = {m=Core.mapi ~eq f m; eq}
-let map_range ?(eq=(=)) f {m} = {m = Core.map_range ~eq f m; eq}
-let fold f {m} x0 = Core.fold f m x0
-let fold_range f {m} x0 = Core.fold_range f m x0
+let mem x {m; _} = Core.mem x m
+let iter f {m; _} = Core.iter f m
+let iter_range f {m; _} = Core.iter_range f m
+let map ?(eq=(=)) f {m; _} = {m=Core.map ~eq f m; eq}
+let mapi ?(eq=(=)) f {m; _} = {m=Core.mapi ~eq f m; eq}
+let map_range ?(eq=(=)) f {m; _} = {m = Core.map_range ~eq f m; eq}
+let fold f {m; _} x0 = Core.fold f m x0
+let fold_range f {m; _} x0 = Core.fold_range f m x0
 let set_to_map ?(eq=(=)) s x = {m = Core.set_to_map s x; eq}
-let domain {m} = Core.domain m
-let map_to_set f {m} = Core.map_to_set f m
-let enum {m} = Core.enum m
-let fold2_range f {m=m1} {m=m2} x0 = Core.fold2_range f m1 m2 x0
-let union f {m=m1;eq} {m=m2} = {m=Core.union ~eq f m1 m2; eq}
-let merge ?(eq=(=)) f {m=m1} {m=m2} = {m=Core.merge ~eq f m1 m2; eq}
-let forall2_range f {m=m1} {m=m2} = Core.forall2_range f m1 m2
-let get_dec_eq {eq} = eq
+let domain {m; _} = Core.domain m
+let map_to_set f {m; _} = Core.map_to_set f m
+let enum {m; _} = Core.enum m
+let fold2_range f {m=m1; _} {m=m2; _} x0 = Core.fold2_range f m1 m2 x0
+let union f {m=m1;eq} {m=m2; _} = {m=Core.union ~eq f m1 m2; eq}
+let merge ?(eq=(=)) f {m=m1; _} {m=m2; _} = {m=Core.merge ~eq f m1 m2; eq}
+let forall2_range f {m=m1; _} {m=m2; _} = Core.forall2_range f m1 m2
+let get_dec_eq {eq; _} = eq
 
 (*$T get_dec_eq
   get_dec_eq (empty Int.equal) == Int.equal
@@ -395,6 +395,6 @@ let of_enum ~eq e =
   BatEnum.fold (fun t (n1, n2, v) -> add_range n1 n2 v t) (empty ~eq) e
 
 module Infix = struct
-  let (-->) {m} k = Core.find k m
+  let (-->) {m; _} k = Core.find k m
   let (<--) m (k,v) = add k v m
 end

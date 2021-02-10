@@ -216,7 +216,7 @@ let get r i =
     | Leaf (lens, s) ->
       if i >= 0 && i < lens then UTF8.get s i
       else raise Out_of_bounds
-    | Concat (l, cl, r, cr, _) ->
+    | Concat (l, cl, r, _cr, _) ->
       if i < cl then aux i l
       else aux (i - cl) r
   in
@@ -237,7 +237,7 @@ let set r i v =
         let s = copy_set s i v in
         Leaf (lens, s)
       else raise Out_of_bounds
-    | Concat(l, cl, r, cr, _) ->
+    | Concat(l, cl, r, _cr, _) ->
       if i < cl then append (aux i l) r
       else append l (aux (i - cl) r)
   in
@@ -270,9 +270,9 @@ module Iter = struct
   let rec next_leaf = function
     | Empty :: l ->
       next_leaf l
-    | Leaf(len, str) :: l ->
+    | Leaf(_len, str) :: l ->
       Some(str, l)
-    | Concat(left, left_len, right, right_len, height) :: l ->
+    | Concat(left, _left_len, right, _right_len, _height) :: l ->
       next_leaf (left :: right :: l)
     | [] ->
       None
@@ -320,9 +320,9 @@ module Iter = struct
   let rec prev_leaf = function
     | Empty :: l ->
       prev_leaf l
-    | Leaf(len, str) :: l ->
+    | Leaf(_len, str) :: l ->
       Some(str, l)
-    | Concat(left, left_len, right, right_len, height) :: l ->
+    | Concat(left, _left_len, right, _right_len, _height) :: l ->
       prev_leaf (right :: left :: l)
     | [] ->
       None
@@ -493,7 +493,7 @@ let rec iteri ?(base=0) f = function
 
 let rec bulk_iteri_backwards ~top f = function
   | Empty -> ()
-  | Leaf (lens,s) -> f top s
+  | Leaf (_lens,s) -> f top s
   | Concat(l,_,r,cr,_) ->
     bulk_iteri_backwards ~top f r;
     bulk_iteri_backwards ~top:(top-cr) f l
@@ -635,7 +635,7 @@ let backwards r =
 let of_enum e =
   let size = BatEnum.count e in
   init size
-    (fun i ->
+    (fun _i ->
        try BatEnum.get_exn e
        with BatEnum.No_more_elements -> assert false)
 
@@ -846,7 +846,7 @@ let of_list l =
     Return.label
       (fun label ->
         let b = Buffer.create 256 in
-        for i = 1 to 256 do
+        for _i = 1 to 256 do
           match !e with
             []   -> Return.return label (false, UTF8.of_string_unsafe (Buffer.contents b))
           | c :: rest  -> Buffer.add_string b (UTF8.to_string_unsafe (UTF8.of_char c)); e := rest

@@ -263,7 +263,7 @@ struct
       csplay begin
         match cfind ~sel:(ksel k) tr with
         | C (cx, Node (l, (k, v), r)) -> C (cx, Node (l, (k, fn v), r))
-        | C (cx, Empty) -> raise Not_found
+        | C (_cx, Empty) -> raise Not_found
       end
     end
 
@@ -439,7 +439,7 @@ struct
         csplay begin
           match cfind ~sel:(ksel k1) tr with
           | C (cx, Node (l, _kv, r)) -> C (cx, Node (l, (k2, v2), r))
-          | C (cx, Empty) -> raise Not_found
+          | C (_cx, Empty) -> raise Not_found
         end
       end
 
