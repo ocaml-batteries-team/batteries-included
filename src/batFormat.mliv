@@ -356,7 +356,7 @@ val set_formatter_output : 'a output -> unit;;
 
 val set_formatter_output_functions :
   (string -> int -> int -> unit) -> (unit -> unit) -> unit
-;;
+
 (** [set_formatter_output_functions out flush] redirects the
     relevant pretty-printer output functions to the functions [out] and
     [flush].
@@ -370,7 +370,7 @@ val set_formatter_output_functions :
 
 val get_formatter_output_functions :
   unit -> (string -> int -> int -> unit) * (unit -> unit)
-;;
+
 (** Return the current output functions of the pretty-printer. *)
 
 (** {6:meaning Changing the meaning of standard formatter pretty printing} *)
@@ -386,7 +386,7 @@ val set_all_formatter_output_functions :
   newline:(unit -> unit) ->
   spaces:(int -> unit) ->
   unit
-;;
+
 (** [set_all_formatter_output_functions out flush outnewline outspace]
     redirects the pretty-printer output to the functions [out] and
     [flush] as described in [set_formatter_output_functions]. In
@@ -408,7 +408,7 @@ val get_all_formatter_output_functions :
     (unit -> unit) *
     (unit -> unit) *
     (int -> unit)
-;;
+
 (** Return the current output functions of the pretty-printer,
     including line breaking and indentation functions. Useful to record the
     current setting and restore it afterwards. *)
@@ -421,7 +421,7 @@ type formatter_tag_functions = {
   print_open_tag : tag -> unit;
   print_close_tag : tag -> unit;
 }
-;;
+
 (** The tag handling functions specific to a formatter:
     [mark] versions are the ``tag marking'' functions that associate a string
     marker to a tag in order for the pretty-printing engine to flush
@@ -431,7 +431,7 @@ type formatter_tag_functions = {
 
 val set_formatter_tag_functions :
   formatter_tag_functions -> unit
-;;
+
 
 (** [set_formatter_tag_functions tag_funs] changes the meaning of
     opening and closing tags to use the functions in [tag_funs].
@@ -506,7 +506,7 @@ val flush_str_formatter : unit -> string;;
 
 val make_formatter :
   (string -> int -> int -> unit) -> (unit -> unit) -> formatter
-;;
+
 (** [make_formatter out flush] returns a new formatter that writes according
     to the output function [out], and the flushing function [flush]. For
     instance, a formatter to the [Pervasives.out_channel] [oc] is returned by
@@ -557,25 +557,25 @@ val pp_get_ellipsis_text : formatter -> unit -> string;;
 val pp_set_formatter_out_channel : formatter -> Pervasives.out_channel -> unit;;
 val pp_set_formatter_output_functions :
   formatter -> (string -> int -> int -> unit) -> (unit -> unit) -> unit
-;;
+
 val pp_get_formatter_output_functions :
   formatter -> unit -> (string -> int -> int -> unit) * (unit -> unit)
-;;
+
 val pp_set_all_formatter_output_functions :
   formatter -> out:(string -> int -> int -> unit) -> flush:(unit -> unit) ->
   newline:(unit -> unit) -> spaces:(int -> unit) -> unit
-;;
+
 val pp_get_all_formatter_output_functions :
   formatter -> unit ->
   (string -> int -> int -> unit) * (unit -> unit) * (unit -> unit) *
     (int -> unit)
-;;
+
 val pp_set_formatter_tag_functions :
   formatter -> formatter_tag_functions -> unit
-;;
+
 val pp_get_formatter_tag_functions :
   formatter -> unit -> formatter_tag_functions
-;;
+
 (** These functions are the basic ones: usual functions
     operating on the standard formatter are defined via partial
     evaluation of these primitives. For instance,
@@ -705,13 +705,13 @@ val ifprintf : formatter -> ('a, formatter, unit) format -> 'a;;
 
 val kfprintf : (formatter -> 'a) -> formatter ->
   ('b, formatter, unit, 'a) format4 -> 'b
-;;
+
 (** Same as [fprintf] above, but instead of returning immediately,
     passes the formatter to its first argument at the end of printing. *)
 
 val ikfprintf : (formatter -> 'a) -> formatter ->
   ('b, formatter, unit, 'a) format4 -> 'b
-;;
+
 (** Same as [kfprintf] above, but does not print anything.
     Useful to ignore some material when conditionally printing.
     @since 3.12.0

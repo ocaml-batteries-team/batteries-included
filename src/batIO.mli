@@ -850,7 +850,9 @@ val strings_of : input -> string BatEnum.t
 
 val lines_of : input -> string BatEnum.t
 (** Read an enumeration of LF or CRLF terminated strings. *)
+
 val lines_of2 : input -> string BatEnum.t
+(** Buffered version of {!lines_of}, for performance. *)
 
 val chunks_of : int -> input -> string BatEnum.t
 (** Read an input as an enumeration of strings of given length.  If the input isn't a multiple of that length, the final string will be smaller than the rest. *)

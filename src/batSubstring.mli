@@ -97,6 +97,7 @@ val get : t -> int -> char
 val size : t -> int
 (** [size (s, i, n)] returns the size of the substring, that is, [n].
 *)
+
 val length: t -> int
 (** Equivalent to {!size}. *)
 
@@ -109,16 +110,19 @@ val slice : t -> int -> int option -> t
     where [sus] = [(s, i, n)].  @raise Invalid_argument if [i' < 0]
     or [n' < 0] or [i'+n' >= n].
 *)
+
 val concat : t list -> string
 (** [concat suss] returns a string consisting of the concatenation of
     the substrings.  Equivalent to [String.concat (List.map to_string
     suss)].
 *)
+
 val explode : t -> char list
 (** [explode sus] returns the list of characters of sus, that is,
     [s(i), s(i+1), ..., s(i+n-1)] where [sus = (s, i, n)].  Equivalent
     to [String.explode (to_string ss)].
 *)
+
 val is_prefix : string -> t -> bool
 (** [is_prefix s1 s2] is true if [s1] is a prefix of [s2]. That is, if
     there exists a string [t] such that string [s1 ^ t = to_string s2].

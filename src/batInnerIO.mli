@@ -399,6 +399,7 @@ val to_output_channel: _ output -> out_channel
     libraries which can't be adapted. As a general rule, if
     you can avoid using this function, don't use it.*)
 *)
+
 (** {6 Standard inputs/outputs} *)
 
 val stdin : input

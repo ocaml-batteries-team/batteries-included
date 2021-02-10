@@ -74,7 +74,7 @@ let close e =
   e.count<- return_no_more_count;
   e.clone<- empty
 
-let force t =(** Transform [t] into a list *)
+let force t = (* Transform [t] into a list *)
   let rec clone enum count =
     let enum = ref !enum
     and count = ref !count in

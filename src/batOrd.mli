@@ -28,11 +28,13 @@ module type Ord = sig type t val ord : t ord end
 val ord0 : int -> order
 val ord : 'a comp -> 'a ord
 (** Returns a variant ordering from a legacy comparison *)
+
 module Ord : functor (Comp : Comp) -> Ord with type t = Comp.t
 
 val comp0 : order -> int
 val comp : 'a ord -> 'a comp
 (** Returns an legacy comparison from a variant ordering *)
+
 module Comp : functor (Ord : Ord) -> Comp with type t = Ord.t
 
 val poly_comp : 'a comp

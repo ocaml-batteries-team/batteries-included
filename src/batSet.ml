@@ -793,6 +793,7 @@ sig
   val print :  ?first:string -> ?last:string -> ?sep:string ->
     ('a BatInnerIO.output -> elt -> unit) ->
     'a BatInnerIO.output -> t -> unit
+
   (** Operations on {!Set} without exceptions.*)
   module Exceptionless : sig
     val min_elt: t -> elt option
@@ -801,6 +802,7 @@ sig
     val any:     t -> elt option
     val find: elt -> t -> elt option
   end
+
   (** Operations on {!Set} with labels. *)
   module Labels : sig
     val iter : f:(elt -> unit) -> t -> unit

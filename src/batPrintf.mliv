@@ -267,6 +267,7 @@ val kfprintf : ('a output -> 'b) -> 'a output -> ('c, 'a output, unit, 'b) forma
 val ksprintf: (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
 (** Same as [sprintf] above, but instead of returning the string,
     passes it to the first argument. *)
+
 val ksprintf2: (string -> 'b) -> ('c, 'a output, unit, 'b) format4 -> 'c
 (** Same as [sprintf2] above, but instead of returning the string,
     passes it to the first argument. *)

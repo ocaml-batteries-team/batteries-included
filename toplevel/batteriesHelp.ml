@@ -63,9 +63,12 @@ let kind_of_name = function
 *)
 
 type url       = string(**A kind of string used to represent URLs. Distinguished for documentation purposes.*)
+
 type qualified = string(**A kind of string used to represent fully-qualified names.*)
+
 type unqualif  = string(**A kind of string used to represent unqualified names, i.e. names without their module.*)
-type package   = string(**A lomd pf stromg used to represent help providers.*)
+
+type package   = string(**A kind pf string used to represent help providers.*)
 
 type suggestion =
   {

@@ -1641,9 +1641,10 @@ val getaddrinfo:
     to force a particular socket domain (e.g. IPv6 only or IPv4 only)
     or a particular socket type (e.g. TCP only or UDP only). *)
 
-type name_info = Unix.name_info =
-  { ni_hostname : string;               (** Name or IP address of host *)
-    ni_service : string }               (** Name of service or port number *)
+type name_info = Unix.name_info = {
+  ni_hostname : string;               (** Name or IP address of host *)
+  ni_service : string;                (** Name of service or port number *)
+}
 (** Host and service information returned by {!Unix.getnameinfo}. *)
 
 type getnameinfo_option = Unix.getnameinfo_option =
