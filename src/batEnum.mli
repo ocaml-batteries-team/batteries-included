@@ -516,6 +516,7 @@ val of_object: (<next:'a; count:int; clone:'b> as 'b) -> 'a t
 
 val enum : 'a t -> 'a t
 (** identity : added for consistency with the other data structures *)
+
 val of_enum : 'a t -> 'a t
 (** identity : added for consistency with the other data structures *)
 

@@ -80,8 +80,10 @@ val add : float -> float -> float
 val sub : float -> float -> float
 val mul : float -> float -> float
 val div : float -> float -> float
+
 external modulo : float -> float -> float = "caml_fmod_float" "fmod" "float"
 external pow : float -> float -> float = "caml_power_float" "pow" "float"
+
 val min_num : float
 val max_num : float
 val compare : float -> float -> int
@@ -97,7 +99,9 @@ external ( + ) : t -> t -> t = "%addfloat"
 external ( - ) : t -> t -> t = "%subfloat"
 external ( * ) : t -> t -> t = "%mulfloat"
 external ( / ) : t -> t -> t = "%divfloat"
+
 external ( ** ) : t -> t -> t = "caml_power_float" "pow" "float"
+
 val min : float -> float -> float
 val max : float -> float -> float
 
@@ -316,8 +320,7 @@ external modf : float -> float * float = "caml_modf_float"
       part of [f]. *)
 
 (** Classes of floating point numbers*)
-type fpkind =
-    Pervasives.fpclass =
+type fpkind = Pervasives.fpclass =
   | FP_normal           (** Normal number, none of the below *)
   | FP_subnormal        (** Number very close to 0.0, has reduced precision *)
   | FP_zero             (** Number is 0.0 or -0.0 *)
