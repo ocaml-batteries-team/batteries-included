@@ -216,7 +216,7 @@ let index_after_n chr n str =
 
 let find_all str sub =
   (* enumerator *)
-  let rec next r () =
+  let next r () =
     try
       let i = find_from str !r sub in
       r := i+1;

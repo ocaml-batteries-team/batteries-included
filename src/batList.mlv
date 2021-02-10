@@ -761,7 +761,7 @@ let find_all p l =
   findnext dummy l;
   dummy.tl
 
-let rec findi p l =
+let findi p l =
   let rec loop n = function
     | [] -> raise Not_found
     | h :: t ->
@@ -769,28 +769,28 @@ let rec findi p l =
   in
   loop 0 l
 
-let rec index_of e l =
+let index_of e l =
   let rec loop n = function
     | []              -> None
     | h::_ when h = e -> Some n
     | _::t            -> loop ( n + 1 ) t
   in loop 0 l
 
-let rec index_ofq e l =
+let index_ofq e l =
   let rec loop n = function
     | []               -> None
     | h::_ when h == e -> Some n
     | _::t             -> loop ( n + 1 ) t
   in loop 0 l
 
-let rec rindex_of e l =
+let rindex_of e l =
   let rec loop n acc = function
     | []              -> acc
     | h::t when h = e -> loop ( n + 1) ( Some n ) t
     | _::t            -> loop ( n + 1 ) acc       t
   in loop 0 None l
 
-let rec rindex_ofq e l =
+let rindex_ofq e l =
   let rec loop n acc = function
     | []               -> acc
     | h::t when h == e -> loop ( n + 1) ( Some n ) t
