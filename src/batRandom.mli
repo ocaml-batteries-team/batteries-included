@@ -175,7 +175,7 @@ module State : sig
           use (and update) the given PRNG state instead of the default one.
       *)
 
-end;;
+end
 
 
 val get_state : unit -> State.t
