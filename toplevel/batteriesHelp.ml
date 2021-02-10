@@ -299,8 +299,8 @@ let man_all sources ~tabs subject =
     else
       match
         List.fold_left
-          (fun (((result_as_strings : string list)(**The text to display, as a list of strings, one string per kind.*),
-            _one_suggestion    (**The latest suggestion -- used only in case there's only one suggestion.*)) as acc)
+          (fun (((result_as_strings : string list)(*The text to display, as a list of strings, one string per kind.*),
+            _one_suggestion    (*The latest suggestion -- used only in case there's only one suggestion.*)) as acc)
             (cmd, kind, singular, plural, _undefined) ->
             match man_aux ~kind ~singular ~plural subject with
             | `No_result                -> acc

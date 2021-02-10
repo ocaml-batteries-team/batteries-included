@@ -1579,8 +1579,6 @@ end
 
 
 module Labels = struct
-
-  type 'a t         = 'a list
   let init i ~f     = init i f
   let make n  x     = make n x
   let iteri ~f l    = iteri f l

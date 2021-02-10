@@ -49,8 +49,6 @@
     @author Edgar Friendly
 *)
 
-open String
-
 val init : int -> (int -> char) -> string
 (** [init l f] returns the string of length [l] with the chars
     f 0 , f 1 , f 2 ... f (l-1).

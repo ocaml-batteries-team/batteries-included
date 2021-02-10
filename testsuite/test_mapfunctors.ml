@@ -1,6 +1,5 @@
 open OUnit
 open BatRandom
-open BatPervasives
 
 module MkTest (MkMap : functor (Ord : BatInterfaces.OrderedType)
                  -> BatMap.S with type key = Ord.t) =

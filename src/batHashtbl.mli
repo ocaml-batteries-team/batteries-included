@@ -34,8 +34,6 @@
     @author David Teller
 *)
 
-open Hashtbl
-
 type ('a, 'b) t = ('a, 'b) Hashtbl.t
 (** A Hashtable with keys of type 'a and values 'b *)
 

@@ -1,5 +1,4 @@
 open OUnit
-open BatPervasives
 
 let assert_equal_arrays =
   assert_equal ~printer:(BatIO.to_string (BatArray.print BatInt.print))

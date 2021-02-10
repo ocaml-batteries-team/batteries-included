@@ -991,8 +991,9 @@ sig
   val to_seq_from :  key -> 'a t -> (key * 'a) BatSeq.t
   val add_seq : (key * 'a) BatSeq.t -> 'a t -> 'a t
   val of_seq : (key * 'a) BatSeq.t -> 'a t
-  (** {6 Boilerplate code}*)
+
   (** {7 Printing}*)
+
   val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
     ('a BatInnerIO.output -> key -> unit) ->
     ('a BatInnerIO.output -> 'c -> unit) ->
