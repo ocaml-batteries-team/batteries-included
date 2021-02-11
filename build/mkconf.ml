@@ -21,6 +21,16 @@
  * THE SOFTWARE.
  *)
 
+let () = if Array.length Sys.argv < 4 then begin
+  prerr_endline "Not enough arguments";
+  exit 2
+end
+
+let oasis_path = Sys.argv.(1)
+let input_path = Sys.argv.(2)
+let output_path = Sys.argv.(3)
+
+
 let strip ?(chars=" \t\r\n") s =
 	let p = ref 0 in
 	let l = String.length s in
@@ -36,7 +46,7 @@ let strip ?(chars=" \t\r\n") s =
 
 let version = (* get version string from _oasis *)
   try
-    let chan = open_in (Filename.concat Filename.parent_dir_name "_oasis") in
+    let chan = open_in oasis_path in
     let v = ref (input_line chan) in
     while String.sub !v 0 8 <> "Version:" do v := input_line chan done;
     let _ = close_in chan in
@@ -87,13 +97,9 @@ let rec loop_file inch outch =
       | None -> ()
 ;;
 
-if Array.length Sys.argv < 3 then begin
-  prerr_endline "Not enough arguments";
-  exit 2
-end else begin
-  let inch = open_in Sys.argv.(1) in
-  let outch = open_out Sys.argv.(2) in
-    loop_file inch outch;
-    close_in inch;
-    close_out outch
-end;;
+let () =
+  let inch = open_in input_path in
+  let outch = open_out output_path in
+  loop_file inch outch;
+  close_in inch;
+  close_out outch

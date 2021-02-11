@@ -13,6 +13,10 @@ let packs = "bigarray,num,str"
 
 let doc_intro = "build/intro.text"
 let mkconf = "build/mkconf.byte"
+let mkconf_command src dst =
+  let oasis_path = Filename.concat Filename.parent_dir_name "_oasis" in
+  Cmd(S[A"ocamlrun"; P mkconf; P oasis_path; P src; P dst])
+
 let compiler_libs = if Sys.ocaml_version.[0] = '4' then [A"-I"; A"+compiler-libs"] else []
 
 let _ = dispatch begin function
@@ -41,14 +45,14 @@ let _ = dispatch begin function
         ~prod:"%.ml"
         ~deps:["%.mlp"; mkconf]
         begin fun env build ->
-          Cmd(S[A"ocamlrun"; P mkconf; P(env "%.mlp"); P(env "%.ml")])
+          mkconf_command (env "%.mlp") (env "%.ml")
         end;
 
       rule "process meta file"
         ~prod:"META"
         ~deps:["META.in"; mkconf]
         begin fun env build ->
-          Cmd(S[A"ocamlrun"; P mkconf; P"META.in"; P"META"])
+          mkconf_command "META.in" "META"
         end
 
   | After_rules ->
