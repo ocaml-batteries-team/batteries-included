@@ -11,9 +11,10 @@ let year_shiftleap = year_shift_f daysleap  (* 2 *)
 let count_shift days =
   let ret = Array.make 7 0 in
   let rec loop day = function
-      h :: [] ->
+    | _h :: [] ->
 	let sh = 6 - day in
 	ret.(sh) <- ret.(sh) + 1 (* and done *)
+    | [] -> assert false
     | h :: t  ->
 	let sh = 6 - day in
 	ret.(sh) <- ret.(sh) + 1;
