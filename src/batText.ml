@@ -260,8 +260,6 @@ module Iter = struct
 
   let copy i = {i with idx=i.idx; }
 
-  type t = iterator option
-
   (* Initial iterator state: *)
   let make rope = { leaf = UTF8.empty;
                     idx = UTF8.ByteIndex.first;

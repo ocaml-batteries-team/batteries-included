@@ -348,7 +348,9 @@ end
 
 module Compare : BatNumber.Compare with type bat__compare_t = t
 
-include (BatNumber.RefOps with type bat__refops_t = t)
+include BatNumber.RefOps with type bat__refops_t = t
+
+include BatNumber.Bounded with type bounded = t
 
 (** {6 Boilerplate code}*)
 
@@ -446,6 +448,8 @@ sig
       val ( = ) : t -> t -> bool
   *)
   val operations : t BatNumber.numeric
+
+  include BatNumber.Bounded with type bounded = t
 
   (**
      {6 Operations specific to floating-point numbers}

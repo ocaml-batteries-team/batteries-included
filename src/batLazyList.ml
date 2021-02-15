@@ -319,9 +319,8 @@ let concat lol =
   ignore (concat (lazy (Cons ((let () = failwith "foo" in nil), nil)))); true
 *)
 
-(**
-   {6  Conversions}
-*)
+(** {6  Conversions} *)
+
 (**
    Eager conversion to list.
 *)

@@ -91,6 +91,8 @@ val ( -- ): t -> t -> t BatEnum.t
 val ( --- ): t -> t -> t BatEnum.t
 val operations : t BatNumber.numeric
 
+include BatNumber.Bounded
+
 (** {6 Submodules grouping all infix operators} *)
 
 module Infix : BatNumber.Infix with type bat__infix_t = t

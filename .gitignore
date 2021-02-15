@@ -23,15 +23,3 @@ qtest2/all_tests.ml
 qtest.targets.log
 setup.data
 setup.log
-src/batUnix.mli
-src/batPervasives.mli
-src/batInnerPervasives.ml
-src/batHashtbl.ml
-src/batMarshal.mli
-src/batPrintexc.mli
-src/batPrintf.ml
-src/batPrintf.mli
-src/batFormat.mli
-src/batSys.mli
-src/batBigarray.mli
-src/batFilename.mli
