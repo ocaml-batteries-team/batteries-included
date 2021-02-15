@@ -231,6 +231,9 @@ let result_of_completions table singular subject (l:completion list) =
     inconsistency singular subject; (*Report internal inconsistency*)
     None) l
 
+(**A deconstructor for [completion].*)
+let get_qualified {qualified = q; _} = q
+
 (**
    Look for a given subject inside one of the manuals
 

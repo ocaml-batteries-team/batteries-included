@@ -173,8 +173,8 @@ let test_is_prefix =
   ];;
 
 let test_enum =
+  let test_enum ss = ss |> to_string |> BatString.enum in
   let ss = of_string "testing" in
-  let test_enum substring = ss |> to_string |> BatString.enum in
   [
     begin "enum" >:: fun () ->
       assert_equal (ss |> enum |> BatString.of_enum) "testing";

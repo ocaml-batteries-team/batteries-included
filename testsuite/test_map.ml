@@ -121,7 +121,6 @@ module TestMap
     val enum : 'a m -> (key * 'a) BatEnum.t
     val backwards : 'a m -> (key * 'a) BatEnum.t
     val of_enum : (key * 'a) BatEnum.t -> 'a m
-    val bindings : 'a m -> (key * 'a) list
 
     val for_all : (key -> 'a -> bool) -> 'a m -> bool
     val exists : (key -> 'a -> bool) -> 'a m -> bool

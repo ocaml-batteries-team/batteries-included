@@ -33,34 +33,21 @@ else
 	QTESTPKG = QTest2Lib
 endif
 
-INSTALL_FILES = _build/META _build/src/*.cma _build/src/*.cmi _build/src/*.mli \
-	toplevel/battop.ml _build/toplevel/*.cmi _build/toplevel/*.mli \
-# Note: we do not currently install
-#       _build/toplevel/*.cma
-# as there are no such files. If you create a proper library for batteries-help, you need to add *.cma
-# to INSTALL_FILES.
-
-INSTALL_FILES += \
-	_build/src/batteriesConfig.cmo _build/src/batteriesPrint.cmo _build/toplevel/batteriesHelp.cmo \
-	toplevel/ocamlinit build/ocaml
-
+INSTALL_FILES = _build/META _build/src/*.cma \
+	battop.ml _build/src/*.cmi _build/src/*.mli \
+	_build/src/batteriesHelp.cmo _build/src/batteriesConfig.cmo _build/src/batteriesPrint.cmo \
+	ocamlinit build/ocaml
 # the bin_annot flag in _tags is not handled by versions of ocamlbuild < 4.01.0
 # hence we only install *.cmt{i} files if they were produced
 ifneq ($(wildcard _build/src/*.cmt),)
 	INSTALL_FILES += _build/src/*.cmt
-	INSTALL_FILES += _build/toplevel/*.cmt
 endif
-
 ifneq ($(wildcard _build/src/*.cmti),)
 	INSTALL_FILES += _build/src/*.cmti
-	INSTALL_FILES += _build/toplevel/*.cmti
 endif
 
-OPT_INSTALL_FILES = \
-	_build/src/*.cmx _build/src/*.cmxa _build/src/*.cmxs \
-	_build/src/*.a _build/src/*.lib \
-	_build/toplevel/*.cmx _build/toplevel/*.cmxa _build/toplevel/*.cmxs \
-	_build/toplevel/*.a _build/toplevel/*.lib
+OPT_INSTALL_FILES = _build/src/*.cmx _build/src/*.a _build/src/*.cmxa \
+	_build/src/*.cmxs _build/src/*.lib
 
 ifneq ($(QTEST_SEED),)
 	QTEST_SEED_FLAG = --seed $(QTEST_SEED)
@@ -70,7 +57,7 @@ endif
 
 # What to build
 TARGETS  = src/batteries.cma
-TARGETS += toplevel/batteriesHelp.cmo
+TARGETS += src/batteriesHelp.cmo
 TARGETS += src/batteriesThread.cma
 TARGETS += META
 BENCH_TARGETS  = benchsuite/bench_int.native
@@ -188,7 +175,8 @@ clean-prefilter:
 # $(TESTFILES) from $(TESTABLE), and pass them to qtest from the
 # `_build` directory.
 
-DONTTEST=src/batteries_compattest.mlv \
+DONTTEST=src/batteriesHelp.ml \
+	 src/batteries_compattest.mlv \
 	 src/batConcreteQueue_402.ml src/batConcreteQueue_403.ml
 TESTABLE ?= $(filter-out $(DONTTEST),\
    $(wildcard src/*.ml) $(wildcard src/*.mlv))

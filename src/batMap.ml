@@ -1046,8 +1046,6 @@ struct
   external t_of_impl: 'a implementation -> 'a t = "%identity"
   external impl_of_t: 'a t -> 'a implementation = "%identity"
 
-  type 'a iter = E | C of key * 'a * 'a implementation * 'a iter
-
   let cardinal t = Concrete.cardinal (impl_of_t t)
   let enum t = Concrete.enum (impl_of_t t)
   let backwards t = Concrete.backwards (impl_of_t t)
@@ -1482,7 +1480,7 @@ let merge f m1 m2 = Concrete.merge f Pervasives.compare m1 m2
 let bindings = Concrete.bindings
 
 let compare cmp_val m1 m2 =
-  Concrete.compare Pervasives.compare Pervasives.compare m1 m2
+  Concrete.compare Pervasives.compare cmp_val m1 m2
 
 let equal eq_val m1 m2 = Concrete.equal Pervasives.compare eq_val m1 m2
 
