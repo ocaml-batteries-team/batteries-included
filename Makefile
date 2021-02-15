@@ -87,7 +87,7 @@ else
 endif
 endif
 
-.PHONY: all clean doc install uninstall reinstall test qtest qtest-clean camfail camfailunk man test_install
+.PHONY: all clean deps doc install uninstall reinstall test qtest qtest-clean camfail camfailunk man test_install
 
 all:
 	@echo "Build mode:" $(MODE)
