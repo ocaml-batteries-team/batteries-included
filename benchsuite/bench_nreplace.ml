@@ -4,10 +4,10 @@
 open Batteries
 open String
 
-(* The original Batteries String.nreplace *)
-let nreplace_orig ~str ~sub ~by =
+(* The current Batteries String.nreplace *)
+let nreplace_current ~str ~sub ~by =
   if sub = "" then invalid_arg "nreplace: cannot replace all empty substrings" ;
-  let parts = nsplit str ~by:sub in
+  let parts = BatString.split_on_string str ~by:sub in
   String.concat by parts
 
 (* The suggestion from Glyn Webster that started it all.
@@ -123,7 +123,7 @@ let nreplace_madroach ~str ~sub ~by =
   and sublen = String.length sub
   and bylen  = String.length by in
 
-  let rec find_simple ~sub ?(pos=0) str =
+  let find_simple ~sub ?(pos=0) str =
     let find pos =
       try BatString.find_from str pos sub with
       Not_found -> raise BatEnum.No_more_elements
@@ -135,7 +135,7 @@ let nreplace_madroach ~str ~sub ~by =
    * skipping overlapping occurrences *)
   let todo =
     let skip_unto = ref 0 in
-    find_simple sub str |>
+    find_simple ~sub str |>
     Enum.filter begin function
       |i when i < !skip_unto -> false
       |i -> skip_unto := i + sublen; true
@@ -281,12 +281,12 @@ let nreplace_substring_enum ~str ~sub ~by =
  * realistic words by others. *)
 
 let long_text =
-  File.lines_of "benchsuite/bench.ml"
+  File.lines_of "bench_nreplace.ml"
   |> Enum.cycle ~times:100 |> List.of_enum |> concat ""
 
 let do_bench_for_len length name =
   let run rep iters =
-    for i=1 to iters do
+    for _i = 1 to iters do
       (* "realistic" workload that attempts to exercise all interesting cases *)
       let str = sub long_text 0 length in
       let str = rep ~str ~sub:"let" ~by:"let there be light" in
@@ -299,7 +299,7 @@ let do_bench_for_len length name =
   in
 
   Bench.bench_n [
-    "orig "^ name, run nreplace_orig ;
+    "current "^ name, run nreplace_current ;
     "glyn "^ name, run nreplace_glyn ;
     "rxd "^ name, run nreplace_rxd ;
     "thelema "^ name, run nreplace_thelema ;
@@ -314,7 +314,7 @@ let do_bench_for_len length name =
 let main =
     (* First check that all implementation performs superficialy the same *)
     let check ~str ~sub ~by =
-        let outp = nreplace_orig ~str ~sub ~by in
+        let outp = nreplace_current ~str ~sub ~by in
         List.iter (fun (d,rep) ->
             let outp' = rep ~str ~sub ~by in
             if outp' <> outp then (

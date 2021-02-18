@@ -1,0 +1,102 @@
+(library
+ (name batteries)
+ (public_name batteries)
+ (synopsis "A community-maintained standard library extension")
+ (preprocess
+  (action (run build/prefilter.exe %{input-file})))
+ (flags (:standard -w -3-32-52))
+ (libraries num threads)
+ (inline_tests
+   (backend qtest_batteries)
+   (deps %{project_root}/qtest/qtest_preamble.ml)
+ )
+ (wrapped false)
+)
+
+(rule
+  (action (copy# batConcreteQueue_402.ml batConcreteQueue.ml))
+  (enabled_if (< %{ocaml_version} 4.03))
+)
+
+(rule
+  (action (copy# batConcreteQueue_403.ml batConcreteQueue.ml))
+  (enabled_if (>= %{ocaml_version} 4.03))
+)
+
+(library
+ (name qtest_batteries)
+ (modules)
+ (inline_tests.backend
+    (generate_runner (run qtest extract --preamble-file %{project_root}/qtest/qtest_preamble.ml --quiet %{impl-files} %{intf-files}))
+    (runner_libraries qcheck ounit2)
+ ))
+
+(rule
+  (target batteriesConfig.ml)
+  (deps %{project_root}/build/mkconf.exe %{project_root}/_oasis batteriesConfig.mlp)
+  (action
+    (run %{project_root}/build/mkconf.exe %{project_root}/_oasis batteriesConfig.mlp %{target})))
+
+
+; documentation works!
+;   dune build @doc
+;   xdg-open _build/default/_doc/_html/index.html
+(documentation
+ (mld_files index))
+
+; note: temporary, intro.text should be renamed
+(rule (copy ../build/intro.text index.mld))
+
+
+
+; note: these copy rules will go away once we have completely
+; transitioned to Dune, but for now they are necessary to preserve
+; ocamlbuild-friendly source filenames.
+(rule (copy batArray.mlv batArray.ml))
+(rule (copy batArray.mliv batArray.mli))
+(rule (copy batBig_int.mlv batBig_int.ml))
+(rule (copy batBig_int.mliv batBig_int.mli))
+(rule (copy batBigarray.mlv batBigarray.ml))
+(rule (copy batBigarray.mliv batBigarray.mli))
+(rule (copy batBuffer.mlv batBuffer.ml))
+(rule (copy batBuffer.mliv batBuffer.mli))
+(rule (copy batBytes.mlv batBytes.ml))
+(rule (copy batBytes.mliv batBytes.mli))
+(rule (copy batBytesCompat.mlv batBytesCompat.ml))
+(rule (copy batChar.mlv batChar.ml))
+(rule (copy batDigest.mlv batDigest.ml))
+(rule (copy batFilename.mlv batFilename.ml))
+(rule (copy batFilename.mliv batFilename.mli))
+(rule (copy batFormat.mlv batFormat.ml))
+(rule (copy batFormat.mliv batFormat.mli))
+(rule (copy batGc.mliv batGc.mli))
+(rule (copy batHashtbl.mlv batHashtbl.ml))
+(rule (copy batInnerPervasives.mlv batInnerPervasives.ml))
+(rule (copy batInnerWeaktbl.mlv batInnerWeaktbl.ml))
+(rule (copy batInnerWeaktbl.mliv batInnerWeaktbl.mli))
+(rule (copy batInt32.mlv batInt32.ml))
+(rule (copy batInt32.mliv batInt32.mli))
+(rule (copy batInt64.mlv batInt64.ml))
+(rule (copy batInt64.mliv batInt64.mli))
+(rule (copy batLexing.mlv batLexing.ml))
+(rule (copy batLexing.mliv batLexing.mli))
+(rule (copy batList.mlv batList.ml))
+(rule (copy batList.mliv batList.mli))
+(rule (copy batMarshal.mlv batMarshal.ml))
+(rule (copy batMarshal.mliv batMarshal.mli))
+(rule (copy batNativeint.mlv batNativeint.ml))
+(rule (copy batNativeint.mliv batNativeint.mli))
+(rule (copy batPervasives.mliv batPervasives.mli))
+(rule (copy batPrintexc.mliv batPrintexc.mli))
+(rule (copy batPrintf.mlv batPrintf.ml))
+(rule (copy batPrintf.mliv batPrintf.mli))
+(rule (copy batQueue.mliv batQueue.mli))
+(rule (copy batSeq.mlv batSeq.ml))
+(rule (copy batSeq.mliv batSeq.mli))
+(rule (copy batStream.mlv batStream.ml))
+(rule (copy batString.mlv batString.ml))
+(rule (copy batString.mliv batString.mli))
+(rule (copy batSys.mlv batSys.ml))
+(rule (copy batSys.mliv batSys.mli))
+(rule (copy batUnix.mlv batUnix.ml))
+(rule (copy batteries.mlv batteries.ml))

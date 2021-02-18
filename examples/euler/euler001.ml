@@ -8,7 +8,7 @@ let top = 999
 
 let () =
   (1 -- top)
-  |> filter (fun x -> x mod 3 = 0 or x mod 5 = 0)
+  |> filter (fun x -> x mod 3 = 0 || x mod 5 = 0)
   |> print_sum
 
 let () =

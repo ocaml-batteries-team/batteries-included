@@ -11,7 +11,7 @@ let fill_arr s =
   done
 
 let farr n =
-  let s = Array.create width false in
+  let s = Array.make width false in
   for _a = 1 to n do
     fill_arr s;
     for _b = 1 to 100 do
@@ -25,7 +25,7 @@ let farr n =
   done
 
 let count_arr n =
-  let s = Array.create width false in
+  let s = Array.make width false in
   for _a = 1 to n do
     let count = ref 0 in
     fill_arr s;

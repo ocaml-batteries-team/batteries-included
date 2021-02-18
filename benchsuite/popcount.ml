@@ -59,11 +59,7 @@ let popcount_lookup x =
   a.(x land 0xFFFF) + a.(x lsr 16)
 
 (* a takes 64k *)
-let a = String.create (1 lsl 16)
-let () =
-  for i = 0 to String.length a - 1 do
-    a.[i] <- Char.chr (popcount i)
-  done
+let a = BatString.init (1 lsl 16) (fun i -> Char.chr (popcount i))
 let popcount_lookup2 x =
   Char.code a.[x land 0xFFFF] + Char.code a.[x lsr 16]
 

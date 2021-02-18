@@ -1,0 +1,7 @@
+(executables
+  (names
+    euler001 euler008 euler009
+    euler010 euler011 euler012 euler013 euler014 euler018 euler019
+    euler021 euler022 euler023 euler024
+    euler067)
+  (libraries batteries))

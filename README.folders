@@ -5,4 +5,5 @@ The following directories contain:
 * examples/   example files showing how to use various features of batteries
 * qtest/      the inline tests
 * src/        the core of Batteries Included, all the batFoo modules
-* testsuite/  a minimal testsuite for batteries
+* toplevel/   Batteries helpers for the toplevel
+* testsuite/  a testsuite for batteries, in addition to inline tests in src/

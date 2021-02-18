@@ -16,20 +16,20 @@ struct
 
   let snoc t x =
     match t with
-    | {front = []; rear = rear} ->
+    | {front = []; rear = rear; _} ->
       assert (rear = []);
       {len_front = 1; front = [x]; len_rear = 0; rear = []}
-    | {rear = rear; len_rear = len_rear} ->
+    | {rear = rear; len_rear = len_rear; _} ->
       {t with rear = x :: rear; len_rear = len_rear + 1}
 
   let front t =
     match t with
-    | {front = []; rear = rear} ->
+    | {front = []; rear = rear; _} ->
       assert (rear = []);
       None
-    | {front = [hd]; rear = rear; len_rear = len_rear} ->
+    | {front = [hd]; rear = rear; len_rear = len_rear; _} ->
       Some (hd, {len_front = len_rear; front = List.rev rear; rear = []; len_rear = 0})
-    | {front = hd :: tl; len_front = len_front} ->
+    | {front = hd :: tl; len_front = len_front; _} ->
       Some (hd, {t with front = tl; len_front = len_front - 1})
 
 end
@@ -38,7 +38,7 @@ type 'a lazy_list = 'a lazy_cell Lazy.t
 and 'a lazy_cell =
   | Nil
   | Cons of 'a * 'a lazy_list
-let nil = Lazy.lazy_from_val Nil
+let nil = Lazy.from_val Nil
 let rec append x y =
   lazy (
     match x with
@@ -49,7 +49,7 @@ let rev x =
   let rec rev_append x acc =
     match x with
     | lazy Nil -> acc
-    | lazy (Cons (hd, tl)) -> rev_append tl (Lazy.lazy_from_val (Cons (hd, acc))) in
+    | lazy (Cons (hd, tl)) -> rev_append tl (Lazy.from_val (Cons (hd, acc))) in
   rev_append x nil
 
 module Queue2 = (* really amortized version *)
@@ -70,11 +70,11 @@ struct
   let snoc ({len_front = len_front; front = front; len_rear = len_rear; rear = rear} as t) x =
     if len_front >= len_rear + 1 then {
       t with
-        rear = Lazy.lazy_from_val (Cons (x, rear));
+        rear = Lazy.from_val (Cons (x, rear));
         len_rear = len_rear + 1;
     }
     else {
-      front = append front (rev (Lazy.lazy_from_val (Cons (x, rear))));
+      front = append front (rev (Lazy.from_val (Cons (x, rear))));
       len_front = len_front + len_rear + 1;
       rear = nil;
       len_rear = 0;
@@ -111,7 +111,7 @@ end
 let test q grow_size =
   let module Q = (val q:Queue) in
   fun n ->
-    for i = 0 to n do
+    for _i = 0 to n do
       let rec loop q = function
         | 0 -> q
         | j -> loop (Q.snoc q j) (j - 1) in

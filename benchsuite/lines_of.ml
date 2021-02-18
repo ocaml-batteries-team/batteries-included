@@ -188,6 +188,6 @@ let () =
                "push_lines_of", rfb4;
                "push_lines_of2", rfb5;
              ] in
-  let results = Bench.bench_funs funs "setup.ml" in
-  print_endline "For reading setup.ml into a list, ";
+  let results = Bench.bench_funs funs "lines_of.ml" in
+  print_endline "For reading lines_of.ml into a list, ";
   Bench.summarize results

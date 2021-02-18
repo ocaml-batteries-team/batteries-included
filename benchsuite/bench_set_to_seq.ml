@@ -71,7 +71,7 @@ let () =
   ()
 
 let () =
-  let repeat f n = for i = 1 to n do ignore (f ()) done in
+  let repeat f n = for _i = 1 to n do ignore (f ()) done in
   Bench.bench_n [
       "too strict", repeat (fun () -> test TooStrict.to_seq);
       "simple", repeat (fun () -> test Simple.to_seq);

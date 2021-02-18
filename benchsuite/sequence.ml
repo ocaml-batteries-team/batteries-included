@@ -137,7 +137,7 @@ struct
   let rec set t i v =
     match i, t with
     | _, [] -> invalid_arg "Index out of bounds"
-    | 0, h :: t -> v :: t
+    | 0, _h :: t -> v :: t
     | _, h :: t -> h :: set t (i - 1) v
   let rec append l1 l2 =
     match l1 with
@@ -149,7 +149,7 @@ struct
       | 0, _ -> reverse acc, l
       | _, [] -> invalid_arg "Index out of bounds"
       | _, h :: t -> aux (h :: acc) (i - 1) t in
-    aux [] 0 l
+    aux [] i l
 end
 
 module ListTail : sig
@@ -256,7 +256,7 @@ struct
   let rec fold_left f acc = function
     | [] -> acc
     | h :: t -> fold_left f (f acc h) t
-  let rec fold_right f acc l =
+  let fold_right f acc l =
     fold_left f acc (reverse l)
   let rec get t i =
     match i, t with
@@ -267,7 +267,7 @@ struct
     let rec aux i v acc t =
       match i, t with
       | _, [] -> invalid_arg "Index out of bounds"
-      | 0, h :: t -> rev_append acc (v :: t)
+      | 0, _ :: t -> rev_append acc (v :: t)
       | _, h :: t -> aux (i - 1) v (h :: acc) t in
     aux i v [] t
   let append l1 l2 =
@@ -278,7 +278,7 @@ struct
       | 0, _ -> reverse acc, l
       | _, [] -> invalid_arg "Index out of bounds"
       | _, h :: t -> aux (h :: acc) (i - 1) t in
-    aux [] 0 l
+    aux [] i l
 end
 
 module ListTailModCons : sig
@@ -427,9 +427,9 @@ struct
   let fold_right f acc {front; rear; len = _} =
     let acc = ListTailModCons.fold_left f acc rear in
     ListTailModCons.fold_right f acc front
-  let enum {front; rear} =
+  let enum {front; rear; _} =
     BatEnum.append (ListTailModCons.enum front) (ListTailModCons.backwards rear)
-  let backwards {front; rear} =
+  let backwards {front; rear; _} =
     BatEnum.append (ListTailModCons.enum rear) (ListTailModCons.backwards front)
   let of_enum e =
     let l = ListTailModCons.of_backwards e in
@@ -440,9 +440,9 @@ struct
 
   let front q =
     match q with
-    | {front = h :: front; len = len} ->
+    | {front = h :: front; len = len; _} ->
       Some ({ q with front = front ; len = len - 1 }, h)
-    | {rear = rear; len = len} ->
+    | {rear = rear; len = len; _} ->
       let rear, rev_front = BatList.split_at (len / 2) rear in
       let front = List.rev rev_front in
       match front with
@@ -455,9 +455,9 @@ struct
 
   let rear q =
     match q with
-    | {rear = h :: rear; len = len} ->
+    | {rear = h :: rear; len = len; _} ->
       Some ({ q with rear = rear ; len = len - 1 }, h)
-    | {front = front; len = len} ->
+    | {front = front; len = len; _} ->
       let front, rev_rear = BatList.split_at (len / 2) front in
       let rear = List.rev rev_rear in
       match rear with
@@ -468,11 +468,11 @@ struct
                 front = front ;
               }, h)
 
-  let cons {front; len; rear} x =
+  let cons {front; len; rear; _} x =
     {front = x :: front; len = len + 1; rear = rear}
-  let snoc {front; len; rear} x =
+  let snoc {front; len; rear; _} x =
     {front = front; len = len + 1; rear = x :: rear}
-  let map f {front; rear; len} =
+  let map f {front; rear; len; _} =
     let front = ListTailModCons.map f front in
     let rear = List.rev (ListTailModCons.map f (List.rev rear)) in
     {front; rear; len}
@@ -643,7 +643,7 @@ module GenFingerTree = struct
     | Nil ->
       Single a
     | Single b ->
-      deep ~monoid (one measure a) Nil (one measure b)
+      deep ~monoid (one ~measure a) Nil (one ~measure b)
     | Deep (_, Four (_, b, c, d, e), m, sf) ->
       deep ~monoid (two ~monoid ~measure a b) (cons_aux ~monoid m (node3 ~monoid ~measure c d e)) sf
     | Deep (v, pr, m, sf) ->
@@ -1194,8 +1194,6 @@ struct
     if i < 0 || i >= size t then invalid_arg "Index out of bounds";
     let left, right = split_at t i in
     append (snoc left v) (tail_exn right)
-  let update t i f =
-    set t i (f (get t i))
   let of_enum e = GenFingerTree.of_enum ~monoid:nat_plus_monoid ~measure:size_measurer e
   let generate_of_enum = of_enum
   let of_backwards e = GenFingerTree.of_backwards ~monoid:nat_plus_monoid ~measure:size_measurer e
@@ -1218,7 +1216,6 @@ struct
     let tdigit = 0
     let tfg = 1
     let telt = 2
-    type 'a iter = int array
 
     let rec aux_elt stack index depth elt =
       if depth = 0 then (
@@ -1414,15 +1411,6 @@ struct
       | Nil -> 0
       | Single x -> measure_node x
       | Deep (v, _, _, _) -> v
-    let measure_t = function
-      | Nil -> 0
-      | Single _ -> 1
-      | Deep (v, _, _, _) -> v
-
-    let node2 a b =
-      Node2 (2, a, b)
-    let node2_node a b =
-      Node2 (measure_node a + measure_node b, a, b)
 
     let node3 a b c =
       Node3 (3, a, b, c)
@@ -1680,7 +1668,7 @@ struct
         let v3 = get_node (depth - 1) enum in
         Obj.magic (node3_node v1 v2 v3)
 
-    let rec get_digit_node depth enum n =
+    let get_digit_node depth enum n =
       match n with
       | 1 ->
         let v1 = get_node depth enum in
@@ -1713,7 +1701,7 @@ struct
           let sf = get_digit_node depth enum n_right in
           deep pr m sf
 
-    let rec get_digit enum n =
+    let get_digit enum n =
       match n with
       | 1 ->
         let v1 = BatEnum.get_exn enum in
@@ -1759,7 +1747,7 @@ struct
         let v3 = get_node (depth - 1) a i in
         Obj.magic (node3_node v1 v2 v3)
 
-    let rec get_digit_node depth a i n =
+    let get_digit_node depth a i n =
       match n with
       | 1 ->
         let v1 = get_node depth a i in
@@ -1792,7 +1780,7 @@ struct
           let sf = get_digit_node depth a i n_right in
           deep pr m sf
 
-    let rec get_digit a i n =
+    let get_digit a i n =
       match n with
       | 1 ->
         let v1 = BatDynArray.unsafe_get a !i in
@@ -1929,7 +1917,6 @@ let rec memory_size acc t =
       tag <> Obj.double_tag &&
       tag <> Obj.double_array_tag &&
       tag <> Obj.custom_tag &&
-      tag <> Obj.final_tag &&
       tag <> Obj.out_of_heap_tag &&
       tag <> Obj.unaligned_tag then
     let size = Obj.size t in
@@ -1951,7 +1938,7 @@ let bench_size size s =
   memory_size s
 
 let bench_cons_front size s n =
-  for i = 0 to n do
+  for _i = 0 to n do
     let module M = (val s : SIG) in
     let rec aux stack = function
       | 0 -> stack
@@ -1972,12 +1959,12 @@ let bench_map size s =
     | n -> aux (M.cons stack n) (n - 1) in
   let s = aux M.empty size in
   fun n ->
-    for i = 0 to n do
+    for _i = 0 to n do
       ignore (M.map (fun x -> x + 1) s)
     done
 
 let bench_snoc_front size s n =
-  for i = 0 to n do
+  for _i = 0 to n do
     let module M = (val s : SIG) in
     let rec aux stack = function
       | 0 -> stack
@@ -1991,7 +1978,7 @@ let bench_snoc_front size s n =
   done
 
 let bench_snoc_front_rear size s n =
-  for i = 0 to n do
+  for _i = 0 to n do
     let module M = (val s : SIG) in
     let rec aux stack = function
       | 0 -> stack
@@ -2013,7 +2000,7 @@ let bench_enum1 size s =
   let module M = (val s : SIG) in
   let t = M.generate_of_enum e in
   fun n ->
-    for i = 0 to n do
+    for _i = 0 to n do
       let e = M.enum t in
       try while true; do ignore (BatEnum.get_exn e); done
       with BatEnum.No_more_elements -> ()
@@ -2021,7 +2008,7 @@ let bench_enum1 size s =
 
 let bench_of_enum1 size s n =
   let a = BatArray.Labels.init size ~f:(fun i -> i) in
-  for i = 0 to n do
+  for _i = 0 to n do
     let e = BatArray.enum a in
     let module M = (val s : SIG) in
     ignore (M.of_enum e)
@@ -2033,7 +2020,7 @@ let bench_fold_left size s =
   let module M = (val s : SIG) in
   let t = M.generate_of_enum e in
   fun n ->
-    for i = 0 to n do
+    for _i = 0 to n do
       M.fold_left (fun () _ -> ()) () t;
     done
 
@@ -2043,7 +2030,7 @@ let bench_fold_right size s =
   let module M = (val s : SIG) in
   let t = M.generate_of_enum e in
   fun n ->
-    for i = 0 to n do
+    for _i = 0 to n do
       M.fold_right (fun () _ -> ()) () t;
     done
 
@@ -2053,7 +2040,7 @@ let bench_reverse size s =
   let module M = (val s : SIG) in
   let t = M.generate_of_enum e in
   fun n ->
-    for i = 0 to n do
+    for _i = 0 to n do
       ignore (M.reverse t)
     done
 
@@ -2063,7 +2050,7 @@ let bench_append size s =
   let module M = (val s : SIG) in
   let t = M.generate_of_enum e in
   fun n ->
-    for i = 0 to n do
+    for _i = 0 to n do
       ignore (M.append t t)
     done
 
@@ -2073,7 +2060,7 @@ let bench_get size s =
   let module M = (val s : SIG) in
   let t = M.generate_of_enum e in
   fun n ->
-    for i = 0 to n do
+    for _i = 0 to n do
       for i = 0 to size - 1 do
         ignore (M.get t i)
       done
@@ -2085,7 +2072,7 @@ let bench_set size s =
   let module M = (val s : SIG) in
   let t = M.generate_of_enum e in
   fun n ->
-    for i = 0 to n do
+    for _i = 0 to n do
       let t = ref t in
       for i = 0 to size - 1 do
         t := M.set !t i 0
@@ -2096,7 +2083,7 @@ module ListTailCore : SIG = struct include ListTail let map = map2 end
 module ListTailModConsOpt : SIG = struct include ListTailModCons let map = map2 end
 module FgGen : SIG = Sequence
 module FgGenOpt : SIG = struct include Sequence let enum = enum2 let fold_left = fold_left2 let fold_right = fold_right2 end
-module FgSpec : SIG = struct include Sequence let reverse = reverse2 let update = update2 let set = set2 let get = get2 let of_enum = of_enum2 let map = map2 end
+module FgSpec : SIG = struct include Sequence let reverse = reverse2 let set = set2 let get = get2 let of_enum = of_enum2 let map = map2 end
 
 
 let sizes = [
