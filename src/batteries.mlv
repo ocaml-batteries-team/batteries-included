@@ -70,7 +70,7 @@ type bytes = Bytes.t
 module Char = BatChar
 module Complex = BatComplex
 module Digest = BatDigest
-##V>=4.12## module Either = BatEither
+module Either = BatEither
 (* Filename *)
 module Format = BatFormat
 module Gc = BatGc
