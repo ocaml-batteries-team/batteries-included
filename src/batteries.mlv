@@ -11,6 +11,7 @@ module Legacy = struct
   module Char = Char
   module Complex = Complex
   module Digest = Digest
+##V>=4.12## module Either = Either
   module Filename = Filename
   module Format = Format
   module Gc = Gc
@@ -69,6 +70,7 @@ type bytes = Bytes.t
 module Char = BatChar
 module Complex = BatComplex
 module Digest = BatDigest
+##V>=4.12## module Either = BatEither
 (* Filename *)
 module Format = BatFormat
 module Gc = BatGc
