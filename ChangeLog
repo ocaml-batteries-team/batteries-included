@@ -3,6 +3,11 @@ Changelog
 
 ## NEXT_RELEASE (minor release)
 
+- BatList.partition_map: ('a -> ('b, 'c) BatEither.t) -> 'a list ->
+                         'b list * 'c list
+  #1028
+  (Francois Berenger, review by Gabriel Scherer)
+
 - BatSet: added several missing methods for compatibility with stdlib.
 	The implementation of filter, map and filter_map was adapted from
 	stdlib, authors of the original implementation are Xavier Leroy,
