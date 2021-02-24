@@ -217,6 +217,22 @@ val unfold_exc : (unit -> 'a) -> 'a list * exn
     @deprecated use {!unfold_exn}
     @since 2.3.0 *)
 
+##V>=4.12##(**{6 Comparison}*)
+##V>=4.12##
+##V>=4.12##val equal : ('a -> 'a -> bool) -> 'a list -> 'a list -> bool
+##V>=4.12##(** [equal eq [a1; ...; an] [b1; ..; bm]] holds when
+##V>=4.12##    the two input lists have the same length, and for each
+##V>=4.12##    pair of elements [ai], [bi] at the same position we have
+##V>=4.12##    [eq ai bi].
+##V>=4.12##
+##V>=4.12##    Note: the [eq] function may be called even if the
+##V>=4.12##    lists have different length. If you know your equality
+##V>=4.12##    function is costly, you may want to check {!compare_lengths}
+##V>=4.12##    first.
+##V>=4.12##
+##V>=4.12##    @since NEXT_RELEASE and 4.12.0
+##V>=4.12##*)
+
 (**{6 Iterators}*)
 
 val iter : ('a -> unit) -> 'a list -> unit

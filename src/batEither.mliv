@@ -53,7 +53,10 @@
    revisit this choice.
 *)
 
-type ('a, 'b) t = Left of 'a | Right of 'b (**)
+type ('a, 'b) t =
+##V>=4.12## ('a, 'b) Stdlib.Either.t =
+  Left of 'a | Right of 'b (**)
+
 (** A value of [('a, 'b) Either.t] contains
     either a value of ['a]  or a value of ['b] *)
 

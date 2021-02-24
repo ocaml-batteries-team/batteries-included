@@ -58,6 +58,8 @@ let rev_map2 = List.rev_map2
 ##V>=4.07##let of_seq = List.of_seq
 ##V>=4.10##let concat_map = List.concat_map
 ##V>=4.10##let find_map_opt = List.find_map
+##V>=4.12##let equal = List.equal
+
 (* ::VH:: END GLUE *)
 
 let rec compare_lengths la lb = match la, lb with
