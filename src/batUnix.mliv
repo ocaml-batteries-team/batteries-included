@@ -244,6 +244,26 @@ val run_and_read : string -> process_status * string
     was redirected to a temporary file).
     @since 2.4 *)
 
+##V>=4.12##val _exit : int -> 'a
+##V>=4.12##(** Terminate the calling process immediately, returning the given
+##V>=4.12##   status code to the operating system: usually 0 to indicate no
+##V>=4.12##   errors, and a small positive integer to indicate failure.
+##V>=4.12##   Unlike {!Stdlib.exit}, {!Unix._exit} performs no finalization
+##V>=4.12##   whatsoever: functions registered with {!Stdlib.at_exit} are not called,
+##V>=4.12##   input/output channels are not flushed, and the C run-time system
+##V>=4.12##   is not finalized either.
+##V>=4.12##
+##V>=4.12##   The typical use of {!Unix._exit} is after a {!Unix.fork} operation,
+##V>=4.12##   when the child process runs into a fatal error and must exit.  In
+##V>=4.12##   this case, it is preferable to not perform any finalization action
+##V>=4.12##   in the child process, as these actions could interfere with similar
+##V>=4.12##   actions performed by the parent process.  For example, output
+##V>=4.12##   channels should not be flushed by the child process, as the parent
+##V>=4.12##   process may flush them again later, resulting in duplicate
+##V>=4.12##   output.
+##V>=4.12##
+##V>=4.12##   @since NEXT_RELEASE and 4.12.0 *)
+
 val getpid : unit -> int
 (** Return the pid of the process. *)
 
@@ -1295,6 +1315,9 @@ val inet6_addr_any : inet_addr
 val inet6_addr_loopback : inet_addr
 (** A special IPv6 address representing the host machine ([::1]). *)
 
+##V>=4.12##val is_inet6_addr : inet_addr -> bool
+##V>=4.12##(** Whether the given [inet_addr] is an IPv6 address.
+##V>=4.12##    @since NEXT_RELEASE and 4.12.0 *)
 
 (** {6 Sockets} *)
 

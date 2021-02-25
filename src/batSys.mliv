@@ -351,3 +351,15 @@ val files_of: string -> string BatEnum.t
  *)
 
 ##V>=4.10##module Immediate64 = Sys.Immediate64
+
+##V>=4.12##external mkdir : string -> int -> unit = "caml_sys_mkdir"
+##V>=4.12##(** Create a directory with the given permissions.
+##V>=4.12##
+##V>=4.12##    @since NEXT_RELEASE and 4.12.0
+##V>=4.12##*)
+##V>=4.12##
+##V>=4.12##external rmdir : string -> unit = "caml_sys_rmdir"
+##V>=4.12##(** Remove an empty directory.
+##V>=4.12##
+##V>=4.12##    @since NEXT_RELEASE and 4.12.0
+##V>=4.12##*)
