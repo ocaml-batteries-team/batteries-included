@@ -13,7 +13,9 @@
 (*                                                                        *)
 (**************************************************************************)
 
-type ('a, 'b) t = Left of 'a | Right of 'b
+type ('a, 'b) t =
+##V>=4.12## ('a, 'b) Stdlib.Either.t =
+  Left of 'a | Right of 'b (**)
 
 let left v = Left v
 let right v = Right v
