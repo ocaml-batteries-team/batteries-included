@@ -384,6 +384,11 @@ sig
   (** Iterate on the whole set, in ascending order.
 
       @since NEXT_RELEASE  *)
+
+  val to_rev_seq : t -> elt BatSeq.t
+  (** Iterate on the whole set, in descending order.
+
+      @since NEXT_RELEASE  *)
     
   val to_seq_from :  elt -> t -> elt BatSeq.t
   (** [to_seq_from x s] iterates on a subset of the elements in [s], 
@@ -871,6 +876,11 @@ val to_seq : 'a t -> 'a BatSeq.t
 
     @since NEXT_RELEASE  *)
   
+val to_rev_seq : 'a t -> 'a BatSeq.t
+(** Iterate on the whole set, in descending order.
+
+    @since NEXT_RELEASE  *)
+  
 val to_seq_from :  'a -> 'a t -> 'a BatSeq.t
 (** [to_seq_from x s] iterates on a subset of the elements in [s], 
     namely those greater or equal to [x], in ascending order.
@@ -1273,6 +1283,11 @@ module PSet : sig
       
   val to_seq : 'a t -> 'a BatSeq.t
   (** Iterate on the whole set, in ascending order.
+  
+      @since NEXT_RELEASE  *)
+    
+  val to_rev_seq : 'a t -> 'a BatSeq.t
+  (** Iterate on the whole set, in descending order.
   
       @since NEXT_RELEASE  *)
     

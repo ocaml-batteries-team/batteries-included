@@ -910,6 +910,15 @@ module Concrete = struct
   let to_seq m =
     seq_of_iter (cons_iter m E)
       
+  let rec rev_seq_of_iter m () =
+    match m with
+    | E -> BatSeq.Nil
+    | C(k, v, r, e) ->
+       BatSeq.Cons ((k, v), rev_seq_of_iter (rev_cons_iter r e))
+      
+  let to_rev_seq m =
+    rev_seq_of_iter (rev_cons_iter m E)
+      
   let to_seq_from cmp k m = 
     seq_of_iter (cons_iter_from cmp k m E)
 
@@ -988,6 +997,7 @@ sig
   val union:
     (key -> 'a -> 'a -> 'a option) -> 'a t -> 'a t -> 'a t
   val to_seq : 'a t -> (key * 'a) BatSeq.t
+  val to_rev_seq : 'a t -> (key * 'a) BatSeq.t
   val to_seq_from :  key -> 'a t -> (key * 'a) BatSeq.t
   val add_seq : (key * 'a) BatSeq.t -> 'a t -> 'a t
   val of_seq : (key * 'a) BatSeq.t -> 'a t
@@ -1143,6 +1153,7 @@ struct
   let of_seq s = t_of_impl (Concrete.of_seq Ord.compare s)
   let add_seq s m = t_of_impl (Concrete.add_seq Ord.compare s (impl_of_t m))
   let to_seq m = Concrete.to_seq (impl_of_t m)
+  let to_rev_seq m = Concrete.to_rev_seq (impl_of_t m)
   let to_seq_from k m = Concrete.to_seq_from Ord.compare k (impl_of_t m)
 
   module Exceptionless =
@@ -1400,6 +1411,7 @@ let add_seq s m =
   Concrete.add_seq Pervasives.compare s m
 
 let to_seq = Concrete.to_seq
+let to_rev_seq = Concrete.to_rev_seq
 
 let to_seq_from x m =
   Concrete.to_seq_from Pervasives.compare x m
@@ -1737,6 +1749,8 @@ module PMap = struct (*$< PMap *)
     { map = Concrete.of_seq cmp s; cmp = cmp }
     
   let to_seq m = Concrete.to_seq m.map
+
+  let to_rev_seq m = Concrete.to_rev_seq m.map
              
   let to_seq_from k m =
     Concrete.to_seq_from m.cmp k m.map

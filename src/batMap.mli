@@ -420,6 +420,11 @@ sig
   (** Iterate on the whole map, in ascending order of keys.
 
       @since NEXT_RELEASE  *)
+
+  val to_rev_seq : 'a t -> (key * 'a) BatSeq.t
+  (** Iterate on the whole map, in descending order of keys.
+
+      @since NEXT_RELEASE  *)
     
   val to_seq_from :  key -> 'a t -> (key * 'a) BatSeq.t
   (** [to_seq_from k m] iterates on a subset of the bindings in [m], 
@@ -851,6 +856,11 @@ val to_seq : ('key, 'a) t -> ('key * 'a) BatSeq.t
     
     @since NEXT_RELEASE  *)
   
+val to_rev_seq : ('key, 'a) t -> ('key * 'a) BatSeq.t
+(** Iterate on the whole map, in descending order of keys.
+
+    @since NEXT_RELEASE  *)
+
 val to_seq_from :  'key -> ('key, 'a) t -> ('key * 'a) BatSeq.t
 (** [to_seq_from k m] iterates on a subset of the bindings in [m], 
     namely those bindings greater or equal to [k], in ascending order. 
@@ -1312,6 +1322,11 @@ module PMap : sig
 
       @since NEXT_RELEASE  *)
     
+  val to_rev_seq : ('key, 'a) t -> ('key * 'a) BatSeq.t
+  (** Iterate on the whole map, in descending order of keys.
+  
+      @since NEXT_RELEASE  *)
+
   val to_seq_from : 'key -> ('key, 'a) t -> ('key * 'a) BatSeq.t
   (** [to_seq_from k m] iterates on a subset of the bindings in [m], 
       namely those bindings greater or equal to [k], in ascending order. 
