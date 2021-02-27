@@ -821,6 +821,9 @@ struct
   let to_seq m =
     seq_of_iter (cons_enum (sget m) End)
 
+  let to_rev_seq m =
+    seq_of_iter (rev_cons_enum (sget m) End)
+
   let to_seq_from k m =
     seq_of_iter (cons_enum_from k (sget m) End)
    

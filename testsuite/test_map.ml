@@ -132,6 +132,7 @@ module TestMap
     val add_seq : (key * 'a) BatSeq.t -> 'a m  -> 'a m
     val of_seq : (key * 'a) BatSeq.t -> 'a m
     val to_seq : 'a m -> (key * 'a) BatSeq.t
+    val to_rev_seq : 'a m -> (key * 'a) BatSeq.t
     val to_seq_from : key -> 'a m -> (key * 'a) BatSeq.t
 
     val merge :
@@ -334,6 +335,11 @@ module TestMap
   let test_to_seq () = 
     "to_seq [1,1;2,2;3,3;4,4]" @? (BatSeq.equal (BatSeq.of_list [1,1;2,2;3,3;4,4]) (M.to_seq (il [4,4;1,1;3,3;2,2])));
     "to_seq []"                @? (BatSeq.equal (BatSeq.of_list [               ]) (M.to_seq (il [               ])));
+    ()
+ 
+  let test_to_rev_seq () = 
+    "to_rev_seq [1,1;2,2;3,3;4,4]" @? (BatSeq.equal (BatSeq.of_list [4,4;3,3;2,2;1,1]) (M.to_rev_seq (il [4,4;1,1;3,3;2,2])));
+    "to_rev_seq []"                @? (BatSeq.equal (BatSeq.of_list [               ]) (M.to_rev_seq (il [               ])));
     ()
  
   let test_to_seq_from () =
@@ -769,6 +775,7 @@ module TestMap
     "test_add_seq" >:: test_add_seq;
     "test_of_seq" >:: test_of_seq;
     "test_to_seq" >:: test_to_seq;
+    "test_to_rev_seq" >:: test_to_rev_seq;
     "test_to_seq_from" >:: test_to_seq_from;
     "test_min_binding_opt" >:: test_min_binding_opt;
     "test_max_binding_opt" >:: test_max_binding_opt;

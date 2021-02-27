@@ -722,6 +722,15 @@ module Concrete = struct
   let to_seq m =
     seq_of_iter (cons_iter m E)
 
+  let rec rev_seq_of_iter m () =
+    match m with
+    | E -> BatSeq.Nil
+    | C(k, r, e) ->
+       BatSeq.Cons (k, rev_seq_of_iter (rev_cons_iter r e))
+
+  let to_rev_seq m =
+    rev_seq_of_iter (rev_cons_iter m E)
+
   let to_seq_from cmp k m =
     seq_of_iter (cons_iter_from cmp k m E)
 
@@ -787,6 +796,7 @@ sig
   val of_list: elt list -> t
   val of_array: elt array -> t
   val to_seq : t -> elt BatSeq.t
+  val to_rev_seq : t -> elt BatSeq.t
   val to_seq_from :  elt -> t -> elt BatSeq.t
   val add_seq : elt BatSeq.t -> t -> t
   val of_seq : elt BatSeq.t -> t
@@ -918,6 +928,9 @@ struct
     
   let to_seq t =
     Concrete.to_seq (impl_of_t t)
+    
+  let to_rev_seq t =
+    Concrete.to_rev_seq (impl_of_t t)
     
   let to_seq_from k t =
     Concrete.to_seq_from Ord.compare k (impl_of_t t)
@@ -1130,6 +1143,9 @@ module PSet = struct (*$< PSet *)
   let to_seq t =
     Concrete.to_seq t.set
     
+  let to_rev_seq t =
+    Concrete.to_rev_seq t.set
+    
   let to_seq_from k t =
     Concrete.to_seq_from t.cmp k t.set
 
@@ -1336,6 +1352,9 @@ let of_seq s =
   
 let to_seq t =
   Concrete.to_seq t
+  
+let to_rev_seq t =
+  Concrete.to_rev_seq t
   
 let to_seq_from k t =
   Concrete.to_seq_from Pervasives.compare k t
