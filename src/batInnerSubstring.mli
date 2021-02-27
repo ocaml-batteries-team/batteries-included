@@ -1,6 +1,24 @@
-(*TODO: What is this module? Is it meant for public use?*)
+(*
+ * BatInnerSubstring -- Abstract substring (inner module)
+ * Copyright (C) 2021  Batteries Included Development Team
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version,
+ * with the special exception on linking described in file LICENSE.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *)
 
-type t = BatInnerSubstring.t
+type t
 (**
    [Substring.t] is the type of substrings of a basestring, an efficient
    representation of a piece of a string.
@@ -29,8 +47,6 @@ val equal : t -> t -> bool
 
     @since 2.1
 *)
-
-val of_input : BatIO.input -> t
 
 val substring : string -> int -> int -> t
 (** [substring s o l] returns a substring with base-string [s], offset
@@ -255,32 +271,6 @@ val span : t -> t -> t
     [union], and [intersection].
 *)
 
-val translate : (char -> char) -> t -> string
-(** [translate f sus] applies [f] to every character of [sus], from
-    left to right, and returns the concatenation of the results.
-    Equivalent to [String.of_list (List.map f (explode sus))].
-*)
-
-val tokens : (char -> bool) -> t -> t list
-(** [tokens p sus] returns the list of tokens in [sus], from left to
-    right, where a token is a non-empty maximal substring of [sus] not
-    containing any delimiter, and a delimiter is a character satisfying
-    [p].
-*)
-
-val fields : (char -> bool) -> t -> t list
-(**
-   [fields p sus] returns the list of fields in [sus], from left to right,
-   where a field is a (possibly empty) maximal substring of [sus] not
-   containing any delimiter, and a delimiter is a character satisfying [p].
-
-   Two tokens may be separated by more than one delimiter, whereas two
-   fields are separated by exactly one delimiter.  If the only delimiter
-   is the character ['|'], then
-   "abc||def" contains two tokens:   "abc" and "def"
-   "abc||def" contains three fields: "abc" and "" and "def"
-*)
-
 val fold_left : ('a -> char -> 'a) -> 'a -> t -> 'a
 (** [fold_left f e sus] folds [f] over [sus] from left to right.  That is,
     evaluates [f s.[i+n-1] (f ... (f s.[i+1] (f s.[i] e)) ...)]
@@ -319,9 +309,6 @@ val iteri : (int -> char -> unit) -> t -> unit
     @since 2.1
 *)
 
-val trim : t -> t
-(** removes whitespace from left and right ends of input *)
-
 val split_on_char : char -> t -> t list
 (** [split_on_char c ss] returns substrings of input [ss] as divided
     by [c] *)
@@ -330,13 +317,3 @@ val split_on_pipe : t -> t list
 val split_on_dot : t -> t list
 val split_on_comma : t -> t list
 val split_on_slash : t -> t list
-
-val enum : t -> char BatEnum.t
-(** [enum ss] returns an enumeration of the characters represented by ss.
-    It does no copying so beweare of mutating the original string.
-
-    @since 2.1
-*)
-
-val print : 'a BatIO.output -> t -> unit
-  (** [print oc ss] prints [ss] to the output channel [oc] *)

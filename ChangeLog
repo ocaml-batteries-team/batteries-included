@@ -3,6 +3,19 @@ Changelog
 
 ## NEXT_RELEASE (minor release)
 
+- BatBuffer: create add_substring' : t -> BatInnerSubstring.t -> unit
+  This function allows adding a BatSubstring.t to a BatBuffer.t, and
+  is otherwise analogous to BatBuffer.add_substring. Because
+  BatSubstring indirectly depended on BatBuffer, we could not make
+  BatBuffer depend on BatSubstring. Instead, we create a new module
+  BatInnerSubstring (thanks to @gasche for the suggestion) that
+  implements the core code for BatSubstring. The functions that
+  depended on other Bat* modules remain in batSubstring.ml. This
+  allows us to depend on BatInnerSubstring in BatBuffer, while
+  retaining the same interface as before.
+  #1034
+  (Ohad Rau)
+
 - BatList.partition_map: ('a -> ('b, 'c) BatEither.t) -> 'a list ->
                          'b list * 'c list
   #1028
