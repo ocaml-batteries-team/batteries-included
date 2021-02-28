@@ -103,7 +103,10 @@ let rec cfind ?(cx=[]) ~sel = function
  *)
 
 module StrongRef : sig
-  type +'a t
+  type +
+##V>=4.12## !
+  'a t
+
   val ref : 'a -> 'a t
   val get : 'a t -> 'a
   val set : 'a t -> 'a -> unit
