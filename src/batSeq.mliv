@@ -101,12 +101,12 @@ val nil : 'a t
 val empty : 'a t
 (** the empty sequence, containing no elements
 
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
 
 val return : 'a -> 'a t
 (** the singleton sequence, containing only the given element
 
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
 
 val cons : 'a -> 'a t -> 'a t
 (** [cons e s = fun () -> Cons(e, s)] *)
@@ -131,14 +131,14 @@ val unfold : ('b -> ('a * 'b) option) -> 'b -> 'a t
     For example, [unfold (function [] -> None | h::t -> Some (h,t)) l]
     is equivalent to [List.to_seq l].
 
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
 
 val flat_map : ('a -> 'b t) -> 'a t -> 'b t
 (** Map each element to a subsequence, then return each element of this
     sub-sequence in turn. This transformation is lazy, it only applies
     when the result is traversed.
 
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
 
 (** {6 Iterators} *)
 

@@ -80,7 +80,7 @@ sig
       tests equal to [x] under its comparison function.
       If no element is equal, return [None]
 
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
 
   val find_first : (elt -> bool) -> t -> elt
   (** [find_first f m] returns the first element [e] for which [f e] is true
@@ -88,7 +88,7 @@ sig
       [f] must be monotonically increasing,
       i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true. 
     
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
     
   val find_first_opt : (elt -> bool) -> t -> elt option
   (** [find_first_opt f m] returns [Some e] for the first element [e]
@@ -96,7 +96,7 @@ sig
       [f] must be monotonically increasing,
       i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true. 
     
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
 
   val find_last : (elt -> bool) -> t -> elt
   (** [find_last f m] returns the last element [e] for which [f e] is true
@@ -104,7 +104,7 @@ sig
     [f] must be monotonically decreasing,
     i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true. 
     
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
     
   val find_last_opt : (elt -> bool) -> t -> elt option
   (** [find_last_opt f m] returns [Some e] for the last element [e]
@@ -112,20 +112,20 @@ sig
     [f] must be monotonically decreasing,
     i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true. 
     
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
 
   val add: elt -> t -> t
   (** [add x s] returns a set containing all elements of [s],
       plus [x]. If [x] was already in [s], [s] is returned unchanged.
 
-      @before NEXT_RELEASE Physical equality was not ensured.
+      @before 3.3.0 Physical equality was not ensured.
       *)
 
   val remove: elt -> t -> t
   (** [remove x s] returns a set containing all elements of [s],
       except [x]. If [x] was not in [s], [s] is returned unchanged.
 
-      @before NEXT_RELEASE Physical equality was not ensured.
+      @before 3.3.0 Physical equality was not ensured.
    *)
 
   val remove_exn: elt -> t -> t
@@ -141,7 +141,7 @@ sig
       When [x] and [y] are physically equal, [m] is returned unchanged.
       @raise Not_found if [x] is not in [s].
 
-      @before NEXT_RELEASE Physical equality was not ensured.
+      @before 3.3.0 Physical equality was not ensured.
       @since 2.4 *)
 
   val union: t -> t -> t
@@ -196,7 +196,7 @@ sig
       values contained in [x]
 
       if [f] returns all elements unmodified then [x] is returned unmodified.
-      @before NEXT_RELEASE Physical equality was not ensured.
+      @before 3.3.0 Physical equality was not ensured.
 *)
 
   val filter: (elt -> bool) -> t -> t
@@ -204,7 +204,7 @@ sig
       that satisfy predicate [p]. 
 
       if [p] returns [true] for all elements then [s] is returned unmodified.
-      @before NEXT_RELEASE Physical equality was not ensured.
+      @before 3.3.0 Physical equality was not ensured.
    *)
 
   val filter_map: (elt -> elt option) -> t -> t
@@ -215,7 +215,7 @@ sig
       corresponding element of [m] is discarded).
 
       if [f] returns [true] for all elements then [s] is returned unmodified.
-      @before NEXT_RELEASE Physical equality was not ensured.
+      @before 3.3.0 Physical equality was not ensured.
  *)
 
   val fold: (elt -> 'a -> 'a) -> t -> 'a -> 'a
@@ -296,7 +296,7 @@ sig
       (with respect to the [Ord.compare] ordering).
       Return None if the set is empty. 
    
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
 
   val pop_min: t -> elt * t
   (** Returns the smallest element of the given set
@@ -326,7 +326,7 @@ sig
   (** Same as {!Set.S.min_elt_opt}, but for the largest element of the
       given set.
 
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
 
   val choose: t -> elt
   (** Return one element of the given set.
@@ -340,7 +340,7 @@ sig
       chosen for equal sets.
       Return [None] if the set is empty.
 
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
 
   val any: t -> elt
   (** Return one element of the given set.
@@ -383,28 +383,28 @@ sig
   val to_seq : t -> elt BatSeq.t
   (** Iterate on the whole set, in ascending order.
 
-      @since NEXT_RELEASE  *)
+      @since 3.3.0  *)
 
   val to_rev_seq : t -> elt BatSeq.t
   (** Iterate on the whole set, in descending order.
 
-      @since NEXT_RELEASE  *)
+      @since 3.3.0  *)
     
   val to_seq_from :  elt -> t -> elt BatSeq.t
   (** [to_seq_from x s] iterates on a subset of the elements in [s], 
       namely those greater or equal to [x], in ascending order.
     
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
     
   val add_seq : elt BatSeq.t -> t -> t
   (** add the given elements to the set, in order. 
     
-      @since NEXT_RELEASE  *)
+      @since 3.3.0  *)
     
   val of_seq : elt BatSeq.t -> t
   (** build a set from the given elements 
     
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
      
 
 
@@ -543,7 +543,7 @@ val find_opt : 'a -> 'a t -> 'a option
     tests equal to [x] under its comparison function.
     If no element is equal, return [None]
 
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
 
 val find_first : ('a -> bool) -> 'a t -> 'a
 (** [find_first f m] returns the first element [e] for which [f e] is true
@@ -551,7 +551,7 @@ val find_first : ('a -> bool) -> 'a t -> 'a
     [f] must be monotonically increasing,
     i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true. 
   
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
   
 val find_first_opt : ('a -> bool) -> 'a t -> 'a option
 (** [find_first_opt f m] returns [Some e] for the first element [e]
@@ -559,7 +559,7 @@ val find_first_opt : ('a -> bool) -> 'a t -> 'a option
     [f] must be monotonically increasing,
     i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true. 
   
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
 
 val find_last : ('a -> bool) -> 'a t -> 'a
 (** [find_last f m] returns the last element [e] for which [f e] is true
@@ -567,7 +567,7 @@ val find_last : ('a -> bool) -> 'a t -> 'a
   [f] must be monotonically decreasing,
   i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true. 
   
-  @since NEXT_RELEASE *)
+  @since 3.3.0 *)
   
 val find_last_opt : ('a -> bool) -> 'a t -> 'a option
 (** [find_last_opt f m] returns [Some e] for the last element [e]
@@ -575,20 +575,20 @@ val find_last_opt : ('a -> bool) -> 'a t -> 'a option
   [f] must be monotonically decreasing,
   i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true. 
   
-  @since NEXT_RELEASE *)
+  @since 3.3.0 *)
 
 val add: 'a -> 'a t -> 'a t
 (** [add x s] returns a set containing all elements of [s],
     plus [x]. If [x] was already in [s], [s] is returned unchanged.
 
-    @before NEXT_RELEASE Physical equality was not ensured.
+    @before 3.3.0 Physical equality was not ensured.
  *)
 
 val remove: 'a -> 'a t -> 'a t
 (** [remove x s] returns a set containing all elements of [s],
     except [x]. If [x] was not in [s], [s] is returned unchanged. 
 
-    @before NEXT_RELEASE Physical equality was not ensured.
+    @before 3.3.0 Physical equality was not ensured.
 *)
 
 val remove_exn: 'a -> 'a t -> 'a t
@@ -605,7 +605,7 @@ val update: 'a -> 'a -> 'a t -> 'a t
     @raise Not_found if [x] is not in [s].
     @since 2.4 
 
-    @before NEXT_RELEASE Physical equality was not ensured.
+    @before 3.3.0 Physical equality was not ensured.
 *)
 
 val union: 'a t -> 'a t -> 'a t
@@ -690,7 +690,7 @@ val filter: ('a -> bool) -> 'a t -> 'a t
     that satisfy predicate [p]. 
 
     if [p] returns [true] for all elements then [s] is returned unmodified.
-    @before NEXT_RELEASE Physical equality was not ensured.
+    @before 3.3.0 Physical equality was not ensured.
  *)
 
 (* as under-specified as 'map' *)
@@ -790,7 +790,7 @@ val min_elt_opt : 'a t -> 'a option
     (with respect to the [Ord.compare] ordering).
     Return None if the set is empty. 
  
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
 
 val pop_min: 'a t -> 'a * 'a t
 (** Returns the smallest element of the given set
@@ -820,7 +820,7 @@ val max_elt_opt : 'a t -> 'a option
 (** Same as {!Set.S.min_elt_opt}, but for the largest element of the
     given set.
 
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
 
 val choose : 'a t -> 'a
 (** returns an arbitrary (but deterministic) element of the given set.
@@ -832,7 +832,7 @@ val choose_opt : 'a t -> 'a option
     chosen for equal sets.
     Return [None] if the set is empty.
 
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
 
 val any: 'a t -> 'a
 (** Return one element of the given set.
@@ -874,28 +874,28 @@ val of_array: 'a array -> 'a t
 val to_seq : 'a t -> 'a BatSeq.t
 (** Iterate on the whole set, in ascending order.
 
-    @since NEXT_RELEASE  *)
+    @since 3.3.0  *)
   
 val to_rev_seq : 'a t -> 'a BatSeq.t
 (** Iterate on the whole set, in descending order.
 
-    @since NEXT_RELEASE  *)
+    @since 3.3.0  *)
   
 val to_seq_from :  'a -> 'a t -> 'a BatSeq.t
 (** [to_seq_from x s] iterates on a subset of the elements in [s], 
     namely those greater or equal to [x], in ascending order.
   
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
   
 val add_seq : 'a BatSeq.t -> 'a t -> 'a t
 (** add the given elements to the set, in order. 
   
-    @since NEXT_RELEASE  *)
+    @since 3.3.0  *)
   
 val of_seq : 'a BatSeq.t -> 'a t
 (** build a set from the given elements 
   
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
    
 (** {6 Boilerplate code}*)
 
@@ -970,7 +970,7 @@ module PSet : sig
       tests equal to [x] under its comparison function.
       If no element is equal, return [None]
 
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
 
   val find_first : ('a -> bool) -> 'a t -> 'a
   (** [find_first f m] returns the first element [e] for which [f e] is true
@@ -978,7 +978,7 @@ module PSet : sig
       [f] must be monotonically increasing,
       i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true. 
     
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
     
   val find_first_opt : ('a -> bool) -> 'a t -> 'a option
   (** [find_first_opt f m] returns [Some e] for the first element [e]
@@ -986,7 +986,7 @@ module PSet : sig
       [f] must be monotonically increasing,
       i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true. 
     
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
 
   val find_last : ('a -> bool) -> 'a t -> 'a
   (** [find_last f m] returns the last element [e] for which [f e] is true
@@ -994,7 +994,7 @@ module PSet : sig
     [f] must be monotonically decreasing,
     i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true. 
     
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
     
   val find_last_opt : ('a -> bool) -> 'a t -> 'a option
   (** [find_last_opt f m] returns [Some e] for the last element [e]
@@ -1002,20 +1002,20 @@ module PSet : sig
     [f] must be monotonically decreasing,
     i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true. 
     
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
 
   val add: 'a -> 'a t -> 'a t
   (** [add x s] returns a set containing all elements of [s],
       plus [x]. If [x] was already in [s], [s] is returned unchanged. 
 
-      @before NEXT_RELEASE Physical equality was not ensured.
+      @before 3.3.0 Physical equality was not ensured.
    *)
 
   val remove: 'a -> 'a t -> 'a t
   (** [remove x s] returns a set containing all elements of [s],
       except [x]. If [x] was not in [s], [s] is returned unchanged.
 
-      @before NEXT_RELEASE Physical equality was not ensured.
+      @before 3.3.0 Physical equality was not ensured.
    *)
 
   val remove_exn: 'a -> 'a t -> 'a t
@@ -1030,7 +1030,7 @@ module PSet : sig
       to the comparison function used by your set.
       When [x] and [y] are physically equal, [m] is returned unchanged.
       @raise Not_found if [x] is not in [s].
-      @before NEXT_RELEASE Physical equality was not ensured.
+      @before 3.3.0 Physical equality was not ensured.
       @since 2.4 *)
 
   val union: 'a t -> 'a t -> 'a t
@@ -1102,7 +1102,7 @@ module PSet : sig
 
       If [f] returns physically equal values for all elements 
       in [m] then the resulting map will be physically equal to [m].
-      @since NEXT_RELEASE
+      @since 3.3.0
   *)
 
   val filter: ('a -> bool) -> 'a t -> 'a t
@@ -1110,7 +1110,7 @@ module PSet : sig
       that satisfy predicate [p]. 
 
       if [p] returns [true] for all elements then [s] is returned unmodified.
-      @before NEXT_RELEASE Physical equality was not ensured.
+      @before 3.3.0 Physical equality was not ensured.
    *)
 
   (* as under-specified as 'map' *)
@@ -1137,7 +1137,7 @@ module PSet : sig
   
       if the filter function [f] returns [true] for all elements in [m],
       the resulting map is physically equal to [m].
-      @since NEXT_RELEASE
+      @since 3.3.0
   *)
 
   val fold: ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
@@ -1208,7 +1208,7 @@ module PSet : sig
       (with respect to the [Ord.compare] ordering).
       Return None if the set is empty. 
    
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
 
   val pop_min: 'a t -> 'a * 'a t
   (** Returns the smallest element of the given set
@@ -1238,7 +1238,7 @@ module PSet : sig
   (** Same as {!Set.S.min_elt_opt}, but for the largest element of the
       given set.
   
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
   
   val choose : 'a t -> 'a
   (** returns an arbitrary (but deterministic) element of the given set.
@@ -1250,7 +1250,7 @@ module PSet : sig
       chosen for equal sets.
       Return [None] if the set is empty.
   
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
   
   val any: 'a t -> 'a
   (** Return one element of the given set.
@@ -1284,28 +1284,28 @@ module PSet : sig
   val to_seq : 'a t -> 'a BatSeq.t
   (** Iterate on the whole set, in ascending order.
   
-      @since NEXT_RELEASE  *)
+      @since 3.3.0  *)
     
   val to_rev_seq : 'a t -> 'a BatSeq.t
   (** Iterate on the whole set, in descending order.
   
-      @since NEXT_RELEASE  *)
+      @since 3.3.0  *)
     
   val to_seq_from :  'a -> 'a t -> 'a BatSeq.t
   (** [to_seq_from x s] iterates on a subset of the elements in [s], 
       namely those greater or equal to [x], in ascending order.
     
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
     
   val add_seq : 'a BatSeq.t -> 'a t -> 'a t
   (** add the given elements to the set, in order. 
     
-      @since NEXT_RELEASE  *)
+      @since 3.3.0  *)
     
   val of_seq : ?cmp:('a -> 'a -> int) -> 'a BatSeq.t -> 'a t
   (** build a set from the given elements 
     
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
      
   (** {6 Boilerplate code}*)
 

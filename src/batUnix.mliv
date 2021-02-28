@@ -262,7 +262,7 @@ val run_and_read : string -> process_status * string
 ##V>=4.12##   process may flush them again later, resulting in duplicate
 ##V>=4.12##   output.
 ##V>=4.12##
-##V>=4.12##   @since NEXT_RELEASE and 4.12.0 *)
+##V>=4.12##   @since 3.3.0 and 4.12.0 *)
 
 val getpid : unit -> int
 (** Return the pid of the process. *)
@@ -1317,7 +1317,7 @@ val inet6_addr_loopback : inet_addr
 
 ##V>=4.12##val is_inet6_addr : inet_addr -> bool
 ##V>=4.12##(** Whether the given [inet_addr] is an IPv6 address.
-##V>=4.12##    @since NEXT_RELEASE and 4.12.0 *)
+##V>=4.12##    @since 3.3.0 and 4.12.0 *)
 
 (** {6 Sockets} *)
 

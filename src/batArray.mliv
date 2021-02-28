@@ -562,7 +562,7 @@ val remove_at : int -> 'a array -> 'a array
 (** [remove_at i a] returns the array [a] without the element at index [i].
 
     @raise Invalid_argument if [i] is outside of [a] bounds.
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
 
 (** {6 Boilerplate code}*)
 

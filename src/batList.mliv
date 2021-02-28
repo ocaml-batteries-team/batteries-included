@@ -230,7 +230,7 @@ val unfold_exc : (unit -> 'a) -> 'a list * exn
 ##V>=4.12##    function is costly, you may want to check {!compare_lengths}
 ##V>=4.12##    first.
 ##V>=4.12##
-##V>=4.12##    @since NEXT_RELEASE and 4.12.0
+##V>=4.12##    @since 3.3.0 and 4.12.0
 ##V>=4.12##*)
 
 (**{6 Iterators}*)
@@ -552,7 +552,7 @@ val partition_map : ('a -> ('b, 'c) BatEither.t) -> 'a list ->
     relative order as the corresponding input elements in [l].
     In particular, [partition_map (fun x -> if f x then Left x else Right x) l]
     is equivalent to [partition f l].
-    @since NEXT_RELEASE
+    @since 3.3.0
 *)
 
 val index_of : 'a -> 'a list -> int option

@@ -94,7 +94,7 @@ sig
       If [x] was already bound to some [z] that is physically equal
       to [y], then the returned map is physically equal to [m].
 
-      @before NEXT_RELEASE physical equality was not ensured. *)
+      @before 3.3.0 physical equality was not ensured. *)
 
   val update_stdlib : key -> ('a option -> 'a option) -> 'a t -> 'a t
   (** [update_stdlib k f m] returns a map containing the same bindings as [m],
@@ -108,7 +108,7 @@ sig
       This function does the same thing as [update] in the stdlib, but has a
       different name for backwards compatibility reasons.
 
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
 
   (* TODO: maybe deprecate this function to re-gain compatibility with stdlib? *)
   val update: key -> key -> 'a -> 'a t -> 'a t
@@ -121,7 +121,7 @@ sig
       be physically equal to [m]
       @raise Not_found if [k1] is not bound in [m].
       @since 2.4.0 
-      @before NEXT_RELEASE physical equality was not ensured.  *)
+      @before 3.3.0 physical equality was not ensured.  *)
     
   val find: key -> 'a t -> 'a
   (** [find x m] returns the current binding of [x] in [m],
@@ -141,7 +141,7 @@ sig
       [f] must be monotonically increasing,
       i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true. 
     
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
 
   val find_first_opt: (key -> bool) -> 'a t -> (key * 'a) option
   (** [find_first_opt f m] returns [Some (k, v)] for the first binding [(k, v)]
@@ -149,7 +149,7 @@ sig
       [f] must be monotonically increasing,
       i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true. 
     
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
 
   val find_last: (key -> bool) -> 'a t -> key * 'a
   (** [find_last f m] returns the last binding [(k, v)] for which [f k] is true
@@ -157,7 +157,7 @@ sig
       [f] must be monotonically decreasing,
       i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true.  
     
-      @since NEXT_RELEASE*)
+      @since 3.3.0*)
 
   val find_last_opt: (key -> bool) -> 'a t -> (key * 'a) option
   (** [find_last_opt f m] returns [Some (k, v)] for the last binding [(k, v)]
@@ -165,7 +165,7 @@ sig
       [f] must be monotonically decreasing,
       i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true. 
     
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
 
   val remove: key -> 'a t -> 'a t
   (** [remove x m] returns a map containing the same bindings as
@@ -173,7 +173,7 @@ sig
       The returned map is physically equal  to the passed one if [x] was
       already unbound. 
   
-      @before  NEXT_RELEASE physical equality was not ensured *)
+      @before  3.3.0 physical equality was not ensured *)
 
   val remove_exn: key -> 'a t -> 'a t
   (** [remove_exn x m] behaves like [remove x m] except that it raises
@@ -261,7 +261,7 @@ sig
       If [f] returns [true] for all bindings of [m] the returned map is physically 
       equal to [m].
       
-      @before NEXT_RELEASE physical equality was not ensured. *)
+      @before 3.3.0 physical equality was not ensured. *)
 
   val filter_map: (key -> 'a -> 'b option) -> 'a t -> 'b t
   (** [filter_map f m] combines the features of [filter] and
@@ -297,7 +297,7 @@ sig
   (** Return [Some (key, value)] for the [key, value] pair with 
       the smallest key, or [None] if the map is empty.
     
-      @since NEXT_RELEASE  *)
+      @since 3.3.0  *)
 
   val pop_min_binding : 'a t -> (key * 'a) * 'a t
   (** Return the [(key, value)] pair with the smallest key
@@ -311,7 +311,7 @@ sig
   (** Return [Some (key, value)] for the [key, value] pair with 
       the largest key, or [None] if the map is empty. 
     
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
 
   val pop_max_binding : 'a t -> (key * 'a) * 'a t
   (** Return the ([key, value]) pair with the largest key
@@ -335,7 +335,7 @@ sig
      chosen is unspecified, but equal bindings will be chosen for
      equal maps.
 
-     @since NEXT_RELEASE *)
+     @since 3.3.0 *)
 
   val any : 'a t -> (key * 'a)
   (** Return one binding of the given map.
@@ -416,33 +416,33 @@ sig
       or [m2] but not in both, it (and the corresponding value) will be 
       present in the resulting map.
     
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
 
   val to_seq : 'a t -> (key * 'a) BatSeq.t
   (** Iterate on the whole map, in ascending order of keys.
 
-      @since NEXT_RELEASE  *)
+      @since 3.3.0  *)
 
   val to_rev_seq : 'a t -> (key * 'a) BatSeq.t
   (** Iterate on the whole map, in descending order of keys.
 
-      @since NEXT_RELEASE  *)
+      @since 3.3.0  *)
     
   val to_seq_from :  key -> 'a t -> (key * 'a) BatSeq.t
   (** [to_seq_from k m] iterates on a subset of the bindings in [m], 
       namely those bindings greater or equal to [k], in ascending order. 
     
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
     
   val add_seq : (key * 'a) BatSeq.t -> 'a t -> 'a t
   (** add the given bindings to the map, in order. 
     
-      @since NEXT_RELEASE  *)
+      @since 3.3.0  *)
     
   val of_seq : (key * 'a) BatSeq.t -> 'a t
   (** build a map from the given bindings 
     
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
 
   (** {6 Boilerplate code}*)
 
@@ -555,7 +555,7 @@ val add : 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
     If [x] was already bound to some [z] that is physically equal
     to [y], then the returned map is physically equal to [m].
 
-    @before NEXT_RELEASE physical equality was not ensured. *)
+    @before 3.3.0 physical equality was not ensured. *)
 
 val update: 'a -> 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
 (** [update k1 k2 v2 m] replace the previous binding of [k1] in [m] by
@@ -567,7 +567,7 @@ val update: 'a -> 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
     be physically equal to [m]
     @raise Not_found if [k1] is not bound in [m].
     @since 2.4.0 
-    @before NEXT_RELEASE physical equality was not ensured. *)
+    @before 3.3.0 physical equality was not ensured. *)
 
 val update_stdlib : 'a -> ('b option -> 'b option) -> ('a, 'b) t -> ('a, 'b) t
 (** [update_stdlib k f m] returns a map containing the same bindings as [m],
@@ -581,7 +581,7 @@ val update_stdlib : 'a -> ('b option -> 'b option) -> ('a, 'b) t -> ('a, 'b) t
 
     This function does the same thing as [update] in the stdlib, but has a
     different name for backwards compatibility reasons.
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
 
 val find : 'a -> ('a, 'b) t -> 'b
 (** [find x m] returns the current binding of [x] in [m],
@@ -601,7 +601,7 @@ val find_first: ('a -> bool) -> ('a, 'b) t -> 'a * 'b
     [f] must be monotonically increasing,
     i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true. 
     
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
 
 val find_first_opt: ('a -> bool) -> ('a, 'b) t -> ('a * 'b) option
 (** [find_first_opt f m] returns [Some (k, v)] for the first binding [(k, v)]
@@ -609,7 +609,7 @@ val find_first_opt: ('a -> bool) -> ('a, 'b) t -> ('a * 'b) option
     [f] must be monotonically increasing,
     i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true.  
     
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
 
 val find_last: ('a -> bool) -> ('a, 'b) t -> 'a * 'b
 (** [find_last f m] returns the last binding [(k, v)] for which [f k] is true
@@ -617,7 +617,7 @@ val find_last: ('a -> bool) -> ('a, 'b) t -> 'a * 'b
     [f] must be monotonically decreasing,
     i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true. 
     
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
 
 val find_last_opt: ('a -> bool) -> ('a, 'b) t -> ('a * 'b) option
 (** [find_last_opt f m] returns [Some (k, v)] for the last binding [(k, v)]
@@ -625,7 +625,7 @@ val find_last_opt: ('a -> bool) -> ('a, 'b) t -> ('a * 'b) option
     [f] must be monotonically decreasing,
     i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true. 
     
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
 
 val remove : 'a -> ('a, 'b) t -> ('a, 'b) t
 (** [remove x m] returns a map containing the same bindings as
@@ -633,7 +633,7 @@ val remove : 'a -> ('a, 'b) t -> ('a, 'b) t
     The returned map is physically equal  to the passed one if [x] was
     already unbound. 
 
-    @before  NEXT_RELEASE physical equality was not ensured *)
+    @before  3.3.0 physical equality was not ensured *)
 
 val remove_exn: 'a -> ('a, 'b) t -> ('a, 'b) t
 (** [remove_exn x m] behaves like [remove x m] except that it raises
@@ -698,7 +698,7 @@ val filter: ('key -> 'a -> bool) -> ('key, 'a) t -> ('key, 'a) t
     If [f] returns [true] for all bindings of [m] the returned map is physically 
     equal to [m].
     
-    @before NEXT_RELEASE physical equality was not ensured. *)
+    @before 3.3.0 physical equality was not ensured. *)
 
 val filter_map: ('key -> 'a -> 'b option) -> ('key, 'a) t -> ('key, 'b) t
 (** [filter_map f m] combines the features of [filter] and
@@ -721,7 +721,7 @@ val choose_opt : ('key, 'a) t -> ('key * 'a) option
     Which binding is chosen is unspecified, but equal bindings will be
     chosen for equal maps.
 
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
 
   
 val any : ('key, 'a) t -> ('key * 'a)
@@ -750,7 +750,7 @@ val min_binding_opt : ('key, 'a) t -> ('key * 'a) option
 (** Return [Some (key, value)] for the [key, value] pair with 
     the smallest key, or [None] if the map is empty.
     
-    @since NEXT_RELEASE  *)
+    @since 3.3.0  *)
 
 val pop_min_binding : ('key, 'a) t -> ('key * 'a) * ('key, 'a) t
 (** Returns the binding with the smallest key along with the rest of the map. *)
@@ -763,7 +763,7 @@ val max_binding_opt :  ('key, 'a) t -> ('key * 'a) option
 (** Return [Some (key, value)] for the [key, value] pair with 
     the largest key, or [None] if the map is empty. 
     
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
 
 val pop_max_binding : ('key, 'a) t -> ('key * 'a) * ('key, 'a) t
 (** Returns the binding with the largest key along with the rest of the map. *)
@@ -851,33 +851,33 @@ val union_stdlib:
 
     This is the union method from the stdlib map, renamed for backwards compatibility.
     
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
 
 val to_seq : ('key, 'a) t -> ('key * 'a) BatSeq.t
 (** Iterate on the whole map, in ascending order of keys.
     
-    @since NEXT_RELEASE  *)
+    @since 3.3.0  *)
   
 val to_rev_seq : ('key, 'a) t -> ('key * 'a) BatSeq.t
 (** Iterate on the whole map, in descending order of keys.
 
-    @since NEXT_RELEASE  *)
+    @since 3.3.0  *)
 
 val to_seq_from :  'key -> ('key, 'a) t -> ('key * 'a) BatSeq.t
 (** [to_seq_from k m] iterates on a subset of the bindings in [m], 
     namely those bindings greater or equal to [k], in ascending order. 
     
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
   
 val add_seq : ('key * 'a) BatSeq.t -> ('key, 'a) t -> ('key, 'a) t
 (** add the given bindings to the map, in order. 
     
-    @since NEXT_RELEASE  *)
+    @since 3.3.0  *)
   
 val of_seq : ('key * 'a) BatSeq.t -> ('key, 'a) t
 (** build a map from the given bindings 
     
-    @since NEXT_RELEASE *)
+    @since 3.3.0 *)
 
 val diff :  ('a, 'b) t -> ('a, 'b) t -> ('a, 'b) t
 (** [diff m1 m2] removes all bindings of keys found in [m2] from [m1],
@@ -1001,7 +1001,7 @@ module PMap : sig
       If [x] was already bound to some [z] that is physically equal
       to [y], then the returned map is physically equal to [m].
 
-      @before NEXT_RELEASE physical equality was not ensured. *)
+      @before 3.3.0 physical equality was not ensured. *)
 
   val update : 'a -> 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
   (** [update k1 k2 v2 m] replace the previous binding of [k1] in [m] by
@@ -1013,7 +1013,7 @@ module PMap : sig
       be physically equal to [m]
       @raise Not_found if [k1] is not bound in [m].
       @since 2.4.0 
-      @before NEXT_RELEASE physical equality was not ensured.  *)
+      @before 3.3.0 physical equality was not ensured.  *)
 
   val update_stdlib : 'a -> ('b option -> 'b option) -> ('a, 'b) t -> ('a, 'b) t
   (** [update_stdlib k f m] returns a map containing the same bindings as [m],
@@ -1027,7 +1027,7 @@ module PMap : sig
       This function does the same thing as [update] in the stdlib, but has a
       different name for backwards compatibility reasons.
 
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
   
   val find : 'a -> ('a, 'b) t -> 'b
   (** [find x m] returns the current binding of [x] in [m],
@@ -1043,7 +1043,7 @@ module PMap : sig
       [f] must be monotonically increasing,
       i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true. 
     
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
 
   val find_first_opt: ('a -> bool) -> ('a, 'b) t -> ('a * 'b) option
   (** [find_first_opt f m] returns [Some (k, v)] for the first binding [(k, v)]
@@ -1051,7 +1051,7 @@ module PMap : sig
       [f] must be monotonically increasing,
       i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true. 
     
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
 
   val find_last: ('a -> bool) -> ('a, 'b) t -> 'a * 'b
   (** [find_last f m] returns the last binding [(k, v)] for which [f k] is true
@@ -1059,7 +1059,7 @@ module PMap : sig
       [f] must be monotonically decreasing,
       i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true. 
     
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
 
   val find_last_opt: ('a -> bool) -> ('a, 'b) t -> ('a * 'b) option
   (** [find_last_opt f m] returns [Some (k, v)] for the last binding [(k, v)]
@@ -1067,7 +1067,7 @@ module PMap : sig
       [f] must be monotonically decreasing,
       i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true. 
     
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
 
   val remove : 'a -> ('a, 'b) t -> ('a, 'b) t
   (** [remove x m] returns a map containing the same bindings as
@@ -1075,7 +1075,7 @@ module PMap : sig
       The returned map is physically equal  to the passed one if [x] was
       already unbound. 
   
-      @before  NEXT_RELEASE physical equality was not ensured *)
+      @before  3.3.0 physical equality was not ensured *)
 
   val remove_exn : 'a -> ('a, 'b) t -> ('a, 'b) t
   (** [remove_exn x m] behaves like [remove x m] except that it raises
@@ -1140,7 +1140,7 @@ module PMap : sig
       If [f] returns [true] for all bindings of [m] the returned map is physically 
       equal to [m].
       
-      @before NEXT_RELEASE physical equality was not ensured. *)
+      @before 3.3.0 physical equality was not ensured. *)
 
   val filter_map: ('key -> 'a -> 'b option) -> ('key, 'a) t -> ('key, 'b) t
   (** [filter_map f m] combines the features of [filter] and
@@ -1162,7 +1162,7 @@ module PMap : sig
      chosen is unspecified, but equal bindings will be chosen for
      equal maps.
 
-     @since NEXT_RELEASE *)
+     @since 3.3.0 *)
 
   val any : ('key, 'a) t -> ('key * 'a)
   (** Return one binding of the given map.
@@ -1189,7 +1189,7 @@ module PMap : sig
   (** Return [Some (key, value)] for the [key, value] pair with 
       the smallest key, or [None] if the map is empty.
     
-      @since NEXT_RELEASE  *)
+      @since 3.3.0  *)
 
   val pop_min_binding : ('key, 'a) t -> ('key * 'a) * ('key, 'a) t
   (** Return the binding with the smallest key along with the rest of the map. *)
@@ -1201,7 +1201,7 @@ module PMap : sig
   (** Return [Some (key, value)] for the [key, value] pair with 
       the largest key, or [None] if the map is empty. 
     
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
 
   val pop_max_binding : ('key, 'a) t -> ('key * 'a) * ('key, 'a) t
   (** Return the binding with the largest key along with the rest of the map. *)
@@ -1317,33 +1317,33 @@ module PMap : sig
 
       This is the union method from the stdlib map, renamed for backwards compatibility.
 
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
 
   val to_seq : ('key, 'a) t -> ('key * 'a) BatSeq.t
   (** Iterate on the whole map, in ascending order of keys.
 
-      @since NEXT_RELEASE  *)
+      @since 3.3.0  *)
     
   val to_rev_seq : ('key, 'a) t -> ('key * 'a) BatSeq.t
   (** Iterate on the whole map, in descending order of keys.
   
-      @since NEXT_RELEASE  *)
+      @since 3.3.0  *)
 
   val to_seq_from : 'key -> ('key, 'a) t -> ('key * 'a) BatSeq.t
   (** [to_seq_from k m] iterates on a subset of the bindings in [m], 
       namely those bindings greater or equal to [k], in ascending order. 
     
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
     
   val add_seq : ('key * 'a) BatSeq.t -> ('key, 'a) t -> ('key, 'a) t
   (** add the given bindings to the map, in order. 
     
-      @since NEXT_RELEASE  *)
+      @since 3.3.0  *)
     
   val of_seq : ?cmp:('key -> 'key -> int) -> ('key * 'a) BatSeq.t -> ('key, 'a) t
   (** build a map from the given bindings 
     
-      @since NEXT_RELEASE *)
+      @since 3.3.0 *)
 
 
   val compare: ('b -> 'b -> int) -> ('a,'b) t -> ('a, 'b) t -> int

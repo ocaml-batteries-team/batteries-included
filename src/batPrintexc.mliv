@@ -400,10 +400,10 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.12##    [raw_backtrace_entry]s are equal as integers, then they represent the same
 ##V>=4.12##    [backtrace_slot]s.
 ##V>=4.12##
-##V>=4.12##    @since NEXT_RELEASE and 4.12.0 *)
+##V>=4.12##    @since 3.3.0 and 4.12.0 *)
 ##V>=4.12##
 ##V>=4.12##val raw_backtrace_entries : raw_backtrace -> raw_backtrace_entry array
-##V>=4.12##(** @since NEXT_RELEASE and 4.12.0 *)
+##V>=4.12##(** @since 3.3.0 and 4.12.0 *)
 ##V>=4.12##
 ##V>=4.12##val backtrace_slots_of_raw_entry :
 ##V>=4.12##  raw_backtrace_entry -> backtrace_slot array option
@@ -414,5 +414,5 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.12##    at index [0] is the most recent call, raise, or primitive, and
 ##V>=4.12##    subsequent slots represent callers.
 ##V>=4.12##
-##V>=4.12##    @since NEXT_RELEASE and 4.12
+##V>=4.12##    @since 3.3.0 and 4.12
 ##V>=4.12##*)
