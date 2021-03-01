@@ -168,7 +168,7 @@ val delete_range : 'a t -> int -> int -> unit
 
     @raise DynArray.Invalid_arg if called with an invalid length or index. *)
 
-val remove_at : int -> 'a t -> 'a t
+val remove_at : int -> 'a t -> unit
 (** Alias for [delete] with parameter order that follows [Array.remove_at].
 
     @since NEXT_RELEASE *)
