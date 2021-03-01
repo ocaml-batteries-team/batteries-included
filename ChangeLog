@@ -1,7 +1,28 @@
 Changelog
 ---------
 
-## NEXT_RELEASE (minor release)
+## v3.3.0 (minor release)
+
+- Several fixes for OCaml-4.12
+  #994, #992,
+  (kit-ty-kate)
+
+- Support for ocaml-multicore in the Gc module
+  #991
+  (kit-ty-kate, review by Gabriel Scherer)
+
+- Significant work preparing switch to dune
+  #1025, #1024, #1023, #1022, #1021, #1020, #1019, #1017
+  (Gabriel Scherer, review by Francois Berenger)
+
+- Remove `-rectypes` from BatFingerTree and simpler implementation
+  #1012
+  (Gabriel Scherer)
+
+- new BatEither module; available in all OCaml versions supported by batteries
+  #1027
+  The implementation comes from the stdlib and is due to Gabriel Scherer.
+  (Francois Berenger, review by Gabriel Scherer)
 
 - BatList.partition_map: ('a -> ('b, 'c) BatEither.t) -> 'a list ->
                          'b list * 'c list
@@ -12,33 +33,47 @@ Changelog
 	The implementation of filter, map and filter_map was adapted from
 	stdlib, authors of the original implementation are Xavier Leroy,
 	Albin Coquereau and Gabriel Scherer
-  #1006
-  (Jakob Krainz)
-
-- BatSeq: compatibility with stdlib.Seq
-  #1005
+  #1006, #1008
   (Jakob Krainz, review by Gabriel Scherer)
 
-- BatMap, BatSplay: find_first, find_first_opt, find_last, find_last_opt
-	for compatibility with stdlib.
+- BatSeq: compatibility with stdlib.Seq
+  #1005, #1007
+  (Jakob Krainz, review by Gabriel Scherer)
+
+- BatMap, BatSplay: find_first, find_first_opt, find_last, find_last_opt,
+        to_rev_seq
+	For compatibility with the stdlib.
 	The implementation in BatMap was adapted from stdlib;
 	authors of the original implementation are Albin Coquereau
-	and Garbiel de Perthuis.
-  #1000
-  (Jakob Krainz)
+	and Gabriel de Perthuis.
+  #1000, #1031
+  (Jakob Krainz, review by Gabriel Scherer)
 
 - BatArray.remove_at: int -> 'a array -> 'a array
   #996
-  (Francois Berenger)
+  For compatibility with BatList
+  (Francois Berenger, review by Cedric Cellier)
 
-- BatDynArray: almost feature parity between DynArray and Array
-  Added new functions to BatDynArray so that it contains almost the same
-  function set as BatArray
+- BatDynArray: several new functions
+  BatDynArray now exposes almost the same functionalities as BatArray
   #872
   (andrepd, review by Florent Monnier and Francois Berenger)
 
-- Fix stack overflow on Int32/64.pow withh negative exponent (issue #989)
-  #990 
+- BatDynArray: uniformization of exceptions and more documentation
+  #988
+  (Florent Monnier, review by Francois Berenger)
+
+- BatDynArray: user input checks in left, right, tail
+  #987
+  (Florent Monnier, review by Francois Berenger)
+
+- Fix stack overflow on Int32/64.pow with negative exponent (issue #989)
+  #990
+  (Cedric Cellier, review by Francois Berenger)
+
+- BatList.unfold_exn is an alias for unfold_exc.
+  BatRefList.find_exn is an alias for find_exc.
+  #978
   (Cedric Cellier, review by Francois Berenger)
 
 ## v3.2.0 (minor release)
