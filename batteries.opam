@@ -26,3 +26,7 @@ depends: [
   "benchmark" {with-test & >= "1.6"}
   "num"
 ]
+# url {
+#   src: "https://github.com/ocaml-batteries-team/batteries-included/archive/vXXX.tar.gz"
+#   checksum: "md5=YYY"
+# }
