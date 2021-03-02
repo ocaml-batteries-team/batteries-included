@@ -340,3 +340,7 @@ val enum : t -> char BatEnum.t
 
 val print : 'a BatIO.output -> t -> unit
   (** [print oc ss] prints [ss] to the output channel [oc] *)
+
+val append_to_buffer: BatBuffer.t -> t -> unit
+(** [append_to_buffer buff ss] appends the sub string [ss]
+    to buffer [b]. *)
