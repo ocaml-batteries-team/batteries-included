@@ -35,8 +35,6 @@ to be performed by someone with commit rights.
   (especially @since NEXT_RELEASE); `sh scripts/find_since.sh` can
   help. ./scripts/replace_since.sh helps even more.
 
-- check whether new functions should go in Incubator
-
 - update the changelog with release notes
 
   The changelog should contain an entry for each notable change that
