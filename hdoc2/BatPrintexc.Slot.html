@@ -34,6 +34,7 @@
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
+<link title="BatEither" rel="Chapter" href="BatEither.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
 <link title="BatFilename" rel="Chapter" href="BatFilename.html">
@@ -156,6 +157,19 @@
 </div>
 <ul class="info-attributes">
 <li><b>Since</b> 2.3.0 and OCaml 4.02</li>
+</ul>
+</div>
+
+<pre><span id="VALname"><span class="keyword">val</span> name</span> : <code class="type"><a href="BatPrintexc.Slot.html#TYPEt">t</a> -> string option</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">name&nbsp;slot</code> returns the name of the function or definition
+      enclosing the location referred to by the slot.</p>
+
+<p><code class="code">name&nbsp;slot</code> returns None if the name is unavailable, which
+      may happen for the same reasons as <code class="code">location</code> returning None.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 4.11</li>
 </ul>
 </div>
 

@@ -36,6 +36,7 @@
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
+<link title="BatEither" rel="Chapter" href="BatEither.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
 <link title="BatFilename" rel="Chapter" href="BatFilename.html">
@@ -546,11 +547,15 @@
 </div>
 </div>
 
-<pre><span id="VALset_print_tags"><span class="keyword">val</span> set_print_tags</span> : <code class="type">bool -> unit</code></pre>
+<pre><span id="VALset_print_tags"><span class="keyword">val</span> set_print_tags</span> : <code class="type">bool -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">set_print_tags&nbsp;b</code> turns on or off the printing of tags.</p>
+</div>
+</div>
+
 <pre><span id="VALset_mark_tags"><span class="keyword">val</span> set_mark_tags</span> : <code class="type">bool -> unit</code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">set_print_tags&nbsp;b</code> turns on or off the printing of tags, while
-    <code class="code">set_mark_tags&nbsp;b</code> turns on or off the output of tag markers.</p>
+<p><code class="code">set_mark_tags&nbsp;b</code> turns on or off the output of tag markers.</p>
 </div>
 </div>
 
@@ -567,9 +572,7 @@
 </div>
 </div>
 
-<pre><span id="VALset_formatter_output_functions"><span class="keyword">val</span> set_formatter_output_functions</span> : <code class="type">(string -> int -> int -> unit) -> (unit -> unit) -> unit</code></pre><div class="info ">
-<div class="info-desc">
-<p><code class="code">set_formatter_output_functions&nbsp;out&nbsp;flush</code> redirects the
+<pre><span id="VALset_formatter_output_functions"><span class="keyword">val</span> set_formatter_output_functions</span> : <code class="type">(string -> int -> int -> unit) -> (unit -> unit) -> unit</code></pre><p><code class="code">set_formatter_output_functions&nbsp;out&nbsp;flush</code> redirects the
     relevant pretty-printer output functions to the functions <code class="code">out</code> and
     <code class="code">flush</code>.</p>
 
@@ -579,22 +582,14 @@
     <code class="code">s</code>. The <code class="code">flush</code> function is called whenever the pretty-printer is
     flushed (via conversion <code class="code">%!</code>, pretty-printing indications <code class="code">@?</code> or <code class="code">@.</code>,
     or using low level function <code class="code">print_flush</code> or <code class="code">print_newline</code>).</p>
-</div>
-</div>
 
-<pre><span id="VALget_formatter_output_functions"><span class="keyword">val</span> get_formatter_output_functions</span> : <code class="type">unit -> (string -> int -> int -> unit) * (unit -> unit)</code></pre><div class="info ">
-<div class="info-desc">
-<p>Return the current output functions of the pretty-printer.</p>
-</div>
-</div>
+<pre><span id="VALget_formatter_output_functions"><span class="keyword">val</span> get_formatter_output_functions</span> : <code class="type">unit -> (string -> int -> int -> unit) * (unit -> unit)</code></pre><p>Return the current output functions of the pretty-printer.</p>
 <h7 id="meaning">Changing the meaning of standard formatter pretty printing</h7><p>The <code class="code"><span class="constructor">Format</span></code> module is versatile enough to let you completely redefine
     the meaning of pretty printing: you may provide your own functions to define
     how to handle indentation, line breaking, and even printing of all the
     characters that have to be printed!</p>
 
-<pre><span id="VALset_all_formatter_output_functions"><span class="keyword">val</span> set_all_formatter_output_functions</span> : <code class="type">out:(string -> int -> int -> unit) -><br>       flush:(unit -> unit) -><br>       newline:(unit -> unit) -> spaces:(int -> unit) -> unit</code></pre><div class="info ">
-<div class="info-desc">
-<p><code class="code">set_all_formatter_output_functions&nbsp;out&nbsp;flush&nbsp;outnewline&nbsp;outspace</code>
+<pre><span id="VALset_all_formatter_output_functions"><span class="keyword">val</span> set_all_formatter_output_functions</span> : <code class="type">out:(string -> int -> int -> unit) -><br>       flush:(unit -> unit) -><br>       newline:(unit -> unit) -> spaces:(int -> unit) -> unit</code></pre><p><code class="code">set_all_formatter_output_functions&nbsp;out&nbsp;flush&nbsp;outnewline&nbsp;outspace</code>
     redirects the pretty-printer output to the functions <code class="code">out</code> and
     <code class="code">flush</code> as described in <code class="code">set_formatter_output_functions</code>. In
     addition, the pretty-printer function that outputs a newline is set
@@ -608,16 +603,10 @@
     <code class="code">outspace</code> and <code class="code">outnewline</code> are normally connected to <code class="code">out</code> and
     <code class="code">flush</code>: respective default values for <code class="code">outspace</code> and <code class="code">outnewline</code>
     are <code class="code">out&nbsp;(<span class="constructor">String</span>.make&nbsp;n&nbsp;<span class="string">'&nbsp;'</span>)&nbsp;0&nbsp;n</code> and <code class="code">out&nbsp;<span class="string">"\n"</span>&nbsp;0&nbsp;1</code>.</p>
-</div>
-</div>
 
-<pre><span id="VALget_all_formatter_output_functions"><span class="keyword">val</span> get_all_formatter_output_functions</span> : <code class="type">unit -><br>       (string -> int -> int -> unit) * (unit -> unit) * (unit -> unit) *<br>       (int -> unit)</code></pre><div class="info ">
-<div class="info-desc">
-<p>Return the current output functions of the pretty-printer,
+<pre><span id="VALget_all_formatter_output_functions"><span class="keyword">val</span> get_all_formatter_output_functions</span> : <code class="type">unit -><br>       (string -> int -> int -> unit) * (unit -> unit) * (unit -> unit) *<br>       (int -> unit)</code></pre><p>Return the current output functions of the pretty-printer,
     including line breaking and indentation functions. Useful to record the
     current setting and restore it afterwards.</p>
-</div>
-</div>
 <h7 id="tags">Changing the meaning of printing semantics tags</h7>
 <pre><code><span id="TYPEformatter_tag_functions"><span class="keyword">type</span> <code class="type"></code>formatter_tag_functions</span> = {</code></pre><table class="typetable">
 <tr>
@@ -650,17 +639,13 @@
 </tr></table>
 <code>}</code>
 
-<div class="info ">
-<div class="info-desc">
+
 <p>The tag handling functions specific to a formatter:
     <code class="code">mark</code> versions are the ``tag marking'' functions that associate a string
     marker to a tag in order for the pretty-printing engine to flush
     those markers as 0 length tokens in the output device of the formatter.
     <code class="code">print</code> versions are the ``tag printing'' functions that can perform
     regular printing when a tag is closed or opened.</p>
-</div>
-</div>
-
 
 <pre><span id="VALset_formatter_tag_functions"><span class="keyword">val</span> set_formatter_tag_functions</span> : <code class="type"><a href="BatFormat.html#TYPEformatter_tag_functions">formatter_tag_functions</a> -> unit</code></pre><p><code class="code">set_formatter_tag_functions&nbsp;tag_funs</code> changes the meaning of
     opening and closing tags to use the functions in <code class="code">tag_funs</code>.</p>
@@ -677,11 +662,7 @@
     called at tag opening and tag closing time, to output regular
     material in the pretty-printer queue.</p>
 
-<pre><span id="VALget_formatter_tag_functions"><span class="keyword">val</span> get_formatter_tag_functions</span> : <code class="type">unit -> <a href="BatFormat.html#TYPEformatter_tag_functions">formatter_tag_functions</a></code></pre><div class="info ">
-<div class="info-desc">
-<p>Return the current tag functions of the pretty-printer.</p>
-</div>
-</div>
+<pre><span id="VALget_formatter_tag_functions"><span class="keyword">val</span> get_formatter_tag_functions</span> : <code class="type">unit -> <a href="BatFormat.html#TYPEformatter_tag_functions">formatter_tag_functions</a></code></pre><p>Return the current tag functions of the pretty-printer.</p>
 <h7 id="6_Multipleformattedoutput">Multiple formatted output</h7>
 <pre><span id="TYPEformatter"><span class="keyword">type</span> <code class="type"></code>formatter</span> = <code class="type">Stdlib.Format.formatter</code> </pre>
 <div class="info ">
@@ -757,14 +738,10 @@
 </div>
 </div>
 
-<pre><span id="VALmake_formatter"><span class="keyword">val</span> make_formatter</span> : <code class="type">(string -> int -> int -> unit) -> (unit -> unit) -> <a href="BatFormat.html#TYPEformatter">formatter</a></code></pre><div class="info ">
-<div class="info-desc">
-<p><code class="code">make_formatter&nbsp;out&nbsp;flush</code> returns a new formatter that writes according
+<pre><span id="VALmake_formatter"><span class="keyword">val</span> make_formatter</span> : <code class="type">(string -> int -> int -> unit) -> (unit -> unit) -> <a href="BatFormat.html#TYPEformatter">formatter</a></code></pre><p><code class="code">make_formatter&nbsp;out&nbsp;flush</code> returns a new formatter that writes according
     to the output function <code class="code">out</code>, and the flushing function <code class="code">flush</code>. For
     instance, a formatter to the <code class="code"><span class="constructor">Pervasives</span>.out_channel</code> <code class="code">oc</code> is returned by
     <code class="code">make_formatter&nbsp;(<span class="constructor">Pervasives</span>.output&nbsp;oc)&nbsp;(<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Pervasives</span>.flush&nbsp;oc)</code>.</p>
-</div>
-</div>
 <h7 id="6_Basicfunctionstousewithformatters">Basic functions to use with formatters</h7>
 <pre><span id="VALpp_open_hbox"><span class="keyword">val</span> pp_open_hbox</span> : <code class="type"><a href="BatFormat.html#TYPEformatter">formatter</a> -> unit -> unit</code></pre>
 <pre><span id="VALpp_open_vbox"><span class="keyword">val</span> pp_open_vbox</span> : <code class="type"><a href="BatFormat.html#TYPEformatter">formatter</a> -> int -> unit</code></pre>
@@ -812,14 +789,10 @@
 <pre><span id="VALpp_set_all_formatter_output_functions"><span class="keyword">val</span> pp_set_all_formatter_output_functions</span> : <code class="type"><a href="BatFormat.html#TYPEformatter">formatter</a> -><br>       out:(string -> int -> int -> unit) -><br>       flush:(unit -> unit) -><br>       newline:(unit -> unit) -> spaces:(int -> unit) -> unit</code></pre>
 <pre><span id="VALpp_get_all_formatter_output_functions"><span class="keyword">val</span> pp_get_all_formatter_output_functions</span> : <code class="type"><a href="BatFormat.html#TYPEformatter">formatter</a> -><br>       unit -><br>       (string -> int -> int -> unit) * (unit -> unit) * (unit -> unit) *<br>       (int -> unit)</code></pre>
 <pre><span id="VALpp_set_formatter_tag_functions"><span class="keyword">val</span> pp_set_formatter_tag_functions</span> : <code class="type"><a href="BatFormat.html#TYPEformatter">formatter</a> -> <a href="BatFormat.html#TYPEformatter_tag_functions">formatter_tag_functions</a> -> unit</code></pre>
-<pre><span id="VALpp_get_formatter_tag_functions"><span class="keyword">val</span> pp_get_formatter_tag_functions</span> : <code class="type"><a href="BatFormat.html#TYPEformatter">formatter</a> -> unit -> <a href="BatFormat.html#TYPEformatter_tag_functions">formatter_tag_functions</a></code></pre><div class="info ">
-<div class="info-desc">
-<p>These functions are the basic ones: usual functions
+<pre><span id="VALpp_get_formatter_tag_functions"><span class="keyword">val</span> pp_get_formatter_tag_functions</span> : <code class="type"><a href="BatFormat.html#TYPEformatter">formatter</a> -> unit -> <a href="BatFormat.html#TYPEformatter_tag_functions">formatter_tag_functions</a></code></pre><p>These functions are the basic ones: usual functions
     operating on the standard formatter are defined via partial
     evaluation of these primitives. For instance,
     <code class="code">print_string</code> is equal to <code class="code">pp_print_string&nbsp;std_formatter</code>.</p>
-</div>
-</div>
 
 <pre><span id="VALpp_print_list"><span class="keyword">val</span> pp_print_list</span> : <code class="type">?pp_sep:(<a href="BatFormat.html#TYPEformatter">formatter</a> -> unit -> unit) -><br>       (<a href="BatFormat.html#TYPEformatter">formatter</a> -> 'a -> unit) -> <a href="BatFormat.html#TYPEformatter">formatter</a> -> 'a list -> unit</code></pre><div class="info ">
 <div class="info-desc">
@@ -959,22 +932,11 @@
 </div>
 <p>Formatted output functions with continuations.</p>
 
-<pre><span id="VALkfprintf"><span class="keyword">val</span> kfprintf</span> : <code class="type">(<a href="BatFormat.html#TYPEformatter">formatter</a> -> 'a) -><br>       <a href="BatFormat.html#TYPEformatter">formatter</a> -><br>       ('b, <a href="BatFormat.html#TYPEformatter">formatter</a>, unit, 'a) Stdlib.format4 -> 'b</code></pre><div class="info ">
-<div class="info-desc">
-<p>Same as <code class="code">fprintf</code> above, but instead of returning immediately,
+<pre><span id="VALkfprintf"><span class="keyword">val</span> kfprintf</span> : <code class="type">(<a href="BatFormat.html#TYPEformatter">formatter</a> -> 'a) -><br>       <a href="BatFormat.html#TYPEformatter">formatter</a> -><br>       ('b, <a href="BatFormat.html#TYPEformatter">formatter</a>, unit, 'a) Stdlib.format4 -> 'b</code></pre><p>Same as <code class="code">fprintf</code> above, but instead of returning immediately,
     passes the formatter to its first argument at the end of printing.</p>
-</div>
-</div>
 
-<pre><span id="VALikfprintf"><span class="keyword">val</span> ikfprintf</span> : <code class="type">(<a href="BatFormat.html#TYPEformatter">formatter</a> -> 'a) -><br>       <a href="BatFormat.html#TYPEformatter">formatter</a> -><br>       ('b, <a href="BatFormat.html#TYPEformatter">formatter</a>, unit, 'a) Stdlib.format4 -> 'b</code></pre><div class="info ">
-<div class="info-desc">
-<p>Same as <code class="code">kfprintf</code> above, but does not print anything.
+<pre><span id="VALikfprintf"><span class="keyword">val</span> ikfprintf</span> : <code class="type">(<a href="BatFormat.html#TYPEformatter">formatter</a> -> 'a) -><br>       <a href="BatFormat.html#TYPEformatter">formatter</a> -><br>       ('b, <a href="BatFormat.html#TYPEformatter">formatter</a>, unit, 'a) Stdlib.format4 -> 'b</code></pre><p>Same as <code class="code">kfprintf</code> above, but does not print anything.
     Useful to ignore some material when conditionally printing.</p>
-</div>
-<ul class="info-attributes">
-<li><b>Since</b> 3.12.0</li>
-</ul>
-</div>
 
 <pre><span id="VALksprintf"><span class="keyword">val</span> ksprintf</span> : <code class="type">(string -> 'a) -> ('b, unit, string, 'a) Stdlib.format4 -> 'b</code></pre><div class="info ">
 <div class="info-desc">

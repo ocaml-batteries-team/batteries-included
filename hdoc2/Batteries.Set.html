@@ -36,6 +36,7 @@
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
+<link title="BatEither" rel="Chapter" href="BatEither.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
 <link title="BatFilename" rel="Chapter" href="BatFilename.html">
@@ -204,11 +205,73 @@
 </ul>
 </div>
 
+<pre><span id="VALfind_opt"><span class="keyword">val</span> find_opt</span> : <code class="type">'a -> 'a <a href="BatSet.html#TYPEt">t</a> -> 'a option</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">find_opt&nbsp;x&nbsp;s</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;k</code> for the element <code class="code">k</code> in <code class="code">s</code> that
+    tests equal to <code class="code">x</code> under its comparison function.
+    If no element is equal, return <code class="code"><span class="constructor">None</span></code></p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
+</div>
+
+<pre><span id="VALfind_first"><span class="keyword">val</span> find_first</span> : <code class="type">('a -> bool) -> 'a <a href="BatSet.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">find_first&nbsp;f&nbsp;m</code> returns the first element <code class="code">e</code> for which <code class="code">f&nbsp;e</code> is true
+    or raises <code class="code"><span class="constructor">Not_found</span></code> if there is no such element.
+    <code class="code">f</code> must be monotonically increasing,
+    i.e. if <code class="code">k1&nbsp;&lt;&nbsp;k2&nbsp;<span class="keywordsign">&amp;&amp;</span>&nbsp;f&nbsp;k1</code> is true then <code class="code">f&nbsp;k2</code> must also be true.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
+</div>
+
+<pre><span id="VALfind_first_opt"><span class="keyword">val</span> find_first_opt</span> : <code class="type">('a -> bool) -> 'a <a href="BatSet.html#TYPEt">t</a> -> 'a option</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">find_first_opt&nbsp;f&nbsp;m</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;e</code> for the first element <code class="code">e</code>
+    for which <code class="code">f&nbsp;e</code> is true or returns <code class="code"><span class="constructor">None</span></code> if there is no such element.
+    <code class="code">f</code> must be monotonically increasing,
+    i.e. if <code class="code">k1&nbsp;&lt;&nbsp;k2&nbsp;<span class="keywordsign">&amp;&amp;</span>&nbsp;f&nbsp;k1</code> is true then <code class="code">f&nbsp;k2</code> must also be true.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
+</div>
+
+<pre><span id="VALfind_last"><span class="keyword">val</span> find_last</span> : <code class="type">('a -> bool) -> 'a <a href="BatSet.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">find_last&nbsp;f&nbsp;m</code> returns the last element <code class="code">e</code> for which <code class="code">f&nbsp;e</code> is true
+  or raises <code class="code"><span class="constructor">Not_found</span></code> if there is no such element.
+  <code class="code">f</code> must be monotonically decreasing,
+  i.e. if <code class="code">k1&nbsp;&lt;&nbsp;k2&nbsp;<span class="keywordsign">&amp;&amp;</span>&nbsp;f&nbsp;k2</code> is true then <code class="code">f&nbsp;k1</code> must also be true.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
+</div>
+
+<pre><span id="VALfind_last_opt"><span class="keyword">val</span> find_last_opt</span> : <code class="type">('a -> bool) -> 'a <a href="BatSet.html#TYPEt">t</a> -> 'a option</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">find_last_opt&nbsp;f&nbsp;m</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;e</code> for the last element <code class="code">e</code>
+  for which <code class="code">f&nbsp;e</code> is true or returns <code class="code"><span class="constructor">None</span></code> if there is no such element.
+  <code class="code">f</code> must be monotonically decreasing,
+  i.e. if <code class="code">k1&nbsp;&lt;&nbsp;k2&nbsp;<span class="keywordsign">&amp;&amp;</span>&nbsp;f&nbsp;k2</code> is true then <code class="code">f&nbsp;k1</code> must also be true.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
+</div>
+
 <pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">'a -> 'a <a href="BatSet.html#TYPEt">t</a> -> 'a <a href="BatSet.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">add&nbsp;x&nbsp;s</code> returns a set containing all elements of <code class="code">s</code>,
     plus <code class="code">x</code>. If <code class="code">x</code> was already in <code class="code">s</code>, <code class="code">s</code> is returned unchanged.</p>
 </div>
+<ul class="info-attributes">
+<li><b>Before 3.3.0 </b> Physical equality was not ensured.</li>
+</ul>
 </div>
 
 <pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">'a -> 'a <a href="BatSet.html#TYPEt">t</a> -> 'a <a href="BatSet.html#TYPEt">t</a></code></pre><div class="info ">
@@ -216,6 +279,9 @@
 <p><code class="code">remove&nbsp;x&nbsp;s</code> returns a set containing all elements of <code class="code">s</code>,
     except <code class="code">x</code>. If <code class="code">x</code> was not in <code class="code">s</code>, <code class="code">s</code> is returned unchanged.</p>
 </div>
+<ul class="info-attributes">
+<li><b>Before 3.3.0 </b> Physical equality was not ensured.</li>
+</ul>
 </div>
 
 <pre><span id="VALremove_exn"><span class="keyword">val</span> remove_exn</span> : <code class="type">'a -> 'a <a href="BatSet.html#TYPEt">t</a> -> 'a <a href="BatSet.html#TYPEt">t</a></code></pre><div class="info ">
@@ -233,9 +299,11 @@
 <div class="info-desc">
 <p><code class="code">update&nbsp;x&nbsp;y&nbsp;s</code> replace <code class="code">x</code> by <code class="code">y</code> in <code class="code">s</code>.
     <code class="code">update</code> is faster when <code class="code">x</code> compares equal to <code class="code">y</code> according
-    to the comparison function used by your set.</p>
+    to the comparison function used by your set.
+    When <code class="code">x</code> and <code class="code">y</code> are physically equal, <code class="code">m</code> is returned unchanged.</p>
 </div>
 <ul class="info-attributes">
+<li><b>Before 3.3.0 </b> Physical equality was not ensured.</li>
 <li><b>Since</b> 2.4</li>
 <li><b>Raises</b> <code>Not_found</code> if <code class="code">x</code> is not in <code class="code">s</code>.</li>
 </ul>
@@ -336,11 +404,34 @@
 </div>
 </div>
 
+<pre><span id="VALmap_endo"><span class="keyword">val</span> map_endo</span> : <code class="type">('a -> 'a) -> 'a <a href="BatSet.html#TYPEt">t</a> -> 'a <a href="BatSet.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">map_endo&nbsp;f&nbsp;x</code> creates a new set with elements <code class="code">f&nbsp;a0</code>,
+    <code class="code">f&nbsp;a1</code>... <code class="code">f&nbsp;aN</code>, where <code class="code">a0</code>, <code class="code">a1</code>, ..., <code class="code">aN</code> are the
+    elements of <code class="code">x</code>.</p>
+
+<p>This function places no restriction on <code class="code">f</code> (beyond the type 
+    signature being more restricted than for <code class="code">map</code> above); it can
+    map multiple input values to the same output value, in which
+    case the resulting set will have smaller cardinality than the
+    input.  <code class="code">f</code>  does not need to be order preserving, although if
+    it is, then <code class="code"><span class="constructor">Incubator</span>.op_map</code> may be more efficient.</p>
+
+<p>This version of map will result in a physically equal map if <code class="code">f</code>
+    returns physically equal keys.</p>
+</div>
+</div>
+
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('a -> bool) -> 'a <a href="BatSet.html#TYPEt">t</a> -> 'a <a href="BatSet.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">filter&nbsp;p&nbsp;s</code> returns the set of all elements in <code class="code">s</code>
     that satisfy predicate <code class="code">p</code>.</p>
+
+<p>if <code class="code">p</code> returns <code class="code"><span class="keyword">true</span></code> for all elements then <code class="code">s</code> is returned unmodified.</p>
 </div>
+<ul class="info-attributes">
+<li><b>Before 3.3.0 </b> Physical equality was not ensured.</li>
+</ul>
 </div>
 
 <pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">('a -> 'b option) -> 'a <a href="BatSet.html#TYPEt">t</a> -> 'b <a href="BatSet.html#TYPEt">t</a></code></pre><div class="info ">
@@ -353,6 +444,22 @@
 
 <p>The resulting map uses the polymorphic <code class="code">compare</code> function to
     order elements.</p>
+</div>
+</div>
+
+<pre><span id="VALfilter_map_endo"><span class="keyword">val</span> filter_map_endo</span> : <code class="type">('a -> 'a option) -> 'a <a href="BatSet.html#TYPEt">t</a> -> 'a <a href="BatSet.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">filter_map_endo&nbsp;f&nbsp;m</code> combines the features of <code class="code">filter</code> and
+    <code class="code">map</code>.  It calls calls <code class="code">f&nbsp;a0</code>, <code class="code">f&nbsp;a1</code>, <code class="code">f&nbsp;aN</code> where <code class="code">a0,a1..an</code>
+    are the elements of <code class="code">m</code> and returns the set of pairs <code class="code">bi</code>
+    such as <code class="code">f&nbsp;ai&nbsp;=&nbsp;<span class="constructor">Some</span>&nbsp;bi</code> (when <code class="code">f</code> returns <code class="code"><span class="constructor">None</span></code>, the
+    corresponding element of <code class="code">m</code> is discarded).</p>
+
+<p>The resulting map uses the polymorphic <code class="code">compare</code> function to
+    order elements.</p>
+
+<p>If the filter function <code class="code">f</code> returns <code class="code"><span class="keyword">true</span></code> for all elements in <code class="code">m</code>,
+    the resulting map is physically equal to <code class="code">m</code>.</p>
 </div>
 </div>
 
@@ -473,6 +580,17 @@
 </ul>
 </div>
 
+<pre><span id="VALmin_elt_opt"><span class="keyword">val</span> min_elt_opt</span> : <code class="type">'a <a href="BatSet.html#TYPEt">t</a> -> 'a option</code></pre><div class="info ">
+<div class="info-desc">
+<p>Return <code class="code"><span class="constructor">Some</span>&nbsp;e</code> for the smallest element <code class="code">e</code> of the given set
+    (with respect to the <code class="code"><span class="constructor">Ord</span>.compare</code> ordering).
+    Return None if the set is empty.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
+</div>
+
 <pre><span id="VALpop_min"><span class="keyword">val</span> pop_min</span> : <code class="type">'a <a href="BatSet.html#TYPEt">t</a> -> 'a * 'a <a href="BatSet.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Returns the smallest element of the given set
@@ -510,12 +628,34 @@
 </ul>
 </div>
 
+<pre><span id="VALmax_elt_opt"><span class="keyword">val</span> max_elt_opt</span> : <code class="type">'a <a href="BatSet.html#TYPEt">t</a> -> 'a option</code></pre><div class="info ">
+<div class="info-desc">
+<p>Same as <code class="code"><span class="constructor">Set</span>.<span class="constructor">S</span>.min_elt_opt</code>, but for the largest element of the
+    given set.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
+</div>
+
 <pre><span id="VALchoose"><span class="keyword">val</span> choose</span> : <code class="type">'a <a href="BatSet.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
 <div class="info-desc">
 <p>returns an arbitrary (but deterministic) element of the given set.</p>
 </div>
 <ul class="info-attributes">
 <li><b>Raises</b> <code>Not_found</code> if given an empty set.</li>
+</ul>
+</div>
+
+<pre><span id="VALchoose_opt"><span class="keyword">val</span> choose_opt</span> : <code class="type">'a <a href="BatSet.html#TYPEt">t</a> -> 'a option</code></pre><div class="info ">
+<div class="info-desc">
+<p>Return <code class="code"><span class="constructor">Some</span>&nbsp;e</code> for one element <code class="code">e</code> of the given set.
+    Which element is chosen is unspecified, but equal elements will be
+    chosen for equal sets.
+    Return <code class="code"><span class="constructor">None</span></code> if the set is empty.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
 </ul>
 </div>
 
@@ -578,6 +718,52 @@
 <p>builds a set from the given array, using the default comparison
     function</p>
 </div>
+</div>
+
+<pre><span id="VALto_seq"><span class="keyword">val</span> to_seq</span> : <code class="type">'a <a href="BatSet.html#TYPEt">t</a> -> 'a <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Iterate on the whole set, in ascending order.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
+</div>
+
+<pre><span id="VALto_rev_seq"><span class="keyword">val</span> to_rev_seq</span> : <code class="type">'a <a href="BatSet.html#TYPEt">t</a> -> 'a <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Iterate on the whole set, in descending order.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
+</div>
+
+<pre><span id="VALto_seq_from"><span class="keyword">val</span> to_seq_from</span> : <code class="type">'a -> 'a <a href="BatSet.html#TYPEt">t</a> -> 'a <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">to_seq_from&nbsp;x&nbsp;s</code> iterates on a subset of the elements in <code class="code">s</code>, 
+    namely those greater or equal to <code class="code">x</code>, in ascending order.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
+</div>
+
+<pre><span id="VALadd_seq"><span class="keyword">val</span> add_seq</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> 'a <a href="BatSet.html#TYPEt">t</a> -> 'a <a href="BatSet.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>add the given elements to the set, in order.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
+</div>
+
+<pre><span id="VALof_seq"><span class="keyword">val</span> of_seq</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> 'a <a href="BatSet.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>build a set from the given elements</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
 </div>
 <h7 id="6_Boilerplatecode">Boilerplate code</h7><div class="h8" id="7_Printing">Printing</div>
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">?first:string -><br>       ?last:string -><br>       ?sep:string -><br>       ('a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'c -> unit) -><br>       'a <a href="BatInnerIO.html#TYPEoutput">BatInnerIO.output</a> -> 'c <a href="BatSet.html#TYPEt">t</a> -> unit</code></pre>

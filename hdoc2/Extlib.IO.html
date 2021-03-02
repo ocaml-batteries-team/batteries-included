@@ -36,6 +36,7 @@
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
+<link title="BatEither" rel="Chapter" href="BatEither.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
 <link title="BatFilename" rel="Chapter" href="BatFilename.html">
@@ -963,7 +964,12 @@
 </div>
 </div>
 
-<pre><span id="VALlines_of2"><span class="keyword">val</span> lines_of2</span> : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> string <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre>
+<pre><span id="VALlines_of2"><span class="keyword">val</span> lines_of2</span> : <code class="type"><a href="BatIO.html#TYPEinput">input</a> -> string <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Buffered version of <a href="BatIO.html#VALlines_of"><code class="code"><span class="constructor">BatIO</span>.lines_of</code></a>, for performance.</p>
+</div>
+</div>
+
 <pre><span id="VALchunks_of"><span class="keyword">val</span> chunks_of</span> : <code class="type">int -> <a href="BatIO.html#TYPEinput">input</a> -> string <a href="BatEnum.html#TYPEt">BatEnum.t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p>Read an input as an enumeration of strings of given length.  If the input isn't a multiple of that length, the final string will be smaller than the rest.</p>

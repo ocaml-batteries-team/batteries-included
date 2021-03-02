@@ -35,6 +35,7 @@
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
+<link title="BatEither" rel="Chapter" href="BatEither.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
 <link title="BatFilename" rel="Chapter" href="BatFilename.html">
@@ -128,24 +129,27 @@
 <div class="info ">
 <div class="info-desc">
 <p>A type for level values, usually a polymorphic variant</p>
-
-<p>Convert each level to a string</p>
 </div>
 </div>
 
 
 <pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="BatLog.Level_sig.html#TYPEt">t</a> -> string</code></pre><div class="info ">
 <div class="info-desc">
-<p>The default level for loggers created with this; log messages
-      with level less than this won't be printed by default.</p>
+<p>Convert each level to a string</p>
 </div>
 </div>
 
 <pre><span id="VALdefault_level"><span class="keyword">val</span> default_level</span> : <code class="type"><a href="BatLog.Level_sig.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
+<p>The default level for loggers created with this; log messages
+      with level less than this won't be printed by default.</p>
+</div>
+</div>
+
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatLog.Level_sig.html#TYPEt">t</a> -> <a href="BatLog.Level_sig.html#TYPEt">t</a> -> int</code></pre><div class="info ">
+<div class="info-desc">
 <p>a comparison function between levels, to know whether logging at a
       particular level should be printed</p>
 </div>
 </div>
-
-<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="BatLog.Level_sig.html#TYPEt">t</a> -> <a href="BatLog.Level_sig.html#TYPEt">t</a> -> int</code></pre></body></html>
+</body></html>

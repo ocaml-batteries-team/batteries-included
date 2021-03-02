@@ -36,6 +36,7 @@
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
+<link title="BatEither" rel="Chapter" href="BatEither.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
 <link title="BatFilename" rel="Chapter" href="BatFilename.html">
@@ -179,8 +180,13 @@
 <div class="info-desc">
 <p><code class="code">add&nbsp;x&nbsp;y&nbsp;m</code> returns a map containing the same bindings as
     <code class="code">m</code>, plus a binding of <code class="code">x</code> to <code class="code">y</code>. If <code class="code">x</code> was already bound
-    in <code class="code">m</code>, its previous binding disappears.</p>
+    in <code class="code">m</code>, its previous binding disappears. 
+    If <code class="code">x</code> was already bound to some <code class="code">z</code> that is physically equal
+    to <code class="code">y</code>, then the returned map is physically equal to <code class="code">m</code>.</p>
 </div>
+<ul class="info-attributes">
+<li><b>Before 3.3.0 </b> physical equality was not ensured.</li>
+</ul>
 </div>
 
 <pre><span id="VALupdate"><span class="keyword">val</span> update</span> : <code class="type">'a -> 'a -> 'b -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info ">
@@ -188,11 +194,34 @@
 <p><code class="code">update&nbsp;k1&nbsp;k2&nbsp;v2&nbsp;m</code> replace the previous binding of <code class="code">k1</code> in <code class="code">m</code> by
     <code class="code">k2</code> associated to <code class="code">v2</code>.
     This is equivalent to <code class="code">add&nbsp;k2&nbsp;v2&nbsp;(remove&nbsp;k1)&nbsp;m</code>, but more efficient
-    in the case where <code class="code">k1</code> and <code class="code">k2</code> have the same key ordering.</p>
+    in the case where <code class="code">k1</code> and <code class="code">k2</code> have the same key ordering.
+    If <code class="code">k1</code> and <code class="code">k2</code> have the same key ordering and <code class="code">v2</code> is physically
+    equal to the value <code class="code">k1</code> is bound to in <code class="code">m</code> then the returned map will
+    be physically equal to <code class="code">m</code></p>
 </div>
 <ul class="info-attributes">
+<li><b>Before 3.3.0 </b> physical equality was not ensured.</li>
 <li><b>Since</b> 2.4.0</li>
 <li><b>Raises</b> <code>Not_found</code> if <code class="code">k1</code> is not bound in <code class="code">m</code>.</li>
+</ul>
+</div>
+
+<pre><span id="VALupdate_stdlib"><span class="keyword">val</span> update_stdlib</span> : <code class="type">'a -> ('b option -> 'b option) -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">update_stdlib&nbsp;k&nbsp;f&nbsp;m</code> returns a map containing the same bindings as <code class="code">m</code>,
+    except <code class="code">k</code> has a new binding as determined by <code class="code">f</code>:
+    First, calculate <code class="code">y</code> as <code class="code">f&nbsp;(find_opt&nbsp;k&nbsp;m)</code>.
+    If <code class="code">y&nbsp;=&nbsp;<span class="constructor">Some</span>&nbsp;v</code> then <code class="code">k</code> will be bound to <code class="code">v</code> in the resulting map.
+    Else <code class="code">k</code> will not be bound in the resulting map.</p>
+
+<p>If <code class="code">v</code> is physically equal to the value of the previous binding of <code class="code">k</code> in <code class="code">m</code>,
+    then the returned map will be physically equal to <code class="code">m</code>.</p>
+
+<p>This function does the same thing as <code class="code">update</code> in the stdlib, but has a
+    different name for backwards compatibility reasons.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
 </ul>
 </div>
 
@@ -217,13 +246,64 @@
 </div>
 </div>
 
+<pre><span id="VALfind_first"><span class="keyword">val</span> find_first</span> : <code class="type">('a -> bool) -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> 'a * 'b</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">find_first&nbsp;f&nbsp;m</code> returns the first binding <code class="code">(k,&nbsp;v)</code> for which <code class="code">f&nbsp;k</code> is true
+    or raises <code class="code"><span class="constructor">Not_found</span></code> if there is no such binding.
+    <code class="code">f</code> must be monotonically increasing,
+    i.e. if <code class="code">k1&nbsp;&lt;&nbsp;k2&nbsp;<span class="keywordsign">&amp;&amp;</span>&nbsp;f&nbsp;k1</code> is true then <code class="code">f&nbsp;k2</code> must also be true.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
+</div>
+
+<pre><span id="VALfind_first_opt"><span class="keyword">val</span> find_first_opt</span> : <code class="type">('a -> bool) -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a * 'b) option</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">find_first_opt&nbsp;f&nbsp;m</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;(k,&nbsp;v)</code> for the first binding <code class="code">(k,&nbsp;v)</code>
+    for which <code class="code">f&nbsp;k</code> is true or returns <code class="code"><span class="constructor">None</span></code> if there is no such binding.
+    <code class="code">f</code> must be monotonically increasing,
+    i.e. if <code class="code">k1&nbsp;&lt;&nbsp;k2&nbsp;<span class="keywordsign">&amp;&amp;</span>&nbsp;f&nbsp;k1</code> is true then <code class="code">f&nbsp;k2</code> must also be true.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
+</div>
+
+<pre><span id="VALfind_last"><span class="keyword">val</span> find_last</span> : <code class="type">('a -> bool) -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> 'a * 'b</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">find_last&nbsp;f&nbsp;m</code> returns the last binding <code class="code">(k,&nbsp;v)</code> for which <code class="code">f&nbsp;k</code> is true
+    or raises <code class="code"><span class="constructor">Not_found</span></code> if there is no such binding.
+    <code class="code">f</code> must be monotonically decreasing,
+    i.e. if <code class="code">k1&nbsp;&lt;&nbsp;k2&nbsp;<span class="keywordsign">&amp;&amp;</span>&nbsp;f&nbsp;k2</code> is true then <code class="code">f&nbsp;k1</code> must also be true.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
+</div>
+
+<pre><span id="VALfind_last_opt"><span class="keyword">val</span> find_last_opt</span> : <code class="type">('a -> bool) -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a * 'b) option</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">find_last_opt&nbsp;f&nbsp;m</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;(k,&nbsp;v)</code> for the last binding <code class="code">(k,&nbsp;v)</code>
+    for which <code class="code">f&nbsp;k</code> is true or returns <code class="code"><span class="constructor">None</span></code> if there is no such binding.
+    <code class="code">f</code> must be monotonically decreasing,
+    i.e. if <code class="code">k1&nbsp;&lt;&nbsp;k2&nbsp;<span class="keywordsign">&amp;&amp;</span>&nbsp;f&nbsp;k2</code> is true then <code class="code">f&nbsp;k1</code> must also be true.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
+</div>
+
 <pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">'a -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">remove&nbsp;x&nbsp;m</code> returns a map containing the same bindings as
     <code class="code">m</code>, except for <code class="code">x</code> which is unbound in the returned map.
-    The returned map compares equal to the passed one if <code class="code">x</code> was
+    The returned map is physically equal  to the passed one if <code class="code">x</code> was
     already unbound.</p>
 </div>
+<ul class="info-attributes">
+<li><b>Before 3.3.0 </b> physical equality was not ensured</li>
+</ul>
 </div>
 
 <pre><span id="VALremove_exn"><span class="keyword">val</span> remove_exn</span> : <code class="type">'a -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info ">
@@ -315,11 +395,16 @@
 
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">('key -> 'a -> bool) -> ('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('key, 'a) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">filter&nbsp;f&nbsp;m</code> returns a map where only the <code class="code">(key,&nbsp;value)</code> pairs
-   <code class="code">key</code>, <code class="code">a</code> of <code class="code">m</code> such that <code class="code">f&nbsp;key&nbsp;a&nbsp;=&nbsp;<span class="keyword">true</span></code> remain. The
-   bindings are passed to <code class="code">f</code> in increasing order with respect
-   to the ordering over the type of the keys.</p>
+<p><code class="code">filter&nbsp;f&nbsp;m</code> returns a map where only the <code class="code">(key,&nbsp;value)</code> pairs of <code class="code">m</code>
+    such that <code class="code">f&nbsp;key&nbsp;value&nbsp;=&nbsp;<span class="keyword">true</span></code> remain. The bindings are passed to
+    <code class="code">f</code> in increasing order with respect to the ordering over the type
+    of the keys. 
+    If <code class="code">f</code> returns <code class="code"><span class="keyword">true</span></code> for all bindings of <code class="code">m</code> the returned map is physically 
+    equal to <code class="code">m</code>.</p>
 </div>
+<ul class="info-attributes">
+<li><b>Before 3.3.0 </b> physical equality was not ensured.</li>
+</ul>
 </div>
 
 <pre><span id="VALfilter_map"><span class="keyword">val</span> filter_map</span> : <code class="type">('key -> 'a -> 'b option) -> ('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('key, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info ">
@@ -341,6 +426,18 @@
 </div>
 <ul class="info-attributes">
 <li><b>Raises</b> <code>Not_found</code> if the map is empty</li>
+</ul>
+</div>
+
+<pre><span id="VALchoose_opt"><span class="keyword">val</span> choose_opt</span> : <code class="type">('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('key * 'a) option</code></pre><div class="info ">
+<div class="info-desc">
+<p>Return <code class="code"><span class="constructor">Some</span>&nbsp;(k,&nbsp;v)</code> for one binding <code class="code">(k,&nbsp;v)</code> of the given map,
+    if the map is not empty. Else, return None.
+    Which binding is chosen is unspecified, but equal bindings will be
+    chosen for equal maps.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
 </ul>
 </div>
 
@@ -370,8 +467,19 @@
 
 <pre><span id="VALmin_binding"><span class="keyword">val</span> min_binding</span> : <code class="type">('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> 'key * 'a</code></pre><div class="info ">
 <div class="info-desc">
-<p>Returns the binding with the smallest key.</p>
+<p>Returns the binding with the smallest key.
+    Raises Not_found if the map is empty.</p>
 </div>
+</div>
+
+<pre><span id="VALmin_binding_opt"><span class="keyword">val</span> min_binding_opt</span> : <code class="type">('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('key * 'a) option</code></pre><div class="info ">
+<div class="info-desc">
+<p>Return <code class="code"><span class="constructor">Some</span>&nbsp;(key,&nbsp;value)</code> for the <code class="code">key,&nbsp;value</code> pair with 
+    the smallest key, or <code class="code"><span class="constructor">None</span></code> if the map is empty.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
 </div>
 
 <pre><span id="VALpop_min_binding"><span class="keyword">val</span> pop_min_binding</span> : <code class="type">('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('key * 'a) * ('key, 'a) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info ">
@@ -382,8 +490,19 @@
 
 <pre><span id="VALmax_binding"><span class="keyword">val</span> max_binding</span> : <code class="type">('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> 'key * 'a</code></pre><div class="info ">
 <div class="info-desc">
-<p>Returns the binding with the largest key.</p>
+<p>Return the <code class="code">(key,&nbsp;value)</code> pair with the largest key. 
+    Raises Not_found if the map is empty.</p>
 </div>
+</div>
+
+<pre><span id="VALmax_binding_opt"><span class="keyword">val</span> max_binding_opt</span> : <code class="type">('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('key * 'a) option</code></pre><div class="info ">
+<div class="info-desc">
+<p>Return <code class="code"><span class="constructor">Some</span>&nbsp;(key,&nbsp;value)</code> for the <code class="code">key,&nbsp;value</code> pair with 
+    the largest key, or <code class="code"><span class="constructor">None</span></code> if the map is empty.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
 </div>
 
 <pre><span id="VALpop_max_binding"><span class="keyword">val</span> pop_max_binding</span> : <code class="type">('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('key * 'a) * ('key, 'a) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info ">
@@ -507,6 +626,69 @@
     <code class="code">m1</code>'s. Equivalent to <code class="code">foldi&nbsp;add&nbsp;m2&nbsp;m1</code>.
     The resulting map uses the comparison function of <code class="code">m1</code>.</p>
 </div>
+</div>
+
+<pre><span id="VALunion_stdlib"><span class="keyword">val</span> union_stdlib</span> : <code class="type">('key -> 'a -> 'a -> 'a option) -><br>       ('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('key, 'a) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">union_stdlib&nbsp;f&nbsp;m1&nbsp;m2</code> computes a map whose keys are a subset of the keys of 
+    <code class="code">m1</code> and of <code class="code">m2</code>. When the same binding is defined in both arguments,
+    the function f is used to combine them.
+    This function is similar to <code class="code">merge</code>, except <code class="code">f</code> is only called if a key
+    is present in both <code class="code">m1</code> and <code class="code">m2</code>. If a key is present in either <code class="code">m1</code>
+    or <code class="code">m2</code> but not in both, it (and the corresponding value) will be 
+    present in the resulting map.</p>
+
+<p>This is the union method from the stdlib map, renamed for backwards compatibility.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
+</div>
+
+<pre><span id="VALto_seq"><span class="keyword">val</span> to_seq</span> : <code class="type">('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('key * 'a) <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Iterate on the whole map, in ascending order of keys.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
+</div>
+
+<pre><span id="VALto_rev_seq"><span class="keyword">val</span> to_rev_seq</span> : <code class="type">('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('key * 'a) <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Iterate on the whole map, in descending order of keys.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
+</div>
+
+<pre><span id="VALto_seq_from"><span class="keyword">val</span> to_seq_from</span> : <code class="type">'key -> ('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('key * 'a) <a href="BatSeq.html#TYPEt">BatSeq.t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">to_seq_from&nbsp;k&nbsp;m</code> iterates on a subset of the bindings in <code class="code">m</code>, 
+    namely those bindings greater or equal to <code class="code">k</code>, in ascending order.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
+</div>
+
+<pre><span id="VALadd_seq"><span class="keyword">val</span> add_seq</span> : <code class="type">('key * 'a) <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> ('key, 'a) <a href="BatMap.html#TYPEt">t</a> -> ('key, 'a) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>add the given bindings to the map, in order.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
+</div>
+
+<pre><span id="VALof_seq"><span class="keyword">val</span> of_seq</span> : <code class="type">('key * 'a) <a href="BatSeq.html#TYPEt">BatSeq.t</a> -> ('key, 'a) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>build a map from the given bindings</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
 </div>
 
 <pre><span id="VALdiff"><span class="keyword">val</span> diff</span> : <code class="type">('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a> -> ('a, 'b) <a href="BatMap.html#TYPEt">t</a></code></pre><div class="info ">

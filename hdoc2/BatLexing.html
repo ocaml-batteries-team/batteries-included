@@ -36,6 +36,7 @@
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
+<link title="BatEither" rel="Chapter" href="BatEither.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
 <link title="BatFilename" rel="Chapter" href="BatFilename.html">
@@ -325,6 +326,26 @@
    starting at index 0, and return the number of bytes
    provided. A return value of 0 means end of input.</p>
 </div>
+</div>
+
+<pre><span id="VALset_position"><span class="keyword">val</span> set_position</span> : <code class="type"><a href="BatLexing.html#TYPElexbuf">lexbuf</a> -> <a href="BatLexing.html#TYPEposition">position</a> -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Set the initial tracked input position for <code class="code">lexbuf</code> to a custom value.
+   Ignores <code class="code">pos_fname</code>. See <a href="BatLexing.html#VALset_filename"><code class="code"><span class="constructor">BatLexing</span>.set_filename</code></a> for changing this field.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 4.11</li>
+</ul>
+</div>
+
+<pre><span id="VALset_filename"><span class="keyword">val</span> set_filename</span> : <code class="type"><a href="BatLexing.html#TYPElexbuf">lexbuf</a> -> string -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Set filename in the initial tracked position to <code class="code">file</code> in
+   <code class="code">lexbuf</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 4.11</li>
+</ul>
 </div>
 
 <pre><span id="VALwith_positions"><span class="keyword">val</span> with_positions</span> : <code class="type"><a href="BatLexing.html#TYPElexbuf">lexbuf</a> -> bool</code></pre><div class="info ">

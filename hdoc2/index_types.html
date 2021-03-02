@@ -32,6 +32,7 @@
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
+<link title="BatEither" rel="Chapter" href="BatEither.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
 <link title="BatFilename" rel="Chapter" href="BatFilename.html">
@@ -130,6 +131,12 @@
 <td><div class="info">
 <p>An alarm is a piece of data that calls a user function at the end of
     each major GC cycle.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatGc.Memprof.html#TYPEallocation">allocation</a> [<a href="BatGc.Memprof.html">BatGc.Memprof</a>]</td>
+<td><div class="info">
+<p>The type of metadata associated with allocations.</p>
 
 </div>
 </td></tr>
@@ -379,14 +386,7 @@
 </div>
 </td></tr>
 <tr><td><a href="BatFormat.html#TYPEformatter_tag_functions">formatter_tag_functions</a> [<a href="BatFormat.html">BatFormat</a>]</td>
-<td><div class="info">
-<p>The tag handling functions specific to a formatter:
-    <code class="code">mark</code> versions are the ``tag marking'' functions that associate a string
-    marker to a tag in order for the pretty-printing engine to flush
-    those markers as 0 length tokens in the output device of the formatter.</p>
-
-</div>
-</td></tr>
+<td></td></tr>
 <tr><td><a href="BatBigarray.html#TYPEfortran_layout">fortran_layout</a> [<a href="BatBigarray.html">BatBigarray</a>]</td>
 <td><div class="info">
 <p>To facilitate interoperability with existing C and Fortran code,
@@ -605,7 +605,7 @@
 <tr><td align="left"><div>N</div></td></tr>
 <tr><td><a href="BatUnix.html#TYPEname_info">name_info</a> [<a href="BatUnix.html">BatUnix</a>]</td>
 <td><div class="info">
-<p>Name of service or port number</p>
+<p>Host and service information returned by <code class="code"><span class="constructor">Unix</span>.getnameinfo</code>.</p>
 
 </div>
 </td></tr>
@@ -1207,6 +1207,8 @@
 <td></td></tr>
 <tr><td><a href="BatEnum.html#TYPEt">t</a> [<a href="BatEnum.html">BatEnum</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatEither.html#TYPEt">t</a> [<a href="BatEither.html">BatEither</a>]</td>
+<td></td></tr>
 <tr><td><a href="BatDynArray.html#TYPEt">t</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatDllist.html#TYPEt">t</a> [<a href="BatDllist.html">BatDllist</a>]</td>
@@ -1356,6 +1358,16 @@
 <tr><td><a href="BatGenlex.html#TYPEtoken">token</a> [<a href="BatGenlex.html">BatGenlex</a>]</td>
 <td><div class="info">
 <p>The type of tokens.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatGc.Memprof.html#TYPEtracker">tracker</a> [<a href="BatGc.Memprof.html">BatGc.Memprof</a>]</td>
+<td><div class="info">
+<p>A <code class="code">(<span class="keywordsign">'</span>minor,&nbsp;<span class="keywordsign">'</span>major)&nbsp;tracker</code> describes how memprof should track
+       sampled blocks over their lifetime, keeping a user-defined piece
+       of metadata for each of them: <code class="code"><span class="keywordsign">'</span>minor</code> is the type of metadata
+       to keep for minor blocks, and <code class="code"><span class="keywordsign">'</span>major</code> the type of metadata
+       for major blocks.</p>
 
 </div>
 </td></tr>

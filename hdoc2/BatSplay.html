@@ -36,6 +36,7 @@
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
+<link title="BatEither" rel="Chapter" href="BatEither.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
 <link title="BatFilename" rel="Chapter" href="BatFilename.html">
@@ -121,7 +122,15 @@
 
 <pre><span id="MODULEBatSplay"><span class="keyword">module</span> BatSplay</span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatSplay.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
 <div class="info-desc">
-<p>Maps and sets based on splay trees</p>
+<p>Maps over ordered types based on splay trees.</p>
+
+<p>Splay trees are ordered binary trees that have the 
+    most recently used element as the root of the tree.
+    If another element is accessed (even read-only), 
+    the tree will be rearranged internally.</p>
+
+<p>Not threadsafe; even read-only functions will rearrange
+    the tree, even though its contents will remain unchanged.</p>
 </div>
 </div>
 <hr width="100%">

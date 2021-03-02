@@ -31,6 +31,7 @@
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
+<link title="BatEither" rel="Chapter" href="BatEither.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
 <link title="BatFilename" rel="Chapter" href="BatFilename.html">
@@ -166,4 +167,29 @@
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;alarm&nbsp;=&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Gc</span>.alarm<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;create_alarm&nbsp;:&nbsp;(unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatGc</span>.alarm<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;delete_alarm&nbsp;:&nbsp;<span class="constructor">BatGc</span>.alarm&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;eventlog_pause&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;=&nbsp;<span class="string">"caml_eventlog_pause"</span><br>
+&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;eventlog_resume&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;=&nbsp;<span class="string">"caml_eventlog_resume"</span><br>
+&nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Memprof</span>&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">sig</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;allocation&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Gc</span>.<span class="constructor">Memprof</span>.allocation&nbsp;=&nbsp;<span class="keyword">private</span>&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n_samples&nbsp;:&nbsp;int;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size&nbsp;:&nbsp;int;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unmarshalled&nbsp;:&nbsp;bool;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;callstack&nbsp;:&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Printexc</span>.raw_backtrace;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;(<span class="keywordsign">'</span>minor,&nbsp;<span class="keywordsign">'</span>major)&nbsp;tracker&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>minor,&nbsp;<span class="keywordsign">'</span>major)&nbsp;<span class="constructor">Stdlib</span>.<span class="constructor">Gc</span>.<span class="constructor">Memprof</span>.tracker&nbsp;=&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alloc_minor&nbsp;:&nbsp;<span class="constructor">BatGc</span>.<span class="constructor">Memprof</span>.allocation&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>minor&nbsp;option;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alloc_major&nbsp;:&nbsp;<span class="constructor">BatGc</span>.<span class="constructor">Memprof</span>.allocation&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>major&nbsp;option;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;promote&nbsp;:&nbsp;<span class="keywordsign">'</span>minor&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>major&nbsp;option;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dealloc_minor&nbsp;:&nbsp;<span class="keywordsign">'</span>minor&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dealloc_major&nbsp;:&nbsp;<span class="keywordsign">'</span>major&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;null_tracker&nbsp;:&nbsp;(<span class="keywordsign">'</span>minor,&nbsp;<span class="keywordsign">'</span>major)&nbsp;<span class="constructor">BatGc</span>.<span class="constructor">Memprof</span>.tracker<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;start&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sampling_rate:float&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;?callstack_size:int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>minor,&nbsp;<span class="keywordsign">'</span>major)&nbsp;<span class="constructor">BatGc</span>.<span class="constructor">Memprof</span>.tracker&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;stop&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">end</span><br>
 <span class="keyword">end</span></code></body></html>

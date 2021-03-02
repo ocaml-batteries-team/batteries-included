@@ -36,6 +36,7 @@
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
+<link title="BatEither" rel="Chapter" href="BatEither.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
 <link title="BatFilename" rel="Chapter" href="BatFilename.html">
@@ -207,8 +208,8 @@
 <pre><span id="VALdiv"><span class="keyword">val</span> div</span> : <code class="type">float -> float -> float</code></pre>
 <pre><span id="VALmodulo"><span class="keyword">val</span> modulo</span> : <code class="type">float -> float -> float</code></pre>
 <pre><span id="VALpow"><span class="keyword">val</span> pow</span> : <code class="type">float -> float -> float</code></pre>
-<pre><span id="VALmin_num"><span class="keyword">val</span> min_num</span> : <code class="type">float</code></pre>
-<pre><span id="VALmax_num"><span class="keyword">val</span> max_num</span> : <code class="type">float</code></pre>
+<pre><span id="VALmin_num"><span class="keyword">val</span> min_num</span> : <code class="type">bounded</code></pre>
+<pre><span id="VALmax_num"><span class="keyword">val</span> max_num</span> : <code class="type">bounded</code></pre>
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">float -> float -> int</code></pre>
 <pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">float -> float -> bool</code></pre>
 <pre><span id="VALord"><span class="keyword">val</span> ord</span> : <code class="type">float -> float -> <a href="BatOrd.html#TYPEorder">BatOrd.order</a></code></pre>
@@ -691,6 +692,8 @@
 <pre><span id="MODULEInfix"><span class="keyword">module</span> <a href="BatFloat.Infix.html">Infix</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatFloat.Infix.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
 <pre><span id="MODULECompare"><span class="keyword">module</span> <a href="BatFloat.Compare.html">Compare</a></span>: <code class="type"><a href="BatNumber.Compare.html">BatNumber.Compare</a></code><code class="type">  with type bat__compare_t = t</code></pre>
 <pre><span class="keyword">include</span> <a href="BatNumber.RefOps.html">BatNumber.RefOps</a></pre>
+
+<pre><span class="keyword">include</span> <a href="BatNumber.Bounded.html">BatNumber.Bounded</a></pre>
 <h7 id="6_Boilerplatecode">Boilerplate code</h7>
 <pre><span id="VALprint"><span class="keyword">val</span> print</span> : <code class="type">(<a href="BatFloat.html#TYPEt">t</a>, 'a) <a href="BatIO.html#TYPEprinter">BatIO.printer</a></code></pre><div class="info ">
 <div class="info-desc">

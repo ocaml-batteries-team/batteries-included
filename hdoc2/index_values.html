@@ -32,6 +32,7 @@
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
+<link title="BatEither" rel="Chapter" href="BatEither.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
 <link title="BatFilename" rel="Chapter" href="BatFilename.html">
@@ -1247,7 +1248,7 @@
 <td></td></tr>
 <tr><td><a href="BatDynArray.html#VALadd">add</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
 <td><div class="info">
-<p><code class="code">add&nbsp;darr&nbsp;v</code> appends <code class="code">v</code> onto <code class="code">darr</code>.</p>
+<p><code class="code">add&nbsp;darr&nbsp;v</code> appends <code class="code">v</code> onto the end of <code class="code">darr</code>.</p>
 
 </div>
 </td></tr>
@@ -1434,9 +1435,45 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatSet.PSet.html#VALadd_seq">add_seq</a> [<a href="BatSet.PSet.html">BatSet.PSet</a>]</td>
+<td><div class="info">
+<p>add the given elements to the set, in order.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.S.html#VALadd_seq">add_seq</a> [<a href="BatSet.S.html">BatSet.S</a>]</td>
+<td><div class="info">
+<p>add the given elements to the set, in order.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.html#VALadd_seq">add_seq</a> [<a href="BatSet.html">BatSet</a>]</td>
+<td><div class="info">
+<p>add the given elements to the set, in order.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatQueue.html#VALadd_seq">add_seq</a> [<a href="BatQueue.html">BatQueue</a>]</td>
 <td><div class="info">
 <p>Add the elements from the generator to the end of the queue</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.PMap.html#VALadd_seq">add_seq</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
+<td><div class="info">
+<p>add the given bindings to the map, in order.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.S.html#VALadd_seq">add_seq</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
+<td><div class="info">
+<p>add the given bindings to the map, in order.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.html#VALadd_seq">add_seq</a> [<a href="BatMap.html">BatMap</a>]</td>
+<td><div class="info">
+<p>add the given bindings to the map, in order.</p>
 
 </div>
 </td></tr>
@@ -2102,6 +2139,12 @@
 <tr><td><a href="BatFloat.html#VALatan2">atan2</a> [<a href="BatFloat.html">BatFloat</a>]</td>
 <td><div class="info">
 <p>The usual trigonometric functions.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatDynArray.html#VALavg">avg</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">avg&nbsp;l</code> returns the average of <code class="code">l</code></p>
 
 </div>
 </td></tr>
@@ -2777,6 +2820,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatDynArray.html#VALcartesian_product">cartesian_product</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p>Cartesian product of the two arrays.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatArray.html#VALcartesian_product">cartesian_product</a> [<a href="BatArray.html">BatArray</a>]</td>
 <td><div class="info">
 <p>Cartesian product of the two arrays.</p>
@@ -3068,6 +3117,45 @@
 <tr><td><a href="BatISet.html#VALchoose">choose</a> [<a href="BatISet.html">BatISet</a>]</td>
 <td><div class="info">
 <p>Returns some element in the set</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.PSet.html#VALchoose_opt">choose_opt</a> [<a href="BatSet.PSet.html">BatSet.PSet</a>]</td>
+<td><div class="info">
+<p>Return <code class="code"><span class="constructor">Some</span>&nbsp;e</code> for one element <code class="code">e</code> of the given set.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.S.html#VALchoose_opt">choose_opt</a> [<a href="BatSet.S.html">BatSet.S</a>]</td>
+<td><div class="info">
+<p>Return <code class="code"><span class="constructor">Some</span>&nbsp;e</code> for one element <code class="code">e</code> of the given set.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.html#VALchoose_opt">choose_opt</a> [<a href="BatSet.html">BatSet</a>]</td>
+<td><div class="info">
+<p>Return <code class="code"><span class="constructor">Some</span>&nbsp;e</code> for one element <code class="code">e</code> of the given set.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.PMap.html#VALchoose_opt">choose_opt</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
+<td><div class="info">
+<p>Return <code class="code"><span class="constructor">Some</span>&nbsp;(k,&nbsp;v)</code> for one binding <code class="code">(k,&nbsp;v)</code> of the given map,
+     if the map is not empty.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.S.html#VALchoose_opt">choose_opt</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
+<td><div class="info">
+<p>Return <code class="code"><span class="constructor">Some</span>&nbsp;(k,&nbsp;v)</code> for one binding <code class="code">(k,&nbsp;v)</code> of the given map,
+     if the map is not empty.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.html#VALchoose_opt">choose_opt</a> [<a href="BatMap.html">BatMap</a>]</td>
+<td><div class="info">
+<p>Return <code class="code"><span class="constructor">Some</span>&nbsp;(k,&nbsp;v)</code> for one binding <code class="code">(k,&nbsp;v)</code> of the given map,
+    if the map is not empty.</p>
 
 </div>
 </td></tr>
@@ -3413,6 +3501,13 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatDynArray.html#VALcombine">combine</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">combine&nbsp;a&nbsp;b</code> converts arrays <code class="code">[a0,...aN]&nbsp;[b0,...,bN]</code> into 
+    an array of pairs <code class="code">[(a0,b0),...,(aN,bN)]</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatSys.html#VALcommand">command</a> [<a href="BatSys.html">BatSys</a>]</td>
 <td><div class="info">
 <p>Execute the given shell command and return its exit code.</p>
@@ -3582,7 +3677,12 @@
 <tr><td><a href="BatMap.html#VALcompare">compare</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatLog.Level_sig.html#VALcompare">compare</a> [<a href="BatLog.Level_sig.html">BatLog.Level_sig</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p>a comparison function between levels, to know whether logging at a
+      particular level should be printed</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatList.html#VALcompare">compare</a> [<a href="BatList.html">BatList</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatInterfaces.OrderedType.html#VALcompare">compare</a> [<a href="BatInterfaces.OrderedType.html">BatInterfaces.OrderedType</a>]</td>
@@ -3663,6 +3763,13 @@
 <td><div class="info">
 <p><code class="code">compare&nbsp;cmp&nbsp;a&nbsp;b</code> compares enumerations <code class="code">a</code> and <code class="code">b</code>
     by lexicographical order using comparison <code class="code">cmp</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatEither.html#VALcompare">compare</a> [<a href="BatEither.html">BatEither</a>]</td>
+<td><div class="info">
+<p><code class="code">compare&nbsp;~left&nbsp;~right&nbsp;e0&nbsp;e1</code> totally orders <code class="code">e0</code> and <code class="code">e1</code> using <code class="code">left</code> and
+    <code class="code">right</code> to respectively compare values wrapped by <code class="code"><span class="constructor">Left</span>&nbsp;_&nbsp;</code> and <code class="code"><span class="constructor">Right</span>&nbsp;_</code>.</p>
 
 </div>
 </td></tr>
@@ -4120,8 +4227,8 @@
 </td></tr>
 <tr><td><a href="BatDynArray.html#VALcopy">copy</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
 <td><div class="info">
-<p><code class="code">copy&nbsp;src</code> returns a fresh copy of <code class="code">src</code>, such that no modification of
-    <code class="code">src</code> affects the copy, or vice versa (all new memory is allocated for
+<p><code class="code">copy&nbsp;a</code> returns a fresh copy of <code class="code">a</code>, such that no modification of
+    <code class="code">a</code> affects the copy, or vice versa (all new memory is allocated for
     the copy).</p>
 
 </div>
@@ -4663,8 +4770,8 @@
 </td></tr>
 <tr><td><a href="BatLog.Level_sig.html#VALdefault_level">default_level</a> [<a href="BatLog.Level_sig.html">BatLog.Level_sig</a>]</td>
 <td><div class="info">
-<p>a comparison function between levels, to know whether logging at a
-      particular level should be printed</p>
+<p>The default level for loggers created with this; log messages
+      with level less than this won't be printed by default.</p>
 
 </div>
 </td></tr>
@@ -4679,6 +4786,13 @@
 <p>The default resizer function the library is using - in this version
     of DynArray, this is the <code class="code">exponential_resizer</code> but should change in
     next versions.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatPrintexc.html#VALdefault_uncaught_exception_handler">default_uncaught_exception_handler</a> [<a href="BatPrintexc.html">BatPrintexc</a>]</td>
+<td><div class="info">
+<p><code class="code"><span class="constructor">Printexc</span>.default_uncaught_exception_handler</code> prints the exception and
+    backtrace on standard error output.</p>
 
 </div>
 </td></tr>
@@ -4727,7 +4841,7 @@
 </td></tr>
 <tr><td><a href="BatDynArray.html#VALdelete_range">delete_range</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
 <td><div class="info">
-<p><code class="code">delete_range&nbsp;darr&nbsp;p&nbsp;len</code> deletes <code class="code">len</code> elements starting at index <code class="code">p</code>.</p>
+<p><code class="code">delete_range&nbsp;darr&nbsp;idx&nbsp;len</code> deletes <code class="code">len</code> elements starting at index <code class="code">idx</code>.</p>
 
 </div>
 </td></tr>
@@ -5269,6 +5383,12 @@
 <tr><td><a href="BatSet.html#VALempty">empty</a> [<a href="BatSet.html">BatSet</a>]</td>
 <td><div class="info">
 <p>The empty set, using <code class="code">compare</code> as comparison function</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSeq.html#VALempty">empty</a> [<a href="BatSeq.html">BatSeq</a>]</td>
+<td><div class="info">
+<p>the empty sequence, containing no elements</p>
 
 </div>
 </td></tr>
@@ -6037,6 +6157,14 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatEither.html#VALequal">equal</a> [<a href="BatEither.html">BatEither</a>]</td>
+<td><div class="info">
+<p><code class="code">equal&nbsp;~left&nbsp;~right&nbsp;e0&nbsp;e1</code> tests equality of <code class="code">e0</code> and <code class="code">e1</code> using <code class="code">left</code>
+    and <code class="code">right</code> to respectively compare values wrapped by <code class="code"><span class="constructor">Left</span>&nbsp;_</code> and
+    <code class="code"><span class="constructor">Right</span>&nbsp;_</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatDigest.html#VALequal">equal</a> [<a href="BatDigest.html">BatDigest</a>]</td>
 <td><div class="info">
 <p>The equal function for digests.</p>
@@ -6131,6 +6259,20 @@
 <tr><td><a href="BatLazyList.html#VALeternity">eternity</a> [<a href="BatLazyList.html">BatLazyList</a>]</td>
 <td><div class="info">
 <p>An infinite list of nothing</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatGc.html#VALeventlog_pause">eventlog_pause</a> [<a href="BatGc.html">BatGc</a>]</td>
+<td><div class="info">
+<p><code class="code">eventlog_pause&nbsp;()</code> will pause the collection of traces in the
+   runtime.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatGc.html#VALeventlog_resume">eventlog_resume</a> [<a href="BatGc.html">BatGc</a>]</td>
+<td><div class="info">
+<p><code class="code">eventlog_resume&nbsp;()</code> will resume the collection of traces in the
+   runtime.</p>
 
 </div>
 </td></tr>
@@ -6309,6 +6451,13 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatDynArray.html#VALexists">exists</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">exists&nbsp;p&nbsp;[a0;&nbsp;a1;&nbsp;...;&nbsp;an]</code> checks if at least one element of
+    the array satisfies the predicate <code class="code">p</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatDllist.html#VALexists">exists</a> [<a href="BatDllist.html">BatDllist</a>]</td>
 <td><div class="info">
 <p>Test whether there exists an element of the given list for which
@@ -6342,6 +6491,12 @@
 <tr><td><a href="BatLazyList.html#VALexists2">exists2</a> [<a href="BatLazyList.html">BatLazyList</a>]</td>
 <td><div class="info">
 <p>Same as <a href="BatLazyList.html#VALexists"><code class="code"><span class="constructor">BatLazyList</span>.exists</code></a>, but for a two-argument predicate.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatDynArray.html#VALexists2">exists2</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p>As <a href="BatDynArray.html#VALexists"><code class="code"><span class="constructor">BatDynArray</span>.exists</code></a> but on two arrays.</p>
 
 </div>
 </td></tr>
@@ -6544,6 +6699,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatDynArray.html#VALfavg">favg</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">favg&nbsp;l</code> returns the average of <code class="code">l</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatArray.html#VALfavg">favg</a> [<a href="BatArray.html">BatArray</a>]</td>
 <td><div class="info">
 <p><code class="code">favg&nbsp;l</code> returns the average of <code class="code">l</code></p>
@@ -6620,6 +6781,13 @@
 <tr><td><a href="BatOptParse.Formatter.html#VALfill">fill</a> [<a href="BatOptParse.Formatter.html">BatOptParse.Formatter</a>]</td>
 <td><div class="info">
 <p>See <code class="code"><span class="constructor">OptParse</span>.<span class="constructor">Formatter</span>.wrap</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatDynArray.html#VALfill">fill</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">fill&nbsp;a&nbsp;start&nbsp;len&nbsp;x</code> modifies the array <code class="code">a</code> in place,
+    storing <code class="code">x</code> in elements number <code class="code">start</code> to <code class="code">start&nbsp;+&nbsp;len&nbsp;-&nbsp;1</code>.</p>
 
 </div>
 </td></tr>
@@ -6783,8 +6951,8 @@
 </td></tr>
 <tr><td><a href="BatMap.PMap.html#VALfilter">filter</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
 <td><div class="info">
-<p><code class="code">filter&nbsp;f&nbsp;m</code> returns a map where only the <code class="code">(key,&nbsp;value)</code> pairs
-     <code class="code">key</code>, <code class="code">a</code> of <code class="code">m</code> such that <code class="code">f&nbsp;key&nbsp;a&nbsp;=&nbsp;<span class="keyword">true</span></code> remain.</p>
+<p><code class="code">filter&nbsp;f&nbsp;m</code> returns a map where only the <code class="code">(key,&nbsp;value)</code> pairs of <code class="code">m</code>
+      such that <code class="code">f&nbsp;key&nbsp;value&nbsp;=&nbsp;<span class="keyword">true</span></code> remain.</p>
 
 </div>
 </td></tr>
@@ -6799,8 +6967,8 @@
 </td></tr>
 <tr><td><a href="BatMap.html#VALfilter">filter</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td><div class="info">
-<p><code class="code">filter&nbsp;f&nbsp;m</code> returns a map where only the <code class="code">(key,&nbsp;value)</code> pairs
-   <code class="code">key</code>, <code class="code">a</code> of <code class="code">m</code> such that <code class="code">f&nbsp;key&nbsp;a&nbsp;=&nbsp;<span class="keyword">true</span></code> remain.</p>
+<p><code class="code">filter&nbsp;f&nbsp;m</code> returns a map where only the <code class="code">(key,&nbsp;value)</code> pairs of <code class="code">m</code>
+    such that <code class="code">f&nbsp;key&nbsp;value&nbsp;=&nbsp;<span class="keyword">true</span></code> remain.</p>
 
 </div>
 </td></tr>
@@ -7080,6 +7248,20 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatSet.PSet.html#VALfilter_map_endo">filter_map_endo</a> [<a href="BatSet.PSet.html">BatSet.PSet</a>]</td>
+<td><div class="info">
+<p><code class="code">filter_map_endo&nbsp;f&nbsp;m</code> combines the features of <code class="code">filter</code> and
+      <code class="code">map</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.html#VALfilter_map_endo">filter_map_endo</a> [<a href="BatSet.html">BatSet</a>]</td>
+<td><div class="info">
+<p><code class="code">filter_map_endo&nbsp;f&nbsp;m</code> combines the features of <code class="code">filter</code> and
+    <code class="code">map</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatInnerWeaktbl.S.html#VALfilter_map_inplace">filter_map_inplace</a> [<a href="BatInnerWeaktbl.S.html">BatInnerWeaktbl.S</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatHashtbl.Cap.Labels.html#VALfilter_map_inplace">filter_map_inplace</a> [<a href="BatHashtbl.Cap.Labels.html">BatHashtbl.Cap.Labels</a>]</td>
@@ -7120,6 +7302,12 @@
 <td><div class="info">
 <p><code class="code">filteri&nbsp;f&nbsp;m</code> returns a hashtbl where only the key, values pairs
     <code class="code">key</code>, <code class="code">a</code> of <code class="code">m</code> such that <code class="code">f&nbsp;key&nbsp;a&nbsp;=&nbsp;<span class="keyword">true</span></code> remain.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatDynArray.html#VALfilteri">filteri</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p>As <code class="code">filter</code> but with the index passed to the predicate.</p>
 
 </div>
 </td></tr>
@@ -7422,6 +7610,21 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatDynArray.Exceptionless.html#VALfind">find</a> [<a href="BatDynArray.Exceptionless.html">BatDynArray.Exceptionless</a>]</td>
+<td><div class="info">
+<p><code class="code">find&nbsp;p&nbsp;a</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;x</code>, where <code class="code">x</code> is the first element of
+      array <code class="code">a</code> that satisfies the predicate <code class="code">p</code>, or <code class="code"><span class="constructor">None</span></code> if there
+      is no such element.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatDynArray.html#VALfind">find</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">find&nbsp;p&nbsp;a</code> returns the first element of array <code class="code">a</code> that
+    satisfies the predicate <code class="code">p</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatDllist.html#VALfind">find</a> [<a href="BatDllist.html">BatDllist</a>]</td>
 <td><div class="info">
 <p><code class="code">find&nbsp;p&nbsp;l</code> returns the first element, <code class="code">l</code> or after, for which <code class="code">p</code>
@@ -7512,6 +7715,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatDynArray.html#VALfind_all">find_all</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">find_all</code> is another name for <code class="code">filter</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatArray.Cap.html#VALfind_all">find_all</a> [<a href="BatArray.Cap.html">BatArray.Cap</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatArray.html#VALfind_all">find_all</a> [<a href="BatArray.html">BatArray</a>]</td>
@@ -7583,6 +7792,90 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatSet.PSet.html#VALfind_first">find_first</a> [<a href="BatSet.PSet.html">BatSet.PSet</a>]</td>
+<td><div class="info">
+<p><code class="code">find_first&nbsp;f&nbsp;m</code> returns the first element <code class="code">e</code> for which <code class="code">f&nbsp;e</code> is true
+      or raises <code class="code"><span class="constructor">Not_found</span></code> if there is no such element.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.S.html#VALfind_first">find_first</a> [<a href="BatSet.S.html">BatSet.S</a>]</td>
+<td><div class="info">
+<p><code class="code">find_first&nbsp;f&nbsp;m</code> returns the first element <code class="code">e</code> for which <code class="code">f&nbsp;e</code> is true
+      or raises <code class="code"><span class="constructor">Not_found</span></code> if there is no such element.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.html#VALfind_first">find_first</a> [<a href="BatSet.html">BatSet</a>]</td>
+<td><div class="info">
+<p><code class="code">find_first&nbsp;f&nbsp;m</code> returns the first element <code class="code">e</code> for which <code class="code">f&nbsp;e</code> is true
+    or raises <code class="code"><span class="constructor">Not_found</span></code> if there is no such element.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.PMap.html#VALfind_first">find_first</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
+<td><div class="info">
+<p><code class="code">find_first&nbsp;f&nbsp;m</code> returns the first binding <code class="code">(k,&nbsp;v)</code> for which <code class="code">f&nbsp;k</code> is true
+      or raises <code class="code"><span class="constructor">Not_found</span></code> if there is no such binding.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.S.html#VALfind_first">find_first</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
+<td><div class="info">
+<p><code class="code">find_first&nbsp;f&nbsp;m</code> returns the first binding <code class="code">(k,&nbsp;v)</code> for which <code class="code">f&nbsp;k</code> is true
+      or raises <code class="code"><span class="constructor">Not_found</span></code> if there is no such binding.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.html#VALfind_first">find_first</a> [<a href="BatMap.html">BatMap</a>]</td>
+<td><div class="info">
+<p><code class="code">find_first&nbsp;f&nbsp;m</code> returns the first binding <code class="code">(k,&nbsp;v)</code> for which <code class="code">f&nbsp;k</code> is true
+    or raises <code class="code"><span class="constructor">Not_found</span></code> if there is no such binding.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.PSet.html#VALfind_first_opt">find_first_opt</a> [<a href="BatSet.PSet.html">BatSet.PSet</a>]</td>
+<td><div class="info">
+<p><code class="code">find_first_opt&nbsp;f&nbsp;m</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;e</code> for the first element <code class="code">e</code>
+      for which <code class="code">f&nbsp;e</code> is true or returns <code class="code"><span class="constructor">None</span></code> if there is no such element.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.S.html#VALfind_first_opt">find_first_opt</a> [<a href="BatSet.S.html">BatSet.S</a>]</td>
+<td><div class="info">
+<p><code class="code">find_first_opt&nbsp;f&nbsp;m</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;e</code> for the first element <code class="code">e</code>
+      for which <code class="code">f&nbsp;e</code> is true or returns <code class="code"><span class="constructor">None</span></code> if there is no such element.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.html#VALfind_first_opt">find_first_opt</a> [<a href="BatSet.html">BatSet</a>]</td>
+<td><div class="info">
+<p><code class="code">find_first_opt&nbsp;f&nbsp;m</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;e</code> for the first element <code class="code">e</code>
+    for which <code class="code">f&nbsp;e</code> is true or returns <code class="code"><span class="constructor">None</span></code> if there is no such element.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.PMap.html#VALfind_first_opt">find_first_opt</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
+<td><div class="info">
+<p><code class="code">find_first_opt&nbsp;f&nbsp;m</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;(k,&nbsp;v)</code> for the first binding <code class="code">(k,&nbsp;v)</code>
+      for which <code class="code">f&nbsp;k</code> is true or returns <code class="code"><span class="constructor">None</span></code> if there is no such binding.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.S.html#VALfind_first_opt">find_first_opt</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
+<td><div class="info">
+<p><code class="code">find_first_opt&nbsp;f&nbsp;m</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;(k,&nbsp;v)</code> for the first binding <code class="code">(k,&nbsp;v)</code>
+      for which <code class="code">f&nbsp;k</code> is true or returns <code class="code"><span class="constructor">None</span></code> if there is no such binding.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.html#VALfind_first_opt">find_first_opt</a> [<a href="BatMap.html">BatMap</a>]</td>
+<td><div class="info">
+<p><code class="code">find_first_opt&nbsp;f&nbsp;m</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;(k,&nbsp;v)</code> for the first binding <code class="code">(k,&nbsp;v)</code>
+    for which <code class="code">f&nbsp;k</code> is true or returns <code class="code"><span class="constructor">None</span></code> if there is no such binding.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatText.html#VALfind_from">find_from</a> [<a href="BatText.html">BatText</a>]</td>
 <td><div class="info">
 <p><code class="code">find_from&nbsp;s&nbsp;ofs&nbsp;x</code> behaves as <code class="code">find&nbsp;s&nbsp;x</code> but starts searching
@@ -7605,6 +7898,96 @@
 <td><div class="info">
 <p><code class="code">find_from&nbsp;s&nbsp;pos&nbsp;x</code> behaves as <code class="code">find&nbsp;s&nbsp;x</code> but starts searching
     at position <code class="code">pos</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.PSet.html#VALfind_last">find_last</a> [<a href="BatSet.PSet.html">BatSet.PSet</a>]</td>
+<td><div class="info">
+<p><code class="code">find_last&nbsp;f&nbsp;m</code> returns the last element <code class="code">e</code> for which <code class="code">f&nbsp;e</code> is true
+    or raises <code class="code"><span class="constructor">Not_found</span></code> if there is no such element.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.S.html#VALfind_last">find_last</a> [<a href="BatSet.S.html">BatSet.S</a>]</td>
+<td><div class="info">
+<p><code class="code">find_last&nbsp;f&nbsp;m</code> returns the last element <code class="code">e</code> for which <code class="code">f&nbsp;e</code> is true
+    or raises <code class="code"><span class="constructor">Not_found</span></code> if there is no such element.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.html#VALfind_last">find_last</a> [<a href="BatSet.html">BatSet</a>]</td>
+<td><div class="info">
+<p><code class="code">find_last&nbsp;f&nbsp;m</code> returns the last element <code class="code">e</code> for which <code class="code">f&nbsp;e</code> is true
+  or raises <code class="code"><span class="constructor">Not_found</span></code> if there is no such element.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.PMap.html#VALfind_last">find_last</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
+<td><div class="info">
+<p><code class="code">find_last&nbsp;f&nbsp;m</code> returns the last binding <code class="code">(k,&nbsp;v)</code> for which <code class="code">f&nbsp;k</code> is true
+      or raises <code class="code"><span class="constructor">Not_found</span></code> if there is no such binding.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.S.html#VALfind_last">find_last</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
+<td><div class="info">
+<p><code class="code">find_last&nbsp;f&nbsp;m</code> returns the last binding <code class="code">(k,&nbsp;v)</code> for which <code class="code">f&nbsp;k</code> is true
+      or raises <code class="code"><span class="constructor">Not_found</span></code> if there is no such binding.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.html#VALfind_last">find_last</a> [<a href="BatMap.html">BatMap</a>]</td>
+<td><div class="info">
+<p><code class="code">find_last&nbsp;f&nbsp;m</code> returns the last binding <code class="code">(k,&nbsp;v)</code> for which <code class="code">f&nbsp;k</code> is true
+    or raises <code class="code"><span class="constructor">Not_found</span></code> if there is no such binding.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.PSet.html#VALfind_last_opt">find_last_opt</a> [<a href="BatSet.PSet.html">BatSet.PSet</a>]</td>
+<td><div class="info">
+<p><code class="code">find_last_opt&nbsp;f&nbsp;m</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;e</code> for the last element <code class="code">e</code>
+    for which <code class="code">f&nbsp;e</code> is true or returns <code class="code"><span class="constructor">None</span></code> if there is no such element.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.S.html#VALfind_last_opt">find_last_opt</a> [<a href="BatSet.S.html">BatSet.S</a>]</td>
+<td><div class="info">
+<p><code class="code">find_last_opt&nbsp;f&nbsp;m</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;e</code> for the last element <code class="code">e</code>
+    for which <code class="code">f&nbsp;e</code> is true or returns <code class="code"><span class="constructor">None</span></code> if there is no such element.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.html#VALfind_last_opt">find_last_opt</a> [<a href="BatSet.html">BatSet</a>]</td>
+<td><div class="info">
+<p><code class="code">find_last_opt&nbsp;f&nbsp;m</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;e</code> for the last element <code class="code">e</code>
+  for which <code class="code">f&nbsp;e</code> is true or returns <code class="code"><span class="constructor">None</span></code> if there is no such element.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.PMap.html#VALfind_last_opt">find_last_opt</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
+<td><div class="info">
+<p><code class="code">find_last_opt&nbsp;f&nbsp;m</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;(k,&nbsp;v)</code> for the last binding <code class="code">(k,&nbsp;v)</code>
+      for which <code class="code">f&nbsp;k</code> is true or returns <code class="code"><span class="constructor">None</span></code> if there is no such binding.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.S.html#VALfind_last_opt">find_last_opt</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
+<td><div class="info">
+<p><code class="code">find_last_opt&nbsp;f&nbsp;m</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;(k,&nbsp;v)</code> for the last binding <code class="code">(k,&nbsp;v)</code>
+      for which <code class="code">f&nbsp;k</code> is true or returns <code class="code"><span class="constructor">None</span></code> if there is no such binding.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.html#VALfind_last_opt">find_last_opt</a> [<a href="BatMap.html">BatMap</a>]</td>
+<td><div class="info">
+<p><code class="code">find_last_opt&nbsp;f&nbsp;m</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;(k,&nbsp;v)</code> for the last binding <code class="code">(k,&nbsp;v)</code>
+    for which <code class="code">f&nbsp;k</code> is true or returns <code class="code"><span class="constructor">None</span></code> if there is no such binding.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatEither.html#VALfind_left">find_left</a> [<a href="BatEither.html">BatEither</a>]</td>
+<td><div class="info">
+<p><code class="code">find_left&nbsp;(<span class="constructor">Left</span>&nbsp;v)</code> is <code class="code"><span class="constructor">Some</span>&nbsp;v</code>, <code class="code">find_left&nbsp;(<span class="constructor">Right</span>&nbsp;_)</code> is <code class="code"><span class="constructor">None</span></code></p>
 
 </div>
 </td></tr>
@@ -7674,6 +8057,27 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatSet.PSet.html#VALfind_opt">find_opt</a> [<a href="BatSet.PSet.html">BatSet.PSet</a>]</td>
+<td><div class="info">
+<p><code class="code">find_opt&nbsp;x&nbsp;s</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;k</code> for the element <code class="code">k</code> in <code class="code">s</code> that
+      tests equal to <code class="code">x</code> under its comparison function.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.S.html#VALfind_opt">find_opt</a> [<a href="BatSet.S.html">BatSet.S</a>]</td>
+<td><div class="info">
+<p><code class="code">find_opt&nbsp;x&nbsp;s</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;k</code> for the element <code class="code">k</code> in <code class="code">s</code> that
+      tests equal to <code class="code">x</code> under its comparison function.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.html#VALfind_opt">find_opt</a> [<a href="BatSet.html">BatSet</a>]</td>
+<td><div class="info">
+<p><code class="code">find_opt&nbsp;x&nbsp;s</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;k</code> for the element <code class="code">k</code> in <code class="code">s</code> that
+    tests equal to <code class="code">x</code> under its comparison function.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatMap.S.html#VALfind_opt">find_opt</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
 <td><div class="info">
 <p><code class="code">find_opt&nbsp;x&nbsp;m</code> returns Some b where b is the current binding
@@ -7706,6 +8110,12 @@
 <td><div class="info">
 <p>Find a binding for the key, or return <code class="code"><span class="constructor">None</span></code> if no
     value is found</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatEither.html#VALfind_right">find_right</a> [<a href="BatEither.html">BatEither</a>]</td>
+<td><div class="info">
+<p><code class="code">find_right&nbsp;(<span class="constructor">Right</span>&nbsp;v)</code> is <code class="code"><span class="constructor">Some</span>&nbsp;v</code>, <code class="code">find_right&nbsp;(<span class="constructor">Left</span>&nbsp;_)</code> is <code class="code"><span class="constructor">None</span></code></p>
 
 </div>
 </td></tr>
@@ -7763,6 +8173,21 @@
 <td><div class="info">
 <p><code class="code">findi&nbsp;p&nbsp;e&nbsp;l</code> returns the first element <code class="code">ai</code> of <code class="code">l</code> along with its
     index <code class="code">i</code> such that <code class="code">p&nbsp;i&nbsp;ai</code> is true.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatDynArray.Exceptionless.html#VALfindi">findi</a> [<a href="BatDynArray.Exceptionless.html">BatDynArray.Exceptionless</a>]</td>
+<td><div class="info">
+<p><code class="code">findi&nbsp;p&nbsp;a</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;n</code>, where <code class="code">n</code> is the index of the
+      first element of array <code class="code">a</code> that satisfies the predicate <code class="code">p</code>,
+      or <code class="code"><span class="constructor">None</span></code> if there is no such element.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatDynArray.html#VALfindi">findi</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">findi&nbsp;p&nbsp;a</code> returns the index of the first element of array <code class="code">a</code>
+    that satisfies the predicate <code class="code">p</code>.</p>
 
 </div>
 </td></tr>
@@ -7845,11 +8270,24 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatDynArray.html#VALfirst">first</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">first&nbsp;darr</code> returns the first element of <code class="code">darr</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatLog.Config.html#VALflags">flags</a> [<a href="BatLog.Config.html">BatLog.Config</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatLog.html#VALflags">flags</a> [<a href="BatLog.html">BatLog</a>]</td>
 <td><div class="info">
 <p>This ref holds the output flags.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSeq.html#VALflat_map">flat_map</a> [<a href="BatSeq.html">BatSeq</a>]</td>
+<td><div class="info">
+<p>Map each element to a subsequence, then return each element of this
+    sub-sequence in turn.</p>
 
 </div>
 </td></tr>
@@ -8225,6 +8663,13 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatEither.html#VALfold">fold</a> [<a href="BatEither.html">BatEither</a>]</td>
+<td><div class="info">
+<p><code class="code">fold&nbsp;~left&nbsp;~right&nbsp;(<span class="constructor">Left</span>&nbsp;v)</code> is <code class="code">left&nbsp;v</code>, and
+    <code class="code">fold&nbsp;~left&nbsp;~right&nbsp;(<span class="constructor">Right</span>&nbsp;v)</code> is <code class="code">right&nbsp;v</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatAvlTree.html#VALfold">fold</a> [<a href="BatAvlTree.html">BatAvlTree</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatArray.Cap.Labels.html#VALfold">fold</a> [<a href="BatArray.Cap.Labels.html">BatArray.Cap.Labels</a>]</td>
@@ -8401,6 +8846,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatDynArray.html#VALfold_lefti">fold_lefti</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p>As <code class="code">fold_left</code>, but with the index of the element as additional argument.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatArray.html#VALfold_lefti">fold_lefti</a> [<a href="BatArray.html">BatArray</a>]</td>
 <td><div class="info">
 <p>As <code class="code">fold_left</code>, but with the index of the element as additional argument</p>
@@ -8570,6 +9021,12 @@
 <td><div class="info">
 <p>As <code class="code">fold_right</code>, but with the index of the element, from <code class="code">0</code> to
     <code class="code">length&nbsp;li&nbsp;-&nbsp;1</code>, as additional argument.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatDynArray.html#VALfold_righti">fold_righti</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p>As <code class="code">fold_right</code>, but with the index of the element as additional argument.</p>
 
 </div>
 </td></tr>
@@ -8774,6 +9231,20 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatEither.html#VALfor_all">for_all</a> [<a href="BatEither.html">BatEither</a>]</td>
+<td><div class="info">
+<p><code class="code">for_all&nbsp;~left&nbsp;~right&nbsp;(<span class="constructor">Left</span>&nbsp;v)</code> is <code class="code">left&nbsp;v</code>, and
+    <code class="code">for_all&nbsp;~left&nbsp;~right&nbsp;(<span class="constructor">Right</span>&nbsp;v)</code> is <code class="code">right&nbsp;v</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatDynArray.html#VALfor_all">for_all</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">for_all&nbsp;p&nbsp;[a0;&nbsp;a1;&nbsp;...;&nbsp;an]</code> checks if all elements of the
+    array satisfy the predicate <code class="code">p</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatDllist.html#VALfor_all">for_all</a> [<a href="BatDllist.html">BatDllist</a>]</td>
 <td><div class="info">
 <p>Test whether a given predicate returns true for all members of the
@@ -8807,6 +9278,12 @@
 <tr><td><a href="BatLazyList.html#VALfor_all2">for_all2</a> [<a href="BatLazyList.html">BatLazyList</a>]</td>
 <td><div class="info">
 <p>Same as <a href="BatLazyList.html#VALfor_all"><code class="code"><span class="constructor">BatLazyList</span>.for_all</code></a>, but for a two-argument predicate.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatDynArray.html#VALfor_all2">for_all2</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p>As <a href="BatDynArray.html#VALfor_all"><code class="code"><span class="constructor">BatDynArray</span>.for_all</code></a> but on two arrays.</p>
 
 </div>
 </td></tr>
@@ -9133,6 +9610,12 @@
 </td></tr>
 <tr><td><a href="BatEnum.html#VALfsum">fsum</a> [<a href="BatEnum.html">BatEnum</a>]</td>
 <td><div class="info">
+</div>
+</td></tr>
+<tr><td><a href="BatDynArray.html#VALfsum">fsum</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">fsum&nbsp;l</code> returns the sum of the floats of <code class="code">l</code>.</p>
+
 </div>
 </td></tr>
 <tr><td><a href="BatArray.html#VALfsum">fsum</a> [<a href="BatArray.html">BatArray</a>]</td>
@@ -9466,12 +9949,7 @@
 <tr><td><a href="BatTuple.Tuple5.html#VALget45">get45</a> [<a href="BatTuple.Tuple5.html">BatTuple.Tuple5</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatFormat.html#VALget_all_formatter_output_functions">get_all_formatter_output_functions</a> [<a href="BatFormat.html">BatFormat</a>]</td>
-<td><div class="info">
-<p>Return the current output functions of the pretty-printer,
-    including line breaking and indentation functions.</p>
-
-</div>
-</td></tr>
+<td></td></tr>
 <tr><td><a href="BatPrintexc.html#VALget_backtrace">get_backtrace</a> [<a href="BatPrintexc.html">BatPrintexc</a>]</td>
 <td><div class="info">
 <p><code class="code"><span class="constructor">Printexc</span>.get_backtrace&nbsp;()</code> returns a string containing the same
@@ -9545,17 +10023,9 @@
 </div>
 </td></tr>
 <tr><td><a href="BatFormat.html#VALget_formatter_output_functions">get_formatter_output_functions</a> [<a href="BatFormat.html">BatFormat</a>]</td>
-<td><div class="info">
-<p>Return the current output functions of the pretty-printer.</p>
-
-</div>
-</td></tr>
+<td></td></tr>
 <tr><td><a href="BatFormat.html#VALget_formatter_tag_functions">get_formatter_tag_functions</a> [<a href="BatFormat.html">BatFormat</a>]</td>
-<td><div class="info">
-<p>Return the current tag functions of the pretty-printer.</p>
-
-</div>
-</td></tr>
+<td></td></tr>
 <tr><td><a href="BatBytes.html#VALget_int16_be">get_int16_be</a> [<a href="BatBytes.html">BatBytes</a>]</td>
 <td><div class="info">
 <p><code class="code">get_int16_be&nbsp;b&nbsp;i</code> is <code class="code">b</code>'s big-endian signed 16-bit integer
@@ -10169,6 +10639,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatDynArray.html#VALhead">head</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p>Alias for <a href="BatDynArray.html#VALleft"><code class="code"><span class="constructor">BatDynArray</span>.left</code></a></p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatArray.html#VALhead">head</a> [<a href="BatArray.html">BatArray</a>]</td>
 <td><div class="info">
 <p>as <a href="BatArray.html#VALleft"><code class="code"><span class="constructor">BatArray</span>.left</code></a></p>
@@ -10344,11 +10820,7 @@
 </div>
 </td></tr>
 <tr><td><a href="BatFormat.html#VALikfprintf">ikfprintf</a> [<a href="BatFormat.html">BatFormat</a>]</td>
-<td><div class="info">
-<p>Same as <code class="code">kfprintf</code> above, but does not print anything.</p>
-
-</div>
-</td></tr>
+<td></td></tr>
 <tr><td><a href="BatText.html#VALimplode">implode</a> [<a href="BatText.html">BatText</a>]</td>
 <td><div class="info">
 <p><code class="code">implode&nbsp;cs</code> returns a rope resulting from concatenating
@@ -10521,8 +10993,7 @@
 </td></tr>
 <tr><td><a href="BatDynArray.html#VALindex_of">index_of</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
 <td><div class="info">
-<p><code class="code">index_of&nbsp;f&nbsp;darr</code> returns the index of the first element <code class="code">x</code> in darr such
-    as <code class="code">f&nbsp;x</code> returns <code class="code"><span class="keyword">true</span></code> or raise <code class="code"><span class="constructor">Not_found</span></code> if not found.</p>
+<p>Alias for <a href="BatDynArray.html#VALfindi"><code class="code"><span class="constructor">BatDynArray</span>.findi</code></a></p>
 
 </div>
 </td></tr>
@@ -11504,6 +11975,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatEither.html#VALis_left">is_left</a> [<a href="BatEither.html">BatEither</a>]</td>
+<td><div class="info">
+<p><code class="code">is_left&nbsp;(<span class="constructor">Left</span>&nbsp;v)</code> is <code class="code"><span class="keyword">true</span></code>, <code class="code">is_left&nbsp;(<span class="constructor">Right</span>&nbsp;v)</code> is <code class="code"><span class="keyword">false</span></code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatChar.html#VALis_letter">is_letter</a> [<a href="BatChar.html">BatChar</a>]</td>
 <td><div class="info">
 <p>Determine if a character represents a ASCII letter.</p>
@@ -11572,6 +12049,12 @@
 <td><div class="info">
 <p>Return <code class="code"><span class="keyword">true</span></code> if the file name is relative to the current
    directory, <code class="code"><span class="keyword">false</span></code> if it is absolute (i.e.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatEither.html#VALis_right">is_right</a> [<a href="BatEither.html">BatEither</a>]</td>
+<td><div class="info">
+<p><code class="code">is_right&nbsp;(<span class="constructor">Left</span>&nbsp;v)</code> is <code class="code"><span class="keyword">false</span></code>, <code class="code">is_right&nbsp;(<span class="constructor">Right</span>&nbsp;v)</code> is <code class="code"><span class="keyword">true</span></code>.</p>
 
 </div>
 </td></tr>
@@ -11860,6 +12343,13 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatEither.html#VALiter">iter</a> [<a href="BatEither.html">BatEither</a>]</td>
+<td><div class="info">
+<p><code class="code">iter&nbsp;~left&nbsp;~right&nbsp;(<span class="constructor">Left</span>&nbsp;v)</code> is <code class="code">left&nbsp;v</code>, and
+    <code class="code">iter&nbsp;~left&nbsp;~right&nbsp;(<span class="constructor">Right</span>&nbsp;v)</code> is <code class="code">right&nbsp;v</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatDynArray.html#VALiter">iter</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
 <td><div class="info">
 <p><code class="code">iter&nbsp;f&nbsp;darr</code> calls the function <code class="code">f</code> on every element of <code class="code">darr</code>.</p>
@@ -11940,6 +12430,13 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatDynArray.html#VALiter2">iter2</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">iter2&nbsp;f&nbsp;[a0,&nbsp;a1,&nbsp;...,&nbsp;an]&nbsp;[b0,&nbsp;b1,&nbsp;...,&nbsp;bn]</code>
+    performs calls <code class="code">f&nbsp;a0&nbsp;b0,&nbsp;f&nbsp;a1&nbsp;b1,&nbsp;...,&nbsp;f&nbsp;an&nbsp;bn</code> in that order.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatArray.Cap.Labels.html#VALiter2">iter2</a> [<a href="BatArray.Cap.Labels.html">BatArray.Cap.Labels</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatArray.Cap.html#VALiter2">iter2</a> [<a href="BatArray.Cap.html">BatArray.Cap</a>]</td>
@@ -11964,6 +12461,14 @@
 <td></td></tr>
 <tr><td><a href="BatEnum.html#VALiter2i">iter2i</a> [<a href="BatEnum.html">BatEnum</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatDynArray.html#VALiter2i">iter2i</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">iter2i&nbsp;f&nbsp;[a0,&nbsp;a1,&nbsp;...,&nbsp;an]&nbsp;[b0,&nbsp;b1,&nbsp;...,&nbsp;bn]</code>
+    performs calls <code class="code">f&nbsp;0&nbsp;a0&nbsp;b0,&nbsp;f&nbsp;1&nbsp;a1&nbsp;b1,&nbsp;...,&nbsp;f&nbsp;n&nbsp;an&nbsp;bn</code> in that
+    order.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatArray.Cap.Labels.html#VALiter2i">iter2i</a> [<a href="BatArray.Cap.Labels.html">BatArray.Cap.Labels</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatArray.Cap.html#VALiter2i">iter2i</a> [<a href="BatArray.Cap.html">BatArray.Cap</a>]</td>
@@ -12176,6 +12681,13 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatDynArray.html#VALkahan_sum">kahan_sum</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">kahan_sum&nbsp;l</code> returns a numerically-accurate
+    sum of the floats of <code class="code">l</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatArray.html#VALkahan_sum">kahan_sum</a> [<a href="BatArray.html">BatArray</a>]</td>
 <td><div class="info">
 <p><code class="code">kahan_sum&nbsp;l</code> returns a numerically-accurate
@@ -12242,12 +12754,7 @@
 </div>
 </td></tr>
 <tr><td><a href="BatFormat.html#VALkfprintf">kfprintf</a> [<a href="BatFormat.html">BatFormat</a>]</td>
-<td><div class="info">
-<p>Same as <code class="code">fprintf</code> above, but instead of returning immediately,
-    passes the formatter to its first argument at the end of printing.</p>
-
-</div>
-</td></tr>
+<td></td></tr>
 <tr><td><a href="BatUnix.html#VALkill">kill</a> [<a href="BatUnix.html">BatUnix</a>]</td>
 <td><div class="info">
 <p><code class="code">kill&nbsp;pid&nbsp;<span class="keyword">sig</span></code> sends signal number <code class="code"><span class="keyword">sig</span></code> to the process
@@ -12516,6 +13023,18 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatEither.html#VALleft">left</a> [<a href="BatEither.html">BatEither</a>]</td>
+<td><div class="info">
+<p><code class="code">left&nbsp;v</code> is <code class="code"><span class="constructor">Left</span>&nbsp;v</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatDynArray.html#VALleft">left</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">left&nbsp;r&nbsp;len</code> returns the array containing the <code class="code">len</code> first characters of <code class="code">r</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatArray.html#VALleft">left</a> [<a href="BatArray.html">BatArray</a>]</td>
 <td><div class="info">
 <p><code class="code">left&nbsp;r&nbsp;len</code> returns the array containing the <code class="code">len</code> first
@@ -12760,7 +13279,11 @@
 </div>
 </td></tr>
 <tr><td><a href="BatIO.html#VALlines_of2">lines_of2</a> [<a href="BatIO.html">BatIO</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p>Buffered version of <a href="BatIO.html#VALlines_of"><code class="code"><span class="constructor">BatIO</span>.lines_of</code></a>, for performance.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatUnix.html#VALlink">link</a> [<a href="BatUnix.html">BatUnix</a>]</td>
 <td><div class="info">
 <p><code class="code">link&nbsp;?follow&nbsp;source&nbsp;dest</code> creates a hard link named <code class="code">dest</code> to the file
@@ -13311,12 +13834,7 @@
 </div>
 </td></tr>
 <tr><td><a href="BatFormat.html#VALmake_formatter">make_formatter</a> [<a href="BatFormat.html">BatFormat</a>]</td>
-<td><div class="info">
-<p><code class="code">make_formatter&nbsp;out&nbsp;flush</code> returns a new formatter that writes according
-    to the output function <code class="code">out</code>, and the flushing function <code class="code">flush</code>.</p>
-
-</div>
-</td></tr>
+<td></td></tr>
 <tr><td><a href="BatCache.html#VALmake_ht">make_ht</a> [<a href="BatCache.html">BatCache</a>]</td>
 <td><div class="info">
 <p>Make a manual cache backed by a hashtable.</p>
@@ -13615,6 +14133,13 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatEither.html#VALmap">map</a> [<a href="BatEither.html">BatEither</a>]</td>
+<td><div class="info">
+<p><code class="code">map&nbsp;~left&nbsp;~right&nbsp;(<span class="constructor">Left</span>&nbsp;v)</code> is <code class="code"><span class="constructor">Left</span>&nbsp;(left&nbsp;v)</code>,
+    <code class="code">map&nbsp;~left&nbsp;~right&nbsp;(<span class="constructor">Right</span>&nbsp;v)</code> is <code class="code"><span class="constructor">Right</span>&nbsp;(right&nbsp;v)</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatDynArray.html#VALmap">map</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
 <td><div class="info">
 <p><code class="code">map&nbsp;f&nbsp;darr</code> applies the function <code class="code">f</code> to every element of <code class="code">darr</code>
@@ -13752,6 +14277,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatDynArray.html#VALmap2">map2</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p>As <a href="BatDynArray.html#VALmap"><code class="code"><span class="constructor">BatDynArray</span>.map</code></a> but on two arrays.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatBounded.S.html#VALmap2">map2</a> [<a href="BatBounded.S.html">BatBounded.S</a>]</td>
 <td><div class="info">
 <p><code class="code">map2&nbsp;f&nbsp;x&nbsp;y</code> applies <code class="code">f</code> to <code class="code">x</code> and <code class="code">y</code>.</p>
@@ -13774,6 +14305,12 @@
 <td><div class="info">
 <p><code class="code"><span class="constructor">List</span>.map2i&nbsp;f&nbsp;[a0;&nbsp;a1;&nbsp;...;&nbsp;an]&nbsp;[b0;&nbsp;b1;&nbsp;...;&nbsp;bn]</code> is
     <code class="code">[f&nbsp;0&nbsp;a0&nbsp;b0;&nbsp;f&nbsp;1&nbsp;a1&nbsp;b1;&nbsp;...;&nbsp;f&nbsp;n&nbsp;an&nbsp;bn]</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatDynArray.html#VALmap2i">map2i</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p>As <a href="BatDynArray.html#VALmapi"><code class="code"><span class="constructor">BatDynArray</span>.mapi</code></a> but on two arrays.</p>
 
 </div>
 </td></tr>
@@ -13817,6 +14354,20 @@
 <td><div class="info">
 <p>Like <a href="BatOption.html#VALmap_default"><code class="code"><span class="constructor">BatOption</span>.map_default</code></a>, but the default value is passed as a thunk that
     is only computed if needed.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.PSet.html#VALmap_endo">map_endo</a> [<a href="BatSet.PSet.html">BatSet.PSet</a>]</td>
+<td><div class="info">
+<p><code class="code">map&nbsp;f&nbsp;x</code> creates a new set with elements <code class="code">f&nbsp;a0</code>,
+      <code class="code">f&nbsp;a1</code>...</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.html#VALmap_endo">map_endo</a> [<a href="BatSet.html">BatSet</a>]</td>
+<td><div class="info">
+<p><code class="code">map_endo&nbsp;f&nbsp;x</code> creates a new set with elements <code class="code">f&nbsp;a0</code>,
+    <code class="code">f&nbsp;a1</code>...</p>
 
 </div>
 </td></tr>
@@ -13888,6 +14439,13 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatEither.html#VALmap_left">map_left</a> [<a href="BatEither.html">BatEither</a>]</td>
+<td><div class="info">
+<p><code class="code">map_left&nbsp;f&nbsp;e</code> is <code class="code"><span class="constructor">Left</span>&nbsp;(f&nbsp;v)</code> if <code class="code">e</code> is <code class="code"><span class="constructor">Left</span>&nbsp;v</code>
+    and <code class="code">e</code> if <code class="code">e</code> is <code class="code"><span class="constructor">Right</span>&nbsp;_</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatRefList.html#VALmap_list">map_list</a> [<a href="BatRefList.html">BatRefList</a>]</td>
 <td><div class="info">
 <p>Apply a function to all elements
@@ -13918,6 +14476,13 @@
 <tr><td><a href="BatFingerTree.S.html#VALmap_right">map_right</a> [<a href="BatFingerTree.S.html">BatFingerTree.S</a>]</td>
 <td><div class="info">
 <p><code class="code">map_right</code> is equivalent to <code class="code"><span class="constructor">List</span>.rev&nbsp;o&nbsp;<span class="constructor">List</span>.map&nbsp;o&nbsp;<span class="constructor">List</span>.rev</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatEither.html#VALmap_right">map_right</a> [<a href="BatEither.html">BatEither</a>]</td>
+<td><div class="info">
+<p><code class="code">map_right&nbsp;f&nbsp;e</code> is <code class="code"><span class="constructor">Right</span>&nbsp;(f&nbsp;v)</code> if <code class="code">e</code> is <code class="code"><span class="constructor">Right</span>&nbsp;v</code>
+    and <code class="code">e</code> if <code class="code">e</code> is <code class="code"><span class="constructor">Left</span>&nbsp;_</code>.</p>
 
 </div>
 </td></tr>
@@ -14166,6 +14731,13 @@
 </td></tr>
 <tr><td><a href="BatFloat.html#VALmax">max</a> [<a href="BatFloat.html">BatFloat</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatDynArray.html#VALmax">max</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">max&nbsp;a</code> returns the largest value in <code class="code">a</code> as judged by
+    <code class="code"><span class="constructor">Pervasives</span>.compare</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatArray.html#VALmax">max</a> [<a href="BatArray.html">BatArray</a>]</td>
 <td><div class="info">
 <p><code class="code">max&nbsp;a</code> returns the largest value in <code class="code">a</code> as judged by
@@ -14201,7 +14773,28 @@
 </td></tr>
 <tr><td><a href="BatMap.html#VALmax_binding">max_binding</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td><div class="info">
-<p>Returns the binding with the largest key.</p>
+<p>Return the <code class="code">(key,&nbsp;value)</code> pair with the largest key.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.PMap.html#VALmax_binding_opt">max_binding_opt</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
+<td><div class="info">
+<p>Return <code class="code"><span class="constructor">Some</span>&nbsp;(key,&nbsp;value)</code> for the <code class="code">key,&nbsp;value</code> pair with 
+      the largest key, or <code class="code"><span class="constructor">None</span></code> if the map is empty.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.S.html#VALmax_binding_opt">max_binding_opt</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
+<td><div class="info">
+<p>Return <code class="code"><span class="constructor">Some</span>&nbsp;(key,&nbsp;value)</code> for the <code class="code">key,&nbsp;value</code> pair with 
+      the largest key, or <code class="code"><span class="constructor">None</span></code> if the map is empty.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.html#VALmax_binding_opt">max_binding_opt</a> [<a href="BatMap.html">BatMap</a>]</td>
+<td><div class="info">
+<p>Return <code class="code"><span class="constructor">Some</span>&nbsp;(key,&nbsp;value)</code> for the <code class="code">key,&nbsp;value</code> pair with 
+    the largest key, or <code class="code"><span class="constructor">None</span></code> if the map is empty.</p>
 
 </div>
 </td></tr>
@@ -14231,6 +14824,27 @@
 <tr><td><a href="BatISet.html#VALmax_elt">max_elt</a> [<a href="BatISet.html">BatISet</a>]</td>
 <td><div class="info">
 <p>Returns the maximum element in the set</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.PSet.html#VALmax_elt_opt">max_elt_opt</a> [<a href="BatSet.PSet.html">BatSet.PSet</a>]</td>
+<td><div class="info">
+<p>Same as <code class="code"><span class="constructor">Set</span>.<span class="constructor">S</span>.min_elt_opt</code>, but for the largest element of the
+      given set.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.S.html#VALmax_elt_opt">max_elt_opt</a> [<a href="BatSet.S.html">BatSet.S</a>]</td>
+<td><div class="info">
+<p>Same as <code class="code"><span class="constructor">Set</span>.<span class="constructor">S</span>.min_elt_opt</code>, but for the largest element of the
+      given set.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.html#VALmax_elt_opt">max_elt_opt</a> [<a href="BatSet.html">BatSet</a>]</td>
+<td><div class="info">
+<p>Same as <code class="code"><span class="constructor">Set</span>.<span class="constructor">S</span>.min_elt_opt</code>, but for the largest element of the
+    given set.</p>
 
 </div>
 </td></tr>
@@ -14454,6 +15068,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatDynArray.html#VALmem">mem</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">mem&nbsp;m&nbsp;a</code> is true if and only if <code class="code">m</code> is equal to an element of <code class="code">a</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatBitSet.html#VALmem">mem</a> [<a href="BatBitSet.html">BatBitSet</a>]</td>
 <td><div class="info">
 <p><code class="code">mem&nbsp;s&nbsp;n</code> returns true if nth-bit in the bitset <code class="code">s</code> is set,
@@ -14531,6 +15151,13 @@
 <tr><td><a href="BatLazyList.html#VALmemq">memq</a> [<a href="BatLazyList.html">BatLazyList</a>]</td>
 <td><div class="info">
 <p>As <code class="code">mem</code>, but with physical equality</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatDynArray.html#VALmemq">memq</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p>Same as <a href="BatDynArray.html#VALmem"><code class="code"><span class="constructor">BatDynArray</span>.mem</code></a> but uses physical equality instead of
+    structural equality to compare array elements.</p>
 
 </div>
 </td></tr>
@@ -14685,6 +15312,13 @@
 </td></tr>
 <tr><td><a href="BatFloat.html#VALmin">min</a> [<a href="BatFloat.html">BatFloat</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatDynArray.html#VALmin">min</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">min&nbsp;a</code> returns the smallest value in <code class="code">a</code> as judged by
+    <code class="code"><span class="constructor">Pervasives</span>.compare</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatArray.html#VALmin">min</a> [<a href="BatArray.html">BatArray</a>]</td>
 <td><div class="info">
 <p><code class="code">min&nbsp;a</code> returns the smallest value in <code class="code">a</code> as judged by
@@ -14713,6 +15347,27 @@
 <tr><td><a href="BatMap.html#VALmin_binding">min_binding</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td><div class="info">
 <p>Returns the binding with the smallest key.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.PMap.html#VALmin_binding_opt">min_binding_opt</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
+<td><div class="info">
+<p>Return <code class="code"><span class="constructor">Some</span>&nbsp;(key,&nbsp;value)</code> for the <code class="code">key,&nbsp;value</code> pair with 
+      the smallest key, or <code class="code"><span class="constructor">None</span></code> if the map is empty.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.S.html#VALmin_binding_opt">min_binding_opt</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
+<td><div class="info">
+<p>Return <code class="code"><span class="constructor">Some</span>&nbsp;(key,&nbsp;value)</code> for the <code class="code">key,&nbsp;value</code> pair with 
+      the smallest key, or <code class="code"><span class="constructor">None</span></code> if the map is empty.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.html#VALmin_binding_opt">min_binding_opt</a> [<a href="BatMap.html">BatMap</a>]</td>
+<td><div class="info">
+<p>Return <code class="code"><span class="constructor">Some</span>&nbsp;(key,&nbsp;value)</code> for the <code class="code">key,&nbsp;value</code> pair with 
+    the smallest key, or <code class="code"><span class="constructor">None</span></code> if the map is empty.</p>
 
 </div>
 </td></tr>
@@ -14745,6 +15400,27 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatSet.PSet.html#VALmin_elt_opt">min_elt_opt</a> [<a href="BatSet.PSet.html">BatSet.PSet</a>]</td>
+<td><div class="info">
+<p>Return <code class="code"><span class="constructor">Some</span>&nbsp;e</code> for the smallest element <code class="code">e</code> of the given set
+      (with respect to the <code class="code"><span class="constructor">Ord</span>.compare</code> ordering).</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.S.html#VALmin_elt_opt">min_elt_opt</a> [<a href="BatSet.S.html">BatSet.S</a>]</td>
+<td><div class="info">
+<p>Return <code class="code"><span class="constructor">Some</span>&nbsp;e</code> for the smallest element <code class="code">e</code> of the given set
+      (with respect to the <code class="code"><span class="constructor">Ord</span>.compare</code> ordering).</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.html#VALmin_elt_opt">min_elt_opt</a> [<a href="BatSet.html">BatSet</a>]</td>
+<td><div class="info">
+<p>Return <code class="code"><span class="constructor">Some</span>&nbsp;e</code> for the smallest element <code class="code">e</code> of the given set
+    (with respect to the <code class="code"><span class="constructor">Ord</span>.compare</code> ordering).</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatNativeint.html#VALmin_int">min_int</a> [<a href="BatNativeint.html">BatNativeint</a>]</td>
 <td><div class="info">
 <p>The greatest representable native integer,
@@ -14769,6 +15445,13 @@
 <td><div class="info">
 <p><code class="code">min_max&nbsp;l</code> returns the pair (smallest, largest) from <code class="code">l</code> as judged by
     <code class="code"><span class="constructor">Pervasives</span>.compare</code> (by default).</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatDynArray.html#VALmin_max">min_max</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">min_max&nbsp;a</code> returns the (smallest, largest) pair of values from <code class="code">a</code>
+    as judged by <code class="code"><span class="constructor">Pervasives</span>.compare</code></p>
 
 </div>
 </td></tr>
@@ -14984,6 +15667,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatDynArray.html#VALmodify">modify</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">modify&nbsp;f&nbsp;a</code> replaces every element <code class="code">x</code> of <code class="code">a</code> with <code class="code">f&nbsp;x</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatBigarray.Array3.html#VALmodify">modify</a> [<a href="BatBigarray.Array3.html">BatBigarray.Array3</a>]</td>
 <td><div class="info">
 <p><code class="code">modify&nbsp;f&nbsp;a</code> changes each element <code class="code">x</code> in <code class="code">a</code> to <code class="code">f&nbsp;x</code>
@@ -15163,6 +15852,14 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatDynArray.html#VALmodifyi">modifyi</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p>Same as <a href="BatDynArray.html#VALmodify"><code class="code"><span class="constructor">BatDynArray</span>.modify</code></a>, but the function is applied to the index of
+    the element as the first argument, and the element itself as
+    the second argument.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatBigarray.Array1.html#VALmodifyi">modifyi</a> [<a href="BatBigarray.Array1.html">BatBigarray.Array1</a>]</td>
 <td><div class="info">
 <p>Same as <code class="code"><span class="constructor">Bigarray</span>.<span class="constructor">Array1</span>.modify</code>, but the function is applied
@@ -15333,6 +16030,13 @@
 <td><div class="info">
 <p>Given n lists, return the n-way cartesian product of
     these lists.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatPrintexc.Slot.html#VALname">name</a> [<a href="BatPrintexc.Slot.html">BatPrintexc.Slot</a>]</td>
+<td><div class="info">
+<p><code class="code">name&nbsp;slot</code> returns the name of the function or definition
+      enclosing the location referred to by the slot.</p>
 
 </div>
 </td></tr>
@@ -15749,6 +16453,12 @@
 <td><div class="info">
 <p><code class="code">null_formatter</code> is a formatter that does not output any
     events, but simply discards them.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatGc.Memprof.html#VALnull_tracker">null_tracker</a> [<a href="BatGc.Memprof.html">BatGc.Memprof</a>]</td>
+<td><div class="info">
+<p>Default callbacks simply return <code class="code"><span class="constructor">None</span></code> or <code class="code">()</code></p>
 
 </div>
 </td></tr>
@@ -16574,9 +17284,45 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatSet.PSet.html#VALof_seq">of_seq</a> [<a href="BatSet.PSet.html">BatSet.PSet</a>]</td>
+<td><div class="info">
+<p>build a set from the given elements</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.S.html#VALof_seq">of_seq</a> [<a href="BatSet.S.html">BatSet.S</a>]</td>
+<td><div class="info">
+<p>build a set from the given elements</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.html#VALof_seq">of_seq</a> [<a href="BatSet.html">BatSet</a>]</td>
+<td><div class="info">
+<p>build a set from the given elements</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatQueue.html#VALof_seq">of_seq</a> [<a href="BatQueue.html">BatQueue</a>]</td>
 <td><div class="info">
 <p>Create a queue from the generator</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.PMap.html#VALof_seq">of_seq</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
+<td><div class="info">
+<p>build a map from the given bindings</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.S.html#VALof_seq">of_seq</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
+<td><div class="info">
+<p>build a map from the given bindings</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.html#VALof_seq">of_seq</a> [<a href="BatMap.html">BatMap</a>]</td>
+<td><div class="info">
+<p>build a map from the given bindings</p>
 
 </div>
 </td></tr>
@@ -17270,7 +18016,12 @@
 <tr><td><a href="BatLog.Make_lev.html#VALoutput">output</a> [<a href="BatLog.Make_lev.html">BatLog.Make_lev</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatLog.Easy.html#VALoutput">output</a> [<a href="BatLog.Easy.html">BatLog.Easy</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p>Set this ref to the output you want logging messages to go
+      to.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatLog.html#VALoutput">output</a> [<a href="BatLog.html">BatLog</a>]</td>
 <td><div class="info">
 <p>This ref holds the output channel for simple logging.</p>
@@ -17577,6 +18328,15 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatDynArray.html#VALpartition">partition</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">partition&nbsp;p&nbsp;a</code> returns a pair of arrays <code class="code">(a1,&nbsp;a2)</code>, where
+    <code class="code">a1</code> is the array of all the elements of <code class="code">a</code> that
+    satisfy the predicate <code class="code">p</code>, and <code class="code">a2</code> is the array of all the
+    elements of <code class="code">a</code> that do not satisfy <code class="code">p</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatArray.Cap.html#VALpartition">partition</a> [<a href="BatArray.Cap.html">BatArray.Cap</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatArray.html#VALpartition">partition</a> [<a href="BatArray.html">BatArray</a>]</td>
@@ -17585,6 +18345,19 @@
     <code class="code">a1</code> is the array of all the elements of <code class="code">a</code> that
     satisfy the predicate <code class="code">p</code>, and <code class="code">a2</code> is the array of all the
     elements of <code class="code">a</code> that do not satisfy <code class="code">p</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatList.Labels.html#VALpartition_map">partition_map</a> [<a href="BatList.Labels.html">BatList.Labels</a>]</td>
+<td></td></tr>
+<tr><td><a href="BatList.html#VALpartition_map">partition_map</a> [<a href="BatList.html">BatList</a>]</td>
+<td><div class="info">
+<p><code class="code">partition_map&nbsp;f&nbsp;l</code> returns a pair of lists <code class="code">(l1,&nbsp;l2)</code> such that,
+    for each element <code class="code">x</code> of the input list <code class="code">l</code>: if <code class="code">f&nbsp;x</code> is <code class="code"><span class="constructor">Left</span>&nbsp;y1</code>, then <code class="code">y1</code> is in <code class="code">l1</code>, and, if <code class="code">f&nbsp;x</code> is <code class="code"><span class="constructor">Right</span>&nbsp;y2</code>, then <code class="code">y2</code> is in <code class="code">l2</code>.
+    The output elements are included in <code class="code">l1</code> and <code class="code">l2</code> in the same
+    relative order as the corresponding input elements in <code class="code">l</code>.
+    In particular, <code class="code">partition_map&nbsp;(<span class="keyword">fun</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keyword">if</span>&nbsp;f&nbsp;x&nbsp;<span class="keyword">then</span>&nbsp;<span class="constructor">Left</span>&nbsp;x&nbsp;<span class="keyword">else</span>&nbsp;<span class="constructor">Right</span>&nbsp;x)&nbsp;l</code>
+    is equivalent to <code class="code">partition&nbsp;f&nbsp;l</code>.</p>
 
 </div>
 </td></tr>
@@ -17933,9 +18706,13 @@
 <tr><td><a href="BatNativeint.html#VALpow">pow</a> [<a href="BatNativeint.html">BatNativeint</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatInt64.html#VALpow">pow</a> [<a href="BatInt64.html">BatInt64</a>]</td>
-<td></td></tr>
+<td><div class="info">
+</div>
+</td></tr>
 <tr><td><a href="BatInt32.html#VALpow">pow</a> [<a href="BatInt32.html">BatInt32</a>]</td>
-<td></td></tr>
+<td><div class="info">
+</div>
+</td></tr>
 <tr><td><a href="BatInt.Safe_int.html#VALpow">pow</a> [<a href="BatInt.Safe_int.html">BatInt.Safe_int</a>]</td>
 <td><div class="info">
 <p><code class="code">pow&nbsp;a&nbsp;b</code> computes a<sup class="superscript">b</sup>.</p>
@@ -17991,13 +18768,7 @@
 <tr><td><a href="BatFormat.html#VALpp_get_formatter_output_functions">pp_get_formatter_output_functions</a> [<a href="BatFormat.html">BatFormat</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatFormat.html#VALpp_get_formatter_tag_functions">pp_get_formatter_tag_functions</a> [<a href="BatFormat.html">BatFormat</a>]</td>
-<td><div class="info">
-<p>These functions are the basic ones: usual functions
-    operating on the standard formatter are defined via partial
-    evaluation of these primitives.</p>
-
-</div>
-</td></tr>
+<td></td></tr>
 <tr><td><a href="BatFormat.html#VALpp_get_margin">pp_get_margin</a> [<a href="BatFormat.html">BatFormat</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatFormat.html#VALpp_get_mark_tags">pp_get_mark_tags</a> [<a href="BatFormat.html">BatFormat</a>]</td>
@@ -18855,6 +19626,13 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatDynArray.html#VALrange">range</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">range&nbsp;a</code> returns an enumeration of all valid indices of the given
+    array, that is, <code class="code">range&nbsp;a&nbsp;=&nbsp;0&nbsp;--^&nbsp;((length&nbsp;a)&nbsp;-1&nbsp;)</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatChar.html#VALrange">range</a> [<a href="BatChar.html">BatChar</a>]</td>
 <td><div class="info">
 <p><code class="code">range&nbsp;from&nbsp;?until</code> produces an enumeration of the
@@ -19404,6 +20182,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatDynArray.html#VALreduce">reduce</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">reduce&nbsp;f&nbsp;a</code> is <code class="code">fold_left&nbsp;f&nbsp;a0&nbsp;[a1,&nbsp;...&nbsp;aN]</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatArray.html#VALreduce">reduce</a> [<a href="BatArray.html">BatArray</a>]</td>
 <td><div class="info">
 <p><code class="code"><span class="constructor">Array</span>.reduce&nbsp;f&nbsp;a</code> is <code class="code">fold_left&nbsp;f&nbsp;a.(0)&nbsp;[|a.(1);&nbsp;..;&nbsp;a.(n-1)|]</code>.</p>
@@ -19712,6 +20496,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatArray.html#VALremove_at">remove_at</a> [<a href="BatArray.html">BatArray</a>]</td>
+<td><div class="info">
+<p><code class="code">remove_at&nbsp;i&nbsp;a</code> returns the array <code class="code">a</code> without the element at index <code class="code">i</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatSet.PSet.html#VALremove_exn">remove_exn</a> [<a href="BatSet.PSet.html">BatSet.PSet</a>]</td>
 <td><div class="info">
 <p><code class="code">remove_exn&nbsp;x&nbsp;s</code> behaves like <code class="code">remove&nbsp;x&nbsp;s</code> except that it raises
@@ -19939,6 +20729,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatSeq.html#VALreturn">return</a> [<a href="BatSeq.html">BatSeq</a>]</td>
+<td><div class="info">
+<p>the singleton sequence, containing only the given element</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatReturn.html#VALreturn">return</a> [<a href="BatReturn.html">BatReturn</a>]</td>
 <td><div class="info">
 <p>Return to a label.</p>
@@ -20005,6 +20801,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatDynArray.html#VALrev">rev</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p>Array reversal.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatDllist.html#VALrev">rev</a> [<a href="BatDllist.html">BatDllist</a>]</td>
 <td><div class="info">
 <p>List reversal.</p>
@@ -20058,6 +20860,12 @@
 <p><code class="code">rev_in_place&nbsp;s</code> mutates the byte sequence <code class="code">s</code>, so that its new value is
     the mirror of its old one: for instance if s contained <code class="code"><span class="string">"Example!"</span></code>, after
     the mutation it will contain <code class="code"><span class="string">"!elpmaxE"</span></code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatDynArray.html#VALrev_in_place">rev_in_place</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p>In-place array reversal.</p>
 
 </div>
 </td></tr>
@@ -20239,6 +21047,18 @@
 <tr><td><a href="BatString.html#VALright">right</a> [<a href="BatString.html">BatString</a>]</td>
 <td><div class="info">
 <p><code class="code">right&nbsp;r&nbsp;len</code> returns the string containing the <code class="code">len</code> last characters of <code class="code">r</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatEither.html#VALright">right</a> [<a href="BatEither.html">BatEither</a>]</td>
+<td><div class="info">
+<p><code class="code">right&nbsp;v</code> is <code class="code"><span class="constructor">Right</span>&nbsp;v</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatDynArray.html#VALright">right</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">right&nbsp;r&nbsp;len</code> returns the array containing the <code class="code">len</code> last characters of <code class="code">r</code>.</p>
 
 </div>
 </td></tr>
@@ -20817,13 +21637,7 @@
 </div>
 </td></tr>
 <tr><td><a href="BatFormat.html#VALset_all_formatter_output_functions">set_all_formatter_output_functions</a> [<a href="BatFormat.html">BatFormat</a>]</td>
-<td><div class="info">
-<p><code class="code">set_all_formatter_output_functions&nbsp;out&nbsp;flush&nbsp;outnewline&nbsp;outspace</code>
-    redirects the pretty-printer output to the functions <code class="code">out</code> and
-    <code class="code">flush</code> as described in <code class="code">set_formatter_output_functions</code>.</p>
-
-</div>
-</td></tr>
+<td></td></tr>
 <tr><td><a href="BatteriesConfig.html#VALset_browser">set_browser</a> [<a href="BatteriesConfig.html">BatteriesConfig</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatUnix.html#VALset_close_on_exec">set_close_on_exec</a> [<a href="BatUnix.html">BatUnix</a>]</td>
@@ -20836,6 +21650,13 @@
 <td><div class="info">
 <p>Set the text of the ellipsis printed when too many boxes
     are opened (a single dot, <code class="code">.</code>, by default).</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatLexing.html#VALset_filename">set_filename</a> [<a href="BatLexing.html">BatLexing</a>]</td>
+<td><div class="info">
+<p>Set filename in the initial tracked position to <code class="code">file</code> in
+   <code class="code">lexbuf</code>.</p>
 
 </div>
 </td></tr>
@@ -20852,13 +21673,7 @@
 </div>
 </td></tr>
 <tr><td><a href="BatFormat.html#VALset_formatter_output_functions">set_formatter_output_functions</a> [<a href="BatFormat.html">BatFormat</a>]</td>
-<td><div class="info">
-<p><code class="code">set_formatter_output_functions&nbsp;out&nbsp;flush</code> redirects the
-    relevant pretty-printer output functions to the functions <code class="code">out</code> and
-    <code class="code">flush</code>.</p>
-
-</div>
-</td></tr>
+<td></td></tr>
 <tr><td><a href="BatFormat.html#VALset_formatter_tag_functions">set_formatter_tag_functions</a> [<a href="BatFormat.html">BatFormat</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatParserCo.Source.html#VALset_full_state">set_full_state</a> [<a href="BatParserCo.Source.html">BatParserCo.Source</a>]</td>
@@ -20943,8 +21758,7 @@
 </td></tr>
 <tr><td><a href="BatFormat.html#VALset_mark_tags">set_mark_tags</a> [<a href="BatFormat.html">BatFormat</a>]</td>
 <td><div class="info">
-<p><code class="code">set_print_tags&nbsp;b</code> turns on or off the printing of tags, while
-    <code class="code">set_mark_tags&nbsp;b</code> turns on or off the output of tag markers.</p>
+<p><code class="code">set_mark_tags&nbsp;b</code> turns on or off the output of tag markers.</p>
 
 </div>
 </td></tr>
@@ -20976,8 +21790,18 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatLexing.html#VALset_position">set_position</a> [<a href="BatLexing.html">BatLexing</a>]</td>
+<td><div class="info">
+<p>Set the initial tracked input position for <code class="code">lexbuf</code> to a custom value.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatFormat.html#VALset_print_tags">set_print_tags</a> [<a href="BatFormat.html">BatFormat</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">set_print_tags&nbsp;b</code> turns on or off the printing of tags.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatDynArray.html#VALset_resizer">set_resizer</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
 <td><div class="info">
 <p>Change the resizer for this array.</p>
@@ -21560,6 +22384,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatDynArray.html#VALsingleton">singleton</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p>Create an array consisting of exactly one element.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatArray.html#VALsingleton">singleton</a> [<a href="BatArray.html">BatArray</a>]</td>
 <td><div class="info">
 <p>Create an array consisting of exactly one element.</p>
@@ -22059,6 +22889,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatDynArray.html#VALsplit">split</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">split&nbsp;a</code> converts the array of pairs <code class="code">a</code> into a pair of arrays.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatArray.Cap.html#VALsplit">split</a> [<a href="BatArray.Cap.html">BatArray.Cap</a>]</td>
 <td></td></tr>
 <tr><td><a href="BatArray.html#VALsplit">split</a> [<a href="BatArray.html">BatArray</a>]</td>
@@ -22368,6 +23204,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatGc.Memprof.html#VALstart">start</a> [<a href="BatGc.Memprof.html">BatGc.Memprof</a>]</td>
+<td><div class="info">
+<p>Start the sampling with the given parameters.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatText.html#VALstarts_with">starts_with</a> [<a href="BatText.html">BatText</a>]</td>
 <td><div class="info">
 <p><code class="code">starts_with&nbsp;s&nbsp;x</code> returns <code class="code"><span class="keyword">true</span></code> if <code class="code">s</code> is starting with <code class="code">x</code>, <code class="code"><span class="keyword">false</span></code> otherwise.</p>
@@ -22526,6 +23368,12 @@
 <td><div class="info">
 <p>The stepwise resizer- another example of a resizer function, this
     time of a parameterized resizer.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatGc.Memprof.html#VALstop">stop</a> [<a href="BatGc.Memprof.html">BatGc.Memprof</a>]</td>
+<td><div class="info">
+<p>Stop the sampling.</p>
 
 </div>
 </td></tr>
@@ -22750,8 +23598,8 @@
 <td></td></tr>
 <tr><td><a href="BatDynArray.html#VALsub">sub</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
 <td><div class="info">
-<p><code class="code">sub&nbsp;darr&nbsp;start&nbsp;len</code> returns an array holding the subset of <code class="code">len</code>
-    elements from <code class="code">darr</code> starting with the element at index <code class="code">idx</code>.</p>
+<p><code class="code">sub&nbsp;a&nbsp;start&nbsp;len</code> returns an array holding the subset of <code class="code">len</code>
+    elements from <code class="code">a</code> starting with the element at index <code class="code">idx</code>.</p>
 
 </div>
 </td></tr>
@@ -22999,6 +23847,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatDynArray.html#VALsum">sum</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">sum&nbsp;l</code> returns the sum of the integers of <code class="code">l</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatArray.html#VALsum">sum</a> [<a href="BatArray.html">BatArray</a>]</td>
 <td><div class="info">
 <p><code class="code">sum&nbsp;l</code> returns the sum of the integers of <code class="code">l</code></p>
@@ -23146,6 +24000,12 @@
 <p><code class="code">tail&nbsp;t</code> returns <code class="code"><span class="constructor">None</span></code> when <code class="code">t</code> is empty,
       or <code class="code"><span class="constructor">Some</span>&nbsp;tl</code> where <code class="code">tl</code> is the sequence <code class="code">t</code> where the first element
       has been removed.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatDynArray.html#VALtail">tail</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">tail&nbsp;r&nbsp;pos</code> returns the array containing all but the <code class="code">pos</code> first characters of <code class="code">r</code>.</p>
 
 </div>
 </td></tr>
@@ -23903,9 +24763,63 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatSet.PSet.html#VALto_rev_seq">to_rev_seq</a> [<a href="BatSet.PSet.html">BatSet.PSet</a>]</td>
+<td><div class="info">
+<p>Iterate on the whole set, in descending order.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.S.html#VALto_rev_seq">to_rev_seq</a> [<a href="BatSet.S.html">BatSet.S</a>]</td>
+<td><div class="info">
+<p>Iterate on the whole set, in descending order.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.html#VALto_rev_seq">to_rev_seq</a> [<a href="BatSet.html">BatSet</a>]</td>
+<td><div class="info">
+<p>Iterate on the whole set, in descending order.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.PMap.html#VALto_rev_seq">to_rev_seq</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
+<td><div class="info">
+<p>Iterate on the whole map, in descending order of keys.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.S.html#VALto_rev_seq">to_rev_seq</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
+<td><div class="info">
+<p>Iterate on the whole map, in descending order of keys.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.html#VALto_rev_seq">to_rev_seq</a> [<a href="BatMap.html">BatMap</a>]</td>
+<td><div class="info">
+<p>Iterate on the whole map, in descending order of keys.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatString.html#VALto_seq">to_seq</a> [<a href="BatString.html">BatString</a>]</td>
 <td><div class="info">
 <p>Iterate on the string, in increasing index order.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.PSet.html#VALto_seq">to_seq</a> [<a href="BatSet.PSet.html">BatSet.PSet</a>]</td>
+<td><div class="info">
+<p>Iterate on the whole set, in ascending order.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.S.html#VALto_seq">to_seq</a> [<a href="BatSet.S.html">BatSet.S</a>]</td>
+<td><div class="info">
+<p>Iterate on the whole set, in ascending order.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.html#VALto_seq">to_seq</a> [<a href="BatSet.html">BatSet</a>]</td>
+<td><div class="info">
+<p>Iterate on the whole set, in ascending order.</p>
 
 </div>
 </td></tr>
@@ -23918,6 +24832,24 @@
 <tr><td><a href="BatQueue.html#VALto_seq">to_seq</a> [<a href="BatQueue.html">BatQueue</a>]</td>
 <td><div class="info">
 <p>Iterate on the queue, in front-to-back order.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.PMap.html#VALto_seq">to_seq</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
+<td><div class="info">
+<p>Iterate on the whole map, in ascending order of keys.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.S.html#VALto_seq">to_seq</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
+<td><div class="info">
+<p>Iterate on the whole map, in ascending order of keys.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.html#VALto_seq">to_seq</a> [<a href="BatMap.html">BatMap</a>]</td>
+<td><div class="info">
+<p>Iterate on the whole map, in ascending order of keys.</p>
 
 </div>
 </td></tr>
@@ -23941,6 +24873,48 @@
 </td></tr>
 <tr><td><a href="BatArray.html#VALto_seq">to_seq</a> [<a href="BatArray.html">BatArray</a>]</td>
 <td></td></tr>
+<tr><td><a href="BatSet.PSet.html#VALto_seq_from">to_seq_from</a> [<a href="BatSet.PSet.html">BatSet.PSet</a>]</td>
+<td><div class="info">
+<p><code class="code">to_seq_from&nbsp;x&nbsp;s</code> iterates on a subset of the elements in <code class="code">s</code>, 
+      namely those greater or equal to <code class="code">x</code>, in ascending order.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.S.html#VALto_seq_from">to_seq_from</a> [<a href="BatSet.S.html">BatSet.S</a>]</td>
+<td><div class="info">
+<p><code class="code">to_seq_from&nbsp;x&nbsp;s</code> iterates on a subset of the elements in <code class="code">s</code>, 
+      namely those greater or equal to <code class="code">x</code>, in ascending order.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSet.html#VALto_seq_from">to_seq_from</a> [<a href="BatSet.html">BatSet</a>]</td>
+<td><div class="info">
+<p><code class="code">to_seq_from&nbsp;x&nbsp;s</code> iterates on a subset of the elements in <code class="code">s</code>, 
+    namely those greater or equal to <code class="code">x</code>, in ascending order.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.PMap.html#VALto_seq_from">to_seq_from</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
+<td><div class="info">
+<p><code class="code">to_seq_from&nbsp;k&nbsp;m</code> iterates on a subset of the bindings in <code class="code">m</code>, 
+      namely those bindings greater or equal to <code class="code">k</code>, in ascending order.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.S.html#VALto_seq_from">to_seq_from</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
+<td><div class="info">
+<p><code class="code">to_seq_from&nbsp;k&nbsp;m</code> iterates on a subset of the bindings in <code class="code">m</code>, 
+      namely those bindings greater or equal to <code class="code">k</code>, in ascending order.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.html#VALto_seq_from">to_seq_from</a> [<a href="BatMap.html">BatMap</a>]</td>
+<td><div class="info">
+<p><code class="code">to_seq_from&nbsp;k&nbsp;m</code> iterates on a subset of the bindings in <code class="code">m</code>, 
+    namely those bindings greater or equal to <code class="code">k</code>, in ascending order.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatString.html#VALto_seqi">to_seqi</a> [<a href="BatString.html">BatString</a>]</td>
 <td><div class="info">
 <p>Iterate on the string, in increasing order, yielding indices along chars</p>
@@ -24045,8 +25019,7 @@
 </td></tr>
 <tr><td><a href="BatLog.Level_sig.html#VALto_string">to_string</a> [<a href="BatLog.Level_sig.html">BatLog.Level_sig</a>]</td>
 <td><div class="info">
-<p>The default level for loggers created with this; log messages
-      with level less than this won't be printed by default.</p>
+<p>Convert each level to a string</p>
 
 </div>
 </td></tr>
@@ -24241,7 +25214,7 @@
 <tr><td><a href="BatString.html#VALtrim">trim</a> [<a href="BatString.html">BatString</a>]</td>
 <td><div class="info">
 <p>Return a copy of the argument, without leading and trailing
-    whitespace.</p>
+    whitespace (according to <a href="BatChar.html#VALis_whitespace"><code class="code"><span class="constructor">BatChar</span>.is_whitespace</code></a>).</p>
 
 </div>
 </td></tr>
@@ -24371,7 +25344,7 @@
 <td></td></tr>
 <tr><td><a href="BatPervasives.html#VALuncurry">uncurry</a> [<a href="BatPervasives.html">BatPervasives</a>]</td>
 <td><div class="info">
-<p>Convert a function which accepts a two arguments into a function
+<p>Convert a function which accepts two arguments into a function
     which accepts a pair of arguments.</p>
 
 </div>
@@ -24387,6 +25360,12 @@
 <tr><td><a href="BatPervasives.html#VALundefined">undefined</a> [<a href="BatPervasives.html">BatPervasives</a>]</td>
 <td><div class="info">
 <p>The undefined function.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatSeq.html#VALunfold">unfold</a> [<a href="BatSeq.html">BatSeq</a>]</td>
+<td><div class="info">
+<p>Build a sequence from a step function and an initial value.</p>
 
 </div>
 </td></tr>
@@ -24454,6 +25433,13 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatMap.S.html#VALunion">union</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
+<td><div class="info">
+<p><code class="code">union&nbsp;f&nbsp;m1&nbsp;m2</code> computes a map whose keys are a subset of the keys of 
+      <code class="code">m1</code> and of <code class="code">m2</code>.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatMap.html#VALunion">union</a> [<a href="BatMap.html">BatMap</a>]</td>
 <td><div class="info">
 <p><code class="code">union&nbsp;m1&nbsp;m2</code> merges two maps, using the comparison function of
@@ -24476,6 +25462,20 @@
 <tr><td><a href="BatBitSet.html#VALunion">union</a> [<a href="BatBitSet.html">BatBitSet</a>]</td>
 <td><div class="info">
 <p><code class="code">union&nbsp;s&nbsp;t</code> return the union of sets <code class="code">s</code>  and <code class="code">t</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.PMap.html#VALunion_stdlib">union_stdlib</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
+<td><div class="info">
+<p><code class="code">union&nbsp;f&nbsp;m1&nbsp;m2</code> computes a map whose keys are a subset of the keys of 
+      <code class="code">m1</code> and of <code class="code">m2</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.html#VALunion_stdlib">union_stdlib</a> [<a href="BatMap.html">BatMap</a>]</td>
+<td><div class="info">
+<p><code class="code">union_stdlib&nbsp;f&nbsp;m1&nbsp;m2</code> computes a map whose keys are a subset of the keys of 
+    <code class="code">m1</code> and of <code class="code">m2</code>.</p>
 
 </div>
 </td></tr>
@@ -24693,6 +25693,10 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatDynArray.html#VALunsafe_upd">unsafe_upd</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+</div>
+</td></tr>
 <tr><td><a href="BatBitSet.html#VALunset">unset</a> [<a href="BatBitSet.html">BatBitSet</a>]</td>
 <td><div class="info">
 <p><code class="code">unset&nbsp;s&nbsp;n</code> sets the <code class="code">n</code>th-bit in the bitset <code class="code">s</code> to false.</p>
@@ -24786,6 +25790,13 @@
 
 </div>
 </td></tr>
+<tr><td><a href="BatDynArray.html#VALupd">upd</a> [<a href="BatDynArray.html">BatDynArray</a>]</td>
+<td><div class="info">
+<p><code class="code">upd&nbsp;darr&nbsp;idx&nbsp;f</code> sets the element of <code class="code">darr</code> at index <code class="code">idx</code> to value
+    <code class="code">f&nbsp;(get&nbsp;darr&nbsp;idx)</code>).</p>
+
+</div>
+</td></tr>
 <tr><td><a href="BatSet.PSet.html#VALupdate">update</a> [<a href="BatSet.PSet.html">BatSet.PSet</a>]</td>
 <td><div class="info">
 <p><code class="code">update&nbsp;x&nbsp;y&nbsp;s</code> replace <code class="code">x</code> by <code class="code">y</code> in <code class="code">s</code>.</p>
@@ -24828,6 +25839,30 @@
 <tr><td><a href="BatFingerTree.html#VALupdate">update</a> [<a href="BatFingerTree.html">BatFingerTree</a>]</td>
 <td><div class="info">
 <p><code class="code">update&nbsp;t&nbsp;i&nbsp;f</code> returns <code class="code">t</code> where the <code class="code">i</code>-th element is now <code class="code">f&nbsp;(get&nbsp;i&nbsp;t)</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.PMap.html#VALupdate_stdlib">update_stdlib</a> [<a href="BatMap.PMap.html">BatMap.PMap</a>]</td>
+<td><div class="info">
+<p><code class="code">update_stdlib&nbsp;k&nbsp;f&nbsp;m</code> returns a map containing the same bindings as <code class="code">m</code>,
+      except <code class="code">k</code> has a new binding as determined by <code class="code">f</code>:
+      First, calculate <code class="code">y</code> as <code class="code">f&nbsp;(find_opt&nbsp;k&nbsp;m)</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.S.html#VALupdate_stdlib">update_stdlib</a> [<a href="BatMap.S.html">BatMap.S</a>]</td>
+<td><div class="info">
+<p><code class="code">update_stdlib&nbsp;k&nbsp;f&nbsp;m</code> returns a map containing the same bindings as <code class="code">m</code>,
+      except <code class="code">k</code> has a new binding as determined by <code class="code">f</code>:
+      First, calculate <code class="code">y</code> as <code class="code">f&nbsp;(find_opt&nbsp;k&nbsp;m)</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="BatMap.html#VALupdate_stdlib">update_stdlib</a> [<a href="BatMap.html">BatMap</a>]</td>
+<td><div class="info">
+<p><code class="code">update_stdlib&nbsp;k&nbsp;f&nbsp;m</code> returns a map containing the same bindings as <code class="code">m</code>,
+    except <code class="code">k</code> has a new binding as determined by <code class="code">f</code>:
+    First, calculate <code class="code">y</code> as <code class="code">f&nbsp;(find_opt&nbsp;k&nbsp;m)</code>.</p>
 
 </div>
 </td></tr>

@@ -36,6 +36,7 @@
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
+<link title="BatEither" rel="Chapter" href="BatEither.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
 <link title="BatFilename" rel="Chapter" href="BatFilename.html">
@@ -906,6 +907,24 @@
     elements of <code class="code">l</code> that do not satisfy <code class="code">p</code>.
     The order of the elements in the input list is preserved.</p>
 </div>
+</div>
+
+<pre><span id="VALpartition_map"><span class="keyword">val</span> partition_map</span> : <code class="type">('a -> ('b, 'c) <a href="BatEither.html#TYPEt">BatEither.t</a>) -> 'a list -> 'b list * 'c list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">partition_map&nbsp;f&nbsp;l</code> returns a pair of lists <code class="code">(l1,&nbsp;l2)</code> such that,
+    for each element <code class="code">x</code> of the input list <code class="code">l</code>:</p>
+<ul>
+<li>if <code class="code">f&nbsp;x</code> is <code class="code"><span class="constructor">Left</span>&nbsp;y1</code>, then <code class="code">y1</code> is in <code class="code">l1</code>, and</li>
+<li>if <code class="code">f&nbsp;x</code> is <code class="code"><span class="constructor">Right</span>&nbsp;y2</code>, then <code class="code">y2</code> is in <code class="code">l2</code>.
+    The output elements are included in <code class="code">l1</code> and <code class="code">l2</code> in the same
+    relative order as the corresponding input elements in <code class="code">l</code>.
+    In particular, <code class="code">partition_map&nbsp;(<span class="keyword">fun</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keyword">if</span>&nbsp;f&nbsp;x&nbsp;<span class="keyword">then</span>&nbsp;<span class="constructor">Left</span>&nbsp;x&nbsp;<span class="keyword">else</span>&nbsp;<span class="constructor">Right</span>&nbsp;x)&nbsp;l</code>
+    is equivalent to <code class="code">partition&nbsp;f&nbsp;l</code>.</li>
+</ul>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
 </div>
 
 <pre><span id="VALindex_of"><span class="keyword">val</span> index_of</span> : <code class="type">'a -> 'a list -> int option</code></pre><div class="info ">

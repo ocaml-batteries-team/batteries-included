@@ -36,6 +36,7 @@
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
+<link title="BatEither" rel="Chapter" href="BatEither.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
 <link title="BatFilename" rel="Chapter" href="BatFilename.html">
@@ -254,6 +255,24 @@
 </div>
 </div>
 
+<pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">'a <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>the empty sequence, containing no elements</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
+</div>
+
+<pre><span id="VALreturn"><span class="keyword">val</span> return</span> : <code class="type">'a -> 'a <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>the singleton sequence, containing only the given element</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
+</div>
+
 <pre><span id="VALcons"><span class="keyword">val</span> cons</span> : <code class="type">'a -> 'a <a href="BatSeq.html#TYPEt">t</a> -> 'a <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">cons&nbsp;e&nbsp;s&nbsp;=&nbsp;<span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Cons</span>(e,&nbsp;s)</code></p>
@@ -283,6 +302,31 @@
 </div>
 <ul class="info-attributes">
 <li><b>Since</b> 2.2.0</li>
+</ul>
+</div>
+
+<pre><span id="VALunfold"><span class="keyword">val</span> unfold</span> : <code class="type">('b -> ('a * 'b) option) -> 'b -> 'a <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Build a sequence from a step function and an initial value.
+    <code class="code">unfold&nbsp;f&nbsp;u</code> returns <code class="code">empty</code> if <code class="code">f&nbsp;u</code> returns <code class="code"><span class="constructor">None</span></code>,
+    or <code class="code"><span class="keyword">fun</span>&nbsp;()&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Cons</span>&nbsp;(x,&nbsp;unfold&nbsp;f&nbsp;y)</code> if <code class="code">f&nbsp;u</code> returns <code class="code"><span class="constructor">Some</span>&nbsp;(x,&nbsp;y)</code>.</p>
+
+<p>For example, <code class="code">unfold&nbsp;(<span class="keyword">function</span>&nbsp;[]&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">None</span>&nbsp;<span class="keywordsign">|</span>&nbsp;h::t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Some</span>&nbsp;(h,t))&nbsp;l</code>
+    is equivalent to <code class="code"><span class="constructor">List</span>.to_seq&nbsp;l</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+</ul>
+</div>
+
+<pre><span id="VALflat_map"><span class="keyword">val</span> flat_map</span> : <code class="type">('a -> 'b <a href="BatSeq.html#TYPEt">t</a>) -> 'a <a href="BatSeq.html#TYPEt">t</a> -> 'b <a href="BatSeq.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Map each element to a subsequence, then return each element of this
+    sub-sequence in turn. This transformation is lazy, it only applies
+    when the result is traversed.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
 </ul>
 </div>
 <h7 id="6_Iterators">Iterators</h7>

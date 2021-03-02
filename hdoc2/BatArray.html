@@ -35,6 +35,7 @@
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
+<link title="BatEither" rel="Chapter" href="BatEither.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
 <link title="BatFilename" rel="Chapter" href="BatFilename.html">
@@ -893,6 +894,16 @@
 </div>
 <ul class="info-attributes">
 <li><b>Raises</b> <code>Invalid_argument</code> if <code class="code">i&nbsp;&lt;&nbsp;0&nbsp;<span class="keywordsign">||</span>&nbsp;i&nbsp;&gt;&nbsp;<span class="constructor">Array</span>.length&nbsp;xs</code>.</li>
+</ul>
+</div>
+
+<pre><span id="VALremove_at"><span class="keyword">val</span> remove_at</span> : <code class="type">int -> 'a array -> 'a array</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">remove_at&nbsp;i&nbsp;a</code> returns the array <code class="code">a</code> without the element at index <code class="code">i</code>.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 3.3.0</li>
+<li><b>Raises</b> <code>Invalid_argument</code> if <code class="code">i</code> is outside of <code class="code">a</code> bounds.</li>
 </ul>
 </div>
 <h7 id="6_Boilerplatecode">Boilerplate code</h7>

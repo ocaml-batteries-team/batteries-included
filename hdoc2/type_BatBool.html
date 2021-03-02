@@ -31,6 +31,7 @@
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
+<link title="BatEither" rel="Chapter" href="BatEither.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
 <link title="BatFilename" rel="Chapter" href="BatFilename.html">
@@ -125,8 +126,6 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;div&nbsp;:&nbsp;<span class="constructor">BatBool</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatBool</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatBool</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;modulo&nbsp;:&nbsp;<span class="constructor">BatBool</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatBool</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatBool</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;pow&nbsp;:&nbsp;<span class="constructor">BatBool</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatBool</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatBool</span>.t<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;min_num&nbsp;:&nbsp;bool<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;max_num&nbsp;:&nbsp;bool<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;compare&nbsp;:&nbsp;bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;equal&nbsp;:&nbsp;bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;ord&nbsp;:&nbsp;bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatOrd</span>.order<br>
@@ -144,6 +143,9 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;--&nbsp;)&nbsp;:&nbsp;<span class="constructor">BatBool</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatBool</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatBool</span>.t&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;(&nbsp;---&nbsp;)&nbsp;:&nbsp;<span class="constructor">BatBool</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatBool</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">BatBool</span>.t&nbsp;<span class="constructor">BatEnum</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;operations&nbsp;:&nbsp;<span class="constructor">BatBool</span>.t&nbsp;<span class="constructor">BatNumber</span>.numeric<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;bounded<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;min_num&nbsp;:&nbsp;bounded<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;max_num&nbsp;:&nbsp;bounded<br>
 &nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Infix</span>&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">sig</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;bat__infix_t&nbsp;=&nbsp;t<br>

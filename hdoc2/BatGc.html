@@ -36,6 +36,7 @@
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
+<link title="BatEither" rel="Chapter" href="BatEither.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
 <link title="BatFilename" rel="Chapter" href="BatFilename.html">
@@ -825,5 +826,33 @@
 <p><code class="code">delete_alarm&nbsp;a</code> will stop the calls to the function associated
       to <code class="code">a</code>.  Calling <code class="code">delete_alarm&nbsp;a</code> again has no effect.</p>
 </div>
+</div>
+
+<pre><span id="VALeventlog_pause"><span class="keyword">val</span> eventlog_pause</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">eventlog_pause&nbsp;()</code> will pause the collection of traces in the
+   runtime.
+   Traces are collected if the program is linked to the instrumented runtime
+   and started with the environment variable OCAML_EVENTLOG_ENABLED.
+   Events are flushed to disk after pausing, and no new events will be
+   recorded until <code class="code">eventlog_resume</code> is called.</p>
+</div>
+</div>
+
+<pre><span id="VALeventlog_resume"><span class="keyword">val</span> eventlog_resume</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">eventlog_resume&nbsp;()</code> will resume the collection of traces in the
+   runtime.
+   Traces are collected if the program is linked to the instrumented runtime
+   and started with the environment variable OCAML_EVENTLOG_ENABLED.
+   This call can be used after calling <code class="code">eventlog_pause</code>, or if the program
+   was started with OCAML_EVENTLOG_ENABLED=p. (which pauses the collection of
+   traces before the first event.)</p>
+</div>
+</div>
+
+<pre><span id="MODULEMemprof"><span class="keyword">module</span> <a href="BatGc.Memprof.html">Memprof</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="BatGc.Memprof.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
+<p><code class="code"><span class="constructor">Memprof</span></code> is a sampling engine for allocated memory words.</p>
+
 </div>
 </body></html>

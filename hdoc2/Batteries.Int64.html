@@ -36,6 +36,7 @@
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
+<link title="BatEither" rel="Chapter" href="BatEither.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
 <link title="BatFilename" rel="Chapter" href="BatFilename.html">
@@ -458,7 +459,12 @@
 <pre><span id="MODULEInfix"><span class="keyword">module</span> <a href="BatInt64.Infix.html">Infix</a></span>: <code class="type"><a href="BatNumber.Infix.html">BatNumber.Infix</a></code><code class="type">  with type bat__infix_t = t</code></pre>
 <pre><span id="MODULECompare"><span class="keyword">module</span> <a href="BatInt64.Compare.html">Compare</a></span>: <code class="type"><a href="BatNumber.Compare.html">BatNumber.Compare</a></code><code class="type">  with type bat__compare_t = t</code></pre>
 <pre><span id="VALmodulo"><span class="keyword">val</span> modulo</span> : <code class="type">int64 -> int64 -> int64</code></pre>
-<pre><span id="VALpow"><span class="keyword">val</span> pow</span> : <code class="type">int64 -> int64 -> int64</code></pre>
+<pre><span id="VALpow"><span class="keyword">val</span> pow</span> : <code class="type">int64 -> int64 -> int64</code></pre><div class="info ">
+<ul class="info-attributes">
+<li><b>Raises</b> <code>Invalid_argument</code> if the exponent is negative.</li>
+</ul>
+</div>
+
 <pre><span id="VAL(+)"><span class="keyword">val</span> (+)</span> : <code class="type"><a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a></code></pre>
 <pre><span id="VAL(-)"><span class="keyword">val</span> (-)</span> : <code class="type"><a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a></code></pre>
 <pre><span id="VAL( * )"><span class="keyword">val</span> ( * )</span> : <code class="type"><a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a> -> <a href="BatInt64.html#TYPEt">t</a></code></pre>

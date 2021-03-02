@@ -36,6 +36,7 @@
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
+<link title="BatEither" rel="Chapter" href="BatEither.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
 <link title="BatFilename" rel="Chapter" href="BatFilename.html">
@@ -292,10 +293,10 @@
 <pre><span id="VALtrim"><span class="keyword">val</span> trim</span> : <code class="type">string -> string</code></pre><div class="info ">
 <div class="info-desc">
 <p>Return a copy of the argument, without leading and trailing
-    whitespace.  The characters regarded as whitespace are: <code class="code"><span class="string">'&nbsp;'</span></code>,
-    <code class="code"><span class="string">'\012'</span></code>, <code class="code"><span class="string">'\n'</span></code>, <code class="code"><span class="string">'\r'</span></code>, and <code class="code"><span class="string">'\t'</span></code>.  If there is no leading nor
-    trailing whitespace character in the argument, return the original
-    string itself, not a copy.</p>
+    whitespace (according to <a href="BatChar.html#VALis_whitespace"><code class="code"><span class="constructor">BatChar</span>.is_whitespace</code></a>).
+    The characters regarded as whitespace are: <code class="code"><span class="string">'&nbsp;'</span></code>, <code class="code"><span class="string">'\n'</span></code>, <code class="code"><span class="string">'\r'</span></code>, <code class="code"><span class="string">'\t'</span></code>,
+    <code class="code"><span class="string">'\012'</span></code> and <code class="code"><span class="string">'\026'</span></code>.  If there is no leading nor trailing whitespace
+    character in the argument, return the original string itself, not a copy.</p>
 </div>
 <ul class="info-attributes">
 <li><b>Since</b> 4.00.0</li>
@@ -913,15 +914,6 @@
 </ul>
 </div>
 
-<pre><span id="VALtrim"><span class="keyword">val</span> trim</span> : <code class="type">string -> string</code></pre><div class="info ">
-<div class="info-desc">
-<p>Returns the same string but without the leading and trailing
-    whitespaces (according to <a href="BatChar.html#VALis_whitespace"><code class="code"><span class="constructor">BatChar</span>.is_whitespace</code></a>).</p>
-
-<p>Example: <code class="code"><span class="constructor">String</span>.trim&nbsp;<span class="string">"&nbsp;\t&nbsp;foo\n&nbsp;&nbsp;"</span>&nbsp;=&nbsp;<span class="string">"foo"</span></code></p>
-</div>
-</div>
-
 <pre><span id="VALquote"><span class="keyword">val</span> quote</span> : <code class="type">string -> string</code></pre><div class="info ">
 <div class="info-desc">
 <p>Add quotes around a string and escape any quote or escape
@@ -1118,32 +1110,6 @@
 
 <p>Example: <code class="code"><span class="constructor">String</span>.split_on_string&nbsp;<span class="string">"bc"</span>&nbsp;<span class="string">"abcabcabc"</span>&nbsp;=&nbsp;[<span class="string">"a"</span>;&nbsp;<span class="string">"a"</span>;&nbsp;<span class="string">"a"</span>;&nbsp;<span class="string">""</span>]</code></p>
 </div>
-</div>
-
-<pre><span id="VALcut_on_char"><span class="keyword">val</span> cut_on_char</span> : <code class="type">char -> int -> string -> string</code></pre><div class="info ">
-<div class="info-desc">
-<p>Similar to Unix <code class="code">cut</code>. <code class="code">cut_on_char&nbsp;chr&nbsp;n&nbsp;str</code> returns the substring of
-   <code class="code">str</code> located strictly between the <code class="code">n</code>-th occurrence of <code class="code">chr</code> and
-   the <code class="code">n+1</code>-th one.</p>
-
-<ul>
-<li><b>Occurrences of <code class="code">chr</code> are numbered from 1</b>.</li>
-<li>If <code class="code">n&nbsp;=&nbsp;0</code>, returns the substring from the beginning of
-     <code class="code">str</code> to the first occurrence of <code class="code">chr</code>.</li>
-<li>If there are exactly <code class="code">n</code> occurrences of <code class="code">chr</code> in <code class="code">str</code>, returns the
-     substring between the last occurrence of <code class="code">chr</code> and the end of <code class="code">str</code>.</li>
-<li>These behaviours cumulate: if <code class="code">n</code> equals <code class="code">0</code> and <code class="code">chr</code> is
-     absent from <code class="code">str</code>, returns the full string <code class="code">str</code>.</li>
-</ul>
-<p><b>Remark:</b> <code class="code">cut_on_char</code> can return the empty string. Examples of this
-   behaviour are <code class="code">cut_on_char&nbsp;<span class="string">','</span>&nbsp;1&nbsp;<span class="string">"foo,,bar"</span></code> and <code class="code">cut_on_char&nbsp;<span class="string">','</span>&nbsp;0&nbsp;<span class="string">",foo"</span></code>.</p>
-</div>
-<ul class="info-attributes">
-<li><b>Since</b> 2.9.0</li>
-<li><b>Raises</b><ul><li><code>Not_found</code> if there are strictly less than <code class="code">n</code> occurrences of <code class="code">chr</code> in str.</li>
-<li><code>Invalid_argument</code> if <code class="code">n&nbsp;&lt;&nbsp;0</code>.</li>
-</ul></li>
-</ul>
 </div>
 
 <pre><span id="VALcut_on_char"><span class="keyword">val</span> cut_on_char</span> : <code class="type">char -> int -> string -> string</code></pre><div class="info ">

@@ -36,6 +36,7 @@
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
+<link title="BatEither" rel="Chapter" href="BatEither.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
 <link title="BatFilename" rel="Chapter" href="BatFilename.html">
@@ -150,14 +151,6 @@
 <h1>Module <a href="type_Batteries.Unix.html">Batteries.Unix</a></h1>
 
 <pre><span id="MODULEUnix"><span class="keyword">module</span> Unix</span>: <code class="type"><a href="BatUnix.html">BatUnix</a></code></pre><hr width="100%">
-<p>Low-level interface to the operating system (both Unix and Windows).</p>
-
-<p>This module only provides low-level functions and types. Unless you
-    know that you need low-level access to the operating system, you
-    probably don't. For higher-level functions, see modules <a href="BatIO.html"><code class="code"><span class="constructor">BatIO</span></code></a>,
-    <a href="BatFile.html"><code class="code"><span class="constructor">BatFile</span></code></a>.</p>
-
-<p><b>Note</b> This module is thread-safe.</p>
 <h7 id="6_Errorreport">Error report</h7>
 <pre><span id="TYPEerror"><span class="keyword">type</span> <code class="type"></code>error</span> = <code class="type">Unix.error</code> = </pre><table class="typetable">
 <tr>
@@ -4454,17 +4447,21 @@
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
 <code><span id="TYPEELTname_info.ni_service">ni_service</span>&nbsp;: <code class="type">string</code>;</code></td>
-
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+<div class="info-desc">
+<p>Name of service or port number</p>
+</div>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 <code>}</code>
 
 <div class="info ">
 <div class="info-desc">
-<p>Name of service or port number</p>
+<p>Host and service information returned by <code class="code"><span class="constructor">Unix</span>.getnameinfo</code>.</p>
 </div>
 </div>
 
-<p>Host and service information returned by <code class="code"><span class="constructor">Unix</span>.getnameinfo</code>.</p>
 
 <pre><span id="TYPEgetnameinfo_option"><span class="keyword">type</span> <code class="type"></code>getnameinfo_option</span> = <code class="type">Unix.getnameinfo_option</code> = </pre><table class="typetable">
 <tr>

@@ -36,6 +36,7 @@
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
+<link title="BatEither" rel="Chapter" href="BatEither.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
 <link title="BatFilename" rel="Chapter" href="BatFilename.html">
@@ -288,6 +289,16 @@
 </ul>
 </div>
 <h7 id="6_Uncaughtexceptions">Uncaught exceptions</h7>
+<pre><span id="VALdefault_uncaught_exception_handler"><span class="keyword">val</span> default_uncaught_exception_handler</span> : <code class="type">exn -> <a href="BatPrintexc.html#TYPEraw_backtrace">raw_backtrace</a> -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code"><span class="constructor">Printexc</span>.default_uncaught_exception_handler</code> prints the exception and
+    backtrace on standard error output.</p>
+</div>
+<ul class="info-attributes">
+<li><b>Since</b> 4.11</li>
+</ul>
+</div>
+
 <pre><span id="VALset_uncaught_exception_handler"><span class="keyword">val</span> set_uncaught_exception_handler</span> : <code class="type">(exn -> <a href="BatPrintexc.html#TYPEraw_backtrace">raw_backtrace</a> -> unit) -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code"><span class="constructor">Printexc</span>.set_uncaught_exception_handler&nbsp;fn</code> registers <code class="code">fn</code> as the handler

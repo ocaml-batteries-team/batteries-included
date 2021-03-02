@@ -36,6 +36,7 @@
 <link title="BatDigest" rel="Chapter" href="BatDigest.html">
 <link title="BatDllist" rel="Chapter" href="BatDllist.html">
 <link title="BatDynArray" rel="Chapter" href="BatDynArray.html">
+<link title="BatEither" rel="Chapter" href="BatEither.html">
 <link title="BatEnum" rel="Chapter" href="BatEnum.html">
 <link title="BatFile" rel="Chapter" href="BatFile.html">
 <link title="BatFilename" rel="Chapter" href="BatFilename.html">
@@ -138,13 +139,16 @@
       that at the <code class="code"><span class="keywordsign">`</span>always</code> level.  Setting <code class="code"><span class="constructor">Easy</span>.level&nbsp;:=&nbsp;<span class="keywordsign">`</span>info</code> will
       enable logging for <code class="code"><span class="keywordsign">`</span>info</code>, <code class="code"><span class="keywordsign">`</span>warn</code>, <code class="code"><span class="keywordsign">`</span>error</code>, <code class="code"><span class="keywordsign">`</span>fatal</code> and
       <code class="code"><span class="keywordsign">`</span>always</code> levels.</p>
+</div>
+</div>
 
+<pre><span id="VALoutput"><span class="keyword">val</span> output</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> Stdlib.ref</code></pre><div class="info ">
+<div class="info-desc">
 <p>Set this ref to the output you want logging messages to go
       to.  Defaults to <code class="code">stderr</code>.</p>
 </div>
 </div>
 
-<pre><span id="VALoutput"><span class="keyword">val</span> output</span> : <code class="type">unit <a href="BatIO.html#TYPEoutput">BatIO.output</a> Stdlib.ref</code></pre>
 <pre><span id="VALlog"><span class="keyword">val</span> log</span> : <code class="type">?fp:string -> <a href="BatLog.html#TYPEeasy_lev">BatLog.easy_lev</a> -> string -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">log&nbsp;lev&nbsp;msg</code> logs the message <code class="code">msg</code> if the current logging
