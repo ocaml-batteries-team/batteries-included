@@ -81,8 +81,12 @@ val sub : float -> float -> float
 val mul : float -> float -> float
 val div : float -> float -> float
 
-external modulo : float -> float -> float = "caml_fmod_float" "fmod" "float"
-external pow : float -> float -> float = "caml_power_float" "pow" "float"
+external modulo : float -> float -> float = "caml_fmod_float" "fmod"
+##V<4.3##  "float"
+##V>=4.3##  [@@unboxed] [@@noalloc]
+external pow : float -> float -> float = "caml_power_float" "pow"
+##V<4.3##  "float"
+##V>=4.3##  [@@unboxed] [@@noalloc]
 
 val min_num : float
 val max_num : float
@@ -100,7 +104,9 @@ external ( - ) : t -> t -> t = "%subfloat"
 external ( * ) : t -> t -> t = "%mulfloat"
 external ( / ) : t -> t -> t = "%divfloat"
 
-external ( ** ) : t -> t -> t = "caml_power_float" "pow" "float"
+external ( ** ) : t -> t -> t = "caml_power_float" "pow"
+##V<4.3##  "float"
+##V>=4.3##  [@@unboxed] [@@noalloc]
 
 val min : float -> float -> float
 val max : float -> float -> float
@@ -121,52 +127,84 @@ val operations : t BatNumber.numeric
    {6 Operations specific to floating-point numbers}
 *)
 
-external sqrt : float -> float = "caml_sqrt_float" "sqrt" "float"
+external sqrt : float -> float = "caml_sqrt_float" "sqrt"
+##V<4.3##  "float"
+##V>=4.3##  [@@unboxed] [@@noalloc]
 (** Square root. *)
 
-external exp : float -> float = "caml_exp_float" "exp" "float"
+external exp : float -> float = "caml_exp_float" "exp"
+##V<4.3##  "float"
+##V>=4.3##  [@@unboxed] [@@noalloc]
 (** Exponential. *)
 
-external log : float -> float = "caml_log_float" "log" "float"
+external log : float -> float = "caml_log_float" "log"
+##V<4.3##  "float"
+##V>=4.3##  [@@unboxed] [@@noalloc]
 (** Natural logarithm. *)
 
-external log10 : float -> float = "caml_log10_float" "log10" "float"
+external log10 : float -> float = "caml_log10_float" "log10"
+##V<4.3##  "float"
+##V>=4.3##  [@@unboxed] [@@noalloc]
 (** Base 10 logarithm. *)
 
-external cos : float -> float = "caml_cos_float" "cos" "float"
+external cos : float -> float = "caml_cos_float" "cos"
+##V<4.3##  "float"
+##V>=4.3##  [@@unboxed] [@@noalloc]
 (** See {!atan2}. *)
 
-external sin : float -> float = "caml_sin_float" "sin" "float"
+external sin : float -> float = "caml_sin_float" "sin"
+##V<4.3##  "float"
+##V>=4.3##  [@@unboxed] [@@noalloc]
 (** See {!atan2}. *)
 
-external tan : float -> float = "caml_tan_float" "tan" "float"
+external tan : float -> float = "caml_tan_float" "tan"
+##V<4.3##  "float"
+##V>=4.3##  [@@unboxed] [@@noalloc]
 (** See {!atan2}. *)
 
-external acos : float -> float = "caml_acos_float" "acos" "float"
+external acos : float -> float = "caml_acos_float" "acos"
+##V<4.3##  "float"
+##V>=4.3##  [@@unboxed] [@@noalloc]
 (** See {!atan2}. *)
 
-external asin : float -> float = "caml_asin_float" "asin" "float"
+external asin : float -> float = "caml_asin_float" "asin"
+##V<4.3##  "float"
+##V>=4.3##  [@@unboxed] [@@noalloc]
 (** See {!atan2}. *)
 
-external atan : float -> float = "caml_atan_float" "atan" "float"
+external atan : float -> float = "caml_atan_float" "atan"
+##V<4.3##  "float"
+##V>=4.3##  [@@unboxed] [@@noalloc]
 (** See {!atan2}. *)
 
-external atan2 : float -> float -> float = "caml_atan2_float" "atan2" "float"
+external atan2 : float -> float -> float = "caml_atan2_float" "atan2"
+##V<4.3##  "float"
+##V>=4.3##  [@@unboxed] [@@noalloc]
 (** The usual trigonometric functions. *)
 
-external cosh : float -> float = "caml_cosh_float" "cosh" "float"
+external cosh : float -> float = "caml_cosh_float" "cosh"
+##V<4.3##  "float"
+##V>=4.3##  [@@unboxed] [@@noalloc]
 (** See {!tanh}. *)
 
-external sinh : float -> float = "caml_sinh_float" "sinh" "float"
+external sinh : float -> float = "caml_sinh_float" "sinh"
+##V<4.3##  "float"
+##V>=4.3##  [@@unboxed] [@@noalloc]
 (** See {!tanh}. *)
 
-external tanh : float -> float = "caml_tanh_float" "tanh" "float"
+external tanh : float -> float = "caml_tanh_float" "tanh"
+##V<4.3##  "float"
+##V>=4.3##  [@@unboxed] [@@noalloc]
 (** The usual hyperbolic trigonometric functions. *)
 
-external ceil : float -> float = "caml_ceil_float" "ceil" "float"
+external ceil : float -> float = "caml_ceil_float" "ceil"
+##V<4.3##  "float"
+##V>=4.3##  [@@unboxed] [@@noalloc]
 (** See {!floor}. *)
 
-external floor : float -> float = "caml_floor_float" "floor" "float"
+external floor : float -> float = "caml_floor_float" "floor"
+##V<4.3##  "float"
+##V>=4.3##  [@@unboxed] [@@noalloc]
 (** Round the given float to an integer value.
     [floor f] returns the greatest integer value less than or
     equal to [f].
