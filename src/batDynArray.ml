@@ -346,6 +346,8 @@ let delete d idx =
   let v = of_list [1;2;3;4] in delete v 1; to_list v = [1;3;4]
 *)
 
+let remove_at idx d = delete d idx
+
 let delete_range d idx len =
   if len < 0 then invalid_arg len "delete_range" "length";
   if idx < 0 || idx + len > d.len then invalid_arg idx "delete_range" "index";
