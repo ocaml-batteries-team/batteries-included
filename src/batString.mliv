@@ -1272,9 +1272,15 @@ sig
   (** {6 Undocumented operations} *)
   external unsafe_get : [> `Read] t -> int -> char = "%string_unsafe_get"
   external unsafe_set : [> `Write] t -> int -> char -> unit = "%string_unsafe_set"
+
   external unsafe_blit :
-    [> `Read] t -> int -> [> `Write] t -> int -> int -> unit = "caml_blit_string" "noalloc"
-  external unsafe_fill : [> `Write] t -> int -> int -> char -> unit = "caml_fill_string" "noalloc"
+    [> `Read] t -> int -> [> `Write] t -> int -> int -> unit = "caml_blit_string"
+##V<4.3##    "noalloc"
+##V>=4.3##    [@@noalloc]
+
+  external unsafe_fill : [> `Write] t -> int -> int -> char -> unit = "caml_fill_string"
+##V<4.3##    "noalloc"
+##V>=4.3##    [@@noalloc]
 
   (**/**)
 
@@ -1316,8 +1322,12 @@ end
 external unsafe_get : string -> int -> char = "%string_unsafe_get"
 external unsafe_set : Bytes.t -> int -> char -> unit = "%string_unsafe_set"
 external unsafe_blit :
-  string -> int -> Bytes.t -> int -> int -> unit = "caml_blit_string" "noalloc"
+  string -> int -> Bytes.t -> int -> int -> unit = "caml_blit_string"
+##V<4.3##  "noalloc"
+##V>=4.3##  [@@noalloc]
 external unsafe_fill :
-  Bytes.t -> int -> int -> char -> unit = "caml_fill_string" "noalloc"
+  Bytes.t -> int -> int -> char -> unit = "caml_fill_string"
+##V<4.3##  "noalloc"
+##V>=4.3##  [@@noalloc]
 
   (**/**)
