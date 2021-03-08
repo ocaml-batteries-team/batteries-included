@@ -3,6 +3,10 @@ Changelog
 
 ## NEXT_RELEASE
 
+- DynArray.remove_at alias for DynArray.delete
+  #1033
+  (Florent Monnier, review by Francois Berenger)
+
 - Fix several deprecated warnings for "float" and "noalloc"
   #729
   Since 4.03: [@@unboxed] and [@@noalloc] respectively
