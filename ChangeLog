@@ -3,6 +3,11 @@ Changelog
 
 ## NEXT_RELEASE
 
+- Fix several deprecated warnings for "float" and "noalloc"
+  #729
+  Since 4.03: [@@unboxed] and [@@noalloc] respectively
+  (Thibault Suzanne, review by Francois Berenger)
+
 TODO
 
 ## v3.3.0 (minor release)
