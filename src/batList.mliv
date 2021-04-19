@@ -1073,6 +1073,29 @@ module Exceptionless : sig
   val last : 'a list -> 'a option
     (** [last l] returns either [Some x] where [x] is the last element of the list, or [None] if
         the list is empty. This function takes linear time. *)
+
+  val reduce : ('a -> 'a -> 'a) -> 'a list -> 'a option
+  (** [reduce f h::t] is [Some (fold_left f h t)]
+      and [reduce f []] is None. *)
+
+  val min_max : ?cmp:('a -> 'a -> int) -> 'a list -> ('a * 'a) option
+  (** [min_max l] returns either Some(s, l)
+      where s and l are respectively the smallest and biggest element of [l] as judged by
+      [Pervasives.compare] (by default) or None if [l] is empty.
+	  You can provide another comparison function via the optional [cmp] parameter.
+  *)
+
+  val max : ?cmp:('a -> 'a -> int) -> 'a list -> 'a option
+  (** [max l] returns either [Some x] where [x] is the largest value of the list as judged by
+      [Pervasives.compare] (by default) or [None] is the list is empty.
+	  You can provide another comparison function via the optional [cmp] parameter.
+  *)
+
+  val min : ?cmp:('a -> 'a -> int) -> 'a list -> 'a option
+  (** [min l] returns either [Some x] where [x] is the smallest value of the list as judged by
+      [Pervasives.compare] or [None] is the list is empty.
+	  You can provide another comparison function via the optional [cmp] parameter.
+  *)
 end
 
 (** {6 Infix submodule regrouping all infix operators} *)

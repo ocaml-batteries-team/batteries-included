@@ -1594,6 +1594,20 @@ module Exceptionless = struct
     | [] -> None
     | [x] -> Some x
     | _ :: l -> last l
+
+  let reduce f = function
+    | [] -> None
+    | h :: t -> Some (fold_left f h t)
+
+  let min_max ?cmp:(cmp = Pervasives.compare) l =
+    try Some (min_max ~cmp l) with Invalid_argument _ -> None
+
+  let min ?cmp:(cmp = Pervasives.compare) l =
+   Option.map (fun (min_elt, _) -> min_elt) @@ min_max ~cmp l
+
+  let max ?cmp:(cmp = Pervasives.compare) l =
+   Option.map (fun (_, max_elt) -> max_elt) @@ min_max ~cmp l
+
 end
 
 
