@@ -1407,8 +1407,14 @@ let reduce f = function
   | h :: t ->
       fold_left f h t
 
-let min l = reduce Pervasives.min l
-let max l = reduce Pervasives.max l
+let min ?cmp:(cmp = Pervasives.compare) l =
+  let min = BatOrd.min_comp cmp in
+  reduce min l
+
+let max ?cmp:(cmp = Pervasives.compare) l =
+  let max = BatOrd.max_comp cmp in
+  reduce max l
+
 let sum l = fold_left (+) 0 l
 (*$= sum & ~printer:string_of_int
   2 (sum [1;1])

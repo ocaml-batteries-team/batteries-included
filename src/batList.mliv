@@ -308,15 +308,17 @@ val fold_left_map : ('a -> 'b -> 'a * 'c) -> 'a -> 'b list -> 'a * 'c list
     @since 2.6.0
 *)
 
-val max : 'a list -> 'a
+val max : ?cmp:('a -> 'a -> int) -> 'a list -> 'a
 (** [max l] returns the largest value in [l] as judged by
-    [Pervasives.compare].
+    [Pervasives.compare] (by default). You can provide another
+    comparison function via the optional [cmp] parameter.
     @raise Invalid_argument on an empty list.
 *)
 
-val min : 'a list -> 'a
+val min : ?cmp:('a -> 'a -> int) -> 'a list -> 'a
 (** [min l] returns the smallest value in [l] as judged by
-    [Pervasives.compare].
+    [Pervasives.compare] (by default). You can provide another
+    comparison function via the optional [cmp] parameter.
     @raise Invalid_argument on an empty list.
 *)
 
