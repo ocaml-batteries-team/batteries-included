@@ -3,6 +3,12 @@ Changelog
 
 ## NEXT_RELEASE
 
+- BatList.ExceptionLess: added min, max and min_max
+  Now, BatList.min and max also accept a ~cmp optional parameter;
+  defaulting to Pervasives.compare.
+  #1037
+  (nicoTolly, review by Francois Berenger)
+
 - DynArray.remove_at alias for DynArray.delete
   #1033
   (Florent Monnier, review by Francois Berenger)
