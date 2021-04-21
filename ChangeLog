@@ -3,7 +3,7 @@ Changelog
 
 ## NEXT_RELEASE
 
-- BatList.ExceptionLess: added min, max and min_max
+- BatList.ExceptionLess: added reduce, min, max and min_max
   Now, BatList.min and max also accept a ~cmp optional parameter;
   defaulting to Pervasives.compare.
   #1037
