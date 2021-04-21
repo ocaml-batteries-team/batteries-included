@@ -1402,10 +1402,8 @@ let print ?(first="[") ?(last="]") ?(sep="; ") print_a  out = function
 let t_printer a_printer _paren out x = print (a_printer false) out x
 
 let reduce f = function
-  | [] ->
-      invalid_arg "List.reduce: Empty List"
-  | h :: t ->
-      fold_left f h t
+  | [] -> invalid_arg "List.reduce: Empty List"
+  | h :: t -> fold_left f h t
 
 let min ?cmp:(cmp = Pervasives.compare) l =
   let min = BatOrd.min_comp cmp in
@@ -1606,17 +1604,18 @@ module Exceptionless = struct
     | h :: t -> Some (fold_left f h t)
 
   let min_max ?cmp:(cmp = Pervasives.compare) l =
-    try Some (min_max ~cmp l) with Invalid_argument _ -> None
+    try Some (min_max ~cmp l)
+    with Invalid_argument _ -> None
 
   let min ?cmp:(cmp = Pervasives.compare) l =
-   Option.map (fun (min_elt, _) -> min_elt) @@ min_max ~cmp l
+    try Some (min ~cmp l)
+    with Invalid_argument _ -> None
 
   let max ?cmp:(cmp = Pervasives.compare) l =
-   Option.map (fun (_, max_elt) -> max_elt) @@ min_max ~cmp l
+    try Some (max ~cmp l)
+    with Invalid_argument _ -> None
 
 end
-
-
 
 module Labels = struct
   let init i ~f     = init i f
