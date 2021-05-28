@@ -637,6 +637,9 @@ struct
   include Hashtbl.Make(H)
   external to_hash : 'a t -> (key, 'a) Hashtbl.t = "%identity"
   external of_hash : (key, 'a) Hashtbl.t -> 'a t = "%identity"
+  (* Warning: these two externals are unsafe, as they forget about the user-provided
+     HashtedType implementation. They are used to avoid code duplication for functions
+     that do *not* use the hashing function, but only traverse the bucket structure. *)
 
   (*      type key = H.t
           type 'a hashtbl = (key, 'a) t
@@ -730,19 +733,29 @@ struct
   let fold = fold
   let length = length
 
+  (* the functions here do not hash values, they only traverse the buckets *)
   let enum h = enum (to_hash h)
   let to_list h = to_list (to_hash h)
-  let of_enum e = of_hash (of_enum e)
   let values  h = values (to_hash h)
   let keys h = keys (to_hash h)
-  let map (f:key -> 'a -> 'b) h = of_hash (map f (to_hash h))
-  let of_list l = of_hash (of_list l)
-
+  let map (f:key -> 'a -> 'b) h =
+    of_hash (map f (to_hash h))
   (* We can use polymorphic filteri since we do not use the key at all for inline ops *)
   let map_inplace (f:key -> 'a -> 'b) h = map_inplace f (to_hash h)
   let filteri_inplace f h = filteri_inplace f (to_hash h)
   let filter_inplace f h = filter_inplace f (to_hash h)
 ##V<4.3##  let filter_map_inplace f h = filter_map_inplace f (to_hash h)
+
+  (* these functions do need to hash values, so we cannot use {to,of}_hash *)
+  let of_enum e =
+    let tbl = create 11 in
+    BatEnum.iter (fun (k, v) -> add tbl k v) e;
+    tbl
+
+  let of_list li =
+    let tbl = create 11 in
+    List.iter (fun (k, v) -> add tbl k v) li;
+    tbl
 
 
   let find_option h key =
