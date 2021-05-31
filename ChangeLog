@@ -3,6 +3,10 @@ Changelog
 
 ## NEXT_RELEASE
 
+- fix a bug in Bashtbl.Make(T).of_{list,enum}
+  #1038, #1039
+  (Gabriel Scherer, report by Johnny Bock Andersen)
+
 - BatList.ExceptionLess: added reduce, min, max and min_max
   Now, BatList.min and max also accept a ~cmp optional parameter;
   defaulting to Pervasives.compare.
