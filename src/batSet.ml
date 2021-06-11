@@ -35,6 +35,12 @@ module Concrete = struct
     | Node (Empty, _x, Empty, _h) -> true
     | _ -> false
 
+  (*$T is_singleton
+    is_singleton (of_list []) = false
+    is_singleton (of_list [1]) = true
+    is_singleton (of_list [1;2]) = false
+  *)
+
   (* Sets are represented by balanced binary trees (the heights of the
      children differ by at most 2 *)
   let height = function
