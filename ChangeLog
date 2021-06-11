@@ -3,6 +3,10 @@ Changelog
 
 ## NEXT_RELEASE
 
+- BatSet.is_singleton: t -> bool
+  #1042
+  (Francois Berenger, review by Gabriel Scherer)
+
 - fix a bug in Bashtbl.Make(T).of_{list,enum}
   #1038, #1039
   (Gabriel Scherer, report by Johnny Bock Andersen)
