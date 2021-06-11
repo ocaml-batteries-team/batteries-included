@@ -64,6 +64,9 @@ sig
   val is_empty: t -> bool
   (** Test whether a set is empty or not. *)
 
+  val is_singleton: t -> bool
+  (** Test if the set is a singleton. *)
+
   val singleton: elt -> t
   (** [singleton x] returns the one-element set containing only [x]. *)
 
@@ -525,6 +528,9 @@ val empty: 'a t
 val is_empty: 'a t -> bool
 (** Test whether a set is empty or not. *)
 
+val is_singleton: 'a t -> bool
+(** Test if the set is a singleton. *)
+
 val singleton : 'a -> 'a t
 (** Creates a new set with the single given element in it. *)
 
@@ -953,6 +959,9 @@ module PSet : sig
 
   val is_empty: 'a t -> bool
   (** Test whether a set is empty or not. *)
+
+  val is_singleton: 'a t -> bool
+  (** Test if the set is a singleton. *)
 
   val singleton : ?cmp:('a -> 'a -> int) -> 'a -> 'a t
   (** Creates a new set with the single given element in it. *)
