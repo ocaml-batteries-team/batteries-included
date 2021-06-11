@@ -30,6 +30,11 @@ module Concrete = struct
   let empty = Empty
 
   let is_empty = function Empty -> true | _ -> false
+
+  let is_singleton = function
+    | Node (Empty, _x, Empty, _h) -> true
+    | _ -> false
+
   (* Sets are represented by balanced binary trees (the heights of the
      children differ by at most 2 *)
   let height = function
@@ -162,9 +167,9 @@ module Concrete = struct
         let nr = add cmp x r in
         if nr == r then
           t
-        else 
+        else
           bal l v nr
-        
+
   let rec remove cmp x = function
     | Empty as t -> t
     | Node(l, v, r, _) as t ->
@@ -175,7 +180,7 @@ module Concrete = struct
         let nl = remove cmp x l in
         if nl == l then
           t
-        else 
+        else
           bal nl v r
       else
         let nr = remove cmp x r in
@@ -208,19 +213,19 @@ module Concrete = struct
            if c = 0 then
              if v == y then
                t
-             else 
+             else
                Node(l, y, r, h)
            else if c < 0 then
              let nl = loop l in
              if nl == l then
                t
-             else 
+             else
                Node(nl, v, r, h)
            else
              let nr = loop r in
              if nr == r then
                t
-             else                       
+             else
                Node(l, v, nr, h)
       in
       loop s
@@ -274,7 +279,7 @@ module Concrete = struct
        else find_last_helper_found k0 f l
 
   let rec find_last f m =
-    match m with 
+    match m with
     | Empty -> raise Not_found
     | Node (l, k, r, _) ->
        if f k
@@ -282,7 +287,7 @@ module Concrete = struct
        else find_last f l
 
   let rec find_last_opt f m =
-    match m with 
+    match m with
     | Empty -> None
     | Node (l, k, r, _) ->
        if f k
@@ -569,7 +574,7 @@ module Concrete = struct
        if pv then
          if l==l' && r==r' then t else join l' v r'
        else concat l' r'
-                       
+
   let try_join cmp l v r =
     (* [join l v r] can only be called when (elements of l < v <
          elements of r); use [try_join l v r] when this property may
@@ -709,7 +714,7 @@ module Concrete = struct
 
   let add_seq cmp s m =
     BatSeq.fold_left (fun m e -> add cmp e m) m s
-    
+
   let of_seq cmp s =
     add_seq cmp s empty
 
@@ -718,7 +723,7 @@ module Concrete = struct
     | E -> BatSeq.Nil
     | C(k, r, e) ->
        BatSeq.Cons (k, seq_of_iter (cons_iter r e))
-      
+
   let to_seq m =
     seq_of_iter (cons_iter m E)
 
@@ -742,6 +747,7 @@ sig
   type t
   val empty: t
   val is_empty: t -> bool
+  val is_singleton: t -> bool
   val singleton: elt -> t
   val mem: elt -> t -> bool
   val find: elt -> t -> elt
@@ -837,6 +843,7 @@ struct
   external t_of_impl : implementation -> t = "%identity"
 
   let cardinal t = Concrete.cardinal (impl_of_t t)
+  let is_singleton t = Concrete.is_singleton (impl_of_t t)
   let enum t = Concrete.enum (impl_of_t t)
   let of_enum e = t_of_impl (Concrete.of_enum Ord.compare e)
   let backwards t = Concrete.backwards (impl_of_t t)
@@ -922,16 +929,16 @@ struct
 
   let add_seq s t =
     t_of_impl (Concrete.add_seq Ord.compare s (impl_of_t t))
-    
+
   let of_seq s =
     t_of_impl (Concrete.of_seq Ord.compare s)
-    
+
   let to_seq t =
     Concrete.to_seq (impl_of_t t)
-    
+
   let to_rev_seq t =
     Concrete.to_rev_seq (impl_of_t t)
-    
+
   let to_seq_from k t =
     Concrete.to_seq_from Ord.compare k (impl_of_t t)
 
@@ -1036,6 +1043,7 @@ module PSet = struct (*$< PSet *)
 
   let singleton ?(cmp = compare) x = { cmp = cmp; set = Concrete.singleton x }
   let is_empty s = Concrete.is_empty s.set
+  let is_singleton s = Concrete.is_singleton s.set
   let mem x s = Concrete.mem s.cmp x s.set
   let find x s = Concrete.find s.cmp x s.set
   let find_opt x s = Concrete.find_opt s.cmp x s.set
@@ -1048,12 +1056,12 @@ module PSet = struct (*$< PSet *)
     if newset == s.set then s
     else { s with set = newset }
   let remove x s =
-    let newset = Concrete.remove s.cmp x s.set in 
+    let newset = Concrete.remove s.cmp x s.set in
     if newset == s.set then s
     else { s with set = newset }
   let remove_exn x s = { s with set = Concrete.remove_exn s.cmp x s.set }
   let update x y s =
-    let newset = Concrete.update s.cmp x y s.set in 
+    let newset = Concrete.update s.cmp x y s.set in
     if newset == s.set then s
     else { s with set =  newset }
   let iter f s = Concrete.iter f s.set
@@ -1133,19 +1141,19 @@ module PSet = struct (*$< PSet *)
   let subset s1 s2 = Concrete.subset s1.cmp s1.set s2.set
   let disjoint s1 s2 = Concrete.disjoint s1.cmp s1.set s2.set
 
-                     
+
   let add_seq s t =
     { t with set = Concrete.add_seq t.cmp s t.set }
-    
+
   let of_seq  ?(cmp = Pervasives.compare) s =
     {set = Concrete.of_seq cmp s; cmp = cmp }
-    
+
   let to_seq t =
     Concrete.to_seq t.set
-    
+
   let to_rev_seq t =
     Concrete.to_rev_seq t.set
-    
+
   let to_seq_from k t =
     Concrete.to_seq_from t.cmp k t.set
 
@@ -1162,6 +1170,8 @@ let singleton x = Concrete.singleton x
 
 let is_empty s = s = Concrete.Empty
 
+let is_singleton s = Concrete.is_singleton s
+
 let mem x s = Concrete.mem Pervasives.compare x s
 
 let find x s = Concrete.find Pervasives.compare x s
@@ -1172,7 +1182,7 @@ let find_first f s = Concrete.find_first f s
 let find_last  f s = Concrete.find_last  f s
 let find_first_opt f s = Concrete.find_first_opt f s
 let find_last_opt  f s = Concrete.find_last_opt  f s
-                 
+
 (*$T find
   (find 1 (of_list [1;2;3;4;5;6;7;8])) == 1
   (find 8 (of_list [1;2;3;4;5;6;7;8])) == 8
@@ -1214,10 +1224,10 @@ let map_endo f s = Concrete.map_endo Pervasives.compare f s
 (*$T map
   map (fun _x -> 1) (of_list [1;2;3]) |> cardinal = 1
  *)
-                   
+
 (*$T map_endo
   let s = of_list [1;2;3] in s == (map_endo (fun x -> x) s)
-  let s = empty in s == (map_endo (fun x -> x+1) s) 
+  let s = empty in s == (map_endo (fun x -> x+1) s)
 *)
 
 let filter f s = Concrete.filter f s
@@ -1346,16 +1356,16 @@ let disjoint s1 s2 = Concrete.disjoint Pervasives.compare s1 s2
 
 let add_seq s t =
   Concrete.add_seq Pervasives.compare s t
-  
+
 let of_seq s =
   Concrete.of_seq Pervasives.compare s
-  
+
 let to_seq t =
   Concrete.to_seq t
-  
+
 let to_rev_seq t =
   Concrete.to_rev_seq t
-  
+
 let to_seq_from k t =
   Concrete.to_seq_from Pervasives.compare k t
 
