@@ -77,6 +77,18 @@ let add_channel = add_input
 ##V<4.2##let add_subbytes = add_substring
 ##V<4.2##let to_bytes = contents
 
+let add_substring' buf substr =
+  let str, offset, len = BatInnerSubstring.base substr in
+  add_substring buf str offset len
+(*$Q add_substring'
+  (Q.triple Q.string Q.int Q.int) (fun (s, o, l) -> let b, b' = create 10, create 10 in \
+                                                    let off = max 0 (min o (String.length s - 1)) in \
+                                                    let len = min (String.length s - off) (max o 0) in \
+                                                    add_substring b s off len; \
+                                                    add_substring' b' (BatInnerSubstring.substring s off len); \
+                                                    contents b = contents b')
+*)
+
 let output_buffer buf =
   BatInnerIO.create_out
     ~write: (add_char buf)

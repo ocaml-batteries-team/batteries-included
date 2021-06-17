@@ -113,6 +113,10 @@ val add_substring : t -> string -> int -> int -> unit
 (** [add_substring b s ofs len] takes [len] characters from offset
     [ofs] in string [s] and appends them at the end of the buffer [b]. *)
 
+val add_substring' : t -> BatInnerSubstring.t -> unit
+(** [add_substring' b s] takes a [Substring.t] [s] and appends its
+    contents to the end of the buffer [b]. *)
+
 val add_subbytes : t -> Bytes.t -> int -> int -> unit
 (** [add_subbytes b s ofs len] takes [len] characters from offset
     [ofs] in byte sequence [s] and appends them at the end of the buffer [b].
