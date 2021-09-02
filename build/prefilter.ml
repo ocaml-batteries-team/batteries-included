@@ -37,6 +37,12 @@ let print_loc = function
        stale := false;
      end
 
+let has_domains ~extra =
+  let extra = String.split_on_char '+' extra in
+  List.mem "domains" extra ||
+  List.mem "multicore" extra ||
+  List.mem "effects" extra
+
 let rec process_line loc line =
   if not (Str.string_match filter_cookie_re line 0)
   then print_endline line
@@ -53,7 +59,7 @@ let rec process_line loc line =
         let ver_min = try int_of_string (Str.matched_group 3 ver_string) with _ -> 0 in
         cmp (major*100+minor) (ver_maj*100+ver_min)
       else if ver_string = "multicore" then
-        cmp (if extra = "+multicore" then 5 else major) 5
+        cmp (if has_domains ~extra then 5 else major) 5
       else
         failwith "Could not parse version string"
     in
