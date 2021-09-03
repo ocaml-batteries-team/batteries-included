@@ -12,7 +12,10 @@ env:
   - OCAML_VERSION=4.07.0
   - OCAML_VERSION=4.08.0
   - OCAML_VERSION=4.09.0
-  - OCAML_VERSION=4.10.0+rc2 OCAML_BETA=enable
+  - OCAML_VERSION=4.10.0
+  - OCAML_VERSION=4.11.0
+  - OCAML_VERSION=4.12.0
+  - OCAML_VERSION=4.12.0+domains
 
 # notifications:
 #   email:
