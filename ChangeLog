@@ -3,6 +3,11 @@ Changelog
 
 ## NEXT_RELEASE
 
+- BatBytes.{fold_left,fold_right,for_all,exists,starts_with,ends_with,split_on_char}
+  #1050
+  Code from the stdlib introduced in OCaml-4.13.0.
+  (Francois Berenger)
+
 - BatArray.{find_opt,fold_left_map,find_map,combine}
   #1047,#1046,#1048,#1049
   Most code comes from the stdlib and was introduced in OCaml-4.13.0.
