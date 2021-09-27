@@ -173,6 +173,11 @@ val to_list : 'a array -> 'a list
 val split : ('a * 'b) array -> 'a array * 'b array
 (** [Array.split a] converts the array of pairs [a] into a pair of arrays. *)
 
+val combine : 'a array -> 'b array -> ('a * 'b) array
+(** [combine [|a1; ...; an|] [|b1; ...; bn|]] is [[|(a1,b1); ...; (an,bn)|]].
+    Raise [Invalid_argument] if the two arrays have different lengths.
+    @since NEXT_RELEASE *)
+
 val of_list : 'a list -> 'a array
 (** [Array.of_list l] returns a fresh array containing the elements
     of [l]. *)
@@ -797,6 +802,7 @@ sig
   val of_backwards : 'a BatEnum.t -> ('a, _) t
   val to_list : ('a, [> `Read]) t -> 'a list
   val split : ('a * 'b, [> `Read]) t -> ('a, _) t * ('b, _) t
+  val combine : ('a, [> `Read]) t -> ('b, [> `Read]) t -> ('a * 'b, [> `Read]) t
   val pivot_split : 'a BatOrd.ord -> ('a, [> `Read]) t -> 'a -> int * int
   val of_list : 'a list -> ('a, _) t
 
