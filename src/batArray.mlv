@@ -58,6 +58,24 @@ let modifyi f a =
 
 let fold = fold_left
 
+let fold_left_map f init a =
+  let n = length a in
+  if n = 0 then
+    (init, [||])
+  else
+    let acc = ref init in
+    let f' x =
+      let acc', y = f !acc x in
+      acc := acc';
+      y in
+    let res = map f' a in
+    (!acc, res)
+
+(*$T fold_left_map
+    fold_left_map (fun acc x -> (acc + x, x)) 0 [|0;1;2;3|] = (6, [|0;1;2;3|])
+    fold_left_map (fun acc x -> (acc + x, x)) 0 [||] = (0, [||])
+  *)
+
 let fold_lefti f x a =
   let r = ref x in
   for i = 0 to length a - 1 do
@@ -986,6 +1004,7 @@ struct
   let modifyi      = modifyi
   let fold_left    = fold_left
   let fold         = fold_left
+  let fold_left_map = fold_left_map
   let fold_right   = fold_right
   let fold_while   = fold_while
   let iter2        = iter2
@@ -1041,6 +1060,7 @@ struct
     let modify ~f a = modify f a
     let modifyi ~f a = modifyi f a
     let fold_left ~f ~init a = fold_left f init a
+    let fold_left_map ~f ~init a = fold_left_map f init a
     let fold = fold_left
     let fold_right ~f a ~init= fold_right f a init
     let fold_while ~p ~f ~init a = fold_while p f init a
@@ -1097,6 +1117,7 @@ struct
   let modify ~f a = modify f a
   let modifyi ~f a = modifyi f a
   let fold_left ~f ~init a = fold_left f init a
+  let fold_left_map ~f ~init a = fold_left_map f init a
   let fold = fold_left
   let fold_right ~f a ~init= fold_right f a init
   let fold_while ~p ~f ~init a = fold_while p f init a
