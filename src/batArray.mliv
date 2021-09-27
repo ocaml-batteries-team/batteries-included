@@ -289,6 +289,12 @@ val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b array -> 'a
     [f (... (f (f x a.(0)) a.(1)) ...) a.(n-1)],
     where [n] is the length of the array [a]. *)
 
+val fold_left_map :
+  ('a -> 'b -> 'a * 'c) -> 'a -> 'b array -> 'a * 'c array
+(** [fold_left_map] is a combination of {!fold_left} and {!map} that threads an
+    accumulator through calls to [f].
+    @since NEXT_RELEASE *)
+
 val fold_while : ('acc -> 'a -> bool) -> ('acc -> 'a -> 'acc) -> 'acc -> 'a array -> ('acc * int)
 (** [fold_while p f init a], accumulates elements [x] of array [a] using
     function [f], as long as the predicate [p acc x] holds.
