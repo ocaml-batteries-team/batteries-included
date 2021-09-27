@@ -479,6 +479,11 @@ val find : ('a -> bool) -> 'a array -> 'a
     @raise Not_found if there is no value that satisfies [p] in
     the array [a]. *)
 
+val find_map : ('a -> 'b option) -> 'a array -> 'b option
+(** [find_map f a] applies [f] to the elements of [a] in order, and returns the
+    first result of the form [Some v], or [None] if none exist.
+    @since NEXT_RELEASE *)
+
 val mem : 'a -> 'a array -> bool
 (** [mem m a] is true if and only if [m] is equal to an element of [a]. *)
 
@@ -662,6 +667,7 @@ module Labels : sig
   val for_all:    f:('a -> bool) -> 'a t -> bool
   val iter2i:     f:( int -> 'a -> 'b -> unit) -> 'a t -> 'b t -> unit
   val find:       f:('a -> bool) -> 'a t -> 'a
+  val find_map:   f:('a -> 'b option) -> 'a array -> 'b option
   val findi:      f:('a -> bool) -> 'a t -> int
   val map:        f:('a -> 'b) -> 'a t -> 'b t
   val mapi:       f:(int -> 'a -> 'b) -> 'a t -> 'b t
@@ -769,6 +775,7 @@ sig
   val for_all : ('a -> bool) -> ('a, [> `Read]) t -> bool
   val exists : ('a -> bool) -> ('a, [> `Read]) t -> bool
   val find : ('a -> bool) -> ('a, [> `Read]) t -> 'a
+  val find_map : ('a -> 'b option) -> ('a, [> `Read]) t -> 'b option
   val mem : 'a -> ('a, [> `Read]) t -> bool
   val memq : 'a -> ('a, [> `Read]) t -> bool
   val findi : ('a -> bool) -> ('a, [> `Read]) t -> int
@@ -851,6 +858,7 @@ sig
     val exists:     f:('a -> bool) -> ('a, [> `Read]) t -> bool
     val for_all:    f:('a -> bool) -> ('a, [> `Read]) t -> bool
     val find:       f:('a -> bool) -> ('a, [> `Read]) t -> 'a
+    val find_map:   f:('a -> 'b option) -> ('a, [> `Read]) t -> 'b option
     val map:        f:('a -> 'b) -> ('a, [>`Read]) t -> ('b, _) t
     val mapi:       f:(int -> 'a -> 'b) -> ('a, [>`Read]) t -> ('b, _) t
     val filter:     f:('a -> bool) -> ('a, [>`Read]) t -> ('a, _) t
