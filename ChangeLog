@@ -3,6 +3,11 @@ Changelog
 
 ## NEXT_RELEASE
 
+- BatArray.{find_opt,fold_left_map,find_map,combine}
+  #1047,#1046,#1048,#1049
+  Most code comes from the stdlib and was introduced in OCaml-4.13.0.
+  (Francois Berenger)
+
 - BatSet.is_singleton: t -> bool
   #1042
   (Francois Berenger, review by Gabriel Scherer)
