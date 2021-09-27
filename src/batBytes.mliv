@@ -179,6 +179,27 @@ val mapi : (int -> char -> char) -> t -> t
     index (in increasing index order) and stores the resulting bytes
     in a new sequence that is returned as the result. *)
 
+val fold_left : ('a -> char -> 'a) -> 'a -> bytes -> 'a
+(** [fold_left f x s] computes
+    [f (... (f (f x (get s 0)) (get s 1)) ...) (get s (n-1))],
+    where [n] is the length of [s].
+    @since NEXT_RELEASE *)
+
+val fold_right : (char -> 'a -> 'a) -> bytes -> 'a -> 'a
+(** [fold_right f s x] computes
+    [f (get s 0) (f (get s 1) ( ... (f (get s (n-1)) x) ...))],
+    where [n] is the length of [s].
+    @since NEXT_RELEASE *)
+
+val for_all : (char -> bool) -> bytes -> bool
+(** [for_all p s] checks if all characters in [s] satisfy the predicate [p].
+    @since NEXT_RELEASE *)
+
+val exists : (char -> bool) -> bytes -> bool
+(** [exists p s] checks if at least one character of [s] satisfies
+    the predicate [p].
+    @since NEXT_RELEASE *)
+
 val trim : t -> t
 (** Return a copy of the argument, without leading and trailing
     whitespace. The bytes regarded as whitespace are the ASCII
@@ -246,6 +267,15 @@ val rindex_from_opt: t -> int -> char -> int option
     Raise [Invalid_argument] if [i+1] is not a valid position in [s].
     @since 2.7.0 *)
 
+val starts_with: prefix:bytes -> bytes -> bool
+(** [starts_with ~prefix s] is [true] if and only if [s] starts with
+    [prefix].
+    @since NEXT_RELEASE *)
+
+val ends_with: suffix:bytes -> bytes -> bool
+(** [ends_with ~suffix s] is [true] if and only if [s] ends with [suffix].
+    @since NEXT_RELEASE *)
+
 val contains : t -> char -> bool
 (** [contains s c] tests if byte [c] appears in [s]. *)
 
@@ -311,6 +341,19 @@ val equal: t -> t -> bool
 (** The equality function for byte sequences.
     @since 2.5.0 *)
 
+val split_on_char: char -> bytes -> bytes list
+(** [split_on_char sep s] returns the list of all (possibly empty)
+    subsequences of [s] that are delimited by the [sep] character.
+
+    The function's output is specified by the following invariants:
+
+    - The list is not empty.
+    - Concatenating its elements using [sep] as a separator returns a
+      byte sequence equal to the input ([Bytes.concat (Bytes.make 1 sep)
+      (Bytes.split_on_char sep s) = s]).
+    - No byte sequence in the result contains the [sep] character.
+    @since NEXT_RELEASE
+*)
 
 (** {4 Unsafe conversions (for advanced users)}
 
