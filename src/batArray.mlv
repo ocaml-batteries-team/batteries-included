@@ -203,6 +203,23 @@ let find p xs = xs.(findi p xs)
     with Not_found -> for_all (fun elt -> not (f elt)) a)
 *)
 
+let find_opt p a =
+  let n = length a in
+  let rec loop i =
+    if i = n then None
+    else
+      let x = unsafe_get a i in
+      if p x then Some x
+      else loop (succ i)
+  in
+  loop 0
+
+(*$T find_opt
+    find_opt (fun x -> x < 0) [||] = None
+    find_opt (fun x -> x < 0) [|0;1;2;3|] = None
+    find_opt (fun x -> x >= 3) [|0;1;2;3|] = Some 3
+*)
+
 (* Use of BitSet suggested by Brian Hurt. *)
 let filter p xs =
   let n = length xs in
@@ -993,6 +1010,7 @@ struct
   let for_all      = for_all
   let exists       = exists
   let find         = find
+  let find_opt     = find_opt
   let mem          = mem
   let memq         = memq
   let findi        = findi
@@ -1052,6 +1070,7 @@ struct
     let for_all ~f a = for_all f a
     let iter2i  ~f a b = iter2i f a b
     let find ~f a = find f a
+    let find_opt ~f a = find_opt f a
     let filter ~f a = filter f a
     let filter_map ~f a = filter_map f a
     let count_matching ~f a = count_matching f a
@@ -1108,6 +1127,7 @@ struct
   let for_all ~f a = for_all f a
   let iter2i  ~f a b = iter2i f a b
   let find ~f a = find f a
+  let find_opt ~f a = find_opt f a
   let findi ~f e = findi f e
   let filter ~f a = filter f a
   let filter_map ~f a = filter_map f a
