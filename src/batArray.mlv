@@ -251,8 +251,8 @@ let find_map f a =
 
 (*$T find_map
     find_map (fun x -> if x < 0 then Some x else None) [||] = None
-    find_map (fun x -> if x < 0 then Some x else None) [|0;-1;2|] = (Some -1)
-    find_map (fun x -> if x < 0 then Some x else None) [|0;1;-2|] = (Some -2)
+    find_map (fun x -> if x < 0 then Some x else None) [|0;-1;2|] = (Some (-1))
+    find_map (fun x -> if x < 0 then Some x else None) [|0;1;-2|] = (Some (-2))
 *)
 
 (* Use of BitSet suggested by Brian Hurt. *)
