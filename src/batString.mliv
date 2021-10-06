@@ -757,6 +757,8 @@ val split_on_string : by:string -> string -> string list
     Note: [split_on_string sep s] is identical to [nsplit s sep] but for empty strings.
 
     Example: [String.split_on_string "bc" "abcabcabc" = ["a"; "a"; "a"; ""]]
+    
+    @since 2.11.0
 *)
 
 val cut_on_char : char -> int -> string -> string
