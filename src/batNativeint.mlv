@@ -87,3 +87,9 @@ let min_num, max_num = min_int, max_int
 
 let print out t = BatPrintf.fprintf out "%nx" t
 let t_printer _paren out t = print out t
+
+let min (x: t) (y: t): t =
+  if x <= y then x else y
+
+let max (x: t) (y: t): t =
+  if x >= y then x else y
