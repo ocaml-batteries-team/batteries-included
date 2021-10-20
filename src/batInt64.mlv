@@ -71,3 +71,9 @@ external format : string -> int64 -> string = "caml_int64_format"
 
 let print out t = BatInnerIO.nwrite out (to_string t)
 let print_hex out t = BatPrintf.fprintf out "%Lx" t
+
+let min (x: t) (y: t): t =
+  if x <= y then x else y
+
+let max (x: t) (y: t): t =
+  if x >= y then x else y
