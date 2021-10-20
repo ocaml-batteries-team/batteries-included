@@ -200,6 +200,10 @@ let flat_map f s =
   equal (flat_map of_list (of_list [[1;2;3];[4;5;6]])) (of_list [1;2;3;4;5;6])
 *)
 
+(* alias *)
+let concat_map =
+  flat_map
+
 let mapi f s =
   let rec mapi f i s () = match s () with
   | Nil -> Nil
