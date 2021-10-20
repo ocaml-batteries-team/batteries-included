@@ -189,3 +189,9 @@ let min_num, max_num = min_int, max_int
 
 let print out t = BatInnerIO.nwrite out (to_string t)
 let print_hex out t = BatPrintf.fprintf out "%lx" t
+
+let min (x: t) (y: t): t =
+  if x <= y then x else y
+
+let max (x: t) (y: t): t =
+  if x >= y then x else y
