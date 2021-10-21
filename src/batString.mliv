@@ -80,6 +80,12 @@ val to_bytes : string -> bytes
     string.
     @since NEXT_RELEASE *)
 
+val cat : string -> string -> string
+(** [cat s1 s2] concatenates s1 and s2 (equivalent to [s1 ^ s2]).
+    @raise Invalid_argument if the result is longer then
+    than {!Sys.max_string_length} bytes.
+    @since NEXT_RELEASE *)
+
 external length : string -> int = "%string_length"
 (** Return the length (number of characters) of the given string. *)
 

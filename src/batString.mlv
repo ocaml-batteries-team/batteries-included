@@ -40,6 +40,8 @@ let init = BatBytesCompat.string_init
 let of_bytes = Bytes.to_string
 let to_bytes = Bytes.of_string
 
+let cat = (^)
+
 let starts_with str p =
   let len = length p in
   if length str < len then false
