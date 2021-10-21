@@ -68,7 +68,17 @@ val is_empty : string -> bool
 
     Example (for some string [s]):
     [ if String.is_empty s then "(Empty)" else s ]
-*)
+ *)
+
+val of_bytes : bytes -> string
+(** Return a new string that contains the same bytes as the given byte
+    sequence.
+    @since NEXT_RELEASE *)
+
+val to_bytes : string -> bytes
+(** Return a new byte sequence that contains the same bytes as the given
+    string.
+    @since NEXT_RELEASE *)
 
 external length : string -> int = "%string_length"
 (** Return the length (number of characters) of the given string. *)

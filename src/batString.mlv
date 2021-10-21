@@ -35,7 +35,10 @@ let init = BatBytesCompat.string_init
 
 (*$T init
    init 5 (fun i -> BatChar.chr (i + int_of_char '0')) = "01234";
-*)
+ *)
+
+let of_bytes = Bytes.to_string
+let to_bytes = Bytes.of_string
 
 let starts_with str p =
   let len = length p in
