@@ -26,6 +26,7 @@ let full_init = Random.full_init
 let self_init = Random.self_init
 let bits      = Random.bits
 let int       = Random.int
+##V>=4.13##let full_int = Random.full_int
 let int32     = Random.int32
 let int64     = Random.int64
 let nativeint = Random.nativeint
