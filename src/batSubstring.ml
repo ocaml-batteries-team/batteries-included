@@ -546,3 +546,14 @@ let rec enum (str, off, len) =
    Enum.compare Char.compare (enum (empty ())) (String.enum "P") <> 0
 *)
 let print oc ss = iter (fun c -> BatIO.write oc c) ss
+
+let append_to_buffer buff ss =
+  let str, ofs, len = base ss in
+  BatBuffer.add_substring buff str ofs len
+
+(*$T append_to_buffer
+    let buff = BatBuffer.create 10 in \
+    let ss = substring "toto" 0 3 in \
+    append_to_buffer buff ss; \
+    BatBuffer.contents buff = "tot"
+*)
