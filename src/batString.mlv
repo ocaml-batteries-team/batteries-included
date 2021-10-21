@@ -983,6 +983,7 @@ let splice s1 off len s2 =
    splice "bar baz" (-4) 2 "XXX" = "barXXXaz"
 *)
 
+let empty = ""
 
 let is_empty s = length s = 0
 (*$T is_empty

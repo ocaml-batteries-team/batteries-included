@@ -56,6 +56,10 @@ val init : int -> (int -> char) -> string
     Example: [String.init 256 char_of_int]
 *)
 
+val empty : string
+(** The empty string.
+    @since NEXT_RELEASE *)
+
 val is_empty : string -> bool
 (** [is_empty s] returns [true] if [s] is the empty string, [false]
     otherwise.
