@@ -131,7 +131,7 @@ module MapBench (M : sig val input_length : int end) = struct
   let p1 = random_pairlist ()
   let p2 = random_pairlist ()
 
-  let merge_fun k a b =
+  let merge_fun k _a _b =
     if k mod 2 = 0 then None else Some ()
 
   let merge_std_map =
@@ -155,9 +155,9 @@ module MapBench (M : sig val input_length : int end) = struct
   (* compare fold-based and merge-based union, diff, intersect *)
   let pmap_union (m1, m2) = Map.union m1 m2
   let fold_union (m1, m2) =
-    Map.foldi Map.add m1 m2
+    Map.foldi Map.add m2 m1
   let merge_union (m1, m2) =
-    let merge_fun k a b = if a <> None then a else b in
+    let merge_fun _k a b = if b <> None then b else a in
     Map.merge merge_fun m1 m2
 
   let union_input =
@@ -184,7 +184,7 @@ module MapBench (M : sig val input_length : int end) = struct
   let fold_diff (m1, m2) =
     Map.foldi (fun k _ acc -> Map.remove k acc) m2 m1
   let merge_diff (m1, m2) =
-    let merge_fun k a b = if b <> None then None else a in
+    let merge_fun _k a b = if b <> None then None else a in
     Map.merge merge_fun m1 m2
 
   let diff_input =
@@ -220,7 +220,7 @@ module MapBench (M : sig val input_length : int end) = struct
     Map.filter_map filter_fun m1
 
   let merge_intersect f (m1, m2) =
-    let merge_fun k a b =
+    let merge_fun _k a b =
       match a, b with
         | Some v1, Some v2 -> Some (f v1 v2)
         | None, _ | _, None -> None in

@@ -123,7 +123,7 @@ val height : t -> int
 val balance : t -> t
 (** [balance r] returns a balanced copy of the [r] rope. Note that ropes are
     automatically rebalanced when their height exceeds a given threshold, but
-    [balance] allows to invoke that operation explicity. *)
+    [balance] allows to invoke that operation explicitly. *)
 
 (** {6 Operations } *)
 

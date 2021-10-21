@@ -29,7 +29,7 @@ let array_len = 10000
 let xs = Array.init array_len (fun _ -> BatRandom.full_range_int ())
 
 let harn f n =
-  for i = 1 to n do
+  for _i = 1 to n do
     for j = 0 to array_len-2 do
       ignore (f xs.(j) xs.(j+1));
     done

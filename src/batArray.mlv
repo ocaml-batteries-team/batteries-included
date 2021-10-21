@@ -20,11 +20,11 @@
  *)
 
 
+include Array
+
 type 'a t = 'a array
 type 'a enumerable = 'a t
 type 'a mappable = 'a t
-
-include Array
 
 ##V<4.2##let create_float n = make n 0.
 ##V<4.2##let make_float = create_float
@@ -56,6 +56,26 @@ let modifyi f a =
     let a = [|3;2;1|] in modifyi (fun i x -> i * x) a; a = [|0;2;2|]
   *)
 
+let fold = fold_left
+
+let fold_left_map f init a =
+  let n = length a in
+  if n = 0 then
+    (init, [||])
+  else
+    let acc = ref init in
+    let f' x =
+      let acc', y = f !acc x in
+      acc := acc';
+      y in
+    let res = map f' a in
+    (!acc, res)
+
+(*$T fold_left_map
+    fold_left_map (fun acc x -> (acc + x, x)) 0 [|0;1;2;3|] = (6, [|0;1;2;3|])
+    fold_left_map (fun acc x -> (acc + x, x)) 0 [||] = (0, [||])
+  *)
+
 let fold_lefti f x a =
   let r = ref x in
   for i = 0 to length a - 1 do
@@ -84,9 +104,12 @@ let rev_in_place xs =
   let n = length xs in
   let j = ref (n-1) in
   for i = 0 to n/2-1 do
-    let c = xs.(i) in
-    xs.(i) <- xs.(!j);
-    xs.(!j) <- c;
+    (* let c = xs.(i) in *)
+    let c = unsafe_get xs i in
+    (* xs.(i) <- xs.(!j); *)
+    unsafe_set xs i (unsafe_get xs !j);
+    (* xs.(!j) <- c; *)
+    unsafe_set xs !j c;
     decr j
   done
 
@@ -97,7 +120,7 @@ let rev_in_place xs =
 *)
 
 let rev xs =
-  let ys = Array.copy xs in
+  let ys = copy xs in
   rev_in_place ys;
   ys
 
@@ -109,7 +132,7 @@ let for_all p xs =
   let n = length xs in
   let rec loop i =
     if i = n then true
-    else if p xs.(i) then loop (succ i)
+    else if p (unsafe_get xs i) then loop (succ i)
     else false
   in
   loop 0
@@ -124,7 +147,7 @@ let exists p xs =
   let n = length xs in
   let rec loop i =
     if i = n then false
-    else if p xs.(i) then true
+    else if p (unsafe_get xs i) then true
     else loop (succ i)
   in
   loop 0
@@ -140,7 +163,7 @@ let mem a xs =
   let n = length xs in
   let rec loop i =
     if i = n then false
-    else if a = xs.(i) then true
+    else if a = unsafe_get xs i then true
     else loop (succ i)
   in
   loop 0
@@ -155,7 +178,7 @@ let memq a xs =
   let n = length xs in
   let rec loop i =
     if i = n then false
-    else if a == xs.(i) then true
+    else if a == unsafe_get xs i then true
     else loop (succ i)
   in
   loop 0
@@ -170,7 +193,7 @@ let findi p xs =
   let n = length xs in
   let rec loop i =
     if i = n then raise Not_found
-    else if p xs.(i) then i
+    else if p (unsafe_get xs i) then i
     else loop (succ i)
   in
   loop 0
@@ -198,30 +221,103 @@ let find p xs = xs.(findi p xs)
     with Not_found -> for_all (fun elt -> not (f elt)) a)
 *)
 
+let find_opt p a =
+  let n = length a in
+  let rec loop i =
+    if i = n then None
+    else
+      let x = unsafe_get a i in
+      if p x then Some x
+      else loop (succ i)
+  in
+  loop 0
+
+(*$T find_opt
+    find_opt (fun x -> x < 0) [||] = None
+    find_opt (fun x -> x < 0) [|0;1;2;3|] = None
+    find_opt (fun x -> x >= 3) [|0;1;2;3|] = Some 3
+*)
+
+let find_map f a =
+  let n = length a in
+  let rec loop i =
+    if i = n then None
+    else
+      match f (unsafe_get a i) with
+      | None -> loop (succ i)
+      | Some _ as r -> r
+  in
+  loop 0
+
+(*$T find_map
+    find_map (fun x -> if x < 0 then Some x else None) [||] = None
+    find_map (fun x -> if x < 0 then Some x else None) [|0;-1;2|] = (Some (-1))
+    find_map (fun x -> if x < 0 then Some x else None) [|0;1;-2|] = (Some (-2))
+*)
+
 (* Use of BitSet suggested by Brian Hurt. *)
 let filter p xs =
   let n = length xs in
   (* Use a bitset to store which elements will be in the final array. *)
   let bs = BatBitSet.create n in
   for i = 0 to n-1 do
-    if p xs.(i) then BatBitSet.set bs i
+    if p (unsafe_get xs i) then BatBitSet.set bs i
   done;
   (* Allocate the final array and copy elements into it. *)
   let n' = BatBitSet.count bs in
   let j = ref 0 in
   init n'
     (fun _ -> match BatBitSet.next_set_bit bs !j with
-      | Some i -> j := i+1; xs.(i)
+      | Some i -> j := i+1; unsafe_get xs i
       | None ->
         (* not enough 1 bits - incorrect count? *)
-        assert false (*BISECT-VISIT*)
+        assert false
     )
 (*$Q filter
   (Q.pair (Q.array Q.small_int) (Q.fun1 Q.Observable.int Q.bool)) (fun (a, Q.Fun(_,f)) -> \
-    let b = Array.to_list (filter f a) in \
-    let b' = List.filter f (Array.to_list a) in \
+    let b = to_list (filter f a) in \
+    let b' = List.filter f (to_list a) in \
     List.for_all (fun (x,y) -> x = y) (List.combine b b') \
   )
+*)
+
+exception End of int
+
+let fold_while p f init xs =
+  let acc = ref init in
+  try
+    let n = length xs in
+    for i = 0 to n - 1 do
+      let x = unsafe_get xs i in
+      if p !acc x then
+        acc := f !acc x
+      else
+        raise (End i)
+    done;
+    (!acc, n)
+  with End i -> (!acc, i)
+
+(*$T fold_while
+  fold_while (fun _ x -> x mod 2 = 0) (+) 0 [|1;2|] = (0, 0)
+  fold_while (fun _ x -> x mod 2 = 1) (+) 0 [|1;2|] = (1, 1)
+  fold_while (fun _ x -> x < 4) (+) 0 [|1;2;3;4|] = (6, 3)
+  fold_while (fun _ x -> x < 4) (+) 0 [|1;2;3|] = (6, 3)
+  fold_while (fun _ x -> x < 4) (+) 0 [||] = (0, 0)
+*)
+
+let count_matching p xs =
+  let n = length xs in
+  let count = ref 0 in
+  for i = 0 to n - 1 do
+    if p (unsafe_get xs i) then
+      incr count
+  done;
+  !count
+
+(*$T count_matching
+  count_matching (fun _ -> true) [||] = 0
+  count_matching (fun x -> x = -1) [|-1|] = 1
+  count_matching (fun x -> x = -1) [|-1;0;-1|] = 2
 *)
 
 let filteri p xs =
@@ -229,17 +325,17 @@ let filteri p xs =
   (* Use a bitset to store which elements will be in the final array. *)
   let bs = BatBitSet.create n in
   for i = 0 to n-1 do
-    if p i xs.(i) then BatBitSet.set bs i
+    if p i (unsafe_get xs i) then BatBitSet.set bs i
   done;
   (* Allocate the final array and copy elements into it. *)
   let n' = BatBitSet.count bs in
   let j = ref 0 in
   init n'
     (fun _ -> match BatBitSet.next_set_bit bs !j with
-      | Some i -> j := i+1; xs.(i)
+      | Some i -> j := i+1; unsafe_get xs i
       | None ->
         (* not enough 1 bits - incorrect count? *)
-        assert false (*BISECT-VISIT*)
+        assert false
     )
 
 (*$T filteri
@@ -248,38 +344,39 @@ let filteri p xs =
 
 let find_all = filter
 
-let partition p xs =
-  let n = length xs in
-  (* Use a bitset to store which elements will be in which final array. *)
-  let bs = BatBitSet.create n in
-  for i = 0 to n-1 do
-    if p xs.(i) then BatBitSet.set bs i
-  done;
-  (* Allocate the final arrays and copy elements into them. *)
-  let n1 = BatBitSet.count bs in
-  let n2 = n - n1 in
-  let j = ref 0 in
-  let xs1 = init n1
-      (fun _ ->
-        (* Find the next set bit in the BitSet. *)
-        while not (BatBitSet.mem bs !j) do incr j done;
-        let r = xs.(!j) in
-        incr j;
-        r) in
-  let j = ref 0 in
-  let xs2 = init n2
-      (fun _ ->
-        (* Find the next clear bit in the BitSet. *)
-        while BatBitSet.mem bs !j do incr j done;
-        let r = xs.(!j) in
-        incr j;
-        r) in
-  xs1, xs2
+(* <=> List.partition *)
+let partition p a =
+  let n = length a in
+  if n = 0 then ([||], [||])
+  else
+    let ok_count = ref 0 in
+    let mask =
+      init n (fun i ->
+          let pi = p (unsafe_get a i) in
+          if pi then incr ok_count;
+          pi) in
+    let ko_count = n - !ok_count in
+    let init = unsafe_get a 0 in
+    let ok = make !ok_count init in
+    let ko = make ko_count init in
+    let j = ref 0 in
+    let k = ref 0 in
+    for i = 0 to n - 1 do
+      let x = unsafe_get a i in
+      let px = unsafe_get mask i in
+      if px then
+        (unsafe_set ok !j x;
+         incr j)
+      else
+        (unsafe_set ko !k x;
+         incr k)
+    done;
+    (ok, ko)
 (*$Q partition
   (Q.pair (Q.array Q.small_int) (Q.fun1 Q.Observable.int Q.bool)) (fun (a, Q.Fun(_,f)) -> \
     let b1, b2 = partition f a in \
-    let b1, b2 = Array.to_list b1, Array.to_list b2 in \
-    let b1', b2' = List.partition f (Array.to_list a) in \
+    let b1, b2 = to_list b1, to_list b2 in \
+    let b1', b2' = List.partition f (to_list a) in \
     List.for_all (fun (x,y) -> x = y) (List.combine b1 b1') && \
     List.for_all (fun (x,y) -> x = y) (List.combine b2 b2') \
   )
@@ -292,7 +389,7 @@ let enum xs =
     BatEnum.make
       ~next:(fun () ->
         if !start < n then
-          xs.(BatRef.post_incr start)
+          unsafe_get xs (BatRef.post_incr start)
         else
           raise BatEnum.No_more_elements)
       ~count:(fun () ->
@@ -304,12 +401,12 @@ let enum xs =
 (*$Q enum
   (Q.array Q.small_int) (fun a -> \
     let e = enum a in \
-    for i = 0 to Array.length a / 2 - 1 do\
+    for i = 0 to length a / 2 - 1 do\
       assert (a.(i) = BatEnum.get_exn e)\
     done; \
     let e' = BatEnum.clone e in \
     assert (BatEnum.count e = BatEnum.count e'); \
-    for i = Array.length a / 2 to Array.length a - 1 do \
+    for i = length a / 2 to length a - 1 do \
       assert (a.(i) = BatEnum.get_exn e && a.(i) = BatEnum.get_exn e') \
     done; \
     BatEnum.is_empty e && BatEnum.is_empty e' \
@@ -322,7 +419,7 @@ let backwards xs =
     BatEnum.make
       ~next:(fun () ->
         if !start > 0 then
-          xs.(BatRef.pre_decr start)
+          unsafe_get xs (BatRef.pre_decr start)
         else
           raise BatEnum.No_more_elements)
       ~count:(fun () ->
@@ -334,13 +431,13 @@ let backwards xs =
 (*$Q backwards
   (Q.array Q.small_int) (fun a -> \
     let e = backwards a in \
-    let n = Array.length a in \
-    for i = 0 to Array.length a / 2 - 1 do\
+    let n = length a in \
+    for i = 0 to length a / 2 - 1 do\
       assert (a.(n - 1 - i) = BatEnum.get_exn e)\
     done; \
     let e' = BatEnum.clone e in \
     assert (BatEnum.count e = BatEnum.count e'); \
-    for i = Array.length a / 2 to Array.length a - 1 do \
+    for i = length a / 2 to length a - 1 do \
       assert (a.(n - 1 - i) = BatEnum.get_exn e && \
               a.(n - 1 - i) = BatEnum.get_exn e') \
     done; \
@@ -351,20 +448,20 @@ let backwards xs =
 let of_enum e =
   let n = BatEnum.count e in
   (* This assumes, reasonably, that init traverses the array in order. *)
-  Array.init n
+  init n
     (fun _i ->
       match BatEnum.get e with
       | Some x -> x
-      | None -> assert false (*BISECT-VISIT*))
+      | None -> assert false)
 
 let of_backwards e =
   of_list (BatList.of_backwards e)
 
-let range xs = BatEnum.(--^) 0 (Array.length xs)
+let range xs = BatEnum.(--^) 0 (length xs)
 (*$Q range
   (Q.array Q.small_int) (fun a -> \
     BatEnum.equal (=) (range a) \
-     (enum (Array.init (Array.length a) (fun i -> i))))
+     (enum (init (length a) (fun i -> i))))
 *)
 
 let filter_map p xs =
@@ -380,18 +477,19 @@ let filter_map p xs =
 *)
 
 let iter2 f a1 a2 =
-  if Array.length a1 <> Array.length a2
-  then raise (Invalid_argument "Array.iter2");
-  for i = 0 to Array.length a1 - 1 do
-    f a1.(i) a2.(i);
+  if length a1 <> length a2
+  then invalid_arg "Array.iter2";
+  for i = 0 to length a1 - 1 do
+    (* f a1.(i) a2.(i) *)
+    f (unsafe_get a1 i) (unsafe_get a2 i)
   done
 (*$Q iter2
   (Q.array Q.small_int) (fun a -> \
-    let a' = Array.map (fun a -> a + 1) a in \
+    let a' = map (fun a -> a + 1) a in \
     let i = ref (-1) in \
-    let b = Array.make (Array.length a) (max_int, max_int) in \
+    let b = make (length a) (max_int, max_int) in \
     let f x1 x2 = incr i; b.(!i) <- (x1, x2) in \
-    let b' = Array.map (fun a -> (a, a + 1)) a in \
+    let b' = map (fun a -> (a, a + 1)) a in \
     iter2 f a a'; \
     b = b' \
   )
@@ -404,18 +502,19 @@ let iter2 f a1 a2 =
 *)
 
 let iter2i f a1 a2 =
-  if Array.length a1 <> Array.length a2
-  then raise (Invalid_argument "Array.iter2i");
-  for i = 0 to Array.length a1 - 1 do
-    f i a1.(i) a2.(i);
+  if length a1 <> length a2
+  then invalid_arg "Array.iter2i";
+  for i = 0 to length a1 - 1 do
+    (* f i a1.(i) a2.(i) *)
+    f i (unsafe_get a1 i) (unsafe_get a2 i)
   done
 (*$Q iter2i
   (Q.array Q.small_int) (fun a -> \
-    let a' = Array.map (fun a -> a + 1) a in \
+    let a' = map (fun a -> a + 1) a in \
     let i = ref (-1) in \
-    let b = Array.make (Array.length a) (max_int, max_int) in \
+    let b = make (length a) (max_int, max_int) in \
     let f idx x1 x2 = incr i; assert (!i = idx); b.(!i) <- (x1, x2) in \
-    let b' = Array.map (fun a -> (a, a + 1)) a in \
+    let b' = map (fun a -> (a, a + 1)) a in \
     iter2i f a a'; \
     b = b' \
   )
@@ -427,15 +526,16 @@ let iter2i f a1 a2 =
     with Invalid_argument _ -> true
 *)
 
-let for_all2 p xs ys =
-  let n = length xs in
-  if length ys <> n then raise (Invalid_argument "Array.for_all2");
-  let rec loop i =
-    if i = n then true
-    else if p xs.(i) ys.(i) then loop (succ i)
-    else false
-  in
-  loop 0
+##V>=4.11##let for_all2 = Array.for_all2
+##V<4.11##let for_all2 p xs ys =
+##V<4.11##  let n = length xs in
+##V<4.11##  if length ys <> n then invalid_arg "Array.for_all2";
+##V<4.11##  let rec loop i =
+##V<4.11##    if i = n then true
+##V<4.11##    else if p (unsafe_get xs i) (unsafe_get ys i) then loop (succ i)
+##V<4.11##    else false
+##V<4.11##  in
+##V<4.11##  loop 0
 
 (*$T for_all2
    for_all2 (=) [|1;2;3|] [|3;2;1|] = false
@@ -447,15 +547,16 @@ let for_all2 p xs ys =
      with Invalid_argument _ -> true
 *)
 
-let exists2 p xs ys =
-  let n = length xs in
-  if length ys <> n then raise (Invalid_argument "Array.exists2");
-  let rec loop i =
-    if i = n then false
-    else if p xs.(i) ys.(i) then true
-    else loop (succ i)
-  in
-  loop 0
+##V>=4.11##let exists2 = Array.exists2
+##V<4.11##let exists2 p xs ys =
+##V<4.11##  let n = length xs in
+##V<4.11##  if length ys <> n then invalid_arg "Array.exists2";
+##V<4.11##  let rec loop i =
+##V<4.11##    if i = n then false
+##V<4.11##    else if p (unsafe_get xs i) (unsafe_get ys i) then true
+##V<4.11##    else loop (succ i)
+##V<4.11##  in
+##V<4.11##  loop 0
 
 (*$T exists2
    exists2 (=) [|1;2;3|] [|3;2;1|]
@@ -466,8 +567,8 @@ let exists2 p xs ys =
 
 let map2 f xs ys =
   let n = length xs in
-  if length ys <> n then raise (Invalid_argument "Array.map2");
-  Array.init n (fun i -> f xs.(i) ys.(i))
+  if length ys <> n then invalid_arg "Array.map2";
+  init n (fun i -> f (unsafe_get xs i) (unsafe_get ys i))
 
 (*$T map2
    map2 (-) [|1;2;3|] [|6;3;1|] = [|-5;-1;2|]
@@ -483,8 +584,9 @@ let cartesian_product a b =
   let nb = length b in
   init
     (na * nb)
-    (fun j -> let i = j / nb in
-              a.(i), b.(j - i*nb))
+    (fun j ->
+       let i = j / nb in
+       (unsafe_get a i, unsafe_get b (j - i * nb)))
 
 (*$T cartesian_product
   let a = cartesian_product [|1;2|] [|"a";"b"|] in \
@@ -499,8 +601,8 @@ let cartesian_product a b =
 *)
 
 let compare cmp a b =
-  let length_a = Array.length a in
-  let length_b = Array.length b in
+  let length_a = length a in
+  let length_b = length b in
   let length   = BatInt.min length_a length_b in
   let rec aux i =
     if i < length then
@@ -547,13 +649,14 @@ let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
 
 
 let reduce f a =
-  if Array.length a = 0 then
+  if length a = 0 then
     invalid_arg "Array.reduce: empty array"
-  else (
-    let acc = ref a.(0) in
-    for i = 1 to Array.length a - 1 do acc := f !acc a.(i) done;
+  else
+    let acc = ref (unsafe_get a 0) in
+    for i = 1 to length a - 1 do
+      acc := f !acc (unsafe_get a i)
+    done;
     !acc
-  )
 
 (*$T reduce
    reduce (+) [|1;2;3|] = 6
@@ -574,15 +677,15 @@ let max a = reduce Pervasives.max a
   *)
 
 let min_max a =
-  let n = Array.length a in
+  let n = length a in
   if n = 0 then
     invalid_arg "Array.min_max: empty array"
   else
-    let mini = ref a.(0) in
-    let maxi = ref a.(0) in
+    let mini = ref (unsafe_get a 0) in
+    let maxi = ref (unsafe_get a 0) in
     for i = 1 to n - 1 do
-      if a.(i) > !maxi then maxi := a.(i);
-      if a.(i) < !mini then mini := a.(i)
+      if (unsafe_get a i) > !maxi then maxi := (unsafe_get a i);
+      if (unsafe_get a i) < !mini then mini := (unsafe_get a i)
     done;
     (!mini, !maxi)
 (*$T min_max
@@ -591,12 +694,13 @@ let min_max a =
     try ignore (min_max [||]); false with Invalid_argument _ -> true
 *)
 
-let sum = reduce (+)
-let fsum = reduce (+.)
+let sum = fold_left (+) 0
+let fsum = fold_left (+.) 0.
 
 (*$T sum
   sum [|1;2;3|] = 6
   sum [|0|] = 0
+  sum [||] = 0
 *) (*$T fsum
      fsum [|1.0;2.0;3.0|] = 6.0
      fsum [|0.0|] = 0.0
@@ -605,8 +709,8 @@ let fsum = reduce (+.)
 let kahan_sum arr =
   let sum = ref 0. in
   let err = ref 0. in
-  for i = 0 to Array.length arr - 1 do
-    let x = arr.(i) -. !err in
+  for i = 0 to length arr - 1 do
+    let x = (unsafe_get arr i) -. !err in
     let new_sum = !sum +. x in
     err := (new_sum -. !sum) -. x;
     sum := new_sum +. 0.;
@@ -622,7 +726,7 @@ let kahan_sum arr =
    kahan_sum [| 1.; 2. |] = 3.
    let n, x = 1_000, 1.1 in \
      Float.approx_equal (float n *. x) \
-                        (kahan_sum (Array.make n x))
+                        (kahan_sum (make n x))
 *)
 
 let flength a =
@@ -646,8 +750,8 @@ let favg a =
    or not failing early *)
 let is_sorted_by f xs =
   let ok = ref true in
-  for i = 0 to Array.length xs - 2 do
-    ok := !ok && (f (xs.(i)) <= f (xs.(i + 1)))
+  for i = 0 to length xs - 2 do
+    ok := !ok && (f (unsafe_get xs i)) <= (f (unsafe_get xs (i + 1)))
   done;
   !ok
 
@@ -680,13 +784,14 @@ let bsearch cmp arr x =
       then `Just_after j
       else
         let middle = i + (j - i) / 2 in (* avoid overflow *)
-        match cmp x arr.(middle) with
+        match cmp x (unsafe_get arr middle) with
         | BatOrd.Eq -> `At middle
         | BatOrd.Lt -> bsearch i (middle - 1)
         | BatOrd.Gt -> bsearch (middle + 1) j
   in
   if length arr = 0 then `Empty
-  else match cmp arr.(0) x, cmp arr.(length arr - 1) x with
+  else match (cmp (unsafe_get arr 0) x,
+              cmp (unsafe_get arr (length arr - 1)) x) with
   | BatOrd.Gt, _ -> `All_bigger
   | _, BatOrd.Lt -> `All_lower
   | _ -> bsearch 0 (length arr - 1)
@@ -701,9 +806,63 @@ let bsearch cmp arr x =
   bsearch BatInt.ord [| |] 3 = `Empty
 *)
 
+let pivot_split cmp arr x =
+  let open BatOrd in
+  let n = length arr in
+  (* find left edge between i and j *)
+  let rec search_left i j =
+    if i > j
+    then i
+    else
+      let middle = i + (j-i)/2 in
+      match cmp (unsafe_get arr middle) x with
+      | Lt -> search_left (middle+1) j
+      | Gt -> search_left i (middle-1)
+      | Eq ->
+        (* check whether [middle] is the edge, ie the leftmost index
+           where arr.(_) = x *)
+        let neighbor = middle - 1 in
+        if neighbor < 0 || cmp (unsafe_get arr neighbor) x = Lt
+          then middle                  (* found! *)
+          else search_left i neighbor  (* go further on left *)
+  (* find right edge, between i and j *)
+  and search_right i j =
+    if i > j
+    then i
+    else
+      let middle = i + (j-i)/2 in
+      match cmp (unsafe_get arr middle) x with
+      | Lt -> search_right (middle+1) j
+      | Gt -> search_right i (middle-1)
+      | Eq ->
+        let neighbor = middle + 1 in
+        if neighbor = n || cmp (unsafe_get arr neighbor) x = Gt
+          then middle + 1              (* found! *)
+          else search_right neighbor j (* go further on right *)
+  in
+  (search_left 0 (n-1), search_right 0 (n-1))
+
+(*$T pivot_split
+  pivot_split BatInt.ord [| |] 1 = (0, 0)
+  pivot_split BatInt.ord [|1;2;2;3;3;4;5|] 3 = (3,5)
+  pivot_split BatInt.ord [|1;1;1;2;3;3;4;5|] 1 = (0,3)
+  pivot_split BatInt.ord [|1;2;2;3;3;4;5|] 10 = (7,7)
+  pivot_split BatInt.ord [|1;2;2;3;3;4;5|] 0 = (0,0)
+  pivot_split BatInt.ord [|2;2;2|] 2 = (0,3)
+  pivot_split BatInt.ord [|1;2;2;4;5|] 3 = (3,3)
+*)
+
 let insert xs x i =
-  if i > Array.length xs then invalid_arg "Array.insert: offset out of range";
-  Array.init (Array.length xs + 1) (fun j -> if j < i then xs.(j) else if j > i then xs.(j-1) else x)
+  let len = length xs in
+  if i < 0 || i > len then
+    invalid_arg "Array.insert: offset out of range";
+  init (len+1) (fun j ->
+    if j < i then
+      unsafe_get xs j
+    else if j > i then
+      unsafe_get xs (j-1)
+    else
+      x)
 
 (*$T insert
    insert [|1;2;3|] 4 0 = [|4;1;2;3|]
@@ -715,6 +874,22 @@ let insert xs x i =
      with Invalid_argument _ -> true
 *)
 
+let remove_at i src =
+  let x = src.(i) in (* keep the bound check in there *)
+  let n = length src in
+  let dst = make (n - 1) x in
+  blit src 0 dst 0 i;
+  blit src (i + 1) dst i (n - i - 1);
+  dst
+(*$T remove_at
+    try remove_at 0 [||] = [|1|] \
+      with Invalid_argument _ -> true
+    remove_at 0 [|1;2;3|] = [|2;3|]
+    remove_at 1 [|1;2;3|] = [|1;3|]
+    remove_at 2 [|1;2;3|] = [|1;2|]
+    try remove_at 3 [|1;2;3|] = [|1|] \
+      with Invalid_argument _ -> true
+*)
 
 (* helper function; only works for arrays of equal length *)
 let eq_elements eq_elt a1 a2 = for_all2 eq_elt a1 a2
@@ -723,7 +898,7 @@ let eq_elements eq_elt a1 a2 = for_all2 eq_elt a1 a2
 let rec ord_aux eq_elt i a1 a2 =
   let open BatOrd in
   if i >= length a1 then Eq
-  else match eq_elt a1.(i) a2.(i) with
+  else match eq_elt (unsafe_get a1 i) (unsafe_get a2 i) with
     | (Lt | Gt) as res -> res
     | Eq -> ord_aux eq_elt (i+1) a1 a2
 
@@ -765,6 +940,37 @@ let shuffle ?state a =
   b = [||]
 *)
 
+(* equivalent of List.split *)
+let split a =
+  let n = length a in
+  if n = 0 then ([||], [||])
+  else
+    let l, r = unsafe_get a 0 in
+    let left = make n l in
+    let right = make n r in
+    for i = 1 to n - 1 do
+      let l, r = unsafe_get a i in
+      unsafe_set left i l;
+      unsafe_set right i r
+    done;
+    (left, right)
+(*$T split
+  split [||] = ([||], [||])
+  split [|(1,2);(3,4);(5,6)|] = ([|1;3;5|], [|2;4;6|])
+*)
+
+let combine a b =
+  let m = length a in
+  let n = length b in
+  if m <> n then invalid_arg "Array.combine";
+  map2 (fun x y -> (x, y)) a b
+
+(*$T combine
+    combine [||] [||] = [||]
+    try combine [|1;2;3|] [||] = [||] with Invalid_argument _ -> true
+    combine [|1;2;3|] [|4;5;6|] = [|(1,4);(2,5);(3,6)|]
+*)
+
 module Incubator = struct
   module Eq (T : BatOrd.Eq) = struct
     type t = T.t array
@@ -784,23 +990,23 @@ let head a pos = left a pos
 let tail a pos = let alen = length a in
   if pos >= alen then [||] else sub a pos (alen - pos)
 
-(*$= left & ~printer:(IO.to_string (Array.print Int.print))
+(*$= left & ~printer:(IO.to_string (print Int.print))
   (left [|1;2;3|] 1) [|1|]
   (left [|1;2|] 3) [|1;2|]
   (left [|1;2;3|] 3) [|1;2;3|]
   (left [|1;2;3|] 10)[|1;2;3|]
   (left [|1;2;3|] 0) [||]
-*) (*$= right & ~printer:(IO.to_string (Array.print Int.print))
+*) (*$= right & ~printer:(IO.to_string (print Int.print))
      (right [|1;2;3|] 1) [|3|]
      (right [|1;2|] 3) [|1;2|]
      (right [|1;2;3|] 3) [|1;2;3|]
      (right [|1;2;3|] 10) [|1;2;3|]
      (right [|1;2;3|] 0) [||]
-   *) (*$= tail & ~printer:(IO.to_string (Array.print Int.print))
+   *) (*$= tail & ~printer:(IO.to_string (print Int.print))
         (tail [|1;2;3|] 1) [|2;3|]
         [||] (tail [|1;2;3|] 10)
         (tail [|1;2;3|] 0) [|1;2;3|]
-      *) (*$= head & ~printer:(IO.to_string (Array.print Int.print))
+      *) (*$= head & ~printer:(IO.to_string (print Int.print))
         (head [|1;2;3|] 1) [|1|]
         (head [|1;2;3|] 10) [|1;2;3|]
         (head [|1;2;3|] 0) [||]
@@ -837,17 +1043,23 @@ struct
   let map          = map
   let filter       = filter
   let filter_map   = filter_map
+  let count_matching = count_matching
   let iteri        = iteri
   let mapi         = mapi
   let modify       = modify
   let modifyi      = modifyi
   let fold_left    = fold_left
+  let fold         = fold_left
+  let fold_left_map = fold_left_map
   let fold_right   = fold_right
+  let fold_while   = fold_while
   let iter2        = iter2
   let iter2i       = iter2i
   let for_all      = for_all
   let exists       = exists
   let find         = find
+  let find_opt     = find_opt
+  let find_map     = find_map
   let mem          = mem
   let memq         = memq
   let findi        = findi
@@ -866,6 +1078,9 @@ struct
   let backwards    = backwards
   let of_backwards = of_backwards
   let to_list      = to_list
+  let split        = split
+  let combine      = combine
+  let pivot_split  = pivot_split
   let of_list      = of_list
   let sort         = sort
   let stable_sort  = stable_sort
@@ -877,7 +1092,6 @@ struct
   external unsafe_get : ('a, [> `Read]) t -> int -> 'a = "%array_unsafe_get"
   external unsafe_set : ('a, [> `Write])t -> int -> 'a -> unit = "%array_unsafe_set"
 
-  (*BISECT-IGNORE-BEGIN*)
   module Labels =
   struct
     let init i ~f = init i f
@@ -895,7 +1109,10 @@ struct
     let modify ~f a = modify f a
     let modifyi ~f a = modifyi f a
     let fold_left ~f ~init a = fold_left f init a
+    let fold_left_map ~f ~init a = fold_left_map f init a
+    let fold = fold_left
     let fold_right ~f a ~init= fold_right f a init
+    let fold_while ~p ~f ~init a = fold_while p f init a
     let sort ~cmp a = sort cmp a
     let stable_sort ~cmp a = stable_sort cmp a
     let fast_sort ~cmp a = fast_sort cmp a
@@ -904,8 +1121,11 @@ struct
     let for_all ~f a = for_all f a
     let iter2i  ~f a b = iter2i f a b
     let find ~f a = find f a
+    let find_opt ~f a = find_opt f a
+    let find_map ~f a = find_map f a
     let filter ~f a = filter f a
     let filter_map ~f a = filter_map f a
+    let count_matching ~f a = count_matching f a
   end
 
   module Exceptionless =
@@ -918,10 +1138,8 @@ struct
       try Some (findi f e)
       with Not_found -> None
   end
-  (*BISECT-IGNORE-END*)
 end
 
-(*BISECT-IGNORE-BEGIN*)
 module Exceptionless =
 struct
   let find f e =
@@ -950,7 +1168,10 @@ struct
   let modify ~f a = modify f a
   let modifyi ~f a = modifyi f a
   let fold_left ~f ~init a = fold_left f init a
+  let fold_left_map ~f ~init a = fold_left_map f init a
+  let fold = fold_left
   let fold_right ~f a ~init= fold_right f a init
+  let fold_while ~p ~f ~init a = fold_while p f init a
   let sort ~cmp a = sort cmp a
   let stable_sort ~cmp a = stable_sort cmp a
   let fast_sort ~cmp a = fast_sort cmp a
@@ -959,13 +1180,15 @@ struct
   let for_all ~f a = for_all f a
   let iter2i  ~f a b = iter2i f a b
   let find ~f a = find f a
+  let find_opt ~f a = find_opt f a
+  let find_map ~f a = find_map f a
   let findi ~f e = findi f e
   let filter ~f a = filter f a
   let filter_map ~f a = filter_map f a
+  let count_matching ~f a = count_matching f a
   module LExceptionless = struct
     include Exceptionless
     let find ~f e = find f e
     let findi ~f e = findi f e
   end
 end
-(*BISECT-IGNORE-END*)

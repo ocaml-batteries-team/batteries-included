@@ -61,8 +61,7 @@
     grouped into large writing operations, as these are generally
     faster and induce less wear on the hardware. Occasionally, you
     may wish to force all waiting operations to take place {e now}.
-    For this purpose, you may either function {!flush} or function
-    I    {!flush_out}.
+    For this purpose, you may call function {!flush}.
 
     Once you have finished using your {!type: input} or your {!type:
     output}, chances are that you will want to close it. This is not a
@@ -98,8 +97,6 @@
 
     @documents BatInnerIO
 *)
-
-open BatInnerIO
 
 type input = BatInnerIO.input
 (** The abstract input type. *)
@@ -365,7 +362,7 @@ val read_all : input -> string
 (** read all the contents of the input until [No_more_input] is raised. *)
 
 val pipe : unit -> input * unit output
-(** Create a pipe between an input and an ouput. Data written from
+(** Create a pipe between an input and an output. Data written from
     the output can be read from the input.
 *)
 
@@ -382,7 +379,7 @@ val pos_in : input -> input * (unit -> int)
 
 val progress_in : input -> (unit -> unit) -> input
 (** [progress_in inp f] create an input that calls [f ()]
-    whenever some content is succesfully read from it.*)
+    whenever some content is successfully read from it.*)
 
 val pos_out : 'a output -> unit output * (unit -> int)
 (** Create an output that provide a count function of the number of bytes
@@ -390,7 +387,7 @@ val pos_out : 'a output -> unit output * (unit -> int)
 
 val progress_out : 'a output -> (unit -> unit) -> unit output
 (** [progress_out out f] create an output that calls [f ()]
-    whenever some content is succesfully written to it.*)
+    whenever some content is successfully written to it.*)
 
 external cast_output : 'a output -> unit output = "%identity"
 (** You can safely transform any output to an unit output in a safe way
@@ -749,7 +746,7 @@ val input_channel : ?autoclose:bool -> ?cleanup:bool -> in_channel -> input
 
     @param cleanup If true, the channel
     will be automatically closed when the {!type: input} is closed.
-    Otherwise, you will need to close the channel manually.
+    Otherwise, you will need to close the channel manually. Default is [true].
 *)
 
 val output_channel : ?cleanup:bool -> out_channel -> unit output
@@ -771,10 +768,10 @@ val to_input_channel : input -> in_channel
 
 (** {6 Generic BatIO Object Wrappers}
 
-    Theses OO Wrappers have been written to provide easy support of
-    BatIO by external librairies. If you want your library to support
+    These OO Wrappers have been written to provide easy support of
+    BatIO by external libraries. If you want your library to support
     BatIO without actually requiring Batteries to compile, you can
-    should implement the classes [in_channel], [out_channel],
+    implement the classes [in_channel], [out_channel],
     [poly_in_channel] and/or [poly_out_channel] which are the common
     BatIO specifications established for ExtLib, OCamlNet and
     Camomile.
@@ -851,7 +848,9 @@ val strings_of : input -> string BatEnum.t
 
 val lines_of : input -> string BatEnum.t
 (** Read an enumeration of LF or CRLF terminated strings. *)
+
 val lines_of2 : input -> string BatEnum.t
+(** Buffered version of {!lines_of}, for performance. *)
 
 val chunks_of : int -> input -> string BatEnum.t
 (** Read an input as an enumeration of strings of given length.  If the input isn't a multiple of that length, the final string will be smaller than the rest. *)
@@ -881,7 +880,7 @@ val synchronize_in : ?lock:BatConcurrent.lock -> input  -> input
    wreak havoc otherwise
 
    @param lock An optional lock. If none is provided, the lock will be specific
-   to this [input]. Specifiying a custom lock may be useful to associate one
+   to this [input]. Specifying a custom lock may be useful to associate one
    common lock for several inputs and/or outputs, for instance in the case
    of pipes.
 *)
@@ -893,7 +892,7 @@ val synchronize_out: ?lock:BatConcurrent.lock -> _ output -> unit output
    wreak havoc otherwise
 
    @param lock An optional lock. If none is provided, the lock will be specific
-   to this [output]. Specifiying a custom lock may be useful to associate one
+   to this [output]. Specifying a custom lock may be useful to associate one
    common lock for several inputs and/or outputs, for instance in the case
    of pipes.
 *)
@@ -952,8 +951,8 @@ module Incubator : sig
       ?last:string ->
       ?sep:string ->
       ?indent:int ->
-      (Format.formatter -> 'a -> 'b) -> Format.formatter -> 'a array -> unit
-      (** Print the contents of an array, with [first] preceeding the first item
+      (Format.formatter -> 'a -> unit) -> Format.formatter -> 'a array -> unit
+      (** Print the contents of an array, with [first] preceding the first item
           (default: ["\[|"]), [last] following the last item (default: ["|\]"])
           and [sep] separating items (default: ["; "]). A printing function must
           be provided to print the items in the array. The [flush] parameter
@@ -973,8 +972,8 @@ module Incubator : sig
       ?last:string ->
       ?sep:string ->
       ?indent:int ->
-      (Format.formatter -> 'a -> 'b) -> Format.formatter -> 'a BatEnum.t -> unit
-      (** Print the contents of an enum, with [first] preceeding the first item
+      (Format.formatter -> 'a -> unit) -> Format.formatter -> 'a BatEnum.t -> unit
+      (** Print the contents of an enum, with [first] preceding the first item
           (default: [""]), [last] following the last item (default: [""])
           and [sep] separating items (default: [" "]). A printing function must
           be provided to print the items in the enum. The [flush] parameter
@@ -993,8 +992,8 @@ module Incubator : sig
       ?last:string ->
       ?sep:string ->
       ?indent:int ->
-      (Format.formatter -> 'a -> 'b) -> Format.formatter -> 'a list -> unit
-      (** Print the contents of a list, with [first] preceeding the first item
+      (Format.formatter -> 'a -> unit) -> Format.formatter -> 'a list -> unit
+      (** Print the contents of a list, with [first] preceding the first item
           (default: ["\["]), [last] following the last item (default: ["\]"])
           and [sep] separating items (default: ["; "]). A printing function must
           be provided to print the items in the list. The [flush] parameter

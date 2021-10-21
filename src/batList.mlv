@@ -39,6 +39,7 @@ let find = List.find
 let exists = List.exists
 let for_all = List.for_all
 let fold_left = List.fold_left
+let fold = List.fold_left
 let rev_map = List.rev_map
 let iter = List.iter
 let rev_append = List.rev_append
@@ -53,6 +54,12 @@ let memq = List.memq
 let mem_assq = List.mem_assq
 let mem_assoc = List.mem_assoc
 let rev_map2 = List.rev_map2
+##V>=4.07##let to_seq = List.to_seq
+##V>=4.07##let of_seq = List.of_seq
+##V>=4.10##let concat_map = List.concat_map
+##V>=4.10##let find_map_opt = List.find_map
+##V>=4.12##let equal = List.equal
+
 (* ::VH:: END GLUE *)
 
 let rec compare_lengths la lb = match la, lb with
@@ -104,7 +111,8 @@ type 'a mut_list =  {
   mutable tl: 'a list
 }
 
-type 'a t = 'a list
+##V<4.08##type 'a t = 'a list
+##V>=4.08##type 'a t = 'a list = [] | (::) of 'a * 'a list
 type 'a enumerable = 'a t
 type 'a mappable = 'a t
 
@@ -132,8 +140,8 @@ let is_empty = function
   not (is_empty [1])
 *)
 
-let at_negative_index_msg = "Negative index not allowed"
-let at_after_end_msg = "Index past end of list"
+let at_negative_index_msg = "List: Negative index not allowed"
+let at_after_end_msg = "List: Index past end of list"
 
 let nth l index =
   if index < 0 then invalid_arg at_negative_index_msg;
@@ -282,7 +290,7 @@ let takedrop n l =
 *)
 
 let ntake n l =
-  if n < 1 then invalid_arg "BatList.ntake";
+  if n < 1 then invalid_arg "List.ntake";
   let took, left = takedrop n l in
   let acc = Acc.create took in
   let rec loop dst = function
@@ -348,6 +356,23 @@ let span p li =
   (span ((=) 2) [2; 2])       ([2; 2],[])
 *)
 
+let fold_while p f init li =
+  let rec loop acc = function
+    | [] -> (acc, [])
+    | (x :: xs) as l ->
+      if p acc x then loop (f acc x) xs
+      else (acc, l) in
+  loop init li
+
+(*$= fold_while
+  (fold_while (fun _acc x -> x = 3) (fun acc x -> acc + x) 0 [3;3;4;3;3]) (6,[4;3;3])
+  (fold_while (fun acc _x -> acc < 6) (fun acc x -> acc + x) 0 [3;3;4;3;3]) (6,[4;3;3])
+  (fold_while (fun _acc x -> x = 3) (fun acc x -> acc + x) 0 [3]) (3,[])
+  (fold_while (fun _acc x -> x = 3) (fun acc x -> acc + x) 0 [4]) (0,[4])
+  (fold_while (fun _acc x -> x = 3) (fun acc x -> acc + x) 0 []) (0,[])
+  (fold_while (fun _acc x -> x = 2) (fun acc x -> acc + x) 0 [2; 2]) (4,[])
+*)
+
 let nsplit p = function
   | [] -> []
   (* note that returning [] on empty inputs is an arbitrary choice
@@ -368,7 +393,7 @@ let nsplit p = function
       let r = Acc.accum dst ok in
       match rest with
         | [] -> ()
-        | x :: xs -> loop r xs
+        | _x :: xs -> loop r xs
     in
     let dummy = Acc.dummy () in
     loop dummy li;
@@ -473,10 +498,10 @@ let unique ?(eq = ( = )) l =
 *)
 
 let unique_cmp ?(cmp = Pervasives.compare) l =
-  let set      = ref (BatMap.PMap.create cmp) in
+  let set = ref (BatSet.PSet.create cmp) in
   let should_keep x =
-    if BatMap.PMap.mem x !set then false
-    else ( set := BatMap.PMap.add x true !set; true )
+    if BatSet.PSet.mem x !set then false
+    else ( set := BatSet.PSet.add x !set; true )
   in
   (* use a stateful filter to remove duplicate elements *)
   List.filter should_keep l
@@ -573,7 +598,7 @@ let map2 f l1 l2 =
     | [], [] -> ()
     | h1 :: t1, h2 :: t2 ->
       loop (Acc.accum dst (f h1 h2)) t1 t2
-    | _ -> invalid_arg "map2: Different_list_size"
+    | _ -> invalid_arg "List.map2: list lengths differ"
   in
   let dummy = Acc.dummy () in
   loop dummy l1 l2;
@@ -585,7 +610,7 @@ let map2i f l1 l2 =
     | [], [] -> ()
     | h1 :: t1, h2 :: t2 ->
       loop (succ i) (Acc.accum dst (f i h1 h2)) t1 t2
-    | _ -> invalid_arg "map2i: Different_list_size"
+    | _ -> invalid_arg "List.map2i: list lengths differ"
   in
   let dummy = Acc.dummy () in
   loop 0 dummy l1 l2;
@@ -606,14 +631,14 @@ let rec iter2 f l1 l2 =
   match l1, l2 with
   | [], [] -> ()
   | h1 :: t1, h2 :: t2 -> f h1 h2; iter2 f t1 t2
-  | _ -> invalid_arg "iter2: Different_list_size"
+  | _ -> invalid_arg "List.iter2: list lengths differ"
 
 let iter2i f l1 l2 =
   let rec loop i l1 l2 =
     match l1, l2 with
     | [], [] -> ()
     | h1 :: t1, h2 :: t2 -> f i h1 h2; loop (succ i) t1 t2
-    | _ -> invalid_arg "iter2: Different_list_size"
+    | _ -> invalid_arg "List.iter2i: list lengths differ"
   in loop 0 l1 l2
 
 (*$T iter2i
@@ -633,14 +658,14 @@ let rec fold_left2 f accum l1 l2 =
   match l1, l2 with
   | [], [] -> accum
   | h1 :: t1, h2 :: t2 -> fold_left2 f (f accum h1 h2) t1 t2
-  | _ -> invalid_arg "fold_left2: Different_list_size"
+  | _ -> invalid_arg "List.fold_left2: list lengths differ"
 
 let fold_right2 f l1 l2 init =
   let rec tail_loop acc l1 l2 =
     match l1, l2 with
     | [] , [] -> acc
     | h1 :: t1 , h2 :: t2 -> tail_loop (f h1 h2 acc) t1 t2
-    | _ -> invalid_arg "fold_left2: Different_list_size"
+    | _ -> invalid_arg "List.fold_right2: list lengths differ"
   in
   let rec loop n l1 l2 =
     match l1, l2 with
@@ -650,7 +675,7 @@ let fold_right2 f l1 l2 init =
         f h1 h2 (loop (n+1) t1 t2)
       else
         f h1 h2 (tail_loop init (rev t1) (rev t2))
-    | _ -> invalid_arg "fold_right2: Different_list_size"
+    | _ -> invalid_arg "List.fold_right2: list lengths differ"
   in
   loop 0 l1 l2
 
@@ -659,7 +684,7 @@ let for_all2 p l1 l2 =
     match l1, l2 with
     | [], [] -> true
     | h1 :: t1, h2 :: t2 -> if p h1 h2 then loop t1 t2 else false
-    | _ -> invalid_arg "for_all2: Different_list_size"
+    | _ -> invalid_arg "List.for_all2: list lengths differ"
   in
   loop l1 l2
 
@@ -668,7 +693,7 @@ let exists2 p l1 l2 =
     match l1, l2 with
     | [], [] -> false
     | h1 :: t1, h2 :: t2 -> if p h1 h2 then true else loop t1 t2
-    | _ -> invalid_arg "exists2: Different_list_size"
+    | _ -> invalid_arg "List.exists2: list lengths differ"
   in
   loop l1 l2
 
@@ -700,7 +725,7 @@ let remove_assq x lst =
 
 let remove_at i lst =
   let rec loop dst i = function
-    | [] -> invalid_arg "BatList.remove_at"
+    | [] -> invalid_arg "List.remove_at"
     | x :: xs ->
       if i = 0 then
         dst.tl <- xs
@@ -708,7 +733,7 @@ let remove_at i lst =
         loop (Acc.accum dst x) (i - 1) xs
   in
   if i < 0 then
-    invalid_arg "BatList.remove_at"
+    invalid_arg "List.remove_at"
   else
     let dummy = Acc.dummy () in
     loop dummy i lst;
@@ -738,7 +763,7 @@ let find_all p l =
   findnext dummy l;
   dummy.tl
 
-let rec findi p l =
+let findi p l =
   let rec loop n = function
     | [] -> raise Not_found
     | h :: t ->
@@ -746,28 +771,28 @@ let rec findi p l =
   in
   loop 0 l
 
-let rec index_of e l =
+let index_of e l =
   let rec loop n = function
     | []              -> None
     | h::_ when h = e -> Some n
     | _::t            -> loop ( n + 1 ) t
   in loop 0 l
 
-let rec index_ofq e l =
+let index_ofq e l =
   let rec loop n = function
     | []               -> None
     | h::_ when h == e -> Some n
     | _::t             -> loop ( n + 1 ) t
   in loop 0 l
 
-let rec rindex_of e l =
+let rindex_of e l =
   let rec loop n acc = function
     | []              -> acc
     | h::t when h = e -> loop ( n + 1) ( Some n ) t
     | _::t            -> loop ( n + 1 ) acc       t
   in loop 0 None l
 
-let rec rindex_ofq e l =
+let rindex_ofq e l =
   let rec loop n acc = function
     | []               -> acc
     | h::t when h == e -> loop ( n + 1) ( Some n ) t
@@ -776,13 +801,27 @@ let rec rindex_ofq e l =
 
 let filter = find_all
 
-let filteri f =
-  let rec aux i = function
-    | [] -> []
-    | x::xs when f i x -> x :: aux (succ i) xs
-    | x::xs -> aux (succ i) xs
-  in
-  aux 0
+let count_matching p l =
+  fold_left (fun count x ->
+      if p x then count + 1
+      else count
+    ) 0 l
+
+(*$T count_matching
+  count_matching (fun _ -> true) [] = 0
+  count_matching (fun _ -> true) [1] = 1
+  count_matching (fun _ -> true) [1;2] = 2
+  count_matching (fun x -> x mod 2 = 1) [1;2;3;4;5;6] = 3
+*)
+
+##V>=4.11##let filteri = List.filteri
+##V<4.11##let filteri f =
+##V<4.11##  let rec aux i = function
+##V<4.11##    | [] -> []
+##V<4.11##    | x::xs when f i x -> x :: aux (succ i) xs
+##V<4.11##    | _x::xs -> aux (succ i) xs
+##V<4.11##  in
+##V<4.11##  aux 0
 (*$T filteri
   (let r = ref (-1) in filteri (fun i _ -> incr r; i = !r) [5; 4; 8] = [5; 4; 8])
   filteri (fun _ x -> x > 4) [5; 4; 8] = [5; 8]
@@ -804,6 +843,24 @@ let partition p lst =
   loop yesdummy nodummy lst;
   (yesdummy.tl, nodummy.tl)
 
+let partition_map p lst =
+  let rec loop left right = function
+    | [] -> ()
+    | x :: xs ->
+      match p x with
+      | BatEither.Left v -> loop (Acc.accum left v) right xs
+      | BatEither.Right v -> loop left (Acc.accum right v) xs in
+  let left_acc = Acc.dummy ()
+  and right_acc = Acc.dummy () in
+  loop left_acc right_acc lst;
+  (left_acc.tl, right_acc.tl)
+
+(*$T partition_map
+  let odd_or_even x = \
+    if x mod 2 = 1 then BatEither.Left x else BatEither.Right x in \
+  partition_map odd_or_even [1;2;3;4;5;6] = ([1;3;5], [2;4;6])
+*)
+
 let split lst =
   let rec loop adst bdst = function
     | [] -> ()
@@ -817,7 +874,6 @@ let split lst =
   adummy.tl, bdummy.tl
 
 let combine l1 l2 =
-  let list_sizes_differ = Invalid_argument "combine: Different_list_size" in
   match l1, l2 with
     | [], [] -> []
     | x :: xs, y :: ys ->
@@ -825,9 +881,9 @@ let combine l1 l2 =
       let rec loop dst l1 l2 = match l1, l2 with
         | [], [] -> inj acc
         | h1 :: t1, h2 :: t2 -> loop (Acc.accum dst (h1, h2)) t1 t2
-        | _, _ -> raise list_sizes_differ
+        | _, _ -> invalid_arg "List.combine: list lengths differ"
       in loop acc xs ys
-    | _, _ -> raise list_sizes_differ
+    | _, _ -> invalid_arg "List.combine: list lengths differ"
 
 (*$T combine
   combine []     []     = []
@@ -847,7 +903,7 @@ let init size f =
     loop r 1;
     inj r
 
-let unfold_exc f =
+let unfold_exn f =
   let rec loop dst =
     loop (Acc.accum dst (f ()))
   in
@@ -856,16 +912,18 @@ let unfold_exc f =
     loop acc
   with exn -> (acc.tl, exn)
 
-(*$T unfold_exc
+(*$T unfold_exn
   let exc () = raise End_of_file in \
-  unfold_exc exc = ([], End_of_file)
+  unfold_exn exc = ([], End_of_file)
   let state = ref 0 in \
   let just_zero () = \
     if !state = 1 then raise End_of_file \
     else let _ = incr state in 0 \
   in \
-  unfold_exc just_zero = ([0], End_of_file)
+  unfold_exn just_zero = ([0], End_of_file)
 *)
+
+let unfold_exc = unfold_exn
 
 let make i x =
   if i < 0 then invalid_arg "List.make";
@@ -996,19 +1054,20 @@ let fold_righti f l init =
   fold_righti (fun i x acc -> (i, x) :: acc) [0.; 1.] [] = [(0, 0.); (1, 1.)]
 *)
 
-let fold_left_map f acc = function
-  | [] -> acc, []
-  | h :: t ->
-    let rec loop acc dst = function
-      | [] -> acc
-      | h :: t ->
-        let acc', t' = f acc h in
-        loop acc' (Acc.accum dst t') t
-    in
-    let acc', h' = f acc h in
-    let r = Acc.create h' in
-    let res = loop acc' r t in
-    res, inj r
+##V>=4.11##let fold_left_map = List.fold_left_map
+##V<4.11##let fold_left_map f acc = function
+##V<4.11##  | [] -> acc, []
+##V<4.11##  | h :: t ->
+##V<4.11##    let rec loop acc dst = function
+##V<4.11##      | [] -> acc
+##V<4.11##      | h :: t ->
+##V<4.11##        let acc', t' = f acc h in
+##V<4.11##        loop acc' (Acc.accum dst t') t
+##V<4.11##    in
+##V<4.11##    let acc', h' = f acc h in
+##V<4.11##    let r = Acc.create h' in
+##V<4.11##    let res = loop acc' r t in
+##V<4.11##    res, inj r
 
 (*$T fold_left_map
   fold_left_map (fun acc x -> assert false) 0 [] = (0, [])
@@ -1342,16 +1401,27 @@ let print ?(first="[") ?(last="]") ?(sep="; ") print_a  out = function
 
 let t_printer a_printer _paren out x = print (a_printer false) out x
 
-let reduce f = function [] -> invalid_arg "Empty List"
-                      | h::t -> fold_left f h t
+let reduce f = function
+  | [] -> invalid_arg "List.reduce: Empty List"
+  | h :: t -> fold_left f h t
 
-let min l = reduce Pervasives.min l
-let max l = reduce Pervasives.max l
-let sum l = reduce (+) l
+let min ?cmp:(cmp = Pervasives.compare) l =
+  let min = BatOrd.min_comp cmp in
+  reduce min l
+
+let max ?cmp:(cmp = Pervasives.compare) l =
+  let max = BatOrd.max_comp cmp in
+  reduce max l
+
+let sum l = fold_left (+) 0 l
+(*$= sum & ~printer:string_of_int
+  2 (sum [1;1])
+  0 (sum [])
+*)
 
 let fsum l =
   match l with
-  | [] -> invalid_arg "List.fsum: Empty List"
+  | [] -> 0.
   | x::xs ->
     let acc = ref x in
     let rem = ref xs in
@@ -1364,9 +1434,9 @@ let fsum l =
         rem := xs
     done;
     !acc
-(*$T fsum
-  try let _ = fsum [] in false with Invalid_argument _ -> true
-  fsum [1.;2.;3.] = 6.
+(*$= fsum & ~printer:string_of_float
+  0. (fsum [])
+  6. (fsum [1.;2.;3.])
 *)
 
 let favg l =
@@ -1528,13 +1598,26 @@ module Exceptionless = struct
     | [] -> None
     | [x] -> Some x
     | _ :: l -> last l
+
+  let reduce f = function
+    | [] -> None
+    | h :: t -> Some (fold_left f h t)
+
+  let min_max ?cmp:(cmp = Pervasives.compare) l =
+    try Some (min_max ~cmp l)
+    with Invalid_argument _ -> None
+
+  let min ?cmp:(cmp = Pervasives.compare) l =
+    try Some (min ~cmp l)
+    with Invalid_argument _ -> None
+
+  let max ?cmp:(cmp = Pervasives.compare) l =
+    try Some (max ~cmp l)
+    with Invalid_argument _ -> None
+
 end
 
-
-
 module Labels = struct
-
-  type 'a t         = 'a list
   let init i ~f     = init i f
   let make n  x     = make n x
   let iteri ~f l    = iteri f l
@@ -1544,6 +1627,7 @@ module Labels = struct
   let find ~f l     = find f l
   let findi ~f      = findi f
   let find_exn ~f   = find_exn f
+##V>=4.10##let find_map_opt ~f = find_map_opt f
   let filter_map ~f = filter_map f
   let remove_if ~f  = remove_if f
   let take_while ~f = take_while f
@@ -1552,12 +1636,16 @@ module Labels = struct
   let iter2 ~f      = iter2 f
   let exists2 ~f    = exists2 f
   let fold_left ~f ~init         = fold_left f init
+  let fold = fold_left
   let fold_right ~f l ~init      = fold_right f l init
   let fold_left2  ~f ~init       = fold_left2 f init
   let fold_right2 ~f l1 l2 ~init = fold_right2 f l1 l2 init
   let filter ~f     = filter f
+  let count_matching ~f = count_matching f
+##V>=4.10##let concat_map ~f = List.concat_map f
   let find_all ~f   = find_all f
   let partition ~f  = partition f
+  let partition_map ~f = partition_map f
   let rev_map ~f    = rev_map f
   let rev_map2 ~f   = rev_map2 f
   let iter ~f       = iter f

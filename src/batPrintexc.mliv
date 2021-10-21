@@ -170,6 +170,7 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##(** {6 Current call stack} *)
 ##V>=4.2##
 ##V>=4.2##val get_callstack: int -> raw_backtrace
+##V>=4.10##external get_callstack : int -> raw_backtrace = "caml_get_current_callstack"
 ##V>=4.2##(** [Printexc.get_callstack n] returns a description of the top of the
 ##V>=4.2##    call stack on the current program point (for the current thread),
 ##V>=4.2##    with at most [n] entries.  (Note: this function is not related to
@@ -180,6 +181,13 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##
 ##V>=4.2##(** {6 Uncaught exceptions} *)
 ##V>=4.2##
+##V>=4.11##val default_uncaught_exception_handler: exn -> raw_backtrace -> unit
+##V>=4.11##(** [Printexc.default_uncaught_exception_handler] prints the exception and
+##V>=4.11##    backtrace on standard error output.
+##V>=4.11##
+##V>=4.11##    @since 4.11
+##V>=4.11##*)
+##V>=4.11##
 ##V>=4.2##val set_uncaught_exception_handler: (exn -> raw_backtrace -> unit) -> unit
 ##V>=4.2##(** [Printexc.set_uncaught_exception_handler fn] registers [fn] as the handler
 ##V>=4.2##    for uncaught exceptions. The default handler prints the exception and
@@ -270,6 +278,16 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##      @since 2.3.0 and OCaml 4.02
 ##V>=4.2##  *)
 ##V>=4.2##
+##V>=4.11##  val name : t -> string option
+##V>=4.11##  (** [name slot] returns the name of the function or definition
+##V>=4.11##      enclosing the location referred to by the slot.
+##V>=4.11##
+##V>=4.11##      [name slot] returns None if the name is unavailable, which
+##V>=4.11##      may happen for the same reasons as [location] returning None.
+##V>=4.11##
+##V>=4.11##      @since 4.11
+##V>=4.11##  *)
+##V>=4.11##
 ##V>=4.2##  val format : int -> t -> string option
 ##V>=4.2##  (** [format pos slot] returns the string representation of [slot] as
 ##V>=4.2##      [raw_backtrace_to_string] would format it, assuming it is the
@@ -325,7 +343,7 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.4##    raw_backtrace_slot -> raw_backtrace_slot option
 ##V>=4.4##(** [get_raw_backtrace_next_slot slot] returns the next slot inlined, if any.
 ##V>=4.4##
-##V>=4.4##    @since NEXT_RELASE and OCaml 4.04
+##V>=4.4##    @since 2.11.0 and OCaml 4.04
 ##V>=4.4##*)
 
 
@@ -345,3 +363,56 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##
 ##V>=4.2##    @since 2.3.0 and OCaml 4.02.0
 ##V>=4.2##*)
+
+##V>=4.08##type t = exn = ..
+##V>=4.08##(** The type of exception values. *)
+
+##V>=4.09##val use_printers: exn -> string option
+##V>=4.09##(** [Printexc.use_printers e] returns [None] if there are no registered
+##V>=4.09##    printers and [Some s] with else as the resulting string otherwise.
+##V>=4.09##
+##V>=4.09##    @since 2.11.0 and OCaml 4.09
+##V>=4.09##*)
+
+##V>=4.09##val to_string_default: exn -> string
+##V>=4.09##(** [Printexc.to_string_default e] returns a string representation of the
+##V>=4.09##    exception [e], ignoring all registered exception printers.
+##V>=4.09##
+##V>=4.09##    @since 2.11.0 and OCaml 4.09
+##V>=4.09##*)
+
+##V>=4.12##type raw_backtrace_entry = Printexc.raw_backtrace_entry
+##V>=4.12##(** A [raw_backtrace_entry] is an element of a [raw_backtrace].
+##V>=4.12##
+##V>=4.12##    Each [raw_backtrace_entry] is an opaque integer, whose value is not stable
+##V>=4.12##    between different programs, or even between different runs of the same
+##V>=4.12##    binary.
+##V>=4.12##
+##V>=4.12##    A [raw_backtrace_entry] can be converted to a usable form using
+##V>=4.12##    [backtrace_slots_of_raw_entry] below. Note that, due to inlining, a
+##V>=4.12##    single [raw_backtrace_entry] may convert to several [backtrace_slot]s.
+##V>=4.12##    Since the values of a [raw_backtrace_entry] are not stable, they cannot
+##V>=4.12##    be marshalled. If they are to be converted, the conversion must be done
+##V>=4.12##    by the process that generated them.
+##V>=4.12##
+##V>=4.12##    Again due to inlining, there may be multiple distinct raw_backtrace_entry
+##V>=4.12##    values that convert to equal [backtrace_slot]s. However, if two
+##V>=4.12##    [raw_backtrace_entry]s are equal as integers, then they represent the same
+##V>=4.12##    [backtrace_slot]s.
+##V>=4.12##
+##V>=4.12##    @since 3.3.0 and 4.12.0 *)
+##V>=4.12##
+##V>=4.12##val raw_backtrace_entries : raw_backtrace -> raw_backtrace_entry array
+##V>=4.12##(** @since 3.3.0 and 4.12.0 *)
+##V>=4.12##
+##V>=4.12##val backtrace_slots_of_raw_entry :
+##V>=4.12##  raw_backtrace_entry -> backtrace_slot array option
+##V>=4.12##(** Returns the slots of a single raw backtrace entry, or [None] if this
+##V>=4.12##    entry lacks debug information.
+##V>=4.12##
+##V>=4.12##    Slots are returned in the same order as [backtrace_slots]: the slot
+##V>=4.12##    at index [0] is the most recent call, raise, or primitive, and
+##V>=4.12##    subsequent slots represent callers.
+##V>=4.12##
+##V>=4.12##    @since 3.3.0 and 4.12
+##V>=4.12##*)

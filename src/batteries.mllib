@@ -13,6 +13,8 @@ BatInnerPervasives
   BatDeque
   BatDigest
   BatEnum
+  BatEither
+  BatFilename
   BatFingerTree
   BatFloat
   BatFormat
@@ -32,7 +34,6 @@ BatInnerPervasives
   BatMarshal
   BatNativeint
   BatNum
-  BatOo
   BatPervasives
   BatPrintexc
   BatPrintf

@@ -1,2 +1,3 @@
-<bench_set.ml*>: package(benchmark)
+<bench_set.ml*>: pkg_benchmark
 <sequence.ml>: rectypes
+"lib": include

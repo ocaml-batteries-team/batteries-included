@@ -29,7 +29,8 @@
     @author David Teller
 *)
 
-val argv : string array
+##V>=4.09##external argv : string array = "%sys_argv"
+##V<4.09##val argv : string array
 (** The command line arguments given to the process.
     The first element is the command name used to invoke the program.
     The following elements are the command-line arguments
@@ -152,17 +153,21 @@ val max_array_length : int
     array is [max_array_length/2] on 32-bit machines and
     [max_array_length] on 64-bit machines. *)
 
+##V>=4.08##val max_floatarray_length : int
+##V>=4.08##(** Maximum length of a floatarray. This is also the maximum length of
+##V>=4.08##    a [float array] when OCaml is configured with
+##V>=4.08##    [--enable-flat-float-array]. *)
+
 ##V>=4.3##external runtime_variant : unit -> string = "caml_runtime_variant"
 ##V>=4.3##(** Return the name of the runtime variant the program is running on.
 ##V>=4.3##    This is normally the argument given to [-runtime-variant] at compile
 ##V>=4.3##    time, but for byte-code it can be changed after compilation.
 ##V>=4.3##    @since 2.5.0 and OCaml 4.03.0 *)
-##V>=4.3##
+
 ##V>=4.3##external runtime_parameters : unit -> string = "caml_runtime_parameters"
 ##V>=4.3##(** Return the value of the runtime parameters, in the same format
 ##V>=4.3##    as the contents of the [OCAMLRUNPARAM] environment variable.
 ##V>=4.3##    @since 2.5.0 and OCaml 4.03.0 *)
-
 
 (** {6 Signal handling} *)
 
@@ -297,7 +302,7 @@ val catch_break : bool -> unit
     terminate the program on user interrupt. *)
 
 
-val ocaml_version : string;;
+val ocaml_version : string
 (** [ocaml_version] is the version of OCaml.
     It is a string of the form ["major.minor[.patchlevel][+additional-info]"],
     where [major], [minor], and [patchlevel] are integers, and
@@ -344,3 +349,17 @@ val files_of: string -> string BatEnum.t
 
     @since 2.5.0 and OCaml 4.02
  *)
+
+##V>=4.10##module Immediate64 = Sys.Immediate64
+
+##V>=4.12##external mkdir : string -> int -> unit = "caml_sys_mkdir"
+##V>=4.12##(** Create a directory with the given permissions.
+##V>=4.12##
+##V>=4.12##    @since 3.3.0 and 4.12.0
+##V>=4.12##*)
+##V>=4.12##
+##V>=4.12##external rmdir : string -> unit = "caml_sys_rmdir"
+##V>=4.12##(** Remove an empty directory.
+##V>=4.12##
+##V>=4.12##    @since 3.3.0 and 4.12.0
+##V>=4.12##*)

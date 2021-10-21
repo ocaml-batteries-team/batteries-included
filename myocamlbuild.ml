@@ -13,23 +13,11 @@ let packs = "bigarray,num,str"
 
 let doc_intro = "build/intro.text"
 let mkconf = "build/mkconf.byte"
+let mkconf_command src dst =
+  let oasis_path = Filename.concat Filename.parent_dir_name "_oasis" in
+  Cmd(S[A"ocamlrun"; P mkconf; P oasis_path; P src; P dst])
+
 let compiler_libs = if Sys.ocaml_version.[0] = '4' then [A"-I"; A"+compiler-libs"] else []
-(* removes the trailing newlines in the stdout of s *)
-let run_and_read s =
-  let res = run_and_read s in
-  String.chomp res
-
-(* Throws exception if bisect not installed - ignore this exception *)
-let bisect_dir = try run_and_read "ocamlfind query bisect" with _ -> "."
-let bisect_pp = Pathname.concat bisect_dir "bisect_pp.cmo"
-
-let src_bat_ml =
-  let l = Array.to_list (Pathname.readdir "src") in
-  let l =
-    List.filter (fun filename ->
-      String.is_prefix "bat" filename && String.is_suffix filename ".ml"
-    ) l in
-  List.map (fun filename -> Pathname.concat "src" filename) l
 
 let _ = dispatch begin function
   | Before_options ->
@@ -57,41 +45,15 @@ let _ = dispatch begin function
         ~prod:"%.ml"
         ~deps:["%.mlp"; mkconf]
         begin fun env build ->
-          Cmd(S[A"ocamlrun"; P mkconf; P(env "%.mlp"); P(env "%.ml")])
+          mkconf_command (env "%.mlp") (env "%.ml")
         end;
 
       rule "process meta file"
         ~prod:"META"
         ~deps:["META.in"; mkconf]
         begin fun env build ->
-          Cmd(S[A"ocamlrun"; P mkconf; P"META.in"; P"META"])
-        end;
-
-      rule "code coverage"
-        ~prod:"coverage/index.html"
-        ~deps:src_bat_ml
-        begin fun env build ->
-          List.iter (fun filename ->
-            tag_file filename ["with_pa_bisect"; "syntax_camlp4o"; "use_bisect"];
-          ) src_bat_ml;
-          let test_exes = [
-            "testsuite/main.native";
-            "qtest/all_tests.native";
-          ] in
-          List.iter (fun exe -> tag_file exe ["use_bisect"]) test_exes;
-          List.iter Outcome.ignore_good (build (
-            List.map (fun exe -> [exe]) test_exes
-          ));
-          Seq ([
-            Cmd(S[Sh"rm -f bisect*.out"]);
-          ] @
-            List.map (fun exe -> Cmd(S[A exe])) test_exes
-          @ [
-            Cmd(S[Sh"bisect-report -html coverage bisect*.out"]);
-          ])
-        end;
-
-    ()
+          mkconf_command "META.in" "META"
+        end
 
   | After_rules ->
 
@@ -197,15 +159,6 @@ let _ = dispatch begin function
         S[A"-syntax"; A"camlp4o"; A"-package"; A"camlp4"];
       flag ["ocaml"; "ocamldep"; "syntax_camlp4o"] &
         S[A"-syntax"; A"camlp4o"; A"-package"; A"camlp4"];
-
-      let flags_pa_bisect =
-        S[A"-ppopt"; P"str.cma"; A"-ppopt"; P bisect_pp;
-          A"-ppopt"; A"-disable"; A"-ppopt"; A"b"] in
-      (* bisect screws up polymorphic recursion without -disable b *)
-      flag ["ocaml"; "compile";  "with_pa_bisect"] & flags_pa_bisect;
-      flag ["ocaml"; "ocamldep";  "with_pa_bisect"] & flags_pa_bisect;
-
-      ocaml_lib ~extern:true ~dir:bisect_dir "bisect";
 
       ocaml_lib "src/batteries";
       ocaml_lib "src/batteriesThread";

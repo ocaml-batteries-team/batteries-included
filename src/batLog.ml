@@ -34,10 +34,10 @@ let flags = ref [`Date; `Time]
 
 let print_flag ?fp t oc = function
   | `Date ->
-    let {Unix.tm_year=y; tm_mon=m; tm_mday=d} = Lazy.force t in
+    let {Unix.tm_year=y; tm_mon=m; tm_mday=d; _} = Lazy.force t in
     BatPrintf.fprintf oc "%4d/%02d/%02d" (y + 1900) (m + 1) d
   | `Time ->
-    let {Unix.tm_hour=h; tm_min=m; tm_sec=s} = Lazy.force t in
+    let {Unix.tm_hour=h; tm_min=m; tm_sec=s; _} = Lazy.force t in
     BatPrintf.fprintf oc "%2d:%02d:%02d" h m s
   | `Filepos ->
     BatOption.may (nwrite oc) fp

@@ -96,6 +96,10 @@ external make : int -> 'a -> 'a array = "caml_make_vect"
    @since 2.3.0
 *)
 
+##V>=4.07##val of_seq: 'a Seq.t -> 'a array
+##V>=4.07##val to_seq: 'a array -> 'a Seq.t
+##V>=4.07##val to_seqi: 'a array -> (int * 'a) Seq.t
+
 external create : int -> 'a -> 'a array = "caml_make_vect"
 (** @deprecated [Array.create] is an alias for {!Array.make}. *)
 
@@ -165,6 +169,14 @@ val blit : 'a array -> int -> 'a array -> int -> int -> unit
 
 val to_list : 'a array -> 'a list
 (** [Array.to_list a] returns the list of all the elements of [a]. *)
+
+val split : ('a * 'b) array -> 'a array * 'b array
+(** [Array.split a] converts the array of pairs [a] into a pair of arrays. *)
+
+val combine : 'a array -> 'b array -> ('a * 'b) array
+(** [combine [|a1; ...; an|] [|b1; ...; bn|]] is [[|(a1,b1); ...; (an,bn)|]].
+    Raise [Invalid_argument] if the two arrays have different lengths.
+    @since NEXT_RELEASE *)
 
 val of_list : 'a list -> 'a array
 (** [Array.of_list l] returns a fresh array containing the elements
@@ -277,6 +289,23 @@ val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b array -> 'a
     [f (... (f (f x a.(0)) a.(1)) ...) a.(n-1)],
     where [n] is the length of the array [a]. *)
 
+val fold_left_map :
+  ('a -> 'b -> 'a * 'c) -> 'a -> 'b array -> 'a * 'c array
+(** [fold_left_map] is a combination of {!fold_left} and {!map} that threads an
+    accumulator through calls to [f].
+    @since NEXT_RELEASE *)
+
+val fold_while : ('acc -> 'a -> bool) -> ('acc -> 'a -> 'acc) -> 'acc -> 'a array -> ('acc * int)
+(** [fold_while p f init a], accumulates elements [x] of array [a] using
+    function [f], as long as the predicate [p acc x] holds.
+    At the end, the accumulated value along with the first index i
+    where [p acc a.(i)] does not hold is returned.
+    If the returned index is equal to [length a], the whole array
+    was folded. *)
+
+val fold : ('a -> 'b -> 'a) -> 'a -> 'b array -> 'a
+(** Alias for [fold_left]. *)
+
 val fold_right : ('b -> 'a -> 'a) -> 'b array -> 'a -> 'a
 (** [Array.fold_right f a x] computes
     [f a.(0) (f a.(1) ( ... (f a.(n-1) x) ...))],
@@ -388,6 +417,24 @@ val bsearch : 'a BatOrd.ord -> 'a array -> 'a ->
     @raise Invalid_argument if the array is found to be unsorted w.r.t [cmp]
     @since 2.2.0 *)
 
+val pivot_split : 'a BatOrd.ord -> 'a array -> 'a -> int * int
+(** [pivot_split cmp arr x] assumes that [arr] is {b sorted} w.r.t
+    [cmp]. It splits an array [arr] of length [len] into three parts,
+    by returning a couple (i,j) such as:
+    - all elements with indices 0..i-1 ([sub arr 0 i]) are lower than [x]
+    - all elements with indices i..j-1 ([sub arr i (j-i)]) are equal to [x]
+    - all elements with indices j..len-1 ([sub arr j (len-j)]) are bigger than [x]
+
+    In particular, it returns:
+    - (0, 0) if all elements of [arr] are bigger than [x]
+    - (len, len) if all elements are lower than [x]
+    - (0, len) if all elements are equal to [x]
+
+    Complexity: logarithmic in the size of the array
+    @raise Invalid_argument if the array is found not to be sorted
+*)
+
+
 (**{6 Operations on two arrays}*)
 
 val iter2 : ('a -> 'b -> unit) -> 'a array -> 'b array -> unit
@@ -443,6 +490,16 @@ val find : ('a -> bool) -> 'a array -> 'a
     @raise Not_found if there is no value that satisfies [p] in
     the array [a]. *)
 
+val find_opt : ('a -> bool) -> 'a array -> 'a option
+(** [find_opt p a] returns the first element of the array [a] that satisfies
+    the predicate [p], or [None] if there is no such element.
+    @since NEXT_RELEASE *)
+
+val find_map : ('a -> 'b option) -> 'a array -> 'b option
+(** [find_map f a] applies [f] to the elements of [a] in order, and returns the
+    first result of the form [Some v], or [None] if none exist.
+    @since NEXT_RELEASE *)
+
 val mem : 'a -> 'a array -> bool
 (** [mem m a] is true if and only if [m] is equal to an element of [a]. *)
 
@@ -468,6 +525,10 @@ val filter_map : ('a -> 'b option) -> 'a array -> 'b array
 (** [filter_map f e] returns an array consisting of all elements
     [x] such that [f y] returns [Some x] , where [y] is an element
     of [e]. *)
+
+val count_matching : ('a -> bool) -> 'a array -> int
+(** [count_matching p a] returns the number of elements of [a]
+    satisfying predicate [p]. *)
 
 val find_all : ('a -> bool) -> 'a array -> 'a array
 (** [find_all] is another name for {!Array.filter}. *)
@@ -513,13 +574,22 @@ val range : 'a array -> int BatEnum.t
 val insert : 'a array -> 'a -> int -> 'a array
 (** [insert xs x i] returns a copy of [xs] except the value [x] is
     inserted in position [i] (and all later indices are shifted to the
-    right). *)
+    right).
+
+    @raise Invalid_argument
+    if [i < 0 || i > Array.length xs]. *)
+
+val remove_at : int -> 'a array -> 'a array
+(** [remove_at i a] returns the array [a] without the element at index [i].
+
+    @raise Invalid_argument if [i] is outside of [a] bounds.
+    @since 3.3.0 *)
 
 (** {6 Boilerplate code}*)
 
 val print : ?first:string -> ?last:string -> ?sep:string ->
   ('a, 'b) BatIO.printer -> ('a t, 'b) BatIO.printer
-(** Print the contents of an array, with [~first] preceeding the first
+(** Print the contents of an array, with [~first] preceding the first
     item (default: "\[|"), [~last] following the last item (default:
     "|\]") and [~sep] separating items (default: "; ").  A printing
     function must be provided to print the items in the array.
@@ -602,7 +672,9 @@ module Labels : sig
   val modify :     f:('a -> 'a) -> 'a array -> unit
   val modifyi :    f:(int -> 'a -> 'a) -> 'a array -> unit
   val fold_left :  f:('a -> 'b -> 'a) -> init:'a -> 'b array -> 'a
+  val fold      :  f:('a -> 'b -> 'a) -> init:'a -> 'b array -> 'a
   val fold_right : f:('b -> 'a -> 'a) -> 'b array -> init:'a -> 'a
+  val fold_while : p:('acc -> 'a -> bool) -> f:('acc -> 'a -> 'acc) -> init:'acc -> 'a array -> ('acc * int)
   val sort :        cmp:('a -> 'a -> int) -> 'a array -> unit
   val stable_sort : cmp:('a -> 'a -> int) -> 'a array -> unit
   val fast_sort :   cmp:('a -> 'a -> int) -> 'a array -> unit
@@ -611,11 +683,14 @@ module Labels : sig
   val for_all:    f:('a -> bool) -> 'a t -> bool
   val iter2i:     f:( int -> 'a -> 'b -> unit) -> 'a t -> 'b t -> unit
   val find:       f:('a -> bool) -> 'a t -> 'a
+  val find_opt:   f:('a -> bool) -> 'a t -> 'a option
+  val find_map:   f:('a -> 'b option) -> 'a array -> 'b option
   val findi:      f:('a -> bool) -> 'a t -> int
   val map:        f:('a -> 'b) -> 'a t -> 'b t
   val mapi:       f:(int -> 'a -> 'b) -> 'a t -> 'b t
   val filter:     f:('a -> bool) -> 'a t -> 'a t
   val filter_map: f:('a -> 'b option) -> 'a t -> 'b t
+  val count_matching: f:('a -> bool) -> 'a t -> int
   module LExceptionless : sig
     val find:       f:('a -> bool) -> 'a t -> 'a option
     val findi:      f:('a -> bool) -> 'a t -> int option
@@ -703,7 +778,9 @@ sig
   val modify : ('a -> 'a) -> ('a, [`Read | `Write]) t -> unit
   val modifyi : (int -> 'a -> 'a) -> ('a, [`Read | `Write]) t -> unit
   val fold_left : ('a -> 'b -> 'a) -> 'a -> ('b, [> `Read]) t -> 'a
+  val fold      : ('a -> 'b -> 'a) -> 'a -> ('b, [> `Read]) t -> 'a
   val fold_right : ('b -> 'a -> 'a) -> ('b, [> `Read]) t -> 'a -> 'a
+  val fold_while : ('acc -> 'a -> bool) -> ('acc -> 'a -> 'acc) -> 'acc -> ('a, [> `Read]) t -> ('acc * int)
 
   (**{6 Operations on two arrays}*)
 
@@ -715,11 +792,14 @@ sig
   val for_all : ('a -> bool) -> ('a, [> `Read]) t -> bool
   val exists : ('a -> bool) -> ('a, [> `Read]) t -> bool
   val find : ('a -> bool) -> ('a, [> `Read]) t -> 'a
+  val find_opt : ('a -> bool) -> ('a, [> `Read]) t -> 'a option
+  val find_map : ('a -> 'b option) -> ('a, [> `Read]) t -> 'b option
   val mem : 'a -> ('a, [> `Read]) t -> bool
   val memq : 'a -> ('a, [> `Read]) t -> bool
   val findi : ('a -> bool) -> ('a, [> `Read]) t -> int
   val filter : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t
   val filter_map : ('a -> 'b option) -> ('a, [> `Read]) t -> ('b, _) t
+  val count_matching: ('a -> bool) -> ('a, [> `Read]) t -> int
   val find_all : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t
   val partition : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t * ('a, _)t
 
@@ -741,6 +821,9 @@ sig
   val backwards : ('a, [> `Read]) t -> 'a BatEnum.t
   val of_backwards : 'a BatEnum.t -> ('a, _) t
   val to_list : ('a, [> `Read]) t -> 'a list
+  val split : ('a * 'b, [> `Read]) t -> ('a, _) t * ('b, _) t
+  val combine : ('a, [> `Read]) t -> ('b, [> `Read]) t -> ('a * 'b, [> `Read]) t
+  val pivot_split : 'a BatOrd.ord -> ('a, [> `Read]) t -> 'a -> int * int
   val of_list : 'a list -> ('a, _) t
 
   (** {6 Utilities} *)
@@ -783,7 +866,9 @@ sig
     val modify : f:('a -> 'a) -> ('a, [`Read | `Write]) t -> unit
     val modifyi : f:(int -> 'a -> 'a) -> ('a, [`Read | `Write]) t -> unit
     val fold_left : f:('a -> 'b -> 'a) -> init:'a ->  ('b, [> `Read]) t -> 'a
+    val fold      : f:('a -> 'b -> 'a) -> init:'a ->  ('b, [> `Read]) t -> 'a
     val fold_right : f:('b -> 'a -> 'a) -> ('b, [> `Read]) t -> init:'a -> 'a
+    val fold_while : p:('acc -> 'a -> bool) -> f:('acc -> 'a -> 'acc) -> init:'acc -> 'a array -> ('acc * int)
     val sort : cmp:('a -> 'a -> int) -> ('a, [> `Read | `Write]) t -> unit
     val stable_sort : cmp:('a -> 'a -> int) -> ('a, [ `Read | `Write]) t -> unit
     val fast_sort : cmp:('a -> 'a -> int) -> ('a, [`Read | `Write]) t -> unit
@@ -792,10 +877,13 @@ sig
     val exists:     f:('a -> bool) -> ('a, [> `Read]) t -> bool
     val for_all:    f:('a -> bool) -> ('a, [> `Read]) t -> bool
     val find:       f:('a -> bool) -> ('a, [> `Read]) t -> 'a
+    val find_opt:   f:('a -> bool) -> ('a, [> `Read]) t -> 'a option
+    val find_map:   f:('a -> 'b option) -> ('a, [> `Read]) t -> 'b option
     val map:        f:('a -> 'b) -> ('a, [>`Read]) t -> ('b, _) t
     val mapi:       f:(int -> 'a -> 'b) -> ('a, [>`Read]) t -> ('b, _) t
     val filter:     f:('a -> bool) -> ('a, [>`Read]) t -> ('a, _) t
     val filter_map: f:('a -> 'b option) -> ('a, [>`Read]) t -> ('b, _) t
+    val count_matching: f:('a -> bool) -> ('a, [>`Read]) t -> int
   end
   (**/**)
   (** {6 Undocumented functions} *)

@@ -18,18 +18,14 @@
  * Foundation, Inc.
  *)
 
-(*BISECT-IGNORE-BEGIN*)
-
 let unit_string = "()"
 
 type t = unit
 let string_of () = unit_string
 let of_string = function
   | "()" -> ()
-  | _  -> raise (Invalid_argument "unit_of_string")
+  | _  -> invalid_arg "Unit.of_string"
 let compare () () = 0
 let ord () () = BatOrd.Eq
 let equal () () = true
 let print out () = BatInnerIO.nwrite out unit_string
-
-  (*BISECT-IGNORE-END*)

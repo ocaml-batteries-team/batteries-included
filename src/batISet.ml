@@ -86,7 +86,7 @@ let before n s = if n = min_int then empty else until (n - 1) s
 *)
 
 let add_range n1 n2 s =
-  if n1 > n2 then invalid_arg (Printf.sprintf "ISet.add_range - %d > %d" n1 n2) else
+  if n1 > n2 then Printf.ksprintf invalid_arg "ISet.add_range - %d > %d" n1 n2 else
     let n1, l =
       if n1 = min_int then n1, empty else
         let l = until (n1 - 1) s in

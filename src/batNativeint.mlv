@@ -77,9 +77,19 @@ external of_string : string -> nativeint = "caml_nativeint_of_string"
 ##V<4.5##let of_string_opt s = try Some (Nativeint.of_string s) with _ -> None
 external format : string -> nativeint -> string = "caml_nativeint_format"
 
+##V>=4.08##let unsigned_compare = Nativeint.unsigned_compare
+##V>=4.08##let unsigned_to_int = Nativeint.unsigned_to_int
+##V>=4.08##let unsigned_rem = Nativeint.unsigned_rem
+##V>=4.08##let unsigned_div = Nativeint.unsigned_div
 
 type bounded = t
 let min_num, max_num = min_int, max_int
 
 let print out t = BatPrintf.fprintf out "%nx" t
 let t_printer _paren out t = print out t
+
+let min (x: t) (y: t): t =
+  if x <= y then x else y
+
+let max (x: t) (y: t): t =
+  if x >= y then x else y

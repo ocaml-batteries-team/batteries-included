@@ -73,8 +73,26 @@ module TestSet
     val sym_diff : s -> s -> s
     val disjoint : s -> s -> bool
 
-    (* val merge : (elt -> bool -> bool -> bool) -> s -> s -> s *)
-
+    val min_elt_opt : s -> elt option
+    val max_elt_opt : s -> elt option
+    val update : elt -> elt -> s -> s
+    val find_opt : elt -> s -> elt option
+    val find_first : (elt -> bool) -> s -> elt
+    val find_first_opt : (elt -> bool) -> s -> elt option
+    val find_last : (elt -> bool) -> s -> elt
+    val find_last_opt : (elt -> bool) -> s -> elt option
+    val choose_opt : s -> elt option
+    val map : (elt -> elt) -> s -> s
+    val map_endo : (elt -> elt) -> s -> s
+    val filter_map : (elt -> elt option) -> s -> s
+    val filter_map_endo : (elt -> elt option) -> s -> s
+    val add_seq : elt BatSeq.t -> s -> s
+    val of_seq : elt BatSeq.t -> s
+    val to_seq : s -> elt BatSeq.t
+    val to_rev_seq : s -> elt BatSeq.t
+    val to_seq_from : elt -> s -> elt BatSeq.t
+    val elements : s -> elt list
+          
     val print :
       ?first:string -> ?last:string -> ?sep:string ->
       ('a BatInnerIO.output -> elt -> unit) ->
@@ -84,6 +102,7 @@ module TestSet
 
   let li t = BatList.of_enum (S.enum t)
   let il li = S.of_enum (BatList.enum li)
+  let s1 = il [1;2;3]
 
   let eq_li ?msg cmp_elt print_elt l1 l2 =
     let cmp t1 t2 =
@@ -119,6 +138,8 @@ module TestSet
       (S.add k (S.add k t), S.add k t);
     "add 4 [3; 5] = [3; 4; 5]" @=
         (S.add 4 t, il [3; 4; 5]);
+    "add returns phys eq. set" @=
+      (s1, (S.add 2 s1));
     ()
 
   let test_cardinal () =
@@ -145,6 +166,13 @@ module TestSet
             S.cardinal t - if S.mem k t then 1 else 0) in
     test_cardinal 3 t;
     test_cardinal 57 t;
+    "remove 4 s1 == s1" @? (s1 == (S.remove 4 s1));
+    "remove 4 empty == empty" @? (S.empty == (S.remove 4 S.empty));
+    ()
+
+  let test_update () =
+    "update 2 2 s1 == s1" @? (s1 == S.update 2 2 s1);
+    "update 2 5 s1 == of_list[1;3;5]" @= (il [1;3;5], S.update 2 5 s1);
     ()
 
   let test_mem () =
@@ -157,12 +185,32 @@ module TestSet
     let t = il [2; 1; 3; 2] in
     "min_elt [2; 1; 3; 2] = 1" @?
       (S.min_elt t = 1);
+    "min_elt empty -> Not_found" @!
+      (Not_found, fun () -> S.min_elt S.empty);
     ()
 
   let test_max_elt () =
     let t = il [2; 1; 3; 2] in
-    "max_elt [2; 1; 3; 2] = 1" @?
+    "max_elt [2; 1; 3; 2] = 3" @?
       (S.max_elt t = 3);
+    "max_elt empty -> Not_found" @!
+      (Not_found, fun () -> S.max_elt S.empty);
+    ()
+
+  let test_min_elt_opt () =
+    let t = il [2; 1; 3; 2] in
+    "min_elt_opt [2; 1; 3; 2] = Some 1" @?
+      (S.min_elt_opt t = Some 1);
+    "min_elt_opt [] = None" @?
+      (S.min_elt_opt S.empty = None);
+    ()
+
+  let test_max_elt_opt () =
+    let t = il [2; 1; 3; 2] in
+    "max_elt_opt [2; 1; 3; 2] = Some 3" @?
+      (S.max_elt_opt t = Some 3);
+    "max_elt_opt [] = None" @?
+      (S.max_elt_opt S.empty = None);
     ()
 
   let test_choose () =
@@ -171,6 +219,14 @@ module TestSet
     let t = il [1; 3] in
     "mem (choose t) t" @?
       (S.mem (S.choose t) t);
+    ()
+
+  let test_choose_opt () =
+    "choose_opt empty = None" @?
+      (S.choose_opt S.empty = None);
+    let t = il [1; 3] in
+    "mem (Option.get (choose t)) t" @?
+      (S.mem (Option.get (S.choose_opt t)) t);
     ()
 
   let test_pop () =
@@ -220,39 +276,7 @@ module TestSet
       (let l, r = S.partition (fun _ -> false) t in
        S.is_empty l && S.equal r t);
     ()
-(*
-  let test_merge () =
-    let t, t' = il [0; 1; 3], [1; 2; 3; 4] in
-    "is_empty (merge (fun k a b -> None) t t')" @?
-      S.is_empty (S.merge (fun _ _ _ -> None) t t');
-    "t = merge (fun k a b -> a) t t'" @=
-      (t, S.merge (fun _ a _ -> a) t t');
-    "t' = merge (fun k a b -> b) t t'" @=
-      (t', S.merge (fun _ _ b -> b) t t');
-    let option_compare cmp a b =
-      match a, b with
-        | None, None -> 0
-        | None, Some _ -> -1
-        | Some _, None -> 1
-        | Some a, Some b -> cmp a b in
-    let pair_compare2 cmp = BatPair.compare ~c1:cmp ~c2:cmp in
-    eq ~msg:
-      "merge (fun k a b -> Some (a, b)) [0,0; 1,1; 3,3] [1,-1; 2,-2; 3,-3; 4,-4
-       = [0, (Some 0, None);
-          1, (Some 1, Some -1);
-          2, (None, Some -2);
-          3, (Some 3, Some -3);
-          4, (None, Some -4)]"
-      (pair_compare2 (option_compare BatInt.compare))
-      (BatPair.print2 (BatOption.print BatInt.print))
-      (S.merge (fun k a b -> Some (a, b)) t t')
-      (il [0, (Some 0, None);
-           1, (Some 1, Some ~-1);
-           2, (None, Some ~-2);
-           3, (Some 3, Some ~-3);
-           4, (None, Some ~-4)]);
-    ()
-*)
+
 
   let test_union () =
     "union [1; 2; 3] [2; 3; 4] = [1; 2; 3; 4]" @=
@@ -329,6 +353,81 @@ module TestSet
       (neg2 S.disjoint (il [1; 2; 3]) (il [1; 4; 5]));
     ()
 
+  let test_find_opt () =
+    "find_opt 1 (of_list [1;2;3;4;5;6;7;8])" @?
+      ((S.find_opt 1 (il [1;2;3;4;5;6;7;8])) = Some 1);
+    "find_opt 1 (of_list [1;2;3;4;5;6;7;8])" @?
+      ((S.find_opt 8 (il [1;2;3;4;5;6;7;8])) = Some 8);
+    "find_opt 2 (of_list [1])" @?
+      ((S.find_opt (2) (il [1])) = None);
+    ()
+    
+  let test_find_first () =
+    "find_first (fun x -> x >= 0) s1" @? (S.find_first (fun x -> x >= 0) s1 = 1);
+    "find_first (fun x -> x >= 1) s1" @? (S.find_first (fun x -> x >= 1) s1 = 1);
+    "find_first (fun x -> x >= 2) s1" @? (S.find_first (fun x -> x >= 2) s1 = 2);
+    "find_first (fun x -> x >= 3) s1" @? (S.find_first (fun x -> x >= 3) s1 = 3);
+    "find_first (fun x -> x >= 4) s1" @? (try ignore(S.find_first (fun x -> x >= 4) s1); false with Not_found -> true);
+    "find_first (fun x -> x >= 3) S.empty" @? (try ignore(S.find_first (fun x -> x >= 3) S.empty); false with Not_found -> true);
+    ()
+
+  let test_find_first_opt () =
+    "find_first_opt (fun x -> x >= 0) s1" @? (S.find_first_opt (fun x -> x >= 0) s1 = Some 1);
+    "find_first_opt (fun x -> x >= 1) s1" @? (S.find_first_opt (fun x -> x >= 1) s1 = Some 1);
+    "find_first_opt (fun x -> x >= 2) s1" @? (S.find_first_opt (fun x -> x >= 2) s1 = Some 2);
+    "find_first_opt (fun x -> x >= 3) s1" @? (S.find_first_opt (fun x -> x >= 3) s1 = Some 3);
+    "find_first_opt (fun x -> x >= 4) s1" @? (S.find_first_opt (fun x -> x >= 4) s1 = None  );
+    "find_first_opt (fun x -> x >= 3) S.empty" @? (S.find_first_opt (fun x -> x >= 3) S.empty = None  );
+    ()
+  
+  let test_find_last () =
+    "find_last_opt (fun x -> x <= 1) s1" @? (          (S.find_last (fun x -> x <= 1) s1) = 1);
+    "find_last_opt (fun x -> x <= 2) s1" @? (          (S.find_last (fun x -> x <= 2) s1) = 2);
+    "find_last_opt (fun x -> x <= 3) s1" @? (          (S.find_last (fun x -> x <= 3) s1) = 3);
+    "find_last_opt (fun x -> x <= 4) s1" @? (          (S.find_last (fun x -> x <= 4) s1) = 3);
+    "find_last_opt (fun x -> x <= 0) s1" @? (try ignore(S.find_last (fun x -> x <= 0) s1); false with Not_found -> true);
+    "find_last_opt (fun x -> x <= 3) S.empty" @? (try ignore(S.find_last (fun x -> x <= 3) S.empty); false with Not_found -> true);
+    ()
+
+  let test_find_last_opt () =
+    "find_last_opt s1 " @? ((S.find_last_opt (fun x -> x <= 0) s1) = None  );
+    "find_last_opt s1 " @? ((S.find_last_opt (fun x -> x <= 1) s1) = Some 1);
+    "find_last_opt s1 " @? ((S.find_last_opt (fun x -> x <= 2) s1) = Some 2);
+    "find_last_opt s1 " @? ((S.find_last_opt (fun x -> x <= 3) s1) = Some 3);
+    "find_last_opt s1 " @? ((S.find_last_opt (fun x -> x <= 4) s1) = Some 3);
+    "find_last_opt S.empty " @? ((S.find_last_opt (fun x -> x <= 3) S.empty) = None  );
+    ()
+
+  let test_add_seq () =
+    "add_seq [1;2;3] [3;4]" @= (il [1;2;3;4], S.add_seq (BatSeq.of_list [1;2;3]) (il [3;4]));
+    "add_seq [1;2]   [3;4]" @= (il [1;2;3;4], S.add_seq (BatSeq.of_list [1;2])   (il [3;4]));
+    "add_seq []      [3;4]" @= (il [3;4],     S.add_seq (BatSeq.of_list [])      (il [3;4]));
+    "add_seq [1;2]   []   " @= (il [1;2],     S.add_seq (BatSeq.of_list [1;2])   (il []));
+    "add_seq []      []   " @= (il [],        S.add_seq (BatSeq.of_list [])      (il []));
+    ()
+
+  let test_of_seq () =
+    "of_seq [1;2;3;4]" @= (il [1;2;3;4], S.of_seq (BatSeq.of_list [1;2;4;3]));
+    "of_seq []"        @= (il []       , S.of_seq (BatSeq.of_list []));
+    ()
+
+  let test_to_seq () = 
+    "to_seq [1;2;3;4]" @? (BatSeq.equal (BatSeq.of_list [1;2;3;4]) (S.to_seq (il [4;1;3;2])));
+    "to_seq []"        @? (BatSeq.equal (BatSeq.of_list [])        (S.to_seq (il [])));
+    ()
+
+  let test_to_rev_seq () =
+    "to_rev_seq [1;2;3;4]" @? (BatSeq.equal (BatSeq.of_list [4;3;2;1]) (S.to_rev_seq (il [4;1;3;2])));
+    "to_rev_seq []"        @? (BatSeq.equal (BatSeq.of_list [])        (S.to_rev_seq (il [])));
+    ()
+ 
+  let test_to_seq_from () =
+    "to_seq_from 0 [1;2;3;4]" @? (BatSeq.equal (BatSeq.of_list [1;2;3;4]) (S.to_seq_from 0 (il [4;1;3;2])));
+    "to_seq_from 3 [1;2;3;4]" @? (BatSeq.equal (BatSeq.of_list [3;4    ]) (S.to_seq_from 3 (il [4;1;3;2])));
+    "to_seq_from 5 [1;2;3;4]" @? (BatSeq.equal (BatSeq.of_list [       ]) (S.to_seq_from 5 (il [4;1;3;2])));
+    "to_seq_from 5 []"        @? (BatSeq.equal (BatSeq.of_list [       ]) (S.to_seq_from 5 (il []       )));
+    ()
+
   let test_for_all_exists () =
     let test (msg, for_all) =
       let (@?) str = (@?) (Printf.sprintf "[%s] %s" msg str) in
@@ -367,7 +466,7 @@ module TestSet
     test "{0, 2}" [0; 2];
     ()
 
-(*
+
   let test_enums () =
     (* test enum, of_enum, backwards *)
     let test_of_enum f name_f t =
@@ -376,13 +475,61 @@ module TestSet
         (S.of_enum (f t)) t in
     List.iter (fun (f, name_f) ->
       test_of_enum f name_f (il []);
-      test_of_enum f name_f (il [(0,1); (4,5); (2, 3)]))
+      test_of_enum f name_f (il [0; 4; 2]))
       [
         S.enum, "enum";
         S.backwards, "backwards";
-        BatList.enum -| S.bindings, "enum bindings";
+        (fun s -> BatList.enum (S.elements s)), "enum bindings";
       ]
-*)
+
+  let test_map () =
+    "map (x -> 1) [1;2;3] == [1]" @=
+      (S.map (fun _x -> 1) (il [1;2;3]), il [1]);
+    "map (x -> x+5) [1;2;3] == [6;7;8]" @=
+      (S.map (fun x -> x+5) (il [1;2;3]), il [6;7;8]);
+    "map (x->x) [1;2;3] == [1;2;3]" @=
+      (S.map (fun x -> x) (il [1;2;3]), il [1;2;3]);
+    "map (x->x) [] == []" @=
+      (S.map (fun x -> x+1) S.empty, S.empty);
+    ()
+
+  let test_map_endo () =
+    "map_endo (x -> 1) [1;2;3] == [1]" @=
+      (S.map_endo (fun _x -> 1) (il [1;2;3]), il [1]);
+    "map_endo (x -> x+5) [1;2;3] == [6;7;8]" @=
+      (S.map_endo (fun x -> x+5) (il [1;2;3]), il [6;7;8]);
+    "map_endo (x->x) [1;2;3] == [1;2;3] (test phys eq)" @?
+      (let s = il [1;2;3] in s == (S.map_endo (fun x -> x) s));
+    "map_endo (x->x) [1;2;3] == [1;2;3] (test phys eq)" @?
+      (let s = S.empty in s == (S.map_endo (fun x -> x+1) s));
+    ()
+
+  let test_filter () =
+    "filter (fun x -> x < 10) [1;2;3] (phys eq)" @?
+      (let s = il [1;2;3] in s == (S.filter (fun x -> x < 10) s));
+    "filter (fun x -> x > 10) [] (phys eq)" @?
+      (let s = S.empty in s == (S.filter (fun x -> x > 10) s));
+    "filter (fun x -> x > 10) [] (phys eq)" @=
+      (S.filter (fun x -> x > 10) (il [0;10;20;30]), il [20;30]);
+    ()
+
+  let test_filter_map () =
+    "filter_map (fun x -> Some x) [1;2;3]" @=
+      (il [1;2;3], S.filter_map (fun x -> Some x) (il [1;2;3]));
+    "filter_map (fun x -> Some x) [] (phys eq)" @=
+      (S.empty, S.filter_map (fun x -> Some x) S.empty);
+    "filter_map (fun x -> if x < 3 then Some (-x) else None) [1;2;3;4] = [-1;-2]" @=
+      (S.filter_map (fun x -> if x < 3 then Some (-x) else None) (il [1;2;3;4]), il [-1;-2]);
+    ()
+
+  let test_filter_map_endo () =
+    "filter_map_endo (fun x -> Some x) [1;2;3] (phys eq)" @?
+      (let s = il [1;2;3] in s == (S.filter_map_endo (fun x -> Some x) s));
+    "filter_map_endo (fun x -> Some x) [] (phys eq)" @?
+      (let s = S.empty    in s == (S.filter_map_endo (fun x -> Some x) s));
+    "filter_map_endo (fun x -> if x < 3 then Some (-x) else None) [1;2;3;4] = [-1;-2]" @=
+      (S.filter_map_endo (fun x -> if x < 3 then Some (-x) else None) (il [1;2;3;4]), il [-1;-2]);
+    ()
 
   let test_iterators () =
     (* we test all iter/fold/filter in one go, by building a common
@@ -436,7 +583,6 @@ module TestSet
     "test_choose" >:: test_choose;
     "test_split" >:: test_split;
     "test_partition" >:: test_partition;
-    (* "test_merge" >:: test_merge; *)
     "test_union" >:: test_union;
     "test_inter" >:: test_inter;
     "test_diff" >:: test_diff;
@@ -444,15 +590,35 @@ module TestSet
     "test_disjoint" >:: test_disjoint;
     "test_for_all_exists" >:: test_for_all_exists;
     "test_print" >:: test_print;
-    (* "test_enums" >:: test_enums; *)
+    "test_enums" >:: test_enums;
     "test_iterators" >:: test_iterators;
     "test_pop" >:: test_pop;
+    "test_find_opt" >:: test_find_opt;
+    "test_find_first" >:: test_find_first;
+    "test_find_first_opt" >:: test_find_first_opt;
+    "test_find_last" >:: test_find_last;
+    "test_find_last_opt" >:: test_find_last_opt;
+    "test_update" >:: test_update;
+    "test_min_elt_opt" >:: test_min_elt_opt;
+    "test_max_elt_opt" >:: test_max_elt_opt;
+    "test_choose_opt" >:: test_choose_opt;
+    "test_add_seq" >:: test_add_seq;
+    "test_of_seq" >:: test_of_seq;
+    "test_to_seq" >:: test_to_seq;
+    "test_to_rev_seq" >:: test_to_rev_seq;
+    "test_to_seq_from" >:: test_to_seq_from;
+    "test_map" >:: test_map;
+    "test_map_endo" >:: test_map_endo;
+    "test_filter_map_endo" >:: test_filter_map_endo;
+    "test_filter" >:: test_filter;
   ]
 end
 
 module S = struct
   include BatSet.Make(BatInt)
   type s = t
+  let map_endo = map
+  let filter_map_endo = filter_map
 end
 
 module P = struct

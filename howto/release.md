@@ -5,6 +5,8 @@ Make a release
 
 - `make test` on a 64 bits machine
 - `make test` on a 32 bits machine
+  (in practice, we have a hard time finding 32 bits machine these
+  days, so it's okay to skip this test)
 
 - `make test` with the oldest ocaml compiler version we are supporting
   (for example, in an opam 3.12.1 switch)
@@ -32,8 +34,6 @@ to be performed by someone with commit rights.
 - inspect commits and sources to find @since tags to add/substitute
   (especially @since NEXT_RELEASE); `sh scripts/find_since.sh` can
   help. ./scripts/replace_since.sh helps even more.
-
-- check whether new functions should go in Incubator
 
 - update the changelog with release notes
 
@@ -72,7 +72,7 @@ upstream opam repository curators may have made changes to the public
 opam files, to reflect new packaging best practices and policies. You
 should check for any change to the latest version's `opam` file; if
 there is any, it should probably be reproduced into our local `opam`
-file, and commited.
+file, and committed.
 
 Note that the local file may have changed during the release lifetime
 to reflect new dependencies or changes in packaging policies. These

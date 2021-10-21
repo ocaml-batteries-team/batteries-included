@@ -11,10 +11,10 @@ let makeIntervals d =
   let merge s num =
     match s with
       | (start,stop) :: tail ->
-	if abs(num-stop) <= d then
-	  (start,num) :: tail
-	else
-	  (num,num) :: s
+        if abs(num-stop) <= d then
+          (start,num) :: tail
+        else
+          (num,num) :: s
       | _ -> assert false
   in
   function
@@ -23,8 +23,13 @@ let makeIntervals d =
 
 let g = [1;3;5;9;12;13;14]
 
-let tests = [ "fsharp", makeIntervals 2, g;
-	      "ocaml", make_intervals 2, g;
-	    ]
+let repeat f n =
+  for _i = 1 to n do
+    ignore (f g)
+  done
 
-let () = Bench.bench tests
+let tests = [ "fsharp", repeat (makeIntervals 2);
+              "ocaml", repeat (make_intervals 2);
+            ]
+
+let () = Bench.bench_n tests |> Bench.run_outputs

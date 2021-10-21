@@ -134,12 +134,14 @@ type easy_lev = [ `trace | `debug | `info | `warn | `error | `fatal | `always ]
     @since 2.0
 *)
 module Easy : sig
+
   (** Set this ref to the lowest level of log you want logged.  For
       example, [Easy.level := `always] disables all logging except
       that at the [`always] level.  Setting [Easy.level := `info] will
       enable logging for [`info], [`warn], [`error], [`fatal] and
       [`always] levels. *)
   val level : easy_lev ref
+
   (** Set this ref to the output you want logging messages to go
       to.  Defaults to [stderr]. *)
   val output : unit output ref
@@ -156,13 +158,17 @@ end
 
 (** The details of a level scheme for verbosity-level loggers *)
 module type Level_sig = sig
+
   (** A type for level values, usually a polymorphic variant *)
   type t
+
   (** Convert each level to a string *)
   val to_string : t -> string
+
   (** The default level for loggers created with this; log messages
       with level less than this won't be printed by default. *)
   val default_level : t
+
   (** a comparison function between levels, to know whether logging at a
       particular level should be printed *)
   val compare : t -> t -> int

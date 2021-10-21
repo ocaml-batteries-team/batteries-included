@@ -63,9 +63,12 @@ let kind_of_name = function
 *)
 
 type url       = string(**A kind of string used to represent URLs. Distinguished for documentation purposes.*)
+
 type qualified = string(**A kind of string used to represent fully-qualified names.*)
+
 type unqualif  = string(**A kind of string used to represent unqualified names, i.e. names without their module.*)
-type package   = string(**A lomd pf stromg used to represent help providers.*)
+
+type package   = string(**A kind pf string used to represent help providers.*)
 
 type suggestion =
   {
@@ -228,9 +231,6 @@ let result_of_completions table singular subject (l:completion list) =
     inconsistency singular subject; (*Report internal inconsistency*)
     None) l
 
-(**A deconstructor for [completion].*)
-let get_qualified {qualified = q; _} = q
-
 (**
    Look for a given subject inside one of the manuals
 
@@ -299,8 +299,8 @@ let man_all sources ~tabs subject =
     else
       match
         List.fold_left
-          (fun (((result_as_strings : string list)(**The text to display, as a list of strings, one string per kind.*),
-            _one_suggestion    (**The latest suggestion -- used only in case there's only one suggestion.*)) as acc)
+          (fun (((result_as_strings : string list)(*The text to display, as a list of strings, one string per kind.*),
+            _one_suggestion    (*The latest suggestion -- used only in case there's only one suggestion.*)) as acc)
             (cmd, kind, singular, plural, _undefined) ->
             match man_aux ~kind ~singular ~plural subject with
             | `No_result                -> acc

@@ -27,10 +27,10 @@
    the measurement function (this is needed because sometimes
    the type of the measure depends on the type of the elements).
 
-   This module also contains an instanciation of a finger tree that
+   This module also contains an instantiation of a finger tree that
    implements a functional sequence with the following characteristics:
    - amortized constant time addition and deletions at both ends
-   - contant time size operation
+   - constant time size operation
    - logarithmic lookup, update or deletion of the element at a given index
    - logarithmic splitting and concatenation
 
@@ -365,7 +365,7 @@ module Generic : sig
   val split : (('m -> bool) -> ('a, 'm) fg -> ('a, 'm) fg * ('a, 'm) fg, 'a, 'm) wrap
     (**
         [split p t], when [p] is monotonic, returns [(t1, t2)] where
-        [t1] is the longest prefix of [t] whose measure does not satifies
+        [t1] is the longest prefix of [t] whose measure does not satisfies
         [p], and [t2] is the rest of [t].
         @raise Empty is there is no such element
 

@@ -121,7 +121,7 @@ val length : 'a t -> int
 val balance : 'a t -> 'a t
 (** [balance r] returns a balanced copy of the [r] vect. Note that vects are
     automatically rebalanced when their height exceeds a given threshold, but
-    [balance] allows to invoke that operation explicity. *)
+    [balance] allows to invoke that operation explicitly. *)
 
 val concat : 'a t -> 'a t -> 'a t
 (** [concat r u] concatenates the [r] and [u] vects. In general, it operates
@@ -318,8 +318,10 @@ val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
 val first : 'a t -> 'a
 val last : 'a t -> 'a
 (** These return the first and last values in the vector *)
+
 val shift : 'a t -> 'a * 'a t
 (** Return the first element of a vector and its last [n-1] elements. *)
+
 val pop : 'a t -> 'a * 'a t
 (** Return the last element of a vector and its first [n-1] elements. *)
 
@@ -475,7 +477,7 @@ val length : 'a t -> int
 val balance : 'a t -> 'a t
 (** [balance r] returns a balanced copy of the [r] vect. Note that vects are
     automatically rebalanced when their height exceeds a given threshold, but
-    [balance] allows to invoke that operation explicity. *)
+    [balance] allows to invoke that operation explicitly. *)
 
 val concat : 'a t -> 'a t -> 'a t
 (** [concat r u] concatenates the [r] and [u] vects. In general, it operates
@@ -516,7 +518,7 @@ val destructive_set : 'a t -> int -> 'a -> unit
     sharing the modified leaf with [v]. Use with caution. *)
 
 val sub : 'a t -> int -> int -> 'a t
-(** [sub m n r] returns a sub-vect of [r] containing all the elements
+(** [sub r m n] returns a sub-vect of [r] containing all the elements
     whose indexes range from [m] to [m + n - 1] (included).
     @raise Out_of_bounds in the same cases as Array.sub.
     Operates in worst-case [O(log size)] time.  *)
@@ -671,10 +673,13 @@ val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
 (** {6 Convenience Functions} *)
 
 val first : 'a t -> 'a
+
 val last : 'a t -> 'a
 (** These return the first and last values in the vector *)
+
 val shift : 'a t -> 'a * 'a t
 (** Return the first element of a vector and its last [n-1] elements. *)
+
 val pop : 'a t -> 'a * 'a t
 (** Return the last element of a vector and its first [n-1] elements. *)
 

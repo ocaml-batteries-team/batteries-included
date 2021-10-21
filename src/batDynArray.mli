@@ -32,6 +32,7 @@
     @author Brian Hurt
     @author Nicolas Cannasse
     @author David Teller (boilerplate code)
+    @author andrepd
 *)
 
 type 'a t
@@ -53,98 +54,207 @@ val create : unit -> 'a t
 
 val make : int -> 'a t
 (** [make count] returns an array with some memory already allocated so
-    up to [count] elements can be stored into it without resizing. *)
+    up to [count] elements can be stored into it without resizing.
+
+    @raise DynArray.Invalid_arg if make is called with a negative argument. *)
 
 val init : int -> (int -> 'a) -> 'a t
 (** [init n f] returns an array of [n] elements filled with values
-    returned by [f 0 , f 1, ... f (n-1)]. *)
+    returned by [f 0 , f 1, ... f (n-1)].
+
+    @raise DynArray.Invalid_arg if init is called with a negative argument. *)
+
+val singleton : 'a -> 'a t
+(** Create an array consisting of exactly one element.
+    @since 3.3.0 *)
 
 (** {6 Array manipulation functions} *)
 
-val empty : 'a t -> bool
-(** Return true if the number of elements in the array is 0. *)
+val get : 'a t -> int -> 'a
+(** [get darr idx] gets the element in [darr] at index [idx]. If [darr] has
+    [len] elements in it, then the valid indexes range from [0] to [len-1].
+
+    @raise DynArray.Invalid_arg if called with an invalid index. *)
+
+val set : 'a t -> int -> 'a -> unit
+(** [set darr idx v] sets the element of [darr] at index [idx] to value
+    [v].  The previous value is overwritten.
+
+    @raise DynArray.Invalid_arg if called with an invalid index. *)
+
+val upd : 'a t -> int -> ('a -> 'a) -> unit
+(** [upd darr idx f] sets the element of [darr] at index [idx] to value
+    [f (get darr idx)]).  The previous value is overwritten.
+
+    @raise DynArray.Invalid_arg if called with an invalid index.
+    @since 3.3.0 *)
 
 val length : 'a t -> int
 (** Return the number of elements in the array. *)
 
-val get : 'a t -> int -> 'a
-(** [get darr idx] gets the element in [darr] at index [idx]. If [darr] has
-    [len] elements in it, then the valid indexes range from [0] to [len-1]. *)
+val empty : 'a t -> bool
+(** Return true if the number of elements in the array is 0. *)
+
+val first : 'a t -> 'a
+(** [first darr] returns the first element of [darr].
+
+    @raise DynArray.Invalid_arg if length of the array is 0.
+    @since 3.3.0 *)
 
 val last : 'a t -> 'a
-(** [last darr] returns the last element of [darr]. *)
+(** [last darr] returns the last element of [darr].
 
-val set : 'a t -> int -> 'a -> unit
-(** [set darr idx v] sets the element of [darr] at index [idx] to value
-    [v].  The previous value is overwritten. *)
+    @raise DynArray.Invalid_arg if length of the array is 0. *)
+
+val left : 'a t -> int -> 'a t
+(** [left r len] returns the array containing the [len] first characters of [r].
+    If [r] contains less than [len] characters, it returns [r].
+
+    @raise DynArray.Invalid_arg if called with an invalid index.
+    @since 3.3.0 *)
+
+val right : 'a t -> int -> 'a t
+(** [right r len] returns the array containing the [len] last characters of [r].
+    If [r] contains less than [len] characters, it returns [r].
+
+    @raise DynArray.Invalid_arg if called with an invalid index.
+    @since 3.3.0 *)
+
+val head : 'a t -> int -> 'a t
+(** Alias for {!left}
+    @since 3.3.0 *)
+
+val tail : 'a t -> int -> 'a t
+(** [tail r pos] returns the array containing all but the [pos] first characters of [r].
+
+    @raise DynArray.Invalid_arg if called with an invalid index.
+    @since 3.3.0 *)
 
 val insert : 'a t -> int -> 'a -> unit
 (** [insert darr idx v] inserts [v] into [darr] at index [idx].  All elements
     of [darr] with an index greater than or equal to [idx] have their
     index incremented (are moved up one place) to make room for the new
-    element. *)
+    element.
+
+    @raise DynArray.Invalid_arg if called with an invalid index. *)
 
 val add : 'a t -> 'a -> unit
-(** [add darr v] appends [v] onto [darr].  [v] becomes the new
+(** [add darr v] appends [v] onto the end of [darr].  [v] becomes the new
     last element of [darr]. *)
 
 val append : 'a t -> 'a t -> unit
 (** [append src dst] adds all elements of [src] to the end of [dst]. *)
 
+(*val concat : 'a array list -> 'a array
+(** Same as [append], but concatenates a list of arrays. *)*)
+
 val delete : 'a t -> int -> unit
 (** [delete darr idx] deletes the element of [darr] at [idx].  All elements
     with an index greater than [idx] have their index decremented (are
-    moved down one place) to fill in the hole. *)
+    moved down one place) to fill in the hole.
+
+    @raise DynArray.Invalid_arg if called with an invalid index. *)
 
 val delete_last : 'a t -> unit
 (** [delete_last darr] deletes the last element of [darr]. This is equivalent
-    of doing [delete darr ((length darr) - 1)]. *)
+    of doing [delete darr ((length darr) - 1)].
+
+    @raise DynArray.Invalid_arg if length of the array is 0. *)
 
 val delete_range : 'a t -> int -> int -> unit
-(** [delete_range darr p len] deletes [len] elements starting at index [p].
-    All elements with an index greater than [p+len] are moved to fill
-    in the hole. *)
+(** [delete_range darr idx len] deletes [len] elements starting at index [idx].
+    All elements with an index greater than [idx+len] are moved to fill
+    in the hole.
+
+    @raise DynArray.Invalid_arg if called with an invalid length or index. *)
+
+val remove_at : int -> 'a t -> unit
+(** Alias for [delete] with parameter order that follows [Array.remove_at].
+
+    @since NEXT_RELEASE *)
 
 val clear : 'a t -> unit
 (** remove all elements from the array and resize it to 0. *)
 
 val blit : 'a t -> int -> 'a t -> int -> int -> unit
 (** [blit src srcidx dst dstidx len] copies [len] elements from [src]
-    starting with index [srcidx] to [dst] starting at [dstidx]. *)
+    starting with index [srcidx] to [dst] starting at [dstidx].
+
+    @raise DynArray.Invalid_arg if called with an invalid length or indices. *)
 
 val compact : 'a t -> unit
-(** [compact darr] ensures that the space allocated by the array is minimal.*)
+(** [compact darr] ensures that the space allocated by the array is minimal. *)
+
+
 
 (** {6 Array copy and conversion} *)
 
-val to_list : 'a t -> 'a list
-(** [to_list darr] returns the elements of [darr] in order as a list. *)
-
-val to_array : 'a t -> 'a array
-(** [to_array darr] returns the elements of [darr] in order as an array. *)
-
 val enum : 'a t -> 'a BatEnum.t
 (** [enum darr] returns the enumeration of [darr] elements. *)
+
+val of_enum : 'a BatEnum.t -> 'a t
+(** [of_enum e] returns an array that holds, in order, the elements of [e]. *)
+
+(* val backwards : 'a array -> 'a BatEnum.t
+(** Returns an enumeration of the elements of an array, from last to first. *)
+
+val of_backwards : 'a BatEnum.t -> 'a array
+(** Build an array from an enumeration, with the first element of
+    the enumeration as the last element of the array and vice
+    versa. *) *)
+
+val range : 'a t -> int BatEnum.t
+(** [range a] returns an enumeration of all valid indices of the given
+    array, that is, [range a = 0 --^ ((length a) -1 )]
+    @since 3.3.0 *)
+
+val to_list : 'a t -> 'a list
+(** [to_list darr] returns the elements of [darr] in order as a list. *)
 
 val of_list : 'a list -> 'a t
 (** [of_list lst] returns a dynamic array with the elements of [lst] in
     it in order. *)
 
+val to_array : 'a t -> 'a array
+(** [to_array darr] returns the elements of [darr] in order as an array. *)
+
 val of_array : 'a array -> 'a t
 (** [of_array arr] returns an array with the elements of [arr] in it
     in order. *)
 
-val of_enum : 'a BatEnum.t -> 'a t
-(** [of_enum e] returns an array that holds, in order, the elements of [e]. *)
-
 val copy : 'a t -> 'a t
-(** [copy src] returns a fresh copy of [src], such that no modification of
-    [src] affects the copy, or vice versa (all new memory is allocated for
-    the copy).   *)
+(** [copy a] returns a fresh copy of [a], such that no modification of
+    [a] affects the copy, or vice versa (all new memory is allocated for
+    the copy). *)
 
 val sub : 'a t -> int -> int -> 'a t
-(** [sub darr start len] returns an array holding the subset of [len]
-    elements from [darr] starting with the element at index [idx]. *)
+(** [sub a start len] returns an array holding the subset of [len]
+    elements from [a] starting with the element at index [idx]. 
+
+    @raise DynArray.Invalid_arg if [start] and [len] do not
+    designate a valid subarray of [a]; that is, if
+    [start < 0], or [len < 0], or [start + len > Array.length a]. *)
+
+val fill : 'a t -> int -> int -> 'a -> unit
+(** [fill a start len x] modifies the array [a] in place,
+    storing [x] in elements number [start] to [start + len - 1].
+
+    @raise DynArray.Invalid_arg if [start] and [len] do not
+    designate a valid subarray of [a].
+    @since 3.3.0 *)
+
+val split : ('a * 'b) t -> 'a t * 'b t
+(** [split a] converts the array of pairs [a] into a pair of arrays.
+    @since 3.3.0 *)
+
+val combine : 'a t -> 'b t -> ('a * 'b) t
+(** [combine a b] converts arrays [[a0,...aN] [b0,...,bN]] into 
+    an array of pairs [[(a0,b0),...,(aN,bN)]]. 
+
+    @raise DynArray.Invalid_arg  if the two arrays have different lengths.
+    @since 3.3.0 *)
+
+
 
 (** {6 Array functional support} *)
 
@@ -167,6 +277,16 @@ val mapi : (int -> 'a -> 'b) -> 'a t -> 'b t
     and creates a dynamic array from the results - similar to [List.mapi] or
     [Array.mapi]. *)
 
+val modify : ('a -> 'a) -> 'a t -> unit
+(** [modify f a] replaces every element [x] of [a] with [f x].
+    @since 3.3.0 *)
+
+val modifyi : (int -> 'a -> 'a) -> 'a t -> unit
+(** Same as {!modify}, but the function is applied to the index of
+    the element as the first argument, and the element itself as
+    the second argument.
+    @since 3.3.0 *)
+
 val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
 (** [fold_left f x darr] computes [f ( ... ( f ( f a0 x) a1) ) ... )
     aN], where [a0,a1..aN] are the indexed elements of [darr]. *)
@@ -176,9 +296,21 @@ val fold_right : ('a -> 'b -> 'b) -> 'a t -> 'b -> 'b
     ... ) ) ], where [a0,a1..aN] are the indexed elements of
     [darr]. *)
 
-val index_of : ('a -> bool) -> 'a t -> int
-(** [index_of f darr] returns the index of the first element [x] in darr such
-    as [f x] returns [true] or raise [Not_found] if not found. *)
+val fold_lefti : ('a -> int -> 'b -> 'a) -> 'a -> 'b t -> 'a
+(** As [fold_left], but with the index of the element as additional argument.
+    @since 3.3.0 *)
+
+val fold_righti : (int -> 'b -> 'a -> 'a) -> 'b t -> 'a -> 'a
+(** As [fold_right], but with the index of the element as additional argument.
+    @since 3.3.0 *)
+
+val reduce : ('a -> 'a -> 'a) -> 'a t -> 'a
+(** [reduce f a] is [fold_left f a0 [a1, ... aN]].  This
+    is useful for merging a group of things that have no
+    reasonable default value to return if the group is empty.
+
+    @raise DynArray.Invalid_arg  on empty arrays.
+    @since 3.3.0 *)
 
 val keep : ('a -> bool) -> 'a t -> unit
 (** [keep p darr] removes in place all the element [x] of [darr]
@@ -200,10 +332,181 @@ val filter : ('a -> bool) -> 'a t -> 'a t
     was changed to {!keep}.
 *)
 
+val find_all : ('a -> bool) -> 'a t -> 'a t
+(** [find_all] is another name for [filter].
+    @since 3.3.0 *)
+
+val filteri : (int -> 'a -> bool) -> 'a t -> 'a t
+(** As [filter] but with the index passed to the predicate.
+    @since 3.3.0 *)
+
 val filter_map : ('a -> 'b option) -> 'a t -> 'b t
 (** [filter_map f e] returns an array consisting of all elements
     [x] such that [f y] returns [Some x] , where [y] is an element
     of [e]. *)
+
+val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
+(** [partition p a] returns a pair of arrays [(a1, a2)], where
+    [a1] is the array of all the elements of [a] that
+    satisfy the predicate [p], and [a2] is the array of all the
+    elements of [a] that do not satisfy [p].
+    The order of the elements in the input array is preserved.
+
+    @since 3.3.0 *)
+
+val for_all : ('a -> bool) -> 'a t -> bool
+(** [for_all p [a0; a1; ...; an]] checks if all elements of the
+    array satisfy the predicate [p].  That is, it returns [ (p a0)
+    && (p a1) && ... && (p an)].
+    @since 3.3.0 *)
+
+val exists : ('a -> bool) -> 'a t -> bool
+(** [exists p [a0; a1; ...; an]] checks if at least one element of
+    the array satisfies the predicate [p].  That is, it returns [(p
+    a0) || (p a1) || ... || (p an)].
+    @since 3.3.0 *)
+
+val find : ('a -> bool) -> 'a t -> 'a
+(** [find p a] returns the first element of array [a] that
+    satisfies the predicate [p].
+
+    @raise Not_found if there is no value that satisfies [p] in
+    the array [a].
+    @since 3.3.0 *)
+
+val findi : ('a -> bool) -> 'a t -> int
+(** [findi p a] returns the index of the first element of array [a]
+    that satisfies the predicate [p].
+
+    @raise Not_found if there is no value that satisfies [p] in the
+    array [a].
+    @since 3.3.0 *)
+
+val index_of : ('a -> bool) -> 'a t -> int
+(** Alias for {!findi} *)
+
+val mem : 'a -> 'a t -> bool
+(** [mem m a] is true if and only if [m] is equal to an element of [a].
+    @since 3.3.0 *)
+
+val memq : 'a -> 'a t -> bool
+(** Same as {!mem} but uses physical equality instead of
+    structural equality to compare array elements.
+    @since 3.3.0 *)
+
+val rev : 'a t -> 'a t
+(** Array reversal.
+    @since 3.3.0 *)
+
+val rev_in_place : 'a t -> unit
+(** In-place array reversal.  The given array is updated.
+    @since 3.3.0 *)
+
+val max : 'a t -> 'a
+(** [max a] returns the largest value in [a] as judged by
+    [Pervasives.compare]
+
+    @raise DynArray.Invalid_arg  on empty input.
+    @since 3.3.0 *)
+
+val min : 'a t -> 'a
+(** [min a] returns the smallest value in [a] as judged by
+    [Pervasives.compare]
+
+    @raise DynArray.Invalid_arg  on empty input.
+    @since 3.3.0 *)
+
+val min_max : 'a t -> 'a * 'a
+(** [min_max a] returns the (smallest, largest) pair of values from [a]
+    as judged by [Pervasives.compare]
+
+    @raise DynArray.Invalid_arg  on empty input.
+    @since 3.3.0 *)
+
+val sum : int t -> int
+(** [sum l] returns the sum of the integers of [l].
+    @since 3.3.0 *)
+
+val fsum : float t -> float
+(** [fsum l] returns the sum of the floats of [l].
+    @since 3.3.0 *)
+
+val kahan_sum : float t -> float
+(** [kahan_sum l] returns a numerically-accurate
+    sum of the floats of [l].
+
+    You should consider using Kahan summation when you really care
+    about very small differences in the result, while the result or
+    one of the intermediate sums can be very large (which usually
+    results in loss of precision of floating-point addition).
+
+    The worst-case rounding error is constant, instead of growing with
+    (the square root of) the length of the input array as with {!
+    fsum}. On the other hand, processing each element requires four
+    floating-point operations instead of one. See
+    {{: https://en.wikipedia.org/wiki/Kahan_summation_algorithm }
+    the wikipedia article} on Kahan summation for more details.
+
+    @since 3.3.0
+*)
+
+val avg : int t -> float
+(** [avg l] returns the average of [l]
+    @since 3.3.0 *)
+
+val favg : float t -> float
+(** [favg l] returns the average of [l]
+    @since 3.3.0 *)
+
+
+
+
+(** {6 Operations on two arrays} *)
+
+val iter2 : ('a -> 'b -> unit) -> 'a t -> 'b t -> unit
+(** [iter2 f [a0, a1, ..., an] [b0, b1, ..., bn]]
+    performs calls [f a0 b0, f a1 b1, ..., f an bn] in that order.
+
+    @raise DynArray.Invalid_arg  if the two arrays have different lengths.
+    @since 3.3.0 *)
+
+val iter2i : (int -> 'a -> 'b -> unit) -> 'a t -> 'b t -> unit
+(** [iter2i f [a0, a1, ..., an] [b0, b1, ..., bn]]
+    performs calls [f 0 a0 b0, f 1 a1 b1, ..., f n an bn] in that
+    order.
+
+    @raise DynArray.Invalid_arg  if the two arrays have different lengths.
+    @since 3.3.0 *)
+
+val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
+(** As {!map} but on two arrays.
+
+    @raise DynArray.Invalid_arg  if the two arrays have different lengths.
+    @since 3.3.0 *)
+
+val map2i : (int -> 'a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
+(** As {!mapi} but on two arrays.
+
+    @raise DynArray.Invalid_arg  if the two arrays have different lengths.
+    @since 3.3.0 *)
+
+val for_all2 : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
+(** As {!for_all} but on two arrays.
+
+    @raise DynArray.Invalid_arg  if the two arrays have different lengths.
+    @since 3.3.0 *)
+
+val exists2 : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
+(** As {!exists} but on two arrays.
+
+    @raise DynArray.Invalid_arg  if the two arrays have different lengths.
+    @since 3.3.0 *)
+
+val cartesian_product : 'a t -> 'b t -> ('a * 'b) t
+(** Cartesian product of the two arrays.
+    @since 3.3.0 *)
+
+
 
 
 (** {6 Array resizers} *)
@@ -315,19 +618,37 @@ val create_with : resizer_t -> 'a t
     @since 2.3.0
 *)
 
+
 (** {6 Unsafe operations} **)
 
 val unsafe_get : 'a t -> int -> 'a
 val unsafe_set : 'a t -> int -> 'a -> unit
+val unsafe_upd : 'a t -> int -> ('a -> 'a) -> unit
+(** @since 3.3.0 *)
 
 
-(** {6 Boilerplate code}*)
+(** {6 Boilerplate code} *)
 
-(** {7 Printing}*)
+(** {7 Printing} *)
 
 val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> 'b t -> unit
+
+(** Operations on {!DynArray} without exceptions. *)
+module Exceptionless : sig
+  val find : ('a -> bool) -> 'a t -> 'a option
+  (** [find p a] returns [Some x], where [x] is the first element of
+      array [a] that satisfies the predicate [p], or [None] if there
+      is no such element.
+      @since 3.3.0 *)
+
+  val findi : ('a -> bool) -> 'a t -> int option
+  (** [findi p a] returns [Some n], where [n] is the index of the
+      first element of array [a] that satisfies the predicate [p],
+      or [None] if there is no such element.
+      @since 3.3.0 *)
+end
 
 (**/**)
 val invariants : _ t -> unit
 val bool_invariants : _ t -> bool
-  (**/**)
+(**/**)

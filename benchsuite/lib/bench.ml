@@ -63,7 +63,7 @@ module M = Measurement
 let mean a = (Array.fold_left (+.) 0. a) /. float (Array.length a)
 let median a =
   let sorted = Array.copy a in
-  Array.sort Pervasives.compare sorted;
+  Array.sort compare sorted;
   let len = Array.length a in
   if len land 1 = 1 then sorted.(len/2+1)
   else (sorted.(len/2) +. sorted.(len/2+1))/. 2.
@@ -199,7 +199,7 @@ module Bootstrap = struct
 
   type estimate = {point: float; lower: float; upper: float; confidence: float}
   let estimate p l u c = {point=p; lower=l; upper=u; confidence=c}
-  let get {point;lower;upper} = (point,lower,upper)
+  let get {point;lower;upper;_} = (point,lower,upper)
 
   let est_scale s est = {est with point = s *. est.point; lower = s *. est.lower; upper = s *. est.upper}
 
@@ -219,8 +219,8 @@ module Bootstrap = struct
         let n = Array.length res in
         let jack = jackknife est sample in
         let jackmean = mean jack in
-        let sum_cubes = Array.fold_left (fun acc x -> let d = jackmean -. x in d *. d *. d) 0. jack in
-        let sum_squares = Array.fold_left (fun acc x -> let d = jackmean -. x in d *. d) 0. jack in
+        let sum_cubes = Array.fold_left (fun acc x -> let d = jackmean -. x in acc +. d *. d *. d) 0. jack in
+        let sum_squares = Array.fold_left (fun acc x -> let d = jackmean -. x in acc +. d *. d) 0. jack in
         let accel = sum_cubes /. (6. *. (sum_squares ** 1.5)) in
         let cumn x = int_of_float ((Normal_dist.standard_cdf x) *. (float n)) in
         let probN = Array.fold_left (fun acc x -> if x < pt then acc+1 else acc) 0 res in
@@ -246,7 +246,7 @@ module Outliers = struct
     high_severe: int; hs_limit: float;
   }
 
-  let print oc {data_count=dc; low_severe=ls; low_mild=lm; high_mild=hm; high_severe=hs} =
+  let print oc {data_count=dc; low_severe=ls; low_mild=lm; high_mild=hm; high_severe=hs; _} =
     let one_percent = dc / 100 in
     if ls>0 || lm > one_percent || hm > one_percent || hs > 0 then begin
       printf "Outliers: ";
@@ -364,8 +364,8 @@ module Outliers = struct
   let print_effect oc ov =
     if ov > 0.00001 then (
       let effect = effect_of_var ov |> effect_to_string in
-      printf "variance introduced by outliers: %.5f%%\n" (ov *. 100.);
-      printf "variance is %s by outliers\n" effect;
+      fprintf oc "variance introduced by outliers: %.5f%%\n" (ov *. 100.);
+      fprintf oc "variance is %s by outliers\n" effect;
     )
 
 end
@@ -465,7 +465,7 @@ let cmp_ci r1 r2 =
   let u2 = r2.mean.Bootstrap.upper in
   if u1 < l2 then -1 else if u2 < l1 then 1 else 0
 let cmp_point r1 r2 =
-  Pervasives.compare r1.mean.Bootstrap.point r2.mean.Bootstrap.point
+  compare r1.mean.Bootstrap.point r2.mean.Bootstrap.point
 let change r1 r2 =
   let t1 = r1.mean.Bootstrap.point in
   let t2 = r2.mean.Bootstrap.point in
@@ -521,7 +521,7 @@ let config = { verbose = true;
                resamples = 1_000;
                confidence_interval = 0.95;
                gc_between_tests= false;
-(*	       output = [summarize ~alpha:0.05];*)
+(*               output = [summarize ~alpha:0.05];*)
                output = [print_times "times.flat"; summarize ~alpha:0.05];
                min_iters = 1;
              }
@@ -541,7 +541,7 @@ let init_environment () =
       let times = Array.init (i+1) (fun _ -> M.timer()) in
       let pos_diffs =
         Array.init i (fun i -> times.(i+1) -. times.(i))
-	           |> Array.to_list |> List.filter is_positive |> Array.of_list
+                   |> Array.to_list |> List.filter is_positive |> Array.of_list
       in
       pos_diffs
     in
@@ -600,7 +600,7 @@ let run_benchmark (f: int -> 'a) =
   Array.init config.samples (fun _ ->
     if config.gc_between_tests then Gc.compact ();
     M.time_ f iters_int)
-		   |> Array.map (fun t -> (t -. env.clock_cost) /. iters)
+                   |> Array.map (fun t -> (t -. env.clock_cost) /. iters)
 
 (** Run a benchmark and analyze the results, printing a simple summary to stdout *)
 let run_and_analyze desc f =

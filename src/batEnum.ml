@@ -46,7 +46,7 @@ let make ~next ~count ~clone =
   }
 
 (** {6 Internal utilities}*)
-let _dummy () = assert false (*BISECT-VISIT*)
+let _dummy () = assert false
 
 (* raised by 'count' functions, may go outside the API *)
 exception Infinite_enum
@@ -74,7 +74,7 @@ let close e =
   e.count<- return_no_more_count;
   e.clone<- empty
 
-let force t =(** Transform [t] into a list *)
+let force t = (* Transform [t] into a list *)
   let rec clone enum count =
     let enum = ref !enum
     and count = ref !count in
@@ -189,7 +189,7 @@ let from2 next clone =
   e
 
 let init n f = (*Experimental fix for init*)
-  if n < 0 then invalid_arg "BatEnum.init";
+  if n < 0 then invalid_arg "Enum.init";
   let count = ref n in
   let f' () =
     match !count with
@@ -265,7 +265,7 @@ let take n e =
   let r = ref [] in
   begin
     try
-      for i = 1 to n do
+      for _i = 1 to n do
         r := e.next () :: !r
       done
     with No_more_elements -> ()
@@ -740,7 +740,7 @@ let range ?until x =
 *)
 
 let drop n e =
-  for i = 1 to n do
+  for _i = 1 to n do
     junk e
   done
 
@@ -868,8 +868,8 @@ let min_count x y =
     | Some c, None | None, Some c -> c
     | Some c1, Some c2 -> min c1 c2
 
-let combine (x,y) =
-  if x.fast && y.fast then (*Optimized case*)
+let combine x y =
+  if x.fast && y.fast then (* Optimized case *)
     let rec aux (x,y) =
       {
         count = (fun () -> min_count x y)                 ;
@@ -881,11 +881,11 @@ let combine (x,y) =
   else from (fun () -> (x.next(), y.next()))
 
 (*$T
-  combine (List.enum [1;2;3], List.enum ["a";"b"]) \
+  combine (List.enum [1;2;3]) ( List.enum ["a";"b"]) \
     |> List.of_enum = [1, "a"; 2, "b"]
-  combine (List.enum [1;2;3], repeat "a") \
+  combine (List.enum [1;2;3]) ( repeat "a") \
     |> List.of_enum = [1,"a"; 2,"a"; 3,"a"]
-  combine (List.enum [1;2;3], repeat "a") \
+  combine (List.enum [1;2;3]) ( repeat "a") \
     |> Enum.count = 3
 *)
 
@@ -987,7 +987,7 @@ let clump clump_size add get e = (* convert a uchar enum into a ustring enum *)
       add x;
       junk e; (* don't get [x] twice *)
       (try
-        for i = 2 to clump_size do
+        for _i = 2 to clump_size do
           add (e.next ())
         done
       with No_more_elements -> ());
@@ -1148,7 +1148,7 @@ let unfold data next =
 
 let arg_min f enum =
   match get enum with
-    None -> invalid_arg "arg_min: Empty enum"
+    None -> invalid_arg "Enum.arg_min: Empty enum"
   | Some v ->
     let item, eval = ref v, ref (f v) in
     iter (fun v -> let fv = f v in
@@ -1157,7 +1157,7 @@ let arg_min f enum =
 
 let arg_max f enum =
   match get enum with
-    None -> invalid_arg "arg_max: Empty enum"
+    None -> invalid_arg "Enum.arg_max: Empty enum"
   | Some v ->
     let item, eval = ref v, ref (f v) in
     iter (fun v -> let fv = f v in
@@ -1304,6 +1304,72 @@ let slazy f =
 
 let delay = slazy
 
+let combination ?(repeat=false) n k =
+  let binomial n p =
+    let binom n p =
+        if p < 0 || n < 0 || p > n then 0
+        else (
+          let a = ref 1 in
+          for i = 1 to p  do
+              a := !a * (n + 1 - i) / i
+          done;
+          !a
+        )
+    and comp = n - p
+    in if (comp < p) then
+      binom n comp
+    else
+      binom n p
+
+  and add_repetitions =
+    let rec conv range acc = function
+    | []    -> acc
+    | h::tl -> conv (range + 1) ((h - range) :: acc) tl
+    in conv 0 []
+  
+  in let order_to_comb n p repeat ord =
+    let rec get_comb n p ord acc =
+      if n <= 0 || p <= 0 || ord < 0 then acc
+      else (
+        let b = binomial (n -1) (p - 1)
+        in
+          if ord < b then
+              get_comb (n - 1) (p - 1) ord (n::acc)
+          else
+              get_comb (n - 1) p (ord - b) acc
+      )
+    in let result = get_comb n p ord []
+  
+    in if repeat then
+       add_repetitions result
+    else
+       result
+
+  and p = if repeat then n + k -1 else n
+  in let length = binomial p k 
+  in let rec make_comb index =
+    make
+      ~next:(fun () ->
+        if !index = length then
+          raise No_more_elements
+        else
+          let next = order_to_comb p k repeat !index 
+          in incr index; next
+      )
+      ~count:(fun () -> length - !index)
+      ~clone:(fun () -> make_comb (ref !index))
+  in make_comb (ref 0)
+  
+(*$T combination
+  (combination               3 3 |> count) = 1
+  (combination ~repeat:true  3 3 |> count) = 10
+  (combination ~repeat:true 29 3 |> count) = 4495 
+  (combination ~repeat:true  3 3 |> List.of_enum ) = \
+    [  [3; 3; 3]; [3; 3; 2]; [3; 3; 1]; [3; 2; 2]; [3; 2; 1]; [3; 1; 1]; \
+       [2; 2; 2]; [2; 2; 1]; [2; 1; 1]; \
+       [1; 1; 1]; ]
+*)
+
 let lsing f =
   init 1 (fun _ -> f ())
 
@@ -1349,7 +1415,7 @@ let print ?(first="") ?(last="") ?(sep=" ") print_a  out e =
   _print_common ~first ~last ~sep ~limit:max_int print_a out e
 
 let print_at_most ?(first="") ?(last="") ?(sep=" ") ~limit print_a out e =
-  if limit <= 0 then raise (Invalid_argument "enum.print_at_most");
+  if limit <= 0 then invalid_arg "Enum.print_at_most";
   _print_common ~first ~last ~sep ~limit print_a out e
 
 (*$T print_at_most
@@ -1531,47 +1597,3 @@ end
     let id l = Monad.bind l Monad.return in  \
     List.enum l |> id |> List.of_enum = l)
 *)
-
-module Incubator = struct
-  open BatOrd
-
-  let int_eq (x:int) y = x = y
-  let int_ord (x:int) y =
-    if x > y then Gt
-    else if y > x then Lt
-    else Eq
-
-  let eq_elements eq_elt a1 a2 = for_all2 eq_elt a1 a2
-
-  let rec ord_elements ord_elt t u =
-    match (get t, get u) with
-    | (None, None)     -> Eq
-    | (None, _)        -> Lt
-    | (_, None)        -> Gt
-    | (Some x, Some y) -> match ord_elt x y with
-      | Eq -> ord_elements ord_elt t u
-      | (Gt|Lt) as n -> n
-
-  let eq eq_elt t1 t2 =
-    bin_eq
-      int_eq (count t1) (count t2)
-      (eq_elements eq_elt) t1 t2
-
-  let ord ord_elt t1 t2 =
-    bin_ord
-      int_ord (count t1) (count t2)
-      (ord_elements ord_elt) t1 t2
-
-  module Eq (T : Eq) = struct
-    type 'a enum = 'a t
-    type t = T.t enum
-    let eq = eq T.eq
-  end
-
-  module Ord (T : Ord) = struct
-    type 'a enum = 'a t
-    type t = T.t enum
-    let ord = ord T.ord
-  end
-
-end

@@ -54,16 +54,19 @@ external neg : int -> int = "%negint"
 
 external add : int -> int -> int = "%addint"
 (** Addition. *)
+
 external ( + ) : int -> int -> int = "%addint"
 (** Addition. *)
 
 external sub : int -> int -> int = "%subint"
 (** Subtraction. *)
+
 external ( - ) : int -> int -> int = "%subint"
 (** Subtraction. *)
 
 external mul : int -> int -> int = "%mulint"
 (** Multiplication. *)
+
 external ( * ) : int -> int -> int = "%mulint"
 (** Multiplication. *)
 
@@ -72,6 +75,7 @@ external div : int -> int -> int = "%divint"
     This division rounds the real quotient of
     its arguments towards zero, as specified for {!Pervasives.(/)}.
     @raise Division_by_zero if the second argument is zero. *)
+
 external ( / ) : int -> int -> int = "%divint"
 (** Integer division.  This division rounds the real quotient of
     its arguments towards zero, as specified for {!Pervasives.(/)}.
@@ -96,6 +100,7 @@ external modulo : int -> int -> int = "%modint"
 val pow  : int -> int -> int
 (** [pow a b] computes a{^b}.
     @raise Invalid_argument when [b] is negative. *)
+
 val ( ** ) : int -> int -> int
 (** [a ** b] computes a{^b}*)
 
@@ -262,10 +267,10 @@ module Safe_int : sig
   (** Addition. *)
 
   val sub : t -> t -> t
-  (** Substraction. *)
+  (** Subtraction. *)
 
   val ( - ) : t -> t -> t
-  (** Substraction. *)
+  (** Subtraction. *)
 
   val mul : t -> t -> t
   (** Multiplication. *)
@@ -278,6 +283,7 @@ module Safe_int : sig
       This division rounds the real quotient of
       its arguments towards zero, as specified for {!Pervasives.(/)}.
       @raise Division_by_zero if the second argument is zero. *)
+
   external ( / ) : t -> t -> t = "%divint"
   (** Integer division. This division rounds the real quotient of
       its arguments towards zero, as specified for {!Pervasives.(/)}.
@@ -307,23 +313,23 @@ module Safe_int : sig
   (** [a ** b] computes a{^b}*)
 
   val ( <> ) : t -> t -> bool
-  (** Comparaison: [a <> b] is true if and only if [a] and [b] have
+  (** Comparison: [a <> b] is true if and only if [a] and [b] have
       different values. *)
 
   val ( > )  : t -> t -> bool
-  (** Comparaison: [a > b] is true if and only if [a] is strictly greater than [b].*)
+  (** Comparison: [a > b] is true if and only if [a] is strictly greater than [b].*)
 
   val ( < )  : t -> t -> bool
-  (** Comparaison: [a < b] is true if and only if [a] is strictly smaller than [b].*)
+  (** Comparison: [a < b] is true if and only if [a] is strictly smaller than [b].*)
 
   val ( >= ) : t -> t -> bool
-  (** Comparaison: [a >= b] is true if and only if [a] is greater or equal to [b].*)
+  (** Comparison: [a >= b] is true if and only if [a] is greater or equal to [b].*)
 
   val ( <= ) : t -> t -> bool
-  (** Comparaison: [a <= b] is true if and only if [a] is smaller or equalto [b].*)
+  (** Comparison: [a <= b] is true if and only if [a] is smaller or equalto [b].*)
 
   val ( = )  : t -> t -> bool
-  (** Comparaison: [a = b] if and only if [a] and [b] have the same value.*)
+  (** Comparison: [a = b] if and only if [a] and [b] have the same value.*)
 
   val max_num : t
   (** The greatest representable integer, which is either 2{^30}-1 or 2{^62}-1. *)

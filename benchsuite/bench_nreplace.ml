@@ -4,10 +4,10 @@
 open Batteries
 open String
 
-(* The original Batteries String.nreplace *)
-let nreplace_orig ~str ~sub ~by =
+(* The current Batteries String.nreplace *)
+let nreplace_current ~str ~sub ~by =
   if sub = "" then invalid_arg "nreplace: cannot replace all empty substrings" ;
-  let parts = nsplit str ~by:sub in
+  let parts = BatString.split_on_string str ~by:sub in
   String.concat by parts
 
 (* The suggestion from Glyn Webster that started it all.
@@ -48,7 +48,7 @@ let nreplace_rxd ~str ~sub ~by =
     | Some i' -> loop_subst (l + dlen) i' in
   let newlen =
     if dlen = 0 then strlen else loop_subst strlen strlen in
-  let newstr = create newlen in
+  let newstr = Bytes.create newlen in
   let rec loop_copy i j =
     match (try Some (rfind_from str (i-1) sub) with Not_found -> None) with
     | None ->
@@ -61,7 +61,7 @@ let nreplace_rxd ~str ~sub ~by =
       String.unsafe_blit str (i'+sublen) newstr (j'+bylen) (i-i'-sublen) ;
       loop_copy i' j' in
   loop_copy strlen newlen ;
-  newstr
+  Bytes.to_string newstr
 
 (* So Thelema proposed a version without the double rfind_from
  * (taken from https://gist.github.com/thelema/5639270 + small fix) *)
@@ -77,7 +77,7 @@ let nreplace_thelema ~str ~sub ~by =
     | Some i' -> loop_subst (i'::idxes) i' in
   let idxes = loop_subst [] strlen in
   let newlen = strlen + List.length idxes * dlen in
-  let newstr = create newlen in
+  let newstr = Bytes.create newlen in
   let rec loop_copy i j idxes =
     match idxes with
     | [] ->
@@ -89,7 +89,7 @@ let nreplace_thelema ~str ~sub ~by =
       String.unsafe_blit by 0 newstr (j + di) bylen ;
       loop_copy (i + di + sublen) (j + di + bylen) rest in
     loop_copy 0 0 idxes ;
-    newstr
+    Bytes.to_string newstr
 
 (* Same as above but avoiding the List.length *)
 let nreplace_thelema2 ~str ~sub ~by =
@@ -103,7 +103,7 @@ let nreplace_thelema2 ~str ~sub ~by =
     | -1 -> idxes, newlen
     | i' -> loop_subst (i'::idxes) (newlen+dlen) i' in
   let idxes, newlen = loop_subst [] strlen strlen in
-  let newstr = create newlen in
+  let newstr = Bytes.create newlen in
   let rec loop_copy i j idxes =
     match idxes with
     | [] ->
@@ -115,15 +115,15 @@ let nreplace_thelema2 ~str ~sub ~by =
       String.unsafe_blit by 0 newstr (j + di) bylen ;
       loop_copy (i + di + sublen) (j + di + bylen) rest in
     loop_copy 0 0 idxes ;
-    newstr
+    Bytes.to_string newstr
 
-(* Independantly, MadRoach implemented the same idea with less luck aparently *)
+(* Independently, MadRoach implemented the same idea with less luck apparently *)
 let nreplace_madroach ~str ~sub ~by =
   let strlen = String.length str
   and sublen = String.length sub
   and bylen  = String.length by in
 
-  let rec find_simple ~sub ?(pos=0) str =
+  let find_simple ~sub ?(pos=0) str =
     let find pos =
       try BatString.find_from str pos sub with
       Not_found -> raise BatEnum.No_more_elements
@@ -135,7 +135,7 @@ let nreplace_madroach ~str ~sub ~by =
    * skipping overlapping occurrences *)
   let todo =
     let skip_unto = ref 0 in
-    find_simple sub str |>
+    find_simple ~sub str |>
     Enum.filter begin function
       |i when i < !skip_unto -> false
       |i -> skip_unto := i + sublen; true
@@ -143,7 +143,7 @@ let nreplace_madroach ~str ~sub ~by =
   in
 
   (* create destination string *)
-  let dst = String.create (strlen + Enum.count todo * (bylen - sublen)) in
+  let dst = Bytes.create (strlen + Enum.count todo * (bylen - sublen)) in
 
   (* do the replacement *)
   let srci, dsti =
@@ -157,9 +157,9 @@ let nreplace_madroach ~str ~sub ~by =
       (0,0)
       todo
   in
-  assert (strlen - srci = String.length dst - dsti);
+  assert (strlen - srci = Bytes.length dst - dsti);
   String.blit str srci dst dsti (strlen - srci);
-  dst
+  Bytes.to_string dst
 
 (* Gasche had its own idea based on substrings.
    Here are several versions, any of which seams faster than all the above.
@@ -219,7 +219,7 @@ let concat_optimized ~sep ssl =
           | (_,_,l)::tl -> count (acc + sep_len + l) tl
         in count len tl
       in
-      let item = String.create total_len in
+      let item = Bytes.create total_len in
       String.unsafe_blit s o item 0 len;
       let pos = ref len in
       let rec loop = function
@@ -231,7 +231,7 @@ let concat_optimized ~sep ssl =
           pos := !pos + len;
           loop tl;
       in loop tl;
-      item
+      Bytes.to_string item
 
 (* should be BatSubstring.concat, with a separator argument *)
 let concat_simple ~sep ssl =
@@ -242,7 +242,7 @@ let concat_simple ~sep ssl =
     | [] -> ""
     | (s,o,len)::tl ->
       let total_len = List.fold_left (fun acc (_,_,l) -> acc+sep_len+l) len tl in
-      let item = String.create total_len in
+      let item = Bytes.create total_len in
       String.unsafe_blit s o item 0 len;
       let pos = ref len in
       let write (s,o,len) =
@@ -252,7 +252,7 @@ let concat_simple ~sep ssl =
         pos := !pos + len;
       in
       List.iter write tl;
-      item
+      Bytes.to_string item
 
 let concat_enum ~sep enum =
   match BatEnum.get enum with
@@ -281,12 +281,12 @@ let nreplace_substring_enum ~str ~sub ~by =
  * realistic words by others. *)
 
 let long_text =
-  File.lines_of "benchsuite/bench.ml"
+  File.lines_of "bench_nreplace.ml"
   |> Enum.cycle ~times:100 |> List.of_enum |> concat ""
 
 let do_bench_for_len length name =
   let run rep iters =
-    for i=1 to iters do
+    for _i = 1 to iters do
       (* "realistic" workload that attempts to exercise all interesting cases *)
       let str = sub long_text 0 length in
       let str = rep ~str ~sub:"let" ~by:"let there be light" in
@@ -299,7 +299,7 @@ let do_bench_for_len length name =
   in
 
   Bench.bench_n [
-    "orig "^ name, run nreplace_orig ;
+    "current "^ name, run nreplace_current ;
     "glyn "^ name, run nreplace_glyn ;
     "rxd "^ name, run nreplace_rxd ;
     "thelema "^ name, run nreplace_thelema ;
@@ -314,7 +314,7 @@ let do_bench_for_len length name =
 let main =
     (* First check that all implementation performs superficialy the same *)
     let check ~str ~sub ~by =
-        let outp = nreplace_orig ~str ~sub ~by in
+        let outp = nreplace_current ~str ~sub ~by in
         List.iter (fun (d,rep) ->
             let outp' = rep ~str ~sub ~by in
             if outp' <> outp then (

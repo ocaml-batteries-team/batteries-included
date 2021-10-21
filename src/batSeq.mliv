@@ -35,10 +35,12 @@
     @author Jeremie Dimino
 *)
 
-type 'a t = unit -> 'a node
+##V<4.7## type 'a t = unit -> 'a node
+##V>=4.7## type 'a t = 'a Stdlib.Seq.t
 (** A sequence is a computation which returns a list-like node *)
 
 and 'a node =
+##V>=4.7## 'a Stdlib.Seq.node =
   | Nil
   | Cons of 'a * 'a t
 
@@ -96,6 +98,16 @@ val flatten : 'a t t -> 'a t
 val nil : 'a t
 (** [nil = fun () -> Nil] *)
 
+val empty : 'a t
+(** the empty sequence, containing no elements
+
+    @since 3.3.0 *)
+
+val return : 'a -> 'a t
+(** the singleton sequence, containing only the given element
+
+    @since 3.3.0 *)
+
 val cons : 'a -> 'a t -> 'a t
 (** [cons e s = fun () -> Cons(e, s)] *)
 
@@ -110,6 +122,27 @@ val init : int -> (int -> 'a) -> 'a t
 val of_list : 'a list -> 'a t
 (** Convenience function to build a seq from a list.
     @since 2.2.0 *)
+
+val unfold : ('b -> ('a * 'b) option) -> 'b -> 'a t
+(** Build a sequence from a step function and an initial value.
+    [unfold f u] returns [empty] if [f u] returns [None],
+    or [fun () -> Cons (x, unfold f y)] if [f u] returns [Some (x, y)].
+
+    For example, [unfold (function [] -> None | h::t -> Some (h,t)) l]
+    is equivalent to [List.to_seq l].
+
+    @since 3.3.0 *)
+
+val flat_map : ('a -> 'b t) -> 'a t -> 'b t
+(** Map each element to a subsequence, then return each element of this
+    sub-sequence in turn. This transformation is lazy, it only applies
+    when the result is traversed.
+
+    @since 3.3.0 *)
+
+val concat_map: ('a -> 'b t) -> 'a t -> 'b t
+(** Alias for {!flat_map}.
+    @since NEXT_RELEASE *)
 
 (** {6 Iterators} *)
 
@@ -275,6 +308,23 @@ val combine : 'a t -> 'b t -> ('a * 'b) t
 val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
 (**Print the contents of a sequence*)
 
+val to_buffer : ?first:string -> ?last:string -> ?sep:string -> ('a -> string) -> Buffer.t -> (unit -> 'a node) -> unit
+(** Convert a sequence to a string in the given buffer; eager.
+    @since 2.10.0
+*)
+
+val to_string : ?first:string -> ?last:string -> ?sep:string -> ('a -> string) -> 'a t -> string
+(** Convert the sequence to a string; eager.
+    @since 2.10.0
+*)
+
+val of_string : ?first:string -> ?last:string -> ?sep:string -> (string -> 'a) -> string -> 'a t
+(** Create a sequence by parsing a string.
+    @raise Invalid_argument if the string is not prefixed by [first].
+    @raise Invalid_argument if the string is not suffixed by [last].
+    @since 2.10.0
+*)
+
 module Infix : sig
   (** Infix operators matching those provided by {!BatEnum.Infix} *)
 
@@ -305,5 +355,5 @@ module Exceptionless : sig
   val reduce : ('a -> 'a -> 'a) -> 'a t -> 'a option
   val max : 'a t -> 'a option
   val min : 'a t -> 'a option
-  val combine : 'a t -> 'b t -> ('a * 'b) t option
+  val combine : 'a t -> 'b t -> ('a * 'b) t
 end

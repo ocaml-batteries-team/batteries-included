@@ -102,7 +102,7 @@ let () =
   assert (list_kahan list = enum_kahan (enum ()));
   assert (array_kahan_opt array = list_kahan_opt list);
   assert (list_kahan_opt list = enum_kahan_opt (enum ()));
-  let repeat f n = for i = 1 to n do ignore (f ()) done in
+  let repeat f n = for _i = 1 to n do ignore (f ()) done in
   Bench.bench_n [
     "array fsum", repeat (fun () -> array_fsum array);
     "array kahan", repeat (fun () -> array_kahan array);

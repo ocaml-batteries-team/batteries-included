@@ -1,5 +1,4 @@
 open BatList
-open BatString
 open List
 open BatLazyList
 open BatIO
@@ -32,12 +31,10 @@ struct
   let of_enum l =
     of_lazy_list (of_enum l)
 
-  open Lexing
-
   (**TODO: Handle EOF !*)
-  let of_lexer l = assert false
+  let of_lexer _l = assert false
   (**    LazyList.of_enum (BatEnum.from (fun () ->
-
+             let open Lexing in
              l.refill_buff l;
                 (l.lex_buffer, (l.lex_start_p, l.lex_curr_p))))*)
 
@@ -80,11 +77,11 @@ let apply p e = p e(**To improve reusability*)
 
    These errors are caused by [must].*)
 
-let fail        e     = Setback (Report [])
+let fail        _e     = Setback (Report [])
 let succeed     v e   = Success (v, e)
 let backtracked v r e = Backtrack (v, r, e)
 let return            = succeed
-let fatal       e     = Failure (Report [])
+let fatal       _e     = Failure (Report [])
 (* Primitives *)
 
 
@@ -98,9 +95,9 @@ let label s p e =
   if BatString.is_empty s then
     match apply p e with
     | Success _ as x      -> x
-    | Setback c           -> Setback (Report [])
-    | Failure c           -> Failure (Report [])
-    | Backtrack (b, c, t) -> Backtrack (b, Report [], t)
+    | Setback _c           -> Setback (Report [])
+    | Failure _c           -> Failure (Report [])
+    | Backtrack (b, _c, t) -> Backtrack (b, Report [], t)
   else
     let make_report c = Report [get_state e, s, c] in
     if !debug_mode then
@@ -230,13 +227,13 @@ let ignore_zero_plus ?sep p e =
     | Some s -> s >>> p
   in
   let rec aux l = match apply p' l with
-    | Success   (x, rest)              -> aux rest
-    | Backtrack (result, report, rest) -> backtracked () report rest
+    | Success   (_x, rest)              -> aux rest
+    | Backtrack (_result, report, rest) -> backtracked () report rest
     | Setback   report                 -> backtracked () report l
     | Failure _ as result              -> result
   in match apply p e with
   | Success   (_, rest)              -> aux rest
-  | Backtrack (result, report, rest) -> backtracked () report rest
+  | Backtrack (_result, report, rest) -> backtracked () report rest
   | Setback   report                 -> backtracked () report e
   | Failure _ as result              -> result
 
@@ -263,8 +260,8 @@ let prefix suffix l =
 let scan p e =
   let just_prefix rest = List.map fst (prefix rest e) in
   match apply p e with (*First proceed with parsing*)
-  | Success (result, rest)           -> succeed (just_prefix rest) rest
-  | Backtrack (result, report, rest) -> backtracked (just_prefix rest) report rest
+  | Success (_result, rest)           -> succeed (just_prefix rest) rest
+  | Backtrack (_result, report, rest) -> backtracked (just_prefix rest) report rest
   | Setback _ | Failure _ as result  -> result
 
 let lookahead p e = match apply p e with
@@ -274,7 +271,7 @@ let lookahead p e = match apply p e with
   | Failure _ as result              -> result
 
 let interpret_result = function
-  | Setback f | Failure f                -> BatInnerPervasives.Bad f
+  | Setback f | Failure f                -> BatInnerPervasives.Error f
   | Success (r, _) | Backtrack (r, _, _) -> BatInnerPervasives.Ok r
 
 let suspend : ('a, 'b, 'c) t -> ('a, (unit -> ('b, 'c report) BatInnerPervasives.result), 'c) t = fun s e ->

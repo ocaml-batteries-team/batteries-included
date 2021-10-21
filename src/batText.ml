@@ -173,7 +173,7 @@ let bal_if_needed l r =
   if height r < max_height then r else balance r
 
 let concat_str l = function
-  | Empty | Concat(_,_,_,_,_) -> invalid_arg "concat_str"
+  | Empty | Concat(_,_,_,_,_) -> invalid_arg "Text.concat_str"
   | Leaf (lenr, rs) as r ->
     match l with
     | Empty -> r
@@ -216,7 +216,7 @@ let get r i =
     | Leaf (lens, s) ->
       if i >= 0 && i < lens then UTF8.get s i
       else raise Out_of_bounds
-    | Concat (l, cl, r, cr, _) ->
+    | Concat (l, cl, r, _cr, _) ->
       if i < cl then aux i l
       else aux (i - cl) r
   in
@@ -237,7 +237,7 @@ let set r i v =
         let s = copy_set s i v in
         Leaf (lens, s)
       else raise Out_of_bounds
-    | Concat(l, cl, r, cr, _) ->
+    | Concat(l, cl, r, _cr, _) ->
       if i < cl then append (aux i l) r
       else append l (aux (i - cl) r)
   in
@@ -260,8 +260,6 @@ module Iter = struct
 
   let copy i = {i with idx=i.idx; }
 
-  type t = iterator option
-
   (* Initial iterator state: *)
   let make rope = { leaf = UTF8.empty;
                     idx = UTF8.ByteIndex.first;
@@ -270,16 +268,16 @@ module Iter = struct
   let rec next_leaf = function
     | Empty :: l ->
       next_leaf l
-    | Leaf(len, str) :: l ->
+    | Leaf(_len, str) :: l ->
       Some(str, l)
-    | Concat(left, left_len, right, right_len, height) :: l ->
+    | Concat(left, _left_len, right, _right_len, _height) :: l ->
       next_leaf (left :: right :: l)
     | [] ->
       None
 
   (* Advance the iterator to the next position, and return current
      character: *)
-  let rec next iter =
+  let next iter =
     if UTF8.ByteIndex.at_end iter.leaf iter.idx then
       (* We are at the end of the current leaf, find another one: *)
       match next_leaf iter.rest with
@@ -298,7 +296,7 @@ module Iter = struct
     end
 
   (* Same thing but map leafs: *)
-  let rec next_map f iter =
+  let next_map f iter =
     if UTF8.ByteIndex.at_end iter.leaf iter.idx then
       match next_leaf iter.rest with
       | None ->
@@ -320,9 +318,9 @@ module Iter = struct
   let rec prev_leaf = function
     | Empty :: l ->
       prev_leaf l
-    | Leaf(len, str) :: l ->
+    | Leaf(_len, str) :: l ->
       Some(str, l)
-    | Concat(left, left_len, right, right_len, height) :: l ->
+    | Concat(left, _left_len, right, _right_len, _height) :: l ->
       prev_leaf (right :: left :: l)
     | [] ->
       None
@@ -493,7 +491,7 @@ let rec iteri ?(base=0) f = function
 
 let rec bulk_iteri_backwards ~top f = function
   | Empty -> ()
-  | Leaf (lens,s) -> f top s
+  | Leaf (_lens,s) -> f top s
   | Concat(l,_,r,cr,_) ->
     bulk_iteri_backwards ~top f r;
     bulk_iteri_backwards ~top:(top-cr) f l
@@ -635,7 +633,7 @@ let backwards r =
 let of_enum e =
   let size = BatEnum.count e in
   init size
-    (fun i ->
+    (fun _i ->
        try BatEnum.get_exn e
        with BatEnum.No_more_elements -> assert false)
 
@@ -846,7 +844,7 @@ let of_list l =
     Return.label
       (fun label ->
         let b = Buffer.create 256 in
-        for i = 1 to 256 do
+        for _i = 1 to 256 do
           match !e with
             []   -> Return.return label (false, UTF8.of_string_unsafe (Buffer.contents b))
           | c :: rest  -> Buffer.add_string b (UTF8.to_string_unsafe (UTF8.of_char c)); e := rest
@@ -871,13 +869,12 @@ let fill r start len char =
 let blit rsrc offsrc rdst offdst len =
   splice rdst offdst len (sub rsrc offsrc len)
 
-
-let list_reduce f = function [] -> invalid_arg "Empty List"
-                           | h::t -> List.fold_left f h t
-
 let concat sep r_list =
-  if r_list = [] then empty else
-    list_reduce (fun r1 r2 -> append r1 (append sep r2)) r_list
+  match r_list with
+    | [] ->
+        empty
+    | h :: t ->
+        List.fold_left (fun r1 r2 -> append r1 (append sep r2)) h t
 
 (**T concat
    Text.concat (Text.of_string "xyz") [] = Text.empty
@@ -918,7 +915,7 @@ let rsplit (r:t) sep =
     avoid a call to [List.rev].  *)
 let nsplit str sep =
   if is_empty str then []
-  else if is_empty sep then invalid_arg "nsplit: empty sep not allowed"
+  else if is_empty sep then invalid_arg "Text.nsplit: empty sep not allowed"
   else
     (* str is not empty *)
     let seplen = length sep in

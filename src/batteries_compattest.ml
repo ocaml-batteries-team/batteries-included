@@ -35,8 +35,12 @@ module Stdlib_verifications = struct
        include module type of Legacy.Lexing
        val from_channel : BatIO.input -> Lexing.lexbuf
      end)
-  module List = (List: module type of Legacy.List)
-  (*  module Map = (Map : module type of Legacy.Map)*)
+  module List =
+    (List: sig
+       include module type of Legacy.List
+       val find_map : ('a -> 'b option) -> 'a list -> 'b
+     end)
+ module Seq = (Seq : module type of Legacy.Seq)
   module Marshal =
     (Marshal: sig
        include module type of Legacy.Marshal
@@ -54,8 +58,8 @@ module Stdlib_verifications = struct
   (*  module Printf = (Printf: module type of Legacy.Printf)*)
   module Queue = (Queue: module type of Legacy.Queue)
   module Random = (Random: module type of Legacy.Random)
+ module Result = (Result: module type of Legacy.Result)
   (*  module Scanf = (Scanf : module type of Legacy.Scanf)*)
-  (*  module Set = (Set: module type of Legacy.Set)*)
   (* FAILS BECAUSE OF Stack.Empty not being present because
      module Stack = (Stack : module type of Legacy.Stack)
   *)
@@ -102,5 +106,29 @@ module Stdlib_verifications = struct
          Unix.sockaddr -> unit
      end)
   module Big_int = (Big_int : module type of Legacy.Big_int)
-  module Bigarray = (Bigarray : module type of Legacy.Bigarray)
+  (* FIXME: This does not pass for some reason:
+  module Bigarray = (Bigarray : module type of Legacy.Bigarray)*)
+   
+  (* test compatibility of BatMap.S with Legacy.Map.S *)
+  let sort_map (type s) (module Map : Legacy.Map.S with type key = s) l =
+      Map.bindings (List.fold_right (fun x m -> Map.add x x m) l Map.empty)
+  module IntMap = struct
+     include BatMap.Int
+     let update = update_stdlib
+  end
+  let _ = assert ([1,1;2,2;3,3;] = (sort_map (module IntMap) [3; 1; 2;]))
+  (* test compat of BatSplay.S with Legacy.Map.S *)
+  module IntSplayMap = struct
+     include BatSplay.Map (BatInt)
+     let update = update_stdlib
+  end
+  let _ = assert ([1,1;2,2;3,3;] = (sort_map (module IntSplayMap) [3; 1; 2;]))
+ 
+  (* test compatibility of BatSet.S with Legacy.Set.S *)
+  let sort (type s) (module Set : Legacy.Set.S with type elt = s) l =
+      Set.elements (List.fold_right Set.add l Set.empty)
+  module IntSet = struct
+      include BatSet.Int
+  end 
+  let _ = assert ([1;2;3] = (sort (module IntSet) [3; 1; 2;]))
 end

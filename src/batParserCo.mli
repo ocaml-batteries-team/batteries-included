@@ -42,7 +42,7 @@
 (**The current state of the parser.
 
    The actual set of states is defined by the user. States are
-   typically used to convey informations, such as position in the file
+   typically used to convey information, such as position in the file
    (i.e. line number and character).
 
 *)
@@ -132,7 +132,7 @@ val any: ('a, 'a, _) t
 (**Accept any singleton value.*)
 
 val return: 'b -> (_, 'b, _) t
-(**A parser which always succeds*)
+(**A parser which always succeeds*)
 
 val satisfy: ('a -> bool) -> ('a, 'a, _) t
 (**[satisfy p] accepts one value [p x] such that [p x = true]*)
@@ -149,7 +149,7 @@ val suspend : ('a, 'b, 'c) t -> ('a, (unit -> ('b, 'c report) BatPervasives.resu
 val run: ('a, 'b, 'c) t -> ('a, 'c) Source.t -> ('b, 'c report) BatPervasives.result
 (**[run p s] executes parser [p] on source [s]. In case of
    success, returns [Ok v], where [v] is the return value of [p].
-   In case of failure, returns [Bad f], with [f] containing
+   In case of failure, returns [Error f], with [f] containing
    details on the parsing error.*)
 
 

@@ -1,6 +1,6 @@
-let (major, minor) =
+let (major, minor, extra) =
   Scanf.sscanf Sys.ocaml_version
-    "%d.%d." (fun j n -> (j, n))
+    "%d.%d.%d%s" (fun j n _ s -> (j, n, s))
 
 let filter_cookie_re =
   Str.regexp "^##V\\([<>]?=?\\)\\([^#]+\\)##"
@@ -23,11 +23,11 @@ let version_re =
  *)
 let mark_loc_stale = function
   | None -> ()
-  | Some (file, count, stale) -> stale := true
+  | Some (_file, _count, stale) -> stale := true
 
 let incr_loc = function
   | None -> ()
-  | Some (file, count, stale) -> incr count
+  | Some (_file, count, _stale) -> incr count
 
 let print_loc = function
   | None -> ()
@@ -37,7 +37,13 @@ let print_loc = function
        stale := false;
      end
 
-let process_line loc line =
+let has_domains ~extra =
+  let extra = String.split_on_char '+' extra in
+  List.mem "domains" extra ||
+  List.mem "multicore" extra ||
+  List.mem "effects" extra
+
+let rec process_line loc line =
   if not (Str.string_match filter_cookie_re line 0)
   then print_endline line
   else begin
@@ -47,12 +53,18 @@ let process_line loc line =
     | _ -> failwith "The ##V8## form is now disabled, use ##V>=8## instead"
     in
     let ver_string = Str.matched_group 2 line in
-    assert (Str.string_match version_re ver_string 0) ;
-    let ver_maj = int_of_string (Str.matched_group 1 ver_string) in
-    let ver_min = try int_of_string (Str.matched_group 3 ver_string) with _ -> 0 in
-    let pass = cmp (major*100+minor) (ver_maj*100+ver_min) in
+    let pass =
+      if Str.string_match version_re ver_string 0 then
+        let ver_maj = int_of_string (Str.matched_group 1 ver_string) in
+        let ver_min = try int_of_string (Str.matched_group 3 ver_string) with _ -> 0 in
+        cmp (major*100+minor) (ver_maj*100+ver_min)
+      else if ver_string = "multicore" then
+        cmp (if has_domains ~extra then 5 else major) 5
+      else
+        failwith "Could not parse version string"
+    in
     if pass
-    then print_endline (Str.replace_first filter_cookie_re "" line)
+    then process_line loc (Str.replace_first filter_cookie_re "" line)
     else mark_loc_stale loc
   end
 

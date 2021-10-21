@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(**Operations on booleans
+(** Operations on booleans
 
    @author Gabriel Scherer
    @author David Teller
@@ -58,7 +58,9 @@ val max_num : bool
 val compare : bool -> bool -> int
 val equal : bool -> bool -> bool
 val ord : bool -> bool -> BatOrd.order
+
 val of_int : int -> bool (** anything but [0] is [true] *)
+
 val to_int : bool -> int
 val of_string : string -> bool
 (** Convert the given string to a boolean.
@@ -66,8 +68,10 @@ val of_string : string -> bool
     ["true"], ["false"], ["0"], ["1"], ["tt"] or ["ff"]. *)
 
 val to_string : bool -> string
+
 val of_float  : float -> bool
 (** [0.], [nan] [+infinity] and [-infiity] are [false]. The other values convert to [true] *)
+
 val to_float  : bool  -> float
 
 val ( + ) : t -> t -> t
@@ -86,6 +90,8 @@ val ( ** ) : t -> t -> t
 val ( -- ): t -> t -> t BatEnum.t
 val ( --- ): t -> t -> t BatEnum.t
 val operations : t BatNumber.numeric
+
+include BatNumber.Bounded
 
 (** {6 Submodules grouping all infix operators} *)
 

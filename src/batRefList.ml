@@ -49,7 +49,8 @@ let transform f rl = rl := BatList.map f !rl
 let map_list f rl = BatList.map f !rl
 let find f rl = List.find f !rl
 let rev rl = rl := List.rev !rl
-let find_exc f exn rl = try List.find f !rl with _ -> raise exn
+let find_exn f exn rl = try List.find f !rl with _ -> raise exn
+let find_exc = find_exn
 let exists f rl = List.exists f !rl
 let sort ~cmp rl = rl := List.sort cmp !rl
 
@@ -115,18 +116,18 @@ module Index = struct
     let p = ref (-1) in
     let rec del_aux = function
       | x::l -> incr p; if !p = pos then l else x::(del_aux l)
-      | [] -> invalid_arg "remove_at: index not found"
+      | [] -> invalid_arg "RefList.Index.remove_at: index not found"
     in
     rl := del_aux !rl
 
   let index pred rl =
     let index = ref (-1) in
-    List.find (fun it -> incr index; pred it; ) !rl;
+    ignore (List.find (fun it -> incr index; pred it; ) !rl);
     !index
 
   let index_of rl item =
     let index = ref (-1) in
-    List.find (fun it -> incr index; it = item; ) !rl;
+    ignore (List.find (fun it -> incr index; it = item; ) !rl);
     !index
 
   let at_index rl pos = List.nth !rl pos
@@ -134,7 +135,7 @@ module Index = struct
   let set rl pos newitem =
     let p = ref (-1) in
     rl := List.map (fun item -> incr p; if !p = pos then newitem else item) !rl;
-    if !p < pos || pos < 0 then invalid_arg "Index out of range"
+    if !p < pos || pos < 0 then invalid_arg "RefList.Index.set: Index out of range"
 
 
 end

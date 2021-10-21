@@ -8,7 +8,7 @@ let ret_amicable ~upto =
   and not_amic = ref ISet.empty
   and to_test = ref ((2--upto) |> ISet.of_enum)
   in
-  let rec test n =  (* cleanup - ugly code *)
+  let test n =  (* cleanup - ugly code *)
     if n >= upto then ()
     else if   ISet.mem n !is_amic
       || ISet.mem n !not_amic then

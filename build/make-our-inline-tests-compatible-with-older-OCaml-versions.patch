@@ -42,7 +42,7 @@ index 005c4df0..79ee6f94 100644
      let f (`a x) = f x in\
      try let elt = find f a in \
 @@ -217,7 +217,7 @@ let filter p xs =
-         assert false (*BISECT-VISIT*)
+         assert false
      )
  (*$Q filter
 -  (Q.pair (Q.array Q.small_int) (Q.fun1 Q.Observable.int Q.bool)) (fun (a, Q.Fun(_,f)) -> \

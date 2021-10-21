@@ -98,8 +98,10 @@ val quo : num -> num -> num
 (**Euclidian divisiom*)
 
 val square: num -> num
+
 val succ  : num -> num
 (** @raise Invalid_argument ["Num.succ"] for [Num.Ratio _] argument *)
+
 val pred  : num -> num
 (** @raise Invalid_argument ["Num.pred"] for [Num.Ratio _] argument *)
 

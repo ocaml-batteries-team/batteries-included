@@ -19,10 +19,10 @@ let test n f =
   let c () = Random.enum_bits () |> Enum.take n in
   let d () = 1--n in
     fun () ->
-      f (Array.enum a);
-      f (List.enum b);
-      f (c ());
-      f (d ())
+      ignore (f (Array.enum a));
+      ignore (f (List.enum b));
+      ignore (f (c ()));
+      ignore (f (d ()))
 
 let test = test 10_000
 

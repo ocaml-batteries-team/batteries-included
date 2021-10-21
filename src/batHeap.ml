@@ -107,35 +107,44 @@ let find_min bh = match bh.mind with
 *)
 
 
-let rec find_min_tree ts k = match ts with
-  | [] -> failwith "find_min_tree"
-  | [t] -> k t
-  | t :: ts ->
-    find_min_tree ts begin
-      fun u ->
-        if Pervasives.compare t.root u.root <= 0
-        then k t else k u
-    end
+let rec find_min_tree ts ~kfail ~ksuccess =
+  match ts with
+    | [] ->
+        kfail ()
+    | [t] ->
+        ksuccess t
+    | t :: ts ->
+        find_min_tree ts ~kfail ~ksuccess:(fun u ->
+          if Pervasives.compare t.root u.root <= 0 then
+            ksuccess t
+          else
+            ksuccess u)
 
-let rec del_min_tree bts k = match bts with
-  | [] -> invalid_arg "del_min"
-  | [t] -> k t []
-  | t :: ts ->
-    del_min_tree ts begin
-      fun u uts ->
-        if Pervasives.compare t.root u.root <= 0
-        then k t ts
-        else k u (t :: uts)
-    end
+let rec del_min_tree bts ~kfail ~ksuccess =
+  match bts with
+    | [] ->
+        kfail ()
+    | [t] ->
+        ksuccess t []
+    | t :: ts ->
+        del_min_tree ts ~kfail ~ksuccess:(fun u uts ->
+          if Pervasives.compare t.root u.root <= 0 then
+            ksuccess t ts
+          else
+            ksuccess u (t :: uts))
 
 let del_min bh =
-  del_min_tree bh.data begin
-    fun bt data ->
-      let size = bh.size - 1 in
-      let data = merge_data (List.rev bt.kids) data in
-      let mind = if size = 0 then None else Some (find_min_tree data (fun t -> t)).root in
-      { size = size ; data = data ; mind = mind }
-  end
+  let kfail () = invalid_arg "del_min" in
+  del_min_tree bh.data ~kfail ~ksuccess:(fun bt data ->
+    let size = bh.size - 1 in
+    let data = merge_data (List.rev bt.kids) data in
+    let mind =
+      if size = 0 then
+        None
+      else
+        Some (find_min_tree data ~kfail ~ksuccess:(fun t -> t)).root
+    in
+    { size; data; mind })
 
 let of_list l = List.fold_left insert empty l
 
@@ -284,35 +293,44 @@ module Make (Ord : BatInterfaces.OrderedType) = struct
     | None -> invalid_arg "find_min"
     | Some d -> d
 
-  let rec find_min_tree ts k = match ts with
-    | [] -> failwith "find_min_tree"
-    | [t] -> k t
-    | t :: ts ->
-      find_min_tree ts begin
-        fun u ->
-          if Ord.compare t.root u.root <= 0
-          then k t else k u
-      end
+  let rec find_min_tree ts ~kfail ~ksuccess =
+    match ts with
+      | [] ->
+          kfail ()
+      | [t] ->
+          ksuccess t
+      | t :: ts ->
+          find_min_tree ts ~kfail ~ksuccess:(fun u ->
+            if Ord.compare t.root u.root <= 0 then
+              ksuccess t
+            else
+              ksuccess u)
 
-  let rec del_min_tree bts k = match bts with
-    | [] -> invalid_arg "del_min"
-    | [t] -> k t []
-    | t :: ts ->
-      del_min_tree ts begin
-        fun u uts ->
-          if Ord.compare t.root u.root <= 0
-          then k t ts
-          else k u (t :: uts)
-      end
+  let rec del_min_tree bts ~kfail ~ksuccess =
+    match bts with
+      | [] ->
+          kfail ()
+      | [t] ->
+          ksuccess t []
+      | t :: ts ->
+          del_min_tree ts ~kfail ~ksuccess:(fun u uts ->
+            if Ord.compare t.root u.root <= 0 then
+              ksuccess t ts
+            else
+              ksuccess u (t :: uts))
 
   let del_min bh =
-    del_min_tree bh.data begin
-      fun bt data ->
-        let size = bh.size - 1 in
-        let data = merge_data (List.rev bt.kids) data in
-        let mind = if size = 0 then None else Some (find_min_tree data (fun t -> t)).root in
-        { size = size ; data = data ; mind = mind }
-    end
+    let kfail () = invalid_arg "del_min" in
+    del_min_tree bh.data ~kfail ~ksuccess:(fun bt data ->
+      let size = bh.size - 1 in
+      let data = merge_data (List.rev bt.kids) data in
+      let mind =
+        if size = 0 then
+          None
+        else
+          Some (find_min_tree data ~kfail ~ksuccess:(fun t -> t)).root
+      in
+      { size; data; mind })
 
   let to_list bh =
     let rec aux acc bh =

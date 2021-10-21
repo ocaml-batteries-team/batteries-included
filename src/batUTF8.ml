@@ -298,7 +298,7 @@ end = struct
   let move us bi n = (* faster moving positive than negative n *)
     let bi = ref bi in
     let step = if n > 0 then next else prev in
-    for j = 1 to abs n do bi := step us !bi done;
+    for _j = 1 to abs n do bi := step us !bi done;
     !bi
   let of_char_idx us ci = move us first ci
 end

@@ -56,7 +56,7 @@ let test_open_files_not_autoclosed () =
 
 let test_open_close_many () =
   try
-    for i = 0 to 10000 do
+    for _i = 0 to 10000 do
       Unix.unlink (write buffer)
     done;
     (* pass *)
@@ -65,7 +65,7 @@ let test_open_close_many () =
 
 let test_open_close_many_pervasives () =
   try
-    for i = 0 to 10000 do
+    for _i = 0 to 10000 do
       let temp = temp_file "batteries" "test" in
       let oc   = open_out temp                         in
       output_string oc "test";

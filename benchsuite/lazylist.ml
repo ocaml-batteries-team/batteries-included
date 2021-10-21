@@ -52,7 +52,7 @@ let exists_inlined f l =
 
 let exists_folding p l =
   let test x rest = p x || Lazy.force rest in
-  Lazy.force (lazy_fold_right test l (Lazy.lazy_from_val false))
+  Lazy.force (lazy_fold_right test l (Lazy.from_val false))
 
 
 

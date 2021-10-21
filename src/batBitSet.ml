@@ -27,7 +27,7 @@ let print_array =
   let print_bchar c =
     let rc = ref c in
     Buffer.clear buf;
-    for i = 1 to 8 do
+    for _i = 1 to 8 do
       Buffer.add_char buf
         (if !rc land 1 == 1 then '1' else '0');
       rc := !rc lsr 1
@@ -48,7 +48,7 @@ let capacity t = (Bytes.length !t) * 8
 let empty () = ref (Bytes.create 0)
 
 let create_ sfun c n = (* n is in bits *)
-  if n < 0 then invalid_arg ("BitSet."^sfun^": negative size");
+  if n < 0 then invalid_arg ("BitSet." ^ sfun ^ ": negative size");
   let size = n / 8 + (if n mod 8 = 0 then 0 else 1) in
   ref (Bytes.make size c)
 
@@ -71,7 +71,7 @@ type bit_op =
 let rec apply_bit_op sfun op t x =
   let pos = x / 8 in
   if pos < 0 then
-    invalid_arg ("BitSet."^sfun^": negative index")
+    invalid_arg ("BitSet." ^ sfun ^ ": negative index")
   else if pos < Bytes.length !t then
     let delta = x mod 8 in
     let c = Char.code (Bytes.unsafe_get !t pos) in
@@ -105,7 +105,7 @@ let toggle t x = apply_bit_op "toggle" Toggle t x
 let mem t x =
   let pos = x / 8 in
   if pos < 0 then
-    invalid_arg ("BitSet.mem: negative index")
+    invalid_arg "BitSet.mem: negative index"
   else if pos < Bytes.length !t then
     let delta = x mod 8 in
     let c = Char.code (Bytes.unsafe_get !t pos) in
@@ -280,7 +280,7 @@ let enum t =
   let rec make n cnt =
     let cur = ref n in
     let cnt = ref cnt in
-    let rec next () =
+    let next () =
       match next_set_bit t !cur with
         Some elem ->
         decr cnt;

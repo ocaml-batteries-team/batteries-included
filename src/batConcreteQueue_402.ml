@@ -26,10 +26,10 @@ and 'a t = {
 external of_abstr : 'a Queue.t -> 'a t = "%identity"
 external to_abstr : 'a t -> 'a Queue.t = "%identity"
 
-let filter_inplace f ({tail} as queue) =
+let filter_inplace f ({tail; _} as queue) =
   if not (Queue.is_empty (to_abstr queue)) then
     let rec filter'
-        ({ next = { content; next} as current } as prev)
+        ({ next = { content; next } as current; _ } as prev)
       =
       if f content
       then

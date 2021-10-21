@@ -79,6 +79,9 @@ module TestMap
 
     val equal : ('a -> 'a -> bool) -> 'a m -> 'a m -> bool
 
+    (* true if add, remove, update_stdlib and filter support physical equality *)
+    val supports_phys_equality : bool
+
     (* tested functions *)
     val empty : 'a m
     val is_empty : _ m -> bool
@@ -88,8 +91,14 @@ module TestMap
     val remove : key -> 'a m -> 'a m
     val mem : key -> _ m -> bool
     val cardinal : _ m -> int
+    val update: key -> key -> 'a -> 'a m -> 'a m
+    val update_stdlib: key -> ('a option -> 'a option) -> 'a m -> 'a m
     val min_binding : 'a m -> (key * 'a)
     val max_binding : 'a m -> (key * 'a)
+    val pop_min_binding : 'a m -> (key * 'a) * 'a m
+    val pop_max_binding : 'a m -> (key * 'a) * 'a m
+    val min_binding_opt : 'a m -> (key * 'a) option
+    val max_binding_opt : 'a m -> (key * 'a) option
     val modify : key -> ('a -> 'a) -> 'a m -> 'a m
     val modify_def : 'a -> key -> ('a -> 'a) -> 'a m -> 'a m
     val modify_opt : key -> ('a option -> 'a option) -> 'a m -> 'a m
@@ -112,7 +121,6 @@ module TestMap
     val enum : 'a m -> (key * 'a) BatEnum.t
     val backwards : 'a m -> (key * 'a) BatEnum.t
     val of_enum : (key * 'a) BatEnum.t -> 'a m
-    val bindings : 'a m -> (key * 'a) list
 
     val for_all : (key -> 'a -> bool) -> 'a m -> bool
     val exists : (key -> 'a -> bool) -> 'a m -> bool
@@ -121,9 +129,18 @@ module TestMap
     val choose : 'a m -> (key * 'a)
     val split : key -> 'a m -> ('a m * 'a option * 'a m)
 
+    val add_seq : (key * 'a) BatSeq.t -> 'a m  -> 'a m
+    val of_seq : (key * 'a) BatSeq.t -> 'a m
+    val to_seq : 'a m -> (key * 'a) BatSeq.t
+    val to_rev_seq : 'a m -> (key * 'a) BatSeq.t
+    val to_seq_from : key -> 'a m -> (key * 'a) BatSeq.t
+
     val merge :
       (key -> 'a option -> 'b option -> 'c option)
       -> 'a m -> 'b m -> 'c m
+      
+    val union_stdlib : 
+      (key -> 'a -> 'a -> 'a option) -> 'a m -> 'a m -> 'a m
 
     val print :
       ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
@@ -171,7 +188,11 @@ module TestMap
     "add k v (add k v' t) = add k v t" @=
       (M.add k v (M.add k v' t), M.add k v t);
     "add 4 8 [3,4; 5,6] = [3,4; 4,8; 5,6]" @=
-        (M.add 4 8 t, il [(3,4); (4,8); (5,6)]);
+      (M.add 4 8 t, il [(3,4); (4,8); (5,6)]);
+    if M.supports_phys_equality then begin
+        "add 3,4 [3,4; 5,6] == [3,4; 5,6]" @?
+          (t == M.add 3 4 t);        
+      end;
     ()
 
   let test_cardinal () =
@@ -212,7 +233,132 @@ module TestMap
             M.cardinal t - if M.mem k t then 1 else 0) in
     test_cardinal 3 t;
     test_cardinal 57 t;
+    if M.supports_phys_equality then begin
+        "remove 12 [3,4; 5,6] == [3,4; 5,6]" @?
+          (t == M.remove 12 t);
+        "remove 12 [] == []" @?
+          (M.empty == M.remove 12 M.empty);
+      end;
     ()
+
+  let test_update_stdlib () =
+    let s = (il [1,1; 2,2]) in
+    "update_stdlib change [1,1;2,2] to [1,3;2,2]" @=
+      (M.update_stdlib 1 (fun x -> assert(x = Some 1); Some 3) s, il [1,3;2,2]);
+    "update_stdlib change [1,1;2,2] to [1,1;2,2;3,3]" @=
+      (M.update_stdlib 3 (fun x -> assert(x = None);   Some 3) s, il [1,1;2,2;3,3]);
+    "update_stdlib change [1,1;2,2] to [2,2]" @=
+      (M.update_stdlib 1 (fun x -> assert(x = Some 1); None)   s, il [2,2]);
+        "update_stdlib change [1,1;2,2] to [1,1;2,2] by not changing binding of 3 (phys eq)" @=
+          (M.update_stdlib 3 (fun x -> assert(x = None); None  ) s, s);
+        "update_stdlib change [1,1;2,2] to [1,1;2,2] by not changing binding of 1 (phys eq)" @=
+          (M.update_stdlib 1 (fun x -> assert(x = Some 1); Some 1) s, s);
+        "update_stdlib change [] to [] by not changing binding of 1 (phys eq)" @=
+          (M.update_stdlib 1 (fun x -> assert(x = None); None) M.empty, M.empty);
+    if M.supports_phys_equality then begin
+        "update_stdlib change [1,1;2,2] to [1,1;2,2] by not changing binding of 3 (phys eq)" @?
+          (M.update_stdlib 3 (fun x -> assert(x = None); None  ) s == s);
+        "update_stdlib change [1,1;2,2] to [1,1;2,2] by not changing binding of 1 (phys eq)" @?
+          (M.update_stdlib 1 (fun x -> assert(x = Some 1); Some 1) s == s);
+        "update_stdlib change [] to [] by not changing binding of 1 (phys eq)" @?
+          (M.update_stdlib 1 (fun x -> assert(x = None); None) M.empty == M.empty);
+      end;
+    ()
+
+  let test_update () =
+    let s = (il [1,1; 2,2]) in
+    "update 1 1 3 [1,1;2,2]" @=
+      (M.update 1 1 3 s, il [1,3;2,2]);
+    "update 1 3 3 [1,1;2,2]" @=
+      (M.update 1 3 3 s, il [2,2;3,3]);
+    "update 1 2 3 [1,1;2,2]" @=
+      (M.update 1 2 3 s, il [2,3]);
+    "update 1 1 1 [1,1;2,2]" @=
+      (M.update 1 1 1 s, s);
+    if M.supports_phys_equality then begin
+        "update 1 1 1 [1,1;2,2] (phys eq)" @?
+          (M.update 1 1 1 s == s);
+      end;
+    ()
+
+  let test_filter () =
+    let t = il [(3,4); (6, 5); (7,8); (10, 9)] in
+    "filter (_ -> false) t" @=
+      (M.filter (fun _ _ -> false) t, M.empty);
+    "filter (fun a b -> a > b) t" @=
+      (M.filter (fun a b -> a > b) t, il [6,5;10,9]);
+    "filter (_ -> true) t" @=
+      (M.filter (fun _ _ -> true) t, t);
+    "filter (_ -> true) empty" @=
+      (M.filter (fun _ _ -> true) M.empty, M.empty);
+    if M.supports_phys_equality then begin
+        "filter (_ -> true) t (phys eq)" @?
+          (M.filter (fun _ _ -> true) t == t);
+        "filter (_ -> true) empty (phys eq)" @?
+          (M.filter (fun _ _ -> true) M.empty == M.empty);
+      end;
+    ()
+
+  let test_union_stdlib () =
+    "union_stdlib empty empty" @=
+      (M.union_stdlib (fun _ -> failwith "must not be called") M.empty M.empty, M.empty);
+    "union_stdlib [1,1;2,2] empty" @=
+      (M.union_stdlib (fun _ -> failwith "must not be called") (il [1,1;2,2]) M.empty, il [1,1;2,2]);
+    "union_stdlib empty [1,1;2,2]" @=
+      (M.union_stdlib (fun _ -> failwith "must not be called") M.empty (il [1,1;2,2]), il [1,1;2,2]);
+    "union_stdlib [1,1;2,2] [3,3;4,4]" @=
+      (M.union_stdlib (fun _ -> failwith "must not be called") (il [3,3;4,4]) (il [1,1;2,2]), il [1,1;2,2;3,3;4,4]);
+    "union_stdlib [1,1;2,2;3,10] [3,6;4,4] keep sum on conflict" @=
+      (M.union_stdlib (fun _k a b -> Some (a+b)) (il [3,6;4,4]) (il [1,1;2,2;3,10]), il [1,1;2,2;3,16;4,4]);
+    "union_stdlib [1,1;2,2;3,10] [3,6;4,4] drop on conflict" @=
+      (M.union_stdlib (fun _k _a _b -> None)       (il [3,6;4,4]) (il [1,1;2,2;3,10]), il [1,1;2,2;4,4]);
+    "union_stdlib [1,1;4,2;3,10] [3,6;4,4] keep 3 w sum, drop 4" @=
+      (M.union_stdlib (fun k a b -> if k = 3 then Some (a+b) else None) (il [2,2;3,6;4,4]) (il [1,1;4,2;3,10]), il [1,1;2,2;3,16]);
+    ()
+
+  let list_of_seq s =
+    BatSeq.fold_right (fun x l -> x :: l) s []
+
+  let test_add_seq () =
+    "add_seq [1,1;2,2;3,3] [3,3;4,4]" @= (il [1,1;2,2;3,3;4,4], M.add_seq (BatSeq.of_list [1,1;2,2;3,3]) (il [3,3;4,4]));
+    "add_seq [1,1;2,2]     [3,3;4,4]" @= (il [1,1;2,2;3,3;4,4], M.add_seq (BatSeq.of_list [1,1;2,2])     (il [3,3;4,4]));
+    "add_seq []            [3,3;4,4]" @= (il [3,3;4,4],         M.add_seq (BatSeq.of_list [])            (il [3,3;4,4]));
+    "add_seq [1,1;2,2]     []       " @= (il [1,1;2,2],         M.add_seq (BatSeq.of_list [1,1;2,2])     (il []));
+    "add_seq []            []       " @= (il [],                M.add_seq (BatSeq.of_list [])            (il []));
+    ()
+
+  let test_of_seq () =
+    "of_seq [1,1;2,2;3,3;4,4]" @= (il [1,1;2,2;3,3;4,4], M.of_seq (BatSeq.of_list [1,1;2,2;4,4;3,3]));
+    "of_seq []"                @= (il [               ], M.of_seq (BatSeq.of_list [               ]));
+    ()
+
+  let test_to_seq () = 
+    "to_seq [1,1;2,2;3,3;4,4]" @? (BatSeq.equal (BatSeq.of_list [1,1;2,2;3,3;4,4]) (M.to_seq (il [4,4;1,1;3,3;2,2])));
+    "to_seq []"                @? (BatSeq.equal (BatSeq.of_list [               ]) (M.to_seq (il [               ])));
+    ()
+ 
+  let test_to_rev_seq () = 
+    "to_rev_seq [1,1;2,2;3,3;4,4]" @? (BatSeq.equal (BatSeq.of_list [4,4;3,3;2,2;1,1]) (M.to_rev_seq (il [4,4;1,1;3,3;2,2])));
+    "to_rev_seq []"                @? (BatSeq.equal (BatSeq.of_list [               ]) (M.to_rev_seq (il [               ])));
+    ()
+ 
+  let test_to_seq_from () =
+    "to_seq_from 5 []"                @? (BatSeq.equal (BatSeq.of_list [               ]) (M.to_seq_from 5 (il [               ])));
+    "to_seq_from 5 [1,1;2,2;3,3;4,4]" @? (BatSeq.equal (BatSeq.of_list [               ]) (M.to_seq_from 5 (il [4,4;1,1;3,3;2,2])));
+    "to_seq_from 3 [1,1;2,2;3,3;4,4]" @? (BatSeq.equal (BatSeq.of_list [3,3;4,4        ]) (M.to_seq_from 3 (il [4,4;1,1;3,3;2,2])));
+    "to_seq_from 5 [1,1;2,2;3,3;4,4]" @? (BatSeq.equal (BatSeq.of_list [1,1;2,2;3,3;4,4]) (M.to_seq_from 0 (il [4,4;1,1;3,3;2,2])));
+    let l =  [0,0;1,1;2,2;3,3;4,4;5,5;6,6;7,7;8,8;9,9]
+    and l2 = [5,5;6,6;7,7;8,8;9,9] in
+    "to_seq_from 5 [1,1 -- 9,9]" @? (BatSeq.equal (BatSeq.of_list l2) (M.to_seq_from 5 (il l)));
+    "to_seq_from 0 [1,1 -- 9,9]" @? (BatSeq.equal (BatSeq.of_list l) (M.to_seq_from 0 (il l)));
+    let max = 40 in
+    let l = BatList.init max (fun i -> (i, i)) in
+    for i = 0 to max do
+      let subl = BatList.filter (fun (x, _) -> x >= i) l in
+      "to_seq_from N [1,1 -- M,M]" @? (BatSeq.equal (BatSeq.of_list subl) (M.to_seq_from i (il l)));
+    done;
+    ()
+
 
   let test_mem () =
     let k, k', v = 1, 2, () in
@@ -224,14 +370,58 @@ module TestMap
     let t = il [(2, 0); (1,2); (3, 4); (2, 0)] in
     "min_binding [(2, 0); (1,2); (3, 4); (2, 0)] = (1, 2)" @?
       (M.min_binding t = (1, 2));
+    "min_binding [] -> Not_found" @?
+      (try ignore(M.min_binding M.empty); false with Not_found -> true);
     ()
 
   let test_max_binding () =
     let t = il [(2, 0); (1,2); (3, 4); (2, 0)] in
     "max_binding [(2, 0); (1,2); (3, 4); (2, 0)] = (3, 4)" @?
       (M.max_binding t = (3, 4));
+    "max_binding [] -> Not_found" @?
+      (try ignore(M.max_binding M.empty); false with Not_found -> true);
     ()
 
+  let test_min_binding_opt () =
+    let t = il [(2, 0); (1,2); (3, 4); (2, 0)] in
+    "min_binding_opt [(2, 0); (1,2); (3, 4); (2, 0)] = (1, 2)" @?
+      (M.min_binding_opt t = Some (1, 2));
+    "min_binding_opt [] = None" @?
+      (M.min_binding_opt M.empty = None);
+    ()
+
+  let test_max_binding_opt () =
+    let t = il [(2, 0); (1,2); (3, 4); (2, 0)] in
+    "max_binding_opt [(2, 0); (1,2); (3, 4); (2, 0)] = (3, 4)" @?
+      (M.max_binding_opt t = Some (3, 4));
+    "max_binding_opt [] = None" @?
+      (M.max_binding_opt M.empty = None);
+    ()
+
+  let test_pop_min_binding () =
+    let t = il [(2, 0); (1,2); (3, 4); (2, 0)] in
+    let t2 = il [(2, 0); (3, 4); (2, 0)] in
+    let mb, rest = M.pop_min_binding t in
+    "pop_min_binding [(2, 0); (1,2); (3, 4); (2, 0)] = (1, 2), ..." @?
+      (mb  = (1, 2));
+    "pop_min_binding [(2, 0); (1,2); (3, 4); (2, 0)] = (1, 2), ..." @=
+      (rest, t2);
+    "pop_min_binding [] -> Not_found" @?
+      (try ignore(M.pop_min_binding M.empty); false with Not_found -> true);
+    ()
+
+  let test_pop_max_binding () =
+    let t = il [(2, 6); (1,2); (3, 4); (2, 6)] in
+    let t2 = il [(1, 2); (2, 6)] in
+    let mb, rest = M.pop_max_binding t in
+    "pop_max_binding [(2, 0); (1,2); (3, 4); (2, 0)] = (1, 2), ..." @?
+      (mb = (3, 4));
+    "pop_max_binding [(2, 0); (1,2); (3, 4); (2, 0)] = (1, 2), ..." @=
+      (rest, t2);
+    "pop_max_binding [] -> Not_found" @?
+      (try ignore(M.pop_max_binding M.empty); false with Not_found -> true);
+    ()
+    
   let test_modify () =
     let k, k', f, t = 1, 2, ((+) 1), il [(1,2); (3, 4)] in
     "mem k t => find k (modify k f t) = f (find k t)" @?
@@ -579,7 +769,20 @@ module TestMap
     "test_iterators" >:: test_iterators;
     "test_pop" >:: test_pop;
     "test_extract" >:: test_extract;
-  ]
+    "test_update" >:: test_update;
+    "test_update_stdlib" >:: test_update_stdlib;
+    "test_filter" >:: test_filter;
+    "test_add_seq" >:: test_add_seq;
+    "test_of_seq" >:: test_of_seq;
+    "test_to_seq" >:: test_to_seq;
+    "test_to_rev_seq" >:: test_to_rev_seq;
+    "test_to_seq_from" >:: test_to_seq_from;
+    "test_min_binding_opt" >:: test_min_binding_opt;
+    "test_max_binding_opt" >:: test_max_binding_opt;
+    "test_pop_min_binding" >:: test_pop_min_binding;
+    "test_pop_max_binding" >:: test_pop_max_binding;
+    "test_union_stdlib" >:: test_union_stdlib;
+    ]
 end
 
 module M = struct
@@ -594,6 +797,9 @@ module M = struct
   let iteri = M.iter
 
   let filterv_map f = M.filter_map (fun _ -> f)
+  let union_stdlib = M.union
+
+  let supports_phys_equality = true
 end
 
 module P = struct
@@ -607,6 +813,7 @@ module P = struct
   let iteri = M.iter
 
   let filterv_map f = M.filter_map (fun _ -> f)
+  let supports_phys_equality = true
 end
 
 module S = struct
@@ -621,6 +828,8 @@ module S = struct
 
   let fold f = M.fold (fun _ -> f)
   let foldi = M.fold
+  let union_stdlib = M.union
+  let supports_phys_equality = false
 end
 
 module TM = TestMap(M)

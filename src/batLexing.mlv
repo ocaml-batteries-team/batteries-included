@@ -1,7 +1,7 @@
 (*
- * BatOO - Extended operations on objects
- * Copyright (C) 1996 Jerome Vouillon, INRIA
- *               2008 David Teller, LIFO, Universite d'Orleans
+ * BatString - Additional functions for string manipulations.
+ * Copyright (C) 1996 Xavier Leroy, INRIA Rocquencourt
+ * Copyright (C) 2009 David Teller, LIFO, Universite d'Orleans
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,5 +20,13 @@
  *)
 
 
-include Oo
-module Internal = CamlinternalOO
+open BatIO
+include Lexing
+
+let from_string = Lexing.from_string
+let from_function = Lexing.from_function
+
+let from_input inp =
+  from_function (fun s n -> try input inp s 0 n with No_more_input -> 0)
+
+let from_channel = from_input
