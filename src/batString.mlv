@@ -66,7 +66,10 @@ let starts_with str p =
   not (starts_with "Jon \"Maddog\" Orwant" "Orwants")
 *)
 
-let for_all s p =
+let starts_with_stdlib ~prefix s =
+  starts_with s prefix
+
+let for_all p s =
   Bytes.(for_all p (unsafe_of_string s))
 (* Bytes.for_all already has a unit test *)
 
@@ -96,6 +99,9 @@ let ends_with str p =
   not (ends_with "Jon \"Maddog\" Orwant" "I'm Jon \"Maddog\" Orwant")
   not (ends_with "Jon \"Maddog\" Orwant" "Jon")
 *)
+
+let ends_with_stdlib ~suffix s =
+  ends_with s suffix
 
 let find_from str pos sub =
   let len = length str in
@@ -299,6 +305,9 @@ let exists str sub =
   exists "ab" "b"
   not (exists "ab" "c")
 *)
+
+let exists_stdlib p s =
+  Bytes.(exists p (unsafe_of_string s))
 
 let strip_default = " \t\r\n"
 let strip ?(chars = strip_default) s =
@@ -1214,6 +1223,19 @@ end (* String.Exceptionless *)
 ##V<4.5##let rindex_opt = Exceptionless.rindex
 ##V<4.5##let index_from_opt = Exceptionless.index_from
 ##V<4.5##let rindex_from_opt = Exceptionless.rindex_from
+
+
+external get_uint8 : string -> int -> int = "%string_safe_get"
+##V>=4.08##let get_int8 s i = Bytes.(get_int8 (unsafe_of_string s) i)
+##V>=4.08##let get_uint16_le s i = Bytes.(get_uint16_le (unsafe_of_string s) i)
+##V>=4.08##let get_uint16_be s i = Bytes.(get_uint16_be (unsafe_of_string s) i)
+##V>=4.08##let get_int16_ne s i = Bytes.(get_int16_ne (unsafe_of_string s) i)
+##V>=4.08##let get_int16_le s i = Bytes.(get_int16_le (unsafe_of_string s) i)
+##V>=4.08##let get_int16_be s i = Bytes.(get_int16_be (unsafe_of_string s) i)
+##V>=4.08##let get_int32_le s i = Bytes.(get_int32_le (unsafe_of_string s) i)
+##V>=4.08##let get_int32_be s i = Bytes.(get_int32_be (unsafe_of_string s) i)
+##V>=4.08##let get_int64_le s i = Bytes.(get_int64_le (unsafe_of_string s) i)
+##V>=4.08##let get_int64_be s i = Bytes.(get_int64_be (unsafe_of_string s) i)
 
 module Cap =
 struct
