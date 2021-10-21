@@ -86,6 +86,10 @@ val cat : string -> string -> string
     than {!Sys.max_string_length} bytes.
     @since NEXT_RELEASE *)
 
+val for_all : (char -> bool) -> string -> bool
+(** [for_all p s] check if all chars in [s] satisfy the predicate [p].
+    @since NEXT_RELEASE *)
+
 external length : string -> int = "%string_length"
 (** Return the length (number of characters) of the given string. *)
 

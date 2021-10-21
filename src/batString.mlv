@@ -40,6 +40,7 @@ let init = BatBytesCompat.string_init
 let of_bytes = Bytes.to_string
 let to_bytes = Bytes.of_string
 
+(* named alias for operator *)
 let cat = (^)
 
 let starts_with str p =
@@ -65,6 +66,9 @@ let starts_with str p =
   not (starts_with "Jon \"Maddog\" Orwant" "Orwants")
 *)
 
+let for_all s p =
+  Bytes.(for_all p (unsafe_of_string s))
+(* Bytes.for_all already has a unit test *)
 
 let ends_with str p =
   let el = length p
