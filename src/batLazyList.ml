@@ -321,6 +321,22 @@ let concat lol =
 
 (** {6  Combinatorics} *)
 
+let combinations l =
+  let rec gen l = match l with
+    | [] -> cons [] nil
+    | x::l' ->
+      lazy (let tl = gen l' in
+            let node = append tl (map (fun l -> x::l) tl) in
+            Lazy.force node)
+  in gen l
+
+(*$T combinations
+    List.sort Pervasives.compare (to_list (combinations [1;2;3])) = \
+   [[]; [1]; [1;2]; [1;2;3]; [1;3]; [2]; [2;3]; [3]]
+     to_list (combinations []) = [[]]
+     List.sort Pervasives.compare (to_list (combinations [1])) = [[]; [1]]
+*)
+
 let permutations l =
   (* do a choice in [l]. [right] contain elements not to choose from. *)
   let rec choose_first among right = match among with

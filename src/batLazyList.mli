@@ -108,27 +108,27 @@ val from_while: (unit -> 'a option) -> 'a t
 val seq: 'a -> ('a -> 'a) -> ('a -> bool) -> 'a t
 (**[seq data next cond] creates a lazy list from the successive results
    of applying [next] to [data], then to the result, etc.  The list
-   continues until the condition [cond] fails.  For example, 
-   [seq 1 ((+) 1) ((>) 100)] returns [[^1, 2, ... 99^]].  If [cond init] 
-   is false, the result is empty.  To create an infinite lazy list, pass 
+   continues until the condition [cond] fails.  For example,
+   [seq 1 ((+) 1) ((>) 100)] returns [[^1, 2, ... 99^]].  If [cond init]
+   is false, the result is empty.  To create an infinite lazy list, pass
    [(fun _ -> true)] as [cond]. *)
 
 val unfold: 'b -> ('b -> ('a * 'b) option) -> 'a t
 (**[unfold data next] creates a (possibly infinite) lazy list from
    the successive results of applying [next] to [data], then to the
-   result, etc. The list ends whenever [next] returns [None].  The function 
+   result, etc. The list ends whenever [next] returns [None].  The function
    [next] should return a pair [option] whose first element will be the
-   current value of the sequence; the second element will be passed 
+   current value of the sequence; the second element will be passed
    (lazily) to [next] in order to compute the following element.  One example
-   of a use of [unfold] is to make each element of the resulting sequence to 
-   depend on the previous two elements, as in this Fibonacci sequence 
+   of a use of [unfold] is to make each element of the resulting sequence to
+   depend on the previous two elements, as in this Fibonacci sequence
    definition:
    {[
      let data = (1, 1)
      let next (x, y) = Some (x, (y, x + y))
      let fib = unfold data next
    ]}
-   The first element [x] of the pair within [Some] will be the current 
+   The first element [x] of the pair within [Some] will be the current
    value of the sequence; the next value of the sequence, and the one after
    that, are recorded as [y] and [x + y] respectively. *)
 
@@ -304,8 +304,8 @@ val rindex_ofq : 'a -> 'a t -> int option
 *)
 
 val next : 'a t -> 'a node_t
-(** Compute and return the first node from the list as a [Cons].  This 
-    differs from [hd], which returns the first element (the first component of 
+(** Compute and return the first node from the list as a [Cons].  This
+    differs from [hd], which returns the first element (the first component of
     the first node). *)
 
 val length : 'a t -> int
@@ -463,6 +463,11 @@ val drop_while : ('a -> bool) -> 'a t -> 'a t
    {6  Combinatorics}
 *)
 
+val combinations : 'a list -> ('a list) t
+(** [combinations l] yields a list of all combinations of elements
+    of [l]. Each combination selects a "subset" of the elements of
+    [l] (duplicates are considered as distinct elements). *)
+
 val permutations : 'a list -> ('a list) t
 (** [permutations l] yields a lazy list of all permutations of the
     list [l]. Every permutation has the same elements as [l], but in
@@ -593,15 +598,15 @@ val for_all2 : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
 
 val equal : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
 (** [equal eq s1 s2] compares elements of [s1] and [s2] pairwise using [eq]
-    and returns true if all elements pass the test and the lists have the same 
+    and returns true if all elements pass the test and the lists have the same
     length; otherwise it returns false.  Examples:
 
       {[
         equal (=) (range 0 4) (range 0 4) (* true *)
 
         (* Make lazy lists of lazy lists: *)
-        let s1 = init 5 (range 0) 
-        let s2 = init 5 (range 0) 
+        let s1 = init 5 (range 0)
+        let s2 = init 5 (range 0)
         equal (equal (=)) s1 s2 (* true *)
       ]}
 
