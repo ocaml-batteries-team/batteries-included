@@ -62,6 +62,7 @@ module Stdlib_verifications = struct
   (* FAILS BECAUSE OF Stack.Empty not being present because
      module Stack = (Stack : module type of Legacy.Stack)
   *)
+  module Random = (Random: module type of Legacy.Random)
   module Stream = (Stream : module type of Legacy.Stream)
   module String : sig
     include module type of Legacy.String
@@ -111,8 +112,6 @@ module Stdlib_verifications = struct
          (BatInnerIO.input -> unit BatInnerIO.output -> unit) ->
          Unix.sockaddr -> unit
        end)
-  (* FBR:TODO move Random back where it was *)
-  (* module Random = (Random: module type of Legacy.Random) *)
   module Big_int = (Big_int : module type of Legacy.Big_int)
   (* FIXME: This does not pass for some reason:
   module Bigarray = (Bigarray : module type of Legacy.Bigarray)*)
