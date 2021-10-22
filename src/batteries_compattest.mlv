@@ -57,14 +57,20 @@ module Stdlib_verifications = struct
      end)
   (*  module Printf = (Printf: module type of Legacy.Printf)*)
   module Queue = (Queue: module type of Legacy.Queue)
-  module Random = (Random: module type of Legacy.Random)
 ##V>=4.8## module Result = (Result: module type of Legacy.Result)
   (*  module Scanf = (Scanf : module type of Legacy.Scanf)*)
   (* FAILS BECAUSE OF Stack.Empty not being present because
      module Stack = (Stack : module type of Legacy.Stack)
   *)
   module Stream = (Stream : module type of Legacy.Stream)
-  module String = (String : module type of Legacy.String)
+  module String : sig
+    include module type of Legacy.String
+  end = struct
+    include BatString
+    let starts_with = starts_with_stdlib
+    let ends_with = ends_with_stdlib
+    let exists = exists_stdlib
+  end
   module Sys = (Sys : module type of Legacy.Sys)
   module Unix =
     (Unix: sig
@@ -104,7 +110,9 @@ module Stdlib_verifications = struct
          ?cleanup:bool ->
          (BatInnerIO.input -> unit BatInnerIO.output -> unit) ->
          Unix.sockaddr -> unit
-     end)
+       end)
+  (* FBR:TODO move Random back where it was *)
+  (* module Random = (Random: module type of Legacy.Random) *)
   module Big_int = (Big_int : module type of Legacy.Big_int)
   (* FIXME: This does not pass for some reason:
   module Bigarray = (Bigarray : module type of Legacy.Bigarray)*)

@@ -388,7 +388,7 @@ let forall2_range f {m=m1; _} {m=m2; _} = Core.forall2_range f m1 m2
 let get_dec_eq {eq; _} = eq
 
 (*$T get_dec_eq
-  get_dec_eq (empty Int.equal) == Int.equal
+  get_dec_eq (empty ~eq:Int.equal) == Int.equal
 *)
 
 let of_enum ~eq e =
