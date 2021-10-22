@@ -319,6 +319,30 @@ let concat lol =
   ignore (concat (lazy (Cons ((let () = failwith "foo" in nil), nil)))); true
 *)
 
+(** {6  Combinatorics} *)
+
+let permutations l =
+  (* do a choice in [l]. [right] contain elements not to choose from. *)
+  let rec choose_first among right = match among with
+    | [] -> cons [] nil
+    | [x] -> perms_starting_with x right
+    | x::among' ->
+      (* choose [x], or don't (in which case put it in [right]) *)
+      append
+        (perms_starting_with x (among' @ right))
+        (choose_first among' (x::right))
+  (* all permutations of [l], prefixed with [x] *)
+  and perms_starting_with x l =
+    map (fun l -> x :: l) (choose_first l [])
+  in choose_first l []
+
+(*$T permutations
+    List.sort Pervasives.compare (to_list (permutations [1;2;3])) = \
+   [[1;2;3]; [1;3;2]; [2;1;3]; [2;3;1]; [3;1;2]; [3;2;1]]
+     to_list (permutations []) = [[]]
+     to_list (permutations [1]) = [[1]]
+*)
+
 (** {6  Conversions} *)
 
 (**

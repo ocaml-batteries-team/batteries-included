@@ -460,6 +460,15 @@ val drop_while : ('a -> bool) -> 'a t -> 'a t
 
 
 (**
+   {6  Combinatorics}
+*)
+
+val permutations : 'a list -> ('a list) t
+(** [permutations l] yields a lazy list of all permutations of the
+    list [l]. Every permutation has the same elements as [l], but in
+    a different order. There are [factorial (length l)] permutations. *)
+
+(**
    {6  Conversions}
 *)
 
