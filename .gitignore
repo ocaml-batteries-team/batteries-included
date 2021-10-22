@@ -23,3 +23,4 @@ qtest2/all_tests.ml
 qtest.targets.log
 setup.data
 setup.log
+src/batteries_compattest.ml
