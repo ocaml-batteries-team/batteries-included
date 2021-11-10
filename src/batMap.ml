@@ -122,7 +122,7 @@ module Concrete = struct
   let rec max_binding = function
     | Node (_, k, v, Empty, _) -> k, v
     | Node (_, _, _, r, _) -> max_binding r
-    | Empty -> invalid_arg "PMap.max_binding: empty tree"
+    | Empty -> raise Not_found
 
   let pop_max_binding s =
     let maxi = ref (get_root s) in
