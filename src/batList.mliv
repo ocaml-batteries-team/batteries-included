@@ -668,8 +668,8 @@ val mem_assq : 'a -> ('a * 'b) list -> bool
     structural equality to compare keys. *)
 
 val modify : 'a -> ('b -> 'b) -> ('a * 'b) list -> ('a * 'b) list
-(** [modify a f l] returns the same list as [l] but with value associated
-    to key [a] replaced with [f a].
+(** [modify a f l] returns the same list as [l] but with value [b] associated
+    to key [a] replaced with [f b].
 
     @raise Not_found if no value is associated with [a] in [l]
     @since 2.1 *)
