@@ -70,7 +70,7 @@ let starts_with_stdlib ~prefix s =
   starts_with s prefix
 
 let for_all p s =
-  Bytes.(for_all p (unsafe_of_string s))
+  BatBytes.(for_all p (unsafe_of_string s))
 (* Bytes.for_all already has a unit test *)
 
 let ends_with str p =
@@ -307,7 +307,7 @@ let exists str sub =
 *)
 
 let exists_stdlib p s =
-  Bytes.(exists p (unsafe_of_string s))
+  BatBytes.(exists p (unsafe_of_string s))
 
 let strip_default = " \t\r\n"
 let strip ?(chars = strip_default) s =
@@ -1229,13 +1229,16 @@ external get_uint8 : string -> int -> int = "%string_safe_get"
 ##V>=4.08##let get_int8 s i = Bytes.(get_int8 (unsafe_of_string s) i)
 ##V>=4.08##let get_uint16_le s i = Bytes.(get_uint16_le (unsafe_of_string s) i)
 ##V>=4.08##let get_uint16_be s i = Bytes.(get_uint16_be (unsafe_of_string s) i)
+##V>=4.08##let get_uint16_ne s i = Bytes.(get_uint16_ne (unsafe_of_string s) i)
 ##V>=4.08##let get_int16_ne s i = Bytes.(get_int16_ne (unsafe_of_string s) i)
 ##V>=4.08##let get_int16_le s i = Bytes.(get_int16_le (unsafe_of_string s) i)
 ##V>=4.08##let get_int16_be s i = Bytes.(get_int16_be (unsafe_of_string s) i)
 ##V>=4.08##let get_int32_le s i = Bytes.(get_int32_le (unsafe_of_string s) i)
 ##V>=4.08##let get_int32_be s i = Bytes.(get_int32_be (unsafe_of_string s) i)
+##V>=4.08##let get_int32_ne s i = Bytes.(get_int32_ne (unsafe_of_string s) i)
 ##V>=4.08##let get_int64_le s i = Bytes.(get_int64_le (unsafe_of_string s) i)
 ##V>=4.08##let get_int64_be s i = Bytes.(get_int64_be (unsafe_of_string s) i)
+##V>=4.08##let get_int64_ne s i = Bytes.(get_int64_ne (unsafe_of_string s) i)
 
 module Cap =
 struct
