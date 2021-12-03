@@ -1122,12 +1122,16 @@ let edit_distance s1 s2 =
         (* j >= 0 && j < length s2 *)
         let cost = if unsafe_get s1 i = unsafe_get s2 j then 0 else 1 in
         A.unsafe_set v1 (j + 1)
-          (min (v1.(j) + 1) (min (v0.(j+1) + 1) (v0.(j) + cost)));
+          (min
+             ((A.unsafe_get v1 j) + 1)
+             (min
+                ((A.unsafe_get v0 (j + 1)) + 1)
+                ((A.unsafe_get v0 j) + cost)));
       done;
       (* copy v1 into v0 for next iteration *)
-      Array.blit v1 0 v0 0 (len2 + 1);
+      A.blit v1 0 v0 0 (len2 + 1);
     done;
-    v1.(len2)
+    A.unsafe_get v1 len2
   end
 
 (*$T edit_distance
