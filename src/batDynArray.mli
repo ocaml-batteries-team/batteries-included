@@ -171,7 +171,7 @@ val delete_range : 'a t -> int -> int -> unit
 val remove_at : int -> 'a t -> unit
 (** Alias for [delete] with parameter order that follows [Array.remove_at].
 
-    @since NEXT_RELEASE *)
+    @since 3.4.0 *)
 
 val clear : 'a t -> unit
 (** remove all elements from the array and resize it to 0. *)

@@ -629,7 +629,7 @@ val rename : string -> string -> unit
 ##V>=4.13##(** [realpath p] is an absolute pathname for [p] obtained by resolving
 ##V>=4.13##    all extra [/] characters, relative path segments and symbolic links.
 ##V>=4.13##
-##V>=4.13##    @since NEXT_RELEASE and OCaml 4.13.0 *)
+##V>=4.13##    @since 3.4.0 and OCaml 4.13.0 *)
 
 
 (** {6 File permissions and ownership} *)

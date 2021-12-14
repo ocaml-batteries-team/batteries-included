@@ -176,7 +176,7 @@ val split : ('a * 'b) array -> 'a array * 'b array
 val combine : 'a array -> 'b array -> ('a * 'b) array
 (** [combine [|a1; ...; an|] [|b1; ...; bn|]] is [[|(a1,b1); ...; (an,bn)|]].
     Raise [Invalid_argument] if the two arrays have different lengths.
-    @since NEXT_RELEASE *)
+    @since 3.4.0 *)
 
 val of_list : 'a list -> 'a array
 (** [Array.of_list l] returns a fresh array containing the elements
@@ -293,7 +293,7 @@ val fold_left_map :
   ('a -> 'b -> 'a * 'c) -> 'a -> 'b array -> 'a * 'c array
 (** [fold_left_map] is a combination of {!fold_left} and {!map} that threads an
     accumulator through calls to [f].
-    @since NEXT_RELEASE *)
+    @since 3.4.0 *)
 
 val fold_while : ('acc -> 'a -> bool) -> ('acc -> 'a -> 'acc) -> 'acc -> 'a array -> ('acc * int)
 (** [fold_while p f init a], accumulates elements [x] of array [a] using
@@ -493,12 +493,12 @@ val find : ('a -> bool) -> 'a array -> 'a
 val find_opt : ('a -> bool) -> 'a array -> 'a option
 (** [find_opt p a] returns the first element of the array [a] that satisfies
     the predicate [p], or [None] if there is no such element.
-    @since NEXT_RELEASE *)
+    @since 3.4.0 *)
 
 val find_map : ('a -> 'b option) -> 'a array -> 'b option
 (** [find_map f a] applies [f] to the elements of [a] in order, and returns the
     first result of the form [Some v], or [None] if none exist.
-    @since NEXT_RELEASE *)
+    @since 3.4.0 *)
 
 val mem : 'a -> 'a array -> bool
 (** [mem m a] is true if and only if [m] is equal to an element of [a]. *)

@@ -63,7 +63,7 @@ val int : int -> int
 ##V>=4.13##     or non-standard environments, such as JavaScript), [Random.full_int]
 ##V>=4.13##     returns a value, where {!Random.int} raises {!Invalid_argument}.
 ##V>=4.13##
-##V>=4.13##    @since NEXT_RELEASE and OCaml 4.13.0 *)
+##V>=4.13##    @since 3.4.0 and OCaml 4.13.0 *)
 
 val int32 : Int32.t -> Int32.t
 (** [Random.int32 bound] returns a random integer between 0 (inclusive)
