@@ -102,8 +102,6 @@ include BatNumber.MakeNumeric(BaseBool)
 (*$T
   of_float (-1.) = true
   of_float 0. = false
-  of_float (1. /. 0.) = false
-  of_float (-1. /. 0.) = false
   of_float nan = false
   to_float true = 1.
   to_float false = 0.
