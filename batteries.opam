@@ -17,6 +17,7 @@ build: [
   [make "all"]
 ]
 install: [make "install"]
+run-test: [make "test"]
 depends: [
   "ocaml" {>= "4.00.0" & < "4.14.0"}
   "ocamlfind" {build & >= "1.5.3"}
