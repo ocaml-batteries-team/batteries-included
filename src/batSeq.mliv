@@ -142,7 +142,7 @@ val flat_map : ('a -> 'b t) -> 'a t -> 'b t
 
 val concat_map: ('a -> 'b t) -> 'a t -> 'b t
 (** Alias for {!flat_map}.
-    @since NEXT_RELEASE *)
+    @since 3.4.0 *)
 
 (** {6 Iterators} *)
 

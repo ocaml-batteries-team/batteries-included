@@ -58,7 +58,7 @@ val init : int -> (int -> char) -> string
 
 val empty : string
 (** The empty string.
-    @since NEXT_RELEASE *)
+    @since 3.4.0 *)
 
 val is_empty : string -> bool
 (** [is_empty s] returns [true] if [s] is the empty string, [false]
@@ -73,22 +73,22 @@ val is_empty : string -> bool
 val of_bytes : bytes -> string
 (** Return a new string that contains the same bytes as the given byte
     sequence.
-    @since NEXT_RELEASE *)
+    @since 3.4.0 *)
 
 val to_bytes : string -> bytes
 (** Return a new byte sequence that contains the same bytes as the given
     string.
-    @since NEXT_RELEASE *)
+    @since 3.4.0 *)
 
 val cat : string -> string -> string
 (** [cat s1 s2] concatenates s1 and s2 (equivalent to [s1 ^ s2]).
     @raise Invalid_argument if the result is longer then
     than {!Sys.max_string_length} bytes.
-    @since NEXT_RELEASE *)
+    @since 3.4.0 *)
 
 val for_all : (char -> bool) -> string -> bool
 (** [for_all p s] check if all chars in [s] satisfy the predicate [p].
-    @since NEXT_RELEASE *)
+    @since 3.4.0 *)
 
 external length : string -> int = "%string_length"
 (** Return the length (number of characters) of the given string. *)
@@ -574,11 +574,11 @@ val starts_with : string -> string -> bool
 
 val starts_with_stdlib : prefix:string -> string -> bool
 (** Equivalent to [starts_with] but the prefix is a labelled parameter.
-    @since NEXT_RELEASE *)
+    @since 3.4.0 *)
 
 val ends_with_stdlib : suffix:string -> string -> bool
 (** Equivalent to [ends_with] but the suffix is a labelled parameter.
-    @since NEXT_RELEASE *)
+    @since 3.4.0 *)
 
 val exists : string -> string -> bool
 (** [exists str sub] returns true if [sub] is a substring of [str] or
@@ -590,7 +590,7 @@ val exists : string -> string -> bool
 val exists_stdlib : (char -> bool) -> string -> bool
 (** [exists_stdlib p str] check if at least one char of [str] satisfies
     the predicate [p].
-    @since NEXT_RELEASE *)
+    @since 3.4.0 *)
   
 val count_char : string -> char -> int
 (** [count_char str c] returns the number of times [c] is used in [str].
@@ -912,72 +912,72 @@ val implode : char list -> string
 val get_uint8 : string -> int -> int
 (** [get_uint8 b i] is [b]'s unsigned 8-bit integer starting at character
     index [i].
-    @since NEXT_RELEASE *)
+    @since 3.4.0 *)
 
 ##V>=4.08##val get_int8 : string -> int -> int
 ##V>=4.08##(** [get_int8 b i] is [b]'s signed 8-bit integer starting at character
 ##V>=4.08##    index [i].
-##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08 *)
+##V>=4.08##    @since 3.4.0 and OCaml 4.08 *)
 
 ##V>=4.08##val get_uint16_ne : string -> int -> int
 ##V>=4.08##(** [get_uint16_ne b i] is [b]'s native-endian unsigned 16-bit integer
 ##V>=4.08##    starting at character index [i].
-##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08 *)
+##V>=4.08##    @since 3.4.0 and OCaml 4.08 *)
 
 ##V>=4.08##val get_uint16_be : string -> int -> int
 ##V>=4.08##(** [get_uint16_be b i] is [b]'s big-endian unsigned 16-bit integer
 ##V>=4.08##    starting at character index [i].
-##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08 *)
+##V>=4.08##    @since 3.4.0 and OCaml 4.08 *)
 
 ##V>=4.08##val get_uint16_le : string -> int -> int
 ##V>=4.08##(** [get_uint16_le b i] is [b]'s little-endian unsigned 16-bit integer
 ##V>=4.08##    starting at character index [i].
-##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08 *)
+##V>=4.08##    @since 3.4.0 and OCaml 4.08 *)
 
 ##V>=4.08##val get_int16_ne : string -> int -> int
 ##V>=4.08##(** [get_int16_ne b i] is [b]'s native-endian signed 16-bit integer
 ##V>=4.08##    starting at character index [i].
-##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08 *)
+##V>=4.08##    @since 3.4.0 and OCaml 4.08 *)
 
 ##V>=4.08##val get_int16_be : string -> int -> int
 ##V>=4.08##(** [get_int16_be b i] is [b]'s big-endian signed 16-bit integer
 ##V>=4.08##    starting at character index [i].
-##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08 *)
+##V>=4.08##    @since 3.4.0 and OCaml 4.08 *)
 
 ##V>=4.08##val get_int16_le : string -> int -> int
 ##V>=4.08##(** [get_int16_le b i] is [b]'s little-endian signed 16-bit integer
 ##V>=4.08##    starting at character index [i].
-##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08 *)
+##V>=4.08##    @since 3.4.0 and OCaml 4.08 *)
 
 ##V>=4.08##val get_int32_ne : string -> int -> int32
 ##V>=4.08##(** [get_int32_ne b i] is [b]'s native-endian 32-bit integer
 ##V>=4.08##    starting at character index [i].
-##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08 *)
+##V>=4.08##    @since 3.4.0 and OCaml 4.08 *)
 
 ##V>=4.08##val get_int32_be : string -> int -> int32
 ##V>=4.08##(** [get_int32_be b i] is [b]'s big-endian 32-bit integer
 ##V>=4.08##    starting at character index [i].
-##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08 *)
+##V>=4.08##    @since 3.4.0 and OCaml 4.08 *)
 
 ##V>=4.08##val get_int32_le : string -> int -> int32
 ##V>=4.08##(** [get_int32_le b i] is [b]'s little-endian 32-bit integer
 ##V>=4.08##    starting at character index [i].
-##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08 *)
+##V>=4.08##    @since 3.4.0 and OCaml 4.08 *)
 
 ##V>=4.08##val get_int64_ne : string -> int -> int64
 ##V>=4.08##(** [get_int64_ne b i] is [b]'s native-endian 64-bit integer
 ##V>=4.08##    starting at character index [i].
-##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08 *)
+##V>=4.08##    @since 3.4.0 and OCaml 4.08 *)
 
 ##V>=4.08##val get_int64_be : string -> int -> int64
 ##V>=4.08##(** [get_int64_be b i] is [b]'s big-endian 64-bit integer
 ##V>=4.08##    starting at character index [i].
-##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08 *)
+##V>=4.08##    @since 3.4.0 and OCaml 4.08 *)
 
 ##V>=4.08##val get_int64_le : string -> int -> int64
 ##V>=4.08##(** [get_int64_le b i] is [b]'s little-endian 64-bit integer
 ##V>=4.08##    starting at character index [i].
-##V>=4.08##    @since NEXT_RELEASE and OCaml 4.08 *)
+##V>=4.08##    @since 3.4.0 and OCaml 4.08 *)
 
 
 (** {6 Comparisons}*)

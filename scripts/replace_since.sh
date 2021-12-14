@@ -13,5 +13,5 @@ if [ -z "$VERSION" ] ; then
     exit 1
 fi
 
-sed "s/NEXT_RELEASE/$VERSION/g" -i'' -- _oasis
-find src/ -name '*.ml*' -exec sed "s/NEXT_RELEASE/$VERSION/g" -i'' {} \;
+sed -e "s/NEXT_RELEASE/$VERSION/g" -i '' _oasis
+find src/ -name '*.ml*' -exec sed -e "s/NEXT_RELEASE/$VERSION/g" -i '' {} \;
