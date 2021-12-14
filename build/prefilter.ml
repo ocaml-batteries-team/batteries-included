@@ -37,11 +37,13 @@ let print_loc = function
        stale := false;
      end
 
+Str.string_match (Str.regexp ".*\\+hihi") extra 0
+
 let has_domains ~extra =
-  let extra = String.split_on_char '+' extra in
-  List.mem "domains" extra ||
-  List.mem "multicore" extra ||
-  List.mem "effects" extra
+  let extra = Str.full_split (Str.regexp_string "+") extra in
+  List.mem (Str.Text "domains") extra ||
+  List.mem (Str.Text "multicore") extra ||
+  List.mem (Str.Text "effects") extra
 
 let rec process_line loc line =
   if not (Str.string_match filter_cookie_re line 0)
