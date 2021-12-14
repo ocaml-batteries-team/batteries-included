@@ -3,6 +3,10 @@ Changelog
 
 ## NEXT_RELEASE
 
+- BatString.edit_distance: faster; unsafe array accesses
+  #1061
+  (Francois Berenger)
+
 - BatBytes.{fold_left,fold_right,for_all,exists,starts_with,ends_with,split_on_char}
   #1050
   Code from the stdlib introduced in OCaml-4.13.0.
