@@ -37,8 +37,6 @@ let print_loc = function
        stale := false;
      end
 
-Str.string_match (Str.regexp ".*\\+hihi") extra 0
-
 let has_domains ~extra =
   let extra = Str.full_split (Str.regexp_string "+") extra in
   List.mem (Str.Text "domains") extra ||
