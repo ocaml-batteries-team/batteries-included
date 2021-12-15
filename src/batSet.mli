@@ -516,7 +516,7 @@ module String : S with type elt = string
     @author David Rajchenbach-Teller
 *)
 
-type 'a t
+type +'a t
 (** The type of sets. *)
 
 include BatEnum.Enumerable with type 'a enumerable = 'a t

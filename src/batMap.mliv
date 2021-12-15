@@ -534,7 +534,7 @@ module String : S with type key = string
     function, it is recommended to use the functorized maps provided
     by {!Make}.  *)
 
-type ('a, 'b) t
+type (+'a, +'b) t
 
 val empty : ('a, 'b) t
 (** The empty map, using [compare] as key comparison function. *)
@@ -973,7 +973,7 @@ module PMap : sig
       functor for additional safety.
   *)
 
-  type ('a, 'b) t
+  type ('a, +'b) t
 
   val empty : ('a, 'b) t
   (** The empty map, using [compare] as key comparison function. *)
