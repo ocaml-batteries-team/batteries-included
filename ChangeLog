@@ -3,6 +3,10 @@ Changelog
 
 ## NEXT_RELEASE
 
+TO_BE_FILLED
+
+## v3.4.0 (minor release)
+
 - BatString.edit_distance: faster; unsafe array accesses
   #1061
   (Francois Berenger)
@@ -39,8 +43,6 @@ Changelog
   #729
   Since 4.03: [@@unboxed] and [@@noalloc] respectively
   (Thibault Suzanne, review by Francois Berenger)
-
-TODO
 
 ## v3.3.0 (minor release)
 
