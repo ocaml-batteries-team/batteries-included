@@ -185,6 +185,10 @@ val iter : ('a -> 'b -> unit) -> ('a, 'b) t -> unit
     they are passed to [f] in reverse order of introduction, that is,
     the most recent binding is passed first. *)
 
+val for_all : ('a -> 'b -> bool) -> ('a, 'b) t -> bool
+(** [Hashtbl.for_all p tbl] check if the predicate [p k v]
+    holds for all bindings currently in [tbl]. *)
+
 val fold : ('a -> 'b -> 'c -> 'c) -> ('a, 'b) t -> 'c -> 'c
 (** [Hashtbl.fold f tbl init] computes
     [(f kN dN ... (f k1 d1 (f k0 d0 init))...)],
@@ -331,6 +335,7 @@ sig
   val add : ('a, 'b) t -> key:'a -> data:'b -> unit
   val replace : ('a, 'b) t -> key:'a -> data:'b -> unit
   val iter : f:(key:'a -> data:'b -> unit) -> ('a, 'b) t -> unit
+  val for_all : f:(key:'a -> data:'b -> bool) -> ('a, 'b) t -> bool
   val map : f:(key:'a -> data:'b -> 'c) -> ('a, 'b) t -> ('a, 'c) t
   val map_inplace : f:(key:'a -> data:'b -> 'b) -> ('a,'b) t -> unit
   val filter : f:('a -> bool) -> ('key, 'a) t -> ('key, 'a) t
@@ -393,6 +398,7 @@ sig
   val replace : 'a t -> key -> 'a -> unit
   val mem : 'a t -> key -> bool
   val iter : (key -> 'a -> unit) -> 'a t -> unit
+  val for_all : (key -> 'a -> bool) -> 'a t -> bool
   val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
   val map : (key -> 'b -> 'c) -> 'b t -> 'c t
   val map_inplace : (key -> 'a -> 'a) -> 'a t -> unit
@@ -469,6 +475,7 @@ sig
     val add : 'a t -> key:key -> data:'a -> unit
     val replace : 'a t -> key:key -> data:'a -> unit
     val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
+    val for_all : f:(key:key -> data:'a -> bool) -> 'a t -> bool
     val map : f:(key:key -> data:'a -> 'b) -> 'a t -> 'b t
     val map_inplace : f:(key:key -> data:'a -> 'a) -> 'a t -> unit
     val filter : f:('a -> bool) -> 'a t -> 'a t
@@ -566,6 +573,7 @@ sig
   (**{6 Traversing}*)
 
   val iter : ('a -> 'b -> unit) -> ('a, 'b, [>`Read]) t -> unit
+  val for_all : ('a -> 'b -> bool) -> ('a, 'b, [>`Read]) t -> bool
   val fold : ('a -> 'b -> 'c -> 'c) -> ('a, 'b, [>`Read]) t -> 'c -> 'c
   val map : ('a -> 'b -> 'c) -> ('a, 'b, [>`Read]) t -> ('a, 'c, _) t
   val map_inplace : ('a -> 'b -> 'b) -> ('a, 'b, [>`Write]) t -> unit
@@ -613,6 +621,7 @@ sig
     val add : ('a, 'b, [>`Write]) t -> key:'a -> data:'b -> unit
     val replace : ('a, 'b, [>`Write]) t -> key:'a -> data:'b -> unit
     val iter : f:(key:'a -> data:'b -> unit) -> ('a, 'b, [>`Read]) t -> unit
+    val for_all : f:(key:'a -> data:'b -> bool) -> ('a, 'b, [>`Read]) t -> bool
     val map : f:(key:'a -> data:'b -> 'c) -> ('a, 'b, [>`Read]) t -> ('a, 'c, _) t
     val map_inplace : f:(key:'a -> data:'b -> 'b) -> ('a, 'b, [>`Write]) t -> unit
     val filter : f:('a -> bool) -> ('key, 'a, [>`Read]) t -> ('key, 'a, _) t

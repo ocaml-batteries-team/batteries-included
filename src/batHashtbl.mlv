@@ -490,7 +490,23 @@ let merge_all f h1 h2 =
      let h = merge_all (fun _ _ r -> r) h1 h2 in \
      find_all h 1)
 *)
+exception Falsified
 
+(* test if predicate holds for all key-value pairs *)
+let for_all p ht =
+  try
+    iter (fun k v ->
+        if not (p k v) then
+          raise Falsified
+      ) ht;
+    true
+  with Falsified -> false
+
+(*$T for_all
+    for_all (fun k v -> k = v) (of_list [(1,1);(2,2);(3,3)])
+    not (for_all (fun k v -> k = v) (of_list [(1,1);(2,2);(3,4)]))
+    for_all (fun k v -> k = v) empty
+*)
 
 module Exceptionless =
 struct
@@ -510,6 +526,7 @@ struct
   let add e ~key ~data = add e key data
   let replace e ~key ~data = replace e key data
   let iter ~f e = iter (label f) e
+  let for_all ~f e = for_all (label f) e
   let map ~f e = map (label f) e
   let map_inplace ~f e = map_inplace (label f) e
   let filter ~f e = filter f e
@@ -547,6 +564,7 @@ sig
   val replace : 'a t -> key -> 'a -> unit
   val mem : 'a t -> key -> bool
   val iter : (key -> 'a -> unit) -> 'a t -> unit
+  val for_all : (key -> 'a -> bool) -> 'a t -> bool
   val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
   val map : (key -> 'b -> 'c) -> 'b t -> 'c t
   val map_inplace : (key -> 'a -> 'a) -> 'a t -> unit
@@ -611,6 +629,7 @@ sig
     val add : 'a t -> key:key -> data:'a -> unit
     val replace : 'a t -> key:key -> data:'a -> unit
     val iter : f:(key:key -> data:'a -> unit) -> 'a t -> unit
+    val for_all : f:(key:key -> data:'a -> bool) -> 'a t -> bool
     val map : f:(key:key -> data:'a -> 'b) -> 'a t -> 'b t
     val map_inplace : f:(key:key -> data:'a -> 'a) -> 'a t -> unit
     val filter : f:('a -> bool) -> 'a t -> 'a t
@@ -730,6 +749,7 @@ struct
     (H.hash key) land (Array.length (h_conv (to_hash h)).data - 1)
 
   let iter = iter
+  let for_all p ht = for_all p (to_hash ht)
   let fold = fold
   let length = length
 
@@ -901,6 +921,7 @@ struct
     let add e ~key ~data = add e key data
     let replace e ~key ~data = replace e key data
     let iter ~f e = iter (label f) e
+    let for_all ~f e = for_all (label f) e
     let map ~f e = map (label f) e
     let map_inplace ~f e = map_inplace (label f) e
     let filter ~f e = filter f e
@@ -954,6 +975,7 @@ struct
   let find_option = find_option
   let mem         = mem
   let iter        = iter
+  let for_all     = for_all
   let fold        = fold
   let map         = map
   let map_inplace = map_inplace
@@ -984,6 +1006,7 @@ struct
     let add e ~key ~data = add e key data
     let replace e ~key ~data = replace e key data
     let iter ~f e = iter (label f) e
+    let for_all ~f e = for_all (label f) e
     let map ~f e = map (label f) e
     let map_inplace ~f e = map_inplace (label f) e
     let filter ~f e = filter f e
