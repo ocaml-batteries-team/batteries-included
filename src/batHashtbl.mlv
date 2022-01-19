@@ -217,6 +217,21 @@ let find_option h key =
   let pos = key_index h key in
   loop (Array.unsafe_get (h_conv h).data pos)
 
+exception Verified
+
+let exists p ht =
+  try
+    iter (fun k v ->
+        if p k v then raise Verified
+      ) ht;
+    false
+  with Verified -> true
+
+(*$T exists
+    exists (fun k v -> k = v) (of_list [(1,2);(2,3);(3,3)])
+    not (exists (fun k v -> k = v) (of_list []))
+*)
+
 let of_enum e =
   let h = create (if BatEnum.fast_count e then BatEnum.count e else 0) in
   BatEnum.iter (fun (k,v) -> add h k v) e;
@@ -519,6 +534,7 @@ struct
   let filter_map ~f e = filter_map (label f) e
   let filter_map_inplace ~f e = filter_map_inplace (label f) e
   let fold ~f e ~init = fold (label f) e init
+  let exists ~f e = exists (label f) e
   let modify ~key ~f = modify key f
   let modify_def ~default ~key ~f = modify_def default key f
   let modify_opt ~key ~f = modify_opt key f
@@ -548,6 +564,7 @@ sig
   val mem : 'a t -> key -> bool
   val iter : (key -> 'a -> unit) -> 'a t -> unit
   val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+  val exists : (key -> 'a -> bool) -> 'a t -> bool
   val map : (key -> 'b -> 'c) -> 'b t -> 'c t
   val map_inplace : (key -> 'a -> 'a) -> 'a t -> unit
   val filter : ('a -> bool) -> 'a t -> 'a t
@@ -620,6 +637,7 @@ sig
     val filter_map : f:(key:key -> data:'a -> 'b option) -> 'a t -> 'b t
     val filter_map_inplace : f:(key:key -> data:'a -> 'a option) -> 'a t -> unit
     val fold : f:(key:key -> data:'a -> 'b -> 'b) -> 'a t -> init:'b -> 'b
+    val exists : f:(key:key -> data:'a -> bool) -> 'a t -> bool
     val modify : key:key -> f:('a -> 'a) -> 'a t -> unit
     val modify_def : default:'a -> key:key -> f:('a -> 'a) -> 'a t -> unit
     val modify_opt : key:key -> f:('a option -> 'a option) -> 'a t -> unit
@@ -740,6 +758,7 @@ struct
   let keys h = keys (to_hash h)
   let map (f:key -> 'a -> 'b) h =
     of_hash (map f (to_hash h))
+  let exists (f:key -> 'a -> bool) h = exists f (to_hash h)
   (* We can use polymorphic filteri since we do not use the key at all for inline ops *)
   let map_inplace (f:key -> 'a -> 'b) h = map_inplace f (to_hash h)
   let filteri_inplace f h = filteri_inplace f (to_hash h)
@@ -910,6 +929,7 @@ struct
     let filter_map ~f e = filter_map (label f) e
     let filter_map_inplace ~f e = filter_map_inplace (label f) e
     let fold ~f e ~init = fold (label f) e init
+    let exists ~f e = exists (label f) e
     let modify ~key ~f = modify key f
     let modify_def ~default ~key ~f = modify_def default key f
     let modify_opt ~key ~f = modify_opt key f
@@ -952,6 +972,7 @@ struct
   let find_all    = find_all
   let find_default= find_default
   let find_option = find_option
+  let exists      = exists
   let mem         = mem
   let iter        = iter
   let fold        = fold
@@ -993,6 +1014,7 @@ struct
     let filter_map ~f e = filter_map (label f) e
     let filter_map_inplace ~f e = filter_map_inplace (label f) e
     let fold ~f e ~init = fold (label f) e init
+    let exists ~f e = exists (label f) e
     let modify ~key ~f = modify key f
     let modify_def ~default ~key ~f = modify_def default key f
     let modify_opt ~key ~f = modify_opt key f
