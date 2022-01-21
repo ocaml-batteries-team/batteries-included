@@ -62,3 +62,14 @@ let split_extension s =
   ("/foo/.rc", "")    (split_extension "/foo/.rc")
   ("", "")            (split_extension "")
 *)
+
+let with_temp_file ?temp_dir prfx sfx f =
+  let tmp_fn = Filename.temp_file ?temp_dir prfx sfx in
+  BatPervasives.finally (fun () -> Sys.remove tmp_fn) f tmp_fn
+
+(* the temp file is expected to exist during f's lifetime, but not after *)
+(*$T with_temp_file
+  let fn = with_temp_file "batFilename_with_temp_file" ".tmp" \
+      (fun fn -> assert(Sys.file_exists fn); fn) in \
+  not (Sys.file_exists fn)
+*)

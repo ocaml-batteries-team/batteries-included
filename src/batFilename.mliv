@@ -147,6 +147,13 @@ val temp_file : ?temp_dir: string -> string -> string -> string
    @before 3.11.2 no ?temp_dir optional argument
 *)
 
+val with_temp_file : ?temp_dir: string -> string -> string -> (string -> 'a) -> 'a
+(** [with_temp_file prfx sfx f] will execute [f tmp_fn] where
+    [tmp_fn = temp_file prfx sfx];
+    [tmp_fn] will be removed prior to returning the result of [f].
+    I.e. run a function using a named temporary file, without forgetting
+    to remove that file. *)
+
 val open_temp_file :
           ?mode: open_flag list ->
 ##V>4.2## ?perms: int ->
