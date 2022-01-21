@@ -3,7 +3,9 @@ Changelog
 
 ## NEXT_RELEASE
 
-TO_BE_FILLED
+- BatFilename.with_temp_file: ?temp_dir:string -> string -> string -> (string -> 'a) -> 'a
+  #1071
+  (Francois Berenger, review by Cedric Cellier)
 
 ## v3.4.0 (minor release)
 
