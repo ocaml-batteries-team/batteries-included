@@ -65,9 +65,7 @@ let split_extension s =
 
 let with_temp_file ?temp_dir prfx sfx f =
   let tmp_fn = Filename.temp_file ?temp_dir prfx sfx in
-  let res = f tmp_fn in
-  Sys.remove tmp_fn;
-  res
+  BatPervasives.finally (fun () -> Sys.remove tmp_fn) f tmp_fn
 
 (* the temp file is expected to exist during f's lifetime, but not after *)
 (*$T with_temp_file
