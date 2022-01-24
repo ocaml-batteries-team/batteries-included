@@ -147,9 +147,12 @@ val find_default : ('a,'b) t -> 'a -> 'b -> 'b
 (** [Hashtbl.find_default tbl key default] finds a binding for [key],
     or return [default] if [key] is unbound in [tbl]. *)
 
-val find_option : ('a,'b) Hashtbl.t -> 'a -> 'b option
+val find_option : ('a,'b) t -> 'a -> 'b option
 (** Find a binding for the key, or return [None] if no
     value is found *)
+
+val exists : ('a -> 'b -> bool) -> ('a,'b) t -> bool
+(** Check if at least one key-value pair satisfies [p k v] *)
 
 val mem : ('a, 'b) t -> 'a -> bool
 (** [Hashtbl.mem tbl x] checks if [x] is bound in [tbl]. *)
@@ -340,6 +343,7 @@ sig
   val filter_map : f:(key:'key -> data:'a -> 'b option) -> ('key, 'a) t -> ('key, 'b) t
   val filter_map_inplace : f:(key:'key -> data:'a -> 'a option) -> ('key, 'a) t -> unit
   val fold : f:(key:'a -> data:'b -> 'c -> 'c) -> ('a, 'b) t -> init:'c -> 'c
+  val exists : f:(key:'a -> data:'b -> bool) -> ('a, 'b) t -> bool
   val modify : key:'a -> f:('b -> 'b) -> ('a, 'b) t -> unit
   val modify_def : default:'b -> key:'a -> f:('b -> 'b) -> ('a, 'b) t -> unit
   val modify_opt : key:'a -> f:('b option -> 'b option) -> ('a, 'b) t -> unit
@@ -394,6 +398,7 @@ sig
   val mem : 'a t -> key -> bool
   val iter : (key -> 'a -> unit) -> 'a t -> unit
   val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+  val exists : (key -> 'a -> bool) -> 'a t -> bool
   val map : (key -> 'b -> 'c) -> 'b t -> 'c t
   val map_inplace : (key -> 'a -> 'a) -> 'a t -> unit
   val filter : ('a -> bool) -> 'a t -> 'a t
@@ -478,6 +483,7 @@ sig
     val filter_map : f:(key:key -> data:'a -> 'b option) -> 'a t -> 'b t
     val filter_map_inplace : f:(key:key -> data:'a -> 'a option) -> 'a t -> unit
     val fold : f:(key:key -> data:'a -> 'b -> 'b) -> 'a t -> init:'b -> 'b
+    val exists : f:(key:key -> data:'a -> bool) -> 'a t -> bool
     val modify : key:key -> f:('a -> 'a) -> 'a t -> unit
     val modify_def : default:'a -> key:key -> f:('a -> 'a) -> 'a t -> unit
     val modify_opt : key:key -> f:('a option -> 'a option) -> 'a t -> unit
@@ -557,6 +563,8 @@ sig
   val find_all : ('a, 'b, [>`Read]) t -> 'a -> 'b list
   val find_default : ('a, 'b, [>`Read]) t -> 'a -> 'b -> 'b
   val find_option : ('a, 'b, [>`Read]) t -> 'a -> 'b option
+  val exists : ('a -> 'b -> bool) -> ('a, 'b, [>`Read]) t -> bool
+
   val mem : ('a, 'b, [>`Read]) t -> 'a -> bool
 
   (*val exists : ('a,'b) t -> 'a -> bool
@@ -622,6 +630,7 @@ sig
     val filter_map : f:(key:'key -> data:'a -> 'b option) -> ('key, 'a, [>`Read]) t -> ('key, 'b, _) t
     val filter_map_inplace : f:(key:'key -> data:'a -> 'a option) -> ('key, 'a, [>`Write]) t -> unit
     val fold : f:(key:'a -> data:'b -> 'c -> 'c) -> ('a, 'b, [>`Read]) t -> init:'c -> 'c
+    val exists : f:(key:'a -> data:'b -> bool) -> ('a, 'b, [>`Read]) t -> bool
     val merge : f:('key -> 'a option -> 'b option -> 'c option) ->
                 left:('key, 'a, [>`Read]) t -> right:('key, 'b, [>`Read]) t -> ('key, 'c, _) t
     val merge_all : f:('key -> 'a list -> 'b list -> 'c list) ->
