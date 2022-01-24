@@ -3,6 +3,14 @@ Changelog
 
 ## NEXT_RELEASE
 
+- BatHashtbl.for_all: ('a -> 'b -> bool) -> ('a, 'b) t -> bool
+  #1069
+  (Francois Berenger)
+
+- BatHashtbl.exists: ('a -> 'b -> bool) -> ('a,'b) t -> bool
+  #1070
+  (Francois Berenger)
+
 - BatFilename.with_temp_file: ?temp_dir:string -> string -> string -> (string -> 'a) -> 'a
   #1071
   (Francois Berenger, review by Cedric Cellier)
