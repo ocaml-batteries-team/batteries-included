@@ -34,6 +34,10 @@ let float     = Random.float
 let bool      = Random.bool
 let char ()   = Char.chr (int 256)
 
+##V>=4.14##let bits32 = Random.bits32
+##V>=4.14##let bits64 = Random.bits64
+##V>=4.14##let nativebits = Random.nativebits
+
 let full_range_int =
   if Sys.word_size = 32 then (* need 31-bits of entropy, bits() gives 30 *)
     fun () -> if bool () then - (bits ())-1 else bits ()
@@ -176,6 +180,10 @@ module Incubator = struct
     let enum_int64 bound = State.enum_int64 (perturb_global ()) bound
     let enum_float bound = State.enum_float (perturb_global ()) bound
     let enum_nativeint bound = State.enum_nativeint (perturb_global ()) bound
+
+##V>=4.14##let bits32 () = State.bits32 (perturb_global ())
+##V>=4.14##let bits64 () = State.bits64 (perturb_global ())
+##V>=4.14##let nativebits () = State.nativebits (perturb_global ())
 
   end
 end
