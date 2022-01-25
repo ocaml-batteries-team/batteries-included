@@ -357,3 +357,532 @@ module Exceptionless : sig
   val min : 'a t -> 'a option
   val combine : 'a t -> 'b t -> ('a * 'b) t
 end
+
+##V>=4.14##val is_empty : 'a t -> bool
+##V>=4.14##(** [is_empty xs] determines whether the sequence [xs] is empty.
+##V>=4.14##
+##V>=4.14##    It is recommended that the sequence [xs] be persistent.
+##V>=4.14##    Indeed, [is_empty xs] demands the head of the sequence [xs],
+##V>=4.14##    so, if [xs] is ephemeral, it may be the case that [xs] cannot
+##V>=4.14##    be used any more after this call has taken place.
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val uncons : 'a t -> ('a * 'a t) option
+##V>=4.14##(** If [xs] is empty, then [uncons xs] is [None].
+##V>=4.14##
+##V>=4.14##    If [xs] is nonempty, then [uncons xs] is
+##V>=4.14##    [Some (head xs, tail xs)],
+##V>=4.14##    that is, a pair of the head and tail of the sequence [xs].
+##V>=4.14##
+##V>=4.14##    This equivalence holds if [xs] is persistent.
+##V>=4.14##    If [xs] is ephemeral, then [uncons] must be preferred
+##V>=4.14##    over separate calls to [head] and [tail],
+##V>=4.14##    which would cause [xs] to be queried twice.
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val length : 'a t -> int
+##V>=4.14##(** [length xs] is the length of the sequence [xs].
+##V>=4.14##
+##V>=4.14##    The sequence [xs] must be finite.
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val iteri : (int -> 'a -> unit) -> 'a t -> unit
+##V>=4.14##(** [iteri f xs] invokes [f i x] successively
+##V>=4.14##    for every element [x] located at index [i] in the sequence [xs].
+##V>=4.14##
+##V>=4.14##    It terminates only if the sequence [xs] is finite.
+##V>=4.14##
+##V>=4.14##    [iteri f xs] is equivalent to
+##V>=4.14##    [iter (fun (i, x) -> f i x) (zip (ints 0) xs)].
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val fold_lefti : (int -> 'b -> 'a -> 'b) -> 'b -> 'a t -> 'b
+##V>=4.14##(** [fold_lefti f _ xs] invokes [f _ i x] successively
+##V>=4.14##    for every element [x] located at index [i] of the sequence [xs].
+##V>=4.14##
+##V>=4.14##    An accumulator of type ['a] is threaded through the calls to [f].
+##V>=4.14##
+##V>=4.14##    It terminates only if the sequence [xs] is finite.
+##V>=4.14##
+##V>=4.14##    [fold_lefti f accu xs] is equivalent to
+##V>=4.14##    [fold_left (fun accu (i, x) -> f accu i x) accu (zip (ints 0) xs)].
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val for_all : ('a -> bool) -> 'a t -> bool
+##V>=4.14##(** [for_all p xs] determines whether all elements [x] of the sequence [xs]
+##V>=4.14##    satisfy [p x].
+##V>=4.14##
+##V>=4.14##    The sequence [xs] must be finite.
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val exists : ('a -> bool) -> 'a t -> bool
+##V>=4.14##(** [exists xs p] determines whether at least one element [x]
+##V>=4.14##    of the sequence [xs] satisfies [p x].
+##V>=4.14##
+##V>=4.14##    The sequence [xs] must be finite.
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val find : ('a -> bool) -> 'a t -> 'a option
+##V>=4.14##(** [find p xs] returns [Some x], where [x] is the first element of the
+##V>=4.14##    sequence [xs] that satisfies [p x], if there is such an element.
+##V>=4.14##
+##V>=4.14##    It returns [None] if there is no such element.
+##V>=4.14##
+##V>=4.14##    The sequence [xs] must be finite.
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val find_map : ('a -> 'b option) -> 'a t -> 'b option
+##V>=4.14##(** [find_map f xs] returns [Some y], where [x] is the first element of the
+##V>=4.14##    sequence [xs] such that [f x = Some _], if there is such an element,
+##V>=4.14##    and where [y] is defined by [f x = Some y].
+##V>=4.14##
+##V>=4.14##    It returns [None] if there is no such element.
+##V>=4.14##
+##V>=4.14##    The sequence [xs] must be finite.
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val iter2 : ('a -> 'b -> unit) -> 'a t -> 'b t -> unit
+##V>=4.14##(** [iter2 f xs ys] invokes [f x y] successively for every pair [(x, y)] of
+##V>=4.14##    elements drawn synchronously from the sequences [xs] and [ys].
+##V>=4.14##
+##V>=4.14##    If the sequences [xs] and [ys] have different lengths, then
+##V>=4.14##    iteration stops as soon as one sequence is exhausted;
+##V>=4.14##    the excess elements in the other sequence are ignored.
+##V>=4.14##
+##V>=4.14##    Iteration terminates only if at least one of the sequences
+##V>=4.14##    [xs] and [ys] is finite.
+##V>=4.14##
+##V>=4.14##    [iter2 f xs ys] is equivalent to
+##V>=4.14##    [iter (fun (x, y) -> f x y) (zip xs ys)].
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val fold_left2 : ('a -> 'b -> 'c -> 'a) -> 'a -> 'b t -> 'c t -> 'a
+##V>=4.14##(** [fold_left2 f _ xs ys] invokes [f _ x y] successively
+##V>=4.14##    for every pair [(x, y)] of elements drawn synchronously
+##V>=4.14##    from the sequences [xs] and [ys].
+##V>=4.14##
+##V>=4.14##    An accumulator of type ['a] is threaded through the calls to [f].
+##V>=4.14##
+##V>=4.14##    If the sequences [xs] and [ys] have different lengths, then
+##V>=4.14##    iteration stops as soon as one sequence is exhausted;
+##V>=4.14##    the excess elements in the other sequence are ignored.
+##V>=4.14##
+##V>=4.14##    Iteration terminates only if at least one of the sequences
+##V>=4.14##    [xs] and [ys] is finite.
+##V>=4.14##
+##V>=4.14##    [fold_left2 f accu xs ys] is equivalent to
+##V>=4.14##    [fold_left (fun accu (x, y) -> f accu x y) (zip xs ys)].
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val for_all2 : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
+##V>=4.14##(** [for_all2 p xs ys] determines whether all pairs [(x, y)] of elements
+##V>=4.14##    drawn synchronously from the sequences [xs] and [ys] satisfy [p x y].
+##V>=4.14##
+##V>=4.14##    If the sequences [xs] and [ys] have different lengths, then
+##V>=4.14##    iteration stops as soon as one sequence is exhausted;
+##V>=4.14##    the excess elements in the other sequence are ignored.
+##V>=4.14##    In particular, if [xs] or [ys] is empty, then
+##V>=4.14##    [for_all2 p xs ys] is true. This is where
+##V>=4.14##    [for_all2] and [equal] differ: [equal eq xs ys] can
+##V>=4.14##    be true only if [xs] and [ys] have the same length.
+##V>=4.14##
+##V>=4.14##    At least one of the sequences [xs] and [ys] must be finite.
+##V>=4.14##
+##V>=4.14##    [for_all2 p xs ys] is equivalent to [for_all (fun b -> b) (map2 p xs ys)].
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val exists2 : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
+##V>=4.14##(** [exists2 p xs ys] determines whether some pair [(x, y)] of elements
+##V>=4.14##    drawn synchronously from the sequences [xs] and [ys] satisfies [p x y].
+##V>=4.14##
+##V>=4.14##    If the sequences [xs] and [ys] have different lengths, then
+##V>=4.14##    iteration must stop as soon as one sequence is exhausted;
+##V>=4.14##    the excess elements in the other sequence are ignored.
+##V>=4.14##
+##V>=4.14##    At least one of the sequences [xs] and [ys] must be finite.
+##V>=4.14##
+##V>=4.14##    [exists2 p xs ys] is equivalent to [exists (fun b -> b) (map2 p xs ys)].
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val equal : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
+##V>=4.14##(** Provided the function [eq] defines an equality on elements,
+##V>=4.14##    [equal eq xs ys] determines whether the sequences [xs] and [ys]
+##V>=4.14##    are pointwise equal.
+##V>=4.14##
+##V>=4.14##    At least one of the sequences [xs] and [ys] must be finite.
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val compare : ('a -> 'b -> int) -> 'a t -> 'b t -> int
+##V>=4.14##(** Provided the function [cmp] defines a preorder on elements,
+##V>=4.14##    [compare cmp xs ys] compares the sequences [xs] and [ys]
+##V>=4.14##    according to the lexicographic preorder.
+##V>=4.14##
+##V>=4.14##    For more details on comparison functions, see {!Array.sort}.
+##V>=4.14##
+##V>=4.14##    At least one of the sequences [xs] and [ys] must be finite.
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val init : int -> (int -> 'a) -> 'a t
+##V>=4.14##(** [init n f] is the sequence [f 0; f 1; ...; f (n-1)].
+##V>=4.14##
+##V>=4.14##    [n] must be nonnegative.
+##V>=4.14##
+##V>=4.14##    If desired, the infinite sequence [f 0; f 1; ...]
+##V>=4.14##    can be defined as [map f (ints 0)].
+##V>=4.14##
+##V>=4.14##    @raise Invalid_argument if [n] is negative.
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val repeat : 'a -> 'a t
+##V>=4.14##(** [repeat x] is the infinite sequence
+##V>=4.14##    where the element [x] is repeated indefinitely.
+##V>=4.14##
+##V>=4.14##    [repeat x] is equivalent to [cycle (return x)].
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val forever : (unit -> 'a) -> 'a t
+##V>=4.14##(** [forever f] is an infinite sequence where every element is produced
+##V>=4.14##    (on demand) by the function call [f()].
+##V>=4.14##
+##V>=4.14##    For instance,
+##V>=4.14##    [forever Random.bool] is an infinite sequence of random bits.
+##V>=4.14##
+##V>=4.14##    [forever f] is equivalent to [map f (repeat ())].
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val cycle : 'a t -> 'a t
+##V>=4.14##(** [cycle xs] is the infinite sequence that consists of an infinite
+##V>=4.14##    number of repetitions of the sequence [xs].
+##V>=4.14##
+##V>=4.14##    If [xs] is an empty sequence,
+##V>=4.14##    then [cycle xs] is empty as well.
+##V>=4.14##
+##V>=4.14##    Consuming (a prefix of) the sequence [cycle xs] once
+##V>=4.14##    can cause the sequence [xs] to be consumed more than once.
+##V>=4.14##    Therefore, [xs] must be persistent.
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val iterate : ('a -> 'a) -> 'a -> 'a t
+##V>=4.14##(** [iterate f x] is the infinite sequence whose elements are
+##V>=4.14##    [x], [f x], [f (f x)], and so on.
+##V>=4.14##
+##V>=4.14##    In other words, it is the orbit of the function [f],
+##V>=4.14##    starting at [x].
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val mapi : (int -> 'a -> 'b) -> 'a t -> 'b t
+##V>=4.14##(** [mapi] is analogous to [map], but applies the function [f] to
+##V>=4.14##    an index and an element.
+##V>=4.14##
+##V>=4.14##    [mapi f xs] is equivalent to [map2 f (ints 0) xs].
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val scan : ('b -> 'a -> 'b) -> 'b -> 'a t -> 'b t
+##V>=4.14##(** If [xs] is a sequence [[x0; x1; x2; ...]], then
+##V>=4.14##    [scan f a0 xs] is a sequence of accumulators
+##V>=4.14##    [[a0; a1; a2; ...]]
+##V>=4.14##    where [a1] is [f a0 x0], [a2] is [f a1 x1], and so on.
+##V>=4.14##
+##V>=4.14##    Thus, [scan f a0 xs] is conceptually related to
+##V>=4.14##    [fold_left f a0 xs]. However, instead of performing an
+##V>=4.14##    eager iteration and immediately returning the final accumulator,
+##V>=4.14##    it returns a sequence of accumulators.
+##V>=4.14##
+##V>=4.14##    For instance, [scan (+) 0] transforms a sequence of integers
+##V>=4.14##    into the sequence of its partial sums.
+##V>=4.14##
+##V>=4.14##    If [xs] has length [n]
+##V>=4.14##    then [scan f a0 xs] has length [n+1].
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val take : int -> 'a t -> 'a t
+##V>=4.14##(** [take n xs] is the sequence of the first [n] elements of [xs].
+##V>=4.14##
+##V>=4.14##    If [xs] has fewer than [n] elements,
+##V>=4.14##    then [take n xs] is equivalent to [xs].
+##V>=4.14##
+##V>=4.14##    [n] must be nonnegative.
+##V>=4.14##
+##V>=4.14##    @raise Invalid_argument if [n] is negative.
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val drop : int -> 'a t -> 'a t
+##V>=4.14##(** [drop n xs] is the sequence [xs], deprived of its first [n] elements.
+##V>=4.14##
+##V>=4.14##    If [xs] has fewer than [n] elements,
+##V>=4.14##    then [drop n xs] is empty.
+##V>=4.14##
+##V>=4.14##    [n] must be nonnegative.
+##V>=4.14##
+##V>=4.14##    [drop] is lazy: the first [n+1] elements of the sequence [xs]
+##V>=4.14##    are demanded only when the first element of [drop n xs] is
+##V>=4.14##    demanded. For this reason, [drop 1 xs] is {i not} equivalent
+##V>=4.14##    to [tail xs], which queries [xs] immediately.
+##V>=4.14##
+##V>=4.14##    @raise Invalid_argument if [n] is negative.
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val take_while : ('a -> bool) -> 'a t -> 'a t
+##V>=4.14##(** [take_while p xs] is the longest prefix of the sequence [xs]
+##V>=4.14##    where every element [x] satisfies [p x].
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val drop_while : ('a -> bool) -> 'a t -> 'a t
+##V>=4.14##(** [drop_while p xs] is the sequence [xs], deprived of the prefix
+##V>=4.14##    [take_while p xs].
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val group : ('a -> 'a -> bool) -> 'a t -> 'a t t
+##V>=4.14##(** Provided the function [eq] defines an equality on elements,
+##V>=4.14##    [group eq xs] is the sequence of the maximal runs
+##V>=4.14##    of adjacent duplicate elements of the sequence [xs].
+##V>=4.14##
+##V>=4.14##    Every element of [group eq xs] is a nonempty sequence of equal elements.
+##V>=4.14##
+##V>=4.14##    The concatenation [concat (group eq xs)] is equal to [xs].
+##V>=4.14##
+##V>=4.14##    Consuming [group eq xs], and consuming the sequences that it contains,
+##V>=4.14##    can cause [xs] to be consumed more than once. Therefore, [xs] must be
+##V>=4.14##    persistent.
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val memoize : 'a t -> 'a t
+##V>=4.14##(** The sequence [memoize xs] has the same elements as the sequence [xs].
+##V>=4.14##
+##V>=4.14##    Regardless of whether [xs] is ephemeral or persistent,
+##V>=4.14##    [memoize xs] is persistent: even if it is queried several times,
+##V>=4.14##    [xs] is queried at most once.
+##V>=4.14##
+##V>=4.14##    The construction of the sequence [memoize xs] internally relies on
+##V>=4.14##    suspensions provided by the module {!Lazy}. These suspensions are
+##V>=4.14##    {i not} thread-safe. Therefore, the sequence [memoize xs]
+##V>=4.14##    must {i not} be queried by multiple threads concurrently.
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##exception Forced_twice
+##V>=4.14##(** This exception is raised when a sequence returned by {!once}
+##V>=4.14##    (or a suffix of it) is queried more than once.
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val once : 'a t -> 'a t
+##V>=4.14##(** The sequence [once xs] has the same elements as the sequence [xs].
+##V>=4.14##
+##V>=4.14##    Regardless of whether [xs] is ephemeral or persistent,
+##V>=4.14##    [once xs] is an ephemeral sequence: it can be queried at most once.
+##V>=4.14##    If it (or a suffix of it) is queried more than once, then the exception
+##V>=4.14##    [Forced_twice] is raised. This can be useful, while debugging or testing,
+##V>=4.14##    to ensure that a sequence is consumed at most once.
+##V>=4.14##
+##V>=4.14##    @raise Forced_twice if [once xs], or a suffix of it,
+##V>=4.14##           is queried more than once.
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val transpose : 'a t t -> 'a t t
+##V>=4.14##(** If [xss] is a matrix (a sequence of rows), then [transpose xss] is
+##V>=4.14##    the sequence of the columns of the matrix [xss].
+##V>=4.14##
+##V>=4.14##    The rows of the matrix [xss] are not required to have the same length.
+##V>=4.14##
+##V>=4.14##    The matrix [xss] is not required to be finite (in either direction).
+##V>=4.14##
+##V>=4.14##    The matrix [xss] must be persistent.
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val zip : 'a t -> 'b t -> ('a * 'b) t
+##V>=4.14##(** [zip xs ys] is the sequence of pairs [(x, y)]
+##V>=4.14##    drawn synchronously from the sequences [xs] and [ys].
+##V>=4.14##
+##V>=4.14##    If the sequences [xs] and [ys] have different lengths, then
+##V>=4.14##    the sequence ends as soon as one sequence is exhausted;
+##V>=4.14##    the excess elements in the other sequence are ignored.
+##V>=4.14##
+##V>=4.14##    [zip xs ys] is equivalent to [map2 (fun a b -> (a, b)) xs ys].
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
+##V>=4.14##(** [map2 f xs ys] is the sequence of the elements [f x y],
+##V>=4.14##    where the pairs [(x, y)] are drawn synchronously from the
+##V>=4.14##    sequences [xs] and [ys].
+##V>=4.14##
+##V>=4.14##    If the sequences [xs] and [ys] have different lengths, then
+##V>=4.14##    the sequence ends as soon as one sequence is exhausted;
+##V>=4.14##    the excess elements in the other sequence are ignored.
+##V>=4.14##
+##V>=4.14##    [map2 f xs ys] is equivalent to [map (fun (x, y) -> f x y) (zip xs ys)].
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val interleave : 'a t -> 'a t -> 'a t
+##V>=4.14##(** [interleave xs ys] is the sequence that begins with the first element of
+##V>=4.14##    [xs], continues with the first element of [ys], and so on.
+##V>=4.14##
+##V>=4.14##    When one of the sequences [xs] and [ys] is exhausted,
+##V>=4.14##    [interleave xs ys] continues with the rest of the other sequence.
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val sorted_merge : ('a -> 'a -> int) -> 'a t -> 'a t -> 'a t
+##V>=4.14##(** If the sequences [xs] and [ys] are sorted according to the total preorder
+##V>=4.14##    [cmp], then [sorted_merge cmp xs ys] is the sorted sequence obtained by
+##V>=4.14##    merging the sequences [xs] and [ys].
+##V>=4.14##
+##V>=4.14##    For more details on comparison functions, see {!Array.sort}.
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val product : 'a t -> 'b t -> ('a * 'b) t
+##V>=4.14##(** [product xs ys] is the Cartesian product of the sequences [xs] and [ys].
+##V>=4.14##
+##V>=4.14##    For every element [x] of [xs] and for every element [y] of [ys],
+##V>=4.14##    the pair [(x, y)] appears once as an element of [product xs ys].
+##V>=4.14##
+##V>=4.14##    The order in which the pairs appear is unspecified.
+##V>=4.14##
+##V>=4.14##    The sequences [xs] and [ys] are not required to be finite.
+##V>=4.14##
+##V>=4.14##    The sequences [xs] and [ys] must be persistent.
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val map_product : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
+##V>=4.14##(** The sequence [map_product f xs ys] is the image through [f]
+##V>=4.14##    of the Cartesian product of the sequences [xs] and [ys].
+##V>=4.14##
+##V>=4.14##    For every element [x] of [xs] and for every element [y] of [ys],
+##V>=4.14##    the element [f x y] appears once as an element of [map_product f xs ys].
+##V>=4.14##
+##V>=4.14##    The order in which these elements appear is unspecified.
+##V>=4.14##
+##V>=4.14##    The sequences [xs] and [ys] are not required to be finite.
+##V>=4.14##
+##V>=4.14##    The sequences [xs] and [ys] must be persistent.
+##V>=4.14##
+##V>=4.14##    [map_product f xs ys] is equivalent to
+##V>=4.14##    [map (fun (x, y) -> f x y) (product xs ys)].
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val unzip : ('a * 'b) t -> 'a t * 'b t
+##V>=4.14##(** [unzip] transforms a sequence of pairs into a pair of sequences.
+##V>=4.14##
+##V>=4.14##    [unzip xs] is equivalent to [(map fst xs, map snd xs)].
+##V>=4.14##
+##V>=4.14##    Querying either of the sequences returned by [unzip xs]
+##V>=4.14##    causes [xs] to be queried.
+##V>=4.14##    Therefore, querying both of them
+##V>=4.14##    causes [xs] to be queried twice.
+##V>=4.14##    Thus, [xs] must be persistent and cheap.
+##V>=4.14##    If that is not the case, use [unzip (memoize xs)].
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val split : ('a * 'b) t -> 'a t * 'b t
+##V>=4.14##(** [split] is an alias for [unzip].
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val partition_map : ('a -> ('b, 'c) Either.t) -> 'a t -> 'b t * 'c t
+##V>=4.14##(** [partition_map f xs] returns a pair of sequences [(ys, zs)], where:
+##V>=4.14##
+##V>=4.14##    - [ys] is the sequence of the elements [y] such that
+##V>=4.14##      [f x = Left y], where [x] ranges over [xs];
+##V>=4.14##
+##V>=4.14##    - [zs] is the sequence of the elements [z] such that
+##V>=4.14##      [f x = Right z], where [x] ranges over [xs].
+##V>=4.14##
+##V>=4.14##    [partition_map f xs] is equivalent to a pair of
+##V>=4.14##    [filter_map Either.find_left (map f xs)] and
+##V>=4.14##    [filter_map Either.find_right (map f xs)].
+##V>=4.14##
+##V>=4.14##    Querying either of the sequences returned by [partition_map f xs]
+##V>=4.14##    causes [xs] to be queried.
+##V>=4.14##    Therefore, querying both of them
+##V>=4.14##    causes [xs] to be queried twice.
+##V>=4.14##    Thus, [xs] must be persistent and cheap.
+##V>=4.14##    If that is not the case, use [partition_map f (memoize xs)].
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
+##V>=4.14##(** [partition p xs] returns a pair of the subsequence of the elements
+##V>=4.14##    of [xs] that satisfy [p] and the subsequence of the elements of
+##V>=4.14##    [xs] that do not satisfy [p].
+##V>=4.14##
+##V>=4.14##    [partition p xs] is equivalent to
+##V>=4.14##    [filter p xs, filter (fun x -> not (p x)) xs].
+##V>=4.14##
+##V>=4.14##    Consuming both of the sequences returned by [partition p xs] causes
+##V>=4.14##    [xs] to be consumed twice and causes the function [f] to be applied
+##V>=4.14##    twice to each element of the list.
+##V>=4.14##    Therefore, [f] should be pure and cheap.
+##V>=4.14##    Furthermore, [xs] should be persistent and cheap.
+##V>=4.14##    If that is not the case, use [partition p (memoize xs)].
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##(** {1 Converting between sequences and dispensers} *)
+##V>=4.14##
+##V>=4.14##(** A dispenser is a representation of a sequence as a function of type
+##V>=4.14##    [unit -> 'a option]. Every time this function is invoked, it returns
+##V>=4.14##    the next element of the sequence. When there are no more elements,
+##V>=4.14##    it returns [None]. A dispenser has mutable internal state, therefore
+##V>=4.14##    is ephemeral: the sequence that it represents can be consumed at most
+##V>=4.14##    once. *)
+##V>=4.14##
+##V>=4.14##val of_dispenser : (unit -> 'a option) -> 'a t
+##V>=4.14##(** [of_dispenser it] is the sequence of the elements produced by the
+##V>=4.14##    dispenser [it]. It is an ephemeral sequence: it can be consumed at most
+##V>=4.14##    once. If a persistent sequence is needed, use
+##V>=4.14##    [memoize (of_dispenser it)].
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##val to_dispenser : 'a t -> (unit -> 'a option)
+##V>=4.14##(** [to_dispenser xs] is a fresh dispenser on the sequence [xs].
+##V>=4.14##
+##V>=4.14##    This dispenser has mutable internal state,
+##V>=4.14##    which is not protected by a lock;
+##V>=4.14##    so, it must not be used by several threads concurrently.
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+
+##V>=4.14##(** {1 Sequences of integers} *)
+
+##V>=4.14##val ints : int -> int t
+##V>=4.14##(** [ints i] is the infinite sequence of the integers beginning at [i] and
+##V>=4.14##    counting up.
+##V>=4.14##
+##V>=4.14##    @since 4.14 *)
+##V>=4.14##
