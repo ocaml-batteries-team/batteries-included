@@ -3,6 +3,10 @@ Changelog
 
 ## NEXT_RELEASE
 
+- add covariances to types of maps and sets
+  #1065
+  (Jean-Christophe Léchenet)
+
 - BatHashtbl.for_all: ('a -> 'b -> bool) -> ('a, 'b) t -> bool
   #1069
   (Francois Berenger)
