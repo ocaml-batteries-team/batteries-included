@@ -214,7 +214,7 @@ let set d idx v =
    Faster (avoids duplication of bounds checks) and more convenient. *)
 let upd d idx f =
   if idx < 0 || idx >= d.len then invalid_arg idx "set" "index";
-  iset d.arr idx (f @@ iget d.arr idx)
+  iset d.arr idx (f (iget d.arr idx))
 
 let first d =
   if d.len = 0 then invalid_arg 0 "first" "<array len is 0>";
@@ -727,7 +727,7 @@ let filter p a =
   (* Use a bitset to store which elements will be in the final array. *)
   let bs = BatBitSet.create n in
   for i = 0 to n-1 do
-    if p @@ iget a.arr i then 
+    if p (iget a.arr i) then 
       BatBitSet.set bs i
   done;
   (* Allocate the final array and copy elements into it. *)
@@ -755,7 +755,7 @@ let filteri p a =
   (* Use a bitset to store which elements will be in the final array. *)
   let bs = BatBitSet.create n in
   for i = 0 to n-1 do
-    if p i @@ iget a.arr i then 
+    if p i (iget a.arr i) then 
       BatBitSet.set bs i
   done;
   (* Allocate the final array and copy elements into it. *)
@@ -848,7 +848,7 @@ let partition p a =
   (* Use a bitset to store which elements will be in the final array. *)
   let bs = BatBitSet.create n in
   for i = 0 to n-1 do
-    if p @@ iget a.arr i then 
+    if p (iget a.arr i) then 
       BatBitSet.set bs i
   done;
   (* Allocate the arrays and copy elements into them. *)
@@ -857,9 +857,9 @@ let partition p a =
   let neg = make (n-n') in
   for i = 0 to n-1 do
     if BatBitSet.mem bs i then
-      add pos @@ iget a.arr i
+      add pos (iget a.arr i)
     else
-      add neg @@ iget a.arr i
+      add neg (iget a.arr i)
   done;
   (pos, neg)
 
@@ -1239,8 +1239,8 @@ let min_max a =
   let n = a.len in
   if n = 0 then
     invalid_arg a.len "DynArray.min_max" "empty array";
-  let mini = ref @@ iget a.arr 0 in
-  let maxi = ref @@ iget a.arr 0 in
+  let mini = ref (iget a.arr 0) in
+  let maxi = ref (iget a.arr 0) in
   for i = 1 to n-1 do
     let x = iget a.arr i in
     if x > !maxi then maxi := x;
@@ -1290,14 +1290,14 @@ let kahan_sum a =
 *)
 
 let avg a =
-  (float_of_int @@ sum a) /. (float_of_int @@ length a)
+  (float_of_int (sum a)) /. (float_of_int (length a))
 (*$T avg
   avg (of_list [1;2;3]) = 2.
   avg (of_list [0]) = 0.
 *) 
 
 let favg a =
-  (fsum a) /. (float_of_int @@ length a)
+  (fsum a) /. (float_of_int (length a))
 (*$T favg
   favg (of_list [1.0; 2.0; 3.0]) = 2.0
   favg (of_list [0.0]) = 0.0
@@ -1494,7 +1494,7 @@ let unsafe_set a n x =
   iset a.arr n x
 
 let unsafe_upd a n f =
-  iset a.arr n (f @@ iget a.arr n)
+  iset a.arr n (f (iget a.arr n))
 
 let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a out t =
   BatEnum.print ~first ~last ~sep print_a out (enum t)
