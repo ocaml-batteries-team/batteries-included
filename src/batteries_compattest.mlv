@@ -40,7 +40,14 @@ module Stdlib_verifications = struct
        include module type of Legacy.List
        val find_map : ('a -> 'b option) -> 'a list -> 'b
      end)
-##V>=4.7## module Seq = (Seq : module type of Legacy.Seq)
+(* previously: V>=4.7 module Seq = (Seq : module type of Legacy.Seq) *)
+##V<4.14##module Seq = (Seq : module type of Legacy.Seq)
+##V>=4.14##module Seq : sig
+##V>=4.14##  include module type of Legacy.Seq
+##V>=4.14##end = struct
+##V>=4.14##  include BatSeq
+##V>=4.14##  let equal = equal_stdlib
+##V>=4.14##end
   module Marshal =
     (Marshal: sig
        include module type of Legacy.Marshal

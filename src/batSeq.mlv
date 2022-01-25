@@ -1,5 +1,6 @@
 (*
  * Copyright (C) 2009 Jeremie Dimino
+ * Copyright (C) 2017 Simon Cruanes, INRIA
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -193,9 +194,9 @@ let rec map f s () = match s () with
   | Nil -> Nil
   | Cons(x, s) -> Cons(f x, map f s)
 
-let flat_map f s = 
+let flat_map f s =
     flatten (map f s)
-    
+
 (*$T flat_map
   equal (flat_map of_list (of_list [[1;2;3];[4;5;6]])) (of_list [1;2;3;4;5;6])
 *)
@@ -426,6 +427,35 @@ let of_string ?(first="[") ?(last="]") ?(sep=";") of_str s =
   try equal (of_string ~first:"{" int_of_string "[1;2;3]") (of_list []) with (Invalid_argument _) -> true
   try equal (of_string ~last:"}" int_of_string "[1;2;3]") (of_list []) with (Invalid_argument _) -> true
 *)
+
+##V>=4.14##let uncons                 = Stdlib.Seq.uncons
+##V>=4.14##let fold_lefti             = Stdlib.Seq.fold_lefti
+##V>=4.14##let fold_left2             = Stdlib.Seq.fold_left2
+##V>=4.14##let for_all2               = Stdlib.Seq.for_all2
+##V>=4.14##let exists2                = Stdlib.Seq.exists2
+##V>=4.14##let compare                = Stdlib.Seq.compare
+##V>=4.14##let repeat                 = Stdlib.Seq.repeat
+##V>=4.14##let forever                = Stdlib.Seq.forever
+##V>=4.14##let cycle                  = Stdlib.Seq.cycle
+##V>=4.14##let iterate                = Stdlib.Seq.iterate
+##V>=4.14##let scan                   = Stdlib.Seq.scan
+##V>=4.14##let group                  = Stdlib.Seq.group
+##V>=4.14##let memoize                = Stdlib.Seq.memoize
+##V>=4.14##exception Forced_twice = Stdlib.Seq.Forced_twice
+##V>=4.14##let once                   = Stdlib.Seq.once
+##V>=4.14##let transpose              = Stdlib.Seq.transpose
+##V>=4.14##let zip                    = Stdlib.Seq.zip
+##V>=4.14##let interleave             = Stdlib.Seq.interleave
+##V>=4.14##let sorted_merge           = Stdlib.Seq.sorted_merge
+##V>=4.14##let product                = Stdlib.Seq.product
+##V>=4.14##let map_product            = Stdlib.Seq.map_product
+##V>=4.14##let unzip                  = Stdlib.Seq.unzip
+##V>=4.14##let partition_map          = Stdlib.Seq.partition_map
+##V>=4.14##let partition              = Stdlib.Seq.partition
+##V>=4.14##let of_dispenser           = Stdlib.Seq.of_dispenser
+##V>=4.14##let to_dispenser           = Stdlib.Seq.to_dispenser
+##V>=4.14##let ints                   = Stdlib.Seq.ints
+##V>=4.14##let equal_stdlib           = Stdlib.Seq.equal
 
 module Infix = struct
   (** Infix operators matching those provided by {!BatEnum.Infix} *)

@@ -517,7 +517,7 @@ end
 ##V>=4.14##
 ##V>=4.14##    @since 4.14 *)
 
-##V>=4.14##val equal : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
+##V>=4.14##val equal_stdlib : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
 ##V>=4.14##(** Provided the function [eq] defines an equality on elements,
 ##V>=4.14##    [equal eq xs ys] determines whether the sequences [xs] and [ys]
 ##V>=4.14##    are pointwise equal.
