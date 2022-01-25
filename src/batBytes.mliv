@@ -179,23 +179,23 @@ val mapi : (int -> char -> char) -> t -> t
     index (in increasing index order) and stores the resulting bytes
     in a new sequence that is returned as the result. *)
 
-val fold_left : ('a -> char -> 'a) -> 'a -> bytes -> 'a
+val fold_left : ('a -> char -> 'a) -> 'a -> t -> 'a
 (** [fold_left f x s] computes
     [f (... (f (f x (get s 0)) (get s 1)) ...) (get s (n-1))],
     where [n] is the length of [s].
     @since 3.4.0 *)
 
-val fold_right : (char -> 'a -> 'a) -> bytes -> 'a -> 'a
+val fold_right : (char -> 'a -> 'a) -> t -> 'a -> 'a
 (** [fold_right f s x] computes
     [f (get s 0) (f (get s 1) ( ... (f (get s (n-1)) x) ...))],
     where [n] is the length of [s].
     @since 3.4.0 *)
 
-val for_all : (char -> bool) -> bytes -> bool
+val for_all : (char -> bool) -> t -> bool
 (** [for_all p s] checks if all characters in [s] satisfy the predicate [p].
     @since 3.4.0 *)
 
-val exists : (char -> bool) -> bytes -> bool
+val exists : (char -> bool) -> t -> bool
 (** [exists p s] checks if at least one character of [s] satisfies
     the predicate [p].
     @since 3.4.0 *)
@@ -267,12 +267,12 @@ val rindex_from_opt: t -> int -> char -> int option
     Raise [Invalid_argument] if [i+1] is not a valid position in [s].
     @since 2.7.0 *)
 
-val starts_with: prefix:bytes -> bytes -> bool
+val starts_with: prefix:t -> t -> bool
 (** [starts_with ~prefix s] is [true] if and only if [s] starts with
     [prefix].
     @since 3.4.0 *)
 
-val ends_with: suffix:bytes -> bytes -> bool
+val ends_with: suffix:t -> t -> bool
 (** [ends_with ~suffix s] is [true] if and only if [s] ends with [suffix].
     @since 3.4.0 *)
 
@@ -341,7 +341,7 @@ val equal: t -> t -> bool
 (** The equality function for byte sequences.
     @since 2.5.0 *)
 
-val split_on_char: char -> bytes -> bytes list
+val split_on_char: char -> t -> t list
 (** [split_on_char sep s] returns the list of all (possibly empty)
     subsequences of [s] that are delimited by the [sep] character.
 
@@ -583,167 +583,167 @@ let s = Bytes.of_string "hello"
 ##V>=4.08##    bytes.}}
 ##V>=4.08##*)
 
-##V>=4.08##val get_uint8 : bytes -> int -> int
+##V>=4.08##val get_uint8 : t -> int -> int
 ##V>=4.08##(** [get_uint8 b i] is [b]'s unsigned 8-bit integer starting at byte index [i].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val get_int8 : bytes -> int -> int
+##V>=4.08##val get_int8 : t -> int -> int
 ##V>=4.08##(** [get_int8 b i] is [b]'s signed 8-bit integer starting at byte index [i].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val get_uint16_ne : bytes -> int -> int
+##V>=4.08##val get_uint16_ne : t -> int -> int
 ##V>=4.08##(** [get_uint16_ne b i] is [b]'s native-endian unsigned 16-bit integer
 ##V>=4.08##    starting at byte index [i].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val get_uint16_be : bytes -> int -> int
+##V>=4.08##val get_uint16_be : t -> int -> int
 ##V>=4.08##(** [get_uint16_be b i] is [b]'s big-endian unsigned 16-bit integer
 ##V>=4.08##    starting at byte index [i].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val get_uint16_le : bytes -> int -> int
+##V>=4.08##val get_uint16_le : t -> int -> int
 ##V>=4.08##(** [get_uint16_le b i] is [b]'s little-endian unsigned 16-bit integer
 ##V>=4.08##    starting at byte index [i].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val get_int16_ne : bytes -> int -> int
+##V>=4.08##val get_int16_ne : t -> int -> int
 ##V>=4.08##(** [get_int16_ne b i] is [b]'s native-endian signed 16-bit integer
 ##V>=4.08##    starting at byte index [i].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val get_int16_be : bytes -> int -> int
+##V>=4.08##val get_int16_be : t -> int -> int
 ##V>=4.08##(** [get_int16_be b i] is [b]'s big-endian signed 16-bit integer
 ##V>=4.08##    starting at byte index [i].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val get_int16_le : bytes -> int -> int
+##V>=4.08##val get_int16_le : t -> int -> int
 ##V>=4.08##(** [get_int16_le b i] is [b]'s little-endian signed 16-bit integer
 ##V>=4.08##    starting at byte index [i].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val get_int32_ne : bytes -> int -> int32
+##V>=4.08##val get_int32_ne : t -> int -> int32
 ##V>=4.08##(** [get_int32_ne b i] is [b]'s native-endian 32-bit integer
 ##V>=4.08##    starting at byte index [i].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val get_int32_be : bytes -> int -> int32
+##V>=4.08##val get_int32_be : t -> int -> int32
 ##V>=4.08##(** [get_int32_be b i] is [b]'s big-endian 32-bit integer
 ##V>=4.08##    starting at byte index [i].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val get_int32_le : bytes -> int -> int32
+##V>=4.08##val get_int32_le : t -> int -> int32
 ##V>=4.08##(** [get_int32_le b i] is [b]'s little-endian 32-bit integer
 ##V>=4.08##    starting at byte index [i].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val get_int64_ne : bytes -> int -> int64
+##V>=4.08##val get_int64_ne : t -> int -> int64
 ##V>=4.08##(** [get_int64_ne b i] is [b]'s native-endian 64-bit integer
 ##V>=4.08##    starting at byte index [i].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val get_int64_be : bytes -> int -> int64
+##V>=4.08##val get_int64_be : t -> int -> int64
 ##V>=4.08##(** [get_int64_be b i] is [b]'s big-endian 64-bit integer
 ##V>=4.08##    starting at byte index [i].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val get_int64_le : bytes -> int -> int64
+##V>=4.08##val get_int64_le : t -> int -> int64
 ##V>=4.08##(** [get_int64_le b i] is [b]'s little-endian 64-bit integer
 ##V>=4.08##    starting at byte index [i].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val set_uint8 : bytes -> int -> int -> unit
+##V>=4.08##val set_uint8 : t -> int -> int -> unit
 ##V>=4.08##(** [set_uint8 b i v] sets [b]'s unsigned 8-bit integer starting at byte index
 ##V>=4.08##    [i] to [v].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val set_int8 : bytes -> int -> int -> unit
+##V>=4.08##val set_int8 : t -> int -> int -> unit
 ##V>=4.08##(** [set_int8 b i v] sets [b]'s signed 8-bit integer starting at byte index
 ##V>=4.08##    [i] to [v].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val set_uint16_ne : bytes -> int -> int -> unit
+##V>=4.08##val set_uint16_ne : t -> int -> int -> unit
 ##V>=4.08##(** [set_uint16_ne b i v] sets [b]'s native-endian unsigned 16-bit integer
 ##V>=4.08##    starting at byte index [i] to [v].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val set_uint16_be : bytes -> int -> int -> unit
+##V>=4.08##val set_uint16_be : t -> int -> int -> unit
 ##V>=4.08##(** [set_uint16_be b i v] sets [b]'s big-endian unsigned 16-bit integer
 ##V>=4.08##    starting at byte index [i] to [v].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val set_uint16_le : bytes -> int -> int -> unit
+##V>=4.08##val set_uint16_le : t -> int -> int -> unit
 ##V>=4.08##(** [set_uint16_le b i v] sets [b]'s little-endian unsigned 16-bit integer
 ##V>=4.08##    starting at byte index [i] to [v].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val set_int16_ne : bytes -> int -> int -> unit
+##V>=4.08##val set_int16_ne : t -> int -> int -> unit
 ##V>=4.08##(** [set_int16_ne b i v] sets [b]'s native-endian signed 16-bit integer
 ##V>=4.08##    starting at byte index [i] to [v].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val set_int16_be : bytes -> int -> int -> unit
+##V>=4.08##val set_int16_be : t -> int -> int -> unit
 ##V>=4.08##(** [set_int16_be b i v] sets [b]'s big-endian signed 16-bit integer
 ##V>=4.08##    starting at byte index [i] to [v].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val set_int16_le : bytes -> int -> int -> unit
+##V>=4.08##val set_int16_le : t -> int -> int -> unit
 ##V>=4.08##(** [set_int16_le b i v] sets [b]'s little-endian signed 16-bit integer
 ##V>=4.08##    starting at byte index [i] to [v].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val set_int32_ne : bytes -> int -> int32 -> unit
+##V>=4.08##val set_int32_ne : t -> int -> int32 -> unit
 ##V>=4.08##(** [set_int32_ne b i v] sets [b]'s native-endian 32-bit integer
 ##V>=4.08##    starting at byte index [i] to [v].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val set_int32_be : bytes -> int -> int32 -> unit
+##V>=4.08##val set_int32_be : t -> int -> int32 -> unit
 ##V>=4.08##(** [set_int32_be b i v] sets [b]'s big-endian 32-bit integer
 ##V>=4.08##    starting at byte index [i] to [v].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val set_int32_le : bytes -> int -> int32 -> unit
+##V>=4.08##val set_int32_le : t -> int -> int32 -> unit
 ##V>=4.08##(** [set_int32_le b i v] sets [b]'s little-endian 32-bit integer
 ##V>=4.08##    starting at byte index [i] to [v].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val set_int64_ne : bytes -> int -> int64 -> unit
+##V>=4.08##val set_int64_ne : t -> int -> int64 -> unit
 ##V>=4.08##(** [set_int64_ne b i v] sets [b]'s native-endian 64-bit integer
 ##V>=4.08##    starting at byte index [i] to [v].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val set_int64_be : bytes -> int -> int64 -> unit
+##V>=4.08##val set_int64_be : t -> int -> int64 -> unit
 ##V>=4.08##(** [set_int64_be b i v] sets [b]'s big-endian 64-bit integer
 ##V>=4.08##    starting at byte index [i] to [v].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
 ##V>=4.08##*)
 
-##V>=4.08##val set_int64_le : bytes -> int -> int64 -> unit
+##V>=4.08##val set_int64_le : t -> int -> int64 -> unit
 ##V>=4.08##(** [set_int64_le b i v] sets [b]'s little-endian 64-bit integer
 ##V>=4.08##    starting at byte index [i] to [v].
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08
@@ -765,4 +765,4 @@ let s = Bytes.of_string "hello"
 ##V<4.4##external unsafe_fill : t -> int -> int -> char -> unit = "caml_fill_string" "noalloc"
 ##V>=4.4##external unsafe_fill:  t -> int -> int -> char -> unit = "caml_fill_bytes" [@@noalloc]
 
-##V>=4.09##external unsafe_blit_string : string -> int -> bytes -> int -> int -> unit = "caml_blit_string" [@@noalloc]
+##V>=4.09##external unsafe_blit_string : string -> int -> t -> int -> int -> unit = "caml_blit_string" [@@noalloc]
