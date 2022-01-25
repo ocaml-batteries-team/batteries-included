@@ -142,6 +142,22 @@ val shuffle: 'a BatEnum.t -> 'a array
     This function only works on finite enumerations with
     less than 2{^30} elements. *)
 
+##V>=4.14##val bits32 : unit -> Int32.t
+##V>=4.14##(** [Random.bits32 ()] returns 32 random bits as an integer between
+##V>=4.14##    {!Int32.min_int} and {!Int32.max_int}.
+##V>=4.14##    @since 4.14.0 *)
+
+##V>=4.14##val bits64 : unit -> Int64.t
+##V>=4.14##(** [Random.bits64 ()] returns 64 random bits as an integer between
+##V>=4.14##    {!Int64.min_int} and {!Int64.max_int}.
+##V>=4.14##    @since 4.14.0 *)
+
+##V>=4.14##val nativebits : unit -> Nativeint.t
+##V>=4.14##(** [Random.nativebits ()] returns 32 or 64 random bits (depending on
+##V>=4.14##    the bit width of the platform) as an integer between
+##V>=4.14##    {!Nativeint.min_int} and {!Nativeint.max_int}.
+##V>=4.14##    @since 4.14.0 *)
+
 (** {6 Advanced functions} *)
 
 (** Manipulate the current state of the random generator.
@@ -186,7 +202,9 @@ module State : sig
       (** These functions are the same as the basic functions, except that they
           use (and update) the given PRNG state instead of the default one.
       *)
-
+##V>=4.14##val bits32 : t -> Int32.t
+##V>=4.14##val bits64 : t -> Int64.t
+##V>=4.14##val nativebits : t -> Nativeint.t
 end
 
 
