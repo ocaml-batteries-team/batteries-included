@@ -70,12 +70,12 @@ val is_empty : string -> bool
     [ if String.is_empty s then "(Empty)" else s ]
  *)
 
-val of_bytes : bytes -> string
+val of_bytes : Bytes.t -> string
 (** Return a new string that contains the same bytes as the given byte
     sequence.
     @since 3.4.0 *)
 
-val to_bytes : string -> bytes
+val to_bytes : string -> Bytes.t
 (** Return a new byte sequence that contains the same bytes as the given
     string.
     @since 3.4.0 *)
