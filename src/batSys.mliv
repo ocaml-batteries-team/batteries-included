@@ -309,6 +309,21 @@ val ocaml_version : string
     [additional-info] is an arbitrary string. The [[.patchlevel]] and
     [[+additional-info]] parts may be absent. *)
 
+##V>=4.14##val development_version : bool
+##V>=4.14##(** [true] if this is a development version, [false] otherwise.
+##V>=4.14##    @since 4.14.0
+##V>=4.14##*)
+
+##V>=4.14##type extra_prefix = Sys.extra_prefix = Plus | Tilde
+##V>=4.14##type extra_info = Sys.extra_info
+##V>=4.14##type ocaml_release_info = Sys.ocaml_release_info = {
+##V>=4.14##    major : int;
+##V>=4.14##    minor : int;
+##V>=4.14##    patchlevel : int;
+##V>=4.14##    extra : extra_info option
+##V>=4.14##}
+
+##V>=4.14##val ocaml_release : ocaml_release_info
 
 val files_of: string -> string BatEnum.t
     (**As {!readdir} but the results are presented as an enumeration
