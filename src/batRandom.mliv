@@ -272,6 +272,8 @@ module Incubator : sig
     val enum_int64 : Int64.t -> Int64.t BatEnum.t
     val enum_nativeint : Nativeint.t -> Nativeint.t BatEnum.t
     val enum_char : unit -> char BatEnum.t
-
+##V>=4.14## val bits32 : unit -> Int32.t
+##V>=4.14## val bits64 : unit -> Int64.t
+##V>=4.14## val nativebits : unit -> Nativeint.t
   end
 end
