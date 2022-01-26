@@ -1,7 +1,7 @@
 Changelog
 ---------
 
-## NEXT_RELEASE
+## v3.5.0 (minor release)
 
 - add covariances to types of maps and sets
   #1065
