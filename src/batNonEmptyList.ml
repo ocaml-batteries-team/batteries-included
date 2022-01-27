@@ -34,6 +34,8 @@ let tl l =
 let create head tail =
   { head; tail }
 
+let cons = create
+
 exception Empty_list
 
 let of_list_exn = function
@@ -68,62 +70,17 @@ let compare_length_with l n =
     compare_length_with (of_list [1; 2]) 3 = -1
 *)
 
-(* (\* Thanks to Jacques Garrigue for suggesting the following structure *\)
- * type 'a mut_list =  {
- *   hd: 'a;
- *   mutable tl: 'a list
- * }
- * 
- * ##V<4.08##type 'a t = 'a list
- * ##V>=4.08##type 'a t = 'a list = [] | (::) of 'a * 'a list
- * type 'a enumerable = 'a t
- * type 'a mappable = 'a t
- * 
- * external inj : 'a mut_list -> 'a list = "%identity"
- * 
- * module Acc = struct
- *   let dummy () =
- *     { hd = Obj.magic (); tl = [] }
- *   let create x =
- *     { hd = x; tl = [] }
- *   let accum acc x =
- *     let cell = create x in
- *     acc.tl <- inj cell;
- *     cell
- * end
- * 
- * let cons h t = h::t
- * 
- * let is_empty = function
- *   | [] -> true
- *   | _  -> false
- * 
- * (\*$T is_empty
- *   is_empty []
- *   not (is_empty [1])
- * *\)
- * 
- * let at_negative_index_msg = "List: Negative index not allowed"
- * let at_after_end_msg = "List: Index past end of list"
- * 
- * let nth l index =
- *   if index < 0 then invalid_arg at_negative_index_msg;
- *   let rec loop n = function
- *     | [] -> invalid_arg at_after_end_msg;
- *     | h :: t ->
- *       if n = 0 then h else loop (n - 1) t
- *   in
- *   loop index l
- * 
- * let at = nth
- * 
- * (\*$T at
- *   try ignore (at [] 0); false with Invalid_argument _ -> true
- *   try ignore (at [1;2;3] (-1)); false with Invalid_argument _ -> true
- *   at [1;2;3] 2 = 3
- * *\)
- * 
- * let at_opt l index =
+let nth l index =
+  BatList.nth (to_list l) index
+
+let at = nth
+
+(*$T at
+  try ignore (at (of_list [1;2;3]) (-1)); false with Invalid_argument _ -> true
+  at (of_list [1;2;3]) 2 = 3
+*)
+
+(* let at_opt l index =
  *   if index < 0 then invalid_arg at_negative_index_msg;
  *   try Some (at l index) with Invalid_argument _ -> None
  * (\*$T at_opt
