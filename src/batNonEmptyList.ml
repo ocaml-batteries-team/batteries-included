@@ -22,6 +22,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+module L = BatList
+
 type 'a t = { head: 'a;
               tail: 'a list }
 
@@ -52,7 +54,7 @@ let to_list l =
   l.head :: l.tail
 
 let compare_lengths la lb =
-  BatList.compare_lengths la.tail lb.tail
+  L.compare_lengths la.tail lb.tail
 
 (*$T compare_lengths
     compare_lengths (of_list [1; 2]) (of_list [3; 4]) = 0
@@ -61,7 +63,7 @@ let compare_lengths la lb =
 *)
 
 let compare_length_with l n =
-  BatList.compare_length_with (to_list l) n
+  L.compare_length_with (to_list l) n
 
 (*$T compare_length_with
     compare_length_with (of_list [1]) 0 = 1
@@ -71,7 +73,7 @@ let compare_length_with l n =
 *)
 
 let nth l index =
-  BatList.nth (to_list l) index
+  L.nth (to_list l) index
 
 let at = nth
 
@@ -80,26 +82,19 @@ let at = nth
   at (of_list [1;2;3]) 2 = 3
 *)
 
-(* let at_opt l index =
- *   if index < 0 then invalid_arg at_negative_index_msg;
- *   try Some (at l index) with Invalid_argument _ -> None
- * (\*$T at_opt
- *   at_opt [] 0 = None
- *   try ignore (at_opt [1;2;3] (-1)); false with Invalid_argument _ -> true
- *   at_opt [1;2;3] 2 = Some 3
- * *\)
- * 
- * let mem_cmp cmp x l =
- *   exists (fun y -> cmp x y = 0) l
- * 
- * (\*$T mem_cmp
- *   mem_cmp Pervasives.compare 0 []     = false
- *   mem_cmp Pervasives.compare 0 [1; 2] = false
- *   mem_cmp Pervasives.compare 1 [1; 2] = true
- *   mem_cmp Pervasives.compare 2 [1; 2] = true
- * *\)
- * 
- * let append l1 l2 =
+let at_opt l index =
+  L.at_opt (to_list l) index
+ 
+let mem_cmp cmp x l =
+  L.mem_cmp cmp x (to_list l)
+
+(*$T mem_cmp
+  mem_cmp Pervasives.compare 0 (of_list [1; 2]) = false
+  mem_cmp Pervasives.compare 1 (of_list [1; 2]) = true
+  mem_cmp Pervasives.compare 2 (of_list [1; 2]) = true
+*)
+
+(* let append l1 l2 =
  *   match l1 with
  *   | [] -> l2
  *   | h :: t ->
