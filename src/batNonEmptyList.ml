@@ -94,30 +94,16 @@ let mem_cmp cmp x l =
   mem_cmp Pervasives.compare 2 (of_list [1; 2]) = true
 *)
 
-(* let append l1 l2 =
- *   match l1 with
- *   | [] -> l2
- *   | h :: t ->
- *     let rec loop dst = function
- *       | [] ->
- *         dst.tl <- l2
- *       | h :: t ->
- *         loop (Acc.accum dst h) t
- *     in
- *     let r = Acc.create h in
- *     loop r t;
- *     inj r
- * 
- * (\*$T append
- *   append []     []     = []
- *   append []     [1]    = [1]
- *   append [1]    []     = [1]
- *   append [1]    [2]    = [1; 2]
- *   append [1; 2] [3]    = [1; 2; 3]
- *   append [1]    [2; 3] = [1; 2; 3]
- * *\)
- * 
- * let flatten l =
+let append l1 l2 =
+  of_list (L.append (to_list l1) (to_list l2))
+
+(*$T append
+  append (of_list [1]) (of_list [2]) = of_list [1; 2]
+  append (of_list [1; 2]) (of_list [3]) = of_list [1; 2; 3]
+  append (of_list [1]) (of_list [2; 3]) = of_list [1; 2; 3]
+*)
+
+(* let flatten l =
  *   let rec inner dst = function
  *     | [] -> dst
  *     | h :: t ->
