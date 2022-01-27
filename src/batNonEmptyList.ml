@@ -46,6 +46,9 @@ let of_list = function
   | [] -> assert(false)
   | head :: tail -> { head; tail }
 
+let to_list l =
+  l.head :: l.tail
+
 let compare_lengths la lb =
   BatList.compare_lengths la.tail lb.tail
 
@@ -55,35 +58,17 @@ let compare_lengths la lb =
     compare_lengths (of_list [1; 2]) (of_list [2; 3; 4]) = -1
 *)
 
-(* (\*$Q compare_lengths
- *   (Q.pair (Q.list Q.small_int) (Q.list Q.small_int)) \
- *   (fun (la, lb) -> \
- *     BatOrd.ord0 (compare_lengths la lb) \
- *     = BatOrd.ord0 (Pervasives.compare (length la) (length lb)))
- * *\)
- * 
- * let rec compare_length_with li n = match li, n with
- *   | [], n -> Pervasives.compare 0 n
- *   | _::tl, n -> compare_length_with tl (n-1)
- * 
- * (\*$T compare_length_with
- * compare_length_with [] 0 = 0
- * compare_length_with [] 1 = -1
- * compare_length_with [1] 0 = 1
- * compare_length_with [1; 2] 2 = 0
- * compare_length_with [1; 2; 3] 2 = 1
- * compare_length_with [1; 2] 3 = -1
- * *\)
- * 
- * (\*$Q compare_length_with
- *   (Q.pair (Q.list Q.small_int) Q.small_int) \
- *   (fun (li, n) -> \
- *     BatOrd.ord0 (compare_length_with li n) \
- *     = BatOrd.ord0 (Pervasives.compare (length li) n))
- * *\)
- * 
- * 
- * (\* Thanks to Jacques Garrigue for suggesting the following structure *\)
+let compare_length_with l n =
+  BatList.compare_length_with (to_list l) n
+
+(*$T compare_length_with
+    compare_length_with (of_list [1]) 0 = 1
+    compare_length_with (of_list [1; 2]) 2 = 0
+    compare_length_with (of_list [1; 2; 3]) 2 = 1
+    compare_length_with (of_list [1; 2]) 3 = -1
+*)
+
+(* (\* Thanks to Jacques Garrigue for suggesting the following structure *\)
  * type 'a mut_list =  {
  *   hd: 'a;
  *   mutable tl: 'a list
