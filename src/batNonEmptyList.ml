@@ -103,31 +103,19 @@ let append l1 l2 =
   append (of_list [1]) (of_list [2; 3]) = of_list [1; 2; 3]
 *)
 
-(* let flatten l =
- *   let rec inner dst = function
- *     | [] -> dst
- *     | h :: t ->
- *       inner (Acc.accum dst h) t
- *   in
- *   let rec outer dst = function
- *     | [] -> ()
- *     | h :: t -> outer (inner dst h) t
- *   in
- *   let r = Acc.dummy () in
- *   outer r l;
- *   r.tl
- * 
- * let concat = flatten
- * 
- * (\*$T flatten
- *   flatten [[1;2];[3];[];[4;5;6]] = [1;2;3;4;5;6]
- *   flatten [[]] = []
- * *\)
- * 
- * let singleton x = [x]
- * (\*$Q singleton
+let flatten l =
+  of_list (L.flatten (to_list l))
+
+let concat = flatten
+
+(*$T flatten
+    flatten (of_list [[1;2];[3];[4;5;6]]) = of_list [1;2;3;4;5;6]
+*)
+
+(* let singleton x = [x]
+ * (*$Q singleton
  *   Q.int (fun x -> let s = singleton x in hd s = x && length s = 1)
- * *\)
+ * *)
  * 
  * let map f = function
  *   | [] -> []
@@ -140,21 +128,21 @@ let append l1 l2 =
  *     let r = Acc.create (f h) in
  *     loop r t;
  *     inj r
- * (\*$Q map
+ * (*$Q map
  *   (Q.pair (Q.fun1 Q.Observable.int Q.int) (Q.list Q.small_int)) \
  *   (fun (Q.Fun (_,f),l) -> map f l = List.map f l)
- * *\)
+ * *)
  * 
  * let rec drop n = function
  *   | _ :: l when n > 0 -> drop (n-1) l
  *   | l -> l
  * 
- * (\*$= drop & ~printer:(IO.to_string (List.print Int.print))
+ * (*$= drop & ~printer:(IO.to_string (List.print Int.print))
  *   (drop 0 [1;2;3]) [1;2;3]
  *   (drop 3 [1;2;3]) []
  *   (drop 4 [1;2;3]) []
  *   (drop 1 [1;2;3]) [2;3]
- * *\)
+ * *)
  * 
  * let take n l =
  *   let rec loop n dst = function
@@ -167,12 +155,12 @@ let append l1 l2 =
  *   loop n dummy l;
  *   dummy.tl
  * 
- * (\*$= take & ~printer:(IO.to_string (List.print Int.print))
+ * (*$= take & ~printer:(IO.to_string (List.print Int.print))
  *   (take 0 [1;2;3]) []
  *   (take 3 [1;2;3]) [1;2;3]
  *   (take 4 [1;2;3]) [1;2;3]
  *   (take 1 [1;2;3]) [1]
- * *\)
+ * *)
  * 
  * let takedrop n l =
  *   let rec loop n dst = function
@@ -183,12 +171,12 @@ let append l1 l2 =
  *   let rest = loop n dummy l in
  *   (dummy.tl, rest)
  * 
- * (\*$T takedrop
+ * (*$T takedrop
  *   takedrop 0 [1; 2; 3] = ([],        [1; 2; 3])
  *   takedrop 3 [1; 2; 3] = ([1; 2; 3], [])
  *   takedrop 4 [1; 2; 3] = ([1; 2; 3], [])
  *   takedrop 1 [1; 2; 3] = ([1],       [2; 3])
- * *\)
+ * *)
  * 
  * let ntake n l =
  *   if n < 1 then invalid_arg "List.ntake";
@@ -201,13 +189,13 @@ let append l1 l2 =
  *   in
  *   loop acc left
  * 
- * (\*$T ntake
+ * (*$T ntake
  *   ntake 2 []           = [[]]
  *   ntake 2 [1]          = [[1]]
  *   ntake 2 [1; 2]       = [[1; 2]]
  *   ntake 2 [1; 2; 3]    = [[1; 2]; [3]]
  *   ntake 2 [1; 2; 3; 4] = [[1; 2]; [3; 4]]
- * *\)
+ * *)
  * 
  * let take_while p li =
  *   let rec loop dst = function
@@ -219,23 +207,23 @@ let append l1 l2 =
  *   loop dummy li;
  *   dummy.tl
  * 
- * (\*$= take_while & ~printer:(IO.to_string (List.print Int.print))
+ * (*$= take_while & ~printer:(IO.to_string (List.print Int.print))
  *   (take_while ((=) 3) [3;3;4;3;3]) [3;3]
  *   (take_while ((=) 3) [3]) [3]
  *   (take_while ((=) 3) [4]) []
  *   (take_while ((=) 3) []) []
  *   (take_while ((=) 2) [2; 2]) [2; 2]
- * *\)
+ * *)
  * 
  * let rec drop_while f = function
  *   | [] -> []
  *   | x :: xs when f x -> drop_while f xs
  *   | xs -> xs
  * 
- * (\*$= drop_while & ~printer:(IO.to_string (List.print Int.print))
+ * (*$= drop_while & ~printer:(IO.to_string (List.print Int.print))
  *   (drop_while ((=) 3) [3;3;4;3;3]) [4;3;3]
  *   (drop_while ((=) 3) [3]) []
- * *\)
+ * *)
  * 
  * let span p li =
  *   let rec loop dst = function
@@ -249,13 +237,13 @@ let append l1 l2 =
  *   let xs = loop dummy li in
  *   (dummy.tl , xs)
  * 
- * (\*$= span
+ * (*$= span
  *   (span ((=) 3) [3;3;4;3;3])  ([3;3],[4;3;3])
  *   (span ((=) 3) [3])          ([3],[])
  *   (span ((=) 3) [4])          ([],[4])
  *   (span ((=) 3) [])           ([],[])
  *   (span ((=) 2) [2; 2])       ([2; 2],[])
- * *\)
+ * *)
  * 
  * let fold_while p f init li =
  *   let rec loop acc = function
@@ -265,18 +253,18 @@ let append l1 l2 =
  *       else (acc, l) in
  *   loop init li
  * 
- * (\*$= fold_while
+ * (*$= fold_while
  *   (fold_while (fun _acc x -> x = 3) (fun acc x -> acc + x) 0 [3;3;4;3;3]) (6,[4;3;3])
  *   (fold_while (fun acc _x -> acc < 6) (fun acc x -> acc + x) 0 [3;3;4;3;3]) (6,[4;3;3])
  *   (fold_while (fun _acc x -> x = 3) (fun acc x -> acc + x) 0 [3]) (3,[])
  *   (fold_while (fun _acc x -> x = 3) (fun acc x -> acc + x) 0 [4]) (0,[4])
  *   (fold_while (fun _acc x -> x = 3) (fun acc x -> acc + x) 0 []) (0,[])
  *   (fold_while (fun _acc x -> x = 2) (fun acc x -> acc + x) 0 [2; 2]) (4,[])
- * *\)
+ * *)
  * 
  * let nsplit p = function
  *   | [] -> []
- *   (\* note that returning [] on empty inputs is an arbitrary choice
+ *   (* note that returning [] on empty inputs is an arbitrary choice
  *      that is made for consistence with the behavior of
  *      BatString.nsplit. Not having this hardcoded case would have
  *      `nsplit p []` return `[[]]`, which is also a semantically valid
@@ -286,7 +274,7 @@ let append l1 l2 =
  * 
  *      If that was to redo from scratch, `[[]]` would be a better return
  *      value for both `BatList.nsplit` and `BatString.nsplit`.
- *   *\)
+ *   *)
  *   | li ->
  *     let not_p x = not (p x) in
  *     let rec loop dst l =
@@ -300,19 +288,19 @@ let append l1 l2 =
  *     loop dummy li;
  *     dummy.tl
  * 
- * (\*$T nsplit
+ * (*$T nsplit
  *   nsplit ((=) 0) []                    = []
  *   nsplit ((=) 0) [0]                   = [[]; []]
  *   nsplit ((=) 0) [1; 0]                = [[1]; []]
  *   nsplit ((=) 0) [0; 1]                = [[]; [1]]
  *   nsplit ((=) 0) [1; 2; 0; 0; 3; 4; 0; 5] = [[1; 2]; []; [3; 4]; [5]]
- * *\)
+ * *)
  * 
- * (\*$Q nsplit & ~count:10
+ * (*$Q nsplit & ~count:10
  *   (Q.list (Q.list Q.pos_int)) (fun xss -> \
  *     let join sep xss = flatten (interleave [sep] xss) in \
- *     (\* normalize: the return type of nsplit \
- *        is quotiented by the equivalence []~[[]] *\) \
+ *     (* normalize: the return type of nsplit \
+ *        is quotiented by the equivalence []~[[]] *) \
  *     let normalize = function [] -> [[]] | li -> li in \
  *     let neg = -1 in \
  *     normalize xss = normalize (nsplit ((=) neg) (join neg xss)) \
@@ -321,9 +309,9 @@ let append l1 l2 =
  *     let join sep xss = flatten (interleave [sep] xss) in \
  *     xs = join sep (nsplit ((=) sep) xs) \
  *   )
- * *\)
+ * *)
  * 
- * (\* nsplit ((=) sep) la @ nsplit ((=) sep) lb   = nsplit ((=) sep) (la @ [sep] @ lb) *\)
+ * (* nsplit ((=) sep) la @ nsplit ((=) sep) lb   = nsplit ((=) sep) (la @ [sep] @ lb) *)
  * 
  * let group_consecutive p l =
  *   let rec loop dst = function
@@ -336,12 +324,12 @@ let append l1 l2 =
  *   loop dummy l;
  *   dummy.tl
  * 
- * (\*$= group_consecutive & ~printer:(IO.to_string (List.print (List.print Int.print)))
+ * (*$= group_consecutive & ~printer:(IO.to_string (List.print (List.print Int.print)))
  *   (group_consecutive (=) [3; 3; 4; 3; 3]) [[3; 3]; [4]; [3; 3]]
  *   (group_consecutive (=) [3])             [[3]]
  *   (group_consecutive (=) [])              []
  *   (group_consecutive (=) [2; 2])          [[2; 2]]
- * *\)
+ * *)
  * 
  * ##V>=4.5##let nth_opt = List.nth_opt
  * ##V<4.5##let nth_opt li n = try Some (nth li n) with _ -> None
@@ -363,7 +351,7 @@ let append l1 l2 =
  *   let res = loop [] l in
  *   may_prepend first (rev (may_prepend last res))
  * 
- * (\*$= interleave & ~printer:(IO.to_string (List.print Int.print))
+ * (*$= interleave & ~printer:(IO.to_string (List.print Int.print))
  *   (interleave 0 [1;2;3]) [1;0;2;0;3]
  *   (interleave 0 [1]) [1]
  *   (interleave 0 []) []
@@ -376,7 +364,7 @@ let append l1 l2 =
  *   (interleave ~first:(-1) ~last:(-2) 0 [1;2;3]) [-1;1;0;2;0;3;-2]
  *   (interleave ~first:(-1) ~last:(-2) 0 [1]) [-1;1;-2]
  *   (interleave ~first:(-1) ~last:(-2) 0 []) [-1;-2]
- * *\)
+ * *)
  * 
  * let unique ?(eq = ( = )) l =
  *   let rec loop dst = function
@@ -391,12 +379,12 @@ let append l1 l2 =
  *   loop dummy l;
  *   dummy.tl
  * 
- * (\* FIXME BAD TESTS: RESULT IS SPECIFIC TO IMPLEMENTATION *\)
- * (\*$= unique & ~printer:(IO.to_string (List.print Int.print))
+ * (* FIXME BAD TESTS: RESULT IS SPECIFIC TO IMPLEMENTATION *)
+ * (*$= unique & ~printer:(IO.to_string (List.print Int.print))
  *   [1;2;3;4;5;6] (unique [1;1;2;2;3;3;4;5;6;4;5;6])
  *   [1] (unique [1;1;1;1;1;1;1;1;1;1])
  *   [1;2] (unique ~eq:(fun x y -> x land 1 = y land 1) [2;2;2;4;6;8;3;1;2])
- * *\)
+ * *)
  * 
  * let unique_cmp ?(cmp = Pervasives.compare) l =
  *   let set = ref (BatSet.PSet.create cmp) in
@@ -404,14 +392,14 @@ let append l1 l2 =
  *     if BatSet.PSet.mem x !set then false
  *     else ( set := BatSet.PSet.add x !set; true )
  *   in
- *   (\* use a stateful filter to remove duplicate elements *\)
+ *   (* use a stateful filter to remove duplicate elements *)
  *   List.filter should_keep l
  * 
- * (\*$= unique_cmp & ~printer:(IO.to_string (List.print Int.print))
+ * (*$= unique_cmp & ~printer:(IO.to_string (List.print Int.print))
  *   [1;2;3;4;5;6] (unique_cmp [1;1;2;2;3;3;4;5;6;4;5;6])
  *   [1] (unique_cmp [1;1;1;1;1;1;1;1;1;1])
  *   [2;3] (unique_cmp ~cmp:(fun x y -> Int.compare (x land 1) (y land 1)) [2;2;2;4;6;8;3;1;2])
- * *\)
+ * *)
  * 
  * 
  * let unique_hash (type et) ?(hash = Hashtbl.hash) ?(eq = (=)) (l : et list) =
@@ -419,11 +407,11 @@ let append l1 l2 =
  *   let ht = HT.create (List.length l) in
  *   let rec loop dst = function
  *     | h::t when not (HT.mem ht h) ->
- *       HT.add ht h (); (\* put h in hash table *\)
+ *       HT.add ht h (); (* put h in hash table *)
  *       loop
- *         (Acc.accum dst h) (\* and to output list *\)
+ *         (Acc.accum dst h) (* and to output list *)
  *         t
- *     | _::t -> (\* if already in hashtable then don't add to output list *\)
+ *     | _::t -> (* if already in hashtable then don't add to output list *)
  *       loop dst t
  *     | [] -> ()
  *   in
@@ -431,11 +419,11 @@ let append l1 l2 =
  *   loop dummy l;
  *   dummy.tl
  * 
- * (\*$= unique_hash & ~printer:(IO.to_string (List.print Int.print))
+ * (*$= unique_hash & ~printer:(IO.to_string (List.print Int.print))
  *   [1;2;3;4;5;6] (unique_hash [1;1;2;2;3;3;4;5;6;4;5;6])
  *   [1] (unique_hash [1;1;1;1;1;1;1;1;1;1])
  *   [2;3] (unique_hash ~hash:(fun x -> Hashtbl.hash (x land 1)) ~eq:(fun x y -> x land 1 = y land 1) [2;2;2;4;6;8;3;1;2])
- * *\)
+ * *)
  * 
  * let filter_map f l =
  *   let rec loop dst = function
@@ -462,12 +450,12 @@ let append l1 l2 =
  *   let dummy = Acc.dummy () in
  *   loop 0 dummy l;
  *   dummy.tl
- * (\*$T filteri_map
+ * (*$T filteri_map
  *   (let r = ref (-1) in filteri_map (fun i _ -> incr r; if i = !r then Some i else None) [5; 4; 8] = [0; 1; 2])
  *   filteri_map (fun _ x -> if x > 4 then Some (x, string_of_int x) else None) [5; 4; 8] = [(5, "5"); (8, "8")]
  *   filteri_map (fun _ _ -> Some ()) [] = []
  *   filteri_map (fun _ _ -> None) [1; 2] = []
- * *\)
+ * *)
  * 
  * let rec find_map f = function
  *   | [] -> raise Not_found
@@ -517,7 +505,7 @@ let append l1 l2 =
  *   loop 0 dummy l1 l2;
  *   dummy.tl
  * 
- * (\*$T map2i
+ * (*$T map2i
  *   map2i (fun i x y -> i, x, y) [] [] = []
  *   map2i (fun i x y -> i, x, y) ['a'] ["b"] = [0, 'a', "b"]
  *   map2i (fun i x y -> i, x, y) ['a'; 'b'; 'c'] ["d"; "e"; "f"] = \
@@ -526,7 +514,7 @@ let append l1 l2 =
  *     with Invalid_argument _ -> true
  *   try ignore (map2i (fun i x y -> i, x, y) [1; 2; 3] ["4"]); false \
  *     with Invalid_argument _ -> true
- * *\)
+ * *)
  * 
  * let rec iter2 f l1 l2 =
  *   match l1, l2 with
@@ -542,18 +530,18 @@ let append l1 l2 =
  *     | _ -> invalid_arg "List.iter2i: list lengths differ"
  *   in loop 0 l1 l2
  * 
- * (\*$T iter2i
+ * (*$T iter2i
  *   try iter2i (fun _ _ _ -> ()) [1] [1;2;3]; false \
  *     with Invalid_argument _ -> true
  *   try iter2i (fun _ _ _ -> ()) [1] []; false \
  *     with Invalid_argument _ -> true
- * *\)
+ * *)
  * 
- * (\*$T iter2i
+ * (*$T iter2i
  *   iter2i (fun _ _ _ -> assert false) [] []; true
  *   let r = ref 0 in iter2i (fun i x y -> r := !r + i * x + y) [1] [2]; !r = 2
  *   let r = ref 0 in iter2i (fun i x y -> r := !r + i * x + y) [1; 2] [3; 4]; !r = 9
- * *\)
+ * *)
  * 
  * let rec fold_left2 f accum l1 l2 =
  *   match l1, l2 with
@@ -640,14 +628,14 @@ let append l1 l2 =
  *     loop dummy i lst;
  *     dummy.tl
  * 
- * (\*$T remove_at
+ * (*$T remove_at
  *   try ignore (remove_at 0 []) ; false with Invalid_argument _ -> true
  *   try ignore (remove_at 1 [0]); false with Invalid_argument _ -> true
  *   remove_at 0 [0]       = []
  *   remove_at 0 [0; 1; 2] = [1; 2]
  *   remove_at 1 [0; 1; 2] = [0; 2]
  *   remove_at 2 [0; 1; 2] = [0; 1]
- * *\)
+ * *)
  * 
  * let rfind p l = find p (rev l)
  * 
@@ -708,12 +696,12 @@ let append l1 l2 =
  *       else count
  *     ) 0 l
  * 
- * (\*$T count_matching
+ * (*$T count_matching
  *   count_matching (fun _ -> true) [] = 0
  *   count_matching (fun _ -> true) [1] = 1
  *   count_matching (fun _ -> true) [1;2] = 2
  *   count_matching (fun x -> x mod 2 = 1) [1;2;3;4;5;6] = 3
- * *\)
+ * *)
  * 
  * ##V>=4.11##let filteri = List.filteri
  * ##V<4.11##let filteri f =
@@ -723,11 +711,11 @@ let append l1 l2 =
  * ##V<4.11##    | _x::xs -> aux (succ i) xs
  * ##V<4.11##  in
  * ##V<4.11##  aux 0
- * (\*$T filteri
+ * (*$T filteri
  *   (let r = ref (-1) in filteri (fun i _ -> incr r; i = !r) [5; 4; 8] = [5; 4; 8])
  *   filteri (fun _ x -> x > 4) [5; 4; 8] = [5; 8]
  *   filteri (fun _ _ -> true) [] = []
- * *\)
+ * *)
  * 
  * let partition p lst =
  *   let rec loop yesdst nodst = function
@@ -756,11 +744,11 @@ let append l1 l2 =
  *   loop left_acc right_acc lst;
  *   (left_acc.tl, right_acc.tl)
  * 
- * (\*$T partition_map
+ * (*$T partition_map
  *   let odd_or_even x = \
  *     if x mod 2 = 1 then BatEither.Left x else BatEither.Right x in \
  *   partition_map odd_or_even [1;2;3;4;5;6] = ([1;3;5], [2;4;6])
- * *\)
+ * *)
  * 
  * let split lst =
  *   let rec loop adst bdst = function
@@ -786,11 +774,11 @@ let append l1 l2 =
  *       in loop acc xs ys
  *     | _, _ -> invalid_arg "List.combine: list lengths differ"
  * 
- * (\*$T combine
+ * (*$T combine
  *   combine []     []     = []
  *   combine [1]    [2]    = [(1, 2)]
  *   combine [1; 3] [2; 4] = [(1, 2); (3, 4)]
- * *\)
+ * *)
  * 
  * let init size f =
  *   if size = 0 then []
@@ -813,7 +801,7 @@ let append l1 l2 =
  *     loop acc
  *   with exn -> (acc.tl, exn)
  * 
- * (\*$T unfold_exn
+ * (*$T unfold_exn
  *   let exc () = raise End_of_file in \
  *   unfold_exn exc = ([], End_of_file)
  *   let state = ref 0 in \
@@ -822,7 +810,7 @@ let append l1 l2 =
  *     else let _ = incr state in 0 \
  *   in \
  *   unfold_exn just_zero = ([0], End_of_file)
- * *\)
+ * *)
  * 
  * let unfold_exc = unfold_exn
  * 
@@ -853,14 +841,14 @@ let append l1 l2 =
  *   in
  *   loop [] j
  * 
- * (\*$T range
+ * (*$T range
  *   range 1 `To 3     = [1; 2; 3]
  *   range 1 `To 1     = [1]
  *   range 3 `Downto 1 = [3; 2; 1]
  *   range 3 `Downto 3 = [3]
  *   try ignore(range 1 `To 0); true with Invalid_argument _ -> true
  *   try ignore(range 1 `Downto 2); true with Invalid_argument _ -> true
- * *\)
+ * *)
  * 
  * let frange start direction stop n =
  *   if n < 2 then invalid_arg (Printf.sprintf "List.frange: %d < 2" n);
@@ -893,7 +881,7 @@ let append l1 l2 =
  *       loop [] 1
  *     end
  * 
- * (\*$T frange
+ * (*$T frange
  *   try ignore(frange 1. `To 2. 1); true with Invalid_argument _ -> true
  *   try ignore(frange 2. `Downto 1. 1); true with Invalid_argument _ -> true
  *   try ignore(frange 3. `To 1. 3); true with Invalid_argument _ -> true
@@ -903,7 +891,7 @@ let append l1 l2 =
  *   frange 3. `Downto 1. 3 = [3.; 2.; 1.]
  *   frange 2. `Downto 1. 2 = [2.; 1.]
  *   length (frange 0.123 `To 3.491 1000) = 1000
- * *\)
+ * *)
  * 
  * let mapi f = function
  *   | [] -> []
@@ -933,15 +921,15 @@ let append l1 l2 =
  *   in
  *   loop 0 init l
  * 
- * (\*$T fold_lefti
+ * (*$T fold_lefti
  *   fold_lefti (fun acc i x -> (i, x) :: acc) [] []       = []
  *   fold_lefti (fun acc i x -> (i, x) :: acc) [] [0.]     = [(0, 0.)]
  *   fold_lefti (fun acc i x -> (i, x) :: acc) [] [0.; 1.] = [(1, 1.); (0, 0.)]
- * *\)
+ * *)
  * 
  * let fold_righti f l init =
  *   let xis =
- *     (\* reverse the list and index its elements *\)
+ *     (* reverse the list and index its elements *)
  *     fold_lefti (fun acc i x -> (i, x) :: acc) [] l
  *   in
  *   fold_left
@@ -949,11 +937,11 @@ let append l1 l2 =
  *     init
  *     xis
  * 
- * (\*$T fold_righti
+ * (*$T fold_righti
  *   fold_righti (fun i x acc -> (i, x) :: acc) []       [] = []
  *   fold_righti (fun i x acc -> (i, x) :: acc) [0.]     [] = [(0, 0.)]
  *   fold_righti (fun i x acc -> (i, x) :: acc) [0.; 1.] [] = [(0, 0.); (1, 1.)]
- * *\)
+ * *)
  * 
  * ##V>=4.11##let fold_left_map = List.fold_left_map
  * ##V<4.11##let fold_left_map f acc = function
@@ -970,10 +958,10 @@ let append l1 l2 =
  * ##V<4.11##    let res = loop acc' r t in
  * ##V<4.11##    res, inj r
  * 
- * (\*$T fold_left_map
+ * (*$T fold_left_map
  *   fold_left_map (fun acc x -> assert false) 0 [] = (0, [])
  *   fold_left_map (fun acc x -> acc ^ x, int_of_string x) "0" ["1"; "2"; "3"] = ("0123", [1; 2; 3])
- * *\)
+ * *)
  * 
  * let first = hd
  * 
@@ -1056,14 +1044,14 @@ let append l1 l2 =
  *              (fun x xs -> Acc.accum xs x)
  *              x acc)
  *         heads xs);
- *     Obj.magic heads (\* equivalent to List.map inj heads, but without creating a new list *\)
+ *     Obj.magic heads (* equivalent to List.map inj heads, but without creating a new list *)
  * 
  * 
- * (\*$T transpose
+ * (*$T transpose
  *   transpose [ [1; 2; 3;]; [4; 5; 6;]; [7; 8; 9;] ] = [[1;4;7];[2;5;8];[3;6;9]]
  *   transpose [] = []
  *   transpose [ [1] ] = [ [1] ]
- * *\)
+ * *)
  * 
  * let enum l =
  *   let rec make lr count =
@@ -1093,12 +1081,12 @@ let append l1 l2 =
  * 
  * 
  * 
- * let backwards l = enum (rev l) (\*TODO: should we make it more efficient?*\)
- * (\*let backwards l = (\*This version only needs one pass but is actually less lazy*\)
+ * let backwards l = enum (rev l) (*TODO: should we make it more efficient?*)
+ * (*let backwards l = (*This version only needs one pass but is actually less lazy*)
  *   let rec aux acc = function
  *     | []   -> acc
  *     | h::t -> aux BatEnum.append (BatEnum.singleton h) acc
- *   in aux l*\)
+ *   in aux l*)
  * 
  * 
  * let of_backwards e =
@@ -1136,17 +1124,17 @@ let append l1 l2 =
  *   in
  *   try aux [] l with Exit -> l
  * 
- * (\*$= modify_opt & ~printer:(IO.to_string (List.print (fun fmt (a,b) -> Printf.fprintf fmt "%d,%d" a b)))
- *   (\* to modify a value *\) \
+ * (*$= modify_opt & ~printer:(IO.to_string (List.print (fun fmt (a,b) -> Printf.fprintf fmt "%d,%d" a b)))
+ *   (* to modify a value *) \
  *   (modify_opt 5 (function Some 1 -> Some 2 | _ -> assert false) [ 1,0 ; 5,1 ; 8,2 ]) \
  *     [ 1,0 ; 5,2 ; 8,2 ]
- *   (\* to add a value *\) \
+ *   (* to add a value *) \
  *   (modify_opt 5 (function None -> Some 2 | _ -> assert false) [ 1,0 ; 8,2 ]) \
  *     [ 1,0 ; 8,2 ; 5,2 ]
- *   (\* to remove a value *\) \
+ *   (* to remove a value *) \
  *   (modify_opt 5 (function Some 1 -> None | _ -> assert false) [ 1,0 ; 5,1 ; 8,2 ]) \
  *     [ 1,0 ; 8,2 ]
- * *\)
+ * *)
  * 
  * let modify a f l =
  *   let f' = function
@@ -1155,12 +1143,12 @@ let append l1 l2 =
  *   in
  *   modify_opt a f' l
  * 
- * (\*$= modify & ~printer:(IO.to_string (List.print (fun fmt (a,b) -> Printf.fprintf fmt "%d,%d" a b)))
+ * (*$= modify & ~printer:(IO.to_string (List.print (fun fmt (a,b) -> Printf.fprintf fmt "%d,%d" a b)))
  *   (modify 5 succ [ 1,0 ; 5,1 ; 8,2 ]) [ 1,0 ; 5,2 ; 8,2 ]
- * *\)
- * (\*$T modify
+ * *)
+ * (*$T modify
  *   try ignore (modify 5 succ [ 1,0 ; 8,2 ]); false with Not_found -> true
- * *\)
+ * *)
  * 
  * let modify_def dfl a f l =
  *   let f' = function
@@ -1169,10 +1157,10 @@ let append l1 l2 =
  *   in
  *   modify_opt a f' l
  * 
- * (\*$= modify_def & ~printer:(IO.to_string (List.print (fun fmt (a,b) -> Printf.fprintf fmt "%d,%d" a b)))
+ * (*$= modify_def & ~printer:(IO.to_string (List.print (fun fmt (a,b) -> Printf.fprintf fmt "%d,%d" a b)))
  *   (modify_def 0 5 succ [ 1,0 ; 5,1 ; 8,2 ]) [ 1,0 ; 5,2 ; 8,2 ]
  *   (modify_def 0 5 succ [ 1,0 ; 8,2 ]) [ 1,0 ; 8,2 ; 5,1 ]
- * *\)
+ * *)
  * 
  * let modify_opt_at n f l =
  *   if n < 0 then invalid_arg at_negative_index_msg;
@@ -1186,7 +1174,7 @@ let append l1 l2 =
  *   in
  *   loop [] n l
  * 
- * (\*$T modify_opt_at
+ * (*$T modify_opt_at
  *   modify_opt_at 2 (fun n -> Some (n*n)) [1;2;3;4;5] = [1;2;9;4;5]
  *   modify_opt_at 2 (fun _ -> None) [1;2;3;4;5] = [1;2;4;5]
  *   try ignore (modify_opt_at 0 (fun _ -> None) []); false \
@@ -1199,12 +1187,12 @@ let append l1 l2 =
  *   with Invalid_argument _ -> true
  *   try ignore (modify_opt_at 3 (fun _ -> None) [1;2;3]); false \
  *   with Invalid_argument _ -> true
- * *\)
+ * *)
  * 
  * let modify_at n f l =
  *   modify_opt_at n (fun x -> Some (f x)) l
  * 
- * (\*$T modify_at
+ * (*$T modify_at
  *   modify_at 2 ((+) 1) [1;2;3;4] = [1;2;4;4]
  *   try ignore (modify_at 0 ((+) 1) []); false \
  *   with Invalid_argument _ -> true
@@ -1216,7 +1204,7 @@ let append l1 l2 =
  *   with Invalid_argument _ -> true
  *   try ignore (modify_at 3 ((+) 1) [1;2;3]); false \
  *   with Invalid_argument _ -> true
- * *\)
+ * *)
  * 
  * let sort_unique cmp lst =
  *   let sorted = List.sort cmp lst in
@@ -1257,19 +1245,19 @@ let append l1 l2 =
  *       List.rev_map List.rev (lastgr::groups)
  *     end
  * 
- * (\*$T group
+ * (*$T group
  *   group Pervasives.compare []                 = []
  *   group Pervasives.compare [1]                = [[1]]
  *   group Pervasives.compare [2; 2]             = [[2; 2]]
  *   group Pervasives.compare [5; 4; 4; 2; 1; 6] = [[1]; [2]; [4; 4]; [5]; [6]]
- * *\)
+ * *)
  * 
  * let cartesian_product l1 l2 =
  *   List.concat (List.map (fun i -> List.map (fun j -> (i,j)) l2) l1)
  * 
- * (\*$T cartesian_product as cp
+ * (*$T cartesian_product as cp
  *   cp [1;2;3] ['x';'y'] = [1,'x';1,'y';2,'x';2,'y';3,'x';3,'y']
- * *\)
+ * *)
  * 
  * let rec n_cartesian_product = function
  *   | [] -> [[]]
@@ -1277,14 +1265,14 @@ let append l1 l2 =
  *     let rest = n_cartesian_product t in
  *     List.concat (List.map (fun i -> List.map (fun r -> i :: r) rest) h)
  * 
- * (\*$T n_cartesian_product as ncp
+ * (*$T n_cartesian_product as ncp
  *   ncp []               = [[]]
  *   ncp [[]]             = []
  *   ncp [[1]; [2]; [3]]  = [[1;2;3]]
  *   ncp [[1;2;3]]        = [[1]; [2]; [3]]
  *   ncp [[1;2;3]; []]    = []
  *   ncp [[1;2;3]; [4;5]] = [[1;4]; [1;5]; [2;4]; [2;5]; [3;4]; [3;5]]
- * *\)
+ * *)
  * 
  * let print ?(first="[") ?(last="]") ?(sep="; ") print_a  out = function
  *   | []   ->
@@ -1315,10 +1303,10 @@ let append l1 l2 =
  *   reduce max l
  * 
  * let sum l = fold_left (+) 0 l
- * (\*$= sum & ~printer:string_of_int
+ * (*$= sum & ~printer:string_of_int
  *   2 (sum [1;1])
  *   0 (sum [])
- * *\)
+ * *)
  * 
  * let fsum l =
  *   match l with
@@ -1335,10 +1323,10 @@ let append l1 l2 =
  *         rem := xs
  *     done;
  *     !acc
- * (\*$= fsum & ~printer:string_of_float
+ * (*$= fsum & ~printer:string_of_float
  *   0. (fsum [])
  *   6. (fsum [1.;2.;3.])
- * *\)
+ * *)
  * 
  * let favg l =
  *   match l with
@@ -1357,17 +1345,17 @@ let append l1 l2 =
  *         rem := xs
  *     done;
  *     !acc /. float_of_int !len
- * (\*$T favg
+ * (*$T favg
  *   try let _ = favg [] in false with Invalid_argument _ -> true
  *   favg [1.;2.;3.] = 2.
- * *\)
+ * *)
  * 
  * let kahan_sum li =
- *   (\* This algorithm is written in a particularly untasteful imperative
+ *   (* This algorithm is written in a particularly untasteful imperative
  *      style to benefit from the nice unboxing of float references that
  *      is harder to obtain with recursive functions today. See the
  *      definition of kahan sum on arrays, on which this one is directly
- *      modeled. *\)
+ *      modeled. *)
  *   let li = ref li in
  *   let continue = ref (!li <> []) in
  *   let sum = ref 0. in
@@ -1384,13 +1372,13 @@ let append l1 l2 =
  *   done;
  *   !sum +. 0.
  * 
- * (\*$T kahan_sum
+ * (*$T kahan_sum
  *    kahan_sum [ ] = 0.
  *    kahan_sum [ 1.; 2. ] = 3.
  *    let n, x = 1_000, 1.1 in \
  *      Float.approx_equal (float n *. x) \
  *                         (kahan_sum (List.make n x))
- * *\)
+ * *)
  * 
  * let min_max ?cmp:(cmp = Pervasives.compare) = function
  *   | [] -> invalid_arg "List.min_max: Empty List"
@@ -1412,11 +1400,11 @@ let append l1 l2 =
  *       (x, x)
  *       xs
  * 
- * (\*$T min_max
+ * (*$T min_max
  *   min_max [1] = (1, 1)
  *   min_max [1; 1] = (1, 1)
  *   min_max [1; -2; 3; 4; 5; 60; 7; 8] = (-2, 60)
- * *\)
+ * *)
  * 
  * let unfold b f =
  *   let acc = Acc.dummy () in
@@ -1426,29 +1414,29 @@ let append l1 l2 =
  *     | Some (a, v) -> loop (Acc.accum dst a) v
  *   in loop acc b
  * 
- * (\*$T unfold
+ * (*$T unfold
  *   unfold 1 (fun x -> None) = []
  *   unfold 0 (fun x -> if x > 3 then None else Some (x, succ x)) = [0;1;2;3]
- * *\)
+ * *)
  * 
  * let subset cmp l l' = for_all (fun x -> mem_cmp cmp x l') l
  * 
- * (\*$T subset
+ * (*$T subset
  *   subset Pervasives.compare [1;2;3;4] [1;2;3] = false
  *   subset Pervasives.compare [1;2;3] [1;2;3] = true
  *   subset Pervasives.compare [3;2;1] [1;2;3] = true
  *   subset Pervasives.compare [1;2] [1;2;3] = true
- * *\)
+ * *)
  * 
  * let shuffle ?state l =
  *   let arr = Array.of_list l in
  *   BatInnerShuffle.array_shuffle ?state arr;
  *   Array.to_list arr
- * (\*$T shuffle
+ * (*$T shuffle
  *   let s = Random.State.make [|11|] in \
  *   shuffle ~state:s [1;2;3;4;5;6;7;8;9] = [7; 2; 9; 5; 3; 6; 4; 1; 8]
  *   shuffle [] = []
- * *\)
+ * *)
  * 
  * module Exceptionless = struct
  *   let rfind p l =
