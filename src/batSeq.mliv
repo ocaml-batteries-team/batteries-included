@@ -400,11 +400,11 @@ end
 ##V>=4.14##
 ##V>=4.14##    @since 4.14 *)
 
-##V>=4.14##val fold_lefti : (int -> 'b -> 'a -> 'b) -> 'b -> 'a t -> 'b
+##V>=4.14##val fold_lefti : ('b -> int -> 'a -> 'b) -> 'b -> 'a t -> 'b
 ##V>=4.14##(** [fold_lefti f _ xs] invokes [f _ i x] successively
 ##V>=4.14##    for every element [x] located at index [i] of the sequence [xs].
 ##V>=4.14##
-##V>=4.14##    An accumulator of type ['a] is threaded through the calls to [f].
+##V>=4.14##    An accumulator of type ['b] is threaded through the calls to [f].
 ##V>=4.14##
 ##V>=4.14##    It terminates only if the sequence [xs] is finite.
 ##V>=4.14##
