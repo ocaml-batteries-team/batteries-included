@@ -39,6 +39,7 @@ let replace  = Hashtbl.replace
 let iter     = Hashtbl.iter
 let fold     = Hashtbl.fold
 let hash     = Hashtbl.hash
+let stats    = Hashtbl.stats
 
 type ('a, 'b) h_bucketlist =
   | Empty
@@ -597,7 +598,8 @@ sig
   val merge : (key -> 'a option -> 'b option -> 'c option) ->
              'a t -> 'b t -> 'c t
   val merge_all : (key -> 'a list -> 'b list -> 'c list) ->
-                  'a t -> 'b t -> 'c t
+    'a t -> 'b t -> 'c t
+  val stats : 'a t -> Hashtbl.statistics
   val keys : 'a t -> key BatEnum.t
   val values : 'a t -> 'a BatEnum.t
   val enum : 'a t -> (key * 'a) BatEnum.t
@@ -770,6 +772,7 @@ struct
   let for_all p ht = for_all p (to_hash ht)
   let fold = fold
   let length = length
+  let stats = stats
 
   (* the functions here do not hash values, they only traverse the buckets *)
   let enum h = enum (to_hash h)
@@ -1009,6 +1012,7 @@ struct
   let modify      = modify
   let modify_def  = modify_def
   let modify_opt  = modify_opt
+  let stats       = stats
   let keys        = keys
   let values      = values
   let enum        = enum
