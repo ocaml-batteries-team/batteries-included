@@ -101,6 +101,12 @@ val copy : ('a, 'b) t -> ('a, 'b) t
 val clear : ('a, 'b) t -> unit
 (** Empty a hash table. *)
 
+val stats : ('a, 'b) t -> Hashtbl.statistics
+(** [Hashtbl.stats tbl] returns statistics about the table [tbl]:
+    number of buckets, size of the biggest bucket, distribution of
+    buckets by size.
+    @since 4.00.0 and batteries NEXT_RELEASE *)
+
 (**{6 Enumerations}*)
 
 val keys : ('a,'b) t -> 'a BatEnum.t
@@ -419,7 +425,8 @@ sig
   val merge : (key -> 'a option -> 'b option -> 'c option) ->
              'a t -> 'b t -> 'c t
   val merge_all : (key -> 'a list -> 'b list -> 'c list) ->
-                  'a t -> 'b t -> 'c t
+    'a t -> 'b t -> 'c t
+  val stats : 'a t -> Hashtbl.statistics
   val keys : 'a t -> key BatEnum.t
   val values : 'a t -> 'a BatEnum.t
   val enum : 'a t -> (key * 'a) BatEnum.t
@@ -563,6 +570,7 @@ sig
   val replace : ('a, 'b, [>`Write]) t -> 'a -> 'b -> unit
   val copy : ('a, 'b, [>`Read]) t -> ('a, 'b, _) t
   val clear : ('a, 'b, [>`Write]) t -> unit
+  val stats : ('a, 'b, _) t -> Hashtbl.statistics
 
   (**{6 Searching}*)
 
