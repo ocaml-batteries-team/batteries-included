@@ -1,6 +1,12 @@
 Changelog
 ---------
 
+## v3.5.1 (minor release)
+
+- expose BatHashtbl.stats : ('a, 'b) t -> statistics
+  #1079
+  (Francois Berenger, request by Simmo Saan)
+
 ## v3.5.0 (minor release)
 
 - add covariances to types of maps and sets
