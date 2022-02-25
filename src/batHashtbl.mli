@@ -37,6 +37,8 @@
 type ('a, 'b) t = ('a, 'b) Hashtbl.t
 (** A Hashtable with keys of type 'a and values 'b *)
 
+type statistics = Hashtbl.statistics
+
 (**{6 Base operations}*)
 
 val create : int -> ('a, 'b) t
@@ -101,11 +103,11 @@ val copy : ('a, 'b) t -> ('a, 'b) t
 val clear : ('a, 'b) t -> unit
 (** Empty a hash table. *)
 
-val stats : ('a, 'b) t -> Hashtbl.statistics
+val stats : ('a, 'b) t -> statistics
 (** [Hashtbl.stats tbl] returns statistics about the table [tbl]:
     number of buckets, size of the biggest bucket, distribution of
     buckets by size.
-    @since 4.00.0 and batteries NEXT_RELEASE *)
+    @since 4.00.0 and batteries 3.5.1 *)
 
 (**{6 Enumerations}*)
 
@@ -426,7 +428,7 @@ sig
              'a t -> 'b t -> 'c t
   val merge_all : (key -> 'a list -> 'b list -> 'c list) ->
     'a t -> 'b t -> 'c t
-  val stats : 'a t -> Hashtbl.statistics
+  val stats : 'a t -> statistics
   val keys : 'a t -> key BatEnum.t
   val values : 'a t -> 'a BatEnum.t
   val enum : 'a t -> (key * 'a) BatEnum.t
@@ -570,7 +572,7 @@ sig
   val replace : ('a, 'b, [>`Write]) t -> 'a -> 'b -> unit
   val copy : ('a, 'b, [>`Read]) t -> ('a, 'b, _) t
   val clear : ('a, 'b, [>`Write]) t -> unit
-  val stats : ('a, 'b, _) t -> Hashtbl.statistics
+  val stats : ('a, 'b, _) t -> statistics
 
   (**{6 Searching}*)
 

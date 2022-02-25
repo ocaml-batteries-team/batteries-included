@@ -39,6 +39,8 @@ let replace  = Hashtbl.replace
 let iter     = Hashtbl.iter
 let fold     = Hashtbl.fold
 let hash     = Hashtbl.hash
+
+type statistics = Hashtbl.statistics
 let stats    = Hashtbl.stats
 
 type ('a, 'b) h_bucketlist =
@@ -599,7 +601,7 @@ sig
              'a t -> 'b t -> 'c t
   val merge_all : (key -> 'a list -> 'b list -> 'c list) ->
     'a t -> 'b t -> 'c t
-  val stats : 'a t -> Hashtbl.statistics
+  val stats : 'a t -> statistics
   val keys : 'a t -> key BatEnum.t
   val values : 'a t -> 'a BatEnum.t
   val enum : 'a t -> (key * 'a) BatEnum.t
