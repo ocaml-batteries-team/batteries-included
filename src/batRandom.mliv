@@ -124,6 +124,7 @@ val enum_char : unit -> char BatEnum.t
 val choice : 'a BatEnum.t -> 'a
 (** [choice e] returns a randomly-chosen element of [e].
 
+	@raise Empty when applied to an empty enum.
     This function only works on finite enumerations with
     less than 2{^30} elements.*)
 
