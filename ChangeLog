@@ -3,6 +3,10 @@ Changelog
 
 ## v3.5.1 (minor release)
 
+- improved BatRandom.choice error a bit when passing an empty enum
+#1080
+ (Nicolas Tollenaere)
+
 - expose BatHashtbl.stats : ('a, 'b) t -> statistics
   #1079
   (Francois Berenger, request by Simmo Saan)
