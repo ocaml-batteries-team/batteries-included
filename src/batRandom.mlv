@@ -78,10 +78,11 @@ let enum_bool () = BatEnum.from bool
 let enum_char () = BatEnum.from char
 
 let choice e =
-if BatEnum.is_empty e
-then raise Empty
-else (BatEnum.drop (int (BatEnum.count e)) e;
-		BatEnum.get_exn e)
+  if BatEnum.is_empty e then
+    raise Empty
+  else
+    (BatEnum.drop (int (BatEnum.count e)) e;
+     BatEnum.get_exn e)
 
 (* Reservoir sampling algorithm (see for instance
    http://en.wikipedia.org/wiki/Reservoir_sampling)
