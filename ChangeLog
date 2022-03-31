@@ -1,11 +1,14 @@
 Changelog
 ---------
 
-## v3.5.1 (minor release)
+## NEXT_RELEASE
 
-- improved BatRandom.choice error a bit when passing an empty enum
-#1080
- (Nicolas Tollenaere)
+- BatRandom.choice on an empty enum now throws Empty instead of
+  Invalid_argument "Random.int" previously
+  #1080
+  (Nicolas Tollenaere, review by Francois Berenger)
+
+## v3.5.1 (minor release)
 
 - expose BatHashtbl.stats : ('a, 'b) t -> statistics
   #1079
