@@ -21,6 +21,7 @@
  *)
 
 
+exception Empty
 let init      = Random.init
 let full_init = Random.full_init
 let self_init = Random.self_init
@@ -76,7 +77,11 @@ let enum_nativeint bound = BatEnum.from (fun () -> nativeint bound)
 let enum_bool () = BatEnum.from bool
 let enum_char () = BatEnum.from char
 
-let choice e = BatEnum.drop (int (BatEnum.count e)) e; BatEnum.get_exn e
+let choice e =
+if BatEnum.is_empty e
+then raise Empty
+else (BatEnum.drop (int (BatEnum.count e)) e;
+		BatEnum.get_exn e)
 
 (* Reservoir sampling algorithm (see for instance
    http://en.wikipedia.org/wiki/Reservoir_sampling)
