@@ -3,6 +3,10 @@ Changelog
 
 ## NEXT_RELEASE
 
+- Support new OCaml 5 unix primitive names
+  #1082
+  (David Allsopp, review by Francois Berenger)
+
 - BatRandom.choice on an empty enum now throws Empty instead of
   Invalid_argument "Random.int" previously
   #1080
