@@ -175,21 +175,7 @@ module Incubator = struct
 end
 
 (* Stdlib last *)
-##V<4.3##include Stdlib
-##V>=4.3##include (Stdlib :
-##V>=4.3##  module type of Stdlib
-##V>=4.3##  with type ('a, 'b) result := ('a, 'b) Stdlib.result
-##V>=4.3##  and  type 'a ref = 'a Stdlib.ref
-##V>=4.3##  and  type fpclass = Stdlib.fpclass
-##V>=4.3##  and  type in_channel = Stdlib.in_channel
-##V>=4.3##  and  type out_channel = Stdlib.out_channel
-##V>=4.3##  and  type open_flag = Stdlib.open_flag
-##V>=4.3##  and  type ('a, 'b, 'c, 'd, 'e, 'f) format6 =
-##V>=4.3##    ('a, 'b, 'c, 'd, 'e, 'f) Stdlib.format6
-##V>=4.3##  and  type ('a, 'b, 'c, 'd) format4 =
-##V>=4.3##    ('a, 'b, 'c, 'd) Stdlib.format4
-##V>=4.3##  and  type ('a, 'b, 'c) format =
-##V>=4.3##    ('a, 'b, 'c) Stdlib.format
-##V>=4.3##)
+(* include Stdlib *)
+
 
 include BatStdlib

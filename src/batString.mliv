@@ -99,28 +99,12 @@ external get : string -> int -> char = "%string_safe_get"
 
     @raise Invalid_argument if [n] not a valid character number in [s]. *)
 
-
-external set : Bytes.t -> int -> char -> unit = "%string_safe_set"
-(** [String.set s n c] modifies string [s] in place,
-    replacing the character number [n] by [c].
-    You can also write [s.[n] <- c] instead of [String.set s n c].
-
-    @raise Invalid_argument if [n] is not a valid character number in [s]. *)
-
-external create : int -> Bytes.t = "caml_create_string"
-(** [String.create n] returns a fresh string of length [n].
-    The string initially contains arbitrary characters.
-
-    @raise Invalid_argument if [n < 0] or [n > ]{!Sys.max_string_length}. *)
-
 val make : int -> char -> string
 (** [String.make n c] returns a fresh string of length [n],
     filled with the character [c].
 
     @raise Invalid_argument if [n < 0] or [n > ]{!Sys.max_string_length}.*)
 
-val copy : string -> string
-(** Return a copy of the given string. *)
 
 val sub : string -> int -> int -> string
 (** [String.sub s start len] returns a fresh string of length [len],
@@ -130,12 +114,6 @@ val sub : string -> int -> int -> string
     @raise Invalid_argument if [start] and [len] do not
     designate a valid substring of [s]. *)
 
-val fill : Bytes.t -> int -> int -> char -> unit
-(** [String.fill s start len c] modifies the byte sequence [s] in
-    place, replacing [len] characters by [c], starting at [start].
-
-    @raise Invalid_argument if [start] and [len] do not
-    designate a valid substring of [s]. *)
 
 val blit : string -> int -> Bytes.t -> int -> int -> unit
 (** [String.blit src srcoff dst dstoff len] copies [len] characters
@@ -291,21 +269,6 @@ val rcontains_from : string -> int -> char -> bool
     @raise Invalid_argument if [stop < 0] or [stop+1] is not a valid
     position in [s]. *)
 
-val uppercase : string -> string
-(** Return a copy of the argument, with all lowercase letters
-    translated to uppercase, including accented letters of the ISO
-    Latin-1 (8859-1) character set. *)
-
-val lowercase : string -> string
-(** Return a copy of the argument, with all uppercase letters
-    translated to lowercase, including accented letters of the ISO
-    Latin-1 (8859-1) character set. *)
-
-val capitalize : string -> string
-(** Return a copy of the argument, with the first character set to uppercase. *)
-
-val uncapitalize : string -> string
-(** Return a copy of the argument, with the first character set to lowercase. *)
 
 val uppercase_ascii : string -> string
 (** Return a copy of the argument, with all lowercase letters
@@ -1484,14 +1447,8 @@ end
 
 (* The following is for system use only. Do not call directly. *)
 
-external unsafe_get : string -> int -> char = "%string_unsafe_get"
-external unsafe_set : Bytes.t -> int -> char -> unit = "%string_unsafe_set"
 external unsafe_blit :
   string -> int -> Bytes.t -> int -> int -> unit = "caml_blit_string"
-##V<4.3##  "noalloc"
-##V>=4.3##  [@@noalloc]
-external unsafe_fill :
-  Bytes.t -> int -> int -> char -> unit = "caml_fill_string"
 ##V<4.3##  "noalloc"
 ##V>=4.3##  [@@noalloc]
 

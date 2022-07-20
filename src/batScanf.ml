@@ -39,7 +39,6 @@ type ('a, 'b, 'c, 'd) scanner =
 
 
 open Scanf
-let fscanf = fscanf
 let sscanf = sscanf
 let scanf = scanf
 let kscanf = kscanf

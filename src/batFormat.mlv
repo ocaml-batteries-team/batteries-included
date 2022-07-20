@@ -49,28 +49,34 @@ let formatter_of_output out =
   in
   let f = make_formatter output flush in
   BatInnerIO.on_close_out out (fun _ -> pp_print_flush f ()); (*Note: we can't just use [flush] as [f] contains a cache.*)
-  pp_set_all_formatter_output_functions f
-    ~out:output
-    ~flush
-    ~newline:(newline_of out)
-    ~spaces:(spaces_of out);
+  pp_set_formatter_out_functions f {
+    out_string = output;
+    out_flush = flush;
+    out_newline = newline_of out;
+    out_spaces = spaces_of out;
+    out_indent = spaces_of out;
+  };
   f
 
 let set_formatter_output out =
   BatInnerIO.on_close_out out (fun _ -> pp_print_flush Format.std_formatter ());
-  set_all_formatter_output_functions
-    ~out:(output_of out)
-    ~flush:(flush_of out)
-    ~newline:(newline_of out)
-    ~spaces:(spaces_of out)
+  set_formatter_out_functions {
+    out_string = output_of out;
+    out_flush = flush_of out;
+    out_newline = newline_of out;
+    out_spaces = spaces_of out;
+    out_indent = spaces_of out;
+  }
 
 let pp_set_formatter_output f out =
   BatInnerIO.on_close_out out (fun _ -> pp_print_flush f ());
-  pp_set_all_formatter_output_functions f
-    ~out:(output_of out)
-    ~flush:(flush_of out)
-    ~newline:(newline_of out)
-    ~spaces:(spaces_of out)
+  pp_set_formatter_out_functions f {
+    out_string = output_of out;
+    out_flush = flush_of out;
+    out_newline = newline_of out;
+    out_spaces = spaces_of out;
+    out_indent = spaces_of out;
+  }
 
 (**{6 Old values, new semantics}*)
 

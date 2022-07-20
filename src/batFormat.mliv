@@ -328,18 +328,6 @@ type tag = string
     Tag marking and tag printing functions are user definable and can
     be set by calling [set_formatter_tag_functions]. *)
 
-val open_tag : tag -> unit
-(** [open_tag t] opens the tag named [t]; the [print_open_tag]
-    function of the formatter is called with [t] as argument;
-    the tag marker [mark_open_tag t] will be flushed into the output
-    device of the formatter. *)
-
-val close_tag : unit -> unit
-(** [close_tag ()] closes the most recently opened tag [t].
-    In addition, the [print_close_tag] function of the formatter is called
-    with [t] as argument. The marker [mark_close_tag t] will be flushed
-    into the output device of the formatter. *)
-
 val set_tags : bool -> unit
 (** [set_tags b] turns on or off the treatment of tags (default is off). *)
 
@@ -385,76 +373,11 @@ val get_formatter_output_functions :
     how to handle indentation, line breaking, and even printing of all the
     characters that have to be printed! *)
 
-val set_all_formatter_output_functions :
-  out:(string -> int -> int -> unit) ->
-  flush:(unit -> unit) ->
-  newline:(unit -> unit) ->
-  spaces:(int -> unit) ->
-  unit
-
-(** [set_all_formatter_output_functions out flush outnewline outspace]
-    redirects the pretty-printer output to the functions [out] and
-    [flush] as described in [set_formatter_output_functions]. In
-    addition, the pretty-printer function that outputs a newline is set
-    to the function [outnewline] and the function that outputs
-    indentation spaces is set to the function [outspace].
-
-    This way, you can change the meaning of indentation (which can be
-    something else than just printing space characters) and the
-    meaning of new lines opening (which can be connected to any other
-    action needed by the application at hand). The two functions
-    [outspace] and [outnewline] are normally connected to [out] and
-    [flush]: respective default values for [outspace] and [outnewline]
-    are [out (String.make n ' ') 0 n] and [out "\n" 0 1]. *)
-
-val get_all_formatter_output_functions :
-  unit ->
-  (string -> int -> int -> unit) *
-    (unit -> unit) *
-    (unit -> unit) *
-    (int -> unit)
-
-(** Return the current output functions of the pretty-printer,
-    including line breaking and indentation functions. Useful to record the
-    current setting and restore it afterwards. *)
 
 (** {6:tags Changing the meaning of printing semantics tags} *)
 
-type formatter_tag_functions = {
-  mark_open_tag : tag -> string;
-  mark_close_tag : tag -> string;
-  print_open_tag : tag -> unit;
-  print_close_tag : tag -> unit;
-}
-
-(** The tag handling functions specific to a formatter:
-    [mark] versions are the ``tag marking'' functions that associate a string
-    marker to a tag in order for the pretty-printing engine to flush
-    those markers as 0 length tokens in the output device of the formatter.
-    [print] versions are the ``tag printing'' functions that can perform
-    regular printing when a tag is closed or opened. *)
-
-val set_formatter_tag_functions :
-  formatter_tag_functions -> unit
 
 
-(** [set_formatter_tag_functions tag_funs] changes the meaning of
-    opening and closing tags to use the functions in [tag_funs].
-
-    When opening a tag name [t], the string [t] is passed to the
-    opening tag marking function (the [mark_open_tag] field of the
-    record [tag_funs]), that must return the opening tag marker for
-    that name. When the next call to [close_tag ()] happens, the tag
-    name [t] is sent back to the closing tag marking function (the
-    [mark_close_tag] field of record [tag_funs]), that must return a
-    closing tag marker for that name.
-
-    The [print_] field of the record contains the functions that are
-    called at tag opening and tag closing time, to output regular
-    material in the pretty-printer queue. *)
-
-val get_formatter_tag_functions :
-  unit -> formatter_tag_functions
 
 (** Return the current tag functions of the pretty-printer. *)
 
@@ -525,8 +448,6 @@ val pp_open_hvbox : formatter -> int -> unit
 val pp_open_hovbox : formatter -> int -> unit
 val pp_open_box : formatter -> int -> unit
 val pp_close_box : formatter -> unit -> unit
-val pp_open_tag : formatter -> string -> unit
-val pp_close_tag : formatter -> unit -> unit
 val pp_print_string : formatter -> string -> unit
 val pp_print_as : formatter -> int -> string -> unit
 val pp_print_int : formatter -> int -> unit
@@ -560,26 +481,7 @@ val pp_over_max_boxes : formatter -> unit -> bool
 val pp_set_ellipsis_text : formatter -> string -> unit
 val pp_get_ellipsis_text : formatter -> unit -> string
 val pp_set_formatter_out_channel : formatter -> Stdlib.out_channel -> unit
-val pp_set_formatter_output_functions :
-  formatter -> (string -> int -> int -> unit) -> (unit -> unit) -> unit
 
-val pp_get_formatter_output_functions :
-  formatter -> unit -> (string -> int -> int -> unit) * (unit -> unit)
-
-val pp_set_all_formatter_output_functions :
-  formatter -> out:(string -> int -> int -> unit) -> flush:(unit -> unit) ->
-  newline:(unit -> unit) -> spaces:(int -> unit) -> unit
-
-val pp_get_all_formatter_output_functions :
-  formatter -> unit ->
-  (string -> int -> int -> unit) * (unit -> unit) * (unit -> unit) *
-    (int -> unit)
-
-val pp_set_formatter_tag_functions :
-  formatter -> formatter_tag_functions -> unit
-
-val pp_get_formatter_tag_functions :
-  formatter -> unit -> formatter_tag_functions
 
 (** These functions are the basic ones: usual functions
     operating on the standard formatter are defined via partial
@@ -726,17 +628,6 @@ val ksprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
 (** Same as [sprintf] above, but instead of returning the string,
     passes it to the first argument. *)
 
-(** {6 Deprecated} *)
-
-val bprintf : Buffer.t -> ('a, formatter, unit) format -> 'a
-(** A deprecated and error prone function. Do not use it.
-
-    If you need to print to some buffer [b], you must first define a
-    formatter writing to [b], using [let to_b = formatter_of_buffer b]; then
-    use regular calls to [Format.fprintf] on formatter [to_b]. *)
-
-val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
-(** A deprecated synonym for [ksprintf]. *)
 
 
 (** {6 Basic functions to use with formatters} *)

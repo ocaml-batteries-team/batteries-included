@@ -512,7 +512,7 @@ struct
         | 1 -> '-'
         | _ -> failwith "titled_formatter: Too much indentation"
       in
-      sprintf "%*s%s\n%*s%s\n\n" !indent "" (String.capitalize h) !indent ""
+      sprintf "%*s%s\n%*s%s\n\n" !indent "" (String.capitalize_ascii h) !indent ""
         (String.make (String.length h) c)
     in
     let format_usage usage =

@@ -390,7 +390,8 @@ val delete_alarm : alarm -> unit
   (** [delete_alarm a] will stop the calls to the function associated
       to [a].  Calling [delete_alarm a] again has no effect. *)
 
-##V>=4.11##external eventlog_pause : unit -> unit = "caml_eventlog_pause"
+##V>=4.11####V<5.0##external eventlog_pause : unit -> unit = "caml_eventlog_pause"
+##V>=5.0##val eventlog_pause : unit -> unit
 ##V>=4.11##(** [eventlog_pause ()] will pause the collection of traces in the
 ##V>=4.11##   runtime.
 ##V>=4.11##   Traces are collected if the program is linked to the instrumented runtime
@@ -398,7 +399,8 @@ val delete_alarm : alarm -> unit
 ##V>=4.11##   Events are flushed to disk after pausing, and no new events will be
 ##V>=4.11##   recorded until [eventlog_resume] is called. *)
 ##V>=4.11##
-##V>=4.11##external eventlog_resume : unit -> unit = "caml_eventlog_resume"
+##V>=4.11####V<5.0##external eventlog_resume : unit -> unit = "caml_eventlog_resume"
+##V>=5.0##val eventlog_resume : unit -> unit
 ##V>=4.11##(** [eventlog_resume ()] will resume the collection of traces in the
 ##V>=4.11##   runtime.
 ##V>=4.11##   Traces are collected if the program is linked to the instrumented runtime
