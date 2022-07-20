@@ -1,4 +1,4 @@
-open BatPervasives
+open BatStdlib
 module R = BatRandom
 module U = OUnit
 

@@ -1,5 +1,5 @@
 (*
- * BatPervasives - Additional functions
+ * BatStdlib - Additional functions
  * Copyright (C) 1996 Xavier Leroy
  *               2003 Nicolas Cannasse
  *               2007 Zheng Li
@@ -39,7 +39,7 @@ open BatIO
 
     This module is automatically opened at the beginning of each compilation.
     All components of this module can therefore be referred by their short
-    name, without prefixing them by [BatPervasives].
+    name, without prefixing them by [BatStdlib].
 
     @author Xavier Leroy (Base module)
     @author Nicolas Cannasse
@@ -47,17 +47,17 @@ open BatIO
     @author Zheng Li
 *)
 
-val input_lines : Pervasives.in_channel -> string BatEnum.t
+val input_lines : Stdlib.in_channel -> string BatEnum.t
 (** Returns an enumeration over lines of an input channel, as read by the
     [input_line] function. *)
 
-val input_chars : Pervasives.in_channel -> char BatEnum.t
+val input_chars : Stdlib.in_channel -> char BatEnum.t
 (** Returns an enumeration over characters of an input channel. *)
 
-val input_list : Pervasives.in_channel -> string list
+val input_list : Stdlib.in_channel -> string list
 (** Returns the list of lines read from an input channel. *)
 
-val input_all : Pervasives.in_channel -> string
+val input_all : Stdlib.in_channel -> string
 (** Return the whole contents of an input channel as a single
     string. *)
 
@@ -243,14 +243,14 @@ val output_binary_int : unit BatIO.output -> int -> unit
     on the given output channel.
     The given integer is taken modulo 2{^32}.
     The only reliable way to read it back is through the
-    {!Pervasives.input_binary_int} function. The format is compatible across
+    {!Stdlib.input_binary_int} function. The format is compatible across
     all machines for a given version of OCaml. *)
 
 val output_binary_float : unit BatIO.output -> float -> unit
 (** Write one float in binary format (8 bytes, IEEE 754 double format)
     on the given output channel.
     The only reliable way to read it back is through the
-    {!Pervasives.input_binary_float} function. The format is compatible across
+    {!Stdlib.input_binary_float} function. The format is compatible across
     all machines for a given version of OCaml. *)
 
 val output_value : unit BatIO.output -> 'a -> unit
@@ -300,16 +300,16 @@ val open_in : ?mode:(BatFile.open_in_flag list) ->
 
 
 val open_in_bin : string -> BatIO.input
-(** Same as {!Pervasives.open_in}, but the file is opened in binary mode,
+(** Same as {!Stdlib.open_in}, but the file is opened in binary mode,
     so that no translation takes place during reads. On operating
     systems that do not distinguish between text mode and binary
-    mode, this function behaves like {!Pervasives.open_in}. *)
+    mode, this function behaves like {!Stdlib.open_in}. *)
 
 val open_in_gen : open_flag list -> int -> string -> BatIO.input
 (** [open_in_gen mode perm filename] opens the named file for reading,
     as described above. The extra arguments [mode] and [perm]
     specify the opening mode and file permissions.
-    {!Pervasives.open_in} and {!Pervasives.open_in_bin} are special
+    {!Stdlib.open_in} and {!Stdlib.open_in_bin} are special
     cases of this function.
 
     @deprecated Use {!open_in instead}*)
@@ -337,7 +337,7 @@ val input : BatIO.input -> Bytes.t -> int -> int -> int
     no more characters were available at that time, or because
     the implementation found it convenient to do a partial read;
     [input] must be called again to read the remaining characters,
-    if desired.  (See also {!Pervasives.really_input} for reading
+    if desired.  (See also {!Stdlib.really_input} for reading
     exactly [len] characters.)
     @raise Invalid_argument if [pos] and [len]
     do not designate a valid subsequence of [buf]. *)
@@ -351,19 +351,19 @@ val really_input : BatIO.input -> Bytes.t -> int -> int -> unit
     [pos] and [len] do not designate a valid subsequence of [buf]. *)
 
 val input_byte : BatIO.input -> int
-(** Same as {!Pervasives.input_char}, but return the 8-bit integer representing
+(** Same as {!Stdlib.input_char}, but return the 8-bit integer representing
     the character.
     @raise End_of_file if an end of file was reached. *)
 
 val input_binary_int : BatIO.input -> int
 (** Read an integer encoded in binary format (4 bytes, big-endian)
-    from the given input channel. See {!Pervasives.output_binary_int}.
+    from the given input channel. See {!Stdlib.output_binary_int}.
     @raise End_of_file if an end of file was reached while reading the
     integer. *)
 
 val input_binary_float : BatIO.input -> float
 (** Read a float encoded in binary format (8 bytes, IEEE 754 double format)
-    from the given input channel. See {!Pervasives.output_binary_float}.
+    from the given input channel. See {!Stdlib.output_binary_float}.
     @raise End_of_file if an end of file was reached while reading the
     float. *)
 
@@ -848,7 +848,7 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.outp
 
     For more functions related to this type, see the {!BatResult} module.
 *)
-type ('a, 'e) result = ('a, 'e) BatInnerPervasives.result =
+type ('a, 'e) result = ('a, 'e) BatInnerStdlib.result =
   | Ok  of 'a
   | Error of 'e
   (** The result of a computation - either an [Ok] with the normal

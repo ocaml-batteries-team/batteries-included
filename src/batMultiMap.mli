@@ -24,7 +24,7 @@
 
     This is a polymorphic multi-map, i.e. an association from 1 to many.
 
-   This implementation uses [Pervasives.compare] to compare both keys and
+   This implementation uses [Stdlib.compare] to compare both keys and
    values.
 
    @author Xavier Leroy

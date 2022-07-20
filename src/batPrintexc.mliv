@@ -194,7 +194,7 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##    backtrace on standard error output.
 ##V>=4.2##
 ##V>=4.2##    Note that when [fn] is called all the functions registered with
-##V>=4.2##    {!Pervasives.at_exit} have already been called. Because of this you must
+##V>=4.2##    {!Stdlib.at_exit} have already been called. Because of this you must
 ##V>=4.2##    make sure any output channel [fn] writes on is flushed.
 ##V>=4.2##
 ##V>=4.2##    If [fn] raises an exception, it is ignored.

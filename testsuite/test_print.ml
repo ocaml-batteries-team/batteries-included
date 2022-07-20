@@ -7,11 +7,11 @@ let many_tests= 100000
 let run_legacy number_of_runs =
 begin
   Gc.full_major ();
-  let devnull = Legacy.Pervasives.open_out "/dev/null" in
+  let devnull = Legacy.Stdlib.open_out "/dev/null" in
   foreach (1 -- number_of_runs) (fun _ ->
     Legacy.Printf.fprintf devnull "%a%!" (fun ch () -> Legacy.Printf.fprintf ch "Hello, world!") ()
   );
-  Legacy.Pervasives.close_out devnull;
+  Legacy.Stdlib.close_out devnull;
   Gc.full_major ();
   (Gc.stat()).live_words
 end

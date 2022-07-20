@@ -358,7 +358,7 @@ external modf : float -> float * float = "caml_modf_float"
       part of [f]. *)
 
 (** Classes of floating point numbers*)
-type fpkind = Pervasives.fpclass =
+type fpkind = Stdlib.fpclass =
   | FP_normal           (** Normal number, none of the below *)
   | FP_subnormal        (** Number very close to 0.0, has reduced precision *)
   | FP_zero             (** Number is 0.0 or -0.0 *)
@@ -582,7 +582,7 @@ sig
       part of [f]. *)
 
   (** Classes of floating point numbers*)
-  type fpkind = Pervasives.fpclass =
+  type fpkind = Stdlib.fpclass =
       FP_normal           (** Normal number, none of the below *)
     | FP_subnormal        (** Number very close to 0.0, has reduced precision *)
     | FP_zero             (** Number is 0.0 or -0.0 *)

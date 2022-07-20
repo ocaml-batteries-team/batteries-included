@@ -33,7 +33,7 @@ index 005c4df0..79ee6f94 100644
          let i = ref (-1) in \
          for_all (fun elt -> incr i; \
 @@ -187,7 +187,7 @@ let findi p xs =
- 
+
  let find p xs = xs.(findi p xs)
  (*$Q find
 -  (Q.pair (Q.array Q.small_int) (Q.fun1 Q.Observable.int Q.bool)) (fun (a, Q.Fun(_,f)) -> \
@@ -80,10 +80,10 @@ index 005c4df0..79ee6f94 100644
 +    let f n = if (n mod 4 = 0) then Some n else None in \
 +    is_sorted_by f (decorate_stable_sort f a))
  *)
- 
+
  let decorate_fast_sort f xs =
 @@ -670,8 +671,9 @@ let decorate_fast_sort f xs =
-   let () = fast_sort (fun (i,_) (j,_) -> Pervasives.compare i j) decorated in
+   let () = fast_sort (fun (i,_) (j,_) -> Stdlib.compare i j) decorated in
    map (fun (_,x) -> x) decorated
  (*$Q decorate_fast_sort
 -  (Q.pair (Q.array Q.small_int) (Q.fun1 Q.Observable.int (Q.option Q.int))) \
@@ -92,7 +92,7 @@ index 005c4df0..79ee6f94 100644
 +    let f n = if (n mod 4 = 0) then Some n else None in \
 +    is_sorted_by f (decorate_fast_sort f a))
  *)
- 
+
  let bsearch cmp arr x =
 diff --git a/src/batInnerShuffle.ml b/src/batInnerShuffle.ml
 index 4bcda867..3593a8f8 100644
@@ -100,13 +100,13 @@ index 4bcda867..3593a8f8 100644
 +++ b/src/batInnerShuffle.ml
 @@ -12,7 +12,7 @@ let array_shuffle ?state a =
    done
- 
+
  (*$Q
 -  Q.(array_of_size Gen.(2--15) small_int) (fun a -> \
 +  Q.(array_of_size (fun _ -> 10) small_int) (fun a -> \
      let a' = Array.copy a in \
      array_shuffle a'; \
-     (Array.to_list a' |> List.sort Pervasives.compare) = \
+     (Array.to_list a' |> List.sort Stdlib.compare) = \
 diff --git a/src/batList.mlv b/src/batList.mlv
 index 9208b765..d7c5d6ce 100644
 --- a/src/batList.mlv
@@ -121,8 +121,8 @@ index 9208b765..d7c5d6ce 100644
 +    let f n = n+1 in \
 +    map f l = List.map f l)
  *)
- 
+
  let rec drop n = function
--- 
+--
 2.13.6
 

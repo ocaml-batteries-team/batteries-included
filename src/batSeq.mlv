@@ -241,11 +241,11 @@ let reduce f s = match s () with
 
 let max s = match s () with
   | Nil -> invalid_arg "Seq.max"
-  | Cons(e, s) -> fold_left Pervasives.max e s
+  | Cons(e, s) -> fold_left Stdlib.max e s
 
 let min s = match s () with
   | Nil -> invalid_arg "Seq.min"
-  | Cons(e, s) -> fold_left Pervasives.min e s
+  | Cons(e, s) -> fold_left Stdlib.min e s
 
 let equal ?(eq=(=)) s1 s2 =
   let rec recurse eq s1 s2 =

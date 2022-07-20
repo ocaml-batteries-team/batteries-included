@@ -28,7 +28,7 @@ let to_byte n = Int32.logand 0xffl n |> Int32.to_int |> Char.chr
 let of_byte b = Char.code b |> Int32.of_int
 
 (*$Q to_byte; of_byte
-  Q.char (fun c -> Pervasives.(=) (to_byte (of_byte c)) c)
+  Q.char (fun c -> Stdlib.(=) (to_byte (of_byte c)) c)
 *)
 
 (*$T to_byte

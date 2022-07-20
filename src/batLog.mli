@@ -67,7 +67,7 @@ val log : ?fp:string -> string -> unit
 
     @since 2.0; was [printf] in 1.x
 *)
-val logf: ?fp:string -> ('a, unit output, unit) Pervasives.format -> 'a
+val logf: ?fp:string -> ('a, unit output, unit) Stdlib.format -> 'a
 
 (** [fatal s] logs the message [s] and then calls [exit 1].  This
     exits the program with return code 1.  *)
@@ -76,7 +76,7 @@ val fatal : ?fp:string -> string -> 'a
 (** [fatalf] allows a format string (as [Printf.printf])and the
     arguments to that format string to build the logging message.
     Exits the program with return code 1. *)
-val fatalf: ?fp:string -> ('a, unit output, unit) Pervasives.format -> 'a
+val fatalf: ?fp:string -> ('a, unit output, unit) Stdlib.format -> 'a
 
 module type Config = sig
   type t
@@ -93,7 +93,7 @@ module Make (S:Config) : sig
   (** As [Printf.printf], only the message is printed to the logging
       output and prefixed with status information per the current flags and
       the currently set prefix. *)
-  val logf: ?fp:string -> ('a, S.t output, unit) Pervasives.format -> 'a
+  val logf: ?fp:string -> ('a, S.t output, unit) Stdlib.format -> 'a
 
   (** [fatal s] logs the message [s] and then calls [exit 1].  This
       exits the program with return code 1.  *)
@@ -102,7 +102,7 @@ module Make (S:Config) : sig
   (** [fatalf] allows a format string (as [Printf.printf])and the
       arguments to that format string to build the logging message.
       Exits the program with return code 1. *)
-  val fatalf: ?fp:string -> ('a, S.t output, unit) Pervasives.format -> 'a
+  val fatalf: ?fp:string -> ('a, S.t output, unit) Stdlib.format -> 'a
 
 end
 

@@ -13,7 +13,7 @@
 (*                                                                        *)
 (**************************************************************************)
 
-type ('a, 'e) t = ('a, 'e) BatPervasives.result =
+type ('a, 'e) t = ('a, 'e) BatStdlib.result =
   | Ok  of 'a
   | Error of 'e
 

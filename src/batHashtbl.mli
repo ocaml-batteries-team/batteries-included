@@ -282,7 +282,7 @@ val merge_all: ('a -> 'b list -> 'c list -> 'd list) ->
 val hash : 'a -> int
 (** [Hashtbl.hash x] associates a positive integer to any value of
     any type. It is guaranteed that
-    if [x = y] or [Pervasives.compare x y = 0], then [hash x = hash y].
+    if [x = y] or [Stdlib.compare x y = 0], then [hash x = hash y].
     Moreover, [hash] always terminates, even on cyclic
     structures. *)
 
@@ -311,7 +311,7 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
 module Exceptionless :
 sig
   val find : ('a, 'b) t -> 'a -> 'b option
-  val modify : 'a -> ('b -> 'b) -> ('a, 'b) t -> (unit, exn) BatPervasives.result
+  val modify : 'a -> ('b -> 'b) -> ('a, 'b) t -> (unit, exn) BatStdlib.result
 end
 
 (** Infix operators over a {!BatHashtbl} *)
@@ -384,7 +384,7 @@ sig
         types include
         ([(=)], {!Hashtbl.hash}) for comparing objects by structure,
         ([(fun x y -> compare x y = 0)], {!Hashtbl.hash})
-        for comparing objects by structure and handling {!Pervasives.nan}
+        for comparing objects by structure and handling {!Stdlib.nan}
         correctly, and
         ([(==)], {!Hashtbl.hash}) for comparing objects by addresses
         (e.g. for cyclic keys). *)
@@ -454,7 +454,7 @@ sig
   module Exceptionless :
   sig
     val find : 'a t -> key -> 'a option
-    val modify : key -> ('a -> 'a) -> 'a t -> (unit, exn) BatPervasives.result
+    val modify : key -> ('a -> 'a) -> 'a t -> (unit, exn) BatStdlib.result
   end
 
   (** Infix operators over a {!BatHashtbl} *)
@@ -630,7 +630,7 @@ sig
   module Exceptionless :
   sig
     val find : ('a, 'b, [>`Read]) t -> 'a -> 'b option
-    val modify : 'a -> ('b -> 'b) -> ('a, 'b, [>`Read]) t -> (unit, exn) BatPervasives.result
+    val modify : 'a -> ('b -> 'b) -> ('a, 'b, [>`Read]) t -> (unit, exn) BatStdlib.result
   end
 
   (** Operations on {!BatHashtbl.Cap} with labels.*)

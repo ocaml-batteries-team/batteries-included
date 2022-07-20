@@ -331,10 +331,10 @@ let combinations l =
   in gen l
 
 (*$T combinations
-    List.sort Pervasives.compare (to_list (combinations [1;2;3])) = \
+    List.sort Stdlib.compare (to_list (combinations [1;2;3])) = \
    [[]; [1]; [1;2]; [1;2;3]; [1;3]; [2]; [2;3]; [3]]
      to_list (combinations []) = [[]]
-     List.sort Pervasives.compare (to_list (combinations [1])) = [[]; [1]]
+     List.sort Stdlib.compare (to_list (combinations [1])) = [[]; [1]]
 *)
 
 let permutations l =
@@ -353,7 +353,7 @@ let permutations l =
   in choose_first l []
 
 (*$T permutations
-    List.sort Pervasives.compare (to_list (permutations [1;2;3])) = \
+    List.sort Stdlib.compare (to_list (permutations [1;2;3])) = \
    [[1;2;3]; [1;3;2]; [2;1;3]; [2;3;1]; [3;1;2]; [3;2;1]]
      to_list (permutations []) = [[]]
      to_list (permutations [1]) = [[1]]
@@ -612,7 +612,7 @@ let take_while p =
     | Cons _ | Nil       -> rev_of_list acc
   in aux []
 
-let sort ?(cmp=Pervasives.compare) l = of_list (List.sort cmp (to_list l))
+let sort ?(cmp=Stdlib.compare) l = of_list (List.sort cmp (to_list l))
 
 let stable_sort cmp l = of_list (List.stable_sort cmp (to_list l))
 

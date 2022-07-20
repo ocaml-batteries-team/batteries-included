@@ -68,14 +68,14 @@ let varbuf_perv tmpsize fn =
   Buffer.contents buf
 
 let read_file_as_str fn =
-  let ic = Pervasives.open_in_bin fn in
-  let len = (Pervasives.in_channel_length ic) in
+  let ic = Stdlib.open_in_bin fn in
+  let len = (Stdlib.in_channel_length ic) in
   let old_gc = Gc.get() in
   Gc.set {old_gc with Gc.space_overhead = 0};
   let ret = String.create len in
   Gc.set old_gc;
-  Pervasives.really_input ic ret 0 len;
-  Pervasives.close_in ic;
+  Stdlib.really_input ic ret 0 len;
+  Stdlib.close_in ic;
   ret
 
 open Bigarray

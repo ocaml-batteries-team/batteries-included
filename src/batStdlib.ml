@@ -1,5 +1,5 @@
 (*
- * BatPervasives - Additional functions
+ * BatStdlib - Additional functions
  * Copyright (C) 1996 Xavier Leroy
  *               2003 Nicolas Cannasse
  *               2007 Zheng Li
@@ -22,7 +22,7 @@
  *)
 
 
-open Pervasives
+open Stdlib
 open BatEnum
 
 let input_lines ch =
@@ -174,7 +174,7 @@ let dump v = dump (Obj.repr v)
 
 let print_any oc v = BatIO.nwrite oc (dump v)
 
-include BatInnerPervasives
+include BatInnerStdlib
 
 let invisible_args = ref 1
 (* the number or arguments to ignore at the beginning of Sys.argv,

@@ -509,7 +509,7 @@ let bprintf2 buf fmt = kbprintf2 ignore buf fmt
     mkprintf ignore out fmt
    ]*)
 
-type ('a, 'b, 'c) t = ('a, 'b, 'c) Pervasives.format
+type ('a, 'b, 'c) t = ('a, 'b, 'c) Stdlib.format
 
 let kfprintf        = mkprintf
 let bprintf         = Printf.bprintf

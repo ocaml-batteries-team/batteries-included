@@ -172,7 +172,7 @@ module Concrete = struct
         else if c < 0 then
           let nl = loop l in
           if nl == l then
-            node 
+            node
           else
             bal nl k v r
         else
@@ -225,7 +225,7 @@ module Concrete = struct
        else find_last_helper_found k0 v0 f l
 
   let rec find_last f m =
-    match m with 
+    match m with
     | Empty -> raise Not_found
     | Node (l, k, v, r, _) ->
        if f k
@@ -233,7 +233,7 @@ module Concrete = struct
        else find_last f l
 
   let rec find_last_opt f m =
-    match m with 
+    match m with
     | Empty -> None
     | Node (l, k, v, r, _) ->
        if f k
@@ -294,7 +294,7 @@ module Concrete = struct
           let nl = loop l in
           if nl == l then
             node
-          else 
+          else
             bal nl k v r
         else
           let nr = loop r in
@@ -332,19 +332,19 @@ module Concrete = struct
            if c = 0 then
              if v == v2 && k == k2 then
                node
-             else 
+             else
                Node(l, k2, v2, r, h)
            else if c < 0 then
              let nl = loop l in
              if nl == l then
                node
-             else 
+             else
                Node(nl, k, v, r, h)
            else
              let nr = loop r in
              if nr == r then
                node
-             else 
+             else
                Node(l, k, v, nr, h)
       in
       loop map
@@ -897,7 +897,7 @@ module Concrete = struct
       (fun m (k, v) -> add k v cmp m)
       m
       s
-    
+
   let of_seq cmp s =
     add_seq cmp s empty
 
@@ -906,20 +906,20 @@ module Concrete = struct
     | E -> BatSeq.Nil
     | C(k, v, r, e) ->
        BatSeq.Cons ((k, v), seq_of_iter (cons_iter r e))
-      
+
   let to_seq m =
     seq_of_iter (cons_iter m E)
-      
+
   let rec rev_seq_of_iter m () =
     match m with
     | E -> BatSeq.Nil
     | C(k, v, r, e) ->
        BatSeq.Cons ((k, v), rev_seq_of_iter (rev_cons_iter r e))
-      
+
   let to_rev_seq m =
     rev_seq_of_iter (rev_cons_iter m E)
-      
-  let to_seq_from cmp k m = 
+
+  let to_seq_from cmp k m =
     seq_of_iter (cons_iter_from cmp k m E)
 
   let union_stdlib f cmp1 m1 cmp2 m2 =
@@ -929,7 +929,7 @@ module Concrete = struct
       | x, None
         | None, x -> x in
     heuristic_merge fwrap cmp1 m1 cmp2 m2
-    
+
   let compare ckey cval m1 m2 =
     BatEnum.compare (fun (k1,v1) (k2,v2) -> BatOrd.bin_comp ckey k1 k2 cval v1 v2) (enum m1) (enum m2)
   let equal ckey eq_val m1 m2 =
@@ -979,7 +979,7 @@ sig
   val min_binding : 'a t -> (key * 'a)
   val min_binding_opt : 'a t -> (key * 'a) option
   val pop_min_binding: 'a t -> (key * 'a) * 'a t
-  val max_binding : 'a t -> (key * 'a)    
+  val max_binding : 'a t -> (key * 'a)
   val max_binding_opt : 'a t -> (key * 'a) option
   val pop_max_binding: 'a t -> (key * 'a) * 'a t
   val choose : 'a t -> (key * 'a)
@@ -1208,18 +1208,18 @@ let is_empty = Concrete.is_empty
   not(is_empty (empty |> add 1 1))
  *)
 
-let add x d m = Concrete.add x d Pervasives.compare m
+let add x d m = Concrete.add x d Stdlib.compare m
 
-let update k1 k2 v2 m = Concrete.update k1 k2 v2 Pervasives.compare m
+let update k1 k2 v2 m = Concrete.update k1 k2 v2 Stdlib.compare m
 
-let update_stdlib k f m = Concrete.update_stdlib k f Pervasives.compare m
+let update_stdlib k f m = Concrete.update_stdlib k f Stdlib.compare m
 
 (*$T update_stdlib
-  let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
+  let of_list l = of_enum (BatList.enum l) and cmp = Stdlib.( = ) in \
   equal cmp (update_stdlib 1 (fun x -> assert(x = Some 1); Some 3) (of_list [1,1; 2,2]))    (of_list [1,3;2,2])
-  let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
+  let of_list l = of_enum (BatList.enum l) and cmp = Stdlib.( = ) in \
   equal cmp (update_stdlib 3 (fun x -> assert(x = None);   Some 3) (of_list [1,1; 2,2]))    (of_list [1,1;2,2;3,3])
-  let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
+  let of_list l = of_enum (BatList.enum l) and cmp = Stdlib.( = ) in \
   equal cmp (update_stdlib 1 (fun x -> assert(x = Some 1); None)   (of_list [1,1; 2,2]))    (of_list [2,2])
   let of_list l = of_enum (BatList.enum l) in \
   let s = (of_list [1,1; 2,2]) in (update_stdlib 3 (fun x -> assert(x = None  ); None  ) s) == s
@@ -1227,7 +1227,7 @@ let update_stdlib k f m = Concrete.update_stdlib k f Pervasives.compare m
   let s = (of_list [1,1; 2,2]) in (update_stdlib 1 (fun x -> assert(x = Some 1); Some 1) s) == s
  *)
 
-let find x m = Concrete.find x Pervasives.compare m
+let find x m = Concrete.find x Stdlib.compare m
 
 (*$T add; find
   empty |> add 1 true |> add 2 false |> find 1
@@ -1238,7 +1238,7 @@ let find x m = Concrete.find x Pervasives.compare m
   empty |> add 2 'y' |> add 1 'x' |> find 2 = 'y'
 *)
 
-let find_opt x m = Concrete.find_option x Pervasives.compare m
+let find_opt x m = Concrete.find_option x Stdlib.compare m
 
 (*$T find_opt
     find_opt  4 (add 1 2 empty) = None
@@ -1246,7 +1246,7 @@ let find_opt x m = Concrete.find_option x Pervasives.compare m
 *)
 
 let find_default def x m =
-  Concrete.find_default def x Pervasives.compare m
+  Concrete.find_default def x Stdlib.compare m
 
 (*$T find_default
     find_default 3 4 (add 1 2 empty) = 3
@@ -1265,7 +1265,7 @@ let find_last_opt f map = Concrete.find_last_opt f map
 *)
 
 
-let remove x m = Concrete.remove x Pervasives.compare m
+let remove x m = Concrete.remove x Stdlib.compare m
 
 (*$Q add ; remove
   (Q.list Q.small_int) (fun xs -> \
@@ -1273,7 +1273,7 @@ let remove x m = Concrete.remove x Pervasives.compare m
   List.fold_left (fun acc x -> remove x acc) (of_list xs true empty) xs |> is_empty)
 *)
 
-let remove_exn x m = Concrete.remove_exn x Pervasives.compare m
+let remove_exn x m = Concrete.remove_exn x Stdlib.compare m
 
 (*$Q add ; remove_exn
   (Q.list Q.small_int) (fun xs -> \
@@ -1285,7 +1285,7 @@ let remove_exn x m = Concrete.remove_exn x Pervasives.compare m
   try remove_exn 1 empty |> ignore ; false with Not_found -> true
 *)
 
-let mem x m = Concrete.mem x Pervasives.compare m
+let mem x m = Concrete.mem x Stdlib.compare m
 
 let iter = Concrete.iter
 let map = Concrete.map
@@ -1314,13 +1314,13 @@ let backwards = Concrete.backwards
 let keys    t = BatEnum.map fst (enum t)
 let values  t = BatEnum.map snd (enum t)
 
-let of_enum e = Concrete.of_enum Pervasives.compare e
+let of_enum e = Concrete.of_enum Stdlib.compare e
 
 let print = Concrete.print
 
-let filterv  f t = Concrete.filterv f t Pervasives.compare
-let filter f t = Concrete.filter f t Pervasives.compare
-let filter_map f t = Concrete.filter_map f t Pervasives.compare
+let filterv  f t = Concrete.filterv f t Stdlib.compare
+let filter f t = Concrete.filter f t Stdlib.compare
+let filter_map f t = Concrete.filter_map f t Stdlib.compare
 
 let choose = Concrete.choose
 let choose_opt = Concrete.choose_opt
@@ -1331,7 +1331,7 @@ let max_binding_opt = Concrete.max_binding_opt
 let min_binding_opt = Concrete.min_binding_opt
 let pop_min_binding = Concrete.pop_min_binding
 let pop_max_binding = Concrete.pop_max_binding
-                    
+
 (*$T pop_min_binding
   (empty |> add 1 true |> pop_min_binding) = ((1, true), empty)
   (empty |> add 1 true |> add 2 false |> pop_min_binding) = \
@@ -1351,7 +1351,7 @@ let pop_max_binding = Concrete.pop_max_binding
   (1,1) = choose (of_list [1,1])
   try ignore(choose empty); false with Not_found -> true
  *)
-                    
+
 (*$T choose_opt
   let of_list l = of_enum (BatList.enum l) in \
   Some (1,1) = choose_opt (of_list [1,1])
@@ -1363,19 +1363,19 @@ let pop_max_binding = Concrete.pop_max_binding
   (3,3) = max_binding (of_list [1,1;2,2;3,3])
   try ignore(max_binding empty); false with Not_found -> true
  *)
-                    
+
 (*$T max_binding_opt
   let of_list l = of_enum (BatList.enum l) in \
   Some (3,3) = max_binding_opt (of_list [1,1;2,2;3,3])
   None = max_binding_opt empty
  *)
-                    
+
 (*$T min_binding
   let of_list l = of_enum (BatList.enum l) in \
   (1,1) = min_binding (of_list [1,1;2,2;3,3])
   try ignore(min_binding empty); false with Not_found -> true
  *)
-                    
+
 (*$T min_binding_opt
   let of_list l = of_enum (BatList.enum l) in \
   Some (1,1) = min_binding_opt (of_list [1,1;2,2;3,3])
@@ -1405,28 +1405,28 @@ let pop_max_binding = Concrete.pop_max_binding
   s == (filter (fun _ _ -> true) s)
   *)
 
-                    
+
 let of_seq s =
-  Concrete.of_seq Pervasives.compare s
+  Concrete.of_seq Stdlib.compare s
 
 let add_seq s m =
-  Concrete.add_seq Pervasives.compare s m
+  Concrete.add_seq Stdlib.compare s m
 
 let to_seq = Concrete.to_seq
 let to_rev_seq = Concrete.to_rev_seq
 
 let to_seq_from x m =
-  Concrete.to_seq_from Pervasives.compare x m
+  Concrete.to_seq_from Stdlib.compare x m
 
-let union_stdlib f m1 m2 = Concrete.union_stdlib f Pervasives.compare m1 Pervasives.compare m2
+let union_stdlib f m1 m2 = Concrete.union_stdlib f Stdlib.compare m1 Stdlib.compare m2
 (*$T union_stdlib
-  let cmp = Pervasives.( = ) in \
+  let cmp = Stdlib.( = ) in \
   equal cmp (union_stdlib (fun _ -> failwith "must not be called") empty empty) empty
-  let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
+  let of_list l = of_enum (BatList.enum l) and cmp = Stdlib.( = ) in \
   equal cmp (union_stdlib (fun _ -> failwith "must not be called") (of_list [1,1;2,2]) empty) (of_list [1,1;2,2])
-  let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
+  let of_list l = of_enum (BatList.enum l) and cmp = Stdlib.( = ) in \
   equal cmp (union_stdlib (fun _ -> failwith "must not be called") empty (of_list [1,1;2,2])) (of_list [1,1;2,2])
-  let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
+  let of_list l = of_enum (BatList.enum l) and cmp = Stdlib.( = ) in \
   equal cmp (union_stdlib (fun _ -> failwith "must not be called") (of_list [3,3;4,4]) (of_list [1,1;2,2])) (of_list [1,1;2,2;3,3;4,4])
  *)
 
@@ -1435,17 +1435,17 @@ let singleton k v = Concrete.singleton k v
 let for_all = Concrete.for_all
 let exists = Concrete.exists
 
-let partition f m = Concrete.partition f Pervasives.compare m
+let partition f m = Concrete.partition f Stdlib.compare m
 let cardinal = Concrete.cardinal
 
-let split k m = Concrete.split k Pervasives.compare m
+let split k m = Concrete.split k Stdlib.compare m
 
-let add_carry x d m = Concrete.add_carry x d Pervasives.compare m
-let modify x f m = Concrete.modify x f Pervasives.compare m
+let add_carry x d m = Concrete.add_carry x d Stdlib.compare m
+let modify x f m = Concrete.modify x f Stdlib.compare m
 
-let modify_def v0 x f m = Concrete.modify_def v0 x f Pervasives.compare m
+let modify_def v0 x f m = Concrete.modify_def v0 x f Stdlib.compare m
 
-let modify_opt x f m = Concrete.modify_opt x f Pervasives.compare m
+let modify_opt x f m = Concrete.modify_opt x f Stdlib.compare m
 (*$T modify_opt
   empty |> add 1 false |> \
   modify_opt 1 (function Some false -> Some true | _ -> assert false) |> \
@@ -1455,20 +1455,20 @@ let modify_opt x f m = Concrete.modify_opt x f Pervasives.compare m
   mem 1 |> not
 *)
 
-let extract x m = Concrete.extract x Pervasives.compare m
+let extract x m = Concrete.extract x Stdlib.compare m
 
 let pop = Concrete.pop
 
-let split k m = Concrete.split k Pervasives.compare m
+let split k m = Concrete.split k Stdlib.compare m
 
 (* We can't compare external primitives directly using the physical equality
    operator, since two different occurrences of an external primitive are two
-   different closures. So we first make a local binding of [Pervasives.compare]
+   different closures. So we first make a local binding of [Stdlib.compare]
    and only then pass it to corresponding functions from Concrete. This way the
    physical equality check in [compatible_cmp] will work as needed *)
 
 let union m1 m2 =
-  let comp = Pervasives.compare in
+  let comp = Stdlib.compare in
   Concrete.union comp m1 comp m2
 
 (*$T union
@@ -1478,25 +1478,25 @@ let union m1 m2 =
  *)
 
 let union_stdlib f m1 m2 =
-  Concrete.union_stdlib f Pervasives.compare m1 Pervasives.compare m2
+  Concrete.union_stdlib f Stdlib.compare m1 Stdlib.compare m2
 
 let diff m1 m2 =
-  let comp = Pervasives.compare in
+  let comp = Stdlib.compare in
   Concrete.diff comp m1 comp m2
 
 let intersect merge m1 m2 =
-  let comp = Pervasives.compare in
+  let comp = Stdlib.compare in
   Concrete.intersect merge comp m1 comp m2
 
 
-let merge f m1 m2 = Concrete.merge f Pervasives.compare m1 m2
+let merge f m1 m2 = Concrete.merge f Stdlib.compare m1 m2
 
 let bindings = Concrete.bindings
 
 let compare cmp_val m1 m2 =
-  Concrete.compare Pervasives.compare cmp_val m1 m2
+  Concrete.compare Stdlib.compare cmp_val m1 m2
 
-let equal eq_val m1 m2 = Concrete.equal Pervasives.compare eq_val m1 m2
+let equal eq_val m1 m2 = Concrete.equal Stdlib.compare eq_val m1 m2
 
 module Exceptionless =
 struct
@@ -1531,7 +1531,7 @@ module PMap = struct (*$< PMap *)
     get_cmp (create BatInt.compare) == BatInt.compare
   *)
 
-  let empty = { cmp = Pervasives.compare; map = Concrete.empty }
+  let empty = { cmp = Stdlib.compare; map = Concrete.empty }
   let get_cmp {cmp; _} = cmp
   let is_empty x = x.map = Concrete.Empty
 
@@ -1581,7 +1581,7 @@ module PMap = struct (*$< PMap *)
   let find_last f map = Concrete.find_last f map.map
   let find_last_opt f map = Concrete.find_last_opt f map.map
 
-    
+
   (*$T update
     add 1 false empty |> update 1 1 true |> find 1
     add 1 false empty |> update 1 2 true |> find 2
@@ -1661,7 +1661,7 @@ module PMap = struct (*$< PMap *)
   let keys    t = BatEnum.map fst (enum t)
   let values  t = BatEnum.map snd (enum t)
 
-  let of_enum ?(cmp = Pervasives.compare) e =
+  let of_enum ?(cmp = Stdlib.compare) e =
     { cmp = cmp; map = Concrete.of_enum cmp e }
 
   let print ?first ?last ?sep ?kvsep print_k print_v out t =
@@ -1686,7 +1686,7 @@ module PMap = struct (*$< PMap *)
     let maxi, rest = Concrete.pop_max_binding m.map in
     (maxi, { m with map = rest })
 
-  let singleton ?(cmp = Pervasives.compare) k v =
+  let singleton ?(cmp = Stdlib.compare) k v =
     { cmp = cmp; map = Concrete.singleton k v }
 
   let for_all f m = Concrete.for_all f m.map
@@ -1747,16 +1747,16 @@ module PMap = struct (*$< PMap *)
   let merge_unsafe f m1 m2 =
     { m1 with map = Concrete.merge f m1.cmp m1.map m2.map }
 
-  let of_seq ?(cmp = Pervasives.compare) s =
+  let of_seq ?(cmp = Stdlib.compare) s =
     { map = Concrete.of_seq cmp s; cmp = cmp }
-    
+
   let to_seq m = Concrete.to_seq m.map
 
   let to_rev_seq m = Concrete.to_rev_seq m.map
-             
+
   let to_seq_from k m =
     Concrete.to_seq_from m.cmp k m.map
-                      
+
   let add_seq s m =
     { m with map = Concrete.add_seq m.cmp s m.map }
 

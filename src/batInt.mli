@@ -73,12 +73,12 @@ external ( * ) : int -> int -> int = "%mulint"
 external div : int -> int -> int = "%divint"
 (** Integer division.
     This division rounds the real quotient of
-    its arguments towards zero, as specified for {!Pervasives.(/)}.
+    its arguments towards zero, as specified for {!Stdlib.(/)}.
     @raise Division_by_zero if the second argument is zero. *)
 
 external ( / ) : int -> int -> int = "%divint"
 (** Integer division.  This division rounds the real quotient of
-    its arguments towards zero, as specified for {!Pervasives.(/)}.
+    its arguments towards zero, as specified for {!Stdlib.(/)}.
     @raise Division_by_zero if the second argument is zero. *)
 
 external rem : int -> int -> int = "%modint"
@@ -221,7 +221,7 @@ val print_hex: 'a BatInnerIO.output -> int -> unit
 
 val compare: t -> t -> int
 (** The comparison function for integers, with the same specification as
-    {!Pervasives.compare}.  Along with the type [t], this function [compare]
+    {!Stdlib.compare}.  Along with the type [t], this function [compare]
     allows the module [Int] to be passed as argument to the functors
     {!Set.Make} and {!Map.Make}. *)
 
@@ -281,12 +281,12 @@ module Safe_int : sig
   external div : t -> t -> t = "%divint"
   (** Integer division.
       This division rounds the real quotient of
-      its arguments towards zero, as specified for {!Pervasives.(/)}.
+      its arguments towards zero, as specified for {!Stdlib.(/)}.
       @raise Division_by_zero if the second argument is zero. *)
 
   external ( / ) : t -> t -> t = "%divint"
   (** Integer division. This division rounds the real quotient of
-      its arguments towards zero, as specified for {!Pervasives.(/)}.
+      its arguments towards zero, as specified for {!Stdlib.(/)}.
       @raise Division_by_zero if the second argument is zero. *)
 
   external rem : t -> t -> t = "%modint"
@@ -385,7 +385,7 @@ module Safe_int : sig
 
   val compare : t -> t -> int
   (** The comparison function for integers, with the same specification as
-      {!Pervasives.compare}.  Along with the type [t], this function [compare]
+      {!Stdlib.compare}.  Along with the type [t], this function [compare]
       allows the module [Int] to be passed as argument to the functors
       {!Set.Make} and {!Map.Make}. *)
 

@@ -113,12 +113,12 @@ val get_exn : 'a option -> exn -> 'a
 val compare : ?cmp:('a -> 'a -> int) -> 'a option -> 'a option -> int
 (** Compare two options, possibly using custom comparators for the
     value.  [None] is always assumed to be less than [Some _].  The
-    parameter [cmp] defaults to [Pervasives.compare]. *)
+    parameter [cmp] defaults to [Stdlib.compare]. *)
 
 val eq : ?eq:('a -> 'a -> bool) -> 'a option -> 'a option -> bool
 (** Test for equality between option types, possibly using a custom
     equality predicate.  The parameter [eq] defaults to
-    [Pervasives.(=)].
+    [Stdlib.(=)].
 
     @since 1.4.0
 *)

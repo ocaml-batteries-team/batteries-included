@@ -15,8 +15,8 @@ let array_shuffle ?state a =
   Q.(array_of_size Gen.(2--15) small_int) (fun a -> \
     let a' = Array.copy a in \
     array_shuffle a'; \
-    (Array.to_list a' |> List.sort Pervasives.compare) = \
-     (Array.to_list a |> List.sort Pervasives.compare))
+    (Array.to_list a' |> List.sort Stdlib.compare) = \
+     (Array.to_list a |> List.sort Stdlib.compare))
 *)
 
 (*$R

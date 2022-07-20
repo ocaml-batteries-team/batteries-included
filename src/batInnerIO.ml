@@ -378,14 +378,14 @@ let input_channel ?(autoclose=true) ?(cleanup=true) ch =
         if autoclose then close_in !me;
         raise No_more_input)
       ~input:(fun s p l ->
-        let n = Pervasives.input ch s p l in
+        let n = Stdlib.input ch s p l in
         if n = 0 then
           begin
             if autoclose then close_in !me else ();
             raise No_more_input
           end
         else n)
-      ~close:(if cleanup then fun () -> Pervasives.close_in ch else ignore)
+      ~close:(if cleanup then fun () -> Stdlib.close_in ch else ignore)
   in
   me := result;
   result
@@ -393,18 +393,18 @@ let input_channel ?(autoclose=true) ?(cleanup=true) ch =
 let output_channel ?(cleanup=false) ch =
   create_out
     ~write: (fun c     -> output_char ch c)
-    ~output:(fun s p l -> Pervasives.output ch s p l; l)
+    ~output:(fun s p l -> Stdlib.output ch s p l; l)
     ~close: (if cleanup then fun () ->
         begin
           (*           Printf.eprintf "Cleaning up\n%!";*)
-          Pervasives.close_out ch
+          Stdlib.close_out ch
         end
       else fun () ->
         begin
           (*           Printf.eprintf "Not cleaning up\n%!";*)
-          Pervasives.flush ch
+          Stdlib.flush ch
         end)
-    ~flush: (fun ()    -> Pervasives.flush ch)
+    ~flush: (fun ()    -> Stdlib.flush ch)
 
 
 let pipe() =
@@ -574,7 +574,7 @@ let read_float ch =
   Int32.float_of_bits (read_real_i32 ch)
 
 let write_byte o n =
-  (* doesn't test bounds of n in order to keep semantics of Pervasives.output_byte *)
+  (* doesn't test bounds of n in order to keep semantics of Stdlib.output_byte *)
   write o (Char.unsafe_chr (n land 0xFF))
 
 let write_string o s =
@@ -624,9 +624,9 @@ let write_double ch f =
 let write_float ch f =
   write_real_i32 ch (Int32.bits_of_float f)
 
-let stdin  = input_channel Pervasives.stdin
-let stdout = output_channel Pervasives.stdout
-let stderr = output_channel Pervasives.stderr
+let stdin  = input_channel Stdlib.stdin
+let stdout = output_channel Stdlib.stdout
+let stderr = output_channel Stdlib.stderr
 let stdnull= create_out
     ~write:ignore
     ~output:(fun _ _ l -> l)

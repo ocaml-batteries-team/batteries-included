@@ -20,7 +20,7 @@ let test_open_process_cleanup () =
       BatPrintf.fprintf w "%s\n" string;
       close_out w;
       while true do
-	ignore (BatPervasives.input_char r) (*This is a way of checking that the process is closed.*)
+	ignore (BatStdlib.input_char r) (*This is a way of checking that the process is closed.*)
       done
   with End_of_file
     | No_more_input -> ()

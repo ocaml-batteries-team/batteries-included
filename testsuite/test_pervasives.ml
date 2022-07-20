@@ -31,7 +31,7 @@ type test3 = {
 
 let test_dump () =
   let test str value =
-    assert_equal ~msg:str ~printer:(fun x -> x) str (BatPervasives.dump value) in
+    assert_equal ~msg:str ~printer:(fun x -> x) str (BatStdlib.dump value) in
 
   (* integers *)
   test "0" None;

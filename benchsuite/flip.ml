@@ -1,4 +1,4 @@
-open BatPervasives
+open BatStdlib
 open BatSet
 
 let of_list l = List.fold_left (flip add) empty l

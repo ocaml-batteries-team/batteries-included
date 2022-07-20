@@ -1074,9 +1074,9 @@ module PSet = struct (*$< PSet *)
   let at_rank_exn i s = Concrete.at_rank_exn i s.set
   let fold f s acc = Concrete.fold f s.set acc
   let map f s =
-    { cmp = Pervasives.compare; set = Concrete.map Pervasives.compare f s.set }
+    { cmp = Stdlib.compare; set = Concrete.map Stdlib.compare f s.set }
   let map_endo f s =
-    let newset = Concrete.map_endo Pervasives.compare f s.set in
+    let newset = Concrete.map_endo Stdlib.compare f s.set in
     if s.set == newset then s
     else { cmp = s.cmp; set = newset }
   let filter f s =
@@ -1151,7 +1151,7 @@ module PSet = struct (*$< PSet *)
   let add_seq s t =
     { t with set = Concrete.add_seq t.cmp s t.set }
 
-  let of_seq  ?(cmp = Pervasives.compare) s =
+  let of_seq  ?(cmp = Stdlib.compare) s =
     {set = Concrete.of_seq cmp s; cmp = cmp }
 
   let to_seq t =
@@ -1178,11 +1178,11 @@ let is_empty s = s = Concrete.Empty
 
 let is_singleton s = Concrete.is_singleton s
 
-let mem x s = Concrete.mem Pervasives.compare x s
+let mem x s = Concrete.mem Stdlib.compare x s
 
-let find x s = Concrete.find Pervasives.compare x s
+let find x s = Concrete.find Stdlib.compare x s
 
-let find_opt x s = Concrete.find_opt Pervasives.compare x s
+let find_opt x s = Concrete.find_opt Stdlib.compare x s
 
 let find_first f s = Concrete.find_first f s
 let find_last  f s = Concrete.find_last  f s
@@ -1200,13 +1200,13 @@ let find_last_opt  f s = Concrete.find_last_opt  f s
   try ignore (find (1,2) (singleton (1,1))); false with Not_found -> true
  *)
 
-let add x s  = Concrete.add Pervasives.compare x s
+let add x s  = Concrete.add Stdlib.compare x s
 
-let remove x s = Concrete.remove Pervasives.compare x s
+let remove x s = Concrete.remove Stdlib.compare x s
 
-let remove_exn x s = Concrete.remove_exn Pervasives.compare x s
+let remove_exn x s = Concrete.remove_exn Stdlib.compare x s
 
-let update x y s = Concrete.update Pervasives.compare x y s
+let update x y s = Concrete.update Stdlib.compare x y s
 
 let iter f s = Concrete.iter f s
 
@@ -1224,8 +1224,8 @@ let at_rank_exn i s = Concrete.at_rank_exn i s
 
 let fold f s acc = Concrete.fold f s acc
 
-let map f s = Concrete.map Pervasives.compare f s
-let map_endo f s = Concrete.map_endo Pervasives.compare f s
+let map f s = Concrete.map Stdlib.compare f s
+let map_endo f s = Concrete.map_endo Stdlib.compare f s
 
 (*$T map
   map (fun _x -> 1) (of_list [1;2;3]) |> cardinal = 1
@@ -1242,8 +1242,8 @@ let filter f s = Concrete.filter f s
   let s = empty in s == (filter (fun x -> x > 10) s)
 *)
 
-let filter_map f s = Concrete.filter_map Pervasives.compare f s
-let filter_map_endo f s = Concrete.filter_map_endo Pervasives.compare f s
+let filter_map f s = Concrete.filter_map Stdlib.compare f s
+let filter_map_endo f s = Concrete.filter_map_endo Stdlib.compare f s
 
 (*$T filter_map_endo
   let s = of_list [1;2;3] in s == (filter_map_endo (fun x -> Some x) s)
@@ -1323,48 +1323,48 @@ let max_elt_opt s = Concrete.max_elt_opt s
 
 let enum s = Concrete.enum s
 
-let of_enum e = Concrete.of_enum Pervasives.compare e
+let of_enum e = Concrete.of_enum Stdlib.compare e
 
 let backwards s = Concrete.backwards s
 
-let of_list l = Concrete.of_list Pervasives.compare l
+let of_list l = Concrete.of_list Stdlib.compare l
 
 (*$Q of_list
   (Q.list Q.small_int) (fun l -> let xs = List.map (fun i -> i mod 5, i) l in \
     let s1 = of_list xs |> enum |> List.of_enum in \
-    let s2 = List.sort_unique Pervasives.compare xs in \
+    let s2 = List.sort_unique Stdlib.compare xs in \
     s1 = s2 \
   )
 *)
 
-let of_array a = Concrete.of_array Pervasives.compare a
+let of_array a = Concrete.of_array Stdlib.compare a
 
 let print ?first ?last ?sep print_elt out s =
   Concrete.print ?first ?last ?sep print_elt out s
 
 let for_all f s = Concrete.for_all f s
-let partition f s = Concrete.partition Pervasives.compare f s
+let partition f s = Concrete.partition Stdlib.compare f s
 let pop s = Concrete.pop s
 let cartesian_product = Concrete.cartesian_product
-let split e s = Concrete.split Pervasives.compare e s
-let split_opt e s = Concrete.split_opt Pervasives.compare e s
-let split_lt e s = Concrete.split_lt Pervasives.compare e s
-let split_le e s = Concrete.split_le Pervasives.compare e s
-let union s1 s2 = Concrete.union Pervasives.compare s1 s2
-let diff s1 s2 = Concrete.diff Pervasives.compare s1 s2
-let sym_diff s1 s2 = Concrete.sym_diff Pervasives.compare s1 s2
-let intersect s1 s2 = Concrete.inter Pervasives.compare s1 s2
-let compare s1 s2 = Concrete.compare Pervasives.compare s1 s2
-let equal s1 s2 = Concrete.equal Pervasives.compare s1 s2
-let subset s1 s2 = Concrete.subset Pervasives.compare s1 s2
-let disjoint s1 s2 = Concrete.disjoint Pervasives.compare s1 s2
+let split e s = Concrete.split Stdlib.compare e s
+let split_opt e s = Concrete.split_opt Stdlib.compare e s
+let split_lt e s = Concrete.split_lt Stdlib.compare e s
+let split_le e s = Concrete.split_le Stdlib.compare e s
+let union s1 s2 = Concrete.union Stdlib.compare s1 s2
+let diff s1 s2 = Concrete.diff Stdlib.compare s1 s2
+let sym_diff s1 s2 = Concrete.sym_diff Stdlib.compare s1 s2
+let intersect s1 s2 = Concrete.inter Stdlib.compare s1 s2
+let compare s1 s2 = Concrete.compare Stdlib.compare s1 s2
+let equal s1 s2 = Concrete.equal Stdlib.compare s1 s2
+let subset s1 s2 = Concrete.subset Stdlib.compare s1 s2
+let disjoint s1 s2 = Concrete.disjoint Stdlib.compare s1 s2
 
 
 let add_seq s t =
-  Concrete.add_seq Pervasives.compare s t
+  Concrete.add_seq Stdlib.compare s t
 
 let of_seq s =
-  Concrete.of_seq Pervasives.compare s
+  Concrete.of_seq Stdlib.compare s
 
 let to_seq t =
   Concrete.to_seq t
@@ -1373,7 +1373,7 @@ let to_rev_seq t =
   Concrete.to_rev_seq t
 
 let to_seq_from k t =
-  Concrete.to_seq_from Pervasives.compare k t
+  Concrete.to_seq_from Stdlib.compare k t
 
 (*$T subset
    subset (of_list [1;2;3]) (of_list [1;2;3;4])

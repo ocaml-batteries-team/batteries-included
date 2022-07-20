@@ -439,7 +439,7 @@ val nsplit : t -> t -> t list
 
 val compare : t -> t -> int
 (** The comparison function for ropes, with the same specification as
-    {!Pervasives.compare}.  Along with the type [t], this function [compare]
+    {!Stdlib.compare}.  Along with the type [t], this function [compare]
     allows the module [Rope] to be passed as argument to the functors
     {!Set.Make} and {!Map.Make}. *)
 

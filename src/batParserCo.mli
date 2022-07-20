@@ -141,12 +141,12 @@ val filter: ('b -> bool) -> ('a, 'b, 'c) t ->  ('a, 'b, 'c) t
 (**[filter f p] is only accepts values [x] such that [p]
    accepts [x] and [f (p x)] is [true]*)
 
-val suspend : ('a, 'b, 'c) t -> ('a, (unit -> ('b, 'c report) BatPervasives.result), 'c) t
+val suspend : ('a, 'b, 'c) t -> ('a, (unit -> ('b, 'c report) BatStdlib.result), 'c) t
 (**[suspend s] returns the state of the parser in a form that can be
    resumed by calling the returned function. evaluation will resume
    from parser s *)
 
-val run: ('a, 'b, 'c) t -> ('a, 'c) Source.t -> ('b, 'c report) BatPervasives.result
+val run: ('a, 'b, 'c) t -> ('a, 'c) Source.t -> ('b, 'c report) BatStdlib.result
 (**[run p s] executes parser [p] on source [s]. In case of
    success, returns [Ok v], where [v] is the return value of [p].
    In case of failure, returns [Error f], with [f] containing

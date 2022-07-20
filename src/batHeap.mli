@@ -26,7 +26,7 @@
 *)
 
 type +'a t
-(** Heap of elements that are compared with [Pervasives.compare]. *)
+(** Heap of elements that are compared with [Stdlib.compare]. *)
 
 val size : 'a t -> int
 (** Number of elements in the heap. O(1) *)

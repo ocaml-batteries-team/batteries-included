@@ -152,7 +152,7 @@ module Infix : sig
 
         {b Important warning}: {!BatIMap.add} takes an optional argument, [eq] that
         is missing in this operator [<--]. As a consequence, using [<--] implies the
-        use of {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Pervasives.html#VAL(==)}Pervasives.(==)}
+        use of {{:http://caml.inria.fr/pub/docs/manual-ocaml/libref/Stdlib.html#VAL(==)}Stdlib.(==)}
         as comparison function.
     *)
 end

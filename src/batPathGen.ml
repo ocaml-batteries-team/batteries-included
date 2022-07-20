@@ -513,7 +513,7 @@ module Make = functor (S : StringType) -> struct
   let full_match pars ss =
     let parser_final = BatParserCo.( >>> ) pars BatParserCo.eof in
     match BatParserCo.run parser_final (S.Parse.source ss) with
-    | BatPervasives.Ok _ -> true
+    | BatStdlib.Ok _ -> true
     | _ -> false
 
   (*  let full_match_none_of raw_excluded ss =

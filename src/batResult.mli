@@ -6,7 +6,7 @@
     ([exn]) that can be raised.
     @since 1.0
 *)
-type ('a, 'e) t = ('a, 'e) BatPervasives.result = Ok of 'a | Error of 'e
+type ('a, 'e) t = ('a, 'e) BatStdlib.result = Ok of 'a | Error of 'e
 
 val ok : 'a -> ('a, 'b) t
 (** [ok v] is [Ok v].

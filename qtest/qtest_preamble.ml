@@ -4,6 +4,6 @@
    but have not yet found their place into Batteries proper. *)
 open Batteries
 
-module Pervasives = Pervasives[@warning "-3"]
+module Stdlib = Stdlib[@warning "-3"]
 [@@@warning "-52"] (* allow to match the constant payload of exception constructors *)
 

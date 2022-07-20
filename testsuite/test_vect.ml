@@ -1,6 +1,6 @@
 open OUnit
 open BatVect
-open BatPervasives
+open BatStdlib
 
 (**Initialize data sample*)
 let state  = BatRandom.State.make [|0|]

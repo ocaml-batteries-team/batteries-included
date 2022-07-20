@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-let min x y = if Pervasives.compare x y <= 0 then x else y
+let min x y = if Stdlib.compare x y <= 0 then x else y
 
 (** binomial trees *)
 type 'a bt = {
@@ -40,7 +40,7 @@ let size bh = bh.size
 let link bt1 bt2 =
   assert (bt1.rank = bt2.rank) ;
   let rank = bt1.rank + 1 in
-  let leq = Pervasives.compare bt1.root bt2.root <= 0 in
+  let leq = Stdlib.compare bt1.root bt2.root <= 0 in
   let root = if leq then bt1.root else bt2.root in
   let kids = if leq then bt2 :: bt1.kids else bt1 :: bt2.kids in
   { rank = rank ; root = root ; kids = kids }
@@ -115,7 +115,7 @@ let rec find_min_tree ts ~kfail ~ksuccess =
         ksuccess t
     | t :: ts ->
         find_min_tree ts ~kfail ~ksuccess:(fun u ->
-          if Pervasives.compare t.root u.root <= 0 then
+          if Stdlib.compare t.root u.root <= 0 then
             ksuccess t
           else
             ksuccess u)
@@ -128,7 +128,7 @@ let rec del_min_tree bts ~kfail ~ksuccess =
         ksuccess t []
     | t :: ts ->
         del_min_tree ts ~kfail ~ksuccess:(fun u uts ->
-          if Pervasives.compare t.root u.root <= 0 then
+          if Stdlib.compare t.root u.root <= 0 then
             ksuccess t ts
           else
             ksuccess u (t :: uts))
@@ -164,7 +164,7 @@ let to_list bh =
 *)
 
 (*$Q to_list ; insert ; empty
-   (Q.list Q.int) ~count:10 (fun l -> to_list (List.fold_left insert empty l) = List.sort Pervasives.compare l)
+   (Q.list Q.int) ~count:10 (fun l -> to_list (List.fold_left insert empty l) = List.sort Stdlib.compare l)
 *)
 
 let elems = to_list

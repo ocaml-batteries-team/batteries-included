@@ -70,7 +70,7 @@ struct
   let emptybucket = Weak.create 0
 
   let create sz =
-    let sz = Pervasives.min (Pervasives.max sz 7) (Sys.max_array_length - 1) in
+    let sz = Stdlib.min (Stdlib.max sz 7) (Sys.max_array_length - 1) in
     { table = Array.make sz emptybucket
     ; totsize = 0 ; limit = 3 }
 
@@ -104,7 +104,7 @@ struct
     in
     Array.fold_right (count_bucket 0) t.table 0
 
-  let next_sz n = Pervasives.min (3 * n / 2 + 3) (Sys.max_array_length - 1)
+  let next_sz n = Stdlib.min (3 * n / 2 + 3) (Sys.max_array_length - 1)
 
   let rec resize t =
     let oldlen = Array.length t.table in
@@ -123,7 +123,7 @@ struct
     let sz = Weak.length bucket in
     let rec loop i =
       if i >= sz then begin
-        let newsz = Pervasives.min (sz + 3) (Sys.max_array_length - 1) in
+        let newsz = Stdlib.min (sz + 3) (Sys.max_array_length - 1) in
         if newsz <= sz then
           failwith "Hashcons.Make: hash bucket cannot grow more" ;
         let newbucket = Weak.create newsz in
@@ -141,7 +141,7 @@ struct
     loop 0
 
   let hashcons t d =
-    let hcode = (HT.hash d) land Pervasives.max_int in
+    let hcode = (HT.hash d) land Stdlib.max_int in
     let index = hcode mod (Array.length t.table) in
     let bucket = t.table.(index) in
     let sz = Weak.length bucket in

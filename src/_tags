@@ -2,8 +2,8 @@ true: debug
 true: warn_error(-50)
 <{batMutex,batRMutex}.{ml,mli}>: threads
 <batteriesThread.*>: threads
-<{batMap,batVect,batFile,batPervasives,batParserCo,batSet,batLogger,batPathGen,batSplay}.ml>: warn_z
-<{batPervasives,batIMap,batLog}.ml>: warn_-9
+<{batMap,batVect,batFile,batStdlib,batParserCo,batSet,batLogger,batPathGen,batSplay}.ml>: warn_z
+<{batStdlib,batIMap,batLog}.ml>: warn_-9
 
 <batBigarray.*>: inline(3)
 # necessary to inline ofs_of_layout on V<4.2

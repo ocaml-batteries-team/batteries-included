@@ -63,11 +63,11 @@
 
     Comparison. Every tuple has a [compare] function, which can
     optionally be customized by specifying methods for comparing each
-    element. {!Pervasives.compare} is used by default.
+    element. {!Stdlib.compare} is used by default.
 *)
 
 (** Pairs. Some of the functions here are also exposed in
-    {!Pervasives}, as documented below.
+    {!Stdlib}, as documented below.
 
     @author Edgar Friendly
     @author Ashish Agarwal
@@ -79,15 +79,15 @@ module Tuple2 : sig
   val make : 'a -> 'b -> 'a * 'b
 
   external first : 'a * 'b -> 'a = "%field0"
-  (** Equivalent to {!Pervasives.fst}. *)
+  (** Equivalent to {!Stdlib.fst}. *)
 
   external second : 'a * 'b -> 'b = "%field1"
-  (** Equivalent to {!Pervasives.snd}. *)
+  (** Equivalent to {!Stdlib.snd}. *)
 
   val swap : ('a * 'b) -> ('b * 'a)
 
   val map : ('a -> 'c) -> ('b -> 'd) -> 'a * 'b -> 'c * 'd
-  (** Equivalent to {!BatPervasives.(***)}. *)
+  (** Equivalent to {!BatStdlib.(***)}. *)
 
   val mapn : ('a -> 'b) -> ('a * 'a) -> ('b * 'b)
   (** Like {!map} but specialized for tuples with elements of the

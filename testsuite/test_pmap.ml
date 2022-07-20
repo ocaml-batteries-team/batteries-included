@@ -1,6 +1,6 @@
 open OUnit
 open BatRandom
-open BatPervasives
+open BatStdlib
 
 let print_enum out enum =
   BatEnum.print (fun out (c, _) -> BatPrintf.fprintf out "%d" c) out enum

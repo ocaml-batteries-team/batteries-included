@@ -52,7 +52,7 @@ val source_of_string : string      -> (char, position) Source.t
 val source_of_enum   : char BatEnum.t -> (char, position) Source.t
 (** Create a source from a latin-1 character.*)
 
-val parse : (char, 'a, position) t -> string -> ('a, position report) BatPervasives.result
+val parse : (char, 'a, position) t -> string -> ('a, position report) BatStdlib.result
 (**Apply a parser to a string.*)
 
 (**{6 Utilities}*)

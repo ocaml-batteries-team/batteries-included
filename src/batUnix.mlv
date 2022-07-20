@@ -136,9 +136,9 @@ let wrap_out ?cleanup cout =
   output
 
 let _ =
-  input_add stdin Pervasives.stdin;
-  output_add stdout Pervasives.stdout;
-  output_add stderr Pervasives.stderr
+  input_add stdin Stdlib.stdin;
+  output_add stdout Stdlib.stdout;
+  output_add stderr Stdlib.stderr
 
 (**
    {6 File descriptors}
@@ -260,7 +260,7 @@ let with_locked_file ~kind filename f =
     | `Write -> F_LOCK
   in
   lockf lock_file lock_action 0;
-  BatInnerPervasives.finally
+  BatInnerStdlib.finally
     (fun () ->
       (* Although the user might expect EINTR to interrupt locking, we must
        * not allow such interrupt here since there is no way to restart the

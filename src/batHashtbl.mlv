@@ -529,7 +529,7 @@ let for_all p ht =
 module Exceptionless =
 struct
   let find = find_option
-  let modify k f = BatPervasives.wrap (modify k f)
+  let modify k f = BatStdlib.wrap (modify k f)
 end
 
 module Infix =
@@ -617,7 +617,7 @@ sig
   module Exceptionless :
   sig
     val find : 'a t -> key -> 'a option
-    val modify : key -> ('a -> 'a) -> 'a t -> (unit, exn) BatPervasives.result
+    val modify : key -> ('a -> 'a) -> 'a t -> (unit, exn) BatStdlib.result
   end
 
   (** Infix operators over a {!BatHashtbl} *)
@@ -966,7 +966,7 @@ struct
   module Exceptionless =
   struct
     let find = find_option
-    let modify k f = BatPervasives.wrap (modify k f)
+    let modify k f = BatStdlib.wrap (modify k f)
   end
 
   module Infix =
@@ -1054,6 +1054,6 @@ struct
   module Exceptionless =
   struct
     let find = find_option
-    let modify k f = BatPervasives.wrap (modify k f)
+    let modify k f = BatStdlib.wrap (modify k f)
   end
 end

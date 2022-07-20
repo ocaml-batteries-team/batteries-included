@@ -31,7 +31,7 @@ open BatInnerIO
    {6 General overview}
 
    The functions of this module produce output according to a
-   {!Pervasives.format}, as described below. Some functions write to
+   {!Stdlib.format}, as described below. Some functions write to
    the standard output (i.e. the screen), some to error channels,
    some to strings or to buffers, or some to abstract outputs.
 
@@ -79,7 +79,7 @@ open BatInnerIO
    {6 Formats}
 *)
 
-type ('a, 'b, 'c) t = ('a, 'b, 'c) Pervasives.format
+type ('a, 'b, 'c) t = ('a, 'b, 'c) Stdlib.format
 (**
    The format to use for displaying the various arguments passed to the function.
 

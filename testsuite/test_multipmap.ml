@@ -1,5 +1,5 @@
 open OUnit
-open BatPervasives
+open BatStdlib
 open BatMultiPMap
 
 let test_multimap_empty_assoc_lists () =

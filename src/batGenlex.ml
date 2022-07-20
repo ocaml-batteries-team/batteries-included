@@ -1,4 +1,4 @@
-open BatInnerPervasives
+open BatInnerStdlib
 open BatParserCo
 open BatCharParser
 

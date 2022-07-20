@@ -1,6 +1,6 @@
 open OUnit
 open BatSubstring
-open BatPervasives
+open BatStdlib
 
 let test_dropr =
   let aeq = assert_equal ~printer:identity in

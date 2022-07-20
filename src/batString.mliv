@@ -332,7 +332,7 @@ type t = string
 
 val compare: t -> t -> int
 (** The comparison function for strings, with the same specification as
-    {!Pervasives.compare}.  Along with the type [t], this function [compare]
+    {!Stdlib.compare}.  Along with the type [t], this function [compare]
     allows the module [String] to be passed as argument to the functors
     {!Set.Make} and {!Map.Make}. *)
 
@@ -591,7 +591,7 @@ val exists_stdlib : (char -> bool) -> string -> bool
 (** [exists_stdlib p str] check if at least one char of [str] satisfies
     the predicate [p].
     @since 3.4.0 *)
-  
+
 val count_char : string -> char -> int
 (** [count_char str c] returns the number of times [c] is used in [str].
  *)
@@ -794,7 +794,7 @@ val split_on_string : by:string -> string -> string list
     Note: [split_on_string sep s] is identical to [nsplit s sep] but for empty strings.
 
     Example: [String.split_on_string "bc" "abcabcabc" = ["a"; "a"; "a"; ""]]
-    
+
     @since 2.11.0
 *)
 
@@ -1023,7 +1023,7 @@ val ord : t -> t -> BatOrd.order
 
 val compare: t -> t -> int
 (** The comparison function for strings, with the same specification as
-    {!Pervasives.compare}.  Along with the type [t], this function [compare]
+    {!Stdlib.compare}.  Along with the type [t], this function [compare]
     allows the module [String] to be passed as argument to the functors
     {!Set.Make} and {!Map.Make}.
 

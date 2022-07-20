@@ -156,7 +156,7 @@ let create() =
     bool_invariants v)
   *)
 
-let singleton x = 
+let singleton x =
   let a = {
     resize = default_resizer;
     len = 1;
@@ -210,7 +210,7 @@ let set d idx v =
   if idx < 0 || idx >= d.len then invalid_arg idx "set" "index";
   iset d.arr idx v
 
-(* upd a i f = set a i (f @@ get a i) 
+(* upd a i f = set a i (f @@ get a i)
    Faster (avoids duplication of bounds checks) and more convenient. *)
 let upd d idx f =
   if idx < 0 || idx >= d.len then invalid_arg idx "set" "index";
@@ -532,7 +532,7 @@ let sub src start len =
     try ignore @@ sub v 3 (-1); false with Invalid_arg _ -> true
 *)
 
-let fill a start len x = 
+let fill a start len x =
   if len < 0 then invalid_arg len "fill" "len";
   if start < 0 || start+len > a.len then invalid_arg start "fill" "start";
   for i = start to start + len - 1 do
@@ -594,7 +594,7 @@ let combine a1 a2 =
     iset arr i (iget a1.arr i, iget a2.arr i)
   done;
   {
-    resize = a1.resize; 
+    resize = a1.resize;
     len = a1.len;
     arr = arr;
   }
@@ -727,7 +727,7 @@ let filter p a =
   (* Use a bitset to store which elements will be in the final array. *)
   let bs = BatBitSet.create n in
   for i = 0 to n-1 do
-    if p (iget a.arr i) then 
+    if p (iget a.arr i) then
       BatBitSet.set bs i
   done;
   (* Allocate the final array and copy elements into it. *)
@@ -755,7 +755,7 @@ let filteri p a =
   (* Use a bitset to store which elements will be in the final array. *)
   let bs = BatBitSet.create n in
   for i = 0 to n-1 do
-    if p i (iget a.arr i) then 
+    if p i (iget a.arr i) then
       BatBitSet.set bs i
   done;
   (* Allocate the final array and copy elements into it. *)
@@ -848,7 +848,7 @@ let partition p a =
   (* Use a bitset to store which elements will be in the final array. *)
   let bs = BatBitSet.create n in
   for i = 0 to n-1 do
-    if p (iget a.arr i) then 
+    if p (iget a.arr i) then
       BatBitSet.set bs i
   done;
   (* Allocate the arrays and copy elements into them. *)
@@ -962,7 +962,7 @@ let find p a =
   let rec loop i =
     if i = a.len then
       raise Not_found
-    else 
+    else
       let x = iget a.arr i in
       if p x then
         x
@@ -1171,7 +1171,7 @@ let reduce f a =
   if a.len = 0 then
     invalid_arg a.len "DynArray.reduce" "empty array";
   let acc = ref (iget a.arr 0) in
-  for i = 1 to a.len-1 do 
+  for i = 1 to a.len-1 do
     acc := f !acc (iget a.arr i)
   done;
   !acc
@@ -1183,7 +1183,7 @@ let reduce f a =
      with Invalid_arg _ -> true
 *)
 
-let rev a = 
+let rev a =
   let n = a.len - 1 in
   let newarr = imake (n+1) in
   for i = 0 to n do
@@ -1201,7 +1201,7 @@ let rev a =
   let a = rev (create()) in empty a
  *)
 
-let rev_in_place a = 
+let rev_in_place a =
   let n = a.len - 1 in
   let lim = a.len/2 - 1 in
   for i = 0 to lim do
@@ -1219,7 +1219,7 @@ let rev_in_place a =
     empty a
  *)
 
-let max a = reduce Pervasives.max a
+let max a = reduce Stdlib.max a
 (*$T
   max (of_list [1;2;3]) = 3
   max (of_list [2;3;1]) = 3
@@ -1227,7 +1227,7 @@ let max a = reduce Pervasives.max a
     with Invalid_arg _ -> true
  *)
 
-let min a = reduce Pervasives.min a
+let min a = reduce Stdlib.min a
 (*$T
   min (of_list [1;2;3]) = 1
   min (of_list [2;3;1]) = 1
@@ -1294,7 +1294,7 @@ let avg a =
 (*$T avg
   avg (of_list [1;2;3]) = 2.
   avg (of_list [0]) = 0.
-*) 
+*)
 
 let favg a =
   (fsum a) /. (float_of_int (length a))
@@ -1306,7 +1306,7 @@ let favg a =
 
 
 let iter2 f a1 a2 =
-  if a1.len <> a2.len then 
+  if a1.len <> a2.len then
     invalid_arg a1.len "DynArray.iter2" "array lengths differ";
   for i = 0 to a1.len - 1 do
     f (iget a1.arr i) (iget a2.arr i);
@@ -1339,7 +1339,7 @@ let iter2i f a1 a2 =
 
 let for_all2 p a1 a2 =
   let n = a1.len in
-  if a2.len <> n then 
+  if a2.len <> n then
     invalid_arg a1.len "DynArray.for_all2" "array lengths differ";
   let rec loop i =
     if i = n then
@@ -1363,7 +1363,7 @@ let for_all2 p a1 a2 =
 
 let exists2 p a1 a2 =
   let n = a1.len in
-  if a2.len <> n then 
+  if a2.len <> n then
     invalid_arg a1.len "DynArray.exists2" "array lengths differ";
   let rec loop i =
     if i = n then
@@ -1384,7 +1384,7 @@ let exists2 p a1 a2 =
 
 let map2 f a1 a2 =
   let n = a1.len in
-  if a2.len <> n then 
+  if a2.len <> n then
     invalid_arg a1.len "DynArray.map2" "array lengths differ";
   init n (fun i -> f (iget a1.arr i) (iget a2.arr i))
 
@@ -1399,7 +1399,7 @@ let map2 f a1 a2 =
 
 let map2i f a1 a2 =
   let n = a1.len in
-  if a2.len <> n then 
+  if a2.len <> n then
     invalid_arg a1.len "DynArray.map2i" "array lengths differ";
   init n (fun i -> f i (iget a1.arr i) (iget a2.arr i))
 
@@ -1417,7 +1417,7 @@ let cartesian_product a1 a2 =
   let nb = a2.len in
   init
     (na * nb)
-    (fun j -> 
+    (fun j ->
       let i = j / nb in
       (iget a1.arr i, iget a2.arr (j - i*nb))
     )

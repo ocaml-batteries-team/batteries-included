@@ -20,7 +20,7 @@ let ord0 n =
 
 let ord comp = fun a b -> ord0 (comp a b)
 
-let poly_comp = Pervasives.compare
+let poly_comp = Stdlib.compare
 
 (* eta-expand to avoid value restriction *)
 let poly_ord = fun a b -> ord poly_comp a b
@@ -158,6 +158,6 @@ let map_ord f ord = fun a b -> ord (f a) (f b)
 
 module Incubator = struct
   let eq_by proj = fun x y -> proj x = proj y
-  let comp_by proj = fun x y -> Pervasives.compare (proj x) (proj y)
-  let ord_by proj = fun x y -> ord0 (Pervasives.compare (proj x) (proj y))
+  let comp_by proj = fun x y -> Stdlib.compare (proj x) (proj y)
+  let ord_by proj = fun x y -> ord0 (Stdlib.compare (proj x) (proj y))
 end

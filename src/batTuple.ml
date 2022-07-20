@@ -66,7 +66,7 @@ module Tuple2 = struct
   let printn ?(first="(") ?(sep=",") ?(last=")") printer out pair =
     print ~first ~sep ~last printer printer out pair
 
-  let compare ?(cmp1=Pervasives.compare) ?(cmp2=Pervasives.compare) (a,b) (c,d) =
+  let compare ?(cmp1=Stdlib.compare) ?(cmp2=Stdlib.compare) (a,b) (c,d) =
     let comp = cmp1 a c in
     if comp <> 0 then comp else cmp2 b d
 
@@ -154,7 +154,7 @@ module Tuple3 = struct
   let printn ?(first="(") ?(sep=",") ?(last=")") printer out pair =
     print ~first ~sep ~last printer printer printer out pair
 
-  let compare ?(cmp1=Pervasives.compare) ?(cmp2=Pervasives.compare) ?(cmp3=Pervasives.compare) (a1,a2,a3) (b1,b2,b3) =
+  let compare ?(cmp1=Stdlib.compare) ?(cmp2=Stdlib.compare) ?(cmp3=Stdlib.compare) (a1,a2,a3) (b1,b2,b3) =
     let c1 = cmp1 a1 b1 in
     if c1 <> 0 then c1 else
       let c2 = cmp2 a2 b2 in
@@ -262,7 +262,7 @@ module Tuple4 = struct
   let printn ?(first="(") ?(sep=",") ?(last=")") printer out pair =
     print ~first ~sep ~last printer printer printer printer out pair
 
-  let compare ?(cmp1=Pervasives.compare) ?(cmp2=Pervasives.compare) ?(cmp3=Pervasives.compare) ?(cmp4=Pervasives.compare) (a1,a2,a3,a4) (b1,b2,b3,b4) =
+  let compare ?(cmp1=Stdlib.compare) ?(cmp2=Stdlib.compare) ?(cmp3=Stdlib.compare) ?(cmp4=Stdlib.compare) (a1,a2,a3,a4) (b1,b2,b3,b4) =
     let c1 = cmp1 a1 b1 in
     if c1 <> 0 then c1 else
       let c2 = cmp2 a2 b2 in
@@ -400,7 +400,7 @@ module Tuple5 = struct
   let printn ?(first="(") ?(sep=",") ?(last=")") printer out pair =
     print ~first ~sep ~last printer printer printer printer printer out pair
 
-  let compare ?(cmp1=Pervasives.compare) ?(cmp2=Pervasives.compare) ?(cmp3=Pervasives.compare) ?(cmp4=Pervasives.compare) ?(cmp5=Pervasives.compare) (a1,a2,a3,a4,a5) (b1,b2,b3,b4,b5) =
+  let compare ?(cmp1=Stdlib.compare) ?(cmp2=Stdlib.compare) ?(cmp3=Stdlib.compare) ?(cmp4=Stdlib.compare) ?(cmp5=Stdlib.compare) (a1,a2,a3,a4,a5) (b1,b2,b3,b4,b5) =
     let c1 = cmp1 a1 b1 in
     if c1 <> 0 then c1 else
       let c2 = cmp2 a2 b2 in

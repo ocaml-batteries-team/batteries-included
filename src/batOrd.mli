@@ -41,7 +41,7 @@ val poly_comp : 'a comp
 val poly_ord : 'a ord
 val poly : 'a ord
 (** Polymorphic comparison functions, based on the
-    [Pervasives.compare] function from inria's stdlib, have
+    [Stdlib.compare] function from inria's stdlib, have
     polymorphic types: they claim to be able to compare values of any
     type. In practice, they work for only some types, may fail on
     function types and may not terminate on cyclic values.

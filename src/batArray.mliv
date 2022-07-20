@@ -184,19 +184,19 @@ val of_list : 'a list -> 'a array
 
 val max : 'a array -> 'a
 (** [max a] returns the largest value in [a] as judged by
-    [Pervasives.compare]
+    [Stdlib.compare]
 
     @raise Invalid_argument on empty input *)
 
 val min : 'a array -> 'a
 (** [min a] returns the smallest value in [a] as judged by
-    [Pervasives.compare]
+    [Stdlib.compare]
 
     @raise Invalid_argument on empty input *)
 
 val min_max : 'a array -> 'a * 'a
 (** [min_max a] returns the (smallest, largest) pair of values from [a]
-    as judged by [Pervasives.compare]
+    as judged by [Stdlib.compare]
 
     @raise Invalid_argument on empty input *)
 
@@ -347,7 +347,7 @@ val sort : ('a -> 'a -> int) -> 'a array -> unit
     function.  The comparison function must return 0 if its arguments
     compare as equal, a positive integer if the first is greater,
     and a negative integer if the first is smaller (see below for a
-    complete specification).  For example, {!Pervasives.compare} is
+    complete specification).  For example, {!Stdlib.compare} is
     a suitable comparison function, provided there are no floating-point
     NaN values in the data.  After calling [Array.sort], the
     array is sorted in place in increasing order.
@@ -392,7 +392,7 @@ val decorate_stable_sort : ('a -> 'b) -> 'a array -> 'a array
     Transform}.
 
     It is unnecessary to have an additional comparison function as
-    argument, as the builtin [Pervasives.compare] is used to compare
+    argument, as the builtin [Stdlib.compare] is used to compare
     the ['b] values.  This is deemed sufficient. *)
 
 val decorate_fast_sort : ('a -> 'b) -> 'a array -> 'a array

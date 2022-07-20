@@ -1095,23 +1095,23 @@ let cartesian_product e1 e2 =
 
 (*$T cartesian_product
   cartesian_product (List.enum [1;2;3]) (List.enum ["a";"b"]) \
-    |> List.of_enum |> List.sort Pervasives.compare = \
+    |> List.of_enum |> List.sort Stdlib.compare = \
     [1,"a"; 1,"b"; 2,"a"; 2,"b"; 3,"a"; 3,"b"]
   let e = cartesian_product (List.enum [1;2;3]) (List.enum [1]) in \
-    e |> List.of_enum |> List.sort Pervasives.compare = [1,1; 2,1; 3,1]
+    e |> List.of_enum |> List.sort Stdlib.compare = [1,1; 2,1; 3,1]
   let e = cartesian_product (List.enum [1]) (List.enum [1;2;3]) in \
-    e |> List.of_enum |> List.sort Pervasives.compare = [1,1; 1,2; 1,3]
+    e |> List.of_enum |> List.sort Stdlib.compare = [1,1; 1,2; 1,3]
   let e = cartesian_product (List.enum [1;2;3]) (List.enum [1;2;3]) in \
     ignore (Enum.get e); Enum.count e = 8
   let e = cartesian_product (List.enum [1;2]) (Enum.repeat 3) in\
     e |> Enum.take 4 |> Enum.map fst |> List.of_enum \
-      |> List.sort Pervasives.compare = [1; 1; 2; 2]
+      |> List.sort Stdlib.compare = [1; 1; 2; 2]
   let e = cartesian_product (Enum.repeat 3) (List.enum [1;2]) in\
     e |> Enum.take 4 |> Enum.map snd |> List.of_enum \
-      |> List.sort Pervasives.compare = [1; 1; 2; 2]
+      |> List.sort Stdlib.compare = [1; 1; 2; 2]
   let e = cartesian_product (Enum.repeat 3) (Enum.repeat "a") in\
     e |> Enum.take 3 |> List.of_enum \
-      |> List.sort Pervasives.compare = [3, "a"; 3, "a"; 3, "a"]
+      |> List.sort Stdlib.compare = [3, "a"; 3, "a"; 3, "a"]
 *)
 
 (*$Q cartesian_product
@@ -1326,7 +1326,7 @@ let combination ?(repeat=false) n k =
     | []    -> acc
     | h::tl -> conv (range + 1) ((h - range) :: acc) tl
     in conv 0 []
-  
+
   in let order_to_comb n p repeat ord =
     let rec get_comb n p ord acc =
       if n <= 0 || p <= 0 || ord < 0 then acc
@@ -1339,31 +1339,31 @@ let combination ?(repeat=false) n k =
               get_comb (n - 1) p (ord - b) acc
       )
     in let result = get_comb n p ord []
-  
+
     in if repeat then
        add_repetitions result
     else
        result
 
   and p = if repeat then n + k -1 else n
-  in let length = binomial p k 
+  in let length = binomial p k
   in let rec make_comb index =
     make
       ~next:(fun () ->
         if !index = length then
           raise No_more_elements
         else
-          let next = order_to_comb p k repeat !index 
+          let next = order_to_comb p k repeat !index
           in incr index; next
       )
       ~count:(fun () -> length - !index)
       ~clone:(fun () -> make_comb (ref !index))
   in make_comb (ref 0)
-  
+
 (*$T combination
   (combination               3 3 |> count) = 1
   (combination ~repeat:true  3 3 |> count) = 10
-  (combination ~repeat:true 29 3 |> count) = 4495 
+  (combination ~repeat:true 29 3 |> count) = 4495
   (combination ~repeat:true  3 3 |> List.of_enum ) = \
     [  [3; 3; 3]; [3; 3; 2]; [3; 3; 1]; [3; 2; 2]; [3; 2; 1]; [3; 1; 1]; \
        [2; 2; 2]; [2; 2; 1]; [2; 1; 1]; \
@@ -1527,7 +1527,7 @@ module Labels = struct
   let from_while ~f  = from_while f
   let seq ~init ~f ~cnd  = seq init f cnd
   let unfold ~init ~f = unfold init f
-  let compare ?(cmp=Pervasives.compare) t u = compare cmp t u
+  let compare ?(cmp=Stdlib.compare) t u = compare cmp t u
   let uniq ?(cmp=(=)) x = uniq_by cmp x
   module LExceptionless = struct
     include Exceptionless

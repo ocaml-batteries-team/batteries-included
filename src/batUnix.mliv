@@ -778,7 +778,7 @@ val open_process_out : ?cleanup:bool -> string -> unit BatInnerIO.output
     is sent to the standard input of the command.
 
     {b Warning} writes on outputs are buffered, hence be careful
-    to call {!Pervasives.flush} at the right times to ensure
+    to call {!Stdlib.flush} at the right times to ensure
     correct synchronization.
 
     @param cleanup If true or unspecified, close the process when the {!type:output}
@@ -1529,7 +1529,7 @@ val open_connection : ?autoclose:bool -> sockaddr -> BatInnerIO.input * unit Bat
     connection is closed whenever either the input or the output
     is closed.
 
-    Remember to call {!Pervasives.flush} on the output  at the right
+    Remember to call {!Stdlib.flush} on the output  at the right
     times to ensure correct synchronization.
 
     @param autoclose If true (default value), close the input

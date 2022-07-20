@@ -1,4 +1,4 @@
-open BatPervasives
+open BatStdlib
 module R = BatRandom
 module U = OUnit
 
@@ -138,8 +138,8 @@ module TestMap
     val merge :
       (key -> 'a option -> 'b option -> 'c option)
       -> 'a m -> 'b m -> 'c m
-      
-    val union_stdlib : 
+
+    val union_stdlib :
       (key -> 'a -> 'a -> 'a option) -> 'a m -> 'a m -> 'a m
 
     val print :
@@ -191,7 +191,7 @@ module TestMap
       (M.add 4 8 t, il [(3,4); (4,8); (5,6)]);
     if M.supports_phys_equality then begin
         "add 3,4 [3,4; 5,6] == [3,4; 5,6]" @?
-          (t == M.add 3 4 t);        
+          (t == M.add 3 4 t);
       end;
     ()
 
@@ -332,16 +332,16 @@ module TestMap
     "of_seq []"                @= (il [               ], M.of_seq (BatSeq.of_list [               ]));
     ()
 
-  let test_to_seq () = 
+  let test_to_seq () =
     "to_seq [1,1;2,2;3,3;4,4]" @? (BatSeq.equal (BatSeq.of_list [1,1;2,2;3,3;4,4]) (M.to_seq (il [4,4;1,1;3,3;2,2])));
     "to_seq []"                @? (BatSeq.equal (BatSeq.of_list [               ]) (M.to_seq (il [               ])));
     ()
- 
-  let test_to_rev_seq () = 
+
+  let test_to_rev_seq () =
     "to_rev_seq [1,1;2,2;3,3;4,4]" @? (BatSeq.equal (BatSeq.of_list [4,4;3,3;2,2;1,1]) (M.to_rev_seq (il [4,4;1,1;3,3;2,2])));
     "to_rev_seq []"                @? (BatSeq.equal (BatSeq.of_list [               ]) (M.to_rev_seq (il [               ])));
     ()
- 
+
   let test_to_seq_from () =
     "to_seq_from 5 []"                @? (BatSeq.equal (BatSeq.of_list [               ]) (M.to_seq_from 5 (il [               ])));
     "to_seq_from 5 [1,1;2,2;3,3;4,4]" @? (BatSeq.equal (BatSeq.of_list [               ]) (M.to_seq_from 5 (il [4,4;1,1;3,3;2,2])));
@@ -421,7 +421,7 @@ module TestMap
     "pop_max_binding [] -> Not_found" @?
       (try ignore(M.pop_max_binding M.empty); false with Not_found -> true);
     ()
-    
+
   let test_modify () =
     let k, k', f, t = 1, 2, ((+) 1), il [(1,2); (3, 4)] in
     "mem k t => find k (modify k f t) = f (find k t)" @?

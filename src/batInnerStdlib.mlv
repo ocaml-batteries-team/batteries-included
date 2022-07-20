@@ -17,7 +17,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(* Inner functions for Pervasives, that can be accessed from other
+(* Inner functions for Stdlib, that can be accessed from other
    modules without pulling in all of batteries as deps. *)
 
 let finally handler f x =

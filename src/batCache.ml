@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-open BatInnerPervasives
+open BatInnerStdlib
 
 type ('a,'b) manual_cache = {
   get : 'a -> 'b;
@@ -82,7 +82,7 @@ let lru_cache ~gen ~cap =
         BatDllist.splice n dll; entries := Some n;
         (* Remove the tail if over capacity *)
         if !len > cap then entry_remove n;
-        (*          BatDllist.print (BatTuple.Tuple2.print BatPervasives.print_any BatPervasives.print_any) BatIO.stdout n; *)
+        (*          BatDllist.print (BatTuple.Tuple2.print BatStdlib.print_any BatStdlib.print_any) BatIO.stdout n; *)
         (* return the value *)
         BatDllist.get n |> snd
       end

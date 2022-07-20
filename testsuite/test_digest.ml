@@ -3,9 +3,9 @@ open OUnit
 (*1. Compute the digest of this file using Legacy.Digest*)
 
 let legacy_result () =
-  let inp    = Pervasives.open_in_bin Sys.argv.(0) in
+  let inp    = Stdlib.open_in_bin Sys.argv.(0) in
   let result = Digest.channel inp (-1) in
-    Pervasives.close_in inp;
+    Stdlib.close_in inp;
     result
 
 (*2. Compute the digest of this file using Batteries.Digest*)

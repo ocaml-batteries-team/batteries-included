@@ -1,7 +1,7 @@
 open OUnit
 open BatFile
 open BatIO
-open BatPervasives
+open BatStdlib
 
 (**Initialize data sample*)
 let state  = BatRandom.State.make [|0|];;
@@ -23,7 +23,7 @@ let read_mmap    name =
 
 let temp_file ?(autoclean = true) pref suff =
   let tf = Filename.temp_file pref suff in
-  if autoclean then Pervasives.at_exit (fun () -> try Unix.unlink tf with _ -> ()) ;
+  if autoclean then Stdlib.at_exit (fun () -> try Unix.unlink tf with _ -> ()) ;
   tf
 
 (**Actual tests*)
@@ -108,10 +108,10 @@ let test_append () =
 
 let test_lines_of () =
   let file_lines_of fn =
-    let ic = Pervasives.open_in fn in
+    let ic = Stdlib.open_in fn in
     BatEnum.suffix_action
-      (fun () -> Pervasives.close_in ic)
-      (BatEnum.from (fun () -> try Pervasives.input_line ic with End_of_file -> raise BatEnum.No_more_elements))
+      (fun () -> Stdlib.close_in ic)
+      (BatEnum.from (fun () -> try Stdlib.input_line ic with End_of_file -> raise BatEnum.No_more_elements))
   in
   try
     let open Batteries in
@@ -129,7 +129,7 @@ let tests = "File" >::: [
   "Reading back output to temporary file" >:: test_read_back_tmp;
   "open_in'd files should not autoclose" >:: test_open_files_not_autoclosed;
   "opening and closing many files" >:: test_open_close_many;
-  "opening and closing many files (Pervasives)" >:: test_open_close_many_pervasives;
+  "opening and closing many files (Stdlib)" >:: test_open_close_many_pervasives;
   "default truncation of files" >:: test_no_append;
   "appending to a file" >:: test_append;
   "reading lines of a file" >:: test_lines_of

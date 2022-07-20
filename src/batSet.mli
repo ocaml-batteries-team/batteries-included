@@ -89,32 +89,32 @@ sig
   (** [find_first f m] returns the first element [e] for which [f e] is true
       or raises [Not_found] if there is no such element.
       [f] must be monotonically increasing,
-      i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true. 
-    
+      i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true.
+
       @since 3.3.0 *)
-    
+
   val find_first_opt : (elt -> bool) -> t -> elt option
   (** [find_first_opt f m] returns [Some e] for the first element [e]
       for which [f e] is true or returns [None] if there is no such element.
       [f] must be monotonically increasing,
-      i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true. 
-    
+      i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true.
+
       @since 3.3.0 *)
 
   val find_last : (elt -> bool) -> t -> elt
   (** [find_last f m] returns the last element [e] for which [f e] is true
     or raises [Not_found] if there is no such element.
     [f] must be monotonically decreasing,
-    i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true. 
-    
+    i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true.
+
     @since 3.3.0 *)
-    
+
   val find_last_opt : (elt -> bool) -> t -> elt option
   (** [find_last_opt f m] returns [Some e] for the last element [e]
     for which [f e] is true or returns [None] if there is no such element.
     [f] must be monotonically decreasing,
-    i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true. 
-    
+    i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true.
+
     @since 3.3.0 *)
 
   val add: elt -> t -> t
@@ -204,7 +204,7 @@ sig
 
   val filter: (elt -> bool) -> t -> t
   (** [filter p s] returns the set of all elements in [s]
-      that satisfy predicate [p]. 
+      that satisfy predicate [p].
 
       if [p] returns [true] for all elements then [s] is returned unmodified.
       @before 3.3.0 Physical equality was not ensured.
@@ -297,8 +297,8 @@ sig
   val min_elt_opt : t -> elt option
   (** Return [Some e] for the smallest element [e] of the given set
       (with respect to the [Ord.compare] ordering).
-      Return None if the set is empty. 
-   
+      Return None if the set is empty.
+
       @since 3.3.0 *)
 
   val pop_min: t -> elt * t
@@ -324,7 +324,7 @@ sig
   val max_elt: t -> elt
   (** Same as {!Set.S.min_elt}, but returns the largest element of the
       given set. *)
-    
+
   val max_elt_opt : t -> elt option
   (** Same as {!Set.S.min_elt_opt}, but for the largest element of the
       given set.
@@ -392,23 +392,23 @@ sig
   (** Iterate on the whole set, in descending order.
 
       @since 3.3.0  *)
-    
+
   val to_seq_from :  elt -> t -> elt BatSeq.t
-  (** [to_seq_from x s] iterates on a subset of the elements in [s], 
+  (** [to_seq_from x s] iterates on a subset of the elements in [s],
       namely those greater or equal to [x], in ascending order.
-    
+
       @since 3.3.0 *)
-    
+
   val add_seq : elt BatSeq.t -> t -> t
-  (** add the given elements to the set, in order. 
-    
+  (** add the given elements to the set, in order.
+
       @since 3.3.0  *)
-    
+
   val of_seq : elt BatSeq.t -> t
-  (** build a set from the given elements 
-    
+  (** build a set from the given elements
+
       @since 3.3.0 *)
-     
+
 
 
 
@@ -555,32 +555,32 @@ val find_first : ('a -> bool) -> 'a t -> 'a
 (** [find_first f m] returns the first element [e] for which [f e] is true
     or raises [Not_found] if there is no such element.
     [f] must be monotonically increasing,
-    i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true. 
-  
+    i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true.
+
     @since 3.3.0 *)
-  
+
 val find_first_opt : ('a -> bool) -> 'a t -> 'a option
 (** [find_first_opt f m] returns [Some e] for the first element [e]
     for which [f e] is true or returns [None] if there is no such element.
     [f] must be monotonically increasing,
-    i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true. 
-  
+    i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true.
+
     @since 3.3.0 *)
 
 val find_last : ('a -> bool) -> 'a t -> 'a
 (** [find_last f m] returns the last element [e] for which [f e] is true
   or raises [Not_found] if there is no such element.
   [f] must be monotonically decreasing,
-  i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true. 
-  
+  i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true.
+
   @since 3.3.0 *)
-  
+
 val find_last_opt : ('a -> bool) -> 'a t -> 'a option
 (** [find_last_opt f m] returns [Some e] for the last element [e]
   for which [f e] is true or returns [None] if there is no such element.
   [f] must be monotonically decreasing,
-  i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true. 
-  
+  i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true.
+
   @since 3.3.0 *)
 
 val add: 'a -> 'a t -> 'a t
@@ -592,7 +592,7 @@ val add: 'a -> 'a t -> 'a t
 
 val remove: 'a -> 'a t -> 'a t
 (** [remove x s] returns a set containing all elements of [s],
-    except [x]. If [x] was not in [s], [s] is returned unchanged. 
+    except [x]. If [x] was not in [s], [s] is returned unchanged.
 
     @before 3.3.0 Physical equality was not ensured.
 *)
@@ -609,7 +609,7 @@ val update: 'a -> 'a -> 'a t -> 'a t
     to the comparison function used by your set.
     When [x] and [y] are physically equal, [m] is returned unchanged.
     @raise Not_found if [x] is not in [s].
-    @since 2.4 
+    @since 2.4
 
     @before 3.3.0 Physical equality was not ensured.
 *)
@@ -680,7 +680,7 @@ val map_endo: ('a -> 'a) -> 'a t -> 'a t
     [f a1]... [f aN], where [a0], [a1], ..., [aN] are the
     elements of [x].
 
-    This function places no restriction on [f] (beyond the type 
+    This function places no restriction on [f] (beyond the type
     signature being more restricted than for [map] above); it can
     map multiple input values to the same output value, in which
     case the resulting set will have smaller cardinality than the
@@ -693,7 +693,7 @@ val map_endo: ('a -> 'a) -> 'a t -> 'a t
 
 val filter: ('a -> bool) -> 'a t -> 'a t
 (** [filter p s] returns the set of all elements in [s]
-    that satisfy predicate [p]. 
+    that satisfy predicate [p].
 
     if [p] returns [true] for all elements then [s] is returned unmodified.
     @before 3.3.0 Physical equality was not ensured.
@@ -794,8 +794,8 @@ val min_elt : 'a t -> 'a
 val min_elt_opt : 'a t -> 'a option
 (** Return [Some e] for the smallest element [e] of the given set
     (with respect to the [Ord.compare] ordering).
-    Return None if the set is empty. 
- 
+    Return None if the set is empty.
+
     @since 3.3.0 *)
 
 val pop_min: 'a t -> 'a * 'a t
@@ -865,7 +865,7 @@ val of_enum: 'a BatEnum.t -> 'a t
 val backwards: 'a t -> 'a BatEnum.t
 (** Return an enumeration of all elements of the given set.  The
     returned enumeration is sorted in decreasing order with respect to
-    the ordering [Pervasives.compare]. *)
+    the ordering [Stdlib.compare]. *)
 
 
 val of_list: 'a list -> 'a t
@@ -876,33 +876,33 @@ val of_array: 'a array -> 'a t
 (** builds a set from the given array, using the default comparison
     function *)
 
-  
+
 val to_seq : 'a t -> 'a BatSeq.t
 (** Iterate on the whole set, in ascending order.
 
     @since 3.3.0  *)
-  
+
 val to_rev_seq : 'a t -> 'a BatSeq.t
 (** Iterate on the whole set, in descending order.
 
     @since 3.3.0  *)
-  
+
 val to_seq_from :  'a -> 'a t -> 'a BatSeq.t
-(** [to_seq_from x s] iterates on a subset of the elements in [s], 
+(** [to_seq_from x s] iterates on a subset of the elements in [s],
     namely those greater or equal to [x], in ascending order.
-  
+
     @since 3.3.0 *)
-  
+
 val add_seq : 'a BatSeq.t -> 'a t -> 'a t
-(** add the given elements to the set, in order. 
-  
+(** add the given elements to the set, in order.
+
     @since 3.3.0  *)
-  
+
 val of_seq : 'a BatSeq.t -> 'a t
-(** build a set from the given elements 
-  
+(** build a set from the given elements
+
     @since 3.3.0 *)
-   
+
 (** {6 Boilerplate code}*)
 
 
@@ -985,37 +985,37 @@ module PSet : sig
   (** [find_first f m] returns the first element [e] for which [f e] is true
       or raises [Not_found] if there is no such element.
       [f] must be monotonically increasing,
-      i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true. 
-    
+      i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true.
+
       @since 3.3.0 *)
-    
+
   val find_first_opt : ('a -> bool) -> 'a t -> 'a option
   (** [find_first_opt f m] returns [Some e] for the first element [e]
       for which [f e] is true or returns [None] if there is no such element.
       [f] must be monotonically increasing,
-      i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true. 
-    
+      i.e. if [k1 < k2 && f k1] is true then [f k2] must also be true.
+
       @since 3.3.0 *)
 
   val find_last : ('a -> bool) -> 'a t -> 'a
   (** [find_last f m] returns the last element [e] for which [f e] is true
     or raises [Not_found] if there is no such element.
     [f] must be monotonically decreasing,
-    i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true. 
-    
+    i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true.
+
     @since 3.3.0 *)
-    
+
   val find_last_opt : ('a -> bool) -> 'a t -> 'a option
   (** [find_last_opt f m] returns [Some e] for the last element [e]
     for which [f e] is true or returns [None] if there is no such element.
     [f] must be monotonically decreasing,
-    i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true. 
-    
+    i.e. if [k1 < k2 && f k2] is true then [f k1] must also be true.
+
     @since 3.3.0 *)
 
   val add: 'a -> 'a t -> 'a t
   (** [add x s] returns a set containing all elements of [s],
-      plus [x]. If [x] was already in [s], [s] is returned unchanged. 
+      plus [x]. If [x] was already in [s], [s] is returned unchanged.
 
       @before 3.3.0 Physical equality was not ensured.
    *)
@@ -1109,14 +1109,14 @@ module PSet : sig
       The resulting map uses the same [compare] function to
       order elements as [m] does.
 
-      If [f] returns physically equal values for all elements 
+      If [f] returns physically equal values for all elements
       in [m] then the resulting map will be physically equal to [m].
       @since 3.3.0
   *)
 
   val filter: ('a -> bool) -> 'a t -> 'a t
   (** [filter p s] returns the set of all elements in [s]
-      that satisfy predicate [p]. 
+      that satisfy predicate [p].
 
       if [p] returns [true] for all elements then [s] is returned unmodified.
       @before 3.3.0 Physical equality was not ensured.
@@ -1140,10 +1140,10 @@ module PSet : sig
       are the elements of [m] and returns the set of pairs [bi]
       such as [f ai = Some bi] (when [f] returns [None], the
       corresponding element of [m] is discarded).
-  
+
       The resulting map uses the same [compare] function to
       order elements as used for [m].
-  
+
       if the filter function [f] returns [true] for all elements in [m],
       the resulting map is physically equal to [m].
       @since 3.3.0
@@ -1215,8 +1215,8 @@ module PSet : sig
   val min_elt_opt : 'a t -> 'a option
   (** Return [Some e] for the smallest element [e] of the given set
       (with respect to the [Ord.compare] ordering).
-      Return None if the set is empty. 
-   
+      Return None if the set is empty.
+
       @since 3.3.0 *)
 
   val pop_min: 'a t -> 'a * 'a t
@@ -1246,9 +1246,9 @@ module PSet : sig
   val max_elt_opt : 'a t -> 'a option
   (** Same as {!Set.S.min_elt_opt}, but for the largest element of the
       given set.
-  
+
       @since 3.3.0 *)
-  
+
   val choose : 'a t -> 'a
   (** returns an arbitrary (but deterministic) element of the given set.
       @raise Not_found if given an empty set. *)
@@ -1258,9 +1258,9 @@ module PSet : sig
       Which element is chosen is unspecified, but equal elements will be
       chosen for equal sets.
       Return [None] if the set is empty.
-  
+
       @since 3.3.0 *)
-  
+
   val any: 'a t -> 'a
   (** Return one element of the given set.
       The difference with choose is that there is no guarantee that equals
@@ -1289,33 +1289,33 @@ module PSet : sig
   val of_array: ?cmp:('a -> 'a -> int) -> 'a array -> 'a t
   (** builds a set from the given array and comparison function *)
 
-      
+
   val to_seq : 'a t -> 'a BatSeq.t
   (** Iterate on the whole set, in ascending order.
-  
+
       @since 3.3.0  *)
-    
+
   val to_rev_seq : 'a t -> 'a BatSeq.t
   (** Iterate on the whole set, in descending order.
-  
+
       @since 3.3.0  *)
-    
+
   val to_seq_from :  'a -> 'a t -> 'a BatSeq.t
-  (** [to_seq_from x s] iterates on a subset of the elements in [s], 
+  (** [to_seq_from x s] iterates on a subset of the elements in [s],
       namely those greater or equal to [x], in ascending order.
-    
+
       @since 3.3.0 *)
-    
+
   val add_seq : 'a BatSeq.t -> 'a t -> 'a t
-  (** add the given elements to the set, in order. 
-    
+  (** add the given elements to the set, in order.
+
       @since 3.3.0  *)
-    
+
   val of_seq : ?cmp:('a -> 'a -> int) -> 'a BatSeq.t -> 'a t
-  (** build a set from the given elements 
-    
+  (** build a set from the given elements
+
       @since 3.3.0 *)
-     
+
   (** {6 Boilerplate code}*)
 
 

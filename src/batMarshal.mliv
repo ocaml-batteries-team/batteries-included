@@ -46,8 +46,8 @@
     uses bytes that are not printable characters. Therefore, input and
     output channels used in conjunction with {!Marshal.output} and
     {!Marshal.input} must be opened in binary mode, using e.g.
-    {!BatPervasives.open_out_bin} or
-    {!BatPervasives.open_in_bin}; channels opened in text
+    {!BatStdlib.open_out_bin} or
+    {!BatStdlib.open_in_bin}; channels opened in text
     mode will cause unmarshaling errors on platforms where text
     channels behave differently than binary channels, e.g. Windows.
 
@@ -126,7 +126,7 @@ val from_bytes : Bytes.t -> int -> 'a
    representation is not read from a channel, but taken from
    the byte sequence [buff], starting at position [ofs].
    The byte sequence is not mutated.
-   
+
    @since 2.3.0
 *)
 

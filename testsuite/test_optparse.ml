@@ -1,5 +1,5 @@
 open OUnit
-open BatPervasives
+open BatStdlib
 open BatOptParse
 
 let printer = dump

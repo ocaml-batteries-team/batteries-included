@@ -81,11 +81,11 @@ compare_lengths [1; 2] [2; 3; 4] = -1
   (Q.pair (Q.list Q.small_int) (Q.list Q.small_int)) \
   (fun (la, lb) -> \
     BatOrd.ord0 (compare_lengths la lb) \
-    = BatOrd.ord0 (Pervasives.compare (length la) (length lb)))
+    = BatOrd.ord0 (Stdlib.compare (length la) (length lb)))
 *)
 
 let rec compare_length_with li n = match li, n with
-  | [], n -> Pervasives.compare 0 n
+  | [], n -> Stdlib.compare 0 n
   | _::tl, n -> compare_length_with tl (n-1)
 
 (*$T compare_length_with
@@ -101,7 +101,7 @@ compare_length_with [1; 2] 3 = -1
   (Q.pair (Q.list Q.small_int) Q.small_int) \
   (fun (li, n) -> \
     BatOrd.ord0 (compare_length_with li n) \
-    = BatOrd.ord0 (Pervasives.compare (length li) n))
+    = BatOrd.ord0 (Stdlib.compare (length li) n))
 *)
 
 
@@ -173,10 +173,10 @@ let mem_cmp cmp x l =
   exists (fun y -> cmp x y = 0) l
 
 (*$T mem_cmp
-  mem_cmp Pervasives.compare 0 []     = false
-  mem_cmp Pervasives.compare 0 [1; 2] = false
-  mem_cmp Pervasives.compare 1 [1; 2] = true
-  mem_cmp Pervasives.compare 2 [1; 2] = true
+  mem_cmp Stdlib.compare 0 []     = false
+  mem_cmp Stdlib.compare 0 [1; 2] = false
+  mem_cmp Stdlib.compare 1 [1; 2] = true
+  mem_cmp Stdlib.compare 2 [1; 2] = true
 *)
 
 let append l1 l2 =
@@ -497,7 +497,7 @@ let unique ?(eq = ( = )) l =
   [1;2] (unique ~eq:(fun x y -> x land 1 = y land 1) [2;2;2;4;6;8;3;1;2])
 *)
 
-let unique_cmp ?(cmp = Pervasives.compare) l =
+let unique_cmp ?(cmp = Stdlib.compare) l =
   let set = ref (BatSet.PSet.create cmp) in
   let should_keep x =
     if BatSet.PSet.mem x !set then false
@@ -1357,10 +1357,10 @@ let group cmp lst =
     end
 
 (*$T group
-  group Pervasives.compare []                 = []
-  group Pervasives.compare [1]                = [[1]]
-  group Pervasives.compare [2; 2]             = [[2; 2]]
-  group Pervasives.compare [5; 4; 4; 2; 1; 6] = [[1]; [2]; [4; 4]; [5]; [6]]
+  group Stdlib.compare []                 = []
+  group Stdlib.compare [1]                = [[1]]
+  group Stdlib.compare [2; 2]             = [[2; 2]]
+  group Stdlib.compare [5; 4; 4; 2; 1; 6] = [[1]; [2]; [4; 4]; [5]; [6]]
 *)
 
 let cartesian_product l1 l2 =
@@ -1405,11 +1405,11 @@ let reduce f = function
   | [] -> invalid_arg "List.reduce: Empty List"
   | h :: t -> fold_left f h t
 
-let min ?cmp:(cmp = Pervasives.compare) l =
+let min ?cmp:(cmp = Stdlib.compare) l =
   let min = BatOrd.min_comp cmp in
   reduce min l
 
-let max ?cmp:(cmp = Pervasives.compare) l =
+let max ?cmp:(cmp = Stdlib.compare) l =
   let max = BatOrd.max_comp cmp in
   reduce max l
 
@@ -1491,7 +1491,7 @@ let kahan_sum li =
                         (kahan_sum (List.make n x))
 *)
 
-let min_max ?cmp:(cmp = Pervasives.compare) = function
+let min_max ?cmp:(cmp = Stdlib.compare) = function
   | [] -> invalid_arg "List.min_max: Empty List"
   | x :: xs ->
     fold_left
@@ -1533,10 +1533,10 @@ let unfold b f =
 let subset cmp l l' = for_all (fun x -> mem_cmp cmp x l') l
 
 (*$T subset
-  subset Pervasives.compare [1;2;3;4] [1;2;3] = false
-  subset Pervasives.compare [1;2;3] [1;2;3] = true
-  subset Pervasives.compare [3;2;1] [1;2;3] = true
-  subset Pervasives.compare [1;2] [1;2;3] = true
+  subset Stdlib.compare [1;2;3;4] [1;2;3] = false
+  subset Stdlib.compare [1;2;3] [1;2;3] = true
+  subset Stdlib.compare [3;2;1] [1;2;3] = true
+  subset Stdlib.compare [1;2] [1;2;3] = true
 *)
 
 let shuffle ?state l =
@@ -1603,15 +1603,15 @@ module Exceptionless = struct
     | [] -> None
     | h :: t -> Some (fold_left f h t)
 
-  let min_max ?cmp:(cmp = Pervasives.compare) l =
+  let min_max ?cmp:(cmp = Stdlib.compare) l =
     try Some (min_max ~cmp l)
     with Invalid_argument _ -> None
 
-  let min ?cmp:(cmp = Pervasives.compare) l =
+  let min ?cmp:(cmp = Stdlib.compare) l =
     try Some (min ~cmp l)
     with Invalid_argument _ -> None
 
-  let max ?cmp:(cmp = Pervasives.compare) l =
+  let max ?cmp:(cmp = Stdlib.compare) l =
     try Some (max ~cmp l)
     with Invalid_argument _ -> None
 

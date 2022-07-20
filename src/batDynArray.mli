@@ -229,7 +229,7 @@ val copy : 'a t -> 'a t
 
 val sub : 'a t -> int -> int -> 'a t
 (** [sub a start len] returns an array holding the subset of [len]
-    elements from [a] starting with the element at index [idx]. 
+    elements from [a] starting with the element at index [idx].
 
     @raise DynArray.Invalid_arg if [start] and [len] do not
     designate a valid subarray of [a]; that is, if
@@ -248,8 +248,8 @@ val split : ('a * 'b) t -> 'a t * 'b t
     @since 3.3.0 *)
 
 val combine : 'a t -> 'b t -> ('a * 'b) t
-(** [combine a b] converts arrays [[a0,...aN] [b0,...,bN]] into 
-    an array of pairs [[(a0,b0),...,(aN,bN)]]. 
+(** [combine a b] converts arrays [[a0,...aN] [b0,...,bN]] into
+    an array of pairs [[(a0,b0),...,(aN,bN)]].
 
     @raise DynArray.Invalid_arg  if the two arrays have different lengths.
     @since 3.3.0 *)
@@ -404,21 +404,21 @@ val rev_in_place : 'a t -> unit
 
 val max : 'a t -> 'a
 (** [max a] returns the largest value in [a] as judged by
-    [Pervasives.compare]
+    [Stdlib.compare]
 
     @raise DynArray.Invalid_arg  on empty input.
     @since 3.3.0 *)
 
 val min : 'a t -> 'a
 (** [min a] returns the smallest value in [a] as judged by
-    [Pervasives.compare]
+    [Stdlib.compare]
 
     @raise DynArray.Invalid_arg  on empty input.
     @since 3.3.0 *)
 
 val min_max : 'a t -> 'a * 'a
 (** [min_max a] returns the (smallest, largest) pair of values from [a]
-    as judged by [Pervasives.compare]
+    as judged by [Stdlib.compare]
 
     @raise DynArray.Invalid_arg  on empty input.
     @since 3.3.0 *)

@@ -1,4 +1,4 @@
-BatInnerPervasives
+BatInnerStdlib
   BatInnerShuffle
   BatArray
   BatBigarray
@@ -34,7 +34,7 @@ BatInnerPervasives
   BatMarshal
   BatNativeint
   BatNum
-  BatPervasives
+  BatStdlib
   BatPrintexc
   BatPrintf
   BatConcreteQueue

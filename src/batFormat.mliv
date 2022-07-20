@@ -470,7 +470,7 @@ type formatter=Format.formatter
     margin, maximum indentation limit, maximum number of boxes
     simultaneously opened, ellipsis, and so on, are specific to
     each pretty-printer and may be fixed independently.
-    Given a [Pervasives.out_channel] output channel [oc], a new formatter
+    Given a [Stdlib.out_channel] output channel [oc], a new formatter
     writing to that channel is simply obtained by calling
     [formatter_of_out_channel oc].
     Alternatively, the [make_formatter] function allocates a new
@@ -514,8 +514,8 @@ val make_formatter :
 
 (** [make_formatter out flush] returns a new formatter that writes according
     to the output function [out], and the flushing function [flush]. For
-    instance, a formatter to the [Pervasives.out_channel] [oc] is returned by
-    [make_formatter (Pervasives.output oc) (fun () -> Pervasives.flush oc)]. *)
+    instance, a formatter to the [Stdlib.out_channel] [oc] is returned by
+    [make_formatter (Stdlib.output oc) (fun () -> Stdlib.flush oc)]. *)
 
 (** {6 Basic functions to use with formatters} *)
 
@@ -559,7 +559,7 @@ val pp_get_max_boxes : formatter -> unit -> int
 val pp_over_max_boxes : formatter -> unit -> bool
 val pp_set_ellipsis_text : formatter -> string -> unit
 val pp_get_ellipsis_text : formatter -> unit -> string
-val pp_set_formatter_out_channel : formatter -> Pervasives.out_channel -> unit
+val pp_set_formatter_out_channel : formatter -> Stdlib.out_channel -> unit
 val pp_set_formatter_output_functions :
   formatter -> (string -> int -> int -> unit) -> (unit -> unit) -> unit
 
@@ -604,7 +604,7 @@ val pp_print_text : formatter -> string -> unit
 
     @since 4.02.0
 *)
-  
+
 (** {6 [printf] like functions for pretty-printing.} *)
 
 val fprintf : formatter -> ('a, formatter, unit) format -> 'a

@@ -4,7 +4,7 @@
 external primitive_int_compare : int -> int -> int = "caml_int_compare" "noalloc"
 [@@warning "-3"]
 
-let std_compare = Pervasives.compare[@warning "-3"]
+let std_compare = Stdlib.compare[@warning "-3"]
 
 let test_compare () =
 

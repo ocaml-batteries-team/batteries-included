@@ -590,7 +590,7 @@ let cartesian_product a b =
 
 (*$T cartesian_product
   let a = cartesian_product [|1;2|] [|"a";"b"|] in \
-    sort Pervasives.compare a; \
+    sort Stdlib.compare a; \
     a = [|1,"a"; 1,"b"; 2,"a"; 2, "b" |]
 *)
 
@@ -617,12 +617,12 @@ let compare cmp a b =
   aux 0
 
 (*$T compare
-   compare Pervasives.compare [|1;2;3|] [|1;2|] = 1
-   compare Pervasives.compare [|1;2|] [|1;2;4|] = -1
-   compare Pervasives.compare [|1|] [||] = 1
-   compare Pervasives.compare [||] [||] = 0
-   compare Pervasives.compare [|1;2|] [|1;2|] = 0
-   compare (fun x y -> -(Pervasives.compare x y)) [|2;1|] [|1;2|] = -1
+   compare Stdlib.compare [|1;2;3|] [|1;2|] = 1
+   compare Stdlib.compare [|1;2|] [|1;2;4|] = -1
+   compare Stdlib.compare [|1|] [||] = 1
+   compare Stdlib.compare [||] [||] = 0
+   compare Stdlib.compare [|1;2|] [|1;2|] = 0
+   compare (fun x y -> -(Stdlib.compare x y)) [|2;1|] [|1;2|] = -1
 *)
 
 let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =
@@ -665,8 +665,8 @@ let reduce f a =
      with Invalid_argument _ -> true
 *)
 
-let min a = reduce Pervasives.min a
-let max a = reduce Pervasives.max a
+let min a = reduce Stdlib.min a
+let max a = reduce Stdlib.max a
 
 (*$T min
   min [|1;2;3|] = 1
@@ -758,7 +758,7 @@ let is_sorted_by f xs =
 (* TODO: Investigate whether a second array is better than pairs *)
 let decorate_stable_sort f xs =
   let decorated = map (fun x -> (f x, x)) xs in
-  let () = stable_sort (fun (i,_) (j,_) -> Pervasives.compare i j) decorated in
+  let () = stable_sort (fun (i,_) (j,_) -> Stdlib.compare i j) decorated in
   map (fun (_,x) -> x) decorated
 (*$T decorate_stable_sort
   decorate_stable_sort fst [|(1,2);(1,3);(0,2);(1,4)|] \
@@ -771,7 +771,7 @@ let decorate_stable_sort f xs =
 
 let decorate_fast_sort f xs =
   let decorated = map (fun x -> (f x, x)) xs in
-  let () = fast_sort (fun (i,_) (j,_) -> Pervasives.compare i j) decorated in
+  let () = fast_sort (fun (i,_) (j,_) -> Stdlib.compare i j) decorated in
   map (fun (_,x) -> x) decorated
 (*$Q decorate_fast_sort
   (Q.pair (Q.array Q.small_int) (Q.fun1 Q.Observable.int (Q.option Q.int))) \

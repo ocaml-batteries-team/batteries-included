@@ -654,7 +654,7 @@ let in_channel_of_input i =
   and cout        = open_out fout in
   let rec aux () =
     let c = read i in
-      Pervasives.output_char cout c;
+      Stdlib.output_char cout c;
       aux ()*)
 *)
 
@@ -713,7 +713,7 @@ let to_input_channel inp =
     let out          = output_channel cout                    in
     copy inp out;
     close_out out;
-    Pervasives.open_in_bin name
+    Stdlib.open_in_bin name
 
 
 

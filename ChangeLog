@@ -58,7 +58,7 @@ Changelog
 
 - BatList.ExceptionLess: added reduce, min, max and min_max
   Now, BatList.min and max also accept a ~cmp optional parameter;
-  defaulting to Pervasives.compare.
+  defaulting to Stdlib.compare.
   #1037
   (Nicolas Tollenaere, review by Francois Berenger)
 
@@ -220,7 +220,7 @@ This minor release adds support for OCaml 4.11.
   #944
   (kit-ty-kate)
 
-- BatResult: BatPervasives.result is now equal to Stdlib.result
+- BatResult: BatStdlib.result is now equal to Stdlib.result
   instead of sharing constructors without being the same type
   #939, #957
   (Clément Busschaert, Cedric Cellier).
@@ -270,7 +270,7 @@ This minor release adds support for OCaml 4.11.
   (François Berenger)
 - PSet: add a ?cmp argument to every function that creates a PSet:
     of_enum, of_list, of_array
-  are changed. The default value is Pervasives.compare.
+  are changed. The default value is Stdlib.compare.
   #679
   (Cedric Cellier)
 

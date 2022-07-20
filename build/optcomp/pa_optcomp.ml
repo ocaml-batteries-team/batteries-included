@@ -700,7 +700,7 @@ let _ =
     (Arg.String (fun filename -> dependency_filename := Some filename))
     "<file> Write dependencies to <file>.";
 
-  Pervasives.at_exit write_depencies;
+  Stdlib.at_exit write_depencies;
 
   Syntax.Quotation.add "optcomp" Syntax.Quotation.DynAst.expr_tag (expand expr_of_value);
   Syntax.Quotation.add "optcomp" Syntax.Quotation.DynAst.patt_tag (expand patt_of_value);

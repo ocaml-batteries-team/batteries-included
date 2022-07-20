@@ -5,7 +5,7 @@
 
 let total_length = 500_000
 
-let (%) = BatPervasives.(%)
+let (%) = BatStdlib.(%)
 
 module MapBench (M : sig val input_length : int end) = struct
   let input_length = M.input_length
@@ -24,7 +24,7 @@ module MapBench (M : sig val input_length : int end) = struct
   let make_samples input tests () = Bench.bench_funs tests input
 
   (* we don't use BatInt to ensure that the same comparison function
-     is used (PMap use Pervasives.compare by default), in order to
+     is used (PMap use Stdlib.compare by default), in order to
      have comparable performance results. *)
   module StdMap = BatMap.Make(struct type t = int let compare = compare end)
 

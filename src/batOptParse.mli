@@ -461,12 +461,12 @@ sig
   val error : t -> ?chn: out_channel -> ?status: int -> string -> unit
   (** Display an error message and exit the program. The error
       message is printed to the channel [chn] (default is
-      [Pervasives.stderr]) and the program exits with exit status
+      [Stdlib.stderr]) and the program exits with exit status
       [status] (default is 1). *)
 
   val usage : t -> ?chn: out_channel -> unit -> unit
   (** Display the usage message to the channel [chn] (default is
-      [Pervasives.stdout]) and return. *)
+      [Stdlib.stdout]) and return. *)
 
 
   (** {6 Option parsing} *)

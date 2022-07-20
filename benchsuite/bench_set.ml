@@ -5,7 +5,7 @@
 
 let total_length = 500_000
 
-let ( % ) = BatPervasives.( % )
+let ( % ) = BatStdlib.( % )
 
 module SetBench (M : sig val input_length : int end) = struct
   let input_length = M.input_length
@@ -25,7 +25,7 @@ module SetBench (M : sig val input_length : int end) = struct
       (List.map (fun (name, test) -> name, test, input) tests)
 
   (* we don't use BatInt to ensure that the same comparison function
-     is used (PMap use Pervasives.compare by default), in order to
+     is used (PMap use Stdlib.compare by default), in order to
      have comparable performance results. *)
   module StdSet = BatSet.Make(struct type t = int let compare = compare end)
 
