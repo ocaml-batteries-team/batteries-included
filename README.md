@@ -13,7 +13,7 @@ Batteries
 
 * provides a consistent API for otherwise independent libraries.
 
-[![Build Status](http://ci.cedeela.fr/buildStatus/icon?job=batteries)](http://ci.cedeela.fr/job/batteries)
+[Documentation](https://ocaml-batteries-team.github.io/batteries-included/hdoc2/)
 
 Building Batteries
 ------------------
