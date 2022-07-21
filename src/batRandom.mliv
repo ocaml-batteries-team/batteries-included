@@ -206,6 +206,8 @@ module State : sig
 ##V>=4.14##val bits32 : t -> Int32.t
 ##V>=4.14##val bits64 : t -> Int64.t
 ##V>=4.14##val nativebits : t -> Nativeint.t
+
+##V>=5.0##val split : t -> t
 end
 
 
@@ -214,6 +216,9 @@ val get_state : unit -> State.t
 
 val set_state : State.t -> unit
 (** Set the state of the generator used by the basic functions. *)
+
+
+##V>=5.0##val split : unit -> State.t
 
 module Incubator : sig
   module Private_state_enums : sig

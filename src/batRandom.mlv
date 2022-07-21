@@ -122,6 +122,7 @@ let shuffle e =
 
 let get_state = Random.get_state
 let set_state = Random.set_state
+##V>=5.0##let split = Random.split
 
 module Incubator = struct
   module Private_state_enums = struct

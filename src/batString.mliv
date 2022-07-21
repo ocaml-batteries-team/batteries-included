@@ -1453,3 +1453,8 @@ external unsafe_blit :
 ##V>=4.3##  [@@noalloc]
 
   (**/**)
+
+
+##V>=5.0##val hash : t -> int
+##V>=5.0##val seeded_hash : int -> t -> int
+external unsafe_get : string -> int -> char = "%string_unsafe_get"

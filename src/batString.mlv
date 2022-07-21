@@ -1381,3 +1381,6 @@ struct
   end (* String.Cap.Exceptionless *)
 
 end (* String.Cap *)
+
+##V>=5.0##let hash = String.hash
+##V>=5.0##let seeded_hash = String.seeded_hash
