@@ -9,7 +9,7 @@ module Pack = Ocamlbuild_pack
 
 let ocamlfind x = S[A"ocamlfind"; A x]
 
-let packs = "num,str,stdlib-shims,camlp-streams,compiler-libs.toplevel"
+let packs = "num,str,stdlib-shims,camlp-streams,compiler-libs.toplevel,unix"
 
 let doc_intro = "build/intro.text"
 let mkconf = "build/mkconf.byte"
