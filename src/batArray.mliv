@@ -100,8 +100,8 @@ external make : int -> 'a -> 'a array = "caml_make_vect"
 ##V>=4.07##val to_seq: 'a array -> 'a Seq.t
 ##V>=4.07##val to_seqi: 'a array -> (int * 'a) Seq.t
 
-external create : int -> 'a -> 'a array = "caml_make_vect"
-(** @deprecated [Array.create] is an alias for {!Array.make}. *)
+##V<5##external create : int -> 'a -> 'a array = "caml_make_vect"
+##V<5##(** @deprecated [Array.create] is an alias for {!Array.make}. *)
 
 val init : int -> (int -> 'a) -> 'a array
 (** [Array.init n f] returns a fresh array of length [n],
@@ -126,8 +126,8 @@ val make_matrix : int -> int -> 'a -> 'a array array
     If the value of [e] is a floating-point number, then the maximum
     size is only [Sys.max_array_length / 2]. *)
 
-val create_matrix : int -> int -> 'a -> 'a array array
-(** @deprecated [Array.create_matrix] is an alias for {!Array.make_matrix}. *)
+##V<5##val create_matrix : int -> int -> 'a -> 'a array array
+##V<5##(** @deprecated [Array.create_matrix] is an alias for {!Array.make_matrix}. *)
 
 val append : 'a array -> 'a array -> 'a array
 (** [Array.append v1 v2] returns a fresh array containing the
