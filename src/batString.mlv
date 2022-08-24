@@ -1010,7 +1010,7 @@ let is_empty s = length s = 0
    is_empty (String.make 0 'a')
 *)
 
-let icompare s1 s2 = compare (String.lowercase s1) (String.lowercase s2)
+let icompare s1 s2 = compare (String.lowercase_ascii s1) (String.lowercase_ascii s2)
 (*$T icompare
    icompare "FOO" "bar" = 1
 *)
@@ -1293,10 +1293,10 @@ struct
   let chop ?l ?r b  = ubos (chop ?l ?r (usob b))
   let strip ?(chars = ubos strip_default) b =
     ubos (strip ~chars:(usob chars) (usob b))
-  let uppercase b   = ubos (uppercase (usob b))
-  let lowercase b   = ubos (lowercase (usob b))
-  let capitalize b  = ubos (capitalize (usob b))
-  let uncapitalize b = ubos (uncapitalize (usob b))
+  let uppercase b   = ubos (uppercase_ascii (usob b))
+  let lowercase b   = ubos (lowercase_ascii (usob b))
+  let capitalize b  = ubos (capitalize_ascii (usob b))
+  let uncapitalize b = ubos (uncapitalize_ascii (usob b))
   let copy          = Bytes.copy
   let sub           = Bytes.sub
   let fill          = Bytes.fill
