@@ -189,16 +189,16 @@ val open_temp_file :
 ##V>=4.0##    @since 2.11.0 and OCaml 4.00.0
 ##V>=4.0##*)
 
-val temp_dir_name : string
-##V>=4.2##  [@@ocaml.deprecated "Use Filename.get_temp_dir_name instead"]
-(** The name of the initial temporary directory:
-    Under Unix, the value of the [TMPDIR] environment variable, or "/tmp"
-    if the variable is not set.
-    Under Windows, the value of the [TEMP] environment variable, or "."
-    if the variable is not set.
-    @deprecated You should use {!Filename.get_temp_dir_name} instead.
-    @since 2.11.0 and OCaml 3.09.1
-*)
+##V<5##val temp_dir_name : string
+##V<5####V>=4.2##  [@@ocaml.deprecated "Use Filename.get_temp_dir_name instead"]
+##V<5##(** The name of the initial temporary directory:
+##V<5##    Under Unix, the value of the [TMPDIR] environment variable, or "/tmp"
+##V<5##    if the variable is not set.
+##V<5##    Under Windows, the value of the [TEMP] environment variable, or "."
+##V<5##    if the variable is not set.
+##V<5##    @deprecated You should use {!Filename.get_temp_dir_name} instead.
+##V<5##    @since 2.11.0 and OCaml 3.09.1
+##V<5##*)
 
 val quote : string -> string
 (** Return a quoted version of a file name, suitable for use as
