@@ -659,8 +659,8 @@ let map f s =
   done;
   Bytes.unsafe_to_string sc
 (*$T map
-   map Char.uppercase "Five" = "FIVE"
-   map Char.uppercase "" = ""
+   map Char.uppercase_ascii "Five" = "FIVE"
+   map Char.uppercase_ascii "" = ""
    map (String.of_char %> failwith) "" = ""
 *)
 
@@ -672,8 +672,8 @@ let mapi f s =
   done;
   Bytes.unsafe_to_string sc
 (*$T mapi
-   mapi (fun _ -> Char.uppercase) "Five" = "FIVE"
-   mapi (fun _ -> Char.uppercase) "" = ""
+   mapi (fun _ -> Char.uppercase_ascii) "Five" = "FIVE"
+   mapi (fun _ -> Char.uppercase_ascii) "" = ""
    mapi (fun _ -> String.of_char %> failwith) "" = ""
    mapi (fun i _c -> "0123456789".[9-i]) "0123456789" = "9876543210"
    ignore (let last = ref (-1) in mapi (fun i _c -> assert (i > !last); last := i; '0') "012345"); true
@@ -689,7 +689,7 @@ let filter_map f s =
   done;
   Buffer.contents sc
 (*$T filter_map
-   filter_map (function 'a'..'z' as c -> Some (Char.uppercase c) | _ -> None) "a b c" = "ABC"
+   filter_map (function 'a'..'z' as c -> Some (Char.uppercase_ascii c) | _ -> None) "a b c" = "ABC"
 *)
 
 let filter f s =
