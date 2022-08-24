@@ -103,15 +103,19 @@ type stat = Gc.stat =
 *)
 
 type control = Gc.control =
-  { mutable minor_heap_size : int;
+  {
+##V<5.0## mutable
+      minor_heap_size : int;
     (** The size (in words) of the minor heap.  Changing
         this parameter will trigger a minor collection.  Default: 32k. *)
 
-    mutable major_heap_increment : int;
+##V<5.0## mutable
+      major_heap_increment : int;
     (** The minimum number of words to add to the
         major heap when increasing it.  Default: 124k. *)
 
-    mutable space_overhead : int;
+##V<5.0## mutable
+      space_overhead : int;
     (** The major GC speed is computed from this parameter.
         This is the memory that will be "wasted" because the GC does not
         immediately collect unreachable blocks.  It is expressed as a
@@ -120,7 +124,8 @@ type control = Gc.control =
         blocks more eagerly) if [space_overhead] is smaller.
         Default: 80. *)
 
-    mutable verbose : int;
+##V<5.0## mutable
+      verbose : int;
     (** This value controls the GC messages on standard error output.
         It is a sum of some of the following flags, to print messages
         on the corresponding events:
@@ -136,7 +141,8 @@ type control = Gc.control =
         - [0x200] Computation of compaction triggering condition.
         Default: 0. *)
 
-    mutable max_overhead : int;
+##V<5.0## mutable
+      max_overhead : int;
     (** Heap compaction is triggered when the estimated amount
         of "wasted" memory is more than [max_overhead] percent of the
         amount of live data.  If [max_overhead] is set to 0, heap
@@ -145,12 +151,14 @@ type control = Gc.control =
         If [max_overhead >= 1000000], compaction is never triggered.
         Default: 500. *)
 
-    mutable stack_limit : int;
+##V<5.0## mutable
+      stack_limit : int;
     (** The maximum size of the stack (in words).  This is only
         relevant to the byte-code runtime, as the native code runtime
         uses the operating system's stack.  Default: 256k. *)
 
-    mutable allocation_policy : int;
+##V<5.0## mutable
+      allocation_policy : int;
     (** The policy used for allocating in the heap.  Possible
         values are 0 and 1.  0 is the next-fit policy, which is
         quite fast but can result in fragmentation.  1 is the
@@ -267,11 +275,9 @@ val allocated_bytes : unit -> float
     started.  It is returned as a [float] to avoid overflow problems
     with [int] on 32-bit machines. *)
 
-##V>=4.3####V<multicore##external get_minor_free : unit -> int = "caml_get_minor_free"
-##V=4.3##          [@@noalloc]
-##V=4.4##          [@@noalloc]
-##V>=4.3####V<multicore##(** Return the current size of the free space inside the minor heap.
-##V>=4.3####V<multicore##    @since 2.5.0 and OCaml 4.03.0 *)
+##V<5####V>=4.3##external get_minor_free : unit -> int = "caml_get_minor_free"  [@@noalloc]
+##V<5####V>=4.3##(** Return the current size of the free space inside the minor heap.
+##V<5####V>=4.3##    @since 2.5.0 and OCaml 4.03.0 *)
 
 ##V>=4.3####V<multicore##external get_bucket : int -> int = "caml_get_major_bucket" [@@noalloc]
 ##V>=4.3####V<multicore##(** [get_bucket n] returns the current size of the [n]-th future bucket
@@ -383,7 +389,8 @@ val delete_alarm : alarm -> unit
   (** [delete_alarm a] will stop the calls to the function associated
       to [a].  Calling [delete_alarm a] again has no effect. *)
 
-##V>=4.11##external eventlog_pause : unit -> unit = "caml_eventlog_pause"
+##V>=4.11####V<5.0##external eventlog_pause : unit -> unit = "caml_eventlog_pause"
+##V>=5.0##val                eventlog_pause : unit -> unit
 ##V>=4.11##(** [eventlog_pause ()] will pause the collection of traces in the
 ##V>=4.11##   runtime.
 ##V>=4.11##   Traces are collected if the program is linked to the instrumented runtime
@@ -391,7 +398,8 @@ val delete_alarm : alarm -> unit
 ##V>=4.11##   Events are flushed to disk after pausing, and no new events will be
 ##V>=4.11##   recorded until [eventlog_resume] is called. *)
 ##V>=4.11##
-##V>=4.11##external eventlog_resume : unit -> unit = "caml_eventlog_resume"
+##V>=4.11####V<5.0##external eventlog_resume : unit -> unit = "caml_eventlog_resume"
+##V>=5.0##val                eventlog_resume : unit -> unit
 ##V>=4.11##(** [eventlog_resume ()] will resume the collection of traces in the
 ##V>=4.11##   runtime.
 ##V>=4.11##   Traces are collected if the program is linked to the instrumented runtime
