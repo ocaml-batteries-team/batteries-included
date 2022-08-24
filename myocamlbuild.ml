@@ -17,7 +17,10 @@ let mkconf_command src dst =
   let oasis_path = Filename.concat Filename.parent_dir_name "_oasis" in
   Cmd(S[A"ocamlrun"; P mkconf; P oasis_path; P src; P dst])
 
-let compiler_libs = if Sys.ocaml_version.[0] = '4' then [A"-I"; A"+compiler-libs"] else []
+let compiler_libs =
+  if int_of_char (Sys.ocaml_version.[0]) >= 4 then
+    [A"-I"; A"+compiler-libs"]
+  else []
 
 let _ = dispatch begin function
   | Before_options ->
