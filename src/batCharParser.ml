@@ -66,11 +66,11 @@ let string s = label ("\"" ^ s ^ "\"") (
   )
 
 let case_char c =
-  if BatChar.is_letter c then one_of [Char.uppercase c; Char.lowercase c]
+  if BatChar.is_letter c then one_of [Char.uppercase_ascii c; Char.lowercase_ascii c]
   else char c
 
 let case_string s = label ("case insensitive \"" ^ s ^ "\"") (
-    let s'  = String.lowercase s in
+    let s'  = String.lowercase_ascii s in
     let len = String.length s'   in
     let rec aux i =
       if i < len then case_char s'.[i] >>= fun _ -> aux (i+1)
