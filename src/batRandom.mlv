@@ -39,6 +39,8 @@ let char ()   = Char.chr (int 256)
 ##V>=4.14##let bits64 = Random.bits64
 ##V>=4.14##let nativebits = Random.nativebits
 
+##V>=5##let split = Random.split
+
 let full_range_int =
   if Sys.word_size = 32 then (* need 31-bits of entropy, bits() gives 30 *)
     fun () -> if bool () then - (bits ())-1 else bits ()
