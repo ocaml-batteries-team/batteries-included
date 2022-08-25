@@ -206,6 +206,15 @@ module State : sig
 ##V>=4.14##val bits32 : t -> Int32.t
 ##V>=4.14##val bits64 : t -> Int64.t
 ##V>=4.14##val nativebits : t -> Nativeint.t
+
+##V>=5##val split : t -> t
+##V>=5##(** Draw a fresh PRNG state from the given PRNG state.
+##V>=5##    (The given PRNG state is modified.)
+##V>=5##    The new PRNG is statistically independent from the given PRNG.
+##V>=5##    Data can be drawn from both PRNGs, in any order, without risk of
+##V>=5##    correlation.  Both PRNGs can be split later, arbitrarily many times.
+##V>=5##    @since 5.0.0 *)
+
 end
 
 
@@ -214,6 +223,13 @@ val get_state : unit -> State.t
 
 val set_state : State.t -> unit
 (** Set the state of the generator used by the basic functions. *)
+
+##V>=5##val split : unit -> State.t
+##V>=5##(** Draw a fresh PRNG state from the current state of the domain-local
+##V>=5##    generator used by the default functions.
+##V>=5##    (The state of the domain-local generator is modified.)
+##V>=5##    See {!Random.State.split}.
+##V>=5##    @since 5.0.0 *)
 
 module Incubator : sig
   module Private_state_enums : sig
