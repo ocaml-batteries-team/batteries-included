@@ -320,7 +320,9 @@ struct
 
     let adapt_case =
       if case_sensitive then identity
-      else BatString.lowercase_ascii
+      else
+##V<5## BatString.lowercase
+##V>=5## BatString.lowercase_ascii
 
     let string_compare =
       if case_sensitive then String.compare
@@ -511,7 +513,10 @@ struct
           if is_reserved x then (Kwd x)
           else                  (Ident x)
       else
-        fun x -> let x = BatString.lowercase_ascii x in
+        fun x -> let x =
+##V<5## BatString.lowercase
+##V>=5## BatString.lowercase_ascii
+                     x in
           if is_reserved x then (Kwd x)
           else                  (Ident x)
 
