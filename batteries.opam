@@ -19,7 +19,8 @@ build: [
 install: [make "install"]
 run-test: [make "test"]
 depends: [
-  "ocaml" {>= "4.00.0" & < "4.15.0"}
+  "ocaml" {>= "5.00.0"}
+  "camlp-streams"
   "ocamlfind" {build & >= "1.5.3"}
   "ocamlbuild" {build}
   "qtest" {with-test & >= "2.5"}
