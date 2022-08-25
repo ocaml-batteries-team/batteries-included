@@ -66,6 +66,9 @@ struct
   let enum_bool state () = BatEnum.from (fun () -> bool state)
   let enum_char state () = BatEnum.from (fun () -> char state)
 
+##V>=5##  external next: t -> (int64[@unboxed]) 
+##V>=5##    = "caml_lxm_next" "caml_lxm_next_unboxed" [@@noalloc]
+  
 end
 
 let enum_bits () = BatEnum.from bits
@@ -160,13 +163,18 @@ module Incubator = struct
       let enum_char state () =
         random_enum state char
 
-      type implementation = { st : int array; mutable idx : int };;
+##V<5##  type implementation = { st: int array; mutable idx: int }
+##V>=5## open Bigarray
+##V>=5## type implementation = (int64, int64_elt, c_layout) Array1.t
+
       (*      external t_of_impl: implementation -> t = "%identity" *)
       external impl_of_t: t -> implementation = "%identity"
 
       let perturb state =
-        let impl = impl_of_t state in
-        make (Array.append impl.st [|impl.idx|])
+##V<5## let impl = impl_of_t state in
+##V<5## make (Array.append impl.st [|impl.idx|])
+##V>=5## let _ = State.next state in
+##V>=5## state
 
     end
 
