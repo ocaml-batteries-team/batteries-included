@@ -591,7 +591,7 @@ val exists_stdlib : (char -> bool) -> string -> bool
 (** [exists_stdlib p str] check if at least one char of [str] satisfies
     the predicate [p].
     @since 3.4.0 *)
-  
+
 val count_char : string -> char -> int
 (** [count_char str c] returns the number of times [c] is used in [str].
  *)
@@ -794,7 +794,7 @@ val split_on_string : by:string -> string -> string list
     Note: [split_on_string sep s] is identical to [nsplit s sep] but for empty strings.
 
     Example: [String.split_on_string "bc" "abcabcabc" = ["a"; "a"; "a"; ""]]
-    
+
     @since 2.11.0
 *)
 
@@ -953,6 +953,20 @@ val get_uint8 : string -> int -> int
 ##V>=4.08##(** [get_int32_ne b i] is [b]'s native-endian 32-bit integer
 ##V>=4.08##    starting at character index [i].
 ##V>=4.08##    @since 3.4.0 and OCaml 4.08 *)
+
+##V>=5##val hash : t -> int
+##V>=5##(** An unseeded hash function for strings, with the same output value as
+##V>=5##    {!Hashtbl.hash}. This function allows this module to be passed as argument
+##V>=5##    to the functor {!Hashtbl.Make}.
+##V>=5##
+##V>=5##    @since 5.0.0 *)
+
+##V>=5##val seeded_hash : int -> t -> int
+##V>=5##(** A seeded hash function for strings, with the same output value as
+##V>=5##    {!Hashtbl.seeded_hash}. This function allows this module to be passed as
+##V>=5##    argument to the functor {!Hashtbl.MakeSeeded}.
+##V>=5##
+##V>=5##    @since 5.0.0 *)
 
 ##V>=4.08##val get_int32_be : string -> int -> int32
 ##V>=4.08##(** [get_int32_be b i] is [b]'s big-endian 32-bit integer
