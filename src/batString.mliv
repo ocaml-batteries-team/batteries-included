@@ -1372,13 +1372,10 @@ sig
 
   val strip : ?chars:[> `Read] t -> [> `Read] t -> _ t
 
-  val uppercase : [> `Read] t -> _ t
-
-  val lowercase : [> `Read] t -> _ t
-
-  val capitalize : [> `Read] t -> _ t
-
-  val uncapitalize : [> `Read] t -> _ t
+##V<5## val uppercase : [> `Read] t -> _ t
+##V<5## val lowercase : [> `Read] t -> _ t
+##V<5## val capitalize : [> `Read] t -> _ t
+##V<5## val uncapitalize : [> `Read] t -> _ t
 
   val copy : [> `Read] t -> _ t
 
