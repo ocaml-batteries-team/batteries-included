@@ -168,7 +168,7 @@ let to_list bh =
 *)
 
 (*$Q to_list ; insert ; empty
-   (Q.list Q.int) ~count:10 (fun l -> to_list (List.fold_left insert empty l) = List.sort Pervasives.compare l)
+   (Q.list Q.int) ~count:10 (fun l -> to_list (List.fold_left insert empty l) = List.sort compare l)
 *)
 
 let elems = to_list
