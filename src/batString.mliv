@@ -1503,7 +1503,7 @@ external unsafe_blit :
 ##V>=4.3##  [@@noalloc]
 ##V<5##external unsafe_fill :
 ##V<5##  Bytes.t -> int -> int -> char -> unit = "caml_fill_string"
-##V<5####V<4.3##  "noalloc"
+##V<4.3##  "noalloc"
 ##V<5####V>=4.3##  [@@noalloc]
 
   (**/**)
