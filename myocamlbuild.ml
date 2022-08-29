@@ -9,7 +9,14 @@ module Pack = Ocamlbuild_pack
 
 let ocamlfind x = S[A"ocamlfind"; A x]
 
-let packs = "bigarray,num,str"
+let ocaml_major_version =
+  int_of_char Sys.ocaml_version.[0]
+
+let packs =
+  if ocaml_major_version <= 4 then
+    "num,str,camlp-streams,bigarray"
+  else
+    "num,str,camlp-streams,unix"
 
 let doc_intro = "build/intro.text"
 let mkconf = "build/mkconf.byte"
@@ -17,7 +24,10 @@ let mkconf_command src dst =
   let oasis_path = Filename.concat Filename.parent_dir_name "_oasis" in
   Cmd(S[A"ocamlrun"; P mkconf; P oasis_path; P src; P dst])
 
-let compiler_libs = if Sys.ocaml_version.[0] = '4' then [A"-I"; A"+compiler-libs"] else []
+let compiler_libs =
+  if ocaml_major_version < 4 then []
+  else if ocaml_major_version >= 5 then [A"-I"; A"+compiler-libs";A"-I"; A"+unix"]
+  else [A"-I"; A"+compiler-libs"]
 
 let _ = dispatch begin function
   | Before_options ->

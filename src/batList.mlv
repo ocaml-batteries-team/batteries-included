@@ -1545,7 +1545,10 @@ let shuffle ?state l =
   Array.to_list arr
 (*$T shuffle
   let s = Random.State.make [|11|] in \
-  shuffle ~state:s [1;2;3;4;5;6;7;8;9] = [7; 2; 9; 5; 3; 6; 4; 1; 8]
+  shuffle ~state:s [1;2;3;4;5;6;7;8;9] = \
+  if Sys.ocaml_release.major < 5 then \
+    [7; 2; 9; 5; 3; 6; 4; 1; 8] else \
+    [1; 7; 4; 9; 5; 2; 8; 6; 3]
   shuffle [] = []
 *)
 

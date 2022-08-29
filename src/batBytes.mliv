@@ -293,23 +293,23 @@ val rcontains_from : t -> int -> char -> bool
     Raise [Invalid_argument] if [stop < 0] or [stop+1] is not a valid
     position in [s]. *)
 
-val uppercase : t -> t
-(** Return a copy of the argument, with all lowercase letters
-    translated to uppercase, including accented letters of the ISO
-    Latin-1 (8859-1) character set. *)
+##V<5##val uppercase : t -> t
+##V<5##(** Return a copy of the argument, with all lowercase letters
+##V<5##    translated to uppercase, including accented letters of the ISO
+##V<5##    Latin-1 (8859-1) character set. *)
 
-val lowercase : t -> t
-(** Return a copy of the argument, with all uppercase letters
-    translated to lowercase, including accented letters of the ISO
-    Latin-1 (8859-1) character set. *)
+##V<5##val lowercase : t -> t
+##V<5##(** Return a copy of the argument, with all uppercase letters
+##V<5##    translated to lowercase, including accented letters of the ISO
+##V<5##    Latin-1 (8859-1) character set. *)
 
-val capitalize : t -> t
-(** Return a copy of the argument, with the first byte set to
-    uppercase. *)
+##V<5##val capitalize : t -> t
+##V<5##(** Return a copy of the argument, with the first byte set to
+##V<5##    uppercase. *)
 
-val uncapitalize : t -> t
-(** Return a copy of the argument, with the first byte set to
-    lowercase. *)
+##V<5##val uncapitalize : t -> t
+##V<5##(** Return a copy of the argument, with the first byte set to
+##V<5##    lowercase. *)
 
 val uppercase_ascii : t -> t
 (** Return a copy of the argument, with all lowercase letters

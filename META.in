@@ -12,7 +12,7 @@ plugin(native,mt)  ="batteriesThread.cmxs"
 package "unthreaded" (
  version="@VERSION@"
  description="Batteries Included (for use in unthreaded programs)"
- requires    ="unix,num,bigarray,str,bytes"
+ requires    ="num,camlp-streams,str,unix"
  archive(toploop)   ="batteries.cma batteriesConfig.cmo batteriesHelp.cmo batteriesPrint.cmo"
  archive(byte)      ="batteries.cma"
  archive(native)    ="batteries.cmxa"

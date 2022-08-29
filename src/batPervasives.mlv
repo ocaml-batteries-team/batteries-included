@@ -163,8 +163,8 @@ let rec dump r =
       opaque "abstract"
     | x when x = Obj.custom_tag ->
       opaque "custom"
-    | x when x = Obj.final_tag ->
-      opaque "final"
+##V<5##    | x when x = Obj.final_tag ->
+##V<5##      opaque "final"
     | x when x = Obj.double_array_tag ->
       BatIO.to_string (BatArray.print BatFloat.print) (Obj.magic r : float array)
     | _ ->

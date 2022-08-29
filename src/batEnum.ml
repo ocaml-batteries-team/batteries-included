@@ -850,7 +850,7 @@ let uniqq e =
   List.enum [1;1;2;3;3;2] |> uniqq |> List.of_enum = [1;2;3;2]
   List.enum ["a";"a";"b";"c";"c";"b"] |> uniq |> List.of_enum = ["a";"b";"c";"b"]
   List.enum ["a";"A";"b";"c";"C";"b"] \
-    |> uniq_by (fun a b -> String.lowercase a = String.lowercase b) \
+    |> uniq_by (fun a b -> String.lowercase_ascii a = String.lowercase_ascii b) \
     |> List.of_enum = ["a";"b";"c";"b"]
 *)
 
