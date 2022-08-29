@@ -1,7 +1,8 @@
 (* open this to extend all Foo with BatFoo *)
 
 module Legacy = struct
-  include Pervasives
+##V<5##  include Pervasives
+##V>=5##  include Stdlib
   module Arg = Arg
   module Array = Array
   module ArrayLabels = ArrayLabels

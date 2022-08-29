@@ -21,6 +21,8 @@
 
 open BatIO
 
+##V>=5## module Pervasives := Stdlib
+
 (** Pretty printing.
 
     This module implements a pretty-printing facility to format text

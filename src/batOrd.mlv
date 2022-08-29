@@ -1,3 +1,6 @@
+
+##V>=5##module Pervasives = Stdlib
+
 type order = Lt | Eq | Gt
 
 type 'a comp = 'a -> 'a -> int

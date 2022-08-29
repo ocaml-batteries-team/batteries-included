@@ -227,12 +227,12 @@ module BaseSafeInt = struct
       operators with their safe counterparts *)
 
   let add a b =
-    let c = Pervasives.( + ) a b in
+    let c = a + b in
     if a < 0 && b < 0 && c >= 0 || a > 0 && b > 0 && c <= 0 then raise Overflow
     else c
 
   let sub a b =
-    let c = Pervasives.( - ) a b in
+    let c = a - b in
     if a < 0 && b > 0 && c >= 0 || a > 0 && b < 0 && c <= 0 then raise Overflow
     else c
 
@@ -256,7 +256,7 @@ module BaseSafeInt = struct
   (* Uses a formula taken from Hacker's Delight, chapter "Overflow Detection",
      plus a fast-path check (see comment above) *)
   let mul (a: int) (b: int) : int =
-    let open Pervasives in
+    (* let open Pervasives in *)
     let c = a * b in
     if (a lor b) asr mul_shift_bits = 0
     || not ((a = min_int && b < 0) || (b <> 0 && c / b <> a)) then

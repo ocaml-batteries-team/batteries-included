@@ -187,7 +187,7 @@ let open_temporary_out ?mode ?(prefix="ocaml") ?(suffix="tmp") ?temp_dir () : (_
   let out          = output_channel ~cleanup:true cout   in
   (match mode with
    | Some l when List.mem `delete_on_exit l ->
-     Pervasives.at_exit (fun () ->
+     at_exit (fun () ->
        try
          BatIO.close_out out;
          Sys.remove name

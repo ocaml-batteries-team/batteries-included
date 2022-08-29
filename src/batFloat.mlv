@@ -21,6 +21,8 @@
 
 open BatNumber
 
+##V>=5##module Pervasives = Stdlib
+
 module BaseFloat = struct
   type t = float
   let zero, one = 0., 1.

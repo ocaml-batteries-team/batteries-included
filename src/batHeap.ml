@@ -18,7 +18,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-let min x y = if Pervasives.compare x y <= 0 then x else y
+let min x y =
+  if x <= y then
+    x
+  else
+    y
 
 (** binomial trees *)
 type 'a bt = {
@@ -40,7 +44,7 @@ let size bh = bh.size
 let link bt1 bt2 =
   assert (bt1.rank = bt2.rank) ;
   let rank = bt1.rank + 1 in
-  let leq = Pervasives.compare bt1.root bt2.root <= 0 in
+  let leq = bt1.root <= bt2.root in
   let root = if leq then bt1.root else bt2.root in
   let kids = if leq then bt2 :: bt1.kids else bt1 :: bt2.kids in
   { rank = rank ; root = root ; kids = kids }
@@ -115,7 +119,7 @@ let rec find_min_tree ts ~kfail ~ksuccess =
         ksuccess t
     | t :: ts ->
         find_min_tree ts ~kfail ~ksuccess:(fun u ->
-          if Pervasives.compare t.root u.root <= 0 then
+          if t.root <= u.root then
             ksuccess t
           else
             ksuccess u)
@@ -128,7 +132,7 @@ let rec del_min_tree bts ~kfail ~ksuccess =
         ksuccess t []
     | t :: ts ->
         del_min_tree ts ~kfail ~ksuccess:(fun u uts ->
-          if Pervasives.compare t.root u.root <= 0 then
+          if t.root <= u.root then
             ksuccess t ts
           else
             ksuccess u (t :: uts))
