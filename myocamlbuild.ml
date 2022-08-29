@@ -10,7 +10,7 @@ module Pack = Ocamlbuild_pack
 let ocamlfind x = S[A"ocamlfind"; A x]
 
 let ocaml_major_version =
-  int_of_char Sys.ocaml_version.[0]
+  int_of_string (String.make 1 Sys.ocaml_version.[0])
 
 let packs =
   if ocaml_major_version <= 4 then
