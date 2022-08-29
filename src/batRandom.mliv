@@ -213,7 +213,7 @@ module State : sig
 ##V>=5##    The new PRNG is statistically independent from the given PRNG.
 ##V>=5##    Data can be drawn from both PRNGs, in any order, without risk of
 ##V>=5##    correlation.  Both PRNGs can be split later, arbitrarily many times.
-##V>=5##    @since 5.0.0 *)
+##V>=5##    @since NEXT_RELEASE and OCaml 5.0.0 *)
 
 end
 
@@ -229,7 +229,7 @@ val set_state : State.t -> unit
 ##V>=5##    generator used by the default functions.
 ##V>=5##    (The state of the domain-local generator is modified.)
 ##V>=5##    See {!Random.State.split}.
-##V>=5##    @since 5.0.0 *)
+##V>=5##    @since NEXT_RELEASE and OCaml 5.0.0 *)
 
 module Incubator : sig
   module Private_state_enums : sig
