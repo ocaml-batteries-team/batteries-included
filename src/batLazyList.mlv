@@ -20,6 +20,10 @@
 
 ##V>=5##module Pervasives = Stdlib
 
+##V>=5##(*$inject
+##V>=5##  module Pervasives = Stdlib
+##V>=5##*)
+
 (** {6 Exceptions} *)
 
 exception No_more_elements

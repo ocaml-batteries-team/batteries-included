@@ -23,6 +23,10 @@
 
 ##V>=5##module Pervasives = Stdlib
 
+##V>=5##(*$inject
+##V>=5##  module Pervasives = Stdlib
+##V>=5##*)
+
 (* ::VH:: GLUE with StdLib *)
 let merge = List.merge
 let fast_sort = List.fast_sort

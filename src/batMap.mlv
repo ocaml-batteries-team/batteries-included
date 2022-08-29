@@ -22,6 +22,10 @@
 
 ##V>=5##module Pervasives = Stdlib
 
+##V>=5##(*$inject
+##V>=5##  module Pervasives = Stdlib
+##V>=5##*)
+
 (* A concrete implementation for the direct balanced maps structure,
    without carrying the ordering information with the data.
 
