@@ -14,7 +14,7 @@ let ocaml_major_version =
 
 let packs =
   if ocaml_major_version <= 4 then
-    "bigarray,num,str"
+    "num,str,camlp-streams,bigarray"
   else
     "num,str,camlp-streams,unix"
 
