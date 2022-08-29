@@ -23,7 +23,7 @@ let read_mmap    name =
 
 let temp_file ?(autoclean = true) pref suff =
   let tf = Filename.temp_file pref suff in
-  if autoclean then Pervasives.at_exit (fun () -> try Unix.unlink tf with _ -> ()) ;
+  if autoclean then at_exit (fun () -> try Unix.unlink tf with _ -> ()) ;
   tf
 
 (**Actual tests*)
@@ -108,10 +108,10 @@ let test_append () =
 
 let test_lines_of () =
   let file_lines_of fn =
-    let ic = Pervasives.open_in fn in
+    let ic = open_in fn in
     BatEnum.suffix_action
-      (fun () -> Pervasives.close_in ic)
-      (BatEnum.from (fun () -> try Pervasives.input_line ic with End_of_file -> raise BatEnum.No_more_elements))
+      (fun () -> close_in ic)
+      (BatEnum.from (fun () -> try input_line ic with End_of_file -> raise BatEnum.No_more_elements))
   in
   try
     let open Batteries in
