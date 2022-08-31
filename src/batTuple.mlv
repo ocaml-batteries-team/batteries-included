@@ -20,6 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+##V>=5##module Pervasives = Stdlib
+
 module Tuple2 = struct
   type ('a,'b) t = 'a * 'b
 

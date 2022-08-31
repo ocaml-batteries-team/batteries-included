@@ -22,7 +22,8 @@
  *)
 
 
-open Pervasives
+##V<5##open Pervasives
+##V>=5##open Stdlib
 open BatEnum
 
 let input_lines ch =

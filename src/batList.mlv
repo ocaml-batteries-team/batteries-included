@@ -21,6 +21,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+##V>=5##module Pervasives = Stdlib
+
+##V>=5##(*$inject
+##V>=5##  module Pervasives = Stdlib
+##V>=5##*)
 
 (* ::VH:: GLUE with StdLib *)
 let merge = List.merge

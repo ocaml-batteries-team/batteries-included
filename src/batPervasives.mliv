@@ -31,6 +31,8 @@
 
 open BatIO
 
+##V>=5## module Pervasives := Stdlib
+
 (** The initially opened module.
 
     This module provides the basic operations over the built-in types

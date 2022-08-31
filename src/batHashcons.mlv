@@ -29,6 +29,8 @@ module Sys = BatSys
 module Hashtbl = BatHashtbl
 module Array = BatArray
 
+##V>=5##module Pervasives = Stdlib
+
 type 'a hobj = {
   obj   : 'a ;
   tag   : int ;
