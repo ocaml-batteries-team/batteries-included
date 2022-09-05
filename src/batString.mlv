@@ -400,16 +400,22 @@ let split_on_string_comp ?(on_empty=[""]) ~by:sep str =
   else if sep = "" then invalid_arg "String.split_on_string: empty sep not allowed"
   else
     (* str is not empty *)
-    let rec loop acc rest =
-      if rest = "" then
-        List.rev ("" :: acc)
+    let len = String.length str in
+    let seplen = String.length sep in
+    let rec loop acc curr =
+      if curr = len then
+        List.rev ("" :: acc) (* for compatibility with old behavior *)
       else
         try
-          let tok, others = split ~by:sep rest in
-          loop (tok :: acc) others
-        with Not_found -> List.rev (rest :: acc)
+          let i = find_from str curr sep in
+          let tok = sub str curr (i - curr) in
+          let next = i + seplen in
+          loop (tok :: acc) next
+        with Not_found ->
+          let rest = sub str curr (len - curr) in
+          List.rev (rest :: acc)
     in
-    loop [] str
+    loop [] 0
 
 let nsplit str ~by = split_on_string_comp ~on_empty:[] ~by str
 
@@ -422,6 +428,7 @@ let split_on_string ~by str = split_on_string_comp ~by str
   split_on_string ~by:"/" "a/b/c" = ["a"; "b"; "c"]
   split_on_string ~by:"/" "/a/b/c//" = [""; "a"; "b"; "c"; ""; ""]
   split_on_string ~by:"FOO" "FOOaFOObFOOcFOOFOO" = [""; "a"; "b"; "c"; ""; ""]
+  split_on_string ~by:"//" "before///after" = ["before"; "/after"] (* bug/issue #1088 *)
 *)
 
 let split_on_char sep str =
