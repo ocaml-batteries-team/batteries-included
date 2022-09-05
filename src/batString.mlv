@@ -394,39 +394,22 @@ let rsplit str ~by:sep =
    try rsplit "abcxyz" ~by:"G" |> ignore; false with Not_found -> true
 *)
 
-(*
-   An implementation of [split_on_string] in one pass.
-
-   This implementation traverses the string backwards, hence building the list
-   of substrings from the end to the beginning, so as to avoid a call to [List.rev].
-*)
+(* An implementation of [split_on_string]. *)
 let split_on_string_comp ?(on_empty=[""]) ~by:sep str =
   if str = "" then on_empty
   else if sep = "" then invalid_arg "String.split_on_string: empty sep not allowed"
   else
-    (* str is non empty *)
-    let seplen = String.length sep in
-    let rec aux acc ofs =
-      if ofs >= 0 then (
-        match
-          try Some (rfind_from str ofs sep)
-          with Not_found -> None
-        with
-        | Some idx -> (* sep found *)
-          let end_of_sep = idx + seplen - 1 in
-          if end_of_sep = ofs (* sep at end of str *)
-          then aux (""::acc) (idx - 1)
-          else
-            let token = sub str (end_of_sep + 1) (ofs - end_of_sep) in
-            aux (token::acc) (idx - 1)
-        | None -> (* sep NOT found *)
-          (sub str 0 (ofs + 1))::acc
-      )
+    (* str is not empty *)
+    let rec loop acc rest =
+      if rest = "" then
+        List.rev ("" :: acc)
       else
-        (* Negative ofs: the last sep started at the beginning of str *)
-        ""::acc
+        try
+          let tok, others = split ~by:sep rest in
+          loop (tok :: acc) others
+        with Not_found -> List.rev (rest :: acc)
     in
-    aux [] (length str - 1 )
+    loop [] str
 
 let nsplit str ~by = split_on_string_comp ~on_empty:[] ~by str
 
