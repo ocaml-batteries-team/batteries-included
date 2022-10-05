@@ -49,7 +49,7 @@ let assert_mem t lst =
          (BS.mem t i))
     lst
 
-let lst1 = [1; 4; 25; 27]
+let lst1 = [1; 4; 25; 27; 1_000_000]
 let lst2 = [1; 5; 26; 250]
 
 let biop op ?(rev=false) lst () =
@@ -151,25 +151,28 @@ let tests = "BitSet" >::: [
        (BS.equal t t'));
 
   "union" >::
-   (biop BS.union [1; 4; 5; 25; 26; 27; 250]);
+   (biop BS.union [1; 4; 5; 25; 26; 27; 250; 1_000_000]);
 
   "union2" >::
-   (biop BS.union ~rev:true [1; 4; 5; 25; 26; 27; 250]);
+   (biop BS.union ~rev:true [1; 4; 5; 25; 26; 27; 250; 1_000_000]);
 
   "diff1" >::
-  (biop BS.diff [4; 25; 27]);
+  (biop BS.diff [4; 25; 27; 1_000_000]);
 
   "diff2" >::
   (biop BS.diff ~rev:true [5; 26; 250]);
 
   "sym_diff" >::
-  (biop BS.sym_diff [4; 25; 27; 5; 26; 250]);
+  (biop BS.sym_diff [4; 25; 27; 5; 26; 250; 1_000_000]);
 
   "sym_diff2" >::
-  (biop BS.sym_diff ~rev:true [4; 25; 27; 5; 26; 250]);
+  (biop BS.sym_diff ~rev:true [4; 25; 27; 5; 26; 250; 1_000_000]);
 
   "inter" >::
   (biop BS.inter [1]);
+
+  "inter2" >::
+  (biop BS.inter ~rev:true [1]);
 
   "next_set_bit" >::
   (fun () ->
