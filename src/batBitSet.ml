@@ -323,6 +323,7 @@ let apply_set_op op t1 t2 =
   let len1 = Bytes.length !t1 in
   let len2 = Bytes.length !t2 in
   let clen = min len1 len2 in
+  (* this operates on the common substring only *)
   while !idx < clen do
     let c1 = Char.code (Bytes.unsafe_get !t1 !idx) in
     let c2 = Char.code (Bytes.unsafe_get !t2 !idx) in
@@ -336,17 +337,30 @@ let apply_set_op op t1 t2 =
     Bytes.unsafe_set !t1 !idx (Char.unsafe_chr cr);
     incr idx
   done;
-  if op = Unite && len1 < len2 then
-    begin
-      extend t1 (len2 * 8);
-      Bytes.blit !t2 len1 !t1 len1 (len2 - len1)
-    end
-  else if op = DiffSym && len1 < len2 then
-    begin
-      let tmp = Bytes.copy !t2 in
-      Bytes.blit !t1 0 tmp 0 len1;
-      t1 := tmp
-    end
+  (* handles the non-shared suffixes as well *)
+  begin match op with
+    | Inter ->
+      (* clear the non-shared suffix of t1 *)
+      if len1 > len2 then begin
+        Bytes.fill !t1 len2 (len1 - len2) (Char.chr 0)
+      end
+    | Diff ->
+      (* keep the non-shared suffix of t1, that is, do nothing *)
+      ()
+    | Unite ->
+      (* copy the non-shared suffix of t2 *)
+      if len1 < len2 then begin
+        extend t1 (len2 * 8);
+        Bytes.blit !t2 len1 !t1 len1 (len2 - len1)
+      end
+    | DiffSym ->
+      (* copy the non-shared suffix of t2 *)
+      if len1 < len2 then begin
+        let tmp = Bytes.copy !t2 in
+        Bytes.blit !t1 0 tmp 0 len1;
+        t1 := tmp
+      end
+  end
 
 let intersect t1 t2 = apply_set_op Inter t1 t2
 
