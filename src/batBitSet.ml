@@ -323,17 +323,17 @@ let apply_set_op op t1 t2 =
   let len1 = Bytes.length !t1 in
   let len2 = Bytes.length !t2 in
   let clen = min len1 len2 in
+  let apply_op = match op with
+    | Inter   -> (fun c1 c2 -> c1 land c2)
+    | Diff    -> (fun c1 c2 -> c1 land (lnot c2))
+    | Unite   -> (fun c1 c2 -> c1 lor c2)
+    | DiffSym -> (fun c1 c2 -> c1 lxor c2)
+  in
   (* this operates on the common substring only *)
   while !idx < clen do
     let c1 = Char.code (Bytes.unsafe_get !t1 !idx) in
     let c2 = Char.code (Bytes.unsafe_get !t2 !idx) in
-    let cr =
-      match op with
-      | Inter   -> c1 land c2
-      | Diff    -> c1 land (lnot c2)
-      | Unite   -> c1 lor c2
-      | DiffSym -> c1 lxor c2
-    in
+    let cr = apply_op c1 c2 in
     Bytes.unsafe_set !t1 !idx (Char.unsafe_chr cr);
     incr idx
   done;

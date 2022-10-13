@@ -2,6 +2,9 @@ Changelog
 ---------
 
 ## NEXT_RELEASE
+  - bug correction in BatBitset.inter
+  #1091
+  (report by Yongho Yoon, fix by Gabriel Scherer)
 
 - Support new OCaml 5 unix primitive names
   #1082
