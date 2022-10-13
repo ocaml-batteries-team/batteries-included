@@ -21,6 +21,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
+##V>=5##module Pervasives = Stdlib
+
+##V>=5##(*$inject
+##V>=5##  module Pervasives = Stdlib
+##V>=5##*)
 
 (* ::VH:: GLUE with StdLib *)
 let merge = List.merge
@@ -1545,7 +1550,11 @@ let shuffle ?state l =
   Array.to_list arr
 (*$T shuffle
   let s = Random.State.make [|11|] in \
-  shuffle ~state:s [1;2;3;4;5;6;7;8;9] = [7; 2; 9; 5; 3; 6; 4; 1; 8]
+  shuffle ~state:s [1;2;3;4;5;6;7;8;9] = \
+  let ocaml_version = int_of_string (String.make 1 Sys.ocaml_version.[0]) in \
+  if ocaml_version < 5 then \
+    [7; 2; 9; 5; 3; 6; 4; 1; 8] else \
+    [1; 7; 4; 9; 5; 2; 8; 6; 3]
   shuffle [] = []
 *)
 

@@ -713,7 +713,7 @@ let to_input_channel inp =
     let out          = output_channel cout                    in
     copy inp out;
     close_out out;
-    Pervasives.open_in_bin name
+    open_in_bin name
 
 
 

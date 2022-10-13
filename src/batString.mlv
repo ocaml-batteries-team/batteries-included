@@ -394,39 +394,28 @@ let rsplit str ~by:sep =
    try rsplit "abcxyz" ~by:"G" |> ignore; false with Not_found -> true
 *)
 
-(*
-   An implementation of [split_on_string] in one pass.
-
-   This implementation traverses the string backwards, hence building the list
-   of substrings from the end to the beginning, so as to avoid a call to [List.rev].
-*)
+(* An implementation of [split_on_string]. *)
 let split_on_string_comp ?(on_empty=[""]) ~by:sep str =
   if str = "" then on_empty
   else if sep = "" then invalid_arg "String.split_on_string: empty sep not allowed"
   else
-    (* str is non empty *)
+    (* str is not empty *)
+    let len = String.length str in
     let seplen = String.length sep in
-    let rec aux acc ofs =
-      if ofs >= 0 then (
-        match
-          try Some (rfind_from str ofs sep)
-          with Not_found -> None
-        with
-        | Some idx -> (* sep found *)
-          let end_of_sep = idx + seplen - 1 in
-          if end_of_sep = ofs (* sep at end of str *)
-          then aux (""::acc) (idx - 1)
-          else
-            let token = sub str (end_of_sep + 1) (ofs - end_of_sep) in
-            aux (token::acc) (idx - 1)
-        | None -> (* sep NOT found *)
-          (sub str 0 (ofs + 1))::acc
-      )
+    let rec loop acc curr =
+      if curr = len then
+        List.rev ("" :: acc) (* for compatibility with old behavior *)
       else
-        (* Negative ofs: the last sep started at the beginning of str *)
-        ""::acc
+        try
+          let i = find_from str curr sep in
+          let tok = sub str curr (i - curr) in
+          let next = i + seplen in
+          loop (tok :: acc) next
+        with Not_found ->
+          let rest = sub str curr (len - curr) in
+          List.rev (rest :: acc)
     in
-    aux [] (length str - 1 )
+    loop [] 0
 
 let nsplit str ~by = split_on_string_comp ~on_empty:[] ~by str
 
@@ -439,6 +428,7 @@ let split_on_string ~by str = split_on_string_comp ~by str
   split_on_string ~by:"/" "a/b/c" = ["a"; "b"; "c"]
   split_on_string ~by:"/" "/a/b/c//" = [""; "a"; "b"; "c"; ""; ""]
   split_on_string ~by:"FOO" "FOOaFOObFOOcFOOFOO" = [""; "a"; "b"; "c"; ""; ""]
+  split_on_string ~by:"//" "before///after" = ["before"; "/after"] (* bug/issue #1088 *)
 *)
 
 let split_on_char sep str =
@@ -659,8 +649,8 @@ let map f s =
   done;
   Bytes.unsafe_to_string sc
 (*$T map
-   map Char.uppercase "Five" = "FIVE"
-   map Char.uppercase "" = ""
+   map Char.uppercase_ascii "Five" = "FIVE"
+   map Char.uppercase_ascii "" = ""
    map (String.of_char %> failwith) "" = ""
 *)
 
@@ -672,8 +662,8 @@ let mapi f s =
   done;
   Bytes.unsafe_to_string sc
 (*$T mapi
-   mapi (fun _ -> Char.uppercase) "Five" = "FIVE"
-   mapi (fun _ -> Char.uppercase) "" = ""
+   mapi (fun _ -> Char.uppercase_ascii) "Five" = "FIVE"
+   mapi (fun _ -> Char.uppercase_ascii) "" = ""
    mapi (fun _ -> String.of_char %> failwith) "" = ""
    mapi (fun i _c -> "0123456789".[9-i]) "0123456789" = "9876543210"
    ignore (let last = ref (-1) in mapi (fun i _c -> assert (i > !last); last := i; '0') "012345"); true
@@ -689,7 +679,7 @@ let filter_map f s =
   done;
   Buffer.contents sc
 (*$T filter_map
-   filter_map (function 'a'..'z' as c -> Some (Char.uppercase c) | _ -> None) "a b c" = "ABC"
+   filter_map (function 'a'..'z' as c -> Some (Char.uppercase_ascii c) | _ -> None) "a b c" = "ABC"
 *)
 
 let filter f s =
@@ -1010,7 +1000,9 @@ let is_empty s = length s = 0
    is_empty (String.make 0 'a')
 *)
 
-let icompare s1 s2 = compare (String.lowercase s1) (String.lowercase s2)
+let icompare s1 s2 = compare
+##V<5## (String.lowercase s1) (String.lowercase s2)
+##V>=5## (String.lowercase_ascii s1) (String.lowercase_ascii s2)
 (*$T icompare
    icompare "FOO" "bar" = 1
 *)
@@ -1293,10 +1285,14 @@ struct
   let chop ?l ?r b  = ubos (chop ?l ?r (usob b))
   let strip ?(chars = ubos strip_default) b =
     ubos (strip ~chars:(usob chars) (usob b))
-  let uppercase b   = ubos (uppercase (usob b))
-  let lowercase b   = ubos (lowercase (usob b))
-  let capitalize b  = ubos (capitalize (usob b))
-  let uncapitalize b = ubos (uncapitalize (usob b))
+##V<5## let uppercase b   = ubos (uppercase (usob b))
+##V<5## let lowercase b   = ubos (lowercase (usob b))
+##V<5## let capitalize b  = ubos (capitalize (usob b))
+##V<5## let uncapitalize b = ubos (uncapitalize (usob b))
+##V>=5##  let uppercase_ascii b    = ubos (uppercase_ascii (usob b))
+##V>=5##  let lowercase_ascii b    = ubos (lowercase_ascii (usob b))
+##V>=5##  let capitalize_ascii b   = ubos (capitalize_ascii (usob b))
+##V>=5##  let uncapitalize_ascii b = ubos (uncapitalize_ascii (usob b))
   let copy          = Bytes.copy
   let sub           = Bytes.sub
   let fill          = Bytes.fill

@@ -42,11 +42,11 @@ val escaped : char -> string
     with special characters escaped following the lexical conventions
     of OCaml. *)
 
-val lowercase : char -> char
-(** Convert the given character to its equivalent lowercase character. *)
+##V<5##val lowercase : char -> char
+##V<5##(** Convert the given character to its equivalent lowercase character. *)
 
-val uppercase : char -> char
-(** Convert the given character to its equivalent uppercase character. *)
+##V<5##val uppercase : char -> char
+##V<5##(** Convert the given character to its equivalent uppercase character. *)
 
 val lowercase_ascii : char -> char
 (** Convert the given character to its equivalent lowercase character,

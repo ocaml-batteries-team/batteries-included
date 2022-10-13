@@ -381,18 +381,18 @@ val bscanf : Scanning.scanbuf -> ('a, 'b, 'c, 'd) scanner
 
 (** {6 Specialized formatted input functions} *)
 
-val fscanf : in_channel -> ('a, 'b, 'c, 'd) scanner
-(** Same as {!Scanf.bscanf}, but reads from the given channel.
-
-    Warning: since all formatted input functions operate from a scanning
-    buffer, be aware that each [fscanf] invocation will operate with a
-    scanning buffer reading from the given channel. This extra level of
-    bufferization can lead to strange scanning behaviour if you use low level
-    primitives on the channel (reading characters, seeking the reading
-    position, and so on).
-
-    As a consequence, never mixt direct low level reading and high level
-    scanning from the same input channel. *)
+##V<5##val fscanf : in_channel -> ('a, 'b, 'c, 'd) scanner
+##V<5##(** Same as {!Scanf.bscanf}, but reads from the given channel.
+##V<5##
+##V<5##    Warning: since all formatted input functions operate from a scanning
+##V<5##    buffer, be aware that each [fscanf] invocation will operate with a
+##V<5##    scanning buffer reading from the given channel. This extra level of
+##V<5##    bufferization can lead to strange scanning behaviour if you use low level
+##V<5##    primitives on the channel (reading characters, seeking the reading
+##V<5##    position, and so on).
+##V<5##
+##V<5##    As a consequence, never mixt direct low level reading and high level
+##V<5##    scanning from the same input channel. *)
 
 val sscanf : string -> ('a, 'b, 'c, 'd) scanner
 (** Same as {!Scanf.bscanf}, but reads from the given string. *)
