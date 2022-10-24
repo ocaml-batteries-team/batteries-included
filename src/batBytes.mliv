@@ -766,3 +766,5 @@ let s = Bytes.of_string "hello"
 ##V>=4.4##external unsafe_fill:  t -> int -> int -> char -> unit = "caml_fill_bytes" [@@noalloc]
 
 ##V>=4.09##external unsafe_blit_string : string -> int -> t -> int -> int -> unit = "caml_blit_string" [@@noalloc]
+
+##V>=5.0##val unsafe_escape : bytes -> bytes
