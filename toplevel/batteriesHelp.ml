@@ -372,7 +372,7 @@ let man = List.assoc "man" helpers
 
 (** Initialize the help system (lazily)*)
 let init () =
-  try
+  try [@alert "-deprecated"] (* Toploop.directive_table is deprecated but Toploop.add_directive is only available since OCaml 4.03 *)
     (*The manual*)
     List.iter (fun (key, search) -> Hashtbl.add Toploop.directive_table key (Toploop.Directive_string search))
       helpers;
