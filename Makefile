@@ -302,13 +302,9 @@ release:
 	$(MAKE) release-cleaned
 
 # assumes irreproachably pristine working directory
-release-cleaned: setup.ml doc test-native
+release-cleaned: doc test-native
 	git archive --format=tar --prefix=batteries-$(VERSION)/ HEAD \
 	  | gzip -9 > batteries-$(VERSION).tar.gz
-
-setup.ml: _oasis
-	oasis setup
-	git commit setup.ml -m"Update setup.ml based on _oasis"
 
 # uploads the current documentation to github hdoc2/ directory
 upload-docs:
