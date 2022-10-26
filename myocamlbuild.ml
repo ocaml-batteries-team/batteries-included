@@ -21,8 +21,8 @@ let packs =
 let doc_intro = "build/intro.text"
 let mkconf = "build/mkconf.byte"
 let mkconf_command src dst =
-  let oasis_path = Filename.concat Filename.parent_dir_name "_oasis" in
-  Cmd(S[A"ocamlrun"; P mkconf; P oasis_path; P src; P dst])
+  let version_path = Filename.concat Filename.parent_dir_name "VERSION" in
+  Cmd(S[A"ocamlrun"; P mkconf; P version_path; P src; P dst])
 
 let compiler_libs =
   if ocaml_major_version < 4 then []

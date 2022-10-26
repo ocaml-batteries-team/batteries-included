@@ -26,31 +26,17 @@ let () = if Array.length Sys.argv < 4 then begin
   exit 2
 end
 
-let oasis_path = Sys.argv.(1)
+let version_path = Sys.argv.(1)
 let input_path = Sys.argv.(2)
 let output_path = Sys.argv.(3)
 
 
-let strip ?(chars=" \t\r\n") s =
-	let p = ref 0 in
-	let l = String.length s in
-	while !p < l && String.contains chars (String.unsafe_get s !p) do
-		incr p;
-	done;
-	let p = !p in
-	let l = ref (l - 1) in
-	while !l >= p && String.contains chars (String.unsafe_get s !l) do
-		decr l;
-	done;
-	String.sub s p (!l - p + 1)
-
-let version = (* get version string from _oasis *)
+let version = (* get version string from VERSION *)
   try
-    let chan = open_in oasis_path in
-    let v = ref (input_line chan) in
-    while String.sub !v 0 8 <> "Version:" do v := input_line chan done;
-    let _ = close_in chan in
-    strip (String.sub !v 8 (String.length !v - 8))
+    let chan = open_in version_path in
+    let v = input_line chan in
+    close_in chan;
+    v
   with x ->
     prerr_endline (Printexc.to_string x);
     exit 2
