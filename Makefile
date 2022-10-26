@@ -3,7 +3,7 @@
 
 NAME = batteries
 
-VERSION := $(shell grep "^Version:" _oasis | cut -c 15-)
+VERSION := $(shell cat VERSION)
 OCAML_MAJOR_VERSION := $(firstword $(subst ., , $(shell ocamlfind ocamlc -version)))
 uname_S := $(shell sh -c 'uname -s 2>/dev/null || echo not')
 
