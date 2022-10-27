@@ -3,7 +3,7 @@
 
 NAME = batteries
 
-VERSION := $(shell grep "^Version:" _oasis | cut -c 15-)
+VERSION := $(shell cat VERSION)
 OCAML_MAJOR_VERSION := $(firstword $(subst ., , $(shell ocamlfind ocamlc -version)))
 uname_S := $(shell sh -c 'uname -s 2>/dev/null || echo not')
 
@@ -302,13 +302,9 @@ release:
 	$(MAKE) release-cleaned
 
 # assumes irreproachably pristine working directory
-release-cleaned: setup.ml doc test-native
+release-cleaned: doc test-native
 	git archive --format=tar --prefix=batteries-$(VERSION)/ HEAD \
 	  | gzip -9 > batteries-$(VERSION).tar.gz
-
-setup.ml: _oasis
-	oasis setup
-	git commit setup.ml -m"Update setup.ml based on _oasis"
 
 # uploads the current documentation to github hdoc2/ directory
 upload-docs:

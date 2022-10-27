@@ -45,7 +45,7 @@ to be performed by someone with commit rights.
   will serve as release notes, and include it at the top of the
   Changelog for the new release.
 
-- Bump version in source (in `_oasis`)
+- Bump version in source (in `VERSION`)
 
 - change ocamlfind dependencies in `META` if necessary
 
@@ -112,6 +112,6 @@ practices.
 # Post-release work
 
 - create a Changelog section for NEXT_RELEASE,
-  use NEXT_RELEASE in the _oasis version field
+  put NEXT_RELEASE in the VERSION file
 
 - once the new opam package is merged, announce on the mailing-list.

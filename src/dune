@@ -33,9 +33,9 @@
 
 (rule
   (target batteriesConfig.ml)
-  (deps %{project_root}/build/mkconf.exe %{project_root}/_oasis batteriesConfig.mlp)
+  (deps %{project_root}/build/mkconf.exe %{project_root}/VERSION batteriesConfig.mlp)
   (action
-    (run %{project_root}/build/mkconf.exe %{project_root}/_oasis batteriesConfig.mlp %{target})))
+    (run %{project_root}/build/mkconf.exe %{project_root}/VERSION batteriesConfig.mlp %{target})))
 
 
 ; documentation works!
