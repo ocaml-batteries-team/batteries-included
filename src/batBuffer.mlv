@@ -41,8 +41,7 @@ let print out t =
 *)
 
 let enum t =
-  let buf = buffer_of_t t in
-  BatEnum.take buf.position (BatString.enum buf.buffer)
+  BatString.enum (contents t)
 
 (*$Q enum
   (Q.string) (fun s -> let b = create 10 in add_string b s; BatEnum.equal Char.equal (enum b) (BatString.enum s))
