@@ -2,7 +2,31 @@ Changelog
 ---------
 
 ## NEXT_RELEASE
-  - bug correction in BatBitset.inter
+
+## v3.6.0 (minor release)
+
+- BatBuffer.enum rewritten to work with OCaml-5
+  (Francois Berenger)
+
+- Fix 'make doc'
+  #1097
+  (Simmo Saan)
+
+- Remove dependence to oasis
+  #1095
+  (Simmo Saan)
+
+- Fix compilation and unit tests for OCaml 5.0.0
+  #1094
+  #1087
+  #1086
+  (Simmo Saan, Francois Berenger)
+
+- Bug correction in BatString.split_on_string
+  #1089
+  (Francois Berenger, report by Lucas Franceschino)
+	
+- bug correction in BatBitset.inter
   #1091
   (report by Yongho Yoon, fix by Gabriel Scherer)
 
