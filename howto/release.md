@@ -45,7 +45,7 @@ to be performed by someone with commit rights.
   will serve as release notes, and include it at the top of the
   Changelog for the new release.
 
-- Bump version in source (in `VERSION`)
+- Bump version in file VERSION
 
 - change ocamlfind dependencies in `META` if necessary
 

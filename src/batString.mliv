@@ -959,14 +959,14 @@ val get_uint8 : string -> int -> int
 ##V>=5##    {!Hashtbl.hash}. This function allows this module to be passed as argument
 ##V>=5##    to the functor {!Hashtbl.Make}.
 ##V>=5##
-##V>=5##    @since NEXT_RELEASE and OCaml 5.0.0 *)
+##V>=5##    @since 3.6.0 and OCaml 5.0.0 *)
 
 ##V>=5##val seeded_hash : int -> t -> int
 ##V>=5##(** A seeded hash function for strings, with the same output value as
 ##V>=5##    {!Hashtbl.seeded_hash}. This function allows this module to be passed as
 ##V>=5##    argument to the functor {!Hashtbl.MakeSeeded}.
 ##V>=5##
-##V>=5##    @since NEXT_RELEASE and OCaml 5.0.0 *)
+##V>=5##    @since 3.6.0 and OCaml 5.0.0 *)
 
 ##V>=4.08##val get_int32_be : string -> int -> int32
 ##V>=4.08##(** [get_int32_be b i] is [b]'s big-endian 32-bit integer
