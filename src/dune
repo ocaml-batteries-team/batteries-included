@@ -5,7 +5,7 @@
  (preprocess
   (action (run build/prefilter.exe %{input-file})))
  (flags (:standard -w -3-32-52))
- (libraries num threads)
+ (libraries num str camlp-streams threads)
  (inline_tests
    (backend qtest_batteries)
    (deps %{project_root}/qtest/qtest_preamble.ml)
