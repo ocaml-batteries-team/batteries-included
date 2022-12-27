@@ -23,9 +23,9 @@ open BatNumber
 
 ##V>=5##module Pervasives = Stdlib
 
-##V>=5##(*$inject
-##V>=5##  module Pervasives = Stdlib
-##V>=5##*)
+(*$inject
+##V>=5##module Pervasives = Stdlib
+*)
 
 module BaseFloat = struct
   type t = float

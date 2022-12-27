@@ -23,9 +23,9 @@
 
 ##V>=5##module Pervasives = Stdlib
 
-##V>=5##(*$inject
-##V>=5##  module Pervasives = Stdlib
-##V>=5##*)
+(*$inject
+##V>=5##module Pervasives = Stdlib
+*)
 
 (* ::VH:: GLUE with StdLib *)
 let merge = List.merge

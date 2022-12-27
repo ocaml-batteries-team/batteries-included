@@ -20,9 +20,9 @@
 
 ##V>=5##module Pervasives = Stdlib
 
-##V>=5##(*$inject
-##V>=5##  module Pervasives = Stdlib
-##V>=5##*)
+(*$inject
+##V>=5##module Pervasives = Stdlib
+*)
 
 (** {6 Exceptions} *)
 

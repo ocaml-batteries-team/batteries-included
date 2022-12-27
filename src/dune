@@ -27,7 +27,7 @@
  (name qtest_batteries)
  (modules)
  (inline_tests.backend
-    (generate_runner (run qtest extract --preamble-file %{project_root}/qtest/qtest_preamble.ml --quiet %{impl-files} %{intf-files}))
+    (generate_runner (pipe-stdout (run qtest extract --preamble-file %{project_root}/qtest/qtest_preamble.ml --quiet %{impl-files} %{intf-files}) (run ../build/prefilter.exe))) ; inline_tests gets unpreprocessed files, so apply prefilter here as well
     (runner_libraries qcheck ounit2)
  ))
 
