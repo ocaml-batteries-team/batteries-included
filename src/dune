@@ -1,8 +1,8 @@
 (library
  (name batteries_unthreaded)
  (public_name batteries.unthreaded)
- (synopsis "A community-maintained standard library extension")
- (modules (:standard \ ("batteries_compattest" batteriesThread batRMutex batMutex)))
+ (synopsis "Batteries Included (for use in unthreaded programs)")
+ (modules (:standard \ batteries_compattest batteriesThread batRMutex batMutex))
  (preprocess
   (action (run %{project_root}/build/prefilter.exe %{input-file})))
  (flags (:standard -w -3-32-52))
@@ -15,10 +15,20 @@
 )
 
 (library
+ (name batteries)
  (public_name batteries)
- (libraries batteries.unthreaded threads)
+ (synopsis "Batteries Included is a community-maintained standard library extension")
  (modules batteriesThread batRMutex batMutex)
- (wrapped false))
+ (preprocess
+  (action (run %{project_root}/build/prefilter.exe %{input-file})))
+ (flags (:standard -w -3-32-52))
+ (libraries batteries.unthreaded threads)
+ (inline_tests
+   (backend qtest_batteries)
+   (deps %{project_root}/qtest/qtest_preamble.ml)
+ )
+ (wrapped false)
+)
 
 (rule
   (action (copy# batConcreteQueue_402.ml batConcreteQueue.ml))
