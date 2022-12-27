@@ -1,8 +1,4 @@
-(executable
+(test
  (name main)
  (flags (:standard -w -3))
  (libraries batteries oUnit threads))
-
-(rule
-  (alias runtest)
-  (action (run ./main.exe)))
