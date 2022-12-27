@@ -1,4 +1,3 @@
-(* $Id: iMap.mli,v 1.1 2003/12/19 17:24:34 yori Exp $ *)
 (* Copyright 2003 Yamagata Yoriyuki. distributed with LGPL *)
 (* Modified by Edgar Friendly <thelema314@gmail.com> *)
 
