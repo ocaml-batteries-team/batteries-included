@@ -46,5 +46,5 @@ let print_stat c = (* copied from original module *)
   fprintf c "heap_chunks: %d\n" st.heap_chunks
 
     (*$T print_stat
-      (IO.output_string () |> tap print_stat |> IO.close_out |> String.nsplit ~by:"\n" |> List.length) = 19
+      (IO.output_string () |> tap print_stat |> IO.close_out |> String.split_on_string ~by:"\n" |> List.length) = 19
     *)
