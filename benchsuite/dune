@@ -1,12 +1,12 @@
 ; note: try to keep the benchmark list in sorted order
 
-(executable
- (name array_filter)
- (modules array_filter)
- (libraries batteries bench))
-(rule
-  (alias benchmarks)
-  (action (run %{exe:array_filter.exe})))
+; (executable
+;  (name array_filter)
+;  (modules array_filter)
+;  (libraries batteries bench))
+; (rule
+;   (alias benchmarks)
+;   (action (run %{exe:array_filter.exe})))
 
 (executable
  (name bench_finger_tree_enum)
