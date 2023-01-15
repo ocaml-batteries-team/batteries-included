@@ -168,7 +168,7 @@ val find : ('a -> bool) -> 'a node_t -> 'a node_t
     returns true.
 
     @raise Not_found if no such element exists
-    @added 1.4.0
+    @since 1.4.0
 *)
 
 val for_all : ('a -> bool) -> 'a node_t -> bool

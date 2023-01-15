@@ -623,7 +623,7 @@ val switch : ('a -> bool) -> 'a t -> 'a t * 'a t
 val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
 (** as [switch]
 
-    @added v1.4.0
+    @since 1.4.0
 *)
 
 (*val switchn: int -> ('a -> int) -> 'a t -> 'a t array
@@ -641,7 +641,7 @@ val arg_max : ('a -> 'b) -> 'a t -> 'a
     Example: [-5 -- 5 |> arg_min (fun x -> x * x + 6 * x - 5) = -3]
     Example: [List.enum ["cat"; "canary"; "dog"; "dodo"; "ant"; "cow"] |> arg_max String.length = "canary"]
 
-    @added v1.4.0
+    @since 1.4.0
     @raise Invalid_argument if the input enum is empty
 *)
 

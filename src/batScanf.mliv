@@ -157,7 +157,7 @@ module Scanning : sig
   *)
 
   val from_channel : BatIO.input -> scanbuf
-  (** @obsolete use {!from_input}*)
+  (** @deprecated use {!from_input}*)
 
 
 end
