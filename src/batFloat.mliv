@@ -253,10 +253,12 @@ val round_to_string : ?digits:int -> float -> string
     be imaginary *)
 val root: float -> int -> float
 
-(** @return True if the sign bit of [x] is set. This usually indicates thet [x] is negative. @since 2.0*)
+(** @return True if the sign bit of [x] is set. This usually indicates thet [x] is negative.
+    @since 2.0*)
 val signbit: float -> bool
 
-(** [copysign x y] returns a copy of [x] with the same sign as [y].  @since 2.0*)
+(** [copysign x y] returns a copy of [x] with the same sign as [y].
+    @since 2.0*)
 val copysign: float -> float -> float
 
 val is_nan : float -> bool
@@ -301,43 +303,55 @@ val nan : float
 (** The smallest positive float [x] such that [1.0 +. x <> 1.0]. *)
 val epsilon : float
 
-(** Euler? ... Euler? ... Euler? @since 2.0*)
+(** Euler? ... Euler? ... Euler?
+    @since 2.0*)
 val e: float
 
-(** [Math.log2 e] @since 2.0 *)
+(** [Math.log2 e]
+    @since 2.0 *)
 val log2e: float
 
-(** [log10 e] @since 2.0 *)
+(** [log10 e]
+    @since 2.0 *)
 val log10e: float
 
-(** [log 2] @since 2.0 *)
+(** [log 2]
+    @since 2.0 *)
 val ln2: float
 
-(** [log 10] @since 2.0 *)
+(** [log 10]
+    @since 2.0 *)
 val ln10: float
 
 (** The constant pi (3.14159...) *)
 val pi : float
 
-(** [pi /. 2.] @since 2.0 *)
+(** [pi /. 2.]
+    @since 2.0 *)
 val pi2: float
 
-(** [pi /. 4.] @since 2.0 *)
+(** [pi /. 4.]
+    @since 2.0 *)
 val pi4: float
 
-(** [1. /. pi] @since 2.0 *)
+(** [1. /. pi]
+    @since 2.0 *)
 val invpi: float
 
-(** [2. /. pi] @since 2.0 *)
+(** [2. /. pi]
+    @since 2.0 *)
 val invpi2: float
 
-(** [2. *. sqrt pi] @since 2.0 *)
+(** [2. *. sqrt pi]
+    @since 2.0 *)
 val sqrtpi2: float
 
-(** [sqrt 2.] @since 2.0 *)
+(** [sqrt 2.]
+    @since 2.0 *)
 val sqrt2: float
 
-(** [1. /. sqrt 2.] @since 2.0 *)
+(** [1. /. sqrt 2.]
+    @since 2.0 *)
 val invsqrt2: float
 
 

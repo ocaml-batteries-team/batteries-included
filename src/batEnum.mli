@@ -523,7 +523,7 @@ val of_enum : 'a t -> 'a t
 val combination : ?repeat:bool -> int -> int -> int list t
 (** [combination n k] returns an enumeration over combination of [k] elements
     between [n] distincts elements.
-    
+
     If [repeat] is true, the combination may contain the same elements many
     times.*)
 
@@ -571,7 +571,7 @@ val combine : 'a t -> 'b t -> ('a * 'b) t
 (** [combine] transform two streams into a stream of pairs of corresponding
     elements. If one stream is shorter, excess elements of the longer stream are
     ignored.
-    Curried @since 3.0
+    @since 3.0 curried
  *)
 
 val uncombine : ('a * 'b) t -> 'a t * 'b t

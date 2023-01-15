@@ -111,7 +111,9 @@ module type Compare = sig
 end
 
 (** Reference operators ala C.  Mutates a reference value. [x -= y] is
-    the same as [x := !x - y].  @since 2.0 *)
+    the same as [x := !x - y].
+
+    @since 2.0 *)
 module type RefOps =
 sig
   type bat__refops_t
