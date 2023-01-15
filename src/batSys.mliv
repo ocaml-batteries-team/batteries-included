@@ -115,7 +115,7 @@ val os_type : string
 ##V>=4.4##
 ##V>=4.4##val backend_type : backend_type
 ##V>=4.4##(** Backend type currently executing the OCaml program.
-##V>=4.4##    @ since 2.5.3 and 4.04
+##V>=4.4##    @since 2.5.3 and 4.04
 ##V>=4.4## *)
 
 ##V>=4.1##val unix : bool
