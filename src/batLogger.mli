@@ -26,7 +26,7 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************)
 
-(** {1 Logging Library}
+(** Logging Library.
 
     This module defines functions which implement a flexible error logging
     system for applications.

@@ -43,6 +43,7 @@
     bindings as pairs.  This allows inspection of what is currently
     cached.
 *)
+
 type ('a,'b) manual_cache = {
   get : 'a -> 'b;
   del : 'a -> unit;
