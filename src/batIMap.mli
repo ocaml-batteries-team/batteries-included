@@ -140,8 +140,10 @@ val get_dec_eq : 'a t -> ('a -> 'a -> bool)
 (** Infix operators over a {!BatIMap} *)
 module Infix : sig
   val (-->) : 'a t -> int -> 'a
-  (** [map-->key] returns the current binding of [key] in [map],
-      or @raise Not_found if no such binding exists.
+  (** [map-->key] returns the current binding of [key] in [map].
+
+      @raise Not_found if no such binding exists.
+
       Equivalent to [find key map]. *)
 
   val (<--) : 'a t -> int * 'a -> 'a t

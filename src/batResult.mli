@@ -27,13 +27,13 @@ val default: 'a -> ('a, _) t -> 'a
     @since 2.0 *)
 
 val get_ok : ('a, 'e) t -> 'a
-(** [get_ok r] is [v] if [r] is [Ok v] and @raise Invalid_argument
-    otherwise.
+(** [get_ok r] is [v] if [r] is [Ok v].
+    @raise Invalid_argument otherwise.
     @since 3.0.0 *)
 
 val get_error : ('a, 'e) t -> 'e
-(** [get_error r] is [e] if [r] is [Error e] and @raise Invalid_argument
-    otherwise.
+(** [get_error r] is [e] if [r] is [Error e].
+    @raise Invalid_argument otherwise.
     @since 3.0.0 *)
 
 val get : ('a, exn) t -> 'a

@@ -67,8 +67,11 @@ val nread : input -> int -> string
 
 val really_nread : input -> int -> string
 (** [really_nread i n] reads a string of exactly [n] characters
-    from the input. @raise No_more_input if at least [n] characters are
-    not available. @raise Invalid_argument if [n] < 0. *)
+    from the input.
+
+    @raise No_more_input if at least [n] characters are
+    not available.
+    @raise Invalid_argument if [n] < 0. *)
 
 val input : input -> Bytes.t -> int -> int -> int
 (** [input i s p len] reads up to [len] bytes from the given input,
@@ -82,8 +85,11 @@ val really_input : input -> Bytes.t -> int -> int -> int
 (** [really_input i s p len] reads exactly [len] characters from the
     given input, storing them in the byte sequence [s], starting at
     position [p]. For consistency with {!BatIO.input} it returns
-    [len]. @raise No_more_input if at least [len] characters are not
-    available. @raise Invalid_argument if [p] and [len] do not designate
+    [len].
+
+    @raise No_more_input if at least [len] characters are not
+    available.
+    @raise Invalid_argument if [p] and [len] do not designate
     a valid subsequence of [s]. *)
 
 val close_in : input -> unit
@@ -120,7 +126,9 @@ val really_output : 'a output -> Bytes.t -> int -> int -> int
 (** [really_output o s p len] writes exactly [len] characters from
     byte sequence [s] onto the the output, starting with the character
     at offset [p]. For consistency with {!BatIO.output} it returns
-    [len]. @raise Invalid_argument if [p] and [len] do not designate
+    [len].
+
+    @raise Invalid_argument if [p] and [len] do not designate
     a valid subsequence of [s]. *)
 
 val really_output_substring : 'a output -> string -> int -> int -> int
@@ -303,7 +311,9 @@ val read_i16 : input -> int
 (** Read a signed 16-bit word. *)
 
 val read_i32 : input -> int
-(** Read a signed 32-bit integer. @raise Overflow if the
+(** Read a signed 32-bit integer.
+
+    @raise Overflow if the
     read integer cannot be represented as an OCaml 31-bit integer. *)
 
 val read_real_i32 : input -> int32

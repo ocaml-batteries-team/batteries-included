@@ -180,8 +180,10 @@ val nread : input -> int -> string
 
 val really_nread : input -> int -> string
 (** [really_nread i n] reads a string of exactly [n] characters
-    from the input. @raise No_more_input if at least [n] characters are
-    not available. @raise Invalid_argument if [n] < 0.
+    from the input.
+
+    @raise No_more_input if at least [n] characters are not available.
+    @raise Invalid_argument if [n] < 0.
 
     Example: [let read_md5 ch = really_nread ch 32]
 *)
@@ -206,9 +208,10 @@ val really_input : input -> Bytes.t -> int -> int -> int
 (** [really_input ic s p len] reads exactly [len] characters from the
     input [ic], storing them in the string [s], starting at
     position [p]. For consistency with {!BatIO.input} it returns
-    [len]. @raise No_more_input if at [len] characters are not
-    available. @raise Invalid_argument if [p] and [len] do not
-    designate a valid substring of [s].
+    [len].
+
+    @raise No_more_input if at [len] characters are not available.
+    @raise Invalid_argument if [p] and [len] do not designate a valid substring of [s].
 
     Example: [let _ = really_input stdin b 0 3]
 *)
@@ -252,8 +255,9 @@ val really_output : 'a output -> Bytes.t -> int -> int -> int
 (** [really_output o s p len] writes exactly [len] characters from
     byte sequence [s] onto the the output, starting with the character
     at offset [p]. For consistency with {!BatIO.output} it returns
-    [len]. @raise Invalid_argument if [p] and [len] do not designate
-    a valid subsequence of [s].
+    [len].
+
+    @raise Invalid_argument if [p] and [len] do not designate a valid subsequence of [s].
 
     This function is useful for networking situations where the output
     buffer might fill resulting in not the entire substring being
@@ -419,8 +423,9 @@ val read_i16 : input -> int
 (** Read a signed 16-bit word. *)
 
 val read_i32 : input -> int
-(** Read a signed 32-bit integer. @raise Overflow if the
-    read integer cannot be represented as an OCaml 31-bit integer. *)
+(** Read a signed 32-bit integer.
+
+    @raise Overflow if the read integer cannot be represented as an OCaml 31-bit integer. *)
 
 val read_real_i32 : input -> int32
 (** Read a signed 32-bit integer as an OCaml int32. *)
@@ -501,8 +506,9 @@ sig
   (** Read a signed 16-bit word. *)
 
   val read_i32 : input -> int
-  (** Read a signed 32-bit integer. @raise Overflow if the
-          read integer cannot be represented as an OCaml 31-bit integer. *)
+  (** Read a signed 32-bit integer.
+
+      @raise Overflow if the read integer cannot be represented as an OCaml 31-bit integer. *)
 
   val read_real_i32 : input -> int32
   (** Read a signed 32-bit integer as an OCaml int32. *)
@@ -828,8 +834,9 @@ val i16s_of : input -> int BatEnum.t
 (** Read an enumartion of signed 16-bit words. *)
 
 val i32s_of : input -> int BatEnum.t
-(** Read an enumeration of signed 32-bit integers. @raise Overflow if the
-    read integer cannot be represented as an OCaml 31-bit integer. *)
+(** Read an enumeration of signed 32-bit integers.
+
+    @raise Overflow if the read integer cannot be represented as an OCaml 31-bit integer. *)
 
 val real_i32s_of : input -> int32 BatEnum.t
 (** Read an enumeration of signed 32-bit integers as OCaml [int32]s. *)

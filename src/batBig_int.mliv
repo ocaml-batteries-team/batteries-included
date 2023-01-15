@@ -130,7 +130,9 @@ val power_big_int_positive_big_int: big_int -> big_int -> big_int
     representing the first argument [a] raised to the power [b]
     (the second argument).  Depending
     on the function, [a] and [b] can be either small integers
-    or big integers.  @raise Invalid_argument if [b] is negative. *)
+    or big integers.
+
+    @raise Invalid_argument if [b] is negative. *)
 
 val operations : t BatNumber.numeric
 
@@ -222,8 +224,9 @@ val to_string_in_base : int -> big_int -> string
 (** [to_string_in_base b n] returns the string representation in base [b] of
     the given big integer [n]. Should you have advanced needs (arbitrarily large
     bases, or custom digits instead of the usual [0,1,...9,a,b,...,z]), use
-    [to_string_in_custom_base] instead. @raise Invalid_argument if b is not in
-    [2 .. 36]. *)
+    [to_string_in_custom_base] instead.
+
+    @raise Invalid_argument if b is not in [2 .. 36]. *)
 
 val to_string_in_custom_base : string -> int -> big_int -> string
 (** First argument, called [symbols], is the vector of the symbols used to
@@ -233,8 +236,9 @@ val to_string_in_custom_base : string -> int -> big_int -> string
     provided that [symbols] can accommodate it. Concretely, the base [b] must be at
     least [2], and [symbols] must be of size at least [b]. The default value of
     [big_int_base_default_symbols] contains 62 symbols, as it uses lowercase and
-    uppercase letters both. See below for more information. @raise Invalid_argument
-    if [b] is incorrect. *)
+    uppercase letters both. See below for more information.
+
+    @raise Invalid_argument if [b] is incorrect. *)
 
 
 val big_int_base_default_symbols : string

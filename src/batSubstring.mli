@@ -85,14 +85,16 @@ val triml : int -> t -> t
 val trimr : int -> t -> t
 (** [trimr k sus] returns sus less its rightmost k characters; or the
     empty string at the beginning of sus if it has less than k
-    characters.  @raise Invalid_argument if [k < 0], even in the partial
-    application [trimr k].
+    characters.
+
+    @raise Invalid_argument if [k < 0], even in the partial application [trimr k].
 *)
 
 val get : t -> int -> char
 (** [get sus k] returns the k'th character of the substring; that
-    is, s(i+k) where sus = (s, i, n).  @raise Invalid_argument if
-    [k<0] or [k>=n].  *)
+    is, s(i+k) where sus = (s, i, n).
+
+    @raise Invalid_argument if [k<0] or [k>=n].  *)
 
 val size : t -> int
 (** [size (s, i, n)] returns the size of the substring, that is, [n].
@@ -107,8 +109,9 @@ val slice : t -> int -> int option -> t
     @raise Invalid_argument if [i' < 0] or [i' > n].
 
     [slice sus i' (Some n')] returns the substring [(s, i+i', n')],
-    where [sus] = [(s, i, n)].  @raise Invalid_argument if [i' < 0]
-    or [n' < 0] or [i'+n' >= n].
+    where [sus] = [(s, i, n)].
+
+    @raise Invalid_argument if [i' < 0] or [n' < 0] or [i'+n' >= n].
 *)
 
 val concat : t list -> string
@@ -146,8 +149,12 @@ val index : t -> char -> int
 
 val index_from : t -> int -> char -> int
 (** [index_from sus i c] returns the index of the first occurrence of [c] in
-    [sus] after the index [i] or @raise Not_found otherwise. If [i] is beyond
-    the range of [sus], @raise Invalid_argument. It is equivalent to [i + index (triml i sus) c]. *)
+    [sus] after the index [i].
+    @raise Not_found otherwise.
+    @raise Invalid_argument If [i] is beyond
+    the range of [sus].
+
+    It is equivalent to [i + index (triml i sus) c]. *)
 
 val rindex : t -> char -> int
 (** [rindex sus c] returns the index of the last occurrence of [c] in [sus] or
@@ -155,8 +162,12 @@ val rindex : t -> char -> int
 
 val rindex_from : t -> int -> char -> int
 (** [index_from sus i c] returns the index of the last occurrence of [c] in [sus]
-    before the index [i] or @raise Not_found otherwise. If [i] is beyond the
-    range of [sus], @raise Invalid_argument. It is equivalent to [rindex (trimr i sus) c]. *)
+    before the index [i].
+    @raise Not_found otherwise.
+    @raise Invalid_argument If [i] is beyond the
+    range of [sus].
+
+    It is equivalent to [rindex (trimr i sus) c]. *)
 
 val contains : t -> char -> bool
 (** [contains s c] tests if character [c] appears in the substring [s].
@@ -229,8 +240,9 @@ val splitr : (char -> bool) -> t -> t * t
 val split_at : int -> t -> t * t
 (** [split_at sus k] returns the pair [(sus1, sus2)] of substrings,
     where [sus1] contains the first [k] characters of [sus], and
-    [sus2] contains the rest.  @raise Invalid_argument if [k < 0] or
-    [k > size sus].
+    [sus2] contains the rest.
+
+    @raise Invalid_argument if [k < 0] or [k > size sus].
 *)
 
 (* NOT IMPLEMENTED

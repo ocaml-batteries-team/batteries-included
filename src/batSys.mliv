@@ -60,7 +60,9 @@ external rename : string -> string -> unit = "caml_sys_rename"
 
 external getenv : string -> string = "caml_sys_getenv"
 (** Return the value associated to a variable in the process
-    environment. @raise Not_found if the variable is unbound. *)
+    environment.
+
+    @raise Not_found if the variable is unbound. *)
 
 val getenv_opt: string -> string option
 (** Return the value associated to a variable in the process

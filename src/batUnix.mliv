@@ -146,7 +146,10 @@ val environment : unit -> string array
 
 val getenv : string -> string
 (** Return the value associated to a variable in the process
-    environment. @raise Not_found if the variable is unbound.
+    environment.
+
+    @raise Not_found if the variable is unbound.
+
     (This function is identical to {!Sys.getenv}.) *)
 
 ##V>=4.6##val unsafe_getenv : string -> string
@@ -661,7 +664,9 @@ val umask : int -> int
 
 val access : string -> access_permission list -> unit
 (** Check that the process has the given permissions over the named
-    file. @raise Unix_error otherwise. *)
+    file.
+
+    @raise Unix_error otherwise. *)
 
 
 (** {6 Operations on file descriptors} *)
@@ -1298,8 +1303,9 @@ val inet_addr_of_string : string -> inet_addr
     address to its internal representation.  The argument string
     consists of 4 numbers separated by periods ([XXX.YYY.ZZZ.TTT])
     for IPv4 addresses, and up to 8 numbers separated by colons
-    for IPv6 addresses.  @raise Failure when given a string that
-    does not match these formats. *)
+    for IPv6 addresses.
+
+    @raise Failure when given a string that does not match these formats. *)
 
 val string_of_inet_addr : inet_addr -> string
 (** Return the printable representation of the given Internet address.

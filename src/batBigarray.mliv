@@ -1140,17 +1140,23 @@ external genarray_of_array3 :
 
 val array1_of_genarray : ('a, 'b, 'c) Genarray.t -> ('a, 'b, 'c) Array1.t
 (** Return the one-dimensional big array corresponding to the given
-    generic big array.  @raise Invalid_argument if the generic big array
+    generic big array.
+
+    @raise Invalid_argument if the generic big array
     does not have exactly one dimension. *)
 
 val array2_of_genarray : ('a, 'b, 'c) Genarray.t -> ('a, 'b, 'c) Array2.t
 (** Return the two-dimensional big array corresponding to the given
-    generic big array.  @raise Invalid_argument if the generic big array
+    generic big array.
+
+    @raise Invalid_argument if the generic big array
     does not have exactly two dimensions. *)
 
 val array3_of_genarray : ('a, 'b, 'c) Genarray.t -> ('a, 'b, 'c) Array3.t
 (** Return the three-dimensional big array corresponding to the given
-    generic big array.  @raise Invalid_argument if the generic big array
+    generic big array.
+
+    @raise Invalid_argument if the generic big array
     does not have exactly three dimensions. *)
 
 

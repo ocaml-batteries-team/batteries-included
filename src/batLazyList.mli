@@ -321,13 +321,17 @@ val would_at_fail: 'a t -> int -> bool
    than [n] elements, [false] otherwise*)
 
 val hd : 'a t -> 'a
-(**Return the first element of the given list. @raise Empty_list if the list is empty.
+(**Return the first element of the given list.
+
+   @raise Empty_list if the list is empty.
 
    Note: this function does not comply with the usual exceptionless error-management
    recommendations, as doing so would essentially render it useless.*)
 
 val tl : 'a t -> 'a t
-(**Return the given list without its first element. @raise Empty_list if the list is empty.
+(**Return the given list without its first element.
+
+   @raise Empty_list if the list is empty.
 
    Note: this function does not comply with the usual exceptionless error-management
    recommendations, as doing so would essentially render it useless.*)
@@ -336,14 +340,18 @@ val first : 'a t -> 'a
 (** As [hd]*)
 
 val last : 'a t -> 'a
-(** Returns the last element of the list. @raise Empty_list if
-    the list is empty. This function takes linear time and causes the
+(** Returns the last element of the list.
+
+    @raise Empty_list if the list is empty.
+
+    This function takes linear time and causes the
     evaluation of all elements of the list*)
 
 val at : 'a t -> int -> 'a
 (** [at l n] returns the element at index [n] (starting from [0]) in
-    the list [l]. @raise Invalid_index is the index is outside of
-    [l] bounds. *)
+    the list [l].
+
+    @raise Invalid_index is the index is outside of [l] bounds. *)
 
 val nth : 'a t -> int -> 'a
 (**  Obsolete. As [at]*)
@@ -406,8 +414,9 @@ val flatten : ('a t) list -> 'a t
 
 val split_at : int -> 'a t -> 'a t * 'a t
 (** [split_at n l] returns two lists [l1] and [l2], [l1] containing the
-    first [n] elements of [l] and [l2] the others. @raise Invalid_index if
-    [n] is outside of [l] size bounds. *)
+    first [n] elements of [l] and [l2] the others.
+
+    @raise Invalid_index if [n] is outside of [l] size bounds. *)
 
 val split_nth : int -> 'a t -> 'a t * 'a t
 (** Obsolete. As [split_at]. *)
@@ -567,7 +576,9 @@ val stable_sort : ('a -> 'a -> int) -> 'a t -> 'a t
 
 val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
 (** [map2 f [^ a0; a1; ...^] [^ b0; b1; ... ^]] is [[^ f a0 b0; f a1
-    b1; ... ^]]. @raise Different_list_size if the two lists have
+    b1; ... ^]].
+
+    @raise Different_list_size if the two lists have
     different lengths. Not tail-recursive, lazy. In particular, the
     exception is raised only after the shortest list has been
     entirely consumed. *)

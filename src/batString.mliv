@@ -402,9 +402,8 @@ val of_char : char -> string
 *)
 
 val to_int : string -> int
-(** Returns the integer represented by the given string
-    or @raise Failure if the string does not represent an
-    integer. This follows OCaml's int literal rules, so "0x"
+(** Returns the integer represented by the given string.
+    This follows OCaml's int literal rules, so "0x"
     prefixes hexadecimal integers, "0o" for octal and "0b" for
     binary.  Underscores within the number are allowed for
     readability but ignored.
@@ -416,8 +415,7 @@ val to_int : string -> int
 *)
 
 val to_float : string -> float
-(** Returns the float represented by the given string
-    or @raise Failure if the string does not represent a float.
+(** Returns the float represented by the given string.
     Decimal points aren't required in the given string, as they are
     for float literals in OCaml, but otherwise the rules for float
     literals apply.
@@ -602,7 +600,7 @@ val count_char : string -> char -> int
 val lchop : ?n:int -> string -> string
 (** Returns the same string but without the first [n] characters.
     By default [n] is 1.
-    If [n] is strictly less than zero @raise Invalid_argument.
+    @raise Invalid_argument If [n] is strictly less than zero.
     If the string has [n] or less characters, returns the empty string.
 
       Example:
@@ -614,7 +612,7 @@ val lchop : ?n:int -> string -> string
 val rchop : ?n:int -> string -> string
 (** Returns the same string but without the last [n] characters.
     By default [n] is 1.
-    If [n] is strictly less than zero @raise Invalid_argument.
+    @raise Invalid_argument If [n] is strictly less than zero.
     If the string has [n] or less characters , returns the empty string.
 
       Example:
