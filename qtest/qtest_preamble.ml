@@ -4,6 +4,9 @@
    but have not yet found their place into Batteries proper. *)
 open Batteries
 
-module Pervasives = Pervasives[@warning "-3"]
+module Pervasives = BatPervasives[@warning "-3"]
 [@@@warning "-52"] (* allow to match the constant payload of exception constructors *)
+[@@@warning "-unused-open"]
+[@@@warning "-unused-var-strict"]
+[@@@warning "-unused-for-index"]
 

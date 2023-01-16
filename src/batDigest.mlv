@@ -21,9 +21,9 @@
 
 include Digest
 
-##V>=5##(*$inject
-##V>=5##  module Pervasives = Stdlib
-##V>=5##*)
+(*$inject
+##V>=5##module Pervasives = Stdlib
+*)
 
 (*Imported from [Digest.input] -- the functions used take advantage of
   [BatIO.input] rather than [in_channel]*)

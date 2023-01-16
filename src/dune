@@ -2,6 +2,7 @@
  (name batteries)
  (public_name batteries)
  (synopsis "A community-maintained standard library extension")
+ (modules (:standard \ batteries_compattest))
  (preprocess
   (action (run build/prefilter.exe %{input-file})))
  (flags (:standard -w -3-32-52))
@@ -27,7 +28,7 @@
  (name qtest_batteries)
  (modules)
  (inline_tests.backend
-    (generate_runner (run qtest extract --preamble-file %{project_root}/qtest/qtest_preamble.ml --quiet %{impl-files} %{intf-files}))
+    (generate_runner (pipe-stdout (run qtest extract --preamble-file %{dep:../qtest/qtest_preamble.ml} --quiet %{impl-files} %{intf-files}) (run ../build/prefilter.exe))) ; inline_tests gets unpreprocessed files, so apply prefilter here as well
     (runner_libraries qcheck ounit2)
  ))
 
@@ -37,6 +38,12 @@
   (action
     (run %{project_root}/build/mkconf.exe %{project_root}/VERSION batteriesConfig.mlp %{target})))
 
+(test
+ (name batteries_compattest)
+ (modules batteries_compattest)
+ (preprocess
+  (action (run build/prefilter.exe %{input-file})))
+ (libraries batteries))
 
 ; documentation works!
 ;   dune build @doc
@@ -126,3 +133,4 @@
 (rule (copy batUnix.mlv batUnix.ml))
 (rule (copy batUTF8.mlv batUTF8.ml))
 (rule (copy batteries.mlv batteries.ml))
+(rule (copy batteries_compattest.mlv batteries_compattest.ml))
