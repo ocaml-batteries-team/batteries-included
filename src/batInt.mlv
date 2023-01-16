@@ -338,7 +338,7 @@ end
     let slow_mul a b = \
       if b = 0 then 0 \
       else if (abs a) > max_int / (abs b) then raise BatNumber.Overflow else a*b \
-    in Pervasives.(=) \
+    in Legacy.(=) \
       (Result.catch (Safe_int.mul a) b) (Result.catch (slow_mul a) b))
 *)
 
