@@ -342,10 +342,10 @@ let combinations l =
   in gen l
 
 (*$T combinations
-    List.sort Pervasives.compare (to_list (combinations [1;2;3])) = \
+    List.sort Legacy.compare (to_list (combinations [1;2;3])) = \
    [[]; [1]; [1;2]; [1;2;3]; [1;3]; [2]; [2;3]; [3]]
      to_list (combinations []) = [[]]
-     List.sort Pervasives.compare (to_list (combinations [1])) = [[]; [1]]
+     List.sort Legacy.compare (to_list (combinations [1])) = [[]; [1]]
 *)
 
 let permutations l =
@@ -364,7 +364,7 @@ let permutations l =
   in choose_first l []
 
 (*$T permutations
-    List.sort Pervasives.compare (to_list (permutations [1;2;3])) = \
+    List.sort Legacy.compare (to_list (permutations [1;2;3])) = \
    [[1;2;3]; [1;3;2]; [2;1;3]; [2;3;1]; [3;1;2]; [3;2;1]]
      to_list (permutations []) = [[]]
      to_list (permutations [1]) = [[1]]
