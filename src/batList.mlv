@@ -86,7 +86,7 @@ compare_lengths [1; 2] [2; 3; 4] = -1
   (Q.pair (Q.list Q.small_int) (Q.list Q.small_int)) \
   (fun (la, lb) -> \
     BatOrd.ord0 (compare_lengths la lb) \
-    = BatOrd.ord0 (Pervasives.compare (length la) (length lb)))
+    = BatOrd.ord0 (BatInt.compare (length la) (length lb)))
 *)
 
 let rec compare_length_with li n = match li, n with
@@ -106,7 +106,7 @@ compare_length_with [1; 2] 3 = -1
   (Q.pair (Q.list Q.small_int) Q.small_int) \
   (fun (li, n) -> \
     BatOrd.ord0 (compare_length_with li n) \
-    = BatOrd.ord0 (Pervasives.compare (length li) n))
+    = BatOrd.ord0 (BatInt.compare (length li) n))
 *)
 
 
@@ -178,10 +178,10 @@ let mem_cmp cmp x l =
   exists (fun y -> cmp x y = 0) l
 
 (*$T mem_cmp
-  mem_cmp Pervasives.compare 0 []     = false
-  mem_cmp Pervasives.compare 0 [1; 2] = false
-  mem_cmp Pervasives.compare 1 [1; 2] = true
-  mem_cmp Pervasives.compare 2 [1; 2] = true
+  mem_cmp BatInt.compare 0 []     = false
+  mem_cmp BatInt.compare 0 [1; 2] = false
+  mem_cmp BatInt.compare 1 [1; 2] = true
+  mem_cmp BatInt.compare 2 [1; 2] = true
 *)
 
 let append l1 l2 =
@@ -1362,10 +1362,10 @@ let group cmp lst =
     end
 
 (*$T group
-  group Pervasives.compare []                 = []
-  group Pervasives.compare [1]                = [[1]]
-  group Pervasives.compare [2; 2]             = [[2; 2]]
-  group Pervasives.compare [5; 4; 4; 2; 1; 6] = [[1]; [2]; [4; 4]; [5]; [6]]
+  group BatInt.compare []                 = []
+  group BatInt.compare [1]                = [[1]]
+  group BatInt.compare [2; 2]             = [[2; 2]]
+  group BatInt.compare [5; 4; 4; 2; 1; 6] = [[1]; [2]; [4; 4]; [5]; [6]]
 *)
 
 let cartesian_product l1 l2 =
@@ -1538,10 +1538,10 @@ let unfold b f =
 let subset cmp l l' = for_all (fun x -> mem_cmp cmp x l') l
 
 (*$T subset
-  subset Pervasives.compare [1;2;3;4] [1;2;3] = false
-  subset Pervasives.compare [1;2;3] [1;2;3] = true
-  subset Pervasives.compare [3;2;1] [1;2;3] = true
-  subset Pervasives.compare [1;2] [1;2;3] = true
+  subset BatInt.compare [1;2;3;4] [1;2;3] = false
+  subset BatInt.compare [1;2;3] [1;2;3] = true
+  subset BatInt.compare [3;2;1] [1;2;3] = true
+  subset BatInt.compare [1;2] [1;2;3] = true
 *)
 
 let shuffle ?state l =
