@@ -3,6 +3,11 @@ Changelog
 
 ## NEXT_RELEASE
 
+- Finish switch to dune
+  #1098 dune build
+  #1099 dune runtest
+  (Simmo Saan, review by Francois Berenger)
+
 ## v3.6.0 (minor release)
 
 - BatBuffer.enum rewritten to work with OCaml-5
