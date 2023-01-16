@@ -156,8 +156,8 @@ let round x =
    a temporary fix made necessary by BatFloat overriding the (=)
    operator. Hugh. *)
 (*$T round
-   Pervasives.(=) (List.map round [1.1; 2.4; 3.3; 3.5; 4.99]) [1.; 2.; 3.; 4.; 5.]
-   Pervasives.(=) (List.map round [-1.1; -2.4; -3.3; -3.5; -4.99]) [-1.; -2.; -3.; -4.; -5.]
+   (List.map round [1.1; 2.4; 3.3; 3.5; 4.99]) = [1.; 2.; 3.; 4.; 5.]
+   (List.map round [-1.1; -2.4; -3.3; -3.5; -4.99]) = [-1.; -2.; -3.; -4.; -5.]
    round 0.499999999999999944 = 0.
    round (-0.499999999999999944) = 0.
 *)
@@ -166,7 +166,7 @@ let round_to_int x =
   int_of_float (round x)
 
 (*$T round_to_int
-   Pervasives.(=) (List.map round_to_int [1.1; 2.4; 3.3; 3.5; 4.99]) [1; 2; 3; 4; 5]
+   (List.map round_to_int [1.1; 2.4; 3.3; 3.5; 4.99]) = [1; 2; 3; 4; 5]
 *)
 
 module Infix = struct
@@ -273,23 +273,23 @@ let round_to_string ?(digits=0) x =
 
 (*$T round_to_string
    List.mem (round_to_string 3.) ["3."; "3"]
-   Pervasives.(=) (round_to_string ~digits:0 3.) (round_to_string 3.)
-   Pervasives.(=) (round_to_string ~digits:1 3.) "3.0"
-   Pervasives.(=) (round_to_string ~digits:1 0.) "0.0"
-   Pervasives.(=) (round_to_string ~digits:1 epsilon_float) "0.0"
-   Pervasives.(=) (round_to_string ~digits:3 1.23456) "1.235"
-   Pervasives.(=) (round_to_string ~digits:3 (- 1.23456)) "-1.235"
-   Pervasives.(=) (round_to_string ~digits:3 1.98765) "1.988"
-   Pervasives.(=) (round_to_string ~digits:3 (- 1.98765)) "-1.988"
+   (round_to_string ~digits:0 3.) = (round_to_string 3.)
+   (round_to_string ~digits:1 3.) = "3.0"
+   (round_to_string ~digits:1 0.) = "0.0"
+   (round_to_string ~digits:1 epsilon_float) = "0.0"
+   (round_to_string ~digits:3 1.23456) = "1.235"
+   (round_to_string ~digits:3 (- 1.23456)) = "-1.235"
+   (round_to_string ~digits:3 1.98765) = "1.988"
+   (round_to_string ~digits:3 (- 1.98765)) = "-1.988"
    Result.(catch (round_to_string ~digits:(-1)) 3. |> is_exn (Invalid_argument "Float.round_to_string"))
    List.mem (round_to_string 0.5) ["0"; "0."; "1"; "1."]
    List.mem (round_to_string (-0.5)) ["-1"; "-1."; "0"; "0."; "-0"; "-0."]
    List.mem (round_to_string ~digits:2 0.215) ["0.21"; "0.22"]
    List.mem (round_to_string ~digits:2 (-0.215)) ["-0.22"; "-0.21"]
-   Pervasives.(=) (round_to_string ~digits:32 epsilon_float) "0.00000000000000022204460492503131"
+   (round_to_string ~digits:32 epsilon_float) = "0.00000000000000022204460492503131"
    List.mem (round_to_string ~digits:42 infinity) ["inf"; "infinity"]
    List.mem (round_to_string ~digits:0 neg_infinity) ["-inf"; "-infinity"]
-   List.for_all (fun digits -> Pervasives.(=) "nan" (String.sub (round_to_string ~digits nan) 0 3)) [0; 42]
+   List.for_all (fun digits -> (=) "nan" (String.sub (round_to_string ~digits nan) 0 3)) [0; 42]
 *)
 
 
