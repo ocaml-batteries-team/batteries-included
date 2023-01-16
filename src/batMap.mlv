@@ -1221,12 +1221,12 @@ let update k1 k2 v2 m = Concrete.update k1 k2 v2 Pervasives.compare m
 let update_stdlib k f m = Concrete.update_stdlib k f Pervasives.compare m
 
 (*$T update_stdlib
-  let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
-  equal cmp (update_stdlib 1 (fun x -> assert(x = Some 1); Some 3) (of_list [1,1; 2,2]))    (of_list [1,3;2,2])
-  let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
-  equal cmp (update_stdlib 3 (fun x -> assert(x = None);   Some 3) (of_list [1,1; 2,2]))    (of_list [1,1;2,2;3,3])
-  let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
-  equal cmp (update_stdlib 1 (fun x -> assert(x = Some 1); None)   (of_list [1,1; 2,2]))    (of_list [2,2])
+  let of_list l = of_enum (BatList.enum l) in \
+  equal (=) (update_stdlib 1 (fun x -> assert(x = Some 1); Some 3) (of_list [1,1; 2,2]))    (of_list [1,3;2,2])
+  let of_list l = of_enum (BatList.enum l) in \
+  equal (=) (update_stdlib 3 (fun x -> assert(x = None);   Some 3) (of_list [1,1; 2,2]))    (of_list [1,1;2,2;3,3])
+  let of_list l = of_enum (BatList.enum l) in \
+  equal (=) (update_stdlib 1 (fun x -> assert(x = Some 1); None)   (of_list [1,1; 2,2]))    (of_list [2,2])
   let of_list l = of_enum (BatList.enum l) in \
   let s = (of_list [1,1; 2,2]) in (update_stdlib 3 (fun x -> assert(x = None  ); None  ) s) == s
   let of_list l = of_enum (BatList.enum l) in \
@@ -1426,14 +1426,13 @@ let to_seq_from x m =
 
 let union_stdlib f m1 m2 = Concrete.union_stdlib f Pervasives.compare m1 Pervasives.compare m2
 (*$T union_stdlib
-  let cmp = Pervasives.( = ) in \
-  equal cmp (union_stdlib (fun _ -> failwith "must not be called") empty empty) empty
-  let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
-  equal cmp (union_stdlib (fun _ -> failwith "must not be called") (of_list [1,1;2,2]) empty) (of_list [1,1;2,2])
-  let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
-  equal cmp (union_stdlib (fun _ -> failwith "must not be called") empty (of_list [1,1;2,2])) (of_list [1,1;2,2])
-  let of_list l = of_enum (BatList.enum l) and cmp = Pervasives.( = ) in \
-  equal cmp (union_stdlib (fun _ -> failwith "must not be called") (of_list [3,3;4,4]) (of_list [1,1;2,2])) (of_list [1,1;2,2;3,3;4,4])
+  equal (=) (union_stdlib (fun _ -> failwith "must not be called") empty empty) empty
+  let of_list l = of_enum (BatList.enum l) in \
+  equal (=) (union_stdlib (fun _ -> failwith "must not be called") (of_list [1,1;2,2]) empty) (of_list [1,1;2,2])
+  let of_list l = of_enum (BatList.enum l) in \
+  equal (=) (union_stdlib (fun _ -> failwith "must not be called") empty (of_list [1,1;2,2])) (of_list [1,1;2,2])
+  let of_list l = of_enum (BatList.enum l) in \
+  equal (=) (union_stdlib (fun _ -> failwith "must not be called") (of_list [3,3;4,4]) (of_list [1,1;2,2])) (of_list [1,1;2,2;3,3;4,4])
  *)
 
 let singleton k v = Concrete.singleton k v
