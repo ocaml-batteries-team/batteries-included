@@ -1338,7 +1338,7 @@ let of_list l = Concrete.of_list Pervasives.compare l
 (*$Q of_list
   (Q.list Q.small_int) (fun l -> let xs = List.map (fun i -> i mod 5, i) l in \
     let s1 = of_list xs |> enum |> List.of_enum in \
-    let s2 = List.sort_unique Pervasives.compare xs in \
+    let s2 = List.sort_unique Legacy.compare xs in \
     s1 = s2 \
   )
 *)
