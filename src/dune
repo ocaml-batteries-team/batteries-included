@@ -58,7 +58,7 @@
  (name batteries_compattest)
  (modules batteries_compattest)
  (preprocess
-  (action (run build/prefilter.exe %{input-file})))
+  (action (run %{project_root}/build/prefilter.exe %{input-file})))
  (libraries batteries))
 
 ; documentation works!
