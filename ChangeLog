@@ -3,6 +3,14 @@ Changelog
 
 ## NEXT_RELEASE
 
+- add batteries.unthreaded to dune file
+  #1104
+  (Stephen Sherratt)
+
+- add optional dependency to dune in opam file
+  #1103
+  (Stephen Sherratt)
+
 - Finish switch to dune
   #1098 dune build
   #1099 dune runtest
