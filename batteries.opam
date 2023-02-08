@@ -27,6 +27,9 @@ depends: [
   "benchmark" {with-test & >= "1.6"}
   "num"
 ]
+depopts: [
+  "dune" {>= "2.7"}
+]
 conflicts: [
   "base-effects"
   "ocaml-option-no-flat-float-array"
