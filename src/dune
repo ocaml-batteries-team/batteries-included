@@ -6,7 +6,7 @@
  (preprocess
   (action (run %{project_root}/build/prefilter.exe %{input-file})))
  (flags (:standard -w -3-32-50-52))
- (libraries num str camlp-streams unix)
+ (libraries num str camlp-streams unix bigarray)
  (inline_tests
    (backend qtest_batteries)
    (deps %{project_root}/qtest/qtest_preamble.ml)
