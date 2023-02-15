@@ -1,10 +1,11 @@
-type 'a cell =
-  | Nil
-  | Cons of { content: 'a; mutable next: 'a cell }
-[@@warning "-37"]
+[@@@warning "-37"]
 (* Disable warning 37 (Unused constructor):
    Cons is never used to build values,
    but it is used implicitly in [of_abstr] *)
+type 'a cell =
+  | Nil
+  | Cons of { content: 'a; mutable next: 'a cell }
+
 
 type 'a t = {
   mutable length: int;
