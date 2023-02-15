@@ -74,6 +74,7 @@ module Stdlib_verifications = struct
     include module type of Legacy.String
   end = struct
     include BatString
+    [@@@warning "-32"] (* unused-value-declaration *)
     let starts_with = starts_with_stdlib
     let ends_with = ends_with_stdlib
     let exists = exists_stdlib
