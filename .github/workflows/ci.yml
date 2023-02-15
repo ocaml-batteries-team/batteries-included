@@ -120,7 +120,7 @@ jobs:
         run: opam install . --deps-only --with-test
 
       - name: Build
-        run: opam exec -- dune build
+        run: opam exec -- dune build @install
 
       - name: Test
         if: ${{ matrix.test }}
