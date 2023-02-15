@@ -13,7 +13,6 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          - macos-latest
         ocaml-compiler:
           - 5.0.0
           - 4.14.x
@@ -34,6 +33,10 @@ jobs:
         include:
           - ocaml-compiler: 4.02.3
             test: false
+          - os: macos-latest
+            ocaml-compiler: 4.14.x
+          - os: macos-latest
+            ocaml-compiler: 5.0.0
 
     runs-on: ${{ matrix.os }}
 
@@ -67,7 +70,6 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          # - macos-latest
         ocaml-compiler:
           - 5.0.0
           - 4.14.x
@@ -82,13 +84,16 @@ jobs:
           - 4.05.x
           - 4.04.x
           - 4.03.x
-
         test:
           - true
 
         include:
           - ocaml-compiler: 4.02.3
             test: false
+          - os: macos-latest
+            ocaml-compiler: 4.14.x
+          - os: macos-latest
+            ocaml-compiler: 5.0.0
 
     runs-on: ${{ matrix.os }}
 
