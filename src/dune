@@ -5,7 +5,7 @@
  (modules (:standard \ batteries_compattest batteriesThread batRMutex batMutex))
  (preprocess
   (action (run %{project_root}/build/prefilter.exe %{input-file})))
- (flags (:standard -w -3-32-52))
+ (flags (:standard -w -3-32-50-52))
  (libraries num str camlp-streams unix)
  (inline_tests
    (backend qtest_batteries)
@@ -21,7 +21,7 @@
  (modules batteriesThread batRMutex batMutex)
  (preprocess
   (action (run %{project_root}/build/prefilter.exe %{input-file})))
- (flags (:standard -w -3-32-52))
+ (flags (:standard -w -3-32-50-52))
  (libraries batteries.unthreaded threads)
  (inline_tests
    (backend qtest_batteries)
