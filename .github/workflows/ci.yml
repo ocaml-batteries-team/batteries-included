@@ -31,12 +31,15 @@ jobs:
           - true
 
         include:
-          - ocaml-compiler: 4.02.3
+          - os: ubuntu-latest
+            ocaml-compiler: 4.02.3
             test: false
           - os: macos-latest
             ocaml-compiler: 4.14.x
+            test: true
           - os: macos-latest
             ocaml-compiler: 5.0.0
+            test: true
 
     runs-on: ${{ matrix.os }}
 
@@ -88,12 +91,15 @@ jobs:
           - true
 
         include:
-          - ocaml-compiler: 4.02.3
+          - os: ubuntu-latest
+            ocaml-compiler: 4.02.3
             test: false
           - os: macos-latest
             ocaml-compiler: 4.14.x
+            test: true
           - os: macos-latest
             ocaml-compiler: 5.0.0
+            test: true
 
     runs-on: ${{ matrix.os }}
 
