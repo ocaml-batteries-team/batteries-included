@@ -2,7 +2,7 @@
  (name batteries_unthreaded)
  (public_name batteries.unthreaded)
  (synopsis "Batteries Included (for use in unthreaded programs)")
- (modules (:standard \ batteries_compattest batteriesThread batRMutex batMutex))
+ (modules (:standard \ batteries_compattest batConcreteQueue_402 batConcreteQueue_403 batteriesThread batRMutex batMutex))
  (preprocess
   (action (run %{project_root}/build/prefilter.exe %{input-file})))
  (flags (:standard -w -3-32-50-52))
