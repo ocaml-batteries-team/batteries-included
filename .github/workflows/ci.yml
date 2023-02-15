@@ -28,7 +28,12 @@ jobs:
           - 4.05.x
           - 4.04.x
           - 4.03.x
-          - 4.02.3
+        test:
+          - true
+
+        include:
+          - ocaml-compiler: 4.02.3
+            test: false
 
     runs-on: ${{ matrix.os }}
 
@@ -42,12 +47,17 @@ jobs:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
 
       - name: Install dependencies
+        run: opam install . --deps-only
+
+      - name: Install test dependencies
+        if: ${{ matrix.test }}
         run: opam install . --deps-only --with-test
 
       - name: Build
         run: opam exec -- make all
 
       - name: Test
+        if: ${{ matrix.test }}
         run: opam exec -- make test
 
   build-dune:
@@ -72,7 +82,13 @@ jobs:
           - 4.05.x
           - 4.04.x
           - 4.03.x
-          - 4.02.3
+
+        test:
+          - true
+
+        include:
+          - ocaml-compiler: 4.02.3
+            test: false
 
     runs-on: ${{ matrix.os }}
 
@@ -86,10 +102,15 @@ jobs:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
 
       - name: Install dependencies
+        run: opam install . --deps-only
+
+      - name: Install test dependencies
+        if: ${{ matrix.test }}
         run: opam install . --deps-only --with-test
 
       - name: Build
         run: opam exec -- dune build
 
       - name: Test
+        if: ${{ matrix.test }}
         run: opam exec -- dune runtest
