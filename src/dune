@@ -2,11 +2,11 @@
  (name batteries_unthreaded)
  (public_name batteries.unthreaded)
  (synopsis "Batteries Included (for use in unthreaded programs)")
- (modules (:standard \ batteries_compattest batteriesThread batRMutex batMutex))
+ (modules (:standard \ batteries_compattest batConcreteQueue_402 batConcreteQueue_403 batteriesThread batRMutex batMutex))
  (preprocess
   (action (run %{project_root}/build/prefilter.exe %{input-file})))
- (flags (:standard -w -3-32-52))
- (libraries num str camlp-streams unix)
+ (flags (:standard -w -3-32-50-52))
+ (libraries num str camlp-streams unix bigarray)
  (inline_tests
    (backend qtest_batteries)
    (deps %{project_root}/qtest/qtest_preamble.ml)
@@ -21,7 +21,7 @@
  (modules batteriesThread batRMutex batMutex)
  (preprocess
   (action (run %{project_root}/build/prefilter.exe %{input-file})))
- (flags (:standard -w -3-32-52))
+ (flags (:standard -w -3-32-50-52))
  (libraries batteries.unthreaded threads)
  (inline_tests
    (backend qtest_batteries)
