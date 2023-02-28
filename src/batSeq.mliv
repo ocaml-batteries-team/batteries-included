@@ -19,7 +19,7 @@
 
 (** Sequence of elements *)
 
-(** A sequence represent a collection of elements, for which you never
+(** A sequence represents a collection of elements, for which you never
     construct the complete representation.
 
     Basically you should use a sequence when you would prefer using a
