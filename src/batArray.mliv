@@ -239,7 +239,7 @@ val favg : float array -> float
 
 val left : 'a array -> int -> 'a array
 (**[left r len] returns the array containing the [len] first
-   characters of [r]. If [r] contains less than [len] characters, it
+   elements of [r]. If [r] contains less than [len] elements, it
    returns [r].
 
    Examples:
