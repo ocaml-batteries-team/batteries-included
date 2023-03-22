@@ -12,7 +12,8 @@
  "Cedric Cellier <rixed@happyleptic.org>"
  "Francois Berenger <unixjunkie@sdf.org>"
  "Gabriel Scherer <gabriel.scherer@gmail.com>"
- "Thibault Suzanne <thi.suzanne@gmail.com>")
+ "Thibault Suzanne <thi.suzanne@gmail.com>"
+ "Simmo Saan <simmo.saan@gmail.com>")
 (license "LGPL-2.1-or-later with OCaml-LGPL-linking-exception")
 
 (package
