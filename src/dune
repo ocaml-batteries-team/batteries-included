@@ -66,6 +66,3 @@
 ;   xdg-open _build/default/_doc/_html/index.html
 (documentation
  (mld_files index))
-
-; note: temporary, intro.text should be renamed
-(rule (copy ../build/intro.text index.mld))
