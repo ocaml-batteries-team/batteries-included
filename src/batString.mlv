@@ -343,6 +343,16 @@ let tail s pos =
   let slen = length s in
   if pos >= slen then "" else sub s pos (slen - pos)
 
+let repeat s n =
+  let buf = Buffer.create ( n * (String.length s) ) in
+  for _i = 1 to n do Buffer.add_string buf s done;
+  Buffer.contents buf
+(*$T repeat
+   repeat "fo" 4 = "fofofofo"
+   repeat "fo" 0 = ""
+   repeat "" 4 = ""
+*)
+
 (*$T left
   left "abc" 1 = "a"
   left "ab" 3 = "ab"
@@ -432,6 +442,7 @@ let split_on_string ~by str = split_on_string_comp ~by str
   split_on_string ~by:"/" "/a/b/c//" = [""; "a"; "b"; "c"; ""; ""]
   split_on_string ~by:"FOO" "FOOaFOObFOOcFOOFOO" = [""; "a"; "b"; "c"; ""; ""]
   split_on_string ~by:"//" "before///after" = ["before"; "/after"] (* bug/issue #1088 *)
+  List.length (split_on_string ~by:" " (repeat " " 10000000)) = 10000001 (* testing for stack overflow, #1111 *)
 *)
 
 let split_on_char sep str =
@@ -926,16 +937,6 @@ let rev_in_place s =
 *)
 
 let in_place_mirror = rev_in_place
-
-let repeat s n =
-  let buf = Buffer.create ( n * (String.length s) ) in
-  for _i = 1 to n do Buffer.add_string buf s done;
-  Buffer.contents buf
-(*$T repeat
-   repeat "fo" 4 = "fofofofo"
-   repeat "fo" 0 = ""
-   repeat "" 4 = ""
-*)
 
 let rev s =
   let len = String.length s in
