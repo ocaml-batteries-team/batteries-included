@@ -406,12 +406,15 @@ let split_on_string_comp ?(on_empty=[""]) ~by:sep str =
       if curr = len then
         List.rev ("" :: acc) (* for compatibility with old behavior *)
       else
-        try
-          let i = find_from str curr sep in
+        let maybe_i =
+          try Some (find_from str curr sep)
+          with Not_found -> None in
+        match maybe_i with
+        | Some i ->
           let tok = sub str curr (i - curr) in
           let next = i + seplen in
           loop (tok :: acc) next
-        with Not_found ->
+        | None ->
           let rest = sub str curr (len - curr) in
           List.rev (rest :: acc)
     in
