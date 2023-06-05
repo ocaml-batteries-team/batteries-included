@@ -17,6 +17,7 @@ test:
 	dune runtest
 
 doc:
+	dune build @all
 	dune build @doc
 
 test_install:
