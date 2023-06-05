@@ -19,8 +19,8 @@ test:
 doc:
 	dune build @doc
 
-# test_install:
-# 	./scripts/test_install.sh
+test_install:
+	./scripts/test_install.sh
 
 reinstall:
 	dune uninstall
