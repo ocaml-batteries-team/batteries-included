@@ -596,7 +596,7 @@ let cartesian_product a b =
 
 (*$T cartesian_product
   let a = cartesian_product [|1;2|] [|"a";"b"|] in \
-    sort Pervasives.compare a; \
+    sort Legacy.compare a; \
     a = [|1,"a"; 1,"b"; 2,"a"; 2, "b" |]
 *)
 
@@ -623,12 +623,12 @@ let compare cmp a b =
   aux 0
 
 (*$T compare
-   compare Pervasives.compare [|1;2;3|] [|1;2|] = 1
-   compare Pervasives.compare [|1;2|] [|1;2;4|] = -1
-   compare Pervasives.compare [|1|] [||] = 1
-   compare Pervasives.compare [||] [||] = 0
-   compare Pervasives.compare [|1;2|] [|1;2|] = 0
-   compare (fun x y -> -(Pervasives.compare x y)) [|2;1|] [|1;2|] = -1
+   compare Legacy.compare [|1;2;3|] [|1;2|] = 1
+   compare Legacy.compare [|1;2|] [|1;2;4|] = -1
+   compare Legacy.compare [|1|] [||] = 1
+   compare Legacy.compare [||] [||] = 0
+   compare Legacy.compare [|1;2|] [|1;2|] = 0
+   compare (fun x y -> -(Legacy.compare x y)) [|2;1|] [|1;2|] = -1
 *)
 
 let print ?(first="[|") ?(last="|]") ?(sep="; ") print_a  out t =

@@ -1,5 +1,6 @@
 (library
- (name batteries_toplevel)
+ (name batteries_top)
+ (public_name batteries.top)
  (synopsis "Bytecode toplevel support for Batteries")
  (libraries num threads str compiler-libs batteries)
  (modules batteriesHelp)

@@ -1,5 +1,0 @@
-(rule
-  (target META)
-  (deps %{project_root}/build/mkconf.exe %{project_root}/VERSION META.in)
-  (action
-    (run %{project_root}/build/mkconf.exe %{project_root}/VERSION META.in %{target})))

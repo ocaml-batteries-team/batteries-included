@@ -1,5 +1,4 @@
 open BatList
-open List
 open BatLazyList
 open BatIO
 open BatPrintf

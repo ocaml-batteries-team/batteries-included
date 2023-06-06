@@ -1,7 +1,24 @@
 Changelog
----------
+=========
 
 ## NEXT_RELEASE
+
+- bugfix impacting BatString.split_on_string
+  #1112
+  (Guido Martinez, review by Francois Berenger)
+
+- add batteries.unthreaded to dune file
+  #1104
+  (Stephen Sherratt)
+
+- add optional dependency to dune in opam file
+  #1103
+  (Stephen Sherratt)
+
+- Finish switch to dune
+  #1098 dune build
+  #1099 dune runtest
+  (Simmo Saan, review by Francois Berenger)
 
 ## v3.6.0 (minor release)
 

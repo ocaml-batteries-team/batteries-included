@@ -175,7 +175,7 @@ type control = Gc.control =
 ##V>=4.3##    (** The size of the window used by the major GC for smoothing
 ##V>=4.3##        out variations in its workload. This is an integer between
 ##V>=4.3##        1 and 50.
-##V>=4.3##        Default: 1. *)
+##V>=4.3##        Default: 1.
 ##V>=4.3##        @since 2.5.0 and OCaml 4.03.0 *)
 ##V>=4.3##
 

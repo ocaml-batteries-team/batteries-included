@@ -50,9 +50,9 @@ let channel inp len = (*TODO: Make efficient*)
 (*3. Compare*)
 (*$R channel
   let legacy_result () =
-  let inp    = Pervasives.open_in_bin Sys.argv.(0) in
+  let inp    = Legacy.open_in_bin Sys.argv.(0) in
   let result = Legacy.Digest.channel inp (-1) in
-    Pervasives.close_in inp;
+    Legacy.close_in inp;
     result
   in
   let batteries_result () =
