@@ -64,6 +64,8 @@ let rev_map2 = List.rev_map2
 ##V>=4.10##let concat_map = List.concat_map
 ##V>=4.10##let find_map_opt = List.find_map
 ##V>=4.12##let equal = List.equal
+##V>=5.1##let find_index = List.find_index
+##V>=5.1##let find_mapi = List.find_mapi
 
 (* ::VH:: END GLUE *)
 

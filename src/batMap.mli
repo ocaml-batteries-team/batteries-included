@@ -446,6 +446,10 @@ sig
     
       @since 3.3.0 *)
 
+  val to_list : 'a t -> (key * 'a) list
+  val of_list : (key * 'a) list -> 'a t
+  val add_to_list: key -> 'a -> 'a list t -> 'a list t
+
   (** {6 Boilerplate code}*)
 
   (** {7 Printing}*)

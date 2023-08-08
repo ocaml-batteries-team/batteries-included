@@ -1009,6 +1009,9 @@ sig
   val to_seq_from :  key -> 'a t -> (key * 'a) BatSeq.t
   val add_seq : (key * 'a) BatSeq.t -> 'a t -> 'a t
   val of_seq : (key * 'a) BatSeq.t -> 'a t
+  val to_list : 'a t -> (key * 'a) list
+  val of_list : (key * 'a) list -> 'a t
+  val add_to_list: key -> 'a -> 'a list t -> 'a list t
 
   (** {7 Printing}*)
 
@@ -1163,6 +1166,13 @@ struct
   let to_seq m = Concrete.to_seq (impl_of_t m)
   let to_rev_seq m = Concrete.to_rev_seq (impl_of_t m)
   let to_seq_from k m = Concrete.to_seq_from Ord.compare k (impl_of_t m)
+
+  let add_to_list x data m =
+    let add = function None -> Some [data] | Some l -> Some (data :: l) in
+    update_stdlib x add m
+
+  let to_list = bindings
+  let of_list bs = List.fold_left (fun m (k, v) -> add k v m) empty bs
 
   module Exceptionless =
   struct
