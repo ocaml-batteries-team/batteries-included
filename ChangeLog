@@ -3,6 +3,10 @@ Changelog
 
 ## NEXT_RELEASE
 
+- compatibility with OCaml 5.1
+  #1117
+  (kit-ty-kate)
+
 - bugfix impacting BatString.split_on_string
   #1112
   (Guido Martinez, review by Francois Berenger)
