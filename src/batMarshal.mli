@@ -60,6 +60,7 @@ type extern_flags = Marshal.extern_flags =
     No_sharing                          (** Don't preserve sharing *)
   | Closures                            (** Send function closures *)
 ##V>=4.1##  | Compat_32                           (** Ensure 32-bit compatibility *)
+##V>=5.1##  | Compression                         (** Compress the output if possible *)
 (** The flags to the [Marshal.to_*] functions below. *)
 
 
@@ -99,6 +100,8 @@ val output: _ BatInnerIO.output -> ?sharing:bool -> ?closures:bool -> 'a -> unit
 
    @since 2.3.0
 *)
+
+##V>=5.1##val compression_supported : unit -> bool
 
 external to_string :
   'a -> extern_flags list -> string = "caml_output_value_to_string"

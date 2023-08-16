@@ -252,6 +252,9 @@ val max: t -> t -> t
 ##V>=4.08##
 ##V>=4.08##    @since 2.10.0 and OCaml 4.08.0 *)
 
+##V>=5.1##val seeded_hash : int -> t -> int
+##V>=5.1##val hash : t -> int
+
 val equal : t -> t -> bool
 (** Equality function for 64-bit integers, useful for {!HashedType}. *)
 

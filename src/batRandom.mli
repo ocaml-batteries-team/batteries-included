@@ -216,6 +216,9 @@ module State : sig
 ##V>=5##    correlation.  Both PRNGs can be split later, arbitrarily many times.
 ##V>=5##    @since 3.6.0 and OCaml 5.0.0 *)
 
+##V>=5.1##val to_binary_string : t -> string
+##V>=5.1##val of_binary_string : string -> t
+
 end
 
 

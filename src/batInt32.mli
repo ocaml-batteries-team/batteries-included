@@ -325,3 +325,6 @@ val print: 'a BatInnerIO.output -> t -> unit
 
 val print_hex: 'a BatInnerIO.output -> t -> unit
   (** prints as hex string *)
+
+##V>=5.1##val seeded_hash : int -> t -> int
+##V>=5.1##val hash : t -> int

@@ -150,6 +150,8 @@ val compare: t -> t -> int
 val equal : t -> t -> bool
 val hash : t -> int
 
+##V>=5.1##val seeded_hash : int -> t -> int
+
 val ord : char BatOrd.ord
 
 module Incubator : sig

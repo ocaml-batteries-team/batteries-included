@@ -77,3 +77,6 @@ let min (x: t) (y: t): t =
 
 let max (x: t) (y: t): t =
   if x >= y then x else y
+
+##V>=5.1##let seeded_hash = Int64.seeded_hash
+##V>=5.1##let hash = Int64.hash

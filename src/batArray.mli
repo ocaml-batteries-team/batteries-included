@@ -928,4 +928,10 @@ external unsafe_set : 'a array -> int -> 'a -> unit = "%array_unsafe_set"
 ##V>=4.6##      = "%floatarray_unsafe_set"
 ##V>=4.6##end
 
+##V>=5.1##val find_index : ('a -> bool) -> 'a array -> int option
+##V>=5.1##val find_map : ('a -> 'b option) -> 'a array -> 'b option
+##V>=5.1##val find_mapi : (int -> 'a -> 'b option) -> 'a array -> 'b option
+##V>=5.1##val map_inplace : ('a -> 'a) -> 'a array -> unit
+##V>=5.1##val mapi_inplace : (int -> 'a -> 'a) -> 'a array -> unit
+
 (**/**)

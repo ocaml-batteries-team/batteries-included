@@ -458,6 +458,8 @@ let of_string ?(first="[") ?(last="]") ?(sep=";") of_str s =
 ##V>=4.14##let to_dispenser           = Stdlib.Seq.to_dispenser
 ##V>=4.14##let ints                   = Stdlib.Seq.ints
 ##V>=4.14##let equal_stdlib           = Stdlib.Seq.equal
+##V>=5.1##let find_index = Stdlib.Seq.find_index
+##V>=5.1##let find_mapi = Stdlib.Seq.find_mapi
 
 module Infix = struct
   (** Infix operators matching those provided by {!BatEnum.Infix} *)

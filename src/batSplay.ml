@@ -670,6 +670,9 @@ struct
 
   let to_list m = List.of_enum (enum m)
   let of_list l = of_enum (List.enum l)
+  let add_to_list x data m =
+    let add = function None -> Some [data] | Some l -> Some (data :: l) in
+    update_stdlib x add m
 
   let custom_print ~first ~last ~sep kvpr out m =
     Enum.print ~first ~last ~sep

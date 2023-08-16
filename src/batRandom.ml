@@ -68,7 +68,7 @@ struct
   let enum_bool state () = BatEnum.from (fun () -> bool state)
   let enum_char state () = BatEnum.from (fun () -> char state)
 
-##V>=5##  external next: t -> (int64[@unboxed]) 
+##V>=5##  external next: t -> (int64[@unboxed])
 ##V>=5##    = "caml_lxm_next" "caml_lxm_next_unboxed" [@@noalloc]
   
 end

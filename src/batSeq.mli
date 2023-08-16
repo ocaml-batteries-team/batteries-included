@@ -886,3 +886,6 @@ end
 ##V>=4.14##
 ##V>=4.14##    @since 4.14 *)
 ##V>=4.14##
+
+##V>=5.1##val find_index : ('a -> bool) -> 'a t -> int option
+##V>=5.1##val find_mapi : (int -> 'a -> 'b option) -> 'a t -> 'b option
