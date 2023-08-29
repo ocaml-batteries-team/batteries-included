@@ -3,7 +3,9 @@ Changelog
 
 ## NEXT_RELEASE
 
-- compatibility with OCaml 5.1
+## v3.7.0 (minor release)
+
+- compatibility with OCaml 5.1.0
   #1117
   (kit-ty-kate)
 
