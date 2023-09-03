@@ -32,6 +32,36 @@
 module Map (Ord : BatInterfaces.OrderedType)
   : sig
     include BatMap.S with type key = Ord.t
+
+    (* Redeclare operations to remove incorrect physical equality documentation. *)
+
+    val add: key -> 'a -> 'a t -> 'a t
+    (** [add x y m] returns a map containing the same bindings as
+        [m], plus a binding of [x] to [y]. If [x] was already bound
+        in [m], its previous binding disappears. *)
+
+    val update_stdlib : key -> ('a option -> 'a option) -> 'a t -> 'a t
+    (** [update_stdlib k f m] returns a map containing the same bindings as [m],
+        except [k] has a new binding as determined by [f]:
+        First, calculate [y] as [f (find_opt k m)].
+        If [y = Some v] then [k] will be bound to [v] in the resulting map.
+        Else [k] will not be bound in the resulting map.
+
+        This function does the same thing as [update] in the stdlib, but has a
+        different name for backwards compatibility reasons.
+
+        @since 3.3.0 *)
+
+    val remove: key -> 'a t -> 'a t
+    (** [remove x m] returns a map containing the same bindings as
+        [m], except for [x] which is unbound in the returned map. *)
+
+    val filter: (key -> 'a -> bool) -> 'a t -> 'a t
+    (** [filter f m] returns a map where only the [(key, value)] pairs of [m]
+        such that [f key value = true] remain. The bindings are passed to
+        [f] in increasing order with respect to the ordering over the type
+        of the keys. *)
+
     val print_as_list:
       ('a BatInnerIO.output -> key -> unit) ->
       ('a BatInnerIO.output -> 'c -> unit) ->
