@@ -121,14 +121,14 @@ sig
   (** [add x s] returns a set containing all elements of [s],
       plus [x]. If [x] was already in [s], [s] is returned unchanged.
 
-      @before 3.3.0 Physical equality was not ensured.
+      @before 3.3.0 or OCaml 4.03 Physical equality was not ensured.
       *)
 
   val remove: elt -> t -> t
   (** [remove x s] returns a set containing all elements of [s],
       except [x]. If [x] was not in [s], [s] is returned unchanged.
 
-      @before 3.3.0 Physical equality was not ensured.
+      @before 3.3.0 or OCaml 4.03 Physical equality was not ensured.
    *)
 
   val remove_exn: elt -> t -> t
@@ -207,7 +207,7 @@ sig
       that satisfy predicate [p]. 
 
       if [p] returns [true] for all elements then [s] is returned unmodified.
-      @before 3.3.0 Physical equality was not ensured.
+      @before 3.3.0 or OCaml 4.03 Physical equality was not ensured.
    *)
 
   val filter_map: (elt -> elt option) -> t -> t
@@ -587,14 +587,14 @@ val add: 'a -> 'a t -> 'a t
 (** [add x s] returns a set containing all elements of [s],
     plus [x]. If [x] was already in [s], [s] is returned unchanged.
 
-    @before 3.3.0 Physical equality was not ensured.
+    @before 3.3.0 or OCaml 4.03 Physical equality was not ensured.
  *)
 
 val remove: 'a -> 'a t -> 'a t
 (** [remove x s] returns a set containing all elements of [s],
     except [x]. If [x] was not in [s], [s] is returned unchanged. 
 
-    @before 3.3.0 Physical equality was not ensured.
+    @before 3.3.0 or OCaml 4.03 Physical equality was not ensured.
 *)
 
 val remove_exn: 'a -> 'a t -> 'a t
@@ -696,7 +696,7 @@ val filter: ('a -> bool) -> 'a t -> 'a t
     that satisfy predicate [p]. 
 
     if [p] returns [true] for all elements then [s] is returned unmodified.
-    @before 3.3.0 Physical equality was not ensured.
+    @before 3.3.0 or OCaml 4.03 Physical equality was not ensured.
  *)
 
 (* as under-specified as 'map' *)
@@ -1017,14 +1017,14 @@ module PSet : sig
   (** [add x s] returns a set containing all elements of [s],
       plus [x]. If [x] was already in [s], [s] is returned unchanged. 
 
-      @before 3.3.0 Physical equality was not ensured.
+      @before 3.3.0 or OCaml 4.03 Physical equality was not ensured.
    *)
 
   val remove: 'a -> 'a t -> 'a t
   (** [remove x s] returns a set containing all elements of [s],
       except [x]. If [x] was not in [s], [s] is returned unchanged.
 
-      @before 3.3.0 Physical equality was not ensured.
+      @before 3.3.0 or OCaml 4.03 Physical equality was not ensured.
    *)
 
   val remove_exn: 'a -> 'a t -> 'a t
@@ -1119,7 +1119,7 @@ module PSet : sig
       that satisfy predicate [p]. 
 
       if [p] returns [true] for all elements then [s] is returned unmodified.
-      @before 3.3.0 Physical equality was not ensured.
+      @before 3.3.0 or OCaml 4.03 Physical equality was not ensured.
    *)
 
   (* as under-specified as 'map' *)

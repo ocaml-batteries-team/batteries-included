@@ -96,7 +96,7 @@ sig
       If [x] was already bound to some [z] that is physically equal
       to [y], then the returned map is physically equal to [m].
 
-      @before 3.3.0 physical equality was not ensured. *)
+      @before 3.3.0 or OCaml 4.03 physical equality was not ensured. *)
 
   val update_stdlib : key -> ('a option -> 'a option) -> 'a t -> 'a t
   (** [update_stdlib k f m] returns a map containing the same bindings as [m],
@@ -175,7 +175,7 @@ sig
       The returned map is physically equal  to the passed one if [x] was
       already unbound. 
   
-      @before  3.3.0 physical equality was not ensured *)
+      @before 3.3.0 or OCaml 4.03 physical equality was not ensured. *)
 
   val remove_exn: key -> 'a t -> 'a t
   (** [remove_exn x m] behaves like [remove x m] except that it raises
@@ -263,7 +263,7 @@ sig
       If [f] returns [true] for all bindings of [m] the returned map is physically 
       equal to [m].
       
-      @before 3.3.0 physical equality was not ensured. *)
+      @before 3.3.0 or OCaml 4.03 physical equality was not ensured. *)
 
   val filter_map: (key -> 'a -> 'b option) -> 'a t -> 'b t
   (** [filter_map f m] combines the features of [filter] and
@@ -561,7 +561,7 @@ val add : 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
     If [x] was already bound to some [z] that is physically equal
     to [y], then the returned map is physically equal to [m].
 
-    @before 3.3.0 physical equality was not ensured. *)
+    @before 3.3.0 or OCaml 4.03 physical equality was not ensured. *)
 
 val update: 'a -> 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
 (** [update k1 k2 v2 m] replace the previous binding of [k1] in [m] by
@@ -639,7 +639,7 @@ val remove : 'a -> ('a, 'b) t -> ('a, 'b) t
     The returned map is physically equal  to the passed one if [x] was
     already unbound. 
 
-    @before  3.3.0 physical equality was not ensured *)
+    @before 3.3.0 or OCaml 4.03 physical equality was not ensured. *)
 
 val remove_exn: 'a -> ('a, 'b) t -> ('a, 'b) t
 (** [remove_exn x m] behaves like [remove x m] except that it raises
@@ -704,7 +704,7 @@ val filter: ('key -> 'a -> bool) -> ('key, 'a) t -> ('key, 'a) t
     If [f] returns [true] for all bindings of [m] the returned map is physically 
     equal to [m].
     
-    @before 3.3.0 physical equality was not ensured. *)
+    @before 3.3.0 or OCaml 4.03 physical equality was not ensured. *)
 
 val filter_map: ('key -> 'a -> 'b option) -> ('key, 'a) t -> ('key, 'b) t
 (** [filter_map f m] combines the features of [filter] and
@@ -1007,7 +1007,7 @@ module PMap : sig
       If [x] was already bound to some [z] that is physically equal
       to [y], then the returned map is physically equal to [m].
 
-      @before 3.3.0 physical equality was not ensured. *)
+      @before 3.3.0 or OCaml 4.03 physical equality was not ensured. *)
 
   val update : 'a -> 'a -> 'b -> ('a, 'b) t -> ('a, 'b) t
   (** [update k1 k2 v2 m] replace the previous binding of [k1] in [m] by
@@ -1081,7 +1081,7 @@ module PMap : sig
       The returned map is physically equal  to the passed one if [x] was
       already unbound. 
   
-      @before  3.3.0 physical equality was not ensured *)
+      @before 3.3.0 or OCaml 4.03 physical equality was not ensured. *)
 
   val remove_exn : 'a -> ('a, 'b) t -> ('a, 'b) t
   (** [remove_exn x m] behaves like [remove x m] except that it raises
@@ -1146,7 +1146,7 @@ module PMap : sig
       If [f] returns [true] for all bindings of [m] the returned map is physically 
       equal to [m].
       
-      @before 3.3.0 physical equality was not ensured. *)
+      @before 3.3.0 or OCaml 4.03 physical equality was not ensured. *)
 
   val filter_map: ('key -> 'a -> 'b option) -> ('key, 'a) t -> ('key, 'b) t
   (** [filter_map f m] combines the features of [filter] and
