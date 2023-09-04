@@ -5,6 +5,10 @@ Changelog
 
 ## v3.7.0 (minor release)
 
+- fix documentation errors for BatSet, BatMap and BatSplay
+  #1120
+  (Simmo Saan)
+
 - compatibility with OCaml 5.1.0
   #1117
   (kit-ty-kate)
