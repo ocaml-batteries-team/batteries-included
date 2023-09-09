@@ -9,7 +9,8 @@
  (libraries num str camlp-streams unix bigarray)
  (inline_tests
    (backend qtest_batteries)
-   (deps %{project_root}/qtest/qtest_preamble.ml)
+   (deps %{project_root}/qtest/qtest_preamble.ml
+    batteriesConfig.ml batConcreteQueue.ml) ; workaround for dune inline test runner not properly depending on generated modules: https://github.com/ocaml/opam-repository/pull/24327#issuecomment-1709839625
  )
  (wrapped false)
 )
