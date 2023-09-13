@@ -2,7 +2,9 @@
  (name batteries_unthreaded)
  (public_name batteries.unthreaded)
  (synopsis "Batteries Included (for use in unthreaded programs)")
- (modules (:standard \ batteries_compattest batConcreteQueue_402 batConcreteQueue_403 batteriesThread batRMutex batMutex))
+ (modules (:standard \ batteries_compattest batConcreteQueue_402
+                       batConcreteQueue_403 batteriesThread batRMutex
+                       batMutex))
  (preprocess
   (action (run %{project_root}/build/prefilter.exe %{input-file})))
  (flags (:standard -w -3-32-50-52))
@@ -10,15 +12,16 @@
  (inline_tests
    (backend qtest_batteries)
    (deps %{project_root}/qtest/qtest_preamble.ml
-    batteriesConfig.ml batConcreteQueue.ml) ; workaround for dune inline test runner not properly depending on generated modules: https://github.com/ocaml/opam-repository/pull/24327#issuecomment-1709839625
- )
+   ;; fix 'dune clean && dune build @src/runtest' (opam CI tests)
+          batteriesConfig.ml batConcreteQueue.ml))
  (wrapped false)
 )
 
 (library
  (name batteries)
  (public_name batteries)
- (synopsis "Batteries Included is a community-maintained standard library extension")
+ (synopsis
+ "Batteries Included is a community-maintained standard library extension")
  (modules batteriesThread batRMutex batMutex)
  (preprocess
   (action (run %{project_root}/build/prefilter.exe %{input-file})))
@@ -45,15 +48,20 @@
  (name qtest_batteries)
  (modules)
  (inline_tests.backend
-    (generate_runner (pipe-stdout (run qtest extract --preamble-file %{dep:../qtest/qtest_preamble.ml} --quiet %{impl-files} %{intf-files}) (run ../build/prefilter.exe))) ; inline_tests gets unpreprocessed files, so apply prefilter here as well
+    (generate_runner (pipe-stdout (run qtest extract --preamble-file
+    %{dep:../qtest/qtest_preamble.ml} --quiet %{impl-files} %{intf-files})
+    ;; inline_tests gets unpreprocessed files, apply prefilter here as well
+    (run ../build/prefilter.exe)))
     (runner_libraries qcheck ounit2)
  ))
 
 (rule
   (target batteriesConfig.ml)
-  (deps %{project_root}/build/mkconf.exe %{project_root}/VERSION batteriesConfig.mlp)
+  (deps %{project_root}/build/mkconf.exe %{project_root}/VERSION
+        batteriesConfig.mlp)
   (action
-    (run %{project_root}/build/mkconf.exe %{project_root}/VERSION batteriesConfig.mlp %{target})))
+    (run %{project_root}/build/mkconf.exe %{project_root}/VERSION
+         batteriesConfig.mlp %{target})))
 
 (test
  (name batteries_compattest)
@@ -62,7 +70,7 @@
   (action (run %{project_root}/build/prefilter.exe %{input-file})))
  (libraries batteries))
 
-; documentation works!
+; build documentation
 ;   dune build @doc
 ;   xdg-open _build/default/_doc/_html/index.html
 (documentation
