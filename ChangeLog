@@ -3,7 +3,11 @@ Changelog
 
 ## NEXT_RELEASE
 
-## v3.7.0 (minor release)
+## v3.7.1 (minor release)
+
+- fix CI tests (dune clean && dune build @src/runtest)
+  #1121
+  (Simo Saan)
 
 - fix documentation errors for BatSet, BatMap and BatSplay
   #1120
