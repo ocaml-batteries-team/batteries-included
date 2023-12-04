@@ -1,7 +1,11 @@
 Changelog
 =========
 
-## NEXT_RELEASE
+## v3.7.2 (bugfix release)
+
+- support OCaml 5.1.1 
+  #1124
+  (kit-ty-kate)
 
 ## v3.7.1 (minor release)
 
@@ -56,7 +60,7 @@ Changelog
 - Bug correction in BatString.split_on_string
   #1089
   (Francois Berenger, report by Lucas Franceschino)
-	
+
 - bug correction in BatBitset.inter
   #1091
   (report by Yongho Yoon, fix by Gabriel Scherer)
