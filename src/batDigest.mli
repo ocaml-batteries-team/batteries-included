@@ -101,3 +101,26 @@ val compare : t -> t -> int
 val equal : t -> t -> bool
 (** The equal function for digests.
     @since 2.5.0 *)
+
+##V>=5.2##val of_hex : string -> t
+
+##V>=5.2##module type S = sig
+##V>=5.2##  type t = string
+##V>=5.2##  val hash_length : int
+##V>=5.2##  val compare : t -> t -> int
+##V>=5.2##  val equal : t -> t -> bool
+##V>=5.2##  val string : string -> t
+##V>=5.2##  val bytes : bytes -> t
+##V>=5.2##  val substring : string -> int -> int -> t
+##V>=5.2##  val subbytes : bytes -> int -> int -> t
+##V>=5.2##  val channel : Stdlib.in_channel -> int -> t
+##V>=5.2##  val file : string -> t
+##V>=5.2##  val output : Stdlib.out_channel -> t -> unit
+##V>=5.2##  val input : Stdlib.in_channel -> t
+##V>=5.2##  val to_hex : t -> string
+##V>=5.2##  val of_hex : string -> t
+##V>=5.2##end
+##V>=5.2##module BLAKE128 : S
+##V>=5.2##module BLAKE256 : S
+##V>=5.2##module BLAKE512 : S
+##V>=5.2##module MD5 : S

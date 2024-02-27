@@ -238,6 +238,8 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##  line_number : int;
 ##V>=4.2##  start_char : int;
 ##V>=4.2##  end_char : int;
+##V>=5.2##  end_line : int;
+##V>=5.2##  end_col : int;
 ##V>=4.2##}
 ##V>=4.2##(** The type of location information found in backtraces. [start_char]
 ##V>=4.2##    and [end_char] are positions relative to the beginning of the

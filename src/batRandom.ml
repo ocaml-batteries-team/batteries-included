@@ -28,9 +28,13 @@ let self_init = Random.self_init
 let bits      = Random.bits
 let int       = Random.int
 ##V>=4.13##let full_int = Random.full_int
+##V>=5.2##let int_in_range = Random.int_in_range
 let int32     = Random.int32
+##V>=5.2##let int32_in_range = Random.int32_in_range
 let int64     = Random.int64
+##V>=5.2##let int64_in_range = Random.int64_in_range
 let nativeint = Random.nativeint
+##V>=5.2##let nativeint_in_range = Random.nativeint_in_range
 let float     = Random.float
 let bool      = Random.bool
 let char ()   = Char.chr (int 256)
@@ -70,7 +74,7 @@ struct
 
 ##V>=5##  external next: t -> (int64[@unboxed])
 ##V>=5##    = "caml_lxm_next" "caml_lxm_next_unboxed" [@@noalloc]
-  
+
 end
 
 let enum_bits () = BatEnum.from bits
