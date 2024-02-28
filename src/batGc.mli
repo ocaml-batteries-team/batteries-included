@@ -430,6 +430,7 @@ val delete_alarm : alarm -> unit
 ##V>=4.11##   notice. *)
 ##V>=4.11##module Memprof :
 ##V>=4.11##  sig
+##V>=5.2##     type t = Gc.Memprof.t
 ##V>=4.12##    type allocation_source = Gc.Memprof.allocation_source = Normal | Marshal | Custom
 ##V>=4.11##    type allocation = Gc.Memprof.allocation = private
 ##V>=4.11##      { n_samples : int;
@@ -476,7 +477,8 @@ val delete_alarm : alarm -> unit
 ##V>=4.11##      sampling_rate:float ->
 ##V>=4.11##      ?callstack_size:int ->
 ##V>=4.11##      ('minor, 'major) tracker ->
-##V>=4.11##      unit
+##V>=4.11####V<5.2##      unit
+##V>=5.2##      t
 ##V>=4.11##    (** Start the sampling with the given parameters. Fails if
 ##V>=4.11##       sampling is already active.
 ##V>=4.11##
@@ -515,4 +517,5 @@ val delete_alarm : alarm -> unit
 ##V>=4.11##
 ##V>=4.11##        Calling [stop] when a callback is running can lead to
 ##V>=4.11##        callbacks not being called even though some events happened. *)
+##V>=5.2##     val discard : t -> unit
 ##V>=4.11##end

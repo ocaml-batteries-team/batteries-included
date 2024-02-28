@@ -65,13 +65,19 @@ val int : int -> int
 ##V>=4.13##
 ##V>=4.13##    @since 3.4.0 and OCaml 4.13.0 *)
 
+##V>=5.2##val int_in_range : min:int -> max:int -> int
+
 val int32 : Int32.t -> Int32.t
 (** [Random.int32 bound] returns a random integer between 0 (inclusive)
      and [bound] (exclusive).  [bound] must be greater than 0. *)
 
+##V>=5.2##val int32_in_range : min:int32 -> max:int32 -> int32
+
 val nativeint : Nativeint.t -> Nativeint.t
 (** [Random.nativeint bound] returns a random integer between 0 (inclusive)
      and [bound] (exclusive).  [bound] must be greater than 0. *)
+
+##V>=5.2##val nativeint_in_range : min:nativeint -> max:nativeint -> nativeint
 
 val int64 : Int64.t -> Int64.t
 (** [Random.int64 bound] returns a random integer between 0 (inclusive)
@@ -82,6 +88,8 @@ val float : float -> float
     between 0 (inclusive) and [bound] (exclusive).  If [bound] is
     negative, the result is negative or zero.  If [bound] is 0,
     the result is 0. *)
+
+##V>=5.2##val int64_in_range : min:int64 -> max:int64 -> int64
 
 val bool : unit -> bool
 (** [Random.bool ()] returns [true] or [false] with probability 0.5 each. *)
@@ -184,9 +192,13 @@ module State : sig
   val bits       : t -> int
   val int        : t -> int -> int
 ##V>=4.13##val full_int : t -> int -> int
+##V>=5.2##val int_in_range : t -> min:int -> max:int -> int
   val int32      : t -> Int32.t -> Int32.t
+##V>=5.2##val int32_in_range : t -> min:int32 -> max:int32 -> int32
   val nativeint  : t -> Nativeint.t -> Nativeint.t
+##V>=5.2##val nativeint_in_range : t -> min:nativeint -> max:nativeint -> nativeint
   val int64      : t -> Int64.t -> Int64.t
+##V>=5.2##val int64_in_range : t -> min:int64 -> max:int64 -> int64
   val float      : t -> float -> float
   val bool       : t -> bool
   val char       : t -> char

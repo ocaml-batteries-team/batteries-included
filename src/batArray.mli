@@ -96,6 +96,8 @@ external make : int -> 'a -> 'a array = "caml_make_vect"
    @since 2.3.0
 *)
 
+##V>=5.2##val init_matrix : int -> int -> (int -> int -> 'a) -> 'a array array
+
 ##V>=4.07##val of_seq: 'a Seq.t -> 'a array
 ##V>=4.07##val to_seq: 'a array -> 'a Seq.t
 ##V>=4.07##val to_seqi: 'a array -> (int * 'a) Seq.t
