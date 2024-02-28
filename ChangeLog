@@ -1,6 +1,12 @@
 Changelog
 =========
 
+## v3.8.0 (minor release)
+
+- support OCaml 5.2 
+  #1127
+  (kit-ty-kate)
+
 ## v3.7.2 (bugfix release)
 
 - support OCaml 5.1.1 
