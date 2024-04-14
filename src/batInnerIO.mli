@@ -84,7 +84,7 @@ val input : input -> Bytes.t -> int -> int -> int
 val really_input : input -> Bytes.t -> int -> int -> int
 (** [really_input i s p len] reads exactly [len] characters from the
     given input, storing them in the byte sequence [s], starting at
-    position [p]. For consistency with {!BatIO.input} it returns
+    position [p]. For consistency with {!BatIO.val-input} it returns
     [len].
 
     @raise No_more_input if at least [len] characters are not
@@ -125,7 +125,7 @@ val output_substring : 'a output -> string -> int -> int -> int
 val really_output : 'a output -> Bytes.t -> int -> int -> int
 (** [really_output o s p len] writes exactly [len] characters from
     byte sequence [s] onto the the output, starting with the character
-    at offset [p]. For consistency with {!BatIO.output} it returns
+    at offset [p]. For consistency with {!BatIO.val-output} it returns
     [len].
 
     @raise Invalid_argument if [p] and [len] do not designate
@@ -210,7 +210,7 @@ val create_out :
     Fully create an output by giving all the needed functions.
 
     @param write  Write one character to the output (see {!write}).
-    @param output Write a (sub)string to the output (see {!output}).
+    @param output Write a (sub)string to the output (see {!val-output}).
     @param flush  Flush any buffers of this output  (see {!flush}).
     @param close  Close this output. The output will be automatically
     flushed.
@@ -270,7 +270,7 @@ val wrap_out :
    in turn avoids the issue.
 
    @param write  Write one character to the output (see {!write}).
-   @param output Write a (sub)string to the output (see {!output}).
+   @param output Write a (sub)string to the output (see {!val-output}).
    @param flush  Flush any buffers of this output  (see {!flush}).
    @param close  Close this output. The output will be automatically
    flushed.

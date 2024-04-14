@@ -226,7 +226,7 @@ val sprintf2: ('a, 'b output, unit, string) format4 -> 'a
     i.e. should have type ['b output -> unit].
 
     Warning: a partial application of this function can only be used once,
-    because the {!BatInnerIO.output} that it uses is closed afterwards.
+    because the {!BatInnerIO.type-output} that it uses is closed afterwards.
     Example: [let f = sprintf2 "%a" Int.print in [f 1; f 2]] will fail. *)
 
 
