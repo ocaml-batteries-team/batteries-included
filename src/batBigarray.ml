@@ -29,6 +29,7 @@ module A = struct include BatArray include BatArray.Labels end
      module _ = (BatBigarray : module type of Bigarray)
    because of the somewhat strange interpretation of strengthening in (module type of),
    we need to explicitly equate each type with its constructor *)
+##V>=5.2##type float16_elt = Bigarray.float16_elt = Float16_elt
 type float32_elt = Bigarray.float32_elt
 ##V>=4.2## = Float32_elt
 type float64_elt = Bigarray.float64_elt
@@ -68,6 +69,7 @@ type ('a, 'b) kind = ('a,'b) Bigarray.kind
 ##V>=4.2##           | Complex32 : (Complex.t, complex32_elt) kind
 ##V>=4.2##           | Complex64 : (Complex.t, complex64_elt) kind
 ##V>=4.2##           | Char : (char, int8_unsigned_elt) kind
+##V>=5.2##           | Float16 : (float, float16_elt) kind
 
 (* this type is local to Batteries,
    it is meant to make it easier to port code

@@ -1,11 +1,11 @@
-let (major, minor, extra) =
+let (major, minor, micro, extra) =
   Scanf.sscanf Sys.ocaml_version
-    "%d.%d.%d%s" (fun j n _ s -> (j, n, s))
+    "%d.%d.%d%s" (fun j n m s -> (j, n, m, s))
 
 let filter_cookie_re =
   Str.regexp "^##V\\([<>]?=?\\)\\([^#]+\\)##"
 let version_re =
-  Str.regexp "\\([0-9]+\\)\\(\\.\\([0-9]+\\)\\)?"
+  Str.regexp "\\([0-9]+\\)\\(\\.\\([0-9]+\\)\\)?\\(\\.\\([0-9]+\\)\\)?"
 
 (* We track line count in the input source, to print location
    directives for the OCaml lexer:
@@ -57,7 +57,8 @@ let rec process_line loc line =
       if Str.string_match version_re ver_string 0 then
         let ver_maj = int_of_string (Str.matched_group 1 ver_string) in
         let ver_min = try int_of_string (Str.matched_group 3 ver_string) with _ -> 0 in
-        cmp (major*100+minor) (ver_maj*100+ver_min)
+        let ver_mic = try int_of_string (Str.matched_group 5 ver_string) with _ -> 0 in
+        cmp (major*10000+minor*100+micro) (ver_maj*10000+ver_min*100+ver_mic)
       else if ver_string = "multicore" then
         cmp (if has_domains ~extra then 5 else major) 5
       else

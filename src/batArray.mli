@@ -96,6 +96,8 @@ external make : int -> 'a -> 'a array = "caml_make_vect"
    @since 2.3.0
 *)
 
+##V>=5.2##val init_matrix : int -> int -> (int -> int -> 'a) -> 'a array array
+
 ##V>=4.07##val of_seq: 'a Seq.t -> 'a array
 ##V>=4.07##val to_seq: 'a array -> 'a Seq.t
 ##V>=4.07##val to_seqi: 'a array -> (int * 'a) Seq.t
@@ -927,5 +929,11 @@ external unsafe_set : 'a array -> int -> 'a -> unit = "%array_unsafe_set"
 ##V>=4.6##  external unsafe_set : floatarray -> int -> float -> unit
 ##V>=4.6##      = "%floatarray_unsafe_set"
 ##V>=4.6##end
+
+##V>=5.1##val find_index : ('a -> bool) -> 'a array -> int option
+##V>=5.1##val find_map : ('a -> 'b option) -> 'a array -> 'b option
+##V>=5.1##val find_mapi : (int -> 'a -> 'b option) -> 'a array -> 'b option
+##V>=5.1##val map_inplace : ('a -> 'a) -> 'a array -> unit
+##V>=5.1##val mapi_inplace : (int -> 'a -> 'a) -> 'a array -> unit
 
 (**/**)

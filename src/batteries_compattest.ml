@@ -3,7 +3,11 @@ open Batteries
 module Stdlib_verifications = struct
   (* This module asserts that all the BatFoo modules are actually
      extensions of stdlib modules, and that no functionality is lost. *)
-  module Array_t = (Array : module type of Legacy.Array)
+  module Array_t =
+    (Array : sig
+       include module type of Legacy.Array
+       val shuffle : ?state:Random.State.t -> 'a array -> unit
+     end)
   module Buffer_t =
     (Buffer: sig
        include module type of Legacy.Buffer

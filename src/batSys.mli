@@ -171,6 +171,8 @@ val max_array_length : int
 ##V>=4.3##    as the contents of the [OCAMLRUNPARAM] environment variable.
 ##V>=4.3##    @since 2.5.0 and OCaml 4.03.0 *)
 
+##V>=5.1##external is_regular_file : string -> bool = "caml_sys_is_regular_file"
+
 (** {6 Signal handling} *)
 
 

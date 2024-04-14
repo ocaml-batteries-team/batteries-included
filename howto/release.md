@@ -47,8 +47,6 @@ to be performed by someone with commit rights.
 
 - Bump version in file VERSION
 
-- change ocamlfind dependencies in `META` if necessary
-
 - check that `make release` correctly produces a release tarball
 
 ## opam preparation work

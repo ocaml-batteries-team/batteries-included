@@ -1180,3 +1180,6 @@ end
 
 val ( @ ) : 'a list -> 'a list -> 'a list
   (** Tail recursive [List.append]. *)
+
+##V>=5.1##val find_index : ('a -> bool) -> 'a list -> int option
+##V>=5.1##val find_mapi : (int -> 'a -> 'b option) -> 'a list -> 'b option

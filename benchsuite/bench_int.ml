@@ -1,7 +1,7 @@
 (* cd .. && ocamlbuild benchsuite/test_int.native -- *)
 
 
-external primitive_int_compare : int -> int -> int = "caml_int_compare" "noalloc"
+external primitive_int_compare : int -> int -> int = "caml_int_compare" [@@noalloc]
 [@@warning "-3"]
 
 let std_compare = compare[@warning "-3"]

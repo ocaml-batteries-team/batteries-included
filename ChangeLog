@@ -1,7 +1,31 @@
 Changelog
 =========
 
-## NEXT_RELEASE
+## v3.8.0 (minor release)
+
+- support OCaml 5.2 
+  #1127
+  (kit-ty-kate)
+
+## v3.7.2 (bugfix release)
+
+- support OCaml 5.1.1 
+  #1124
+  (kit-ty-kate)
+
+## v3.7.1 (minor release)
+
+- fix CI tests (dune clean && dune build @src/runtest)
+  #1121
+  (Simo Saan)
+
+- fix documentation errors for BatSet, BatMap and BatSplay
+  #1120
+  (Simmo Saan)
+
+- compatibility with OCaml 5.1.0
+  #1117
+  (kit-ty-kate)
 
 - bugfix impacting BatString.split_on_string
   #1112
@@ -42,7 +66,7 @@ Changelog
 - Bug correction in BatString.split_on_string
   #1089
   (Francois Berenger, report by Lucas Franceschino)
-	
+
 - bug correction in BatBitset.inter
   #1091
   (report by Yongho Yoon, fix by Gabriel Scherer)

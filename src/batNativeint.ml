@@ -82,6 +82,9 @@ external format : string -> nativeint -> string = "caml_nativeint_format"
 ##V>=4.08##let unsigned_rem = Nativeint.unsigned_rem
 ##V>=4.08##let unsigned_div = Nativeint.unsigned_div
 
+##V>=5.1##let seeded_hash = Nativeint.seeded_hash
+##V>=5.1##let hash = Nativeint.hash
+
 type bounded = t
 let min_num, max_num = min_int, max_int
 
