@@ -165,7 +165,7 @@ val data_size : Bytes.t -> int -> int
 val total_size : Bytes.t -> int -> int
 (** See {!Marshal.header_size}.*)
 
-(** {6 Deprecated} *)
+(** {1 Deprecated} *)
 
 val to_channel : _ BatInnerIO.output -> 'a -> extern_flags list -> unit
 (** @deprecated Use {!output} instead *)

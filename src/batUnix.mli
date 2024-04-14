@@ -34,7 +34,7 @@
     @documents Unix
 *)
 
-(** {6 Error report} *)
+(** {1 Error report} *)
 
 
 type error = Unix.error =
@@ -128,7 +128,7 @@ val handle_unix_error : ('a -> 'b) -> 'a -> 'b
     describing the error and exits with code 2. *)
 
 
-(** {6 Access to the process environment} *)
+(** {1 Access to the process environment} *)
 
 
 val environment : unit -> string array
@@ -173,7 +173,7 @@ val putenv : string -> string -> unit
     and [value] its new associated value. *)
 
 
-(** {6 Process handling} *)
+(** {1 Process handling} *)
 
 
 type process_status = Unix.process_status =
@@ -279,7 +279,7 @@ val nice : int -> int
     lower priorities.) Return the new nice value. *)
 
 
-(** {6 Basic file input/output} *)
+(** {1 Basic file input/output} *)
 
 
 type file_descr = Unix.file_descr
@@ -381,7 +381,7 @@ val single_write_substring : file_descr -> string -> int -> int -> int
 ##V>=5.2##  (_, Bigarray.int8_unsigned_elt, Bigarray.c_layout) Bigarray.Array1.t ->
 ##V>=5.2##  int -> int -> int
 
-(** {6 Interfacing with the standard input/output library} *)
+(** {1 Interfacing with the standard input/output library} *)
 
 val in_channel_of_descr : file_descr -> in_channel
 (** Create an input channel reading from the given descriptor.
@@ -400,7 +400,7 @@ val descr_of_out_channel : out_channel -> file_descr
 (** Return the descriptor corresponding to an output channel. *)
 
 
-(** {6 Interfacing with the standard input/output library} *)
+(** {1 Interfacing with the standard input/output library} *)
 
 val input_of_descr: ?autoclose:bool -> ?cleanup:bool -> file_descr -> BatInnerIO.input
 (** Create an {!type:input} reading from the given descriptor.
@@ -458,7 +458,7 @@ val descr_of_output : unit BatInnerIO.output -> file_descr
 
 
 
-(** {6 Seeking and truncating} *)
+(** {1 Seeking and truncating} *)
 
 
 type seek_command = Unix.seek_command =
@@ -479,7 +479,7 @@ val ftruncate : file_descr -> int -> unit
     to the given size. *)
 
 
-(** {6 File status} *)
+(** {1 File status} *)
 
 
 type file_kind = Unix.file_kind =
@@ -522,7 +522,7 @@ val isatty : file_descr -> bool
 (** Return [true] if the given file descriptor refers to a terminal or
     console window, [false] otherwise. *)
 
-(** {6 File operations on large files} *)
+(** {1 File operations on large files} *)
 
 module LargeFile :
 sig
@@ -558,7 +558,7 @@ end
     whose sizes are greater than [max_int]. *)
 
 
-##V>=4.6##(** {6 Mapping files into memory} *)
+##V>=4.6##(** {1 Mapping files into memory} *)
 ##V>=4.6##
 ##V=4.6##val map_file :
 ##V=4.6##  file_descr -> ?pos:int64 -> ('a, 'b) CamlinternalBigarray.kind ->
@@ -615,7 +615,7 @@ end
 ##V>=4.6##  validation fails.
 ##V>=4.6##  @since 2.8.0 and OCaml 4.06.0 *)
 
-(** {6 Operations on file names} *)
+(** {1 Operations on file names} *)
 
 
 val unlink : string -> unit
@@ -650,7 +650,7 @@ val rename : string -> string -> unit
 ##V>=4.13##    @since 3.4.0 and OCaml 4.13.0 *)
 
 
-(** {6 File permissions and ownership} *)
+(** {1 File permissions and ownership} *)
 
 
 type access_permission = Unix.access_permission =
@@ -684,7 +684,7 @@ val access : string -> access_permission list -> unit
     @raise Unix_error otherwise. *)
 
 
-(** {6 Operations on file descriptors} *)
+(** {1 Operations on file descriptors} *)
 
 
 val dup :
@@ -722,7 +722,7 @@ val clear_close_on_exec : file_descr -> unit
     See {!Unix.set_close_on_exec}.*)
 
 
-(** {6 Directories} *)
+(** {1 Directories} *)
 
 
 val mkdir : string -> file_perm -> unit
@@ -758,7 +758,7 @@ val closedir : dir_handle -> unit
 
 
 
-(** {6 Pipes and redirections} *)
+(** {1 Pipes and redirections} *)
 
 val pipe :
 ##V>=4.5##  ?cloexec:bool ->
@@ -771,7 +771,7 @@ val mkfifo : string -> file_perm -> unit
 (** Create a named pipe with the given permissions. *)
 
 
-(** {6 High-level process and redirection management} *)
+(** {1 High-level process and redirection management} *)
 
 val open_process_in : ?autoclose: bool -> ?cleanup:bool -> string -> BatInnerIO.input
 (** High-level pipe and process management. This function
@@ -970,7 +970,7 @@ val create_process_env :
     [env] specifies the environment passed to the program. *)
 
 
-(** {6 Symbolic links} *)
+(** {1 Symbolic links} *)
 ##V<4.3##val symlink : string -> string -> unit
 ##V<4.3##(** [symlink source dest] creates the file [dest] as a symbolic link
 ##V<4.3##    to the file [source]. *)
@@ -1027,7 +1027,7 @@ val readlink : string -> string
 (** Read the contents of a link. *)
 
 
-(** {6 Polling} *)
+(** {1 Polling} *)
 
 
 val select :
@@ -1044,7 +1044,7 @@ val select :
     and over which an exceptional condition is pending (third
     component). *)
 
-(** {6 Locking} *)
+(** {1 Locking} *)
 
 
 type lock_command = Unix.lock_command =
@@ -1093,7 +1093,7 @@ val with_locked_file : kind:[`Read|`Write] -> string -> (file_descr -> 'a) -> 'a
 
     @param kind specifies whether the lock is read-only or read-write. *)
 
-(** {6 Signals}
+(** {1 Signals}
     Note: installation of signal handlers is performed via
     the functions {!Sys.signal} and {!Sys.set_signal}.
 *)
@@ -1129,7 +1129,7 @@ val pause : unit -> unit
 (** Wait until a non-ignored, non-blocked signal is delivered. *)
 
 
-(** {6 Time functions} *)
+(** {1 Time functions} *)
 
 
 type process_times = Unix.process_times =
@@ -1233,7 +1233,7 @@ val setitimer :
     after its next expiration. *)
 
 
-(** {6 User id, group id} *)
+(** {1 User id, group id} *)
 
 
 val getuid : unit -> int
@@ -1307,7 +1307,7 @@ val getgrgid : int -> group_entry
     @raise Not_found if no such entry can be found. *)
 
 
-(** {6 Internet addresses} *)
+(** {1 Internet addresses} *)
 
 
 type inet_addr = Unix.inet_addr
@@ -1345,7 +1345,7 @@ val inet6_addr_loopback : inet_addr
 ##V>=4.12##(** Whether the given [inet_addr] is an IPv6 address.
 ##V>=4.12##    @since 3.3.0 and 4.12.0 *)
 
-(** {6 Sockets} *)
+(** {1 Sockets} *)
 
 
 type socket_domain = Unix.socket_domain =
@@ -1462,7 +1462,7 @@ val sendto_substring :
 
 
 
-(** {6 Socket options} *)
+(** {1 Socket options} *)
 
 
 type socket_bool_option = Unix.socket_bool_option =
@@ -1542,7 +1542,7 @@ val getsockopt_error : file_descr -> error option
 (** Return the error condition associated with the given socket,
     and clear it. *)
 
-(** {6 High-level network connection functions} *)
+(** {1 High-level network connection functions} *)
 
 val open_connection : ?autoclose:bool -> sockaddr -> BatInnerIO.input * unit BatInnerIO.output
 (** Connect to a server at the given address.
@@ -1593,7 +1593,7 @@ val establish_server : ?autoclose:bool -> ?cleanup:bool -> (BatInnerIO.input -> 
     ensure proper cleanup.  *)
 
 
-(** {6 Host and protocol databases} *)
+(** {1 Host and protocol databases} *)
 
 
 type host_entry = Unix.host_entry =
@@ -1708,7 +1708,7 @@ val getnameinfo : sockaddr -> getnameinfo_option list -> name_info
     @raise Not_found if an error occurs. *)
 
 
-(** {6 Terminal interface} *)
+(** {1 Terminal interface} *)
 
 
 (** The following functions implement the POSIX standard terminal
@@ -1823,7 +1823,7 @@ val setsid : unit -> int
     its controlling terminal. *)
 
 
-(** {6 Small tools} *)
+(** {1 Small tools} *)
 
 val is_directory : string -> bool
 (** [is_directory filename] returns true if [filename] refers to a directory (or symlink of a directory) *)
@@ -1834,7 +1834,7 @@ val restart_on_EINTR : ('a -> 'b) -> 'a -> 'b
 
 
 (**
-   {6 Thread-safety internals}
+   {1 Thread-safety internals}
 
    Unless you are attempting to adapt Batteries Included to a new model of
    concurrency, you probably won't need this.
@@ -1850,7 +1850,7 @@ val lock: BatConcurrent.lock ref
    concurrency model, set the lock appropriately.
 *)
 
-(** {6 Obsolete stuff} *)
+(** {1 Obsolete stuff} *)
 
 val in_channel_of_descr: file_descr -> BatInnerIO.input
 (** @deprecated use {!input_of_descr}*)

@@ -180,7 +180,7 @@ val output_buffer : t -> string BatInnerIO.output
 ##V>=4.6##
 ##V>=4.6##    @since 2.8.0 and OCaml 4.06.0 *)
 
-(** {6 Boilerplate code}*)
+(** {1 Boilerplate code}*)
 
 val enum : t -> char BatEnum.t
 (** Returns an enumeration of the characters of a buffer. *)

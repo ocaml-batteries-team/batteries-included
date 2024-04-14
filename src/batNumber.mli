@@ -189,7 +189,7 @@ end
 
 (**/**)
 
-(** {6 Utilities}*)
+(** {1 Utilities}*)
 
 (**
    The smallest set of operations supported by every set of numbers
@@ -201,7 +201,7 @@ sig
   val zero : t
   val one  : t
 
-  (** {6 Arithmetic operations}
+  (** {1 Arithmetic operations}
 
     Depending on the implementation, some of these operations
     {i may} raise exceptions at run-time to represent over/under-flows.*)
@@ -217,7 +217,7 @@ sig
   val pow : t -> t -> t
   val compare : t -> t -> int
 
-  (** {6 Conversions} *)
+  (** {1 Conversions} *)
   val of_int : int -> t
   (** Convert this number to the closest integer.*)
 

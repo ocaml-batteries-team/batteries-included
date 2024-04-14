@@ -92,7 +92,7 @@ val next_set_bit : t -> int -> int option
     @raise Invalid_argument on negative index ([n < 0])
 *)
 
-(** {6 In-place Update} *)
+(** {1 In-place Update} *)
 
 (** These functions modify an existing bitset. *)
 
@@ -129,7 +129,7 @@ val differentiate_sym : t -> t -> unit
 (** [differentiate_sym s t] sets [s] to the symmetrical difference of the
     sets [s] and [t]. *)
 
-(** {6 Return new bitset} *)
+(** {1 Return new bitset} *)
 
 (** These functions return a new bitset that shares nothing with the
     input bitset.  This is not as efficient as the in-place update. *)
@@ -156,7 +156,7 @@ val diff : t -> t -> t
 val sym_diff : t -> t -> t
 (** [sym_diff s t] returns the symmetrical difference of [s] and [t]. *)
 
-(** {6 Boilerplate code}*)
+(** {1 Boilerplate code}*)
 
 val print: 'a BatInnerIO.output -> t -> unit
 (* Print the given BitSet to the given output channel.  This
@@ -193,7 +193,7 @@ val ord : t -> t -> BatOrd.order
 (** [ord s1 s2] returns [BatOrd.Lt], [BatOrd.Eq] or [BatOrd.Gt] if [compare s1 s2]
     is, respectively, [< 0], [0] or [> 0]. *)
 
-(** {6 Internals} *)
+(** {1 Internals} *)
 val capacity : t -> int
   (** [capacity s] returns the number of bits, both set and unset, stored
       in [s].  This is guaranteed to be larger than the largest element

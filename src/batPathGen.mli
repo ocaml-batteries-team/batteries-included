@@ -31,7 +31,7 @@
 
 
 (**
-   {6 Functorized interface}
+   {1 Functorized interface}
 *)
 
 (* the part copied to PathGen.ml starts here *)
@@ -137,7 +137,7 @@ module type PathType = sig
   val is_relative : t -> bool
   val is_absolute : t -> bool
 
-  (** {6 Construction} *)
+  (** {1 Construction} *)
 
   val root : t
   (** Root of the filesystem ([\[""\]]). It is minimal absolute path. Below it is called 'empty'. However it yields "/" or "\\" when converted to a string.
@@ -267,7 +267,7 @@ module type PathType = sig
       @raise Malformed_path if normalization fails (see {!PathType.normalize})
   *)
 
-  (** {6 Validation} *)
+  (** {1 Validation} *)
 
   exception Illegal_char
   (** Raised by {!PathType.of_string}, {!PathType.append} and {!PathType.Operators.(/:)} when used validator finds illegal character. *)
@@ -289,7 +289,7 @@ module type PathType = sig
     On reserved names and ones ending with dot (except "." and "..") Illegal_name is raised.
   *)
 
-  (** {6 Conversions} *)
+  (** {1 Conversions} *)
 
   val to_ustring : t -> ustring
   (** Convert to the chosen [ustring] type. Empty relative path is converted to "." (single dot).
@@ -309,7 +309,7 @@ module type PathType = sig
       @raise Illegal_char when a character not allowed in paths is found.
   *)
 
-  (** {7 Convenience aliases} *)
+  (** {2 Convenience aliases} *)
 
   val s : t -> string
   (** = {!to_string} *)
@@ -317,7 +317,7 @@ module type PathType = sig
   val p : ustring -> t
   (** = {!of_string} *)
 
-  (** {6 Name related functions}
+  (** {1 Name related functions}
       These functions do not accept empty paths, i.e. [\[\]], [\[""\]] or [\["C:"\]].
   *)
 
@@ -461,7 +461,7 @@ module type PathType = sig
       ]}
   *)
 
-  (** {6 Supplementary functions} *)
+  (** {1 Supplementary functions} *)
 
   val drive_letter : t -> uchar option
     (**

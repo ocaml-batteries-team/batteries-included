@@ -89,9 +89,9 @@ val of_enum : 'a BatEnum.t -> 'a t
     Note: if [s] is a stack, [s <> of_enum (enum s)], as [of_enum]
     reverses the input order.  *)
 
-(** {6 Boilerplate code}*)
+(** {1 Boilerplate code}*)
 
-(** {7 Printing}*)
+(** {2 Printing}*)
 
 (* Prints the contents of the given stack *)
 val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit

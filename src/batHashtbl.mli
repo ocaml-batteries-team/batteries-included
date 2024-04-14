@@ -39,7 +39,7 @@ type ('a, 'b) t = ('a, 'b) Hashtbl.t
 
 type statistics = Hashtbl.statistics
 
-(**{6 Base operations}*)
+(**{1 Base operations}*)
 
 val create : int -> ('a, 'b) t
 (** [Hashtbl.create n] creates a new, empty hash table, with
@@ -109,7 +109,7 @@ val stats : ('a, 'b) t -> statistics
     buckets by size.
     @since 4.00.0 and batteries 3.5.1 *)
 
-(**{6 Enumerations}*)
+(**{1 Enumerations}*)
 
 val keys : ('a,'b) t -> 'a BatEnum.t
 (** Return an enumeration of all the keys of a hashtable.
@@ -125,7 +125,7 @@ val enum : ('a, 'b) t -> ('a * 'b) BatEnum.t
 val of_enum : ('a * 'b) BatEnum.t -> ('a, 'b) t
 (** Create a hashtable from a (key,value) enumeration. *)
 
-(**{6 Lists}*)
+(**{1 Lists}*)
 
 val of_list : ('a * 'b) list -> ('a, 'b) t
 (** Create a hashtable from a list of (key,value) pairs.
@@ -139,7 +139,7 @@ val bindings : ('a, 'b) t -> ('a * 'b) list
 (** Alias for [to_list].
     @since 2.6.0 *)
 
-(**{6 Searching}*)
+(**{1 Searching}*)
 
 val find : ('a, 'b) t -> 'a -> 'b
 (** [Hashtbl.find tbl x] returns the current binding of [x] in [tbl],
@@ -169,7 +169,7 @@ val mem : ('a, 'b) t -> 'a -> bool
   (** [exists h k] returns true is at least one item with key [k] is
       found in the hashtable. *)*)
 
-(**{6 Traversing}
+(**{1 Traversing}
 
    A number of higher-order functions are provided to allow
    purely functional traversal or transformation of hashtables.
@@ -277,7 +277,7 @@ val merge_all: ('a -> 'b list -> 'c list -> 'd list) ->
     @since 2.10.0
 *)
 
-(** {6 The polymorphic hash primitive}*)
+(** {1 The polymorphic hash primitive}*)
 
 val hash : 'a -> int
 (** [Hashtbl.hash x] associates a positive integer to any value of
@@ -287,16 +287,16 @@ val hash : 'a -> int
     structures. *)
 
 
-(** {6 Boilerplate code}*)
+(** {1 Boilerplate code}*)
 
-(** {7 Printing}*)
+(** {2 Printing}*)
 
 val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
   ('a BatInnerIO.output -> 'b -> unit) ->
   ('a BatInnerIO.output -> 'c -> unit) ->
   'a BatInnerIO.output -> ('b, 'c) t -> unit
 
-(** {6 Override modules}*)
+(** {1 Override modules}*)
 
 (**
    The following modules replace functions defined in {!Hashtbl} with functions
@@ -366,7 +366,7 @@ sig
                  left:('a, 'b) t -> right:('a, 'c) t -> ('a, 'd) t
 end
 
-(** {6 Functorial interface} *)
+(** {1 Functorial interface} *)
 
 module type HashedType =
 sig
@@ -440,7 +440,7 @@ sig
     ('a BatInnerIO.output -> 'b -> unit) ->
     'a BatInnerIO.output -> 'b t -> unit
 
-  (** {6 Override modules}*)
+  (** {1 Override modules}*)
 
   (**
      The following modules replace functions defined in {!Hashtbl} with functions
@@ -532,7 +532,7 @@ sig
   type ('a, 'b, 'c) t constraint 'c = [< `Read | `Write ]
   (** The type of a hashtable. *)
 
-  (**{6 Constructors}*)
+  (**{1 Constructors}*)
 
   val create : int -> ('a, 'b, _) t
 
@@ -562,7 +562,7 @@ sig
 
       This operation involves no copying.*)
 
-  (**{6 Base operations}*)
+  (**{1 Base operations}*)
 
   val length : ('a, 'b, _) t -> int
   val is_empty : ('a, 'b, _) t -> bool
@@ -574,7 +574,7 @@ sig
   val clear : ('a, 'b, [>`Write]) t -> unit
   val stats : ('a, 'b, _) t -> statistics
 
-  (**{6 Searching}*)
+  (**{1 Searching}*)
 
   val find : ('a, 'b, [>`Read]) t -> 'a -> 'b
   val find_all : ('a, 'b, [>`Read]) t -> 'a -> 'b list
@@ -588,7 +588,7 @@ sig
     (** [exists h k] returns true is at least one item with key [k] is
         found in the hashtable. *)*)
 
-  (**{6 Traversing}*)
+  (**{1 Traversing}*)
 
   val iter : ('a -> 'b -> unit) -> ('a, 'b, [>`Read]) t -> unit
   val for_all : ('a -> 'b -> bool) -> ('a, 'b, [>`Read]) t -> bool
@@ -606,7 +606,7 @@ sig
   val merge_all : ('key -> 'a list -> 'b list -> 'c list) ->
                   ('key, 'a, [>`Read]) t -> ('key, 'b, [>`Read]) t -> ('key, 'c, _) t
 
-  (**{6 Conversions}*)
+  (**{1 Conversions}*)
 
   val keys : ('a,'b, [>`Read]) t -> 'a BatEnum.t
   val values : ('a, 'b, [>`Read]) t -> 'b BatEnum.t
@@ -615,16 +615,16 @@ sig
   val to_list : ('a, 'b, [>`Read]) t -> ('a * 'b) list
   val of_list : ('a * 'b) list -> ('a, 'b, _) t
 
-  (** {6 Boilerplate code}*)
+  (** {1 Boilerplate code}*)
 
-  (** {7 Printing}*)
+  (** {2 Printing}*)
 
   val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
     ('a BatInnerIO.output -> 'b -> unit) ->
     ('a BatInnerIO.output -> 'c -> unit) ->
     'a BatInnerIO.output -> ('b, 'c, [>`Read]) t -> unit
 
-  (** {6 Override modules}*)
+  (** {1 Override modules}*)
 
   (** Operations on {!BatHashtbl.Cap} without exceptions.*)
   module Exceptionless :

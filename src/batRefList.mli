@@ -111,7 +111,7 @@ val tl : 'a t -> 'a t
 val rev : 'a t -> unit
 (** Reverses the ref list - O(n) *)
 
-(** {6 Functional Operations} *)
+(** {1 Functional Operations} *)
 
 val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
 (** [List.fold_left f a (ref [b0; b1; ...; bn])] is
@@ -186,7 +186,7 @@ val remove_all : 'a t -> 'a -> unit
 (** Remove all elements equal to the specified
     element from the ref list *)
 
-(** {6 Boilerplate code}*)
+(** {1 Boilerplate code}*)
 
 
 

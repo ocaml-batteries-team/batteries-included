@@ -51,7 +51,7 @@
     @author David Teller
 *)
 
-(** {6 Element kinds} *)
+(** {1 Element kinds} *)
 
 (** Big arrays can contain elements of the following kinds:
     - IEEE single precision (32 bits) floating-point numbers
@@ -220,7 +220,7 @@ val kind_size_in_bytes : ('a, 'b) kind -> int
 
    @since 2.5.0 *)
 
-(** {6 Array layouts} *)
+(** {1 Array layouts} *)
 
 type c_layout = Bigarray.c_layout
 ##V>=4.2## = C_layout_typ (**)
@@ -258,7 +258,7 @@ type 'a layout = 'a Bigarray.layout
     if ['a] is {!Bigarray.fortran_layout}. *)
 
 
-(** {7 Supported layouts}
+(** {2 Supported layouts}
 
     The abstract values [c_layout] and [fortran_layout] represent
     the two supported layouts at the level of values.
@@ -562,7 +562,7 @@ sig
 
 end
 
-##V>=4.5##(** {6 Zero-dimensional arrays} *)
+##V>=4.5##(** {1 Zero-dimensional arrays} *)
 ##V>=4.5##
 ##V>=4.5##(** Zero-dimensional arrays. The [Array0] structure provides operations
 ##V>=4.5##   similar to those of {!Bigarray.Genarray}, but specialized to the case
@@ -619,7 +619,7 @@ end
 ##V>=4.5##end
 
 
-(** {6 One-dimensional arrays} *)
+(** {1 One-dimensional arrays} *)
 
 (** One-dimensional arrays. The [Array1] structure provides operations
     similar to those of
@@ -752,7 +752,7 @@ module Array1 : sig
     given big array.  *)
 
 
-  (**{6 Unsafe operations}
+  (**{1 Unsafe operations}
 
      In case of doubt, don't use them.*)
 
@@ -771,7 +771,7 @@ module Array1 : sig
 end
 
 
-(** {6 Two-dimensional arrays} *)
+(** {1 Two-dimensional arrays} *)
 
 (** Two-dimensional arrays. The [Array2] structure provides operations
     similar to those of {!Bigarray.Genarray}, but specialized to the
@@ -912,7 +912,7 @@ sig
   (** Build a two-dimensional array initialized from the
       given big array.  *)
 
-  (**{6 Unsafe operations}
+  (**{1 Unsafe operations}
 
      In case of doubt, don't use them.*)
 
@@ -929,7 +929,7 @@ sig
 
 end
 
-(** {6 Three-dimensional arrays} *)
+(** {1 Three-dimensional arrays} *)
 
 (** Three-dimensional arrays. The [Array3] structure provides operations
     similar to those of {!Bigarray.Genarray}, but specialized to the case
@@ -1095,7 +1095,7 @@ sig
   (** Build a three-dimensional array initialized from the
       given big array.  *)
 
-  (**{6 Unsafe operations}
+  (**{1 Unsafe operations}
 
      In case of doubt, don't use them.*)
 
@@ -1112,7 +1112,7 @@ sig
 
 end
 
-(** {6 Coercions between generic big arrays and fixed-dimension big arrays} *)
+(** {1 Coercions between generic big arrays and fixed-dimension big arrays} *)
 
 ##V>=4.5##external genarray_of_array0 :
 ##V>=4.5##  ('a, 'b, 'c) Array0.t -> ('a, 'b, 'c) Genarray.t = "%identity"
@@ -1163,7 +1163,7 @@ val array3_of_genarray : ('a, 'b, 'c) Genarray.t -> ('a, 'b, 'c) Array3.t
     does not have exactly three dimensions. *)
 
 
-(** {6 Re-shaping big arrays} *)
+(** {1 Re-shaping big arrays} *)
 
 val reshape : ('a, 'b, 'c) Genarray.t -> int array -> ('a, 'b, 'c) Genarray.t
 (** [reshape b [|d1;...;dN|]] converts the big array [b] to a

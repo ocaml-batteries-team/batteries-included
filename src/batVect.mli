@@ -43,7 +43,7 @@
     - concat, substring, insert, remove operations in amortized logarithmic time
     - access to and modification of vectors in logarithmic time
 
-    {8 Functional nature and persistence}
+    {3 Functional nature and persistence}
 
     All operations but [destructive_set] (provided for efficient ephemeral usage)
     are non-destructive: the original vect is never modified.  When a new vect is
@@ -73,7 +73,7 @@ exception Out_of_bounds
 val max_length : int
 (** Maximum length of the vect. *)
 
-(** {6 Creation and conversions} *)
+(** {1 Creation and conversions} *)
 
 val empty : 'a t
 (** The empty vect. *)
@@ -105,7 +105,7 @@ val init : int -> (int -> 'a) -> 'a t
 
     @raise Invalid_argument if [n < 0] or [n > max_length].*)
 
-(** {6 Properties } *)
+(** {1 Properties } *)
 
 val is_empty : 'a t -> bool
 (** Returns whether the vect is empty or not. *)
@@ -116,7 +116,7 @@ val height : 'a t -> int
 val length : 'a t -> int
 (** Returns the length of the vect ([O(1)]). *)
 
-(** {6 Operations } *)
+(** {1 Operations } *)
 
 val balance : 'a t -> 'a t
 (** [balance r] returns a balanced copy of the [r] vect. Note that vects are
@@ -181,7 +181,7 @@ val remove : int -> int -> 'a t -> 'a t
     [length r - n].
     Operates in amortized [O(log(size r))] time. *)
 
-(** {6 Conversion}*)
+(** {1 Conversion}*)
 
 val enum : 'a t -> 'a BatEnum.t
 (** Returns an enumeration of the elements of the vector.
@@ -197,7 +197,7 @@ val backwards : 'a t -> 'a BatEnum.t
 val of_backwards : 'a BatEnum.t -> 'a t
 (** Build a vector from an enumeration, from last to first.*)
 
-(** {6 Iteration and higher-order functions } *)
+(** {1 Iteration and higher-order functions } *)
 
 val iter : ('a -> unit) -> 'a t -> unit
 (** [iter f r] applies [f] to all the elements in the [r] vect,
@@ -256,7 +256,7 @@ val mapi : (int -> 'a -> 'b) -> 'a t -> 'b t
       with [<>].  Operates in [O(n)] time. *)
 *)
 
-(**{6 Predicates}*)
+(**{1 Predicates}*)
 
 val for_all : ('a -> bool) -> 'a t -> bool
 (** [for_all p [a0; a1; ...; an]] checks if all elements of the vect
@@ -313,7 +313,7 @@ val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
     elements of [v] that do not satisfy [p].
     The order of the elements in the input vect is preserved. *)
 
-(** {6 Convenience Functions} *)
+(** {1 Convenience Functions} *)
 
 val first : 'a t -> 'a
 val last : 'a t -> 'a
@@ -325,7 +325,7 @@ val shift : 'a t -> 'a * 'a t
 val pop : 'a t -> 'a * 'a t
 (** Return the last element of a vector and its first [n-1] elements. *)
 
-(** {6 Boilerplate code}*)
+(** {1 Boilerplate code}*)
 
 val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
 
@@ -337,7 +337,7 @@ val ord : 'a BatOrd.ord -> 'a t BatOrd.ord
 val invariants : _ t -> unit
 (**/**)
 
-(** {6 Override modules}*)
+(** {1 Override modules}*)
 
 (** Operations on {!BatVect} with labels.
 
@@ -379,7 +379,7 @@ module Labels : sig
   val partition : f:('a -> bool) -> 'a t -> 'a t * 'a t
 end
 
-(** {6 Functorial interface} *)
+(** {1 Functorial interface} *)
 
 module type RANDOMACCESS =
 sig
@@ -422,7 +422,7 @@ module Make :
         operating on them.
     *)
 
-    (** {6 Creation and conversions} *)
+    (** {1 Creation and conversions} *)
 
     val empty : 'a t
     (** The empty vect. *)
@@ -461,7 +461,7 @@ val init : int -> (int -> 'a) -> 'a t
 
     @raise Invalid_argument if [n < 0] or [n > max_length].*)
 
-(** {6 Properties } *)
+(** {1 Properties } *)
 
 val is_empty : 'a t -> bool
 (** Returns whether the vect is empty or not. *)
@@ -472,7 +472,7 @@ val height : 'a t -> int
 val length : 'a t -> int
 (** Returns the length of the vect ([O(1)]). *)
 
-(** {6 Operations } *)
+(** {1 Operations } *)
 
 val balance : 'a t -> 'a t
 (** [balance r] returns a balanced copy of the [r] vect. Note that vects are
@@ -537,7 +537,7 @@ val remove : int -> int -> 'a t -> 'a t
     [length r - n].
     Operates in amortized [O(log(size r))] time. *)
 
-(** {6 Conversion}*)
+(** {1 Conversion}*)
 
 val enum : 'a t -> 'a BatEnum.t
 (** Returns an enumeration of the elements of the vector.
@@ -553,7 +553,7 @@ val backwards : 'a t -> 'a BatEnum.t
 val of_backwards : 'a BatEnum.t -> 'a t
 (** Build a vector from an enumeration, from last to first.*)
 
-(** {6 Iteration and higher-order functions } *)
+(** {1 Iteration and higher-order functions } *)
 
 val iter : ('a -> unit) -> 'a t -> unit
 (** [iter f r] applies [f] to all the elements in the [r] vect,
@@ -612,7 +612,7 @@ val mapi : (int -> 'a -> 'b) -> 'a t -> 'b t
       with [<>].  Operates in [O(n)] time. *)
 *)
 
-(**{6 Predicates}*)
+(**{1 Predicates}*)
 
 val for_all : ('a -> bool) -> 'a t -> bool
 (** [for_all p [a0; a1; ...; an]] checks if all elements of the vect
@@ -670,7 +670,7 @@ val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
     elements of [v] that do not satisfy [p].
     The order of the elements in the input vect is preserved. *)
 
-(** {6 Convenience Functions} *)
+(** {1 Convenience Functions} *)
 
 val first : 'a t -> 'a
 
@@ -683,9 +683,9 @@ val shift : 'a t -> 'a * 'a t
 val pop : 'a t -> 'a * 'a t
 (** Return the last element of a vector and its first [n-1] elements. *)
 
-(** {6 Boilerplate code}*)
+(** {1 Boilerplate code}*)
 
-(** {6 Override modules}*)
+(** {1 Override modules}*)
 
   (** Operations on {!BatVect} with labels.
 
@@ -727,7 +727,7 @@ val pop : 'a t -> 'a * 'a t
     val partition : f:('a -> bool) -> 'a t -> 'a t * 'a t
   end
 
-(** {7 Printing}*)
+(** {2 Printing}*)
 
 val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
 

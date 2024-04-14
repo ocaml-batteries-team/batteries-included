@@ -173,7 +173,7 @@ val max_array_length : int
 
 ##V>=5.1##external is_regular_file : string -> bool = "caml_sys_is_regular_file"
 
-(** {6 Signal handling} *)
+(** {1 Signal handling} *)
 
 
 type signal_behavior = Sys.signal_behavior =
@@ -199,7 +199,7 @@ val set_signal : int -> signal_behavior -> unit
 (** Same as {!Sys.signal} but return value is ignored. *)
 
 
-(** {7 Signal numbers for the standard POSIX signals.} *)
+(** {2 Signal numbers for the standard POSIX signals.} *)
 
 val sigabrt : int
 (** Abnormal termination *)
@@ -344,7 +344,7 @@ val files_of: string -> string BatEnum.t
 ##V>=4.3##(** Return whether runtime warnings are currently enabled.
 ##V>=4.3##    @since 2.5.0 and OCaml 4.03 *)
 
-(** {6 Optimization} *)
+(** {1 Optimization} *)
 
 ##V>=4.3##external opaque_identity : 'a -> 'a = "%opaque"
 ##V=4.2##val opaque_identity : 'a -> 'a

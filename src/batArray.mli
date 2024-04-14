@@ -341,7 +341,7 @@ val singleton : 'a -> 'a array
 *)
 
 
-(** {6 Sorting} *)
+(** {1 Sorting} *)
 
 
 val sort : ('a -> 'a -> int) -> 'a array -> unit
@@ -437,7 +437,7 @@ val pivot_split : 'a BatOrd.ord -> 'a array -> 'a -> int * int
 *)
 
 
-(**{6 Operations on two arrays}*)
+(**{1 Operations on two arrays}*)
 
 val iter2 : ('a -> 'b -> unit) -> 'a array -> 'b array -> unit
 (** [Array.iter2 f [|a0; a1; ...; an|] [|b0; b1; ...; bn|]]
@@ -473,7 +473,7 @@ val cartesian_product : 'a array -> 'b array -> ('a * 'b) array
 (** Cartesian product of the two arrays.
     @since 2.2.0 *)
 
-(**{6 Predicates}*)
+(**{1 Predicates}*)
 
 val for_all : ('a -> bool) -> 'a array -> bool
 (** [for_all p [|a0; a1; ...; an|]] checks if all elements of the
@@ -542,7 +542,7 @@ val partition : ('a -> bool) -> 'a array -> 'a array * 'a array
     elements of [a] that do not satisfy [p].
     The order of the elements in the input array is preserved. *)
 
-(** {6 Array transformations} *)
+(** {1 Array transformations} *)
 
 val rev : 'a array -> 'a array
 (** Array reversal.*)
@@ -550,7 +550,7 @@ val rev : 'a array -> 'a array
 val rev_in_place : 'a array -> unit
 (** In-place array reversal.  The array argument is updated. *)
 
-(** {6 Conversions} *)
+(** {1 Conversions} *)
 
 val enum : 'a array -> 'a BatEnum.t
 (** Returns an enumeration of the elements of an array.
@@ -567,7 +567,7 @@ val of_backwards : 'a BatEnum.t -> 'a array
     the enumeration as the last element of the array and vice
     versa. *)
 
-(** {6 Utilities} *)
+(** {1 Utilities} *)
 
 val range : 'a array -> int BatEnum.t
 (** [range a] returns an enumeration of all valid indexes into the given
@@ -587,7 +587,7 @@ val remove_at : int -> 'a array -> 'a array
     @raise Invalid_argument if [i] is outside of [a] bounds.
     @since 3.3.0 *)
 
-(** {6 Boilerplate code}*)
+(** {1 Boilerplate code}*)
 
 val print : ?first:string -> ?last:string -> ?sep:string ->
   ('a, 'b) BatIO.printer -> ('a t, 'b) BatIO.printer
@@ -628,7 +628,7 @@ val equal : 'a BatOrd.eq -> 'a array BatOrd.eq
     equal if their lengths are the same and corresponding elements
     test equal. *)
 
-(** {6 Override modules}*)
+(** {1 Override modules}*)
 
 (** The following modules replace functions defined in {!Array} with
     functions behaving slightly differently but having the same
@@ -722,13 +722,13 @@ sig
      while a [('a, [`Read]) array] only has read-only capabilities
      and a [('a, [`Write]) array] only has write-only capabilities.*)
 
-  (**{6 Base operations}*)
+  (**{1 Base operations}*)
 
   external length : ('a, [> ]) t -> int = "%array_length"
   external get : ('a, [> `Read]) t -> int -> 'a = "%array_safe_get"
   external set : ('a, [> `Write]) t -> int -> 'a -> unit = "%array_safe_set"
 
-  (**{6 Constructors}*)
+  (**{1 Constructors}*)
 
   external make : int -> 'a -> ('a, _) t = "caml_make_vect"
   external create : int -> 'a -> ('a, _) t = "caml_make_vect"
@@ -771,7 +771,7 @@ sig
   val make_matrix : int -> int -> 'a -> (('a, _)t, _) t
   val create_matrix : int -> int -> 'a ->  (('a, _)t, _) t
 
-  (** {6 Iterators}*)
+  (** {1 Iterators}*)
 
   val iter : ('a -> unit) -> ('a, [> `Read]) t -> unit
   val map : ('a -> 'b) -> ('a, [>`Read]) t -> ('b, _) t
@@ -784,12 +784,12 @@ sig
   val fold_right : ('b -> 'a -> 'a) -> ('b, [> `Read]) t -> 'a -> 'a
   val fold_while : ('acc -> 'a -> bool) -> ('acc -> 'a -> 'acc) -> 'acc -> ('a, [> `Read]) t -> ('acc * int)
 
-  (**{6 Operations on two arrays}*)
+  (**{1 Operations on two arrays}*)
 
   val iter2 : ('a -> 'b -> unit) -> ('a, [> `Read]) t -> ('b, [> `Read]) t -> unit
   val iter2i : (int -> 'a -> 'b -> unit) -> ('a, [> `Read]) t -> ('b, [> `Read]) t -> unit
 
-  (**{6 Predicates}*)
+  (**{1 Predicates}*)
 
   val for_all : ('a -> bool) -> ('a, [> `Read]) t -> bool
   val exists : ('a -> bool) -> ('a, [> `Read]) t -> bool
@@ -805,7 +805,7 @@ sig
   val find_all : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t
   val partition : ('a -> bool) -> ('a, [> `Read]) t -> ('a, _) t * ('a, _)t
 
-  (** {6 Array transformations} *)
+  (** {1 Array transformations} *)
 
   val rev : ('a, [> `Read]) t -> ('a, _) t
   val rev_in_place : ('a, [`Read | `Write]) t -> unit
@@ -816,7 +816,7 @@ sig
   val fill : ('a, [> `Write]) t -> int -> int -> 'a -> unit
   val blit : ('a, [> `Read]) t -> int -> ('a, [>`Write]) t -> int -> int -> unit
 
-  (** {6 Conversions} *)
+  (** {1 Conversions} *)
 
   val enum : ('a, [> `Read]) t -> 'a BatEnum.t
   val of_enum : 'a BatEnum.t -> ('a, _) t
@@ -828,13 +828,13 @@ sig
   val pivot_split : 'a BatOrd.ord -> ('a, [> `Read]) t -> 'a -> int * int
   val of_list : 'a list -> ('a, _) t
 
-  (** {6 Utilities} *)
+  (** {1 Utilities} *)
 
   val sort : ('a -> 'a -> int) -> ('a, [> `Read | `Write]) t -> unit
   val stable_sort : ('a -> 'a -> int) -> ('a, [ `Read | `Write]) t -> unit
   val fast_sort : ('a -> 'a -> int) -> ('a, [`Read | `Write]) t -> unit
 
-  (** {6 Boilerplate code}*)
+  (** {1 Boilerplate code}*)
 
   val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatIO.output -> 'b -> unit) ->  'a BatIO.output -> ('b, [>`Read]) t -> unit
 
@@ -842,7 +842,7 @@ sig
   val ord : 'a BatOrd.ord -> ('a, [> `Read]) t BatOrd.ord
   val equal : 'a BatOrd.eq -> ('a, [> `Read]) t BatOrd.eq
 
-  (** {6 Override modules}*)
+  (** {1 Override modules}*)
 
   (** Operations on {!BatArray.Cap} without exceptions.*)
   module Exceptionless : sig
@@ -888,7 +888,7 @@ sig
     val count_matching: f:('a -> bool) -> ('a, [>`Read]) t -> int
   end
   (**/**)
-  (** {6 Undocumented functions} *)
+  (** {1 Undocumented functions} *)
 
   external unsafe_get : ('a, [> `Read]) t -> int -> 'a = "%array_unsafe_get"
   external unsafe_set : ('a, [> `Write])t -> int -> 'a -> unit = "%array_unsafe_set"
@@ -910,7 +910,7 @@ end
 
 
 (**/**)
-(** {6 Undocumented functions} *)
+(** {1 Undocumented functions} *)
 
 (* for tests *)
 val is_sorted_by : ('a -> 'b) -> 'a array -> bool

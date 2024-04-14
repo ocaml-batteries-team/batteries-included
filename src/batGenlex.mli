@@ -74,7 +74,7 @@ val make_lexer : string list -> char Stream.t -> token Stream.t
     Comments delimited by [(*] and [*)] are skipped as well,
     and can be nested. *)
 
-(* {6 Batteries extensions to genlex } *)
+(* {1 Batteries extensions to genlex } *)
 type lexer_error =
   | IllegalCharacter of char
   | NotReallyAChar
@@ -100,7 +100,7 @@ val to_lazy_list_filter:  t -> char BatLazyList.t ->  token BatLazyList.t
 
 val string_of_token : token -> string
 
-(**{6 Extending to other languages}*)
+(**{1 Extending to other languages}*)
 open BatCharParser
 
 module Languages :
@@ -131,7 +131,7 @@ sig
   sig
     (**Create a lexer from a language definition*)
 
-    (** {6 High-level API} *)
+    (** {1 High-level API} *)
 
     (** Drop comments, present reserved operators and reserved
         names as [Kwd], operators and identifiers as [Ident],
@@ -144,7 +144,7 @@ sig
     val feed               : (char, position) BatParserCo.Source.t -> (token, position) BatParserCo.Source.t
 
 
-    (** {6 Medium-level API} *)
+    (** {1 Medium-level API} *)
     val start  : (char, unit, position) BatParserCo.t
     (**Remove any leading whitespaces*)
 
@@ -180,7 +180,7 @@ sig
     val number:        (char, [`Float of float | `Integer of int] , position) BatParserCo.t
     (**Parse either an integer or a floating-point number.*)
 
-    (** {6 Low-level API} *)
+    (** {1 Low-level API} *)
     val char         : char -> (char, char , position) BatParserCo.t
     (** As {!CharParser.char}, but case-insensitive if specified
         by {!case_sensitive}. *)

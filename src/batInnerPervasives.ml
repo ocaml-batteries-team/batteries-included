@@ -64,7 +64,7 @@ let forever f x = ignore (while true do ignore (f x) done)
 let ignore_exceptions f x = try ignore (f x) with _ -> ()
 
 
-  (** {6 Operators}*)
+  (** {1 Operators}*)
 
 ##V<4## let ( |> ) x f = f x
 ##V>=4## external (|>) : 'a -> ('a -> 'b) -> 'b = "%revapply"

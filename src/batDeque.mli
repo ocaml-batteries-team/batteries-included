@@ -32,7 +32,7 @@ include BatInterfaces.Mappable with type 'a mappable = 'a t
 val size : 'a dq -> int
 (** [size dq] is the number of elements in the [dq]. O(1) *)
 
-(** {6 Construction} *)
+(** {1 Construction} *)
 
 val empty : 'a dq
 (** The empty deque. *)
@@ -43,7 +43,7 @@ val cons : 'a -> 'a dq -> 'a dq
 val snoc : 'a dq -> 'a -> 'a dq
 (** [snoc x dq] adds [x] to the rear of [dq]. O(1) *)
 
-(** {6 Deconstruction} *)
+(** {1 Deconstruction} *)
 
 val front : 'a dq -> ('a * 'a dq) option
 (** [front dq] returns [Some (x, dq')] iff [x] is at the front of
@@ -55,7 +55,7 @@ val rear : 'a dq -> ('a dq * 'a) option
     and [dq'] is the rest of [dq] excluding [x], and [None] if [dq]
     has no elements. O(1) amortized, O(n) worst case *)
 
-(** {6 Basic operations} *)
+(** {1 Basic operations} *)
 
 val eq : ?eq:('a -> 'a -> bool) -> 'a dq -> 'a dq -> bool
   (** [eq dq1 dq2] is true if [dq1] and [dq2] have the same sequence
@@ -133,7 +133,7 @@ val rotate_backward : 'a dq -> 'a dq
 
     @since 2.3.0 *)
 
-(** {6 Transformation} *)
+(** {1 Transformation} *)
 
 val of_list : 'a list -> 'a dq
 (** [of_list l] is a deque representation of the elements of [l].
@@ -154,7 +154,7 @@ val enum : 'a dq -> 'a BatEnum.t
     is amortized O(1), and O(n) worst case.
 *)
 
-(** {6 Printing} *)
+(** {1 Printing} *)
 
 val print : ?first:string -> ?last:string -> ?sep:string
   -> ('a, 'b) BatIO.printer -> ('a dq, 'b) BatIO.printer

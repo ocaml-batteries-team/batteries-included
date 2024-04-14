@@ -81,14 +81,14 @@ val is_lowercase : char -> bool
 val is_uppercase_latin1: char -> bool
 (** Determine if a character is uppercase Latin 1.
     A character is uppercase Latin 1 if it is between
-    ['A'] and ['Z'], between ['À'] and ['Ö'] or
-    between ['Ø'] and ['İ'] *)
+    ['A'] and ['Z'], between ['ï¿½'] and ['ï¿½'] or
+    between ['ï¿½'] and ['ï¿½'] *)
 
 val is_lowercase_latin1: char -> bool
 (** Determine if a character is lowercase Latin 1.
     A character is lowercase Latin 1 if it is between
-    ['a'] and ['z'], between ['Ş'] and ['ö'] or
-    between ['ø'] and ['ÿ']*)
+    ['a'] and ['z'], between ['ï¿½'] and ['ï¿½'] or
+    between ['ï¿½'] and ['ï¿½']*)
 
 val is_latin1: char -> bool
 (** Determine if a character is a Latin 1 letter.
@@ -132,12 +132,12 @@ val ( -- ): char -> char -> char BatEnum.t
     ['a' -- 'z'] is the enumeration of all characters
     between ['a'] and ['z'] included.*)
 
-(** {6 Infix submodule regrouping all infix operators} *)
+(** {1 Infix submodule regrouping all infix operators} *)
 module Infix : sig
   val ( -- ): char -> char -> char BatEnum.t
 end
 
-(** {6 Boilerplate code}*)
+(** {1 Boilerplate code}*)
 
 val print: 'a BatInnerIO.output -> Char.t -> unit
 

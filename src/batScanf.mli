@@ -25,9 +25,9 @@
     @author David Teller
 *)
 
-(** {6 Introduction} *)
+(** {1 Introduction} *)
 
-(** {7 Functional input with format strings} *)
+(** {2 Functional input with format strings} *)
 
 (** The module [Scanf] provides formatted input functions or {e scanners}.
 
@@ -56,7 +56,7 @@
     - [f] is a function that has as many arguments as the number of values to
     read in the input. *)
 
-(** {7 A simple example} *)
+(** {2 A simple example} *)
 
 (** As suggested above, the expression [bscanf ib "%d" f] reads a decimal
     integer [n] from the source of characters [ib] and returns [f n].
@@ -73,7 +73,7 @@
     "%d" f], and then enter [41] at the keyboard, we get [42] as the final
     result. *)
 
-(** {7 Formatted input as a functional feature} *)
+(** {2 Formatted input as a functional feature} *)
 
 (** The OCaml scanning facility is reminiscent of the corresponding C feature.
     However, it is also largely different, simpler, and yet more powerful:
@@ -87,7 +87,7 @@
     polymorphic user-defined scanners.  Furthermore, the OCaml formatted input
     facility is fully type-checked at compile time. *)
 
-(** {6 Scanning buffers} *)
+(** {1 Scanning buffers} *)
 module Scanning : sig
 
   type scanbuf = Scanf.Scanning.scanbuf
@@ -153,7 +153,7 @@ module Scanning : sig
       for the scanning buffer [ib]. *)
 
   (**
-     {6 Obsolete}
+     {1 Obsolete}
   *)
 
   val from_channel : BatIO.input -> scanbuf
@@ -162,7 +162,7 @@ module Scanning : sig
 
 end
 
-(** {6 Type of formatted input functions} *)
+(** {1 Type of formatted input functions} *)
 
 type ('a, 'b, 'c, 'd) scanner =
   ('a, Scanning.scanbuf, 'b, 'c, 'a -> 'd, 'd) format6 -> 'c
@@ -188,7 +188,7 @@ exception Scan_failure of string
 (** The exception that formatted input functions raise when the input cannot be
     read according to the given format. *)
 
-(** {6 The general formatted input function} *)
+(** {1 The general formatted input function} *)
 
 val bscanf : Scanning.scanbuf -> ('a, 'b, 'c, 'd) scanner
 (** [bscanf ib fmt r1 ... rN f] reads arguments for the function [f], from the
@@ -202,7 +202,7 @@ val bscanf : Scanning.scanbuf -> ('a, 'b, 'c, 'd) scanner
     Arguments [r1] to [rN] are user-defined input functions that read the
     argument corresponding to a [%r] conversion. *)
 
-(** {6 Format string description} *)
+(** {1 Format string description} *)
 
 (** The format is a character string which contains three types of
     objects:
@@ -212,7 +212,7 @@ val bscanf : Scanning.scanbuf -> ('a, 'b, 'c, 'd) scanner
       one argument for the function [f],
     - scanning indications to specify boundaries of tokens. *)
 
-(** {7 The space character in format strings} *)
+(** {2 The space character in format strings} *)
 
 (** As mentioned above, a plain character in the format string is just
     matched with the characters of the input; however, one character is a
@@ -228,7 +228,7 @@ val bscanf : Scanning.scanbuf -> ('a, 'b, 'c, 'd) scanner
     input with various whitespace in it, such as [Price = 1 $],
     [Price  =  1    $], or even [Price=1$]. *)
 
-(** {7 Conversion specifications in format strings} *)
+(** {2 Conversion specifications in format strings} *)
 
 (** Conversion specifications consist in the [%] character, followed by
     an optional flag, an optional field width, and followed by one or
@@ -335,7 +335,7 @@ val bscanf : Scanning.scanbuf -> ('a, 'b, 'c, 'd) scanner
     [Str]), stream parsers, [ocamllex]-generated lexers,
     [ocamlyacc]-generated parsers. *)
 
-(** {7 Scanning indications in format strings} *)
+(** {2 Scanning indications in format strings} *)
 
 (** Scanning indications appear just after the string conversions [%s]
     and [%\[ range \]] to delimit the end of the token. A scanning
@@ -359,7 +359,7 @@ val bscanf : Scanning.scanbuf -> ('a, 'b, 'c, 'd) scanner
     or carefully double check the format strings that contain ['\@']
     characters). *)
 
-(** {7 Exceptions during scanning} *)
+(** {2 Exceptions during scanning} *)
 
 (** Scanners may raise the following exceptions when the input cannot be read
     according to the format string:
@@ -379,7 +379,7 @@ val bscanf : Scanning.scanbuf -> ('a, 'b, 'c, 'd) scanner
     [End_of_file]: if the end of input is reached the conversion succeeds and
     simply returns the characters read so far, or [""] if none were read. *)
 
-(** {6 Specialized formatted input functions} *)
+(** {1 Specialized formatted input functions} *)
 
 ##V<5##val fscanf : in_channel -> ('a, 'b, 'c, 'd) scanner
 ##V<5##(** Same as {!Scanf.bscanf}, but reads from the given channel.
@@ -410,7 +410,7 @@ val kscanf :
     error handling function [ef] with the scanning buffer and the
     exception that aborted the scanning process. *)
 
-(** {6 Reading format strings from input} *)
+(** {1 Reading format strings from input} *)
 
 val bscanf_format :
   Scanning.scanbuf -> ('a, 'b, 'c, 'd, 'e, 'f) format6 ->

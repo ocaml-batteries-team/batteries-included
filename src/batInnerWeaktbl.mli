@@ -21,7 +21,7 @@
 *)
 
 
-(** {6 Generic interface} *)
+(** {1 Generic interface} *)
 
 
 type ('a, 'b) t
@@ -99,7 +99,7 @@ val length : ('a, 'b) t -> int
     gives the number of times [Weaktbl.iter] calls its first argument. *)
 
 
-(** {6 Functorial interface} *)
+(** {1 Functorial interface} *)
 
 module type HashedType = sig
   type t

@@ -55,7 +55,7 @@ val source_of_enum   : char BatEnum.t -> (char, position) Source.t
 val parse : (char, 'a, position) t -> string -> ('a, position report) BatPervasives.result
 (**Apply a parser to a string.*)
 
-(**{6 Utilities}*)
+(**{1 Utilities}*)
 
 val char : char -> (char, char, position) t
 (** Recognize exactly one char*)

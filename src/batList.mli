@@ -68,7 +68,7 @@ include BatEnum.Enumerable with type 'a enumerable = 'a t
 include BatInterfaces.Mappable with type 'a mappable = 'a t
 
 
-(**{6 Base operations}*)
+(**{1 Base operations}*)
 
 
 val is_empty : 'a list -> bool
@@ -162,7 +162,7 @@ val singleton : 'a -> 'a list
 *)
 
 
-(**{6 Constructors}*)
+(**{1 Constructors}*)
 
 
 val make : int -> 'a -> 'a list
@@ -223,7 +223,7 @@ val unfold_exc : (unit -> 'a) -> 'a list * exn
     @deprecated use {!unfold_exn}
     @since 2.3.0 *)
 
-##V>=4.12##(**{6 Comparison}*)
+##V>=4.12##(**{1 Comparison}*)
 ##V>=4.12##
 ##V>=4.12##val equal : ('a -> 'a -> bool) -> 'a list -> 'a list -> bool
 ##V>=4.12##(** [equal eq [a1; ...; an] [b1; ..; bm]] holds when
@@ -239,7 +239,7 @@ val unfold_exc : (unit -> 'a) -> 'a list * exn
 ##V>=4.12##    @since 3.3.0 and 4.12.0
 ##V>=4.12##*)
 
-(**{6 Iterators}*)
+(**{1 Iterators}*)
 
 val iter : ('a -> unit) -> 'a list -> unit
 (** [List.iter f [a0; a1; ...; an]] applies function [f] in turn to
@@ -370,7 +370,7 @@ val min_max : ?cmp:('a -> 'a -> int) -> 'a list -> 'a * 'a
 ##V>=4.07##(** Create a list from the iterator
 ##V>=4.07##    @since 2.10.0 and OCaml 4.07 *)
 
-(** {6 Iterators on two lists} *)
+(** {1 Iterators on two lists} *)
 
 
 val iter2 : ('a -> 'b -> unit) -> 'a list -> 'b list -> unit
@@ -412,7 +412,7 @@ val fold_right2 : ('a -> 'b -> 'c -> 'c) -> 'a list -> 'b list -> 'c -> 'c
     Tail-recursive. *)
 
 
-(**{6 List scanning}*)
+(**{1 List scanning}*)
 
 val mem : 'a -> 'a list -> bool
 (** [mem a l] is true if and only if [a] is equal
@@ -427,7 +427,7 @@ val memq : 'a -> 'a list -> bool
 (** Same as {!List.mem}, but uses physical equality instead of structural
     equality to compare list elements. *)
 
-(**{7 Unary predicate, One list}*)
+(**{2 Unary predicate, One list}*)
 
 val for_all : ('a -> bool) -> 'a list -> bool
 (** [for_all p [a0; a1; ...; an]] checks if all elements of the list
@@ -439,7 +439,7 @@ val exists : ('a -> bool) -> 'a list -> bool
     the list satisfies the predicate [p]. That is, it returns
     [(p a0) || (p a1) || ... || (p an)]. *)
 
-(**{7 Binary predicate, Two lists}*)
+(**{2 Binary predicate, Two lists}*)
 
 val for_all2 : ('a -> 'b -> bool) -> 'a list -> 'b list -> bool
 (** Same as {!List.for_all}, but for a two-argument predicate.
@@ -459,7 +459,7 @@ val subset : ('a -> 'b -> int) -> 'a list -> 'b list -> bool
 *)
 
 
-(**{6 List searching}*)
+(**{1 List searching}*)
 
 val find : ('a -> bool) -> 'a list -> 'a
 (** [find p l] returns the first element of the list [l]
@@ -623,7 +623,7 @@ val unique_hash : ?hash:('a -> int) -> ?eq:('a -> 'a -> bool) -> 'a list -> 'a l
     @since 2.0.0
 *)
 
-(**{6 Association lists}*)
+(**{1 Association lists}*)
 
 val assoc : 'a -> ('a * 'b) list -> 'b
 (** [assoc a l] returns the value associated with key [a] in the list of
@@ -698,7 +698,7 @@ val modify_opt : 'a -> ('b option -> 'b option) -> ('a * 'b) list -> ('a * 'b) l
 
     @since 2.1 *)
 
-(** {6 List transformations}*)
+(** {1 List transformations}*)
 
 val modify_at : int -> ('a -> 'a) -> 'a list -> 'a list
 (** [modify_at n f l] returns the same list as [l]
@@ -832,7 +832,7 @@ val interleave : ?first:'a -> ?last:'a -> 'a -> 'a list -> 'a list
     [first; a0; sep; a1; sep; a2; sep; ...; sep; an; last]. *)
 
 
-(** {6 BatEnum functions}
+(** {1 BatEnum functions}
 
     Abstraction layer.*)
 
@@ -859,7 +859,7 @@ val of_backwards : 'a BatEnum.t -> 'a list
 
 
 
-(** {6 List of pairs}*)
+(** {1 List of pairs}*)
 
 val split : ('a * 'b) list -> 'a list * 'b list
 (** Transform a list of pairs into a pair of lists:
@@ -876,7 +876,7 @@ val combine : 'a list -> 'b list -> ('a * 'b) list
     Tail-recursive. *)
 
 
-(** {6 Sorting}*)
+(** {1 Sorting}*)
 
 
 val sort : ('a -> 'a -> int) -> 'a list -> 'a list
@@ -932,7 +932,7 @@ val sort_unique : ('a -> 'a -> int) -> 'a list -> 'a list
 (** synonym for [sort_uniq] *)
 
 
-(** {6 Utilities}*)
+(** {1 Utilities}*)
 
 
 val group : ('a -> 'a -> int) -> 'a list -> 'a list list
@@ -968,9 +968,9 @@ val transpose : 'a list list -> 'a list list
     @since 2.0.0
 *)
 
-(** {6 Boilerplate code}*)
+(** {1 Boilerplate code}*)
 
-(** {7 Printing}*)
+(** {2 Printing}*)
 
 val print : ?first:string -> ?last:string -> ?sep:string -> ('a
       BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b list -> unit
@@ -990,7 +990,7 @@ module Comp (T : Comp) : Comp with type t = T.t list
 
 
 
-(** {6 Obsolete functions} *)
+(** {1 Obsolete functions} *)
 
 val nth : 'a list -> int -> 'a
 (** Obsolete. As [at]. *)
@@ -1009,7 +1009,7 @@ val takewhile :  ('a -> bool) -> 'a list -> 'a list
 val dropwhile : ('a -> bool) -> 'a list -> 'a list
 (** obsolete, as {!drop_while} *)
 
-(** {6 Override modules}*)
+(** {1 Override modules}*)
 
 (**
    The following modules replace functions defined in {!List} with functions
@@ -1113,7 +1113,7 @@ module Exceptionless : sig
   *)
 end
 
-(** {6 Infix submodule regrouping all infix operators} *)
+(** {1 Infix submodule regrouping all infix operators} *)
 module Infix : sig
   val ( @ ) : 'a list -> 'a list -> 'a list
 end

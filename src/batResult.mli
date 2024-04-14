@@ -147,7 +147,7 @@ val to_seq : ('a, 'e) t -> 'a BatSeq.t
     containing [v] and [Error _] is the empty sequence.
     @since 3.0.0 *)
 
-(** {6 The Result Monad} *)
+(** {1 The Result Monad} *)
 
 (** This monad is very similar to the option monad, but instead of
     being [None] when an error occurs, the first error in the sequence is
@@ -170,7 +170,7 @@ module Monad : sig
   val return : 'a -> ('a, _) t
 end
 
-(** {6 Infix} *)
+(** {1 Infix} *)
 
 (** This infix module provides the operator [(>>=)] *)
 module Infix : sig

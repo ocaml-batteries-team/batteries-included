@@ -86,7 +86,7 @@ open BatIO
     @author David Teller
 *)
 
-(** {6 Boxes} *)
+(** {1 Boxes} *)
 
 val open_box : int -> unit
 (** [open_box d] opens a new pretty-printing box
@@ -103,7 +103,7 @@ val open_box : int -> unit
 val close_box : unit -> unit
 (** Closes the most recently opened pretty-printing box. *)
 
-(** {6 Formatting functions} *)
+(** {1 Formatting functions} *)
 
 val print_string : string -> unit
 (** [print_string str] prints [str] in the current box. *)
@@ -125,7 +125,7 @@ val print_char : char -> unit
 val print_bool : bool -> unit
 (** Prints a boolean in the current box. *)
 
-(** {6 Break hints} *)
+(** {1 Break hints} *)
 
 val print_space : unit -> unit
 (** [print_space ()] is used to separate items (typically to print
@@ -168,7 +168,7 @@ val print_if_newline : unit -> unit
     has just been split. Otherwise, ignore the next formatting
     command. *)
 
-(** {6 Margin} *)
+(** {1 Margin} *)
 
 val set_margin : int -> unit
 (** [set_margin d] sets the value of the right margin
@@ -181,7 +181,7 @@ val set_margin : int -> unit
 val get_margin : unit -> int
 (** Returns the position of the right margin. *)
 
-(** {6 Maximum indentation limit} *)
+(** {1 Maximum indentation limit} *)
 
 val set_max_indent : int -> unit
 (** [set_max_indent d] sets the value of the maximum
@@ -195,7 +195,7 @@ val set_max_indent : int -> unit
 val get_max_indent : unit -> int
 (** Return the value of the maximum indentation limit (in characters). *)
 
-(** {6 Formatting depth: maximum number of boxes allowed before ellipsis} *)
+(** {1 Formatting depth: maximum number of boxes allowed before ellipsis} *)
 
 val set_max_boxes : int -> unit
 (** [set_max_boxes max] sets the maximum number
@@ -211,7 +211,7 @@ val get_max_boxes : unit -> int
 val over_max_boxes : unit -> bool
 (** Tests if the maximum number of boxes allowed have already been opened. *)
 
-(** {6 Advanced formatting} *)
+(** {1 Advanced formatting} *)
 
 val open_hbox : unit -> unit
 (** [open_hbox ()] opens a new pretty-printing box.
@@ -244,7 +244,7 @@ val open_hovbox : int -> unit
     When a new line is printed in the box, [d] is added to the
     current indentation. *)
 
-(** {6 Tabulations} *)
+(** {1 Tabulations} *)
 
 val open_tbox : unit -> unit
 (** Opens a tabulation box. *)
@@ -270,7 +270,7 @@ val set_tab : unit -> unit
 val print_tab : unit -> unit
 (** [print_tab ()] is equivalent to [print_tbreak 0 0]. *)
 
-(** {6 Ellipsis} *)
+(** {1 Ellipsis} *)
 
 val set_ellipsis_text : string -> unit
 (** Set the text of the ellipsis printed when too many boxes
@@ -279,7 +279,7 @@ val set_ellipsis_text : string -> unit
 val get_ellipsis_text : unit -> string
 (** Return the text of the ellipsis. *)
 
-(** {6:tags Semantics Tags} *)
+(** {1:tags Semantics Tags} *)
 
 type tag = string
 
@@ -356,7 +356,7 @@ val get_print_tags : unit -> bool
 val get_mark_tags : unit -> bool
 (** Return the current status of tags printing and tags marking. *)
 
-(** {6 Redirecting the standard formatter output} *)
+(** {1 Redirecting the standard formatter output} *)
 
 val set_formatter_output : 'a output -> unit
 (** Sets the output of the formatter to the given argument *)
@@ -380,7 +380,7 @@ val get_formatter_output_functions :
 
 (** Return the current output functions of the pretty-printer. *)
 
-(** {6:meaning Changing the meaning of standard formatter pretty printing} *)
+(** {1:meaning Changing the meaning of standard formatter pretty printing} *)
 
 (** The [Format] module is versatile enough to let you completely redefine
     the meaning of pretty printing: you may provide your own functions to define
@@ -420,7 +420,7 @@ val get_formatter_output_functions :
 ##V<5##    including line breaking and indentation functions. Useful to record the
 ##V<5##    current setting and restore it afterwards. *)
 
-(** {6:tags Changing the meaning of printing semantics tags} *)
+(** {1:tags Changing the meaning of printing semantics tags} *)
 
 ##V<5##type formatter_tag_functions = {
 ##V<5##  mark_open_tag : tag -> string;
@@ -460,7 +460,7 @@ val get_formatter_output_functions :
 
 (** Return the current tag functions of the pretty-printer. *)
 
-(** {6 Multiple formatted output} *)
+(** {1 Multiple formatted output} *)
 
 type formatter=Format.formatter
 (** Abstract data corresponding to a pretty-printer (also called a
@@ -519,7 +519,7 @@ val make_formatter :
     instance, a formatter to the [Pervasives.out_channel] [oc] is returned by
     [make_formatter (Pervasives.output oc) (fun () -> Pervasives.flush oc)]. *)
 
-(** {6 Basic functions to use with formatters} *)
+(** {1 Basic functions to use with formatters} *)
 
 val pp_open_hbox : formatter -> unit -> unit
 val pp_open_vbox : formatter -> int -> unit
@@ -607,7 +607,7 @@ val pp_print_text : formatter -> string -> unit
     @since 4.02.0
 *)
   
-(** {6 [printf] like functions for pretty-printing.} *)
+(** {1 [printf] like functions for pretty-printing.} *)
 
 val fprintf : formatter -> ('a, formatter, unit) format -> 'a
 
@@ -728,7 +728,7 @@ val ksprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
 (** Same as [sprintf] above, but instead of returning the string,
     passes it to the first argument. *)
 
-(** {6 Deprecated} *)
+(** {1 Deprecated} *)
 
 ##V<5##val bprintf : Buffer.t -> ('a, formatter, unit) format -> 'a
 ##V<5##(** A deprecated and error prone function. Do not use it.
@@ -740,11 +740,11 @@ val ksprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
 ##V<5##val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
 ##V<5##(** A deprecated synonym for [ksprintf]. *)
 
-(** {6 Basic functions to use with formatters} *)
+(** {1 Basic functions to use with formatters} *)
 
 val pp_set_formatter_output      : formatter -> _ output -> unit
 
-(** {6 Deprecated}*)
+(** {1 Deprecated}*)
 
 val set_formatter_out_channel : _ output -> unit
 (** Redirect the pretty-printer output to the given channel.
