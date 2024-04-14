@@ -54,7 +54,7 @@ BatNativeint BatOption BatRef BatTuple BatUnit }
 
 These modules have base library equivalents.  When using [open Batteries], [BatFoo] will replace [Foo], so that the new functions are easily available without a [Bat] prefix on the module name.  As well, [BatPervasives] is opened into the global namespace.  Finally, the previous versions of replaced modules are available in the [Legacy] module, i.e. [Legacy.Unix] and [Legacy.Pervasives].
 
-{!modules: BatArray BatBigarray BatBig_int BatBuffer BatComplex
+{!modules: BatArray BatBigarray BatBig_int BatBuffer BatBytes BatComplex
 BatDigest BatFormat BatGc BatGenlex BatHashtbl BatLexing BatList
 BatMap BatMarshal BatNum BatPervasives BatPrintexc BatPrintf
 BatQueue BatRandom BatScanf BatSet BatStack BatStream BatString
