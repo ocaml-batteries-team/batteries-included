@@ -602,8 +602,6 @@ val foreach: 'a BatEnum.t -> ('a -> unit) ->  unit
 (**
    {2 General-purpose loops}
 
-   {topic loops}
-
    The following functions are the three main general-purpose loops
    available in OCaml. By opposition to the loops available in
    imperative languages, OCaml loops are regular functions, which
