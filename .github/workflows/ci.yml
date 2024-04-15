@@ -14,7 +14,7 @@ jobs:
         os:
           - ubuntu-latest
         ocaml-compiler:
-          - 5.1.2	
+          - 5.1.0
           - 5.0.0
           - 4.14.x
           - 4.13.x
@@ -26,8 +26,6 @@ jobs:
           - 4.07.x
           - 4.06.x
           - 4.05.x
-          - 4.04.x
-          - 4.03.x
         test:
           - true
 
