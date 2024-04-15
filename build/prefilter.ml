@@ -57,7 +57,8 @@ let rec process_line loc line =
       if Str.string_match version_re ver_string 0 then
         let ver_maj = int_of_string (Str.matched_group 1 ver_string) in
         let ver_min = try int_of_string (Str.matched_group 3 ver_string) with _ -> 0 in
-        let ver_mic = try int_of_string (Str.matched_group 5 ver_string) with _ -> 0 in
+        (* ver_mic defaults to micro (not 0) such that ##V=4.4## still matches 4.04.2 *)
+        let ver_mic = try int_of_string (Str.matched_group 5 ver_string) with _ -> micro in
         cmp (major*10000+minor*100+micro) (ver_maj*10000+ver_min*100+ver_mic)
       else if ver_string = "multicore" then
         cmp (if has_domains ~extra then 5 else major) 5
