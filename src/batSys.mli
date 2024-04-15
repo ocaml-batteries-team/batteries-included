@@ -60,7 +60,9 @@ external rename : string -> string -> unit = "caml_sys_rename"
 
 external getenv : string -> string = "caml_sys_getenv"
 (** Return the value associated to a variable in the process
-    environment. @raise Not_found if the variable is unbound. *)
+    environment.
+
+    @raise Not_found if the variable is unbound. *)
 
 val getenv_opt: string -> string option
 (** Return the value associated to a variable in the process
@@ -115,7 +117,7 @@ val os_type : string
 ##V>=4.4##
 ##V>=4.4##val backend_type : backend_type
 ##V>=4.4##(** Backend type currently executing the OCaml program.
-##V>=4.4##    @ since 2.5.3 and 4.04
+##V>=4.4##    @since 2.5.3 and 4.04
 ##V>=4.4## *)
 
 ##V>=4.1##val unix : bool
@@ -171,7 +173,7 @@ val max_array_length : int
 
 ##V>=5.1##external is_regular_file : string -> bool = "caml_sys_is_regular_file"
 
-(** {6 Signal handling} *)
+(** {1 Signal handling} *)
 
 
 type signal_behavior = Sys.signal_behavior =
@@ -197,7 +199,7 @@ val set_signal : int -> signal_behavior -> unit
 (** Same as {!Sys.signal} but return value is ignored. *)
 
 
-(** {7 Signal numbers for the standard POSIX signals.} *)
+(** {2 Signal numbers for the standard POSIX signals.} *)
 
 val sigabrt : int
 (** Abnormal termination *)
@@ -342,7 +344,7 @@ val files_of: string -> string BatEnum.t
 ##V>=4.3##(** Return whether runtime warnings are currently enabled.
 ##V>=4.3##    @since 2.5.0 and OCaml 4.03 *)
 
-(** {6 Optimization} *)
+(** {1 Optimization} *)
 
 ##V>=4.3##external opaque_identity : 'a -> 'a = "%opaque"
 ##V=4.2##val opaque_identity : 'a -> 'a

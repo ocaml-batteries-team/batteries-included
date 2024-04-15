@@ -131,7 +131,7 @@ val of_enum: 'a BatEnum.t -> 'a option
 (** [of_enum e] consumes the first element of [e], if it exists, and
     returns [Some e]. If [e] is empty, return [None]. *)
 
-(** {6 The Option Monad} *)
+(** {1 The Option Monad} *)
 
 (**
     This module provides everything needed to write and execute computations
@@ -150,14 +150,14 @@ module Monad : sig
         [bind (Some 1) (fun x -> if x = 1 then Some 4 else None)] returns Some 4. *)
 end
 
-(** {6 Boilerplate code}*)
+(** {1 Boilerplate code}*)
 
 open BatOrd
 val ord : 'a ord -> 'a option ord
 (** Comparison between optional values
     @since 2.2.0 *)
 
-(** {7 Printing}*)
+(** {2 Printing}*)
 
 val print : ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> 'b t -> unit
 

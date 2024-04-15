@@ -52,7 +52,7 @@ val enum : 'a t -> 'a BatEnum.t
     Since enumerations are consumable and sequence are not, it is
     not possible to have the inverse operations, i.e. [of_enum] *)
 
-(** {6 Base operations} *)
+(** {1 Base operations} *)
 
 val length : 'a t -> int
 (** Return the number of elements of the given sequence. This may
@@ -93,7 +93,7 @@ val concat : 'a t t -> 'a t
 val flatten : 'a t t -> 'a t
 (** Same as {!concat}. *)
 
-(** {6 Constructors} *)
+(** {1 Constructors} *)
 
 val nil : 'a t
 (** [nil = fun () -> Nil] *)
@@ -117,7 +117,9 @@ val make : int -> 'a -> 'a t
 
 val init : int -> (int -> 'a) -> 'a t
 (** [init n f] returns the sequence returning the results of [f 0],
-    [f 1].... [f (n-1)]. @raise Invalid_argument if [n < 0]. *)
+    [f 1].... [f (n-1)].
+
+    @raise Invalid_argument if [n < 0]. *)
 
 val of_list : 'a list -> 'a t
 (** Convenience function to build a seq from a list.
@@ -144,7 +146,7 @@ val concat_map: ('a -> 'b t) -> 'a t -> 'b t
 (** Alias for {!flat_map}.
     @since 3.4.0 *)
 
-(** {6 Iterators} *)
+(** {1 Iterators} *)
 
 val iter : ('a -> unit) -> 'a t -> unit
 (** [iter f s] applies [f] to all the elements of the sequence. Eager. *)
@@ -208,7 +210,7 @@ val equal : ?eq:('a -> 'a -> bool) -> 'a t -> 'a t -> bool
       @param eq optional equality function (default {!Pervasives.(=)})
       @since 2.2.0 *)
 
-(** {6 Sequence scanning}
+(** {1 Sequence scanning}
 
     Most functions in the following sections have a shortcut semantic
     similar to the behavior of the usual (&&) and (||) operators :
@@ -237,7 +239,7 @@ val mem : 'a -> 'a t -> bool
     [l]. Eager, shortcut.
 *)
 
-(** {6 Sequence searching} *)
+(** {1 Sequence searching} *)
 
 val find : ('a -> bool) -> 'a t -> 'a option
 (** [find p s] returns the first element of [s] such as [p e]
@@ -269,13 +271,13 @@ val filter_map : ('a -> 'b option) -> 'a t -> 'b t
     mapped by [f]. Lazy.
 *)
 
-(** {6 Association sequences} *)
+(** {1 Association sequences} *)
 
 val assoc : 'a -> ('a * 'b) t -> 'b option
 (** [assoc a s] returns the value associated with key [a] in the
     sequence of pairs [s]. Eager, shortcut.  *)
 
-(** {6 Sequence transformations} *)
+(** {1 Sequence transformations} *)
 
 val take : int -> 'a t -> 'a t
 (** [take n s] returns up to the [n] first elements from sequence
@@ -293,7 +295,7 @@ val drop_while : ('a -> bool) -> 'a t -> 'a t
 (** [drop_while f s] returns the sequence [s] with the first
     elements satisfying the predicate [f] dropped. Lazy. *)
 
-(** {6 Sequence of pairs} *)
+(** {1 Sequence of pairs} *)
 
 val split : ('a * 'b) t -> 'a t * 'b t
 (** [split s = (map fst s, map snd s)]. Lazy. *)
@@ -303,7 +305,7 @@ val combine : 'a t -> 'b t -> ('a * 'b) t
 
     @raise Invalid_argument if given sequences of different length. *)
 
-(** {6 Printing} *)
+(** {1 Printing} *)
 
 val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
 (**Print the contents of a sequence*)

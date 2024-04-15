@@ -90,7 +90,7 @@ val print : _ BatInnerIO.output -> exn -> unit
   (** Print an exception.  The stdlib [print] function is now named [!pass].*)
 
 
-##V=4.1##(** {6 Raw backtraces} *)
+##V=4.1##(** {1 Raw backtraces} *)
 ##V=4.1##
 ##V=4.1##type raw_backtrace = Printexc.raw_backtrace
 ##V=4.1##
@@ -115,7 +115,7 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.5##    @since 2.7.0 and OCaml 4.05.0
 ##V>=4.5##*)
 
-##V=4.1##(** {6 Current call stack} *)
+##V=4.1##(** {1 Current call stack} *)
 ##V=4.1##
 ##V=4.1##val get_callstack: int -> raw_backtrace
 ##V=4.1##
@@ -127,7 +127,7 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V=4.1##    @since 2.2.0 and OCaml 4.01.0
 ##V=4.1##*)
 
-##V>=4.2##(** {6 Raw backtraces} *)
+##V>=4.2##(** {1 Raw backtraces} *)
 ##V>=4.2##
 ##V>=4.2##type raw_backtrace = Printexc.raw_backtrace
 ##V>=4.2##(** The abstract type [raw_backtrace] stores a backtrace in
@@ -167,7 +167,7 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##    @since 2.2.0 and OCaml 4.01.0
 ##V>=4.2##*)
 ##V>=4.2##
-##V>=4.2##(** {6 Current call stack} *)
+##V>=4.2##(** {1 Current call stack} *)
 ##V>=4.2##
 ##V>=4.2##val get_callstack: int -> raw_backtrace
 ##V>=4.10##external get_callstack : int -> raw_backtrace = "caml_get_current_callstack"
@@ -179,7 +179,7 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##    @since 2.2.0 and OCaml 4.01.0
 ##V>=4.2##*)
 ##V>=4.2##
-##V>=4.2##(** {6 Uncaught exceptions} *)
+##V>=4.2##(** {1 Uncaught exceptions} *)
 ##V>=4.2##
 ##V>=4.11##val default_uncaught_exception_handler: exn -> raw_backtrace -> unit
 ##V>=4.11##(** [Printexc.default_uncaught_exception_handler] prints the exception and
@@ -203,7 +203,7 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##*)
 ##V>=4.2##
 ##V>=4.2##
-##V>=4.2##(** {6 Manipulation of backtrace information}
+##V>=4.2##(** {1 Manipulation of backtrace information}
 ##V>=4.2##
 ##V>=4.2##    Those function allow to traverse the slots of a raw backtrace,
 ##V>=4.2##    extract information from them in a programmer-friendly format.
@@ -304,7 +304,7 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.2##end
 ##V>=4.2##
 ##V>=4.2##
-##V>=4.2##(** {6 Raw backtrace slots} *)
+##V>=4.2##(** {1 Raw backtrace slots} *)
 ##V>=4.2##
 ##V>=4.2##type raw_backtrace_slot = Printexc.raw_backtrace_slot
 ##V>=4.2##(** This type allows direct access to raw backtrace slots, without any
@@ -349,7 +349,7 @@ val print : _ BatInnerIO.output -> exn -> unit
 ##V>=4.4##*)
 
 
-##V>=4.2##(** {6 Exception slots} *)
+##V>=4.2##(** {1 Exception slots} *)
 ##V>=4.2##
 ##V>=4.2##val exn_slot_id: exn -> int
 ##V>=4.2##(** [Printexc.exn_slot_id] returns an integer which uniquely identifies

@@ -44,7 +44,7 @@ include BatEnum.Enumerable with type 'a enumerable = 'a t
 
 exception Empty
 
-(** {6 node functions } *)
+(** {1 node functions } *)
 
 (** Creates a node.  This is an O(1) operation. *)
 val create : 'a -> 'a node_t
@@ -168,7 +168,7 @@ val find : ('a -> bool) -> 'a node_t -> 'a node_t
     returns true.
 
     @raise Not_found if no such element exists
-    @added 1.4.0
+    @since 1.4.0
 *)
 
 val for_all : ('a -> bool) -> 'a node_t -> bool
@@ -203,7 +203,7 @@ val filter_map : ('a -> 'b option) -> 'a node_t -> 'b node_t
     @raise Empty if the resulting list is empty.*)
 
 
-(** {6 list conversion } *)
+(** {1 list conversion } *)
 
 (** Converts a dllist to a normal list.  This is an O(N) operation. *)
 val to_list : 'a node_t -> 'a list
@@ -214,7 +214,7 @@ val to_list : 'a node_t -> 'a list
 val of_list : 'a list -> 'a node_t
 
 
-(** {6 enums } *)
+(** {1 enums } *)
 
 (** Create an enum of the list.
     Note that modifying the list while the enum exists will have undefined
@@ -246,9 +246,9 @@ val backwards : 'a node_t -> 'a BatEnum.t
 *)
 val of_enum : 'a BatEnum.t -> 'a node_t
 
-(** {6 Boilerplate code}*)
+(** {1 Boilerplate code}*)
 
-(** {7 Printing}*)
+(** {2 Printing}*)
 
 val print : ?first:string -> ?last:string -> ?sep:string ->('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
 

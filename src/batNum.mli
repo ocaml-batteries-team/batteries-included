@@ -45,7 +45,7 @@ type num = Num.num =
 
 type t = num
 
-(** {6 Usual operations}*)
+(** {1 Usual operations}*)
 val zero   : num
 val one    : num
 val neg    : num -> num
@@ -93,7 +93,7 @@ val ( ** ) : num -> num -> num
 val max_num : num -> num -> num
 val min_num : num -> num -> num
 
-(** {6 Additional operations}*)
+(** {1 Additional operations}*)
 val quo : num -> num -> num
 (**Euclidian divisiom*)
 
@@ -123,7 +123,7 @@ val operations : num BatNumber.numeric
 
 
 
-(** {6 Comparisons between numbers} *)
+(** {1 Comparisons between numbers} *)
 
 val ( =/ ) : num -> num -> bool
 val ( </ ) : num -> num -> bool
@@ -141,7 +141,7 @@ val ge_num : num -> num -> bool
 
 
 
-(** {6 Coercions with strings} *)
+(** {1 Coercions with strings} *)
 
 
 
@@ -159,7 +159,7 @@ val approx_num_exp : int -> num -> string
 
 
 
-(** {6 Coercions between numerical types} *)
+(** {1 Coercions between numerical types} *)
 val nat_of_num : num -> nat
 val num_of_nat : nat -> num
 val num_of_big_int : big_int -> num
@@ -168,12 +168,12 @@ val ratio_of_num : num -> ratio
 val num_of_ratio : ratio -> num
 val float_of_num : num -> float
 
-(** {6 Boilerplate code}*)
+(** {1 Boilerplate code}*)
 
-(** {7 Printing}*)
+(** {2 Printing}*)
 val print: 'a BatInnerIO.output -> t -> unit
 
-(** {6 Submodules grouping all infix operators} *)
+(** {1 Submodules grouping all infix operators} *)
 
 module TaggedInfix : sig
   val ( =/ ) : num -> num -> bool
@@ -208,7 +208,7 @@ end
 
 module Compare : BatNumber.Compare with type bat__compare_t = t
 
-(** {6 Deprecated} *)
+(** {1 Deprecated} *)
 
 val ( +/ ) : num -> num -> num
 val add_num : num -> num -> num

@@ -30,7 +30,7 @@ open BatInnerIO
 *)
 
 (**
-   {6 General overview}
+   {1 General overview}
 
    The functions of this module produce output according to a
    {!Pervasives.format}, as described below. Some functions write to
@@ -78,7 +78,7 @@ open BatInnerIO
 
 
 (**
-   {6 Formats}
+   {1 Formats}
 *)
 
 type ('a, 'b, 'c) t = ('a, 'b, 'c) Pervasives.format
@@ -89,7 +89,7 @@ type ('a, 'b, 'c) t = ('a, 'b, 'c) Pervasives.format
    of objects: plain characters, which are simply copied, and directives,
    each of which causes the conversion and printing of arguments.
 
-   {7 Simple directives}
+   {2 Simple directives}
 
    All directives start with the [%] character. In their simplest form,
    a directive is [%] followed by exactly one character:
@@ -128,7 +128,7 @@ type ('a, 'b, 'c) t = ('a, 'b, 'c) Pervasives.format
    - [,]: the no-op delimiter for conversion specifications
 
 
-   {7 Unparsers}
+   {2 Unparsers}
 
    - [%a]: user-defined printer. Typically, this printer corresponds to two
      arguments: a printing function [f], with type ['a output -> 'c -> unit]
@@ -146,7 +146,7 @@ type ('a, 'b, 'c) t = ('a, 'b, 'c) Pervasives.format
      or [('a, 'b, 'd, 'e) format4], function [f] must have type
      ['b -> 'd].
 
-   {7 Formatting formats}
+   {2 Formatting formats}
    - [%\{ fmt %\}]: convert a {!format} to a string. The format argument
      must have the same type as the internal format string [fmt].
      In other words, [printf "%\{ %s %\}"] accepts an argument
@@ -159,7 +159,7 @@ type ('a, 'b, 'c) t = ('a, 'b, 'c) Pervasives.format
      whose type must be the same as that of format ["%s"], and
      uses that argument to print the following arguments.
 
-   {7 Additional options}
+   {2 Additional options}
    The general format of directives is
 
    [% \[flags\] \[width\] \[.precision\] type]
@@ -192,7 +192,7 @@ type ('a, 'b, 'c) t = ('a, 'b, 'c) Pervasives.format
 *)
 
 
-(** {6 Common functions}*)
+(** {1 Common functions}*)
 
 val printf: ('b, 'a output, unit) t -> 'b
 (**The usual [printf] function, prints to the standard output {!stdout}, i.e. normally
@@ -226,11 +226,11 @@ val sprintf2: ('a, 'b output, unit, string) format4 -> 'a
     i.e. should have type ['b output -> unit].
 
     Warning: a partial application of this function can only be used once,
-    because the {!BatInnerIO.output} that it uses is closed afterwards.
+    because the {!BatInnerIO.type-output} that it uses is closed afterwards.
     Example: [let f = sprintf2 "%a" Int.print in [f 1; f 2]] will fail. *)
 
 
-(** {6 General functions}*)
+(** {1 General functions}*)
 
 val fprintf: 'a output -> ('b, 'a output, unit) t -> 'b
 (**General function. This function prints to any output. Typically,
@@ -260,7 +260,7 @@ val bprintf2: Buffer.t  -> ('b, 'a output, unit) t -> 'b
    {!bprintf}, only the result is changed with
    respect to {!printf}, not the inner workings.*)
 
-(**{6 Functions with continuations}*)
+(**{1 Functions with continuations}*)
 
 val kfprintf : ('a output -> 'b) -> 'a output -> ('c, 'a output, unit, 'b) format4 -> 'c
 (**Same as [fprintf], but instead of returning immediately, passes the [output] to its first
@@ -288,13 +288,13 @@ val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
 
 
 (**
-   {6 About formats}
+   {1 About formats}
 
    You only need to read this if you intend to create your new printf-like functions,
    which happens generally by toying with {!mkprintf}.
 
 
-   {7 Format4}
+   {2 Format4}
 
    [('a, 'b, 'c, 'd) format4] is the type of arguments for
    [printf]-style functions such that
@@ -324,10 +324,10 @@ val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
    - ['d] is the final return value of the function once all
    arguments have been printed
 
-   {7 Format}
+   {2 Format}
    [('a, 'b, 'c) format] or [('a, 'b, 'c) t] is just a shortcut for [('a, 'b, 'c, 'c) format4].
 
-   {7 Important}
+   {2 Important}
    Note that {!Obj.magic} is involved behind this, so be careful.
 *)
 

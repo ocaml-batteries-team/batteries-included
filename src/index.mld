@@ -1,3 +1,4 @@
+{0 Batteries user guide}
 OCaml Batteries Included documentation.
 
 OCaml Batteries included (or simply "Batteries") is a community-driven effort to standardize on an consistent, documented, and comprehensive development platform for the OCaml programming language.
@@ -31,42 +32,42 @@ repo}, and our
 {{:https://github.com/ocaml-batteries-team/batteries-included/issues?sort=created&direction=desc&state=open}Issue
 tracker}.
 
-{6 New Data Structures in Batteries}
+{1 New Data Structures in Batteries}
 
 {!modules: BatBitSet BatCache BatDeque BatDllist BatDynArray BatEnum
 BatFingerTree BatGlobal BatHashcons BatHeap BatIMap BatISet
 BatLazyList BatMultiPMap BatRefList BatSeq BatSplay BatText BatUChar
 BatUref BatUTF8 BatVect}
 
-{6 New Modules in Batteries}
+{1 New Modules in Batteries}
 
 {!modules: BatBase64 BatCharParser BatFile BatInterfaces BatIO BatLog
 BatLogger BatNumber BatOptParse BatParserCo
 BatResult BatReturn }
 
-{6 Builtin Types as Modules}
+{1 Builtin Types as Modules}
 
 {!modules: BatBool BatChar BatFloat BatInt BatInt32 BatInt64
 BatNativeint BatOption BatRef BatTuple BatUnit }
 
-{6 Extensions to the Standard Library}
+{1 Extensions to the Standard Library}
 
 These modules have base library equivalents.  When using [open Batteries], [BatFoo] will replace [Foo], so that the new functions are easily available without a [Bat] prefix on the module name.  As well, [BatPervasives] is opened into the global namespace.  Finally, the previous versions of replaced modules are available in the [Legacy] module, i.e. [Legacy.Unix] and [Legacy.Pervasives].
 
-{!modules: BatArray BatBigarray BatBig_int BatBuffer BatComplex
+{!modules: BatArray BatBigarray BatBig_int BatBuffer BatBytes BatComplex
 BatDigest BatFormat BatGc BatGenlex BatHashtbl BatLexing BatList
 BatMap BatMarshal BatNum BatPervasives BatPrintexc BatPrintf
 BatQueue BatRandom BatScanf BatSet BatStack BatStream BatString
 BatSys BatUnix}
 
-{6 Thread-related Modules}
+{1 Thread-related Modules}
 
 These modules are available only when compiling with threads.  To use
 them, do [open BatteriesThread] at the top of your code.
 
 {!modules: BatConcurrent BatMutex BatRMutex}
 
-{6 Incubator}
+{1 Incubator}
 
 These modules are available only inside [Batteries.Incubator].  Their
 interface is not guaranteed stable, and may be changed at any time,
@@ -76,6 +77,6 @@ finalized and moved to batteries proper.
 
 {!modules: BatBounded BatOrd BatPathGen BatSubstring}
 
-{6 Internal Modules}
+{1 Internal Modules}
 
 {!modules: BatAvlTree BatInnerIO BatInnerWeaktbl}

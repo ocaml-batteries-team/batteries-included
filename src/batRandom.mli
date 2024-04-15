@@ -33,7 +33,7 @@
     @documents Random
 *)
 
-(** {6 Basic functions} *)
+(** {1 Basic functions} *)
 
 val init : int -> unit
 (** Initialize the generator, using the argument as a seed.
@@ -107,7 +107,7 @@ val full_range_int : unit -> int
     platforms, so is not portable. *)
 
 
-(** {6 Enumerations of random values.} *)
+(** {1 Enumerations of random values.} *)
 
 val enum_bits  : unit    -> int BatEnum.t
 
@@ -127,7 +127,7 @@ val enum_char : unit -> char BatEnum.t
 
 (*val enum_uchar : unit -> UChar.t BatEnum.t*)
 
-(** {6 Working with data structures.} *)
+(** {1 Working with data structures.} *)
 
 val choice : 'a BatEnum.t -> 'a
 (** [choice e] returns a randomly-chosen element of [e].
@@ -167,7 +167,7 @@ val shuffle: 'a BatEnum.t -> 'a array
 ##V>=4.14##    {!Nativeint.min_int} and {!Nativeint.max_int}.
 ##V>=4.14##    @since 4.14.0 *)
 
-(** {6 Advanced functions} *)
+(** {1 Advanced functions} *)
 
 (** Manipulate the current state of the random generator.
 

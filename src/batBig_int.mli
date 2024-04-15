@@ -48,7 +48,7 @@ val one : big_int
 val unit_big_int : big_int
 (** The big integer [1]. *)
 
-(** {6 Arithmetic operations} *)
+(** {1 Arithmetic operations} *)
 
 val neg : big_int -> big_int
 val succ : big_int -> big_int
@@ -130,16 +130,18 @@ val power_big_int_positive_big_int: big_int -> big_int -> big_int
     representing the first argument [a] raised to the power [b]
     (the second argument).  Depending
     on the function, [a] and [b] can be either small integers
-    or big integers.  @raise Invalid_argument if [b] is negative. *)
+    or big integers.
+
+    @raise Invalid_argument if [b] is negative. *)
 
 val operations : t BatNumber.numeric
 
-(** {6 Generators} *)
+(** {1 Generators} *)
 
 val ( -- ) : big_int -> big_int -> big_int BatEnum.t
 val ( --- ): big_int -> big_int -> big_int BatEnum.t
 
-(** {6 Comparisons and tests} *)
+(** {1 Comparisons and tests} *)
 
 val compare : big_int -> big_int -> int
 val ord : big_int -> big_int -> BatOrd.order
@@ -188,7 +190,7 @@ val num_digits_big_int : big_int -> int
 ##V>=4.3##            @since 2.5.0 and OCaml 4.03 *)
 
 
-(** {6 Conversions to and from strings} *)
+(** {1 Conversions to and from strings} *)
 
 val to_string : big_int -> string
 val string_of_big_int : big_int -> string
@@ -222,8 +224,9 @@ val to_string_in_base : int -> big_int -> string
 (** [to_string_in_base b n] returns the string representation in base [b] of
     the given big integer [n]. Should you have advanced needs (arbitrarily large
     bases, or custom digits instead of the usual [0,1,...9,a,b,...,z]), use
-    [to_string_in_custom_base] instead. @raise Invalid_argument if b is not in
-    [2 .. 36]. *)
+    [to_string_in_custom_base] instead.
+
+    @raise Invalid_argument if b is not in [2 .. 36]. *)
 
 val to_string_in_custom_base : string -> int -> big_int -> string
 (** First argument, called [symbols], is the vector of the symbols used to
@@ -233,8 +236,9 @@ val to_string_in_custom_base : string -> int -> big_int -> string
     provided that [symbols] can accommodate it. Concretely, the base [b] must be at
     least [2], and [symbols] must be of size at least [b]. The default value of
     [big_int_base_default_symbols] contains 62 symbols, as it uses lowercase and
-    uppercase letters both. See below for more information. @raise Invalid_argument
-    if [b] is incorrect. *)
+    uppercase letters both. See below for more information.
+
+    @raise Invalid_argument if [b] is incorrect. *)
 
 
 val big_int_base_default_symbols : string
@@ -252,7 +256,7 @@ val big_int_base_default_symbols : string
 *)
 
 
-(** {6 Conversions to and from other numerical types} *)
+(** {1 Conversions to and from other numerical types} *)
 
 
 val of_int : int -> big_int
@@ -335,7 +339,7 @@ val of_float: float -> big_int
 val to_float: big_int -> float
 
 
-(** {6 Bit-oriented operations} *)
+(** {1 Bit-oriented operations} *)
 
 val and_big_int : big_int -> big_int -> big_int
 (** Bitwise logical ``and''.
@@ -372,14 +376,14 @@ val extract_big_int : big_int -> int -> int -> big_int
     a two's complement representation is used. *)
 
 
-(** {6 Submodules grouping all infix operators}  *)
+(** {1 Submodules grouping all infix operators}  *)
 
 module Infix : BatNumber.Infix with type bat__infix_t = t
 module Compare : BatNumber.Compare with type bat__compare_t = t
 
 (**/**)
 
-(** {6 For internal use} *)
+(** {1 For internal use} *)
 val nat_of_big_int : big_int -> Nat.nat
 val big_int_of_nat : Nat.nat -> big_int
 val base_power_big_int: int -> int -> big_int -> big_int
@@ -388,7 +392,7 @@ val round_futur_last_digit : Bytes.t -> int -> int -> bool
 val approx_big_int: int -> big_int -> string
 ##V>=4.3##val round_big_int_to_float: big_int -> bool -> float
 
-(** {6 Obsolete}*)
+(** {1 Obsolete}*)
 
 val zero_big_int : big_int
 (** The big integer [0]. *)
@@ -432,8 +436,8 @@ val gcd_big_int : big_int -> big_int -> big_int
 
 (**/**)
 
-(** {6 Boilerplate code} *)
+(** {1 Boilerplate code} *)
 
-(** {7 Printing} *)
+(** {2 Printing} *)
 
 val print : 'a BatIO.output -> t -> unit

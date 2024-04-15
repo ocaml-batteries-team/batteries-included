@@ -21,6 +21,7 @@
 (** Simple logging
     @author Edgar Friendly
 *)
+
 open BatIO
 
 (** This ref holds the output channel for simple logging.  Defaults to

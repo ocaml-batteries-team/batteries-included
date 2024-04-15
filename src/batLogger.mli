@@ -26,7 +26,7 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************)
 
-(** {1 Logging Library}
+(** Logging Library.
 
     This module defines functions which implement a flexible error logging
     system for applications.
@@ -35,7 +35,7 @@
 *)
 
 (******************************************************************************)
-(** {6 log modules} *)
+(** {1 log modules} *)
 
 type log
 type level = NONE | FATAL | ERROR | WARN | NOTICE | INFO | DEBUG
@@ -57,7 +57,7 @@ val log_enabled : log -> level -> bool
     currently enabled for the logger. *)
 
 (******************************************************************************)
-(** {6 log events} *)
+(** {1 log events} *)
 
 type event = string * (string * string) list
 (** A log [event] consists of an event name and a list of key-value
@@ -97,7 +97,7 @@ val with_log : log -> level -> (unit -> event) -> ?result:('a -> string) ->
     parameter. *)
 
 (******************************************************************************)
-(** {6 log formatters} *)
+(** {1 log formatters} *)
 
 type formatter = log -> level -> event -> float -> unit
 (** the type of a log formatter is a function that takes the
@@ -175,7 +175,7 @@ val dbg_formatter : formatter
     events are raised. *)
 
 (******************************************************************************)
-(** {6 logger initialization} *)
+(** {1 logger initialization} *)
 
 val init : (string * level) list -> formatter -> unit
 (** [init name_level_list formatter] initializes the logging
@@ -199,7 +199,7 @@ val init_from_string : string -> formatter -> unit
     [register_formatter]). *)
 
 (******************************************************************************)
-(** {6 log utilities} *)
+(** {1 log utilities} *)
 
 val level_of_name : string -> level
 (** [level_of_name str] returns the [level] associated with [str]. *)

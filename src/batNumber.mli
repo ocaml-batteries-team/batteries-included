@@ -111,7 +111,9 @@ module type Compare = sig
 end
 
 (** Reference operators ala C.  Mutates a reference value. [x -= y] is
-    the same as [x := !x - y].  @since 2.0 *)
+    the same as [x := !x - y].
+
+    @since 2.0 *)
 module type RefOps =
 sig
   type bat__refops_t
@@ -187,7 +189,7 @@ end
 
 (**/**)
 
-(** {6 Utilities}*)
+(** {1 Utilities}*)
 
 (**
    The smallest set of operations supported by every set of numbers
@@ -199,7 +201,7 @@ sig
   val zero : t
   val one  : t
 
-  (** {6 Arithmetic operations}
+  (** {1 Arithmetic operations}
 
     Depending on the implementation, some of these operations
     {i may} raise exceptions at run-time to represent over/under-flows.*)
@@ -215,7 +217,7 @@ sig
   val pow : t -> t -> t
   val compare : t -> t -> int
 
-  (** {6 Conversions} *)
+  (** {1 Conversions} *)
   val of_int : int -> t
   (** Convert this number to the closest integer.*)
 
@@ -224,7 +226,9 @@ sig
 
   val of_string : string -> t
   (** Convert the representation of a number to the corresponding
-    number. @raise Invalid_argument if the string does not represent
+    number.
+
+    @raise Invalid_argument if the string does not represent
     a valid number of type [t]*)
 
   val to_string : t -> string

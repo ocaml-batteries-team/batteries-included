@@ -70,6 +70,7 @@
     @author David Rajchenbach-Teller
     @author Gabriel Scherer
 *)
+
 module type S =
 sig
   type key
@@ -450,9 +451,9 @@ sig
   val of_list : (key * 'a) list -> 'a t
   val add_to_list: key -> 'a -> 'a list t -> 'a list t
 
-  (** {6 Boilerplate code}*)
+  (** {1 Boilerplate code}*)
 
-  (** {7 Printing}*)
+  (** {2 Printing}*)
 
   val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
     ('a BatInnerIO.output -> key -> unit) ->
@@ -461,7 +462,7 @@ sig
 
   (** Output signature of the functor {!Map.Make}. *)
 
-  (** {6 Override modules}*)
+  (** {1 Override modules}*)
 
   (**
      The following modules replace functions defined in {!Map} with functions
@@ -519,7 +520,7 @@ module Make (Ord : BatInterfaces.OrderedType) : S with type key = Ord.t
     given a totally ordered type.
 *)
 
-(** {6 Common instantiations} **)
+(** {1 Common instantiations} **)
 
 module Int : S with type key = int
 module Int32 : S with type key = int32
@@ -947,9 +948,9 @@ val bindings : ('key, 'a) t -> ('key * 'a) list
 *)
 
 
-(** {6 Boilerplate code}*)
+(** {1 Boilerplate code}*)
 
-(** {7 Printing}*)
+(** {2 Printing}*)
 
 val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
   ('a BatInnerIO.output -> 'b -> unit) ->
@@ -1392,9 +1393,9 @@ module PMap : sig
       Added for compatibility with stdlib 3.12 *)
 
 
-  (** {6 Boilerplate code}*)
+  (** {1 Boilerplate code}*)
 
-  (** {7 Printing}*)
+  (** {2 Printing}*)
 
   val print :  ?first:string -> ?last:string -> ?sep:string -> ?kvsep:string ->
     ('a BatInnerIO.output -> 'b -> unit) ->

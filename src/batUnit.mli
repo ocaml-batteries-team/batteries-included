@@ -50,7 +50,7 @@ val ord : t -> t -> BatOrd.order
 val equal : t -> t -> bool
 (** Always returns true. *)
 
-(** {6 Boilerplate code}*)
+(** {1 Boilerplate code}*)
 
-(** {7 Printing}*)
+(** {2 Printing}*)
 val print: 'a BatInnerIO.output -> unit -> unit

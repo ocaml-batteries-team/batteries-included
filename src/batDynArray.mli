@@ -47,7 +47,7 @@ exception Invalid_arg of int * string * string
     contains the parameter name that made the operation fail.
 *)
 
-(** {6 Array creation} *)
+(** {1 Array creation} *)
 
 val create : unit -> 'a t
 (** [create()] returns a new empty dynamic array. *)
@@ -68,7 +68,7 @@ val singleton : 'a -> 'a t
 (** Create an array consisting of exactly one element.
     @since 3.3.0 *)
 
-(** {6 Array manipulation functions} *)
+(** {1 Array manipulation functions} *)
 
 val get : 'a t -> int -> 'a
 (** [get darr idx] gets the element in [darr] at index [idx]. If [darr] has
@@ -187,7 +187,7 @@ val compact : 'a t -> unit
 
 
 
-(** {6 Array copy and conversion} *)
+(** {1 Array copy and conversion} *)
 
 val enum : 'a t -> 'a BatEnum.t
 (** [enum darr] returns the enumeration of [darr] elements. *)
@@ -256,7 +256,7 @@ val combine : 'a t -> 'b t -> ('a * 'b) t
 
 
 
-(** {6 Array functional support} *)
+(** {1 Array functional support} *)
 
 val iter : ('a -> unit) -> 'a t -> unit
 (** [iter f darr] calls the function [f] on every element of [darr].  It
@@ -461,7 +461,7 @@ val favg : float t -> float
 
 
 
-(** {6 Operations on two arrays} *)
+(** {1 Operations on two arrays} *)
 
 val iter2 : ('a -> 'b -> unit) -> 'a t -> 'b t -> unit
 (** [iter2 f [a0, a1, ..., an] [b0, b1, ..., bn]]
@@ -509,7 +509,7 @@ val cartesian_product : 'a t -> 'b t -> ('a * 'b) t
 
 
 
-(** {6 Array resizers} *)
+(** {1 Array resizers} *)
 
 type resizer_t = currslots:int -> oldlength:int -> newlength:int -> int
 (** The type of a resizer function.
@@ -619,7 +619,7 @@ val create_with : resizer_t -> 'a t
 *)
 
 
-(** {6 Unsafe operations} **)
+(** {1 Unsafe operations} **)
 
 val unsafe_get : 'a t -> int -> 'a
 val unsafe_set : 'a t -> int -> 'a -> unit
@@ -627,9 +627,9 @@ val unsafe_upd : 'a t -> int -> ('a -> 'a) -> unit
 (** @since 3.3.0 *)
 
 
-(** {6 Boilerplate code} *)
+(** {1 Boilerplate code} *)
 
-(** {7 Printing} *)
+(** {2 Printing} *)
 
 val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> 'b t -> unit
 

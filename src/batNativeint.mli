@@ -74,8 +74,11 @@ external mul : nativeint -> nativeint -> nativeint = "%nativeint_mul"
 (** Multiplication. *)
 
 external div : nativeint -> nativeint -> nativeint = "%nativeint_div"
-(** Integer division. @raise Division_by_zero if the second
-    argument is zero.  This division rounds the real quotient of
+(** Integer division.
+
+    @raise Division_by_zero if the second argument is zero.
+
+    This division rounds the real quotient of
     its arguments towards zero, as specified for {!Pervasives.(/)}. *)
 
 ##V>=4.08##val unsigned_div : nativeint -> nativeint -> nativeint
@@ -282,21 +285,21 @@ val operations : t BatNumber.numeric
 
 include BatNumber.Bounded with type bounded = t
 
-(** {6 Submodules grouping all infix operators} *)
+(** {1 Submodules grouping all infix operators} *)
 
 module Infix : BatNumber.Infix with type bat__infix_t = t
 module Compare : BatNumber.Compare with type bat__compare_t = t
 
 
-(** {6 Boilerplate code}*)
+(** {1 Boilerplate code}*)
 
-(** {7 Printing}*)
+(** {2 Printing}*)
 
 val print : (t,_) BatIO.printer
 
 (**/**)
 
-(** {6 Deprecated functions} *)
+(** {1 Deprecated functions} *)
 
 external format : string -> nativeint -> string = "caml_nativeint_format"
 (** [Nativeint.format fmt n] return the string representation of the

@@ -51,7 +51,7 @@ type t = float
    real numbers by OCaml. *)
 
 (**
-   {6 Usual operations}
+   {1 Usual operations}
 *)
 
 val zero : float
@@ -124,7 +124,7 @@ val ( --- ): t -> t -> t BatEnum.t
 val operations : t BatNumber.numeric
 
 (**
-   {6 Operations specific to floating-point numbers}
+   {1 Operations specific to floating-point numbers}
 *)
 
 external sqrt : float -> float = "caml_sqrt_float" "sqrt"
@@ -253,10 +253,12 @@ val round_to_string : ?digits:int -> float -> string
     be imaginary *)
 val root: float -> int -> float
 
-(** @return True if the sign bit of [x] is set. This usually indicates thet [x] is negative. @since 2.0*)
+(** @return True if the sign bit of [x] is set. This usually indicates thet [x] is negative.
+    @since 2.0*)
 val signbit: float -> bool
 
-(** [copysign x y] returns a copy of [x] with the same sign as [y].  @since 2.0*)
+(** [copysign x y] returns a copy of [x] with the same sign as [y].
+    @since 2.0*)
 val copysign: float -> float -> float
 
 val is_nan : float -> bool
@@ -274,7 +276,7 @@ val is_finite : float -> bool
 
     @since 2.0 *)
 
-(** {6 Constants} *)
+(** {1 Constants} *)
 
 (** Special float constants.  It may not be safe to compare
     directly with these, as they have multiple internal
@@ -301,47 +303,59 @@ val nan : float
 (** The smallest positive float [x] such that [1.0 +. x <> 1.0]. *)
 val epsilon : float
 
-(** Euler? ... Euler? ... Euler? @since 2.0*)
+(** Euler? ... Euler? ... Euler?
+    @since 2.0*)
 val e: float
 
-(** [Math.log2 e] @since 2.0 *)
+(** [Math.log2 e]
+    @since 2.0 *)
 val log2e: float
 
-(** [log10 e] @since 2.0 *)
+(** [log10 e]
+    @since 2.0 *)
 val log10e: float
 
-(** [log 2] @since 2.0 *)
+(** [log 2]
+    @since 2.0 *)
 val ln2: float
 
-(** [log 10] @since 2.0 *)
+(** [log 10]
+    @since 2.0 *)
 val ln10: float
 
 (** The constant pi (3.14159...) *)
 val pi : float
 
-(** [pi /. 2.] @since 2.0 *)
+(** [pi /. 2.]
+    @since 2.0 *)
 val pi2: float
 
-(** [pi /. 4.] @since 2.0 *)
+(** [pi /. 4.]
+    @since 2.0 *)
 val pi4: float
 
-(** [1. /. pi] @since 2.0 *)
+(** [1. /. pi]
+    @since 2.0 *)
 val invpi: float
 
-(** [2. /. pi] @since 2.0 *)
+(** [2. /. pi]
+    @since 2.0 *)
 val invpi2: float
 
-(** [2. *. sqrt pi] @since 2.0 *)
+(** [2. *. sqrt pi]
+    @since 2.0 *)
 val sqrtpi2: float
 
-(** [sqrt 2.] @since 2.0 *)
+(** [sqrt 2.]
+    @since 2.0 *)
 val sqrt2: float
 
-(** [1. /. sqrt 2.] @since 2.0 *)
+(** [1. /. sqrt 2.]
+    @since 2.0 *)
 val invsqrt2: float
 
 
-(** {6 Operations on the internal representation of floating-point
+(** {1 Operations on the internal representation of floating-point
     numbers}*)
 
 external frexp : float -> float * int = "caml_frexp_float"
@@ -375,7 +389,7 @@ val approx_equal : ?epsilon:float -> float -> float -> bool
 (** Test whether two floats are approximately equal (i.e. within
     epsilon of each other).  [epsilon] defaults to 1e-5. *)
 
-(** {6 Submodules grouping all infix operators} *)
+(** {1 Submodules grouping all infix operators} *)
 
 module Infix : sig
   include BatNumber.Infix with type bat__infix_t = t
@@ -390,9 +404,9 @@ include BatNumber.RefOps with type bat__refops_t = t
 
 include BatNumber.Bounded with type bounded = t
 
-(** {6 Boilerplate code}*)
+(** {1 Boilerplate code}*)
 
-(** {7 Printing}*)
+(** {2 Printing}*)
 val print: (t, _) BatIO.printer
 
 (**Operations on floating-point numbers, with exceptions raised in
@@ -433,7 +447,7 @@ sig
        real numbers by OCaml. *)
 
   (**
-     {6 Usual operations}
+     {1 Usual operations}
   *)
 
   val zero : float
@@ -490,7 +504,7 @@ sig
   include BatNumber.Bounded with type bounded = t
 
   (**
-     {6 Operations specific to floating-point numbers}
+     {1 Operations specific to floating-point numbers}
   *)
 
   val exp : float -> float
@@ -565,7 +579,7 @@ sig
   val pi : float
   (** The constant pi (3.14159...) *)
 
-  (** {6 Operations on the internal representation of floating-point numbers}*)
+  (** {1 Operations on the internal representation of floating-point numbers}*)
 
   val frexp : float -> float * int
   (** [frexp f] returns the pair of the significant
@@ -596,8 +610,8 @@ sig
         normal, subnormal, zero, infinite, or not a number. *)
 
 
-  (** {6 Boilerplate code}*)
+  (** {1 Boilerplate code}*)
 
-  (** {7 Printing}*)
+  (** {2 Printing}*)
   val print: 'a BatInnerIO.output -> t -> unit
 end

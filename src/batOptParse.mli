@@ -33,7 +33,7 @@
 module Opt :
 sig
 
-  (** {6 Exceptions} *)
+  (** {1 Exceptions} *)
 
   exception No_value
   (** [No_value] gets raised by {!OptParse.Opt.get} when an option
@@ -55,7 +55,7 @@ sig
       attempt to catch it. *)
 
 
-  (** {6 Types} *)
+  (** {1 Types} *)
 
   type 'a t = {
     option_set : string -> string list -> unit;
@@ -96,7 +96,7 @@ sig
   *)
 
 
-  (** {6 Option value retrieval} *)
+  (** {1 Option value retrieval} *)
 
   val get : 'a t -> 'a
   (** Get the value of an option.
@@ -129,7 +129,7 @@ sig
 
 
 
-  (** {6 Option creation} *)
+  (** {1 Option creation} *)
 
   val value_option :
     string -> 'a option -> (string -> 'a) -> (exn -> string -> string) ->
@@ -174,7 +174,7 @@ end
 module StdOpt :
 sig
 
-  (** {6 Flag options} *)
+  (** {1 Flag options} *)
 
   val store_const : ?default: 'a -> 'a -> 'a Opt.t
   (** [store_const ?default const] returns a flag option which
@@ -211,7 +211,7 @@ sig
   (** Exactly identical to [count_option ~dest:dest ~increment:(-1) ()]. *)
 
 
-  (** {6 Value options} *)
+  (** {1 Value options} *)
 
   val int_option : ?default: int -> ?metavar: string -> unit -> int Opt.t
   (** [int_option ?default ?metavar ()] returns an option which takes
@@ -236,7 +236,7 @@ sig
     [default] is the default value of the option.  If [None], the
     option has no default value. *)
 
-  (** {6 Callback options} *)
+  (** {1 Callback options} *)
 
   val int_callback : ?metavar: string -> (int -> unit) -> unit Opt.t
   (** [int_callback ?metavar f] returns an option which takes a single
@@ -250,7 +250,7 @@ sig
   (** See {!OptParse.StdOpt.int_callback}. *)
 
 
-  (** {6 Special options} *)
+  (** {1 Special options} *)
 
   val help_option : unit -> 'a Opt.t
   (** [help_option ()] returns the standard help option which
@@ -287,7 +287,7 @@ sig
       string supplied by the user.  *)
 
 
-  (** {6 Standard formatters} *)
+  (** {1 Standard formatters} *)
 
 
   val indented_formatter :
@@ -321,7 +321,7 @@ sig
       the options. *)
 
 
-  (** {6 Low-level formatting} *)
+  (** {1 Low-level formatting} *)
 
 
   val wrap : ?initial_indent: int -> ?subsequent_indent: int ->
@@ -353,7 +353,7 @@ end
 module OptParser :
 sig
 
-  (** {6 Exceptions} *)
+  (** {1 Exceptions} *)
 
 
   exception Option_conflict of string
@@ -364,7 +364,7 @@ sig
       conflicting option names. *)
 
 
-  (** {6 Types} *)
+  (** {1 Types} *)
 
 
   type t
@@ -374,7 +374,7 @@ sig
   (** The type of an option group. *)
 
 
-  (** {6 Option parser creation} *)
+  (** {1 Option parser creation} *)
 
   val make : ?usage: string -> ?description: string -> ?version: string ->
     ?suppress_usage: bool -> ?suppress_help: bool ->
@@ -456,7 +456,7 @@ sig
 
   *)
 
-  (** {6 Output and error handling} *)
+  (** {1 Output and error handling} *)
 
   val error : t -> ?chn: out_channel -> ?status: int -> string -> unit
   (** Display an error message and exit the program. The error
@@ -469,7 +469,7 @@ sig
       [Pervasives.stdout]) and return. *)
 
 
-  (** {6 Option parsing} *)
+  (** {1 Option parsing} *)
 
   val parse : t -> ?first: int -> ?last: int -> string array -> string list
   (** Parse arguments as if the arguments [args.(first)],

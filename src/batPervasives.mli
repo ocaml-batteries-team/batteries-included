@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
-(** {6 Additional functions.}
+(** Additional functions.
 
     @author Xavier Leroy (Base module)
     @author Nicolas Cannasse
@@ -93,7 +93,7 @@ val print_any : 'b BatIO.output -> 'a -> unit
     string to the output.
 *)
 
-(** {6 List operations}
+(** {1 List operations}
 
     More list operations are provided in module {!List}.
 *)
@@ -102,7 +102,7 @@ val ( @ ) : 'a list -> 'a list -> 'a list
 (** List concatenation. *)
 
 
-(** {6 Input/output}
+(** {1 Input/output}
 
     This section only contains the most common input/output operations.
     More operations may be found in modules {!BatIO} and {!File}.
@@ -138,7 +138,7 @@ val flush_all : unit -> unit
     debugging, as it forces pending data to be written immediately.
 *)
 
-(** {7 Output functions on standard output} *)
+(** {2 Output functions on standard output} *)
 
 
 val print_bool : bool -> unit
@@ -153,7 +153,7 @@ val print_guess : 'a BatIO.output -> 'b -> unit
 val print_all : input -> unit
 (** Print the contents of an input to the standard output.*)
 
-(** {7 Output functions on standard error} *)
+(** {2 Output functions on standard error} *)
 
 val prerr_bool : bool -> unit
 (** Print a boolean to stderr. *)
@@ -166,7 +166,7 @@ val prerr_guess : 'a -> unit
 val prerr_all : input -> unit
 (** Print the contents of an input to the error output.*)
 
-(** {7 General output functions} *)
+(** {2 General output functions} *)
 
 val output_file : filename:string -> text:string -> unit
 (** creates a filename, write text into it and close it. *)
@@ -275,7 +275,7 @@ val close_out : unit BatIO.output -> unit
 val close_out_noerr : unit BatIO.output -> unit
 (** Same as [close_out], but ignore all errors. *)
 
-(** {7 General input functions} *)
+(** {2 General input functions} *)
 
 val input_file : ?bin:bool -> string -> string
 (** returns the data of a given filename. *)
@@ -347,7 +347,9 @@ val input : BatIO.input -> Bytes.t -> int -> int -> int
 val really_input : BatIO.input -> Bytes.t -> int -> int -> unit
 (** [really_input ic buf pos len] reads [len] characters from channel
     [ic], storing them in byte sequence [buf], starting at character
-    number [pos].  @raise End_of_file if the end of file is reached
+    number [pos].
+
+    @raise End_of_file if the end of file is reached
     before [len] characters have been read.
     @raise Invalid_argument if
     [pos] and [len] do not designate a valid subsequence of [buf]. *)
@@ -389,7 +391,7 @@ val close_in_noerr : BatIO.input -> unit
 
 
 (**
-   {6 Fundamental functions and operators}
+   {1 Fundamental functions and operators}
 *)
 
 external identity : 'a -> 'a = "%identity"
@@ -549,7 +551,7 @@ val exe  : string
 
 
 (**
-   {6 Enumerations}
+   {1 Enumerations}
 
    In OCaml Batteries Included, all data structures are enumerable,
    which means that they support a number of standard operations,
@@ -598,9 +600,7 @@ val foreach: 'a BatEnum.t -> ('a -> unit) ->  unit
 *)
 
 (**
-   {7 General-purpose loops}
-
-   {topic loops}
+   {2 General-purpose loops}
 
    The following functions are the three main general-purpose loops
    available in OCaml. By opposition to the loops available in
@@ -748,7 +748,7 @@ val ( @// ) : ('a -> 'b option) -> 'a BatEnum.t -> 'b BatEnum.t
 *)
 
 (**
-   {7 Other operations on enumerations}
+   {2 Other operations on enumerations}
 *)
 
 val exists: ('a -> bool) -> 'a BatEnum.t -> bool
@@ -835,7 +835,7 @@ val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.outp
 (** Print and consume the contents of an enumeration.*)
 
 (**
-   {6 Results}
+   {1 Results}
 *)
 
 (** This type represents the outcome of a function which has the
@@ -872,7 +872,7 @@ val wrap : ('a -> 'b) -> 'a -> ('b, exn) result
 
 
 (**
-   {6 Thread-safety internals}
+   {1 Thread-safety internals}
 
    Unless you are attempting to adapt Batteries Included to a new model of
    concurrency, you probably won't need this.

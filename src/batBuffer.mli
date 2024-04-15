@@ -81,8 +81,9 @@ val blit : t -> int -> Bytes.t -> int -> int -> unit
 *)
 
 val nth : t -> int -> char
-(** get the n-th character of the buffer. @raise Invalid_argument if
-    index out of bounds *)
+(** get the n-th character of the buffer.
+
+    @raise Invalid_argument if index out of bounds *)
 
 val length : t -> int
 (** Return the number of characters currently contained in the buffer. *)
@@ -142,11 +143,12 @@ val add_buffer : t -> t -> unit
 
 val add_input : t -> BatInnerIO.input -> int -> unit
 (** [add_input b ic n] reads exactly [n] character from the input [ic]
-    and stores them at the end of buffer [b].  @raise End_of_file if
-    the channel contains fewer than [n] characters. *)
+    and stores them at the end of buffer [b].
+
+    @raise End_of_file if the channel contains fewer than [n] characters. *)
 
 val add_channel : t -> BatInnerIO.input -> int -> unit
-(** @obsolete replaced by {!add_input}*)
+(** @deprecated replaced by {!add_input}*)
 
 val output_buffer : t -> string BatInnerIO.output
 (** [output_buffer b] creates an output channel that writes to that
@@ -178,7 +180,7 @@ val output_buffer : t -> string BatInnerIO.output
 ##V>=4.6##
 ##V>=4.6##    @since 2.8.0 and OCaml 4.06.0 *)
 
-(** {6 Boilerplate code}*)
+(** {1 Boilerplate code}*)
 
 val enum : t -> char BatEnum.t
 (** Returns an enumeration of the characters of a buffer. *)

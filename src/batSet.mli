@@ -412,15 +412,15 @@ sig
 
 
 
-  (** {6 Boilerplate code}*)
+  (** {1 Boilerplate code}*)
 
-  (** {7 Printing}*)
+  (** {2 Printing}*)
 
   val print :  ?first:string -> ?last:string -> ?sep:string ->
     ('a BatInnerIO.output -> elt -> unit) ->
     'a BatInnerIO.output -> t -> unit
 
-  (** {6 Override modules}*)
+  (** {1 Override modules}*)
 
   (**
      The following modules replace functions defined in {!Set} with functions
@@ -490,7 +490,7 @@ module Make2(O1 : OrderedType) (O2 : OrderedType) : sig
   (** cartesian product of the two sets *)
 end
 
-(** {6 Common instantiations} *)
+(** {1 Common instantiations} *)
 
 module Int : S with type elt = int
 module Int32 : S with type elt = int32
@@ -903,16 +903,16 @@ val of_seq : 'a BatSeq.t -> 'a t
   
     @since 3.3.0 *)
    
-(** {6 Boilerplate code}*)
+(** {1 Boilerplate code}*)
 
 
-(** {7 Printing}*)
+(** {2 Printing}*)
 
 val print :  ?first:string -> ?last:string -> ?sep:string ->
   ('a BatInnerIO.output -> 'c -> unit) ->
   'a BatInnerIO.output -> 'c t -> unit
 
-(** {6 Incubator} *)
+(** {1 Incubator} *)
 module Incubator : sig
 
   val op_map : ('a -> 'b) -> 'a t -> 'b t
@@ -928,7 +928,7 @@ end
 
 
 module PSet : sig
-  (** {6 Polymorphic sets}
+  (** {1 Polymorphic sets}
 
       The definitions below describe the polymorphic set interface.
 
@@ -1316,10 +1316,10 @@ module PSet : sig
     
       @since 3.3.0 *)
      
-  (** {6 Boilerplate code}*)
+  (** {1 Boilerplate code}*)
 
 
-  (** {7 Printing}*)
+  (** {2 Printing}*)
 
   val print :  ?first:string -> ?last:string -> ?sep:string ->
     ('a BatInnerIO.output -> 'c -> unit) ->

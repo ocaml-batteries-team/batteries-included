@@ -336,7 +336,7 @@ val compare: t -> t -> int
     allows the module [String] to be passed as argument to the functors
     {!Set.Make} and {!Map.Make}. *)
 
-(** {6 Conversions} *)
+(** {1 Conversions} *)
 
 val enum : string -> char BatEnum.t
 (** Returns an enumeration of the characters of a string.
@@ -402,9 +402,8 @@ val of_char : char -> string
 *)
 
 val to_int : string -> int
-(** Returns the integer represented by the given string
-    or @raise Failure if the string does not represent an
-    integer. This follows OCaml's int literal rules, so "0x"
+(** Returns the integer represented by the given string.
+    This follows OCaml's int literal rules, so "0x"
     prefixes hexadecimal integers, "0o" for octal and "0b" for
     binary.  Underscores within the number are allowed for
     readability but ignored.
@@ -416,8 +415,7 @@ val to_int : string -> int
 *)
 
 val to_float : string -> float
-(** Returns the float represented by the given string
-    or @raise Failure if the string does not represent a float.
+(** Returns the float represented by the given string.
     Decimal points aren't required in the given string, as they are
     for float literals in OCaml, but otherwise the rules for float
     literals apply.
@@ -429,7 +427,7 @@ val to_float : string -> float
     @raise Failure if the string does not represent a float.
 *)
 
-(** {6 String traversals} *)
+(** {1 String traversals} *)
 
 val map : (char -> char) -> string -> string
 (** [map f s] returns a string where all characters [c] in [s] have been
@@ -500,7 +498,7 @@ val iteri : (int -> char -> unit) -> string -> unit
     ]}
 *)
 
-(** {6 Finding}*)
+(** {1 Finding}*)
 
 
 
@@ -597,12 +595,12 @@ val count_char : string -> char -> int
  *)
 
 
-(** {6 Transformations}*)
+(** {1 Transformations}*)
 
 val lchop : ?n:int -> string -> string
 (** Returns the same string but without the first [n] characters.
     By default [n] is 1.
-    If [n] is strictly less than zero @raise Invalid_argument.
+    @raise Invalid_argument If [n] is strictly less than zero.
     If the string has [n] or less characters, returns the empty string.
 
       Example:
@@ -614,7 +612,7 @@ val lchop : ?n:int -> string -> string
 val rchop : ?n:int -> string -> string
 (** Returns the same string but without the last [n] characters.
     By default [n] is 1.
-    If [n] is strictly less than zero @raise Invalid_argument.
+    @raise Invalid_argument If [n] is strictly less than zero.
     If the string has [n] or less characters , returns the empty string.
 
       Example:
@@ -725,7 +723,7 @@ val rev : string -> string
     @since 2.1
 *)
 
-(** {6 In-Place Transformations}*)
+(** {1 In-Place Transformations}*)
 
 val rev_in_place : Bytes.t -> unit
 (** [rev_in_place s] mutates the byte sequence [s], so that its new value is
@@ -735,7 +733,7 @@ val rev_in_place : Bytes.t -> unit
 val in_place_mirror : Bytes.t -> unit
 (** @deprecated Use {!String.rev_in_place} instead *)
 
-(** {6 Splitting around}*)
+(** {1 Splitting around}*)
 
 val split_on_char: char -> string -> string list
 (** [String.split_on_char sep s] returns the list of all (possibly empty)
@@ -872,7 +870,7 @@ val implode : char list -> string
     Example: [String.implode ['b'; 'a'; 'r'] = "bar"]
 *)
 
-##V>=4.07##(** {6 Iterators} *)
+##V>=4.07##(** {1 Iterators} *)
 
 ##V>=4.07##val to_seq : t -> char Seq.t
 ##V>=4.07##(** Iterate on the string, in increasing index order. Modifications of the
@@ -887,7 +885,7 @@ val implode : char list -> string
 ##V>=4.07##(** Create a string from the generator
 ##V>=4.07##    @since 2.10.0 and OCaml 4.07 *)
 
-(** {6 Binary decoding of integers} *)
+(** {1 Binary decoding of integers} *)
 
 (** The functions in this section binary decode integers from strings.
 
@@ -1027,7 +1025,7 @@ val get_uint8 : string -> int -> int
 ##V>=4.14##(** [is_valid_utf_16le b] is [true] if and only if [b] contains valid
 ##V>=4.14##    UTF-16LE data. *)
 
-(** {6 Comparisons}*)
+(** {1 Comparisons}*)
 
 val equal : t -> t -> bool
 (** String equality *)
@@ -1080,9 +1078,9 @@ val edit_distance : t -> t -> int
     @since 2.2.0
 *)
 
-(** {6 Boilerplate code}*)
+(** {1 Boilerplate code}*)
 
-(** {7 Printing}*)
+(** {2 Printing}*)
 
 val print: 'a BatInnerIO.output -> string -> unit
 (**Print a string.
@@ -1217,7 +1215,7 @@ sig
 
   external create : int -> _ t = "caml_create_string"
 
-  (** {6 Constructors}*)
+  (** {1 Constructors}*)
 
   external of_string : Bytes.t -> _ t = "%identity"
 ##V>=4.2##    [@@ocaml.deprecated "Use Cap.of_bytes instead"]
@@ -1290,7 +1288,7 @@ sig
 
   val init : int -> (int -> char) -> _ t
 
-  (** {6 Conversions}*)
+  (** {1 Conversions}*)
   val enum : [> `Read] t -> char BatEnum.t
 
   val of_enum : char BatEnum.t -> _ t
@@ -1313,7 +1311,7 @@ sig
 
   val to_float : [> `Read] t -> float
 
-  (** {6 String traversals}*)
+  (** {1 String traversals}*)
 
   val map : (char -> char) -> [>`Read] t -> _ t
   val mapi : (int -> char -> char) -> [>`Read] t -> _ t
@@ -1332,7 +1330,7 @@ sig
   val iter : (char -> unit) -> [> `Read] t -> unit
 
 
-  (** {6 Finding}*)
+  (** {1 Finding}*)
 
   val index : [>`Read] t -> char -> int
 
@@ -1364,7 +1362,7 @@ sig
 
   val count_char : [> `Read] t -> char -> int
 
-  (** {6 Transformations}*)
+  (** {1 Transformations}*)
 
   val lchop : ?n:int -> [> `Read] t -> _ t
 
@@ -1411,7 +1409,7 @@ sig
 
   val repeat: [> `Read] t -> int -> _ t
 
-  (** {6 Splitting around}*)
+  (** {1 Splitting around}*)
   val split : [> `Read] t -> by:[> `Read] t -> _ t * _ t
 
   val rsplit : [> `Read] t -> by:[> `Read] t -> _ t * _ t
@@ -1428,14 +1426,14 @@ sig
 
   val implode : char list -> _ t
 
-  (** {6 Comparisons}*)
+  (** {1 Comparisons}*)
 
   val compare: [> `Read] t -> [> `Read] t -> int
 
   val icompare: [> `Read] t -> [> `Read] t -> int
 
 
-  (** {7 Printing}*)
+  (** {2 Printing}*)
 
   val print: 'a BatInnerIO.output -> [> `Read] t -> unit
 
@@ -1445,7 +1443,7 @@ sig
 
   (**/**)
 
-  (** {6 Undocumented operations} *)
+  (** {1 Undocumented operations} *)
   external unsafe_get : [> `Read] t -> int -> char = "%string_unsafe_get"
   external unsafe_set : [> `Write] t -> int -> char -> unit = "%string_unsafe_set"
 

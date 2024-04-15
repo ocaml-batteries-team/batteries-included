@@ -59,7 +59,7 @@ exception Error of string
     accepted, but one of the following components is rejected. *)
 
 
-(** {6 Stream builders} *)
+(** {1 Stream builders} *)
 
 val from : (int -> 'a option) -> 'a t
 (** [Stream.from f] returns a stream built from the function [f].
@@ -84,7 +84,7 @@ val of_bytes : Bytes.t -> char t
 val of_channel : in_channel -> char t
 (** Return the stream of the characters read from the input channel. *)
 
-(** {6 Other Stream builders}
+(** {1 Other Stream builders}
 
     Warning: these functions create streams with fast access; it is illegal
     to mix them with streams built with [[< >]]; would raise [Failure]
@@ -99,7 +99,7 @@ val of_fun : (unit -> 'a) -> 'a t
     stream. *)
 
 
-(** {6 Stream iterator} *)
+(** {1 Stream iterator} *)
 
 val iter : ('a -> unit) -> 'a t -> unit
 (** [Stream.iter f s] scans the whole stream s, applying function [f]
@@ -130,17 +130,19 @@ val filter : ('a -> bool) -> 'a t -> 'a t
     and return the results in the same order as a stream. *)
 
 
-(** {6 Predefined parsers} *)
+(** {1 Predefined parsers} *)
 
 val next : 'a t -> 'a
 (** Return the first element of the stream and remove it from the
-    stream. @raise Stream.Failure if the stream is empty. *)
+    stream.
+
+    @raise Stream.Failure if the stream is empty. *)
 
 val empty : 'a t -> unit
 (** Return [()] if the stream is empty, else raise [Stream.Failure]. *)
 
 
-(** {6 Useful functions} *)
+(** {1 Useful functions} *)
 
 val peek : 'a t -> 'a option
 (** Return [Some] of "the first element" of the stream, or [None] if
@@ -160,7 +162,7 @@ val npeek : int -> 'a t -> 'a list
     elements are available. *)
 
 
-(** {6 Conversion functions} *)
+(** {1 Conversion functions} *)
 
 val enum : 'a t -> 'a BatEnum.t
 (** Convert a stream to an enumeration.
@@ -188,13 +190,13 @@ val to_string_fmt : ('a -> string, unit, string) format -> 'a t -> string
 val to_string_fun : ('a -> string) -> 'a t -> string
 (** convert stream to string, using given conversion function *)
 
-(** {6 Stream consumers} *)
+(** {1 Stream consumers} *)
 
 val on_output:   'a BatIO.output-> char t -> unit
 (** Convert an [output] to a stream.*)
 
 
-(** {6 Computation over stream}
+(** {1 Computation over stream}
 
     All the functions in this part are lazy.
 *)
@@ -248,7 +250,7 @@ val drop_while : ('a -> bool) -> 'a t -> 'a t
 (** [drop_while test stream] returns the remaining suffix of [take_while test
     stream]. *)
 
-(** {6 Streams pair arithmetic}
+(** {1 Streams pair arithmetic}
 
     All the functions in this part are lazy.
 *)
@@ -287,7 +289,7 @@ val switch : ('a -> bool) -> 'a t -> 'a t * 'a t
     order of elements in the source stream is preserved. *)
 
 
-(** {6 Stream arithmetic}
+(** {1 Stream arithmetic}
 
     All the functions in this part are lazy.*)
 
@@ -301,11 +303,13 @@ val is_empty : 'a t -> bool
 (** [is_empty stream] tests whether [stream] is empty. But note that it forces
     the evaluation of the head element if any. *)
 
-(** {6 Predefined parsers} *)
+(** {1 Predefined parsers} *)
 
 val next : 'a t -> 'a
 (** Return the first element of the stream and remove it from the
-    stream. @raise Stream.Failure if the stream is empty. *)
+    stream.
+
+    @raise Stream.Failure if the stream is empty. *)
 
 
 

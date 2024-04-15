@@ -47,7 +47,7 @@ val equal : 'a uref -> 'a uref -> bool
     urefs, either because they are physically the same or because
     they have been {!unite}d. *)
 
-(** {6 Printing} *)
+(** {1 Printing} *)
 
 val print : ('a, 'b) BatIO.printer -> ('a uref, 'b) BatIO.printer
     (** Print the uref. *)

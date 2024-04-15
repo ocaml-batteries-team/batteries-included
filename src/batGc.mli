@@ -88,11 +88,14 @@ type stat = Gc.stat =
     (** Maximum size reached by the major heap, in words. *)
 
     stack_size: int;
-    (** Current size of the stack, in words. @since 3.12.0 *)
+    (** Current size of the stack, in words.
+
+        @since 3.12.0 *)
 
 ##V>=4.12## forced_major_collections: int;
 ##V>=4.12## (** Number of forced full major collections completed since the program
-##V>=4.12##     was started. @since 4.12.0 *)
+##V>=4.12##     was started.
+##V>=4.12##     @since 4.12.0 *)
   }
 (** The memory management counters are returned in a [stat] record.
 
@@ -164,13 +167,16 @@ type control = Gc.control =
         quite fast but can result in fragmentation.  1 is the
         first-fit policy, which can be slower in some cases but
         can be better for programs with fragmentation problems.
-        Default: 0. @since 3.11.0 *)
+        Default: 0.
+
+        @since 3.11.0 *)
 
 ##V>=4.3##    window_size : int;
 ##V>=4.3##    (** The size of the window used by the major GC for smoothing
 ##V>=4.3##        out variations in its workload. This is an integer between
 ##V>=4.3##        1 and 50.
-##V>=4.3##        Default: 1. @since 2.5.0 and OCaml 4.03.0 *)
+##V>=4.3##        Default: 1.
+##V>=4.3##        @since 2.5.0 and OCaml 4.03.0 *)
 ##V>=4.3##
 
 ##V>=4.8##    custom_major_ratio : int;

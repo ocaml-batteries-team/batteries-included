@@ -31,7 +31,7 @@ type +'a t
 val size : 'a t -> int
 (** Number of elements in the heap. O(1) *)
 
-(** {6 Construction} *)
+(** {1 Construction} *)
 
 val empty : 'a t
 (** The empty heap. *)
@@ -43,7 +43,7 @@ val add : 'a -> 'a t -> 'a t
 (** [add x h] is the same as [insert h x]. This function is intended
     to be used with [fold_right]. *)
 
-(** {6 Operations} *)
+(** {1 Operations} *)
 
 val merge : 'a t -> 'a t -> 'a t
 (** Merge two heaps. O(log m) *)
@@ -56,7 +56,7 @@ val del_min : 'a t -> 'a t
 (** Delete the minimal element of the heap. O(log n)
     @raise Invalid_argument ["del_min"] if the heap is empty *)
 
-(** {6 Transformation} *)
+(** {1 Transformation} *)
 
 val of_list : 'a list -> 'a t
 (** Build a heap from a given list. O(n log n) *)
@@ -75,14 +75,14 @@ val enum : 'a t -> 'a BatEnum.t
 (** Enumerate the elements of the heap in heap order. O(log n) per
     {!BatEnum.get}. *)
 
-(** {6 Printing} *)
+(** {1 Printing} *)
 
 val print :  ?first:string -> ?last:string -> ?sep:string
   -> ('a, 'b) BatIO.printer -> ('a t, 'b) BatIO.printer
 (** Print the contents of the heap in heap order. O(n log n) *)
 
 
-(** {6 Functorized version} *)
+(** {1 Functorized version} *)
 
 (** The result of {!Make} *)
 module type H =

@@ -73,7 +73,7 @@ sig
       ['wrapped_type].
   *)
 
-  (** {6 Construction} *)
+  (** {1 Construction} *)
 
   val empty : ('a, 'm) fg
   (** [empty] is the sequence with no elements. *)
@@ -97,7 +97,7 @@ sig
       O(1) amortized, O(log(n)) worst case.
   *)
 
-  (** {6 Deconstruction} *)
+  (** {1 Deconstruction} *)
 
   val front : (('a, 'm) fg -> (('a, 'm) fg * 'a) option, 'a, 'm) wrap
   (** [front t] returns [None] when [t] is empty,
@@ -193,7 +193,7 @@ sig
       O(1) amortized, O(log(n)) worst case.
   *)
 
-  (** {6 Inspection} *)
+  (** {1 Inspection} *)
 
   val size : ('a, 'm) fg -> int
   (** [size t] returns the number of elements in the sequence.
@@ -246,9 +246,9 @@ sig
       O(n).
   *)
 
-  (** {6 Conversions} *)
+  (** {1 Conversions} *)
 
-  (** {7 Conversions to other structures} *)
+  (** {2 Conversions to other structures} *)
 
   val enum : ('a, 'm) fg -> 'a BatEnum.t
   (** [enum t] builds an enumeration of the elements of [t] going from
@@ -277,7 +277,7 @@ sig
       O(n).
   *)
 
-  (** {7 Conversions from other structures} *)
+  (** {2 Conversions from other structures} *)
 
   val of_enum : ('a BatEnum.t -> ('a, 'm) fg, 'a, 'm) wrap
   (** [of_enum e] build the sequence containing the elements of [e]
@@ -305,7 +305,7 @@ sig
       O(n).
   *)
 
-  (** {6 Combining/reorganizing} *)
+  (** {1 Combining/reorganizing} *)
 
   val map : (('a -> 'b) -> ('a, 'm) fg -> ('b, 'm) fg, 'b, 'm) wrap
   (** [map] is equivalent to {!List.map}.
@@ -331,7 +331,7 @@ sig
       O(n).
   *)
 
-  (** {6 Boilerplate code} *)
+  (** {1 Boilerplate code} *)
 
   val print : ?first:string -> ?last:string -> ?sep:string -> ('a, 'b) BatIO.printer -> (('a, _) fg,'b) BatIO.printer
 

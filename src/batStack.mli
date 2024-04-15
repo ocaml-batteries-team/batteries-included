@@ -41,12 +41,14 @@ val push : 'a -> 'a t -> unit
 (** [push x s] adds the element [x] at the top of stack [s]. *)
 
 val pop : 'a t -> 'a
-(** [pop s] removes and returns the topmost element in stack [s],
-    or @raise Empty if the stack is empty. *)
+(** [pop s] removes and returns the topmost element in stack [s].
+
+    @raise Empty if the stack is empty. *)
 
 val top : 'a t -> 'a
-(** [top s] returns the topmost element in stack [s],
-    or @raise Empty if the stack is empty. *)
+(** [top s] returns the topmost element in stack [s].
+
+    @raise Empty if the stack is empty. *)
 
 val clear : 'a t -> unit
 (** Discard all elements from a stack. *)
@@ -87,9 +89,9 @@ val of_enum : 'a BatEnum.t -> 'a t
     Note: if [s] is a stack, [s <> of_enum (enum s)], as [of_enum]
     reverses the input order.  *)
 
-(** {6 Boilerplate code}*)
+(** {1 Boilerplate code}*)
 
-(** {7 Printing}*)
+(** {2 Printing}*)
 
 (* Prints the contents of the given stack *)
 val print : ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit

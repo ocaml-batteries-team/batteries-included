@@ -39,7 +39,7 @@
     - concat, substring, insert, remove operations in amortized logarithmic time
     - access to and modification of ropes in logarithmic time
 
-    {8 Functional nature and persistence}
+    {3 Functional nature and persistence}
 
     All operations are non-destructive: the original rope is never modified. When a
     new rope is returned as the result of an operation, it will share as much data
@@ -56,7 +56,7 @@
     calling [balance] after each modification would defeat the purpose of amortization.
 
 
-    {8 Limitations}
+    {3 Limitations}
 
     The length of ropes is limited to approximately 700 Mb on 32-bit
     architectures, 220 Gb on 64 bit architectures.
@@ -73,7 +73,7 @@ exception Out_of_bounds
 val max_length : int
 (** Maximum length of the rope (number of UTF-8 characters). *)
 
-(** {6 Creation and conversions} *)
+(** {1 Creation and conversions} *)
 
 val empty : t
 (** The empty rope. *)
@@ -108,7 +108,7 @@ val implode : BatUChar.t list -> t
     the characters in the list [cs]. *)
 
 
-(** {6 Properties } *)
+(** {1 Properties } *)
 
 val is_empty : t -> bool
 (** Returns whether the rope is empty or not. *)
@@ -125,7 +125,7 @@ val balance : t -> t
     automatically rebalanced when their height exceeds a given threshold, but
     [balance] allows to invoke that operation explicitly. *)
 
-(** {6 Operations } *)
+(** {1 Operations } *)
 
 val append : t -> t -> t
 (** [append r u] concatenates the [r] and [u] ropes. In general, it operates
@@ -184,7 +184,7 @@ val concat : t -> t list -> t
     inserting the separator rope [sep] between each. *)
 
 
-(** {6 Iteration} *)
+(** {1 Iteration} *)
 
 val iter : (BatUChar.t -> unit) -> t -> unit
 (** [iter f r] applies [f] to all the characters in the [r] rope,
@@ -244,7 +244,7 @@ val of_enum : BatUChar.t BatEnum.t -> t
 (** converts the enumeration into a rope
     @since 2.2.0 *)
 
-(** {6 Finding}*)
+(** {1 Finding}*)
 
 val index : t -> BatUChar.t -> int
 (** [index s c] returns the position of the leftmost
@@ -412,7 +412,7 @@ val replace : str:t -> sub:t -> by:t -> bool * t
     within [str] has been replaced by the rope [by]. The boolean
     is [true] if a substitution has taken place, [false] otherwise. *)
 
-(** {6 Splitting around}*)
+(** {1 Splitting around}*)
 
 val split : t -> t -> t * t
 (** [split s sep] splits the rope [s] between the first

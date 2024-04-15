@@ -112,7 +112,7 @@ val oget_exn : 'a option ref -> 'a
 (** Get a value from an option ref;
     @raise Not_found on [oget_exn (ref None)] *)
 
-(** {6 Boilerplate code}*)
+(** {1 Boilerplate code}*)
 
 val print: ('b BatInnerIO.output -> 'a -> unit) -> 'b BatInnerIO.output -> 'a t -> unit
 

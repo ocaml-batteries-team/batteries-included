@@ -81,7 +81,7 @@ include Enumerable with type 'a enumerable = 'a t
 include BatInterfaces.Mappable with type 'a mappable = 'a t
 
 
-(** {6 Final functions}
+(** {1 Final functions}
 
     These functions consume the enumeration until
     it ends or an exception is raised by the first
@@ -167,7 +167,7 @@ val foldi : (int -> 'a -> 'b -> 'b) -> 'b -> 'a t -> 'b
 
 val fold2i : (int -> 'a -> 'b -> 'c -> 'c) -> 'c -> 'a t -> 'b t -> 'c
 
-(** {6 Useful functions} *)
+(** {1 Useful functions} *)
 
 val find : ('a -> bool) -> 'a t -> 'a
 (** [find f e] returns the first element [x] of [e] such that [f x] returns
@@ -301,7 +301,7 @@ val cartesian_product : 'a t -> 'b t -> ('a * 'b) t
     returned)
     @since 2.2.0 *)
 
-(** {6 Lazy constructors}
+(** {1 Lazy constructors}
 
     These functions are lazy which means that they will create a new modified
     enumeration without actually enumerating any element until they are asked
@@ -389,7 +389,7 @@ val concat_map : ('a -> 'b t) -> 'a t -> 'b t
     [concat_map f e] is the same as [concat (map f e)].
     @since 2.2.0 *)
 
-(** {6 Constructors}
+(** {1 Constructors}
 
     In this section the word {i shall} denotes a semantic
     requirement. The correct operation of the functions in this
@@ -523,11 +523,11 @@ val of_enum : 'a t -> 'a t
 val combination : ?repeat:bool -> int -> int -> int list t
 (** [combination n k] returns an enumeration over combination of [k] elements
     between [n] distincts elements.
-    
+
     If [repeat] is true, the combination may contain the same elements many
     times.*)
 
-(** {6 Counting} *)
+(** {1 Counting} *)
 
 val count : 'a t -> int
 (** [count e] returns the number of remaining elements in [e] without
@@ -554,7 +554,7 @@ val hard_count : 'a t -> int
     lines in a file).*)
 
 (**
-   {6 Utilities }
+   {1 Utilities }
 *)
 
 val range : ?until:int -> int -> int t
@@ -571,7 +571,7 @@ val combine : 'a t -> 'b t -> ('a * 'b) t
 (** [combine] transform two streams into a stream of pairs of corresponding
     elements. If one stream is shorter, excess elements of the longer stream are
     ignored.
-    Curried @since 3.0
+    @since 3.0 curried
  *)
 
 val uncombine : ('a * 'b) t -> 'a t * 'b t
@@ -623,7 +623,7 @@ val switch : ('a -> bool) -> 'a t -> 'a t * 'a t
 val partition : ('a -> bool) -> 'a t -> 'a t * 'a t
 (** as [switch]
 
-    @added v1.4.0
+    @since 1.4.0
 *)
 
 (*val switchn: int -> ('a -> int) -> 'a t -> 'a t array
@@ -641,11 +641,11 @@ val arg_max : ('a -> 'b) -> 'a t -> 'a
     Example: [-5 -- 5 |> arg_min (fun x -> x * x + 6 * x - 5) = -3]
     Example: [List.enum ["cat"; "canary"; "dog"; "dodo"; "ant"; "cow"] |> arg_max String.length = "canary"]
 
-    @added v1.4.0
+    @since 1.4.0
     @raise Invalid_argument if the input enum is empty
 *)
 
-(** {6 Trampolining} *)
+(** {1 Trampolining} *)
 
 val while_do : ('a -> bool) -> ('a t -> 'a t) -> 'a t -> 'a t
 (** [while_do cont f e] is a loop on [e] using [f] as body and [cont] as
@@ -659,7 +659,7 @@ val while_do : ('a -> bool) -> ('a t -> 'a t) -> 'a t -> 'a t
     corresponding element has been added to the result stream.
 *)
 
-(** {6 Infix operators} *)
+(** {1 Infix operators} *)
 
 (** Infix versions of some functions
 
@@ -733,7 +733,7 @@ val ( @/ ) : ('a -> 'b) -> 'a t -> 'b t
 val ( //@ ) : 'a t -> ('a -> 'b option) -> 'b t
 val ( @// ) : ('a -> 'b option) -> 'a t -> 'b t
 
-(** {6 Monad related modules} *)
+(** {1 Monad related modules} *)
 
 (** Monadic operations on Enumerations containing monadic elements
 
@@ -770,7 +770,7 @@ module Monad : sig
 end
 
 
-(** {6 Boilerplate code}*)
+(** {1 Boilerplate code}*)
 
 val print :  ?first:string -> ?last:string -> ?sep:string -> ('a BatInnerIO.output -> 'b -> unit) -> 'a BatInnerIO.output -> 'b t -> unit
 (** Print and consume the contents of an enumeration.*)
@@ -809,7 +809,7 @@ val equal : ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
     the same sequence of elements.
 *)
 
-(** {6 Override modules}*)
+(** {1 Override modules}*)
 
 (**
    The following modules replace functions defined in {!BatEnum} with functions
@@ -873,7 +873,7 @@ end
 
 (**/**)
 
-(** {6 For system use only, not for the casual user}
+(** {1 For system use only, not for the casual user}
 
     For compatibility with {!Stream}
 *)

@@ -27,7 +27,7 @@
 
 open BatInnerIO
 
-(** {6 Utilities} *)
+(** {1 Utilities} *)
 
 val lines_of : string -> string BatEnum.t
 (** [lines_of name] reads the contents of file [name] as an enumeration of lines.
@@ -51,7 +51,7 @@ val size_of_big: string -> Int64.t
     This function is provided as the size of a file larger than 1 Gb cannot
     be represented with an [int] on a 32-bit machine.*)
 
-(** {6 File permissions}
+(** {1 File permissions}
 
     File permissions are used when creating a file to allow controlling which users
     may read, write or open that file. To use a permission, create a value of type
@@ -115,7 +115,7 @@ val set_permissions: string -> permission -> unit
 val chmod: string -> permission -> unit
 (** As {!set_permissions}*)
 
-(** {6 Opening a file for reading} *)
+(** {1 Opening a file for reading} *)
 
 type open_in_flag =
   [ `create
@@ -140,7 +140,7 @@ val with_file_in : ?mode:(open_in_flag list) -> ?perm:permission -> string -> (i
     invokes [f] to process the contents of that file then, once [f] has returned
     or triggered an exception, closes the file before proceeding. *)
 
-(** {6 Opening a file for writing} *)
+(** {1 Opening a file for writing} *)
 
 type open_out_flag =
   [ `append   (**Start writing at the end of the file rather than the start *)
@@ -170,7 +170,7 @@ val with_file_out: ?mode:(open_out_flag list) -> ?perm:permission -> string -> (
     invokes [f] to write onto that file then, once [f] has returned or triggered
     an exception, closes the file before proceeding. *)
 
-(** {6 Opening a temporary file for writing} *)
+(** {1 Opening a temporary file for writing} *)
 
 type open_temporary_out_flag =
   [ open_out_flag

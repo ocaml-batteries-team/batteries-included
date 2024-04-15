@@ -258,14 +258,14 @@ val equal : t -> t -> bool
 
 val ord : t -> t -> BatOrd.order
 
-(** {6 Submodules grouping all infix operators} *)
+(** {1 Submodules grouping all infix operators} *)
 
 module Infix : BatNumber.Infix with type bat__infix_t = t
 module Compare: BatNumber.Compare with type bat__compare_t = t
 
 (**/**)
 
-(** {6 Deprecated functions} *)
+(** {1 Deprecated functions} *)
 
 external format : string -> int64 -> string = "caml_int64_format"
 (** [Int64.format fmt n] return the string representation of the
@@ -295,9 +295,9 @@ val ( ** ) : t -> t -> t
 *)
 val operations : t BatNumber.numeric
 
-(** {6 Boilerplate code}*)
+(** {1 Boilerplate code}*)
 
-(** {7 Printing}*)
+(** {2 Printing}*)
 
 val print: 'a BatInnerIO.output -> t -> unit
 (** prints as decimal string *)

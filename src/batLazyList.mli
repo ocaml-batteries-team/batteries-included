@@ -42,7 +42,7 @@
      @author David Teller
 *)
 
-(** {6 Exceptions} *)
+(** {1 Exceptions} *)
 
 exception Empty_list
 (** [Empty_list] is raised when an operation applied on an empty list
@@ -59,7 +59,7 @@ exception Different_list_size of string
 exception No_more_elements
 (** See {!from} and {!from_loop} for more information on this exception.*)
 
-(**{6  Type}
+(**{1  Type}
 
    {b Note} The types are kept concrete so as to allow pattern-matching.
    However, it is generally easier to manipulate {!nil} and {!cons}.*)
@@ -73,7 +73,7 @@ and 'a node_t = | Nil | Cons of 'a * 'a t
 include BatEnum.Enumerable with type 'a enumerable = 'a t
 include BatInterfaces.Mappable with type 'a mappable = 'a t
 
-(** {6 Access } *)
+(** {1 Access } *)
 
 val nil : 'a t
 (**The empty list.*)
@@ -91,7 +91,7 @@ val get : 'a t -> ('a * 'a t) option
 (**[get l] returns the head and tail of [l], if [l] is not empty.*)
 
 (**
-   {6 List creation}
+   {1 List creation}
 *)
 
 
@@ -155,7 +155,7 @@ val range : int -> int -> int t
 
 
 (**
-   {6 Higher-order functions}
+   {1 Higher-order functions}
 *)
 
 val iter : ('a -> 'b) -> 'a t -> unit
@@ -245,7 +245,7 @@ val lazy_fold_right :
    @since 2.1
 *)
 
-(** {6 Finding}*)
+(** {1 Finding}*)
 
 val mem : 'a -> 'a t -> bool
 (** [mem x l] determines if [x] is part of [l].
@@ -300,7 +300,7 @@ val rindex_ofq : 'a -> 'a t -> int option
     physical equality*)
 
 (**
-   {6  Common functions}
+   {1  Common functions}
 *)
 
 val next : 'a t -> 'a node_t
@@ -321,13 +321,17 @@ val would_at_fail: 'a t -> int -> bool
    than [n] elements, [false] otherwise*)
 
 val hd : 'a t -> 'a
-(**Return the first element of the given list. @raise Empty_list if the list is empty.
+(**Return the first element of the given list.
+
+   @raise Empty_list if the list is empty.
 
    Note: this function does not comply with the usual exceptionless error-management
    recommendations, as doing so would essentially render it useless.*)
 
 val tl : 'a t -> 'a t
-(**Return the given list without its first element. @raise Empty_list if the list is empty.
+(**Return the given list without its first element.
+
+   @raise Empty_list if the list is empty.
 
    Note: this function does not comply with the usual exceptionless error-management
    recommendations, as doing so would essentially render it useless.*)
@@ -336,19 +340,23 @@ val first : 'a t -> 'a
 (** As [hd]*)
 
 val last : 'a t -> 'a
-(** Returns the last element of the list. @raise Empty_list if
-    the list is empty. This function takes linear time and causes the
+(** Returns the last element of the list.
+
+    @raise Empty_list if the list is empty.
+
+    This function takes linear time and causes the
     evaluation of all elements of the list*)
 
 val at : 'a t -> int -> 'a
 (** [at l n] returns the element at index [n] (starting from [0]) in
-    the list [l]. @raise Invalid_index is the index is outside of
-    [l] bounds. *)
+    the list [l].
+
+    @raise Invalid_index is the index is outside of [l] bounds. *)
 
 val nth : 'a t -> int -> 'a
 (**  Obsolete. As [at]*)
 
-(** {6 Association lists}
+(** {1 Association lists}
 
     These lists behave essentially as {!HashMap}, although they are
     typically faster for short number of associations, and much
@@ -375,7 +383,7 @@ val mem_assq : 'a -> ('a * 'b) t -> bool
 val rev : 'a t -> 'a t
 (** Eager list reversal.*)
 
-(** {6 Transformations} *)
+(** {1 Transformations} *)
 
 val eager_append : 'a t -> 'a t -> 'a t
 (**Evaluate a list and append another list after this one.
@@ -406,13 +414,14 @@ val flatten : ('a t) list -> 'a t
 
 val split_at : int -> 'a t -> 'a t * 'a t
 (** [split_at n l] returns two lists [l1] and [l2], [l1] containing the
-    first [n] elements of [l] and [l2] the others. @raise Invalid_index if
-    [n] is outside of [l] size bounds. *)
+    first [n] elements of [l] and [l2] the others.
+
+    @raise Invalid_index if [n] is outside of [l] size bounds. *)
 
 val split_nth : int -> 'a t -> 'a t * 'a t
 (** Obsolete. As [split_at]. *)
 
-(**{6 Dropping elements}*)
+(**{1 Dropping elements}*)
 
 val unique : ?cmp:('a -> 'a -> int) -> 'a t -> 'a t
 (** [unique cmp l] returns the list [l] without any duplicate element.
@@ -460,7 +469,7 @@ val drop_while : ('a -> bool) -> 'a t -> 'a t
 
 
 (**
-   {6  Combinatorics}
+   {1  Combinatorics}
 *)
 
 val combinations : 'a list -> ('a list) t
@@ -474,7 +483,7 @@ val permutations : 'a list -> ('a list) t
     a different order. There are [factorial (length l)] permutations. *)
 
 (**
-   {6  Conversions}
+   {1  Conversions}
 *)
 
 val to_list : 'a t -> 'a list
@@ -514,7 +523,7 @@ val of_array : 'a array -> 'a t
 (**Eager conversion from array*)
 
 (**
-   {6  Predicates}
+   {1  Predicates}
 *)
 
 val filter : ('a -> bool) -> 'a t -> 'a t
@@ -551,23 +560,25 @@ val filter_map : ('a -> 'b option) -> 'a t -> 'b t
      | None   -> [^ ^] ].*)
 
 
-(**{6 Misc.}*)
+(**{1 Misc.}*)
 
 val eternity : unit t
 (** An infinite list of nothing*)
 
-(**{6 Sorting}*)
+(**{1 Sorting}*)
 
 val sort : ?cmp:('a -> 'a -> int) -> 'a t -> 'a t
 (** Sort the list using optional comparator (by default [compare]). *)
 
 val stable_sort : ('a -> 'a -> int) -> 'a t -> 'a t
 
-(**{6 Operations on two lists}*)
+(**{1 Operations on two lists}*)
 
 val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
 (** [map2 f [^ a0; a1; ...^] [^ b0; b1; ... ^]] is [[^ f a0 b0; f a1
-    b1; ... ^]]. @raise Different_list_size if the two lists have
+    b1; ... ^]].
+
+    @raise Different_list_size if the two lists have
     different lengths. Not tail-recursive, lazy. In particular, the
     exception is raised only after the shortest list has been
     entirely consumed. *)
@@ -633,20 +644,20 @@ val combine : 'a t -> 'b t -> ('a * 'b) t
 val uncombine : ('a * 'b) t -> 'a t * 'b t
 (** Divide a list of pairs into a pair of lists. *)
 
-(** {6 Infix submodule regrouping all infix operators} *)
+(** {1 Infix submodule regrouping all infix operators} *)
 module Infix : sig
   val ( ^:^ ) : 'a -> 'a t -> 'a t
   val ( ^@^ ) : 'a t -> 'a t -> 'a t
 end
 
-(** {6 Boilerplate code}*)
+(** {1 Boilerplate code}*)
 
-(** {7 Printing}*)
+(** {2 Printing}*)
 
 val print : ?first:string -> ?last:string -> ?sep:string ->('a BatInnerIO.output -> 'b -> unit) ->  'a BatInnerIO.output -> 'b t -> unit
 
 
-(** {6 Override modules}*)
+(** {1 Override modules}*)
 
 (**
    The following modules replace functions defined in {!LazyList} with functions

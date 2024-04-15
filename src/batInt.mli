@@ -199,14 +199,14 @@ val ( --- ) : t -> t -> t BatEnum.t
 external of_int : int -> int = "%identity"
 external to_int : int -> int = "%identity"
 
-(** {6 Submodules regrouping all infix operations} *)
+(** {1 Submodules regrouping all infix operations} *)
 
 module Infix : BatNumber.Infix with type bat__infix_t = t
 module Compare : BatNumber.Compare with type bat__compare_t = t
 
-(** {6 Boilerplate code}*)
+(** {1 Boilerplate code}*)
 
-(** {7 Printing}*)
+(** {2 Printing}*)
 
 val print: 'a BatInnerIO.output -> int -> unit
 (** prints as decimal string *)
@@ -217,7 +217,7 @@ val print_hex: 'a BatInnerIO.output -> int -> unit
 (*    val bprint: 'a BatInnerIO.output -> t -> unit
       (** prints as binary string *) *)
 
-(** {7 Compare} *)
+(** {2 Compare} *)
 
 val compare: t -> t -> int
 (** The comparison function for integers, with the same specification as
@@ -374,12 +374,12 @@ module Safe_int : sig
   external of_int : int -> t = "%identity"
   external to_int : t -> int = "%identity"
 
-  (** {6 Submodules regrouping all infix operations on safe integers} *)
+  (** {1 Submodules regrouping all infix operations on safe integers} *)
 
   module Infix : BatNumber.Infix with type bat__infix_t = t
   module Compare : BatNumber.Compare with type bat__compare_t = t
 
-  (** {6 Boilerplate code}*)
+  (** {1 Boilerplate code}*)
 
   val print: 'a BatInnerIO.output -> t -> unit
 
