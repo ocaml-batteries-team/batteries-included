@@ -29,6 +29,7 @@
 type ('a, 'b) t = ('a, 'b) Hashtbl.t
 let create s  = Hashtbl.create s
 let clear    = Hashtbl.clear
+let reset    = Hashtbl.reset
 let add      = Hashtbl.add
 let copy     = Hashtbl.copy
 let find     = Hashtbl.find
@@ -42,6 +43,13 @@ let hash     = Hashtbl.hash
 
 type statistics = Hashtbl.statistics
 let stats    = Hashtbl.stats
+
+##V>=4.07##let to_seq = Hashtbl.to_seq
+##V>=4.07##let to_seq_keys = Hashtbl.to_seq_keys
+##V>=4.07##let to_seq_values = Hashtbl.to_seq_values
+##V>=4.07##let add_seq = Hashtbl.add_seq
+##V>=4.07##let replace_seq = Hashtbl.replace_seq
+##V>=4.07##let of_seq = Hashtbl.of_seq
 
 type ('a, 'b) h_bucketlist =
   | Empty
@@ -219,6 +227,8 @@ let find_option h key =
   in
   let pos = key_index h key in
   loop (Array.unsafe_get (h_conv h).data pos)
+
+let find_opt = find_option
 
 exception Verified
 
@@ -572,6 +582,7 @@ sig
   val length : 'a t -> int
   val is_empty : 'a t -> bool
   val clear : 'a t -> unit
+  val reset : 'a t -> unit
   val copy : 'a t -> 'a t
   val add : 'a t -> key -> 'a -> unit
   val remove : 'a t -> key -> unit
@@ -580,6 +591,8 @@ sig
   val find_all : 'a t -> key -> 'a list
   val find_default : 'a t -> key ->  'a -> 'a
   val find_option : 'a t -> key -> 'a option
+  val find_opt : 'a t -> key -> 'a option
+
   val replace : 'a t -> key -> 'a -> unit
   val mem : 'a t -> key -> bool
   val iter : (key -> 'a -> unit) -> 'a t -> unit
@@ -602,6 +615,14 @@ sig
   val merge_all : (key -> 'a list -> 'b list -> 'c list) ->
     'a t -> 'b t -> 'c t
   val stats : 'a t -> statistics
+
+##V>=4.07##  val to_seq : 'a t -> (key * 'a) Seq.t
+##V>=4.07##  val to_seq_keys : _ t -> key Seq.t
+##V>=4.07##  val to_seq_values : 'a t -> 'a Seq.t
+##V>=4.07##  val add_seq : 'a t -> (key * 'a) Seq.t -> unit
+##V>=4.07##  val replace_seq : 'a t -> (key * 'a) Seq.t -> unit
+##V>=4.07##  val of_seq : (key * 'a) Seq.t -> 'a t
+
   val keys : 'a t -> key BatEnum.t
   val values : 'a t -> 'a BatEnum.t
   val enum : 'a t -> (key * 'a) BatEnum.t
@@ -673,7 +694,7 @@ sig
 end
 
 
-module Make(H: HashedType): (S with type key = H.t) =
+module Make(H: HashedType): (S with type key = H.t and type 'a t = 'a Hashtbl.Make (H).t) =
 struct
   include Hashtbl.Make(H)
   external to_hash : 'a t -> (key, 'a) Hashtbl.t = "%identity"
