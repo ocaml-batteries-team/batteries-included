@@ -1,6 +1,12 @@
 Changelog
 =========
 
+## NEXT_RELEASE
+
+- Add reset, find_opt and Seq functions to BatHashtbl
+  #1133
+  (Simmo Saan)
+
 ## v3.8.0 (minor release)
 
 - support OCaml 5.2 
