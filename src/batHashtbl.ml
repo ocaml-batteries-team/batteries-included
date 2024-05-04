@@ -833,6 +833,8 @@ struct
     let pos = key_index h key in
     loop (Array.unsafe_get hc.data pos)
 
+##V<4.05##  let find_opt = find_option
+
   let find_default h key defval =
     let hc = h_conv (to_hash h) in
     let rec loop = function
