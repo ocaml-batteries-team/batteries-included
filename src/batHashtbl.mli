@@ -512,7 +512,7 @@ sig
 end
 (** The output signature of the functor {!Hashtbl.Make}. *)
 
-module Make (H : HashedType) : S with type key = H.t
+module Make (H : HashedType) : S with type key = H.t and type 'a t = 'a Hashtbl.Make (H).t
 (** Functor building an implementation of the hashtable structure.
     The functor [Hashtbl.Make] returns a structure containing
     a type [key] of keys and a type ['a t] of hash tables

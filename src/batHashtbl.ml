@@ -673,7 +673,7 @@ sig
 end
 
 
-module Make(H: HashedType): (S with type key = H.t) =
+module Make(H: HashedType): (S with type key = H.t and type 'a t = 'a Hashtbl.Make (H).t) =
 struct
   include Hashtbl.Make(H)
   external to_hash : 'a t -> (key, 'a) Hashtbl.t = "%identity"

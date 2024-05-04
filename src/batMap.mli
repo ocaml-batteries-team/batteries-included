@@ -515,7 +515,7 @@ sig
 end
 
 
-module Make (Ord : BatInterfaces.OrderedType) : S with type key = Ord.t
+module Make (Ord : BatInterfaces.OrderedType) : S with type key = Ord.t with type 'a t = 'a Map.Make (Ord).t
 (** Functor building an implementation of the map structure
     given a totally ordered type.
 *)
