@@ -1,6 +1,12 @@
 Changelog
 =========
 
+## NEXT_RELEASE
+
+- Add Stdlib type equality to Set.Make, Map.Make and Hashtbl.Make
+  #1132
+  (Simmo Saan)
+
 ## v3.8.0 (minor release)
 
 - support OCaml 5.2 
