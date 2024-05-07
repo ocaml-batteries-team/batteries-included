@@ -103,11 +103,52 @@ val copy : ('a, 'b) t -> ('a, 'b) t
 val clear : ('a, 'b) t -> unit
 (** Empty a hash table. *)
 
+val reset : ('a, 'b) t -> unit
+(** Empty a hash table and shrink the size of the bucket table
+    to its initial size.
+    @since NEXT_RELEASE and OCaml 4.00 *)
+
 val stats : ('a, 'b) t -> statistics
 (** [Hashtbl.stats tbl] returns statistics about the table [tbl]:
     number of buckets, size of the biggest bucket, distribution of
     buckets by size.
     @since 4.00.0 and batteries 3.5.1 *)
+
+(** {1 Sequences} *)
+
+##V>=4.07##val to_seq : ('a,'b) t -> ('a * 'b) Seq.t
+##V>=4.07##(** Iterate on the whole table.  The order in which the bindings
+##V>=4.07##    appear in the sequence is unspecified. However, if the table contains
+##V>=4.07##    several bindings for the same key, they appear in reversed order of
+##V>=4.07##    introduction, that is, the most recent binding appears first.
+##V>=4.07##
+##V>=4.07##    The behavior is not specified if the hash table is modified
+##V>=4.07##    during the iteration.
+##V>=4.07##
+##V>=4.07##    @since NEXT_RELEASE and OCaml 4.07 *)
+##V>=4.07##
+##V>=4.07##val to_seq_keys : ('a,_) t -> 'a Seq.t
+##V>=4.07##(** Same as [Seq.map fst (to_seq m)]
+##V>=4.07##    @since NEXT_RELEASE and OCaml 4.07 *)
+##V>=4.07##
+##V>=4.07##val to_seq_values : (_,'b) t -> 'b Seq.t
+##V>=4.07##(** Same as [Seq.map snd (to_seq m)]
+##V>=4.07##    @since NEXT_RELEASE and OCaml 4.07 *)
+##V>=4.07##
+##V>=4.07##val add_seq : ('a,'b) t -> ('a * 'b) Seq.t -> unit
+##V>=4.07##(** Add the given bindings to the table, using {!add}
+##V>=4.07##    @since NEXT_RELEASE and OCaml 4.07 *)
+##V>=4.07##
+##V>=4.07##val replace_seq : ('a,'b) t -> ('a * 'b) Seq.t -> unit
+##V>=4.07##(** Add the given bindings to the table, using {!replace}
+##V>=4.07##    @since NEXT_RELEASE and OCaml 4.07 *)
+##V>=4.07##
+##V>=4.07##val of_seq : ('a * 'b) Seq.t -> ('a, 'b) t
+##V>=4.07##(** Build a table from the given bindings. The bindings are added
+##V>=4.07##    in the same order they appear in the sequence, using {!replace_seq},
+##V>=4.07##    which means that if two pairs have the same key, only the latest one
+##V>=4.07##    will appear in the table.
+##V>=4.07##    @since NEXT_RELEASE and OCaml 4.07 *)
 
 (**{1 Enumerations}*)
 
@@ -158,6 +199,10 @@ val find_default : ('a,'b) t -> 'a -> 'b -> 'b
 val find_option : ('a,'b) t -> 'a -> 'b option
 (** Find a binding for the key, or return [None] if no
     value is found *)
+
+val find_opt : ('a, 'b) t -> 'a -> 'b option
+(** [Stdlib]-compatible alias for {!find_option}.
+    @since NEXT_RELEASE *)
 
 val exists : ('a -> 'b -> bool) -> ('a,'b) t -> bool
 (** Check if at least one key-value pair satisfies [p k v] *)
@@ -399,6 +444,7 @@ sig
   val length : 'a t -> int
   val is_empty : 'a t -> bool
   val clear : 'a t -> unit
+  val reset : 'a t -> unit
   val copy : 'a t -> 'a t
   val add : 'a t -> key -> 'a -> unit
   val remove : 'a t -> key -> unit
@@ -407,6 +453,8 @@ sig
   val find_all : 'a t -> key -> 'a list
   val find_default : 'a t -> key ->  'a -> 'a
   val find_option : 'a t -> key -> 'a option
+  val find_opt : 'a t -> key -> 'a option
+
   val replace : 'a t -> key -> 'a -> unit
   val mem : 'a t -> key -> bool
   val iter : (key -> 'a -> unit) -> 'a t -> unit
@@ -429,6 +477,14 @@ sig
   val merge_all : (key -> 'a list -> 'b list -> 'c list) ->
     'a t -> 'b t -> 'c t
   val stats : 'a t -> statistics
+
+##V>=4.07##  val to_seq : 'a t -> (key * 'a) Seq.t
+##V>=4.07##  val to_seq_keys : _ t -> key Seq.t
+##V>=4.07##  val to_seq_values : 'a t -> 'a Seq.t
+##V>=4.07##  val add_seq : 'a t -> (key * 'a) Seq.t -> unit
+##V>=4.07##  val replace_seq : 'a t -> (key * 'a) Seq.t -> unit
+##V>=4.07##  val of_seq : (key * 'a) Seq.t -> 'a t
+
   val keys : 'a t -> key BatEnum.t
   val values : 'a t -> 'a BatEnum.t
   val enum : 'a t -> (key * 'a) BatEnum.t

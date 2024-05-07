@@ -31,7 +31,11 @@ module Stdlib_verifications = struct
        val print_stat : 'a BatInnerIO.output -> unit
      end)
   module Genlex = (Genlex : module type of Legacy.Genlex)
-  (*  module Hashtbl = (Hashtbl: module type of Legacy.Hashtbl)*)
+  (* module Hashtbl = (Hashtbl: module type of Legacy.Hashtbl) *)
+  module Hashtbl =
+  struct
+    module Make = (Hashtbl.Make : module type of Legacy.Hashtbl.Make)
+  end
   module Int32 = (Int32: module type of Legacy.Int32)
   module Int64 = (Int64: module type of Legacy.Int64)
   module Lexing =
