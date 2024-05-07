@@ -475,7 +475,7 @@ module IRopeSet   : S with type elt = BatRope.t
 
  *)
 
-module Make (Ord : OrderedType) : S with type elt = Ord.t
+module Make (Ord : OrderedType) : S with type elt = Ord.t and type t = Set.Make (Ord).t
 (** Functor building an implementation of the set structure
     given a totally ordered type.
 
