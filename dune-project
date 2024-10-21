@@ -28,5 +28,4 @@
   (benchmark (and :with-test (>= 1.6)))
   num)
  (conflicts
-  base-effects
   ocaml-option-no-flat-float-array))

@@ -327,7 +327,7 @@ module Outliers = struct
     (*note_outliers IO.stdout a;*)
     mean a
 
-  type effect =
+  type eff =
     | Unaffected (* less then 1% effect *)
     | Slight     (* between 1% and 10% *)
     | Moderate   (* between 10% and 50% *)
@@ -363,9 +363,9 @@ module Outliers = struct
 
   let print_effect oc ov =
     if ov > 0.00001 then (
-      let effect = effect_of_var ov |> effect_to_string in
+      let eff = effect_of_var ov |> effect_to_string in
       fprintf oc "variance introduced by outliers: %.5f%%\n" (ov *. 100.);
-      fprintf oc "variance is %s by outliers\n" effect;
+      fprintf oc "variance is %s by outliers\n" eff;
     )
 
 end

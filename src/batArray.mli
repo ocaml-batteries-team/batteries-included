@@ -69,7 +69,8 @@ external set : 'a array -> int -> 'a -> unit = "%array_safe_set"
     @raise Invalid_argument
     if [n] is outside the range 0 to [Array.length a - 1]. *)
 
-external make : int -> 'a -> 'a array = "caml_make_vect"
+##V>=5.3##external make : int -> 'a -> 'a array = "caml_array_make"
+##V<5.3##external make : int -> 'a -> 'a array = "caml_make_vect"
 (** [Array.make n x] returns a fresh array of length [n],
     initialized with [x].
     All the elements of this new array are initially
@@ -88,7 +89,8 @@ external make : int -> 'a -> 'a array = "caml_make_vect"
 ##V=4.2##external make_float: int -> float array = "caml_make_float_vect"
 ##V=4.2##val create_float: int -> float array
 
-##V>=4.3##external create_float: int -> float array = "caml_make_float_vect"
+##V>=5.3##external create_float : int -> float array = "caml_array_create_float"
+##V>=4.3####V<5.3##external create_float: int -> float array = "caml_make_float_vect"
 ##V>=4.3##val make_float: int -> float array
 (** [Array.make_float n] returns a fresh float array of length [n],
    with uninitialized data.
@@ -730,11 +732,14 @@ sig
 
   (**{1 Constructors}*)
 
-  external make : int -> 'a -> ('a, _) t = "caml_make_vect"
-  external create : int -> 'a -> ('a, _) t = "caml_make_vect"
+##V>=5.3##  external make : int -> 'a -> ('a, _) t = "caml_array_make"
+##V<5.3##  external make : int -> 'a -> ('a, _) t = "caml_make_vect"
+##V>=5.3##  external create : int -> 'a -> ('a, _) t = "caml_array_make"
+##V<5.3##  external create : int -> 'a -> ('a, _) t = "caml_make_vect"
 
 ##V<4.2##  val make_float : int -> (float, _) t
-##V>=4.2##  external make_float : int -> (float, _) t = "caml_make_float_vect"
+##V>=5.3##  external make_float : int -> (float, _) t = "caml_array_create_float"
+##V>=4.2####V<5.3##  external make_float : int -> (float, _) t = "caml_make_float_vect"
 (** [Array.make_float n] returns a fresh float array of length [n],
     with uninitialized data.
 
