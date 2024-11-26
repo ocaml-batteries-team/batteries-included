@@ -68,6 +68,11 @@ val peek : 'a t -> 'a
 val top : 'a t -> 'a
 (** [top] is a synonym for [peek]. *)
 
+##V>=5.3##val drop : 'a t -> unit
+##V>=5.3##(** [drop q] removes the first element in queue [q], or raises {!Empty}
+##V>=5.3##   if the queue is empty.
+##V>=5.3##   @since 3.9.0 and OCaml 5.3 *)
+
 val clear : 'a t -> unit
 (** Discard all elements from a queue. *)
 

@@ -38,7 +38,8 @@ type 'a mappable = 'a t
 ##V=4.2##external make_float: int -> float array = "caml_make_float_vect"
 ##V=4.2##external create_float: int -> float array = "caml_make_float_vect"
 
-##V>=4.3##external create_float: int -> float array = "caml_make_float_vect"
+##V>=5.3##external create_float: int -> float array = "caml_array_create_float"
+##V>=4.3####V<5.3##external create_float: int -> float array = "caml_make_float_vect"
 ##V>=4.3##let make_float = create_float
 
 let singleton x = [|x|]
@@ -1038,11 +1039,14 @@ struct
   external length     : ('a, [> ]) t -> int                     = "%array_length"
   external get        : ('a, [> `Read]) t -> int -> 'a          = "%array_safe_get"
   external set        : ('a, [> `Write]) t -> int -> 'a -> unit = "%array_safe_set"
-  external make       : int -> 'a -> ('a, _) t                  = "caml_make_vect"
-  external create     : int -> 'a -> ('a, _) t                  = "caml_make_vect"
+##V>=5.3##  external make       : int -> 'a -> ('a, _) t                  = "caml_array_make"
+##V<5.3##  external make       : int -> 'a -> ('a, _) t                  = "caml_make_vect"
+##V>=5.3##  external create     : int -> 'a -> ('a, _) t                  = "caml_array_make"
+##V<5.3##  external create     : int -> 'a -> ('a, _) t                  = "caml_make_vect"
 
 
-##V>=4.2##  external make_float: int -> (float, _) t = "caml_make_float_vect"
+##V>=5.3##  external make_float: int -> (float, _) t = "caml_array_create_float"
+##V>=4.2####V<5.3##  external make_float: int -> (float, _) t = "caml_make_float_vect"
 ##V<4.2##  let make_float n = make n 0.
 
   let init         = init
