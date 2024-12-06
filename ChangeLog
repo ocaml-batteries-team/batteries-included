@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## NEXT_RELEASE
+## v3.9.0
 
 - Add reset, find_opt and Seq functions to BatHashtbl
   #1133
@@ -9,6 +9,14 @@ Changelog
 
 - Add Stdlib type equality to Set.Make, Map.Make and Hashtbl.Make
   #1132
+  (Simmo Saan)
+
+- Add support for OCaml 5.3
+  #1134
+  (kit-ty-kate)
+
+- Restore OCaml < 4.05 compatibility (fix regression from 3.8.0)
+  #1131
   (Simmo Saan)
 
 ## v3.8.0 (minor release)
