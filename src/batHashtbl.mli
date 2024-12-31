@@ -106,7 +106,7 @@ val clear : ('a, 'b) t -> unit
 val reset : ('a, 'b) t -> unit
 (** Empty a hash table and shrink the size of the bucket table
     to its initial size.
-    @since NEXT_RELEASE and OCaml 4.00 *)
+    @since 3.9.0 and OCaml 4.00 *)
 
 val stats : ('a, 'b) t -> statistics
 (** [Hashtbl.stats tbl] returns statistics about the table [tbl]:
@@ -125,30 +125,30 @@ val stats : ('a, 'b) t -> statistics
 ##V>=4.07##    The behavior is not specified if the hash table is modified
 ##V>=4.07##    during the iteration.
 ##V>=4.07##
-##V>=4.07##    @since NEXT_RELEASE and OCaml 4.07 *)
+##V>=4.07##    @since 3.9.0 and OCaml 4.07 *)
 ##V>=4.07##
 ##V>=4.07##val to_seq_keys : ('a,_) t -> 'a Seq.t
 ##V>=4.07##(** Same as [Seq.map fst (to_seq m)]
-##V>=4.07##    @since NEXT_RELEASE and OCaml 4.07 *)
+##V>=4.07##    @since 3.9.0 and OCaml 4.07 *)
 ##V>=4.07##
 ##V>=4.07##val to_seq_values : (_,'b) t -> 'b Seq.t
 ##V>=4.07##(** Same as [Seq.map snd (to_seq m)]
-##V>=4.07##    @since NEXT_RELEASE and OCaml 4.07 *)
+##V>=4.07##    @since 3.9.0 and OCaml 4.07 *)
 ##V>=4.07##
 ##V>=4.07##val add_seq : ('a,'b) t -> ('a * 'b) Seq.t -> unit
 ##V>=4.07##(** Add the given bindings to the table, using {!add}
-##V>=4.07##    @since NEXT_RELEASE and OCaml 4.07 *)
+##V>=4.07##    @since 3.9.0 and OCaml 4.07 *)
 ##V>=4.07##
 ##V>=4.07##val replace_seq : ('a,'b) t -> ('a * 'b) Seq.t -> unit
 ##V>=4.07##(** Add the given bindings to the table, using {!replace}
-##V>=4.07##    @since NEXT_RELEASE and OCaml 4.07 *)
+##V>=4.07##    @since 3.9.0 and OCaml 4.07 *)
 ##V>=4.07##
 ##V>=4.07##val of_seq : ('a * 'b) Seq.t -> ('a, 'b) t
 ##V>=4.07##(** Build a table from the given bindings. The bindings are added
 ##V>=4.07##    in the same order they appear in the sequence, using {!replace_seq},
 ##V>=4.07##    which means that if two pairs have the same key, only the latest one
 ##V>=4.07##    will appear in the table.
-##V>=4.07##    @since NEXT_RELEASE and OCaml 4.07 *)
+##V>=4.07##    @since 3.9.0 and OCaml 4.07 *)
 
 (**{1 Enumerations}*)
 
@@ -202,7 +202,7 @@ val find_option : ('a,'b) t -> 'a -> 'b option
 
 val find_opt : ('a, 'b) t -> 'a -> 'b option
 (** [Stdlib]-compatible alias for {!find_option}.
-    @since NEXT_RELEASE *)
+    @since 3.9.0 *)
 
 val exists : ('a -> 'b -> bool) -> ('a,'b) t -> bool
 (** Check if at least one key-value pair satisfies [p k v] *)
