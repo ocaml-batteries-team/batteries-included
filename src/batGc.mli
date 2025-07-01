@@ -438,6 +438,9 @@ val delete_alarm : alarm -> unit
 ##V>=4.11##  sig
 ##V>=5.2##     type t = Gc.Memprof.t
 ##V>=4.12##    type allocation_source = Gc.Memprof.allocation_source = Normal | Marshal | Custom
+##V>=5.4##     type allocation_source = Gc.Memprof.allocation_source = Normal | Marshal | Custom | Map_file
+##V>=5.4##     val string_of_allocation_source : allocation_source -> string
+##V>=4.12##
 ##V>=4.11##    type allocation = Gc.Memprof.allocation = private
 ##V>=4.11##      { n_samples : int;
 ##V>=4.11##        (** The number of samples in this block (>= 1). *)
@@ -525,3 +528,52 @@ val delete_alarm : alarm -> unit
 ##V>=4.11##        callbacks not being called even though some events happened. *)
 ##V>=5.2##     val discard : t -> unit
 ##V>=4.11##end
+##V>=5.4##type suspended_collection_work = Gc.suspended_collection_work
+##V>=5.4##
+##V>=5.4##external ramp_up : (unit -> 'a) -> 'a * suspended_collection_work
+##V>=5.4##  = "caml_ml_gc_ramp_up"
+##V>=5.4##(** In general, the OCaml GC assumes that the program runs in
+##V>=5.4##    a "steady state" where peak memory usage remains constant: for
+##V>=5.4##    each newly allocated work, it assumes that one work has become
+##V>=5.4##    unreachable and will try to collect it during the next GC slice.
+##V>=5.4##
+##V>=5.4##    This assumption is incorrect at the points during program
+##V>=5.4##    execution where the live memory increases instead of remaining
+##V>=5.4##    stable: the steady-state assumption will make the GC work harder
+##V>=5.4##    at no benefit as it will not find more memory to collect.
+##V>=5.4##
+##V>=5.4##    [ramp_up f] puts the current domain in a "ramp-up" phase for the
+##V>=5.4##    duration of the evaluation of [f ()], letting the GC know that the
+##V>=5.4##    steady-state assumption does not hold; it should be used when you
+##V>=5.4##    know that the live memory of the program will increase
+##V>=5.4##    significantly.
+##V>=5.4##
+##V>=5.4##    During a ramp-up phase, the GC will not try to work harder for new
+##V>=5.4##    allocations: the corresponding collection work is "suspended". The
+##V>=5.4##    total amount of suspended collection work is returned by [ramp_up]
+##V>=5.4##    along with the result of the function.
+##V>=5.4##
+##V>=5.4##    If the user discards this suspended work (by doing nothing
+##V>=5.4##    with it), the GC will never accelerate to recover the
+##V>=5.4##    corresponding amount of memory. This is appropriate if the ramp-up
+##V>=5.4##    work allocates long-lived memory that remains live until the end
+##V>=5.4##    of the program execution.
+##V>=5.4##
+##V>=5.4##    If the user knows that at a certain point in the program the live
+##V>=5.4##    memory consumption has been reduced by the corresponding amount --
+##V>=5.4##    typically, because the memory allocated during [ramp_up] has become
+##V>=5.4##    unused -- then they should call {!ramp_down} below to have the GC
+##V>=5.4##    "resume" this collection work.
+##V>=5.4##
+##V>=5.4##    If [f ()] raises an exception, the ramp-up phase terminates, the
+##V>=5.4##    collection work that was suspended is resumed, and the exception
+##V>=5.4##    is re-raised.
+##V>=5.4##
+##V>=5.4##    If [f ()] performs an effect, the effect is not handled and an
+##V>=5.4##    [Effect.Unhandled] exception is thrown instead.
+##V>=5.4##*)
+##V>=5.4##
+##V>=5.4##external ramp_down : suspended_collection_work -> unit
+##V>=5.4##  = "caml_ml_gc_ramp_down"
+##V>=5.4##(** Notify the GC about some amount of collection work that was
+##V>=5.4##    suspended during a ramp-up phase, to be resumed now. *)

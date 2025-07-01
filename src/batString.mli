@@ -1025,6 +1025,54 @@ val get_uint8 : string -> int -> int
 ##V>=4.14##(** [is_valid_utf_16le b] is [true] if and only if [b] contains valid
 ##V>=4.14##    UTF-16LE data. *)
 
+##V>=5.4##(** {1:spellchecking Spellchecking} *)
+##V>=5.4##
+##V>=5.4##val edit_distance : ?limit:int -> t -> t -> int
+##V>=5.4##(** [edit_distance s0 s1] is the number of single character edits
+##V>=5.4##    (understood as insertion, deletion, substitution, transposition)
+##V>=5.4##    that are needed to change [s0] into [s1].
+##V>=5.4##
+##V>=5.4##    If [limit] is provided the function returns with [limit] as soon
+##V>=5.4##    as it was determined that [s0] and [s1] have distance of at least
+##V>=5.4##    [limit]. This is faster if you have a fixed limit, for example for
+##V>=5.4##    spellchecking.
+##V>=5.4##
+##V>=5.4##    The function assumes the strings are UTF-8 encoded and uses {!Uchar.t}
+##V>=5.4##    for the notion of character. Decoding errors are replaced by
+##V>=5.4##    {!Uchar.rep}. Normalizing the strings to
+##V>=5.4##    {{:https://unicode.org/glossary/#normalization_form_c}NFC} gives
+##V>=5.4##    better results.
+##V>=5.4##
+##V>=5.4##    {b Note.} This implements the simpler Optimal String Alignement (OSA)
+##V>=5.4##    distance, not the Damerau-Levenshtein distance. With this function
+##V>=5.4##    ["ca"] and ["abc"] have a distance of 3 not 2.
+##V>=5.4##
+##V>=5.4##    @since 5.4
+##V>=5.4##*)
+##V>=5.4##
+##V>=5.4##val spellcheck :
+##V>=5.4##  ?max_dist:(string -> int) -> ((string -> unit) -> unit) -> string ->
+##V>=5.4##  string list
+##V>=5.4##(** [spellcheck iter_dict s] are the strings enumerated by the
+##V>=5.4##    iterator [iter_dict] whose {{!edit_distance}edit distance} to [s]
+##V>=5.4##    is the smallest and at most [max_dist s]. If multiple corrections
+##V>=5.4##    are returned their order is as found in [iter_dict]. The default
+##V>=5.4##    [max_dist s] is:
+##V>=5.4##
+##V>=5.4##    {ul
+##V>=5.4##    {- [0] if [s] has 0 to 2 Unicode characters.}
+##V>=5.4##    {- [1] if [s] has 3 to 4 Unicode characters.}
+##V>=5.4##    {- [2] otherwise.}}
+##V>=5.4##
+##V>=5.4##    If your dictionary is a list [l], a suitable [iter_dict] is given
+##V>=5.4##    by [(fun yield -> List.iter yield l)].
+##V>=5.4##
+##V>=5.4##    All strings are assumed to be UTF-8 encoded, decoding
+##V>=5.4##    errors are replaced by {!Uchar.rep} characters.
+##V>=5.4##
+##V>=5.4##    @since 5.4 *)
+##V>=5.4##
+
 (** {1 Comparisons}*)
 
 val equal : t -> t -> bool
@@ -1072,11 +1120,11 @@ module NumString : BatInterfaces.OrderedType with type t = t
     Example: [module FilenameSet = Set.Make(String.NumString)]
 *)
 
-val edit_distance : t -> t -> int
-(** Edition distance (also known as "Levenshtein distance").
-    See {{:http://en.wikipedia.org/wiki/Levenshtein_distance} wikipedia}
-    @since 2.2.0
-*)
+##V<5.4##val edit_distance : t -> t -> int
+##V<5.4##(** Edition distance (also known as "Levenshtein distance").
+##V<5.4##    See {{:http://en.wikipedia.org/wiki/Levenshtein_distance} wikipedia}
+##V<5.4##    @since 2.2.0
+##V<5.4##*)
 
 (** {1 Boilerplate code}*)
 

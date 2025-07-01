@@ -111,6 +111,12 @@ val return : 'a -> 'a t
 val cons : 'a -> 'a t -> 'a t
 (** [cons e s = fun () -> Cons(e, s)] *)
 
+##V>=5.4##val singleton: 'a -> 'a t
+##V>=5.4##(** [singleton x] returns the one-element sequence containing only [x].
+##V>=5.4##
+##V>=5.4##    @since 5.4 *)
+##V>=5.4##
+
 val make : int -> 'a -> 'a t
 (** [make n e] returns the sequence of length [n] where all elements
     are [e] *)
@@ -265,6 +271,14 @@ val filter : ('a -> bool) -> 'a t -> 'a t
     Other functions that may drop an unbound number of elements
     ([filter_map], [take_while], etc.) have the same behavior.
 *)
+
+##V>=5.4##val filteri : (int -> 'a -> bool) -> 'a t -> 'a t
+##V>=5.4##(** Same as {!filter}, but the predicate is applied to the index of
+##V>=5.4##   the element as first argument (counting from 0), and the element
+##V>=5.4##   itself as second argument.
+##V>=5.4##
+##V>=5.4##   @since 5.4
+##V>=5.4##*)
 
 val filter_map : ('a -> 'b option) -> 'a t -> 'b t
 (** [filter_map f s] returns the sequence of elements filtered and

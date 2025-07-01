@@ -1098,16 +1098,23 @@ val with_locked_file : kind:[`Read|`Write] -> string -> (file_descr -> 'a) -> 'a
     the functions {!Sys.signal} and {!Sys.set_signal}.
 *)
 
-val kill : int -> int -> unit
+##V>=5.4## val kill : int -> Sys.signal -> unit
+##V<5.4## val kill : int -> int -> unit
 (** [kill pid sig] sends signal number [sig] to the process
-    with id [pid]. *)
+    with id [pid].
+
+##V>=5.4##     On Windows: only the {!Sys.sigkill} signal is emulated, causing the receiving
+##V>=5.4##     process to exit with code [ERROR_PROCESS_ABORTED] (1067). Before OCaml 5.5,
+##V>=5.4##     the receiving process exited with code 0.
+*)
 
 type sigprocmask_command = Unix.sigprocmask_command =
     SIG_SETMASK
   | SIG_BLOCK
   | SIG_UNBLOCK
 
-val sigprocmask : sigprocmask_command -> int list -> int list
+##V>=5.4## val sigprocmask : sigprocmask_command -> Sys.signal list -> Sys.signal list
+##V<5.4## val sigprocmask : sigprocmask_command -> int list -> int list
 (** [sigprocmask cmd sigs] changes the set of blocked signals.
     If [cmd] is [SIG_SETMASK], blocked signals are set to those in
     the list [sigs].
@@ -1117,10 +1124,12 @@ val sigprocmask : sigprocmask_command -> int list -> int list
     from the set of blocked signals.
     [sigprocmask] returns the set of previously blocked signals. *)
 
-val sigpending : unit -> int list
+##V>=5.4## val sigpending : unit -> Sys.signal list
+##V<5.4## val sigpending : unit -> int list
 (** Return the set of blocked signals that are currently pending. *)
 
-val sigsuspend : int list -> unit
+##V>=5.4## val sigsuspend : Sys.signal list -> unit
+##V<5.4## val sigsuspend : int list -> unit
 (** [sigsuspend sigs] atomically sets the blocked signals to [sigs]
     and waits for a non-ignored, non-blocked signal to be delivered.
     On return, the blocked signals are reset to their initial value. *)
@@ -1128,6 +1137,17 @@ val sigsuspend : int list -> unit
 val pause : unit -> unit
 (** Wait until a non-ignored, non-blocked signal is delivered. *)
 
+##V>=5.4## val sigwait : Sys.signal list -> Sys.signal
+##V>=5.4## (** [sigwait sigs] waits until one of the signals in the list [sigs]
+##V>=5.4##    becomes pending.  It then removes this signal from the set of pending
+##V>=5.4##    signals, and returns the number of this signal.
+##V>=5.4##    Signal handlers attached to the signals in [sigs] will not be
+##V>=5.4##    invoked.  The signals [sigs] are expected to be blocked before
+##V>=5.4##    calling [sigwait].
+##V>=5.4##
+##V>=5.4##    @since 5.4
+##V>=5.4##    @raise Invalid_argument on Windows (no inter-process signals on
+##V>=5.4##    Windows) *)
 
 (** {1 Time functions} *)
 

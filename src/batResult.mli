@@ -31,10 +31,22 @@ val get_ok : ('a, 'e) t -> 'a
     @raise Invalid_argument otherwise.
     @since 3.0.0 *)
 
+##V>=5.4##val get_ok' : ('a, string) result -> 'a
+##V>=5.4##(** [get_ok'] is like {!get_ok} but in case of error uses the
+##V>=5.4##    error message for raising [Invalid_argument].
+##V>=5.4##
+##V>=5.4##    @since 5.4 *)
+
 val get_error : ('a, 'e) t -> 'e
 (** [get_error r] is [e] if [r] is [Error e].
     @raise Invalid_argument otherwise.
     @since 3.0.0 *)
+
+##V>=5.4##val error_to_failure : ('a, string) result -> 'a
+##V>=5.4##(** [error_to_failure r] is [v] if [r] is [Ok v] and raises [Failure e]
+##V>=5.4##    if [r] is [Error e].
+##V>=5.4##
+##V>=5.4##    @since 5.4 *)
 
 val get : ('a, exn) t -> 'a
 (** [get (Ok x)] returns [x], and [get (Error e)] raises [e].  This
@@ -67,6 +79,12 @@ val map : ('a -> 'b) -> ('a, 'e) t -> ('b, 'e) t
 (** [map f r] is [Ok (f v)] if [r] is [Ok v] and [r] if [r] is [Error _].
     @since 3.0.0 *)
 
+##V>=5.4##val product : ('a, 'e) result -> ('b, 'e) result -> ('a * 'b, 'e) result
+##V>=5.4##(** [product r0 r1] is [Ok (v0, v1)] if [r0] is [Ok v0] and [r1] is [Ok v2]
+##V>=5.4##    and otherwise returns the error of [r0], if any, or the error of [r1].
+##V>=5.4##
+##V>=5.4##    @since 5.4 *)
+
 val map_error : ('e -> 'f) -> ('a, 'e) t -> ('a, 'f) t
 (** [map_error f r] is [Error (f e)] if [r] is [Error e] and [r] if
     [r] is [Ok _].
@@ -85,6 +103,11 @@ val fold : ok:('a -> 'c) -> error:('e -> 'c) -> ('a, 'e) t -> 'c
 (** [fold ~ok ~error r] is [ok v] if [r] is [Ok v] and [error e] if [r]
     is [Error e].
     @since 3.0.0 *)
+
+##V>=5.4##val retract : ('a, 'a) result -> 'a
+##V>=5.4##(** [retract r] is [v] if [r] is [Ok v] or [Error v].
+##V>=5.4##
+##V>=5.4##    @since 5.4 *)
 
 val iter : ('a -> unit) -> ('a, 'e) t -> unit
 (** [iter f r] is [f v] if [r] is [Ok v] and [()] otherwise.
@@ -146,6 +169,26 @@ val to_seq : ('a, 'e) t -> 'a BatSeq.t
 (** [to_seq r] is [r] as a sequence. [Ok v] is the singleton sequence
     containing [v] and [Error _] is the empty sequence.
     @since 3.0.0 *)
+
+##V>=5.4##(** {1:syntax Syntax} *)
+##V>=5.4##
+##V>=5.4##(** Binding operators. See manual section 12.23 for details.
+##V>=5.4##
+##V>=5.4##    @since 5.4 *)
+##V>=5.4##module Syntax : sig
+##V>=5.4##
+##V>=5.4##  val ( let* ) : ('a, 'e) result -> ('a -> ('b, 'e) result) -> ('b, 'e) result
+##V>=5.4##  (** [( let* )] is {!Result.bind}. *)
+##V>=5.4##
+##V>=5.4##  val ( and* ) : ('a, 'e) result -> ('b, 'e) result -> ('a * 'b, 'e) result
+##V>=5.4##  (** [( and* )] is {!Result.product}. *)
+##V>=5.4##
+##V>=5.4##  val ( let+ ) : ('a, 'e) result -> ('a -> 'b) -> ('b, 'e) result
+##V>=5.4##  (** [( let+ )] is {!Result.map}. *)
+##V>=5.4##
+##V>=5.4##  val ( and+ ) : ('a, 'e) result -> ('b, 'e) result -> ('a * 'b, 'e) result
+##V>=5.4##  (** [( and+ )] is {!Result.product}. *)
+##V>=5.4##end
 
 (** {1 The Result Monad} *)
 

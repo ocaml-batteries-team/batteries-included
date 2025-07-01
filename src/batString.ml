@@ -1091,45 +1091,45 @@ end
 
 module A = Array
 
-let edit_distance s1 s2 =
-  let len1 = String.length s1 in
-  let len2 = String.length s2 in
-  if len1 = 0
-    then len2
-  else if len2 = 0
-    then len1
-  else if s1 = s2
-    then 0
-  else begin
-    (* distance vectors (v0=previous, v1=current) *)
-    let v0 = A.make (len2 + 1) 0 in
-    let v1 = A.make (len2 + 1) 0 in
-    (* initialize v0: v0(i) = A(0)(i) = delete i chars from t *)
-    for i = 0 to len2 do
-      A.unsafe_set v0 i i
-    done;
-    (* main loop for the bottom up dynamic algorithm *)
-    for i = 0 to len1 - 1 do
-      (* first edit distance is the deletion of i+1 elements from s *)
-      A.unsafe_set v1 0 (i + 1);
-      (* try add/delete/replace operations *)
-      for j = 0 to len2 - 1 do
-        (* i >= 0 && i < length s1 *)
-        (* j >= 0 && j < length s2 *)
-        let cost = if unsafe_get s1 i = unsafe_get s2 j then 0 else 1 in
-        A.unsafe_set v1 (j + 1)
-          (min
-             ((A.unsafe_get v1 j) + 1)
-             (min
-                ((A.unsafe_get v0 (j + 1)) + 1)
-                ((A.unsafe_get v0 j) + cost)));
-      done;
-      (* copy v1 into v0 for next iteration *)
-      A.blit v1 0 v0 0 (len2 + 1);
-    done;
-    A.unsafe_get v1 len2
-  end
-
+##V<5.4##let edit_distance s1 s2 =
+##V<5.4##  let len1 = String.length s1 in
+##V<5.4##  let len2 = String.length s2 in
+##V<5.4##  if len1 = 0
+##V<5.4##    then len2
+##V<5.4##  else if len2 = 0
+##V<5.4##    then len1
+##V<5.4##  else if s1 = s2
+##V<5.4##    then 0
+##V<5.4##  else begin
+##V<5.4##    (* distance vectors (v0=previous, v1=current) *)
+##V<5.4##    let v0 = A.make (len2 + 1) 0 in
+##V<5.4##    let v1 = A.make (len2 + 1) 0 in
+##V<5.4##    (* initialize v0: v0(i) = A(0)(i) = delete i chars from t *)
+##V<5.4##    for i = 0 to len2 do
+##V<5.4##      A.unsafe_set v0 i i
+##V<5.4##    done;
+##V<5.4##    (* main loop for the bottom up dynamic algorithm *)
+##V<5.4##    for i = 0 to len1 - 1 do
+##V<5.4##      (* first edit distance is the deletion of i+1 elements from s *)
+##V<5.4##      A.unsafe_set v1 0 (i + 1);
+##V<5.4##      (* try add/delete/replace operations *)
+##V<5.4##      for j = 0 to len2 - 1 do
+##V<5.4##        (* i >= 0 && i < length s1 *)
+##V<5.4##        (* j >= 0 && j < length s2 *)
+##V<5.4##        let cost = if unsafe_get s1 i = unsafe_get s2 j then 0 else 1 in
+##V<5.4##        A.unsafe_set v1 (j + 1)
+##V<5.4##          (min
+##V<5.4##             ((A.unsafe_get v1 j) + 1)
+##V<5.4##             (min
+##V<5.4##                ((A.unsafe_get v0 (j + 1)) + 1)
+##V<5.4##                ((A.unsafe_get v0 j) + cost)));
+##V<5.4##      done;
+##V<5.4##      (* copy v1 into v0 for next iteration *)
+##V<5.4##      A.blit v1 0 v0 0 (len2 + 1);
+##V<5.4##    done;
+##V<5.4##    A.unsafe_get v1 len2
+##V<5.4##  end
+##V<5.4##
 (*$T edit_distance
   edit_distance "foo" "fo0" = 1
   edit_distance "hello" "hell" = 1

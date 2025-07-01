@@ -94,6 +94,17 @@ external readdir : string -> string array = "caml_sys_read_directory"
     in any specific order; they are not, in particular, guaranteed to
     appear in alphabetical order. *)
 
+##V>=5.4## val io_buffer_size: int
+##V>=5.4## (** Size of C buffers used by the runtime system and IO primitives of the [unix]
+##V>=5.4##     library.
+##V>=5.4## 
+##V>=5.4##     Primitives that read from or write to values of type [string] or [bytes]
+##V>=5.4##     generally use an intermediate buffer of this size to avoid holding the
+##V>=5.4##     domain lock.
+##V>=5.4## 
+##V>=5.4##     @since 5.4
+##V>=5.4## *)
+
 val interactive : bool ref
 (** This reference is initially set to [false] in standalone
     programs and to [true] if the code is being executed under
@@ -181,11 +192,21 @@ val max_array_length : int
 
 (** {1 Signal handling} *)
 
+##V>=5.4## type signal = int
+##V>=5.4## (** The type for signal numbers.
+##V>=5.4## 
+##V>=5.4##   Negative numbers are used by OCaml to provide a platform-independent
+##V>=5.4##   number for signals recognised by OCaml. Positive numbers are always the
+##V>=5.4##   platform-dependent value for a given signal.
+##V>=5.4##   The function {!signal_of_int} converts known platform-dependent numbers
+##V>=5.4##   to independent ones, and {!signal_to_int} does the reverse.
+##V>=5.4##   @since 5.4 *)
 
 type signal_behavior = Sys.signal_behavior =
     Signal_default
   | Signal_ignore
-  | Signal_handle of (int -> unit)
+##V>=5.4##  | Signal_handle of (signal -> unit)   (** *)
+##V<5.4##   | Signal_handle of (int -> unit)   (** *)
   (** What to do when receiving a signal:
       - [Signal_default]: take the default behavior
        (usually: abort the program)
@@ -193,112 +214,176 @@ type signal_behavior = Sys.signal_behavior =
       - [Signal_handle f]: call function [f], giving it the signal
       number as argument. *)
 
-external signal :
-  int -> signal_behavior -> signal_behavior = "caml_install_signal_handler"
+##V>=5.4## external signal :
+##V>=5.4##  signal -> signal_behavior -> signal_behavior = "caml_install_signal_handler"
+##V<5.4## external signal :
+##V<5.4##  int -> signal_behavior -> signal_behavior = "caml_install_signal_handler"
 (** Set the behavior of the system on receipt of a given signal.  The
     first argument is the signal number.  Return the behavior
     previously associated with the signal.
     @raise Invalid_argument If the signal number is
     invalid (or not available on your system). *)
 
-val set_signal : int -> signal_behavior -> unit
+##V>=5.4## val set_signal : signal -> signal_behavior -> unit
+##V<5.4## val set_signal : int -> signal_behavior -> unit
 (** Same as {!Sys.signal} but return value is ignored. *)
-
 
 (** {2 Signal numbers for the standard POSIX signals.} *)
 
-val sigabrt : int
+##V>=5.4## val sigabrt : signal
+##V<5.4## val sigabrt : int
 (** Abnormal termination *)
 
-val sigalrm : int
+##V>=5.4## val sigalrm : signal
+##V<5.4## val sigalrm : int
 (** Timeout *)
 
-val sigfpe : int
+##V>=5.4## val sigfpe : signal
+##V<5.4## val sigfpe : int
 (** Arithmetic exception *)
 
-val sighup : int
+##V>=5.4## val sighup : signal
+##V<5.4## val sighup : int
 (** Hangup on controlling terminal *)
 
-val sigill : int
+##V>=5.4## val sigill : signal
+##V<5.4## val sigill : int
 (** Invalid hardware instruction *)
 
-val sigint : int
+##V>=5.4## val sigint : signal
+##V<5.4## val sigint : int
 (** Interactive interrupt (ctrl-C) *)
 
-val sigkill : int
+##V>=5.4## val sigkill : signal
+##V<5.4## val sigkill : int
 (** Termination (cannot be ignored) *)
 
-val sigpipe : int
+##V>=5.4## val sigpipe : signal
+##V<5.4## val sigpipe : int
 (** Broken pipe *)
 
-val sigquit : int
+##V>=5.4## val sigquit : signal
+##V<5.4## val sigquit : int
 (** Interactive termination *)
 
-val sigsegv : int
+##V>=5.4## val sigsegv : signal
+##V<5.4## val sigsegv : int
 (** Invalid memory reference *)
 
-val sigterm : int
+##V>=5.4## val sigterm : signal
+##V<5.4## val sigterm : int
 (** Termination *)
 
-val sigusr1 : int
+##V>=5.4## val sigusr1 : signal
+##V<5.4## val sigusr1 : int
 (** Application-defined signal 1 *)
 
-val sigusr2 : int
+##V>=5.4## val sigusr2 : signal
+##V<5.4## val sigusr2 : int
 (** Application-defined signal 2 *)
 
-val sigchld : int
+##V>=5.4## val sigchld : signal
+##V<5.4## val sigchld : int
 (** Child process terminated *)
 
-val sigcont : int
+##V>=5.4## val sigcont : signal
+##V<5.4## val sigcont : int
 (** Continue *)
 
-val sigstop : int
+##V>=5.4## val sigstop : signal
+##V<5.4## val sigstop : int
 (** Stop *)
 
-val sigtstp : int
+##V>=5.4## val sigtstp : signal
+##V<5.4## val sigtstp : int
 (** Interactive stop *)
 
-val sigttin : int
+##V>=5.4## val sigttin : signal
+##V<5.4## val sigttin : int
 (** Terminal read from background process *)
 
-val sigttou : int
+##V>=5.4## val sigttou : signal
+##V<5.4## val sigttou : int
 (** Terminal write from background process *)
 
-val sigvtalrm : int
+##V>=5.4## val sigvtalrm : signal
+##V<5.4## val sigvtalrm : int
 (** Timeout in virtual time *)
 
-val sigprof : int
+##V>=5.4## val sigprof : signal
+##V<5.4## val sigprof : int
 (** Profiling interrupt *)
 
-val sigbus : int
+##V>=5.4## val sigbus : signal
+##V<5.4## val sigbus : int
 (** Bus error
     @since 2.5.0 *)
 
-val sigpoll : int
+##V>=5.4## val sigpoll : signal
+##V<5.4## val sigpoll : int
 (** Pollable event
     @since 2.5.0 *)
 
-val sigsys : int
+##V>=5.4## val sigsys : signal
+##V<5.4## val sigsys : int
 (** Bad argument to routine
     @since 2.5.0 *)
 
-val sigtrap : int
+##V>=5.4## val sigtrap : signal
+##V<5.4## val sigtrap : int
 (** Trace/breakpoint trap
     @since 2.5.0 *)
 
-val sigurg : int
+##V>=5.4## val sigurg : signal
+##V<5.4## val sigurg : int
 (** Urgent condition on socket
     @since 2.5.0 *)
 
-val sigxcpu : int
+##V>=5.4## val sigxcpu : signal
+##V<5.4## val sigxcpu : int
 (** Timeout in cpu time
     @since 2.5.0 *)
 
-val sigxfsz : int
+##V>=5.4## val sigxfsz : signal
+##V<5.4## val sigxfsz : int
 (** File size limit exceeded
     @since 2.5.0 *)
 
+##V>=5.4## val sigio : signal
+##V>=5.4## (** I/O is possible on a descriptor
+##V>=5.4##     @since 5.4 *)
+##V>=5.4## 
+##V>=5.4## val sigwinch : signal
+##V>=5.4## (** Window size change
+##V>=5.4##     @since 5.4 *)
 
+##V>=5.4## val signal_to_string : signal -> string
+##V>=5.4##   (** [signal_to_string] formats an OCaml [signal] as a C POSIX
+##V>=5.4##     {{:http://pubs.opengroup.org/onlinepubs/9799919799/basedefs/signal.h.html}
+##V>=5.4##     constant} or ["SIG(%d)"] for platform-dependent signal numbers.
+##V>=5.4## 
+##V>=5.4##     @raise Invalid_argument for unrecognised negative numbers.
+##V>=5.4##     @since 5.4 *)
+##V>=5.4## 
+##V>=5.4## val signal_of_int : int -> signal
+##V>=5.4## (** [signal_of_int n] converts a platform-dependent signal number [n] to
+##V>=5.4##     an OCaml signal number.
+##V>=5.4## 
+##V>=5.4##     For positive [n] this is [n] itself if OCaml does not have a
+##V>=5.4##     platform-independent signal number for [n].
+##V>=5.4## 
+##V>=5.4##     @raise Invalid_argument if [n] is negative.
+##V>=5.4##     @since 5.4 *)
+##V>=5.4## 
+##V>=5.4## val signal_to_int : signal -> int
+##V>=5.4## (** [signal_to_int n] converts an OCaml signal number [n] to
+##V>=5.4##     a platform-dependent signal number.
+##V>=5.4## 
+##V>=5.4##     For positive [n] this is [n] itself.
+##V>=5.4## 
+##V>=5.4##     @raise Invalid_argument for unrecognised negative numbers.
+##V>=5.4##     @since 5.4 *)
+  
 exception Break
 (** Exception raised on interactive interrupt if {!Sys.catch_break}
     is on. *)

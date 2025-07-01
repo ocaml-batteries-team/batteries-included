@@ -43,6 +43,17 @@ let spaces_of out =
 
 (**{6 New functions}*)
 
+##V>=5.4## let utf8_scalar_width s ~pos ~len =
+##V>=5.4##   let rec width s count current stop =
+##V>=5.4##     if current >= stop then count
+##V>=5.4##       else
+##V>=5.4##         let decode = String.get_utf_8_uchar s current in
+##V>=5.4##       let advance = Uchar.utf_decode_length decode in
+##V>=5.4##       width s (count + 1) (current+advance) stop
+##V>=5.4##   in
+##V>=5.4##   width s 0 pos (pos + len)
+##V>=5.4## 
+
 let formatter_of_output out =
   let output = output_of out
   and flush  = flush_of  out
@@ -56,11 +67,27 @@ let formatter_of_output out =
 ##V<5## ~spaces:(spaces_of out);
 ##V>=5## pp_set_formatter_out_functions f
 ##V>=5## { out_string = output;
+##V>=5.4##   out_width = utf8_scalar_width;
 ##V>=5##   out_flush = flush;
 ##V>=5##   out_newline = newline_of out;
 ##V>=5##   out_spaces = spaces_of out;
 ##V>=5##   out_indent = spaces_of out };
   f
+
+(* ##V<5## pp_set_all_formatter_output_functions f *)
+(* ##V<5## ~out:output *)
+(* ##V>=5.4## ~width:utf8_scalar_width *)
+(* ##V<5## ~flush *)
+(* ##V<5## ~newline:(newline_of out) *)
+(* ##V<5## ~spaces:(spaces_of out); *)
+(* ##V>=5## pp_set_formatter_out_functions f *)
+(* ##V>=5## { out_string = output; *)
+(* ##V>=5.4##   out_width = utf8_scalar_width; *)
+(* ##V>=5##   out_flush = flush; *)
+(* ##V>=5##   out_newline = newline_of out; *)
+(* ##V>=5##   out_spaces = spaces_of out; *)
+(* ##V>=5##   out_indent = spaces_of out }; *)
+(*   f *)
 
 let set_formatter_output out =
   BatInnerIO.on_close_out out (fun _ -> pp_print_flush Format.std_formatter ());
@@ -71,6 +98,7 @@ let set_formatter_output out =
 ##V<5##    ~spaces:(spaces_of out)
 ##V>=5##  set_formatter_out_functions {
 ##V>=5##    out_string = output_of out;
+##V>=5.4##   out_width = utf8_scalar_width;
 ##V>=5##    out_flush = flush_of out;
 ##V>=5##    out_newline = newline_of out;
 ##V>=5##    out_spaces = spaces_of out;
@@ -85,6 +113,7 @@ let pp_set_formatter_output f out =
 ##V<5##    ~spaces:(spaces_of out)
 ##V>=5##  pp_set_formatter_out_functions f {
 ##V>=5##    out_string = output_of out;
+##V>=5.4##   out_width = utf8_scalar_width;
 ##V>=5##    out_flush = flush_of out;
 ##V>=5##    out_newline = newline_of out;
 ##V>=5##    out_spaces = spaces_of out;

@@ -143,6 +143,8 @@ let of_list l =
 
 let empty = nil
 
+##V>=5.4##let singleton x () = Cons (x, empty)
+
 (*$T empty
    length empty = 0
  *)
@@ -300,6 +302,17 @@ let rec filter f s () = match s () with
       Cons(e, filter f s)
     else
       filter f s ()
+
+##V>=5.4##let rec filteri_aux f i seq () = match seq() with
+##V>=5.4##  | Nil -> Nil
+##V>=5.4##  | Cons (x, next) ->
+##V>=5.4##    let i' = i + 1 in
+##V>=5.4##      if f i x
+##V>=5.4##        then Cons (x, filteri_aux f i' next)
+##V>=5.4##        else filteri_aux f i' next ()
+##V>=5.4##
+##V>=5.4##let[@inline] filteri f seq () =
+##V>=5.4##  filteri_aux f 0 seq ()
 
 let rec filter_map f s () = match s () with
   | Nil ->

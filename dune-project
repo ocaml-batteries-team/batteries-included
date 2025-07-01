@@ -20,7 +20,7 @@
  (name batteries)
  (synopsis "A community-maintained standard library extension")
  (depends
-  (ocaml (>= 4.02.3))
+  (ocaml (and (>= 4.02.3) (< 5.5)))
   camlp-streams
   (ocamlfind (>= 1.5.3))
   (qtest (and :with-test (>= 2.5)))

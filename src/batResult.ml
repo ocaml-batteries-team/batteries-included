@@ -21,12 +21,15 @@ let ok v = Ok v
 let error e = Error e
 let value r ~default = match r with Ok v -> v | Error _ -> default
 let get_ok = function Ok v -> v | Error _ -> invalid_arg "result is Error _"
+##V>=5.4##let get_ok' = function Ok v -> v | Error e -> invalid_arg e
 let get_error = function Error e -> e | Ok _ -> invalid_arg "result is Ok _"
+##V>=5.4##let error_to_failure = function Ok v -> v | Error e -> failwith e
 let bind r f = match r with Ok v -> f v | Error _ as e -> e
 let join = function Ok r -> r | Error _ as e -> e
 let map_error f = function Error e -> Error (f e) | Ok _ as v -> v
 let fold ~ok ~error = function Ok v -> ok v | Error e -> error e
 let iter f = function Ok v -> f v | Error _ -> ()
+##V>=5.4##let retract = function Ok v -> v | Error v -> v
 let iter_error f = function Error e -> f e | Ok _ -> ()
 let is_error = function Error _ -> true | Ok _ -> false
 
@@ -69,6 +72,11 @@ let map f = function
   map succ (Ok 3) = (Ok 4)
 *)
 
+##V>=5.4##let product r0 r1 = match r0, r1 with
+##V>=5.4##| (Error _ as r), _
+##V>=5.4##| _, (Error _ as r) -> r
+##V>=5.4##| Ok v0, Ok v1 -> Ok (v0, v1)
+
 let map_both f g = function
   | Error e -> Error (g e)
   | Ok v  -> Ok (f v)
@@ -97,6 +105,12 @@ let print print_val oc = function
   | Ok x -> BatPrintf.fprintf oc "Ok(%a)" print_val x
   | Error e -> BatPrintf.fprintf oc "Error(%a)" BatPrintexc.print e
 
+##V>=5.4##module Syntax = struct
+##V>=5.4##  let ( let* ) = bind
+##V>=5.4##  let ( and* ) = product
+##V>=5.4##  let ( let+ ) r f = map f r
+##V>=5.4##  let ( and+ ) = product
+##V>=5.4##end
 
 module Monad = struct
   let bind m k = match m with
