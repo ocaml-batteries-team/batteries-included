@@ -14,7 +14,7 @@ jobs:
         os:
           - ubuntu-latest
         ocaml-compiler:
-          - 5.4.0~alpha1
+          - "ocaml-variants.5.4.0~alpha1"
           - 5.3.x
           - 5.2.x
           - 5.1.x
