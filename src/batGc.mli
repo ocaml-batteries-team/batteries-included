@@ -437,7 +437,7 @@ val delete_alarm : alarm -> unit
 ##V>=4.11##module Memprof :
 ##V>=4.11##  sig
 ##V>=5.2##     type t = Gc.Memprof.t
-##V>=4.12##    type allocation_source = Gc.Memprof.allocation_source = Normal | Marshal | Custom
+##V>=4.12####V<=5.3##    type allocation_source = Gc.Memprof.allocation_source = Normal | Marshal | Custom
 ##V>=5.4##     type allocation_source = Gc.Memprof.allocation_source = Normal | Marshal | Custom | Map_file
 ##V>=5.4##     val string_of_allocation_source : allocation_source -> string
 ##V>=4.12##
