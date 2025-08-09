@@ -438,6 +438,8 @@ val delete_alarm : alarm -> unit
 ##V>=4.11##  sig
 ##V>=5.2##     type t = Gc.Memprof.t
 ##V>=4.12##    type allocation_source = Gc.Memprof.allocation_source = Normal | Marshal | Custom
+##V>=5.4##                              | Map_file
+##V>=5.4##     val string_of_allocation_source : allocation_source -> string
 ##V>=4.11##    type allocation = Gc.Memprof.allocation = private
 ##V>=4.11##      { n_samples : int;
 ##V>=4.11##        (** The number of samples in this block (>= 1). *)
@@ -525,3 +527,7 @@ val delete_alarm : alarm -> unit
 ##V>=4.11##        callbacks not being called even though some events happened. *)
 ##V>=5.2##     val discard : t -> unit
 ##V>=4.11##end
+
+##V>=5.4##type suspended_collection_work = Gc.suspended_collection_work
+##V>=5.4##external ramp_up : (unit -> 'a) -> 'a * suspended_collection_work = "caml_ml_gc_ramp_up"
+##V>=5.4##external ramp_down : suspended_collection_work -> unit = "caml_ml_gc_ramp_down"

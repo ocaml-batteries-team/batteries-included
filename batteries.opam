@@ -15,7 +15,7 @@ bug-reports:
   "https://github.com/ocaml-batteries-team/batteries-included/issues"
 depends: [
   "dune" {>= "2.7"}
-  "ocaml" {>= "4.05" & < "5.4"}
+  "ocaml" {>= "4.05" & < "5.5"}
   "camlp-streams"
   "ocamlfind" {>= "1.5.3"}
   "qtest" {with-test & >= "2.5"}
@@ -24,7 +24,7 @@ depends: [
   "num"
   "odoc" {with-doc}
 ]
-conflicts: ["base-effects" "ocaml-option-no-flat-float-array"]
+conflicts: ["ocaml-option-no-flat-float-array"]
 build: [
   ["dune" "subst"] {dev}
   [

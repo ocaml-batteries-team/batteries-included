@@ -111,3 +111,14 @@ end
 module Infix = struct
   let (>>=) = Monad.bind
 end
+
+##V>=5.4##let get_ok' = Stdlib.Result.get_ok'
+##V>=5.4##let error_to_failure = Stdlib.Result.error_to_failure
+##V>=5.4##let product = Stdlib.Result.product
+##V>=5.4##let retract = Stdlib.Result.retract
+##V>=5.4##module Syntax = struct
+##V>=5.4##  let ( let* ) = Stdlib.Result.Syntax.( let* )
+##V>=5.4##  let ( and* ) = Stdlib.Result.Syntax.( and* )
+##V>=5.4##  let ( let+ ) = Stdlib.Result.Syntax.( let+ )
+##V>=5.4##  let ( and+ ) = Stdlib.Result.Syntax.( and+ )
+##V>=5.4##end

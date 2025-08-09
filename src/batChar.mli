@@ -160,6 +160,30 @@ module Incubator : sig
   module Eq : BatOrd.Eq with type t = char
 end
 
+##V>=5.4##module Ascii : sig
+##V>=5.4##  val min : char
+##V>=5.4##  val max : char
+##V>=5.4##  val is_valid : char -> bool
+##V>=5.4##  val is_upper : char -> bool
+##V>=5.4##  val is_lower : char -> bool
+##V>=5.4##  val is_letter : char -> bool
+##V>=5.4##  val is_alphanum : char -> bool
+##V>=5.4##  val is_white : char -> bool
+##V>=5.4##  val is_blank : char -> bool
+##V>=5.4##  val is_graphic : char -> bool
+##V>=5.4##  val is_print : char -> bool
+##V>=5.4##  val is_control : char -> bool
+##V>=5.4##  val is_digit : char -> bool
+##V>=5.4##  val digit_to_int : char -> int
+##V>=5.4##  val digit_of_int : int -> char
+##V>=5.4##  val is_hex_digit : char -> bool
+##V>=5.4##  val hex_digit_to_int : char -> int
+##V>=5.4##  val lower_hex_digit_of_int : int -> char
+##V>=5.4##  val upper_hex_digit_of_int : int -> char
+##V>=5.4##  val uppercase : char -> char
+##V>=5.4##  val lowercase : char -> char
+##V>=5.4##end
+
 (**/**)
 
 external unsafe_chr : int -> char = "%identity"

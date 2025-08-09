@@ -1505,3 +1505,5 @@ external unsafe_blit :
 ##V<5####V>=4.3##  [@@noalloc]
 
   (**/**)
+
+##V>=5.4##val spellcheck : ?max_dist:(string -> int) -> ((string -> unit) -> unit) -> string -> string list

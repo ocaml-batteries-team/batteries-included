@@ -388,3 +388,11 @@ val files_of: string -> string BatEnum.t
 ##V>=4.12##
 ##V>=4.12##    @since 3.3.0 and 4.12.0
 ##V>=4.12##*)
+
+##V>=5.4##val io_buffer_size : int
+##V>=5.4##type signal = int
+##V>=5.4##val sigio : signal
+##V>=5.4##val sigwinch : signal
+##V>=5.4##val signal_to_string : signal -> string
+##V>=5.4##val signal_of_int : int -> signal
+##V>=5.4##val signal_to_int : signal -> int

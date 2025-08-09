@@ -179,3 +179,14 @@ end
 
 (** Print a result as Ok(x) or Error(exn) *)
 val print : ('b BatInnerIO.output -> 'a -> unit) -> 'b BatInnerIO.output -> ('a, exn) t -> unit
+
+##V>=5.4##val get_ok' : ('a, string) result -> 'a
+##V>=5.4##val error_to_failure : ('a, string) result -> 'a
+##V>=5.4##val product : ('a, 'e) result -> ('b, 'e) result -> ('a * 'b, 'e) result
+##V>=5.4##val retract : ('a, 'a) result -> 'a
+##V>=5.4##module Syntax : sig
+##V>=5.4##  val ( let* ) : ('a, 'e) result -> ('a -> ('b, 'e) result) -> ('b, 'e) result
+##V>=5.4##  val ( and* ) : ('a, 'e) result -> ('b, 'e) result -> ('a * 'b, 'e) result
+##V>=5.4##  val ( let+ ) : ('a, 'e) result -> ('a -> 'b) -> ('b, 'e) result
+##V>=5.4##  val ( and+ ) : ('a, 'e) result -> ('b, 'e) result -> ('a * 'b, 'e) result
+##V>=5.4##end

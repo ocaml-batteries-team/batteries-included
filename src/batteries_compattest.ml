@@ -54,6 +54,7 @@ module Stdlib_verifications = struct
 ##V>=4.14## end = struct
 ##V>=4.14##   include BatSeq
 ##V>=4.14##   let equal = equal_stdlib
+##V>=5.4##    let filteri = Stdlib.Seq.filteri
 ##V>=4.14## end
   module Marshal =
     (Marshal: sig
@@ -86,6 +87,7 @@ module Stdlib_verifications = struct
     let starts_with = starts_with_stdlib
     let ends_with = ends_with_stdlib
     let exists = exists_stdlib
+##V>=5.4##let edit_distance = Stdlib.String.edit_distance
   end
   module Sys = (Sys : module type of Legacy.Sys)
   module Unix =
