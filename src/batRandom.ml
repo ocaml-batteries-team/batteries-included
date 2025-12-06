@@ -21,7 +21,6 @@
  *)
 
 
-exception Empty
 let init      = Random.init
 let full_init = Random.full_init
 let self_init = Random.self_init
@@ -88,7 +87,7 @@ let enum_char () = BatEnum.from char
 
 let choice e =
   if BatEnum.is_empty e then
-    raise Empty
+    invalid_arg "Random.choice"
   else
     (BatEnum.drop (int (BatEnum.count e)) e;
      BatEnum.get_exn e)
