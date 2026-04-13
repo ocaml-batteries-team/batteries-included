@@ -204,6 +204,9 @@ val find_opt : ('a, 'b) t -> 'a -> 'b option
 (** [Stdlib]-compatible alias for {!find_option}.
     @since 3.9.0 *)
 
+##V>=5.5##val find_and_remove : ('a, 'b) t -> 'a -> 'b option
+##V>=5.5##val find_and_replace : ('a, 'b) t -> 'a -> 'b -> 'b option
+
 val exists : ('a -> 'b -> bool) -> ('a,'b) t -> bool
 (** Check if at least one key-value pair satisfies [p k v] *)
 
@@ -454,6 +457,9 @@ sig
   val find_default : 'a t -> key ->  'a -> 'a
   val find_option : 'a t -> key -> 'a option
   val find_opt : 'a t -> key -> 'a option
+
+##V>=5.5##  val find_and_remove : 'a t -> key -> 'a option
+##V>=5.5##  val find_and_replace : 'a t -> key -> 'a -> 'a option
 
   val replace : 'a t -> key -> 'a -> unit
   val mem : 'a t -> key -> bool

@@ -1507,3 +1507,32 @@ external unsafe_blit :
   (**/**)
 
 ##V>=5.4##val spellcheck : ?max_dist:(string -> int) -> ((string -> unit) -> unit) -> string -> string list
+
+##V>=5.5##val of_char : char -> string
+##V>=5.5##val is_empty : string -> bool
+##V>=5.5##val includes : affix:string -> string -> bool
+##V>=5.5##val take_first : int -> string -> string
+##V>=5.5##val take_last : int -> string -> string
+##V>=5.5##val drop_first : int -> string -> string
+##V>=5.5##val drop_last : int -> string -> string
+##V>=5.5##val cut_first : int -> string -> string * string
+##V>=5.5##val cut_last : int -> string -> string * string
+##V>=5.5##val take_first_while : (char -> bool) -> string -> string
+##V>=5.5##val take_last_while : (char -> bool) -> string -> string
+##V>=5.5##val drop_first_while : (char -> bool) -> string -> string
+##V>=5.5##val drop_last_while : (char -> bool) -> string -> string
+##V>=5.5##val cut_first_while : (char -> bool) -> string -> string * string
+##V>=5.5##val cut_last_while : (char -> bool) -> string -> string * string
+##V>=5.5##val split_first : sep:string -> string -> (string * string) option
+##V>=5.5##val split_last : sep:string -> string -> (string * string) option
+##V>=5.5##val split_all : sep:string -> ?drop:(string -> bool) -> string -> string list
+##V>=5.5##val rsplit_all : sep:string -> ?drop:(string -> bool) -> string -> string list
+##V>=5.5##val find_first_index : (char -> bool) -> ?start:int -> string -> int option
+##V>=5.5##val find_last_index : (char -> bool) -> ?start:int -> string -> int option
+##V>=5.5##val find_first : sub:string -> ?start:int -> string -> int option
+##V>=5.5##val find_last : sub:string -> ?start:int -> string -> int option
+##V>=5.5##val find_all_stdlib : sub:string -> (int -> 'acc -> 'acc) -> ?start:int -> string -> 'acc -> 'acc
+##V>=5.5##val rfind_all : sub:string -> (int -> 'acc -> 'acc) -> ?start:int -> string -> 'acc -> 'acc
+##V>=5.5##val replace_first : sub:string -> by:string -> ?start:int -> string -> string
+##V>=5.5##val replace_last : sub:string -> by:string -> ?start:int -> string -> string
+##V>=5.5##val replace_all : sub:string -> by:string -> ?start:int -> string -> string

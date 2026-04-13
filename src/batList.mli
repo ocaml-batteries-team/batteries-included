@@ -1183,3 +1183,6 @@ val ( @ ) : 'a list -> 'a list -> 'a list
 
 ##V>=5.1##val find_index : ('a -> bool) -> 'a list -> int option
 ##V>=5.1##val find_mapi : (int -> 'a -> 'b option) -> 'a list -> 'b option
+
+##V>=5.5##val filter_mapi : (int -> 'a -> 'b option) -> 'a list -> 'b list
+##V>=5.5##val split_map : ('c -> 'a * 'b) -> 'c list -> 'a list * 'b list

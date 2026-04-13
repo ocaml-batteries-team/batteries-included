@@ -396,3 +396,5 @@ val files_of: string -> string BatEnum.t
 ##V>=5.4##val signal_to_string : signal -> string
 ##V>=5.4##val signal_of_int : int -> signal
 ##V>=5.4##val signal_to_int : signal -> int
+
+##V>=5.5##val runtime_executable : string

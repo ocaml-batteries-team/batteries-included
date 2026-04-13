@@ -198,3 +198,15 @@ let max (x: t) (y: t): t =
 
 ##V>=5.1##let seeded_hash = Int32.seeded_hash
 ##V>=5.1##let hash = Int32.hash
+
+##V>=5.5##let fdiv = Int32.fdiv
+##V>=5.5##let cdiv = Int32.cdiv
+##V>=5.5##let ediv = Int32.ediv
+##V>=5.5##let erem = Int32.erem
+##V>=5.5##let succ = Int32.succ
+##V>=5.5##let popcount = Int32.popcount
+##V>=5.5##let unsigned_bitsize = Int32.unsigned_bitsize
+##V>=5.5##let signed_bitsize = Int32.signed_bitsize
+##V>=5.5##let leading_zeros = Int32.leading_zeros
+##V>=5.5##let leading_sign_bits = Int32.leading_sign_bits
+##V>=5.5##let trailing_zeros = Int32.trailing_zeros

@@ -461,6 +461,7 @@ let of_string ?(first="[") ?(last="]") ?(sep=";") of_str s =
 ##V>=5.1##let find_index = Stdlib.Seq.find_index
 ##V>=5.1##let find_mapi = Stdlib.Seq.find_mapi
 ##V>=5.4##let singleton = Stdlib.Seq.singleton
+##V>=5.5##let delay = Stdlib.Seq.delay
 
 module Infix = struct
   (** Infix operators matching those provided by {!BatEnum.Infix} *)

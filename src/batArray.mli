@@ -382,6 +382,8 @@ val stable_sort : ('a -> 'a -> int) -> 'a array -> unit
     It is usually faster than the current implementation of {!Array.sort}.
 *)
 
+##V>=5.5##val stable_sort_sub : ('a -> 'a -> int) -> 'a array -> int -> int -> unit
+
 val fast_sort : ('a -> 'a -> int) -> 'a array -> unit
 (** Same as {!Array.sort} or {!Array.stable_sort}, whichever is faster
     on typical input.

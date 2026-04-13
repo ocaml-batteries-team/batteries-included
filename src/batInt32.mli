@@ -329,3 +329,15 @@ val print_hex: 'a BatInnerIO.output -> t -> unit
 
 ##V>=5.1##val seeded_hash : int -> t -> int
 ##V>=5.1##val hash : t -> int
+
+##V>=5.5##val fdiv : int32 -> int32 -> int32
+##V>=5.5##val cdiv : int32 -> int32 -> int32
+##V>=5.5##val ediv : int32 -> int32 -> int32
+##V>=5.5##val erem : int32 -> int32 -> int32
+##V>=5.5##val succ : int32 -> int32
+##V>=5.5##val popcount: t -> int
+##V>=5.5##val unsigned_bitsize: t -> int
+##V>=5.5##val signed_bitsize: t -> int
+##V>=5.5##val leading_zeros: t -> int
+##V>=5.5##val leading_sign_bits: t -> int
+##V>=5.5##val trailing_zeros: t -> int

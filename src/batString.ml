@@ -1381,3 +1381,5 @@ struct
   end (* String.Cap.Exceptionless *)
 
 end (* String.Cap *)
+
+##V>=5.5##let find_all_stdlib = String.find_all

@@ -1865,3 +1865,5 @@ val descr_of_out_channel : unit BatInnerIO.output -> file_descr
   (** @deprecated use {!descr_of_output}. *)
 
 ##V>=5.4##val sigwait : Sys.signal list -> Sys.signal
+
+##V>=5.5##val unsetenv : string -> unit
