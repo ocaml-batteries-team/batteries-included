@@ -33,9 +33,6 @@ jobs:
           - true
 
         include:
-          - os: ubuntu-latest
-            ocaml-compiler: 4.02.3
-            test: false
           - os: macos-latest
             ocaml-compiler: 4.14.x
             test: true
