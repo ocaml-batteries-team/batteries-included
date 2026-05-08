@@ -96,6 +96,8 @@ type stat = Gc.stat =
 ##V>=4.12## (** Number of forced full major collections completed since the program
 ##V>=4.12##     was started.
 ##V>=4.12##     @since 4.12.0 *)
+
+##V>=5.5## live_stacks_words : int;
   }
 (** The memory management counters are returned in a [stat] record.
 
@@ -526,8 +528,15 @@ val delete_alarm : alarm -> unit
 ##V>=4.11##        Calling [stop] when a callback is running can lead to
 ##V>=4.11##        callbacks not being called even though some events happened. *)
 ##V>=5.2##     val discard : t -> unit
+##V>=5.5##     val is_sampling : unit -> bool
 ##V>=4.11##end
 
 ##V>=5.4##type suspended_collection_work = Gc.suspended_collection_work
 ##V>=5.4##external ramp_up : (unit -> 'a) -> 'a * suspended_collection_work = "caml_ml_gc_ramp_up"
 ##V>=5.4##external ramp_down : suspended_collection_work -> unit = "caml_ml_gc_ramp_down"
+
+##V>=5.5##module Tweak : sig
+##V>=5.5##  val set : string -> int -> unit
+##V>=5.5##  val get : string -> int
+##V>=5.5##  val list_active : unit -> (string * int) list
+##V>=5.5##end

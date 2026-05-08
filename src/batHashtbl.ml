@@ -50,6 +50,9 @@ let stats    = Hashtbl.stats
 ##V>=4.07##let add_seq = Hashtbl.add_seq
 ##V>=4.07##let replace_seq = Hashtbl.replace_seq
 ##V>=4.07##let of_seq = Hashtbl.of_seq
+##V>=5.5##let find_and_remove = Hashtbl.find_and_remove
+##V>=5.5##let find_and_replace = Hashtbl.find_and_replace
+
 
 type ('a, 'b) h_bucketlist =
   | Empty
@@ -592,6 +595,9 @@ sig
   val find_default : 'a t -> key ->  'a -> 'a
   val find_option : 'a t -> key -> 'a option
   val find_opt : 'a t -> key -> 'a option
+
+##V>=5.5##  val find_and_remove : 'a t -> key -> 'a option
+##V>=5.5##  val find_and_replace : 'a t -> key -> 'a -> 'a option
 
   val replace : 'a t -> key -> 'a -> unit
   val mem : 'a t -> key -> bool

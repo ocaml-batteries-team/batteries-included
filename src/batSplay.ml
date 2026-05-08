@@ -244,6 +244,11 @@ struct
     let tr = sget m in
     tr = Empty
 
+  let is_singleton m =
+    match sget m with
+    | Node (Empty, _, Empty) -> true
+    | Empty | Node _ -> false
+
   (*  let kcmp (j, _) (k, _) = Ord.compare j k*)
   let ksel j (k, _) = Ord.compare j k
 

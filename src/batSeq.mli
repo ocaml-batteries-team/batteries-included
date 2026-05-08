@@ -894,3 +894,5 @@ end
 
 
 ##V>=5.4##val singleton: 'a -> 'a t
+
+##V>=5.5##val delay : (unit -> 'a t) -> 'a t

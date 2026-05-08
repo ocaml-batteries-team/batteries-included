@@ -309,3 +309,14 @@ external format : string -> nativeint -> string = "caml_nativeint_format"
     @deprecated use {!Printf.sprintf} with a [%nx] format
     instead. *)
 (**/**)
+
+##V>=5.5##val fdiv : nativeint -> nativeint -> nativeint
+##V>=5.5##val cdiv : nativeint -> nativeint -> nativeint
+##V>=5.5##val ediv : nativeint -> nativeint -> nativeint
+##V>=5.5##val erem : nativeint -> nativeint -> nativeint
+##V>=5.5##val popcount: t -> int
+##V>=5.5##val unsigned_bitsize: t -> int
+##V>=5.5##val signed_bitsize: t -> int
+##V>=5.5##val leading_zeros: t -> int
+##V>=5.5##val leading_sign_bits: t -> int
+##V>=5.5##val trailing_zeros: t -> int

@@ -96,3 +96,14 @@ let min (x: t) (y: t): t =
 
 let max (x: t) (y: t): t =
   if x >= y then x else y
+
+##V>=5.5##let fdiv = Nativeint.fdiv
+##V>=5.5##let cdiv = Nativeint.cdiv
+##V>=5.5##let ediv = Nativeint.ediv
+##V>=5.5##let erem = Nativeint.erem
+##V>=5.5##let popcount = Nativeint.popcount
+##V>=5.5##let unsigned_bitsize = Nativeint.unsigned_bitsize
+##V>=5.5##let signed_bitsize = Nativeint.signed_bitsize
+##V>=5.5##let leading_zeros = Nativeint.leading_zeros
+##V>=5.5##let leading_sign_bits = Nativeint.leading_sign_bits
+##V>=5.5##let trailing_zeros = Nativeint.trailing_zeros

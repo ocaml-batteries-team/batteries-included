@@ -66,6 +66,8 @@ let rev_map2 = List.rev_map2
 ##V>=4.12##let equal = List.equal
 ##V>=5.1##let find_index = List.find_index
 ##V>=5.1##let find_mapi = List.find_mapi
+##V>=5.5##let filter_mapi = List.filter_mapi
+##V>=5.5##let split_map = List.split_map
 
 (* ::VH:: END GLUE *)
 

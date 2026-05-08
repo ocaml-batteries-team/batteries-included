@@ -512,6 +512,8 @@ sig
     val compare: cmp:('a -> 'a -> int) -> 'a t -> 'a t -> int
     val equal: cmp:('a -> 'a -> bool) -> 'a t -> 'a t -> bool
   end
+
+##V>=5.5##val is_singleton : 'a t -> bool
 end
 
 

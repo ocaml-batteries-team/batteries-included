@@ -88,6 +88,7 @@ module Stdlib_verifications = struct
     let ends_with = ends_with_stdlib
     let exists = exists_stdlib
 ##V>=5.4##let edit_distance = Stdlib.String.edit_distance
+##V>=5.5##let find_all = find_all_stdlib
   end
   module Sys = (Sys : module type of Legacy.Sys)
   module Unix =
