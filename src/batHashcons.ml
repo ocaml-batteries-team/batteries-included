@@ -153,12 +153,8 @@ struct
         add t hdata ;
         hdata
       end else begin
-        match Weak.get_copy bucket i with
-        | Some v when HT.equal v.obj d ->
-          begin match Weak.get bucket i with
-            | Some v -> v
-            | None -> loop (i + 1)
-          end
+        match Weak.get bucket i with
+        | Some v when HT.equal v.obj d -> v
         | _ -> loop (i + 1)
       end
     in
