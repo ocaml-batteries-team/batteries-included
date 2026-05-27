@@ -128,7 +128,7 @@ struct
     if !i < sz then begin
       Weak.set bucket !i (Some d)
     end else begin
-      let newsz = Pervasives.min (sz + 3) (Sys.max_array_length - 1) in
+      let newsz = next_sz sz in
       if newsz <= sz then
         failwith "Hashcons.Make: hash bucket cannot grow more" ;
       let newbucket = Weak.create newsz in
