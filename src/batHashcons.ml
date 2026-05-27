@@ -144,18 +144,20 @@ struct
     let index = hcode mod (Array.length t.table) in
     let bucket = t.table.(index) in
     let sz = Weak.length bucket in
-    let rec loop i =
-      if i >= sz then begin
-        let hdata = { hcode = hcode ; tag = gentag () ; obj = d } in
-        add t hdata ;
-        hdata
-      end else begin
-        match Weak.get bucket i with
-        | Some v when HT.equal v.obj d -> v
-        | _ -> loop (i + 1)
-      end
-    in
-    loop 0
+    let found = ref None in
+    let i = ref 0 in
+    while !i < sz && BatOption.is_none !found do
+      match Weak.get bucket !i with
+      | Some v as opt when HT.equal v.obj d ->
+        found := opt
+      | _ -> incr i
+    done;
+    match !found with
+    | Some v -> v
+    | None ->
+      let hdata = { hcode = hcode ; tag = gentag () ; obj = d } in
+      add t hdata ;
+      hdata
 end
 
 module H = struct
