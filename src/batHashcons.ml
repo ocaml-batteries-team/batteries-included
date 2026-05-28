@@ -116,6 +116,7 @@ struct
       newt.limit <- t.limit + 100 ;          (* prevent resizing of newt *)
       iter (add newt) t ;
       t.table <- newt.table ;
+      t.totsize <- newt.totsize
     end
 
   and add t d =
