@@ -147,7 +147,7 @@ struct
     let i = ref 0 in
     while !i < sz && BatOption.is_none !found do
       match Weak.get bucket !i with
-      | Some v as opt when HT.equal v.obj d ->
+      | Some v as opt when v.hcode = hcode && HT.equal v.obj d ->
         found := opt
       | _ -> incr i
     done;
