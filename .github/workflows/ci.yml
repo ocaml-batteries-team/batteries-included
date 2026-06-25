@@ -23,11 +23,12 @@ jobs:
           - 4.13.x
           - 4.12.x
           - 4.11.x
-          - 4.10.x
-          - 4.09.x
-          - 4.08.x
-          - 4.07.x
-          - 4.06.x
+          - ocaml-base-compiler.4.10.2
+          - ocaml-base-compiler.4.09.1
+          - ocaml-base-compiler.4.08.1
+          - ocaml-base-compiler.4.07.1
+          - ocaml-base-compiler.4.06.1
+          - ocaml-base-compiler.4.05.0
         test:
           - true
 
@@ -48,6 +49,9 @@ jobs:
       - name: Set up OCaml ${{ matrix.ocaml-compiler }}
         uses: ocaml/setup-ocaml@v3
         with:
+          opam-repositories: |
+            default: git+https://github.com/ocaml/opam-repository.git
+            archive: git+https://github.com/ocaml/opam-repository-archive.git
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
 
       - name: Install dependencies
