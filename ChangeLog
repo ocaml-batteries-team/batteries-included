@@ -1,6 +1,16 @@
 Changelog
 =========
 
+## v3.11.0
+
+- Add support for OCaml 5.5
+  #1146
+  (kit-ty-kate)
+
+- Update GitHub Actions CI
+  #1147
+  (Simmo Saan)
+
 ## v3.10.0
 
 - Add support for OCaml 5.4
