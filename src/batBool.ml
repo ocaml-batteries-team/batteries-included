@@ -63,7 +63,7 @@ module BaseBool : BatNumber.NUMERIC_BASE with type t = bool = struct
     | false -> 0
     | true  -> 1
 
-  let of_float x = of_int (int_of_float x)
+  let of_float x = BatFloat.is_finite x && x <> 0.
   let to_float x = float_of_int (to_int x)
   let of_string = function
     | "true" | "tt" | "1" -> true
